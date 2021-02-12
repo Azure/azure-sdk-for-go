@@ -135,7 +135,11 @@ func (client TaskRunsClient) CreateSender(req *http.Request) (future TaskRunsCre
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tr.Response.Response, err = future.GetResult(sender); err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
+		tr.Response.Response, err = future.GetResult(sender)
+		if tr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
 			tr, err = client.CreateResponder(tr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsCreateFuture", "Result", tr.Response.Response, "Failure responding to request")
@@ -669,7 +673,11 @@ func (client TaskRunsClient) UpdateSender(req *http.Request) (future TaskRunsUpd
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tr.Response.Response, err = future.GetResult(sender); err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
+		tr.Response.Response, err = future.GetResult(sender)
+		if tr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
 			tr, err = client.UpdateResponder(tr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerregistry.TaskRunsUpdateFuture", "Result", tr.Response.Response, "Failure responding to request")

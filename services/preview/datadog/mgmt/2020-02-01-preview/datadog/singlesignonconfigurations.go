@@ -126,7 +126,11 @@ func (client SingleSignOnConfigurationsClient) CreateOrUpdateSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ssor.Response.Response, err = future.GetResult(sender); err == nil && ssor.Response.Response.StatusCode != http.StatusNoContent {
+		ssor.Response.Response, err = future.GetResult(sender)
+		if ssor.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "datadog.SingleSignOnConfigurationsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ssor.Response.Response.StatusCode != http.StatusNoContent {
 			ssor, err = client.CreateOrUpdateResponder(ssor.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "datadog.SingleSignOnConfigurationsCreateOrUpdateFuture", "Result", ssor.Response.Response, "Failure responding to request")

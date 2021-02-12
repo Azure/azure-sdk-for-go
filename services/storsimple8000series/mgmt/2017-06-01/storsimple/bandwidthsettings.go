@@ -132,7 +132,11 @@ func (client BandwidthSettingsClient) CreateOrUpdateSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if bs.Response.Response, err = future.GetResult(sender); err == nil && bs.Response.Response.StatusCode != http.StatusNoContent {
+		bs.Response.Response, err = future.GetResult(sender)
+		if bs.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storsimple.BandwidthSettingsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && bs.Response.Response.StatusCode != http.StatusNoContent {
 			bs, err = client.CreateOrUpdateResponder(bs.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storsimple.BandwidthSettingsCreateOrUpdateFuture", "Result", bs.Response.Response, "Failure responding to request")

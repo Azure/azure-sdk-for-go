@@ -138,7 +138,11 @@ func (client WatchersClient) CheckConnectivitySender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ci.Response.Response, err = future.GetResult(sender); err == nil && ci.Response.Response.StatusCode != http.StatusNoContent {
+		ci.Response.Response, err = future.GetResult(sender)
+		if ci.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersCheckConnectivityFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ci.Response.Response.StatusCode != http.StatusNoContent {
 			ci, err = client.CheckConnectivityResponder(ci.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.WatchersCheckConnectivityFuture", "Result", ci.Response.Response, "Failure responding to request")
@@ -494,7 +498,11 @@ func (client WatchersClient) GetAzureReachabilityReportSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if arr.Response.Response, err = future.GetResult(sender); err == nil && arr.Response.Response.StatusCode != http.StatusNoContent {
+		arr.Response.Response, err = future.GetResult(sender)
+		if arr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersGetAzureReachabilityReportFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && arr.Response.Response.StatusCode != http.StatusNoContent {
 			arr, err = client.GetAzureReachabilityReportResponder(arr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.WatchersGetAzureReachabilityReportFuture", "Result", arr.Response.Response, "Failure responding to request")
@@ -600,7 +608,11 @@ func (client WatchersClient) GetFlowLogStatusSender(req *http.Request) (future W
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if fli.Response.Response, err = future.GetResult(sender); err == nil && fli.Response.Response.StatusCode != http.StatusNoContent {
+		fli.Response.Response, err = future.GetResult(sender)
+		if fli.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersGetFlowLogStatusFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && fli.Response.Response.StatusCode != http.StatusNoContent {
 			fli, err = client.GetFlowLogStatusResponder(fli.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.WatchersGetFlowLogStatusFuture", "Result", fli.Response.Response, "Failure responding to request")
@@ -711,7 +723,11 @@ func (client WatchersClient) GetNetworkConfigurationDiagnosticSender(req *http.R
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cdr.Response.Response, err = future.GetResult(sender); err == nil && cdr.Response.Response.StatusCode != http.StatusNoContent {
+		cdr.Response.Response, err = future.GetResult(sender)
+		if cdr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersGetNetworkConfigurationDiagnosticFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cdr.Response.Response.StatusCode != http.StatusNoContent {
 			cdr, err = client.GetNetworkConfigurationDiagnosticResponder(cdr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.WatchersGetNetworkConfigurationDiagnosticFuture", "Result", cdr.Response.Response, "Failure responding to request")
@@ -819,7 +835,11 @@ func (client WatchersClient) GetNextHopSender(req *http.Request) (future Watcher
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if nhr.Response.Response, err = future.GetResult(sender); err == nil && nhr.Response.Response.StatusCode != http.StatusNoContent {
+		nhr.Response.Response, err = future.GetResult(sender)
+		if nhr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersGetNextHopFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && nhr.Response.Response.StatusCode != http.StatusNoContent {
 			nhr, err = client.GetNextHopResponder(nhr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.WatchersGetNextHopFuture", "Result", nhr.Response.Response, "Failure responding to request")
@@ -1008,7 +1028,11 @@ func (client WatchersClient) GetTroubleshootingSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tr.Response.Response, err = future.GetResult(sender); err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
+		tr.Response.Response, err = future.GetResult(sender)
+		if tr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersGetTroubleshootingFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
 			tr, err = client.GetTroubleshootingResponder(tr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.WatchersGetTroubleshootingFuture", "Result", tr.Response.Response, "Failure responding to request")
@@ -1114,7 +1138,11 @@ func (client WatchersClient) GetTroubleshootingResultSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tr.Response.Response, err = future.GetResult(sender); err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
+		tr.Response.Response, err = future.GetResult(sender)
+		if tr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersGetTroubleshootingResultFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
 			tr, err = client.GetTroubleshootingResultResponder(tr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.WatchersGetTroubleshootingResultFuture", "Result", tr.Response.Response, "Failure responding to request")
@@ -1220,7 +1248,11 @@ func (client WatchersClient) GetVMSecurityRulesSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sgvr.Response.Response, err = future.GetResult(sender); err == nil && sgvr.Response.Response.StatusCode != http.StatusNoContent {
+		sgvr.Response.Response, err = future.GetResult(sender)
+		if sgvr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersGetVMSecurityRulesFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sgvr.Response.Response.StatusCode != http.StatusNoContent {
 			sgvr, err = client.GetVMSecurityRulesResponder(sgvr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.WatchersGetVMSecurityRulesFuture", "Result", sgvr.Response.Response, "Failure responding to request")
@@ -1466,7 +1498,11 @@ func (client WatchersClient) ListAvailableProvidersSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if apl.Response.Response, err = future.GetResult(sender); err == nil && apl.Response.Response.StatusCode != http.StatusNoContent {
+		apl.Response.Response, err = future.GetResult(sender)
+		if apl.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersListAvailableProvidersFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && apl.Response.Response.StatusCode != http.StatusNoContent {
 			apl, err = client.ListAvailableProvidersResponder(apl.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.WatchersListAvailableProvidersFuture", "Result", apl.Response.Response, "Failure responding to request")
@@ -1576,7 +1612,11 @@ func (client WatchersClient) SetFlowLogConfigurationSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if fli.Response.Response, err = future.GetResult(sender); err == nil && fli.Response.Response.StatusCode != http.StatusNoContent {
+		fli.Response.Response, err = future.GetResult(sender)
+		if fli.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersSetFlowLogConfigurationFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && fli.Response.Response.StatusCode != http.StatusNoContent {
 			fli, err = client.SetFlowLogConfigurationResponder(fli.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.WatchersSetFlowLogConfigurationFuture", "Result", fli.Response.Response, "Failure responding to request")
@@ -1765,7 +1805,11 @@ func (client WatchersClient) VerifyIPFlowSender(req *http.Request) (future Watch
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vifr.Response.Response, err = future.GetResult(sender); err == nil && vifr.Response.Response.StatusCode != http.StatusNoContent {
+		vifr.Response.Response, err = future.GetResult(sender)
+		if vifr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.WatchersVerifyIPFlowFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vifr.Response.Response.StatusCode != http.StatusNoContent {
 			vifr, err = client.VerifyIPFlowResponder(vifr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.WatchersVerifyIPFlowFuture", "Result", vifr.Response.Response, "Failure responding to request")

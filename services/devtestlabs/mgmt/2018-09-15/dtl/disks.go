@@ -226,7 +226,11 @@ func (client DisksClient) CreateOrUpdateSender(req *http.Request) (future DisksC
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
+		d.Response.Response, err = future.GetResult(sender)
+		if d.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "dtl.DisksCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
 			d, err = client.CreateOrUpdateResponder(d.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "dtl.DisksCreateOrUpdateFuture", "Result", d.Response.Response, "Failure responding to request")

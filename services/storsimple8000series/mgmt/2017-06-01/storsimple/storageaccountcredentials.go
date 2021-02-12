@@ -135,7 +135,11 @@ func (client StorageAccountCredentialsClient) CreateOrUpdateSender(req *http.Req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sac.Response.Response, err = future.GetResult(sender); err == nil && sac.Response.Response.StatusCode != http.StatusNoContent {
+		sac.Response.Response, err = future.GetResult(sender)
+		if sac.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sac.Response.Response.StatusCode != http.StatusNoContent {
 			sac, err = client.CreateOrUpdateResponder(sac.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storsimple.StorageAccountCredentialsCreateOrUpdateFuture", "Result", sac.Response.Response, "Failure responding to request")

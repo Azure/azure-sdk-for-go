@@ -291,7 +291,11 @@ func (client PrivateEndpointConnectionClient) PutSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pecr.Response.Response, err = future.GetResult(sender); err == nil && pecr.Response.Response.StatusCode != http.StatusNoContent {
+		pecr.Response.Response, err = future.GetResult(sender)
+		if pecr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionPutFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pecr.Response.Response.StatusCode != http.StatusNoContent {
 			pecr, err = client.PutResponder(pecr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionPutFuture", "Result", pecr.Response.Response, "Failure responding to request")

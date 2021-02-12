@@ -121,7 +121,11 @@ func (client VpnServerConfigurationsClient) CreateOrUpdateSender(req *http.Reque
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vsc.Response.Response, err = future.GetResult(sender); err == nil && vsc.Response.Response.StatusCode != http.StatusNoContent {
+		vsc.Response.Response, err = future.GetResult(sender)
+		if vsc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VpnServerConfigurationsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vsc.Response.Response.StatusCode != http.StatusNoContent {
 			vsc, err = client.CreateOrUpdateResponder(vsc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VpnServerConfigurationsCreateOrUpdateFuture", "Result", vsc.Response.Response, "Failure responding to request")

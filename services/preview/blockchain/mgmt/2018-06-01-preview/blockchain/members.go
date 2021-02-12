@@ -122,7 +122,11 @@ func (client MembersClient) CreateSender(req *http.Request) (future MembersCreat
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mVar.Response.Response, err = future.GetResult(sender); err == nil && mVar.Response.Response.StatusCode != http.StatusNoContent {
+		mVar.Response.Response, err = future.GetResult(sender)
+		if mVar.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "blockchain.MembersCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mVar.Response.Response.StatusCode != http.StatusNoContent {
 			mVar, err = client.CreateResponder(mVar.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "blockchain.MembersCreateFuture", "Result", mVar.Response.Response, "Failure responding to request")

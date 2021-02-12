@@ -148,7 +148,11 @@ func (client APISchemaClient) CreateOrUpdateSender(req *http.Request) (future AP
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sc.Response.Response, err = future.GetResult(sender); err == nil && sc.Response.Response.StatusCode != http.StatusNoContent {
+		sc.Response.Response, err = future.GetResult(sender)
+		if sc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.APISchemaCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sc.Response.Response.StatusCode != http.StatusNoContent {
 			sc, err = client.CreateOrUpdateResponder(sc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "apimanagement.APISchemaCreateOrUpdateFuture", "Result", sc.Response.Response, "Failure responding to request")

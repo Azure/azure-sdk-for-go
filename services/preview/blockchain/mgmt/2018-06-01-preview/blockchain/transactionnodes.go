@@ -125,7 +125,11 @@ func (client TransactionNodesClient) CreateSender(req *http.Request) (future Tra
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tn.Response.Response, err = future.GetResult(sender); err == nil && tn.Response.Response.StatusCode != http.StatusNoContent {
+		tn.Response.Response, err = future.GetResult(sender)
+		if tn.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tn.Response.Response.StatusCode != http.StatusNoContent {
 			tn, err = client.CreateResponder(tn.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesCreateFuture", "Result", tn.Response.Response, "Failure responding to request")

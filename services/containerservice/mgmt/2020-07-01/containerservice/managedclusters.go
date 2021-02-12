@@ -169,7 +169,11 @@ func (client ManagedClustersClient) CreateOrUpdateSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mc.Response.Response, err = future.GetResult(sender); err == nil && mc.Response.Response.StatusCode != http.StatusNoContent {
+		mc.Response.Response, err = future.GetResult(sender)
+		if mc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mc.Response.Response.StatusCode != http.StatusNoContent {
 			mc, err = client.CreateOrUpdateResponder(mc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersCreateOrUpdateFuture", "Result", mc.Response.Response, "Failure responding to request")
@@ -1451,7 +1455,11 @@ func (client ManagedClustersClient) UpdateTagsSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mc.Response.Response, err = future.GetResult(sender); err == nil && mc.Response.Response.StatusCode != http.StatusNoContent {
+		mc.Response.Response, err = future.GetResult(sender)
+		if mc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersUpdateTagsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mc.Response.Response.StatusCode != http.StatusNoContent {
 			mc, err = client.UpdateTagsResponder(mc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerservice.ManagedClustersUpdateTagsFuture", "Result", mc.Response.Response, "Failure responding to request")

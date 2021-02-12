@@ -119,7 +119,11 @@ func (client VirtualWansClient) CreateOrUpdateSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vw.Response.Response, err = future.GetResult(sender); err == nil && vw.Response.Response.StatusCode != http.StatusNoContent {
+		vw.Response.Response, err = future.GetResult(sender)
+		if vw.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualWansCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vw.Response.Response.StatusCode != http.StatusNoContent {
 			vw, err = client.CreateOrUpdateResponder(vw.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualWansCreateOrUpdateFuture", "Result", vw.Response.Response, "Failure responding to request")

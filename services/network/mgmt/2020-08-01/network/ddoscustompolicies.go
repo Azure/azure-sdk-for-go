@@ -120,7 +120,11 @@ func (client DdosCustomPoliciesClient) CreateOrUpdateSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dcp.Response.Response, err = future.GetResult(sender); err == nil && dcp.Response.Response.StatusCode != http.StatusNoContent {
+		dcp.Response.Response, err = future.GetResult(sender)
+		if dcp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.DdosCustomPoliciesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dcp.Response.Response.StatusCode != http.StatusNoContent {
 			dcp, err = client.CreateOrUpdateResponder(dcp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.DdosCustomPoliciesCreateOrUpdateFuture", "Result", dcp.Response.Response, "Failure responding to request")

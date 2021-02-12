@@ -407,7 +407,11 @@ func (client IntegrationServiceEnvironmentManagedApisClient) PutSender(req *http
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ma.Response.Response, err = future.GetResult(sender); err == nil && ma.Response.Response.StatusCode != http.StatusNoContent {
+		ma.Response.Response, err = future.GetResult(sender)
+		if ma.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentManagedApisPutFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ma.Response.Response.StatusCode != http.StatusNoContent {
 			ma, err = client.PutResponder(ma.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "logic.IntegrationServiceEnvironmentManagedApisPutFuture", "Result", ma.Response.Response, "Failure responding to request")

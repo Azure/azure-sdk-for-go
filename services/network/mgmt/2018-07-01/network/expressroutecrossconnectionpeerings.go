@@ -136,7 +136,11 @@ func (client ExpressRouteCrossConnectionPeeringsClient) CreateOrUpdateSender(req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if erccp.Response.Response, err = future.GetResult(sender); err == nil && erccp.Response.Response.StatusCode != http.StatusNoContent {
+		erccp.Response.Response, err = future.GetResult(sender)
+		if erccp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCrossConnectionPeeringsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && erccp.Response.Response.StatusCode != http.StatusNoContent {
 			erccp, err = client.CreateOrUpdateResponder(erccp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ExpressRouteCrossConnectionPeeringsCreateOrUpdateFuture", "Result", erccp.Response.Response, "Failure responding to request")

@@ -133,7 +133,11 @@ func (client CloudEndpointsClient) CreateSender(req *http.Request) (future Cloud
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ce.Response.Response, err = future.GetResult(sender); err == nil && ce.Response.Response.StatusCode != http.StatusNoContent {
+		ce.Response.Response, err = future.GetResult(sender)
+		if ce.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ce.Response.Response.StatusCode != http.StatusNoContent {
 			ce, err = client.CreateResponder(ce.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsCreateFuture", "Result", ce.Response.Response, "Failure responding to request")
@@ -529,7 +533,11 @@ func (client CloudEndpointsClient) PostBackupSender(req *http.Request) (future C
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pbr.Response.Response, err = future.GetResult(sender); err == nil && pbr.Response.Response.StatusCode != http.StatusNoContent {
+		pbr.Response.Response, err = future.GetResult(sender)
+		if pbr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsPostBackupFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pbr.Response.Response.StatusCode != http.StatusNoContent {
 			pbr, err = client.PostBackupResponder(pbr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storagesync.CloudEndpointsPostBackupFuture", "Result", pbr.Response.Response, "Failure responding to request")

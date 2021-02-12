@@ -149,7 +149,11 @@ func (client NamedValueClient) CreateOrUpdateSender(req *http.Request) (future N
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if nvc.Response.Response, err = future.GetResult(sender); err == nil && nvc.Response.Response.StatusCode != http.StatusNoContent {
+		nvc.Response.Response, err = future.GetResult(sender)
+		if nvc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.NamedValueCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && nvc.Response.Response.StatusCode != http.StatusNoContent {
 			nvc, err = client.CreateOrUpdateResponder(nvc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "apimanagement.NamedValueCreateOrUpdateFuture", "Result", nvc.Response.Response, "Failure responding to request")
@@ -769,7 +773,11 @@ func (client NamedValueClient) UpdateSender(req *http.Request) (future NamedValu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if nvc.Response.Response, err = future.GetResult(sender); err == nil && nvc.Response.Response.StatusCode != http.StatusNoContent {
+		nvc.Response.Response, err = future.GetResult(sender)
+		if nvc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.NamedValueUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && nvc.Response.Response.StatusCode != http.StatusNoContent {
 			nvc, err = client.UpdateResponder(nvc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "apimanagement.NamedValueUpdateFuture", "Result", nvc.Response.Response, "Failure responding to request")

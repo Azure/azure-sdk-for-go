@@ -138,7 +138,11 @@ func (client RegistrationAssignmentsClient) CreateOrUpdateSender(req *http.Reque
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ra.Response.Response, err = future.GetResult(sender); err == nil && ra.Response.Response.StatusCode != http.StatusNoContent {
+		ra.Response.Response, err = future.GetResult(sender)
+		if ra.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ra.Response.Response.StatusCode != http.StatusNoContent {
 			ra, err = client.CreateOrUpdateResponder(ra.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "managedservices.RegistrationAssignmentsCreateOrUpdateFuture", "Result", ra.Response.Response, "Failure responding to request")

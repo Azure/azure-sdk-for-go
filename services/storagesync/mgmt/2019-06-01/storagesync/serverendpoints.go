@@ -144,7 +144,11 @@ func (client ServerEndpointsClient) CreateSender(req *http.Request) (future Serv
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if se.Response.Response, err = future.GetResult(sender); err == nil && se.Response.Response.StatusCode != http.StatusNoContent {
+		se.Response.Response, err = future.GetResult(sender)
+		if se.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && se.Response.Response.StatusCode != http.StatusNoContent {
 			se, err = client.CreateResponder(se.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsCreateFuture", "Result", se.Response.Response, "Failure responding to request")
@@ -650,7 +654,11 @@ func (client ServerEndpointsClient) UpdateSender(req *http.Request) (future Serv
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if se.Response.Response, err = future.GetResult(sender); err == nil && se.Response.Response.StatusCode != http.StatusNoContent {
+		se.Response.Response, err = future.GetResult(sender)
+		if se.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && se.Response.Response.StatusCode != http.StatusNoContent {
 			se, err = client.UpdateResponder(se.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsUpdateFuture", "Result", se.Response.Response, "Failure responding to request")

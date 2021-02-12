@@ -135,7 +135,11 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateSender(req *http.Reques
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if aser.Response.Response, err = future.GetResult(sender); err == nil && aser.Response.Response.StatusCode != http.StatusNoContent {
+		aser.Response.Response, err = future.GetResult(sender)
+		if aser.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && aser.Response.Response.StatusCode != http.StatusNoContent {
 			aser, err = client.CreateOrUpdateResponder(aser.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsCreateOrUpdateFuture", "Result", aser.Response.Response, "Failure responding to request")
@@ -243,7 +247,11 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wpr.Response.Response, err = future.GetResult(sender); err == nil && wpr.Response.Response.StatusCode != http.StatusNoContent {
+		wpr.Response.Response, err = future.GetResult(sender)
+		if wpr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wpr.Response.Response.StatusCode != http.StatusNoContent {
 			wpr, err = client.CreateOrUpdateMultiRolePoolResponder(wpr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture", "Result", wpr.Response.Response, "Failure responding to request")
@@ -353,7 +361,11 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *h
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wpr.Response.Response, err = future.GetResult(sender); err == nil && wpr.Response.Response.StatusCode != http.StatusNoContent {
+		wpr.Response.Response, err = future.GetResult(sender)
+		if wpr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wpr.Response.Response.StatusCode != http.StatusNoContent {
 			wpr, err = client.CreateOrUpdateWorkerPoolResponder(wpr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture", "Result", wpr.Response.Response, "Failure responding to request")
@@ -4040,7 +4052,11 @@ func (client AppServiceEnvironmentsClient) ResumeSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if acp.ac.Response.Response, err = future.GetResult(sender); err == nil && acp.ac.Response.Response.StatusCode != http.StatusNoContent {
+		acp.ac.Response.Response, err = future.GetResult(sender)
+		if acp.ac.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsResumeFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && acp.ac.Response.Response.StatusCode != http.StatusNoContent {
 			acp, err = client.ResumeResponder(acp.ac.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsResumeFuture", "Result", acp.ac.Response.Response, "Failure responding to request")
@@ -4186,7 +4202,11 @@ func (client AppServiceEnvironmentsClient) SuspendSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if acp.ac.Response.Response, err = future.GetResult(sender); err == nil && acp.ac.Response.Response.StatusCode != http.StatusNoContent {
+		acp.ac.Response.Response, err = future.GetResult(sender)
+		if acp.ac.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsSuspendFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && acp.ac.Response.Response.StatusCode != http.StatusNoContent {
 			acp, err = client.SuspendResponder(acp.ac.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsSuspendFuture", "Result", acp.ac.Response.Response, "Failure responding to request")

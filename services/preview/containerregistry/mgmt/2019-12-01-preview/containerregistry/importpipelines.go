@@ -140,7 +140,11 @@ func (client ImportPipelinesClient) CreateSender(req *http.Request) (future Impo
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if IP.Response.Response, err = future.GetResult(sender); err == nil && IP.Response.Response.StatusCode != http.StatusNoContent {
+		IP.Response.Response, err = future.GetResult(sender)
+		if IP.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.ImportPipelinesCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && IP.Response.Response.StatusCode != http.StatusNoContent {
 			IP, err = client.CreateResponder(IP.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerregistry.ImportPipelinesCreateFuture", "Result", IP.Response.Response, "Failure responding to request")

@@ -206,7 +206,11 @@ func (client EnterpriseChannelsClient) CreateSender(req *http.Request) (future E
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ec.Response.Response, err = future.GetResult(sender); err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
+		ec.Response.Response, err = future.GetResult(sender)
+		if ec.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
 			ec, err = client.CreateResponder(ec.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsCreateFuture", "Result", ec.Response.Response, "Failure responding to request")
@@ -632,7 +636,11 @@ func (client EnterpriseChannelsClient) UpdateSender(req *http.Request) (future E
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ec.Response.Response, err = future.GetResult(sender); err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
+		ec.Response.Response, err = future.GetResult(sender)
+		if ec.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ec.Response.Response.StatusCode != http.StatusNoContent {
 			ec, err = client.UpdateResponder(ec.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsUpdateFuture", "Result", ec.Response.Response, "Failure responding to request")

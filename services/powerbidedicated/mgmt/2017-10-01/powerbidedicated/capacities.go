@@ -221,7 +221,11 @@ func (client CapacitiesClient) CreateSender(req *http.Request) (future Capacitie
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dc.Response.Response, err = future.GetResult(sender); err == nil && dc.Response.Response.StatusCode != http.StatusNoContent {
+		dc.Response.Response, err = future.GetResult(sender)
+		if dc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dc.Response.Response.StatusCode != http.StatusNoContent {
 			dc, err = client.CreateResponder(dc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesCreateFuture", "Result", dc.Response.Response, "Failure responding to request")
@@ -1052,7 +1056,11 @@ func (client CapacitiesClient) UpdateSender(req *http.Request) (future Capacitie
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dc.Response.Response, err = future.GetResult(sender); err == nil && dc.Response.Response.StatusCode != http.StatusNoContent {
+		dc.Response.Response, err = future.GetResult(sender)
+		if dc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dc.Response.Response.StatusCode != http.StatusNoContent {
 			dc, err = client.UpdateResponder(dc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "powerbidedicated.CapacitiesUpdateFuture", "Result", dc.Response.Response, "Failure responding to request")

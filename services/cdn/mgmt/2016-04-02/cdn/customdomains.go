@@ -130,7 +130,11 @@ func (client CustomDomainsClient) CreateSender(req *http.Request) (future Custom
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cd.Response.Response, err = future.GetResult(sender); err == nil && cd.Response.Response.StatusCode != http.StatusNoContent {
+		cd.Response.Response, err = future.GetResult(sender)
+		if cd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.CustomDomainsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cd.Response.Response.StatusCode != http.StatusNoContent {
 			cd, err = client.CreateResponder(cd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.CustomDomainsCreateFuture", "Result", cd.Response.Response, "Failure responding to request")
@@ -231,7 +235,11 @@ func (client CustomDomainsClient) DeleteIfExistsSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cd.Response.Response, err = future.GetResult(sender); err == nil && cd.Response.Response.StatusCode != http.StatusNoContent {
+		cd.Response.Response, err = future.GetResult(sender)
+		if cd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.CustomDomainsDeleteIfExistsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cd.Response.Response.StatusCode != http.StatusNoContent {
 			cd, err = client.DeleteIfExistsResponder(cd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.CustomDomainsDeleteIfExistsFuture", "Result", cd.Response.Response, "Failure responding to request")

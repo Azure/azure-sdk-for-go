@@ -424,7 +424,11 @@ func (client BaseClient) GeneratevirtualwanvpnserverconfigurationvpnprofileSende
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vpr.Response.Response, err = future.GetResult(sender); err == nil && vpr.Response.Response.StatusCode != http.StatusNoContent {
+		vpr.Response.Response, err = future.GetResult(sender)
+		if vpr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.GeneratevirtualwanvpnserverconfigurationvpnprofileFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vpr.Response.Response.StatusCode != http.StatusNoContent {
 			vpr, err = client.GeneratevirtualwanvpnserverconfigurationvpnprofileResponder(vpr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.GeneratevirtualwanvpnserverconfigurationvpnprofileFuture", "Result", vpr.Response.Response, "Failure responding to request")
@@ -521,7 +525,11 @@ func (client BaseClient) GetActiveSessionsSender(req *http.Request) (future GetA
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if baslrp.baslr.Response.Response, err = future.GetResult(sender); err == nil && baslrp.baslr.Response.Response.StatusCode != http.StatusNoContent {
+		baslrp.baslr.Response.Response, err = future.GetResult(sender)
+		if baslrp.baslr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.GetActiveSessionsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && baslrp.baslr.Response.Response.StatusCode != http.StatusNoContent {
 			baslrp, err = client.GetActiveSessionsResponder(baslrp.baslr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.GetActiveSessionsFuture", "Result", baslrp.baslr.Response.Response, "Failure responding to request")
@@ -783,7 +791,11 @@ func (client BaseClient) PutBastionShareableLinkSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if bsllrp.bsllr.Response.Response, err = future.GetResult(sender); err == nil && bsllrp.bsllr.Response.Response.StatusCode != http.StatusNoContent {
+		bsllrp.bsllr.Response.Response, err = future.GetResult(sender)
+		if bsllrp.bsllr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.PutBastionShareableLinkFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && bsllrp.bsllr.Response.Response.StatusCode != http.StatusNoContent {
 			bsllrp, err = client.PutBastionShareableLinkResponder(bsllrp.bsllr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.PutBastionShareableLinkFuture", "Result", bsllrp.bsllr.Response.Response, "Failure responding to request")

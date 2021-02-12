@@ -134,7 +134,11 @@ func (client VirtualNetworkLinksClient) CreateOrUpdateSender(req *http.Request) 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vnl.Response.Response, err = future.GetResult(sender); err == nil && vnl.Response.Response.StatusCode != http.StatusNoContent {
+		vnl.Response.Response, err = future.GetResult(sender)
+		if vnl.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "privatedns.VirtualNetworkLinksCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vnl.Response.Response.StatusCode != http.StatusNoContent {
 			vnl, err = client.CreateOrUpdateResponder(vnl.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "privatedns.VirtualNetworkLinksCreateOrUpdateFuture", "Result", vnl.Response.Response, "Failure responding to request")
@@ -544,7 +548,11 @@ func (client VirtualNetworkLinksClient) UpdateSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vnl.Response.Response, err = future.GetResult(sender); err == nil && vnl.Response.Response.StatusCode != http.StatusNoContent {
+		vnl.Response.Response, err = future.GetResult(sender)
+		if vnl.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "privatedns.VirtualNetworkLinksUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vnl.Response.Response.StatusCode != http.StatusNoContent {
 			vnl, err = client.UpdateResponder(vnl.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "privatedns.VirtualNetworkLinksUpdateFuture", "Result", vnl.Response.Response, "Failure responding to request")

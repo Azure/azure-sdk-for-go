@@ -125,7 +125,11 @@ func (client AvailabilityGroupListenersClient) CreateOrUpdateSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if agl.Response.Response, err = future.GetResult(sender); err == nil && agl.Response.Response.StatusCode != http.StatusNoContent {
+		agl.Response.Response, err = future.GetResult(sender)
+		if agl.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sqlvirtualmachine.AvailabilityGroupListenersCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && agl.Response.Response.StatusCode != http.StatusNoContent {
 			agl, err = client.CreateOrUpdateResponder(agl.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sqlvirtualmachine.AvailabilityGroupListenersCreateOrUpdateFuture", "Result", agl.Response.Response, "Failure responding to request")

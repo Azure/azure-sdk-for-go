@@ -140,7 +140,11 @@ func (client PipelinesClient) CreateOrUpdateSender(req *http.Request) (future Pi
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if p.Response.Response, err = future.GetResult(sender); err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
+		p.Response.Response, err = future.GetResult(sender)
+		if p.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "devops.PipelinesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && p.Response.Response.StatusCode != http.StatusNoContent {
 			p, err = client.CreateOrUpdateResponder(p.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "devops.PipelinesCreateOrUpdateFuture", "Result", p.Response.Response, "Failure responding to request")

@@ -135,7 +135,11 @@ func (client ReplicationsClient) CreateSender(req *http.Request) (future Replica
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if r.Response.Response, err = future.GetResult(sender); err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
+		r.Response.Response, err = future.GetResult(sender)
+		if r.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
 			r, err = client.CreateResponder(r.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsCreateFuture", "Result", r.Response.Response, "Failure responding to request")
@@ -577,7 +581,11 @@ func (client ReplicationsClient) UpdateSender(req *http.Request) (future Replica
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if r.Response.Response, err = future.GetResult(sender); err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
+		r.Response.Response, err = future.GetResult(sender)
+		if r.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
 			r, err = client.UpdateResponder(r.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerregistry.ReplicationsUpdateFuture", "Result", r.Response.Response, "Failure responding to request")

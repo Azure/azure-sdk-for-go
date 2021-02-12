@@ -1127,7 +1127,11 @@ func (client IntegrationRuntimesClient) StartSender(req *http.Request) (future I
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if irsr.Response.Response, err = future.GetResult(sender); err == nil && irsr.Response.Response.StatusCode != http.StatusNoContent {
+		irsr.Response.Response, err = future.GetResult(sender)
+		if irsr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesStartFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && irsr.Response.Response.StatusCode != http.StatusNoContent {
 			irsr, err = client.StartResponder(irsr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "datafactory.IntegrationRuntimesStartFuture", "Result", irsr.Response.Response, "Failure responding to request")

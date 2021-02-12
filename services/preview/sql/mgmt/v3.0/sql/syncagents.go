@@ -123,7 +123,11 @@ func (client SyncAgentsClient) CreateOrUpdateSender(req *http.Request) (future S
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sa.Response.Response, err = future.GetResult(sender); err == nil && sa.Response.Response.StatusCode != http.StatusNoContent {
+		sa.Response.Response, err = future.GetResult(sender)
+		if sa.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.SyncAgentsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sa.Response.Response.StatusCode != http.StatusNoContent {
 			sa, err = client.CreateOrUpdateResponder(sa.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.SyncAgentsCreateOrUpdateFuture", "Result", sa.Response.Response, "Failure responding to request")

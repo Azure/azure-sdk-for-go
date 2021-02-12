@@ -117,7 +117,11 @@ func (client VpnServerConfigurationsAssociatedWithVirtualWanClient) ListSender(r
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vscr.Response.Response, err = future.GetResult(sender); err == nil && vscr.Response.Response.StatusCode != http.StatusNoContent {
+		vscr.Response.Response, err = future.GetResult(sender)
+		if vscr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VpnServerConfigurationsAssociatedWithVirtualWanListFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vscr.Response.Response.StatusCode != http.StatusNoContent {
 			vscr, err = client.ListResponder(vscr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VpnServerConfigurationsAssociatedWithVirtualWanListFuture", "Result", vscr.Response.Response, "Failure responding to request")

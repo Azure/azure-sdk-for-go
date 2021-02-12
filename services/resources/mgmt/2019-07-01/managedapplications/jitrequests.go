@@ -136,7 +136,11 @@ func (client JitRequestsClient) CreateOrUpdateSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if jrd.Response.Response, err = future.GetResult(sender); err == nil && jrd.Response.Response.StatusCode != http.StatusNoContent {
+		jrd.Response.Response, err = future.GetResult(sender)
+		if jrd.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "managedapplications.JitRequestsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && jrd.Response.Response.StatusCode != http.StatusNoContent {
 			jrd, err = client.CreateOrUpdateResponder(jrd.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "managedapplications.JitRequestsCreateOrUpdateFuture", "Result", jrd.Response.Response, "Failure responding to request")

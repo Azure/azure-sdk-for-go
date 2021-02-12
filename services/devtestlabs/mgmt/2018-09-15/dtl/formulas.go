@@ -127,7 +127,11 @@ func (client FormulasClient) CreateOrUpdateSender(req *http.Request) (future For
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if f.Response.Response, err = future.GetResult(sender); err == nil && f.Response.Response.StatusCode != http.StatusNoContent {
+		f.Response.Response, err = future.GetResult(sender)
+		if f.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "dtl.FormulasCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && f.Response.Response.StatusCode != http.StatusNoContent {
 			f, err = client.CreateOrUpdateResponder(f.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "dtl.FormulasCreateOrUpdateFuture", "Result", f.Response.Response, "Failure responding to request")

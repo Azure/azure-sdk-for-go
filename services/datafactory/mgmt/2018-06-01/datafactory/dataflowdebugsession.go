@@ -231,7 +231,11 @@ func (client DataFlowDebugSessionClient) CreateSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cdfdsr.Response.Response, err = future.GetResult(sender); err == nil && cdfdsr.Response.Response.StatusCode != http.StatusNoContent {
+		cdfdsr.Response.Response, err = future.GetResult(sender)
+		if cdfdsr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cdfdsr.Response.Response.StatusCode != http.StatusNoContent {
 			cdfdsr, err = client.CreateResponder(cdfdsr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionCreateFuture", "Result", cdfdsr.Response.Response, "Failure responding to request")
@@ -436,7 +440,11 @@ func (client DataFlowDebugSessionClient) ExecuteCommandSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dfdcr.Response.Response, err = future.GetResult(sender); err == nil && dfdcr.Response.Response.StatusCode != http.StatusNoContent {
+		dfdcr.Response.Response, err = future.GetResult(sender)
+		if dfdcr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionExecuteCommandFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dfdcr.Response.Response.StatusCode != http.StatusNoContent {
 			dfdcr, err = client.ExecuteCommandResponder(dfdcr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "datafactory.DataFlowDebugSessionExecuteCommandFuture", "Result", dfdcr.Response.Response, "Failure responding to request")

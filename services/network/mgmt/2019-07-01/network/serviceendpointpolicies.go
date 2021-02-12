@@ -119,7 +119,11 @@ func (client ServiceEndpointPoliciesClient) CreateOrUpdateSender(req *http.Reque
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sep.Response.Response, err = future.GetResult(sender); err == nil && sep.Response.Response.StatusCode != http.StatusNoContent {
+		sep.Response.Response, err = future.GetResult(sender)
+		if sep.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ServiceEndpointPoliciesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sep.Response.Response.StatusCode != http.StatusNoContent {
 			sep, err = client.CreateOrUpdateResponder(sep.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ServiceEndpointPoliciesCreateOrUpdateFuture", "Result", sep.Response.Response, "Failure responding to request")
@@ -618,7 +622,11 @@ func (client ServiceEndpointPoliciesClient) UpdateSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sep.Response.Response, err = future.GetResult(sender); err == nil && sep.Response.Response.StatusCode != http.StatusNoContent {
+		sep.Response.Response, err = future.GetResult(sender)
+		if sep.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ServiceEndpointPoliciesUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sep.Response.Response.StatusCode != http.StatusNoContent {
 			sep, err = client.UpdateResponder(sep.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ServiceEndpointPoliciesUpdateFuture", "Result", sep.Response.Response, "Failure responding to request")

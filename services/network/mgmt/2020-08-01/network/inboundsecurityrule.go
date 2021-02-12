@@ -124,7 +124,11 @@ func (client InboundSecurityRuleClient) CreateOrUpdateSender(req *http.Request) 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if isr.Response.Response, err = future.GetResult(sender); err == nil && isr.Response.Response.StatusCode != http.StatusNoContent {
+		isr.Response.Response, err = future.GetResult(sender)
+		if isr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.InboundSecurityRuleCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && isr.Response.Response.StatusCode != http.StatusNoContent {
 			isr, err = client.CreateOrUpdateResponder(isr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.InboundSecurityRuleCreateOrUpdateFuture", "Result", isr.Response.Response, "Failure responding to request")

@@ -132,7 +132,11 @@ func (client WorkspacesClient) CreateSender(req *http.Request) (future Workspace
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if w.Response.Response, err = future.GetResult(sender); err == nil && w.Response.Response.StatusCode != http.StatusNoContent {
+		w.Response.Response, err = future.GetResult(sender)
+		if w.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "batchai.WorkspacesCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && w.Response.Response.StatusCode != http.StatusNoContent {
 			w, err = client.CreateResponder(w.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "batchai.WorkspacesCreateFuture", "Result", w.Response.Response, "Failure responding to request")

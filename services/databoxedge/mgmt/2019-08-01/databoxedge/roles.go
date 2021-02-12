@@ -120,7 +120,11 @@ func (client RolesClient) CreateOrUpdateSender(req *http.Request) (future RolesC
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rm.Response.Response, err = future.GetResult(sender); err == nil && rm.Response.Response.StatusCode != http.StatusNoContent {
+		rm.Response.Response, err = future.GetResult(sender)
+		if rm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "databoxedge.RolesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rm.Response.Response.StatusCode != http.StatusNoContent {
 			rm, err = client.CreateOrUpdateResponder(rm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "databoxedge.RolesCreateOrUpdateFuture", "Result", rm.Response.Response, "Failure responding to request")

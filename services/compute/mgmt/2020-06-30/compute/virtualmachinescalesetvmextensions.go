@@ -126,7 +126,11 @@ func (client VirtualMachineScaleSetVMExtensionsClient) CreateOrUpdateSender(req 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vmssve.Response.Response, err = future.GetResult(sender); err == nil && vmssve.Response.Response.StatusCode != http.StatusNoContent {
+		vmssve.Response.Response, err = future.GetResult(sender)
+		if vmssve.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vmssve.Response.Response.StatusCode != http.StatusNoContent {
 			vmssve, err = client.CreateOrUpdateResponder(vmssve.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsCreateOrUpdateFuture", "Result", vmssve.Response.Response, "Failure responding to request")
@@ -492,7 +496,11 @@ func (client VirtualMachineScaleSetVMExtensionsClient) UpdateSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vmssve.Response.Response, err = future.GetResult(sender); err == nil && vmssve.Response.Response.StatusCode != http.StatusNoContent {
+		vmssve.Response.Response, err = future.GetResult(sender)
+		if vmssve.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vmssve.Response.Response.StatusCode != http.StatusNoContent {
 			vmssve, err = client.UpdateResponder(vmssve.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "compute.VirtualMachineScaleSetVMExtensionsUpdateFuture", "Result", vmssve.Response.Response, "Failure responding to request")

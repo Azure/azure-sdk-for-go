@@ -148,7 +148,11 @@ func (client AFDOriginGroupsClient) CreateSender(req *http.Request) (future AFDO
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if aog.Response.Response, err = future.GetResult(sender); err == nil && aog.Response.Response.StatusCode != http.StatusNoContent {
+		aog.Response.Response, err = future.GetResult(sender)
+		if aog.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.AFDOriginGroupsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && aog.Response.Response.StatusCode != http.StatusNoContent {
 			aog, err = client.CreateResponder(aog.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.AFDOriginGroupsCreateFuture", "Result", aog.Response.Response, "Failure responding to request")
@@ -698,7 +702,11 @@ func (client AFDOriginGroupsClient) UpdateSender(req *http.Request) (future AFDO
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if aog.Response.Response, err = future.GetResult(sender); err == nil && aog.Response.Response.StatusCode != http.StatusNoContent {
+		aog.Response.Response, err = future.GetResult(sender)
+		if aog.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.AFDOriginGroupsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && aog.Response.Response.StatusCode != http.StatusNoContent {
 			aog, err = client.UpdateResponder(aog.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.AFDOriginGroupsUpdateFuture", "Result", aog.Response.Response, "Failure responding to request")

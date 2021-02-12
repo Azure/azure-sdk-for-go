@@ -317,7 +317,11 @@ func (client LabsClient) CreateOrUpdateSender(req *http.Request) (future LabsCre
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if l.Response.Response, err = future.GetResult(sender); err == nil && l.Response.Response.StatusCode != http.StatusNoContent {
+		l.Response.Response, err = future.GetResult(sender)
+		if l.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "dtl.LabsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && l.Response.Response.StatusCode != http.StatusNoContent {
 			l, err = client.CreateOrUpdateResponder(l.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "dtl.LabsCreateOrUpdateFuture", "Result", l.Response.Response, "Failure responding to request")

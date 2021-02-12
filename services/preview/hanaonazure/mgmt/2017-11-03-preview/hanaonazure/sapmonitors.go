@@ -118,7 +118,11 @@ func (client SapMonitorsClient) CreateSender(req *http.Request) (future SapMonit
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sm.Response.Response, err = future.GetResult(sender); err == nil && sm.Response.Response.StatusCode != http.StatusNoContent {
+		sm.Response.Response, err = future.GetResult(sender)
+		if sm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sm.Response.Response.StatusCode != http.StatusNoContent {
 			sm, err = client.CreateResponder(sm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsCreateFuture", "Result", sm.Response.Response, "Failure responding to request")

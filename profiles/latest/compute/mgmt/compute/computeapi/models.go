@@ -19,14 +19,14 @@
 
 package computeapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-06-30/compute/computeapi"
+import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-12-01/compute/computeapi"
 
 type AvailabilitySetsClientAPI = original.AvailabilitySetsClientAPI
-type ContainerServicesClientAPI = original.ContainerServicesClientAPI
 type DedicatedHostGroupsClientAPI = original.DedicatedHostGroupsClientAPI
 type DedicatedHostsClientAPI = original.DedicatedHostsClientAPI
 type DiskAccessesClientAPI = original.DiskAccessesClientAPI
 type DiskEncryptionSetsClientAPI = original.DiskEncryptionSetsClientAPI
+type DiskRestorePointClientAPI = original.DiskRestorePointClientAPI
 type DisksClientAPI = original.DisksClientAPI
 type GalleriesClientAPI = original.GalleriesClientAPI
 type GalleryApplicationVersionsClientAPI = original.GalleryApplicationVersionsClientAPI
@@ -44,6 +44,7 @@ type UsageClientAPI = original.UsageClientAPI
 type VirtualMachineExtensionImagesClientAPI = original.VirtualMachineExtensionImagesClientAPI
 type VirtualMachineExtensionsClientAPI = original.VirtualMachineExtensionsClientAPI
 type VirtualMachineImagesClientAPI = original.VirtualMachineImagesClientAPI
+type VirtualMachineImagesEdgeZoneClientAPI = original.VirtualMachineImagesEdgeZoneClientAPI
 type VirtualMachineRunCommandsClientAPI = original.VirtualMachineRunCommandsClientAPI
 type VirtualMachineScaleSetExtensionsClientAPI = original.VirtualMachineScaleSetExtensionsClientAPI
 type VirtualMachineScaleSetRollingUpgradesClientAPI = original.VirtualMachineScaleSetRollingUpgradesClientAPI

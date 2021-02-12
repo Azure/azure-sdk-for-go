@@ -120,7 +120,11 @@ func (client TriggersClient) CreateOrUpdateSender(req *http.Request) (future Tri
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tm.Response.Response, err = future.GetResult(sender); err == nil && tm.Response.Response.StatusCode != http.StatusNoContent {
+		tm.Response.Response, err = future.GetResult(sender)
+		if tm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "databoxedge.TriggersCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tm.Response.Response.StatusCode != http.StatusNoContent {
 			tm, err = client.CreateOrUpdateResponder(tm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "databoxedge.TriggersCreateOrUpdateFuture", "Result", tm.Response.Response, "Failure responding to request")

@@ -134,7 +134,11 @@ func (client FailoverGroupsClient) CreateOrUpdateSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if fg.Response.Response, err = future.GetResult(sender); err == nil && fg.Response.Response.StatusCode != http.StatusNoContent {
+		fg.Response.Response, err = future.GetResult(sender)
+		if fg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && fg.Response.Response.StatusCode != http.StatusNoContent {
 			fg, err = client.CreateOrUpdateResponder(fg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.FailoverGroupsCreateOrUpdateFuture", "Result", fg.Response.Response, "Failure responding to request")
@@ -327,7 +331,11 @@ func (client FailoverGroupsClient) FailoverSender(req *http.Request) (future Fai
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if fg.Response.Response, err = future.GetResult(sender); err == nil && fg.Response.Response.StatusCode != http.StatusNoContent {
+		fg.Response.Response, err = future.GetResult(sender)
+		if fg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsFailoverFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && fg.Response.Response.StatusCode != http.StatusNoContent {
 			fg, err = client.FailoverResponder(fg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.FailoverGroupsFailoverFuture", "Result", fg.Response.Response, "Failure responding to request")
@@ -428,7 +436,11 @@ func (client FailoverGroupsClient) ForceFailoverAllowDataLossSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if fg.Response.Response, err = future.GetResult(sender); err == nil && fg.Response.Response.StatusCode != http.StatusNoContent {
+		fg.Response.Response, err = future.GetResult(sender)
+		if fg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsForceFailoverAllowDataLossFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && fg.Response.Response.StatusCode != http.StatusNoContent {
 			fg, err = client.ForceFailoverAllowDataLossResponder(fg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.FailoverGroupsForceFailoverAllowDataLossFuture", "Result", fg.Response.Response, "Failure responding to request")
@@ -729,7 +741,11 @@ func (client FailoverGroupsClient) UpdateSender(req *http.Request) (future Failo
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if fg.Response.Response, err = future.GetResult(sender); err == nil && fg.Response.Response.StatusCode != http.StatusNoContent {
+		fg.Response.Response, err = future.GetResult(sender)
+		if fg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.FailoverGroupsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && fg.Response.Response.StatusCode != http.StatusNoContent {
 			fg, err = client.UpdateResponder(fg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.FailoverGroupsUpdateFuture", "Result", fg.Response.Response, "Failure responding to request")

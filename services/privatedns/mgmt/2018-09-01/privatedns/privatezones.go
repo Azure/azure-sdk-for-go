@@ -131,7 +131,11 @@ func (client PrivateZonesClient) CreateOrUpdateSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pz.Response.Response, err = future.GetResult(sender); err == nil && pz.Response.Response.StatusCode != http.StatusNoContent {
+		pz.Response.Response, err = future.GetResult(sender)
+		if pz.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "privatedns.PrivateZonesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pz.Response.Response.StatusCode != http.StatusNoContent {
 			pz, err = client.CreateOrUpdateResponder(pz.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "privatedns.PrivateZonesCreateOrUpdateFuture", "Result", pz.Response.Response, "Failure responding to request")
@@ -649,7 +653,11 @@ func (client PrivateZonesClient) UpdateSender(req *http.Request) (future Private
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pz.Response.Response, err = future.GetResult(sender); err == nil && pz.Response.Response.StatusCode != http.StatusNoContent {
+		pz.Response.Response, err = future.GetResult(sender)
+		if pz.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "privatedns.PrivateZonesUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pz.Response.Response.StatusCode != http.StatusNoContent {
 			pz, err = client.UpdateResponder(pz.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "privatedns.PrivateZonesUpdateFuture", "Result", pz.Response.Response, "Failure responding to request")

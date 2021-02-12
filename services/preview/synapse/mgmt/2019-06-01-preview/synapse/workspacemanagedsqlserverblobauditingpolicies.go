@@ -132,7 +132,11 @@ func (client WorkspaceManagedSQLServerBlobAuditingPoliciesClient) CreateOrUpdate
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sbap.Response.Response, err = future.GetResult(sender); err == nil && sbap.Response.Response.StatusCode != http.StatusNoContent {
+		sbap.Response.Response, err = future.GetResult(sender)
+		if sbap.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sbap.Response.Response.StatusCode != http.StatusNoContent {
 			sbap, err = client.CreateOrUpdateResponder(sbap.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateFuture", "Result", sbap.Response.Response, "Failure responding to request")

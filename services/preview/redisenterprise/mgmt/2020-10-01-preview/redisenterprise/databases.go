@@ -121,7 +121,11 @@ func (client DatabasesClient) CreateSender(req *http.Request) (future DatabasesC
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
+		d.Response.Response, err = future.GetResult(sender)
+		if d.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
 			d, err = client.CreateResponder(d.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesCreateFuture", "Result", d.Response.Response, "Failure responding to request")
@@ -791,7 +795,11 @@ func (client DatabasesClient) RegenerateKeySender(req *http.Request) (future Dat
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ak.Response.Response, err = future.GetResult(sender); err == nil && ak.Response.Response.StatusCode != http.StatusNoContent {
+		ak.Response.Response, err = future.GetResult(sender)
+		if ak.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesRegenerateKeyFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ak.Response.Response.StatusCode != http.StatusNoContent {
 			ak, err = client.RegenerateKeyResponder(ak.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesRegenerateKeyFuture", "Result", ak.Response.Response, "Failure responding to request")
@@ -893,7 +901,11 @@ func (client DatabasesClient) UpdateSender(req *http.Request) (future DatabasesU
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
+		d.Response.Response, err = future.GetResult(sender)
+		if d.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
 			d, err = client.UpdateResponder(d.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesUpdateFuture", "Result", d.Response.Response, "Failure responding to request")

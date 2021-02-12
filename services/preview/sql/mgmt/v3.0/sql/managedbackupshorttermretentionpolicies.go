@@ -126,7 +126,11 @@ func (client ManagedBackupShortTermRetentionPoliciesClient) CreateOrUpdateSender
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mbstrp.Response.Response, err = future.GetResult(sender); err == nil && mbstrp.Response.Response.StatusCode != http.StatusNoContent {
+		mbstrp.Response.Response, err = future.GetResult(sender)
+		if mbstrp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mbstrp.Response.Response.StatusCode != http.StatusNoContent {
 			mbstrp, err = client.CreateOrUpdateResponder(mbstrp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ManagedBackupShortTermRetentionPoliciesCreateOrUpdateFuture", "Result", mbstrp.Response.Response, "Failure responding to request")
@@ -431,7 +435,11 @@ func (client ManagedBackupShortTermRetentionPoliciesClient) UpdateSender(req *ht
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mbstrp.Response.Response, err = future.GetResult(sender); err == nil && mbstrp.Response.Response.StatusCode != http.StatusNoContent {
+		mbstrp.Response.Response, err = future.GetResult(sender)
+		if mbstrp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ManagedBackupShortTermRetentionPoliciesUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mbstrp.Response.Response.StatusCode != http.StatusNoContent {
 			mbstrp, err = client.UpdateResponder(mbstrp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ManagedBackupShortTermRetentionPoliciesUpdateFuture", "Result", mbstrp.Response.Response, "Failure responding to request")

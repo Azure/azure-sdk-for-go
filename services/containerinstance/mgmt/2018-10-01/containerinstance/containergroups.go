@@ -139,7 +139,11 @@ func (client ContainerGroupsClient) CreateOrUpdateSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cg.Response.Response, err = future.GetResult(sender); err == nil && cg.Response.Response.StatusCode != http.StatusNoContent {
+		cg.Response.Response, err = future.GetResult(sender)
+		if cg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cg.Response.Response.StatusCode != http.StatusNoContent {
 			cg, err = client.CreateOrUpdateResponder(cg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsCreateOrUpdateFuture", "Result", cg.Response.Response, "Failure responding to request")

@@ -119,7 +119,11 @@ func (client VpnGatewaysClient) CreateOrUpdateSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vg.Response.Response, err = future.GetResult(sender); err == nil && vg.Response.Response.StatusCode != http.StatusNoContent {
+		vg.Response.Response, err = future.GetResult(sender)
+		if vg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VpnGatewaysCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vg.Response.Response.StatusCode != http.StatusNoContent {
 			vg, err = client.CreateOrUpdateResponder(vg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VpnGatewaysCreateOrUpdateFuture", "Result", vg.Response.Response, "Failure responding to request")
@@ -614,7 +618,11 @@ func (client VpnGatewaysClient) UpdateTagsSender(req *http.Request) (future VpnG
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vg.Response.Response, err = future.GetResult(sender); err == nil && vg.Response.Response.StatusCode != http.StatusNoContent {
+		vg.Response.Response, err = future.GetResult(sender)
+		if vg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VpnGatewaysUpdateTagsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vg.Response.Response.StatusCode != http.StatusNoContent {
 			vg, err = client.UpdateTagsResponder(vg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VpnGatewaysUpdateTagsFuture", "Result", vg.Response.Response, "Failure responding to request")

@@ -130,7 +130,11 @@ func (client LinkedServerClient) CreateSender(req *http.Request) (future LinkedS
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if lswp.Response.Response, err = future.GetResult(sender); err == nil && lswp.Response.Response.StatusCode != http.StatusNoContent {
+		lswp.Response.Response, err = future.GetResult(sender)
+		if lswp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "redis.LinkedServerCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && lswp.Response.Response.StatusCode != http.StatusNoContent {
 			lswp, err = client.CreateResponder(lswp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "redis.LinkedServerCreateFuture", "Result", lswp.Response.Response, "Failure responding to request")

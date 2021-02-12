@@ -215,7 +215,11 @@ func (client Client) CreateSender(req *http.Request) (future CreateFuture, err e
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rt.Response.Response, err = future.GetResult(sender); err == nil && rt.Response.Response.StatusCode != http.StatusNoContent {
+		rt.Response.Response, err = future.GetResult(sender)
+		if rt.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "redis.CreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rt.Response.Response.StatusCode != http.StatusNoContent {
 			rt, err = client.CreateResponder(rt.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "redis.CreateFuture", "Result", rt.Response.Response, "Failure responding to request")

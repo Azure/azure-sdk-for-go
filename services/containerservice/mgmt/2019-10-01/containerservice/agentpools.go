@@ -131,7 +131,11 @@ func (client AgentPoolsClient) CreateOrUpdateSender(req *http.Request) (future A
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ap.Response.Response, err = future.GetResult(sender); err == nil && ap.Response.Response.StatusCode != http.StatusNoContent {
+		ap.Response.Response, err = future.GetResult(sender)
+		if ap.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerservice.AgentPoolsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ap.Response.Response.StatusCode != http.StatusNoContent {
 			ap, err = client.CreateOrUpdateResponder(ap.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerservice.AgentPoolsCreateOrUpdateFuture", "Result", ap.Response.Response, "Failure responding to request")

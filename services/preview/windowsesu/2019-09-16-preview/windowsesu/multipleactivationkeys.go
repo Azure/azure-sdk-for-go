@@ -138,7 +138,11 @@ func (client MultipleActivationKeysClient) CreateSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mak.Response.Response, err = future.GetResult(sender); err == nil && mak.Response.Response.StatusCode != http.StatusNoContent {
+		mak.Response.Response, err = future.GetResult(sender)
+		if mak.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mak.Response.Response.StatusCode != http.StatusNoContent {
 			mak, err = client.CreateResponder(mak.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "windowsesu.MultipleActivationKeysCreateFuture", "Result", mak.Response.Response, "Failure responding to request")

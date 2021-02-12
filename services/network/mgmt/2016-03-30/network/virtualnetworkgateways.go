@@ -121,7 +121,11 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdateSender(req *http.Reques
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vng.Response.Response, err = future.GetResult(sender); err == nil && vng.Response.Response.StatusCode != http.StatusNoContent {
+		vng.Response.Response, err = future.GetResult(sender)
+		if vng.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vng.Response.Response.StatusCode != http.StatusNoContent {
 			vng, err = client.CreateOrUpdateResponder(vng.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysCreateOrUpdateFuture", "Result", vng.Response.Response, "Failure responding to request")
@@ -588,7 +592,11 @@ func (client VirtualNetworkGatewaysClient) ResetSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vng.Response.Response, err = future.GetResult(sender); err == nil && vng.Response.Response.StatusCode != http.StatusNoContent {
+		vng.Response.Response, err = future.GetResult(sender)
+		if vng.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysResetFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vng.Response.Response.StatusCode != http.StatusNoContent {
 			vng, err = client.ResetResponder(vng.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysResetFuture", "Result", vng.Response.Response, "Failure responding to request")

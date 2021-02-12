@@ -111,7 +111,11 @@ func (client CalculateExchangeClient) PostSender(req *http.Request) (future Calc
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ceorr.Response.Response, err = future.GetResult(sender); err == nil && ceorr.Response.Response.StatusCode != http.StatusNoContent {
+		ceorr.Response.Response, err = future.GetResult(sender)
+		if ceorr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "reservations.CalculateExchangePostFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ceorr.Response.Response.StatusCode != http.StatusNoContent {
 			ceorr, err = client.PostResponder(ceorr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "reservations.CalculateExchangePostFuture", "Result", ceorr.Response.Response, "Failure responding to request")

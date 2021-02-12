@@ -123,7 +123,11 @@ func (client Client) CreateOrUpdateSender(req *http.Request) (future CreateOrUpd
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ws.Response.Response, err = future.GetResult(sender); err == nil && ws.Response.Response.StatusCode != http.StatusNoContent {
+		ws.Response.Response, err = future.GetResult(sender)
+		if ws.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "webservices.CreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ws.Response.Response.StatusCode != http.StatusNoContent {
 			ws, err = client.CreateOrUpdateResponder(ws.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "webservices.CreateOrUpdateFuture", "Result", ws.Response.Response, "Failure responding to request")
@@ -225,7 +229,11 @@ func (client Client) CreateRegionalPropertiesSender(req *http.Request) (future C
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if aos.Response.Response, err = future.GetResult(sender); err == nil && aos.Response.Response.StatusCode != http.StatusNoContent {
+		aos.Response.Response, err = future.GetResult(sender)
+		if aos.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "webservices.CreateRegionalPropertiesFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && aos.Response.Response.StatusCode != http.StatusNoContent {
 			aos, err = client.CreateRegionalPropertiesResponder(aos.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "webservices.CreateRegionalPropertiesFuture", "Result", aos.Response.Response, "Failure responding to request")
@@ -721,7 +729,11 @@ func (client Client) PatchSender(req *http.Request) (future PatchFuture, err err
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ws.Response.Response, err = future.GetResult(sender); err == nil && ws.Response.Response.StatusCode != http.StatusNoContent {
+		ws.Response.Response, err = future.GetResult(sender)
+		if ws.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "webservices.PatchFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ws.Response.Response.StatusCode != http.StatusNoContent {
 			ws, err = client.PatchResponder(ws.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "webservices.PatchFuture", "Result", ws.Response.Response, "Failure responding to request")

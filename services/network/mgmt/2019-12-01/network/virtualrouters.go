@@ -131,7 +131,11 @@ func (client VirtualRoutersClient) CreateOrUpdateSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vr.Response.Response, err = future.GetResult(sender); err == nil && vr.Response.Response.StatusCode != http.StatusNoContent {
+		vr.Response.Response, err = future.GetResult(sender)
+		if vr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualRoutersCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vr.Response.Response.StatusCode != http.StatusNoContent {
 			vr, err = client.CreateOrUpdateResponder(vr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualRoutersCreateOrUpdateFuture", "Result", vr.Response.Response, "Failure responding to request")

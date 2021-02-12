@@ -135,7 +135,11 @@ func (client BackupPoliciesClient) CreateSender(req *http.Request) (future Backu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if bp.Response.Response, err = future.GetResult(sender); err == nil && bp.Response.Response.StatusCode != http.StatusNoContent {
+		bp.Response.Response, err = future.GetResult(sender)
+		if bp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "netapp.BackupPoliciesCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && bp.Response.Response.StatusCode != http.StatusNoContent {
 			bp, err = client.CreateResponder(bp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "netapp.BackupPoliciesCreateFuture", "Result", bp.Response.Response, "Failure responding to request")

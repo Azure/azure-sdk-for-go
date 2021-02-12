@@ -132,7 +132,11 @@ func (client AccessControlRecordsClient) CreateOrUpdateSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if acr.Response.Response, err = future.GetResult(sender); err == nil && acr.Response.Response.StatusCode != http.StatusNoContent {
+		acr.Response.Response, err = future.GetResult(sender)
+		if acr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && acr.Response.Response.StatusCode != http.StatusNoContent {
 			acr, err = client.CreateOrUpdateResponder(acr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsCreateOrUpdateFuture", "Result", acr.Response.Response, "Failure responding to request")

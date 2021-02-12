@@ -119,7 +119,11 @@ func (client ManagedHsmsClient) CreateOrUpdateSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mh.Response.Response, err = future.GetResult(sender); err == nil && mh.Response.Response.StatusCode != http.StatusNoContent {
+		mh.Response.Response, err = future.GetResult(sender)
+		if mh.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mh.Response.Response.StatusCode != http.StatusNoContent {
 			mh, err = client.CreateOrUpdateResponder(mh.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsCreateOrUpdateFuture", "Result", mh.Response.Response, "Failure responding to request")
@@ -624,7 +628,11 @@ func (client ManagedHsmsClient) UpdateSender(req *http.Request) (future ManagedH
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mh.Response.Response, err = future.GetResult(sender); err == nil && mh.Response.Response.StatusCode != http.StatusNoContent {
+		mh.Response.Response, err = future.GetResult(sender)
+		if mh.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mh.Response.Response.StatusCode != http.StatusNoContent {
 			mh, err = client.UpdateResponder(mh.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "keyvault.ManagedHsmsUpdateFuture", "Result", mh.Response.Response, "Failure responding to request")

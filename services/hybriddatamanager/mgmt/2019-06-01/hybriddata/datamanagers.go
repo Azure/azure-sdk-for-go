@@ -130,7 +130,11 @@ func (client DataManagersClient) CreateSender(req *http.Request) (future DataMan
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dm.Response.Response, err = future.GetResult(sender); err == nil && dm.Response.Response.StatusCode != http.StatusNoContent {
+		dm.Response.Response, err = future.GetResult(sender)
+		if dm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "hybriddata.DataManagersCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dm.Response.Response.StatusCode != http.StatusNoContent {
 			dm, err = client.CreateResponder(dm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "hybriddata.DataManagersCreateFuture", "Result", dm.Response.Response, "Failure responding to request")
@@ -574,7 +578,11 @@ func (client DataManagersClient) UpdateSender(req *http.Request) (future DataMan
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dm.Response.Response, err = future.GetResult(sender); err == nil && dm.Response.Response.StatusCode != http.StatusNoContent {
+		dm.Response.Response, err = future.GetResult(sender)
+		if dm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "hybriddata.DataManagersUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dm.Response.Response.StatusCode != http.StatusNoContent {
 			dm, err = client.UpdateResponder(dm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "hybriddata.DataManagersUpdateFuture", "Result", dm.Response.Response, "Failure responding to request")

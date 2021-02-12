@@ -401,7 +401,11 @@ func (client RunbookDraftClient) ReplaceContentSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rc.Response.Response, err = future.GetResult(sender); err == nil && rc.Response.Response.StatusCode != http.StatusNoContent {
+		rc.Response.Response, err = future.GetResult(sender)
+		if rc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rc.Response.Response.StatusCode != http.StatusNoContent {
 			rc, err = client.ReplaceContentResponder(rc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "automation.RunbookDraftReplaceContentFuture", "Result", rc.Response.Response, "Failure responding to request")

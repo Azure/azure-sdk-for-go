@@ -315,7 +315,11 @@ func (client JobsClient) CreateSender(req *http.Request) (future JobsCreateFutur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if jr.Response.Response, err = future.GetResult(sender); err == nil && jr.Response.Response.StatusCode != http.StatusNoContent {
+		jr.Response.Response, err = future.GetResult(sender)
+		if jr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "databox.JobsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && jr.Response.Response.StatusCode != http.StatusNoContent {
 			jr, err = client.CreateResponder(jr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "databox.JobsCreateFuture", "Result", jr.Response.Response, "Failure responding to request")
@@ -941,7 +945,11 @@ func (client JobsClient) UpdateSender(req *http.Request) (future JobsUpdateFutur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if jr.Response.Response, err = future.GetResult(sender); err == nil && jr.Response.Response.StatusCode != http.StatusNoContent {
+		jr.Response.Response, err = future.GetResult(sender)
+		if jr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "databox.JobsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && jr.Response.Response.StatusCode != http.StatusNoContent {
 			jr, err = client.UpdateResponder(jr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "databox.JobsUpdateFuture", "Result", jr.Response.Response, "Failure responding to request")

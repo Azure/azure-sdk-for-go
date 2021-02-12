@@ -137,7 +137,11 @@ func (client BigDataPoolsClient) CreateOrUpdateSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if bdpri.Response.Response, err = future.GetResult(sender); err == nil && bdpri.Response.Response.StatusCode != http.StatusNoContent {
+		bdpri.Response.Response, err = future.GetResult(sender)
+		if bdpri.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.BigDataPoolsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && bdpri.Response.Response.StatusCode != http.StatusNoContent {
 			bdpri, err = client.CreateOrUpdateResponder(bdpri.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.BigDataPoolsCreateOrUpdateFuture", "Result", bdpri.Response.Response, "Failure responding to request")
@@ -246,7 +250,11 @@ func (client BigDataPoolsClient) DeleteSender(req *http.Request) (future BigData
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.BigDataPoolsDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.DeleteResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.BigDataPoolsDeleteFuture", "Result", so.Response.Response, "Failure responding to request")

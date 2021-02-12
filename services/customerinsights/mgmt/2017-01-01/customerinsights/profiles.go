@@ -131,7 +131,11 @@ func (client ProfilesClient) CreateOrUpdateSender(req *http.Request) (future Pro
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if prf.Response.Response, err = future.GetResult(sender); err == nil && prf.Response.Response.StatusCode != http.StatusNoContent {
+		prf.Response.Response, err = future.GetResult(sender)
+		if prf.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.ProfilesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && prf.Response.Response.StatusCode != http.StatusNoContent {
 			prf, err = client.CreateOrUpdateResponder(prf.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "customerinsights.ProfilesCreateOrUpdateFuture", "Result", prf.Response.Response, "Failure responding to request")

@@ -129,7 +129,11 @@ func (client WorkspacesClient) CreateOrUpdateSender(req *http.Request) (future W
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if w.Response.Response, err = future.GetResult(sender); err == nil && w.Response.Response.StatusCode != http.StatusNoContent {
+		w.Response.Response, err = future.GetResult(sender)
+		if w.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.WorkspacesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && w.Response.Response.StatusCode != http.StatusNoContent {
 			w, err = client.CreateOrUpdateResponder(w.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.WorkspacesCreateOrUpdateFuture", "Result", w.Response.Response, "Failure responding to request")
@@ -236,7 +240,11 @@ func (client WorkspacesClient) DeleteSender(req *http.Request) (future Workspace
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.WorkspacesDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.DeleteResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.WorkspacesDeleteFuture", "Result", so.Response.Response, "Failure responding to request")
@@ -677,7 +685,11 @@ func (client WorkspacesClient) UpdateSender(req *http.Request) (future Workspace
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if w.Response.Response, err = future.GetResult(sender); err == nil && w.Response.Response.StatusCode != http.StatusNoContent {
+		w.Response.Response, err = future.GetResult(sender)
+		if w.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.WorkspacesUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && w.Response.Response.StatusCode != http.StatusNoContent {
 			w, err = client.UpdateResponder(w.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.WorkspacesUpdateFuture", "Result", w.Response.Response, "Failure responding to request")

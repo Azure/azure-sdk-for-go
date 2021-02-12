@@ -141,7 +141,11 @@ func (client DiskPoolsClient) CreateOrUpdateSender(req *http.Request) (future Di
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dp.Response.Response, err = future.GetResult(sender); err == nil && dp.Response.Response.StatusCode != http.StatusNoContent {
+		dp.Response.Response, err = future.GetResult(sender)
+		if dp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dp.Response.Response.StatusCode != http.StatusNoContent {
 			dp, err = client.CreateOrUpdateResponder(dp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsCreateOrUpdateFuture", "Result", dp.Response.Response, "Failure responding to request")

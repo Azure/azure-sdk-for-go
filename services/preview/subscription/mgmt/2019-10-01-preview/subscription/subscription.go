@@ -197,7 +197,11 @@ func (client Client) CreateAliasSender(req *http.Request) (future CreateAliasFut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if par.Response.Response, err = future.GetResult(sender); err == nil && par.Response.Response.StatusCode != http.StatusNoContent {
+		par.Response.Response, err = future.GetResult(sender)
+		if par.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "subscription.CreateAliasFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && par.Response.Response.StatusCode != http.StatusNoContent {
 			par, err = client.CreateAliasResponder(par.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "subscription.CreateAliasFuture", "Result", par.Response.Response, "Failure responding to request")
@@ -304,7 +308,11 @@ func (client Client) CreateCspSubscriptionSender(req *http.Request) (future Crea
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
+		cr.Response.Response, err = future.GetResult(sender)
+		if cr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "subscription.CreateCspSubscriptionFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
 			cr, err = client.CreateCspSubscriptionResponder(cr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "subscription.CreateCspSubscriptionFuture", "Result", cr.Response.Response, "Failure responding to request")
@@ -417,7 +425,11 @@ func (client Client) CreateSubscriptionSender(req *http.Request) (future CreateS
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
+		cr.Response.Response, err = future.GetResult(sender)
+		if cr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "subscription.CreateSubscriptionFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
 			cr, err = client.CreateSubscriptionResponder(cr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "subscription.CreateSubscriptionFuture", "Result", cr.Response.Response, "Failure responding to request")
@@ -514,7 +526,11 @@ func (client Client) CreateSubscriptionInEnrollmentAccountSender(req *http.Reque
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
+		cr.Response.Response, err = future.GetResult(sender)
+		if cr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "subscription.CreateSubscriptionInEnrollmentAccountFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
 			cr, err = client.CreateSubscriptionInEnrollmentAccountResponder(cr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "subscription.CreateSubscriptionInEnrollmentAccountFuture", "Result", cr.Response.Response, "Failure responding to request")

@@ -127,7 +127,11 @@ func (client CustomResourceProviderClient) CreateOrUpdateSender(req *http.Reques
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if crm.Response.Response, err = future.GetResult(sender); err == nil && crm.Response.Response.StatusCode != http.StatusNoContent {
+		crm.Response.Response, err = future.GetResult(sender)
+		if crm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "customproviders.CustomResourceProviderCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && crm.Response.Response.StatusCode != http.StatusNoContent {
 			crm, err = client.CreateOrUpdateResponder(crm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "customproviders.CustomResourceProviderCreateOrUpdateFuture", "Result", crm.Response.Response, "Failure responding to request")

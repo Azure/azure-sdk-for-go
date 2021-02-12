@@ -234,7 +234,11 @@ func (client ZonesClient) DeleteSender(req *http.Request) (future ZonesDeleteFut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if zdr.Response.Response, err = future.GetResult(sender); err == nil && zdr.Response.Response.StatusCode != http.StatusNoContent {
+		zdr.Response.Response, err = future.GetResult(sender)
+		if zdr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "dns.ZonesDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && zdr.Response.Response.StatusCode != http.StatusNoContent {
 			zdr, err = client.DeleteResponder(zdr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "dns.ZonesDeleteFuture", "Result", zdr.Response.Response, "Failure responding to request")

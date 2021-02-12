@@ -133,7 +133,11 @@ func (client InstancePoolsClient) CreateOrUpdateSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if IP.Response.Response, err = future.GetResult(sender); err == nil && IP.Response.Response.StatusCode != http.StatusNoContent {
+		IP.Response.Response, err = future.GetResult(sender)
+		if IP.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.InstancePoolsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && IP.Response.Response.StatusCode != http.StatusNoContent {
 			IP, err = client.CreateOrUpdateResponder(IP.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.InstancePoolsCreateOrUpdateFuture", "Result", IP.Response.Response, "Failure responding to request")
@@ -632,7 +636,11 @@ func (client InstancePoolsClient) UpdateSender(req *http.Request) (future Instan
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if IP.Response.Response, err = future.GetResult(sender); err == nil && IP.Response.Response.StatusCode != http.StatusNoContent {
+		IP.Response.Response, err = future.GetResult(sender)
+		if IP.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.InstancePoolsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && IP.Response.Response.StatusCode != http.StatusNoContent {
 			IP, err = client.UpdateResponder(IP.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.InstancePoolsUpdateFuture", "Result", IP.Response.Response, "Failure responding to request")

@@ -123,7 +123,11 @@ func (client SQLVirtualMachinesClient) CreateOrUpdateSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if svm.Response.Response, err = future.GetResult(sender); err == nil && svm.Response.Response.StatusCode != http.StatusNoContent {
+		svm.Response.Response, err = future.GetResult(sender)
+		if svm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesCreateOrUpdateFutureType", "Result", nil, "received nil response and error")
+		}
+		if err == nil && svm.Response.Response.StatusCode != http.StatusNoContent {
 			svm, err = client.CreateOrUpdateResponder(svm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesCreateOrUpdateFutureType", "Result", svm.Response.Response, "Failure responding to request")
@@ -745,7 +749,11 @@ func (client SQLVirtualMachinesClient) UpdateSender(req *http.Request) (future S
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if svm.Response.Response, err = future.GetResult(sender); err == nil && svm.Response.Response.StatusCode != http.StatusNoContent {
+		svm.Response.Response, err = future.GetResult(sender)
+		if svm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesUpdateFutureType", "Result", nil, "received nil response and error")
+		}
+		if err == nil && svm.Response.Response.StatusCode != http.StatusNoContent {
 			svm, err = client.UpdateResponder(svm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sqlvirtualmachine.SQLVirtualMachinesUpdateFutureType", "Result", svm.Response.Response, "Failure responding to request")

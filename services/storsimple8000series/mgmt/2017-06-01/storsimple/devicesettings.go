@@ -130,7 +130,11 @@ func (client DeviceSettingsClient) CreateOrUpdateAlertSettingsSender(req *http.R
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if as.Response.Response, err = future.GetResult(sender); err == nil && as.Response.Response.StatusCode != http.StatusNoContent {
+		as.Response.Response, err = future.GetResult(sender)
+		if as.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsCreateOrUpdateAlertSettingsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && as.Response.Response.StatusCode != http.StatusNoContent {
 			as, err = client.CreateOrUpdateAlertSettingsResponder(as.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsCreateOrUpdateAlertSettingsFuture", "Result", as.Response.Response, "Failure responding to request")
@@ -242,7 +246,11 @@ func (client DeviceSettingsClient) CreateOrUpdateTimeSettingsSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ts.Response.Response, err = future.GetResult(sender); err == nil && ts.Response.Response.StatusCode != http.StatusNoContent {
+		ts.Response.Response, err = future.GetResult(sender)
+		if ts.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsCreateOrUpdateTimeSettingsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ts.Response.Response.StatusCode != http.StatusNoContent {
 			ts, err = client.CreateOrUpdateTimeSettingsResponder(ts.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsCreateOrUpdateTimeSettingsFuture", "Result", ts.Response.Response, "Failure responding to request")
@@ -790,7 +798,11 @@ func (client DeviceSettingsClient) UpdateNetworkSettingsSender(req *http.Request
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ns.Response.Response, err = future.GetResult(sender); err == nil && ns.Response.Response.StatusCode != http.StatusNoContent {
+		ns.Response.Response, err = future.GetResult(sender)
+		if ns.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsUpdateNetworkSettingsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ns.Response.Response.StatusCode != http.StatusNoContent {
 			ns, err = client.UpdateNetworkSettingsResponder(ns.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsUpdateNetworkSettingsFuture", "Result", ns.Response.Response, "Failure responding to request")
@@ -899,7 +911,11 @@ func (client DeviceSettingsClient) UpdateSecuritySettingsSender(req *http.Reques
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ss.Response.Response, err = future.GetResult(sender); err == nil && ss.Response.Response.StatusCode != http.StatusNoContent {
+		ss.Response.Response, err = future.GetResult(sender)
+		if ss.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsUpdateSecuritySettingsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ss.Response.Response.StatusCode != http.StatusNoContent {
 			ss, err = client.UpdateSecuritySettingsResponder(ss.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsUpdateSecuritySettingsFuture", "Result", ss.Response.Response, "Failure responding to request")

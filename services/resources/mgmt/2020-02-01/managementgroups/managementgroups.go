@@ -129,7 +129,11 @@ func (client Client) CreateOrUpdateSender(req *http.Request) (future CreateOrUpd
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "managementgroups.CreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.CreateOrUpdateResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "managementgroups.CreateOrUpdateFuture", "Result", so.Response.Response, "Failure responding to request")
@@ -232,7 +236,11 @@ func (client Client) DeleteSender(req *http.Request) (future DeleteFuture, err e
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if aaor.Response.Response, err = future.GetResult(sender); err == nil && aaor.Response.Response.StatusCode != http.StatusNoContent {
+		aaor.Response.Response, err = future.GetResult(sender)
+		if aaor.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "managementgroups.DeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && aaor.Response.Response.StatusCode != http.StatusNoContent {
 			aaor, err = client.DeleteResponder(aaor.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "managementgroups.DeleteFuture", "Result", aaor.Response.Response, "Failure responding to request")

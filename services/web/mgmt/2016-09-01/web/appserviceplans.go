@@ -130,7 +130,11 @@ func (client AppServicePlansClient) CreateOrUpdateSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if asp.Response.Response, err = future.GetResult(sender); err == nil && asp.Response.Response.StatusCode != http.StatusNoContent {
+		asp.Response.Response, err = future.GetResult(sender)
+		if asp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppServicePlansCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && asp.Response.Response.StatusCode != http.StatusNoContent {
 			asp, err = client.CreateOrUpdateResponder(asp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppServicePlansCreateOrUpdateFuture", "Result", asp.Response.Response, "Failure responding to request")

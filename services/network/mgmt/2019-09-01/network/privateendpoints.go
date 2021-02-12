@@ -120,7 +120,11 @@ func (client PrivateEndpointsClient) CreateOrUpdateSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if peVar.Response.Response, err = future.GetResult(sender); err == nil && peVar.Response.Response.StatusCode != http.StatusNoContent {
+		peVar.Response.Response, err = future.GetResult(sender)
+		if peVar.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.PrivateEndpointsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && peVar.Response.Response.StatusCode != http.StatusNoContent {
 			peVar, err = client.CreateOrUpdateResponder(peVar.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.PrivateEndpointsCreateOrUpdateFuture", "Result", peVar.Response.Response, "Failure responding to request")

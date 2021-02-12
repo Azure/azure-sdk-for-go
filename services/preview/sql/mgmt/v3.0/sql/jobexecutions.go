@@ -206,7 +206,11 @@ func (client JobExecutionsClient) CreateSender(req *http.Request) (future JobExe
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if je.Response.Response, err = future.GetResult(sender); err == nil && je.Response.Response.StatusCode != http.StatusNoContent {
+		je.Response.Response, err = future.GetResult(sender)
+		if je.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.JobExecutionsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && je.Response.Response.StatusCode != http.StatusNoContent {
 			je, err = client.CreateResponder(je.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.JobExecutionsCreateFuture", "Result", je.Response.Response, "Failure responding to request")
@@ -310,7 +314,11 @@ func (client JobExecutionsClient) CreateOrUpdateSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if je.Response.Response, err = future.GetResult(sender); err == nil && je.Response.Response.StatusCode != http.StatusNoContent {
+		je.Response.Response, err = future.GetResult(sender)
+		if je.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.JobExecutionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && je.Response.Response.StatusCode != http.StatusNoContent {
 			je, err = client.CreateOrUpdateResponder(je.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.JobExecutionsCreateOrUpdateFuture", "Result", je.Response.Response, "Failure responding to request")

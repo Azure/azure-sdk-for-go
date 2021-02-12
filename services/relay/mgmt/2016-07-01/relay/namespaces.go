@@ -215,7 +215,11 @@ func (client NamespacesClient) CreateOrUpdateSender(req *http.Request) (future N
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if n.Response.Response, err = future.GetResult(sender); err == nil && n.Response.Response.StatusCode != http.StatusNoContent {
+		n.Response.Response, err = future.GetResult(sender)
+		if n.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "relay.NamespacesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && n.Response.Response.StatusCode != http.StatusNoContent {
 			n, err = client.CreateOrUpdateResponder(n.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "relay.NamespacesCreateOrUpdateFuture", "Result", n.Response.Response, "Failure responding to request")

@@ -122,7 +122,11 @@ func (client NatRulesClient) CreateOrUpdateSender(req *http.Request) (future Nat
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vgnr.Response.Response, err = future.GetResult(sender); err == nil && vgnr.Response.Response.StatusCode != http.StatusNoContent {
+		vgnr.Response.Response, err = future.GetResult(sender)
+		if vgnr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.NatRulesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vgnr.Response.Response.StatusCode != http.StatusNoContent {
 			vgnr, err = client.CreateOrUpdateResponder(vgnr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.NatRulesCreateOrUpdateFuture", "Result", vgnr.Response.Response, "Failure responding to request")

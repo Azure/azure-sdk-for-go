@@ -122,7 +122,11 @@ func (client TenantConfigurationClient) DeploySender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if orc.Response.Response, err = future.GetResult(sender); err == nil && orc.Response.Response.StatusCode != http.StatusNoContent {
+		orc.Response.Response, err = future.GetResult(sender)
+		if orc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationDeployFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && orc.Response.Response.StatusCode != http.StatusNoContent {
 			orc, err = client.DeployResponder(orc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationDeployFuture", "Result", orc.Response.Response, "Failure responding to request")
@@ -310,7 +314,11 @@ func (client TenantConfigurationClient) SaveSender(req *http.Request) (future Te
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if orc.Response.Response, err = future.GetResult(sender); err == nil && orc.Response.Response.StatusCode != http.StatusNoContent {
+		orc.Response.Response, err = future.GetResult(sender)
+		if orc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationSaveFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && orc.Response.Response.StatusCode != http.StatusNoContent {
 			orc, err = client.SaveResponder(orc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationSaveFuture", "Result", orc.Response.Response, "Failure responding to request")
@@ -419,7 +427,11 @@ func (client TenantConfigurationClient) ValidateSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if orc.Response.Response, err = future.GetResult(sender); err == nil && orc.Response.Response.StatusCode != http.StatusNoContent {
+		orc.Response.Response, err = future.GetResult(sender)
+		if orc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationValidateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && orc.Response.Response.StatusCode != http.StatusNoContent {
 			orc, err = client.ValidateResponder(orc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationValidateFuture", "Result", orc.Response.Response, "Failure responding to request")

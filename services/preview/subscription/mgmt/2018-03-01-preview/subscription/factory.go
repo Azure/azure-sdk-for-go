@@ -115,7 +115,11 @@ func (client FactoryClient) CreateSubscriptionInEnrollmentAccountSender(req *htt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
+		cr.Response.Response, err = future.GetResult(sender)
+		if cr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "subscription.FactoryCreateSubscriptionInEnrollmentAccountFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
 			cr, err = client.CreateSubscriptionInEnrollmentAccountResponder(cr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "subscription.FactoryCreateSubscriptionInEnrollmentAccountFuture", "Result", cr.Response.Response, "Failure responding to request")

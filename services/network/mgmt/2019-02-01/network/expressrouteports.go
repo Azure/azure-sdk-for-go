@@ -120,7 +120,11 @@ func (client ExpressRoutePortsClient) CreateOrUpdateSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if erp.Response.Response, err = future.GetResult(sender); err == nil && erp.Response.Response.StatusCode != http.StatusNoContent {
+		erp.Response.Response, err = future.GetResult(sender)
+		if erp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && erp.Response.Response.StatusCode != http.StatusNoContent {
 			erp, err = client.CreateOrUpdateResponder(erp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsCreateOrUpdateFuture", "Result", erp.Response.Response, "Failure responding to request")
@@ -615,7 +619,11 @@ func (client ExpressRoutePortsClient) UpdateTagsSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if erp.Response.Response, err = future.GetResult(sender); err == nil && erp.Response.Response.StatusCode != http.StatusNoContent {
+		erp.Response.Response, err = future.GetResult(sender)
+		if erp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsUpdateTagsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && erp.Response.Response.StatusCode != http.StatusNoContent {
 			erp, err = client.UpdateTagsResponder(erp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ExpressRoutePortsUpdateTagsFuture", "Result", erp.Response.Response, "Failure responding to request")

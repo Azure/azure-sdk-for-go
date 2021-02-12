@@ -131,7 +131,11 @@ func (client SQLPoolsClient) CreateSender(req *http.Request) (future SQLPoolsCre
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sp.Response.Response, err = future.GetResult(sender); err == nil && sp.Response.Response.StatusCode != http.StatusNoContent {
+		sp.Response.Response, err = future.GetResult(sender)
+		if sp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.SQLPoolsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sp.Response.Response.StatusCode != http.StatusNoContent {
 			sp, err = client.CreateResponder(sp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.SQLPoolsCreateFuture", "Result", sp.Response.Response, "Failure responding to request")
@@ -240,7 +244,11 @@ func (client SQLPoolsClient) DeleteSender(req *http.Request) (future SQLPoolsDel
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.SQLPoolsDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.DeleteResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.SQLPoolsDeleteFuture", "Result", so.Response.Response, "Failure responding to request")
@@ -565,7 +573,11 @@ func (client SQLPoolsClient) PauseSender(req *http.Request) (future SQLPoolsPaus
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.SQLPoolsPauseFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.PauseResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.SQLPoolsPauseFuture", "Result", so.Response.Response, "Failure responding to request")
@@ -766,7 +778,11 @@ func (client SQLPoolsClient) ResumeSender(req *http.Request) (future SQLPoolsRes
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.SQLPoolsResumeFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.ResumeResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.SQLPoolsResumeFuture", "Result", so.Response.Response, "Failure responding to request")

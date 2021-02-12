@@ -126,7 +126,11 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdateSender(req *http.Reques
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vng.Response.Response, err = future.GetResult(sender); err == nil && vng.Response.Response.StatusCode != http.StatusNoContent {
+		vng.Response.Response, err = future.GetResult(sender)
+		if vng.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vng.Response.Response.StatusCode != http.StatusNoContent {
 			vng, err = client.CreateOrUpdateResponder(vng.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysCreateOrUpdateFuture", "Result", vng.Response.Response, "Failure responding to request")
@@ -317,7 +321,11 @@ func (client VirtualNetworkGatewaysClient) GeneratevpnclientpackageSender(req *h
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGeneratevpnclientpackageFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.GeneratevpnclientpackageResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGeneratevpnclientpackageFuture", "Result", s.Response.Response, "Failure responding to request")
@@ -418,7 +426,11 @@ func (client VirtualNetworkGatewaysClient) GenerateVpnProfileSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGenerateVpnProfileFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.GenerateVpnProfileResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGenerateVpnProfileFuture", "Result", s.Response.Response, "Failure responding to request")
@@ -594,7 +606,11 @@ func (client VirtualNetworkGatewaysClient) GetAdvertisedRoutesSender(req *http.R
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if grlr.Response.Response, err = future.GetResult(sender); err == nil && grlr.Response.Response.StatusCode != http.StatusNoContent {
+		grlr.Response.Response, err = future.GetResult(sender)
+		if grlr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetAdvertisedRoutesFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && grlr.Response.Response.StatusCode != http.StatusNoContent {
 			grlr, err = client.GetAdvertisedRoutesResponder(grlr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetAdvertisedRoutesFuture", "Result", grlr.Response.Response, "Failure responding to request")
@@ -695,7 +711,11 @@ func (client VirtualNetworkGatewaysClient) GetBgpPeerStatusSender(req *http.Requ
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if bpslr.Response.Response, err = future.GetResult(sender); err == nil && bpslr.Response.Response.StatusCode != http.StatusNoContent {
+		bpslr.Response.Response, err = future.GetResult(sender)
+		if bpslr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetBgpPeerStatusFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && bpslr.Response.Response.StatusCode != http.StatusNoContent {
 			bpslr, err = client.GetBgpPeerStatusResponder(bpslr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetBgpPeerStatusFuture", "Result", bpslr.Response.Response, "Failure responding to request")
@@ -793,7 +813,11 @@ func (client VirtualNetworkGatewaysClient) GetLearnedRoutesSender(req *http.Requ
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if grlr.Response.Response, err = future.GetResult(sender); err == nil && grlr.Response.Response.StatusCode != http.StatusNoContent {
+		grlr.Response.Response, err = future.GetResult(sender)
+		if grlr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetLearnedRoutesFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && grlr.Response.Response.StatusCode != http.StatusNoContent {
 			grlr, err = client.GetLearnedRoutesResponder(grlr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetLearnedRoutesFuture", "Result", grlr.Response.Response, "Failure responding to request")
@@ -891,7 +915,11 @@ func (client VirtualNetworkGatewaysClient) GetVpnclientConnectionHealthSender(re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vcchdlr.Response.Response, err = future.GetResult(sender); err == nil && vcchdlr.Response.Response.StatusCode != http.StatusNoContent {
+		vcchdlr.Response.Response, err = future.GetResult(sender)
+		if vcchdlr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnclientConnectionHealthFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vcchdlr.Response.Response.StatusCode != http.StatusNoContent {
 			vcchdlr, err = client.GetVpnclientConnectionHealthResponder(vcchdlr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnclientConnectionHealthFuture", "Result", vcchdlr.Response.Response, "Failure responding to request")
@@ -990,7 +1018,11 @@ func (client VirtualNetworkGatewaysClient) GetVpnclientIpsecParametersSender(req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vcipp.Response.Response, err = future.GetResult(sender); err == nil && vcipp.Response.Response.StatusCode != http.StatusNoContent {
+		vcipp.Response.Response, err = future.GetResult(sender)
+		if vcipp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vcipp.Response.Response.StatusCode != http.StatusNoContent {
 			vcipp, err = client.GetVpnclientIpsecParametersResponder(vcipp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnclientIpsecParametersFuture", "Result", vcipp.Response.Response, "Failure responding to request")
@@ -1088,7 +1120,11 @@ func (client VirtualNetworkGatewaysClient) GetVpnProfilePackageURLSender(req *ht
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if s.Response.Response, err = future.GetResult(sender); err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
+		s.Response.Response, err = future.GetResult(sender)
+		if s.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnProfilePackageURLFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && s.Response.Response.StatusCode != http.StatusNoContent {
 			s, err = client.GetVpnProfilePackageURLResponder(s.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysGetVpnProfilePackageURLFuture", "Result", s.Response.Response, "Failure responding to request")
@@ -1424,7 +1460,11 @@ func (client VirtualNetworkGatewaysClient) ResetSender(req *http.Request) (futur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vng.Response.Response, err = future.GetResult(sender); err == nil && vng.Response.Response.StatusCode != http.StatusNoContent {
+		vng.Response.Response, err = future.GetResult(sender)
+		if vng.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysResetFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vng.Response.Response.StatusCode != http.StatusNoContent {
 			vng, err = client.ResetResponder(vng.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysResetFuture", "Result", vng.Response.Response, "Failure responding to request")
@@ -1624,7 +1664,11 @@ func (client VirtualNetworkGatewaysClient) SetVpnclientIpsecParametersSender(req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vcipp.Response.Response, err = future.GetResult(sender); err == nil && vcipp.Response.Response.StatusCode != http.StatusNoContent {
+		vcipp.Response.Response, err = future.GetResult(sender)
+		if vcipp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vcipp.Response.Response.StatusCode != http.StatusNoContent {
 			vcipp, err = client.SetVpnclientIpsecParametersResponder(vcipp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysSetVpnclientIpsecParametersFuture", "Result", vcipp.Response.Response, "Failure responding to request")
@@ -1800,7 +1844,11 @@ func (client VirtualNetworkGatewaysClient) UpdateTagsSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vng.Response.Response, err = future.GetResult(sender); err == nil && vng.Response.Response.StatusCode != http.StatusNoContent {
+		vng.Response.Response, err = future.GetResult(sender)
+		if vng.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysUpdateTagsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vng.Response.Response.StatusCode != http.StatusNoContent {
 			vng, err = client.UpdateTagsResponder(vng.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysUpdateTagsFuture", "Result", vng.Response.Response, "Failure responding to request")

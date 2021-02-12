@@ -144,7 +144,11 @@ func (client BackupScheduleGroupsClient) CreateOrUpdateSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if bsg.Response.Response, err = future.GetResult(sender); err == nil && bsg.Response.Response.StatusCode != http.StatusNoContent {
+		bsg.Response.Response, err = future.GetResult(sender)
+		if bsg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storsimple.BackupScheduleGroupsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && bsg.Response.Response.StatusCode != http.StatusNoContent {
 			bsg, err = client.CreateOrUpdateResponder(bsg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storsimple.BackupScheduleGroupsCreateOrUpdateFuture", "Result", bsg.Response.Response, "Failure responding to request")

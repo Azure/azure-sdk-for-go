@@ -133,7 +133,11 @@ func (client ControllerClient) CreateSender(req *http.Request) (future Controlle
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dc.Response.Response, err = future.GetResult(sender); err == nil && dc.Response.Response.StatusCode != http.StatusNoContent {
+		dc.Response.Response, err = future.GetResult(sender)
+		if dc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "delegatednetwork.ControllerCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dc.Response.Response.StatusCode != http.StatusNoContent {
 			dc, err = client.CreateResponder(dc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "delegatednetwork.ControllerCreateFuture", "Result", dc.Response.Response, "Failure responding to request")

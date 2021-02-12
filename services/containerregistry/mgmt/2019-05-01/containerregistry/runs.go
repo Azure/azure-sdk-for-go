@@ -546,7 +546,11 @@ func (client RunsClient) UpdateSender(req *http.Request) (future RunsUpdateFutur
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if r.Response.Response, err = future.GetResult(sender); err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
+		r.Response.Response, err = future.GetResult(sender)
+		if r.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.RunsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && r.Response.Response.StatusCode != http.StatusNoContent {
 			r, err = client.UpdateResponder(r.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerregistry.RunsUpdateFuture", "Result", r.Response.Response, "Failure responding to request")

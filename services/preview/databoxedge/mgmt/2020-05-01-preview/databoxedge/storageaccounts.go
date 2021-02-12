@@ -127,7 +127,11 @@ func (client StorageAccountsClient) CreateOrUpdateSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sa.Response.Response, err = future.GetResult(sender); err == nil && sa.Response.Response.StatusCode != http.StatusNoContent {
+		sa.Response.Response, err = future.GetResult(sender)
+		if sa.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "databoxedge.StorageAccountsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sa.Response.Response.StatusCode != http.StatusNoContent {
 			sa, err = client.CreateOrUpdateResponder(sa.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "databoxedge.StorageAccountsCreateOrUpdateFuture", "Result", sa.Response.Response, "Failure responding to request")

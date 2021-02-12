@@ -129,7 +129,11 @@ func (client RuleSetsClient) CreateSender(req *http.Request) (future RuleSetsCre
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rs.Response.Response, err = future.GetResult(sender); err == nil && rs.Response.Response.StatusCode != http.StatusNoContent {
+		rs.Response.Response, err = future.GetResult(sender)
+		if rs.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.RuleSetsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rs.Response.Response.StatusCode != http.StatusNoContent {
 			rs, err = client.CreateResponder(rs.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.RuleSetsCreateFuture", "Result", rs.Response.Response, "Failure responding to request")

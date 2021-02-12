@@ -128,7 +128,11 @@ func (client TriggerClient) CreateOrUpdateTriggerSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tr.Response.Response, err = future.GetResult(sender); err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
+		tr.Response.Response, err = future.GetResult(sender)
+		if tr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "artifacts.TriggerCreateOrUpdateTriggerFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tr.Response.Response.StatusCode != http.StatusNoContent {
 			tr, err = client.CreateOrUpdateTriggerResponder(tr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "artifacts.TriggerCreateOrUpdateTriggerFuture", "Result", tr.Response.Response, "Failure responding to request")
@@ -820,7 +824,11 @@ func (client TriggerClient) SubscribeTriggerToEventsSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tsos.Response.Response, err = future.GetResult(sender); err == nil && tsos.Response.Response.StatusCode != http.StatusNoContent {
+		tsos.Response.Response, err = future.GetResult(sender)
+		if tsos.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "artifacts.TriggerSubscribeTriggerToEventsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tsos.Response.Response.StatusCode != http.StatusNoContent {
 			tsos, err = client.SubscribeTriggerToEventsResponder(tsos.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "artifacts.TriggerSubscribeTriggerToEventsFuture", "Result", tsos.Response.Response, "Failure responding to request")
@@ -926,7 +934,11 @@ func (client TriggerClient) UnsubscribeTriggerFromEventsSender(req *http.Request
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tsos.Response.Response, err = future.GetResult(sender); err == nil && tsos.Response.Response.StatusCode != http.StatusNoContent {
+		tsos.Response.Response, err = future.GetResult(sender)
+		if tsos.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "artifacts.TriggerUnsubscribeTriggerFromEventsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tsos.Response.Response.StatusCode != http.StatusNoContent {
 			tsos, err = client.UnsubscribeTriggerFromEventsResponder(tsos.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "artifacts.TriggerUnsubscribeTriggerFromEventsFuture", "Result", tsos.Response.Response, "Failure responding to request")

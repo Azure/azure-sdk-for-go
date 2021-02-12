@@ -139,7 +139,11 @@ func (client APIClient) CreateOrUpdateSender(req *http.Request) (future APICreat
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ac.Response.Response, err = future.GetResult(sender); err == nil && ac.Response.Response.StatusCode != http.StatusNoContent {
+		ac.Response.Response, err = future.GetResult(sender)
+		if ac.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.APICreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ac.Response.Response.StatusCode != http.StatusNoContent {
 			ac, err = client.CreateOrUpdateResponder(ac.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "apimanagement.APICreateOrUpdateFuture", "Result", ac.Response.Response, "Failure responding to request")

@@ -116,7 +116,11 @@ func (client InvoicesClient) DownloadBillingSubscriptionInvoiceSender(req *http.
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+		du.Response.Response, err = future.GetResult(sender)
+		if du.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadBillingSubscriptionInvoiceFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
 			du, err = client.DownloadBillingSubscriptionInvoiceResponder(du.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadBillingSubscriptionInvoiceFuture", "Result", du.Response.Response, "Failure responding to request")
@@ -215,7 +219,11 @@ func (client InvoicesClient) DownloadInvoiceSender(req *http.Request) (future In
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+		du.Response.Response, err = future.GetResult(sender)
+		if du.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadInvoiceFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
 			du, err = client.DownloadInvoiceResponder(du.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadInvoiceFuture", "Result", du.Response.Response, "Failure responding to request")
@@ -320,7 +328,11 @@ func (client InvoicesClient) DownloadMultipleBillingProfileInvoicesSender(req *h
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+		du.Response.Response, err = future.GetResult(sender)
+		if du.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingProfileInvoicesFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
 			du, err = client.DownloadMultipleBillingProfileInvoicesResponder(du.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingProfileInvoicesFuture", "Result", du.Response.Response, "Failure responding to request")
@@ -423,7 +435,11 @@ func (client InvoicesClient) DownloadMultipleBillingSubscriptionInvoicesSender(r
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+		du.Response.Response, err = future.GetResult(sender)
+		if du.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
 			du, err = client.DownloadMultipleBillingSubscriptionInvoicesResponder(du.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "billing.InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture", "Result", du.Response.Response, "Failure responding to request")

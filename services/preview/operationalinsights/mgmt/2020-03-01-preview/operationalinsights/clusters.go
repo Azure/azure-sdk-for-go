@@ -133,7 +133,11 @@ func (client ClustersClient) CreateOrUpdateSender(req *http.Request) (future Clu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if c.Response.Response, err = future.GetResult(sender); err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
+		c.Response.Response, err = future.GetResult(sender)
+		if c.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "operationalinsights.ClustersCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && c.Response.Response.StatusCode != http.StatusNoContent {
 			c, err = client.CreateOrUpdateResponder(c.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "operationalinsights.ClustersCreateOrUpdateFuture", "Result", c.Response.Response, "Failure responding to request")

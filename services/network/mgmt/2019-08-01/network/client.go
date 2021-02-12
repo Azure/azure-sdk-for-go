@@ -210,7 +210,11 @@ func (client BaseClient) GeneratevirtualwanvpnserverconfigurationvpnprofileSende
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vpr.Response.Response, err = future.GetResult(sender); err == nil && vpr.Response.Response.StatusCode != http.StatusNoContent {
+		vpr.Response.Response, err = future.GetResult(sender)
+		if vpr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.GeneratevirtualwanvpnserverconfigurationvpnprofileFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vpr.Response.Response.StatusCode != http.StatusNoContent {
 			vpr, err = client.GeneratevirtualwanvpnserverconfigurationvpnprofileResponder(vpr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.GeneratevirtualwanvpnserverconfigurationvpnprofileFuture", "Result", vpr.Response.Response, "Failure responding to request")

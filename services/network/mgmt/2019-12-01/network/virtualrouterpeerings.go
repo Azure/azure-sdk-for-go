@@ -135,7 +135,11 @@ func (client VirtualRouterPeeringsClient) CreateOrUpdateSender(req *http.Request
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vrp.Response.Response, err = future.GetResult(sender); err == nil && vrp.Response.Response.StatusCode != http.StatusNoContent {
+		vrp.Response.Response, err = future.GetResult(sender)
+		if vrp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualRouterPeeringsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vrp.Response.Response.StatusCode != http.StatusNoContent {
 			vrp, err = client.CreateOrUpdateResponder(vrp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualRouterPeeringsCreateOrUpdateFuture", "Result", vrp.Response.Response, "Failure responding to request")

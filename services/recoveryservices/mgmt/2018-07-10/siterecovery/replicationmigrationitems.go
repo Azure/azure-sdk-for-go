@@ -131,7 +131,11 @@ func (client ReplicationMigrationItemsClient) CreateSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mi.Response.Response, err = future.GetResult(sender); err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
+		mi.Response.Response, err = future.GetResult(sender)
+		if mi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
 			mi, err = client.CreateResponder(mi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsCreateFuture", "Result", mi.Response.Response, "Failure responding to request")
@@ -663,7 +667,11 @@ func (client ReplicationMigrationItemsClient) MigrateSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mi.Response.Response, err = future.GetResult(sender); err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
+		mi.Response.Response, err = future.GetResult(sender)
+		if mi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsMigrateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
 			mi, err = client.MigrateResponder(mi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsMigrateFuture", "Result", mi.Response.Response, "Failure responding to request")
@@ -773,7 +781,11 @@ func (client ReplicationMigrationItemsClient) TestMigrateSender(req *http.Reques
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mi.Response.Response, err = future.GetResult(sender); err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
+		mi.Response.Response, err = future.GetResult(sender)
+		if mi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsTestMigrateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
 			mi, err = client.TestMigrateResponder(mi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsTestMigrateFuture", "Result", mi.Response.Response, "Failure responding to request")
@@ -883,7 +895,11 @@ func (client ReplicationMigrationItemsClient) TestMigrateCleanupSender(req *http
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mi.Response.Response, err = future.GetResult(sender); err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
+		mi.Response.Response, err = future.GetResult(sender)
+		if mi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsTestMigrateCleanupFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
 			mi, err = client.TestMigrateCleanupResponder(mi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsTestMigrateCleanupFuture", "Result", mi.Response.Response, "Failure responding to request")
@@ -987,7 +1003,11 @@ func (client ReplicationMigrationItemsClient) UpdateSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mi.Response.Response, err = future.GetResult(sender); err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
+		mi.Response.Response, err = future.GetResult(sender)
+		if mi.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mi.Response.Response.StatusCode != http.StatusNoContent {
 			mi, err = client.UpdateResponder(mi.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsUpdateFuture", "Result", mi.Response.Response, "Failure responding to request")

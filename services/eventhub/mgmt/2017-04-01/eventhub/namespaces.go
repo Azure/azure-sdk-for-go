@@ -224,7 +224,11 @@ func (client NamespacesClient) CreateOrUpdateSender(req *http.Request) (future N
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if en.Response.Response, err = future.GetResult(sender); err == nil && en.Response.Response.StatusCode != http.StatusNoContent {
+		en.Response.Response, err = future.GetResult(sender)
+		if en.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "eventhub.NamespacesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && en.Response.Response.StatusCode != http.StatusNoContent {
 			en, err = client.CreateOrUpdateResponder(en.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "eventhub.NamespacesCreateOrUpdateFuture", "Result", en.Response.Response, "Failure responding to request")

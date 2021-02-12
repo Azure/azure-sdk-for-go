@@ -134,7 +134,11 @@ func (client EnvironmentsClient) CreateOrUpdateSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if erm.Response.Response, err = future.GetResult(sender); err == nil && erm.Response.Response.StatusCode != http.StatusNoContent {
+		erm.Response.Response, err = future.GetResult(sender)
+		if erm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && erm.Response.Response.StatusCode != http.StatusNoContent {
 			erm, err = client.CreateOrUpdateResponder(erm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsCreateOrUpdateFuture", "Result", erm.Response.Response, "Failure responding to request")
@@ -539,7 +543,11 @@ func (client EnvironmentsClient) UpdateSender(req *http.Request) (future Environ
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if erm.Response.Response, err = future.GetResult(sender); err == nil && erm.Response.Response.StatusCode != http.StatusNoContent {
+		erm.Response.Response, err = future.GetResult(sender)
+		if erm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && erm.Response.Response.StatusCode != http.StatusNoContent {
 			erm, err = client.UpdateResponder(erm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "timeseriesinsights.EnvironmentsUpdateFuture", "Result", erm.Response.Response, "Failure responding to request")

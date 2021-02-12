@@ -132,7 +132,11 @@ func (client VirtualAppliancesClient) CreateOrUpdateSender(req *http.Request) (f
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if va.Response.Response, err = future.GetResult(sender); err == nil && va.Response.Response.StatusCode != http.StatusNoContent {
+		va.Response.Response, err = future.GetResult(sender)
+		if va.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualAppliancesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && va.Response.Response.StatusCode != http.StatusNoContent {
 			va, err = client.CreateOrUpdateResponder(va.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualAppliancesCreateOrUpdateFuture", "Result", va.Response.Response, "Failure responding to request")

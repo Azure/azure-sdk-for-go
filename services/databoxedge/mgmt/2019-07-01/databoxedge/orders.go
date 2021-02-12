@@ -139,7 +139,11 @@ func (client OrdersClient) CreateOrUpdateSender(req *http.Request) (future Order
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if o.Response.Response, err = future.GetResult(sender); err == nil && o.Response.Response.StatusCode != http.StatusNoContent {
+		o.Response.Response, err = future.GetResult(sender)
+		if o.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "databoxedge.OrdersCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && o.Response.Response.StatusCode != http.StatusNoContent {
 			o, err = client.CreateOrUpdateResponder(o.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "databoxedge.OrdersCreateOrUpdateFuture", "Result", o.Response.Response, "Failure responding to request")

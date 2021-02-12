@@ -131,7 +131,11 @@ func (client IPFirewallRulesClient) CreateOrUpdateSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ifri.Response.Response, err = future.GetResult(sender); err == nil && ifri.Response.Response.StatusCode != http.StatusNoContent {
+		ifri.Response.Response, err = future.GetResult(sender)
+		if ifri.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.IPFirewallRulesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ifri.Response.Response.StatusCode != http.StatusNoContent {
 			ifri, err = client.CreateOrUpdateResponder(ifri.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.IPFirewallRulesCreateOrUpdateFuture", "Result", ifri.Response.Response, "Failure responding to request")
@@ -240,7 +244,11 @@ func (client IPFirewallRulesClient) DeleteSender(req *http.Request) (future IPFi
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.IPFirewallRulesDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.DeleteResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.IPFirewallRulesDeleteFuture", "Result", so.Response.Response, "Failure responding to request")
@@ -566,7 +574,11 @@ func (client IPFirewallRulesClient) ReplaceAllSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rafror.Response.Response, err = future.GetResult(sender); err == nil && rafror.Response.Response.StatusCode != http.StatusNoContent {
+		rafror.Response.Response, err = future.GetResult(sender)
+		if rafror.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.IPFirewallRulesReplaceAllFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rafror.Response.Response.StatusCode != http.StatusNoContent {
 			rafror, err = client.ReplaceAllResponder(rafror.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.IPFirewallRulesReplaceAllFuture", "Result", rafror.Response.Response, "Failure responding to request")

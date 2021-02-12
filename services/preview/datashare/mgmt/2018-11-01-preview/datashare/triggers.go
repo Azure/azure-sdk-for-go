@@ -122,7 +122,11 @@ func (client TriggersClient) CreateSender(req *http.Request) (future TriggersCre
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tm.Response.Response, err = future.GetResult(sender); err == nil && tm.Response.Response.StatusCode != http.StatusNoContent {
+		tm.Response.Response, err = future.GetResult(sender)
+		if tm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "datashare.TriggersCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tm.Response.Response.StatusCode != http.StatusNoContent {
 			tm, err = client.CreateResponder(tm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "datashare.TriggersCreateFuture", "Result", tm.Response.Response, "Failure responding to request")
@@ -223,7 +227,11 @@ func (client TriggersClient) DeleteSender(req *http.Request) (future TriggersDel
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if or.Response.Response, err = future.GetResult(sender); err == nil && or.Response.Response.StatusCode != http.StatusNoContent {
+		or.Response.Response, err = future.GetResult(sender)
+		if or.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "datashare.TriggersDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && or.Response.Response.StatusCode != http.StatusNoContent {
 			or, err = client.DeleteResponder(or.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "datashare.TriggersDeleteFuture", "Result", or.Response.Response, "Failure responding to request")

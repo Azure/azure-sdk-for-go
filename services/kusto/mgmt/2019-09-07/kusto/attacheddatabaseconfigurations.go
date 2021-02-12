@@ -133,7 +133,11 @@ func (client AttachedDatabaseConfigurationsClient) CreateOrUpdateSender(req *htt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if adc.Response.Response, err = future.GetResult(sender); err == nil && adc.Response.Response.StatusCode != http.StatusNoContent {
+		adc.Response.Response, err = future.GetResult(sender)
+		if adc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "kusto.AttachedDatabaseConfigurationsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && adc.Response.Response.StatusCode != http.StatusNoContent {
 			adc, err = client.CreateOrUpdateResponder(adc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "kusto.AttachedDatabaseConfigurationsCreateOrUpdateFuture", "Result", adc.Response.Response, "Failure responding to request")

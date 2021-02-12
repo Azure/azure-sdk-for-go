@@ -146,7 +146,11 @@ func (client DedicatedCloudNodesClient) CreateOrUpdateSender(req *http.Request) 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dcn.Response.Response, err = future.GetResult(sender); err == nil && dcn.Response.Response.StatusCode != http.StatusNoContent {
+		dcn.Response.Response, err = future.GetResult(sender)
+		if dcn.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dcn.Response.Response.StatusCode != http.StatusNoContent {
 			dcn, err = client.CreateOrUpdateResponder(dcn.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesCreateOrUpdateFuture", "Result", dcn.Response.Response, "Failure responding to request")

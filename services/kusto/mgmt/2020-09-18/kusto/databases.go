@@ -289,7 +289,11 @@ func (client DatabasesClient) CreateOrUpdateSender(req *http.Request) (future Da
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dm.Response.Response, err = future.GetResult(sender); err == nil && dm.Response.Response.StatusCode != http.StatusNoContent {
+		dm.Response.Response, err = future.GetResult(sender)
+		if dm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "kusto.DatabasesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dm.Response.Response.StatusCode != http.StatusNoContent {
 			dm, err = client.CreateOrUpdateResponder(dm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "kusto.DatabasesCreateOrUpdateFuture", "Result", dm.Response.Response, "Failure responding to request")
@@ -796,7 +800,11 @@ func (client DatabasesClient) UpdateSender(req *http.Request) (future DatabasesU
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dm.Response.Response, err = future.GetResult(sender); err == nil && dm.Response.Response.StatusCode != http.StatusNoContent {
+		dm.Response.Response, err = future.GetResult(sender)
+		if dm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "kusto.DatabasesUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dm.Response.Response.StatusCode != http.StatusNoContent {
 			dm, err = client.UpdateResponder(dm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "kusto.DatabasesUpdateFuture", "Result", dm.Response.Response, "Failure responding to request")

@@ -114,7 +114,11 @@ func (client PriceSheetClient) DownloadSender(req *http.Request) (future PriceSh
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if du.Response.Response, err = future.GetResult(sender); err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
+		du.Response.Response, err = future.GetResult(sender)
+		if du.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "billing.PriceSheetDownloadFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && du.Response.Response.StatusCode != http.StatusNoContent {
 			du, err = client.DownloadResponder(du.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "billing.PriceSheetDownloadFuture", "Result", du.Response.Response, "Failure responding to request")

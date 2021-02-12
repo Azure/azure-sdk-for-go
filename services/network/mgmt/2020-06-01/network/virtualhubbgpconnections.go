@@ -236,7 +236,11 @@ func (client VirtualHubBgpConnectionsClient) ListAdvertisedRoutesSender(req *htt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if prl.Response.Response, err = future.GetResult(sender); err == nil && prl.Response.Response.StatusCode != http.StatusNoContent {
+		prl.Response.Response, err = future.GetResult(sender)
+		if prl.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualHubBgpConnectionsListAdvertisedRoutesFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && prl.Response.Response.StatusCode != http.StatusNoContent {
 			prl, err = client.ListAdvertisedRoutesResponder(prl.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualHubBgpConnectionsListAdvertisedRoutesFuture", "Result", prl.Response.Response, "Failure responding to request")
@@ -335,7 +339,11 @@ func (client VirtualHubBgpConnectionsClient) ListLearnedRoutesSender(req *http.R
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if prl.Response.Response, err = future.GetResult(sender); err == nil && prl.Response.Response.StatusCode != http.StatusNoContent {
+		prl.Response.Response, err = future.GetResult(sender)
+		if prl.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualHubBgpConnectionsListLearnedRoutesFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && prl.Response.Response.StatusCode != http.StatusNoContent {
 			prl, err = client.ListLearnedRoutesResponder(prl.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualHubBgpConnectionsListLearnedRoutesFuture", "Result", prl.Response.Response, "Failure responding to request")

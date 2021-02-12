@@ -131,7 +131,11 @@ func (client VirtualHubsClient) CreateOrUpdateSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vh.Response.Response, err = future.GetResult(sender); err == nil && vh.Response.Response.StatusCode != http.StatusNoContent {
+		vh.Response.Response, err = future.GetResult(sender)
+		if vh.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualHubsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vh.Response.Response.StatusCode != http.StatusNoContent {
 			vh, err = client.CreateOrUpdateResponder(vh.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualHubsCreateOrUpdateFuture", "Result", vh.Response.Response, "Failure responding to request")

@@ -744,7 +744,11 @@ func (client WorkflowsClient) RunSender(req *http.Request) (future WorkflowsRunF
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wr.Response.Response, err = future.GetResult(sender); err == nil && wr.Response.Response.StatusCode != http.StatusNoContent {
+		wr.Response.Response, err = future.GetResult(sender)
+		if wr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "logic.WorkflowsRunFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wr.Response.Response.StatusCode != http.StatusNoContent {
 			wr, err = client.RunResponder(wr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "logic.WorkflowsRunFuture", "Result", wr.Response.Response, "Failure responding to request")

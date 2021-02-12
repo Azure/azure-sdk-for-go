@@ -213,7 +213,11 @@ func (client VirtualMachineClient) CreateOrUpdateResourceSender(req *http.Reques
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if lvm.Response.Response, err = future.GetResult(sender); err == nil && lvm.Response.Response.StatusCode != http.StatusNoContent {
+		lvm.Response.Response, err = future.GetResult(sender)
+		if lvm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "dtl.VirtualMachineCreateOrUpdateResourceFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && lvm.Response.Response.StatusCode != http.StatusNoContent {
 			lvm, err = client.CreateOrUpdateResourceResponder(lvm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "dtl.VirtualMachineCreateOrUpdateResourceFuture", "Result", lvm.Response.Response, "Failure responding to request")

@@ -147,7 +147,11 @@ func (client BuildTasksClient) CreateSender(req *http.Request) (future BuildTask
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if bt.Response.Response, err = future.GetResult(sender); err == nil && bt.Response.Response.StatusCode != http.StatusNoContent {
+		bt.Response.Response, err = future.GetResult(sender)
+		if bt.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.BuildTasksCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && bt.Response.Response.StatusCode != http.StatusNoContent {
 			bt, err = client.CreateResponder(bt.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerregistry.BuildTasksCreateFuture", "Result", bt.Response.Response, "Failure responding to request")
@@ -680,7 +684,11 @@ func (client BuildTasksClient) UpdateSender(req *http.Request) (future BuildTask
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if bt.Response.Response, err = future.GetResult(sender); err == nil && bt.Response.Response.StatusCode != http.StatusNoContent {
+		bt.Response.Response, err = future.GetResult(sender)
+		if bt.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.BuildTasksUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && bt.Response.Response.StatusCode != http.StatusNoContent {
 			bt, err = client.UpdateResponder(bt.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerregistry.BuildTasksUpdateFuture", "Result", bt.Response.Response, "Failure responding to request")

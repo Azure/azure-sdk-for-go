@@ -120,7 +120,11 @@ func (client Client) CreateSender(req *http.Request) (future CreateFuture, err e
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dlsa.Response.Response, err = future.GetResult(sender); err == nil && dlsa.Response.Response.StatusCode != http.StatusNoContent {
+		dlsa.Response.Response, err = future.GetResult(sender)
+		if dlsa.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "account.CreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dlsa.Response.Response.StatusCode != http.StatusNoContent {
 			dlsa, err = client.CreateResponder(dlsa.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "account.CreateFuture", "Result", dlsa.Response.Response, "Failure responding to request")
@@ -1136,7 +1140,11 @@ func (client Client) UpdateSender(req *http.Request) (future UpdateFuture, err e
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dlsa.Response.Response, err = future.GetResult(sender); err == nil && dlsa.Response.Response.StatusCode != http.StatusNoContent {
+		dlsa.Response.Response, err = future.GetResult(sender)
+		if dlsa.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "account.UpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dlsa.Response.Response.StatusCode != http.StatusNoContent {
 			dlsa, err = client.UpdateResponder(dlsa.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "account.UpdateFuture", "Result", dlsa.Response.Response, "Failure responding to request")

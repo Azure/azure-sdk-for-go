@@ -121,7 +121,11 @@ func (client ApplicationGatewaysClient) BackendHealthSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if agbh.Response.Response, err = future.GetResult(sender); err == nil && agbh.Response.Response.StatusCode != http.StatusNoContent {
+		agbh.Response.Response, err = future.GetResult(sender)
+		if agbh.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysBackendHealthFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && agbh.Response.Response.StatusCode != http.StatusNoContent {
 			agbh, err = client.BackendHealthResponder(agbh.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysBackendHealthFuture", "Result", agbh.Response.Response, "Failure responding to request")
@@ -226,7 +230,11 @@ func (client ApplicationGatewaysClient) BackendHealthOnDemandSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if agbhod.Response.Response, err = future.GetResult(sender); err == nil && agbhod.Response.Response.StatusCode != http.StatusNoContent {
+		agbhod.Response.Response, err = future.GetResult(sender)
+		if agbhod.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysBackendHealthOnDemandFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && agbhod.Response.Response.StatusCode != http.StatusNoContent {
 			agbhod, err = client.BackendHealthOnDemandResponder(agbhod.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysBackendHealthOnDemandFuture", "Result", agbhod.Response.Response, "Failure responding to request")
@@ -355,7 +363,11 @@ func (client ApplicationGatewaysClient) CreateOrUpdateSender(req *http.Request) 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ag.Response.Response, err = future.GetResult(sender); err == nil && ag.Response.Response.StatusCode != http.StatusNoContent {
+		ag.Response.Response, err = future.GetResult(sender)
+		if ag.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ag.Response.Response.StatusCode != http.StatusNoContent {
 			ag, err = client.CreateOrUpdateResponder(ag.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysCreateOrUpdateFuture", "Result", ag.Response.Response, "Failure responding to request")

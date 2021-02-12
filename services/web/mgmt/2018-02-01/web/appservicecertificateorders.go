@@ -135,7 +135,11 @@ func (client AppServiceCertificateOrdersClient) CreateOrUpdateSender(req *http.R
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if asco.Response.Response, err = future.GetResult(sender); err == nil && asco.Response.Response.StatusCode != http.StatusNoContent {
+		asco.Response.Response, err = future.GetResult(sender)
+		if asco.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && asco.Response.Response.StatusCode != http.StatusNoContent {
 			asco, err = client.CreateOrUpdateResponder(asco.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersCreateOrUpdateFuture", "Result", asco.Response.Response, "Failure responding to request")
@@ -245,7 +249,11 @@ func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificateSender(
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ascr.Response.Response, err = future.GetResult(sender); err == nil && ascr.Response.Response.StatusCode != http.StatusNoContent {
+		ascr.Response.Response, err = future.GetResult(sender)
+		if ascr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersCreateOrUpdateCertificateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ascr.Response.Response.StatusCode != http.StatusNoContent {
 			ascr, err = client.CreateOrUpdateCertificateResponder(ascr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersCreateOrUpdateCertificateFuture", "Result", ascr.Response.Response, "Failure responding to request")

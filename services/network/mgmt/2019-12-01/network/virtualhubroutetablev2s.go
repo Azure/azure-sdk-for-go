@@ -123,7 +123,11 @@ func (client VirtualHubRouteTableV2sClient) CreateOrUpdateSender(req *http.Reque
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vhrtv.Response.Response, err = future.GetResult(sender); err == nil && vhrtv.Response.Response.StatusCode != http.StatusNoContent {
+		vhrtv.Response.Response, err = future.GetResult(sender)
+		if vhrtv.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualHubRouteTableV2sCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vhrtv.Response.Response.StatusCode != http.StatusNoContent {
 			vhrtv, err = client.CreateOrUpdateResponder(vhrtv.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualHubRouteTableV2sCreateOrUpdateFuture", "Result", vhrtv.Response.Response, "Failure responding to request")

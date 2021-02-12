@@ -125,7 +125,11 @@ func (client ReplicationStorageClassificationMappingsClient) CreateSender(req *h
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if scm.Response.Response, err = future.GetResult(sender); err == nil && scm.Response.Response.StatusCode != http.StatusNoContent {
+		scm.Response.Response, err = future.GetResult(sender)
+		if scm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationStorageClassificationMappingsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && scm.Response.Response.StatusCode != http.StatusNoContent {
 			scm, err = client.CreateResponder(scm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationStorageClassificationMappingsCreateFuture", "Result", scm.Response.Response, "Failure responding to request")

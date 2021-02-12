@@ -121,7 +121,11 @@ func (client AliasClient) CreateSender(req *http.Request) (future AliasCreateFut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if par.Response.Response, err = future.GetResult(sender); err == nil && par.Response.Response.StatusCode != http.StatusNoContent {
+		par.Response.Response, err = future.GetResult(sender)
+		if par.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "subscription.AliasCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && par.Response.Response.StatusCode != http.StatusNoContent {
 			par, err = client.CreateResponder(par.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "subscription.AliasCreateFuture", "Result", par.Response.Response, "Failure responding to request")

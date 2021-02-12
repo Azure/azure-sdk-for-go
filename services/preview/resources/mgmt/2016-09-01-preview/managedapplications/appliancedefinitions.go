@@ -136,7 +136,11 @@ func (client ApplianceDefinitionsClient) CreateOrUpdateSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ad.Response.Response, err = future.GetResult(sender); err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
+		ad.Response.Response, err = future.GetResult(sender)
+		if ad.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
 			ad, err = client.CreateOrUpdateResponder(ad.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsCreateOrUpdateFuture", "Result", ad.Response.Response, "Failure responding to request")
@@ -244,7 +248,11 @@ func (client ApplianceDefinitionsClient) CreateOrUpdateByIDSender(req *http.Requ
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ad.Response.Response, err = future.GetResult(sender); err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
+		ad.Response.Response, err = future.GetResult(sender)
+		if ad.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsCreateOrUpdateByIDFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ad.Response.Response.StatusCode != http.StatusNoContent {
 			ad, err = client.CreateOrUpdateByIDResponder(ad.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "managedapplications.ApplianceDefinitionsCreateOrUpdateByIDFuture", "Result", ad.Response.Response, "Failure responding to request")

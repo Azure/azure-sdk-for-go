@@ -455,6 +455,18 @@ type AppTemplate struct {
 	Order *float64 `json:"order,omitempty"`
 	// Description - READ-ONLY; The description of the template.
 	Description *string `json:"description,omitempty"`
+	// Industry - READ-ONLY; The industry of the template.
+	Industry *string `json:"industry,omitempty"`
+	// Locations - READ-ONLY; A list of locations that support the template.
+	Locations *[]AppTemplateLocations `json:"locations,omitempty"`
+}
+
+// AppTemplateLocations ioT Central Application Template Locations.
+type AppTemplateLocations struct {
+	// ID - READ-ONLY; The ID of the location.
+	ID *string `json:"id,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the location.
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
 // AppTemplatesResult a list of IoT Central Application Templates with a next link.
@@ -691,6 +703,10 @@ type Operation struct {
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
+	// Origin - READ-ONLY; The intended executor of the operation.
+	Origin *string `json:"origin,omitempty"`
+	// Properties - READ-ONLY; Additional descriptions for the operation.
+	Properties interface{} `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Operation.

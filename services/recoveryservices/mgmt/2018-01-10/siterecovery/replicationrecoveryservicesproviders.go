@@ -146,7 +146,11 @@ func (client ReplicationRecoveryServicesProvidersClient) CreateSender(req *http.
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rsp.Response.Response, err = future.GetResult(sender); err == nil && rsp.Response.Response.StatusCode != http.StatusNoContent {
+		rsp.Response.Response, err = future.GetResult(sender)
+		if rsp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryServicesProvidersCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rsp.Response.Response.StatusCode != http.StatusNoContent {
 			rsp, err = client.CreateResponder(rsp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryServicesProvidersCreateFuture", "Result", rsp.Response.Response, "Failure responding to request")
@@ -740,7 +744,11 @@ func (client ReplicationRecoveryServicesProvidersClient) RefreshProviderSender(r
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rsp.Response.Response, err = future.GetResult(sender); err == nil && rsp.Response.Response.StatusCode != http.StatusNoContent {
+		rsp.Response.Response, err = future.GetResult(sender)
+		if rsp.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryServicesProvidersRefreshProviderFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rsp.Response.Response.StatusCode != http.StatusNoContent {
 			rsp, err = client.RefreshProviderResponder(rsp.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationRecoveryServicesProvidersRefreshProviderFuture", "Result", rsp.Response.Response, "Failure responding to request")

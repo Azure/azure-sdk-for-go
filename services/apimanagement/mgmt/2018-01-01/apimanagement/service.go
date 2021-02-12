@@ -133,7 +133,11 @@ func (client ServiceClient) ApplyNetworkConfigurationUpdatesSender(req *http.Req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sr.Response.Response, err = future.GetResult(sender); err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
+		sr.Response.Response, err = future.GetResult(sender)
+		if sr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.ServiceApplyNetworkConfigurationUpdatesFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
 			sr, err = client.ApplyNetworkConfigurationUpdatesResponder(sr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "apimanagement.ServiceApplyNetworkConfigurationUpdatesFuture", "Result", sr.Response.Response, "Failure responding to request")
@@ -247,7 +251,11 @@ func (client ServiceClient) BackupSender(req *http.Request) (future ServiceBacku
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sr.Response.Response, err = future.GetResult(sender); err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
+		sr.Response.Response, err = future.GetResult(sender)
+		if sr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.ServiceBackupFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
 			sr, err = client.BackupResponder(sr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "apimanagement.ServiceBackupFuture", "Result", sr.Response.Response, "Failure responding to request")
@@ -449,7 +457,11 @@ func (client ServiceClient) CreateOrUpdateSender(req *http.Request) (future Serv
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sr.Response.Response, err = future.GetResult(sender); err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
+		sr.Response.Response, err = future.GetResult(sender)
+		if sr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.ServiceCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
 			sr, err = client.CreateOrUpdateResponder(sr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "apimanagement.ServiceCreateOrUpdateFuture", "Result", sr.Response.Response, "Failure responding to request")
@@ -1043,7 +1055,11 @@ func (client ServiceClient) RestoreSender(req *http.Request) (future ServiceRest
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sr.Response.Response, err = future.GetResult(sender); err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
+		sr.Response.Response, err = future.GetResult(sender)
+		if sr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.ServiceRestoreFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
 			sr, err = client.RestoreResponder(sr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "apimanagement.ServiceRestoreFuture", "Result", sr.Response.Response, "Failure responding to request")
@@ -1152,7 +1168,11 @@ func (client ServiceClient) UpdateSender(req *http.Request) (future ServiceUpdat
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sr.Response.Response, err = future.GetResult(sender); err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
+		sr.Response.Response, err = future.GetResult(sender)
+		if sr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.ServiceUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
 			sr, err = client.UpdateResponder(sr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "apimanagement.ServiceUpdateFuture", "Result", sr.Response.Response, "Failure responding to request")
@@ -1262,7 +1282,11 @@ func (client ServiceClient) UpdateHostnameSender(req *http.Request) (future Serv
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sr.Response.Response, err = future.GetResult(sender); err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
+		sr.Response.Response, err = future.GetResult(sender)
+		if sr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "apimanagement.ServiceUpdateHostnameFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sr.Response.Response.StatusCode != http.StatusNoContent {
 			sr, err = client.UpdateHostnameResponder(sr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "apimanagement.ServiceUpdateHostnameFuture", "Result", sr.Response.Response, "Failure responding to request")

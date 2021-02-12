@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## `v51.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-12-01/compute`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-09-01-preview/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql`
+- `github.com/Azure/azure-sdk-for-go/services/preview/synapse/2020-08-01-preview/accesscontrol`
+- `github.com/Azure/azure-sdk-for-go/services/redisenterprise/mgmt/2021-03-01/redisenterprise`
+- `github.com/Azure/azure-sdk-for-go/services/resourcemover/mgmt/2021-01-01/resourcemover`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral` | [details](services/iotcentral/mgmt/2018-09-01/iotcentral/CHANGELOG.md) |
+
 ## `v51.1.0`
 
 ### New Packages
@@ -12,7 +30,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2020-08-01-preview/storage` | [details](services/preview/storage/mgmt/2020-08-01-preview/storage/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/storage/mgmt/2020-08-01-preview/storage` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v51.1.0/services/preview/storage/mgmt/2020-08-01-preview/storage/CHANGELOG.md) |
 
 ## `v51.0.0`
 

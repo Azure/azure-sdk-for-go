@@ -119,7 +119,11 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if he.Response.Response, err = future.GetResult(sender); err == nil && he.Response.Response.StatusCode != http.StatusNoContent {
+		he.Response.Response, err = future.GetResult(sender)
+		if he.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && he.Response.Response.StatusCode != http.StatusNoContent {
 			he, err = client.CreateOrUpdateManagedHostingEnvironmentResponder(he.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture", "Result", he.Response.Response, "Failure responding to request")
@@ -220,7 +224,11 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentSe
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.DeleteManagedHostingEnvironmentResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture", "Result", so.Response.Response, "Failure responding to request")

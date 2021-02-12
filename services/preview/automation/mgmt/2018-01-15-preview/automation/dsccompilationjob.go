@@ -134,7 +134,11 @@ func (client DscCompilationJobClient) CreateSender(req *http.Request) (future Ds
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dcj.Response.Response, err = future.GetResult(sender); err == nil && dcj.Response.Response.StatusCode != http.StatusNoContent {
+		dcj.Response.Response, err = future.GetResult(sender)
+		if dcj.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "automation.DscCompilationJobCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dcj.Response.Response.StatusCode != http.StatusNoContent {
 			dcj, err = client.CreateResponder(dcj.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "automation.DscCompilationJobCreateFuture", "Result", dcj.Response.Response, "Failure responding to request")

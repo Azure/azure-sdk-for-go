@@ -120,7 +120,11 @@ func (client ExpressRouteCircuitsClient) CreateOrUpdateSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if erc.Response.Response, err = future.GetResult(sender); err == nil && erc.Response.Response.StatusCode != http.StatusNoContent {
+		erc.Response.Response, err = future.GetResult(sender)
+		if erc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && erc.Response.Response.StatusCode != http.StatusNoContent {
 			erc, err = client.CreateOrUpdateResponder(erc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsCreateOrUpdateFuture", "Result", erc.Response.Response, "Failure responding to request")
@@ -770,7 +774,11 @@ func (client ExpressRouteCircuitsClient) ListArpTableSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ercatlr.Response.Response, err = future.GetResult(sender); err == nil && ercatlr.Response.Response.StatusCode != http.StatusNoContent {
+		ercatlr.Response.Response, err = future.GetResult(sender)
+		if ercatlr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListArpTableFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ercatlr.Response.Response.StatusCode != http.StatusNoContent {
 			ercatlr, err = client.ListArpTableResponder(ercatlr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListArpTableFuture", "Result", ercatlr.Response.Response, "Failure responding to request")
@@ -872,7 +880,11 @@ func (client ExpressRouteCircuitsClient) ListRoutesTableSender(req *http.Request
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ercrtlr.Response.Response, err = future.GetResult(sender); err == nil && ercrtlr.Response.Response.StatusCode != http.StatusNoContent {
+		ercrtlr.Response.Response, err = future.GetResult(sender)
+		if ercrtlr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListRoutesTableFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ercrtlr.Response.Response.StatusCode != http.StatusNoContent {
 			ercrtlr, err = client.ListRoutesTableResponder(ercrtlr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListRoutesTableFuture", "Result", ercrtlr.Response.Response, "Failure responding to request")
@@ -974,7 +986,11 @@ func (client ExpressRouteCircuitsClient) ListRoutesTableSummarySender(req *http.
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ercrtslr.Response.Response, err = future.GetResult(sender); err == nil && ercrtslr.Response.Response.StatusCode != http.StatusNoContent {
+		ercrtslr.Response.Response, err = future.GetResult(sender)
+		if ercrtslr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListRoutesTableSummaryFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ercrtslr.Response.Response.StatusCode != http.StatusNoContent {
 			ercrtslr, err = client.ListRoutesTableSummaryResponder(ercrtslr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsListRoutesTableSummaryFuture", "Result", ercrtslr.Response.Response, "Failure responding to request")
@@ -1074,7 +1090,11 @@ func (client ExpressRouteCircuitsClient) UpdateTagsSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if erc.Response.Response, err = future.GetResult(sender); err == nil && erc.Response.Response.StatusCode != http.StatusNoContent {
+		erc.Response.Response, err = future.GetResult(sender)
+		if erc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsUpdateTagsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && erc.Response.Response.StatusCode != http.StatusNoContent {
 			erc, err = client.UpdateTagsResponder(erc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ExpressRouteCircuitsUpdateTagsFuture", "Result", erc.Response.Response, "Failure responding to request")

@@ -123,7 +123,11 @@ func (client DeploymentsClient) CreateOrUpdateSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dr.Response.Response, err = future.GetResult(sender); err == nil && dr.Response.Response.StatusCode != http.StatusNoContent {
+		dr.Response.Response, err = future.GetResult(sender)
+		if dr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "appplatform.DeploymentsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dr.Response.Response.StatusCode != http.StatusNoContent {
 			dr, err = client.CreateOrUpdateResponder(dr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "appplatform.DeploymentsCreateOrUpdateFuture", "Result", dr.Response.Response, "Failure responding to request")
@@ -1003,7 +1007,11 @@ func (client DeploymentsClient) UpdateSender(req *http.Request) (future Deployme
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dr.Response.Response, err = future.GetResult(sender); err == nil && dr.Response.Response.StatusCode != http.StatusNoContent {
+		dr.Response.Response, err = future.GetResult(sender)
+		if dr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "appplatform.DeploymentsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dr.Response.Response.StatusCode != http.StatusNoContent {
 			dr, err = client.UpdateResponder(dr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "appplatform.DeploymentsUpdateFuture", "Result", dr.Response.Response, "Failure responding to request")

@@ -130,7 +130,11 @@ func (client UsersClient) CreateOrUpdateSender(req *http.Request) (future UsersC
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if u.Response.Response, err = future.GetResult(sender); err == nil && u.Response.Response.StatusCode != http.StatusNoContent {
+		u.Response.Response, err = future.GetResult(sender)
+		if u.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "databoxedge.UsersCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && u.Response.Response.StatusCode != http.StatusNoContent {
 			u, err = client.CreateOrUpdateResponder(u.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "databoxedge.UsersCreateOrUpdateFuture", "Result", u.Response.Response, "Failure responding to request")

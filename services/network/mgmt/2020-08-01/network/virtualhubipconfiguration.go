@@ -144,7 +144,11 @@ func (client VirtualHubIPConfigurationClient) CreateOrUpdateSender(req *http.Req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if hic.Response.Response, err = future.GetResult(sender); err == nil && hic.Response.Response.StatusCode != http.StatusNoContent {
+		hic.Response.Response, err = future.GetResult(sender)
+		if hic.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.VirtualHubIPConfigurationCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && hic.Response.Response.StatusCode != http.StatusNoContent {
 			hic, err = client.CreateOrUpdateResponder(hic.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.VirtualHubIPConfigurationCreateOrUpdateFuture", "Result", hic.Response.Response, "Failure responding to request")

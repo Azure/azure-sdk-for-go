@@ -144,7 +144,11 @@ func (client MonitorsClient) CreateSender(req *http.Request) (future MonitorsCre
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if mr.Response.Response, err = future.GetResult(sender); err == nil && mr.Response.Response.StatusCode != http.StatusNoContent {
+		mr.Response.Response, err = future.GetResult(sender)
+		if mr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "datadog.MonitorsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && mr.Response.Response.StatusCode != http.StatusNoContent {
 			mr, err = client.CreateResponder(mr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "datadog.MonitorsCreateFuture", "Result", mr.Response.Response, "Failure responding to request")

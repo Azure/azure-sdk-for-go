@@ -140,7 +140,11 @@ func (client ExportPipelinesClient) CreateSender(req *http.Request) (future Expo
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ep.Response.Response, err = future.GetResult(sender); err == nil && ep.Response.Response.StatusCode != http.StatusNoContent {
+		ep.Response.Response, err = future.GetResult(sender)
+		if ep.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ep.Response.Response.StatusCode != http.StatusNoContent {
 			ep, err = client.CreateResponder(ep.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerregistry.ExportPipelinesCreateFuture", "Result", ep.Response.Response, "Failure responding to request")

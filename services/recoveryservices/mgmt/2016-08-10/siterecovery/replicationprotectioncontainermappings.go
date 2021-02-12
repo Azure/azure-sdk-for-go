@@ -125,7 +125,11 @@ func (client ReplicationProtectionContainerMappingsClient) CreateSender(req *htt
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pcm.Response.Response, err = future.GetResult(sender); err == nil && pcm.Response.Response.StatusCode != http.StatusNoContent {
+		pcm.Response.Response, err = future.GetResult(sender)
+		if pcm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionContainerMappingsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pcm.Response.Response.StatusCode != http.StatusNoContent {
 			pcm, err = client.CreateResponder(pcm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionContainerMappingsCreateFuture", "Result", pcm.Response.Response, "Failure responding to request")

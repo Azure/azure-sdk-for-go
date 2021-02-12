@@ -185,7 +185,11 @@ func (client LineOfCreditsClient) UpdateSender(req *http.Request) (future LineOf
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if loc.Response.Response, err = future.GetResult(sender); err == nil && loc.Response.Response.StatusCode != http.StatusNoContent {
+		loc.Response.Response, err = future.GetResult(sender)
+		if loc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "billing.LineOfCreditsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && loc.Response.Response.StatusCode != http.StatusNoContent {
 			loc, err = client.UpdateResponder(loc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "billing.LineOfCreditsUpdateFuture", "Result", loc.Response.Response, "Failure responding to request")

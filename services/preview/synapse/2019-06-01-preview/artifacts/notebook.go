@@ -153,7 +153,11 @@ func (client NotebookClient) CreateOrUpdateNotebookSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if nr.Response.Response, err = future.GetResult(sender); err == nil && nr.Response.Response.StatusCode != http.StatusNoContent {
+		nr.Response.Response, err = future.GetResult(sender)
+		if nr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "artifacts.NotebookCreateOrUpdateNotebookFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && nr.Response.Response.StatusCode != http.StatusNoContent {
 			nr, err = client.CreateOrUpdateNotebookResponder(nr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "artifacts.NotebookCreateOrUpdateNotebookFuture", "Result", nr.Response.Response, "Failure responding to request")

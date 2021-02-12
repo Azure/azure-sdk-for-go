@@ -134,7 +134,11 @@ func (client StreamingEndpointsClient) CreateSender(req *http.Request) (future S
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if se.Response.Response, err = future.GetResult(sender); err == nil && se.Response.Response.StatusCode != http.StatusNoContent {
+		se.Response.Response, err = future.GetResult(sender)
+		if se.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "media.StreamingEndpointsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && se.Response.Response.StatusCode != http.StatusNoContent {
 			se, err = client.CreateResponder(se.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "media.StreamingEndpointsCreateFuture", "Result", se.Response.Response, "Failure responding to request")
@@ -851,7 +855,11 @@ func (client StreamingEndpointsClient) UpdateSender(req *http.Request) (future S
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if se.Response.Response, err = future.GetResult(sender); err == nil && se.Response.Response.StatusCode != http.StatusNoContent {
+		se.Response.Response, err = future.GetResult(sender)
+		if se.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "media.StreamingEndpointsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && se.Response.Response.StatusCode != http.StatusNoContent {
 			se, err = client.UpdateResponder(se.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "media.StreamingEndpointsUpdateFuture", "Result", se.Response.Response, "Failure responding to request")

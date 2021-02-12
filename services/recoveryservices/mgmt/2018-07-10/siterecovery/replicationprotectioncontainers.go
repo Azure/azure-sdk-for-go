@@ -122,7 +122,11 @@ func (client ReplicationProtectionContainersClient) CreateSender(req *http.Reque
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pc.Response.Response, err = future.GetResult(sender); err == nil && pc.Response.Response.StatusCode != http.StatusNoContent {
+		pc.Response.Response, err = future.GetResult(sender)
+		if pc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionContainersCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pc.Response.Response.StatusCode != http.StatusNoContent {
 			pc, err = client.CreateResponder(pc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionContainersCreateFuture", "Result", pc.Response.Response, "Failure responding to request")
@@ -316,7 +320,11 @@ func (client ReplicationProtectionContainersClient) DiscoverProtectableItemSende
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pc.Response.Response, err = future.GetResult(sender); err == nil && pc.Response.Response.StatusCode != http.StatusNoContent {
+		pc.Response.Response, err = future.GetResult(sender)
+		if pc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionContainersDiscoverProtectableItemFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pc.Response.Response.StatusCode != http.StatusNoContent {
 			pc, err = client.DiscoverProtectableItemResponder(pc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionContainersDiscoverProtectableItemFuture", "Result", pc.Response.Response, "Failure responding to request")
@@ -730,7 +738,11 @@ func (client ReplicationProtectionContainersClient) SwitchProtectionSender(req *
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pc.Response.Response, err = future.GetResult(sender); err == nil && pc.Response.Response.StatusCode != http.StatusNoContent {
+		pc.Response.Response, err = future.GetResult(sender)
+		if pc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionContainersSwitchProtectionFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pc.Response.Response.StatusCode != http.StatusNoContent {
 			pc, err = client.SwitchProtectionResponder(pc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationProtectionContainersSwitchProtectionFuture", "Result", pc.Response.Response, "Failure responding to request")

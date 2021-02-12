@@ -110,7 +110,11 @@ func (client ExchangeClient) PostSender(req *http.Request) (future ExchangePostF
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if eorr.Response.Response, err = future.GetResult(sender); err == nil && eorr.Response.Response.StatusCode != http.StatusNoContent {
+		eorr.Response.Response, err = future.GetResult(sender)
+		if eorr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "reservations.ExchangePostFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && eorr.Response.Response.StatusCode != http.StatusNoContent {
 			eorr, err = client.PostResponder(eorr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "reservations.ExchangePostFuture", "Result", eorr.Response.Response, "Failure responding to request")

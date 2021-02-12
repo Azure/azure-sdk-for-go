@@ -148,7 +148,11 @@ func (client SQLResourcesClient) CreateUpdateSQLContainerSender(req *http.Reques
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if scgr.Response.Response, err = future.GetResult(sender); err == nil && scgr.Response.Response.StatusCode != http.StatusNoContent {
+		scgr.Response.Response, err = future.GetResult(sender)
+		if scgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLContainerFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && scgr.Response.Response.StatusCode != http.StatusNoContent {
 			scgr, err = client.CreateUpdateSQLContainerResponder(scgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLContainerFuture", "Result", scgr.Response.Response, "Failure responding to request")
@@ -268,7 +272,11 @@ func (client SQLResourcesClient) CreateUpdateSQLDatabaseSender(req *http.Request
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sdgr.Response.Response, err = future.GetResult(sender); err == nil && sdgr.Response.Response.StatusCode != http.StatusNoContent {
+		sdgr.Response.Response, err = future.GetResult(sender)
+		if sdgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLDatabaseFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sdgr.Response.Response.StatusCode != http.StatusNoContent {
 			sdgr, err = client.CreateUpdateSQLDatabaseResponder(sdgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLDatabaseFuture", "Result", sdgr.Response.Response, "Failure responding to request")
@@ -392,7 +400,11 @@ func (client SQLResourcesClient) CreateUpdateSQLStoredProcedureSender(req *http.
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sspgr.Response.Response, err = future.GetResult(sender); err == nil && sspgr.Response.Response.StatusCode != http.StatusNoContent {
+		sspgr.Response.Response, err = future.GetResult(sender)
+		if sspgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLStoredProcedureFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sspgr.Response.Response.StatusCode != http.StatusNoContent {
 			sspgr, err = client.CreateUpdateSQLStoredProcedureResponder(sspgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLStoredProcedureFuture", "Result", sspgr.Response.Response, "Failure responding to request")
@@ -516,7 +528,11 @@ func (client SQLResourcesClient) CreateUpdateSQLTriggerSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if stgr.Response.Response, err = future.GetResult(sender); err == nil && stgr.Response.Response.StatusCode != http.StatusNoContent {
+		stgr.Response.Response, err = future.GetResult(sender)
+		if stgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLTriggerFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && stgr.Response.Response.StatusCode != http.StatusNoContent {
 			stgr, err = client.CreateUpdateSQLTriggerResponder(stgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLTriggerFuture", "Result", stgr.Response.Response, "Failure responding to request")
@@ -641,7 +657,11 @@ func (client SQLResourcesClient) CreateUpdateSQLUserDefinedFunctionSender(req *h
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sudfgr.Response.Response, err = future.GetResult(sender); err == nil && sudfgr.Response.Response.StatusCode != http.StatusNoContent {
+		sudfgr.Response.Response, err = future.GetResult(sender)
+		if sudfgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sudfgr.Response.Response.StatusCode != http.StatusNoContent {
 			sudfgr, err = client.CreateUpdateSQLUserDefinedFunctionResponder(sudfgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture", "Result", sudfgr.Response.Response, "Failure responding to request")
@@ -2400,7 +2420,11 @@ func (client SQLResourcesClient) UpdateSQLContainerThroughputSender(req *http.Re
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+		tsgr.Response.Response, err = future.GetResult(sender)
+		if tsgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesUpdateSQLContainerThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
 			tsgr, err = client.UpdateSQLContainerThroughputResponder(tsgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesUpdateSQLContainerThroughputFuture", "Result", tsgr.Response.Response, "Failure responding to request")
@@ -2521,7 +2545,11 @@ func (client SQLResourcesClient) UpdateSQLDatabaseThroughputSender(req *http.Req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if tsgr.Response.Response, err = future.GetResult(sender); err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
+		tsgr.Response.Response, err = future.GetResult(sender)
+		if tsgr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesUpdateSQLDatabaseThroughputFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && tsgr.Response.Response.StatusCode != http.StatusNoContent {
 			tsgr, err = client.UpdateSQLDatabaseThroughputResponder(tsgr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesUpdateSQLDatabaseThroughputFuture", "Result", tsgr.Response.Response, "Failure responding to request")

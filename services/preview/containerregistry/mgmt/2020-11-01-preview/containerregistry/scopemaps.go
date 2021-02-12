@@ -138,7 +138,11 @@ func (client ScopeMapsClient) CreateSender(req *http.Request) (future ScopeMapsC
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sm.Response.Response, err = future.GetResult(sender); err == nil && sm.Response.Response.StatusCode != http.StatusNoContent {
+		sm.Response.Response, err = future.GetResult(sender)
+		if sm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.ScopeMapsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sm.Response.Response.StatusCode != http.StatusNoContent {
 			sm, err = client.CreateResponder(sm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerregistry.ScopeMapsCreateFuture", "Result", sm.Response.Response, "Failure responding to request")
@@ -580,7 +584,11 @@ func (client ScopeMapsClient) UpdateSender(req *http.Request) (future ScopeMapsU
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sm.Response.Response, err = future.GetResult(sender); err == nil && sm.Response.Response.StatusCode != http.StatusNoContent {
+		sm.Response.Response, err = future.GetResult(sender)
+		if sm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.ScopeMapsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sm.Response.Response.StatusCode != http.StatusNoContent {
 			sm, err = client.UpdateResponder(sm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "containerregistry.ScopeMapsUpdateFuture", "Result", sm.Response.Response, "Failure responding to request")

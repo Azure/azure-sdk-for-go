@@ -563,7 +563,11 @@ func (client DelegatedSubnetServiceClient) PatchDetailsSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ds.Response.Response, err = future.GetResult(sender); err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
+		ds.Response.Response, err = future.GetResult(sender)
+		if ds.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServicePatchDetailsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
 			ds, err = client.PatchDetailsResponder(ds.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServicePatchDetailsFuture", "Result", ds.Response.Response, "Failure responding to request")
@@ -677,7 +681,11 @@ func (client DelegatedSubnetServiceClient) PutDetailsSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ds.Response.Response, err = future.GetResult(sender); err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
+		ds.Response.Response, err = future.GetResult(sender)
+		if ds.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServicePutDetailsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ds.Response.Response.StatusCode != http.StatusNoContent {
 			ds, err = client.PutDetailsResponder(ds.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServicePutDetailsFuture", "Result", ds.Response.Response, "Failure responding to request")

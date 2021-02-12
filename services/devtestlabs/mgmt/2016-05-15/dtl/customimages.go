@@ -127,7 +127,11 @@ func (client CustomImagesClient) CreateOrUpdateSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ci.Response.Response, err = future.GetResult(sender); err == nil && ci.Response.Response.StatusCode != http.StatusNoContent {
+		ci.Response.Response, err = future.GetResult(sender)
+		if ci.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "dtl.CustomImagesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ci.Response.Response.StatusCode != http.StatusNoContent {
 			ci, err = client.CreateOrUpdateResponder(ci.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "dtl.CustomImagesCreateOrUpdateFuture", "Result", ci.Response.Response, "Failure responding to request")

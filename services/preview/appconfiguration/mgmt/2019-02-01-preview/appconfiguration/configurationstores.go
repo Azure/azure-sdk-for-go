@@ -128,7 +128,11 @@ func (client ConfigurationStoresClient) CreateSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cs.Response.Response, err = future.GetResult(sender); err == nil && cs.Response.Response.StatusCode != http.StatusNoContent {
+		cs.Response.Response, err = future.GetResult(sender)
+		if cs.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cs.Response.Response.StatusCode != http.StatusNoContent {
 			cs, err = client.CreateResponder(cs.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresCreateFuture", "Result", cs.Response.Response, "Failure responding to request")
@@ -968,7 +972,11 @@ func (client ConfigurationStoresClient) UpdateSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cs.Response.Response, err = future.GetResult(sender); err == nil && cs.Response.Response.StatusCode != http.StatusNoContent {
+		cs.Response.Response, err = future.GetResult(sender)
+		if cs.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cs.Response.Response.StatusCode != http.StatusNoContent {
 			cs, err = client.UpdateResponder(cs.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresUpdateFuture", "Result", cs.Response.Response, "Failure responding to request")

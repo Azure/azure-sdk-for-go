@@ -1,30 +1,5 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82/specification/operationsmanagement/resource-manager/readme.md tag: `package-2015-11-preview`
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82//specification/operationsmanagement/resource-manager/readme.md tag: `package-2015-11-preview`
 
-Code generator @microsoft.azure/autorest.go@2.1.168
+Code generator @microsoft.azure/autorest.go@2.1.171
 
-## Breaking Changes
 
-### Removed Funcs
-
-1. *SolutionsCreateOrUpdateFuture.Result(SolutionsClient) (Solution, error)
-1. *SolutionsDeleteFuture.Result(SolutionsClient) (autorest.Response, error)
-1. *SolutionsUpdateFuture.Result(SolutionsClient) (Solution, error)
-
-## Struct Changes
-
-### Removed Struct Fields
-
-1. SolutionsCreateOrUpdateFuture.azure.Future
-1. SolutionsDeleteFuture.azure.Future
-1. SolutionsUpdateFuture.azure.Future
-
-## Struct Changes
-
-### New Struct Fields
-
-1. SolutionsCreateOrUpdateFuture.Result
-1. SolutionsCreateOrUpdateFuture.azure.FutureAPI
-1. SolutionsDeleteFuture.Result
-1. SolutionsDeleteFuture.azure.FutureAPI
-1. SolutionsUpdateFuture.Result
-1. SolutionsUpdateFuture.azure.FutureAPI

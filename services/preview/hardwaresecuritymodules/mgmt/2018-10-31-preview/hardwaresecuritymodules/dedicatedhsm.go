@@ -128,7 +128,11 @@ func (client DedicatedHsmClient) CreateOrUpdateSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dh.Response.Response, err = future.GetResult(sender); err == nil && dh.Response.Response.StatusCode != http.StatusNoContent {
+		dh.Response.Response, err = future.GetResult(sender)
+		if dh.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dh.Response.Response.StatusCode != http.StatusNoContent {
 			dh, err = client.CreateOrUpdateResponder(dh.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmCreateOrUpdateFuture", "Result", dh.Response.Response, "Failure responding to request")
@@ -639,7 +643,11 @@ func (client DedicatedHsmClient) UpdateSender(req *http.Request) (future Dedicat
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dh.Response.Response, err = future.GetResult(sender); err == nil && dh.Response.Response.StatusCode != http.StatusNoContent {
+		dh.Response.Response, err = future.GetResult(sender)
+		if dh.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dh.Response.Response.StatusCode != http.StatusNoContent {
 			dh, err = client.UpdateResponder(dh.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "hardwaresecuritymodules.DedicatedHsmUpdateFuture", "Result", dh.Response.Response, "Failure responding to request")

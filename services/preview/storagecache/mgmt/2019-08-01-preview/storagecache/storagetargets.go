@@ -147,7 +147,11 @@ func (client StorageTargetsClient) CreateSender(req *http.Request) (future Stora
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if st.Response.Response, err = future.GetResult(sender); err == nil && st.Response.Response.StatusCode != http.StatusNoContent {
+		st.Response.Response, err = future.GetResult(sender)
+		if st.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && st.Response.Response.StatusCode != http.StatusNoContent {
 			st, err = client.CreateResponder(st.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsCreateFuture", "Result", st.Response.Response, "Failure responding to request")
@@ -255,7 +259,11 @@ func (client StorageTargetsClient) DeleteSender(req *http.Request) (future Stora
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.DeleteResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsDeleteFuture", "Result", so.Response.Response, "Failure responding to request")

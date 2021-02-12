@@ -131,7 +131,11 @@ func (client InteractionsClient) CreateOrUpdateSender(req *http.Request) (future
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if irf.Response.Response, err = future.GetResult(sender); err == nil && irf.Response.Response.StatusCode != http.StatusNoContent {
+		irf.Response.Response, err = future.GetResult(sender)
+		if irf.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.InteractionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && irf.Response.Response.StatusCode != http.StatusNoContent {
 			irf, err = client.CreateOrUpdateResponder(irf.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "customerinsights.InteractionsCreateOrUpdateFuture", "Result", irf.Response.Response, "Failure responding to request")

@@ -131,7 +131,11 @@ func (client FlowLogsClient) CreateOrUpdateSender(req *http.Request) (future Flo
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if fl.Response.Response, err = future.GetResult(sender); err == nil && fl.Response.Response.StatusCode != http.StatusNoContent {
+		fl.Response.Response, err = future.GetResult(sender)
+		if fl.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.FlowLogsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && fl.Response.Response.StatusCode != http.StatusNoContent {
 			fl, err = client.CreateOrUpdateResponder(fl.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.FlowLogsCreateOrUpdateFuture", "Result", fl.Response.Response, "Failure responding to request")

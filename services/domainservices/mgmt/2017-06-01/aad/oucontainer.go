@@ -130,7 +130,11 @@ func (client OuContainerClient) CreateSender(req *http.Request) (future OuContai
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if oc.Response.Response, err = future.GetResult(sender); err == nil && oc.Response.Response.StatusCode != http.StatusNoContent {
+		oc.Response.Response, err = future.GetResult(sender)
+		if oc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "aad.OuContainerCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && oc.Response.Response.StatusCode != http.StatusNoContent {
 			oc, err = client.CreateResponder(oc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "aad.OuContainerCreateFuture", "Result", oc.Response.Response, "Failure responding to request")
@@ -556,7 +560,11 @@ func (client OuContainerClient) UpdateSender(req *http.Request) (future OuContai
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if oc.Response.Response, err = future.GetResult(sender); err == nil && oc.Response.Response.StatusCode != http.StatusNoContent {
+		oc.Response.Response, err = future.GetResult(sender)
+		if oc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "aad.OuContainerUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && oc.Response.Response.StatusCode != http.StatusNoContent {
 			oc, err = client.UpdateResponder(oc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "aad.OuContainerUpdateFuture", "Result", oc.Response.Response, "Failure responding to request")

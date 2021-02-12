@@ -223,7 +223,11 @@ func (client IntegrationRuntimeObjectMetadataClient) RefreshSender(req *http.Req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if somsr.Response.Response, err = future.GetResult(sender); err == nil && somsr.Response.Response.StatusCode != http.StatusNoContent {
+		somsr.Response.Response, err = future.GetResult(sender)
+		if somsr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataRefreshFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && somsr.Response.Response.StatusCode != http.StatusNoContent {
 			somsr, err = client.RefreshResponder(somsr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimeObjectMetadataRefreshFuture", "Result", somsr.Response.Response, "Failure responding to request")

@@ -134,7 +134,11 @@ func (client ExperimentsClient) CreateSender(req *http.Request) (future Experime
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if e.Response.Response, err = future.GetResult(sender); err == nil && e.Response.Response.StatusCode != http.StatusNoContent {
+		e.Response.Response, err = future.GetResult(sender)
+		if e.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "batchai.ExperimentsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && e.Response.Response.StatusCode != http.StatusNoContent {
 			e, err = client.CreateResponder(e.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "batchai.ExperimentsCreateFuture", "Result", e.Response.Response, "Failure responding to request")

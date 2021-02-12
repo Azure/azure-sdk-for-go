@@ -131,7 +131,11 @@ func (client ProjectsClient) CreateSender(req *http.Request) (future ProjectsCre
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pr.Response.Response, err = future.GetResult(sender); err == nil && pr.Response.Response.StatusCode != http.StatusNoContent {
+		pr.Response.Response, err = future.GetResult(sender)
+		if pr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "visualstudio.ProjectsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pr.Response.Response.StatusCode != http.StatusNoContent {
 			pr, err = client.CreateResponder(pr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "visualstudio.ProjectsCreateFuture", "Result", pr.Response.Response, "Failure responding to request")

@@ -117,7 +117,11 @@ func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilitySender(
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if plsv.Response.Response, err = future.GetResult(sender); err == nil && plsv.Response.Response.StatusCode != http.StatusNoContent {
+		plsv.Response.Response, err = future.GetResult(sender)
+		if plsv.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesCheckPrivateLinkServiceVisibilityFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && plsv.Response.Response.StatusCode != http.StatusNoContent {
 			plsv, err = client.CheckPrivateLinkServiceVisibilityResponder(plsv.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesCheckPrivateLinkServiceVisibilityFuture", "Result", plsv.Response.Response, "Failure responding to request")
@@ -217,7 +221,11 @@ func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilityByResou
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if plsv.Response.Response, err = future.GetResult(sender); err == nil && plsv.Response.Response.StatusCode != http.StatusNoContent {
+		plsv.Response.Response, err = future.GetResult(sender)
+		if plsv.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesCheckPrivateLinkServiceVisibilityByResourceGroupFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && plsv.Response.Response.StatusCode != http.StatusNoContent {
 			plsv, err = client.CheckPrivateLinkServiceVisibilityByResourceGroupResponder(plsv.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesCheckPrivateLinkServiceVisibilityByResourceGroupFuture", "Result", plsv.Response.Response, "Failure responding to request")
@@ -317,7 +325,11 @@ func (client PrivateLinkServicesClient) CreateOrUpdateSender(req *http.Request) 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if pls.Response.Response, err = future.GetResult(sender); err == nil && pls.Response.Response.StatusCode != http.StatusNoContent {
+		pls.Response.Response, err = future.GetResult(sender)
+		if pls.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && pls.Response.Response.StatusCode != http.StatusNoContent {
 			pls, err = client.CreateOrUpdateResponder(pls.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.PrivateLinkServicesCreateOrUpdateFuture", "Result", pls.Response.Response, "Failure responding to request")

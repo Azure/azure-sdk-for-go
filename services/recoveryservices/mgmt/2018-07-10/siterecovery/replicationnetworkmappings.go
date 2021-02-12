@@ -124,7 +124,11 @@ func (client ReplicationNetworkMappingsClient) CreateSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if nm.Response.Response, err = future.GetResult(sender); err == nil && nm.Response.Response.StatusCode != http.StatusNoContent {
+		nm.Response.Response, err = future.GetResult(sender)
+		if nm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && nm.Response.Response.StatusCode != http.StatusNoContent {
 			nm, err = client.CreateResponder(nm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsCreateFuture", "Result", nm.Response.Response, "Failure responding to request")
@@ -637,7 +641,11 @@ func (client ReplicationNetworkMappingsClient) UpdateSender(req *http.Request) (
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if nm.Response.Response, err = future.GetResult(sender); err == nil && nm.Response.Response.StatusCode != http.StatusNoContent {
+		nm.Response.Response, err = future.GetResult(sender)
+		if nm.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && nm.Response.Response.StatusCode != http.StatusNoContent {
 			nm, err = client.UpdateResponder(nm.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "siterecovery.ReplicationNetworkMappingsUpdateFuture", "Result", nm.Response.Response, "Failure responding to request")

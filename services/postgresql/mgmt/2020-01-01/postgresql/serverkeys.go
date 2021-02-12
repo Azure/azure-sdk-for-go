@@ -137,7 +137,11 @@ func (client ServerKeysClient) CreateOrUpdateSender(req *http.Request) (future S
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if sk.Response.Response, err = future.GetResult(sender); err == nil && sk.Response.Response.StatusCode != http.StatusNoContent {
+		sk.Response.Response, err = future.GetResult(sender)
+		if sk.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "postgresql.ServerKeysCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && sk.Response.Response.StatusCode != http.StatusNoContent {
 			sk, err = client.CreateOrUpdateResponder(sk.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "postgresql.ServerKeysCreateOrUpdateFuture", "Result", sk.Response.Response, "Failure responding to request")

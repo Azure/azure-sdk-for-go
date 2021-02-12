@@ -193,7 +193,11 @@ func (client AccountsClient) CreateOrUpdateSender(req *http.Request) (future Acc
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
+		a.Response.Response, err = future.GetResult(sender)
+		if a.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "purview.AccountsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
 			a, err = client.CreateOrUpdateResponder(a.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "purview.AccountsCreateOrUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
@@ -773,7 +777,11 @@ func (client AccountsClient) UpdateSender(req *http.Request) (future AccountsUpd
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
+		a.Response.Response, err = future.GetResult(sender)
+		if a.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "purview.AccountsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
 			a, err = client.UpdateResponder(a.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "purview.AccountsUpdateFuture", "Result", a.Response.Response, "Failure responding to request")

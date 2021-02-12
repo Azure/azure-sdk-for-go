@@ -125,7 +125,11 @@ func (client EncryptionProtectorsClient) CreateOrUpdateSender(req *http.Request)
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ep.Response.Response, err = future.GetResult(sender); err == nil && ep.Response.Response.StatusCode != http.StatusNoContent {
+		ep.Response.Response, err = future.GetResult(sender)
+		if ep.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ep.Response.Response.StatusCode != http.StatusNoContent {
 			ep, err = client.CreateOrUpdateResponder(ep.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.EncryptionProtectorsCreateOrUpdateFuture", "Result", ep.Response.Response, "Failure responding to request")

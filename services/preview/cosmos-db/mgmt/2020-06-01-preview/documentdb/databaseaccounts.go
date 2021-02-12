@@ -216,7 +216,11 @@ func (client DatabaseAccountsClient) CreateOrUpdateSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dagr.Response.Response, err = future.GetResult(sender); err == nil && dagr.Response.Response.StatusCode != http.StatusNoContent {
+		dagr.Response.Response, err = future.GetResult(sender)
+		if dagr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dagr.Response.Response.StatusCode != http.StatusNoContent {
 			dagr, err = client.CreateOrUpdateResponder(dagr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsCreateOrUpdateFuture", "Result", dagr.Response.Response, "Failure responding to request")
@@ -1760,7 +1764,11 @@ func (client DatabaseAccountsClient) UpdateSender(req *http.Request) (future Dat
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if dagr.Response.Response, err = future.GetResult(sender); err == nil && dagr.Response.Response.StatusCode != http.StatusNoContent {
+		dagr.Response.Response, err = future.GetResult(sender)
+		if dagr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && dagr.Response.Response.StatusCode != http.StatusNoContent {
 			dagr, err = client.UpdateResponder(dagr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "documentdb.DatabaseAccountsUpdateFuture", "Result", dagr.Response.Response, "Failure responding to request")

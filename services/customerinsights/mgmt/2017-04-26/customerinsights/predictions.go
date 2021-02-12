@@ -144,7 +144,11 @@ func (client PredictionsClient) CreateOrUpdateSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if prf.Response.Response, err = future.GetResult(sender); err == nil && prf.Response.Response.StatusCode != http.StatusNoContent {
+		prf.Response.Response, err = future.GetResult(sender)
+		if prf.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.PredictionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && prf.Response.Response.StatusCode != http.StatusNoContent {
 			prf, err = client.CreateOrUpdateResponder(prf.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "customerinsights.PredictionsCreateOrUpdateFuture", "Result", prf.Response.Response, "Failure responding to request")

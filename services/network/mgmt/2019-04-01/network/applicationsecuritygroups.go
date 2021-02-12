@@ -120,7 +120,11 @@ func (client ApplicationSecurityGroupsClient) CreateOrUpdateSender(req *http.Req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if asg.Response.Response, err = future.GetResult(sender); err == nil && asg.Response.Response.StatusCode != http.StatusNoContent {
+		asg.Response.Response, err = future.GetResult(sender)
+		if asg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ApplicationSecurityGroupsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && asg.Response.Response.StatusCode != http.StatusNoContent {
 			asg, err = client.CreateOrUpdateResponder(asg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ApplicationSecurityGroupsCreateOrUpdateFuture", "Result", asg.Response.Response, "Failure responding to request")
@@ -615,7 +619,11 @@ func (client ApplicationSecurityGroupsClient) UpdateTagsSender(req *http.Request
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if asg.Response.Response, err = future.GetResult(sender); err == nil && asg.Response.Response.StatusCode != http.StatusNoContent {
+		asg.Response.Response, err = future.GetResult(sender)
+		if asg.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.ApplicationSecurityGroupsUpdateTagsFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && asg.Response.Response.StatusCode != http.StatusNoContent {
 			asg, err = client.UpdateTagsResponder(asg.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.ApplicationSecurityGroupsUpdateTagsFuture", "Result", asg.Response.Response, "Failure responding to request")

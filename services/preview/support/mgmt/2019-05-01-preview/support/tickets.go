@@ -228,7 +228,11 @@ func (client TicketsClient) CreateSender(req *http.Request) (future TicketsCreat
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if td.Response.Response, err = future.GetResult(sender); err == nil && td.Response.Response.StatusCode != http.StatusNoContent {
+		td.Response.Response, err = future.GetResult(sender)
+		if td.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "support.TicketsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && td.Response.Response.StatusCode != http.StatusNoContent {
 			td, err = client.CreateResponder(td.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "support.TicketsCreateFuture", "Result", td.Response.Response, "Failure responding to request")

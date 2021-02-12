@@ -134,7 +134,11 @@ func (client ServerCommunicationLinksClient) CreateOrUpdateSender(req *http.Requ
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if scl.Response.Response, err = future.GetResult(sender); err == nil && scl.Response.Response.StatusCode != http.StatusNoContent {
+		scl.Response.Response, err = future.GetResult(sender)
+		if scl.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && scl.Response.Response.StatusCode != http.StatusNoContent {
 			scl, err = client.CreateOrUpdateResponder(scl.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sql.ServerCommunicationLinksCreateOrUpdateFuture", "Result", scl.Response.Response, "Failure responding to request")

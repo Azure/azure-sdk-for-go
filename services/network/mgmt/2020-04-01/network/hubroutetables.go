@@ -122,7 +122,11 @@ func (client HubRouteTablesClient) CreateOrUpdateSender(req *http.Request) (futu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if hrt.Response.Response, err = future.GetResult(sender); err == nil && hrt.Response.Response.StatusCode != http.StatusNoContent {
+		hrt.Response.Response, err = future.GetResult(sender)
+		if hrt.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.HubRouteTablesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && hrt.Response.Response.StatusCode != http.StatusNoContent {
 			hrt, err = client.CreateOrUpdateResponder(hrt.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.HubRouteTablesCreateOrUpdateFuture", "Result", hrt.Response.Response, "Failure responding to request")

@@ -132,7 +132,11 @@ func (client WorkspaceManagedSQLServerSecurityAlertPolicyClient) CreateOrUpdateS
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ssap.Response.Response, err = future.GetResult(sender); err == nil && ssap.Response.Response.StatusCode != http.StatusNoContent {
+		ssap.Response.Response, err = future.GetResult(sender)
+		if ssap.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ssap.Response.Response.StatusCode != http.StatusNoContent {
 			ssap, err = client.CreateOrUpdateResponder(ssap.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateFuture", "Result", ssap.Response.Response, "Failure responding to request")

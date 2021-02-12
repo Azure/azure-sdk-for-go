@@ -128,7 +128,11 @@ func (client VendorNetworkFunctionsClient) CreateOrUpdateSender(req *http.Reques
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if vnf.Response.Response, err = future.GetResult(sender); err == nil && vnf.Response.Response.StatusCode != http.StatusNoContent {
+		vnf.Response.Response, err = future.GetResult(sender)
+		if vnf.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "hybridnetwork.VendorNetworkFunctionsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && vnf.Response.Response.StatusCode != http.StatusNoContent {
 			vnf, err = client.CreateOrUpdateResponder(vnf.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "hybridnetwork.VendorNetworkFunctionsCreateOrUpdateFuture", "Result", vnf.Response.Response, "Failure responding to request")

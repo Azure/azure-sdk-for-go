@@ -132,7 +132,11 @@ func (client RouteFilterRulesClient) CreateOrUpdateSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rfr.Response.Response, err = future.GetResult(sender); err == nil && rfr.Response.Response.StatusCode != http.StatusNoContent {
+		rfr.Response.Response, err = future.GetResult(sender)
+		if rfr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "network.RouteFilterRulesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rfr.Response.Response.StatusCode != http.StatusNoContent {
 			rfr, err = client.CreateOrUpdateResponder(rfr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "network.RouteFilterRulesCreateOrUpdateFuture", "Result", rfr.Response.Response, "Failure responding to request")

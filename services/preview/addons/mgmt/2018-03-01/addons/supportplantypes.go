@@ -116,7 +116,11 @@ func (client SupportPlanTypesClient) CreateOrUpdateSender(req *http.Request) (fu
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cspre.Response.Response, err = future.GetResult(sender); err == nil && cspre.Response.Response.StatusCode != http.StatusNoContent {
+		cspre.Response.Response, err = future.GetResult(sender)
+		if cspre.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cspre.Response.Response.StatusCode != http.StatusNoContent {
 			cspre, err = client.CreateOrUpdateResponder(cspre.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesCreateOrUpdateFuture", "Result", cspre.Response.Response, "Failure responding to request")
@@ -213,7 +217,11 @@ func (client SupportPlanTypesClient) DeleteSender(req *http.Request) (future Sup
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if cspre.Response.Response, err = future.GetResult(sender); err == nil && cspre.Response.Response.StatusCode != http.StatusNoContent {
+		cspre.Response.Response, err = future.GetResult(sender)
+		if cspre.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesDeleteFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && cspre.Response.Response.StatusCode != http.StatusNoContent {
 			cspre, err = client.DeleteResponder(cspre.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesDeleteFuture", "Result", cspre.Response.Response, "Failure responding to request")

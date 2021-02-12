@@ -138,7 +138,11 @@ func (client IntegrationRuntimesClient) CreateSender(req *http.Request) (future 
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if irr.Response.Response, err = future.GetResult(sender); err == nil && irr.Response.Response.StatusCode != http.StatusNoContent {
+		irr.Response.Response, err = future.GetResult(sender)
+		if irr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimesCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && irr.Response.Response.StatusCode != http.StatusNoContent {
 			irr, err = client.CreateResponder(irr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimesCreateFuture", "Result", irr.Response.Response, "Failure responding to request")
@@ -775,7 +779,11 @@ func (client IntegrationRuntimesClient) StartSender(req *http.Request) (future I
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if irsr.Response.Response, err = future.GetResult(sender); err == nil && irsr.Response.Response.StatusCode != http.StatusNoContent {
+		irsr.Response.Response, err = future.GetResult(sender)
+		if irsr.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimesStartFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && irsr.Response.Response.StatusCode != http.StatusNoContent {
 			irsr, err = client.StartResponder(irsr.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.IntegrationRuntimesStartFuture", "Result", irsr.Response.Response, "Failure responding to request")

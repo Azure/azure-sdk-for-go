@@ -121,7 +121,11 @@ func (client GroupsClient) CreateOrUpdateSender(req *http.Request) (future Group
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if g.Response.Response, err = future.GetResult(sender); err == nil && g.Response.Response.StatusCode != http.StatusNoContent {
+		g.Response.Response, err = future.GetResult(sender)
+		if g.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sqlvirtualmachine.GroupsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && g.Response.Response.StatusCode != http.StatusNoContent {
 			g, err = client.CreateOrUpdateResponder(g.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sqlvirtualmachine.GroupsCreateOrUpdateFuture", "Result", g.Response.Response, "Failure responding to request")
@@ -620,7 +624,11 @@ func (client GroupsClient) UpdateSender(req *http.Request) (future GroupsUpdateF
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if g.Response.Response, err = future.GetResult(sender); err == nil && g.Response.Response.StatusCode != http.StatusNoContent {
+		g.Response.Response, err = future.GetResult(sender)
+		if g.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "sqlvirtualmachine.GroupsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && g.Response.Response.StatusCode != http.StatusNoContent {
 			g, err = client.UpdateResponder(g.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "sqlvirtualmachine.GroupsUpdateFuture", "Result", g.Response.Response, "Failure responding to request")

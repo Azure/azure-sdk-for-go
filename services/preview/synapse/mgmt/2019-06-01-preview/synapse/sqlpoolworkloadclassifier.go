@@ -139,7 +139,11 @@ func (client SQLPoolWorkloadClassifierClient) CreateOrUpdateSender(req *http.Req
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if wc.Response.Response, err = future.GetResult(sender); err == nil && wc.Response.Response.StatusCode != http.StatusNoContent {
+		wc.Response.Response, err = future.GetResult(sender)
+		if wc.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadClassifierCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && wc.Response.Response.StatusCode != http.StatusNoContent {
 			wc, err = client.CreateOrUpdateResponder(wc.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "synapse.SQLPoolWorkloadClassifierCreateOrUpdateFuture", "Result", wc.Response.Response, "Failure responding to request")

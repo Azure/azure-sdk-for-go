@@ -134,7 +134,11 @@ func (client RoleAssignmentsClient) CreateOrUpdateSender(req *http.Request) (fut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if rarf.Response.Response, err = future.GetResult(sender); err == nil && rarf.Response.Response.StatusCode != http.StatusNoContent {
+		rarf.Response.Response, err = future.GetResult(sender)
+		if rarf.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && rarf.Response.Response.StatusCode != http.StatusNoContent {
 			rarf, err = client.CreateOrUpdateResponder(rarf.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "customerinsights.RoleAssignmentsCreateOrUpdateFuture", "Result", rarf.Response.Response, "Failure responding to request")

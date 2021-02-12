@@ -130,7 +130,11 @@ func (client QuotaClient) CreateOrUpdateSender(req *http.Request) (future QuotaC
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "reservations.QuotaCreateOrUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.CreateOrUpdateResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "reservations.QuotaCreateOrUpdateFuture", "Result", so.Response.Response, "Failure responding to request")
@@ -443,7 +447,11 @@ func (client QuotaClient) UpdateSender(req *http.Request) (future QuotaUpdateFut
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if so.Response.Response, err = future.GetResult(sender); err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
+		so.Response.Response, err = future.GetResult(sender)
+		if so.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "reservations.QuotaUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && so.Response.Response.StatusCode != http.StatusNoContent {
 			so, err = client.UpdateResponder(so.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "reservations.QuotaUpdateFuture", "Result", so.Response.Response, "Failure responding to request")

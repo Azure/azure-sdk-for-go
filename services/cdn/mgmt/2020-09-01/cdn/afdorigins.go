@@ -151,7 +151,11 @@ func (client AFDOriginsClient) CreateSender(req *http.Request) (future AFDOrigin
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ao.Response.Response, err = future.GetResult(sender); err == nil && ao.Response.Response.StatusCode != http.StatusNoContent {
+		ao.Response.Response, err = future.GetResult(sender)
+		if ao.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.AFDOriginsCreateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ao.Response.Response.StatusCode != http.StatusNoContent {
 			ao, err = client.CreateResponder(ao.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.AFDOriginsCreateFuture", "Result", ao.Response.Response, "Failure responding to request")
@@ -581,7 +585,11 @@ func (client AFDOriginsClient) UpdateSender(req *http.Request) (future AFDOrigin
 			return
 		}
 		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		if ao.Response.Response, err = future.GetResult(sender); err == nil && ao.Response.Response.StatusCode != http.StatusNoContent {
+		ao.Response.Response, err = future.GetResult(sender)
+		if ao.Response.Response == nil && err == nil {
+			err = autorest.NewErrorWithError(err, "cdn.AFDOriginsUpdateFuture", "Result", nil, "received nil response and error")
+		}
+		if err == nil && ao.Response.Response.StatusCode != http.StatusNoContent {
 			ao, err = client.UpdateResponder(ao.Response.Response)
 			if err != nil {
 				err = autorest.NewErrorWithError(err, "cdn.AFDOriginsUpdateFuture", "Result", ao.Response.Response, "Failure responding to request")

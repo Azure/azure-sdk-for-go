@@ -1,6 +1,6 @@
 {
   "autorestArguments": [
-    "--use=@microsoft.azure/autorest.go@2.1.169",
+    "--use=@microsoft.azure/autorest.go@2.1.171",
     "--go",
     "--verbose",
     "--go-sdk-folder=.",

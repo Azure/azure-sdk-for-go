@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -112,46 +113,80 @@ func Example() {
 }
 
 // Awaiting Mohit's test PR, StorageError is barren for now.
-// func ExampleStorageError() {
-// 	/* This example demonstrates how to handle errors returned from the various Client methods. All these methods return an
-// 	   object implementing the azcore.Response interface and an object implementing Go's error interface.
-// 	   The error result is nil if the request was successful; your code can safely use the Response interface object.
-// 	   If the error is non-nil, the error could be due to:
-//
-// 	1. An invalid argument passed to the method. You should not write code to handle these errors;
-// 	   instead, fix these errors as they appear during development/testing.
-//
-// 	2. A network request didn't reach an Azure Storage Service. This usually happens due to a bad URL or
-// 	   faulty networking infrastructure (like a router issue). In this case, an object implementing the
-// 	   net.Error interface will be returned. The net.Error interface offers Timeout and Temporary methods
-// 	   which return true if the network error is determined to be a timeout or temporary condition. If
-// 	   your pipeline uses the retry policy factory, then this policy looks for Timeout/Temporary and
-// 	   automatically retries based on the retry options you've configured. Because of the retry policy,
-// 	   your code will usually not call the Timeout/Temporary methods explicitly other than possibly logging
-// 	   the network failure.
-//
-// 	3. A network request did reach the Azure Storage Service but the service failed to perform the
-// 	   requested operation. In this case, an object implementing the StorageError interface is returned.
-// 	   The StorageError interface also implements the net.Error interface and, if you use the retry policy,
-// 	   you would most likely ignore the Timeout/Temporary methods. However, the StorageError interface exposes
-// 	   richer information such as a service error code, an error description, details data, and the
-// 	   service-returned http.Response. And, from the http.Response, you can get the initiating http.Request.
-// 	 */
-//
-// 	container, err := NewContainerClient("http://myaccount.blob.core.windows.net/mycontainer", NewAnonymousCredential(), nil)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	create, err := container.Create(context.Background(), nil)
-//
-// 	if err != nil { // an error occurred
-// 		if stgErr, ok := err.(StorageError); ok { // We know this error is service-specific
-// 			switch stgErr.Message {
+func ExampleStorageError() {
+	/* This example demonstrates how to handle errors returned from the various Client methods. All these methods return an
+	   object implementing the azcore.Response interface and an object implementing Go's error interface.
+	   The error result is nil if the request was successful; your code can safely use the Response interface object.
+	   If the error is non-nil, the error could be due to:
 
-// 			}
-// 		}
-// 	}
-// }
+	1. An invalid argument passed to the method. You should not write code to handle these errors;
+	   instead, fix these errors as they appear during development/testing.
+
+	2. A network request didn't reach an Azure Storage Service. This usually happens due to a bad URL or
+	   faulty networking infrastructure (like a router issue). In this case, an object implementing the
+	   net.Error interface will be returned. The net.Error interface offers Timeout and Temporary methods
+	   which return true if the network error is determined to be a timeout or temporary condition. If
+	   your pipeline uses the retry policy factory, then this policy looks for Timeout/Temporary and
+	   automatically retries based on the retry options you've configured. Because of the retry policy,
+	   your code will usually not call the Timeout/Temporary methods explicitly other than possibly logging
+	   the network failure.
+
+	3. A network request did reach the Azure Storage Service but the service failed to perform the
+	   requested operation. In this case, an object implementing the StorageError interface is returned.
+	   The StorageError interface also implements the net.Error interface and, if you use the retry policy,
+	   you would most likely ignore the Timeout/Temporary methods. However, the StorageError interface exposes
+	   richer information such as a service error code, an error description, details data, and the
+	   service-returned http.Response. And, from the http.Response, you can get the initiating http.Request.
+	 */
+
+	/*
+	if err != nil { // An error occurred
+			if stgErr, ok := err.(StorageError); ok { // This error is a Service-specific error
+				// StorageError also implements net.Error so you could call its Timeout/Temporary methods if you want.
+				switch stgErr.ServiceCode() { // Compare serviceCode to various ServiceCodeXxx constants
+				case ServiceCodeContainerAlreadyExists:
+					// You can also look at the http.Response object that failed.
+					if failedResponse := stgErr.Response(); failedResponse != nil {
+						// From the response object, you can get the initiating http.Request object
+						failedRequest := failedResponse.Request
+						_ = failedRequest // Avoid compiler's "declared and not used" error
+					}
+
+				case ServiceCodeContainerBeingDeleted:
+					// Handle this error ...
+				default:
+					// Handle other errors ...
+				}
+			}
+			log.Fatal(err) // Error is not due to Azure Storage service; networking infrastructure failure
+		}
+	*/
+
+	container, err := NewContainerClient("http://myaccount.blob.core.windows.net/mycontainer", NewAnonymousCredential(), nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = container.Create(context.Background(), nil)
+
+	if err != nil { // an error occurred
+		var stgErr StorageError
+
+		if errors.As(err, &stgErr) { // We know this error is service-specific
+			switch stgErr.ServiceCode() {
+			case ServiceCodeContainerAlreadyExists:
+				// You can also look at the *http.Response that's attached to the error as well.
+				if resp := stgErr.Response(); resp != nil  {
+					failedRequest := resp.Request
+					_ = failedRequest // avoid compiler's declared but not used error
+				}
+			case ServiceCodeContainerBeingDeleted:
+				// Handle this error ...
+			default:
+				// Handle other errors ...
+			}
+		}
+	}
+}
 
 // This example demonstrates splitting a URL into its parts so you can examine and modify the URL in a Azure Storage fluent way.
 func ExampleBlobURLParts() {
@@ -502,11 +537,14 @@ func ExampleBlobHTTPHeaders() {
 		log.Fatal(err)
 	}
 	blobClient, err := NewBlockBlobClient(u, credential, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	ctx := context.Background() // This example uses a never-expiring context
 
 	// Create a blob with HTTP headers
-	_, err = blobURL.Upload(ctx, strings.NewReader("Some text"),
+	_, err = blobClient.Upload(ctx, strings.NewReader("Some text"),
 		&UploadBlockBlobOptions{BlobHttpHeaders: &BlobHttpHeaders{
 			BlobContentType: to.StringPtr("text/html; charset=utf-8"),
 			BlobContentDisposition: to.StringPtr("attachment"),
@@ -530,7 +568,7 @@ func ExampleBlobHTTPHeaders() {
 
 	// Update the blob's HTTP Headers and write them back to the blob
 	httpHeaders.BlobContentType = to.StringPtr("text/plain")
-	_, err = blobURL.SetHTTPHeaders(ctx, httpHeaders, nil)
+	_, err = blobClient.SetHTTPHeaders(ctx, httpHeaders, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -675,44 +713,31 @@ func ExamplePageBlobClient() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	BlobClient, err := NewPageBlobClient(u, credential, nil)
+	blobClient, err := NewPageBlobClient(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	ctx := context.Background() // This example uses a never-expiring context
-	_, err = BlobClient.Create(ctx, PageBlobPageBytes*4, nil)
+	_, err = blobClient.Create(ctx, PageBlobPageBytes*4, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	page := [PageBlobPageBytes]byte{}
 	copy(page[:], "Page 0")
-	_, err = blobURL.UploadPages(ctx, bytes.NewReader(page[:]), nil)
+	_, err = blobClient.UploadPages(ctx, bytes.NewReader(page[:]), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	copy(page[:], "Page 1")
-	_, err = blobURL.UploadPages(ctx, bytes.NewReader(page[:]), &UploadPagesOptions{Offset: to.Int64Ptr(2*PageBlobPageBytes)})
+	_, err = blobClient.UploadPages(ctx, bytes.NewReader(page[:]), &UploadPagesOptions{Offset: to.Int64Ptr(2*PageBlobPageBytes)})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	getPages, err := BlobClient.GetPageRanges(ctx, 0*PageBlobPageBytes, 10*PageBlobPageBytes, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	for _, pr := range *getPages.PageList.PageRange {
-		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
-	}
-
-	_, err = BlobClient.ClearPages(ctx, 0*PageBlobPageBytes, 1*PageBlobPageBytes, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	getPages, err = BlobClient.GetPageRanges(ctx, 0*PageBlobPageBytes, 10*PageBlobPageBytes, nil)
+	getPages, err := blobClient.GetPageRanges(ctx, 0*PageBlobPageBytes, 10*PageBlobPageBytes, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -720,7 +745,20 @@ func ExamplePageBlobClient() {
 		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
 	}
 
-	get, err := BlobClient.Download(ctx, nil)
+	_, err = blobClient.ClearPages(ctx, 0*PageBlobPageBytes, 1*PageBlobPageBytes, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	getPages, err = blobClient.GetPageRanges(ctx, 0*PageBlobPageBytes, 10*PageBlobPageBytes, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for _, pr := range *getPages.PageList.PageRange {
+		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
+	}
+
+	get, err := blobClient.Download(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -813,7 +851,7 @@ func Example_blobSnapshots() {
 	// DeleteSnapshotsOptionOnly deletes all the base blob's snapshots but not the base blob itself
 	// DeleteSnapshotsOptionInclude deletes the base blob & all its snapshots.
 	// DeleteSnapshotOptionNone produces an error if the base blob has any snapshots.
-	_, err = baseBlobURL.Delete(ctx, &DeleteBlobOptions{DeleteSnapshots: DeleteSnapshotsOptionTypeInclude.ToPtr()})
+	_, err = baseBlobClient.Delete(ctx, &DeleteBlobOptions{DeleteSnapshots: DeleteSnapshotsOptionTypeInclude.ToPtr()})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -831,17 +869,17 @@ func Example_progressUploadDownload() {
 	cURL := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
 
 	// Create an ServiceURL object that wraps the service URL and a request pipeline to making requests.
-	ContainerClient, err := NewContainerClient(cURL, credential, nil)
+	containerClient, err := NewContainerClient(cURL, credential, nil)
 
 	ctx := context.Background() // This example uses a never-expiring context
 	// Here's how to create a blob with HTTP headers and metadata (I'm using the same metadata that was put on the container):
-	BlobClient := ContainerClient.NewBlockBlobClient("Data.bin")
+	blobClient := containerClient.NewBlockBlobClient("Data.bin")
 
 	// requestBody is the stream of data to write
 	requestBody := strings.NewReader("Some text to write")
 
 	// Wrap the request body in a RequestBodyProgress and pass a callback function for progress reporting.
-	_, err = blobURL.Upload(ctx, azcore.NewRequestBodyProgress(azcore.NopCloser(requestBody), func(bytesTransferred int64) {
+	_, err = blobClient.Upload(ctx, azcore.NewRequestBodyProgress(azcore.NopCloser(requestBody), func(bytesTransferred int64) {
 		fmt.Printf("Wrote %d of %d bytes.", bytesTransferred, requestBody.Size())
 	}), &UploadBlockBlobOptions{ BlobHttpHeaders: &BlobHttpHeaders{
 		BlobContentType: to.StringPtr("text/html; charset=utf-8"),
@@ -852,7 +890,7 @@ func Example_progressUploadDownload() {
 	}
 
 	// Here's how to read the blob's data with progress reporting:
-	get, err := BlobClient.Download(ctx, nil)
+	get, err := blobClient.Download(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1060,9 +1098,9 @@ func ExampleLeaseContainer() {
 		log.Fatal(err)
 	}
 
-	// Create an ContainerClient object that wraps the container's URL and a default pipeline.
+	// Create an containerClient object that wraps the container's URL and a default pipeline.
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
-	ContainerClient, err := NewContainerClient(u, credential, nil)
+	containerClient, err := NewContainerClient(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1072,21 +1110,21 @@ func ExampleLeaseContainer() {
 
 	// Now acquire a lease on the container.
 	// You can choose to pass an empty string for proposed ID so that the service automatically assigns one for you.
-	acquireLeaseResponse, err := containerURL.AcquireLease(ctx, &AcquireLeaseOptionsContainer{ ContainerAcquireLeaseOptions: &ContainerAcquireLeaseOptions{ Duration: to.Int32Ptr(60) }})
+	acquireLeaseResponse, err := containerClient.AcquireLease(ctx, &AcquireLeaseOptionsContainer{ ContainerAcquireLeaseOptions: &ContainerAcquireLeaseOptions{ Duration: to.Int32Ptr(60) }})
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("The container is leased for delete operations with lease ID", *acquireLeaseResponse.LeaseID)
 
 	// The container cannot be deleted without providing the lease ID.
-	_, err = ContainerClient.Delete(ctx, nil)
+	_, err = containerClient.Delete(ctx, nil)
 	if err == nil {
 		log.Fatal("delete should have failed")
 	}
 	fmt.Println("The container cannot be deleted while there is an active lease")
 
 	// We can release the lease now and the container can be deleted.
-	_, err = ContainerClient.ReleaseLease(ctx, *acquireLeaseResponse.LeaseID, nil)
+	_, err = containerClient.ReleaseLease(ctx, *acquireLeaseResponse.LeaseID, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1094,7 +1132,7 @@ func ExampleLeaseContainer() {
 
 	// Acquire a lease again to perform other operations.
 	// duration is still 60
-	acquireLeaseResponse, err = containerURL.AcquireLease(ctx, &AcquireLeaseOptionsContainer{ContainerAcquireLeaseOptions: &ContainerAcquireLeaseOptions{Duration: to.Int32Ptr(60)}})
+	acquireLeaseResponse, err = containerClient.AcquireLease(ctx, &AcquireLeaseOptionsContainer{ContainerAcquireLeaseOptions: &ContainerAcquireLeaseOptions{Duration: to.Int32Ptr(60)}})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1104,21 +1142,21 @@ func ExampleLeaseContainer() {
 	// A lease ID can be any valid GUID string format.
 	newLeaseID := newUUID()
 	newLeaseID[0] = 1
-	changeLeaseResponse, err := ContainerClient.ChangeLease(ctx, *acquireLeaseResponse.LeaseID, newLeaseID.String(), nil)
+	changeLeaseResponse, err := containerClient.ChangeLease(ctx, *acquireLeaseResponse.LeaseID, newLeaseID.String(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("The lease ID was changed to", *changeLeaseResponse.LeaseID)
 
 	// The lease can be renewed.
-	renewLeaseResponse, err := ContainerClient.RenewLease(ctx, *changeLeaseResponse.LeaseID, nil)
+	renewLeaseResponse, err := containerClient.RenewLease(ctx, *changeLeaseResponse.LeaseID, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("The lease was renewed with the same ID", *renewLeaseResponse.LeaseID)
 
 	// Finally, the lease can be broken and we could prevent others from acquiring a lease for a period of time
-	_, err = containerURL.BreakLease(ctx, &BreakLeaseOptionsContainer{ContainerBreakLeaseOptions: &ContainerBreakLeaseOptions{BreakPeriod: to.Int32Ptr(60)}})
+	_, err = containerClient.BreakLease(ctx, &BreakLeaseOptionsContainer{ContainerBreakLeaseOptions: &ContainerBreakLeaseOptions{BreakPeriod: to.Int32Ptr(60)}})
 	if err != nil {
 		log.Fatal(err)
 	}

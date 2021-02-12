@@ -3,6 +3,7 @@ package azblob
 import (
 	"bytes"
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"net/http"
 	"sort"
@@ -22,6 +23,25 @@ import (
 // 	ServiceCode() ServiceCodeType
 // }
 
+// InternalError is an internal error type that all errors get wrapped in.
+type InternalError struct {
+	cause error
+}
+
+func (e InternalError) Error() string {
+	if (errors.Is(e.cause, StorageError{})) {
+		return e.cause.Error()
+	}
+
+	return fmt.Sprintf("===== INTERNAL ERROR =====\n%s", e.cause.Error())
+}
+
+func (e InternalError) Is(err error) bool {
+	_, ok := err.(InternalError)
+
+	return ok
+}
+
 // StorageError is the internal struct that replaces the generated StorageError.
 // TL;DR: This implements xml.Unmarshaler, and when the original StorageError is substituted, this unmarshaler kicks in.
 // This handles the description and details. defunkifyStorageError handles the response, cause, and service code.
@@ -35,10 +55,14 @@ type StorageError struct {
 
 func handleError(err error) error {
 	if err, ok := err.(*runtime.ResponseError); ok {
-		return defunkifyStorageError(err)
+		return InternalError{defunkifyStorageError(err) }
 	}
 
-	return err
+	if err != nil {
+		return InternalError{err}
+	}
+
+	return nil
 }
 
 // defunkifyStorageError is a function that takes the "funky" *runtime.ResponseError and reduces it to a storageError.
@@ -58,7 +82,9 @@ func defunkifyStorageError(responseError *runtime.ResponseError) error {
 		return err
 	}
 
-	return responseError
+	return InternalError{
+		cause: responseError,
+	}
 }
 
 // // newStorageError creates an error object that implements the error interface.
@@ -73,34 +99,48 @@ func defunkifyStorageError(responseError *runtime.ResponseError) error {
 // }
 
 // ServiceCode returns service-error information. The caller may examine these values but should not modify any of them.
-func (e *StorageError) ServiceCode() ServiceCodeType {
+func (e StorageError) ServiceCode() ServiceCodeType {
 	return e.serviceCode
 }
 
 // Error implements the error interface's Error method to return a string representation of the error.
-func (e *StorageError) Error() string {
+func (e StorageError) Error() string {
 	b := &bytes.Buffer{}
-	fmt.Fprintf(b, "===== RESPONSE ERROR (ServiceCode=%s) =====\n", e.serviceCode)
-	fmt.Fprintf(b, "Description=%s, Details: ", e.description)
-	if len(e.details) == 0 {
-		b.WriteString("(none)\n")
-	} else {
-		b.WriteRune('\n')
-		keys := make([]string, 0, len(e.details))
-		// Alphabetize the details
-		for k := range e.details {
-			keys = append(keys, k)
+
+	if e.response != nil {
+		fmt.Fprintf(b, "===== RESPONSE ERROR (ServiceCode=%s) =====\n", e.serviceCode)
+		fmt.Fprintf(b, "Description=%s, Details: ", e.description)
+		if len(e.details) == 0 {
+			b.WriteString("(none)\n")
+		} else {
+			b.WriteRune('\n')
+			keys := make([]string, 0, len(e.details))
+			// Alphabetize the details
+			for k := range e.details {
+				keys = append(keys, k)
+			}
+			sort.Strings(keys)
+			for _, k := range keys {
+				fmt.Fprintf(b, "   %s: %+v\n", k, e.details[k])
+			}
 		}
-		sort.Strings(keys)
-		for _, k := range keys {
-			fmt.Fprintf(b, "   %s: %+v\n", k, e.details[k])
-		}
+		// req := azcore.Request{Request: e.response.Request}.Copy() // Make a copy of the response's request
+		WriteRequestWithResponse(b, &azcore.Request{Request: e.response.Request}, e.response)
 	}
-	// req := azcore.Request{Request: e.response.Request}.Copy() // Make a copy of the response's request
-	WriteRequestWithResponse(b, &azcore.Request{Request: e.response.Request}, e.response)
+
 	return b.String()
 	// azcore.WriteRequestWithResponse(b, prepareRequestForLogging(req), e.response, nil)
 	// return e.ErrorNode.Error(b.String())
+}
+
+func (e StorageError) Is(err error) bool {
+	_, ok := err.(StorageError)
+
+	return ok
+}
+
+func (e StorageError) Response() *http.Response {
+	return e.response
 }
 
 func WriteRequestWithResponse(b *bytes.Buffer, request *azcore.Request, response *http.Response) {

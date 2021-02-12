@@ -7,131 +7,195 @@ package azblob
 type ServiceCodeType string
 
 const (
-	// ServiceCodeNone is the default value. It indicates that the error was related to the service or that the service didn't return a code.
-	ServiceCodeNone ServiceCodeType = ""
+	// ServiceCodeAppendPositionConditionNotMet means the append position condition specified was not met.
+	ServiceCodeAppendPositionConditionNotMet ServiceCodeType = "AppendPositionConditionNotMet"
 
-	// ServiceCodeAccountAlreadyExists means the specified account already exists.
-	ServiceCodeAccountAlreadyExists ServiceCodeType = "AccountAlreadyExists"
+	// ServiceCodeBlobAlreadyExists means the specified blob already exists.
+	ServiceCodeBlobAlreadyExists ServiceCodeType = "BlobAlreadyExists"
 
-	// ServiceCodeAccountBeingCreated means the specified account is in the process of being created (403).
-	ServiceCodeAccountBeingCreated ServiceCodeType = "AccountBeingCreated"
+	// ServiceCodeBlobNotFound means the specified blob does not exist.
+	ServiceCodeBlobNotFound ServiceCodeType = "BlobNotFound"
 
-	// ServiceCodeAccountIsDisabled means the specified account is disabled (403).
-	ServiceCodeAccountIsDisabled ServiceCodeType = "AccountIsDisabled"
+	// ServiceCodeBlobOverwritten means the blob has been recreated since the previous snapshot was taken.
+	ServiceCodeBlobOverwritten ServiceCodeType = "BlobOverwritten"
 
-	// ServiceCodeAuthenticationFailed means the server failed to authenticate the request. Make sure the value of the Authorization header is formed correctly including the signature (403).
-	ServiceCodeAuthenticationFailed ServiceCodeType = "AuthenticationFailed"
+	// ServiceCodeBlobTierInadequateForContentLength means the specified blob tier size limit cannot be less than content length.
+	ServiceCodeBlobTierInadequateForContentLength ServiceCodeType = "BlobTierInadequateForContentLength"
 
-	// ServiceCodeConditionHeadersNotSupported means the condition headers are not supported (400).
-	ServiceCodeConditionHeadersNotSupported ServiceCodeType = "ConditionHeadersNotSupported"
+	// ServiceCodeBlockCountExceedsLimit means the committed block count cannot exceed the maximum limit of 50,000 blocks
+	// or that the uncommitted block count cannot exceed the maximum limit of 100,000 blocks.
+	ServiceCodeBlockCountExceedsLimit ServiceCodeType = "BlockCountExceedsLimit"
 
-	// ServiceCodeConditionNotMet means the condition specified in the conditional header(s) was not met for a read/write operation (304/412).
-	ServiceCodeConditionNotMet ServiceCodeType = "ConditionNotMet"
+	// ServiceCodeBlockListTooLong means the block list may not contain more than 50,000 blocks.
+	ServiceCodeBlockListTooLong ServiceCodeType = "BlockListTooLong"
 
-	// ServiceCodeEmptyMetadataKey means the key for one of the metadata key-value pairs is empty (400).
-	ServiceCodeEmptyMetadataKey ServiceCodeType = "EmptyMetadataKey"
+	// ServiceCodeCannotChangeToLowerTier means that a higher blob tier has already been explicitly set.
+	ServiceCodeCannotChangeToLowerTier ServiceCodeType = "CannotChangeToLowerTier"
 
-	// ServiceCodeInsufficientAccountPermissions means read operations are currently disabled or Write operations are not allowed or The account being accessed does not have sufficient permissions to execute this operation (403).
-	ServiceCodeInsufficientAccountPermissions ServiceCodeType = "InsufficientAccountPermissions"
+	// ServiceCodeCannotVerifyCopySource means that the service could not verify the copy source within the specified time.
+	// Examine the HTTP status code and message for more information about the failure.
+	ServiceCodeCannotVerifyCopySource ServiceCodeType = "CannotVerifyCopySource"
 
-	// ServiceCodeInternalError means the server encountered an internal error. Please retry the request (500).
-	ServiceCodeInternalError ServiceCodeType = "InternalError"
+	// ServiceCodeContainerAlreadyExists means the specified container already exists.
+	ServiceCodeContainerAlreadyExists ServiceCodeType = "ContainerAlreadyExists"
 
-	// ServiceCodeInvalidAuthenticationInfo means the authentication information was not provided in the correct format. Verify the value of Authorization header (400).
-	ServiceCodeInvalidAuthenticationInfo ServiceCodeType = "InvalidAuthenticationInfo"
+	// ServiceCodeContainerBeingDeleted means the specified container is being deleted.
+	ServiceCodeContainerBeingDeleted ServiceCodeType = "ContainerBeingDeleted"
 
-	// ServiceCodeInvalidHeaderValue means the value provided for one of the HTTP headers was not in the correct format (400).
-	ServiceCodeInvalidHeaderValue ServiceCodeType = "InvalidHeaderValue"
+	// ServiceCodeContainerDisabled means the specified container has been disabled by the administrator.
+	ServiceCodeContainerDisabled ServiceCodeType = "ContainerDisabled"
 
-	// ServiceCodeInvalidHTTPVerb means the HTTP verb specified was not recognized by the server (400).
-	ServiceCodeInvalidHTTPVerb ServiceCodeType = "InvalidHttpVerb"
+	// ServiceCodeContainerNotFound means the specified container does not exist.
+	ServiceCodeContainerNotFound ServiceCodeType = "ContainerNotFound"
 
-	// ServiceCodeInvalidInput means one of the request inputs is not valid (400).
-	ServiceCodeInvalidInput ServiceCodeType = "InvalidInput"
+	// ServiceCodeContentLengthLargerThanTierLimit means the blob's content length cannot exceed its tier limit.
+	ServiceCodeContentLengthLargerThanTierLimit ServiceCodeType = "ContentLengthLargerThanTierLimit"
 
-	// ServiceCodeInvalidMd5 means the MD5 value specified in the request is invalid. The MD5 value must be 128 bits and Base64-encoded (400).
-	ServiceCodeInvalidMd5 ServiceCodeType = "InvalidMd5"
+	// ServiceCodeCopyAcrossAccountsNotSupported means the copy source account and destination account must be the same.
+	ServiceCodeCopyAcrossAccountsNotSupported ServiceCodeType = "CopyAcrossAccountsNotSupported"
 
-	// ServiceCodeInvalidMetadata means the specified metadata is invalid. It includes characters that are not permitted (400).
-	ServiceCodeInvalidMetadata ServiceCodeType = "InvalidMetadata"
+	// ServiceCodeCopyIDMismatch means the specified copy ID did not match the copy ID for the pending copy operation.
+	ServiceCodeCopyIDMismatch ServiceCodeType = "CopyIdMismatch"
 
-	// ServiceCodeInvalidQueryParameterValue means an invalid value was specified for one of the query parameters in the request URI (400).
-	ServiceCodeInvalidQueryParameterValue ServiceCodeType = "InvalidQueryParameterValue"
+	// ServiceCodeFeatureVersionMismatch means the type of blob in the container is unrecognized by this version or
+	// that the operation for AppendBlob requires at least version 2015-02-21.
+	ServiceCodeFeatureVersionMismatch ServiceCodeType = "FeatureVersionMismatch"
 
-	// ServiceCodeInvalidRange means the range specified is invalid for the current size of the resource (416).
-	ServiceCodeInvalidRange ServiceCodeType = "InvalidRange"
+	// ServiceCodeIncrementalCopyBlobMismatch means the specified source blob is different than the copy source of the existing incremental copy blob.
+	ServiceCodeIncrementalCopyBlobMismatch ServiceCodeType = "IncrementalCopyBlobMismatch"
 
-	// ServiceCodeInvalidResourceName means the specified resource name contains invalid characters (400).
-	ServiceCodeInvalidResourceName ServiceCodeType = "InvalidResourceName"
+	// ServiceCodeFeatureEncryptionMismatch means the given customer specified encryption does not match the encryption used to encrypt the blob.
+	ServiceCodeFeatureEncryptionMismatch ServiceCodeType = "BlobCustomerSpecifiedEncryptionMismatch"
 
-	// ServiceCodeInvalidURI means the requested URI does not represent any resource on the server (400).
-	ServiceCodeInvalidURI ServiceCodeType = "InvalidUri"
+	// ServiceCodeIncrementalCopyOfEarlierVersionSnapshotNotAllowed means the specified snapshot is earlier than the last snapshot copied into the incremental copy blob.
+	ServiceCodeIncrementalCopyOfEarlierVersionSnapshotNotAllowed ServiceCodeType = "IncrementalCopyOfEarlierVersionSnapshotNotAllowed"
 
-	// ServiceCodeInvalidXMLDocument means the specified XML is not syntactically valid (400).
-	ServiceCodeInvalidXMLDocument ServiceCodeType = "InvalidXmlDocument"
+	// ServiceCodeIncrementalCopySourceMustBeSnapshot means the source for incremental copy request must be a snapshot.
+	ServiceCodeIncrementalCopySourceMustBeSnapshot ServiceCodeType = "IncrementalCopySourceMustBeSnapshot"
 
-	// ServiceCodeInvalidXMLNodeValue means the value provided for one of the XML nodes in the request body was not in the correct format (400).
-	ServiceCodeInvalidXMLNodeValue ServiceCodeType = "InvalidXmlNodeValue"
+	// ServiceCodeInfiniteLeaseDurationRequired means the lease ID matched, but the specified lease must be an infinite-duration lease.
+	ServiceCodeInfiniteLeaseDurationRequired ServiceCodeType = "InfiniteLeaseDurationRequired"
 
-	// ServiceCodeMd5Mismatch means the MD5 value specified in the request did not match the MD5 value calculated by the server (400).
-	ServiceCodeMd5Mismatch ServiceCodeType = "Md5Mismatch"
+	// ServiceCodeInvalidBlobOrBlock means the specified blob or block content is invalid.
+	ServiceCodeInvalidBlobOrBlock ServiceCodeType = "InvalidBlobOrBlock"
 
-	// ServiceCodeMetadataTooLarge means the size of the specified metadata exceeds the maximum size permitted (400).
-	ServiceCodeMetadataTooLarge ServiceCodeType = "MetadataTooLarge"
+	// ServiceCodeInvalidBlobType means the blob type is invalid for this operation.
+	ServiceCodeInvalidBlobType ServiceCodeType = "InvalidBlobType"
 
-	// ServiceCodeMissingContentLengthHeader means the Content-Length header was not specified (411).
-	ServiceCodeMissingContentLengthHeader ServiceCodeType = "MissingContentLengthHeader"
+	// ServiceCodeInvalidBlockID means the specified block ID is invalid. The block ID must be Base64-encoded.
+	ServiceCodeInvalidBlockID ServiceCodeType = "InvalidBlockId"
 
-	// ServiceCodeMissingRequiredQueryParameter means a required query parameter was not specified for this request (400).
-	ServiceCodeMissingRequiredQueryParameter ServiceCodeType = "MissingRequiredQueryParameter"
+	// ServiceCodeInvalidBlockList means the specified block list is invalid.
+	ServiceCodeInvalidBlockList ServiceCodeType = "InvalidBlockList"
 
-	// ServiceCodeMissingRequiredHeader means a required HTTP header was not specified (400).
-	ServiceCodeMissingRequiredHeader ServiceCodeType = "MissingRequiredHeader"
+	// ServiceCodeInvalidOperation means an invalid operation against a blob snapshot.
+	ServiceCodeInvalidOperation ServiceCodeType = "InvalidOperation"
 
-	// ServiceCodeMissingRequiredXMLNode means a required XML node was not specified in the request body (400).
-	ServiceCodeMissingRequiredXMLNode ServiceCodeType = "MissingRequiredXmlNode"
+	// ServiceCodeInvalidPageRange means the page range specified is invalid.
+	ServiceCodeInvalidPageRange ServiceCodeType = "InvalidPageRange"
 
-	// ServiceCodeMultipleConditionHeadersNotSupported means multiple condition headers are not supported (400).
-	ServiceCodeMultipleConditionHeadersNotSupported ServiceCodeType = "MultipleConditionHeadersNotSupported"
+	// ServiceCodeInvalidSourceBlobType means the copy source blob type is invalid for this operation.
+	ServiceCodeInvalidSourceBlobType ServiceCodeType = "InvalidSourceBlobType"
 
-	// ServiceCodeOperationTimedOut means the operation could not be completed within the permitted time (500).
-	ServiceCodeOperationTimedOut ServiceCodeType = "OperationTimedOut"
+	// ServiceCodeInvalidSourceBlobURL means the source URL for incremental copy request must be valid Azure Storage blob URL.
+	ServiceCodeInvalidSourceBlobURL ServiceCodeType = "InvalidSourceBlobUrl"
 
-	// ServiceCodeOutOfRangeInput means one of the request inputs is out of range (400).
-	ServiceCodeOutOfRangeInput ServiceCodeType = "OutOfRangeInput"
+	// ServiceCodeInvalidVersionForPageBlobOperation means that all operations on page blobs require at least version 2009-09-19.
+	ServiceCodeInvalidVersionForPageBlobOperation ServiceCodeType = "InvalidVersionForPageBlobOperation"
 
-	// ServiceCodeOutOfRangeQueryParameterValue means a query parameter specified in the request URI is outside the permissible range (400).
-	ServiceCodeOutOfRangeQueryParameterValue ServiceCodeType = "OutOfRangeQueryParameterValue"
+	// ServiceCodeLeaseAlreadyPresent means there is already a lease present.
+	ServiceCodeLeaseAlreadyPresent ServiceCodeType = "LeaseAlreadyPresent"
 
-	// ServiceCodeRequestBodyTooLarge means the size of the request body exceeds the maximum size permitted (413).
-	ServiceCodeRequestBodyTooLarge ServiceCodeType = "RequestBodyTooLarge"
+	// ServiceCodeLeaseAlreadyBroken means the lease has already been broken and cannot be broken again.
+	ServiceCodeLeaseAlreadyBroken ServiceCodeType = "LeaseAlreadyBroken"
 
-	// ServiceCodeResourceTypeMismatch means the specified resource type does not match the type of the existing resource (409).
-	ServiceCodeResourceTypeMismatch ServiceCodeType = "ResourceTypeMismatch"
+	// ServiceCodeLeaseIDMismatchWithBlobOperation means the lease ID specified did not match the lease ID for the blob.
+	ServiceCodeLeaseIDMismatchWithBlobOperation ServiceCodeType = "LeaseIdMismatchWithBlobOperation"
 
-	// ServiceCodeRequestURLFailedToParse means the url in the request could not be parsed (400).
-	ServiceCodeRequestURLFailedToParse ServiceCodeType = "RequestUrlFailedToParse"
+	// ServiceCodeLeaseIDMismatchWithContainerOperation means the lease ID specified did not match the lease ID for the container.
+	ServiceCodeLeaseIDMismatchWithContainerOperation ServiceCodeType = "LeaseIdMismatchWithContainerOperation"
 
-	// ServiceCodeResourceAlreadyExists means the specified resource already exists (409).
-	ServiceCodeResourceAlreadyExists ServiceCodeType = "ResourceAlreadyExists"
+	// ServiceCodeLeaseIDMismatchWithLeaseOperation means the lease ID specified did not match the lease ID for the blob/container.
+	ServiceCodeLeaseIDMismatchWithLeaseOperation ServiceCodeType = "LeaseIdMismatchWithLeaseOperation"
 
-	// ServiceCodeResourceNotFound means the specified resource does not exist (404).
-	ServiceCodeResourceNotFound ServiceCodeType = "ResourceNotFound"
+	// ServiceCodeLeaseIDMissing means there is currently a lease on the blob/container and no lease ID was specified in the request.
+	ServiceCodeLeaseIDMissing ServiceCodeType = "LeaseIdMissing"
 
-	ServiceCodeNoAuthenticationInformation ServiceCodeType = "NoAuthenticationInformation"
+	// ServiceCodeLeaseIsBreakingAndCannotBeAcquired means the lease ID matched, but the lease is currently in breaking state and cannot be acquired until it is broken.
+	ServiceCodeLeaseIsBreakingAndCannotBeAcquired ServiceCodeType = "LeaseIsBreakingAndCannotBeAcquired"
 
-	// ServiceCodeServerBusy means the server is currently unable to receive requests. Please retry your request or Ingress/egress is over the account limit or operations per second is over the account limit (503).
-	ServiceCodeServerBusy ServiceCodeType = "ServerBusy"
+	// ServiceCodeLeaseIsBreakingAndCannotBeChanged means the lease ID matched, but the lease is currently in breaking state and cannot be changed.
+	ServiceCodeLeaseIsBreakingAndCannotBeChanged ServiceCodeType = "LeaseIsBreakingAndCannotBeChanged"
 
-	// ServiceCodeUnsupportedHeader means one of the HTTP headers specified in the request is not supported (400).
-	ServiceCodeUnsupportedHeader ServiceCodeType = "UnsupportedHeader"
+	// ServiceCodeLeaseIsBrokenAndCannotBeRenewed means the lease ID matched, but the lease has been broken explicitly and cannot be renewed.
+	ServiceCodeLeaseIsBrokenAndCannotBeRenewed ServiceCodeType = "LeaseIsBrokenAndCannotBeRenewed"
 
-	// ServiceCodeUnsupportedXMLNode means one of the XML nodes specified in the request body is not supported (400).
-	ServiceCodeUnsupportedXMLNode ServiceCodeType = "UnsupportedXmlNode"
+	// ServiceCodeLeaseLost means a lease ID was specified, but the lease for the blob/container has expired.
+	ServiceCodeLeaseLost ServiceCodeType = "LeaseLost"
 
-	// ServiceCodeUnsupportedQueryParameter means one of the query parameters specified in the request URI is not supported (400).
-	ServiceCodeUnsupportedQueryParameter ServiceCodeType = "UnsupportedQueryParameter"
+	// ServiceCodeLeaseNotPresentWithBlobOperation means there is currently no lease on the blob.
+	ServiceCodeLeaseNotPresentWithBlobOperation ServiceCodeType = "LeaseNotPresentWithBlobOperation"
 
-	// ServiceCodeUnsupportedHTTPVerb means the resource doesn't support the specified HTTP verb (405).
-	ServiceCodeUnsupportedHTTPVerb ServiceCodeType = "UnsupportedHttpVerb"
+	// ServiceCodeLeaseNotPresentWithContainerOperation means there is currently no lease on the container.
+	ServiceCodeLeaseNotPresentWithContainerOperation ServiceCodeType = "LeaseNotPresentWithContainerOperation"
+
+	// ServiceCodeLeaseNotPresentWithLeaseOperation means there is currently no lease on the blob/container.
+	ServiceCodeLeaseNotPresentWithLeaseOperation ServiceCodeType = "LeaseNotPresentWithLeaseOperation"
+
+	// ServiceCodeMaxBlobSizeConditionNotMet means the max blob size condition specified was not met.
+	ServiceCodeMaxBlobSizeConditionNotMet ServiceCodeType = "MaxBlobSizeConditionNotMet"
+
+	// ServiceCodeNoPendingCopyOperation means there is currently no pending copy operation.
+	ServiceCodeNoPendingCopyOperation ServiceCodeType = "NoPendingCopyOperation"
+
+	// ServiceCodeOperationNotAllowedOnIncrementalCopyBlob means the specified operation is not allowed on an incremental copy blob.
+	ServiceCodeOperationNotAllowedOnIncrementalCopyBlob ServiceCodeType = "OperationNotAllowedOnIncrementalCopyBlob"
+
+	// ServiceCodePendingCopyOperation means there is currently a pending copy operation.
+	ServiceCodePendingCopyOperation ServiceCodeType = "PendingCopyOperation"
+
+	// ServiceCodePreviousSnapshotCannotBeNewer means the prevsnapshot query parameter value cannot be newer than snapshot query parameter value.
+	ServiceCodePreviousSnapshotCannotBeNewer ServiceCodeType = "PreviousSnapshotCannotBeNewer"
+
+	// ServiceCodePreviousSnapshotNotFound means the previous snapshot is not found.
+	ServiceCodePreviousSnapshotNotFound ServiceCodeType = "PreviousSnapshotNotFound"
+
+	// ServiceCodePreviousSnapshotOperationNotSupported means that differential Get Page Ranges is not supported on the previous snapshot.
+	ServiceCodePreviousSnapshotOperationNotSupported ServiceCodeType = "PreviousSnapshotOperationNotSupported"
+
+	// ServiceCodeSequenceNumberConditionNotMet means the sequence number condition specified was not met.
+	ServiceCodeSequenceNumberConditionNotMet ServiceCodeType = "SequenceNumberConditionNotMet"
+
+	// ServiceCodeSequenceNumberIncrementTooLarge means the sequence number increment cannot be performed because it would result in overflow of the sequence number.
+	ServiceCodeSequenceNumberIncrementTooLarge ServiceCodeType = "SequenceNumberIncrementTooLarge"
+
+	// ServiceCodeSnapshotCountExceeded means the snapshot count against this blob has been exceeded.
+	ServiceCodeSnapshotCountExceeded ServiceCodeType = "SnapshotCountExceeded"
+
+	// ServiceCodeSnaphotOperationRateExceeded means the rate of snapshot operations against this blob has been exceeded.
+	ServiceCodeSnaphotOperationRateExceeded ServiceCodeType = "SnaphotOperationRateExceeded"
+
+	// ServiceCodeSnapshotsPresent means this operation is not permitted while the blob has snapshots.
+	ServiceCodeSnapshotsPresent ServiceCodeType = "SnapshotsPresent"
+
+	// ServiceCodeSourceConditionNotMet means the source condition specified using HTTP conditional header(s) is not met.
+	ServiceCodeSourceConditionNotMet ServiceCodeType = "SourceConditionNotMet"
+
+	// ServiceCodeSystemInUse means this blob is in use by the system.
+	ServiceCodeSystemInUse ServiceCodeType = "SystemInUse"
+
+	// ServiceCodeTargetConditionNotMet means the target condition specified using HTTP conditional header(s) is not met.
+	ServiceCodeTargetConditionNotMet ServiceCodeType = "TargetConditionNotMet"
+
+	// ServiceCodeUnauthorizedBlobOverwrite means this request is not authorized to perform blob overwrites.
+	ServiceCodeUnauthorizedBlobOverwrite ServiceCodeType = "UnauthorizedBlobOverwrite"
+
+	// ServiceCodeBlobBeingRehydrated means this operation is not permitted because the blob is being rehydrated.
+	ServiceCodeBlobBeingRehydrated ServiceCodeType = "BlobBeingRehydrated"
+
+	// ServiceCodeBlobArchived means this operation is not permitted on an archived blob.
+	ServiceCodeBlobArchived ServiceCodeType = "BlobArchived"
+
+	// ServiceCodeBlobNotArchived means this blob is currently not in the archived state.
+	ServiceCodeBlobNotArchived ServiceCodeType = "BlobNotArchived"
 )

@@ -5,7 +5,7 @@
 ### New Packages
 
 - `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-12-01/compute`
-- `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-09/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-09-01-preview/documentdb`
 - `github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v4.0/sql`
 - `github.com/Azure/azure-sdk-for-go/services/preview/synapse/2020-08-01-preview/accesscontrol`
 - `github.com/Azure/azure-sdk-for-go/services/redisenterprise/mgmt/2021-03-01/redisenterprise`

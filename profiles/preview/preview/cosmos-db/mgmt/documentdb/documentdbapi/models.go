@@ -19,7 +19,7 @@
 
 package documentdbapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-09/documentdb/documentdbapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2020-09-01-preview/documentdb/documentdbapi"
 
 type CassandraResourcesClientAPI = original.CassandraResourcesClientAPI
 type CollectionClientAPI = original.CollectionClientAPI

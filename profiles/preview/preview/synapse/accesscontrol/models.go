@@ -19,33 +19,35 @@
 
 package accesscontrol
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2020-02-01-preview/accesscontrol"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2020-08-01-preview/accesscontrol"
 
 type BaseClient = original.BaseClient
+type CheckAccessDecision = original.CheckAccessDecision
+type CheckPrincipalAccessRequest = original.CheckPrincipalAccessRequest
+type CheckPrincipalAccessResponse = original.CheckPrincipalAccessResponse
 type ErrorContract = original.ErrorContract
 type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
-type ListRoleAssignmentDetails = original.ListRoleAssignmentDetails
 type ListString = original.ListString
+type ListSynapseRoleDefinition = original.ListSynapseRoleDefinition
+type RequiredAction = original.RequiredAction
 type RoleAssignmentDetails = original.RoleAssignmentDetails
-type RoleAssignmentOptions = original.RoleAssignmentOptions
-type RolesListResponse = original.RolesListResponse
-type RolesListResponseIterator = original.RolesListResponseIterator
-type RolesListResponsePage = original.RolesListResponsePage
-type SynapseRole = original.SynapseRole
+type RoleAssignmentDetailsList = original.RoleAssignmentDetailsList
+type RoleAssignmentRequest = original.RoleAssignmentRequest
+type RoleAssignmentsClient = original.RoleAssignmentsClient
+type RoleDefinitionsClient = original.RoleDefinitionsClient
+type SubjectInfo = original.SubjectInfo
+type SynapseRbacPermission = original.SynapseRbacPermission
+type SynapseRoleDefinition = original.SynapseRoleDefinition
 
 func New(endpoint string) BaseClient {
 	return original.New(endpoint)
 }
-func NewRolesListResponseIterator(page RolesListResponsePage) RolesListResponseIterator {
-	return original.NewRolesListResponseIterator(page)
+func NewRoleAssignmentsClient(endpoint string) RoleAssignmentsClient {
+	return original.NewRoleAssignmentsClient(endpoint)
 }
-func NewRolesListResponsePage(cur RolesListResponse, getNextPage func(context.Context, RolesListResponse) (RolesListResponse, error)) RolesListResponsePage {
-	return original.NewRolesListResponsePage(cur, getNextPage)
+func NewRoleDefinitionsClient(endpoint string) RoleDefinitionsClient {
+	return original.NewRoleDefinitionsClient(endpoint)
 }
 func NewWithoutDefaults(endpoint string) BaseClient {
 	return original.NewWithoutDefaults(endpoint)

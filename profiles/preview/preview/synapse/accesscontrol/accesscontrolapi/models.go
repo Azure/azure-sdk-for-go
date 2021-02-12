@@ -19,6 +19,7 @@
 
 package accesscontrolapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2020-02-01-preview/accesscontrol/accesscontrolapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/synapse/2020-08-01-preview/accesscontrol/accesscontrolapi"
 
-type BaseClientAPI = original.BaseClientAPI
+type RoleAssignmentsClientAPI = original.RoleAssignmentsClientAPI
+type RoleDefinitionsClientAPI = original.RoleDefinitionsClientAPI

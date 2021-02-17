@@ -49,7 +49,7 @@ type StorageError struct {
 	response *http.Response
 	description string
 
-	serviceCode ServiceCodeType
+	ServiceCode ServiceCodeType
 	details     map[string]string
 }
 
@@ -72,10 +72,10 @@ func defunkifyStorageError(responseError *runtime.ResponseError) error {
 
 		err.response = responseError.RawResponse()
 
-		err.serviceCode = ServiceCodeType(responseError.RawResponse().Header.Get("x-ms-error-code"))
+		err.ServiceCode = ServiceCodeType(responseError.RawResponse().Header.Get("x-ms-error-code"))
 
 		if code, ok := err.details["Code"]; ok {
-			err.serviceCode = ServiceCodeType(code)
+			err.ServiceCode = ServiceCodeType(code)
 			delete(err.details, "Code")
 		}
 
@@ -98,17 +98,12 @@ func defunkifyStorageError(responseError *runtime.ResponseError) error {
 // 	}
 // }
 
-// ServiceCode returns service-error information. The caller may examine these values but should not modify any of them.
-func (e StorageError) ServiceCode() ServiceCodeType {
-	return e.serviceCode
-}
-
 // Error implements the error interface's Error method to return a string representation of the error.
 func (e StorageError) Error() string {
 	b := &bytes.Buffer{}
 
 	if e.response != nil {
-		fmt.Fprintf(b, "===== RESPONSE ERROR (ServiceCode=%s) =====\n", e.serviceCode)
+		fmt.Fprintf(b, "===== RESPONSE ERROR (ServiceCode=%s) =====\n", e.ServiceCode)
 		fmt.Fprintf(b, "Description=%s, Details: ", e.description)
 		if len(e.details) == 0 {
 			b.WriteString("(none)\n")
@@ -125,11 +120,11 @@ func (e StorageError) Error() string {
 			}
 		}
 		// req := azcore.Request{Request: e.response.Request}.Copy() // Make a copy of the response's request
-		WriteRequestWithResponse(b, &azcore.Request{Request: e.response.Request}, e.response)
+		writeRequestWithResponse(b, &azcore.Request{Request: e.response.Request}, e.response)
 	}
 
 	return b.String()
-	// azcore.WriteRequestWithResponse(b, prepareRequestForLogging(req), e.response, nil)
+	// azcore.writeRequestWithResponse(b, prepareRequestForLogging(req), e.response, nil)
 	// return e.ErrorNode.Error(b.String())
 }
 
@@ -143,7 +138,7 @@ func (e StorageError) Response() *http.Response {
 	return e.response
 }
 
-func WriteRequestWithResponse(b *bytes.Buffer, request *azcore.Request, response *http.Response) {
+func writeRequestWithResponse(b *bytes.Buffer, request *azcore.Request, response *http.Response) {
 	// Write the request into the buffer.
 	fmt.Fprint(b, "   "+request.Method+" "+request.URL.String()+"\n")
 	writeHeader(b, request.Header)

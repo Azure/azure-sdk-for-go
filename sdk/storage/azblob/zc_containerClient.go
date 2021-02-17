@@ -16,13 +16,13 @@ type ContainerClient struct {
 }
 
 // NewContainerClient creates a ContainerClient object using the specified URL and request policy pipeline.
-func NewContainerClient(containerURL string, cred azcore.Credential, options *connectionOptions) (ContainerClient, error) {
+func NewContainerClient(containerURL string, cred azcore.Credential, options *ClientOptions) (ContainerClient, error) {
 	u, err := url.Parse(containerURL)
 	if err != nil {
 		return ContainerClient{}, err
 	}
 	return ContainerClient{client: &containerClient{
-		con: newConnection(containerURL, cred, options),
+		con: newConnection(containerURL, cred, options.getConnectionOptions()),
 	}, u: *u}, nil
 }
 
@@ -31,29 +31,17 @@ func (c ContainerClient) URL() url.URL {
 	return c.u
 }
 
-// String returns the URL as a string.
-func (c ContainerClient) String() string {
-	u := c.URL()
-	return u.String()
-}
-
-// WithPipeline creates a new ContainerClient object identical to the source but with the specified request policy pipeline.
-func (c ContainerClient) WithPipeline(pipeline azcore.Pipeline) ContainerClient {
-	con := newConnectionWithPipeline(c.u.String(), pipeline)
-	return ContainerClient{client: &containerClient{con: con}, u: c.u}
-}
-
 // NewBlobClient creates a new BlobClient object by concatenating blobName to the end of
 // ContainerClient's URL. The new BlobClient uses the same request policy pipeline as the ContainerClient.
 // To change the pipeline, create the BlobClient and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewBlobClient instead of calling this object's
 // NewBlobClient method.
-func (c ContainerClient) NewBlobClient(blobName string, mode *PathRenameMode) BlobClient {
+func (c ContainerClient) NewBlobClient(blobName string) BlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
 	newCon := newConnectionWithPipeline(blobURL.String(), c.client.con.p)
 
 	return BlobClient{
-		client: &blobClient{newCon, mode},
+		client: &blobClient{newCon, nil},
 		u:      blobURL,
 	}
 }

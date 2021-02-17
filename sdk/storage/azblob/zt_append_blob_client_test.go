@@ -288,7 +288,8 @@ func (s *aztestsSuite) TestBlobCreateAppendMetadataNonEmpty(c *chk.C) {
 
 	resp, err := abClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(resp.Metadata, chk.NotNil)
+	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobCreateAppendMetadataEmpty(c *chk.C) {
@@ -305,7 +306,7 @@ func (s *aztestsSuite) TestBlobCreateAppendMetadataEmpty(c *chk.C) {
 
 	resp, err := abClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.HasLen, 0)
+	c.Assert(resp.Metadata, chk.IsNil)
 }
 
 func (s *aztestsSuite) TestBlobCreateAppendMetadataInvalid(c *chk.C) {
@@ -343,7 +344,8 @@ func (s *aztestsSuite) TestBlobCreateAppendHTTPHeaders(c *chk.C) {
 func validateAppendBlobPut(c *chk.C, abClient AppendBlobClient) {
 	resp, err := abClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(resp.Metadata, chk.NotNil)
+	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
 	c.Assert(resp.NewHTTPHeaders(), chk.DeepEquals, basicHeaders)
 }
 

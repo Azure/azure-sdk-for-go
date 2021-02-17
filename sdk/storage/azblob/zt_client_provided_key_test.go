@@ -1211,15 +1211,17 @@ func (s *aztestsSuite) TestGetSetBlobMetadataWithCPK(c *chk.C) {
 	}
 	getResp, err = bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	c.Assert(err, chk.IsNil)
-	c.Assert(getResp.NewMetadata(), chk.HasLen, len(basicMetadata))
-	c.Assert(getResp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(getResp.Metadata, chk.NotNil)
+	c.Assert(*getResp.Metadata, chk.HasLen, len(basicMetadata))
+	c.Assert(*getResp.Metadata, chk.DeepEquals, basicMetadata)
 
 	_, err = bbClient.SetMetadata(ctx, map[string]string{}, &setBlobMetadataOptions)
 	c.Assert(err, chk.IsNil)
 
 	getResp, err = bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	c.Assert(err, chk.IsNil)
-	c.Assert(getResp.NewMetadata(), chk.HasLen, 0)
+	c.Assert(getResp.Metadata, chk.NotNil)
+	c.Assert(*getResp.Metadata, chk.HasLen, 0)
 }
 
 func (s *aztestsSuite) TestGetSetBlobMetadataWithCPKScope(c *chk.C) {
@@ -1241,15 +1243,16 @@ func (s *aztestsSuite) TestGetSetBlobMetadataWithCPKScope(c *chk.C) {
 
 	getResp, err := bbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(getResp.NewMetadata(), chk.HasLen, len(basicMetadata))
-	c.Assert(getResp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(getResp.Metadata, chk.NotNil)
+	c.Assert(*getResp.Metadata, chk.HasLen, len(basicMetadata))
+	c.Assert(*getResp.Metadata, chk.DeepEquals, basicMetadata)
 
 	_, err = bbClient.SetMetadata(ctx, map[string]string{}, &setBlobMetadataOptions)
 	c.Assert(err, chk.IsNil)
 
 	getResp, err = bbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(getResp.NewMetadata(), chk.HasLen, 0)
+	c.Assert(getResp.Metadata, chk.IsNil)
 }
 
 func (s *aztestsSuite) TestBlobSnapshotWithCPK(c *chk.C) {

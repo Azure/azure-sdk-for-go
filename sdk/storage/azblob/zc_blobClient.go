@@ -13,13 +13,13 @@ type BlobClient struct {
 }
 
 // NewBlobClient creates a BlobClient object using the specified URL and request policy pipeline.
-func NewBlobClient(blobURL string, cred azcore.Credential, pathRenameMode *PathRenameMode, options *connectionOptions) (BlobClient, error) {
+func NewBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (BlobClient, error) {
 	u, err := url.Parse(blobURL)
 	if err != nil {
 		return BlobClient{}, err
 	}
-	con := newConnection(blobURL, cred, options)
-	return BlobClient{client: &blobClient{con, pathRenameMode}, u: *u}, nil
+	con := newConnection(blobURL, cred, options.getConnectionOptions())
+	return BlobClient{client: &blobClient{con, nil}, u: *u}, nil
 }
 
 // URL returns the URL endpoint used by the BlobClient object.
@@ -27,16 +27,10 @@ func (b BlobClient) URL() url.URL {
 	return b.u
 }
 
-// String returns the URL as a string.
-func (b BlobClient) String() string {
+// string returns the URL as a string.
+func (b BlobClient) string() string {
 	u := b.URL()
 	return u.String()
-}
-
-// WithPipeline creates a new BlobClient object identical to the source but with the specified request policy pipeline.
-func (b BlobClient) WithPipeline(pipeline azcore.Pipeline) BlobClient {
-	con := newConnectionWithPipeline(b.u.String(), pipeline)
-	return BlobClient{client: &blobClient{con, b.client.pathRenameMode}, u: b.u}
 }
 
 // WithSnapshot creates a new BlobClient object identical to the source but with the specified snapshot timestamp.
@@ -54,9 +48,9 @@ func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
 	}
 }
 
-// ToAppendBlobURL creates an AppendBlobURL using the source's URL and pipeline.
-func (b BlobClient) ToAppendBlobURL() AppendBlobClient {
-	con := newConnectionWithPipeline(b.String(), b.client.con.p)
+// ToAppendBlobClient creates an AppendBlobURL using the source's URL and pipeline.
+func (b BlobClient) ToAppendBlobClient() AppendBlobClient {
+	con := newConnectionWithPipeline(b.string(), b.client.con.p)
 	return AppendBlobClient{
 		client:     &appendBlobClient{con},
 		u:          b.u,
@@ -66,7 +60,7 @@ func (b BlobClient) ToAppendBlobURL() AppendBlobClient {
 
 // ToBlockBlobURL creates a BlockBlobClient using the source's URL and pipeline.
 func (b BlobClient) ToBlockBlobClient() BlockBlobClient {
-	con := newConnectionWithPipeline(b.String(), b.client.con.p)
+	con := newConnectionWithPipeline(b.string(), b.client.con.p)
 	return BlockBlobClient{
 		client:     &blockBlobClient{con},
 		u:          b.u,
@@ -74,9 +68,9 @@ func (b BlobClient) ToBlockBlobClient() BlockBlobClient {
 	}
 }
 
-// ToPageBlobURL creates a PageBlobURL using the source's URL and pipeline.
-func (b BlobClient) ToPageBlobURL() PageBlobClient {
-	con := newConnectionWithPipeline(b.String(), b.client.con.p)
+// ToPageBlobClient creates a PageBlobURL using the source's URL and pipeline.
+func (b BlobClient) ToPageBlobClient() PageBlobClient {
+	con := newConnectionWithPipeline(b.string(), b.client.con.p)
 	return PageBlobClient{
 		client:     &pageBlobClient{con},
 		u:          b.u,
@@ -109,7 +103,7 @@ func (b BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) 
 	}
 	return &DownloadResponse{
 		b:       b,
-		r:       dr,
+		BlobDownloadResponse:       dr,
 		ctx:     ctx,
 		getInfo: HTTPGetterInfo{Offset: offset, Count: count, ETag: *dr.ETag},
 	}, err

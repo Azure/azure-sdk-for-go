@@ -27,28 +27,18 @@ type BlockBlobClient struct {
 }
 
 // NewBlockBlobClient creates a BlockBlobClient object using the specified URL and request policy pipeline.
-func NewBlockBlobClient(blobURL string, cred azcore.Credential, options *connectionOptions) (BlockBlobClient, error) {
+func NewBlockBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (BlockBlobClient, error) {
 	u, err := url.Parse(blobURL)
 	if err != nil {
 		return BlockBlobClient{}, err
 	}
-	con := newConnection(blobURL, cred, options)
+	con := newConnection(blobURL, cred, options.getConnectionOptions())
 	return BlockBlobClient{
 		client:     &blockBlobClient{con: con},
 		u:          *u,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
 	//return bbc, nil
-}
-
-// WithPipeline creates a new BlockBlobClient object identical to the source but with the specific request policy pipeline.
-func (bb BlockBlobClient) WithPipeline(pipeline azcore.Pipeline) BlockBlobClient {
-	con := newConnectionWithPipeline(bb.u.String(), pipeline)
-	return BlockBlobClient{
-		client:     &blockBlobClient{con},
-		u:          bb.u,
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
 }
 
 // URL returns the URL endpoint used by the BlobClient object.

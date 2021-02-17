@@ -441,7 +441,8 @@ func (s *aztestsSuite) TestBlobCreatePageMetadataNonEmpty(c *chk.C) {
 
 	resp, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(resp.Metadata, chk.NotNil)
+	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageMetadataEmpty(c *chk.C) {
@@ -459,7 +460,7 @@ func (s *aztestsSuite) TestBlobCreatePageMetadataEmpty(c *chk.C) {
 
 	resp, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.HasLen, 0)
+	c.Assert(resp.Metadata, chk.IsNil)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageMetadataInvalid(c *chk.C) {
@@ -502,7 +503,8 @@ func (s *aztestsSuite) TestBlobCreatePageHTTPHeaders(c *chk.C) {
 func validatePageBlobPut(c *chk.C, pbClient PageBlobClient) {
 	resp, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(resp.Metadata, chk.NotNil)
+	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
 	c.Assert(resp.NewHTTPHeaders(), chk.DeepEquals, basicHeaders)
 }
 

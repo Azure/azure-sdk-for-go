@@ -244,7 +244,7 @@ func ExampleAccountSASSignatureValues() {
 	// ******************************************
 
 	// When someone receives the URL, they can access the resource using it in code like this, or a tool of some variety.
-	serviceURL, err := NewServiceClient(urlToSend, NewAnonymousCredential(), nil)
+	serviceURL, err := NewServiceClient(urlToSend, azcore.AnonymousCredential(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -292,7 +292,7 @@ func ExampleBlobSASSignatureValues() {
 	// **************
 
 	// When someone receives the URL, they can access the SAS-protected resource like this:
-	blob, _ := NewBlobClient(urlToSendToSomeone, NewAnonymousCredential(), nil, nil)
+	blob, _ := NewBlobClient(urlToSendToSomeone, azcore.AnonymousCredential(), nil)
 
 	// if you have a SAS query parameter string, you can parse it into it's parts.
 	blobURLParts := NewBlobURLParts(blob.URL())
@@ -456,7 +456,11 @@ func ExampleMetadata_containers() {
 	}
 
 	// Show the container's metadata
-	metadata := get.NewMetadata()
+	if get.Metadata == nil {
+		log.Fatal("metadata is empty!")
+	}
+
+	metadata := *get.Metadata
 	for k, v := range metadata {
 		fmt.Print(k + "=" + v + "\n")
 	}
@@ -509,7 +513,11 @@ func ExampleMetadata_blobs() {
 	fmt.Println(*get.BlobType, *get.ETag, *get.LastModified)
 
 	// Show the blob's metadata
-	metadata := get.NewMetadata()
+	if get.Metadata == nil {
+		log.Fatal("No metadata returned")
+	}
+
+	metadata := *get.Metadata
 	for k, v := range metadata {
 		fmt.Print(k + "=" + v + "\n")
 	}
@@ -919,7 +927,7 @@ func ExampleBlobClient_startCopy() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	BlobClient, err := NewBlobClient(u, credential, nil, nil)
+	blobURL, err := NewBlobClient(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1018,7 +1026,7 @@ func ExampleBlobClient_Download() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	BlobClient, err := NewBlobClient(u, credential, nil, nil)
+	blobURL, err := NewBlobClient(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}

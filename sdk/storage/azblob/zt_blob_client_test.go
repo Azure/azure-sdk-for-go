@@ -1361,7 +1361,7 @@ func validateBlobDeleted(c *chk.C, blobClient BlobClient) {
 	c.Assert(err, chk.NotNil)
 
 	// TODO cannot be checked right now
-	serr := err.(StorageError) // Delete blob is a HEAD request and does not return a ServiceCode in the body
+	serr := err.(*StorageError) // Delete blob is a HEAD request and does not return a ServiceCode in the body
 	c.Assert(strings.Contains(serr.Error(), "not exist"), chk.Equals, true)
 }
 

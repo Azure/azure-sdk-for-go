@@ -91,7 +91,9 @@ func (bb BlockBlobClient) Upload(ctx context.Context, body io.ReadSeeker, option
 
 	basics, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions := options.pointers()
 
-	return bb.client.Upload(ctx, count, azcore.NopCloser(body), basics, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions)
+	resp, err := bb.client.Upload(ctx, count, azcore.NopCloser(body), basics, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions)
+
+	return resp, handleError(err)
 }
 
 // StageBlock uploads the specified block to the block blob's "staging area" to be later committed by a call to CommitBlockList.
@@ -104,7 +106,9 @@ func (bb BlockBlobClient) StageBlock(ctx context.Context, base64BlockID string, 
 	}
 
 	ac, stageBlockOptions, cpkInfo, cpkScopeInfo := options.pointers()
-	return bb.client.StageBlock(ctx, base64BlockID, count, azcore.NopCloser(body), stageBlockOptions, ac, cpkInfo, cpkScopeInfo)
+	resp, err := bb.client.StageBlock(ctx, base64BlockID, count, azcore.NopCloser(body), stageBlockOptions, ac, cpkInfo, cpkScopeInfo)
+
+	return resp, handleError(err)
 }
 
 // StageBlockFromURL copies the specified block from a source URL to the block blob's "staging area" to be later committed by a call to CommitBlockList.
@@ -113,7 +117,9 @@ func (bb BlockBlobClient) StageBlock(ctx context.Context, base64BlockID string, 
 func (bb BlockBlobClient) StageBlockFromURL(ctx context.Context, base64BlockID string, sourceURL url.URL, contentLength int64, options *StageBlockFromURLOptions) (BlockBlobStageBlockFromURLResponse, error) {
 	ac, smac, stageOptions, cpkInfo, cpkScope := options.pointers()
 
-	return bb.client.StageBlockFromURL(ctx, base64BlockID, contentLength, sourceURL, stageOptions, cpkInfo, cpkScope, ac, smac)
+	resp, err := bb.client.StageBlockFromURL(ctx, base64BlockID, contentLength, sourceURL, stageOptions, cpkInfo, cpkScope, ac, smac)
+
+	return resp, handleError(err)
 }
 
 // CommitBlockList writes a blob by specifying the list of block IDs that make up the blob.
@@ -125,9 +131,11 @@ func (bb BlockBlobClient) StageBlockFromURL(ctx context.Context, base64BlockID s
 func (bb BlockBlobClient) CommitBlockList(ctx context.Context, base64BlockIDs []string, options *CommitBlockListOptions) (BlockBlobCommitBlockListResponse, error) {
 	commitOptions, headers, cpkInfo, cpkScope, modifiedAccess, leaseAccess := options.pointers()
 
-	return bb.client.CommitBlockList(ctx, BlockLookupList{
+	resp, err := bb.client.CommitBlockList(ctx, BlockLookupList{
 		Latest: &base64BlockIDs,
 	}, commitOptions, headers, leaseAccess, cpkInfo, cpkScope, modifiedAccess)
+
+	return resp, handleError(err)
 }
 
 // GetBlockList returns the list of blocks that have been uploaded as part of a block blob using the specified block list filter.
@@ -135,7 +143,9 @@ func (bb BlockBlobClient) CommitBlockList(ctx context.Context, base64BlockIDs []
 func (bb BlockBlobClient) GetBlockList(ctx context.Context, listType BlockListType, options *GetBlockListOptions) (BlockListResponse, error) {
 	o, mac, lac := options.pointers()
 
-	return bb.client.GetBlockList(ctx, listType, o, lac, mac)
+	resp, err := bb.client.GetBlockList(ctx, listType, o, lac, mac)
+
+	return resp, handleError(err)
 }
 
 // CopyFromURL synchronously copies the data at the source URL to a block blob, with sizes up to 256 MB.
@@ -147,5 +157,7 @@ func (bb BlockBlobClient) CopyFromURL(ctx context.Context, source url.URL, optio
 		con: bb.client.con,
 	}
 
-	return bClient.CopyFromURL(ctx, source, copyOptions, smac, mac, lac)
+	resp, err := bClient.CopyFromURL(ctx, source, copyOptions, smac, mac, lac)
+
+	return resp, handleError(err)
 }

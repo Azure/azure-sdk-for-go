@@ -15,31 +15,6 @@ type listContainersSegmentAutoPager struct {
 	timer *time.Timer
 }
 
-// func (c ContainerItem) Duplicate() ContainerItem {
-// 	out := ContainerItem{
-// 		Deleted:    nil,
-// 		Metadata:   nil,
-// 		Name:       nil,
-// 		Properties: nil,
-// 		Version:    nil,
-// 	}
-//
-// 	out.Name = &*c.Name
-//
-// 	if out.Metadata != nil {
-// 		meta := make(map[string]string)
-// 		for k, v := range *c.Metadata {
-// 			meta[k] = v
-// 		}
-// 		out.Metadata = &meta
-// 	}
-//
-// 	if out.Properties != nil {
-// 		out.Properties.
-// 	}
-//
-// }
-
 func (p listContainersSegmentAutoPager) Go() {
 	p.timer = time.NewTimer(p.timeout)
 
@@ -69,7 +44,7 @@ func (p listContainersSegmentAutoPager) Go() {
 		if !p.pager.NextPage(p.ctx) {
 			err := p.pager.Err()
 			if err != nil {
-				p.errChan <- err
+				p.errChan <- handleError(err)
 			} else {
 				p.errChan <- nil
 			}

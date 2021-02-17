@@ -95,28 +95,34 @@ func (c ContainerClient) NewPageBlobClient(blobName string) PageBlobClient {
 }
 
 func (c ContainerClient) GetAccountInfo(ctx context.Context) (ContainerGetAccountInfoResponse, error) {
-	return c.client.GetAccountInfo(ctx, nil)
+	resp, err := c.client.GetAccountInfo(ctx, nil)
+
+	return resp, handleError(err)
 }
 
 // Create creates a new container within a storage account. If a container with the same name already exists, the operation fails.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/create-container.
 func (c ContainerClient) Create(ctx context.Context, options *CreateContainerOptions) (ContainerCreateResponse, error) {
 	basics, cpkInfo := options.pointers()
-	return c.client.Create(ctx, basics, cpkInfo)
+	resp, err := c.client.Create(ctx, basics, cpkInfo)
+
+	return resp, handleError(err)
 }
 
 // Delete marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-container.
 func (c ContainerClient) Delete(ctx context.Context, options *DeleteContainerOptions) (ContainerDeleteResponse, error) {
 	basics, leaseInfo, accessConditions := options.pointers()
-	return c.client.Delete(ctx, basics, leaseInfo, accessConditions)
+	resp, err := c.client.Delete(ctx, basics, leaseInfo, accessConditions)
+
+	return resp, handleError(err)
 }
 
 func (c ContainerClient) GetMetadata(ctx context.Context, gpo *GetPropertiesOptionsContainer) (map[string]string, error) {
 	resp, err := c.GetProperties(ctx, gpo)
 
 	if err != nil {
-		return nil, err
+		return nil, handleError(err)
 	}
 
 	return *resp.Metadata, nil
@@ -131,7 +137,9 @@ func (c ContainerClient) GetProperties(ctx context.Context, gpo *GetPropertiesOp
 	// The optionals are nil, like they were in track 1.5
 	options, leaseAccess := gpo.pointers()
 
-	return c.client.GetProperties(ctx, options, leaseAccess)
+	resp, err := c.client.GetProperties(ctx, options, leaseAccess)
+
+	return resp, handleError(err)
 }
 
 //// SetMetadata sets the container's metadata.
@@ -148,7 +156,9 @@ func (c ContainerClient) SetMetadata(ctx context.Context, options *SetMetadataCo
 
 	metadataOptions, lac, mac := options.pointers()
 
-	return c.client.SetMetadata(ctx, metadataOptions, lac, mac)
+	resp, err := c.client.SetMetadata(ctx, metadataOptions, lac, mac)
+
+	return resp, handleError(err)
 }
 
 // GetAccessPolicy returns the container's access policy. The access policy indicates whether container's blobs may be accessed publicly.
@@ -156,7 +166,9 @@ func (c ContainerClient) SetMetadata(ctx context.Context, options *SetMetadataCo
 func (c ContainerClient) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (SignedIDentifierArrayResponse, error) {
 	o, ac := options.pointers()
 
-	return c.client.GetAccessPolicy(ctx, o, ac)
+	resp, err := c.client.GetAccessPolicy(ctx, o, ac)
+
+	return resp, handleError(err)
 }
 
 // SetAccessPolicy sets the container's permissions. The access policy indicates whether blobs in a container may be accessed publicly.
@@ -175,7 +187,9 @@ func (c ContainerClient) SetAccessPolicy(ctx context.Context, options *SetAccess
 
 	accessPolicy, mac, lac := options.pointers()
 
-	return c.client.SetAccessPolicy(ctx, &accessPolicy, mac, lac)
+	resp, err := c.client.SetAccessPolicy(ctx, &accessPolicy, mac, lac)
+
+	return resp, handleError(err)
 }
 
 // AcquireLease acquires a lease on the container for delete operations. The lease duration must be between 15 to 60 seconds, or infinite (-1).
@@ -186,7 +200,9 @@ func (c ContainerClient) AcquireLease(ctx context.Context, leaseOptions *Acquire
 		return ContainerAcquireLeaseResponse{}, errors.New("leaseOptions must be specified, with at least ProposedLeaseID and Duration specified under ContainerAcquireLeaseOptions")
 	}
 
-	return c.client.AcquireLease(ctx, leaseOptions.ContainerAcquireLeaseOptions, leaseOptions.ModifiedAccessConditions)
+	resp, err := c.client.AcquireLease(ctx, leaseOptions.ContainerAcquireLeaseOptions, leaseOptions.ModifiedAccessConditions)
+
+	return resp, handleError(err)
 }
 
 // RenewLease renews the container's previously-acquired lease.
@@ -194,7 +210,9 @@ func (c ContainerClient) AcquireLease(ctx context.Context, leaseOptions *Acquire
 func (c ContainerClient) RenewLease(ctx context.Context, leaseId string, leaseOptions *RenewLeaseOptionsContainer) (ContainerRenewLeaseResponse, error) {
 	renewOptions, accessConditions := leaseOptions.pointers()
 
-	return c.client.RenewLease(ctx, leaseId, renewOptions, accessConditions)
+	resp, err := c.client.RenewLease(ctx, leaseId, renewOptions, accessConditions)
+
+	return resp, handleError(err)
 }
 
 // ReleaseLease releases the container's previously-acquired lease.
@@ -202,7 +220,9 @@ func (c ContainerClient) RenewLease(ctx context.Context, leaseId string, leaseOp
 func (c ContainerClient) ReleaseLease(ctx context.Context, leaseID string, leaseOptions *ReleaseLeaseOptionsContainer) (ContainerReleaseLeaseResponse, error) {
 	options, ac := leaseOptions.pointers()
 
-	return c.client.ReleaseLease(ctx, leaseID, options, ac)
+	resp, err := c.client.ReleaseLease(ctx, leaseID, options, ac)
+
+	return resp, handleError(err)
 }
 
 // BreakLease breaks the container's previously-acquired lease (if it exists).
@@ -210,7 +230,9 @@ func (c ContainerClient) ReleaseLease(ctx context.Context, leaseID string, lease
 func (c ContainerClient) BreakLease(ctx context.Context, container *BreakLeaseOptionsContainer) (ContainerBreakLeaseResponse, error) {
 	options, ac := container.pointers()
 
-	return c.client.BreakLease(ctx, options, ac)
+	resp, err := c.client.BreakLease(ctx, options, ac)
+
+	return resp, handleError(err)
 }
 
 // ChangeLease changes the container's lease ID.
@@ -218,7 +240,9 @@ func (c ContainerClient) BreakLease(ctx context.Context, container *BreakLeaseOp
 func (c ContainerClient) ChangeLease(ctx context.Context, leaseID string, proposedID string, options *ChangeLeaseOptionsContainer) (ContainerChangeLeaseResponse, error) {
 	clo, ac := options.pointers()
 
-	return c.client.ChangeLease(ctx, leaseID, proposedID, clo, ac)
+	resp, err := c.client.ChangeLease(ctx, leaseID, proposedID, clo, ac)
+
+	return resp, handleError(err)
 }
 
 // ListBlobsFlatSegment returns a channel of blobs starting from the specified Marker. Use an empty

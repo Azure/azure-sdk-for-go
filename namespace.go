@@ -52,7 +52,7 @@ const (
 	//`
 
 	// Version is the semantic version number
-	Version = "0.10.9"
+	Version = "0.10.10"
 
 	rootUserAgent = "/golang-service-bus"
 

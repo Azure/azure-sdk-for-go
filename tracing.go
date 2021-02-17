@@ -105,6 +105,16 @@ func (r *rpcClient) startSpanFromContext(ctx context.Context, operationName stri
 	return ctx, span
 }
 
+func (r *rpcClient) startProducerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
+	applyComponentInfo(span)
+	span.AddAttributes(
+		tab.StringAttribute("span.kind", "producer"),
+		tab.StringAttribute("message_bus.destination", r.ec.ManagementPath()),
+	)
+	return ctx, span
+}
+
 func startConsumerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
 	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)

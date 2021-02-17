@@ -26,32 +26,19 @@ type ServiceClient struct {
 
 // NewServiceClient creates a ServiceClient object using the specified URL, credential, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
-func NewServiceClient(serviceURL string, cred azcore.Credential, options *connectionOptions) (ServiceClient, error) {
+func NewServiceClient(serviceURL string, cred azcore.Credential, options *ClientOptions) (ServiceClient, error) {
 	u, err := url.Parse(serviceURL)
 	if err != nil {
 		return ServiceClient{}, err
 	}
 	return ServiceClient{client: &serviceClient{
-		con: newConnection(serviceURL, cred, options),
+		con: newConnection(serviceURL, cred, options.getConnectionOptions()),
 	}, u: *u}, nil
 }
 
 // URL returns the URL endpoint used by the ServiceClient object.
 func (s ServiceClient) URL() url.URL {
 	return s.u
-}
-
-// String returns the URL as a string.
-func (s ServiceClient) String() string {
-	return s.u.String()
-}
-
-// WithPipeline creates a new ServiceClient object identical to the source but with the specified request policy pipeline.
-func (s ServiceClient) WithPipeline(pipeline azcore.Pipeline) ServiceClient {
-	connection := newConnectionWithPipeline(s.u.String(), pipeline)
-	return ServiceClient{client: &serviceClient{con: connection},
-		u: s.u,
-	}
 }
 
 // NewContainerClient creates a new ContainerClient object by concatenating containerName to the end of
@@ -103,16 +90,6 @@ func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, info Key
 	}
 	urlParts := NewBlobURLParts(s.URL())
 	return NewUserDelegationCredential(strings.Split(urlParts.Host, ".")[0], *udk.UserDelegationKey), nil
-}
-
-//NewKeyInfo creates a new KeyInfo struct with the correct time formatting & conversion
-func NewKeyInfo(Start, Expiry time.Time) KeyInfo {
-	start := Start.UTC().Format(SASTimeFormat)
-	expiry := Expiry.UTC().Format(SASTimeFormat)
-	return KeyInfo{
-		Start:  &start,
-		Expiry: &expiry,
-	}
 }
 
 // The List Containers Segment operation returns a channel of the containers under the specified account.

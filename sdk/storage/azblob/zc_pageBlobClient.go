@@ -21,26 +21,17 @@ type PageBlobClient struct {
 	u      url.URL
 }
 
-func NewPageBlobClient(blobURL string, cred azcore.Credential, options *connectionOptions) (PageBlobClient, error) {
+func NewPageBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (PageBlobClient, error) {
 	u, err := url.Parse(blobURL)
 	if err != nil {
 		return PageBlobClient{}, err
 	}
-	con := newConnection(blobURL, cred, options)
+	con := newConnection(blobURL, cred, options.getConnectionOptions())
 	return PageBlobClient{
 		client:     &pageBlobClient{con: con},
 		u:          *u,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
-}
-
-func (pb PageBlobClient) WithPipeline(pipeline azcore.Pipeline) PageBlobClient {
-	con := newConnectionWithPipeline(pb.u.String(), pipeline)
-	return PageBlobClient{
-		client:     &pageBlobClient{con},
-		u:          pb.u,
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
 }
 
 func (pb PageBlobClient) URL() url.URL {

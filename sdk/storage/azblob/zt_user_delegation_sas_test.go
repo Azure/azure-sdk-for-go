@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	chk "gopkg.in/check.v1"
 )
 
@@ -99,7 +100,7 @@ func (s *aztestsSuite) TestUserDelegationSASBlob(c *chk.C) {
 	}
 
 	// Prepare user delegation key
-	keyInfo := NewKeyInfo(currentTime, currentTime.Add(48*time.Hour))
+	keyInfo := KeyInfo{Start: to.StringPtr(currentTime.String()), Expiry: to.StringPtr(currentTime.Add(48*time.Hour).String())}
 	cudk, err := serviceClient.GetUserDelegationCredential(ctx, keyInfo)
 	c.Assert(err, chk.IsNil)
 	c.Assert(cudk, chk.NotNil)

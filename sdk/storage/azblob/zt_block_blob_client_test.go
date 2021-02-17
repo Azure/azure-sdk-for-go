@@ -253,10 +253,10 @@ func (s *aztestsSuite) TestCopyBlockBlobFromURL(c *chk.C) {
 	// Make sure the metadata got copied over
 	getPropResp, err := destBlob.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	metadata := getPropResp.NewMetadata()
+	metadata := getPropResp.Metadata
 	c.Assert(metadata, chk.NotNil)
-	c.Assert(metadata, chk.HasLen, 1)
-	c.Assert(metadata, chk.DeepEquals, map[string]string{"foo": "bar"})
+	c.Assert(*metadata, chk.HasLen, 1)
+	c.Assert(*metadata, chk.DeepEquals, map[string]string{"foo": "bar"})
 
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
@@ -436,9 +436,9 @@ func (s *aztestsSuite) TestBlobPutBlobMetadataNotEmpty(c *chk.C) {
 
 	resp, err := bbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	actualMetadata := resp.NewMetadata()
+	actualMetadata := resp.Metadata
 	c.Assert(actualMetadata, chk.NotNil)
-	c.Assert(actualMetadata, chk.DeepEquals, basicMetadata)
+	c.Assert(*actualMetadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobPutBlobMetadataEmpty(c *chk.C) {
@@ -456,7 +456,8 @@ func (s *aztestsSuite) TestBlobPutBlobMetadataEmpty(c *chk.C) {
 
 	resp, err := bbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.HasLen, 0)
+	c.Assert(resp.Metadata, chk.NotNil)
+	c.Assert(*resp.Metadata, chk.HasLen, 0)
 }
 
 func (s *aztestsSuite) TestBlobPutBlobMetadataInvalid(c *chk.C) {

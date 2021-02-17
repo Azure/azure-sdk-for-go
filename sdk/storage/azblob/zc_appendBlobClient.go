@@ -10,7 +10,7 @@ import (
 
 const (
 	AppendBlobMaxAppendBlockBytes = 4 * 1024 * 1024
-	AppendBlobMaxBlocks           = 5000
+	AppendBlobMaxBlocks           = 50_000
 )
 
 type AppendBlobClient struct {
@@ -19,12 +19,12 @@ type AppendBlobClient struct {
 	u      url.URL
 }
 
-func NewAppendBlobClient(blobURL string, cred azcore.Credential, options *connectionOptions) (AppendBlobClient, error) {
+func NewAppendBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (AppendBlobClient, error) {
 	u, err := url.Parse(blobURL)
 	if err != nil {
 		return AppendBlobClient{}, err
 	}
-	con := newConnection(blobURL, cred, options)
+	con := newConnection(blobURL, cred, options.getConnectionOptions())
 	return AppendBlobClient{
 		client:     &appendBlobClient{con: con},
 		u:          *u,
@@ -34,15 +34,6 @@ func NewAppendBlobClient(blobURL string, cred azcore.Credential, options *connec
 
 func (ab AppendBlobClient) URL() url.URL {
 	return ab.u
-}
-
-func (ab AppendBlobClient) WithPipeline(pipeline azcore.Pipeline) AppendBlobClient {
-	con := newConnectionWithPipeline(ab.u.String(), pipeline)
-	return AppendBlobClient{
-		client:     &appendBlobClient{con},
-		u:          ab.u,
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
 }
 
 // WithSnapshot creates a new AppendBlobURL object identical to the source but with the specified snapshot timestamp.

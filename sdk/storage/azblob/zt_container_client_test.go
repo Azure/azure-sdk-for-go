@@ -26,21 +26,21 @@ func (s *aztestsSuite) TestCreateRootContainerURL(c *chk.C) {
 	c.Assert(temp.String(), chk.Equals, correctURL)
 }
 
-func (s *aztestsSuite) TestAccountWithPipeline(c *chk.C) {
-	bsu := getBSU()
-	pipeline := newTestPipeline()
-	bsu = bsu.WithPipeline(pipeline) // testPipeline returns an identifying message as an error
-	containerClient := bsu.NewContainerClient("name")
-
-	access := PublicAccessTypeBlob
-	createContainerOptions := CreateContainerOptions{
-		Access:   &access,
-		Metadata: &map[string]string{},
-	}
-	_, err := containerClient.Create(ctx, &createContainerOptions)
-	c.Assert(err, chk.NotNil)
-	c.Assert(err.Error(), chk.Equals, testPipelineMessage)
-}
+// func (s *aztestsSuite) TestAccountWithPipeline(c *chk.C) {
+// 	bsu := getBSU()
+// 	pipeline := newTestPipeline()
+// 	bsu = bsu.WithPipeline(pipeline) // testPipeline returns an identifying message as an error
+// 	containerClient := bsu.NewContainerClient("name")
+//
+// 	access := PublicAccessTypeBlob
+// 	createContainerOptions := CreateContainerOptions{
+// 		Access:   &access,
+// 		Metadata: &map[string]string{},
+// 	}
+// 	_, err := containerClient.Create(ctx, &createContainerOptions)
+// 	c.Assert(err, chk.NotNil)
+// 	c.Assert(err.Error(), chk.Equals, testPipelineMessage)
+// }
 
 func (s *aztestsSuite) TestContainerCreateInvalidName(c *chk.C) {
 	bsu := getBSU()
@@ -123,7 +123,7 @@ func (s *aztestsSuite) TestContainerCreateNilMetadata(c *chk.C) {
 
 	response, err := containerClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(response.NewMetadata(), chk.HasLen, 0)
+	c.Assert(response.Metadata, chk.IsNil)
 }
 
 func (s *aztestsSuite) TestContainerCreateEmptyMetadata(c *chk.C) {
@@ -141,7 +141,7 @@ func (s *aztestsSuite) TestContainerCreateEmptyMetadata(c *chk.C) {
 
 	response, err := containerClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(response.NewMetadata(), chk.HasLen, 0)
+	c.Assert(response.Metadata, chk.IsNil)
 }
 
 // Note that for all tests that create blobs, deleting the container also deletes any blobs within that container, thus we
@@ -629,21 +629,21 @@ func (s *aztestsSuite) TestContainerAccessConditionsUnsupportedConditions(c *chk
 //	c.Assert(err, chk.NotNil)
 //}
 
-func (s *aztestsSuite) TestContainerWithNewPipeline(c *chk.C) {
-	bsu := getBSU()
-	pipeline := newTestPipeline()
-	containerClient, _ := getContainerClient(c, bsu)
-	containerClient = containerClient.WithPipeline(pipeline)
-
-	access := PublicAccessTypeBlob
-	createContainerOptions := CreateContainerOptions{
-		Access: &access,
-	}
-	_, err := containerClient.Create(ctx, &createContainerOptions)
-
-	c.Assert(err, chk.NotNil)
-	c.Assert(err.Error(), chk.Equals, testPipelineMessage)
-}
+// func (s *aztestsSuite) TestContainerWithNewPipeline(c *chk.C) {
+// 	bsu := getBSU()
+// 	pipeline := newTestPipeline()
+// 	containerClient, _ := getContainerClient(c, bsu)
+// 	containerClient = containerClient.WithPipeline(pipeline)
+//
+// 	access := PublicAccessTypeBlob
+// 	createContainerOptions := CreateContainerOptions{
+// 		Access: &access,
+// 	}
+// 	_, err := containerClient.Create(ctx, &createContainerOptions)
+//
+// 	c.Assert(err, chk.NotNil)
+// 	c.Assert(err.Error(), chk.Equals, testPipelineMessage)
+// }
 
 func (s *aztestsSuite) TestContainerGetSetPermissionsMultiplePolicies(c *chk.C) {
 	bsu := getBSU()
@@ -1242,7 +1242,8 @@ func (s *aztestsSuite) TestContainerSetMetadataIfModifiedSinceTrue(c *chk.C) {
 
 	resp, err := containerClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(resp.Metadata, chk.NotNil)
+	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
 
 }
 
@@ -1270,7 +1271,7 @@ func (s *aztestsSuite) TestContainerNewBlobURL(c *chk.C) {
 	bsu := getBSU()
 	containerClient, _ := getContainerClient(c, bsu)
 
-	blobURL := containerClient.NewBlobClient(blobPrefix, nil)
+	blobURL := containerClient.NewBlobClient(blobPrefix)
 	tempBlob := blobURL.URL()
 	tempContainer := containerClient.URL()
 	c.Assert(tempBlob.String(), chk.Equals, tempContainer.String()+"/"+blobPrefix)

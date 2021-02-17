@@ -64,18 +64,18 @@ func (s *aztestsSuite) TestCreateBlobClientWithSnapshotAndSAS(c *chk.C) {
 	c.Assert(testURL.String(), chk.Equals, correctURL)
 }
 
-func (s *aztestsSuite) TestBlobWithNewPipeline(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := getContainerClient(c, bsu)
-	blobClient := containerClient.NewBlockBlobClient(blobPrefix)
-
-	newBlobClient := blobClient.WithPipeline(newTestPipeline())
-
-	// exercise the new pipeline
-	_, err := newBlobClient.GetAccountInfo(ctx)
-	c.Assert(err, chk.NotNil)
-	c.Assert(err.Error(), chk.Equals, testPipelineMessage)
-}
+// func (s *aztestsSuite) TestBlobWithNewPipeline(c *chk.C) {
+// 	bsu := getBSU()
+// 	containerClient, _ := getContainerClient(c, bsu)
+// 	blobClient := containerClient.NewBlockBlobClient(blobPrefix)
+//
+// 	newBlobClient := blobClient.WithPipeline(newTestPipeline())
+//
+// 	// exercise the new pipeline
+// 	_, err := newBlobClient.GetAccountInfo(ctx)
+// 	c.Assert(err, chk.NotNil)
+// 	c.Assert(err.Error(), chk.Equals, testPipelineMessage)
+// }
 
 func waitForCopy(c *chk.C, copyBlobClient BlockBlobClient, blobCopyResponse BlobStartCopyFromURLResponse) {
 	status := *blobCopyResponse.CopyStatus

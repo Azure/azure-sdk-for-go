@@ -27,7 +27,7 @@ all: fmt lint vet tidy ; $(info $(M) building library…) @ ## Build program
 
 GOLINT = $(BIN)/golint
 $(BIN)/golint: ; $(info $(M) building golint…)
-	$Q go get github.com/golang/lint/golint
+	$Q go get golang.org/x/lint/golint
 
 # Tests
 

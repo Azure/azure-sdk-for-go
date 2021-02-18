@@ -352,6 +352,7 @@ func (r *Receiver) listenForMessage(ctx context.Context) (*amqp.Message, error) 
 	var receiver *amqp.Receiver
 	r.clientMu.RLock()
 	if r.receiver == nil {
+		r.clientMu.RUnlock()
 		return nil, r.connClosedError(ctx)
 	}
 	receiver = r.receiver

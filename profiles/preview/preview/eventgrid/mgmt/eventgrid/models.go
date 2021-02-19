@@ -22,11 +22,20 @@ package eventgrid
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2020-04-01-preview/eventgrid"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2020-10-15-preview/eventgrid"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
 )
 
 type DomainProvisioningState = original.DomainProvisioningState
@@ -144,16 +153,23 @@ type OperatorType = original.OperatorType
 const (
 	OperatorTypeAdvancedFilter            OperatorType = original.OperatorTypeAdvancedFilter
 	OperatorTypeBoolEquals                OperatorType = original.OperatorTypeBoolEquals
+	OperatorTypeIsNotNull                 OperatorType = original.OperatorTypeIsNotNull
+	OperatorTypeIsNullOrUndefined         OperatorType = original.OperatorTypeIsNullOrUndefined
 	OperatorTypeNumberGreaterThan         OperatorType = original.OperatorTypeNumberGreaterThan
 	OperatorTypeNumberGreaterThanOrEquals OperatorType = original.OperatorTypeNumberGreaterThanOrEquals
 	OperatorTypeNumberIn                  OperatorType = original.OperatorTypeNumberIn
+	OperatorTypeNumberInRange             OperatorType = original.OperatorTypeNumberInRange
 	OperatorTypeNumberLessThan            OperatorType = original.OperatorTypeNumberLessThan
 	OperatorTypeNumberLessThanOrEquals    OperatorType = original.OperatorTypeNumberLessThanOrEquals
 	OperatorTypeNumberNotIn               OperatorType = original.OperatorTypeNumberNotIn
+	OperatorTypeNumberNotInRange          OperatorType = original.OperatorTypeNumberNotInRange
 	OperatorTypeStringBeginsWith          OperatorType = original.OperatorTypeStringBeginsWith
 	OperatorTypeStringContains            OperatorType = original.OperatorTypeStringContains
 	OperatorTypeStringEndsWith            OperatorType = original.OperatorTypeStringEndsWith
 	OperatorTypeStringIn                  OperatorType = original.OperatorTypeStringIn
+	OperatorTypeStringNotBeginsWith       OperatorType = original.OperatorTypeStringNotBeginsWith
+	OperatorTypeStringNotContains         OperatorType = original.OperatorTypeStringNotContains
+	OperatorTypeStringNotEndsWith         OperatorType = original.OperatorTypeStringNotEndsWith
 	OperatorTypeStringNotIn               OperatorType = original.OperatorTypeStringNotIn
 )
 
@@ -239,6 +255,13 @@ const (
 	Enabled  PublicNetworkAccess = original.Enabled
 )
 
+type ResourceKind = original.ResourceKind
+
+const (
+	Azure    ResourceKind = original.Azure
+	AzureArc ResourceKind = original.AzureArc
+)
+
 type ResourceProvisioningState = original.ResourceProvisioningState
 
 const (
@@ -286,18 +309,29 @@ const (
 	TopicTypeProvisioningStateUpdating  TopicTypeProvisioningState = original.TopicTypeProvisioningStateUpdating
 )
 
+type Type = original.Type
+
+const (
+	TypeDeliveryAttributeMapping Type = original.TypeDeliveryAttributeMapping
+	TypeDynamic                  Type = original.TypeDynamic
+	TypeStatic                   Type = original.TypeStatic
+)
+
 type AdvancedFilter = original.AdvancedFilter
 type AzureFunctionEventSubscriptionDestination = original.AzureFunctionEventSubscriptionDestination
 type AzureFunctionEventSubscriptionDestinationProperties = original.AzureFunctionEventSubscriptionDestinationProperties
 type BaseClient = original.BaseClient
 type BasicAdvancedFilter = original.BasicAdvancedFilter
 type BasicDeadLetterDestination = original.BasicDeadLetterDestination
+type BasicDeliveryAttributeMapping = original.BasicDeliveryAttributeMapping
 type BasicEventSubscriptionDestination = original.BasicEventSubscriptionDestination
 type BasicInputSchemaMapping = original.BasicInputSchemaMapping
 type BoolEqualsAdvancedFilter = original.BoolEqualsAdvancedFilter
 type ConnectionState = original.ConnectionState
 type DeadLetterDestination = original.DeadLetterDestination
 type DeadLetterWithResourceIdentity = original.DeadLetterWithResourceIdentity
+type DeliveryAttributeListResult = original.DeliveryAttributeListResult
+type DeliveryAttributeMapping = original.DeliveryAttributeMapping
 type DeliveryWithResourceIdentity = original.DeliveryWithResourceIdentity
 type Domain = original.Domain
 type DomainProperties = original.DomainProperties
@@ -320,6 +354,8 @@ type DomainsListResult = original.DomainsListResult
 type DomainsListResultIterator = original.DomainsListResultIterator
 type DomainsListResultPage = original.DomainsListResultPage
 type DomainsUpdateFuture = original.DomainsUpdateFuture
+type DynamicDeliveryAttributeMapping = original.DynamicDeliveryAttributeMapping
+type DynamicDeliveryAttributeMappingProperties = original.DynamicDeliveryAttributeMappingProperties
 type EventChannel = original.EventChannel
 type EventChannelDestination = original.EventChannelDestination
 type EventChannelFilter = original.EventChannelFilter
@@ -349,6 +385,7 @@ type EventSubscriptionsUpdateFuture = original.EventSubscriptionsUpdateFuture
 type EventType = original.EventType
 type EventTypeProperties = original.EventTypeProperties
 type EventTypesListResult = original.EventTypesListResult
+type ExtendedLocation = original.ExtendedLocation
 type ExtensionTopic = original.ExtensionTopic
 type ExtensionTopicProperties = original.ExtensionTopicProperties
 type ExtensionTopicsClient = original.ExtensionTopicsClient
@@ -357,6 +394,8 @@ type HybridConnectionEventSubscriptionDestinationProperties = original.HybridCon
 type IdentityInfo = original.IdentityInfo
 type InboundIPRule = original.InboundIPRule
 type InputSchemaMapping = original.InputSchemaMapping
+type IsNotNullAdvancedFilter = original.IsNotNullAdvancedFilter
+type IsNullOrUndefinedAdvancedFilter = original.IsNullOrUndefinedAdvancedFilter
 type JSONField = original.JSONField
 type JSONFieldWithDefault = original.JSONFieldWithDefault
 type JSONInputSchemaMapping = original.JSONInputSchemaMapping
@@ -364,9 +403,11 @@ type JSONInputSchemaMappingProperties = original.JSONInputSchemaMappingPropertie
 type NumberGreaterThanAdvancedFilter = original.NumberGreaterThanAdvancedFilter
 type NumberGreaterThanOrEqualsAdvancedFilter = original.NumberGreaterThanOrEqualsAdvancedFilter
 type NumberInAdvancedFilter = original.NumberInAdvancedFilter
+type NumberInRangeAdvancedFilter = original.NumberInRangeAdvancedFilter
 type NumberLessThanAdvancedFilter = original.NumberLessThanAdvancedFilter
 type NumberLessThanOrEqualsAdvancedFilter = original.NumberLessThanOrEqualsAdvancedFilter
 type NumberNotInAdvancedFilter = original.NumberNotInAdvancedFilter
+type NumberNotInRangeAdvancedFilter = original.NumberNotInRangeAdvancedFilter
 type Operation = original.Operation
 type OperationInfo = original.OperationInfo
 type OperationsClient = original.OperationsClient
@@ -428,6 +469,8 @@ type ServiceBusQueueEventSubscriptionDestination = original.ServiceBusQueueEvent
 type ServiceBusQueueEventSubscriptionDestinationProperties = original.ServiceBusQueueEventSubscriptionDestinationProperties
 type ServiceBusTopicEventSubscriptionDestination = original.ServiceBusTopicEventSubscriptionDestination
 type ServiceBusTopicEventSubscriptionDestinationProperties = original.ServiceBusTopicEventSubscriptionDestinationProperties
+type StaticDeliveryAttributeMapping = original.StaticDeliveryAttributeMapping
+type StaticDeliveryAttributeMappingProperties = original.StaticDeliveryAttributeMappingProperties
 type StorageBlobDeadLetterDestination = original.StorageBlobDeadLetterDestination
 type StorageBlobDeadLetterDestinationProperties = original.StorageBlobDeadLetterDestinationProperties
 type StorageQueueEventSubscriptionDestination = original.StorageQueueEventSubscriptionDestination
@@ -436,7 +479,11 @@ type StringBeginsWithAdvancedFilter = original.StringBeginsWithAdvancedFilter
 type StringContainsAdvancedFilter = original.StringContainsAdvancedFilter
 type StringEndsWithAdvancedFilter = original.StringEndsWithAdvancedFilter
 type StringInAdvancedFilter = original.StringInAdvancedFilter
+type StringNotBeginsWithAdvancedFilter = original.StringNotBeginsWithAdvancedFilter
+type StringNotContainsAdvancedFilter = original.StringNotContainsAdvancedFilter
+type StringNotEndsWithAdvancedFilter = original.StringNotEndsWithAdvancedFilter
 type StringNotInAdvancedFilter = original.StringNotInAdvancedFilter
+type SystemData = original.SystemData
 type SystemTopic = original.SystemTopic
 type SystemTopicEventSubscriptionsClient = original.SystemTopicEventSubscriptionsClient
 type SystemTopicEventSubscriptionsCreateOrUpdateFuture = original.SystemTopicEventSubscriptionsCreateOrUpdateFuture
@@ -467,6 +514,7 @@ type TopicsDeleteFuture = original.TopicsDeleteFuture
 type TopicsListResult = original.TopicsListResult
 type TopicsListResultIterator = original.TopicsListResultIterator
 type TopicsListResultPage = original.TopicsListResultPage
+type TopicsRegenerateKeyFuture = original.TopicsRegenerateKeyFuture
 type TopicsUpdateFuture = original.TopicsUpdateFuture
 type TrackedResource = original.TrackedResource
 type UserIdentityProperties = original.UserIdentityProperties
@@ -641,6 +689,9 @@ func NewTopicsListResultPage(cur TopicsListResult, getNextPage func(context.Cont
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleDomainProvisioningStateValues() []DomainProvisioningState {
 	return original.PossibleDomainProvisioningStateValues()
 }
@@ -707,6 +758,9 @@ func PossiblePersistedConnectionStatusValues() []PersistedConnectionStatus {
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return original.PossiblePublicNetworkAccessValues()
 }
+func PossibleResourceKindValues() []ResourceKind {
+	return original.PossibleResourceKindValues()
+}
 func PossibleResourceProvisioningStateValues() []ResourceProvisioningState {
 	return original.PossibleResourceProvisioningStateValues()
 }
@@ -721,6 +775,9 @@ func PossibleTopicProvisioningStateValues() []TopicProvisioningState {
 }
 func PossibleTopicTypeProvisioningStateValues() []TopicTypeProvisioningState {
 	return original.PossibleTopicTypeProvisioningStateValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

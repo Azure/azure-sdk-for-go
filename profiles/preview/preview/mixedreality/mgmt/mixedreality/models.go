@@ -22,18 +22,20 @@ package mixedreality
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/mixedreality/mgmt/2020-05-01-preview/mixedreality"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/mixedreality/mgmt/2021-03-01-preview/mixedreality"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type NameAvailability = original.NameAvailability
+type CreatedByType = original.CreatedByType
 
 const (
-	False NameAvailability = original.False
-	True  NameAvailability = original.True
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
 )
 
 type NameUnavailableReason = original.NameUnavailableReason
@@ -68,6 +70,15 @@ type CheckNameAvailabilityResponse = original.CheckNameAvailabilityResponse
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type Identity = original.Identity
+type LogSpecification = original.LogSpecification
+type MetricDimension = original.MetricDimension
+type MetricSpecification = original.MetricSpecification
+type ObjectAnchorsAccount = original.ObjectAnchorsAccount
+type ObjectAnchorsAccountIdentity = original.ObjectAnchorsAccountIdentity
+type ObjectAnchorsAccountPage = original.ObjectAnchorsAccountPage
+type ObjectAnchorsAccountPageIterator = original.ObjectAnchorsAccountPageIterator
+type ObjectAnchorsAccountPagePage = original.ObjectAnchorsAccountPagePage
+type ObjectAnchorsAccountsClient = original.ObjectAnchorsAccountsClient
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationPage = original.OperationPage
@@ -75,9 +86,9 @@ type OperationPageIterator = original.OperationPageIterator
 type OperationPagePage = original.OperationPagePage
 type OperationsClient = original.OperationsClient
 type Plan = original.Plan
+type Properties = original.Properties
 type ProxyResource = original.ProxyResource
 type RemoteRenderingAccount = original.RemoteRenderingAccount
-type RemoteRenderingAccountIdentity = original.RemoteRenderingAccountIdentity
 type RemoteRenderingAccountPage = original.RemoteRenderingAccountPage
 type RemoteRenderingAccountPageIterator = original.RemoteRenderingAccountPageIterator
 type RemoteRenderingAccountPagePage = original.RemoteRenderingAccountPagePage
@@ -87,16 +98,30 @@ type ResourceModelWithAllowedPropertySet = original.ResourceModelWithAllowedProp
 type ResourceModelWithAllowedPropertySetIdentity = original.ResourceModelWithAllowedPropertySetIdentity
 type ResourceModelWithAllowedPropertySetPlan = original.ResourceModelWithAllowedPropertySetPlan
 type ResourceModelWithAllowedPropertySetSku = original.ResourceModelWithAllowedPropertySetSku
+type ServiceSpecification = original.ServiceSpecification
 type Sku = original.Sku
 type SpatialAnchorsAccount = original.SpatialAnchorsAccount
 type SpatialAnchorsAccountPage = original.SpatialAnchorsAccountPage
 type SpatialAnchorsAccountPageIterator = original.SpatialAnchorsAccountPageIterator
 type SpatialAnchorsAccountPagePage = original.SpatialAnchorsAccountPagePage
 type SpatialAnchorsAccountsClient = original.SpatialAnchorsAccountsClient
+type SystemData = original.SystemData
 type TrackedResource = original.TrackedResource
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewObjectAnchorsAccountPageIterator(page ObjectAnchorsAccountPagePage) ObjectAnchorsAccountPageIterator {
+	return original.NewObjectAnchorsAccountPageIterator(page)
+}
+func NewObjectAnchorsAccountPagePage(cur ObjectAnchorsAccountPage, getNextPage func(context.Context, ObjectAnchorsAccountPage) (ObjectAnchorsAccountPage, error)) ObjectAnchorsAccountPagePage {
+	return original.NewObjectAnchorsAccountPagePage(cur, getNextPage)
+}
+func NewObjectAnchorsAccountsClient(subscriptionID string) ObjectAnchorsAccountsClient {
+	return original.NewObjectAnchorsAccountsClient(subscriptionID)
+}
+func NewObjectAnchorsAccountsClientWithBaseURI(baseURI string, subscriptionID string) ObjectAnchorsAccountsClient {
+	return original.NewObjectAnchorsAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationPageIterator(page OperationPagePage) OperationPageIterator {
 	return original.NewOperationPageIterator(page)
@@ -137,8 +162,8 @@ func NewSpatialAnchorsAccountsClientWithBaseURI(baseURI string, subscriptionID s
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleNameAvailabilityValues() []NameAvailability {
-	return original.PossibleNameAvailabilityValues()
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleNameUnavailableReasonValues() []NameUnavailableReason {
 	return original.PossibleNameUnavailableReasonValues()

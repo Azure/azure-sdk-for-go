@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## `v51.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-01-15/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/monitor/mgmt/2020-10-01/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2020-10-15-preview/eventgrid`
+- `github.com/Azure/azure-sdk-for-go/services/preview/mixedreality/mgmt/2021-03-01-preview/mixedreality`
+- `github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-09-01/web`
+
 ## `v51.2.0`
 
 ### New Packages
@@ -15,8 +25,8 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral` | [details](services/iotcentral/mgmt/2018-09-01/iotcentral/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v51.2.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v51.2.0/services/iotcentral/mgmt/2018-09-01/iotcentral/CHANGELOG.md) |
 
 ## `v51.1.0`
 

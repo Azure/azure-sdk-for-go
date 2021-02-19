@@ -22,11 +22,18 @@ package documentdb
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2019-08-01/documentdb"
+	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-01-15/documentdb"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type BackupPolicyType = original.BackupPolicyType
+
+const (
+	Continuous BackupPolicyType = original.Continuous
+	Periodic   BackupPolicyType = original.Periodic
 )
 
 type CompositePathSortOrder = original.CompositePathSortOrder
@@ -109,11 +116,19 @@ const (
 	SecondaryReadonly KeyKind = original.SecondaryReadonly
 )
 
+type NetworkACLBypass = original.NetworkACLBypass
+
+const (
+	NetworkACLBypassAzureServices NetworkACLBypass = original.NetworkACLBypassAzureServices
+	NetworkACLBypassNone          NetworkACLBypass = original.NetworkACLBypassNone
+)
+
 type PartitionKind = original.PartitionKind
 
 const (
-	PartitionKindHash  PartitionKind = original.PartitionKindHash
-	PartitionKindRange PartitionKind = original.PartitionKindRange
+	PartitionKindHash      PartitionKind = original.PartitionKindHash
+	PartitionKindMultiHash PartitionKind = original.PartitionKindMultiHash
+	PartitionKindRange     PartitionKind = original.PartitionKindRange
 )
 
 type PrimaryAggregationType = original.PrimaryAggregationType
@@ -125,6 +140,30 @@ const (
 	PrimaryAggregationTypeMinimum PrimaryAggregationType = original.PrimaryAggregationTypeMinimum
 	PrimaryAggregationTypeNone    PrimaryAggregationType = original.PrimaryAggregationTypeNone
 	PrimaryAggregationTypeTotal   PrimaryAggregationType = original.PrimaryAggregationTypeTotal
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	Disabled PublicNetworkAccess = original.Disabled
+	Enabled  PublicNetworkAccess = original.Enabled
+)
+
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	ResourceIdentityTypeNone                       ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
+)
+
+type ServerVersion = original.ServerVersion
+
+const (
+	FourFullStopZero ServerVersion = original.FourFullStopZero
+	ThreeFullStopSix ServerVersion = original.ThreeFullStopSix
+	ThreeFullStopTwo ServerVersion = original.ThreeFullStopTwo
 )
 
 type SpatialType = original.SpatialType
@@ -153,6 +192,14 @@ const (
 	Pre  TriggerType = original.Pre
 )
 
+type Type = original.Type
+
+const (
+	TypeBackupPolicy Type = original.TypeBackupPolicy
+	TypeContinuous   Type = original.TypeContinuous
+	TypePeriodic     Type = original.TypePeriodic
+)
+
 type UnitType = original.UnitType
 
 const (
@@ -165,13 +212,21 @@ const (
 	Seconds        UnitType = original.Seconds
 )
 
+type APIProperties = original.APIProperties
 type ARMProxyResource = original.ARMProxyResource
 type ARMResourceProperties = original.ARMResourceProperties
+type AutoUpgradePolicyResource = original.AutoUpgradePolicyResource
+type AutoscaleSettings = original.AutoscaleSettings
+type AutoscaleSettingsResource = original.AutoscaleSettingsResource
+type AzureEntityResource = original.AzureEntityResource
+type BackupPolicy = original.BackupPolicy
 type BaseClient = original.BaseClient
+type BasicBackupPolicy = original.BasicBackupPolicy
 type Capability = original.Capability
 type CassandraKeyspaceCreateUpdateParameters = original.CassandraKeyspaceCreateUpdateParameters
 type CassandraKeyspaceCreateUpdateProperties = original.CassandraKeyspaceCreateUpdateProperties
 type CassandraKeyspaceGetProperties = original.CassandraKeyspaceGetProperties
+type CassandraKeyspaceGetPropertiesOptions = original.CassandraKeyspaceGetPropertiesOptions
 type CassandraKeyspaceGetPropertiesResource = original.CassandraKeyspaceGetPropertiesResource
 type CassandraKeyspaceGetResults = original.CassandraKeyspaceGetResults
 type CassandraKeyspaceListResult = original.CassandraKeyspaceListResult
@@ -182,12 +237,17 @@ type CassandraResourcesCreateUpdateCassandraKeyspaceFuture = original.CassandraR
 type CassandraResourcesCreateUpdateCassandraTableFuture = original.CassandraResourcesCreateUpdateCassandraTableFuture
 type CassandraResourcesDeleteCassandraKeyspaceFuture = original.CassandraResourcesDeleteCassandraKeyspaceFuture
 type CassandraResourcesDeleteCassandraTableFuture = original.CassandraResourcesDeleteCassandraTableFuture
+type CassandraResourcesMigrateCassandraKeyspaceToAutoscaleFuture = original.CassandraResourcesMigrateCassandraKeyspaceToAutoscaleFuture
+type CassandraResourcesMigrateCassandraKeyspaceToManualThroughputFuture = original.CassandraResourcesMigrateCassandraKeyspaceToManualThroughputFuture
+type CassandraResourcesMigrateCassandraTableToAutoscaleFuture = original.CassandraResourcesMigrateCassandraTableToAutoscaleFuture
+type CassandraResourcesMigrateCassandraTableToManualThroughputFuture = original.CassandraResourcesMigrateCassandraTableToManualThroughputFuture
 type CassandraResourcesUpdateCassandraKeyspaceThroughputFuture = original.CassandraResourcesUpdateCassandraKeyspaceThroughputFuture
 type CassandraResourcesUpdateCassandraTableThroughputFuture = original.CassandraResourcesUpdateCassandraTableThroughputFuture
 type CassandraSchema = original.CassandraSchema
 type CassandraTableCreateUpdateParameters = original.CassandraTableCreateUpdateParameters
 type CassandraTableCreateUpdateProperties = original.CassandraTableCreateUpdateProperties
 type CassandraTableGetProperties = original.CassandraTableGetProperties
+type CassandraTableGetPropertiesOptions = original.CassandraTableGetPropertiesOptions
 type CassandraTableGetPropertiesResource = original.CassandraTableGetPropertiesResource
 type CassandraTableGetResults = original.CassandraTableGetResults
 type CassandraTableListResult = original.CassandraTableListResult
@@ -202,6 +262,9 @@ type CompositePath = original.CompositePath
 type ConflictResolutionPolicy = original.ConflictResolutionPolicy
 type ConsistencyPolicy = original.ConsistencyPolicy
 type ContainerPartitionKey = original.ContainerPartitionKey
+type ContinuousModeBackupPolicy = original.ContinuousModeBackupPolicy
+type CorsPolicy = original.CorsPolicy
+type CreateUpdateOptions = original.CreateUpdateOptions
 type DatabaseAccountConnectionString = original.DatabaseAccountConnectionString
 type DatabaseAccountCreateUpdateParameters = original.DatabaseAccountCreateUpdateParameters
 type DatabaseAccountCreateUpdateProperties = original.DatabaseAccountCreateUpdateProperties
@@ -225,6 +288,7 @@ type DatabaseAccountsRegenerateKeyFuture = original.DatabaseAccountsRegenerateKe
 type DatabaseAccountsUpdateFuture = original.DatabaseAccountsUpdateFuture
 type DatabaseClient = original.DatabaseClient
 type ErrorResponse = original.ErrorResponse
+type ErrorResponseUpdatedFormat = original.ErrorResponseUpdatedFormat
 type ExcludedPath = original.ExcludedPath
 type ExtendedResourceProperties = original.ExtendedResourceProperties
 type FailoverPolicies = original.FailoverPolicies
@@ -232,6 +296,7 @@ type FailoverPolicy = original.FailoverPolicy
 type GremlinDatabaseCreateUpdateParameters = original.GremlinDatabaseCreateUpdateParameters
 type GremlinDatabaseCreateUpdateProperties = original.GremlinDatabaseCreateUpdateProperties
 type GremlinDatabaseGetProperties = original.GremlinDatabaseGetProperties
+type GremlinDatabaseGetPropertiesOptions = original.GremlinDatabaseGetPropertiesOptions
 type GremlinDatabaseGetPropertiesResource = original.GremlinDatabaseGetPropertiesResource
 type GremlinDatabaseGetResults = original.GremlinDatabaseGetResults
 type GremlinDatabaseListResult = original.GremlinDatabaseListResult
@@ -239,6 +304,7 @@ type GremlinDatabaseResource = original.GremlinDatabaseResource
 type GremlinGraphCreateUpdateParameters = original.GremlinGraphCreateUpdateParameters
 type GremlinGraphCreateUpdateProperties = original.GremlinGraphCreateUpdateProperties
 type GremlinGraphGetProperties = original.GremlinGraphGetProperties
+type GremlinGraphGetPropertiesOptions = original.GremlinGraphGetPropertiesOptions
 type GremlinGraphGetPropertiesResource = original.GremlinGraphGetPropertiesResource
 type GremlinGraphGetResults = original.GremlinGraphGetResults
 type GremlinGraphListResult = original.GremlinGraphListResult
@@ -248,12 +314,19 @@ type GremlinResourcesCreateUpdateGremlinDatabaseFuture = original.GremlinResourc
 type GremlinResourcesCreateUpdateGremlinGraphFuture = original.GremlinResourcesCreateUpdateGremlinGraphFuture
 type GremlinResourcesDeleteGremlinDatabaseFuture = original.GremlinResourcesDeleteGremlinDatabaseFuture
 type GremlinResourcesDeleteGremlinGraphFuture = original.GremlinResourcesDeleteGremlinGraphFuture
+type GremlinResourcesMigrateGremlinDatabaseToAutoscaleFuture = original.GremlinResourcesMigrateGremlinDatabaseToAutoscaleFuture
+type GremlinResourcesMigrateGremlinDatabaseToManualThroughputFuture = original.GremlinResourcesMigrateGremlinDatabaseToManualThroughputFuture
+type GremlinResourcesMigrateGremlinGraphToAutoscaleFuture = original.GremlinResourcesMigrateGremlinGraphToAutoscaleFuture
+type GremlinResourcesMigrateGremlinGraphToManualThroughputFuture = original.GremlinResourcesMigrateGremlinGraphToManualThroughputFuture
 type GremlinResourcesUpdateGremlinDatabaseThroughputFuture = original.GremlinResourcesUpdateGremlinDatabaseThroughputFuture
 type GremlinResourcesUpdateGremlinGraphThroughputFuture = original.GremlinResourcesUpdateGremlinGraphThroughputFuture
+type IPAddressOrRange = original.IPAddressOrRange
 type IncludedPath = original.IncludedPath
 type Indexes = original.Indexes
 type IndexingPolicy = original.IndexingPolicy
 type Location = original.Location
+type ManagedServiceIdentity = original.ManagedServiceIdentity
+type ManagedServiceIdentityUserAssignedIdentitiesValue = original.ManagedServiceIdentityUserAssignedIdentitiesValue
 type Metric = original.Metric
 type MetricAvailability = original.MetricAvailability
 type MetricDefinition = original.MetricDefinition
@@ -264,6 +337,7 @@ type MetricValue = original.MetricValue
 type MongoDBCollectionCreateUpdateParameters = original.MongoDBCollectionCreateUpdateParameters
 type MongoDBCollectionCreateUpdateProperties = original.MongoDBCollectionCreateUpdateProperties
 type MongoDBCollectionGetProperties = original.MongoDBCollectionGetProperties
+type MongoDBCollectionGetPropertiesOptions = original.MongoDBCollectionGetPropertiesOptions
 type MongoDBCollectionGetPropertiesResource = original.MongoDBCollectionGetPropertiesResource
 type MongoDBCollectionGetResults = original.MongoDBCollectionGetResults
 type MongoDBCollectionListResult = original.MongoDBCollectionListResult
@@ -271,6 +345,7 @@ type MongoDBCollectionResource = original.MongoDBCollectionResource
 type MongoDBDatabaseCreateUpdateParameters = original.MongoDBDatabaseCreateUpdateParameters
 type MongoDBDatabaseCreateUpdateProperties = original.MongoDBDatabaseCreateUpdateProperties
 type MongoDBDatabaseGetProperties = original.MongoDBDatabaseGetProperties
+type MongoDBDatabaseGetPropertiesOptions = original.MongoDBDatabaseGetPropertiesOptions
 type MongoDBDatabaseGetPropertiesResource = original.MongoDBDatabaseGetPropertiesResource
 type MongoDBDatabaseGetResults = original.MongoDBDatabaseGetResults
 type MongoDBDatabaseListResult = original.MongoDBDatabaseListResult
@@ -280,6 +355,10 @@ type MongoDBResourcesCreateUpdateMongoDBCollectionFuture = original.MongoDBResou
 type MongoDBResourcesCreateUpdateMongoDBDatabaseFuture = original.MongoDBResourcesCreateUpdateMongoDBDatabaseFuture
 type MongoDBResourcesDeleteMongoDBCollectionFuture = original.MongoDBResourcesDeleteMongoDBCollectionFuture
 type MongoDBResourcesDeleteMongoDBDatabaseFuture = original.MongoDBResourcesDeleteMongoDBDatabaseFuture
+type MongoDBResourcesMigrateMongoDBCollectionToAutoscaleFuture = original.MongoDBResourcesMigrateMongoDBCollectionToAutoscaleFuture
+type MongoDBResourcesMigrateMongoDBCollectionToManualThroughputFuture = original.MongoDBResourcesMigrateMongoDBCollectionToManualThroughputFuture
+type MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleFuture = original.MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleFuture
+type MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputFuture = original.MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputFuture
 type MongoDBResourcesUpdateMongoDBCollectionThroughputFuture = original.MongoDBResourcesUpdateMongoDBCollectionThroughputFuture
 type MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture = original.MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture
 type MongoIndex = original.MongoIndex
@@ -301,6 +380,7 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type OptionsResource = original.OptionsResource
 type PartitionKeyRangeIDClient = original.PartitionKeyRangeIDClient
 type PartitionKeyRangeIDRegionClient = original.PartitionKeyRangeIDRegionClient
 type PartitionMetric = original.PartitionMetric
@@ -313,10 +393,27 @@ type PercentileMetricListResult = original.PercentileMetricListResult
 type PercentileMetricValue = original.PercentileMetricValue
 type PercentileSourceTargetClient = original.PercentileSourceTargetClient
 type PercentileTargetClient = original.PercentileTargetClient
+type PeriodicModeBackupPolicy = original.PeriodicModeBackupPolicy
+type PeriodicModeProperties = original.PeriodicModeProperties
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsCreateOrUpdateFuture = original.PrivateEndpointConnectionsCreateOrUpdateFuture
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateEndpointProperty = original.PrivateEndpointProperty
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
+type ProxyResource = original.ProxyResource
 type RegionForOnlineOffline = original.RegionForOnlineOffline
+type Resource = original.Resource
 type SQLContainerCreateUpdateParameters = original.SQLContainerCreateUpdateParameters
 type SQLContainerCreateUpdateProperties = original.SQLContainerCreateUpdateProperties
 type SQLContainerGetProperties = original.SQLContainerGetProperties
+type SQLContainerGetPropertiesOptions = original.SQLContainerGetPropertiesOptions
 type SQLContainerGetPropertiesResource = original.SQLContainerGetPropertiesResource
 type SQLContainerGetResults = original.SQLContainerGetResults
 type SQLContainerListResult = original.SQLContainerListResult
@@ -324,6 +421,7 @@ type SQLContainerResource = original.SQLContainerResource
 type SQLDatabaseCreateUpdateParameters = original.SQLDatabaseCreateUpdateParameters
 type SQLDatabaseCreateUpdateProperties = original.SQLDatabaseCreateUpdateProperties
 type SQLDatabaseGetProperties = original.SQLDatabaseGetProperties
+type SQLDatabaseGetPropertiesOptions = original.SQLDatabaseGetPropertiesOptions
 type SQLDatabaseGetPropertiesResource = original.SQLDatabaseGetPropertiesResource
 type SQLDatabaseGetResults = original.SQLDatabaseGetResults
 type SQLDatabaseListResult = original.SQLDatabaseListResult
@@ -339,6 +437,10 @@ type SQLResourcesDeleteSQLDatabaseFuture = original.SQLResourcesDeleteSQLDatabas
 type SQLResourcesDeleteSQLStoredProcedureFuture = original.SQLResourcesDeleteSQLStoredProcedureFuture
 type SQLResourcesDeleteSQLTriggerFuture = original.SQLResourcesDeleteSQLTriggerFuture
 type SQLResourcesDeleteSQLUserDefinedFunctionFuture = original.SQLResourcesDeleteSQLUserDefinedFunctionFuture
+type SQLResourcesMigrateSQLContainerToAutoscaleFuture = original.SQLResourcesMigrateSQLContainerToAutoscaleFuture
+type SQLResourcesMigrateSQLContainerToManualThroughputFuture = original.SQLResourcesMigrateSQLContainerToManualThroughputFuture
+type SQLResourcesMigrateSQLDatabaseToAutoscaleFuture = original.SQLResourcesMigrateSQLDatabaseToAutoscaleFuture
+type SQLResourcesMigrateSQLDatabaseToManualThroughputFuture = original.SQLResourcesMigrateSQLDatabaseToManualThroughputFuture
 type SQLResourcesUpdateSQLContainerThroughputFuture = original.SQLResourcesUpdateSQLContainerThroughputFuture
 type SQLResourcesUpdateSQLDatabaseThroughputFuture = original.SQLResourcesUpdateSQLDatabaseThroughputFuture
 type SQLStoredProcedureCreateUpdateParameters = original.SQLStoredProcedureCreateUpdateParameters
@@ -366,6 +468,7 @@ type SpatialSpec = original.SpatialSpec
 type TableCreateUpdateParameters = original.TableCreateUpdateParameters
 type TableCreateUpdateProperties = original.TableCreateUpdateProperties
 type TableGetProperties = original.TableGetProperties
+type TableGetPropertiesOptions = original.TableGetPropertiesOptions
 type TableGetPropertiesResource = original.TableGetPropertiesResource
 type TableGetResults = original.TableGetResults
 type TableListResult = original.TableListResult
@@ -373,13 +476,17 @@ type TableResource = original.TableResource
 type TableResourcesClient = original.TableResourcesClient
 type TableResourcesCreateUpdateTableFuture = original.TableResourcesCreateUpdateTableFuture
 type TableResourcesDeleteTableFuture = original.TableResourcesDeleteTableFuture
+type TableResourcesMigrateTableToAutoscaleFuture = original.TableResourcesMigrateTableToAutoscaleFuture
+type TableResourcesMigrateTableToManualThroughputFuture = original.TableResourcesMigrateTableToManualThroughputFuture
 type TableResourcesUpdateTableThroughputFuture = original.TableResourcesUpdateTableThroughputFuture
+type ThroughputPolicyResource = original.ThroughputPolicyResource
 type ThroughputSettingsGetProperties = original.ThroughputSettingsGetProperties
 type ThroughputSettingsGetPropertiesResource = original.ThroughputSettingsGetPropertiesResource
 type ThroughputSettingsGetResults = original.ThroughputSettingsGetResults
 type ThroughputSettingsResource = original.ThroughputSettingsResource
 type ThroughputSettingsUpdateParameters = original.ThroughputSettingsUpdateParameters
 type ThroughputSettingsUpdateProperties = original.ThroughputSettingsUpdateProperties
+type TrackedResource = original.TrackedResource
 type UniqueKey = original.UniqueKey
 type UniqueKeyPolicy = original.UniqueKeyPolicy
 type Usage = original.Usage
@@ -497,6 +604,18 @@ func NewPercentileTargetClient(subscriptionID string) PercentileTargetClient {
 func NewPercentileTargetClientWithBaseURI(baseURI string, subscriptionID string) PercentileTargetClient {
 	return original.NewPercentileTargetClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewSQLResourcesClient(subscriptionID string) SQLResourcesClient {
 	return original.NewSQLResourcesClient(subscriptionID)
 }
@@ -511,6 +630,9 @@ func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string) T
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleBackupPolicyTypeValues() []BackupPolicyType {
+	return original.PossibleBackupPolicyTypeValues()
 }
 func PossibleCompositePathSortOrderValues() []CompositePathSortOrder {
 	return original.PossibleCompositePathSortOrderValues()
@@ -542,11 +664,23 @@ func PossibleIndexingModeValues() []IndexingMode {
 func PossibleKeyKindValues() []KeyKind {
 	return original.PossibleKeyKindValues()
 }
+func PossibleNetworkACLBypassValues() []NetworkACLBypass {
+	return original.PossibleNetworkACLBypassValues()
+}
 func PossiblePartitionKindValues() []PartitionKind {
 	return original.PossiblePartitionKindValues()
 }
 func PossiblePrimaryAggregationTypeValues() []PrimaryAggregationType {
 	return original.PossiblePrimaryAggregationTypeValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleServerVersionValues() []ServerVersion {
+	return original.PossibleServerVersionValues()
 }
 func PossibleSpatialTypeValues() []SpatialType {
 	return original.PossibleSpatialTypeValues()
@@ -556,6 +690,9 @@ func PossibleTriggerOperationValues() []TriggerOperation {
 }
 func PossibleTriggerTypeValues() []TriggerType {
 	return original.PossibleTriggerTypeValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
 }
 func PossibleUnitTypeValues() []UnitType {
 	return original.PossibleUnitTypeValues()

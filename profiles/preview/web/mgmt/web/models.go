@@ -22,7 +22,7 @@ package web
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-06-01/web"
+	original "github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-09-01/web"
 )
 
 const (
@@ -249,6 +249,15 @@ type CookieExpirationConvention = original.CookieExpirationConvention
 const (
 	FixedTime               CookieExpirationConvention = original.FixedTime
 	IdentityProviderDerived CookieExpirationConvention = original.IdentityProviderDerived
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type CustomHostNameDNSRecordType = original.CustomHostNameDNSRecordType
@@ -811,6 +820,8 @@ type AppsStartWebSiteNetworkTraceOperationFuture = original.AppsStartWebSiteNetw
 type AppsStartWebSiteNetworkTraceOperationSlotFuture = original.AppsStartWebSiteNetworkTraceOperationSlotFuture
 type AppsSwapSlotSlotFuture = original.AppsSwapSlotSlotFuture
 type AppsSwapSlotWithProductionFuture = original.AppsSwapSlotWithProductionFuture
+type AppserviceGithubToken = original.AppserviceGithubToken
+type AppserviceGithubTokenRequest = original.AppserviceGithubTokenRequest
 type ArmIDWrapper = original.ArmIDWrapper
 type AuthPlatform = original.AuthPlatform
 type AuthPlatformProperties = original.AuthPlatformProperties
@@ -1318,6 +1329,7 @@ type String = original.String
 type StringDictionary = original.StringDictionary
 type SwiftVirtualNetwork = original.SwiftVirtualNetwork
 type SwiftVirtualNetworkProperties = original.SwiftVirtualNetworkProperties
+type SystemData = original.SystemData
 type TldLegalAgreement = original.TldLegalAgreement
 type TldLegalAgreementCollection = original.TldLegalAgreementCollection
 type TldLegalAgreementCollectionIterator = original.TldLegalAgreementCollectionIterator
@@ -1895,6 +1907,9 @@ func PossibleContinuousWebJobStatusValues() []ContinuousWebJobStatus {
 }
 func PossibleCookieExpirationConventionValues() []CookieExpirationConvention {
 	return original.PossibleCookieExpirationConventionValues()
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleCustomHostNameDNSRecordTypeValues() []CustomHostNameDNSRecordType {
 	return original.PossibleCustomHostNameDNSRecordTypeValues()

@@ -86,6 +86,7 @@ func (client TopicsClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 		"api-version": APIVersion,
 	}
 
+	topicInfo.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

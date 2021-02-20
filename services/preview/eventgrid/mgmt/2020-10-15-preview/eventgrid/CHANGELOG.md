@@ -1,5 +1,12 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/8240593bde5350e6762015523ccd57cb61e32da5/specification/eventgrid/resource-manager/readme.md tag: `package-2020-10-preview`
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/2ba10dfdebd4ebe23212cb8b4a49f8855f4f37cb/specification/eventgrid/resource-manager/readme.md tag: `package-2020-10-preview`
 
-Code generator @microsoft.azure/autorest.go@2.1.171
+Code generator 
 
 
+### Struct Changes
+
+#### New Struct Fields
+
+1. Domain.SystemData
+1. DomainTopic.SystemData
+1. Topic.SystemData

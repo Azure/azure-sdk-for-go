@@ -890,6 +890,8 @@ type Domain struct {
 	Sku *ResourceSku `json:"sku,omitempty"`
 	// Identity - Identity information for the resource.
 	Identity *IdentityInfo `json:"identity,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to Domain resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags of the resource.
@@ -958,6 +960,15 @@ func (d *Domain) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				d.Identity = &identity
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				d.SystemData = &systemData
 			}
 		case "location":
 			if v != nil {
@@ -1342,6 +1353,8 @@ type DomainTopic struct {
 	autorest.Response `json:"-"`
 	// DomainTopicProperties - Properties of the Domain Topic.
 	*DomainTopicProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to Domain Topic resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Name of the resource.
@@ -1376,6 +1389,15 @@ func (dt *DomainTopic) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dt.DomainTopicProperties = &domainTopicProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				dt.SystemData = &systemData
 			}
 		case "id":
 			if v != nil {
@@ -1782,7 +1804,7 @@ type EventChannel struct {
 	autorest.Response `json:"-"`
 	// EventChannelProperties - Properties of the EventChannel.
 	*EventChannelProperties `json:"properties,omitempty"`
-	// SystemData - READ-ONLY; The system metadata relating to this resource.
+	// SystemData - READ-ONLY; The system metadata relating to Event Channel resource.
 	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
@@ -2274,7 +2296,7 @@ type EventSubscription struct {
 	autorest.Response `json:"-"`
 	// EventSubscriptionProperties - Properties of the event subscription.
 	*EventSubscriptionProperties `json:"properties,omitempty"`
-	// SystemData - READ-ONLY; The system metadata relating to this resource.
+	// SystemData - READ-ONLY; The system metadata relating to Event Subscription resource.
 	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified identifier of the resource.
 	ID *string `json:"id,omitempty"`
@@ -4950,7 +4972,7 @@ type PartnerNamespace struct {
 	autorest.Response `json:"-"`
 	// PartnerNamespaceProperties - Properties of the partner namespace.
 	*PartnerNamespaceProperties `json:"properties,omitempty"`
-	// SystemData - READ-ONLY; The system metadata relating to this resource.
+	// SystemData - READ-ONLY; The system metadata relating to Partner Namespace resource.
 	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -5298,7 +5320,7 @@ type PartnerRegistration struct {
 	autorest.Response `json:"-"`
 	// PartnerRegistrationProperties - Properties of the partner registration.
 	*PartnerRegistrationProperties `json:"properties,omitempty"`
-	// SystemData - READ-ONLY; The system metadata relating to this resource.
+	// SystemData - READ-ONLY; The system metadata relating to Partner Registration resource.
 	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -5709,7 +5731,7 @@ type PartnerTopic struct {
 	*PartnerTopicProperties `json:"properties,omitempty"`
 	// Identity - Identity information for the resource.
 	Identity *IdentityInfo `json:"identity,omitempty"`
-	// SystemData - READ-ONLY; The system metadata relating to this resource.
+	// SystemData - READ-ONLY; The system metadata relating to Partner Topic resource.
 	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
@@ -8736,6 +8758,8 @@ type Topic struct {
 	Kind ResourceKind `json:"kind,omitempty"`
 	// ExtendedLocation - Extended location of the resource.
 	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to Topic resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags of the resource.
@@ -8828,6 +8852,15 @@ func (t *Topic) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				t.ExtendedLocation = &extendedLocation
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				t.SystemData = &systemData
 			}
 		case "location":
 			if v != nil {

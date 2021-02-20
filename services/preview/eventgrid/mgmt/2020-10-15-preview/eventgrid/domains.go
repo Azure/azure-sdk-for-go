@@ -86,6 +86,7 @@ func (client DomainsClient) CreateOrUpdatePreparer(ctx context.Context, resource
 		"api-version": APIVersion,
 	}
 
+	domainInfo.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

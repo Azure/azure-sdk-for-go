@@ -1,5 +1,31 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82//specification/cognitiveservices/data-plane/Face/readme.md tag: `release_1_0`
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/ea20b4f61fd31aeb6a72d0b0f76fdd6e68688351/specification/cognitiveservices/data-plane/Face/readme.md tag: `release_1_0`
 
-Code generator @microsoft.azure/autorest.go@2.1.171
+Code generator 
 
 
+### Breaking Changes
+
+### Signature Changes
+
+#### Funcs
+
+1. Client.DetectWithStream
+	- Params
+		- From: context.Context, io.ReadCloser, *bool, *bool, []AttributeType, RecognitionModel, *bool, DetectionModel
+		- To: context.Context, io.ReadCloser, *bool, *bool, []AttributeType, RecognitionModel, *bool, DetectionModel, *int32
+1. Client.DetectWithStreamPreparer
+	- Params
+		- From: context.Context, io.ReadCloser, *bool, *bool, []AttributeType, RecognitionModel, *bool, DetectionModel
+		- To: context.Context, io.ReadCloser, *bool, *bool, []AttributeType, RecognitionModel, *bool, DetectionModel, *int32
+1. Client.DetectWithURL
+	- Params
+		- From: context.Context, ImageURL, *bool, *bool, []AttributeType, RecognitionModel, *bool, DetectionModel
+		- To: context.Context, ImageURL, *bool, *bool, []AttributeType, RecognitionModel, *bool, DetectionModel, *int32
+1. Client.DetectWithURLPreparer
+	- Params
+		- From: context.Context, ImageURL, *bool, *bool, []AttributeType, RecognitionModel, *bool, DetectionModel
+		- To: context.Context, ImageURL, *bool, *bool, []AttributeType, RecognitionModel, *bool, DetectionModel, *int32
+
+#### New Constants
+
+1. DetectionModel.Detection03

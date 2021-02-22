@@ -98,11 +98,13 @@ const (
 	Detection01 DetectionModel = "detection_01"
 	// Detection02 ...
 	Detection02 DetectionModel = "detection_02"
+	// Detection03 ...
+	Detection03 DetectionModel = "detection_03"
 )
 
 // PossibleDetectionModelValues returns an array of possible values for the DetectionModel const type.
 func PossibleDetectionModelValues() []DetectionModel {
-	return []DetectionModel{Detection01, Detection02}
+	return []DetectionModel{Detection01, Detection02, Detection03}
 }
 
 // ExposureLevel enumerates the values for exposure level.

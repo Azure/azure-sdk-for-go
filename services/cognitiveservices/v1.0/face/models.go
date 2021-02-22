@@ -140,13 +140,13 @@ type FacialHair struct {
 
 // FindSimilarRequest request body for find similar operation.
 type FindSimilarRequest struct {
-	// FaceID - FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call
+	// FaceID - FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this faceId is not persisted and will expire at the time specified by faceIdTimeToLive after the detection call
 	FaceID *uuid.UUID `json:"faceId,omitempty"`
 	// FaceListID - An existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
 	FaceListID *string `json:"faceListId,omitempty"`
 	// LargeFaceListID - An existing user-specified unique candidate large face list, created in LargeFaceList - Create. Large face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
 	LargeFaceListID *string `json:"largeFaceListId,omitempty"`
-	// FaceIds - An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
+	// FaceIds - An array of candidate faceIds. All of them are created by Face - Detect and the faceIds will expire at the time specified by faceIdTimeToLive after the detection call. The number of faceIds is limited to 1000. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
 	FaceIds *[]uuid.UUID `json:"faceIds,omitempty"`
 	// MaxNumOfCandidatesReturned - The number of top similar faces returned. The valid range is [1, 1000].
 	MaxNumOfCandidatesReturned *int32 `json:"maxNumOfCandidatesReturned,omitempty"`
@@ -428,7 +428,7 @@ type OperationStatus struct {
 // PersistedFace personFace object.
 type PersistedFace struct {
 	autorest.Response `json:"-"`
-	// PersistedFaceID - The persistedFaceId of the target face, which is persisted and will not expire. Different from faceId created by Face - Detect and will expire in 24 hours after the detection call.
+	// PersistedFaceID - The persistedFaceId of the target face, which is persisted and will not expire. Different from faceId created by Face - Detect and will expire in at the time specified by faceIdTimeToLive after the detection call.
 	PersistedFaceID *uuid.UUID `json:"persistedFaceId,omitempty"`
 	// UserData - User-provided data attached to the face. The size limit is 1KB.
 	UserData *string `json:"userData,omitempty"`
@@ -474,7 +474,7 @@ type Rectangle struct {
 
 // SimilarFace response body for find similar face operation.
 type SimilarFace struct {
-	// FaceID - FaceId of candidate face when find by faceIds. faceId is created by Face - Detect and will expire 24 hours after the detection call
+	// FaceID - FaceId of candidate face when find by faceIds. faceId is created by Face - Detect and will expire at the time specified by faceIdTimeToLive after the detection call
 	FaceID *uuid.UUID `json:"faceId,omitempty"`
 	// PersistedFaceID - PersistedFaceId of candidate face when find by faceListId. persistedFaceId in face list is persisted and will not expire. As showed in below response
 	PersistedFaceID *uuid.UUID `json:"persistedFaceId,omitempty"`

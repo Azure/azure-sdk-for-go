@@ -22,6 +22,7 @@ const (
 type ServiceClient struct {
 	client *serviceClient
 	u      url.URL
+	cred   StorageAccountCredential
 }
 
 // NewServiceClient creates a ServiceClient object using the specified URL, credential, and options.
@@ -31,9 +32,12 @@ func NewServiceClient(serviceURL string, cred azcore.Credential, options *Client
 	if err != nil {
 		return ServiceClient{}, err
 	}
+
+	c, _ := cred.(*SharedKeyCredential)
+
 	return ServiceClient{client: &serviceClient{
 		con: newConnection(serviceURL, cred, options.getConnectionOptions()),
-	}, u: *u}, nil
+	}, u: *u, cred: c}, nil
 }
 
 // URL returns the URL endpoint used by the ServiceClient object.
@@ -159,4 +163,24 @@ func (s ServiceClient) GetStatistics(ctx context.Context) (StorageServiceStatsRe
 	resp, err := s.client.GetStatistics(ctx, nil)
 
 	return resp, handleError(err)
+}
+
+func (s ServiceClient) CanGetAccountSASToken() bool {
+	return s.cred != nil
+}
+
+// GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account.
+// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetAccountSASToken().
+func (s ServiceClient) GetAccountSASToken(services AccountSASServices, resources AccountSASResourceTypes, permissions AccountSASPermissions, validityTime time.Duration) (SASQueryParameters, error) {
+	return AccountSASSignatureValues{
+		Version: SASVersion,
+
+		Permissions: permissions.String(),
+		Services: services.String(),
+		ResourceTypes: resources.String(),
+
+		StartTime: time.Now(),
+		ExpiryTime: time.Now().Add(validityTime),
+	}.NewSASQueryParameters(s.cred.(*SharedKeyCredential))
 }

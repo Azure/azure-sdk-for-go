@@ -4,12 +4,14 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/url"
+	"time"
 )
 
 // A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
 type BlobClient struct {
 	client *blobClient
 	u      url.URL
+	cred   StorageAccountCredential
 }
 
 // NewBlobClient creates a BlobClient object using the specified URL and request policy pipeline.
@@ -19,7 +21,10 @@ func NewBlobClient(blobURL string, cred azcore.Credential, options *ClientOption
 		return BlobClient{}, err
 	}
 	con := newConnection(blobURL, cred, options.getConnectionOptions())
-	return BlobClient{client: &blobClient{con, nil}, u: *u}, nil
+
+	c, _ := cred.(*SharedKeyCredential)
+
+	return BlobClient{client: &blobClient{con, nil}, u: *u, cred: c}, nil
 }
 
 // URL returns the URL endpoint used by the BlobClient object.
@@ -263,4 +268,33 @@ func (b BlobClient) GetTags(ctx context.Context, options *GetTagsBlobOptions) (B
 	resp, err := b.client.GetTags(ctx, blobGetTagsOptions, modifiedAccessConditions)
 
 	return resp, handleError(err)
+}
+
+func (b BlobClient) CanGetBlobSASToken() bool {
+	return b.cred != nil
+}
+
+// GetBlobSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
+// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetBlobSASToken().
+func (b BlobClient) GetBlobSASToken(permissions BlobSASPermissions, validityTime time.Duration) (SASQueryParameters, error) {
+	urlParts := NewBlobURLParts(b.URL())
+
+	t, err := time.Parse(SnapshotTimeFormat, urlParts.Snapshot)
+
+	if err != nil {
+		t = time.Time{}
+	}
+
+	return BlobSASSignatureValues{
+		ContainerName: urlParts.ContainerName,
+		BlobName: urlParts.BlobName,
+		SnapshotTime: t,
+		Version: SASVersion,
+
+		Permissions: permissions.String(),
+
+		StartTime: time.Now(),
+		ExpiryTime: time.Now().Add(validityTime),
+	}.NewSASQueryParameters(b.cred)
 }

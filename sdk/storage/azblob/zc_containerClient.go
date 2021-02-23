@@ -13,6 +13,7 @@ import (
 type ContainerClient struct {
 	client *containerClient
 	u      url.URL
+	cred   StorageAccountCredential
 }
 
 // NewContainerClient creates a ContainerClient object using the specified URL and request policy pipeline.
@@ -21,9 +22,12 @@ func NewContainerClient(containerURL string, cred azcore.Credential, options *Cl
 	if err != nil {
 		return ContainerClient{}, err
 	}
+
+	c, _ := cred.(*SharedKeyCredential)
+
 	return ContainerClient{client: &containerClient{
 		con: newConnection(containerURL, cred, options.getConnectionOptions()),
-	}, u: *u}, nil
+	}, u: *u, cred: c}, nil
 }
 
 // URL returns the URL endpoint used by the ContainerClient object.
@@ -308,4 +312,26 @@ func (c ContainerClient) ListBlobsHierarchySegment(ctx context.Context, delimite
 	}.Go()
 
 	return output, errChan
+}
+
+func (c ContainerClient) CanGetContainerSASToken() bool {
+	return c.cred != nil
+}
+
+// GetContainerSASToken is a convenience method for generating a SAS token for the currently pointed at container.
+// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetContainerSASToken().
+func (c ContainerClient) GetContainerSASToken(permissions BlobSASPermissions, validityTime time.Duration) (SASQueryParameters, error) {
+	urlParts := NewBlobURLParts(c.URL())
+
+	// Containers do not have snapshots, nor versions.
+
+	return BlobSASSignatureValues{
+		ContainerName: urlParts.ContainerName,
+
+		Permissions: permissions.String(),
+
+		StartTime: time.Now(),
+		ExpiryTime: time.Now().Add(validityTime),
+	}.NewSASQueryParameters(c.cred)
 }

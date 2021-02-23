@@ -188,51 +188,6 @@ func (b BlobClient) CreateSnapshot(ctx context.Context, options *CreateBlobSnaps
 	return resp, handleError(err)
 }
 
-// AcquireLease acquires a lease on the blob for write and delete operations. The lease duration must be between
-// 15 to 60 seconds, or infinite (-1).
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (b BlobClient) AcquireLease(ctx context.Context, options *AcquireBlobLeaseOptions) (BlobAcquireLeaseResponse, error) {
-	basics, access := options.pointers()
-	resp, err := b.client.AcquireLease(ctx, basics, access)
-
-	return resp, handleError(err)
-}
-
-// RenewLease renews the blob's previously-acquired lease.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (b BlobClient) RenewLease(ctx context.Context, leaseID string, options *RenewBlobLeaseOptions) (BlobRenewLeaseResponse, error) {
-	basics, access := options.pointers()
-	return b.client.RenewLease(ctx, leaseID, basics, access)
-}
-
-// ReleaseLease releases the blob's previously-acquired lease.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (b BlobClient) ReleaseLease(ctx context.Context, leaseID string, options *ReleaseBlobLeaseOptions) (BlobReleaseLeaseResponse, error) {
-	basics, access := options.pointers()
-	resp, err := b.client.ReleaseLease(ctx, leaseID, basics, access)
-
-	return resp, handleError(err)
-}
-
-// BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1)
-// constant to break a fixed-duration lease when it expires or an infinite lease immediately.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (b BlobClient) BreakLease(ctx context.Context, options *BreakBlobLeaseOptions) (BlobBreakLeaseResponse, error) {
-	basics, access := options.pointers()
-	resp, err := b.client.BreakLease(ctx, basics, access)
-
-	return resp, handleError(err)
-}
-
-// ChangeLease changes the blob's lease ID.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (b BlobClient) ChangeLease(ctx context.Context, leaseID string, proposedID string, options *ChangeBlobLeaseOptions) (BlobChangeLeaseResponse, error) {
-	basics, access := options.pointers()
-	resp, err := b.client.ChangeLease(ctx, leaseID, proposedID, basics, access)
-
-	return resp, handleError(err)
-}
-
 // StartCopyFromURL copies the data at the source URL to a blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/copy-blob.
 func (b BlobClient) StartCopyFromURL(ctx context.Context, copySource url.URL, options *StartCopyBlobOptions) (BlobStartCopyFromURLResponse, error) {

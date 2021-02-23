@@ -236,7 +236,7 @@ func (r DownloadResponse) LastModified() *time.Time {
 	return r.r.LastModified
 }
 
-// LeaseDuration returns the value for header x-ms-lease-duration.
+// LeaseDuration returns the value for header x-ms-lease-Duration.
 func (r DownloadResponse) LeaseDuration() *LeaseDurationType {
 	return r.r.LeaseDuration
 }

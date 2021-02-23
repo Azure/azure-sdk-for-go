@@ -77,64 +77,6 @@ func (o *SetAccessPolicyOptions) pointers() (ContainerSetAccessPolicyOptions, *L
 	return o.ContainerSetAccessPolicyOptions, lac, mac
 }
 
-type AcquireLeaseOptionsContainer struct {
-	// At least Access and ContainerAcl must be specified
-	ContainerAcquireLeaseOptions *ContainerAcquireLeaseOptions
-	ModifiedAccessConditions     *ModifiedAccessConditions
-}
-
-type RenewLeaseOptionsContainer struct {
-	ContainerRenewLeaseOptions *ContainerRenewLeaseOptions
-	ModifiedAccessConditions   *ModifiedAccessConditions
-}
-
-func (o *RenewLeaseOptionsContainer) pointers() (*ContainerRenewLeaseOptions, *ModifiedAccessConditions) {
-	if o == nil {
-		return nil, nil
-	}
-
-	return o.ContainerRenewLeaseOptions, o.ModifiedAccessConditions
-}
-
-type ReleaseLeaseOptionsContainer struct {
-	ContainerReleaseLeaseOptions *ContainerReleaseLeaseOptions
-	ModifiedAccessConditions     *ModifiedAccessConditions
-}
-
-func (o *ReleaseLeaseOptionsContainer) pointers() (*ContainerReleaseLeaseOptions, *ModifiedAccessConditions) {
-	if o == nil {
-		return nil, nil
-	}
-
-	return o.ContainerReleaseLeaseOptions, o.ModifiedAccessConditions
-}
-
-type BreakLeaseOptionsContainer struct {
-	ContainerBreakLeaseOptions *ContainerBreakLeaseOptions
-	ModifiedAccessConditions   *ModifiedAccessConditions
-}
-
-func (o *BreakLeaseOptionsContainer) pointers() (*ContainerBreakLeaseOptions, *ModifiedAccessConditions) {
-	if o == nil {
-		return nil, nil
-	}
-
-	return o.ContainerBreakLeaseOptions, o.ModifiedAccessConditions
-}
-
-type ChangeLeaseOptionsContainer struct {
-	ContainerChangeLeaseOptions *ContainerChangeLeaseOptions
-	ModifiedAccessConditions    *ModifiedAccessConditions
-}
-
-func (o *ChangeLeaseOptionsContainer) pointers() (*ContainerChangeLeaseOptions, *ModifiedAccessConditions) {
-	if o == nil {
-		return nil, nil
-	}
-
-	return o.ContainerChangeLeaseOptions, o.ModifiedAccessConditions
-}
-
 type SetMetadataContainerOptions struct {
 	Metadata                 *map[string]string
 	LeaseAccessConditions    *LeaseAccessConditions

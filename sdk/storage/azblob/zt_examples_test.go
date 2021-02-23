@@ -1068,7 +1068,7 @@ func ExampleLeaseContainer() {
 
 	// Create an ContainerURL object that wraps the container's URL and a default pipeline.
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
-	containerClient, err := NewContainerClient(u, credential, nil)
+	containerLeaseClient, err := NewContainerLeaseClient(u, credential, nil, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1079,29 +1079,29 @@ func ExampleLeaseContainer() {
 	// Now acquire a lease on the container.
 	// You can choose to pass an empty string for proposed ID so that the service automatically assigns one for you.
 	duration := int32(60)
-	acquireLeaseResponse, err := containerClient.AcquireLease(ctx, &AcquireLeaseOptionsContainer{ContainerAcquireLeaseOptions: &ContainerAcquireLeaseOptions{Duration: &duration}})
+	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: &duration})
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("The container is leased for delete operations with lease ID", *acquireLeaseResponse.LeaseID)
 
 	// The container cannot be deleted without providing the lease ID.
-	_, err = containerClient.Delete(ctx, nil)
+	_, err = containerLeaseClient.Delete(ctx, nil)
 	if err == nil {
 		log.Fatal("delete should have failed")
 	}
 	fmt.Println("The container cannot be deleted while there is an active lease")
 
 	// We can release the lease now and the container can be deleted.
-	_, err = containerClient.ReleaseLease(ctx, *acquireLeaseResponse.LeaseID, nil)
+	_, err = containerLeaseClient.ReleaseLease(ctx, &ReleaseLeaseContainerOptions{LeaseId: *acquireLeaseResponse.LeaseID})
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("The lease on the container is now released")
 
 	// Acquire a lease again to perform other operations.
-	// duration is still 60
-	acquireLeaseResponse, err = containerClient.AcquireLease(ctx, &AcquireLeaseOptionsContainer{ContainerAcquireLeaseOptions: &ContainerAcquireLeaseOptions{Duration: &duration}})
+	// Duration is still 60
+	acquireLeaseResponse, err = containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: &duration})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1111,14 +1111,14 @@ func ExampleLeaseContainer() {
 	// A lease ID can be any valid GUID string format.
 	newLeaseID := newUUID()
 	newLeaseID[0] = 1
-	changeLeaseResponse, err := containerClient.ChangeLease(ctx, *acquireLeaseResponse.LeaseID, newLeaseID.String(), nil)
+	changeLeaseResponse, err := containerLeaseClient.ChangeLease(ctx, &ChangeLeaseContainerOptions{LeaseId: *acquireLeaseResponse.LeaseID, ProposedLeaseId: newLeaseID.String()})
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("The lease ID was changed to", *changeLeaseResponse.LeaseID)
 
 	// The lease can be renewed.
-	renewLeaseResponse, err := containerClient.RenewLease(ctx, *changeLeaseResponse.LeaseID, nil)
+	renewLeaseResponse, err := containerLeaseClient.RenewLease(ctx, &RenewLeaseContainerOptions{LeaseId: *changeLeaseResponse.LeaseID})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1126,7 +1126,7 @@ func ExampleLeaseContainer() {
 
 	// Finally, the lease can be broken and we could prevent others from acquiring a lease for a period of time
 	duration = 60
-	_, err = containerClient.BreakLease(ctx, &BreakLeaseOptionsContainer{ContainerBreakLeaseOptions: &ContainerBreakLeaseOptions{BreakPeriod: &duration}})
+	_, err = containerLeaseClient.BreakLease(ctx, &BreakLeaseContainerOptions{BreakPeriod: &duration})
 	if err != nil {
 		log.Fatal(err)
 	}

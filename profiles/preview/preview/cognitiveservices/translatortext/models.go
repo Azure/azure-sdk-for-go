@@ -88,7 +88,6 @@ type FileFormat = original.FileFormat
 type FileFormatListResult = original.FileFormatListResult
 type Glossary = original.Glossary
 type InnerErrorV2 = original.InnerErrorV2
-type SetObject = original.SetObject
 type SourceInput = original.SourceInput
 type StatusSummary = original.StatusSummary
 type StorageSourceListResult = original.StorageSourceListResult

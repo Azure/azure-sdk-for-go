@@ -145,7 +145,6 @@ func (s *aztestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(c *chk.C) {
 	getResp, err := bbClient.Download(ctx, &downloadBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
 	//storageErr := err.(StorageError)
 	//c.Assert(storageErr.RawResponse.StatusCode, chk.Equals, 409)
 	//c.Assert(storageErr.ServiceCode(), chk.Equals, ServiceCodeFeatureEncryptionMismatch)
@@ -1098,8 +1097,8 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5WithCPK(c *chk.C) {
 	}
 	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions1)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeMd5Mismatch)
+
+	validateStorageError(c, err, ServiceCodeMd5Mismatch)
 }
 
 func (s *aztestsSuite) TestClearDiffPagesWithCPK(c *chk.C) {
@@ -1292,7 +1291,7 @@ func (s *aztestsSuite) TestBlobSnapshotWithCPK(c *chk.C) {
 	// Get blob properties of snapshot without encryption key should fail the request.
 	_, err = snapshotURL.GetProperties(ctx, nil)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
+
 	//c.Assert(err.(StorageError).Response().StatusCode, chk.Equals, 404)
 }
 

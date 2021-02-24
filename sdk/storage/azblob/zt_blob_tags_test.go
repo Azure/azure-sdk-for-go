@@ -427,19 +427,19 @@ func (s *aztestsSuite) TestSetBlobTagForSnapshot(c *chk.C) {
 // TODO: Once new pacer is done.
 //func (s *aztestsSuite) TestListBlobReturnsTags(c *chk.C) {
 //	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
-//	blobURL, blobName := createNewBlockBlob(c, containerURL)
+//	containerClient, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(c, containerClient)
+//	blobClient, blobName := createNewBlockBlob(c, containerClient)
 //	blobTagsMap := BlobTagsMap{
 //		"+-./:=_ ": "firsttag",
 //		"tag2":     "+-./:=_",
 //		"+-./:=_1": "+-./:=_",
 //	}
-//	resp, err := blobURL.SetTags(ctx, nil, nil, nil, nil, nil, nil, blobTagsMap)
+//	resp, err := blobClient.SetTags(ctx, nil, nil, nil, nil, nil, nil, blobTagsMap)
 //	c.Assert(err, chk.IsNil)
 //	c.Assert(resp.StatusCode(), chk.Equals, 204)
 //
-//	listBlobResp, err := containerURL.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Tags: true}})
+//	listBlobResp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Tags: true}})
 //
 //	c.Assert(err, chk.IsNil)
 //	c.Assert(listBlobResp.Segment.BlobItems[0].Name, chk.Equals, blobName)
@@ -451,12 +451,12 @@ func (s *aztestsSuite) TestSetBlobTagForSnapshot(c *chk.C) {
 //
 //func (s *aztestsSuite) TestFindBlobsByTags(c *chk.C) {
 //	bsu := getBSU()
-//	containerURL1, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL1)
-//	containerURL2, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL2)
-//	containerURL3, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL3)
+//	containerClient1, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(c, containerClient1)
+//	containerClient2, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(c, containerClient2)
+//	containerClient3, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(c, containerClient3)
 //
 //	blobTagsMap1 := BlobTagsMap{
 //		"tag2": "tagsecond",
@@ -467,21 +467,21 @@ func (s *aztestsSuite) TestSetBlobTagForSnapshot(c *chk.C) {
 //		"tag2": "secondtag",
 //		"tag3": "thirdtag",
 //	}
-//	blobURL11, _ := getBlockBlobURL(c, containerURL1)
+//	blobURL11, _ := getBlockBlobURL(c, containerClient1)
 //	_, err := blobURL11.Upload(ctx, bytes.NewReader([]byte("random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, blobTagsMap1, ClientProvidedKeyOptions{})
 //	c.Assert(err, chk.IsNil)
-//	blobURL12, _ := getBlockBlobURL(c, containerURL1)
+//	blobURL12, _ := getBlockBlobURL(c, containerClient1)
 //	_, err = blobURL12.Upload(ctx, bytes.NewReader([]byte("another random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, blobTagsMap2, ClientProvidedKeyOptions{})
 //	c.Assert(err, chk.IsNil)
 //
-//	blobURL21, _ := getBlockBlobURL(c, containerURL2)
+//	blobURL21, _ := getBlockBlobURL(c, containerClient2)
 //	_, err = blobURL21.Upload(ctx, bytes.NewReader([]byte("random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	c.Assert(err, chk.IsNil)
-//	blobURL22, _ := getBlockBlobURL(c, containerURL2)
+//	blobURL22, _ := getBlockBlobURL(c, containerClient2)
 //	_, err = blobURL22.Upload(ctx, bytes.NewReader([]byte("another random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, blobTagsMap2, ClientProvidedKeyOptions{})
 //	c.Assert(err, chk.IsNil)
 //
-//	blobURL31, _ := getBlockBlobURL(c, containerURL3)
+//	blobURL31, _ := getBlockBlobURL(c, containerClient3)
 //	_, err = blobURL31.Upload(ctx, bytes.NewReader([]byte("random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	c.Assert(err, chk.IsNil)
 //
@@ -526,25 +526,25 @@ func (s *aztestsSuite) TestSetBlobTagForSnapshot(c *chk.C) {
 //	serviceURL := NewServiceURL(*u, NewPipeline(NewAnonymousCredential(), PipelineOptions{}))
 //
 //	containerName := generateContainerName()
-//	containerURL := serviceURL.NewContainerURL(containerName)
-//	_, err = containerURL.Create(ctx, Metadata{}, PublicAccessNone)
-//	defer containerURL.Delete(ctx, ContainerAccessConditions{})
+//	containerClient := serviceURL.NewcontainerClient(containerName)
+//	_, err = containerClient.Create(ctx, Metadata{}, PublicAccessNone)
+//	defer containerClient.Delete(ctx, ContainerAccessConditions{})
 //	if err != nil {
 //		c.Fatal(err)
 //	}
 //
-//	blobURL := containerURL.NewBlockBlobURL("temp")
-//	_, err = blobURL.Upload(ctx, bytes.NewReader([]byte("random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	blobClient := containerClient.NewBlockBlobURL("temp")
+//	_, err = blobClient.Upload(ctx, bytes.NewReader([]byte("random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	if err != nil {
 //		c.Fail()
 //	}
 //
 //	blobTagsMap := BlobTagsMap{"tag1": "firsttag", "tag2": "secondtag", "tag3": "thirdtag"}
-//	setBlobTagsResp, err := blobURL.SetTags(ctx, nil, nil, nil, nil, nil, nil, blobTagsMap)
+//	setBlobTagsResp, err := blobClient.SetTags(ctx, nil, nil, nil, nil, nil, nil, blobTagsMap)
 //	c.Assert(err, chk.IsNil)
 //	c.Assert(setBlobTagsResp.StatusCode(), chk.Equals, 204)
 //
-//	blobGetTagsResp, err := blobURL.GetTags(ctx, nil, nil, nil, nil, nil)
+//	blobGetTagsResp, err := blobClient.GetTags(ctx, nil, nil, nil, nil, nil)
 //	c.Assert(err, chk.IsNil)
 //	c.Assert(blobGetTagsResp.StatusCode(), chk.Equals, 200)
 //	c.Assert(blobGetTagsResp.BlobTagSet, chk.HasLen, 3)

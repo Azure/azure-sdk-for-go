@@ -132,10 +132,10 @@ func (s *aztestsSuite) TestListContainersPaged(c *chk.C) {
 
 func (s *aztestsSuite) TestAccountListContainersEmptyPrefix(c *chk.C) {
 	bsu := getBSU()
-	containerURL1, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL1)
-	containerURL2, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerURL2)
+	containerClient1, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient1)
+	containerClient2, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient2)
 
 	count := 0
 	pager, err := bsu.ListContainersSegment(context.Background(), 100, time.Hour, nil)
@@ -152,8 +152,8 @@ func (s *aztestsSuite) TestAccountListContainersEmptyPrefix(c *chk.C) {
 // TODO re-enable after fixing error handling
 //func (s *aztestsSuite) TestAccountListContainersMaxResultsNegative(c *chk.C) {
 //	bsu := getBSU()
-//	containerURL, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerURL)
+//	containerClient, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(c, containerClient)
 //
 //	illegalMaxResults := []int32{-2, 0}
 //	for _, num := range illegalMaxResults {
@@ -171,10 +171,10 @@ func (s *aztestsSuite) TestAccountListContainersEmptyPrefix(c *chk.C) {
 //func (s *aztestsSuite) TestAccountListContainersMaxResultsExact(c *chk.C) {
 //	// If this test fails, ensure there are no extra containers prefixed with go in the account. These may be left over if a test is interrupted.
 //	bsu := getBSU()
-//	containerURL1, containerName1 := createNewContainerWithSuffix(c, bsu, "abc")
-//	defer deleteContainer(c, containerURL1)
-//	containerURL2, containerName2 := createNewContainerWithSuffix(c, bsu, "abcde")
-//	defer deleteContainer(c, containerURL2)
+//	containerClient1, containerName1 := createNewContainerWithSuffix(c, bsu, "abc")
+//	defer deleteContainer(c, containerClient1)
+//	containerClient2, containerName2 := createNewContainerWithSuffix(c, bsu, "abcde")
+//	defer deleteContainer(c, containerClient2)
 //
 //	prefix := containerPrefix + "abc"
 //	maxResults := int32(2)
@@ -293,8 +293,7 @@ func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge(c *chk.C) {
 	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
 	c.Assert(err, chk.NotNil)
 
-	// TODO the error should have more details, follow up with Joel
-	//validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
+	validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
 }
 
 func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(c *chk.C) {
@@ -305,6 +304,5 @@ func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(c *chk.C) {
 	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
 	c.Assert(err, chk.NotNil)
 
-	// TODO the error should have more details, follow up with Joel
-	//validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
+	validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
 }

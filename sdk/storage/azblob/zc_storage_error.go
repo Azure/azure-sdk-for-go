@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 )
 
-
 // // StorageError identifies a responder-generated network or response parsing error.
 // type StorageError interface {
 // 	// ResponseError implements error's Error(), net.Error's Temporary() and Timeout() methods & Response().
@@ -171,7 +170,6 @@ func writeHeader(b *bytes.Buffer, header map[string][]string) {
 	}
 }
 
-
 // Temporary returns true if the error occurred due to a temporary condition (including an HTTP status of 500 or 503).
 func (e *StorageError) Temporary() bool {
 	if e.response != nil {
@@ -179,7 +177,7 @@ func (e *StorageError) Temporary() bool {
 			return true
 		}
 	}
-
+  
 	return false
 }
 

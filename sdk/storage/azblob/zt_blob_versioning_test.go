@@ -53,23 +53,28 @@ func (s *aztestsSuite) TestAppendBlobGetPropertiesUsingVID(c *chk.C) {
 	c.Assert(*blobProp.IsCurrentVersion, chk.Equals, true)
 }
 
-//func (s *aztestsSuite) TestSetBlobMetadataReturnsVID(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	blobURL, blobName := createNewBlockBlob(c, containerClient)
-//	metadata := map[string]string{"test_key_1": "test_value_1", "test_key_2": "2019"}
-//	resp, err := blobURL.SetMetadata(ctx, metadata, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.VersionID, chk.NotNil)
-//
-//	listBlobResp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Metadata: true}})
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(listBlobResp.Segment.BlobItems[0].Name, chk.Equals, blobName)
-//	c.Assert(listBlobResp.Segment.BlobItems[0].Metadata, chk.HasLen, 2)
-//	c.Assert(listBlobResp.Segment.BlobItems[0].Metadata, chk.DeepEquals, metadata)
-//}
+func (s *aztestsSuite) TestSetBlobMetadataReturnsVID(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	blobURL, blobName := createNewBlockBlob(c, containerClient)
+	metadata := map[string]string{"test_key_1": "test_value_1", "test_key_2": "2019"}
+	resp, err := blobURL.SetMetadata(ctx, metadata, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.VersionID, chk.NotNil)
+
+	include := []ListBlobsIncludeItem{ListBlobsIncludeItemMetadata}
+	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
+		Include: &include,
+	}
+	listBlobResp, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
+
+	c.Assert(<-errChan, chk.IsNil)
+	blobResp1 := <-listBlobResp
+	c.Assert(*blobResp1.Name, chk.Equals, blobName)
+	c.Assert(*blobResp1.Metadata, chk.HasLen, 2)
+	c.Assert(*blobResp1.Metadata, chk.DeepEquals, metadata)
+}
 
 //func (s *aztestsSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID(c *chk.C) {
 //	bsu := getBSU()
@@ -93,7 +98,7 @@ func (s *aztestsSuite) TestAppendBlobGetPropertiesUsingVID(c *chk.C) {
 //		c.Assert(versionId, chk.Equals, resp.VersionID())
 //	}
 //}
-//
+
 //func (s *aztestsSuite) TestDeleteSpecificBlobVersion(c *chk.C) {
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
@@ -125,7 +130,7 @@ func (s *aztestsSuite) TestAppendBlobGetPropertiesUsingVID(c *chk.C) {
 //		c.Fail()
 //	}
 //}
-//
+
 //func (s *aztestsSuite) TestDeleteSpecificBlobVersionWithBlobSAS(c *chk.C) {
 //	bsu := getBSU()
 //	credential, err := getGenericCredential("")
@@ -168,7 +173,7 @@ func (s *aztestsSuite) TestAppendBlobGetPropertiesUsingVID(c *chk.C) {
 //		c.Assert(blob.VersionID, chk.Not(chk.Equals), versionId)
 //	}
 //}
-//
+
 //func (s *aztestsSuite) TestDownloadSpecificBlobVersion(c *chk.C) {
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
@@ -200,7 +205,7 @@ func (s *aztestsSuite) TestAppendBlobGetPropertiesUsingVID(c *chk.C) {
 //	data, err = ioutil.ReadAll(blockBlobDeleteResp.Response().Body)
 //	c.Assert(string(data), chk.Equals, "updated_data")
 //}
-//
+
 //func (s *aztestsSuite) TestCreateBlobSnapshotReturnsVID(c *chk.C) {
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
@@ -233,7 +238,7 @@ func (s *aztestsSuite) TestAppendBlobGetPropertiesUsingVID(c *chk.C) {
 //		c.Assert(blob.Snapshot, chk.Equals, "")
 //	}
 //}
-//
+
 //func (s *aztestsSuite) TestCopyBlobFromURLWithSASReturnsVID(c *chk.C) {
 //	bsu := getBSU()
 //	credential, err := getGenericCredential("")
@@ -296,7 +301,7 @@ func (s *aztestsSuite) TestAppendBlobGetPropertiesUsingVID(c *chk.C) {
 //	c.Assert(resp.Response().Header.Get("x-ms-version"), chk.Equals, ServiceVersion)
 //	c.Assert(resp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
 //}
-//
+
 //func (s *aztestsSuite) TestCreateBlockBlobReturnsVID(c *chk.C) {
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)

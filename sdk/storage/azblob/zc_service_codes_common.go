@@ -142,6 +142,12 @@ const (
 	// ServiceCodeLeaseNotPresentWithLeaseOperation means there is currently no lease on the blob/container.
 	ServiceCodeLeaseNotPresentWithLeaseOperation ServiceCodeType = "LeaseNotPresentWithLeaseOperation"
 
+	// ServiceCodeUnsupportedHTTPVerb means the resource doesn't support the specified HTTP verb (405).
+	ServiceCodeUnsupportedHTTPVerb ServiceCodeType = "UnsupportedHttpVerb"
+
+	// ServiceCodeBlobNotFound means the specified blob does not exist.
+	ServiceCodeBlobNotFound ServiceCodeType = "BlobNotFound"
+
 	// ServiceCodeMaxBlobSizeConditionNotMet means the max blob size condition specified was not met.
 	ServiceCodeMaxBlobSizeConditionNotMet ServiceCodeType = "MaxBlobSizeConditionNotMet"
 
@@ -184,6 +190,16 @@ const (
 	// ServiceCodeSystemInUse means this blob is in use by the system.
 	ServiceCodeSystemInUse ServiceCodeType = "SystemInUse"
 
+	// ServiceCodeSequenceNumberConditionNotMet means the sequence number condition specified was not met.
+	ServiceCodeSequenceNumberConditionNotMet ServiceCodeType = "SequenceNumberConditionNotMet"
+
+	// ServiceCodePreviousSnapshotNotFound means the previous snapshot is not found.
+	ServiceCodePreviousSnapshotNotFound ServiceCodeType = "PreviousSnapshotNotFound"
+
+	// ServiceCodeCannotVerifyCopySource means that the service could not verify the copy source within the specified time.
+	// Examine the HTTP status code and message for more information about the failure.
+	ServiceCodeCannotVerifyCopySource ServiceCodeType = "CannotVerifyCopySource"
+
 	// ServiceCodeTargetConditionNotMet means the target condition specified using HTTP conditional header(s) is not met.
 	ServiceCodeTargetConditionNotMet ServiceCodeType = "TargetConditionNotMet"
 
@@ -198,4 +214,13 @@ const (
 
 	// ServiceCodeBlobNotArchived means this blob is currently not in the archived state.
 	ServiceCodeBlobNotArchived ServiceCodeType = "BlobNotArchived"
+
+	// ServiceCodeContainerAlreadyExists means the specified container already exists.
+	ServiceCodeContainerAlreadyExists ServiceCodeType = "ContainerAlreadyExists"
+
+	// ServiceCodeContainerNotFound means the specified container does not exist.
+	ServiceCodeContainerNotFound ServiceCodeType = "ContainerNotFound"
+
+	// ServiceCodeNoPendingCopyOperation means there is currently no pending copy operation.
+	ServiceCodeNoPendingCopyOperation ServiceCodeType = "NoPendingCopyOperation"
 )

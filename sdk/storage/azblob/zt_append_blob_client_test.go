@@ -83,8 +83,7 @@ func (s *aztestsSuite) TestAppendBlockWithMD5(c *chk.C) {
 	appendResp, err = abClient.AppendBlock(context.Background(), readerToBody, &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeMd5Mismatch)
+	validateStorageError(c, err, ServiceCodeMd5Mismatch)
 }
 
 func (s *aztestsSuite) TestAppendBlockFromURL(c *chk.C) {
@@ -270,8 +269,8 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	}
 	_, err = destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, int64(contentSize), nil)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeMd5Mismatch)
+
+	validateStorageError(c, err, ServiceCodeMd5Mismatch)
 }
 
 func (s *aztestsSuite) TestBlobCreateAppendMetadataNonEmpty(c *chk.C) {
@@ -392,8 +391,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfModifiedSinceFalse(c *chk.C) {
 	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue(c *chk.C) {
@@ -439,8 +437,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse(c *chk.C) {
 	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobCreateAppendIfMatchTrue(c *chk.C) {
@@ -485,8 +482,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfMatchFalse(c *chk.C) {
 	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobCreateAppendIfNoneMatchTrue(c *chk.C) {
@@ -531,8 +527,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfNoneMatchFalse(c *chk.C) {
 	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobAppendBlockNilBody(c *chk.C) {
@@ -544,8 +539,7 @@ func (s *aztestsSuite) TestBlobAppendBlockNilBody(c *chk.C) {
 	_, err := abClient.AppendBlock(ctx, bytes.NewReader(nil), nil)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeInvalidHeaderValue)
+	validateStorageError(c, err, ServiceCodeInvalidHeaderValue)
 }
 
 func (s *aztestsSuite) TestBlobAppendBlockEmptyBody(c *chk.C) {
@@ -557,8 +551,7 @@ func (s *aztestsSuite) TestBlobAppendBlockEmptyBody(c *chk.C) {
 	_, err := abClient.AppendBlock(ctx, strings.NewReader(""), nil)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeInvalidHeaderValue)
+	validateStorageError(c, err, ServiceCodeInvalidHeaderValue)
 }
 
 func (s *aztestsSuite) TestBlobAppendBlockNonExistentBlob(c *chk.C) {
@@ -570,8 +563,7 @@ func (s *aztestsSuite) TestBlobAppendBlockNonExistentBlob(c *chk.C) {
 	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeBlobNotFound)
+	validateStorageError(c, err, ServiceCodeBlobNotFound)
 }
 
 func validateBlockAppended(c *chk.C, abClient AppendBlobClient, expectedSize int) {
@@ -618,8 +610,7 @@ func (s *aztestsSuite) TestBlobAppendBlockIfModifiedSinceFalse(c *chk.C) {
 	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 // Ping Pong
@@ -662,8 +653,7 @@ func (s *aztestsSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse(c *chk.C) {
 	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobAppendBlockIfMatchTrue(c *chk.C) {
@@ -704,8 +694,7 @@ func (s *aztestsSuite) TestBlobAppendBlockIfMatchFalse(c *chk.C) {
 	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchTrue(c *chk.C) {
@@ -746,8 +735,7 @@ func (s *aztestsSuite) TestBlobAppendBlockIfNoneMatchFalse(c *chk.C) {
 	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 // TODO: Fix this
@@ -829,8 +817,7 @@ func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNegOne(c *ch
 	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeAppendPositionConditionNotMet)
+	validateStorageError(c, err, ServiceCodeInvalidHeaderValue)
 }
 
 func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero(c *chk.C) {
@@ -848,7 +835,6 @@ func (s *aztestsSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero(c *c
 	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
 	// validateStorageError(c, err, ServiceCodeAppendPositionConditionNotMet)
 }
 
@@ -885,6 +871,5 @@ func (s *aztestsSuite) TestBlobAppendBlockIfMaxSizeFalse(c *chk.C) {
 	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeMaxBlobSizeConditionNotMet)
+	validateStorageError(c, err, ServiceCodeMaxBlobSizeConditionNotMet)
 }

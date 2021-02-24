@@ -268,6 +268,7 @@ func (b BlobClient) GetTags(ctx context.Context, options *GetTagsBlobOptions) (B
 	resp, err := b.client.GetTags(ctx, blobGetTagsOptions, modifiedAccessConditions)
 
 	return resp, handleError(err)
+
 }
 
 func (b BlobClient) CanGetBlobSASToken() bool {

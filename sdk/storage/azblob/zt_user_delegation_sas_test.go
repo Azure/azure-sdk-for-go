@@ -10,77 +10,73 @@ import (
 	chk "gopkg.in/check.v1"
 )
 
-// TODO enable after container is implemented
 //Creates a container and tests permissions by listing blobs
-//func (s *aztestsSuite) TestUserDelegationSASContainer(c *chk.C) {
-//	bsu := getBSU()
-//	containerURL, containerName := getContainerClient(c, bsu)
-//	currentTime := time.Now().UTC()
-//	ocred, err := getOAuthCredential("")
-//	if err != nil {
-//		c.Fatal(err)
-//	}
-//
-//	// Create pipeline w/ OAuth to handle user delegation key obtaining
-//	p := NewPipeline(*ocred, PipelineOptions{})
-//
-//	bsu = bsu.WithPipeline(p)
-//	keyInfo := NewKeyInfo(currentTime, currentTime.Add(48*time.Hour))
-//	cudk, err := bsu.GetUserDelegationCredential(ctx, keyInfo, nil, nil)
-//	if err != nil {
-//		c.Fatal(err)
-//	}
-//
-//	cSAS, err := BlobSASSignatureValues{
-//		Protocol:      SASProtocolHTTPS,
-//		StartTime:     currentTime,
-//		ExpiryTime:    currentTime.Add(24 * time.Hour),
-//		Permissions:   "racwdl",
-//		ContainerName: containerName,
-//	}.NewSASQueryParameters(cudk)
-//
-//	// Create anonymous pipeline
-//	p = NewPipeline(NewAnonymousCredential(), PipelineOptions{})
-//
-//	// Create the container
-//	_, err = containerURL.Create(ctx, Metadata{}, PublicAccessNone)
-//	defer containerURL.Delete(ctx, ContainerAccessConditions{})
-//	if err != nil {
-//		c.Fatal(err)
-//	}
-//
-//	// Craft a container URL w/ container UDK SAS
-//	cURL := containerURL.URL()
-//	cURL.RawQuery += cSAS.Encode()
-//	cSASURL := NewContainerURL(cURL, p)
-//
-//	bblob := cSASURL.NewBlockBlobURL("test")
-//	_, err = bblob.Upload(ctx, strings.NewReader("hello world!"), BlobHTTPHeaders{}, Metadata{}, BlobAccessConditions{})
-//	if err != nil {
-//		c.Fatal(err)
-//	}
-//
-//	resp, err := bblob.Download(ctx, 0, 0, BlobAccessConditions{}, false)
-//	data := &bytes.Buffer{}
-//	body := resp.Body(RetryReaderOptions{})
-//	if body == nil {
-//		c.Fatal("download body was nil")
-//	}
-//	_, err = data.ReadFrom(body)
-//	if err != nil {
-//		c.Fatal(err)
-//	}
-//	err = body.Close()
-//	if err != nil {
-//		c.Fatal(err)
-//	}
-//
-//	c.Assert(data.String(), chk.Equals, "hello world!")
-//	_, err = bblob.Delete(ctx, DeleteSnapshotsOptionNone, BlobAccessConditions{})
-//	if err != nil {
-//		c.Fatal(err)
-//	}
-//}
+func (s *aztestsSuite) TestUserDelegationSASContainer(c *chk.C) {
+	bsu := getBSU()
+	containerClient, containerName := getContainerClient(c, bsu)
+	currentTime := time.Now().UTC()
+	// Ensuring currTime <= time of sending delegating request request
+	keyInfo := NewKeyInfo(currentTime, currentTime.Add(48*time.Hour))
+	time.Sleep(2 * time.Second)
+
+	serviceClient, err := getGenericServiceClientWithOAuth(c, "")
+	c.Assert(err, chk.IsNil)
+
+	userDelegationCred, err := serviceClient.GetUserDelegationCredential(ctx, keyInfo)
+	if err != nil {
+		c.Fatal(err)
+	}
+
+	cSAS, err := BlobSASSignatureValues{
+		Protocol:      SASProtocolHTTPS,
+		StartTime:     currentTime.Add(-1 * time.Second),
+		ExpiryTime:    currentTime.Add(24 * time.Hour),
+		Permissions:   "racwdl",
+		ContainerName: containerName,
+	}.NewSASQueryParameters(userDelegationCred)
+
+	// Create anonymous pipeline
+	//p = azcore.NewPipeline(NewAnonymousCredential(), PipelineOptions{})
+
+	// Create the container
+	_, err = containerClient.Create(ctx, nil)
+	defer containerClient.Delete(ctx, nil)
+	if err != nil {
+		c.Fatal(err)
+	}
+
+	// Craft a container URL w/ container UDK SAS
+	cURL := containerClient.URL()
+	cURL.RawQuery += cSAS.Encode()
+	cSASURL, err := NewContainerClient(cURL.String(), NewAnonymousCredential(), nil)
+
+	bblob := cSASURL.NewBlockBlobClient("test")
+	_, err = bblob.Upload(ctx, strings.NewReader("hello world!"), nil)
+	if err != nil {
+		c.Fatal(err)
+	}
+
+	resp, err := bblob.Download(ctx, nil)
+	data := &bytes.Buffer{}
+	body := resp.Body(RetryReaderOptions{})
+	if body == nil {
+		c.Fatal("download body was nil")
+	}
+	_, err = data.ReadFrom(body)
+	if err != nil {
+		c.Fatal(err)
+	}
+	err = body.Close()
+	if err != nil {
+		c.Fatal(err)
+	}
+
+	c.Assert(data.String(), chk.Equals, "hello world!")
+	_, err = bblob.Delete(ctx, nil)
+	if err != nil {
+		c.Fatal(err)
+	}
+}
 
 // Creates a blob, takes a snapshot, downloads from snapshot, and deletes from the snapshot w/ the token
 func (s *aztestsSuite) TestUserDelegationSASBlob(c *chk.C) {
@@ -88,13 +84,14 @@ func (s *aztestsSuite) TestUserDelegationSASBlob(c *chk.C) {
 	serviceClient, err := getGenericServiceClientWithOAuth(c, "")
 	c.Assert(err, chk.IsNil)
 
-	containerURL, containerName := getContainerClient(c, serviceClient)
-	blobClient, blobName := getBlockBlobClient(c, containerURL)
+	containerClient, containerName := getContainerClient(c, serviceClient)
+	blobClient, blobName := getBlockBlobClient(c, containerClient)
 	currentTime := time.Now().UTC()
+	time.Sleep(time.Second)
 
 	// Create container & upload sample data
-	_, err = containerURL.Create(ctx, nil)
-	defer containerURL.Delete(ctx, nil)
+	_, err = containerClient.Create(ctx, nil)
+	defer containerClient.Delete(ctx, nil)
 	if err != nil {
 		c.Fatal(err)
 	}

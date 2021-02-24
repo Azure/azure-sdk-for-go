@@ -1,6 +1,8 @@
 package azblob
 
 import (
+	"bytes"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
 	"os"
 	"strconv"
@@ -53,9 +55,7 @@ func (s *aztestsSuite) TestContainerCreateInvalidName(c *chk.C) {
 	}
 	_, err := containerClient.Create(ctx, &createContainerOptions)
 	c.Assert(err, chk.NotNil)
-
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeInvalidResourceName)
+	validateStorageError(c, err, ServiceCodeInvalidResourceName)
 }
 
 func (s *aztestsSuite) TestContainerCreateEmptyName(c *chk.C) {
@@ -70,8 +70,7 @@ func (s *aztestsSuite) TestContainerCreateEmptyName(c *chk.C) {
 	_, err := containerClient.Create(ctx, &createContainerOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeInvalidQueryParameterValue)
+	validateStorageError(c, err, ServiceCodeInvalidQueryParameterValue)
 }
 
 func (s *aztestsSuite) TestContainerCreateNameCollision(c *chk.C) {
@@ -89,8 +88,7 @@ func (s *aztestsSuite) TestContainerCreateNameCollision(c *chk.C) {
 	_, err := containerClient.Create(ctx, &createContainerOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeContainerAlreadyExists)
+	validateStorageError(c, err, ServiceCodeContainerAlreadyExists)
 }
 
 func (s *aztestsSuite) TestContainerCreateInvalidMetadata(c *chk.C) {
@@ -147,91 +145,120 @@ func (s *aztestsSuite) TestContainerCreateEmptyMetadata(c *chk.C) {
 // Note that for all tests that create blobs, deleting the container also deletes any blobs within that container, thus we
 // simply delete the whole container after the test
 
-//// TODO: After Pacer is ready
-//func (s *aztestsSuite) TestContainerCreateAccessContainer(c *chk.C) {
-//	bsu := getBSU()
-//	credential, err := getGenericCredential("")
-//	c.Assert(err, chk.IsNil)
-//	containerClient, _ := getContainerClient(c, bsu)
-//
-//	access := PublicAccessTypeBlob
-//	createContainerOptions := CreateContainerOptions{
-//		Access:   &access,
-//	}
-//	_, err = containerClient.Create(ctx, &createContainerOptions)
-//	defer deleteContainer(c, containerClient)
-//	c.Assert(err, chk.IsNil)
-//
-//	blobURL := containerClient.NewBlockBlobClient(blobPrefix)
-//	_, err = blobURL.Upload(ctx, bytes.NewReader([]byte("Content")), nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	// Anonymous enumeration should be valid with container access
-//	containerURL2, _ := NewContainerClient(containerClient.String(), credential, nil)
-//	response, err := containerURL2.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(response.Segment.BlobItems[0].Name, chk.Equals, blobPrefix)
-//
-//	// Getting blob data anonymously should still be valid with container access
-//	blobURL2 := containerURL2.NewBlockBlobClient(blobPrefix)
-//	resp, err := blobURL2.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
-//}
+func (s *aztestsSuite) TestContainerCreateAccessContainer(c *chk.C) {
+	bsu := getBSU()
+	credential, err := getGenericCredential("")
+	c.Assert(err, chk.IsNil)
+	containerClient, _ := getContainerClient(c, bsu)
 
-//func (s *aztestsSuite) TestContainerCreateAccessBlob(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := getContainerClient(c, bsu)
-//
-//	_, err := containerClient.Create(ctx, nil, PublicAccessBlob)
-//	defer deleteContainer(c, containerClient)
-//	c.Assert(err, chk.IsNil)
-//
-//	blobURL := containerClient.NewBlockBlobClient(blobPrefix)
-//	blobURL.Upload(ctx, bytes.NewReader([]byte("Content")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//
-//	// Reference the same container URL but with anonymous credentials
-//	containerURL2 := NewContainerClient(containerClient.URL(), NewPipeline(NewAnonymousCredential(), PipelineOptions{}))
-//	_, err = containerURL2.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
-//	validateStorageError(c, err, ServiceCodeNoAuthenticationInformation) // Listing blobs is not publicly accessible
-//
-//	// Accessing blob specific data should be public
-//	blobURL2 := containerURL2.NewBlockBlobClient(blobPrefix)
-//	resp, err := blobURL2.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
-//}
-//
-//func (s *aztestsSuite) TestContainerCreateAccessNone(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := getContainerClient(c, bsu)
-//
-//	_, err := containerClient.Create(ctx, nil, PublicAccessNone)
-//	defer deleteContainer(c, containerClient)
-//
-//	blobURL := containerClient.NewBlockBlobClient(blobPrefix)
-//	blobURL.Upload(ctx, bytes.NewReader([]byte("Content")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-//
-//	// Reference the same container URL but with anonymous credentials
-//	containerURL2 := NewContainerClient(containerClient.URL(), NewPipeline(NewAnonymousCredential(), PipelineOptions{}))
-//	// Listing blobs is not public
-//	_, err = containerURL2.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
-//	validateStorageError(c, err, ServiceCodeNoAuthenticationInformation)
-//
-//	// Blob data is not public
-//	blobURL2 := containerURL2.NewBlockBlobClient(blobPrefix)
-//	_, err = blobURL2.GetProperties(ctx, BlobAccessConditions{}, ClientProvidedKeyOptions{})
-//	c.Assert(err, chk.NotNil)
-//	serr := err.(StorageError)
-//	c.Assert(serr.Response().StatusCode, chk.Equals, 401) // HEAD request does not return a status code
-//}
-//
+	access := PublicAccessTypeBlob
+	createContainerOptions := CreateContainerOptions{
+		Access: &access,
+	}
+	_, err = containerClient.Create(ctx, &createContainerOptions)
+	defer deleteContainer(c, containerClient)
+	c.Assert(err, chk.IsNil)
+
+	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		Metadata: &basicMetadata,
+	}
+	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	// Anonymous enumeration should be valid with container access
+	containerClient2, _ := NewContainerClient(containerClient.String(), credential, nil)
+	response, errChan := containerClient2.ListBlobsFlatSegment(ctx, 3, 0, nil)
+	c.Assert(err, chk.IsNil)
+	for resp := range response {
+		c.Assert(*resp.Name, chk.Equals, blobPrefix)
+	}
+	c.Assert(<-errChan, chk.IsNil)
+
+	// Getting blob data anonymously should still be valid with container access
+	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
+	resp, err := blobURL2.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+}
+
+func (s *aztestsSuite) TestContainerCreateAccessBlob(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := getContainerClient(c, bsu)
+
+	access := PublicAccessTypeBlob
+	createContainerOptions := CreateContainerOptions{
+		Access: &access,
+	}
+	_, err := containerClient.Create(ctx, &createContainerOptions)
+	defer deleteContainer(c, containerClient)
+	c.Assert(err, chk.IsNil)
+
+	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		Metadata: &basicMetadata,
+	}
+	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	// Reference the same container URL but with anonymous credentials
+	containerClient2, err := NewContainerClient(containerClient.String(), azcore.AnonymousCredential(), nil)
+	c.Assert(err, chk.IsNil)
+
+	_, errChan := containerClient2.ListBlobsFlatSegment(ctx, 3, 0, nil)
+	for err := range errChan {
+		c.Assert(err, chk.NotNil)
+
+		// validateStorageError(c, err, ServiceCodeNoAuthenticationInformation) // Listing blobs is not publicly accessible
+	}
+
+	// Accessing blob specific data should be public
+	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
+	resp, err := blobURL2.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+}
+
+func (s *aztestsSuite) TestContainerCreateAccessNone(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := getContainerClient(c, bsu)
+
+	// Public Access Type None
+	_, err := containerClient.Create(ctx, nil)
+	defer deleteContainer(c, containerClient)
+
+	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		Metadata: &basicMetadata,
+	}
+	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	// Reference the same container URL but with anonymous credentials
+	containerClient2, err := NewContainerClient(containerClient.String(), azcore.AnonymousCredential(), nil)
+	c.Assert(err, chk.IsNil)
+
+	_, errChan := containerClient2.ListBlobsFlatSegment(ctx, 3, 0, nil)
+	for err := range errChan {
+		c.Assert(err, chk.NotNil)
+
+		// validateStorageError(c, err, ServiceCodeNoAuthenticationInformation) // Listing blobs is not publicly accessible
+	}
+
+	// Blob data is not public
+	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
+	_, err = blobURL2.GetProperties(ctx, nil)
+	c.Assert(err, chk.NotNil)
+
+	//serr := err.(StorageError)
+	//c.Assert(serr.Response().StatusCode, chk.Equals, 401) // HEAD request does not return a status code
+}
 
 func validateContainerDeleted(c *chk.C, containerClient ContainerClient) {
 	_, err := containerClient.GetAccessPolicy(ctx, nil)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeContainerNotFound)
+
+	validateStorageError(c, err, ServiceCodeContainerNotFound)
 }
 
 func (s *aztestsSuite) TestContainerDelete(c *chk.C) {
@@ -250,8 +277,8 @@ func (s *aztestsSuite) TestContainerDeleteNonExistent(c *chk.C) {
 
 	_, err := containerClient.Delete(ctx, nil)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeContainerNotFound)
+
+	validateStorageError(c, err, ServiceCodeContainerNotFound)
 }
 
 func (s *aztestsSuite) TestContainerDeleteIfModifiedSinceTrue(c *chk.C) {
@@ -284,8 +311,8 @@ func (s *aztestsSuite) TestContainerDeleteIfModifiedSinceFalse(c *chk.C) {
 	}
 	_, err := containerClient.Delete(ctx, &deleteContainerOptions)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue(c *chk.C) {
@@ -320,27 +347,27 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceFalse(c *chk.C) {
 	}
 	_, err := containerClient.Delete(ctx, &deleteContainerOptions)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
-func (s *aztestsSuite) TestContainerAccessConditionsUnsupportedConditions(c *chk.C) {
-	// This test defines that the library will panic if the user specifies conditional headers
-	// that will be ignored by the service
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-
-	invalidEtag := "invalid"
-	deleteContainerOptions := SetMetadataContainerOptions{
-		Metadata: &basicMetadata,
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfMatch: &invalidEtag,
-		},
-	}
-	_, err := containerClient.SetMetadata(ctx, &deleteContainerOptions)
-	c.Assert(err, chk.NotNil)
-}
+//func (s *aztestsSuite) TestContainerAccessConditionsUnsupportedConditions(c *chk.C) {
+//	// This test defines that the library will panic if the user specifies conditional headers
+//	// that will be ignored by the service
+//	bsu := getBSU()
+//	containerClient, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(c, containerClient)
+//
+//	invalidEtag := "invalid"
+//	deleteContainerOptions := SetMetadataContainerOptions{
+//		Metadata: &basicMetadata,
+//		ModifiedAccessConditions: &ModifiedAccessConditions{
+//			IfMatch: &invalidEtag,
+//		},
+//	}
+//	_, err := containerClient.SetMetadata(ctx, &deleteContainerOptions)
+//	c.Assert(err, chk.NotNil)
+//}
 
 //func (s *aztestsSuite) TestContainerListBlobsNonexistentPrefix(c *chk.C) {
 //	bsu := getBSU()
@@ -348,67 +375,85 @@ func (s *aztestsSuite) TestContainerAccessConditionsUnsupportedConditions(c *chk
 //	defer deleteContainer(c, containerClient)
 //	createNewBlockBlob(c, containerClient)
 //
-//	resp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{Prefix: blobPrefix + blobPrefix})
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Segment.BlobItems, chk.HasLen, 0)
+//	prefix := blobPrefix + blobPrefix
+//	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
+//		Prefix: &prefix,
+//	}
+//	listResponse, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
+//	c.Assert(<- errChan, chk.IsNil)
+//	c.Assert(listResponse, chk.IsNil)
 //}
 
-//func (s *aztestsSuite) TestContainerListBlobsSpecificValidPrefix(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	_, blobName := createNewBlockBlob(c, containerClient)
-//
-//	resp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{Prefix: blobPrefix})
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Segment.BlobItems, chk.HasLen, 1)
-//	c.Assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
-//}
+func (s *aztestsSuite) TestContainerListBlobsSpecificValidPrefix(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	_, blobName := createNewBlockBlob(c, containerClient)
 
-//func (s *aztestsSuite) TestContainerListBlobsValidDelimiter(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	createNewBlockBlobWithPrefix(c, containerClient, "a/1")
-//	createNewBlockBlobWithPrefix(c, containerClient, "a/2")
-//	createNewBlockBlobWithPrefix(c, containerClient, "b/1")
-//	_, blobName := createNewBlockBlobWithPrefix(c, containerClient, "blob")
-//
-//	resp, err := containerClient.ListBlobsHierarchySegment(ctx, Marker{}, "/", ListBlobsSegmentOptions{})
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(len(resp.Segment.BlobItems), chk.Equals, 1)
-//	c.Assert(len(resp.Segment.BlobPrefixes), chk.Equals, 2)
-//	c.Assert(resp.Segment.BlobPrefixes[0].Name, chk.Equals, "a/")
-//	c.Assert(resp.Segment.BlobPrefixes[1].Name, chk.Equals, "b/")
-//	c.Assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
-//}
+	prefix := blobPrefix
+	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
+		Prefix: &prefix,
+	}
+	listResponse, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
+	c.Assert(<-errChan, chk.IsNil)
 
-//func (s *aztestsSuite) TestContainerListBlobsWithSnapshots(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//
-//	_, err := containerClient.ListBlobsHierarchySegment(ctx, Marker{}, "/", ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true}})
-//	c.Assert(err, chk.Not(chk.Equals), nil)
-//}
-//
-//func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	createNewBlockBlobWithPrefix(c, containerClient, "a/1")
-//	createNewBlockBlobWithPrefix(c, containerClient, "a/2")
-//	createNewBlockBlobWithPrefix(c, containerClient, "b/1")
-//	createNewBlockBlobWithPrefix(c, containerClient, "blob")
-//
-//	resp, err := containerClient.ListBlobsHierarchySegment(ctx, Marker{}, "^", ListBlobsSegmentOptions{})
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Segment.BlobItems, chk.HasLen, 4)
-//}
+	c.Assert(listResponse, chk.HasLen, 1)
+	for resp := range listResponse {
+		c.Assert(*resp.Name, chk.Equals, blobName)
+	}
+}
+
+func (s *aztestsSuite) TestContainerListBlobsValidDelimiter(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	prefixes := []string{"a/1", "a/2", "b/2", "blob"}
+	blobNames := make([]string, 4)
+	for idx, prefix := range prefixes {
+		_, blobNames[idx] = createNewBlockBlobWithPrefix(c, containerClient, prefix)
+	}
+
+	listResponse, errChan := containerClient.ListBlobsHierarchySegment(ctx, "/", 4, 0, nil)
+	c.Assert(<-errChan, chk.IsNil)
+	c.Assert(listResponse, chk.HasLen, 1)
+	for resp := range listResponse {
+		c.Assert(*resp.Name, chk.Equals, blobNames[3])
+	}
+	// TODO: Ask why the output is BlobItemInternal and why other fields are not there for ex: prefix array
+	//c.Assert(err, chk.IsNil)
+	//c.Assert(len(resp.Segment.BlobItems), chk.Equals, 1)
+	//c.Assert(len(resp.Segment.BlobPrefixes), chk.Equals, 2)
+	//c.Assert(resp.Segment.BlobPrefixes[0].Name, chk.Equals, "a/")
+	//c.Assert(resp.Segment.BlobPrefixes[1].Name, chk.Equals, "b/")
+	//c.Assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
+}
+
+func (s *aztestsSuite) TestContainerListBlobsWithSnapshots(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+
+	containerListBlobHierarchySegmentOptions := ContainerListBlobHierarchySegmentOptions{
+		Include: &[]ListBlobsIncludeItem{},
+	}
+	_, err := containerClient.ListBlobsHierarchySegment(ctx, "/", 3, 0, &containerListBlobHierarchySegmentOptions)
+	c.Assert(err, chk.Not(chk.Equals), nil)
+}
+
+func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	prefixes := []string{"a/1", "a/2", "b/1", "blob"}
+	for _, prefix := range prefixes {
+		createNewBlockBlobWithPrefix(c, containerClient, prefix)
+	}
+
+	resp, errChan := containerClient.ListBlobsHierarchySegment(ctx, "^", 4, 0, nil)
+
+	c.Assert(<-errChan, chk.IsNil)
+	c.Assert(resp, chk.HasLen, len(prefixes))
+}
 
 //func (s *aztestsSuite) TestContainerListBlobsIncludeTypeMetadata(c *chk.C) {
 //	bsu := getBSU()
@@ -451,9 +496,9 @@ func (s *aztestsSuite) TestContainerAccessConditionsUnsupportedConditions(c *chk
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(c, containerClient)
-//	blobURL, blobName := createNewBlockBlob(c, containerClient)
+//	bbClient, blobName := createNewBlockBlob(c, containerClient)
 //	blobCopyURL, blobCopyName := createNewBlockBlobWithPrefix(c, containerClient, "copy")
-//	_, err := blobCopyURL.StartCopyFromURL(ctx, blobURL.URL(), Metadata{}, ModifiedAccessConditions{}, BlobAccessConditions{}, DefaultAccessTier, nil)
+//	_, err := blobCopyURL.StartCopyFromURL(ctx, bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, BlobAccessConditions{}, DefaultAccessTier, nil)
 //	c.Assert(err, chk.IsNil)
 //
 //	resp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{},
@@ -465,7 +510,7 @@ func (s *aztestsSuite) TestContainerAccessConditionsUnsupportedConditions(c *chk
 //	c.Assert(resp.Segment.BlobItems[1].Name, chk.Equals, blobName)
 //	c.Assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobCopyName)
 //	c.Assert(*resp.Segment.BlobItems[0].Properties.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
-//	temp := blobURL.URL()
+//	temp := bbClient.URL()
 //	c.Assert(*resp.Segment.BlobItems[0].Properties.CopySource, chk.Equals, temp.String())
 //	c.Assert(resp.Segment.BlobItems[0].Properties.CopyStatus, chk.Equals, CopyStatusSuccess)
 //}
@@ -474,8 +519,8 @@ func (s *aztestsSuite) TestContainerAccessConditionsUnsupportedConditions(c *chk
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(c, containerClient)
-//	blobURL, blobName := getBlockBlobURL(c, containerClient)
-//	_, err := blobURL.StageBlock(ctx, blockID, strings.NewReader(blockBlobDefaultData), LeaseAccessConditions{}, nil, ClientProvidedKeyOptions{})
+//	bbClient, blobName := getBlockBlobURL(c, containerClient)
+//	_, err := bbClient.StageBlock(ctx, blockID, strings.NewReader(blockBlobDefaultData), LeaseAccessConditions{}, nil, ClientProvidedKeyOptions{})
 //	c.Assert(err, chk.IsNil)
 //
 //	resp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{},
@@ -489,14 +534,14 @@ func (s *aztestsSuite) TestContainerAccessConditionsUnsupportedConditions(c *chk
 //func testContainerListBlobsIncludeTypeDeletedImpl(c *chk.C, bsu ServiceURL) error {
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(c, containerClient)
-//	blobURL, _ := createNewBlockBlob(c, containerClient)
+//	bbClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{},
 //		ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true, Deleted: true}})
 //	c.Assert(err, chk.IsNil)
 //	c.Assert(resp.Segment.BlobItems, chk.HasLen, 1)
 //
-//	_, err = blobURL.Delete(ctx, DeleteSnapshotsOptionInclude, BlobAccessConditions{})
+//	_, err = bbClient.Delete(ctx, DeleteSnapshotsOptionInclude, BlobAccessConditions{})
 //	c.Assert(err, chk.IsNil)
 //
 //	resp, err = containerClient.ListBlobsFlatSegment(ctx, Marker{},
@@ -522,11 +567,11 @@ func (s *aztestsSuite) TestContainerAccessConditionsUnsupportedConditions(c *chk
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(c, containerClient)
 //
-//	blobURL, _ := createNewBlockBlobWithPrefix(c, containerClient, "z")
-//	_, err := blobURL.CreateSnapshot(ctx, Metadata{}, BlobAccessConditions{}, ClientProvidedKeyOptions{})
+//	bbClient, _ := createNewBlockBlobWithPrefix(c, containerClient, "z")
+//	_, err := bbClient.CreateSnapshot(ctx, Metadata{}, BlobAccessConditions{}, ClientProvidedKeyOptions{})
 //	c.Assert(err, chk.IsNil)
 //	blobURL2, _ := createNewBlockBlobWithPrefix(c, containerClient, "copy")
-//	resp2, err := blobURL2.StartCopyFromURL(ctx, blobURL.URL(), Metadata{}, ModifiedAccessConditions{}, BlobAccessConditions{}, DefaultAccessTier, nil)
+//	resp2, err := blobURL2.StartCopyFromURL(ctx, bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, BlobAccessConditions{}, DefaultAccessTier, nil)
 //	c.Assert(err, chk.IsNil)
 //	waitForCopy(c, blobURL2, resp2)
 //	blobURL3, _ := createNewBlockBlobWithPrefix(c, containerClient, "deleted")
@@ -563,19 +608,21 @@ func (s *aztestsSuite) TestContainerAccessConditionsUnsupportedConditions(c *chk
 //	_, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{MaxResults: -2})
 //	c.Assert(err, chk.Not(chk.IsNil))
 //}
-//
+
 //func (s *aztestsSuite) TestContainerListBlobsMaxResultsZero(c *chk.C) {
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(c, containerClient)
 //	createNewBlockBlob(c, containerClient)
 //
-//	resp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{MaxResults: 0})
+//	maxResults := int32(0)
+//	resp, errChan := containerClient.ListBlobsFlatSegment(ctx, 1, 0, &ContainerListBlobFlatSegmentOptions{Maxresults: &maxResults})
 //
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Segment.BlobItems, chk.HasLen, 1)
+//	c.Assert(<-errChan, chk.IsNil)
+//	c.Assert(resp, chk.HasLen, 1)
 //}
-//
+
+// TODO: Adele: Case failing
 //func (s *aztestsSuite) TestContainerListBlobsMaxResultsInsufficient(c *chk.C) {
 //	bsu := getBSU()
 //	containerClient, _ := createNewContainer(c, bsu)
@@ -583,67 +630,64 @@ func (s *aztestsSuite) TestContainerAccessConditionsUnsupportedConditions(c *chk
 //	_, blobName := createNewBlockBlobWithPrefix(c, containerClient, "a")
 //	createNewBlockBlobWithPrefix(c, containerClient, "b")
 //
-//	resp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{MaxResults: 1})
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Segment.BlobItems, chk.HasLen, 1)
-//	c.Assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
-//}
-//
-//func (s *aztestsSuite) TestContainerListBlobsMaxResultsExact(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	_, blobName := createNewBlockBlobWithPrefix(c, containerClient, "a")
-//	_, blobName2 := createNewBlockBlobWithPrefix(c, containerClient, "b")
-//
-//	resp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{MaxResults: 2})
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Segment.BlobItems, chk.HasLen, 2)
-//	c.Assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
-//	c.Assert(resp.Segment.BlobItems[1].Name, chk.Equals, blobName2)
-//}
-//
-//func (s *aztestsSuite) TestContainerListBlobsMaxResultsSufficient(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	_, blobName := createNewBlockBlobWithPrefix(c, containerClient, "a")
-//	_, blobName2 := createNewBlockBlobWithPrefix(c, containerClient, "b")
-//
-//	resp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{MaxResults: 3})
-//
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Segment.BlobItems, chk.HasLen, 2)
-//	c.Assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
-//	c.Assert(resp.Segment.BlobItems[1].Name, chk.Equals, blobName2)
-//}
-//
-//func (s *aztestsSuite) TestContainerListBlobsNonExistentContainer(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := getContainerClient(c, bsu)
-//
-//	_, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
-//
-//	c.Assert(err, chk.NotNil)
+//	maxResults := int32(1)
+//	resp, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &ContainerListBlobFlatSegmentOptions{Maxresults: &maxResults})
+//	c.Assert(<- errChan, chk.IsNil)
+//	c.Assert(resp, chk.HasLen, 1)
+//	c.Assert((<- resp).Name, chk.Equals, blobName)
 //}
 
-// func (s *aztestsSuite) TestContainerWithNewPipeline(c *chk.C) {
-// 	bsu := getBSU()
-// 	pipeline := newTestPipeline()
-// 	containerClient, _ := getContainerClient(c, bsu)
-// 	containerClient = containerClient.WithPipeline(pipeline)
-//
-// 	access := PublicAccessTypeBlob
-// 	createContainerOptions := CreateContainerOptions{
-// 		Access: &access,
-// 	}
-// 	_, err := containerClient.Create(ctx, &createContainerOptions)
-//
-// 	c.Assert(err, chk.NotNil)
-// 	c.Assert(err.Error(), chk.Equals, testPipelineMessage)
-// }
+func (s *aztestsSuite) TestContainerListBlobsMaxResultsExact(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	blobNames := make([]string, 2)
+	_, blobNames[0] = createNewBlockBlobWithPrefix(c, containerClient, "a")
+	_, blobNames[1] = createNewBlockBlobWithPrefix(c, containerClient, "b")
+
+	maxResult := int32(2)
+	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
+		Maxresults: &maxResult,
+	}
+	listResponse, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
+	c.Assert(<-errChan, chk.IsNil)
+	c.Assert(listResponse, chk.HasLen, len(blobNames))
+	idx := 0
+	for resp := range listResponse {
+		c.Assert(*resp.Name, chk.Equals, blobNames[idx])
+		idx = idx + 1
+	}
+}
+
+func (s *aztestsSuite) TestContainerListBlobsMaxResultsSufficient(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+	blobNames := make([]string, 2)
+	_, blobNames[0] = createNewBlockBlobWithPrefix(c, containerClient, "a")
+	_, blobNames[1] = createNewBlockBlobWithPrefix(c, containerClient, "b")
+
+	maxResult := int32(3)
+	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
+		Maxresults: &maxResult,
+	}
+	listResponse, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
+	c.Assert(<-errChan, chk.IsNil)
+	c.Assert(listResponse, chk.HasLen, len(blobNames))
+	idx := 0
+	for resp := range listResponse {
+		c.Assert(*resp.Name, chk.Equals, blobNames[idx])
+		idx = idx + 1
+	}
+}
+
+func (s *aztestsSuite) TestContainerListBlobsNonExistentContainer(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := getContainerClient(c, bsu)
+
+	_, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, nil)
+	c.Assert(<-errChan, chk.NotNil)
+}
 
 func (s *aztestsSuite) TestContainerGetSetPermissionsMultiplePolicies(c *chk.C) {
 	bsu := getBSU()
@@ -725,16 +769,17 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessNone(c *chk.C) {
 	bsu2, err := NewServiceClient(bsu.String(), credential, nil)
 	c.Assert(err, chk.IsNil)
 
-	containerURL2 := bsu2.NewContainerClient(containerName)
-	blobURL2 := containerURL2.NewBlockBlobClient(blobName)
+	containerClient2 := bsu2.NewContainerClient(containerName)
+	blobURL2 := containerClient2.NewBlockBlobClient(blobName)
 	_, err = blobURL2.Download(ctx, nil)
 
 	// Get permissions via the original container URL so the request succeeds
-	resp, _ := containerClient.GetAccessPolicy(ctx, nil)
+	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 	c.Assert(resp.BlobPublicAccess, chk.IsNil)
+	c.Assert(err, chk.NotNil)
 	// If we cannot access a blob's data, we will also not be able to enumerate blobs
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeNoAuthenticationInformation)
+
+	validateStorageError(c, err, ServiceCodeNoAuthenticationInformation)
 
 }
 
@@ -865,8 +910,8 @@ func (s *aztestsSuite) TestContainerSetPermissionsACLMoreThanFive(c *chk.C) {
 	}
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
+
+	validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
 }
 
 func (s *aztestsSuite) TestContainerSetPermissionsDeleteAndModifyACL(c *chk.C) {
@@ -973,39 +1018,39 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAllPolicies(c *chk.C) {
 	c.Assert(resp.SignedIdentifiers, chk.IsNil)
 }
 
-func (s *aztestsSuite) TestContainerSetPermissionsInvalidPolicyTimes(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-
-	defer deleteContainer(c, containerClient)
-
-	// Swap start and expiry
-	expiry := time.Now().UTC()
-	start := expiry.Add(5 * time.Minute).UTC()
-	permissions := make([]SignedIDentifier, 2, 2)
-	listOnly := AccessPolicyPermission{Read: true}.String()
-	for i := 0; i < 2; i++ {
-		id := "000" + strconv.Itoa(i)
-		permissions[i] = SignedIDentifier{
-			ID: &id,
-			AccessPolicy: &AccessPolicy{
-				Start:      &start,
-				Expiry:     &expiry,
-				Permission: &listOnly,
-			},
-		}
-	}
-
-	access := PublicAccessTypeBlob
-	setAccessPolicyOptions := SetAccessPolicyOptions{
-		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
-			Access:       &access,
-			ContainerAcl: &permissions,
-		},
-	}
-	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
-	c.Assert(err, chk.IsNil)
-}
+//func (s *aztestsSuite) TestContainerSetPermissionsInvalidPolicyTimes(c *chk.C) {
+//	bsu := getBSU()
+//	containerClient, _ := createNewContainer(c, bsu)
+//
+//	defer deleteContainer(c, containerClient)
+//
+//	// Swap start and expiry
+//	expiry := time.Now().UTC()
+//	start := expiry.Add(5 * time.Minute).UTC()
+//	permissions := make([]SignedIDentifier, 2, 2)
+//	listOnly := AccessPolicyPermission{Read: true}.String()
+//	for i := 0; i < 2; i++ {
+//		id := "000" + strconv.Itoa(i)
+//		permissions[i] = SignedIDentifier{
+//			ID: &id,
+//			AccessPolicy: &AccessPolicy{
+//				Start:      &start,
+//				Expiry:     &expiry,
+//				Permission: &listOnly,
+//			},
+//		}
+//	}
+//
+//	access := PublicAccessTypeBlob
+//	setAccessPolicyOptions := SetAccessPolicyOptions{
+//		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
+//			Access:       &access,
+//			ContainerAcl: &permissions,
+//		},
+//	}
+//	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+//	c.Assert(err, chk.IsNil)
+//}
 
 func (s *aztestsSuite) TestContainerSetPermissionsNilPolicySlice(c *chk.C) {
 	bsu := getBSU()
@@ -1051,8 +1096,8 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong(c *chk
 	}
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
+
+	validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
 }
 
 func (s *aztestsSuite) TestContainerSetPermissionsIfModifiedSinceTrue(c *chk.C) {
@@ -1090,8 +1135,8 @@ func (s *aztestsSuite) TestContainerSetPermissionsIfModifiedSinceFalse(c *chk.C)
 	}
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestContainerSetPermissionsIfUnModifiedSinceTrue(c *chk.C) {
@@ -1130,8 +1175,8 @@ func (s *aztestsSuite) TestContainerSetPermissionsIfUnModifiedSinceFalse(c *chk.
 	}
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestContainerGetPropertiesAndMetadataNoMetadata(c *chk.C) {
@@ -1151,8 +1196,8 @@ func (s *aztestsSuite) TestContainerGetPropsAndMetaNonExistentContainer(c *chk.C
 
 	_, err := containerClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeContainerNotFound)
+
+	validateStorageError(c, err, ServiceCodeContainerNotFound)
 }
 
 func (s *aztestsSuite) TestContainerSetMetadataEmpty(c *chk.C) {
@@ -1219,8 +1264,8 @@ func (*aztestsSuite) TestContainerSetMetadataNonExistent(c *chk.C) {
 
 	_, err := containerClient.SetMetadata(ctx, nil)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeContainerNotFound)
+
+	validateStorageError(c, err, ServiceCodeContainerNotFound)
 }
 
 func (s *aztestsSuite) TestContainerSetMetadataIfModifiedSinceTrue(c *chk.C) {
@@ -1263,8 +1308,8 @@ func (s *aztestsSuite) TestContainerSetMetadataIfModifiedSinceFalse(c *chk.C) {
 	}
 	_, err := containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
 	c.Assert(err, chk.NotNil)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestContainerNewBlobURL(c *chk.C) {
@@ -1273,18 +1318,19 @@ func (s *aztestsSuite) TestContainerNewBlobURL(c *chk.C) {
 
 	blobURL := containerClient.NewBlobClient(blobPrefix)
 	tempBlob := blobURL.URL()
+  
 	tempContainer := containerClient.URL()
 	c.Assert(tempBlob.String(), chk.Equals, tempContainer.String()+"/"+blobPrefix)
-	c.Assert(blobURL, chk.FitsTypeOf, BlobClient{})
+	c.Assert(bbClient, chk.FitsTypeOf, BlobClient{})
 }
 
 func (s *aztestsSuite) TestContainerNewBlockBlobClient(c *chk.C) {
 	bsu := getBSU()
 	containerClient, _ := getContainerClient(c, bsu)
 
-	blobURL := containerClient.NewBlockBlobClient(blobPrefix)
-	tempBlob := blobURL.URL()
+	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
+	tempBlob := bbClient.URL()
 	tempContainer := containerClient.URL()
 	c.Assert(tempBlob.String(), chk.Equals, tempContainer.String()+"/"+blobPrefix)
-	c.Assert(blobURL, chk.FitsTypeOf, BlockBlobClient{})
+	c.Assert(bbClient, chk.FitsTypeOf, BlockBlobClient{})
 }

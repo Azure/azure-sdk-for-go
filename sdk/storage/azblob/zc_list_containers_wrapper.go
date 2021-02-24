@@ -9,7 +9,7 @@ type listContainersSegmentAutoPager struct {
 	pager ListContainersSegmentResponsePager
 	channel chan ContainerItem
 	errChan chan error
-	ctx context.Context
+	ctx     context.Context
 
 	timeout time.Duration
 	timer *time.Timer

@@ -391,7 +391,6 @@ func (s *aztestsSuite) TestStageBlockWithMD5(c *chk.C) {
 	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &badStageBlockOptions)
 	c.Assert(err, chk.NotNil)
 
-	// TODO: Fix issue with storage error interface
 	//c.Assert(err.(StorageError), chk.Equals, ServiceCodeMd5Mismatch)
 }
 
@@ -524,7 +523,7 @@ func (s *aztestsSuite) TestBlobPutBlobIfModifiedSinceFalse(c *chk.C) {
 
 	//TODO: Fix issue with storage error interface
 	//c.Assert(strings.Contains(err.Error(), string(ServiceCodeConditionNotMet)), chk.Equals, true)
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceTrue(c *chk.C) {
@@ -565,8 +564,8 @@ func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse(c *chk.C) {
 	}
 	_, err := bbClient.Upload(ctx, bytes.NewReader(nil), &uploadBlockBlobOptions)
 	_ = err
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutBlobIfMatchTrue(c *chk.C) {
@@ -604,17 +603,16 @@ func (s *aztestsSuite) TestBlobPutBlobIfMatchFalse(c *chk.C) {
 
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
-	rsc := azcore.NopCloser(body)
 
-	ifNoneMatch := "garbage"
+	ifMatch := "garbage"
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
 		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfNoneMatch: &ifNoneMatch,
+			IfMatch: &ifMatch,
 		},
 	}
-	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+	_, err = bbClient.Upload(ctx, body, &uploadBlockBlobOptions)
+	c.Assert(err, chk.NotNil)
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutBlobIfNoneMatchTrue(c *chk.C) {
@@ -662,8 +660,8 @@ func (s *aztestsSuite) TestBlobPutBlobIfNoneMatchFalse(c *chk.C) {
 		},
 	}
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func setupPutBlockListTest(c *chk.C) (containerClient ContainerClient, bbClient BlockBlobClient, id string) {
@@ -728,8 +726,8 @@ func (s *aztestsSuite) TestBlobPutBlockListIfModifiedSinceFalse(c *chk.C) {
 	}
 	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
 	_ = err
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue(c *chk.C) {
@@ -762,8 +760,7 @@ func (s *aztestsSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse(c *chk.C) {
 	}
 	_, err = bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutBlockListIfMatchTrue(c *chk.C) {
@@ -793,8 +790,7 @@ func (s *aztestsSuite) TestBlobPutBlockListIfMatchFalse(c *chk.C) {
 	}
 	_, err = bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 
 }
 
@@ -825,8 +821,7 @@ func (s *aztestsSuite) TestBlobPutBlockListIfNoneMatchFalse(c *chk.C) {
 	}
 	_, err = bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
 
-	// TODO: Fix issue with storage error interface
-	//validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, ServiceCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutBlockListValidateData(c *chk.C) {

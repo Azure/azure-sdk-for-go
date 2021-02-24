@@ -197,13 +197,11 @@ func (r *Receiver) ReceiveOne(ctx context.Context, handler Handler) error {
 	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.ReceiveOne")
 	defer span.End()
 
-	amqpMsg, err := r.listenForMessage(ctx)
+	err := r.listenForMessage(ctx, newAmqpAdapterHandler(r, handler))
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
 	}
-
-	r.handleMessage(ctx, amqpMsg, handler)
 
 	return nil
 }
@@ -216,21 +214,11 @@ func (r *Receiver) Listen(ctx context.Context, handler Handler) *ListenerHandle 
 	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.Listen")
 	defer span.End()
 
-	messages := make(chan *amqp.Message)
-	go r.listenForMessages(ctx, messages)
-	go r.handleMessages(ctx, messages, handler)
+	go r.listenForMessages(ctx, newAmqpAdapterHandler(r, handler))
 
 	return &ListenerHandle{
 		r:   r,
 		ctx: ctx,
-	}
-}
-
-func (r *Receiver) handleMessages(ctx context.Context, messages chan *amqp.Message, handler Handler) {
-	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.handleMessages")
-	defer span.End()
-	for msg := range messages {
-		r.handleMessage(ctx, msg, handler)
 	}
 }
 
@@ -290,21 +278,19 @@ func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler
 	}
 }
 
-func (r *Receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Message) {
+func (r *Receiver) listenForMessages(ctx context.Context, handler amqpHandler) {
 	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.listenForMessages")
 	defer span.End()
 
 	for {
-		msg, err := r.listenForMessage(ctx)
+		err := r.listenForMessage(ctx, handler)
 		if err == nil {
-			msgChan <- msg
 			continue
 		}
 
 		select {
 		case <-ctx.Done():
 			tab.For(ctx).Debug("context done")
-			close(msgChan)
 			return
 		default:
 			_, retryErr := common.Retry(10, 10*time.Second, func() (interface{}, error) {
@@ -332,7 +318,6 @@ func (r *Receiver) listenForMessages(ctx context.Context, msgChan chan *amqp.Mes
 				if err := r.Close(ctx); err != nil {
 					tab.For(ctx).Error(err)
 				}
-				close(msgChan)
 				return
 			}
 		}
@@ -345,7 +330,7 @@ func (r *Receiver) setLastError(err error) {
 	r.lastErrorMu.Unlock()
 }
 
-func (r *Receiver) listenForMessage(ctx context.Context) (*amqp.Message, error) {
+func (r *Receiver) listenForMessage(ctx context.Context, handler amqpHandler) error {
 	ctx, span := r.startConsumerSpanFromContext(ctx, "sb.Receiver.listenForMessage")
 	defer span.End()
 
@@ -353,22 +338,18 @@ func (r *Receiver) listenForMessage(ctx context.Context) (*amqp.Message, error) 
 	r.clientMu.RLock()
 	if r.receiver == nil {
 		r.clientMu.RUnlock()
-		return nil, r.connClosedError(ctx)
+		return r.connClosedError(ctx)
 	}
 	receiver = r.receiver
 	r.clientMu.RUnlock()
-	msg, err := receiver.Receive(ctx)
+	err := receiver.HandleMessage(ctx, func(message *amqp.Message) error {
+		return handler.Handle(ctx, message)
+	})
 	if err != nil {
 		tab.For(ctx).Debug(err.Error())
-		return nil, err
+		return err
 	}
-
-	id := messageID(msg)
-	if idStr, ok := id.(string); ok {
-		span.AddAttributes(tab.StringAttribute("amqp.message.id", idStr))
-	}
-
-	return msg, nil
+	return nil
 }
 
 func (r *Receiver) connClosedError(ctx context.Context) error {

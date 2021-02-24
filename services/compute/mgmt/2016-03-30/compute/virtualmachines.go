@@ -53,8 +53,8 @@ func (client VirtualMachinesClient) Capture(ctx context.Context, resourceGroupNa
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Capture")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -165,8 +165,8 @@ func (client VirtualMachinesClient) CreateOrUpdate(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -293,8 +293,8 @@ func (client VirtualMachinesClient) Deallocate(ctx context.Context, resourceGrou
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Deallocate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -394,8 +394,8 @@ func (client VirtualMachinesClient) Delete(ctx context.Context, resourceGroupNam
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1039,8 +1039,8 @@ func (client VirtualMachinesClient) PowerOff(ctx context.Context, resourceGroupN
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.PowerOff")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1140,8 +1140,8 @@ func (client VirtualMachinesClient) Redeploy(ctx context.Context, resourceGroupN
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Redeploy")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1241,8 +1241,8 @@ func (client VirtualMachinesClient) Restart(ctx context.Context, resourceGroupNa
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Restart")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1342,8 +1342,8 @@ func (client VirtualMachinesClient) Start(ctx context.Context, resourceGroupName
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachinesClient.Start")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

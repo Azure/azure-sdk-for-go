@@ -54,8 +54,8 @@ func (client AFDEndpointsClient) Create(ctx context.Context, resourceGroupName s
 		ctx = tracing.StartSpan(ctx, fqdn+"/AFDEndpointsClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -173,8 +173,8 @@ func (client AFDEndpointsClient) Delete(ctx context.Context, resourceGroupName s
 		ctx = tracing.StartSpan(ctx, fqdn+"/AFDEndpointsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -617,8 +617,8 @@ func (client AFDEndpointsClient) PurgeContent(ctx context.Context, resourceGroup
 		ctx = tracing.StartSpan(ctx, fqdn+"/AFDEndpointsClient.PurgeContent")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -725,8 +725,8 @@ func (client AFDEndpointsClient) Update(ctx context.Context, resourceGroupName s
 		ctx = tracing.StartSpan(ctx, fqdn+"/AFDEndpointsClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

@@ -55,8 +55,8 @@ func (client MongoDBResourcesClient) CreateUpdateMongoDBCollection(ctx context.C
 		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.CreateUpdateMongoDBCollection")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -182,8 +182,8 @@ func (client MongoDBResourcesClient) CreateUpdateMongoDBDatabase(ctx context.Con
 		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.CreateUpdateMongoDBDatabase")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -308,8 +308,8 @@ func (client MongoDBResourcesClient) DeleteMongoDBCollection(ctx context.Context
 		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.DeleteMongoDBCollection")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -415,8 +415,8 @@ func (client MongoDBResourcesClient) DeleteMongoDBDatabase(ctx context.Context, 
 		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.DeleteMongoDBDatabase")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1081,8 +1081,8 @@ func (client MongoDBResourcesClient) UpdateMongoDBCollectionThroughput(ctx conte
 		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.UpdateMongoDBCollectionThroughput")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1210,8 +1210,8 @@ func (client MongoDBResourcesClient) UpdateMongoDBDatabaseThroughput(ctx context
 		ctx = tracing.StartSpan(ctx, fqdn+"/MongoDBResourcesClient.UpdateMongoDBDatabaseThroughput")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

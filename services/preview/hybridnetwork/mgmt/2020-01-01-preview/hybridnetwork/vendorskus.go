@@ -52,8 +52,8 @@ func (client VendorSkusClient) CreateOrUpdate(ctx context.Context, vendorName st
 		ctx = tracing.StartSpan(ctx, fqdn+"/VendorSkusClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -161,8 +161,8 @@ func (client VendorSkusClient) Delete(ctx context.Context, vendorName string, sk
 		ctx = tracing.StartSpan(ctx, fqdn+"/VendorSkusClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

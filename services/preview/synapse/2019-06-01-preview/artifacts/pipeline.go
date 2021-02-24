@@ -47,8 +47,8 @@ func (client PipelineClient) CreateOrUpdatePipeline(ctx context.Context, pipelin
 		ctx = tracing.StartSpan(ctx, fqdn+"/PipelineClient.CreateOrUpdatePipeline")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -275,8 +275,8 @@ func (client PipelineClient) DeletePipeline(ctx context.Context, pipelineName st
 		ctx = tracing.StartSpan(ctx, fqdn+"/PipelineClient.DeletePipeline")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -579,8 +579,8 @@ func (client PipelineClient) RenamePipeline(ctx context.Context, pipelineName st
 		ctx = tracing.StartSpan(ctx, fqdn+"/PipelineClient.RenamePipeline")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

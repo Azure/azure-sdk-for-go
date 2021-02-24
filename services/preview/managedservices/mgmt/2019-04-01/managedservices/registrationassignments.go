@@ -54,8 +54,8 @@ func (client RegistrationAssignmentsClient) CreateOrUpdate(ctx context.Context, 
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationAssignmentsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -175,8 +175,8 @@ func (client RegistrationAssignmentsClient) Delete(ctx context.Context, scope st
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistrationAssignmentsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

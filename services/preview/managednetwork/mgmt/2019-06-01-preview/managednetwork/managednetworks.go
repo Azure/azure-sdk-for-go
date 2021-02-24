@@ -134,8 +134,8 @@ func (client ManagedNetworksClient) Delete(ctx context.Context, resourceGroupNam
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedNetworksClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -572,8 +572,8 @@ func (client ManagedNetworksClient) Update(ctx context.Context, parameters Updat
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedNetworksClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

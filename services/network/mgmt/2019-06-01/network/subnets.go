@@ -52,8 +52,8 @@ func (client SubnetsClient) CreateOrUpdate(ctx context.Context, resourceGroupNam
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubnetsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -157,8 +157,8 @@ func (client SubnetsClient) Delete(ctx context.Context, resourceGroupName string
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubnetsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -451,8 +451,8 @@ func (client SubnetsClient) PrepareNetworkPolicies(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubnetsClient.PrepareNetworkPolicies")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -547,8 +547,8 @@ func (client SubnetsClient) UnprepareNetworkPolicies(ctx context.Context, resour
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubnetsClient.UnprepareNetworkPolicies")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

@@ -123,8 +123,8 @@ func (client Client) CreateAlias(ctx context.Context, aliasName string, body Put
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.CreateAlias")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -235,8 +235,8 @@ func (client Client) CreateCspSubscription(ctx context.Context, billingAccountNa
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.CreateCspSubscription")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -349,8 +349,8 @@ func (client Client) CreateSubscription(ctx context.Context, billingAccountName 
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.CreateSubscription")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -461,8 +461,8 @@ func (client Client) CreateSubscriptionInEnrollmentAccount(ctx context.Context, 
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.CreateSubscriptionInEnrollmentAccount")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

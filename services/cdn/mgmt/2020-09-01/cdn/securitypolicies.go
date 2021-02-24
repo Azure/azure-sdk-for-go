@@ -54,8 +54,8 @@ func (client SecurityPoliciesClient) Create(ctx context.Context, resourceGroupNa
 		ctx = tracing.StartSpan(ctx, fqdn+"/SecurityPoliciesClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -167,8 +167,8 @@ func (client SecurityPoliciesClient) Delete(ctx context.Context, resourceGroupNa
 		ctx = tracing.StartSpan(ctx, fqdn+"/SecurityPoliciesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -480,8 +480,8 @@ func (client SecurityPoliciesClient) Patch(ctx context.Context, resourceGroupNam
 		ctx = tracing.StartSpan(ctx, fqdn+"/SecurityPoliciesClient.Patch")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

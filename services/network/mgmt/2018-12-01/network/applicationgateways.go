@@ -53,8 +53,8 @@ func (client ApplicationGatewaysClient) BackendHealth(ctx context.Context, resou
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationGatewaysClient.BackendHealth")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -158,8 +158,8 @@ func (client ApplicationGatewaysClient) CreateOrUpdate(ctx context.Context, reso
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationGatewaysClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -291,8 +291,8 @@ func (client ApplicationGatewaysClient) Delete(ctx context.Context, resourceGrou
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationGatewaysClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1228,8 +1228,8 @@ func (client ApplicationGatewaysClient) Start(ctx context.Context, resourceGroup
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationGatewaysClient.Start")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1318,8 +1318,8 @@ func (client ApplicationGatewaysClient) Stop(ctx context.Context, resourceGroupN
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationGatewaysClient.Stop")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1409,8 +1409,8 @@ func (client ApplicationGatewaysClient) UpdateTags(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationGatewaysClient.UpdateTags")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

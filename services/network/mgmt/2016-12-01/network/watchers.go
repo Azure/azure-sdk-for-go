@@ -130,8 +130,8 @@ func (client WatchersClient) Delete(ctx context.Context, resourceGroupName strin
 		ctx = tracing.StartSpan(ctx, fqdn+"/WatchersClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -297,8 +297,8 @@ func (client WatchersClient) GetFlowLogStatus(ctx context.Context, resourceGroup
 		ctx = tracing.StartSpan(ctx, fqdn+"/WatchersClient.GetFlowLogStatus")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -407,8 +407,8 @@ func (client WatchersClient) GetNextHop(ctx context.Context, resourceGroupName s
 		ctx = tracing.StartSpan(ctx, fqdn+"/WatchersClient.GetNextHop")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -604,8 +604,8 @@ func (client WatchersClient) GetTroubleshooting(ctx context.Context, resourceGro
 		ctx = tracing.StartSpan(ctx, fqdn+"/WatchersClient.GetTroubleshooting")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -718,8 +718,8 @@ func (client WatchersClient) GetTroubleshootingResult(ctx context.Context, resou
 		ctx = tracing.StartSpan(ctx, fqdn+"/WatchersClient.GetTroubleshootingResult")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -828,8 +828,8 @@ func (client WatchersClient) GetVMSecurityRules(ctx context.Context, resourceGro
 		ctx = tracing.StartSpan(ctx, fqdn+"/WatchersClient.GetVMSecurityRules")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1083,8 +1083,8 @@ func (client WatchersClient) SetFlowLogConfiguration(ctx context.Context, resour
 		ctx = tracing.StartSpan(ctx, fqdn+"/WatchersClient.SetFlowLogConfiguration")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1197,8 +1197,8 @@ func (client WatchersClient) VerifyIPFlow(ctx context.Context, resourceGroupName
 		ctx = tracing.StartSpan(ctx, fqdn+"/WatchersClient.VerifyIPFlow")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

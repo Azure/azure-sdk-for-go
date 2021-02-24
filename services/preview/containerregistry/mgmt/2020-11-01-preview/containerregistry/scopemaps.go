@@ -53,8 +53,8 @@ func (client ScopeMapsClient) Create(ctx context.Context, resourceGroupName stri
 		ctx = tracing.StartSpan(ctx, fqdn+"/ScopeMapsClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -175,8 +175,8 @@ func (client ScopeMapsClient) Delete(ctx context.Context, resourceGroupName stri
 		ctx = tracing.StartSpan(ctx, fqdn+"/ScopeMapsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -502,8 +502,8 @@ func (client ScopeMapsClient) Update(ctx context.Context, resourceGroupName stri
 		ctx = tracing.StartSpan(ctx, fqdn+"/ScopeMapsClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

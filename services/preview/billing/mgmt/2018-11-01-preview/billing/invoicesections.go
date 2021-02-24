@@ -50,8 +50,8 @@ func (client InvoiceSectionsClient) Create(ctx context.Context, billingAccountNa
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionsClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -612,8 +612,8 @@ func (client InvoiceSectionsClient) Update(ctx context.Context, billingAccountNa
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoiceSectionsClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

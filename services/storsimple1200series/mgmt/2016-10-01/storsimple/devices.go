@@ -53,8 +53,8 @@ func (client DevicesClient) CreateOrUpdateAlertSettings(ctx context.Context, dev
 		ctx = tracing.StartSpan(ctx, fqdn+"/DevicesClient.CreateOrUpdateAlertSettings")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -169,8 +169,8 @@ func (client DevicesClient) CreateOrUpdateSecuritySettings(ctx context.Context, 
 		ctx = tracing.StartSpan(ctx, fqdn+"/DevicesClient.CreateOrUpdateSecuritySettings")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -275,8 +275,8 @@ func (client DevicesClient) Deactivate(ctx context.Context, deviceName string, r
 		ctx = tracing.StartSpan(ctx, fqdn+"/DevicesClient.Deactivate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -374,8 +374,8 @@ func (client DevicesClient) Delete(ctx context.Context, deviceName string, resou
 		ctx = tracing.StartSpan(ctx, fqdn+"/DevicesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -473,8 +473,8 @@ func (client DevicesClient) DownloadUpdates(ctx context.Context, deviceName stri
 		ctx = tracing.StartSpan(ctx, fqdn+"/DevicesClient.DownloadUpdates")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -573,8 +573,8 @@ func (client DevicesClient) Failover(ctx context.Context, deviceName string, fai
 		ctx = tracing.StartSpan(ctx, fqdn+"/DevicesClient.Failover")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1103,8 +1103,8 @@ func (client DevicesClient) InstallUpdates(ctx context.Context, deviceName strin
 		ctx = tracing.StartSpan(ctx, fqdn+"/DevicesClient.InstallUpdates")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1553,8 +1553,8 @@ func (client DevicesClient) Patch(ctx context.Context, deviceName string, device
 		ctx = tracing.StartSpan(ctx, fqdn+"/DevicesClient.Patch")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1665,8 +1665,8 @@ func (client DevicesClient) ScanForUpdates(ctx context.Context, deviceName strin
 		ctx = tracing.StartSpan(ctx, fqdn+"/DevicesClient.ScanForUpdates")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

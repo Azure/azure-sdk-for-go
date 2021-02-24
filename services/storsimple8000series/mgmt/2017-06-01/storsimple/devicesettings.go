@@ -53,8 +53,8 @@ func (client DeviceSettingsClient) CreateOrUpdateAlertSettings(ctx context.Conte
 		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSettingsClient.CreateOrUpdateAlertSettings")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -168,8 +168,8 @@ func (client DeviceSettingsClient) CreateOrUpdateTimeSettings(ctx context.Contex
 		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSettingsClient.CreateOrUpdateTimeSettings")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -623,8 +623,8 @@ func (client DeviceSettingsClient) SyncRemotemanagementCertificate(ctx context.C
 		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSettingsClient.SyncRemotemanagementCertificate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -723,8 +723,8 @@ func (client DeviceSettingsClient) UpdateNetworkSettings(ctx context.Context, de
 		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSettingsClient.UpdateNetworkSettings")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -836,8 +836,8 @@ func (client DeviceSettingsClient) UpdateSecuritySettings(ctx context.Context, d
 		ctx = tracing.StartSpan(ctx, fqdn+"/DeviceSettingsClient.UpdateSecuritySettings")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

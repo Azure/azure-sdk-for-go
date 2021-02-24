@@ -54,8 +54,8 @@ func (client OriginsClient) Create(ctx context.Context, originName string, origi
 		ctx = tracing.StartSpan(ctx, fqdn+"/OriginsClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -168,8 +168,8 @@ func (client OriginsClient) DeleteIfExists(ctx context.Context, originName strin
 		ctx = tracing.StartSpan(ctx, fqdn+"/OriginsClient.DeleteIfExists")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -432,8 +432,8 @@ func (client OriginsClient) Update(ctx context.Context, originName string, origi
 		ctx = tracing.StartSpan(ctx, fqdn+"/OriginsClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

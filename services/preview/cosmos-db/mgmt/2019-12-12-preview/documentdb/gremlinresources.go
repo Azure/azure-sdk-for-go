@@ -54,8 +54,8 @@ func (client GremlinResourcesClient) CreateUpdateGremlinDatabase(ctx context.Con
 		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.CreateUpdateGremlinDatabase")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -179,8 +179,8 @@ func (client GremlinResourcesClient) CreateUpdateGremlinGraph(ctx context.Contex
 		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.CreateUpdateGremlinGraph")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -310,8 +310,8 @@ func (client GremlinResourcesClient) DeleteGremlinDatabase(ctx context.Context, 
 		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.DeleteGremlinDatabase")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -415,8 +415,8 @@ func (client GremlinResourcesClient) DeleteGremlinGraph(ctx context.Context, res
 		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.DeleteGremlinGraph")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1067,8 +1067,8 @@ func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughput(ctx context
 		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.UpdateGremlinDatabaseThroughput")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1193,8 +1193,8 @@ func (client GremlinResourcesClient) UpdateGremlinGraphThroughput(ctx context.Co
 		ctx = tracing.StartSpan(ctx, fqdn+"/GremlinResourcesClient.UpdateGremlinGraphThroughput")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

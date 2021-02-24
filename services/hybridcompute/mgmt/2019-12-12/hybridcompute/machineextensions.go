@@ -54,8 +54,8 @@ func (client MachineExtensionsClient) CreateOrUpdate(ctx context.Context, resour
 		ctx = tracing.StartSpan(ctx, fqdn+"/MachineExtensionsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -165,8 +165,8 @@ func (client MachineExtensionsClient) Delete(ctx context.Context, resourceGroupN
 		ctx = tracing.StartSpan(ctx, fqdn+"/MachineExtensionsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -476,8 +476,8 @@ func (client MachineExtensionsClient) Update(ctx context.Context, resourceGroupN
 		ctx = tracing.StartSpan(ctx, fqdn+"/MachineExtensionsClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

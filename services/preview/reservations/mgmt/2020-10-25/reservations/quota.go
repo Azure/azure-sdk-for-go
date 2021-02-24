@@ -62,8 +62,8 @@ func (client QuotaClient) CreateOrUpdate(ctx context.Context, subscriptionID str
 		ctx = tracing.StartSpan(ctx, fqdn+"/QuotaClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -378,8 +378,8 @@ func (client QuotaClient) Update(ctx context.Context, subscriptionID string, pro
 		ctx = tracing.StartSpan(ctx, fqdn+"/QuotaClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

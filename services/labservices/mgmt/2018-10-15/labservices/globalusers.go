@@ -603,8 +603,8 @@ func (client GlobalUsersClient) ResetPassword(ctx context.Context, userName stri
 		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalUsersClient.ResetPassword")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -701,8 +701,8 @@ func (client GlobalUsersClient) StartEnvironment(ctx context.Context, userName s
 		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalUsersClient.StartEnvironment")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -799,8 +799,8 @@ func (client GlobalUsersClient) StopEnvironment(ctx context.Context, userName st
 		ctx = tracing.StartSpan(ctx, fqdn+"/GlobalUsersClient.StopEnvironment")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

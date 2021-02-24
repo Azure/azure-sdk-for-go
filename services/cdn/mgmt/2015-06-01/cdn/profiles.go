@@ -52,8 +52,8 @@ func (client ProfilesClient) Create(ctx context.Context, profileName string, pro
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -163,8 +163,8 @@ func (client ProfilesClient) DeleteIfExists(ctx context.Context, profileName str
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.DeleteIfExists")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -551,8 +551,8 @@ func (client ProfilesClient) Update(ctx context.Context, profileName string, pro
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProfilesClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

@@ -47,8 +47,8 @@ func (client LinkedServiceClient) CreateOrUpdateLinkedService(ctx context.Contex
 		ctx = tracing.StartSpan(ctx, fqdn+"/LinkedServiceClient.CreateOrUpdateLinkedService")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -163,8 +163,8 @@ func (client LinkedServiceClient) DeleteLinkedService(ctx context.Context, linke
 		ctx = tracing.StartSpan(ctx, fqdn+"/LinkedServiceClient.DeleteLinkedService")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -467,8 +467,8 @@ func (client LinkedServiceClient) RenameLinkedService(ctx context.Context, linke
 		ctx = tracing.StartSpan(ctx, fqdn+"/LinkedServiceClient.RenameLinkedService")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

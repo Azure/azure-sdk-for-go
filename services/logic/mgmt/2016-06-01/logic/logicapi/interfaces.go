@@ -72,7 +72,7 @@ type WorkflowTriggersClientAPI interface {
 	ListComplete(ctx context.Context, resourceGroupName string, workflowName string, top *int32, filter string) (result logic.WorkflowTriggerListResultIterator, err error)
 	ListCallbackURL(ctx context.Context, resourceGroupName string, workflowName string, triggerName string) (result logic.WorkflowTriggerCallbackURL, err error)
 	Reset(ctx context.Context, resourceGroupName string, workflowName string, triggerName string) (result autorest.Response, err error)
-	Run(ctx context.Context, resourceGroupName string, workflowName string, triggerName string) (result logic.SetObject, err error)
+	Run(ctx context.Context, resourceGroupName string, workflowName string, triggerName string) (result autorest.Response, err error)
 	SetState(ctx context.Context, resourceGroupName string, workflowName string, triggerName string, setState logic.SetTriggerStateActionDefinition) (result autorest.Response, err error)
 }
 

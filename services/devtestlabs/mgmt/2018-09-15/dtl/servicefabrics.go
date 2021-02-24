@@ -54,8 +54,8 @@ func (client ServiceFabricsClient) CreateOrUpdate(ctx context.Context, resourceG
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceFabricsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -176,8 +176,8 @@ func (client ServiceFabricsClient) Delete(ctx context.Context, resourceGroupName
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceFabricsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -570,8 +570,8 @@ func (client ServiceFabricsClient) Start(ctx context.Context, resourceGroupName 
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceFabricsClient.Start")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -664,8 +664,8 @@ func (client ServiceFabricsClient) Stop(ctx context.Context, resourceGroupName s
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceFabricsClient.Stop")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

@@ -1486,8 +1486,8 @@ func (client BaseClient) FullBackup(ctx context.Context, vaultBaseURL string, az
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.FullBackup")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1679,8 +1679,8 @@ func (client BaseClient) FullRestoreOperation(ctx context.Context, vaultBaseURL 
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.FullRestoreOperation")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -6325,8 +6325,8 @@ func (client BaseClient) SelectiveKeyRestoreOperationMethod(ctx context.Context,
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.SelectiveKeyRestoreOperationMethod")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

@@ -54,8 +54,8 @@ func (client BackupPoliciesClient) BackupNow(ctx context.Context, deviceName str
 		ctx = tracing.StartSpan(ctx, fqdn+"/BackupPoliciesClient.BackupNow")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -157,8 +157,8 @@ func (client BackupPoliciesClient) CreateOrUpdate(ctx context.Context, deviceNam
 		ctx = tracing.StartSpan(ctx, fqdn+"/BackupPoliciesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -274,8 +274,8 @@ func (client BackupPoliciesClient) Delete(ctx context.Context, deviceName string
 		ctx = tracing.StartSpan(ctx, fqdn+"/BackupPoliciesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

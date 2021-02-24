@@ -135,8 +135,8 @@ func (client DatabaseAccountsClient) CreateOrUpdate(ctx context.Context, resourc
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -252,8 +252,8 @@ func (client DatabaseAccountsClient) Delete(ctx context.Context, resourceGroupNa
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -359,8 +359,8 @@ func (client DatabaseAccountsClient) FailoverPriorityChange(ctx context.Context,
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.FailoverPriorityChange")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1358,8 +1358,8 @@ func (client DatabaseAccountsClient) OfflineRegion(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.OfflineRegion")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1467,8 +1467,8 @@ func (client DatabaseAccountsClient) OnlineRegion(ctx context.Context, resourceG
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.OnlineRegion")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1576,8 +1576,8 @@ func (client DatabaseAccountsClient) RegenerateKey(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.RegenerateKey")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1683,8 +1683,8 @@ func (client DatabaseAccountsClient) Update(ctx context.Context, resourceGroupNa
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

@@ -139,8 +139,8 @@ func (client RegistriesClient) Create(ctx context.Context, resourceGroupName str
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistriesClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -258,8 +258,8 @@ func (client RegistriesClient) Delete(ctx context.Context, resourceGroupName str
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistriesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -359,8 +359,8 @@ func (client RegistriesClient) GenerateCredentials(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistriesClient.GenerateCredentials")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -645,8 +645,8 @@ func (client RegistriesClient) ImportImage(ctx context.Context, resourceGroupNam
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistriesClient.ImportImage")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1251,8 +1251,8 @@ func (client RegistriesClient) ScheduleRun(ctx context.Context, resourceGroupNam
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistriesClient.ScheduleRun")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1365,8 +1365,8 @@ func (client RegistriesClient) Update(ctx context.Context, resourceGroupName str
 		ctx = tracing.StartSpan(ctx, fqdn+"/RegistriesClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

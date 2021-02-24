@@ -55,8 +55,8 @@ func (client SnapshotsClient) Create(ctx context.Context, body Snapshot, resourc
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotsClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -189,8 +189,8 @@ func (client SnapshotsClient) Delete(ctx context.Context, resourceGroupName stri
 		ctx = tracing.StartSpan(ctx, fqdn+"/SnapshotsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

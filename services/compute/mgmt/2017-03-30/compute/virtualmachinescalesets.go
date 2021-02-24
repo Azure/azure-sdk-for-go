@@ -53,8 +53,8 @@ func (client VirtualMachineScaleSetsClient) CreateOrUpdate(ctx context.Context, 
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineScaleSetsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -181,8 +181,8 @@ func (client VirtualMachineScaleSetsClient) Deallocate(ctx context.Context, reso
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineScaleSetsClient.Deallocate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -287,8 +287,8 @@ func (client VirtualMachineScaleSetsClient) Delete(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineScaleSetsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -389,8 +389,8 @@ func (client VirtualMachineScaleSetsClient) DeleteInstances(ctx context.Context,
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineScaleSetsClient.DeleteInstances")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1002,8 +1002,8 @@ func (client VirtualMachineScaleSetsClient) PowerOff(ctx context.Context, resour
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineScaleSetsClient.PowerOff")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1109,8 +1109,8 @@ func (client VirtualMachineScaleSetsClient) Reimage(ctx context.Context, resourc
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineScaleSetsClient.Reimage")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1217,8 +1217,8 @@ func (client VirtualMachineScaleSetsClient) ReimageAll(ctx context.Context, reso
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineScaleSetsClient.ReimageAll")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1324,8 +1324,8 @@ func (client VirtualMachineScaleSetsClient) Restart(ctx context.Context, resourc
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineScaleSetsClient.Restart")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1431,8 +1431,8 @@ func (client VirtualMachineScaleSetsClient) Start(ctx context.Context, resourceG
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineScaleSetsClient.Start")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1538,8 +1538,8 @@ func (client VirtualMachineScaleSetsClient) Update(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineScaleSetsClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1642,8 +1642,8 @@ func (client VirtualMachineScaleSetsClient) UpdateInstances(ctx context.Context,
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineScaleSetsClient.UpdateInstances")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

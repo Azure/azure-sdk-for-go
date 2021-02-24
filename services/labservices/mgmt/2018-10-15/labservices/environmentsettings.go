@@ -135,8 +135,8 @@ func (client EnvironmentSettingsClient) CreateOrUpdate(ctx context.Context, reso
 		ctx = tracing.StartSpan(ctx, fqdn+"/EnvironmentSettingsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -253,8 +253,8 @@ func (client EnvironmentSettingsClient) Delete(ctx context.Context, resourceGrou
 		ctx = tracing.StartSpan(ctx, fqdn+"/EnvironmentSettingsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -650,8 +650,8 @@ func (client EnvironmentSettingsClient) Start(ctx context.Context, resourceGroup
 		ctx = tracing.StartSpan(ctx, fqdn+"/EnvironmentSettingsClient.Start")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -744,8 +744,8 @@ func (client EnvironmentSettingsClient) Stop(ctx context.Context, resourceGroupN
 		ctx = tracing.StartSpan(ctx, fqdn+"/EnvironmentSettingsClient.Stop")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

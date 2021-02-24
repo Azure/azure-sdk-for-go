@@ -56,8 +56,8 @@ func (client StorageTargetsClient) Create(ctx context.Context, resourceGroupName
 		ctx = tracing.StartSpan(ctx, fqdn+"/StorageTargetsClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -185,8 +185,8 @@ func (client StorageTargetsClient) Delete(ctx context.Context, resourceGroupName
 		ctx = tracing.StartSpan(ctx, fqdn+"/StorageTargetsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

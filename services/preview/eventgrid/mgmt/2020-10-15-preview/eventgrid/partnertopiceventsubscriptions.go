@@ -55,8 +55,8 @@ func (client PartnerTopicEventSubscriptionsClient) CreateOrUpdate(ctx context.Co
 		ctx = tracing.StartSpan(ctx, fqdn+"/PartnerTopicEventSubscriptionsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -162,8 +162,8 @@ func (client PartnerTopicEventSubscriptionsClient) Delete(ctx context.Context, r
 		ctx = tracing.StartSpan(ctx, fqdn+"/PartnerTopicEventSubscriptionsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -625,8 +625,8 @@ func (client PartnerTopicEventSubscriptionsClient) Update(ctx context.Context, r
 		ctx = tracing.StartSpan(ctx, fqdn+"/PartnerTopicEventSubscriptionsClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

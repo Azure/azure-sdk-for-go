@@ -1502,6 +1502,66 @@ func (lrt LegacyReservationTransaction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON is the custom unmarshaler for LegacyReservationTransaction struct.
+func (lrt *LegacyReservationTransaction) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var legacyReservationTransactionProperties LegacyReservationTransactionProperties
+				err = json.Unmarshal(*v, &legacyReservationTransactionProperties)
+				if err != nil {
+					return err
+				}
+				lrt.LegacyReservationTransactionProperties = &legacyReservationTransactionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				lrt.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				lrt.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				lrt.Type = &typeVar
+			}
+		case "tags":
+			if v != nil {
+				var tags []string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				lrt.Tags = &tags
+			}
+		}
+	}
+
+	return nil
+}
+
 // LegacyReservationTransactionProperties the properties of a legacy reservation transaction.
 type LegacyReservationTransactionProperties struct {
 	// EventDate - READ-ONLY; The date of the transaction

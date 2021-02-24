@@ -47,8 +47,8 @@ func (client DatasetClient) CreateOrUpdateDataset(ctx context.Context, datasetNa
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatasetClient.CreateOrUpdateDataset")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -163,8 +163,8 @@ func (client DatasetClient) DeleteDataset(ctx context.Context, datasetName strin
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatasetClient.DeleteDataset")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -467,8 +467,8 @@ func (client DatasetClient) RenameDataset(ctx context.Context, datasetName strin
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatasetClient.RenameDataset")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

@@ -53,8 +53,8 @@ func (client PublicIPAddressesClient) CreateOrUpdate(ctx context.Context, resour
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPAddressesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -167,8 +167,8 @@ func (client PublicIPAddressesClient) Delete(ctx context.Context, resourceGroupN
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPAddressesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -899,8 +899,8 @@ func (client PublicIPAddressesClient) UpdateTags(ctx context.Context, resourceGr
 		ctx = tracing.StartSpan(ctx, fqdn+"/PublicIPAddressesClient.UpdateTags")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

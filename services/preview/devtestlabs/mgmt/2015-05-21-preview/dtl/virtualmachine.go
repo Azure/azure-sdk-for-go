@@ -51,8 +51,8 @@ func (client VirtualMachineClient) ApplyArtifacts(ctx context.Context, resourceG
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineClient.ApplyArtifacts")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -145,8 +145,8 @@ func (client VirtualMachineClient) CreateOrUpdateResource(ctx context.Context, r
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineClient.CreateOrUpdateResource")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -250,8 +250,8 @@ func (client VirtualMachineClient) DeleteResource(ctx context.Context, resourceG
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineClient.DeleteResource")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -628,8 +628,8 @@ func (client VirtualMachineClient) Start(ctx context.Context, resourceGroupName 
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineClient.Start")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -720,8 +720,8 @@ func (client VirtualMachineClient) Stop(ctx context.Context, resourceGroupName s
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineClient.Stop")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

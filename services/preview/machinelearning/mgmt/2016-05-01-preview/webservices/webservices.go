@@ -56,8 +56,8 @@ func (client Client) CreateOrUpdate(ctx context.Context, resourceGroupName strin
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -552,8 +552,8 @@ func (client Client) Patch(ctx context.Context, resourceGroupName string, webSer
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Patch")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -655,8 +655,8 @@ func (client Client) Remove(ctx context.Context, resourceGroupName string, webSe
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Remove")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

@@ -47,8 +47,8 @@ func (client NotebookClient) CreateOrUpdateNotebook(ctx context.Context, noteboo
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotebookClient.CreateOrUpdateNotebook")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -188,8 +188,8 @@ func (client NotebookClient) DeleteNotebook(ctx context.Context, notebookName st
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotebookClient.DeleteNotebook")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -589,8 +589,8 @@ func (client NotebookClient) RenameNotebook(ctx context.Context, notebookName st
 		ctx = tracing.StartSpan(ctx, fqdn+"/NotebookClient.RenameNotebook")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

@@ -52,8 +52,8 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironment(ctx con
 		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.CreateOrUpdateHostingEnvironment")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -156,8 +156,8 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePool(ctx context.
 		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.CreateOrUpdateMultiRolePool")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -261,8 +261,8 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPool(ctx context.Con
 		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.CreateOrUpdateWorkerPool")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -366,8 +366,8 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironment(ctx context.Con
 		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.DeleteHostingEnvironment")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -3632,8 +3632,8 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironment(ctx context.Con
 		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.ResumeHostingEnvironment")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -3774,8 +3774,8 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironment(ctx context.Co
 		ctx = tracing.StartSpan(ctx, fqdn+"/HostingEnvironmentsClient.SuspendHostingEnvironment")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

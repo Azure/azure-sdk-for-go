@@ -53,8 +53,8 @@ func (client ApplicationDefinitionsClient) CreateOrUpdate(ctx context.Context, r
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationDefinitionsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -171,8 +171,8 @@ func (client ApplicationDefinitionsClient) CreateOrUpdateByID(ctx context.Contex
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationDefinitionsClient.CreateOrUpdateByID")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -288,8 +288,8 @@ func (client ApplicationDefinitionsClient) Delete(ctx context.Context, resourceG
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationDefinitionsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -389,8 +389,8 @@ func (client ApplicationDefinitionsClient) DeleteByID(ctx context.Context, resou
 		ctx = tracing.StartSpan(ctx, fqdn+"/ApplicationDefinitionsClient.DeleteByID")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

@@ -540,8 +540,8 @@ func (client Client) MoveResources(ctx context.Context, sourceResourceGroupName 
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.MoveResources")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -644,8 +644,8 @@ func (client Client) Update(ctx context.Context, resourceGroupName string, resou
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

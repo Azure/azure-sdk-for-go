@@ -220,8 +220,8 @@ func (client ResourcesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 		ctx = tracing.StartSpan(ctx, fqdn+"/ResourcesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -339,8 +339,8 @@ func (client ResourcesClient) CreateOrUpdateByID(ctx context.Context, resourceID
 		ctx = tracing.StartSpan(ctx, fqdn+"/ResourcesClient.CreateOrUpdateByID")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -451,8 +451,8 @@ func (client ResourcesClient) Delete(ctx context.Context, resourceGroupName stri
 		ctx = tracing.StartSpan(ctx, fqdn+"/ResourcesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -553,8 +553,8 @@ func (client ResourcesClient) DeleteByID(ctx context.Context, resourceID string,
 		ctx = tracing.StartSpan(ctx, fqdn+"/ResourcesClient.DeleteByID")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1092,8 +1092,8 @@ func (client ResourcesClient) MoveResources(ctx context.Context, sourceResourceG
 		ctx = tracing.StartSpan(ctx, fqdn+"/ResourcesClient.MoveResources")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1196,8 +1196,8 @@ func (client ResourcesClient) Update(ctx context.Context, resourceGroupName stri
 		ctx = tracing.StartSpan(ctx, fqdn+"/ResourcesClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1312,8 +1312,8 @@ func (client ResourcesClient) UpdateByID(ctx context.Context, resourceID string,
 		ctx = tracing.StartSpan(ctx, fqdn+"/ResourcesClient.UpdateByID")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1416,8 +1416,8 @@ func (client ResourcesClient) ValidateMoveResources(ctx context.Context, sourceR
 		ctx = tracing.StartSpan(ctx, fqdn+"/ResourcesClient.ValidateMoveResources")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

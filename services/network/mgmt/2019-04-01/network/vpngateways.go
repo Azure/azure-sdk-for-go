@@ -51,8 +51,8 @@ func (client VpnGatewaysClient) CreateOrUpdate(ctx context.Context, resourceGrou
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnGatewaysClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -155,8 +155,8 @@ func (client VpnGatewaysClient) Delete(ctx context.Context, resourceGroupName st
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnGatewaysClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -550,8 +550,8 @@ func (client VpnGatewaysClient) Reset(ctx context.Context, resourceGroupName str
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnGatewaysClient.Reset")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -652,8 +652,8 @@ func (client VpnGatewaysClient) UpdateTags(ctx context.Context, resourceGroupNam
 		ctx = tracing.StartSpan(ctx, fqdn+"/VpnGatewaysClient.UpdateTags")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

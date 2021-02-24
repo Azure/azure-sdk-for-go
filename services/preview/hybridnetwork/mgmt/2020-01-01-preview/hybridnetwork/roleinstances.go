@@ -265,8 +265,8 @@ func (client RoleInstancesClient) Restart(ctx context.Context, locationName stri
 		ctx = tracing.StartSpan(ctx, fqdn+"/RoleInstancesClient.Restart")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -365,8 +365,8 @@ func (client RoleInstancesClient) Start(ctx context.Context, locationName string
 		ctx = tracing.StartSpan(ctx, fqdn+"/RoleInstancesClient.Start")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -465,8 +465,8 @@ func (client RoleInstancesClient) Stop(ctx context.Context, locationName string,
 		ctx = tracing.StartSpan(ctx, fqdn+"/RoleInstancesClient.Stop")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

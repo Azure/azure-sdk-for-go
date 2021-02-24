@@ -138,8 +138,8 @@ func (client ClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -265,8 +265,8 @@ func (client ClustersClient) Delete(ctx context.Context, resourceGroupName strin
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -356,8 +356,8 @@ func (client ClustersClient) DetachFollowerDatabases(ctx context.Context, resour
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.DetachFollowerDatabases")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -901,8 +901,8 @@ func (client ClustersClient) Start(ctx context.Context, resourceGroupName string
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Start")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -991,8 +991,8 @@ func (client ClustersClient) Stop(ctx context.Context, resourceGroupName string,
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Stop")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1082,8 +1082,8 @@ func (client ClustersClient) Update(ctx context.Context, resourceGroupName strin
 		ctx = tracing.StartSpan(ctx, fqdn+"/ClustersClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

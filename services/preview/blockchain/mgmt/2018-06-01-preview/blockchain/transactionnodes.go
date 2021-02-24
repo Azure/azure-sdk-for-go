@@ -54,8 +54,8 @@ func (client TransactionNodesClient) Create(ctx context.Context, blockchainMembe
 		ctx = tracing.StartSpan(ctx, fqdn+"/TransactionNodesClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -163,8 +163,8 @@ func (client TransactionNodesClient) Delete(ctx context.Context, blockchainMembe
 		ctx = tracing.StartSpan(ctx, fqdn+"/TransactionNodesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

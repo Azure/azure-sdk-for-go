@@ -55,8 +55,8 @@ func (client VolumeContainersClient) CreateOrUpdate(ctx context.Context, deviceN
 		ctx = tracing.StartSpan(ctx, fqdn+"/VolumeContainersClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -175,8 +175,8 @@ func (client VolumeContainersClient) Delete(ctx context.Context, deviceName stri
 		ctx = tracing.StartSpan(ctx, fqdn+"/VolumeContainersClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

@@ -54,8 +54,8 @@ func (client BuildStepsClient) Create(ctx context.Context, resourceGroupName str
 		ctx = tracing.StartSpan(ctx, fqdn+"/BuildStepsClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -177,8 +177,8 @@ func (client BuildStepsClient) Delete(ctx context.Context, resourceGroupName str
 		ctx = tracing.StartSpan(ctx, fqdn+"/BuildStepsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -654,8 +654,8 @@ func (client BuildStepsClient) Update(ctx context.Context, resourceGroupName str
 		ctx = tracing.StartSpan(ctx, fqdn+"/BuildStepsClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

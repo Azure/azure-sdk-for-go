@@ -131,8 +131,8 @@ func (client JobCollectionsClient) Delete(ctx context.Context, resourceGroupName
 		ctx = tracing.StartSpan(ctx, fqdn+"/JobCollectionsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -221,8 +221,8 @@ func (client JobCollectionsClient) Disable(ctx context.Context, resourceGroupNam
 		ctx = tracing.StartSpan(ctx, fqdn+"/JobCollectionsClient.Disable")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -311,8 +311,8 @@ func (client JobCollectionsClient) Enable(ctx context.Context, resourceGroupName
 		ctx = tracing.StartSpan(ctx, fqdn+"/JobCollectionsClient.Enable")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

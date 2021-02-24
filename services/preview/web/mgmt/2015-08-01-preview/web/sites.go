@@ -864,8 +864,8 @@ func (client SitesClient) CreateOrUpdateSite(ctx context.Context, resourceGroupN
 		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSite")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1475,8 +1475,8 @@ func (client SitesClient) CreateOrUpdateSiteSlot(ctx context.Context, resourceGr
 		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.CreateOrUpdateSiteSlot")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -10220,8 +10220,8 @@ func (client SitesClient) ListSitePublishingCredentials(ctx context.Context, res
 		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSitePublishingCredentials")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -10322,8 +10322,8 @@ func (client SitesClient) ListSitePublishingCredentialsSlot(ctx context.Context,
 		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.ListSitePublishingCredentialsSlot")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -10740,8 +10740,8 @@ func (client SitesClient) RecoverSite(ctx context.Context, resourceGroupName str
 		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.RecoverSite")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -10846,8 +10846,8 @@ func (client SitesClient) RecoverSiteSlot(ctx context.Context, resourceGroupName
 		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.RecoverSiteSlot")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -11278,8 +11278,8 @@ func (client SitesClient) RestoreSite(ctx context.Context, resourceGroupName str
 		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.RestoreSite")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -11385,8 +11385,8 @@ func (client SitesClient) RestoreSiteSlot(ctx context.Context, resourceGroupName
 		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.RestoreSiteSlot")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -11800,8 +11800,8 @@ func (client SitesClient) SwapSlotsSlot(ctx context.Context, resourceGroupName s
 		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.SwapSlotsSlot")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -11905,8 +11905,8 @@ func (client SitesClient) SwapSlotWithProduction(ctx context.Context, resourceGr
 		ctx = tracing.StartSpan(ctx, fqdn+"/SitesClient.SwapSlotWithProduction")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

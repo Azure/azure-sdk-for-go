@@ -54,8 +54,8 @@ func (client SQLResourcesClient) CreateUpdateSQLContainer(ctx context.Context, r
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.CreateUpdateSQLContainer")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -188,8 +188,8 @@ func (client SQLResourcesClient) CreateUpdateSQLDatabase(ctx context.Context, re
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.CreateUpdateSQLDatabase")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -314,8 +314,8 @@ func (client SQLResourcesClient) CreateUpdateSQLRoleAssignment(ctx context.Conte
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.CreateUpdateSQLRoleAssignment")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -434,8 +434,8 @@ func (client SQLResourcesClient) CreateUpdateSQLRoleDefinition(ctx context.Conte
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.CreateUpdateSQLRoleDefinition")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -556,8 +556,8 @@ func (client SQLResourcesClient) CreateUpdateSQLStoredProcedure(ctx context.Cont
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.CreateUpdateSQLStoredProcedure")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -686,8 +686,8 @@ func (client SQLResourcesClient) CreateUpdateSQLTrigger(ctx context.Context, res
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.CreateUpdateSQLTrigger")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -817,8 +817,8 @@ func (client SQLResourcesClient) CreateUpdateSQLUserDefinedFunction(ctx context.
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.CreateUpdateSQLUserDefinedFunction")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -945,8 +945,8 @@ func (client SQLResourcesClient) DeleteSQLContainer(ctx context.Context, resourc
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.DeleteSQLContainer")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1052,8 +1052,8 @@ func (client SQLResourcesClient) DeleteSQLDatabase(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.DeleteSQLDatabase")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1158,8 +1158,8 @@ func (client SQLResourcesClient) DeleteSQLRoleAssignment(ctx context.Context, ro
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.DeleteSQLRoleAssignment")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1264,8 +1264,8 @@ func (client SQLResourcesClient) DeleteSQLRoleDefinition(ctx context.Context, ro
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.DeleteSQLRoleDefinition")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1372,8 +1372,8 @@ func (client SQLResourcesClient) DeleteSQLStoredProcedure(ctx context.Context, r
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.DeleteSQLStoredProcedure")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1482,8 +1482,8 @@ func (client SQLResourcesClient) DeleteSQLTrigger(ctx context.Context, resourceG
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.DeleteSQLTrigger")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1592,8 +1592,8 @@ func (client SQLResourcesClient) DeleteSQLUserDefinedFunction(ctx context.Contex
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.DeleteSQLUserDefinedFunction")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -3192,8 +3192,8 @@ func (client SQLResourcesClient) UpdateSQLContainerThroughput(ctx context.Contex
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.UpdateSQLContainerThroughput")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -3320,8 +3320,8 @@ func (client SQLResourcesClient) UpdateSQLDatabaseThroughput(ctx context.Context
 		ctx = tracing.StartSpan(ctx, fqdn+"/SQLResourcesClient.UpdateSQLDatabaseThroughput")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

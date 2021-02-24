@@ -54,8 +54,8 @@ func (client BandwidthSettingsClient) CreateOrUpdate(ctx context.Context, bandwi
 		ctx = tracing.StartSpan(ctx, fqdn+"/BandwidthSettingsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -169,8 +169,8 @@ func (client BandwidthSettingsClient) Delete(ctx context.Context, bandwidthSetti
 		ctx = tracing.StartSpan(ctx, fqdn+"/BandwidthSettingsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

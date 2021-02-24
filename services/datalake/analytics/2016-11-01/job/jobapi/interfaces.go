@@ -22,7 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/datalake/analytics/2016-11-01/job"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // PipelineClientAPI contains the set of methods on the PipelineClient type.

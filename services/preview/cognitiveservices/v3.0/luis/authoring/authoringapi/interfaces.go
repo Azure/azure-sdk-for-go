@@ -20,7 +20,7 @@ package authoringapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v3.0/luis/authoring"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // FeaturesClientAPI contains the set of methods on the FeaturesClient type.

@@ -22,7 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/services/servicefabric/7.0/servicefabric"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // BaseClientAPI contains the set of methods on the BaseClient type.

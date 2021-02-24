@@ -21,7 +21,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/2018-06-01-preview/sql"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // DatabaseSecurityAlertPoliciesClientAPI contains the set of methods on the DatabaseSecurityAlertPoliciesClient type.

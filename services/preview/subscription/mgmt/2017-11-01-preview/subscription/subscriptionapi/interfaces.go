@@ -20,7 +20,7 @@ package subscriptionapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/subscription/mgmt/2017-11-01-preview/subscription"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // DefinitionsOperationMetadataClientAPI contains the set of methods on the DefinitionsOperationMetadataClient type.

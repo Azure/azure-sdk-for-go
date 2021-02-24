@@ -1,5 +1,5 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/8240593bde5350e6762015523ccd57cb61e32da5/specification/web/resource-manager/readme.md tag: `package-2020-09`
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/151393e1b900e1bde104fad8b8a0a42f2a460f6e/specification/web/resource-manager/readme.md tag: `package-2020-09`
 
-Code generator @microsoft.azure/autorest.go@2.1.171
+Code generator 
 
 

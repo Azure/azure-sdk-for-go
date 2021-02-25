@@ -1,5 +1,44 @@
 # CHANGELOG
 
+## `v52.0.0`
+
+
+NOTE: We have switched the uuid package from `github.com/satori/go.uuid` to `github.com/gofrs/uuid` as announced in [this issue](https://github.com/Azure/azure-sdk-for-go/issues/14283)
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2020-11-01/containerinstance`
+- `github.com/Azure/azure-sdk-for-go/services/kubernetesconfiguration/mgmt/2021-03-01/kubernetesconfiguration`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-11-01/netapp`
+- `github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2016-07-07/apimanagement` | [details](services/apimanagement/mgmt/2016-07-07/apimanagement/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2016-10-10/apimanagement` | [details](services/apimanagement/mgmt/2016-10-10/apimanagement/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2019-10-01/consumption` | [details](services/consumption/mgmt/2019-10-01/consumption/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/ctrl/2017-03-01/apimanagement` | [details](services/preview/apimanagement/ctrl/2017-03-01/apimanagement/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2020-11-01-preview/appplatform` | [details](services/preview/appplatform/mgmt/2020-11-01-preview/appplatform/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/streamanalytics/mgmt/2020-03-01-preview/streamanalytics` | [details](services/preview/streamanalytics/mgmt/2020-03-01-preview/streamanalytics/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/2019-06-01-preview/synapse` | [details](services/preview/synapse/mgmt/2019-06-01-preview/synapse/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/synapse/mgmt/2020-12-01/synapse` | [details](services/synapse/mgmt/2020-12-01/synapse/CHANGELOG.md) |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2015-06-01/cdn` | [details](services/cdn/mgmt/2015-06-01/cdn/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2016-04-02/cdn` | [details](services/cdn/mgmt/2016-04-02/cdn/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/logic/mgmt/2016-06-01/logic` | [details](services/logic/mgmt/2016-06-01/logic/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2020-05-01/media` | [details](services/mediaservices/mgmt/2020-05-01/media/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0_preview.1/translatortext` | [details](services/preview/cognitiveservices/v1.0_preview.1/translatortext/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/logic/mgmt/2018-07-01-preview/logic` | [details](services/preview/logic/mgmt/2018-07-01-preview/logic/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/mixedreality/mgmt/2021-03-01-preview/mixedreality` | [details](services/preview/mixedreality/mgmt/2021-03-01-preview/mixedreality/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-02-01/managementgroups` | [details](services/resources/mgmt/2020-02-01/managementgroups/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-05-01/managementgroups` | [details](services/resources/mgmt/2020-05-01/managementgroups/CHANGELOG.md) |
+
 ## `v51.3.0`
 
 ### New Packages

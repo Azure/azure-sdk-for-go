@@ -22,7 +22,7 @@ package containerinstance
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2019-12-01/containerinstance"
+	original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2020-11-01/containerinstance"
 )
 
 const (
@@ -124,6 +124,7 @@ type CapabilitiesListResultPage = original.CapabilitiesListResultPage
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type Container = original.Container
+type ContainerAttachResponse = original.ContainerAttachResponse
 type ContainerExec = original.ContainerExec
 type ContainerExecRequest = original.ContainerExecRequest
 type ContainerExecRequestTerminalSize = original.ContainerExecRequestTerminalSize
@@ -156,6 +157,7 @@ type EnvironmentVariable = original.EnvironmentVariable
 type Event = original.Event
 type GitRepoVolume = original.GitRepoVolume
 type GpuResource = original.GpuResource
+type HTTPHeaders = original.HTTPHeaders
 type IPAddress = original.IPAddress
 type ImageRegistryCredential = original.ImageRegistryCredential
 type InitContainerDefinition = original.InitContainerDefinition

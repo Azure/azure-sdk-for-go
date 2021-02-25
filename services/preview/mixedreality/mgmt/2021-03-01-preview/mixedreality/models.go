@@ -478,10 +478,14 @@ func NewObjectAnchorsAccountPagePage(cur ObjectAnchorsAccountPage, getNextPage f
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
-	// IsDataAction - Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
+	// IsDataAction - Whether or not this is a data plane operation
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+	// Origin - The origin
+	Origin *string `json:"origin,omitempty"`
+	// Properties - Properties of the operation
+	Properties *OperationProperties `json:"properties,omitempty"`
 }
 
 // OperationDisplay the object that represents the operation.
@@ -656,6 +660,12 @@ func NewOperationPagePage(cur OperationPage, getNextPage func(context.Context, O
 	}
 }
 
+// OperationProperties operation properties.
+type OperationProperties struct {
+	// ServiceSpecification - Service specification.
+	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
+}
+
 // Plan plan for the resource.
 type Plan struct {
 	// Name - A user defined name of the 3rd Party Artifact that is being procured.
@@ -668,12 +678,6 @@ type Plan struct {
 	PromotionCode *string `json:"promotionCode,omitempty"`
 	// Version - The version of the desired product/artifact.
 	Version *string `json:"version,omitempty"`
-}
-
-// Properties operation properties.
-type Properties struct {
-	// ServiceSpecification - Service specification.
-	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
 // ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not

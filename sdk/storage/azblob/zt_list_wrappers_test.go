@@ -80,7 +80,7 @@ func (s *aztestsSuite) TestBlobListWrapperListingError(c *chk.C) {
 
 	blobs, errs := container.ListBlobsFlatSegment(ctx, 1, 0, nil)
 
-	for _ = range blobs {
+	for range blobs {
 		// there should be NO blob listings coming back. Just an error.
 		c.FailNow()
 	}

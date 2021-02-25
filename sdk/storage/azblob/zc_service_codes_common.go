@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azblob
 
 // https://docs.microsoft.com/en-us/rest/api/storageservices/common-rest-api-error-codes

@@ -33,14 +33,14 @@ type SubscriptionsClient struct {
 }
 
 // NewSubscriptionsClient creates an instance of the SubscriptionsClient client.
-func NewSubscriptionsClient(operationResultID string, skip *int32, top *int32, skiptoken string) SubscriptionsClient {
-	return NewSubscriptionsClientWithBaseURI(DefaultBaseURI, operationResultID, skip, top, skiptoken)
+func NewSubscriptionsClient() SubscriptionsClient {
+	return NewSubscriptionsClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewSubscriptionsClientWithBaseURI creates an instance of the SubscriptionsClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewSubscriptionsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) SubscriptionsClient {
-	return SubscriptionsClient{NewWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)}
+func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
+	return SubscriptionsClient{NewWithBaseURI(baseURI)}
 }
 
 // Create associates existing subscription with the management group.

@@ -118,7 +118,7 @@ func (aaor *AzureAsyncOperationResults) UnmarshalJSON(body []byte) error {
 type CheckNameAvailabilityRequest struct {
 	// Name - the name to check for availability
 	Name *string `json:"name,omitempty"`
-	// Type - fully qualified resource type which includes provider namespace. Possible values include: 'MicrosoftManagementmanagementGroup'
+	// Type - fully qualified resource type which includes provider namespace. Possible values include: 'MicrosoftManagementmanagementGroups'
 	Type Type `json:"type,omitempty"`
 }
 
@@ -136,7 +136,7 @@ type CheckNameAvailabilityResult struct {
 
 // ChildInfo the child information of a management group.
 type ChildInfo struct {
-	// Type - The fully qualified resource type which includes provider namespace (e.g. Microsoft.Management/managementGroups). Possible values include: 'MicrosoftManagementmanagementGroups', 'Subscriptions'
+	// Type - The fully qualified resource type which includes provider namespace (e.g. Microsoft.Management/managementGroups). Possible values include: 'Type1MicrosoftManagementmanagementGroups', 'Type1Subscriptions'
 	Type Type1 `json:"type,omitempty"`
 	// ID - The fully qualified ID for the child resource (management group or subscription).  For example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
 	ID *string `json:"id,omitempty"`

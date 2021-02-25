@@ -33,15 +33,15 @@ type HierarchySettingsClient struct {
 }
 
 // NewHierarchySettingsClient creates an instance of the HierarchySettingsClient client.
-func NewHierarchySettingsClient(operationResultID string, skip *int32, top *int32, skiptoken string) HierarchySettingsClient {
-	return NewHierarchySettingsClientWithBaseURI(DefaultBaseURI, operationResultID, skip, top, skiptoken)
+func NewHierarchySettingsClient() HierarchySettingsClient {
+	return NewHierarchySettingsClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewHierarchySettingsClientWithBaseURI creates an instance of the HierarchySettingsClient client using a custom
 // endpoint.  Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure
 // stack).
-func NewHierarchySettingsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) HierarchySettingsClient {
-	return HierarchySettingsClient{NewWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)}
+func NewHierarchySettingsClientWithBaseURI(baseURI string) HierarchySettingsClient {
+	return HierarchySettingsClient{NewWithBaseURI(baseURI)}
 }
 
 // CreateOrUpdate creates or updates the hierarchy settings defined at the Management Group level.

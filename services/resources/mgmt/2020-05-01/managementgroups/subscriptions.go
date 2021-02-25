@@ -33,14 +33,14 @@ type SubscriptionsClient struct {
 }
 
 // NewSubscriptionsClient creates an instance of the SubscriptionsClient client.
-func NewSubscriptionsClient(operationResultID string, skip *int32, top *int32, skiptoken string) SubscriptionsClient {
-	return NewSubscriptionsClientWithBaseURI(DefaultBaseURI, operationResultID, skip, top, skiptoken)
+func NewSubscriptionsClient() SubscriptionsClient {
+	return NewSubscriptionsClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewSubscriptionsClientWithBaseURI creates an instance of the SubscriptionsClient client using a custom endpoint.
 // Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewSubscriptionsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) SubscriptionsClient {
-	return SubscriptionsClient{NewWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)}
+func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
+	return SubscriptionsClient{NewWithBaseURI(baseURI)}
 }
 
 // Create associates existing subscription with the management group.
@@ -295,7 +295,10 @@ func (client SubscriptionsClient) GetSubscriptionResponder(resp *http.Response) 
 // management group.
 // Parameters:
 // groupID - management Group ID.
-func (client SubscriptionsClient) GetSubscriptionsUnderManagementGroup(ctx context.Context, groupID string) (result ListSubscriptionUnderManagementGroupPage, err error) {
+// skiptoken - page continuation token is only used if a previous operation returned a partial result.
+// If a previous response contains a nextLink element, the value of the nextLink element will include a token
+// parameter that specifies a starting point to use for subsequent calls.
+func (client SubscriptionsClient) GetSubscriptionsUnderManagementGroup(ctx context.Context, groupID string, skiptoken string) (result ListSubscriptionUnderManagementGroupPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionsClient.GetSubscriptionsUnderManagementGroup")
 		defer func() {
@@ -307,7 +310,7 @@ func (client SubscriptionsClient) GetSubscriptionsUnderManagementGroup(ctx conte
 		}()
 	}
 	result.fn = client.getSubscriptionsUnderManagementGroupNextResults
-	req, err := client.GetSubscriptionsUnderManagementGroupPreparer(ctx, groupID)
+	req, err := client.GetSubscriptionsUnderManagementGroupPreparer(ctx, groupID, skiptoken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.SubscriptionsClient", "GetSubscriptionsUnderManagementGroup", nil, "Failure preparing request")
 		return
@@ -334,7 +337,7 @@ func (client SubscriptionsClient) GetSubscriptionsUnderManagementGroup(ctx conte
 }
 
 // GetSubscriptionsUnderManagementGroupPreparer prepares the GetSubscriptionsUnderManagementGroup request.
-func (client SubscriptionsClient) GetSubscriptionsUnderManagementGroupPreparer(ctx context.Context, groupID string) (*http.Request, error) {
+func (client SubscriptionsClient) GetSubscriptionsUnderManagementGroupPreparer(ctx context.Context, groupID string, skiptoken string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId": autorest.Encode("path", groupID),
 	}
@@ -343,8 +346,8 @@ func (client SubscriptionsClient) GetSubscriptionsUnderManagementGroupPreparer(c
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(client.Skiptoken) > 0 {
-		queryParameters["$skiptoken"] = autorest.Encode("query", client.Skiptoken)
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -395,7 +398,7 @@ func (client SubscriptionsClient) getSubscriptionsUnderManagementGroupNextResult
 }
 
 // GetSubscriptionsUnderManagementGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client SubscriptionsClient) GetSubscriptionsUnderManagementGroupComplete(ctx context.Context, groupID string) (result ListSubscriptionUnderManagementGroupIterator, err error) {
+func (client SubscriptionsClient) GetSubscriptionsUnderManagementGroupComplete(ctx context.Context, groupID string, skiptoken string) (result ListSubscriptionUnderManagementGroupIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/SubscriptionsClient.GetSubscriptionsUnderManagementGroup")
 		defer func() {
@@ -406,6 +409,6 @@ func (client SubscriptionsClient) GetSubscriptionsUnderManagementGroupComplete(c
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.GetSubscriptionsUnderManagementGroup(ctx, groupID)
+	result.page, err = client.GetSubscriptionsUnderManagementGroup(ctx, groupID, skiptoken)
 	return
 }

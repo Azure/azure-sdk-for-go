@@ -37,10 +37,10 @@ type ClientAPI interface {
 	CreateOrUpdate(ctx context.Context, groupID string, createManagementGroupRequest managementgroups.CreateManagementGroupRequest, cacheControl string) (result managementgroups.CreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, groupID string, cacheControl string) (result managementgroups.DeleteFuture, err error)
 	Get(ctx context.Context, groupID string, expand string, recurse *bool, filter string, cacheControl string) (result managementgroups.ManagementGroup, err error)
-	GetDescendants(ctx context.Context, groupID string) (result managementgroups.DescendantListResultPage, err error)
-	GetDescendantsComplete(ctx context.Context, groupID string) (result managementgroups.DescendantListResultIterator, err error)
-	List(ctx context.Context, cacheControl string) (result managementgroups.ListResultPage, err error)
-	ListComplete(ctx context.Context, cacheControl string) (result managementgroups.ListResultIterator, err error)
+	GetDescendants(ctx context.Context, groupID string, skiptoken string, top *int32) (result managementgroups.DescendantListResultPage, err error)
+	GetDescendantsComplete(ctx context.Context, groupID string, skiptoken string, top *int32) (result managementgroups.DescendantListResultIterator, err error)
+	List(ctx context.Context, cacheControl string, skiptoken string) (result managementgroups.ListResultPage, err error)
+	ListComplete(ctx context.Context, cacheControl string, skiptoken string) (result managementgroups.ListResultIterator, err error)
 	Update(ctx context.Context, groupID string, patchGroupRequest managementgroups.PatchManagementGroupRequest, cacheControl string) (result managementgroups.ManagementGroup, err error)
 }
 
@@ -51,8 +51,8 @@ type SubscriptionsClientAPI interface {
 	Create(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (result managementgroups.SubscriptionUnderManagementGroup, err error)
 	Delete(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (result autorest.Response, err error)
 	GetSubscription(ctx context.Context, groupID string, subscriptionID string, cacheControl string) (result managementgroups.SubscriptionUnderManagementGroup, err error)
-	GetSubscriptionsUnderManagementGroup(ctx context.Context, groupID string) (result managementgroups.ListSubscriptionUnderManagementGroupPage, err error)
-	GetSubscriptionsUnderManagementGroupComplete(ctx context.Context, groupID string) (result managementgroups.ListSubscriptionUnderManagementGroupIterator, err error)
+	GetSubscriptionsUnderManagementGroup(ctx context.Context, groupID string, skiptoken string) (result managementgroups.ListSubscriptionUnderManagementGroupPage, err error)
+	GetSubscriptionsUnderManagementGroupComplete(ctx context.Context, groupID string, skiptoken string) (result managementgroups.ListSubscriptionUnderManagementGroupIterator, err error)
 }
 
 var _ SubscriptionsClientAPI = (*managementgroups.SubscriptionsClient)(nil)
@@ -78,8 +78,8 @@ var _ OperationsClientAPI = (*managementgroups.OperationsClient)(nil)
 
 // EntitiesClientAPI contains the set of methods on the EntitiesClient type.
 type EntitiesClientAPI interface {
-	List(ctx context.Context, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (result managementgroups.EntityListResultPage, err error)
-	ListComplete(ctx context.Context, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (result managementgroups.EntityListResultIterator, err error)
+	List(ctx context.Context, skiptoken string, skip *int32, top *int32, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (result managementgroups.EntityListResultPage, err error)
+	ListComplete(ctx context.Context, skiptoken string, skip *int32, top *int32, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (result managementgroups.EntityListResultIterator, err error)
 }
 
 var _ EntitiesClientAPI = (*managementgroups.EntitiesClient)(nil)

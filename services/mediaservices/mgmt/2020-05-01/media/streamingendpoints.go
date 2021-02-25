@@ -104,6 +104,7 @@ func (client StreamingEndpointsClient) CreatePreparer(ctx context.Context, resou
 		queryParameters["autoStart"] = autorest.Encode("query", *autoStart)
 	}
 
+	parameters.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -825,6 +826,7 @@ func (client StreamingEndpointsClient) UpdatePreparer(ctx context.Context, resou
 		"api-version": APIVersion,
 	}
 
+	parameters.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

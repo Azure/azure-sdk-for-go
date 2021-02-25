@@ -203,6 +203,7 @@ func (client LiveEventsClient) CreatePreparer(ctx context.Context, resourceGroup
 		queryParameters["autoStart"] = autorest.Encode("query", *autoStart)
 	}
 
+	parameters.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -926,6 +927,7 @@ func (client LiveEventsClient) UpdatePreparer(ctx context.Context, resourceGroup
 		"api-version": APIVersion,
 	}
 
+	parameters.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPatch(),

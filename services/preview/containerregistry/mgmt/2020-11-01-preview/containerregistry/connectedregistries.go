@@ -54,8 +54,8 @@ func (client ConnectedRegistriesClient) Create(ctx context.Context, resourceGrou
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectedRegistriesClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -182,8 +182,8 @@ func (client ConnectedRegistriesClient) Deactivate(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectedRegistriesClient.Deactivate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -288,8 +288,8 @@ func (client ConnectedRegistriesClient) Delete(ctx context.Context, resourceGrou
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectedRegistriesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -621,8 +621,8 @@ func (client ConnectedRegistriesClient) Update(ctx context.Context, resourceGrou
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectedRegistriesClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

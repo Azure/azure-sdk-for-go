@@ -125,8 +125,8 @@ func (client Client) AvailableScopes(ctx context.Context, reservationOrderID str
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.AvailableScopes")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -539,8 +539,8 @@ func (client Client) Merge(ctx context.Context, reservationOrderID string, body 
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Merge")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -640,8 +640,8 @@ func (client Client) Split(ctx context.Context, reservationOrderID string, body 
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Split")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -816,8 +816,8 @@ func (client Client) Update(ctx context.Context, reservationOrderID string, rese
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

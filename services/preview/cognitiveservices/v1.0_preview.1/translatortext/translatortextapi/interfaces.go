@@ -20,20 +20,21 @@ package translatortextapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/cognitiveservices/v1.0_preview.1/translatortext"
-	"github.com/satori/go.uuid"
+	"github.com/Azure/go-autorest/autorest"
+	"github.com/gofrs/uuid"
 )
 
 // TranslationClientAPI contains the set of methods on the TranslationClient type.
 type TranslationClientAPI interface {
-	CancelOperation(ctx context.Context, endpoint string, ID uuid.UUID) (result translatortext.SetObject, err error)
-	GetDocumentFormats(ctx context.Context, endpoint string) (result translatortext.SetObject, err error)
-	GetDocumentStatus(ctx context.Context, endpoint string, ID uuid.UUID, documentID uuid.UUID) (result translatortext.SetObject, err error)
-	GetDocumentStorageSource(ctx context.Context, endpoint string) (result translatortext.SetObject, err error)
-	GetGlossaryFormats(ctx context.Context, endpoint string) (result translatortext.SetObject, err error)
-	GetOperationDocumentsStatus(ctx context.Context, endpoint string, ID uuid.UUID, top *int32, skip *int32) (result translatortext.SetObject, err error)
-	GetOperations(ctx context.Context, endpoint string, top *int32, skip *int32) (result translatortext.SetObject, err error)
-	GetOperationStatus(ctx context.Context, endpoint string, ID uuid.UUID) (result translatortext.SetObject, err error)
-	SubmitBatchRequest(ctx context.Context, endpoint string, body *translatortext.BatchSubmissionRequest) (result translatortext.ErrorResponseV2, err error)
+	CancelOperation(ctx context.Context, endpoint string, ID uuid.UUID) (result translatortext.BatchStatusDetail, err error)
+	GetDocumentFormats(ctx context.Context, endpoint string) (result translatortext.FileFormatListResult, err error)
+	GetDocumentStatus(ctx context.Context, endpoint string, ID uuid.UUID, documentID uuid.UUID) (result translatortext.DocumentStatusDetail, err error)
+	GetDocumentStorageSource(ctx context.Context, endpoint string) (result translatortext.StorageSourceListResult, err error)
+	GetGlossaryFormats(ctx context.Context, endpoint string) (result translatortext.FileFormatListResult, err error)
+	GetOperationDocumentsStatus(ctx context.Context, endpoint string, ID uuid.UUID, top *int32, skip *int32) (result translatortext.DocumentStatusResponse, err error)
+	GetOperations(ctx context.Context, endpoint string, top *int32, skip *int32) (result translatortext.BatchStatusResponse, err error)
+	GetOperationStatus(ctx context.Context, endpoint string, ID uuid.UUID) (result translatortext.BatchStatusDetail, err error)
+	SubmitBatchRequest(ctx context.Context, endpoint string, body *translatortext.BatchSubmissionRequest) (result autorest.Response, err error)
 }
 
 var _ TranslationClientAPI = (*translatortext.TranslationClient)(nil)

@@ -21,7 +21,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v3.0/computervision"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 	"io"
 )
 

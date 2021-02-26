@@ -55,8 +55,8 @@ func (client JobDefinitionsClient) CreateOrUpdate(ctx context.Context, dataServi
 		ctx = tracing.StartSpan(ctx, fqdn+"/JobDefinitionsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -176,8 +176,8 @@ func (client JobDefinitionsClient) Delete(ctx context.Context, dataServiceName s
 		ctx = tracing.StartSpan(ctx, fqdn+"/JobDefinitionsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -633,8 +633,8 @@ func (client JobDefinitionsClient) Run(ctx context.Context, dataServiceName stri
 		ctx = tracing.StartSpan(ctx, fqdn+"/JobDefinitionsClient.Run")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

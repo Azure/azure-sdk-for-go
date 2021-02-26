@@ -134,8 +134,8 @@ func (client DatabaseAccountsClient) CreateOrUpdate(ctx context.Context, resourc
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -266,8 +266,8 @@ func (client DatabaseAccountsClient) CreateUpdateCassandraKeyspace(ctx context.C
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateCassandraKeyspace")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -391,8 +391,8 @@ func (client DatabaseAccountsClient) CreateUpdateCassandraTable(ctx context.Cont
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateCassandraTable")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -516,8 +516,8 @@ func (client DatabaseAccountsClient) CreateUpdateGremlinDatabase(ctx context.Con
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateGremlinDatabase")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -641,8 +641,8 @@ func (client DatabaseAccountsClient) CreateUpdateGremlinGraph(ctx context.Contex
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateGremlinGraph")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -767,8 +767,8 @@ func (client DatabaseAccountsClient) CreateUpdateMongoDBCollection(ctx context.C
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateMongoDBCollection")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -892,8 +892,8 @@ func (client DatabaseAccountsClient) CreateUpdateMongoDBDatabase(ctx context.Con
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateMongoDBDatabase")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1017,8 +1017,8 @@ func (client DatabaseAccountsClient) CreateUpdateSQLContainer(ctx context.Contex
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateSQLContainer")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1142,8 +1142,8 @@ func (client DatabaseAccountsClient) CreateUpdateSQLDatabase(ctx context.Context
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateSQLDatabase")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1266,8 +1266,8 @@ func (client DatabaseAccountsClient) CreateUpdateTable(ctx context.Context, reso
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.CreateUpdateTable")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1388,8 +1388,8 @@ func (client DatabaseAccountsClient) Delete(ctx context.Context, resourceGroupNa
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1491,8 +1491,8 @@ func (client DatabaseAccountsClient) DeleteCassandraKeyspace(ctx context.Context
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteCassandraKeyspace")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1596,8 +1596,8 @@ func (client DatabaseAccountsClient) DeleteCassandraTable(ctx context.Context, r
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteCassandraTable")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1701,8 +1701,8 @@ func (client DatabaseAccountsClient) DeleteGremlinDatabase(ctx context.Context, 
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteGremlinDatabase")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1806,8 +1806,8 @@ func (client DatabaseAccountsClient) DeleteGremlinGraph(ctx context.Context, res
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteGremlinGraph")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1912,8 +1912,8 @@ func (client DatabaseAccountsClient) DeleteMongoDBCollection(ctx context.Context
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteMongoDBCollection")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -2017,8 +2017,8 @@ func (client DatabaseAccountsClient) DeleteMongoDBDatabase(ctx context.Context, 
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteMongoDBDatabase")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -2122,8 +2122,8 @@ func (client DatabaseAccountsClient) DeleteSQLContainer(ctx context.Context, res
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteSQLContainer")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -2227,8 +2227,8 @@ func (client DatabaseAccountsClient) DeleteSQLDatabase(ctx context.Context, reso
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteSQLDatabase")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -2331,8 +2331,8 @@ func (client DatabaseAccountsClient) DeleteTable(ctx context.Context, resourceGr
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.DeleteTable")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -2437,8 +2437,8 @@ func (client DatabaseAccountsClient) FailoverPriorityChange(ctx context.Context,
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.FailoverPriorityChange")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -5858,8 +5858,8 @@ func (client DatabaseAccountsClient) OfflineRegion(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.OfflineRegion")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -5965,8 +5965,8 @@ func (client DatabaseAccountsClient) OnlineRegion(ctx context.Context, resourceG
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.OnlineRegion")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -6072,8 +6072,8 @@ func (client DatabaseAccountsClient) Patch(ctx context.Context, resourceGroupNam
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.Patch")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -6188,8 +6188,8 @@ func (client DatabaseAccountsClient) RegenerateKey(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.RegenerateKey")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -6295,8 +6295,8 @@ func (client DatabaseAccountsClient) UpdateCassandraKeyspaceThroughput(ctx conte
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateCassandraKeyspaceThroughput")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -6420,8 +6420,8 @@ func (client DatabaseAccountsClient) UpdateCassandraTableThroughput(ctx context.
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateCassandraTableThroughput")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -6545,8 +6545,8 @@ func (client DatabaseAccountsClient) UpdateGremlinDatabaseThroughput(ctx context
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateGremlinDatabaseThroughput")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -6669,8 +6669,8 @@ func (client DatabaseAccountsClient) UpdateGremlinGraphThroughput(ctx context.Co
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateGremlinGraphThroughput")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -6795,8 +6795,8 @@ func (client DatabaseAccountsClient) UpdateMongoDBCollectionThroughput(ctx conte
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateMongoDBCollectionThroughput")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -6920,8 +6920,8 @@ func (client DatabaseAccountsClient) UpdateMongoDBDatabaseThroughput(ctx context
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateMongoDBDatabaseThroughput")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -7044,8 +7044,8 @@ func (client DatabaseAccountsClient) UpdateSQLContainerThroughput(ctx context.Co
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateSQLContainerThroughput")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -7168,8 +7168,8 @@ func (client DatabaseAccountsClient) UpdateSQLDatabaseThroughput(ctx context.Con
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateSQLDatabaseThroughput")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -7291,8 +7291,8 @@ func (client DatabaseAccountsClient) UpdateTableThroughput(ctx context.Context, 
 		ctx = tracing.StartSpan(ctx, fqdn+"/DatabaseAccountsClient.UpdateTableThroughput")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

@@ -52,8 +52,8 @@ func (client ServiceEndpointPoliciesClient) CreateOrUpdate(ctx context.Context, 
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceEndpointPoliciesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -155,8 +155,8 @@ func (client ServiceEndpointPoliciesClient) Delete(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceEndpointPoliciesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -555,8 +555,8 @@ func (client ServiceEndpointPoliciesClient) Update(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceEndpointPoliciesClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

@@ -3846,6 +3846,63 @@ type SchemaContract struct {
 	*SchemaDocumentProperties `json:"document,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SchemaContract.
+func (sc SchemaContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sc.ID != nil {
+		objectMap["id"] = sc.ID
+	}
+	if sc.ContentType != nil {
+		objectMap["contentType"] = sc.ContentType
+	}
+	if sc.SchemaDocumentProperties != nil {
+		objectMap["document"] = sc.SchemaDocumentProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SchemaContract struct.
+func (sc *SchemaContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sc.ID = &ID
+			}
+		case "contentType":
+			if v != nil {
+				var contentType string
+				err = json.Unmarshal(*v, &contentType)
+				if err != nil {
+					return err
+				}
+				sc.ContentType = &contentType
+			}
+		case "document":
+			if v != nil {
+				var schemaDocumentProperties SchemaDocumentProperties
+				err = json.Unmarshal(*v, &schemaDocumentProperties)
+				if err != nil {
+					return err
+				}
+				sc.SchemaDocumentProperties = &schemaDocumentProperties
+			}
+		}
+	}
+
+	return nil
+}
+
 // SchemaContractProperties schema contract Properties.
 type SchemaContractProperties struct {
 	// ContentType - Must be a valid a media type used in a Content-Type header as defined in the RFC 2616. Media type of the schema document (e.g. application/json, application/xml).

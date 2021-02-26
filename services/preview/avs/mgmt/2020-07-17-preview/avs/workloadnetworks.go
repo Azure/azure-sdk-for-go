@@ -54,8 +54,8 @@ func (client WorkloadNetworksClient) CreateDhcp(ctx context.Context, resourceGro
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.CreateDhcp")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -170,8 +170,8 @@ func (client WorkloadNetworksClient) CreatePortMirroring(ctx context.Context, re
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.CreatePortMirroring")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -286,8 +286,8 @@ func (client WorkloadNetworksClient) CreateSegments(ctx context.Context, resourc
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.CreateSegments")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -402,8 +402,8 @@ func (client WorkloadNetworksClient) CreateVMGroup(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.CreateVMGroup")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -517,8 +517,8 @@ func (client WorkloadNetworksClient) DeleteDhcp(ctx context.Context, resourceGro
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.DeleteDhcp")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -619,8 +619,8 @@ func (client WorkloadNetworksClient) DeletePortMirroring(ctx context.Context, re
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.DeletePortMirroring")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -721,8 +721,8 @@ func (client WorkloadNetworksClient) DeleteSegment(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.DeleteSegment")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -823,8 +823,8 @@ func (client WorkloadNetworksClient) DeleteVMGroup(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.DeleteVMGroup")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -2222,8 +2222,8 @@ func (client WorkloadNetworksClient) UpdateDhcp(ctx context.Context, resourceGro
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.UpdateDhcp")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -2338,8 +2338,8 @@ func (client WorkloadNetworksClient) UpdatePortMirroring(ctx context.Context, re
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.UpdatePortMirroring")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -2454,8 +2454,8 @@ func (client WorkloadNetworksClient) UpdateSegments(ctx context.Context, resourc
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.UpdateSegments")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -2570,8 +2570,8 @@ func (client WorkloadNetworksClient) UpdateVMGroup(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.UpdateVMGroup")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

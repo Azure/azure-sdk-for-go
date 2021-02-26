@@ -55,8 +55,8 @@ func (client IscsiDisksClient) CreateOrUpdate(ctx context.Context, deviceName st
 		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiDisksClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -176,8 +176,8 @@ func (client IscsiDisksClient) Delete(ctx context.Context, deviceName string, is
 		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiDisksClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

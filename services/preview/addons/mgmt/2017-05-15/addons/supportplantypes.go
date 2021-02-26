@@ -51,8 +51,8 @@ func (client SupportPlanTypesClient) CreateOrUpdate(ctx context.Context, provide
 		ctx = tracing.StartSpan(ctx, fqdn+"/SupportPlanTypesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -152,8 +152,8 @@ func (client SupportPlanTypesClient) Delete(ctx context.Context, providerName st
 		ctx = tracing.StartSpan(ctx, fqdn+"/SupportPlanTypesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

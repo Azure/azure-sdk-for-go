@@ -51,8 +51,8 @@ func (client CustomImageClient) CreateOrUpdateResource(ctx context.Context, reso
 		ctx = tracing.StartSpan(ctx, fqdn+"/CustomImageClient.CreateOrUpdateResource")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -156,8 +156,8 @@ func (client CustomImageClient) DeleteResource(ctx context.Context, resourceGrou
 		ctx = tracing.StartSpan(ctx, fqdn+"/CustomImageClient.DeleteResource")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

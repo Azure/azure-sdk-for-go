@@ -22,7 +22,7 @@ package iotspaces
 
 import (
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 const (

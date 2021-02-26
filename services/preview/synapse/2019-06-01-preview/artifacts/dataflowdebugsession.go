@@ -130,8 +130,8 @@ func (client DataFlowDebugSessionClient) CreateDataFlowDebugSession(ctx context.
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataFlowDebugSessionClient.CreateDataFlowDebugSession")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -304,8 +304,8 @@ func (client DataFlowDebugSessionClient) ExecuteCommand(ctx context.Context, req
 		ctx = tracing.StartSpan(ctx, fqdn+"/DataFlowDebugSessionClient.ExecuteCommand")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

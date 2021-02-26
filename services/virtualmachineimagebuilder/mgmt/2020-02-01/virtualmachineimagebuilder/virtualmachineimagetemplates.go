@@ -52,8 +52,8 @@ func (client VirtualMachineImageTemplatesClient) Cancel(ctx context.Context, res
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineImageTemplatesClient.Cancel")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -149,8 +149,8 @@ func (client VirtualMachineImageTemplatesClient) CreateOrUpdate(ctx context.Cont
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineImageTemplatesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -271,8 +271,8 @@ func (client VirtualMachineImageTemplatesClient) Delete(ctx context.Context, res
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineImageTemplatesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -888,8 +888,8 @@ func (client VirtualMachineImageTemplatesClient) Run(ctx context.Context, resour
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineImageTemplatesClient.Run")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -985,8 +985,8 @@ func (client VirtualMachineImageTemplatesClient) Update(ctx context.Context, par
 		ctx = tracing.StartSpan(ctx, fqdn+"/VirtualMachineImageTemplatesClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

@@ -52,8 +52,8 @@ func (client PrivateEndpointConnectionClient) Delete(ctx context.Context, vaultN
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -223,8 +223,8 @@ func (client PrivateEndpointConnectionClient) Put(ctx context.Context, vaultName
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionClient.Put")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

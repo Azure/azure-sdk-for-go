@@ -22,7 +22,7 @@ package netapp
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-09-01/netapp"
+	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-11-01/netapp"
 )
 
 const (
@@ -57,6 +57,15 @@ const (
 	CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots CheckQuotaNameResourceTypes = original.CheckQuotaNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
+)
+
 type EndpointType = original.EndpointType
 
 const (
@@ -69,6 +78,12 @@ type InAvailabilityReasonType = original.InAvailabilityReasonType
 const (
 	AlreadyExists InAvailabilityReasonType = original.AlreadyExists
 	Invalid       InAvailabilityReasonType = original.Invalid
+)
+
+type KeySource = original.KeySource
+
+const (
+	MicrosoftNetApp KeySource = original.MicrosoftNetApp
 )
 
 type MirrorState = original.MirrorState
@@ -119,7 +134,10 @@ const (
 type Account = original.Account
 type AccountBackupsClient = original.AccountBackupsClient
 type AccountBackupsDeleteFuture = original.AccountBackupsDeleteFuture
+type AccountEncryption = original.AccountEncryption
 type AccountList = original.AccountList
+type AccountListIterator = original.AccountListIterator
+type AccountListPage = original.AccountListPage
 type AccountPatch = original.AccountPatch
 type AccountProperties = original.AccountProperties
 type AccountsClient = original.AccountsClient
@@ -143,12 +161,17 @@ type BackupsClient = original.BackupsClient
 type BackupsCreateFuture = original.BackupsCreateFuture
 type BackupsDeleteFuture = original.BackupsDeleteFuture
 type BackupsList = original.BackupsList
+type BackupsUpdateFuture = original.BackupsUpdateFuture
 type BaseClient = original.BaseClient
 type BreakReplicationRequest = original.BreakReplicationRequest
 type CapacityPool = original.CapacityPool
 type CapacityPoolList = original.CapacityPoolList
+type CapacityPoolListIterator = original.CapacityPoolListIterator
+type CapacityPoolListPage = original.CapacityPoolListPage
 type CapacityPoolPatch = original.CapacityPoolPatch
 type CheckAvailabilityResponse = original.CheckAvailabilityResponse
+type CloudError = original.CloudError
+type CloudErrorBody = original.CloudErrorBody
 type DailySchedule = original.DailySchedule
 type Dimension = original.Dimension
 type ExportPolicyRule = original.ExportPolicyRule
@@ -179,6 +202,7 @@ type Snapshot = original.Snapshot
 type SnapshotPoliciesClient = original.SnapshotPoliciesClient
 type SnapshotPoliciesDeleteFuture = original.SnapshotPoliciesDeleteFuture
 type SnapshotPoliciesList = original.SnapshotPoliciesList
+type SnapshotPoliciesUpdateFuture = original.SnapshotPoliciesUpdateFuture
 type SnapshotPolicy = original.SnapshotPolicy
 type SnapshotPolicyDetails = original.SnapshotPolicyDetails
 type SnapshotPolicyPatch = original.SnapshotPolicyPatch
@@ -190,6 +214,7 @@ type SnapshotsCreateFuture = original.SnapshotsCreateFuture
 type SnapshotsDeleteFuture = original.SnapshotsDeleteFuture
 type SnapshotsList = original.SnapshotsList
 type SnapshotsUpdateFuture = original.SnapshotsUpdateFuture
+type SystemData = original.SystemData
 type Vault = original.Vault
 type VaultList = original.VaultList
 type VaultProperties = original.VaultProperties
@@ -231,6 +256,12 @@ func NewAccountBackupsClient(subscriptionID string) AccountBackupsClient {
 func NewAccountBackupsClientWithBaseURI(baseURI string, subscriptionID string) AccountBackupsClient {
 	return original.NewAccountBackupsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewAccountListIterator(page AccountListPage) AccountListIterator {
+	return original.NewAccountListIterator(page)
+}
+func NewAccountListPage(cur AccountList, getNextPage func(context.Context, AccountList) (AccountList, error)) AccountListPage {
+	return original.NewAccountListPage(cur, getNextPage)
+}
 func NewAccountsClient(subscriptionID string) AccountsClient {
 	return original.NewAccountsClient(subscriptionID)
 }
@@ -248,6 +279,12 @@ func NewBackupsClient(subscriptionID string) BackupsClient {
 }
 func NewBackupsClientWithBaseURI(baseURI string, subscriptionID string) BackupsClient {
 	return original.NewBackupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCapacityPoolListIterator(page CapacityPoolListPage) CapacityPoolListIterator {
+	return original.NewCapacityPoolListIterator(page)
+}
+func NewCapacityPoolListPage(cur CapacityPoolList, getNextPage func(context.Context, CapacityPoolList) (CapacityPoolList, error)) CapacityPoolListPage {
+	return original.NewCapacityPoolListPage(cur, getNextPage)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -309,11 +346,17 @@ func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 func PossibleCheckQuotaNameResourceTypesValues() []CheckQuotaNameResourceTypes {
 	return original.PossibleCheckQuotaNameResourceTypesValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleEndpointTypeValues() []EndpointType {
 	return original.PossibleEndpointTypeValues()
 }
 func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 	return original.PossibleInAvailabilityReasonTypeValues()
+}
+func PossibleKeySourceValues() []KeySource {
+	return original.PossibleKeySourceValues()
 }
 func PossibleMirrorStateValues() []MirrorState {
 	return original.PossibleMirrorStateValues()

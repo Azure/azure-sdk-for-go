@@ -54,8 +54,8 @@ func (client CustomDomainsClient) Create(ctx context.Context, customDomainName s
 		ctx = tracing.StartSpan(ctx, fqdn+"/CustomDomainsClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -168,8 +168,8 @@ func (client CustomDomainsClient) DeleteIfExists(ctx context.Context, customDoma
 		ctx = tracing.StartSpan(ctx, fqdn+"/CustomDomainsClient.DeleteIfExists")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -427,13 +427,13 @@ func (client CustomDomainsClient) ListByEndpointResponder(resp *http.Response) (
 // endpointName - name of the endpoint within the CDN profile.
 // profileName - name of the CDN profile within the resource group.
 // resourceGroupName - name of the resource group within the Azure subscription.
-func (client CustomDomainsClient) Update(ctx context.Context, customDomainName string, customDomainProperties CustomDomainParameters, endpointName string, profileName string, resourceGroupName string) (result ErrorResponse, err error) {
+func (client CustomDomainsClient) Update(ctx context.Context, customDomainName string, customDomainProperties CustomDomainParameters, endpointName string, profileName string, resourceGroupName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/CustomDomainsClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response != nil {
+				sc = result.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -446,7 +446,7 @@ func (client CustomDomainsClient) Update(ctx context.Context, customDomainName s
 
 	resp, err := client.UpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.Response = resp
 		err = autorest.NewErrorWithError(err, "cdn.CustomDomainsClient", "Update", resp, "Failure sending request")
 		return
 	}
@@ -493,12 +493,11 @@ func (client CustomDomainsClient) UpdateSender(req *http.Request) (*http.Respons
 
 // UpdateResponder handles the response to the Update request. The method always
 // closes the http.Response Body.
-func (client CustomDomainsClient) UpdateResponder(resp *http.Response) (result ErrorResponse, err error) {
+func (client CustomDomainsClient) UpdateResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }

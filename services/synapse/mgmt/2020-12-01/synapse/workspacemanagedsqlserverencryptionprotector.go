@@ -54,8 +54,8 @@ func (client WorkspaceManagedSQLServerEncryptionProtectorClient) CreateOrUpdate(
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceManagedSQLServerEncryptionProtectorClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -385,8 +385,8 @@ func (client WorkspaceManagedSQLServerEncryptionProtectorClient) Revalidate(ctx 
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkspaceManagedSQLServerEncryptionProtectorClient.Revalidate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

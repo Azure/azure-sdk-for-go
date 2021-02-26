@@ -53,8 +53,8 @@ func (client IscsiServersClient) BackupNow(ctx context.Context, deviceName strin
 		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiServersClient.BackupNow")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -155,8 +155,8 @@ func (client IscsiServersClient) CreateOrUpdate(ctx context.Context, deviceName 
 		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiServersClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -274,8 +274,8 @@ func (client IscsiServersClient) Delete(ctx context.Context, deviceName string, 
 		ctx = tracing.StartSpan(ctx, fqdn+"/IscsiServersClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

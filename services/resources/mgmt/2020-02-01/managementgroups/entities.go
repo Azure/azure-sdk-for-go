@@ -33,18 +33,23 @@ type EntitiesClient struct {
 }
 
 // NewEntitiesClient creates an instance of the EntitiesClient client.
-func NewEntitiesClient(operationResultID string, skip *int32, top *int32, skiptoken string) EntitiesClient {
-	return NewEntitiesClientWithBaseURI(DefaultBaseURI, operationResultID, skip, top, skiptoken)
+func NewEntitiesClient() EntitiesClient {
+	return NewEntitiesClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewEntitiesClientWithBaseURI creates an instance of the EntitiesClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) EntitiesClient {
-	return EntitiesClient{NewWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)}
+func NewEntitiesClientWithBaseURI(baseURI string) EntitiesClient {
+	return EntitiesClient{NewWithBaseURI(baseURI)}
 }
 
 // List list all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
 // Parameters:
+// skiptoken - page continuation token is only used if a previous operation returned a partial result.
+// If a previous response contains a nextLink element, the value of the nextLink element will include a token
+// parameter that specifies a starting point to use for subsequent calls.
+// skip - number of entities to skip over when retrieving results. Passing this in will override $skipToken.
+// top - number of elements to return when retrieving results. Passing this in will override $skipToken.
 // selectParameter - this parameter specifies the fields to include in the response. Can include any
 // combination of Name,DisplayName,Type,ParentDisplayNameChain,ParentChain, e.g.
 // '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'. When specified the $select parameter
@@ -72,7 +77,7 @@ func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skip
 // groupName - a filter which allows the get entities call to focus on a particular group (i.e. "$filter=name
 // eq 'groupName'")
 // cacheControl - indicates that the request shouldn't utilize any caches.
-func (client EntitiesClient) List(ctx context.Context, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (result EntityListResultPage, err error) {
+func (client EntitiesClient) List(ctx context.Context, skiptoken string, skip *int32, top *int32, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (result EntityListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EntitiesClient.List")
 		defer func() {
@@ -84,7 +89,7 @@ func (client EntitiesClient) List(ctx context.Context, selectParameter string, s
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, selectParameter, search, filter, view, groupName, cacheControl)
+	req, err := client.ListPreparer(ctx, skiptoken, skip, top, selectParameter, search, filter, view, groupName, cacheControl)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.EntitiesClient", "List", nil, "Failure preparing request")
 		return
@@ -111,19 +116,19 @@ func (client EntitiesClient) List(ctx context.Context, selectParameter string, s
 }
 
 // ListPreparer prepares the List request.
-func (client EntitiesClient) ListPreparer(ctx context.Context, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (*http.Request, error) {
+func (client EntitiesClient) ListPreparer(ctx context.Context, skiptoken string, skip *int32, top *int32, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (*http.Request, error) {
 	const APIVersion = "2020-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(client.Skiptoken) > 0 {
-		queryParameters["$skiptoken"] = autorest.Encode("query", client.Skiptoken)
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
 	}
-	if client.Skip != nil {
-		queryParameters["$skip"] = autorest.Encode("query", *client.Skip)
+	if skip != nil {
+		queryParameters["$skip"] = autorest.Encode("query", *skip)
 	}
-	if client.Top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *client.Top)
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
 	if len(selectParameter) > 0 {
 		queryParameters["$select"] = autorest.Encode("query", selectParameter)
@@ -196,7 +201,7 @@ func (client EntitiesClient) listNextResults(ctx context.Context, lastResults En
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client EntitiesClient) ListComplete(ctx context.Context, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (result EntityListResultIterator, err error) {
+func (client EntitiesClient) ListComplete(ctx context.Context, skiptoken string, skip *int32, top *int32, selectParameter string, search string, filter string, view string, groupName string, cacheControl string) (result EntityListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EntitiesClient.List")
 		defer func() {
@@ -207,6 +212,6 @@ func (client EntitiesClient) ListComplete(ctx context.Context, selectParameter s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, selectParameter, search, filter, view, groupName, cacheControl)
+	result.page, err = client.List(ctx, skiptoken, skip, top, selectParameter, search, filter, view, groupName, cacheControl)
 	return
 }

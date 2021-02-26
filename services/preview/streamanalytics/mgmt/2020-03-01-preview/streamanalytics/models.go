@@ -73,6 +73,48 @@ func (afp AggregateFunctionProperties) AsBasicFunctionProperties() (BasicFunctio
 	return &afp, true
 }
 
+// UnmarshalJSON is the custom unmarshaler for AggregateFunctionProperties struct.
+func (afp *AggregateFunctionProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				afp.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var functionConfiguration FunctionConfiguration
+				err = json.Unmarshal(*v, &functionConfiguration)
+				if err != nil {
+					return err
+				}
+				afp.FunctionConfiguration = &functionConfiguration
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicFunctionProperties
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				afp.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // AvroSerialization describes how data from an input is serialized or how data is serialized when written
 // to an output in Avro format.
 type AvroSerialization struct {
@@ -6152,6 +6194,48 @@ func (sfp ScalarFunctionProperties) AsFunctionProperties() (*FunctionProperties,
 // AsBasicFunctionProperties is the BasicFunctionProperties implementation for ScalarFunctionProperties.
 func (sfp ScalarFunctionProperties) AsBasicFunctionProperties() (BasicFunctionProperties, bool) {
 	return &sfp, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for ScalarFunctionProperties struct.
+func (sfp *ScalarFunctionProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				sfp.Etag = &etag
+			}
+		case "properties":
+			if v != nil {
+				var functionConfiguration FunctionConfiguration
+				err = json.Unmarshal(*v, &functionConfiguration)
+				if err != nil {
+					return err
+				}
+				sfp.FunctionConfiguration = &functionConfiguration
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicFunctionProperties
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sfp.Type = typeVar
+			}
+		}
+	}
+
+	return nil
 }
 
 // BasicSerialization describes how data from an input is serialized or how data is serialized when written to an

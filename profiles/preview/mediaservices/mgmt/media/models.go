@@ -66,11 +66,43 @@ const (
 	None                         AssetStorageEncryptionFormat = original.None
 )
 
+type AttributeFilter = original.AttributeFilter
+
+const (
+	All         AttributeFilter = original.All
+	Bottom      AttributeFilter = original.Bottom
+	Top         AttributeFilter = original.Top
+	ValueEquals AttributeFilter = original.ValueEquals
+)
+
 type AudioAnalysisMode = original.AudioAnalysisMode
 
 const (
 	Basic    AudioAnalysisMode = original.Basic
 	Standard AudioAnalysisMode = original.Standard
+)
+
+type BlurType = original.BlurType
+
+const (
+	Black BlurType = original.Black
+	Box   BlurType = original.Box
+	High  BlurType = original.High
+	Low   BlurType = original.Low
+	Med   BlurType = original.Med
+)
+
+type ChannelMapping = original.ChannelMapping
+
+const (
+	BackLeft            ChannelMapping = original.BackLeft
+	BackRight           ChannelMapping = original.BackRight
+	Center              ChannelMapping = original.Center
+	FrontLeft           ChannelMapping = original.FrontLeft
+	FrontRight          ChannelMapping = original.FrontRight
+	LowFrequencyEffects ChannelMapping = original.LowFrequencyEffects
+	StereoLeft          ChannelMapping = original.StereoLeft
+	StereoRight         ChannelMapping = original.StereoRight
 )
 
 type ContentKeyPolicyFairPlayRentalAndLeaseKeyType = original.ContentKeyPolicyFairPlayRentalAndLeaseKeyType
@@ -117,6 +149,15 @@ const (
 	ContentKeyPolicyRestrictionTokenTypeUnknown ContentKeyPolicyRestrictionTokenType = original.ContentKeyPolicyRestrictionTokenTypeUnknown
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
+)
+
 type DeinterlaceMode = original.DeinterlaceMode
 
 const (
@@ -146,6 +187,11 @@ const (
 	H264SingleBitrate1080p           EncoderNamedPreset = original.H264SingleBitrate1080p
 	H264SingleBitrate720p            EncoderNamedPreset = original.H264SingleBitrate720p
 	H264SingleBitrateSD              EncoderNamedPreset = original.H264SingleBitrateSD
+	H265AdaptiveStreaming            EncoderNamedPreset = original.H265AdaptiveStreaming
+	H265ContentAwareEncoding         EncoderNamedPreset = original.H265ContentAwareEncoding
+	H265SingleBitrate1080p           EncoderNamedPreset = original.H265SingleBitrate1080p
+	H265SingleBitrate4K              EncoderNamedPreset = original.H265SingleBitrate4K
+	H265SingleBitrate720p            EncoderNamedPreset = original.H265SingleBitrate720p
 )
 
 type EncryptionScheme = original.EncryptionScheme
@@ -162,6 +208,14 @@ type EntropyMode = original.EntropyMode
 const (
 	Cabac EntropyMode = original.Cabac
 	Cavlc EntropyMode = original.Cavlc
+)
+
+type FaceRedactorMode = original.FaceRedactorMode
+
+const (
+	Analyze  FaceRedactorMode = original.Analyze
+	Combined FaceRedactorMode = original.Combined
+	Redact   FaceRedactorMode = original.Redact
 )
 
 type FilterTrackPropertyCompareOperation = original.FilterTrackPropertyCompareOperation
@@ -199,6 +253,21 @@ const (
 	H264VideoProfileHigh422  H264VideoProfile = original.H264VideoProfileHigh422
 	H264VideoProfileHigh444  H264VideoProfile = original.H264VideoProfileHigh444
 	H264VideoProfileMain     H264VideoProfile = original.H264VideoProfileMain
+)
+
+type H265Complexity = original.H265Complexity
+
+const (
+	H265ComplexityBalanced H265Complexity = original.H265ComplexityBalanced
+	H265ComplexityQuality  H265Complexity = original.H265ComplexityQuality
+	H265ComplexitySpeed    H265Complexity = original.H265ComplexitySpeed
+)
+
+type H265VideoProfile = original.H265VideoProfile
+
+const (
+	H265VideoProfileAuto H265VideoProfile = original.H265VideoProfileAuto
+	H265VideoProfileMain H265VideoProfile = original.H265VideoProfileMain
 )
 
 type InsightsType = original.InsightsType
@@ -335,6 +404,7 @@ const (
 	OdataTypeMicrosoftMediaCopyAudio OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaCopyAudio
 	OdataTypeMicrosoftMediaCopyVideo OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaCopyVideo
 	OdataTypeMicrosoftMediaH264Video OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaH264Video
+	OdataTypeMicrosoftMediaH265Video OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaH265Video
 	OdataTypeMicrosoftMediaImage     OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaImage
 	OdataTypeMicrosoftMediaJpgImage  OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaJpgImage
 	OdataTypeMicrosoftMediaPngImage  OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaPngImage
@@ -382,14 +452,24 @@ const (
 	OdataTypeMicrosoftMediaTransportStreamFormat OdataTypeBasicFormat = original.OdataTypeMicrosoftMediaTransportStreamFormat
 )
 
+type OdataTypeBasicInputDefinition = original.OdataTypeBasicInputDefinition
+
+const (
+	OdataTypeInputDefinition                 OdataTypeBasicInputDefinition = original.OdataTypeInputDefinition
+	OdataTypeMicrosoftMediaFromAllInputFile  OdataTypeBasicInputDefinition = original.OdataTypeMicrosoftMediaFromAllInputFile
+	OdataTypeMicrosoftMediaFromEachInputFile OdataTypeBasicInputDefinition = original.OdataTypeMicrosoftMediaFromEachInputFile
+	OdataTypeMicrosoftMediaInputFile         OdataTypeBasicInputDefinition = original.OdataTypeMicrosoftMediaInputFile
+)
+
 type OdataTypeBasicJobInput = original.OdataTypeBasicJobInput
 
 const (
-	OdataTypeJobInput                    OdataTypeBasicJobInput = original.OdataTypeJobInput
-	OdataTypeMicrosoftMediaJobInputAsset OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputAsset
-	OdataTypeMicrosoftMediaJobInputClip  OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputClip
-	OdataTypeMicrosoftMediaJobInputHTTP  OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputHTTP
-	OdataTypeMicrosoftMediaJobInputs     OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputs
+	OdataTypeJobInput                       OdataTypeBasicJobInput = original.OdataTypeJobInput
+	OdataTypeMicrosoftMediaJobInputAsset    OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputAsset
+	OdataTypeMicrosoftMediaJobInputClip     OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputClip
+	OdataTypeMicrosoftMediaJobInputHTTP     OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputHTTP
+	OdataTypeMicrosoftMediaJobInputs        OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputs
+	OdataTypeMicrosoftMediaJobInputSequence OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputSequence
 )
 
 type OdataTypeBasicJobOutput = original.OdataTypeBasicJobOutput
@@ -402,11 +482,13 @@ const (
 type OdataTypeBasicLayer = original.OdataTypeBasicLayer
 
 const (
-	OdataTypeLayer                    OdataTypeBasicLayer = original.OdataTypeLayer
-	OdataTypeMicrosoftMediaH264Layer  OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaH264Layer
-	OdataTypeMicrosoftMediaJpgLayer   OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaJpgLayer
-	OdataTypeMicrosoftMediaPngLayer   OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaPngLayer
-	OdataTypeMicrosoftMediaVideoLayer OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaVideoLayer
+	OdataTypeLayer                        OdataTypeBasicLayer = original.OdataTypeLayer
+	OdataTypeMicrosoftMediaH264Layer      OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaH264Layer
+	OdataTypeMicrosoftMediaH265Layer      OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaH265Layer
+	OdataTypeMicrosoftMediaH265VideoLayer OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaH265VideoLayer
+	OdataTypeMicrosoftMediaJpgLayer       OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaJpgLayer
+	OdataTypeMicrosoftMediaPngLayer       OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaPngLayer
+	OdataTypeMicrosoftMediaVideoLayer     OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaVideoLayer
 )
 
 type OdataTypeBasicOverlay = original.OdataTypeBasicOverlay
@@ -428,6 +510,18 @@ const (
 	OdataTypePreset                                     OdataTypeBasicPreset = original.OdataTypePreset
 )
 
+type OdataTypeBasicTrackDescriptor = original.OdataTypeBasicTrackDescriptor
+
+const (
+	OdataTypeMicrosoftMediaAudioTrackDescriptor        OdataTypeBasicTrackDescriptor = original.OdataTypeMicrosoftMediaAudioTrackDescriptor
+	OdataTypeMicrosoftMediaSelectAudioTrackByAttribute OdataTypeBasicTrackDescriptor = original.OdataTypeMicrosoftMediaSelectAudioTrackByAttribute
+	OdataTypeMicrosoftMediaSelectAudioTrackByID        OdataTypeBasicTrackDescriptor = original.OdataTypeMicrosoftMediaSelectAudioTrackByID
+	OdataTypeMicrosoftMediaSelectVideoTrackByAttribute OdataTypeBasicTrackDescriptor = original.OdataTypeMicrosoftMediaSelectVideoTrackByAttribute
+	OdataTypeMicrosoftMediaSelectVideoTrackByID        OdataTypeBasicTrackDescriptor = original.OdataTypeMicrosoftMediaSelectVideoTrackByID
+	OdataTypeMicrosoftMediaVideoTrackDescriptor        OdataTypeBasicTrackDescriptor = original.OdataTypeMicrosoftMediaVideoTrackDescriptor
+	OdataTypeTrackDescriptor                           OdataTypeBasicTrackDescriptor = original.OdataTypeTrackDescriptor
+)
+
 type OnErrorType = original.OnErrorType
 
 const (
@@ -438,9 +532,9 @@ const (
 type Priority = original.Priority
 
 const (
-	High   Priority = original.High
-	Low    Priority = original.Low
-	Normal Priority = original.Normal
+	PriorityHigh   Priority = original.PriorityHigh
+	PriorityLow    Priority = original.PriorityLow
+	PriorityNormal Priority = original.PriorityNormal
 )
 
 type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
@@ -481,8 +575,8 @@ const (
 type StorageAuthentication = original.StorageAuthentication
 
 const (
-	ManagedIdentity StorageAuthentication = original.ManagedIdentity
-	System          StorageAuthentication = original.System
+	StorageAuthenticationManagedIdentity StorageAuthentication = original.StorageAuthenticationManagedIdentity
+	StorageAuthenticationSystem          StorageAuthentication = original.StorageAuthenticationSystem
 )
 
 type StreamOptionsFlag = original.StreamOptionsFlag
@@ -526,6 +620,13 @@ const (
 	StretchModeAutoFit  StretchMode = original.StretchModeAutoFit
 	StretchModeAutoSize StretchMode = original.StretchModeAutoSize
 	StretchModeNone     StretchMode = original.StretchModeNone
+)
+
+type TrackAttribute = original.TrackAttribute
+
+const (
+	Bitrate  TrackAttribute = original.Bitrate
+	Language TrackAttribute = original.Language
 )
 
 type TrackPropertyCompareOperation = original.TrackPropertyCompareOperation
@@ -579,10 +680,12 @@ type AssetsClient = original.AssetsClient
 type Audio = original.Audio
 type AudioAnalyzerPreset = original.AudioAnalyzerPreset
 type AudioOverlay = original.AudioOverlay
+type AudioTrackDescriptor = original.AudioTrackDescriptor
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type BasicAudio = original.BasicAudio
 type BasicAudioAnalyzerPreset = original.BasicAudioAnalyzerPreset
+type BasicAudioTrackDescriptor = original.BasicAudioTrackDescriptor
 type BasicClipTime = original.BasicClipTime
 type BasicCodec = original.BasicCodec
 type BasicContentKeyPolicyConfiguration = original.BasicContentKeyPolicyConfiguration
@@ -590,8 +693,10 @@ type BasicContentKeyPolicyPlayReadyContentKeyLocation = original.BasicContentKey
 type BasicContentKeyPolicyRestriction = original.BasicContentKeyPolicyRestriction
 type BasicContentKeyPolicyRestrictionTokenKey = original.BasicContentKeyPolicyRestrictionTokenKey
 type BasicFormat = original.BasicFormat
+type BasicH265VideoLayer = original.BasicH265VideoLayer
 type BasicImage = original.BasicImage
 type BasicImageFormat = original.BasicImageFormat
+type BasicInputDefinition = original.BasicInputDefinition
 type BasicJobInput = original.BasicJobInput
 type BasicJobInputClip = original.BasicJobInputClip
 type BasicJobOutput = original.BasicJobOutput
@@ -599,8 +704,10 @@ type BasicLayer = original.BasicLayer
 type BasicMultiBitrateFormat = original.BasicMultiBitrateFormat
 type BasicOverlay = original.BasicOverlay
 type BasicPreset = original.BasicPreset
+type BasicTrackDescriptor = original.BasicTrackDescriptor
 type BasicVideo = original.BasicVideo
 type BasicVideoLayer = original.BasicVideoLayer
+type BasicVideoTrackDescriptor = original.BasicVideoTrackDescriptor
 type BuiltInStandardEncoderPreset = original.BuiltInStandardEncoderPreset
 type CbcsDrmConfiguration = original.CbcsDrmConfiguration
 type CencDrmConfiguration = original.CencDrmConfiguration
@@ -656,13 +763,20 @@ type FilterTrackSelection = original.FilterTrackSelection
 type Filters = original.Filters
 type FirstQuality = original.FirstQuality
 type Format = original.Format
+type FromAllInputFile = original.FromAllInputFile
+type FromEachInputFile = original.FromEachInputFile
 type H264Layer = original.H264Layer
 type H264Video = original.H264Video
+type H265Layer = original.H265Layer
+type H265Video = original.H265Video
+type H265VideoLayer = original.H265VideoLayer
 type Hls = original.Hls
 type IPAccessControl = original.IPAccessControl
 type IPRange = original.IPRange
 type Image = original.Image
 type ImageFormat = original.ImageFormat
+type InputDefinition = original.InputDefinition
+type InputFile = original.InputFile
 type Job = original.Job
 type JobCollection = original.JobCollection
 type JobCollectionIterator = original.JobCollectionIterator
@@ -673,6 +787,7 @@ type JobInput = original.JobInput
 type JobInputAsset = original.JobInputAsset
 type JobInputClip = original.JobInputClip
 type JobInputHTTP = original.JobInputHTTP
+type JobInputSequence = original.JobInputSequence
 type JobInputs = original.JobInputs
 type JobOutput = original.JobOutput
 type JobOutputAsset = original.JobOutputAsset
@@ -757,6 +872,10 @@ type Provider = original.Provider
 type ProxyResource = original.ProxyResource
 type Rectangle = original.Rectangle
 type Resource = original.Resource
+type SelectAudioTrackByAttribute = original.SelectAudioTrackByAttribute
+type SelectAudioTrackByID = original.SelectAudioTrackByID
+type SelectVideoTrackByAttribute = original.SelectVideoTrackByAttribute
+type SelectVideoTrackByID = original.SelectVideoTrackByID
 type Service = original.Service
 type ServiceCollection = original.ServiceCollection
 type ServiceCollectionIterator = original.ServiceCollectionIterator
@@ -801,6 +920,8 @@ type StreamingPolicyPlayReadyConfiguration = original.StreamingPolicyPlayReadyCo
 type StreamingPolicyProperties = original.StreamingPolicyProperties
 type StreamingPolicyWidevineConfiguration = original.StreamingPolicyWidevineConfiguration
 type SyncStorageKeysInput = original.SyncStorageKeysInput
+type SystemData = original.SystemData
+type TrackDescriptor = original.TrackDescriptor
 type TrackPropertyCondition = original.TrackPropertyCondition
 type TrackSelection = original.TrackSelection
 type TrackedResource = original.TrackedResource
@@ -817,6 +938,7 @@ type Video = original.Video
 type VideoAnalyzerPreset = original.VideoAnalyzerPreset
 type VideoLayer = original.VideoLayer
 type VideoOverlay = original.VideoOverlay
+type VideoTrackDescriptor = original.VideoTrackDescriptor
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -1013,8 +1135,17 @@ func PossibleAssetContainerPermissionValues() []AssetContainerPermission {
 func PossibleAssetStorageEncryptionFormatValues() []AssetStorageEncryptionFormat {
 	return original.PossibleAssetStorageEncryptionFormatValues()
 }
+func PossibleAttributeFilterValues() []AttributeFilter {
+	return original.PossibleAttributeFilterValues()
+}
 func PossibleAudioAnalysisModeValues() []AudioAnalysisMode {
 	return original.PossibleAudioAnalysisModeValues()
+}
+func PossibleBlurTypeValues() []BlurType {
+	return original.PossibleBlurTypeValues()
+}
+func PossibleChannelMappingValues() []ChannelMapping {
+	return original.PossibleChannelMappingValues()
 }
 func PossibleContentKeyPolicyFairPlayRentalAndLeaseKeyTypeValues() []ContentKeyPolicyFairPlayRentalAndLeaseKeyType {
 	return original.PossibleContentKeyPolicyFairPlayRentalAndLeaseKeyTypeValues()
@@ -1031,6 +1162,9 @@ func PossibleContentKeyPolicyPlayReadyUnknownOutputPassingOptionValues() []Conte
 func PossibleContentKeyPolicyRestrictionTokenTypeValues() []ContentKeyPolicyRestrictionTokenType {
 	return original.PossibleContentKeyPolicyRestrictionTokenTypeValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleDeinterlaceModeValues() []DeinterlaceMode {
 	return original.PossibleDeinterlaceModeValues()
 }
@@ -1046,6 +1180,9 @@ func PossibleEncryptionSchemeValues() []EncryptionScheme {
 func PossibleEntropyModeValues() []EntropyMode {
 	return original.PossibleEntropyModeValues()
 }
+func PossibleFaceRedactorModeValues() []FaceRedactorMode {
+	return original.PossibleFaceRedactorModeValues()
+}
 func PossibleFilterTrackPropertyCompareOperationValues() []FilterTrackPropertyCompareOperation {
 	return original.PossibleFilterTrackPropertyCompareOperationValues()
 }
@@ -1057,6 +1194,12 @@ func PossibleH264ComplexityValues() []H264Complexity {
 }
 func PossibleH264VideoProfileValues() []H264VideoProfile {
 	return original.PossibleH264VideoProfileValues()
+}
+func PossibleH265ComplexityValues() []H265Complexity {
+	return original.PossibleH265ComplexityValues()
+}
+func PossibleH265VideoProfileValues() []H265VideoProfile {
+	return original.PossibleH265VideoProfileValues()
 }
 func PossibleInsightsTypeValues() []InsightsType {
 	return original.PossibleInsightsTypeValues()
@@ -1112,6 +1255,9 @@ func PossibleOdataTypeBasicContentKeyPolicyRestrictionValues() []OdataTypeBasicC
 func PossibleOdataTypeBasicFormatValues() []OdataTypeBasicFormat {
 	return original.PossibleOdataTypeBasicFormatValues()
 }
+func PossibleOdataTypeBasicInputDefinitionValues() []OdataTypeBasicInputDefinition {
+	return original.PossibleOdataTypeBasicInputDefinitionValues()
+}
 func PossibleOdataTypeBasicJobInputValues() []OdataTypeBasicJobInput {
 	return original.PossibleOdataTypeBasicJobInputValues()
 }
@@ -1126,6 +1272,9 @@ func PossibleOdataTypeBasicOverlayValues() []OdataTypeBasicOverlay {
 }
 func PossibleOdataTypeBasicPresetValues() []OdataTypeBasicPreset {
 	return original.PossibleOdataTypeBasicPresetValues()
+}
+func PossibleOdataTypeBasicTrackDescriptorValues() []OdataTypeBasicTrackDescriptor {
+	return original.PossibleOdataTypeBasicTrackDescriptorValues()
 }
 func PossibleOdataTypeValues() []OdataType {
 	return original.PossibleOdataTypeValues()
@@ -1165,6 +1314,9 @@ func PossibleStreamingPolicyStreamingProtocolValues() []StreamingPolicyStreaming
 }
 func PossibleStretchModeValues() []StretchMode {
 	return original.PossibleStretchModeValues()
+}
+func PossibleTrackAttributeValues() []TrackAttribute {
+	return original.PossibleTrackAttributeValues()
 }
 func PossibleTrackPropertyCompareOperationValues() []TrackPropertyCompareOperation {
 	return original.PossibleTrackPropertyCompareOperationValues()

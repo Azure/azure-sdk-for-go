@@ -20,6 +20,7 @@ package cdnapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/cdn/mgmt/2016-04-02/cdn"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // ProfilesClientAPI contains the set of methods on the ProfilesClient type.
@@ -68,7 +69,7 @@ type CustomDomainsClientAPI interface {
 	DeleteIfExists(ctx context.Context, customDomainName string, endpointName string, profileName string, resourceGroupName string) (result cdn.CustomDomainsDeleteIfExistsFuture, err error)
 	Get(ctx context.Context, customDomainName string, endpointName string, profileName string, resourceGroupName string) (result cdn.CustomDomain, err error)
 	ListByEndpoint(ctx context.Context, endpointName string, profileName string, resourceGroupName string) (result cdn.CustomDomainListResult, err error)
-	Update(ctx context.Context, customDomainName string, customDomainProperties cdn.CustomDomainParameters, endpointName string, profileName string, resourceGroupName string) (result cdn.ErrorResponse, err error)
+	Update(ctx context.Context, customDomainName string, customDomainProperties cdn.CustomDomainParameters, endpointName string, profileName string, resourceGroupName string) (result autorest.Response, err error)
 }
 
 var _ CustomDomainsClientAPI = (*cdn.CustomDomainsClient)(nil)

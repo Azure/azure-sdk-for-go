@@ -53,8 +53,8 @@ func (client FileServersClient) BackupNow(ctx context.Context, deviceName string
 		ctx = tracing.StartSpan(ctx, fqdn+"/FileServersClient.BackupNow")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -155,8 +155,8 @@ func (client FileServersClient) CreateOrUpdate(ctx context.Context, deviceName s
 		ctx = tracing.StartSpan(ctx, fqdn+"/FileServersClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -275,8 +275,8 @@ func (client FileServersClient) Delete(ctx context.Context, deviceName string, f
 		ctx = tracing.StartSpan(ctx, fqdn+"/FileServersClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

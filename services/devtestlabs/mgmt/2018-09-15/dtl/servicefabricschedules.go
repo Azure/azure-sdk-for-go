@@ -227,8 +227,8 @@ func (client ServiceFabricSchedulesClient) Execute(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/ServiceFabricSchedulesClient.Execute")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

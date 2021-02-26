@@ -23,7 +23,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 	"net/http"
 )
 
@@ -46,7 +46,7 @@ func NewTranslationClient() TranslationClient {
 // endpoint - supported Cognitive Services endpoints (protocol and hostname, for example:
 // https://westus.api.cognitive.microsoft.com).
 // ID - format - uuid.  The operation-id
-func (client TranslationClient) CancelOperation(ctx context.Context, endpoint string, ID uuid.UUID) (result SetObject, err error) {
+func (client TranslationClient) CancelOperation(ctx context.Context, endpoint string, ID uuid.UUID) (result BatchStatusDetail, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TranslationClient.CancelOperation")
 		defer func() {
@@ -104,11 +104,11 @@ func (client TranslationClient) CancelOperationSender(req *http.Request) (*http.
 
 // CancelOperationResponder handles the response to the CancelOperation request. The method always
 // closes the http.Response Body.
-func (client TranslationClient) CancelOperationResponder(resp *http.Response) (result SetObject, err error) {
+func (client TranslationClient) CancelOperationResponder(resp *http.Response) (result BatchStatusDetail, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusNotFound, http.StatusTooManyRequests, http.StatusInternalServerError, http.StatusServiceUnavailable),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -120,7 +120,7 @@ func (client TranslationClient) CancelOperationResponder(resp *http.Response) (r
 // Parameters:
 // endpoint - supported Cognitive Services endpoints (protocol and hostname, for example:
 // https://westus.api.cognitive.microsoft.com).
-func (client TranslationClient) GetDocumentFormats(ctx context.Context, endpoint string) (result SetObject, err error) {
+func (client TranslationClient) GetDocumentFormats(ctx context.Context, endpoint string) (result FileFormatListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TranslationClient.GetDocumentFormats")
 		defer func() {
@@ -174,11 +174,11 @@ func (client TranslationClient) GetDocumentFormatsSender(req *http.Request) (*ht
 
 // GetDocumentFormatsResponder handles the response to the GetDocumentFormats request. The method always
 // closes the http.Response Body.
-func (client TranslationClient) GetDocumentFormatsResponder(resp *http.Response) (result SetObject, err error) {
+func (client TranslationClient) GetDocumentFormatsResponder(resp *http.Response) (result FileFormatListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusTooManyRequests, http.StatusInternalServerError, http.StatusServiceUnavailable),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -190,7 +190,7 @@ func (client TranslationClient) GetDocumentFormatsResponder(resp *http.Response)
 // https://westus.api.cognitive.microsoft.com).
 // ID - format - uuid.  The batch id
 // documentID - format - uuid.  The document id
-func (client TranslationClient) GetDocumentStatus(ctx context.Context, endpoint string, ID uuid.UUID, documentID uuid.UUID) (result SetObject, err error) {
+func (client TranslationClient) GetDocumentStatus(ctx context.Context, endpoint string, ID uuid.UUID, documentID uuid.UUID) (result DocumentStatusDetail, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TranslationClient.GetDocumentStatus")
 		defer func() {
@@ -249,11 +249,11 @@ func (client TranslationClient) GetDocumentStatusSender(req *http.Request) (*htt
 
 // GetDocumentStatusResponder handles the response to the GetDocumentStatus request. The method always
 // closes the http.Response Body.
-func (client TranslationClient) GetDocumentStatusResponder(resp *http.Response) (result SetObject, err error) {
+func (client TranslationClient) GetDocumentStatusResponder(resp *http.Response) (result DocumentStatusDetail, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusNotFound, http.StatusTooManyRequests, http.StatusInternalServerError, http.StatusServiceUnavailable),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -263,7 +263,7 @@ func (client TranslationClient) GetDocumentStatusResponder(resp *http.Response) 
 // Parameters:
 // endpoint - supported Cognitive Services endpoints (protocol and hostname, for example:
 // https://westus.api.cognitive.microsoft.com).
-func (client TranslationClient) GetDocumentStorageSource(ctx context.Context, endpoint string) (result SetObject, err error) {
+func (client TranslationClient) GetDocumentStorageSource(ctx context.Context, endpoint string) (result StorageSourceListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TranslationClient.GetDocumentStorageSource")
 		defer func() {
@@ -317,11 +317,11 @@ func (client TranslationClient) GetDocumentStorageSourceSender(req *http.Request
 
 // GetDocumentStorageSourceResponder handles the response to the GetDocumentStorageSource request. The method always
 // closes the http.Response Body.
-func (client TranslationClient) GetDocumentStorageSourceResponder(resp *http.Response) (result SetObject, err error) {
+func (client TranslationClient) GetDocumentStorageSourceResponder(resp *http.Response) (result StorageSourceListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusTooManyRequests, http.StatusInternalServerError, http.StatusServiceUnavailable),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -332,7 +332,7 @@ func (client TranslationClient) GetDocumentStorageSourceResponder(resp *http.Res
 // Parameters:
 // endpoint - supported Cognitive Services endpoints (protocol and hostname, for example:
 // https://westus.api.cognitive.microsoft.com).
-func (client TranslationClient) GetGlossaryFormats(ctx context.Context, endpoint string) (result SetObject, err error) {
+func (client TranslationClient) GetGlossaryFormats(ctx context.Context, endpoint string) (result FileFormatListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TranslationClient.GetGlossaryFormats")
 		defer func() {
@@ -386,11 +386,11 @@ func (client TranslationClient) GetGlossaryFormatsSender(req *http.Request) (*ht
 
 // GetGlossaryFormatsResponder handles the response to the GetGlossaryFormats request. The method always
 // closes the http.Response Body.
-func (client TranslationClient) GetGlossaryFormatsResponder(resp *http.Response) (result SetObject, err error) {
+func (client TranslationClient) GetGlossaryFormatsResponder(resp *http.Response) (result FileFormatListResult, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusTooManyRequests, http.StatusInternalServerError, http.StatusServiceUnavailable),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -421,7 +421,7 @@ func (client TranslationClient) GetGlossaryFormatsResponder(resp *http.Response)
 // When both $top and $skip are supplied, $skip is applied first
 // skip - skip the $skip entries in the collection
 // When both $top and $skip are supplied, $skip is applied first
-func (client TranslationClient) GetOperationDocumentsStatus(ctx context.Context, endpoint string, ID uuid.UUID, top *int32, skip *int32) (result SetObject, err error) {
+func (client TranslationClient) GetOperationDocumentsStatus(ctx context.Context, endpoint string, ID uuid.UUID, top *int32, skip *int32) (result DocumentStatusResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TranslationClient.GetOperationDocumentsStatus")
 		defer func() {
@@ -506,11 +506,11 @@ func (client TranslationClient) GetOperationDocumentsStatusSender(req *http.Requ
 
 // GetOperationDocumentsStatusResponder handles the response to the GetOperationDocumentsStatus request. The method always
 // closes the http.Response Body.
-func (client TranslationClient) GetOperationDocumentsStatusResponder(resp *http.Response) (result SetObject, err error) {
+func (client TranslationClient) GetOperationDocumentsStatusResponder(resp *http.Response) (result DocumentStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusNotFound, http.StatusTooManyRequests, http.StatusInternalServerError, http.StatusServiceUnavailable),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -540,7 +540,7 @@ func (client TranslationClient) GetOperationDocumentsStatusResponder(resp *http.
 // When both $top and $skip are supplied, $skip is applied first
 // skip - skip the $skip entries in the collection
 // When both $top and $skip are supplied, $skip is applied first
-func (client TranslationClient) GetOperations(ctx context.Context, endpoint string, top *int32, skip *int32) (result SetObject, err error) {
+func (client TranslationClient) GetOperations(ctx context.Context, endpoint string, top *int32, skip *int32) (result BatchStatusResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TranslationClient.GetOperations")
 		defer func() {
@@ -621,11 +621,11 @@ func (client TranslationClient) GetOperationsSender(req *http.Request) (*http.Re
 
 // GetOperationsResponder handles the response to the GetOperations request. The method always
 // closes the http.Response Body.
-func (client TranslationClient) GetOperationsResponder(resp *http.Response) (result SetObject, err error) {
+func (client TranslationClient) GetOperationsResponder(resp *http.Response) (result BatchStatusResponse, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusBadRequest, http.StatusUnauthorized, http.StatusTooManyRequests, http.StatusInternalServerError, http.StatusServiceUnavailable),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -638,7 +638,7 @@ func (client TranslationClient) GetOperationsResponder(resp *http.Response) (res
 // endpoint - supported Cognitive Services endpoints (protocol and hostname, for example:
 // https://westus.api.cognitive.microsoft.com).
 // ID - format - uuid.  The operation id
-func (client TranslationClient) GetOperationStatus(ctx context.Context, endpoint string, ID uuid.UUID) (result SetObject, err error) {
+func (client TranslationClient) GetOperationStatus(ctx context.Context, endpoint string, ID uuid.UUID) (result BatchStatusDetail, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TranslationClient.GetOperationStatus")
 		defer func() {
@@ -696,11 +696,11 @@ func (client TranslationClient) GetOperationStatusSender(req *http.Request) (*ht
 
 // GetOperationStatusResponder handles the response to the GetOperationStatus request. The method always
 // closes the http.Response Body.
-func (client TranslationClient) GetOperationStatusResponder(resp *http.Response) (result SetObject, err error) {
+func (client TranslationClient) GetOperationStatusResponder(resp *http.Response) (result BatchStatusDetail, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusUnauthorized, http.StatusNotFound, http.StatusTooManyRequests, http.StatusInternalServerError, http.StatusServiceUnavailable),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -724,13 +724,13 @@ func (client TranslationClient) GetOperationStatusResponder(resp *http.Response)
 // endpoint - supported Cognitive Services endpoints (protocol and hostname, for example:
 // https://westus.api.cognitive.microsoft.com).
 // body - request details
-func (client TranslationClient) SubmitBatchRequest(ctx context.Context, endpoint string, body *BatchSubmissionRequest) (result ErrorResponseV2, err error) {
+func (client TranslationClient) SubmitBatchRequest(ctx context.Context, endpoint string, body *BatchSubmissionRequest) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TranslationClient.SubmitBatchRequest")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.Response != nil {
+				sc = result.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -750,7 +750,7 @@ func (client TranslationClient) SubmitBatchRequest(ctx context.Context, endpoint
 
 	resp, err := client.SubmitBatchRequestSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
+		result.Response = resp
 		err = autorest.NewErrorWithError(err, "translatortext.TranslationClient", "SubmitBatchRequest", resp, "Failure sending request")
 		return
 	}
@@ -790,12 +790,11 @@ func (client TranslationClient) SubmitBatchRequestSender(req *http.Request) (*ht
 
 // SubmitBatchRequestResponder handles the response to the SubmitBatchRequest request. The method always
 // closes the http.Response Body.
-func (client TranslationClient) SubmitBatchRequestResponder(resp *http.Response) (result ErrorResponseV2, err error) {
+func (client TranslationClient) SubmitBatchRequestResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusUnauthorized, http.StatusTooManyRequests, http.StatusInternalServerError, http.StatusServiceUnavailable),
-		autorest.ByUnmarshallingJSON(&result),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }

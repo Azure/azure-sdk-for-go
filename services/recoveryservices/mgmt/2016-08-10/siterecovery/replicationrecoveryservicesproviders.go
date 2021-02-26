@@ -53,8 +53,8 @@ func (client ReplicationRecoveryServicesProvidersClient) Delete(ctx context.Cont
 		ctx = tracing.StartSpan(ctx, fqdn+"/ReplicationRecoveryServicesProvidersClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -456,8 +456,8 @@ func (client ReplicationRecoveryServicesProvidersClient) Purge(ctx context.Conte
 		ctx = tracing.StartSpan(ctx, fqdn+"/ReplicationRecoveryServicesProvidersClient.Purge")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -548,8 +548,8 @@ func (client ReplicationRecoveryServicesProvidersClient) RefreshProvider(ctx con
 		ctx = tracing.StartSpan(ctx, fqdn+"/ReplicationRecoveryServicesProvidersClient.RefreshProvider")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

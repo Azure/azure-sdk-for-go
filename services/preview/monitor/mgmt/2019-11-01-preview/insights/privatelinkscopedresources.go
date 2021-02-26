@@ -53,8 +53,8 @@ func (client PrivateLinkScopedResourcesClient) CreateOrUpdate(ctx context.Contex
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkScopedResourcesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -164,8 +164,8 @@ func (client PrivateLinkScopedResourcesClient) Delete(ctx context.Context, resou
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkScopedResourcesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

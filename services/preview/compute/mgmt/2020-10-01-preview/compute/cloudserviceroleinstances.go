@@ -50,8 +50,8 @@ func (client CloudServiceRoleInstancesClient) Delete(ctx context.Context, roleIn
 		ctx = tracing.StartSpan(ctx, fqdn+"/CloudServiceRoleInstancesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -494,8 +494,8 @@ func (client CloudServiceRoleInstancesClient) Rebuild(ctx context.Context, roleI
 		ctx = tracing.StartSpan(ctx, fqdn+"/CloudServiceRoleInstancesClient.Rebuild")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -585,8 +585,8 @@ func (client CloudServiceRoleInstancesClient) Reimage(ctx context.Context, roleI
 		ctx = tracing.StartSpan(ctx, fqdn+"/CloudServiceRoleInstancesClient.Reimage")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -675,8 +675,8 @@ func (client CloudServiceRoleInstancesClient) Restart(ctx context.Context, roleI
 		ctx = tracing.StartSpan(ctx, fqdn+"/CloudServiceRoleInstancesClient.Restart")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

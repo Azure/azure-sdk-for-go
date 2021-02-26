@@ -51,8 +51,8 @@ func (client InvoicesClient) DownloadBillingSubscriptionInvoice(ctx context.Cont
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicesClient.DownloadBillingSubscriptionInvoice")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -154,8 +154,8 @@ func (client InvoicesClient) DownloadInvoice(ctx context.Context, billingAccount
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicesClient.DownloadInvoice")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -257,8 +257,8 @@ func (client InvoicesClient) DownloadMultipleBillingProfileInvoices(ctx context.
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicesClient.DownloadMultipleBillingProfileInvoices")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -364,8 +364,8 @@ func (client InvoicesClient) DownloadMultipleBillingSubscriptionInvoices(ctx con
 		ctx = tracing.StartSpan(ctx, fqdn+"/InvoicesClient.DownloadMultipleBillingSubscriptionInvoices")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

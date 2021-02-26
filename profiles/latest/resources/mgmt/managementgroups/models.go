@@ -158,14 +158,14 @@ type SubscriptionUnderManagementGroupProperties = original.SubscriptionUnderMana
 type SubscriptionsClient = original.SubscriptionsClient
 type TenantBackfillStatusResult = original.TenantBackfillStatusResult
 
-func New(operationResultID string, skip *int32, top *int32, skiptoken string) BaseClient {
-	return original.New(operationResultID, skip, top, skiptoken)
+func New() BaseClient {
+	return original.New()
 }
-func NewClient(operationResultID string, skip *int32, top *int32, skiptoken string) Client {
-	return original.NewClient(operationResultID, skip, top, skiptoken)
+func NewClient() Client {
+	return original.NewClient()
 }
-func NewClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) Client {
-	return original.NewClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewClientWithBaseURI(baseURI string) Client {
+	return original.NewClientWithBaseURI(baseURI)
 }
 func NewDescendantListResultIterator(page DescendantListResultPage) DescendantListResultIterator {
 	return original.NewDescendantListResultIterator(page)
@@ -173,11 +173,11 @@ func NewDescendantListResultIterator(page DescendantListResultPage) DescendantLi
 func NewDescendantListResultPage(cur DescendantListResult, getNextPage func(context.Context, DescendantListResult) (DescendantListResult, error)) DescendantListResultPage {
 	return original.NewDescendantListResultPage(cur, getNextPage)
 }
-func NewEntitiesClient(operationResultID string, skip *int32, top *int32, skiptoken string) EntitiesClient {
-	return original.NewEntitiesClient(operationResultID, skip, top, skiptoken)
+func NewEntitiesClient() EntitiesClient {
+	return original.NewEntitiesClient()
 }
-func NewEntitiesClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) EntitiesClient {
-	return original.NewEntitiesClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewEntitiesClientWithBaseURI(baseURI string) EntitiesClient {
+	return original.NewEntitiesClientWithBaseURI(baseURI)
 }
 func NewEntityListResultIterator(page EntityListResultPage) EntityListResultIterator {
 	return original.NewEntityListResultIterator(page)
@@ -185,11 +185,11 @@ func NewEntityListResultIterator(page EntityListResultPage) EntityListResultIter
 func NewEntityListResultPage(cur EntityListResult, getNextPage func(context.Context, EntityListResult) (EntityListResult, error)) EntityListResultPage {
 	return original.NewEntityListResultPage(cur, getNextPage)
 }
-func NewHierarchySettingsClient(operationResultID string, skip *int32, top *int32, skiptoken string) HierarchySettingsClient {
-	return original.NewHierarchySettingsClient(operationResultID, skip, top, skiptoken)
+func NewHierarchySettingsClient() HierarchySettingsClient {
+	return original.NewHierarchySettingsClient()
 }
-func NewHierarchySettingsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) HierarchySettingsClient {
-	return original.NewHierarchySettingsClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewHierarchySettingsClientWithBaseURI(baseURI string) HierarchySettingsClient {
+	return original.NewHierarchySettingsClientWithBaseURI(baseURI)
 }
 func NewListResultIterator(page ListResultPage) ListResultIterator {
 	return original.NewListResultIterator(page)
@@ -209,20 +209,20 @@ func NewOperationListResultIterator(page OperationListResultPage) OperationListR
 func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
 	return original.NewOperationListResultPage(cur, getNextPage)
 }
-func NewOperationsClient(operationResultID string, skip *int32, top *int32, skiptoken string) OperationsClient {
-	return original.NewOperationsClient(operationResultID, skip, top, skiptoken)
+func NewOperationsClient() OperationsClient {
+	return original.NewOperationsClient()
 }
-func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI)
 }
-func NewSubscriptionsClient(operationResultID string, skip *int32, top *int32, skiptoken string) SubscriptionsClient {
-	return original.NewSubscriptionsClient(operationResultID, skip, top, skiptoken)
+func NewSubscriptionsClient() SubscriptionsClient {
+	return original.NewSubscriptionsClient()
 }
-func NewSubscriptionsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) SubscriptionsClient {
-	return original.NewSubscriptionsClientWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewSubscriptionsClientWithBaseURI(baseURI string) SubscriptionsClient {
+	return original.NewSubscriptionsClientWithBaseURI(baseURI)
 }
-func NewWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) BaseClient {
-	return original.NewWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }
 func PossibleInheritedPermissionsValues() []InheritedPermissions {
 	return original.PossibleInheritedPermissionsValues()

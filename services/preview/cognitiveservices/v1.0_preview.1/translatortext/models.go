@@ -21,7 +21,7 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // The package's fully qualified name.
@@ -38,6 +38,7 @@ type BatchRequest struct {
 
 // BatchStatusDetail job status response
 type BatchStatusDetail struct {
+	autorest.Response `json:"-"`
 	// ID - Id of the operation.
 	ID *uuid.UUID `json:"id,omitempty"`
 	// CreatedDateTimeUtc - Operation created date time
@@ -51,6 +52,7 @@ type BatchStatusDetail struct {
 
 // BatchStatusResponse document Status Response
 type BatchStatusResponse struct {
+	autorest.Response `json:"-"`
 	// Value - The summary status of individual operation
 	Value *[]BatchStatusDetail `json:"value,omitempty"`
 	// NextLink - Url for the next page.  Null if no more pages available
@@ -75,6 +77,7 @@ type DocumentFilter struct {
 
 // DocumentStatusDetail ...
 type DocumentStatusDetail struct {
+	autorest.Response `json:"-"`
 	// Path - Location of the document or folder
 	Path *string `json:"path,omitempty"`
 	// CreatedDateTimeUtc - Operation created date time
@@ -96,6 +99,7 @@ type DocumentStatusDetail struct {
 
 // DocumentStatusResponse document Status Response
 type DocumentStatusResponse struct {
+	autorest.Response `json:"-"`
 	// Value - The detail status of individual documents
 	Value *[]DocumentStatusDetail `json:"value,omitempty"`
 	// NextLink - Url for the next page.  Null if no more pages available
@@ -108,8 +112,7 @@ type DocumentStatusResponse struct {
 // directly from
 // a controller.
 type ErrorResponseV2 struct {
-	autorest.Response `json:"-"`
-	Error             *ErrorV2 `json:"error,omitempty"`
+	Error *ErrorV2 `json:"error,omitempty"`
 }
 
 // ErrorV2 this contains an outer error with error code, message, details, target and an inner error with
@@ -151,6 +154,7 @@ type FileFormat struct {
 
 // FileFormatListResult base type for List return in our api
 type FileFormatListResult struct {
+	autorest.Response `json:"-"`
 	// Value - list of objects
 	Value *[]FileFormat `json:"value,omitempty"`
 }
@@ -195,12 +199,6 @@ func (iev InnerErrorV2) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SetObject ...
-type SetObject struct {
-	autorest.Response `json:"-"`
-	Value             interface{} `json:"value,omitempty"`
-}
-
 // SourceInput source of the input documents
 type SourceInput struct {
 	// SourceURL - Location of the folder / container or single file with your documents
@@ -231,6 +229,7 @@ type StatusSummary struct {
 
 // StorageSourceListResult base type for List return in our api
 type StorageSourceListResult struct {
+	autorest.Response `json:"-"`
 	// Value - list of objects
 	Value *[]string `json:"value,omitempty"`
 }

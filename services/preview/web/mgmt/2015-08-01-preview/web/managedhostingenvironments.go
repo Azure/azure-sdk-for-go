@@ -52,8 +52,8 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedHostingEnvironmentsClient.CreateOrUpdateManagedHostingEnvironment")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -156,8 +156,8 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironment(c
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedHostingEnvironmentsClient.DeleteManagedHostingEnvironment")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

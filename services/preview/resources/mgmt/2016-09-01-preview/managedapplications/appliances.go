@@ -52,8 +52,8 @@ func (client AppliancesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppliancesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -179,8 +179,8 @@ func (client AppliancesClient) CreateOrUpdateByID(ctx context.Context, appliance
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppliancesClient.CreateOrUpdateByID")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -295,8 +295,8 @@ func (client AppliancesClient) Delete(ctx context.Context, resourceGroupName str
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppliancesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -397,8 +397,8 @@ func (client AppliancesClient) DeleteByID(ctx context.Context, applianceID strin
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppliancesClient.DeleteByID")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

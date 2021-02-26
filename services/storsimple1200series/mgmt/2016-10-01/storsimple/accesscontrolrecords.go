@@ -54,8 +54,8 @@ func (client AccessControlRecordsClient) CreateOrUpdate(ctx context.Context, acc
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccessControlRecordsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -169,8 +169,8 @@ func (client AccessControlRecordsClient) Delete(ctx context.Context, accessContr
 		ctx = tracing.StartSpan(ctx, fqdn+"/AccessControlRecordsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

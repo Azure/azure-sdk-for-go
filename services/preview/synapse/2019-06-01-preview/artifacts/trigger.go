@@ -47,8 +47,8 @@ func (client TriggerClient) CreateOrUpdateTrigger(ctx context.Context, triggerNa
 		ctx = tracing.StartSpan(ctx, fqdn+"/TriggerClient.CreateOrUpdateTrigger")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -163,8 +163,8 @@ func (client TriggerClient) DeleteTrigger(ctx context.Context, triggerName strin
 		ctx = tracing.StartSpan(ctx, fqdn+"/TriggerClient.DeleteTrigger")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -551,8 +551,8 @@ func (client TriggerClient) StartTrigger(ctx context.Context, triggerName string
 		ctx = tracing.StartSpan(ctx, fqdn+"/TriggerClient.StartTrigger")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -650,8 +650,8 @@ func (client TriggerClient) StopTrigger(ctx context.Context, triggerName string)
 		ctx = tracing.StartSpan(ctx, fqdn+"/TriggerClient.StopTrigger")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -749,8 +749,8 @@ func (client TriggerClient) SubscribeTriggerToEvents(ctx context.Context, trigge
 		ctx = tracing.StartSpan(ctx, fqdn+"/TriggerClient.SubscribeTriggerToEvents")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -859,8 +859,8 @@ func (client TriggerClient) UnsubscribeTriggerFromEvents(ctx context.Context, tr
 		ctx = tracing.StartSpan(ctx, fqdn+"/TriggerClient.UnsubscribeTriggerFromEvents")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

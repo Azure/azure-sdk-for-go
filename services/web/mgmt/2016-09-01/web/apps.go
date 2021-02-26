@@ -970,8 +970,8 @@ func (client AppsClient) CreateFunction(ctx context.Context, resourceGroupName s
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateFunction")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1086,8 +1086,8 @@ func (client AppsClient) CreateInstanceFunctionSlot(ctx context.Context, resourc
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateInstanceFunctionSlot")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1201,8 +1201,8 @@ func (client AppsClient) CreateInstanceMSDeployOperation(ctx context.Context, re
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateInstanceMSDeployOperation")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1316,8 +1316,8 @@ func (client AppsClient) CreateInstanceMSDeployOperationSlot(ctx context.Context
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateInstanceMSDeployOperationSlot")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1430,8 +1430,8 @@ func (client AppsClient) CreateMSDeployOperation(ctx context.Context, resourceGr
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateMSDeployOperation")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1543,8 +1543,8 @@ func (client AppsClient) CreateMSDeployOperationSlot(ctx context.Context, resour
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateMSDeployOperationSlot")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1657,8 +1657,8 @@ func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -2898,8 +2898,8 @@ func (client AppsClient) CreateOrUpdateSlot(ctx context.Context, resourceGroupNa
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOrUpdateSlot")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -3038,8 +3038,8 @@ func (client AppsClient) CreateOrUpdateSourceControl(ctx context.Context, resour
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOrUpdateSourceControl")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -3152,8 +3152,8 @@ func (client AppsClient) CreateOrUpdateSourceControlSlot(ctx context.Context, re
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.CreateOrUpdateSourceControlSlot")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -14122,8 +14122,8 @@ func (client AppsClient) InstallSiteExtension(ctx context.Context, resourceGroup
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.InstallSiteExtension")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -14235,8 +14235,8 @@ func (client AppsClient) InstallSiteExtensionSlot(ctx context.Context, resourceG
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.InstallSiteExtensionSlot")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -21440,8 +21440,8 @@ func (client AppsClient) ListPublishingCredentials(ctx context.Context, resource
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListPublishingCredentials")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -21551,8 +21551,8 @@ func (client AppsClient) ListPublishingCredentialsSlot(ctx context.Context, reso
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.ListPublishingCredentialsSlot")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -24544,8 +24544,8 @@ func (client AppsClient) MigrateMySQL(ctx context.Context, resourceGroupName str
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.MigrateMySQL")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -24660,8 +24660,8 @@ func (client AppsClient) MigrateStorage(ctx context.Context, subscriptionName st
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.MigrateStorage")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -24779,8 +24779,8 @@ func (client AppsClient) Recover(ctx context.Context, resourceGroupName string, 
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Recover")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -25058,8 +25058,8 @@ func (client AppsClient) RecoverSlot(ctx context.Context, resourceGroupName stri
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.RecoverSlot")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -25523,8 +25523,8 @@ func (client AppsClient) Restore(ctx context.Context, resourceGroupName string, 
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.Restore")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -25644,8 +25644,8 @@ func (client AppsClient) RestoreSlot(ctx context.Context, resourceGroupName stri
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.RestoreSlot")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -26983,8 +26983,8 @@ func (client AppsClient) SwapSlotSlot(ctx context.Context, resourceGroupName str
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.SwapSlotSlot")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -27088,8 +27088,8 @@ func (client AppsClient) SwapSlotWithProduction(ctx context.Context, resourceGro
 		ctx = tracing.StartSpan(ctx, fqdn+"/AppsClient.SwapSlotWithProduction")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

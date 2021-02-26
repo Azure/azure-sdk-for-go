@@ -39,28 +39,20 @@ const (
 // BaseClient is the base client for Managementgroups.
 type BaseClient struct {
 	autorest.Client
-	BaseURI           string
-	OperationResultID string
-	Skip              *int32
-	Top               *int32
-	Skiptoken         string
+	BaseURI string
 }
 
 // New creates an instance of the BaseClient client.
-func New(operationResultID string, skip *int32, top *int32, skiptoken string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, operationResultID, skip, top, skiptoken)
+func New() BaseClient {
+	return NewWithBaseURI(DefaultBaseURI)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client using a custom endpoint.  Use this when interacting with
 // an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) BaseClient {
+func NewWithBaseURI(baseURI string) BaseClient {
 	return BaseClient{
-		Client:            autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:           baseURI,
-		OperationResultID: operationResultID,
-		Skip:              skip,
-		Top:               top,
-		Skiptoken:         skiptoken,
+		Client:  autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI: baseURI,
 	}
 }
 

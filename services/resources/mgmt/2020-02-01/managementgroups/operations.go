@@ -33,14 +33,14 @@ type OperationsClient struct {
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(operationResultID string, skip *int32, top *int32, skiptoken string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, operationResultID, skip, top, skiptoken)
+func NewOperationsClient() OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewOperationsClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)}
+func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI)}
 }
 
 // List lists all of the available Management REST API operations.

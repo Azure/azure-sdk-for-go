@@ -116,28 +116,28 @@ func PossibleStatusValues() []Status {
 type Type string
 
 const (
-	// MicrosoftManagementmanagementGroup ...
-	MicrosoftManagementmanagementGroup Type = "Microsoft.Management/managementGroup"
+	// MicrosoftManagementmanagementGroups ...
+	MicrosoftManagementmanagementGroups Type = "Microsoft.Management/managementGroups"
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{MicrosoftManagementmanagementGroup}
+	return []Type{MicrosoftManagementmanagementGroups}
 }
 
 // Type1 enumerates the values for type 1.
 type Type1 string
 
 const (
-	// MicrosoftManagementmanagementGroups ...
-	MicrosoftManagementmanagementGroups Type1 = "Microsoft.Management/managementGroups"
-	// Subscriptions ...
-	Subscriptions Type1 = "/subscriptions"
+	// Type1MicrosoftManagementmanagementGroups ...
+	Type1MicrosoftManagementmanagementGroups Type1 = "Microsoft.Management/managementGroups"
+	// Type1Subscriptions ...
+	Type1Subscriptions Type1 = "/subscriptions"
 )
 
 // PossibleType1Values returns an array of possible values for the Type1 const type.
 func PossibleType1Values() []Type1 {
-	return []Type1{MicrosoftManagementmanagementGroups, Subscriptions}
+	return []Type1{Type1MicrosoftManagementmanagementGroups, Type1Subscriptions}
 }
 
 // Type2 enumerates the values for type 2.

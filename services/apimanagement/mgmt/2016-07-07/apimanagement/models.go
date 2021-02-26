@@ -3272,6 +3272,93 @@ func (sr ServiceResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON is the custom unmarshaler for ServiceResource struct.
+func (sr *ServiceResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sr.ID = &ID
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				sr.Location = &location
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sr.Type = &typeVar
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				sr.Etag = &etag
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				sr.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var serviceProperties ServiceProperties
+				err = json.Unmarshal(*v, &serviceProperties)
+				if err != nil {
+					return err
+				}
+				sr.ServiceProperties = &serviceProperties
+			}
+		case "sku":
+			if v != nil {
+				var sku ServiceSkuProperties
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				sr.Sku = &sku
+			}
+		}
+	}
+
+	return nil
+}
+
 // ServicesBackupFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServicesBackupFuture struct {

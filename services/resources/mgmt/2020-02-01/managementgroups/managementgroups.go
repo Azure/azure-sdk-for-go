@@ -33,14 +33,14 @@ type Client struct {
 }
 
 // NewClient creates an instance of the Client client.
-func NewClient(operationResultID string, skip *int32, top *int32, skiptoken string) Client {
-	return NewClientWithBaseURI(DefaultBaseURI, operationResultID, skip, top, skiptoken)
+func NewClient() Client {
+	return NewClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewClientWithBaseURI creates an instance of the Client client using a custom endpoint.  Use this when interacting
 // with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewClientWithBaseURI(baseURI string, operationResultID string, skip *int32, top *int32, skiptoken string) Client {
-	return Client{NewWithBaseURI(baseURI, operationResultID, skip, top, skiptoken)}
+func NewClientWithBaseURI(baseURI string) Client {
+	return Client{NewWithBaseURI(baseURI)}
 }
 
 // CreateOrUpdate create or update a management group.
@@ -55,8 +55,8 @@ func (client Client) CreateOrUpdate(ctx context.Context, groupID string, createM
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -166,8 +166,8 @@ func (client Client) Delete(ctx context.Context, groupID string, cacheControl st
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -362,7 +362,11 @@ func (client Client) GetResponder(resp *http.Response) (result ManagementGroup, 
 // GetDescendants list all entities that descend from a management group.
 // Parameters:
 // groupID - management Group ID.
-func (client Client) GetDescendants(ctx context.Context, groupID string) (result DescendantListResultPage, err error) {
+// skiptoken - page continuation token is only used if a previous operation returned a partial result.
+// If a previous response contains a nextLink element, the value of the nextLink element will include a token
+// parameter that specifies a starting point to use for subsequent calls.
+// top - number of elements to return when retrieving results. Passing this in will override $skipToken.
+func (client Client) GetDescendants(ctx context.Context, groupID string, skiptoken string, top *int32) (result DescendantListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetDescendants")
 		defer func() {
@@ -374,7 +378,7 @@ func (client Client) GetDescendants(ctx context.Context, groupID string) (result
 		}()
 	}
 	result.fn = client.getDescendantsNextResults
-	req, err := client.GetDescendantsPreparer(ctx, groupID)
+	req, err := client.GetDescendantsPreparer(ctx, groupID, skiptoken, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "GetDescendants", nil, "Failure preparing request")
 		return
@@ -401,7 +405,7 @@ func (client Client) GetDescendants(ctx context.Context, groupID string) (result
 }
 
 // GetDescendantsPreparer prepares the GetDescendants request.
-func (client Client) GetDescendantsPreparer(ctx context.Context, groupID string) (*http.Request, error) {
+func (client Client) GetDescendantsPreparer(ctx context.Context, groupID string, skiptoken string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"groupId": autorest.Encode("path", groupID),
 	}
@@ -410,11 +414,11 @@ func (client Client) GetDescendantsPreparer(ctx context.Context, groupID string)
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(client.Skiptoken) > 0 {
-		queryParameters["$skiptoken"] = autorest.Encode("query", client.Skiptoken)
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
 	}
-	if client.Top != nil {
-		queryParameters["$top"] = autorest.Encode("query", *client.Top)
+	if top != nil {
+		queryParameters["$top"] = autorest.Encode("query", *top)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -465,7 +469,7 @@ func (client Client) getDescendantsNextResults(ctx context.Context, lastResults 
 }
 
 // GetDescendantsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) GetDescendantsComplete(ctx context.Context, groupID string) (result DescendantListResultIterator, err error) {
+func (client Client) GetDescendantsComplete(ctx context.Context, groupID string, skiptoken string, top *int32) (result DescendantListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.GetDescendants")
 		defer func() {
@@ -476,14 +480,17 @@ func (client Client) GetDescendantsComplete(ctx context.Context, groupID string)
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.GetDescendants(ctx, groupID)
+	result.page, err = client.GetDescendants(ctx, groupID, skiptoken, top)
 	return
 }
 
 // List list management groups for the authenticated user.
 // Parameters:
 // cacheControl - indicates that the request shouldn't utilize any caches.
-func (client Client) List(ctx context.Context, cacheControl string) (result ListResultPage, err error) {
+// skiptoken - page continuation token is only used if a previous operation returned a partial result.
+// If a previous response contains a nextLink element, the value of the nextLink element will include a token
+// parameter that specifies a starting point to use for subsequent calls.
+func (client Client) List(ctx context.Context, cacheControl string, skiptoken string) (result ListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.List")
 		defer func() {
@@ -495,7 +502,7 @@ func (client Client) List(ctx context.Context, cacheControl string) (result List
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, cacheControl)
+	req, err := client.ListPreparer(ctx, cacheControl, skiptoken)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "managementgroups.Client", "List", nil, "Failure preparing request")
 		return
@@ -522,13 +529,13 @@ func (client Client) List(ctx context.Context, cacheControl string) (result List
 }
 
 // ListPreparer prepares the List request.
-func (client Client) ListPreparer(ctx context.Context, cacheControl string) (*http.Request, error) {
+func (client Client) ListPreparer(ctx context.Context, cacheControl string, skiptoken string) (*http.Request, error) {
 	const APIVersion = "2020-02-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(client.Skiptoken) > 0 {
-		queryParameters["$skiptoken"] = autorest.Encode("query", client.Skiptoken)
+	if len(skiptoken) > 0 {
+		queryParameters["$skiptoken"] = autorest.Encode("query", skiptoken)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -586,7 +593,7 @@ func (client Client) listNextResults(ctx context.Context, lastResults ListResult
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListComplete(ctx context.Context, cacheControl string) (result ListResultIterator, err error) {
+func (client Client) ListComplete(ctx context.Context, cacheControl string, skiptoken string) (result ListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.List")
 		defer func() {
@@ -597,7 +604,7 @@ func (client Client) ListComplete(ctx context.Context, cacheControl string) (res
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, cacheControl)
+	result.page, err = client.List(ctx, cacheControl, skiptoken)
 	return
 }
 

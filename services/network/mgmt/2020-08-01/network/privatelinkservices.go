@@ -52,8 +52,8 @@ func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibility(ctx co
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkServicesClient.CheckPrivateLinkServiceVisibility")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -156,8 +156,8 @@ func (client PrivateLinkServicesClient) CheckPrivateLinkServiceVisibilityByResou
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkServicesClient.CheckPrivateLinkServiceVisibilityByResourceGroup")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -260,8 +260,8 @@ func (client PrivateLinkServicesClient) CreateOrUpdate(ctx context.Context, reso
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkServicesClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -373,8 +373,8 @@ func (client PrivateLinkServicesClient) Delete(ctx context.Context, resourceGrou
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkServicesClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -464,8 +464,8 @@ func (client PrivateLinkServicesClient) DeletePrivateEndpointConnection(ctx cont
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateLinkServicesClient.DeletePrivateEndpointConnection")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

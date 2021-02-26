@@ -20,7 +20,7 @@ package runtimeapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/cognitiveservices/v2.0/luis/runtime"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // PredictionClientAPI contains the set of methods on the PredictionClient type.

@@ -938,6 +938,129 @@ func (bc BackendContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON is the custom unmarshaler for BackendContract struct.
+func (bc *BackendContract) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				bc.ID = &ID
+			}
+		case "protocol":
+			if v != nil {
+				var protocol BackendProtocol
+				err = json.Unmarshal(*v, &protocol)
+				if err != nil {
+					return err
+				}
+				bc.Protocol = protocol
+			}
+		case "certificate":
+			if v != nil {
+				var certificate []string
+				err = json.Unmarshal(*v, &certificate)
+				if err != nil {
+					return err
+				}
+				bc.Certificate = &certificate
+			}
+		case "query":
+			if v != nil {
+				var query map[string][]string
+				err = json.Unmarshal(*v, &query)
+				if err != nil {
+					return err
+				}
+				bc.Query = query
+			}
+		case "header":
+			if v != nil {
+				var header map[string][]string
+				err = json.Unmarshal(*v, &header)
+				if err != nil {
+					return err
+				}
+				bc.Header = header
+			}
+		case "url":
+			if v != nil {
+				var URL string
+				err = json.Unmarshal(*v, &URL)
+				if err != nil {
+					return err
+				}
+				bc.URL = &URL
+			}
+		case "username":
+			if v != nil {
+				var username string
+				err = json.Unmarshal(*v, &username)
+				if err != nil {
+					return err
+				}
+				bc.Username = &username
+			}
+		case "password":
+			if v != nil {
+				var password string
+				err = json.Unmarshal(*v, &password)
+				if err != nil {
+					return err
+				}
+				bc.Password = &password
+			}
+		case "title":
+			if v != nil {
+				var title string
+				err = json.Unmarshal(*v, &title)
+				if err != nil {
+					return err
+				}
+				bc.Title = &title
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				bc.Description = &description
+			}
+		case "resourceId":
+			if v != nil {
+				var resourceID string
+				err = json.Unmarshal(*v, &resourceID)
+				if err != nil {
+					return err
+				}
+				bc.ResourceID = &resourceID
+			}
+		case "properties":
+			if v != nil {
+				var backendProperties BackendProperties
+				err = json.Unmarshal(*v, &backendProperties)
+				if err != nil {
+					return err
+				}
+				bc.BackendProperties = &backendProperties
+			}
+		}
+	}
+
+	return nil
+}
+
 // BackendCredentialsContract details of the Credentials used to connect to Backend.
 type BackendCredentialsContract struct {
 	// Certificate - List of Client Certificate Thumbprint.
@@ -1060,6 +1183,129 @@ func (br BackendResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UnmarshalJSON is the custom unmarshaler for BackendResponse struct.
+func (br *BackendResponse) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				br.ID = &ID
+			}
+		case "protocol":
+			if v != nil {
+				var protocol BackendProtocol
+				err = json.Unmarshal(*v, &protocol)
+				if err != nil {
+					return err
+				}
+				br.Protocol = protocol
+			}
+		case "certificate":
+			if v != nil {
+				var certificate []string
+				err = json.Unmarshal(*v, &certificate)
+				if err != nil {
+					return err
+				}
+				br.Certificate = &certificate
+			}
+		case "query":
+			if v != nil {
+				var query map[string][]string
+				err = json.Unmarshal(*v, &query)
+				if err != nil {
+					return err
+				}
+				br.Query = query
+			}
+		case "header":
+			if v != nil {
+				var header map[string][]string
+				err = json.Unmarshal(*v, &header)
+				if err != nil {
+					return err
+				}
+				br.Header = header
+			}
+		case "url":
+			if v != nil {
+				var URL string
+				err = json.Unmarshal(*v, &URL)
+				if err != nil {
+					return err
+				}
+				br.URL = &URL
+			}
+		case "username":
+			if v != nil {
+				var username string
+				err = json.Unmarshal(*v, &username)
+				if err != nil {
+					return err
+				}
+				br.Username = &username
+			}
+		case "password":
+			if v != nil {
+				var password string
+				err = json.Unmarshal(*v, &password)
+				if err != nil {
+					return err
+				}
+				br.Password = &password
+			}
+		case "title":
+			if v != nil {
+				var title string
+				err = json.Unmarshal(*v, &title)
+				if err != nil {
+					return err
+				}
+				br.Title = &title
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				br.Description = &description
+			}
+		case "resourceId":
+			if v != nil {
+				var resourceID string
+				err = json.Unmarshal(*v, &resourceID)
+				if err != nil {
+					return err
+				}
+				br.ResourceID = &resourceID
+			}
+		case "properties":
+			if v != nil {
+				var backendProperties BackendProperties
+				err = json.Unmarshal(*v, &backendProperties)
+				if err != nil {
+					return err
+				}
+				br.BackendProperties = &backendProperties
+			}
+		}
+	}
+
+	return nil
+}
+
 // BackendUpdateParameters parameters supplied to the Update Backend operation.
 type BackendUpdateParameters struct {
 	// Protocol - Backend communication protocol. Possible values include: 'BackendProtocolHTTP', 'BackendProtocolSoap'
@@ -1122,6 +1368,120 @@ func (bup BackendUpdateParameters) MarshalJSON() ([]byte, error) {
 		objectMap["properties"] = bup.BackendProperties
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for BackendUpdateParameters struct.
+func (bup *BackendUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "protocol":
+			if v != nil {
+				var protocol BackendProtocol
+				err = json.Unmarshal(*v, &protocol)
+				if err != nil {
+					return err
+				}
+				bup.Protocol = protocol
+			}
+		case "certificate":
+			if v != nil {
+				var certificate []string
+				err = json.Unmarshal(*v, &certificate)
+				if err != nil {
+					return err
+				}
+				bup.Certificate = &certificate
+			}
+		case "query":
+			if v != nil {
+				var query map[string][]string
+				err = json.Unmarshal(*v, &query)
+				if err != nil {
+					return err
+				}
+				bup.Query = query
+			}
+		case "header":
+			if v != nil {
+				var header map[string][]string
+				err = json.Unmarshal(*v, &header)
+				if err != nil {
+					return err
+				}
+				bup.Header = header
+			}
+		case "url":
+			if v != nil {
+				var URL string
+				err = json.Unmarshal(*v, &URL)
+				if err != nil {
+					return err
+				}
+				bup.URL = &URL
+			}
+		case "username":
+			if v != nil {
+				var username string
+				err = json.Unmarshal(*v, &username)
+				if err != nil {
+					return err
+				}
+				bup.Username = &username
+			}
+		case "password":
+			if v != nil {
+				var password string
+				err = json.Unmarshal(*v, &password)
+				if err != nil {
+					return err
+				}
+				bup.Password = &password
+			}
+		case "title":
+			if v != nil {
+				var title string
+				err = json.Unmarshal(*v, &title)
+				if err != nil {
+					return err
+				}
+				bup.Title = &title
+			}
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				bup.Description = &description
+			}
+		case "resourceId":
+			if v != nil {
+				var resourceID string
+				err = json.Unmarshal(*v, &resourceID)
+				if err != nil {
+					return err
+				}
+				bup.ResourceID = &resourceID
+			}
+		case "properties":
+			if v != nil {
+				var backendProperties BackendProperties
+				err = json.Unmarshal(*v, &backendProperties)
+				if err != nil {
+					return err
+				}
+				bup.BackendProperties = &backendProperties
+			}
+		}
+	}
+
+	return nil
 }
 
 // CertificateCollection paged Certificates list representation.

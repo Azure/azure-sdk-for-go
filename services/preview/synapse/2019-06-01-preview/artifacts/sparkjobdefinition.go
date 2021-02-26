@@ -149,8 +149,8 @@ func (client SparkJobDefinitionClient) DebugSparkJobDefinition(ctx context.Conte
 		ctx = tracing.StartSpan(ctx, fqdn+"/SparkJobDefinitionClient.DebugSparkJobDefinition")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -344,8 +344,8 @@ func (client SparkJobDefinitionClient) ExecuteSparkJobDefinition(ctx context.Con
 		ctx = tracing.StartSpan(ctx, fqdn+"/SparkJobDefinitionClient.ExecuteSparkJobDefinition")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -643,8 +643,8 @@ func (client SparkJobDefinitionClient) RenameSparkJobDefinition(ctx context.Cont
 		ctx = tracing.StartSpan(ctx, fqdn+"/SparkJobDefinitionClient.RenameSparkJobDefinition")
 		defer func() {
 			sc := -1
-			if result.Response() != nil {
-				sc = result.Response().StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()

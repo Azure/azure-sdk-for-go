@@ -20,7 +20,7 @@ package prediction
 import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 )
 
 // The package's fully qualified name.

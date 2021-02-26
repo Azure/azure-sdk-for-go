@@ -22,7 +22,7 @@ package storage
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2019-06-01/storage"
+	original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
 )
 
 const (
@@ -83,6 +83,15 @@ const (
 	None          Bypass = original.None
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
+)
+
 type DefaultAction = original.DefaultAction
 
 const (
@@ -119,6 +128,12 @@ const (
 	Enabled  EncryptionScopeState = original.Enabled
 )
 
+type ExtendedLocationTypes = original.ExtendedLocationTypes
+
+const (
+	EdgeZone ExtendedLocationTypes = original.EdgeZone
+)
+
 type GeoReplicationStatus = original.GeoReplicationStatus
 
 const (
@@ -138,6 +153,15 @@ type HTTPProtocol = original.HTTPProtocol
 const (
 	HTTPS     HTTPProtocol = original.HTTPS
 	Httpshttp HTTPProtocol = original.Httpshttp
+)
+
+type IdentityType = original.IdentityType
+
+const (
+	IdentityTypeNone                       IdentityType = original.IdentityTypeNone
+	IdentityTypeSystemAssigned             IdentityType = original.IdentityTypeSystemAssigned
+	IdentityTypeSystemAssignedUserAssigned IdentityType = original.IdentityTypeSystemAssignedUserAssigned
+	IdentityTypeUserAssigned               IdentityType = original.IdentityTypeUserAssigned
 )
 
 type ImmutabilityPolicyState = original.ImmutabilityPolicyState
@@ -232,7 +256,8 @@ const (
 type ListSharesExpand = original.ListSharesExpand
 
 const (
-	ListSharesExpandDeleted ListSharesExpand = original.ListSharesExpandDeleted
+	ListSharesExpandDeleted   ListSharesExpand = original.ListSharesExpandDeleted
+	ListSharesExpandSnapshots ListSharesExpand = original.ListSharesExpandSnapshots
 )
 
 type MinimumTLSVersion = original.MinimumTLSVersion
@@ -241,6 +266,12 @@ const (
 	TLS10 MinimumTLSVersion = original.TLS10
 	TLS11 MinimumTLSVersion = original.TLS11
 	TLS12 MinimumTLSVersion = original.TLS12
+)
+
+type Name = original.Name
+
+const (
+	AccessTimeTracking Name = original.AccessTimeTracking
 )
 
 type Permissions = original.Permissions
@@ -287,6 +318,12 @@ const (
 	PublicAccessBlob      PublicAccess = original.PublicAccessBlob
 	PublicAccessContainer PublicAccess = original.PublicAccessContainer
 	PublicAccessNone      PublicAccess = original.PublicAccessNone
+)
+
+type PutSharesExpand = original.PutSharesExpand
+
+const (
+	Snapshots PutSharesExpand = original.Snapshots
 )
 
 type Reason = original.Reason
@@ -420,6 +457,13 @@ type AzureFilesIdentityBasedAuthentication = original.AzureFilesIdentityBasedAut
 type BaseClient = original.BaseClient
 type BlobContainer = original.BlobContainer
 type BlobContainersClient = original.BlobContainersClient
+type BlobInventoryPoliciesClient = original.BlobInventoryPoliciesClient
+type BlobInventoryPolicy = original.BlobInventoryPolicy
+type BlobInventoryPolicyDefinition = original.BlobInventoryPolicyDefinition
+type BlobInventoryPolicyFilter = original.BlobInventoryPolicyFilter
+type BlobInventoryPolicyProperties = original.BlobInventoryPolicyProperties
+type BlobInventoryPolicyRule = original.BlobInventoryPolicyRule
+type BlobInventoryPolicySchema = original.BlobInventoryPolicySchema
 type BlobRestoreParameters = original.BlobRestoreParameters
 type BlobRestoreRange = original.BlobRestoreRange
 type BlobRestoreStatus = original.BlobRestoreStatus
@@ -438,9 +482,16 @@ type CustomDomain = original.CustomDomain
 type DateAfterCreation = original.DateAfterCreation
 type DateAfterModification = original.DateAfterModification
 type DeleteRetentionPolicy = original.DeleteRetentionPolicy
+type DeletedAccount = original.DeletedAccount
+type DeletedAccountListResult = original.DeletedAccountListResult
+type DeletedAccountListResultIterator = original.DeletedAccountListResultIterator
+type DeletedAccountListResultPage = original.DeletedAccountListResultPage
+type DeletedAccountProperties = original.DeletedAccountProperties
+type DeletedAccountsClient = original.DeletedAccountsClient
 type DeletedShare = original.DeletedShare
 type Dimension = original.Dimension
 type Encryption = original.Encryption
+type EncryptionIdentity = original.EncryptionIdentity
 type EncryptionScope = original.EncryptionScope
 type EncryptionScopeKeyVaultProperties = original.EncryptionScopeKeyVaultProperties
 type EncryptionScopeListResult = original.EncryptionScopeListResult
@@ -452,6 +503,8 @@ type EncryptionService = original.EncryptionService
 type EncryptionServices = original.EncryptionServices
 type Endpoints = original.Endpoints
 type ErrorResponse = original.ErrorResponse
+type ErrorResponseBody = original.ErrorResponseBody
+type ExtendedLocation = original.ExtendedLocation
 type FileServiceItems = original.FileServiceItems
 type FileServiceProperties = original.FileServiceProperties
 type FileServicePropertiesProperties = original.FileServicePropertiesProperties
@@ -470,11 +523,13 @@ type ImmutabilityPolicy = original.ImmutabilityPolicy
 type ImmutabilityPolicyProperties = original.ImmutabilityPolicyProperties
 type ImmutabilityPolicyProperty = original.ImmutabilityPolicyProperty
 type KeyVaultProperties = original.KeyVaultProperties
+type LastAccessTimeTrackingPolicy = original.LastAccessTimeTrackingPolicy
 type LeaseContainerRequest = original.LeaseContainerRequest
 type LeaseContainerResponse = original.LeaseContainerResponse
 type LegalHold = original.LegalHold
 type LegalHoldProperties = original.LegalHoldProperties
 type ListAccountSasResponse = original.ListAccountSasResponse
+type ListBlobInventoryPolicy = original.ListBlobInventoryPolicy
 type ListContainerItem = original.ListContainerItem
 type ListContainerItems = original.ListContainerItems
 type ListContainerItemsIterator = original.ListContainerItemsIterator
@@ -500,7 +555,9 @@ type ManagementPolicyProperties = original.ManagementPolicyProperties
 type ManagementPolicyRule = original.ManagementPolicyRule
 type ManagementPolicySchema = original.ManagementPolicySchema
 type ManagementPolicySnapShot = original.ManagementPolicySnapShot
+type ManagementPolicyVersion = original.ManagementPolicyVersion
 type MetricSpecification = original.MetricSpecification
+type Multichannel = original.Multichannel
 type NetworkRuleSet = original.NetworkRuleSet
 type ObjectReplicationPolicies = original.ObjectReplicationPolicies
 type ObjectReplicationPoliciesClient = original.ObjectReplicationPoliciesClient
@@ -523,6 +580,7 @@ type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
 type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
+type ProtocolSettings = original.ProtocolSettings
 type ProxyResource = original.ProxyResource
 type Queue = original.Queue
 type QueueClient = original.QueueClient
@@ -531,6 +589,7 @@ type QueueServiceProperties = original.QueueServiceProperties
 type QueueServicePropertiesProperties = original.QueueServicePropertiesProperties
 type QueueServicesClient = original.QueueServicesClient
 type Resource = original.Resource
+type ResourceAccessRule = original.ResourceAccessRule
 type RestorePolicyProperties = original.RestorePolicyProperties
 type Restriction = original.Restriction
 type RoutingPreference = original.RoutingPreference
@@ -541,6 +600,8 @@ type Sku = original.Sku
 type SkuInformation = original.SkuInformation
 type SkuListResult = original.SkuListResult
 type SkusClient = original.SkusClient
+type SmbSetting = original.SmbSetting
+type SystemData = original.SystemData
 type Table = original.Table
 type TableClient = original.TableClient
 type TableProperties = original.TableProperties
@@ -555,6 +616,7 @@ type Usage = original.Usage
 type UsageListResult = original.UsageListResult
 type UsageName = original.UsageName
 type UsagesClient = original.UsagesClient
+type UserAssignedIdentity = original.UserAssignedIdentity
 type VirtualNetworkRule = original.VirtualNetworkRule
 
 func New(subscriptionID string) BaseClient {
@@ -578,11 +640,29 @@ func NewBlobContainersClient(subscriptionID string) BlobContainersClient {
 func NewBlobContainersClientWithBaseURI(baseURI string, subscriptionID string) BlobContainersClient {
 	return original.NewBlobContainersClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewBlobInventoryPoliciesClient(subscriptionID string) BlobInventoryPoliciesClient {
+	return original.NewBlobInventoryPoliciesClient(subscriptionID)
+}
+func NewBlobInventoryPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BlobInventoryPoliciesClient {
+	return original.NewBlobInventoryPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewBlobServicesClient(subscriptionID string) BlobServicesClient {
 	return original.NewBlobServicesClient(subscriptionID)
 }
 func NewBlobServicesClientWithBaseURI(baseURI string, subscriptionID string) BlobServicesClient {
 	return original.NewBlobServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDeletedAccountListResultIterator(page DeletedAccountListResultPage) DeletedAccountListResultIterator {
+	return original.NewDeletedAccountListResultIterator(page)
+}
+func NewDeletedAccountListResultPage(cur DeletedAccountListResult, getNextPage func(context.Context, DeletedAccountListResult) (DeletedAccountListResult, error)) DeletedAccountListResultPage {
+	return original.NewDeletedAccountListResultPage(cur, getNextPage)
+}
+func NewDeletedAccountsClient(subscriptionID string) DeletedAccountsClient {
+	return original.NewDeletedAccountsClient(subscriptionID)
+}
+func NewDeletedAccountsClientWithBaseURI(baseURI string, subscriptionID string) DeletedAccountsClient {
+	return original.NewDeletedAccountsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewEncryptionScopeListResultIterator(page EncryptionScopeListResultPage) EncryptionScopeListResultIterator {
 	return original.NewEncryptionScopeListResultIterator(page)
@@ -722,6 +802,9 @@ func PossibleBlobRestoreProgressStatusValues() []BlobRestoreProgressStatus {
 func PossibleBypassValues() []Bypass {
 	return original.PossibleBypassValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleDefaultActionValues() []DefaultAction {
 	return original.PossibleDefaultActionValues()
 }
@@ -737,6 +820,9 @@ func PossibleEncryptionScopeSourceValues() []EncryptionScopeSource {
 func PossibleEncryptionScopeStateValues() []EncryptionScopeState {
 	return original.PossibleEncryptionScopeStateValues()
 }
+func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
+	return original.PossibleExtendedLocationTypesValues()
+}
 func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
 	return original.PossibleGeoReplicationStatusValues()
 }
@@ -745,6 +831,9 @@ func PossibleGetShareExpandValues() []GetShareExpand {
 }
 func PossibleHTTPProtocolValues() []HTTPProtocol {
 	return original.PossibleHTTPProtocolValues()
+}
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
 }
 func PossibleImmutabilityPolicyStateValues() []ImmutabilityPolicyState {
 	return original.PossibleImmutabilityPolicyStateValues()
@@ -788,6 +877,9 @@ func PossibleListSharesExpandValues() []ListSharesExpand {
 func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
 	return original.PossibleMinimumTLSVersionValues()
 }
+func PossibleNameValues() []Name {
+	return original.PossibleNameValues()
+}
 func PossiblePermissionsValues() []Permissions {
 	return original.PossiblePermissionsValues()
 }
@@ -802,6 +894,9 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 }
 func PossiblePublicAccessValues() []PublicAccess {
 	return original.PossiblePublicAccessValues()
+}
+func PossiblePutSharesExpandValues() []PutSharesExpand {
+	return original.PossiblePutSharesExpandValues()
 }
 func PossibleReasonCodeValues() []ReasonCode {
 	return original.PossibleReasonCodeValues()

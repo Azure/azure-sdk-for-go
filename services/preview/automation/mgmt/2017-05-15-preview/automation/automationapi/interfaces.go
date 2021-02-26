@@ -21,7 +21,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/automation/mgmt/2017-05-15-preview/automation"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/satori/go.uuid"
+	"github.com/gofrs/uuid"
 	"io"
 )
 

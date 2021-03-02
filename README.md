@@ -20,6 +20,19 @@ channel](https://gophers.slack.com/messages/CA7HK8EEP)** on the [Gophers
 Slack](https://gophers.slack.com/). Sign up
 [here](https://invite.slack.golangbridge.org) first if necessary.
 
+### Management: New Releases
+
+A new set of management libraries that follow the [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html) and based on [Azure Core modules](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/azcore) are now in Public Preview. These new libraries provide a number of core capabilities that are shared amongst all Azure SDKs, including the intuitive Azure Identity library, an HTTP Pipeline with custom policies, error-handling, distributed tracing, and much more. You can find the list of new packages [on this page](https://azure.github.io/azure-sdk/releases/latest/golang.html). 
+
+To get started with these new libraries, please see the README under each SDK folder. For example, the quick-start guide for Compute module is [here](https://github.com/Azure/azure-sdk-for-go/blob/master/sdk/arm/compute/README.md). These new libraries can be [found here](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/arm)
+
+> NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
+
+### Management: Previous Versions
+
+For a complete list of management libraries which enable you to provision and manage Azure resources, please check [here](https://github.com/Azure/azure-sdk-for-go/tree/master/services). They might not have the same feature set as the new releases but they do offer wider coverage of services. 
+
+Code samples for these libraries can be found [here](https://github.com/Azure-Samples/azure-sdk-for-go-samples).
 
 ## Package Updates
 

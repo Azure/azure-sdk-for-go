@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## `v52.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2020-03-01-preview/deviceupdate`
+
 ## `v52.1.0`
 
 ### New Packages

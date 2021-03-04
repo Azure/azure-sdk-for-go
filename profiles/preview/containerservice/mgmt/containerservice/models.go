@@ -22,7 +22,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2020-12-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-02-01/containerservice"
 )
 
 const (
@@ -80,7 +80,8 @@ const (
 type KubeletDiskType = original.KubeletDiskType
 
 const (
-	OS KubeletDiskType = original.OS
+	OS        KubeletDiskType = original.OS
+	Temporary KubeletDiskType = original.Temporary
 )
 
 type LicenseType = original.LicenseType

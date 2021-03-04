@@ -45,3 +45,5 @@ steps:
     condition: succeededOrFailed()
     failOnStderr: true
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
+
+  - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml

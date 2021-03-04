@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## `v52.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-02-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/hybridkubernetes/mgmt/2021-03-01/hybridkubernetes`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers` | [details](services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers/CHANGELOG.md) |
+
 ## `v52.2.0`
 
 ### New Packages

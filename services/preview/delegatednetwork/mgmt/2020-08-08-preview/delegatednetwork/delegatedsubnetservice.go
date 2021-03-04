@@ -45,10 +45,10 @@ func NewDelegatedSubnetServiceClientWithBaseURI(baseURI string, subscriptionID s
 
 // DeleteDetails delete dnc DelegatedSubnet.
 // Parameters:
-// resourceGroupName - the name of the Azure Resource group of which a given DelegatedNetwork resource is part.
-// This name must be at least 1 character in length, and no more than 90.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
-func (client DelegatedSubnetServiceClient) DeleteDetails(ctx context.Context, resourceGroupName string, resourceName string) (result DelegatedSubnetServiceDeleteDetailsFuture, err error) {
+// forceDelete - force delete resource
+func (client DelegatedSubnetServiceClient) DeleteDetails(ctx context.Context, resourceGroupName string, resourceName string, forceDelete *bool) (result DelegatedSubnetServiceDeleteDetailsFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DelegatedSubnetServiceClient.DeleteDetails")
 		defer func() {
@@ -67,11 +67,13 @@ func (client DelegatedSubnetServiceClient) DeleteDetails(ctx context.Context, re
 		{TargetValue: resourceName,
 			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "resourceName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("delegatednetwork.DelegatedSubnetServiceClient", "DeleteDetails", err.Error())
 	}
 
-	req, err := client.DeleteDetailsPreparer(ctx, resourceGroupName, resourceName)
+	req, err := client.DeleteDetailsPreparer(ctx, resourceGroupName, resourceName, forceDelete)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "DeleteDetails", nil, "Failure preparing request")
 		return
@@ -87,7 +89,7 @@ func (client DelegatedSubnetServiceClient) DeleteDetails(ctx context.Context, re
 }
 
 // DeleteDetailsPreparer prepares the DeleteDetails request.
-func (client DelegatedSubnetServiceClient) DeleteDetailsPreparer(ctx context.Context, resourceGroupName string, resourceName string) (*http.Request, error) {
+func (client DelegatedSubnetServiceClient) DeleteDetailsPreparer(ctx context.Context, resourceGroupName string, resourceName string, forceDelete *bool) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"resourceName":      autorest.Encode("path", resourceName),
@@ -97,6 +99,9 @@ func (client DelegatedSubnetServiceClient) DeleteDetailsPreparer(ctx context.Con
 	const APIVersion = "2020-08-08-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if forceDelete != nil {
+		queryParameters["forceDelete"] = autorest.Encode("query", *forceDelete)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -148,8 +153,7 @@ func (client DelegatedSubnetServiceClient) DeleteDetailsResponder(resp *http.Res
 
 // GetDetails gets details about the specified dnc DelegatedSubnet Link.
 // Parameters:
-// resourceGroupName - the name of the Azure Resource group of which a given DelegatedNetwork resource is part.
-// This name must be at least 1 character in length, and no more than 90.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
 func (client DelegatedSubnetServiceClient) GetDetails(ctx context.Context, resourceGroupName string, resourceName string) (result DelegatedSubnet, err error) {
 	if tracing.IsEnabled() {
@@ -170,7 +174,9 @@ func (client DelegatedSubnetServiceClient) GetDetails(ctx context.Context, resou
 		{TargetValue: resourceName,
 			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "resourceName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("delegatednetwork.DelegatedSubnetServiceClient", "GetDetails", err.Error())
 	}
 
@@ -237,8 +243,7 @@ func (client DelegatedSubnetServiceClient) GetDetailsResponder(resp *http.Respon
 
 // ListByResourceGroup get all the DelegatedSubnets resources in a resource group.
 // Parameters:
-// resourceGroupName - the name of the Azure Resource group of which a given DelegatedNetwork resource is part.
-// This name must be at least 1 character in length, and no more than 90.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 func (client DelegatedSubnetServiceClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result DelegatedSubnetsPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DelegatedSubnetServiceClient.ListByResourceGroup")
@@ -254,7 +259,9 @@ func (client DelegatedSubnetServiceClient) ListByResourceGroup(ctx context.Conte
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("delegatednetwork.DelegatedSubnetServiceClient", "ListByResourceGroup", err.Error())
 	}
 
@@ -372,6 +379,12 @@ func (client DelegatedSubnetServiceClient) ListBySubscription(ctx context.Contex
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("delegatednetwork.DelegatedSubnetServiceClient", "ListBySubscription", err.Error())
+	}
+
 	result.fn = client.listBySubscriptionNextResults
 	req, err := client.ListBySubscriptionPreparer(ctx)
 	if err != nil {
@@ -475,8 +488,7 @@ func (client DelegatedSubnetServiceClient) ListBySubscriptionComplete(ctx contex
 
 // PatchDetails patch delegated subnet resource
 // Parameters:
-// resourceGroupName - the name of the Azure Resource group of which a given DelegatedNetwork resource is part.
-// This name must be at least 1 character in length, and no more than 90.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
 // parameters - delegated subnet details.
 func (client DelegatedSubnetServiceClient) PatchDetails(ctx context.Context, resourceGroupName string, resourceName string, parameters ResourceUpdateParameters) (result DelegatedSubnetServicePatchDetailsFuture, err error) {
@@ -498,7 +510,9 @@ func (client DelegatedSubnetServiceClient) PatchDetails(ctx context.Context, res
 		{TargetValue: resourceName,
 			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "resourceName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("delegatednetwork.DelegatedSubnetServiceClient", "PatchDetails", err.Error())
 	}
 
@@ -592,8 +606,7 @@ func (client DelegatedSubnetServiceClient) PatchDetailsResponder(resp *http.Resp
 
 // PutDetails put delegated subnet resource
 // Parameters:
-// resourceGroupName - the name of the Azure Resource group of which a given DelegatedNetwork resource is part.
-// This name must be at least 1 character in length, and no more than 90.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // resourceName - the name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
 // parameters - delegated subnet details.
 func (client DelegatedSubnetServiceClient) PutDetails(ctx context.Context, resourceGroupName string, resourceName string, parameters DelegatedSubnet) (result DelegatedSubnetServicePutDetailsFuture, err error) {
@@ -615,7 +628,9 @@ func (client DelegatedSubnetServiceClient) PutDetails(ctx context.Context, resou
 		{TargetValue: resourceName,
 			Constraints: []validation.Constraint{{Target: "resourceName", Name: validation.MaxLength, Rule: 63, Chain: nil},
 				{Target: "resourceName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceName", Name: validation.Pattern, Rule: `^[a-z][a-z0-9]*$`, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("delegatednetwork.DelegatedSubnetServiceClient", "PutDetails", err.Error())
 	}
 

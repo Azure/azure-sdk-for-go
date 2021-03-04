@@ -1,5 +1,63 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82//specification/dnc/resource-manager/readme.md tag: `package-2020-08-08-preview`
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/bd75cbc7ae9c997f39362ac9d19d557219720bbd/specification/dnc/resource-manager/readme.md tag: `package-2020-08-08-preview`
 
-Code generator @microsoft.azure/autorest.go@2.1.175
+Code generator 
 
 
+### Breaking Changes
+
+#### Removed Funcs
+
+1. OperationListResult.MarshalJSON() ([]byte, error)
+
+### Struct Changes
+
+#### Removed Structs
+
+1. ControllerDetailsModel
+1. ErrorDefinition
+
+#### Removed Struct Fields
+
+1. Operation.Properties
+
+### Signature Changes
+
+#### Funcs
+
+1. DelegatedSubnetServiceClient.DeleteDetails
+	- Params
+		- From: context.Context, string, string
+		- To: context.Context, string, string, *bool
+1. DelegatedSubnetServiceClient.DeleteDetailsPreparer
+	- Params
+		- From: context.Context, string, string
+		- To: context.Context, string, string, *bool
+
+#### Struct Fields
+
+1. DelegatedSubnetProperties.ControllerDetails changed type from *ControllerDetailsModel to *ControllerDetails
+1. ErrorResponse.Error changed type from *ErrorDefinition to *ErrorDetail
+1. Operation.Origin changed type from *string to Origin
+
+#### New Constants
+
+1. ActionType.Internal
+1. Origin.System
+1. Origin.User
+1. Origin.Usersystem
+
+#### New Funcs
+
+1. PossibleActionTypeValues() []ActionType
+1. PossibleOriginValues() []Origin
+
+### Struct Changes
+
+#### New Structs
+
+1. ErrorAdditionalInfo
+1. ErrorDetail
+
+#### New Struct Fields
+
+1. Operation.ActionType

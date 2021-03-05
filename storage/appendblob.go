@@ -70,7 +70,6 @@ type AppendBlockOptions struct {
 func (b *Blob) AppendBlock(chunk []byte, options *AppendBlockOptions) error {
 	params := url.Values{"comp": {"appendblock"}}
 	headers := b.Container.bsc.client.getStandardHeaders()
-	headers["x-ms-blob-type"] = string(BlobTypeAppend)
 	headers["Content-Length"] = fmt.Sprintf("%v", len(chunk))
 
 	if options != nil {

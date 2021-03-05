@@ -176,6 +176,23 @@ type AzureStorageServiceError struct {
 	APIVersion                string
 }
 
+// AzureTablesServiceError contains fields of the error response from
+// Azure Table Storage Service REST API in Atom format.
+// See https://msdn.microsoft.com/en-us/library/azure/dd179382.aspx
+type AzureTablesServiceError struct {
+	Code       string `xml:"code"`
+	Message    string `xml:"message"`
+	StatusCode int
+	RequestID  string
+	Date       string
+	APIVersion string
+}
+
+func (e AzureTablesServiceError) Error() string {
+	return fmt.Sprintf("storage: service returned error: StatusCode=%d, ErrorCode=%s, ErrorMessage=%s, RequestInitiated=%s, RequestId=%s, API Version=%s",
+		e.StatusCode, e.Code, e.Message, e.Date, e.RequestID, e.APIVersion)
+}
+
 type odataErrorMessage struct {
 	Lang  string `json:"lang"`
 	Value string `json:"value"`
@@ -828,8 +845,21 @@ func (c Client) execInternalJSONCommon(verb, url string, headers map[string]stri
 			err = serviceErrFromStatusCode(resp.StatusCode, resp.Status, requestID, date, version)
 			return respToRet, req, resp, err
 		}
-		// try unmarshal as odata.error json
-		err = json.Unmarshal(respBody, &respToRet.odata)
+		// response contains storage service error object, unmarshal
+		if resp.Header.Get("Content-Type") == "application/xml" {
+			storageErr := AzureTablesServiceError{
+				StatusCode: resp.StatusCode,
+				RequestID:  requestID,
+				Date:       date,
+				APIVersion: version,
+			}
+			if err := xml.Unmarshal(respBody, &storageErr); err != nil {
+				storageErr.Message = fmt.Sprintf("Response body could no be unmarshaled: %v. Body: %v.", err, string(respBody))
+			}
+			err = storageErr
+		} else {
+			err = json.Unmarshal(respBody, &respToRet.odata)
+		}
 	}
 
 	return respToRet, req, resp, err

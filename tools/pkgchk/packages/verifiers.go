@@ -7,11 +7,15 @@ import (
 	"unicode"
 )
 
-type VerifyFunc func(p Track1Package) error
+type VerifyFunc func(p Package) error
 
-type Verifier []VerifyFunc
+type Verifier interface {
+	Verify(pkg Package) []error
+}
 
-func (v Verifier) Verify(pkg Track1Package) []error {
+type verifiers []VerifyFunc
+
+func (v verifiers) Verify(pkg Package) []error {
 	var errors []error
 	for _, verifier := range v {
 		if err := verifier(pkg); err != nil {
@@ -22,16 +26,16 @@ func (v Verifier) Verify(pkg Track1Package) []error {
 }
 
 func GetDefaultVerifier() Verifier {
-	return []VerifyFunc{
+	return verifiers([]VerifyFunc{
 		verifyPkgMatchesDir,
 		verifyLowerCase,
 		verifyDirectoryStructure,
-	}
+	})
 }
 
 // ensures that the leaf directory name matches the package name
 // new to modules: if the last leaf is version suffix, find its parent as leaf folder
-func verifyPkgMatchesDir(p Track1Package) error {
+func verifyPkgMatchesDir(p Package) error {
 	leaf := findPackageFolderInPath(p.FullPath())
 	if !strings.EqualFold(leaf, p.Name()) {
 		return fmt.Errorf("leaf directory of '%s' doesn't match package name '%s'", p.Path(), p.Name())
@@ -50,7 +54,7 @@ func findPackageFolderInPath(path string) string {
 }
 
 // ensures that there are no upper-case letters in a package's directory
-func verifyLowerCase(p Track1Package) error {
+func verifyLowerCase(p Package) error {
 	// walk the package directory looking for upper-case characters
 	for _, r := range p.Path() {
 		if r == '/' {
@@ -64,7 +68,7 @@ func verifyLowerCase(p Track1Package) error {
 }
 
 // ensures that the package's directory hierarchy is properly formed
-func verifyDirectoryStructure(p Track1Package) error {
+func verifyDirectoryStructure(p Package) error {
 	// for ARM the package directory structure is highly deterministic:
 	// /redis/mgmt/2015-08-01/redis
 	// /resources/mgmt/2017-06-01-preview/policy
@@ -74,7 +78,7 @@ func verifyDirectoryStructure(p Track1Package) error {
 	if !p.IsARMPackage() {
 		return nil
 	}
-	regexStr := fmt.Sprintf(`(preview/)?%s/mgmt/%s/%s%s$`, rpNameRegex, apiVersionRegex, nameSpaceRegex, majorSubDirRegex)
+	regexStr := fmt.Sprintf(`^(preview/)?%s/mgmt/%s/%s%s$`, rpNameRegex, apiVersionRegex, nameSpaceRegex, majorSubDirRegex)
 	regex := regexp.MustCompile(regexStr)
 	if !regex.MatchString(p.Path()) {
 		return fmt.Errorf("bad directory structure '%s'", p.Path())

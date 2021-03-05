@@ -11,6 +11,14 @@ import (
 	"strings"
 )
 
+type Package interface {
+	Root() string
+	Path() string
+	FullPath() string
+	Name() string
+	IsARMPackage() bool
+}
+
 type Track1Package struct {
 	root string
 	dir  string
@@ -38,8 +46,8 @@ func (p Track1Package) IsARMPackage() bool {
 	return strings.Index(p.Path(), "/mgmt/") > -1
 }
 
-func List(root string) ([]Track1Package, error) {
-	var results []Track1Package
+func List(root string) ([]Package, error) {
+	var results []Package
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err

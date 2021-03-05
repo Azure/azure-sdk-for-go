@@ -20,7 +20,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/packages"
+	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/track1"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -62,7 +62,7 @@ func theCommand(args []string) error {
 }
 
 func VerifyPackages(root, exceptionFile string) error {
-	pkgs, err := packages.List(root)
+	pkgs, err := track1.List(root)
 	if err != nil {
 		return fmt.Errorf("failed to get packages: %+v", err)
 	}
@@ -70,7 +70,7 @@ func VerifyPackages(root, exceptionFile string) error {
 	if err != nil {
 		return fmt.Errorf("failed to load exceptions: %+v", err)
 	}
-	verifier := packages.GetDefaultTrack1Verifier()
+	verifier := track1.GetDefaultVerifier()
 	count := 0
 	for _, pkg := range pkgs {
 		for _, err := range verifier.Verify(pkg) {

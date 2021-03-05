@@ -1,4 +1,4 @@
-package packages
+package track1
 
 import (
 	"path/filepath"
@@ -55,7 +55,7 @@ func TestVerifier_Verify(t *testing.T) {
 		t.Fatalf("failed to get packages: %+v", err)
 	}
 
-	verifier := GetDefaultTrack1Verifier()
+	verifier := GetDefaultVerifier()
 	for _, pkg := range pkgs {
 		if errors := verifier.Verify(pkg); len(errors) != 0 {
 			t.Fatalf("failed to verify packages: %+v", errors)

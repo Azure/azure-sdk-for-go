@@ -2,7 +2,6 @@ package track1
 
 import (
 	"fmt"
-	"go/ast"
 	"go/parser"
 	"go/token"
 	"io/ioutil"
@@ -12,9 +11,9 @@ import (
 )
 
 type Package struct {
-	root string
-	dir  string
-	p    *ast.Package
+	root    string
+	dir     string
+	pkgName string
 }
 
 func (p Package) Root() string {
@@ -31,7 +30,7 @@ func (p Package) FullPath() string {
 }
 
 func (p Package) Name() string {
-	return p.p.Name
+	return p.pkgName
 }
 
 func (p Package) IsARMPackage() bool {
@@ -80,15 +79,15 @@ func List(root string) ([]Package, error) {
 				if len(packages) > 1 {
 					return fmt.Errorf("found more than one package which is unexpected")
 				}
-				var p *ast.Package
+				pkgName := ""
 				for _, pkg := range packages {
-					p = pkg
+					pkgName = pkg.Name
 				}
 				// normalize the separator
 				results = append(results, Package{
-					root: root,
-					dir:  strings.ReplaceAll(path, "\\", "/"),
-					p:    p,
+					root:    root,
+					dir:     strings.ReplaceAll(path, "\\", "/"),
+					pkgName: pkgName,
 				})
 			}
 		}

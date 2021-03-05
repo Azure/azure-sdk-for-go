@@ -2,10 +2,11 @@ package track1
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/packages"
 	"regexp"
 	"strings"
 	"unicode"
+
+	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/packages"
 )
 
 type verifiers []packages.VerifyFunc
@@ -82,8 +83,8 @@ func verifyDirectoryStructure(p packages.Package) error {
 }
 
 const (
-	rpNameRegex = `[a-z0-9\-]+`
-	apiVersionRegex = `((?:\d{4}-\d{2}-\d{2}(?:-preview)?)|(?:v\d{1,2}\.\d{1,2}))`
-	nameSpaceRegex = `[a-z0-9]+`
+	rpNameRegex      = `[a-z0-9\-]+`
+	apiVersionRegex  = `((?:\d{4}-\d{2}-\d{2}(?:-preview)?)|(?:v\d{1,2}\.\d{1,2}))`
+	nameSpaceRegex   = `[a-z0-9]+`
 	majorSubDirRegex = `(/v\d+)?`
 )

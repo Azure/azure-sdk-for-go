@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-const(
+const (
 	testRoot = "../../testpkgs"
 )
 

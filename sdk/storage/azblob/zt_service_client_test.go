@@ -52,26 +52,40 @@ func (s *aztestsSuite) TestListContainersBasic(c *chk.C) {
 
 	prefix := containerPrefix
 	listOptions := ListContainersSegmentOptions{Prefix: &prefix, Include: ListContainersDetail{Metadata: true}}
-	pager, errs := sa.ListContainersSegment(context.Background(), 100, 0, &listOptions)
+	pager := sa.ListContainersSegment(&listOptions)
 
 	count := 0
-	for container := range pager {
-		count++
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
 
-		c.Assert(container.Name, chk.NotNil)
+		for _, container := range *resp.EnumerationResults.ContainerItems {
+			c.Assert(container.Name, chk.NotNil)
 
-		if *container.Name == name {
-			c.Assert(container.Properties, chk.NotNil)
-			c.Assert(container.Properties.LastModified, chk.NotNil)
-			c.Assert(container.Properties.Etag, chk.NotNil)
-			c.Assert(*container.Properties.LeaseStatus, chk.Equals, LeaseStatusTypeUnlocked)
-			c.Assert(*container.Properties.LeaseState, chk.Equals, LeaseStateTypeAvailable)
-			c.Assert(container.Properties.LeaseDuration, chk.IsNil)
-			c.Assert(container.Properties.PublicAccess, chk.IsNil)
-			c.Assert(container.Metadata, chk.DeepEquals, &md)
+			if *container.Name == name {
+				c.Assert(container.Properties, chk.NotNil)
+				c.Assert(container.Properties.LastModified, chk.NotNil)
+				c.Assert(container.Properties.Etag, chk.NotNil)
+				c.Assert(*container.Properties.LeaseStatus, chk.Equals, LeaseStatusTypeUnlocked)
+				c.Assert(*container.Properties.LeaseState, chk.Equals, LeaseStateTypeAvailable)
+				c.Assert(container.Properties.LeaseDuration, chk.IsNil)
+				c.Assert(container.Properties.PublicAccess, chk.IsNil)
+				c.Assert(container.Metadata, chk.DeepEquals, &md)
+			}
 		}
 	}
-	err = <-errs
+
+	c.Assert(pager.Err(), chk.IsNil)
+
+	// for container := range pager {
+	// 	count++
+	//
+	// 	c.Assert(container.Name, chk.NotNil)
+	//
+	// 	if *container.Name == name {
+	//
+	// 	}
+	// }
+	// err = <-errs
 
 	c.Assert(err, chk.IsNil)
 	c.Assert(count >= 0, chk.Equals, true)
@@ -104,15 +118,17 @@ func (s *aztestsSuite) TestListContainersPaged(c *chk.C) {
 	count := 0
 	results := make([]ContainerItem, 0)
 
-	pager, errs := sa.ListContainersSegment(context.Background(), 100, time.Hour, &listOptions)
-	for container := range pager {
-		// record the results
-		results = append(results, container)
-		count += 1
-		c.Assert(container.Name, chk.NotNil)
+	pager := sa.ListContainersSegment(&listOptions)
+
+	for pager.NextPage(ctx) {
+		for _, container := range *pager.PageResponse().EnumerationResults.ContainerItems {
+			results = append(results, container)
+			count += 1
+			c.Assert(container.Name, chk.NotNil)
+		}
 	}
-	err := <-errs
-	c.Assert(err, chk.IsNil)
+
+	c.Assert(pager.Err(), chk.IsNil)
 	c.Assert(count, chk.Equals, numContainers)
 	c.Assert(len(results), chk.Equals, numContainers)
 
@@ -138,14 +154,18 @@ func (s *aztestsSuite) TestAccountListContainersEmptyPrefix(c *chk.C) {
 	defer deleteContainer(c, containerClient2)
 
 	count := 0
-	pager, err := bsu.ListContainersSegment(context.Background(), 100, time.Hour, nil)
-	c.Assert(err, chk.IsNil)
+	pager := bsu.ListContainersSegment(nil)
 
-	for container := range pager {
-		// record the results
-		count += 1
-		c.Assert(container.Name, chk.NotNil)
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+
+		for _, container := range *resp.EnumerationResults.ContainerItems {
+			count++
+			c.Assert(container.Name, chk.NotNil)
+		}
 	}
+	c.Assert(pager.Err(), chk.IsNil)
+
 	c.Assert(count >= 2, chk.Equals, true)
 }
 
@@ -293,7 +313,7 @@ func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge(c *chk.C) {
 	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
+	validateStorageError(c, err, StorageErrorCodeInvalidXMLDocument)
 }
 
 func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(c *chk.C) {
@@ -304,5 +324,5 @@ func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(c *chk.C) {
 	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
+	validateStorageError(c, err, StorageErrorCodeInvalidXMLDocument)
 }

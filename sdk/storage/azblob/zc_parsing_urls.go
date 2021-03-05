@@ -53,15 +53,17 @@ func isIPEndpointStyle(host string) bool {
 
 // NewBlobURLParts parses a URL initializing BlobURLParts' fields including any SAS-related & snapshot query parameters. Any other
 // query parameters remain in the UnparsedParams field. This method overwrites all fields in the BlobURLParts object.
-func NewBlobURLParts(u url.URL) BlobURLParts {
+func NewBlobURLParts(u string) BlobURLParts {
+	uri, _ := url.Parse(u)
+
 	up := BlobURLParts{
-		Scheme: u.Scheme,
-		Host:   u.Host,
+		Scheme: uri.Scheme,
+		Host:   uri.Host,
 	}
 
 	// Find the container & blob names (if any)
-	if u.Path != "" {
-		path := u.Path
+	if uri.Path != "" {
+		path := uri.Path
 		if path[0] == '/' {
 			path = path[1:] // If path starts with a slash, remove it
 		}
@@ -84,7 +86,7 @@ func NewBlobURLParts(u url.URL) BlobURLParts {
 	}
 
 	// Convert the query parameters to a case-sensitive map & trim whitespace
-	paramsMap := u.Query()
+	paramsMap := uri.Query()
 
 	up.Snapshot = "" // Assume no snapshot
 	if snapshotStr, ok := caseInsensitiveValues(paramsMap).Get(snapshot); ok {
@@ -110,7 +112,7 @@ func (values caseInsensitiveValues) Get(key string) ([]string, bool) {
 
 // URL returns a URL object whose fields are initialized from the BlobURLParts fields. The URL's RawQuery
 // field contains the SAS, snapshot, and unparsed query parameters.
-func (up BlobURLParts) URL() url.URL {
+func (up BlobURLParts) URL() string {
 	path := ""
 	if isIPEndpointStyle(up.Host) && up.IPEndpointStyleInfo.AccountName != "" {
 		path += "/" + up.IPEndpointStyleInfo.AccountName
@@ -150,5 +152,5 @@ func (up BlobURLParts) URL() url.URL {
 		Path:     path,
 		RawQuery: rawQuery,
 	}
-	return u
+	return u.String()
 }

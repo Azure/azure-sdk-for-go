@@ -16,24 +16,18 @@ const (
 type AppendBlobClient struct {
 	BlobClient
 	client *appendBlobClient
-	u      url.URL
 }
 
 func NewAppendBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (AppendBlobClient, error) {
-	u, err := url.Parse(blobURL)
-	if err != nil {
-		return AppendBlobClient{}, err
-	}
 	con := newConnection(blobURL, cred, options.getConnectionOptions())
 	return AppendBlobClient{
 		client:     &appendBlobClient{con: con},
-		u:          *u,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
 }
 
-func (ab AppendBlobClient) URL() url.URL {
-	return ab.u
+func (ab AppendBlobClient) URL() string {
+	return ab.client.con.u
 }
 
 // WithSnapshot creates a new AppendBlobURL object identical to the source but with the specified snapshot timestamp.
@@ -41,11 +35,9 @@ func (ab AppendBlobClient) URL() url.URL {
 func (ab AppendBlobClient) WithSnapshot(snapshot string) AppendBlobClient {
 	p := NewBlobURLParts(ab.URL())
 	p.Snapshot = snapshot
-	snapshotURL := p.URL()
-	con := newConnectionWithPipeline(snapshotURL.String(), ab.client.con.p)
+	con := newConnectionWithPipeline(p.URL(), ab.client.con.p)
 	return AppendBlobClient{
 		client:     &appendBlobClient{con: con},
-		u:          snapshotURL,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
@@ -55,11 +47,9 @@ func (ab AppendBlobClient) WithSnapshot(snapshot string) AppendBlobClient {
 func (ab AppendBlobClient) WithVersionID(versionID string) AppendBlobClient {
 	p := NewBlobURLParts(ab.URL())
 	p.VersionID = versionID
-	versionIDURL := p.URL()
-	con := newConnectionWithPipeline(versionIDURL.String(), ab.client.con.p)
+	con := newConnectionWithPipeline(p.URL(), ab.client.con.p)
 	return AppendBlobClient{
 		client:     &appendBlobClient{con: con},
-		u:          versionIDURL,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
@@ -92,10 +82,12 @@ func (ab AppendBlobClient) AppendBlock(ctx context.Context, body io.ReadSeeker, 
 
 // AppendBlockFromURL copies a new block of data from source URL to the end of the existing append blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/append-block-from-url.
-func (ab AppendBlobClient) AppendBlockFromURL(ctx context.Context, source url.URL, contentLength int64, options *AppendBlockURLOptions) (AppendBlobAppendBlockFromURLResponse, error) {
+func (ab AppendBlobClient) AppendBlockFromURL(ctx context.Context, source string, contentLength int64, options *AppendBlockURLOptions) (AppendBlobAppendBlockFromURLResponse, error) {
 	appendOptions, aac, cpkinfo, cpkscope, mac, lac, smac := options.pointers()
 
-	resp, err := ab.client.AppendBlockFromURL(ctx, source, contentLength, appendOptions, cpkinfo, cpkscope, lac, aac, mac, smac)
+	uri, _ := url.Parse(source)
+
+	resp, err := ab.client.AppendBlockFromURL(ctx, *uri, contentLength, appendOptions, cpkinfo, cpkscope, lac, aac, mac, smac)
 
 	return resp, handleError(err)
 }

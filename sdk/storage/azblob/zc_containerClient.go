@@ -3,7 +3,6 @@ package azblob
 import (
 	"context"
 	"errors"
-	"net/url"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -12,27 +11,21 @@ import (
 // A ContainerClient represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type ContainerClient struct {
 	client *containerClient
-	u      url.URL
 	cred   StorageAccountCredential
 }
 
 // NewContainerClient creates a ContainerClient object using the specified URL and request policy pipeline.
 func NewContainerClient(containerURL string, cred azcore.Credential, options *ClientOptions) (ContainerClient, error) {
-	u, err := url.Parse(containerURL)
-	if err != nil {
-		return ContainerClient{}, err
-	}
-
 	c, _ := cred.(*SharedKeyCredential)
 
 	return ContainerClient{client: &containerClient{
 		con: newConnection(containerURL, cred, options.getConnectionOptions()),
-	}, u: *u, cred: c}, nil
+	}, cred: c}, nil
 }
 
 // URL returns the URL endpoint used by the ContainerClient object.
-func (c ContainerClient) URL() url.URL {
-	return c.u
+func (c ContainerClient) URL() string {
+	return c.client.con.u
 }
 
 // NewBlobClient creates a new BlobClient object by concatenating blobName to the end of
@@ -42,11 +35,10 @@ func (c ContainerClient) URL() url.URL {
 // NewBlobClient method.
 func (c ContainerClient) NewBlobClient(blobName string) BlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
-	newCon := newConnectionWithPipeline(blobURL.String(), c.client.con.p)
+	newCon := newConnectionWithPipeline(blobURL, c.client.con.p)
 
 	return BlobClient{
 		client: &blobClient{newCon, nil},
-		u:      blobURL,
 	}
 }
 
@@ -57,11 +49,10 @@ func (c ContainerClient) NewBlobClient(blobName string) BlobClient {
 // NewAppendBlobURL method.
 func (c ContainerClient) NewAppendBlobURL(blobName string) AppendBlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
-	newCon := newConnectionWithPipeline(blobURL.String(), c.client.con.p)
+	newCon := newConnectionWithPipeline(blobURL, c.client.con.p)
 
 	return AppendBlobClient{
 		client:     &appendBlobClient{newCon},
-		u:          blobURL,
 		BlobClient: BlobClient{client: &blobClient{con: newCon}},
 	}
 }
@@ -73,11 +64,10 @@ func (c ContainerClient) NewAppendBlobURL(blobName string) AppendBlobClient {
 // NewBlockBlobClient method.
 func (c ContainerClient) NewBlockBlobClient(blobName string) BlockBlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
-	newCon := newConnectionWithPipeline(blobURL.String(), c.client.con.p)
+	newCon := newConnectionWithPipeline(blobURL, c.client.con.p)
 
 	return BlockBlobClient{
 		client:     &blockBlobClient{newCon},
-		u:          blobURL,
 		BlobClient: BlobClient{client: &blobClient{con: newCon}},
 	}
 }
@@ -89,11 +79,10 @@ func (c ContainerClient) NewBlockBlobClient(blobName string) BlockBlobClient {
 // NewPageBlobURL method.
 func (c ContainerClient) NewPageBlobClient(blobName string) PageBlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
-	newCon := newConnectionWithPipeline(blobURL.String(), c.client.con.p)
+	newCon := newConnectionWithPipeline(blobURL, c.client.con.p)
 
 	return PageBlobClient{
 		client:     &pageBlobClient{newCon},
-		u:          blobURL,
 		BlobClient: BlobClient{client: &blobClient{con: newCon}},
 	}
 }
@@ -249,36 +238,11 @@ func (c ContainerClient) ChangeLease(ctx context.Context, leaseID string, propos
 	return resp, handleError(err)
 }
 
-// ListBlobsFlatSegment returns a channel of blobs starting from the specified Marker. Use an empty
+// ListBlobsFlatSegment returns a pager for blobs starting from the specified Marker. Use an empty
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
-// The returned channel contains individual blob items.
-// AutoPagerTimeout specifies the amount of time with no read operations before the channel times out and closes. Specify no time and it will be ignored.
-// AutoPagerBufferSize specifies the channel's buffer size.
-// Both the blob item channel and error channel should be watched. Only one error will be released via this channel (or a nil error, to register a clean exit.)
-func (c ContainerClient) ListBlobsFlatSegment(ctx context.Context, AutoPagerBufferSize uint, AutoPagerTimeout time.Duration, listOptions *ContainerListBlobFlatSegmentOptions) (chan BlobItemInternal, chan error) {
-	pager := c.client.ListBlobFlatSegment(listOptions)
-
-	output := make(chan BlobItemInternal, AutoPagerBufferSize)
-	errChan := make(chan error, 1)
-
-	if err := pager.Err(); err != nil {
-		errChan <- err
-		close(output)
-		close(errChan)
-		return output, errChan
-	}
-
-	go listBlobsFlatSegmentAutoPager{
-		pager,
-		output,
-		errChan,
-		ctx,
-		AutoPagerTimeout,
-		nil,
-	}.Go()
-
-	return output, errChan
+func (c ContainerClient) ListBlobsFlatSegment(listOptions *ContainerListBlobFlatSegmentOptions) ListBlobsFlatSegmentResponsePager {
+	return c.client.ListBlobFlatSegment(listOptions)
 }
 
 // ListBlobsHierarchySegment returns a channel of blobs starting from the specified Marker. Use an empty
@@ -289,29 +253,8 @@ func (c ContainerClient) ListBlobsFlatSegment(ctx context.Context, AutoPagerBuff
 // AutoPagerTimeout specifies the amount of time with no read operations before the channel times out and closes. Specify no time and it will be ignored.
 // AutoPagerBufferSize specifies the channel's buffer size.
 // Both the blob item channel and error channel should be watched. Only one error will be released via this channel (or a nil error, to register a clean exit.)
-func (c ContainerClient) ListBlobsHierarchySegment(ctx context.Context, delimiter string, AutoPagerBufferSize uint, AutoPagerTimeout time.Duration, listOptions *ContainerListBlobHierarchySegmentOptions) (chan BlobItemInternal, chan error) {
-	pager := c.client.ListBlobHierarchySegment(delimiter, listOptions)
-
-	output := make(chan BlobItemInternal, AutoPagerBufferSize)
-	errChan := make(chan error, 1)
-
-	if err := pager.Err(); err != nil {
-		errChan <- err
-		close(output)
-		close(errChan)
-		return output, errChan
-	}
-
-	go listBlobsHierarchySegmentAutoPager{
-		pager,
-		output,
-		errChan,
-		ctx,
-		AutoPagerTimeout,
-		nil,
-	}.Go()
-
-	return output, errChan
+func (c ContainerClient) ListBlobsHierarchySegment(delimiter string, listOptions *ContainerListBlobHierarchySegmentOptions) ListBlobsHierarchySegmentResponsePager {
+	return c.client.ListBlobHierarchySegment(delimiter, listOptions)
 }
 
 func (c ContainerClient) CanGetContainerSASToken() bool {

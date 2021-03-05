@@ -332,9 +332,8 @@ func (s *aztestsSuite) TestBlobSASQueryParamOverrideResponseHeaders(c *chk.C) {
 
 	// Generate new bbClient client
 	blobURLWithSAS := blobParts.URL()
-	blobRawURL := blobURLWithSAS.String()
-	c.Assert(blobRawURL, chk.NotNil)
-	blobClientWithSAS, err := NewBlockBlobClient(blobURLWithSAS.String(), azcore.AnonymousCredential(), nil)
+	c.Assert(blobURLWithSAS, chk.NotNil)
+	blobClientWithSAS, err := NewBlockBlobClient(blobURLWithSAS, azcore.AnonymousCredential(), nil)
 	c.Assert(err, chk.IsNil)
 
 	gResp, err := blobClientWithSAS.GetProperties(ctx, nil)
@@ -391,7 +390,7 @@ func (s *aztestsSuite) TestStageBlockWithMD5(c *chk.C) {
 	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &badStageBlockOptions)
 	c.Assert(err, chk.NotNil)
 
-	//c.Assert(err.(StorageError), chk.Equals, ServiceCodeMd5Mismatch)
+	//c.Assert(err.(StorageError), chk.Equals, StorageErrorCodeMd5Mismatch)
 }
 
 func (s *aztestsSuite) TestBlobPutBlobHTTPHeaders(c *chk.C) {
@@ -522,8 +521,8 @@ func (s *aztestsSuite) TestBlobPutBlobIfModifiedSinceFalse(c *chk.C) {
 	c.Assert(err, chk.NotNil)
 
 	//TODO: Fix issue with storage error interface
-	//c.Assert(strings.Contains(err.Error(), string(ServiceCodeConditionNotMet)), chk.Equals, true)
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	//c.Assert(strings.Contains(err.Error(), string(StorageErrorCodeConditionNotMet)), chk.Equals, true)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceTrue(c *chk.C) {
@@ -565,7 +564,7 @@ func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse(c *chk.C) {
 	_, err := bbClient.Upload(ctx, bytes.NewReader(nil), &uploadBlockBlobOptions)
 	_ = err
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutBlobIfMatchTrue(c *chk.C) {
@@ -612,7 +611,7 @@ func (s *aztestsSuite) TestBlobPutBlobIfMatchFalse(c *chk.C) {
 	}
 	_, err = bbClient.Upload(ctx, body, &uploadBlockBlobOptions)
 	c.Assert(err, chk.NotNil)
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutBlobIfNoneMatchTrue(c *chk.C) {
@@ -661,7 +660,7 @@ func (s *aztestsSuite) TestBlobPutBlobIfNoneMatchFalse(c *chk.C) {
 	}
 	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func setupPutBlockListTest(c *chk.C) (containerClient ContainerClient, bbClient BlockBlobClient, id string) {
@@ -727,7 +726,7 @@ func (s *aztestsSuite) TestBlobPutBlockListIfModifiedSinceFalse(c *chk.C) {
 	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
 	_ = err
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue(c *chk.C) {
@@ -760,7 +759,7 @@ func (s *aztestsSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse(c *chk.C) {
 	}
 	_, err = bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutBlockListIfMatchTrue(c *chk.C) {
@@ -790,7 +789,7 @@ func (s *aztestsSuite) TestBlobPutBlockListIfMatchFalse(c *chk.C) {
 	}
 	_, err = bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 
 }
 
@@ -821,7 +820,7 @@ func (s *aztestsSuite) TestBlobPutBlockListIfNoneMatchFalse(c *chk.C) {
 	}
 	_, err = bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutBlockListValidateData(c *chk.C) {
@@ -832,7 +831,7 @@ func (s *aztestsSuite) TestBlobPutBlockListValidateData(c *chk.C) {
 
 	resp, err := bbClient.Download(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	data, _ := ioutil.ReadAll(resp.Response().Body)
+	data, _ := ioutil.ReadAll(resp.RawResponse.Body)
 	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
 }
 

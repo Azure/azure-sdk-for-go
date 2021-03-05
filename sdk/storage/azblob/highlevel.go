@@ -114,11 +114,11 @@ func (o *HighLevelUploadToBlockBlobOption) getCommitBlockListOptions() *CommitBl
 
 // uploadReaderAtToBlockBlob uploads a buffer in blocks to a block blob.
 func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSize int64,
-	blockBlobClient BlockBlobClient, o HighLevelUploadToBlockBlobOption) (CommonResponse, error) {
+	blockBlobClient BlockBlobClient, o HighLevelUploadToBlockBlobOption) (*http.Response, error) {
 	if o.BlockSize == 0 {
 		// If bufferSize > (BlockBlobMaxStageBlockBytes * BlockBlobMaxBlocks), then error
 		if readerSize > BlockBlobMaxStageBlockBytes*BlockBlobMaxBlocks {
-			return BlockBlobUploadResponse{}, errors.New("buffer is too large to upload to a block blob")
+			return nil, errors.New("buffer is too large to upload to a block blob")
 		}
 		// If bufferSize <= BlockBlobMaxUploadBlobBytes, then Upload should be used with just 1 I/O request
 		if readerSize <= BlockBlobMaxUploadBlobBytes {
@@ -140,7 +140,9 @@ func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSi
 		}
 
 		uploadBlockBlobOptions := o.getUploadBlockBlobOptions()
-		return blockBlobClient.Upload(ctx, body, uploadBlockBlobOptions)
+		resp, err := blockBlobClient.Upload(ctx, body, uploadBlockBlobOptions)
+
+		return resp.RawResponse, err
 	}
 
 	var numBlocks = uint16(((readerSize - 1) / o.BlockSize) + 1)
@@ -182,26 +184,28 @@ func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSi
 		},
 	})
 	if err != nil {
-		return BlockBlobUploadResponse{}, err
+		return nil, err
 	}
 	// All put blocks were successful, call Put Block List to finalize the blob
 	commitBlockListOptions := o.getCommitBlockListOptions()
-	return blockBlobClient.CommitBlockList(ctx, blockIDList, commitBlockListOptions)
+	resp, err := blockBlobClient.CommitBlockList(ctx, blockIDList, commitBlockListOptions)
+
+	return resp.RawResponse, err
 }
 
 // UploadBufferToBlockBlob uploads a buffer in blocks to a block blob.
 func UploadBufferToBlockBlob(ctx context.Context, b []byte,
-	blockBlobClient BlockBlobClient, o HighLevelUploadToBlockBlobOption) (CommonResponse, error) {
+	blockBlobClient BlockBlobClient, o HighLevelUploadToBlockBlobOption) (*http.Response, error) {
 	return uploadReaderAtToBlockBlob(ctx, bytes.NewReader(b), int64(len(b)), blockBlobClient, o)
 }
 
 // UploadFileToBlockBlob uploads a file in blocks to a block blob.
 func UploadFileToBlockBlob(ctx context.Context, file *os.File,
-	blockBlobClient BlockBlobClient, o HighLevelUploadToBlockBlobOption) (CommonResponse, error) {
+	blockBlobClient BlockBlobClient, o HighLevelUploadToBlockBlobOption) (*http.Response, error) {
 
 	stat, err := file.Stat()
 	if err != nil {
-		return BlockBlobUploadResponse{}, err
+		return nil, err
 	}
 	return uploadReaderAtToBlockBlob(ctx, file, stat.Size(), blockBlobClient, o)
 }
@@ -262,7 +266,7 @@ func downloadBlobToWriterAt(ctx context.Context, blobClient BlobClient, offset i
 
 	if count == CountToEnd { // If size not specified, calculate it
 		if initialDownloadResponse != nil {
-			count = *(initialDownloadResponse.ContentLength()) - offset // if we have the length, use it
+			count = *initialDownloadResponse.ContentLength - offset // if we have the length, use it
 		} else {
 			// If we don't have the length at all, get it
 			downloadBlobOptions := o.getDownloadBlobOptions(0, CountToEnd, nil)
@@ -270,7 +274,7 @@ func downloadBlobToWriterAt(ctx context.Context, blobClient BlobClient, offset i
 			if err != nil {
 				return err
 			}
-			count = *(dr.ContentLength()) - offset
+			count = *dr.ContentLength - offset
 		}
 	}
 

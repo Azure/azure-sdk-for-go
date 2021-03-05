@@ -41,8 +41,8 @@ func NewServiceClient(serviceURL string, cred azcore.Credential, options *Client
 }
 
 // URL returns the URL endpoint used by the ServiceClient object.
-func (s ServiceClient) URL() url.URL {
-	return s.u
+func (s ServiceClient) URL() string {
+	return s.client.con.u
 }
 
 // NewContainerClient creates a new ContainerClient object by concatenating containerName to the end of
@@ -51,18 +51,17 @@ func (s ServiceClient) URL() url.URL {
 // desired pipeline object. Or, call this package's NewContainerClient instead of calling this object's
 // NewContainerClient method.
 func (s ServiceClient) NewContainerClient(containerName string) ContainerClient {
-	containerURL := appendToURLPath(s.u, containerName)
-	containerConnection := newConnectionWithPipeline(containerURL.String(), s.client.con.p)
+	containerURL := appendToURLPath(s.client.con.u, containerName)
+	containerConnection := newConnectionWithPipeline(containerURL, s.client.con.p)
 	return ContainerClient{
 		client: &containerClient{
 			con: containerConnection,
 		},
-		u: containerURL,
 	}
 }
 
 // appendToURLPath appends a string to the end of a URL's path (prefixing the string with a '/' if required)
-func appendToURLPath(u url.URL, name string) url.URL {
+func appendToURLPath(u string, name string) string {
 	// e.g. "https://ms.com/a/b/?k1=v1&k2=v2#f"
 	// When you call url.Parse() this is what you'll get:
 	//     Scheme: "https"
@@ -74,11 +73,13 @@ func appendToURLPath(u url.URL, name string) url.URL {
 	// ForceQuery: false
 	//   RawQuery: "k1=v1&k2=v2"
 	//   Fragment: "f"
-	if len(u.Path) == 0 || u.Path[len(u.Path)-1] != '/' {
-		u.Path += "/" // Append "/" to end before appending name
+	uri, _ := url.Parse(u)
+
+	if len(uri.Path) == 0 || uri.Path[len(uri.Path)-1] != '/' {
+		uri.Path += "/" // Append "/" to end before appending name
 	}
-	u.Path += name
-	return u
+	uri.Path += name
+	return uri.String()
 }
 
 func (s ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountInfoResponse, error) {
@@ -87,8 +88,9 @@ func (s ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountInf
 	return resp, handleError(err)
 }
 
-//GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceClient object.
-//OAuth is required for this call, as well as any role that can delegate access to the storage account.
+// GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceClient object.
+// OAuth is required for this call, as well as any role that can delegate access to the storage account.
+// Strings in KeyInfo should be formatted with SASTimeFormat.
 func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, info KeyInfo) (UserDelegationCredential, error) {
 	udk, err := s.client.GetUserDelegationKey(ctx, info, nil)
 	if err != nil {
@@ -98,25 +100,15 @@ func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, info Key
 	return NewUserDelegationCredential(strings.Split(urlParts.Host, ".")[0], *udk.UserDelegationKey), nil
 }
 
-// The List Containers Segment operation returns a channel of the containers under the specified account.
+// The List Containers Segment operation returns a pager of the containers under the specified account.
 // Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
-// The returned channel contains individual container items.
-// AutoPagerTimeout specifies the amount of time with no read operations before the channel times out and closes. Specify no time and it will be ignored.
-// AutoPagerBufferSize specifies the channel's buffer size.
-// Both the blob item channel and error channel should be watched. Only one error will be released via this channel (or a nil error, to register a clean exit.)
-func (s ServiceClient) ListContainersSegment(ctx context.Context, AutoPagerBufferSize uint, AutoPagerTimeout time.Duration, o *ListContainersSegmentOptions) (chan ContainerItem, chan error) {
-	output := make(chan ContainerItem, AutoPagerBufferSize)
-	errChan := make(chan error, 1)
-
+func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) ListContainersSegmentResponsePager {
 	listOptions := o.pointers()
 	pager := s.client.ListContainersSegment(listOptions)
 	// override the generated advancer, which is incorrect
 	if pager.Err() != nil {
-		errChan <- pager.Err()
-		close(output)
-		close(errChan)
-		return output, errChan
+		return pager
 	}
 
 	p := pager.(*listContainersSegmentResponsePager) // cast to the internal type first
@@ -124,7 +116,7 @@ func (s ServiceClient) ListContainersSegment(ctx context.Context, AutoPagerBuffe
 		if response.EnumerationResults.NextMarker == nil {
 			return nil, errors.New("unexpected missing NextMarker")
 		}
-		req, err := s.client.listContainersSegmentCreateRequest(ctx, listOptions)
+		req, err := s.client.listContainersSegmentCreateRequest(cxt, listOptions)
 		if err != nil {
 			return nil, err
 		}
@@ -135,16 +127,7 @@ func (s ServiceClient) ListContainersSegment(ctx context.Context, AutoPagerBuffe
 		return req, nil
 	}
 
-	go listContainersSegmentAutoPager{
-		pager,
-		output,
-		errChan,
-		ctx,
-		AutoPagerTimeout,
-		nil,
-	}.Go()
-
-	return output, errChan
+	return p
 }
 
 func (s ServiceClient) GetProperties(ctx context.Context) (StorageServicePropertiesResponse, error) {

@@ -107,8 +107,8 @@ func (s *aztestsSuite) TestPutBlockAndPutBlockListWithCPK(c *chk.C) {
 	_, _ = b.ReadFrom(reader)
 	_ = reader.Close()
 	c.Assert(b.String(), chk.Equals, "AAA BBB CCC ")
-	c.Assert(getResp.ETag(), chk.DeepEquals, resp.ETag)
-	c.Assert(getResp.LastModified(), chk.DeepEquals, resp.LastModified)
+	c.Assert(*getResp.ETag, chk.DeepEquals, resp.ETag)
+	c.Assert(*getResp.LastModified, chk.DeepEquals, resp.LastModified)
 }
 
 func (s *aztestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(c *chk.C) {
@@ -147,7 +147,7 @@ func (s *aztestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(c *chk.C) {
 
 	//storageErr := err.(StorageError)
 	//c.Assert(storageErr.RawResponse.StatusCode, chk.Equals, 409)
-	//c.Assert(storageErr.ServiceCode(), chk.Equals, ServiceCodeFeatureEncryptionMismatch)
+	//c.Assert(storageErr.ErrorCode, chk.Equals, StorageErrorCodeFeatureEncryptionMismatch)
 
 	downloadBlobOptions = DownloadBlobOptions{
 		CpkScopeInfo: &testCPKByScope,
@@ -160,10 +160,10 @@ func (s *aztestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	_ = reader.Close() // The client must close the response body when finished with it
 	c.Assert(b.String(), chk.Equals, "AAA BBB CCC ")
-	c.Assert(getResp.ETag(), chk.DeepEquals, resp.ETag)
-	c.Assert(getResp.LastModified(), chk.DeepEquals, resp.LastModified)
-	c.Assert(*getResp.IsServerEncrypted(), chk.Equals, true)
-	c.Assert(getResp.r.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
+	c.Assert(*getResp.ETag, chk.DeepEquals, resp.ETag)
+	c.Assert(*getResp.LastModified, chk.DeepEquals, resp.LastModified)
+	c.Assert(*getResp.IsServerEncrypted, chk.Equals, true)
+	c.Assert(*getResp.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
 }
 
 func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPK(c *chk.C) {
@@ -274,7 +274,7 @@ func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPK(c *chk.C) {
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
 	c.Assert(err, chk.IsNil)
 	c.Assert(destData, chk.DeepEquals, content)
-	c.Assert(downloadResp.r.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
+	c.Assert(*downloadResp.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
 }
 
 func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPKWithScope(c *chk.C) {
@@ -381,7 +381,7 @@ func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPKWithScope(c *chk.C) {
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
 	c.Assert(err, chk.IsNil)
 	c.Assert(destData, chk.DeepEquals, content)
-	c.Assert(downloadResp.r.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
+	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
 }
 
 func (s *aztestsSuite) TestUploadBlobWithMD5WithCPK(c *chk.C) {
@@ -419,11 +419,11 @@ func (s *aztestsSuite) TestUploadBlobWithMD5WithCPK(c *chk.C) {
 	}
 	downloadResp, err = bbClient.BlobClient.Download(ctx, &downloadBlobOptions)
 	c.Assert(err, chk.IsNil)
-	c.Assert(*downloadResp.ContentMD5(), chk.DeepEquals, md5Val[:])
+	c.Assert(*downloadResp.ContentMD5, chk.DeepEquals, md5Val[:])
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	c.Assert(err, chk.IsNil)
 	c.Assert(destData, chk.DeepEquals, srcData)
-	c.Assert(downloadResp.r.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
+	c.Assert(downloadResp.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
 }
 
 func (s *aztestsSuite) TestUploadBlobWithMD5WithCPKScope(c *chk.C) {
@@ -451,11 +451,11 @@ func (s *aztestsSuite) TestUploadBlobWithMD5WithCPKScope(c *chk.C) {
 	}
 	downloadResp, err := bbClient.BlobClient.Download(ctx, &downloadBlobOptions)
 	c.Assert(err, chk.IsNil)
-	c.Assert(*downloadResp.ContentMD5(), chk.DeepEquals, md5Val[:])
+	c.Assert(*downloadResp.ContentMD5, chk.DeepEquals, md5Val[:])
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	c.Assert(err, chk.IsNil)
 	c.Assert(destData, chk.DeepEquals, srcData)
-	c.Assert(downloadResp.r.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
+	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
 }
 
 func (s *aztestsSuite) TestAppendBlockWithCPK(c *chk.C) {
@@ -508,7 +508,7 @@ func (s *aztestsSuite) TestAppendBlockWithCPK(c *chk.C) {
 	data, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
 	c.Assert(err, chk.IsNil)
 	c.Assert(string(data), chk.DeepEquals, "AAA BBB CCC ")
-	c.Assert(downloadResp.r.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
+	c.Assert(*downloadResp.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
 }
 
 func (s *aztestsSuite) TestAppendBlockWithCPKScope(c *chk.C) {
@@ -557,7 +557,7 @@ func (s *aztestsSuite) TestAppendBlockWithCPKScope(c *chk.C) {
 	data, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
 	c.Assert(err, chk.IsNil)
 	c.Assert(string(data), chk.DeepEquals, "AAA BBB CCC ")
-	c.Assert(downloadResp.r.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
+	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
 }
 
 func (s *aztestsSuite) TestAppendBlockFromURLWithCPK(c *chk.C) {
@@ -658,8 +658,8 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithCPK(c *chk.C) {
 	downloadResp, err = destBlob.Download(ctx, &downloadBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	c.Assert(*downloadResp.IsServerEncrypted(), chk.Equals, true)
-	c.Assert(downloadResp.r.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
+	c.Assert(*downloadResp.IsServerEncrypted, chk.Equals, true)
+	c.Assert(*downloadResp.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
 
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	c.Assert(err, chk.IsNil)
@@ -751,8 +751,8 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithCPKScope(c *chk.C) {
 	}
 	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
 	c.Assert(err, chk.IsNil)
-	c.Assert(*downloadResp.IsServerEncrypted(), chk.Equals, true)
-	c.Assert(downloadResp.r.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
+	c.Assert(*downloadResp.IsServerEncrypted, chk.Equals, true)
+	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
 
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	c.Assert(err, chk.IsNil)
@@ -818,7 +818,7 @@ func (s *aztestsSuite) TestPageBlockWithCPK(c *chk.C) {
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
 	c.Assert(err, chk.IsNil)
 	c.Assert(destData, chk.DeepEquals, srcData)
-	c.Assert(downloadResp.r.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
+	c.Assert(*downloadResp.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
 }
 
 func (s *aztestsSuite) TestPageBlockWithCPKScope(c *chk.C) {
@@ -857,7 +857,7 @@ func (s *aztestsSuite) TestPageBlockWithCPKScope(c *chk.C) {
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
 	c.Assert(err, chk.IsNil)
 	c.Assert(destData, chk.DeepEquals, srcData)
-	c.Assert(downloadResp.r.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
+	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
 }
 
 func (s *aztestsSuite) TestPageBlockFromURLWithCPK(c *chk.C) {
@@ -933,7 +933,7 @@ func (s *aztestsSuite) TestPageBlockFromURLWithCPK(c *chk.C) {
 	}
 	downloadResp, err = destBlob.Download(ctx, &downloadBlobOptions)
 	c.Assert(err, chk.IsNil)
-	c.Assert(downloadResp.r.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
+	c.Assert(*downloadResp.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
 
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	c.Assert(err, chk.IsNil)
@@ -1004,7 +1004,7 @@ func (s *aztestsSuite) TestPageBlockFromURLWithCPKScope(c *chk.C) {
 	}
 	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
 	c.Assert(err, chk.IsNil)
-	c.Assert(downloadResp.r.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
+	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
 
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	c.Assert(err, chk.IsNil)
@@ -1084,7 +1084,7 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5WithCPK(c *chk.C) {
 	}
 	downloadResp, err = destBlob.Download(ctx, &downloadBlobOptions)
 	c.Assert(err, chk.IsNil)
-	c.Assert(downloadResp.r.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
+	c.Assert(*downloadResp.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
 
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
 	c.Assert(err, chk.IsNil)
@@ -1098,7 +1098,7 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5WithCPK(c *chk.C) {
 	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions1)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeMd5Mismatch)
+	validateStorageError(c, err, StorageErrorCodeMD5Mismatch)
 }
 
 func (s *aztestsSuite) TestClearDiffPagesWithCPK(c *chk.C) {
@@ -1283,7 +1283,7 @@ func (s *aztestsSuite) TestBlobSnapshotWithCPK(c *chk.C) {
 	}
 	dResp, err := snapshotURL.Download(ctx, &downloadBlobOptions)
 	c.Assert(err, chk.IsNil)
-	c.Assert(dResp.r.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
+	c.Assert(*dResp.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySha256)
 
 	_, err = snapshotURL.Delete(ctx, nil)
 	c.Assert(err, chk.IsNil)
@@ -1324,7 +1324,7 @@ func (s *aztestsSuite) TestBlobSnapshotWithCPKScope(c *chk.C) {
 	}
 	dResp, err := snapshotURL.Download(ctx, &downloadBlobOptions)
 	c.Assert(err, chk.IsNil)
-	c.Assert(dResp.r.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
+	c.Assert(*dResp.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
 
 	_, err = snapshotURL.Delete(ctx, nil)
 	c.Assert(err, chk.IsNil)

@@ -16,7 +16,10 @@ func (s *aztestsSuite) TestUserDelegationSASContainer(c *chk.C) {
 	containerClient, containerName := getContainerClient(c, bsu)
 	currentTime := time.Now().UTC()
 	// Ensuring currTime <= time of sending delegating request request
-	keyInfo := NewKeyInfo(currentTime, currentTime.Add(48*time.Hour))
+	keyInfo := KeyInfo{
+		Start: to.StringPtr(currentTime.Format(SASTimeFormat)),
+		Expiry: to.StringPtr(currentTime.Add(48*time.Hour).Format(SASTimeFormat)),
+	}
 	time.Sleep(2 * time.Second)
 
 	serviceClient, err := getGenericServiceClientWithOAuth(c, "")
@@ -46,9 +49,9 @@ func (s *aztestsSuite) TestUserDelegationSASContainer(c *chk.C) {
 	}
 
 	// Craft a container URL w/ container UDK SAS
-	cURL := containerClient.URL()
-	cURL.RawQuery += cSAS.Encode()
-	cSASURL, err := NewContainerClient(cURL.String(), NewAnonymousCredential(), nil)
+	cURL := NewBlobURLParts(containerClient.URL())
+	cURL.SAS = cSAS
+	cSASURL, err := NewContainerClient(cURL.URL(), NewAnonymousCredential(), nil)
 
 	bblob := cSASURL.NewBlockBlobClient("test")
 	_, err = bblob.Upload(ctx, strings.NewReader("hello world!"), nil)
@@ -117,10 +120,9 @@ func (s *aztestsSuite) TestUserDelegationSASBlob(c *chk.C) {
 	bSASParts := NewBlobURLParts(blobClient.URL())
 	bSASParts.SAS = bSAS
 	blobURLWithSAS := bSASParts.URL()
-	blobRawURL := blobURLWithSAS.String()
-	c.Assert(blobRawURL, chk.NotNil)
+	c.Assert(len(blobURLWithSAS), chk.Not(chk.Equals), 0)
 
-	blobClientWithSAS, err := NewBlockBlobClient(blobURLWithSAS.String(), azcore.AnonymousCredential(), nil)
+	blobClientWithSAS, err := NewBlockBlobClient(blobURLWithSAS, azcore.AnonymousCredential(), nil)
 	c.Assert(err, chk.IsNil)
 
 	data := "Hello World!"

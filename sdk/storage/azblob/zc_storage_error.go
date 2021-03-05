@@ -18,8 +18,8 @@ import (
 // 	// ResponseError implements error's Error(), net.Error's Temporary() and Timeout() methods & Response().
 // 	// ResponseError
 //
-// 	// ServiceCode returns a service error code. Your code can use this to make error recovery decisions.
-// 	ServiceCode() ServiceCodeType
+// 	// ErrorCode returns a service error code. Your code can use this to make error recovery decisions.
+// 	ErrorCode() ServiceCodeType
 // }
 
 // InternalError is an internal error type that all errors get wrapped in.
@@ -48,8 +48,8 @@ type StorageError struct {
 	response *http.Response
 	description string
 
-	ServiceCode ServiceCodeType
-	details     map[string]string
+	ErrorCode StorageErrorCode
+	details   map[string]string
 }
 
 func handleError(err error) error {
@@ -71,10 +71,10 @@ func defunkifyStorageError(responseError *runtime.ResponseError) error {
 
 		err.response = responseError.RawResponse()
 
-		err.ServiceCode = ServiceCodeType(responseError.RawResponse().Header.Get("x-ms-error-code"))
+		err.ErrorCode = StorageErrorCode(responseError.RawResponse().Header.Get("x-ms-error-code"))
 
 		if code, ok := err.details["Code"]; ok {
-			err.ServiceCode = ServiceCodeType(code)
+			err.ErrorCode = StorageErrorCode(code)
 			delete(err.details, "Code")
 		}
 
@@ -102,7 +102,7 @@ func (e StorageError) Error() string {
 	b := &bytes.Buffer{}
 
 	if e.response != nil {
-		fmt.Fprintf(b, "===== RESPONSE ERROR (ServiceCode=%s) =====\n", e.ServiceCode)
+		fmt.Fprintf(b, "===== RESPONSE ERROR (ErrorCode=%s) =====\n", e.ErrorCode)
 		fmt.Fprintf(b, "Description=%s, Details: ", e.description)
 		if len(e.details) == 0 {
 			b.WriteString("(none)\n")

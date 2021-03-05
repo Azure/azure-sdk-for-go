@@ -3,6 +3,7 @@ package azblob
 import (
 	"bytes"
 	"context"
+	"crypto/rand"
 	"encoding/base64"
 	"encoding/binary"
 	"errors"
@@ -10,7 +11,6 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -89,11 +89,19 @@ func Example() {
 	// The ListBlobs and ListContainers APIs return two channels, a values channel, and an errors channel.
 	// You should enumerate on a range over the values channel, and then check the errors channel, as only ONE value will ever be passed to the errors channel.
 	// The AutoPagerTimeout defines how long it will wait to place into the items channel before it exits & cleans itself up. A zero time will result in no timeout.
-	blobs, errs := container.ListBlobsFlatSegment(ctx, 1, 0, nil)
+	pager := container.ListBlobsFlatSegment(nil)
 
   // TODO: fix me for the pager (why wasn't I fixed?)
-	for blobItem := range blobs {
-		fmt.Println(*blobItem.Name)
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+
+		for _, v := range *resp.EnumerationResults.Segment.BlobItems {
+			fmt.Println(*v.Name)
+		}
+	}
+
+	if err = pager.Err(); err != nil {
+		log.Fatal(err)
 	}
   
 	// Delete the blob we created earlier.
@@ -146,14 +154,14 @@ func ExampleStorageError() {
 		var stgErr StorageError
 
 		if errors.As(err, &stgErr) { // We know this error is service-specific
-			switch stgErr.ServiceCode() {
-			case ServiceCodeContainerAlreadyExists:
+			switch stgErr.ErrorCode {
+			case StorageErrorCodeContainerAlreadyExists:
 				// You can also look at the *http.Response that's attached to the error as well.
 				if resp := stgErr.Response(); resp != nil  {
 					failedRequest := resp.Request
 					_ = failedRequest // avoid compiler's declared but not used error
 				}
-			case ServiceCodeContainerBeingDeleted:
+			case StorageErrorCodeContainerBeingDeleted:
 				// Handle this error ...
 			default:
 				// Handle other errors ...
@@ -165,13 +173,13 @@ func ExampleStorageError() {
 // This example demonstrates splitting a URL into its parts so you can examine and modify the URL in a Azure Storage fluent way.
 func ExampleBlobURLParts() {
 	// Let's begin with a snapshot SAS token.
-	u, _ := url.Parse("https://myaccount.blob.core.windows.net/mycontainter/ReadMe.txt?" +
+	u := "https://myaccount.blob.core.windows.net/mycontainter/ReadMe.txt?" +
 		"snapshot=2011-03-09T01:42:34Z&" +
 		"sv=2015-02-21&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw&sip=168.1.5.60-168.1.5.70&" +
-		"spr=https,http&si=myIdentifier&ss=bf&srt=s&sig=92836758923659283652983562==")
+		"spr=https,http&si=myIdentifier&ss=bf&srt=s&sig=92836758923659283652983562=="
 
 	// Breaking the URL down into it's parts by conversion to BlobURLParts
-	parts := NewBlobURLParts(*u)
+	parts := NewBlobURLParts(u)
 
 	// Now, we can access the parts (this example prints them.)
 	fmt.Println(parts.Host, parts.ContainerName, parts.BlobName, parts.Snapshot)
@@ -187,8 +195,7 @@ func ExampleBlobURLParts() {
 	parts.ContainerName = "othercontainer"
 
 	// construct a new URL from the parts
-	newURL := parts.URL()
-	fmt.Print(newURL.String())
+	fmt.Print(parts.URL())
 }
 
 // This example shows how to create and use an Azure Storage account Shared Access Signature (SAS).
@@ -307,8 +314,7 @@ func ExampleContainerClient_SetAccessPolicy() {
 	}
 
 	// Attempt to read the blob
-	rawBlobURL := blob.URL()
-	get, err := http.Get(rawBlobURL.String())
+	get, err := http.Get(blob.URL())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -319,7 +325,7 @@ func ExampleContainerClient_SetAccessPolicy() {
 		}
 
 		// Now, this works:
-		get, err = http.Get(rawBlobURL.String())
+		get, err = http.Get(blob.URL())
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -355,7 +361,7 @@ func ExampleBlobAccessConditions() {
 			}
 		} else {
 			response.Body(RetryReaderOptions{}).Close() // The client must close the response body when finished with it
-			fmt.Print("Success: " + response.Response().Status + "\n")
+			fmt.Print("Success: " + response.RawResponse.Status + "\n")
 		}
 	}
 
@@ -809,18 +815,21 @@ func Example_blobSnapshots() {
 
 	// Show all blobs in the container with their snapshots:
 	// List the blob(s) in our container; since a container may hold millions of blobs, this is done 1 segment at a time.
-	blobs, errs := containerClient.ListBlobsFlatSegment(ctx, 0, 0, nil)
-  
-	for blob := range blobs { // range over a channel doesn't block, so, if there's an immediate error, it's happy.
-		// Process the blobs returned
-		snapTime := "N/A"
-		if blob.Snapshot != nil {
-			snapTime = *blob.Snapshot
+	pager := containerClient.ListBlobsFlatSegment(nil)
+
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+			// Process the blobs returned
+			snapTime := "N/A"
+			if blob.Snapshot != nil {
+				snapTime = *blob.Snapshot
+			}
+			fmt.Printf("Blob name: %s, Snapshot: %s\n", *blob.Name, snapTime)
 		}
-		fmt.Printf("Blob name: %s, Snapshot: %s\n", *blob.Name, snapTime)
 	}
-  
-	if err = <- errs; err != nil { // Getting
+
+	if err := pager.Err(); err != nil {
 		log.Fatal(err)
 	}
 
@@ -881,7 +890,7 @@ func Example_progressUploadDownload() {
 	// Wrap the response body in a ResponseBodyProgress and pass a callback function for progress reporting.
 	responseBody := azcore.NewResponseBodyProgress(get.Body(RetryReaderOptions{}),
 		func(bytesTransferred int64) {
-			fmt.Printf("Read %d of %d bytes.", bytesTransferred, get.ContentLength())
+			fmt.Printf("Read %d of %d bytes.", bytesTransferred, *get.ContentLength)
 		})
 
 	downloadedData := &bytes.Buffer{}
@@ -902,15 +911,15 @@ func ExampleBlobClient_startCopy() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	blobClient, err := NewBlobClient(u, credential, nil, nil)
+	blobClient, err := NewBlobClient(u, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	ctx := context.Background() // This example uses a never-expiring context
 
-	src, _ := url.Parse("https://cdn2.auth0.com/docs/media/addons/azure_blob.svg")
-	startCopy, err := blobClient.StartCopyFromURL(ctx, *src, nil)
+	src := "https://cdn2.auth0.com/docs/media/addons/azure_blob.svg"
+	startCopy, err := blobClient.StartCopyFromURL(ctx, src, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -925,7 +934,7 @@ func ExampleBlobClient_startCopy() {
 		}
 		copyStatus = *getMetadata.CopyStatus
 	}
-	fmt.Printf("Copy from %s to %s: ID=%s, Status=%s\n", src.String(), BlobClient, copyID, copyStatus)
+	fmt.Printf("Copy from %s to %s: ID=%s, Status=%s\n", src, blobClient.URL(), copyID, copyStatus)
 }
 
 // // This example shows how to copy a large stream in blocks (chunks) to a block blob.
@@ -1051,7 +1060,10 @@ func ExampleUploadStreamToBlockBlob() {
 	// Create some data to test the upload stream
 	blobSize := 8 * 1024 * 1024
 	data := make([]byte, blobSize)
-	rand.Read(data)
+	_, err = rand.Read(data)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// Perform UploadStreamToBlockBlob
 	bufferSize := 2 * 1024 * 1024 // Configure the size of the rotating buffers that are used when uploading

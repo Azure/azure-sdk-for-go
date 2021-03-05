@@ -2,12 +2,14 @@ package azblob
 
 import (
 	"bytes"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
 	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
+
 )
 
 func (s *aztestsSuite) TestNewContainerClientValidName(c *chk.C) {
@@ -15,8 +17,7 @@ func (s *aztestsSuite) TestNewContainerClientValidName(c *chk.C) {
 	testURL := bsu.NewContainerClient(containerPrefix)
 
 	correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + containerPrefix
-	temp := testURL.URL()
-	c.Assert(temp.String(), chk.Equals, correctURL)
+	c.Assert(testURL.URL(), chk.Equals, correctURL)
 }
 
 func (s *aztestsSuite) TestCreateRootContainerURL(c *chk.C) {
@@ -24,8 +25,7 @@ func (s *aztestsSuite) TestCreateRootContainerURL(c *chk.C) {
 	testURL := bsu.NewContainerClient(ContainerNameRoot)
 
 	correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/$root"
-	temp := testURL.URL()
-	c.Assert(temp.String(), chk.Equals, correctURL)
+	c.Assert(testURL.URL(), chk.Equals, correctURL)
 }
 
 // func (s *aztestsSuite) TestAccountWithPipeline(c *chk.C) {
@@ -55,7 +55,7 @@ func (s *aztestsSuite) TestContainerCreateInvalidName(c *chk.C) {
 	}
 	_, err := containerClient.Create(ctx, &createContainerOptions)
 	c.Assert(err, chk.NotNil)
-	validateStorageError(c, err, ServiceCodeInvalidResourceName)
+	validateStorageError(c, err, StorageErrorCodeInvalidResourceName)
 }
 
 func (s *aztestsSuite) TestContainerCreateEmptyName(c *chk.C) {
@@ -70,7 +70,7 @@ func (s *aztestsSuite) TestContainerCreateEmptyName(c *chk.C) {
 	_, err := containerClient.Create(ctx, &createContainerOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeInvalidQueryParameterValue)
+	validateStorageError(c, err, StorageErrorCodeInvalidQueryParameterValue)
 }
 
 func (s *aztestsSuite) TestContainerCreateNameCollision(c *chk.C) {
@@ -88,7 +88,7 @@ func (s *aztestsSuite) TestContainerCreateNameCollision(c *chk.C) {
 	_, err := containerClient.Create(ctx, &createContainerOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeContainerAlreadyExists)
+	validateStorageError(c, err, StorageErrorCodeContainerAlreadyExists)
 }
 
 func (s *aztestsSuite) TestContainerCreateInvalidMetadata(c *chk.C) {
@@ -167,19 +167,24 @@ func (s *aztestsSuite) TestContainerCreateAccessContainer(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	// Anonymous enumeration should be valid with container access
-	containerClient2, _ := NewContainerClient(containerClient.String(), credential, nil)
-	response, errChan := containerClient2.ListBlobsFlatSegment(ctx, 3, 0, nil)
-	c.Assert(err, chk.IsNil)
-	for resp := range response {
-		c.Assert(*resp.Name, chk.Equals, blobPrefix)
+	containerClient2, _ := NewContainerClient(containerClient.URL(), credential, nil)
+	pager := containerClient2.ListBlobsFlatSegment(nil)
+
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+
+		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+			c.Assert(*blob.Name, chk.Equals, blobPrefix)
+		}
 	}
-	c.Assert(<-errChan, chk.IsNil)
+
+	c.Assert(pager.Err(), chk.IsNil)
 
 	// Getting blob data anonymously should still be valid with container access
 	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
 	resp, err := blobURL2.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestContainerCreateAccessBlob(c *chk.C) {
@@ -202,21 +207,19 @@ func (s *aztestsSuite) TestContainerCreateAccessBlob(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	// Reference the same container URL but with anonymous credentials
-	containerClient2, err := NewContainerClient(containerClient.String(), azcore.AnonymousCredential(), nil)
+	containerClient2, err := NewContainerClient(containerClient.URL(), azcore.AnonymousCredential(), nil)
 	c.Assert(err, chk.IsNil)
 
-	_, errChan := containerClient2.ListBlobsFlatSegment(ctx, 3, 0, nil)
-	for err := range errChan {
-		c.Assert(err, chk.NotNil)
+	pager := containerClient2.ListBlobsFlatSegment(nil)
 
-		// validateStorageError(c, err, ServiceCodeNoAuthenticationInformation) // Listing blobs is not publicly accessible
-	}
+	c.Assert(pager.NextPage(ctx), chk.Equals, false)
+	c.Assert(pager.Err(), chk.NotNil)
 
 	// Accessing blob specific data should be public
 	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
 	resp, err := blobURL2.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestContainerCreateAccessNone(c *chk.C) {
@@ -235,15 +238,13 @@ func (s *aztestsSuite) TestContainerCreateAccessNone(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	// Reference the same container URL but with anonymous credentials
-	containerClient2, err := NewContainerClient(containerClient.String(), azcore.AnonymousCredential(), nil)
+	containerClient2, err := NewContainerClient(containerClient.URL(), azcore.AnonymousCredential(), nil)
 	c.Assert(err, chk.IsNil)
 
-	_, errChan := containerClient2.ListBlobsFlatSegment(ctx, 3, 0, nil)
-	for err := range errChan {
-		c.Assert(err, chk.NotNil)
+	pager := containerClient2.ListBlobsFlatSegment(nil)
 
-		// validateStorageError(c, err, ServiceCodeNoAuthenticationInformation) // Listing blobs is not publicly accessible
-	}
+	c.Assert(pager.NextPage(ctx), chk.Equals, false)
+	c.Assert(pager.Err(), chk.NotNil)
 
 	// Blob data is not public
 	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
@@ -258,7 +259,7 @@ func validateContainerDeleted(c *chk.C, containerClient ContainerClient) {
 	_, err := containerClient.GetAccessPolicy(ctx, nil)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeContainerNotFound)
+	validateStorageError(c, err, StorageErrorCodeContainerNotFound)
 }
 
 func (s *aztestsSuite) TestContainerDelete(c *chk.C) {
@@ -278,7 +279,7 @@ func (s *aztestsSuite) TestContainerDeleteNonExistent(c *chk.C) {
 	_, err := containerClient.Delete(ctx, nil)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeContainerNotFound)
+	validateStorageError(c, err, StorageErrorCodeContainerNotFound)
 }
 
 func (s *aztestsSuite) TestContainerDeleteIfModifiedSinceTrue(c *chk.C) {
@@ -312,7 +313,7 @@ func (s *aztestsSuite) TestContainerDeleteIfModifiedSinceFalse(c *chk.C) {
 	_, err := containerClient.Delete(ctx, &deleteContainerOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue(c *chk.C) {
@@ -348,7 +349,7 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceFalse(c *chk.C) {
 	_, err := containerClient.Delete(ctx, &deleteContainerOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 //func (s *aztestsSuite) TestContainerAccessConditionsUnsupportedConditions(c *chk.C) {
@@ -394,13 +395,22 @@ func (s *aztestsSuite) TestContainerListBlobsSpecificValidPrefix(c *chk.C) {
 	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
 		Prefix: &prefix,
 	}
-	listResponse, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
-	c.Assert(<-errChan, chk.IsNil)
+	pager := containerClient.ListBlobsFlatSegment(&containerListBlobFlatSegmentOptions)
 
-	c.Assert(listResponse, chk.HasLen, 1)
-	for resp := range listResponse {
-		c.Assert(*resp.Name, chk.Equals, blobName)
+	count := 0
+
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+
+		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+			count++
+			c.Assert(*blob.Name, chk.Equals, blobName)
+		}
 	}
+
+	c.Assert(pager.Err(), chk.IsNil)
+
+	c.Assert(count, chk.Equals, 1)
 }
 
 func (s *aztestsSuite) TestContainerListBlobsValidDelimiter(c *chk.C) {
@@ -413,12 +423,22 @@ func (s *aztestsSuite) TestContainerListBlobsValidDelimiter(c *chk.C) {
 		_, blobNames[idx] = createNewBlockBlobWithPrefix(c, containerClient, prefix)
 	}
 
-	listResponse, errChan := containerClient.ListBlobsHierarchySegment(ctx, "/", 4, 0, nil)
-	c.Assert(<-errChan, chk.IsNil)
-	c.Assert(listResponse, chk.HasLen, 1)
-	for resp := range listResponse {
-		c.Assert(*resp.Name, chk.Equals, blobNames[3])
+	pager := containerClient.ListBlobsHierarchySegment("/", nil)
+
+	count := 0
+
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+
+		for _,blob := range *resp.EnumerationResults.Segment.BlobItems {
+			count++
+			c.Assert(*blob.Name, chk.Equals, blobNames[3])
+		}
 	}
+
+	c.Assert(pager.Err(), chk.IsNil)
+	c.Assert(count, chk.Equals, 1)
+
 	// TODO: Ask why the output is BlobItemInternal and why other fields are not there for ex: prefix array
 	//c.Assert(err, chk.IsNil)
 	//c.Assert(len(resp.Segment.BlobItems), chk.Equals, 1)
@@ -436,8 +456,10 @@ func (s *aztestsSuite) TestContainerListBlobsWithSnapshots(c *chk.C) {
 	containerListBlobHierarchySegmentOptions := ContainerListBlobHierarchySegmentOptions{
 		Include: &[]ListBlobsIncludeItem{},
 	}
-	_, err := containerClient.ListBlobsHierarchySegment(ctx, "/", 3, 0, &containerListBlobHierarchySegmentOptions)
-	c.Assert(err, chk.Not(chk.Equals), nil)
+	pager := containerClient.ListBlobsHierarchySegment("/", &containerListBlobHierarchySegmentOptions)
+
+	pager.NextPage(ctx)
+	c.Assert(pager.Err(), chk.NotNil)
 }
 
 func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter(c *chk.C) {
@@ -449,10 +471,11 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter(c *chk.C) {
 		createNewBlockBlobWithPrefix(c, containerClient, prefix)
 	}
 
-	resp, errChan := containerClient.ListBlobsHierarchySegment(ctx, "^", 4, 0, nil)
+	pager := containerClient.ListBlobsHierarchySegment("^", nil)
 
-	c.Assert(<-errChan, chk.IsNil)
-	c.Assert(resp, chk.HasLen, len(prefixes))
+	pager.NextPage(ctx)
+	c.Assert(pager.Err(), chk.IsNil)
+	c.Assert(*pager.PageResponse().EnumerationResults.Segment.BlobPrefixes, chk.HasLen, len(prefixes))
 }
 
 //func (s *aztestsSuite) TestContainerListBlobsIncludeTypeMetadata(c *chk.C) {
@@ -646,17 +669,22 @@ func (s *aztestsSuite) TestContainerListBlobsMaxResultsExact(c *chk.C) {
 	_, blobNames[1] = createNewBlockBlobWithPrefix(c, containerClient, "b")
 
 	maxResult := int32(2)
-	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
+	pager := containerClient.ListBlobsFlatSegment(&ContainerListBlobFlatSegmentOptions{
 		Maxresults: &maxResult,
+	})
+
+	nameMap := blobListToMap(blobNames)
+
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+
+		c.Assert(len(*resp.EnumerationResults.Segment.BlobItems), chk.Equals, blobNames)
+		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+			c.Assert(nameMap[*blob.Name], chk.Equals, true)
+		}
 	}
-	listResponse, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
-	c.Assert(<-errChan, chk.IsNil)
-	c.Assert(listResponse, chk.HasLen, len(blobNames))
-	idx := 0
-	for resp := range listResponse {
-		c.Assert(*resp.Name, chk.Equals, blobNames[idx])
-		idx = idx + 1
-	}
+
+	c.Assert(pager.Err(), chk.IsNil)
 }
 
 func (s *aztestsSuite) TestContainerListBlobsMaxResultsSufficient(c *chk.C) {
@@ -671,22 +699,29 @@ func (s *aztestsSuite) TestContainerListBlobsMaxResultsSufficient(c *chk.C) {
 	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
 		Maxresults: &maxResult,
 	}
-	listResponse, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
-	c.Assert(<-errChan, chk.IsNil)
-	c.Assert(listResponse, chk.HasLen, len(blobNames))
-	idx := 0
-	for resp := range listResponse {
-		c.Assert(*resp.Name, chk.Equals, blobNames[idx])
-		idx = idx + 1
+	pager := containerClient.ListBlobsFlatSegment(&containerListBlobFlatSegmentOptions)
+
+	nameMap := blobListToMap(blobNames)
+
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+
+		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+			c.Assert(nameMap[*blob.Name], chk.Equals, true)
+		}
 	}
+
+	c.Assert(pager.Err(), chk.IsNil)
 }
 
 func (s *aztestsSuite) TestContainerListBlobsNonExistentContainer(c *chk.C) {
 	bsu := getBSU()
 	containerClient, _ := getContainerClient(c, bsu)
 
-	_, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, nil)
-	c.Assert(<-errChan, chk.NotNil)
+	pager := containerClient.ListBlobsFlatSegment(nil)
+
+	pager.NextPage(ctx)
+	c.Assert(pager.Err(), chk.NotNil)
 }
 
 func (s *aztestsSuite) TestContainerGetSetPermissionsMultiplePolicies(c *chk.C) {
@@ -766,7 +801,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessNone(c *chk.C) {
 	//pipeline := NewPipeline(NewAnonymousCredential(), PipelineOptions{})
 	credential, err := getGenericCredential("")
 	c.Assert(err, chk.IsNil)
-	bsu2, err := NewServiceClient(bsu.String(), credential, nil)
+	bsu2, err := NewServiceClient(bsu.URL(), credential, nil)
 	c.Assert(err, chk.IsNil)
 
 	containerClient2 := bsu2.NewContainerClient(containerName)
@@ -779,7 +814,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessNone(c *chk.C) {
 	c.Assert(err, chk.NotNil)
 	// If we cannot access a blob's data, we will also not be able to enumerate blobs
 
-	validateStorageError(c, err, ServiceCodeNoAuthenticationInformation)
+	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
 
 }
 
@@ -876,7 +911,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer(c *chk.C
 //	anonymousBlobService := NewServiceURL(bsu.URL(), sasPipeline)
 //	anonymousContainer := anonymousBlobService.NewContainerClient(containerName)
 //	_, err = anonymousContainer.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
-//	validateStorageError(c, err, ServiceCodeNoAuthenticationInformation)
+//	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
 //}
 
 func (s *aztestsSuite) TestContainerSetPermissionsACLMoreThanFive(c *chk.C) {
@@ -911,7 +946,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsACLMoreThanFive(c *chk.C) {
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
+	validateStorageError(c, err, StorageErrorCodeInvalidXMLDocument)
 }
 
 func (s *aztestsSuite) TestContainerSetPermissionsDeleteAndModifyACL(c *chk.C) {
@@ -1097,7 +1132,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong(c *chk
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeInvalidXMLDocument)
+	validateStorageError(c, err, StorageErrorCodeInvalidXMLDocument)
 }
 
 func (s *aztestsSuite) TestContainerSetPermissionsIfModifiedSinceTrue(c *chk.C) {
@@ -1136,7 +1171,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsIfModifiedSinceFalse(c *chk.C)
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestContainerSetPermissionsIfUnModifiedSinceTrue(c *chk.C) {
@@ -1176,7 +1211,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsIfUnModifiedSinceFalse(c *chk.
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestContainerGetPropertiesAndMetadataNoMetadata(c *chk.C) {
@@ -1197,7 +1232,7 @@ func (s *aztestsSuite) TestContainerGetPropsAndMetaNonExistentContainer(c *chk.C
 	_, err := containerClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeContainerNotFound)
+	validateStorageError(c, err, StorageErrorCodeContainerNotFound)
 }
 
 func (s *aztestsSuite) TestContainerSetMetadataEmpty(c *chk.C) {
@@ -1265,7 +1300,7 @@ func (*aztestsSuite) TestContainerSetMetadataNonExistent(c *chk.C) {
 	_, err := containerClient.SetMetadata(ctx, nil)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeContainerNotFound)
+	validateStorageError(c, err, StorageErrorCodeContainerNotFound)
 }
 
 func (s *aztestsSuite) TestContainerSetMetadataIfModifiedSinceTrue(c *chk.C) {
@@ -1309,18 +1344,16 @@ func (s *aztestsSuite) TestContainerSetMetadataIfModifiedSinceFalse(c *chk.C) {
 	_, err := containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestContainerNewBlobURL(c *chk.C) {
 	bsu := getBSU()
 	containerClient, _ := getContainerClient(c, bsu)
 
-	blobURL := containerClient.NewBlobClient(blobPrefix)
-	tempBlob := blobURL.URL()
-  
-	tempContainer := containerClient.URL()
-	c.Assert(tempBlob.String(), chk.Equals, tempContainer.String()+"/"+blobPrefix)
+	bbClient := containerClient.NewBlobClient(blobPrefix)
+
+	c.Assert(bbClient.URL(), chk.Equals, containerClient.URL()+"/"+blobPrefix)
 	c.Assert(bbClient, chk.FitsTypeOf, BlobClient{})
 }
 
@@ -1329,8 +1362,7 @@ func (s *aztestsSuite) TestContainerNewBlockBlobClient(c *chk.C) {
 	containerClient, _ := getContainerClient(c, bsu)
 
 	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
-	tempBlob := bbClient.URL()
-	tempContainer := containerClient.URL()
-	c.Assert(tempBlob.String(), chk.Equals, tempContainer.String()+"/"+blobPrefix)
+
+	c.Assert(bbClient.URL(), chk.Equals, containerClient.URL()+"/"+blobPrefix)
 	c.Assert(bbClient, chk.FitsTypeOf, BlockBlobClient{})
 }

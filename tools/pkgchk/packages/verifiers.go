@@ -25,7 +25,7 @@ func (v verifiers) Verify(pkg Package) []error {
 	return errors
 }
 
-func GetDefaultVerifier() Verifier {
+func GetDefaultTrack1Verifier() Verifier {
 	return verifiers([]VerifyFunc{
 		verifyPkgMatchesDir,
 		verifyLowerCase,

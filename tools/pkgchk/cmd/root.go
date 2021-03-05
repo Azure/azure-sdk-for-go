@@ -70,7 +70,7 @@ func VerifyPackages(root, exceptionFile string) error {
 	if err != nil {
 		return fmt.Errorf("failed to load exceptions: %+v", err)
 	}
-	verifier := packages.GetDefaultVerifier()
+	verifier := packages.GetDefaultTrack1Verifier()
 	count := 0
 	for _, pkg := range pkgs {
 		for _, err := range verifier.Verify(pkg) {

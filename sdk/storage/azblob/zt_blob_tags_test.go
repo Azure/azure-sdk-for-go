@@ -358,7 +358,7 @@ func (s *aztestsSuite) TestCopyBlockBlobFromURLWithTags(c *chk.C) {
 	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
 	c.Assert(err, chk.IsNil)
 	c.Assert(destData, chk.DeepEquals, sourceData)
-	c.Assert(*downloadResp.r.TagCount, chk.Equals, int64(1))
+	c.Assert(*downloadResp.TagCount, chk.Equals, int64(1))
 
 	_, badMD5 := getRandomDataAndReader(16)
 	copyBlockBlobFromURLOptions2 := CopyBlockBlobFromURLOptions{
@@ -399,7 +399,7 @@ func (s *aztestsSuite) TestGetPropertiesReturnsTagsCount(c *chk.C) {
 	downloadResp, err := bbClient.Download(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(downloadResp, chk.NotNil)
-	c.Assert(downloadResp.r.RawResponse.Header.Get("x-ms-tag-count"), chk.Equals, "3")
+	c.Assert(downloadResp.RawResponse.Header.Get("x-ms-tag-count"), chk.Equals, "3")
 }
 
 func (s *aztestsSuite) TestSetBlobTagForSnapshot(c *chk.C) {

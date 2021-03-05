@@ -30,7 +30,7 @@ func (o *UploadBlockBlobOptions) pointers() (*BlockBlobUploadOptions, *BlobHttpH
 	}
 
 	basics := BlockBlobUploadOptions{
-		BlobTagsString:          SerializeBlobTagsToStrPtr(o.BlobTagsMap),
+		BlobTagsString:          serializeBlobTagsToStrPtr(o.BlobTagsMap),
 		Metadata:                o.Metadata,
 		Tier:                    o.Tier,
 		TransactionalContentMd5: o.TransactionalContentMd5,
@@ -110,7 +110,7 @@ func (o *CommitBlockListOptions) pointers() (*BlockBlobCommitBlockListOptions, *
 	}
 
 	options := &BlockBlobCommitBlockListOptions{
-		BlobTagsString:            SerializeBlobTagsToStrPtr(o.BlobTagsMap),
+		BlobTagsString:            serializeBlobTagsToStrPtr(o.BlobTagsMap),
 		Metadata:                  o.Metadata,
 		RequestId:                 o.RequestId,
 		Tier:                      o.Tier,
@@ -152,7 +152,7 @@ func (o *CopyBlockBlobFromURLOptions) pointers() (*BlobCopyFromURLOptions, *Sour
 	}
 
 	options := &BlobCopyFromURLOptions{
-		BlobTagsString:   SerializeBlobTagsToStrPtr(o.BlobTagsMap),
+		BlobTagsString:   serializeBlobTagsToStrPtr(o.BlobTagsMap),
 		Metadata:         o.Metadata,
 		RequestId:        o.RequestId,
 		SourceContentMd5: o.SourceContentMd5,

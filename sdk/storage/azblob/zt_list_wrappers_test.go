@@ -25,14 +25,18 @@ func (s *aztestsSuite) TestBlobListWrapper(c *chk.C) {
 
 	createNewBlobs(c, container, files)
 
-	blobs, errs := container.ListBlobsFlatSegment(ctx, 3, 0, nil)
+	pager := container.ListBlobsFlatSegment(nil)
 
 	found := make([]string, 0)
 
-	for blobItem := range blobs {
-		found = append(found, *blobItem.Name)
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+
+		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+			found = append(found, *blob.Name)
+		}
 	}
-	c.Assert(<-errs, chk.IsNil)
+	c.Assert(pager.Err(), chk.IsNil)
 
 	sort.Strings(files)
 	sort.Strings(found)
@@ -56,14 +60,18 @@ func (s *aztestsSuite) TestBlobListWrapperFullBuffer(c *chk.C) {
 
 	createNewBlobs(c, container, files)
 
-	blobs, errs := container.ListBlobsFlatSegment(ctx, 1, 0, nil)
+	pager := container.ListBlobsFlatSegment(nil)
 
 	found := make([]string, 0)
 
-	for blobItem := range blobs {
-		found = append(found, *blobItem.Name)
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+
+		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+			found = append(found, *blob.Name)
+		}
 	}
-	c.Assert(<-errs, chk.IsNil)
+	c.Assert(pager.Err(), chk.IsNil)
 
 	sort.Strings(files)
 	sort.Strings(found)
@@ -78,14 +86,8 @@ func (s *aztestsSuite) TestBlobListWrapperListingError(c *chk.C) {
 
 	container, _ := getContainerClient(c, bsu)
 
-	blobs, errs := container.ListBlobsFlatSegment(ctx, 1, 0, nil)
+	pager := container.ListBlobsFlatSegment(nil)
 
-	for range blobs {
-		// there should be NO blob listings coming back. Just an error.
-		c.FailNow()
-	}
-
-	err = <-errs
-	c.Log(err.Error())
-	c.Assert(err, chk.NotNil)
+	c.Assert(pager.NextPage(ctx), chk.Equals, false)
+	c.Assert(pager.Err(), chk.NotNil)
 }

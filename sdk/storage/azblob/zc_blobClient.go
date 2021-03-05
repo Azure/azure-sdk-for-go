@@ -7,39 +7,27 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/url"
+	"time"
 )
 
 // A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
 type BlobClient struct {
 	client *blobClient
-	u      url.URL
+	cred   StorageAccountCredential
 }
 
 // NewBlobClient creates a BlobClient object using the specified URL and request policy pipeline.
-func NewBlobClient(blobURL string, cred azcore.Credential, pathRenameMode *PathRenameMode, options *connectionOptions) (BlobClient, error) {
-	u, err := url.Parse(blobURL)
-	if err != nil {
-		return BlobClient{}, err
-	}
-	con := newConnection(blobURL, cred, options)
-	return BlobClient{client: &blobClient{con, pathRenameMode}, u: *u}, nil
+func NewBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (BlobClient, error) {
+	con := newConnection(blobURL, cred, options.getConnectionOptions())
+
+	c, _ := cred.(*SharedKeyCredential)
+
+	return BlobClient{client: &blobClient{con, nil}, cred: c}, nil
 }
 
 // URL returns the URL endpoint used by the BlobClient object.
-func (b BlobClient) URL() url.URL {
-	return b.u
-}
-
-// String returns the URL as a string.
-func (b BlobClient) String() string {
-	u := b.URL()
-	return u.String()
-}
-
-// WithPipeline creates a new BlobClient object identical to the source but with the specified request policy pipeline.
-func (b BlobClient) WithPipeline(pipeline azcore.Pipeline) BlobClient {
-	con := newConnectionWithPipeline(b.u.String(), pipeline)
-	return BlobClient{client: &blobClient{con, b.client.pathRenameMode}, u: b.u}
+func (b BlobClient) URL() string {
+	return b.client.con.u
 }
 
 // WithSnapshot creates a new BlobClient object identical to the source but with the specified snapshot timestamp.
@@ -47,43 +35,11 @@ func (b BlobClient) WithPipeline(pipeline azcore.Pipeline) BlobClient {
 func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
 	p := NewBlobURLParts(b.URL())
 	p.Snapshot = snapshot
-	snapshotURL := p.URL()
 	return BlobClient{
 		client: &blobClient{
-			newConnectionWithPipeline(snapshotURL.String(), b.client.con.p),
+			newConnectionWithPipeline(p.URL(), b.client.con.p),
 			b.client.pathRenameMode,
 		},
-		u: b.u,
-	}
-}
-
-// ToAppendBlobURL creates an AppendBlobURL using the source's URL and pipeline.
-func (b BlobClient) ToAppendBlobURL() AppendBlobClient {
-	con := newConnectionWithPipeline(b.String(), b.client.con.p)
-	return AppendBlobClient{
-		client:     &appendBlobClient{con},
-		u:          b.u,
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
-}
-
-// ToBlockBlobURL creates a BlockBlobClient using the source's URL and pipeline.
-func (b BlobClient) ToBlockBlobClient() BlockBlobClient {
-	con := newConnectionWithPipeline(b.String(), b.client.con.p)
-	return BlockBlobClient{
-		client:     &blockBlobClient{con},
-		u:          b.u,
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
-}
-
-// ToPageBlobURL creates a PageBlobURL using the source's URL and pipeline.
-func (b BlobClient) ToPageBlobURL() PageBlobClient {
-	con := newConnectionWithPipeline(b.String(), b.client.con.p)
-	return PageBlobClient{
-		client:     &pageBlobClient{con},
-		u:          b.u,
-		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
 
@@ -112,7 +68,7 @@ func (b BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) 
 	}
 	return &DownloadResponse{
 		b:       b,
-		r:       dr,
+		BlobDownloadResponse:       dr,
 		ctx:     ctx,
 		getInfo: HTTPGetterInfo{Offset: offset, Count: count, ETag: *dr.ETag},
 	}, err
@@ -238,9 +194,10 @@ func (b BlobClient) ChangeLease(ctx context.Context, leaseID string, proposedID 
 
 // StartCopyFromURL copies the data at the source URL to a blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/copy-blob.
-func (b BlobClient) StartCopyFromURL(ctx context.Context, copySource url.URL, options *StartCopyBlobOptions) (BlobStartCopyFromURLResponse, error) {
+func (b BlobClient) StartCopyFromURL(ctx context.Context, copySource string, options *StartCopyBlobOptions) (BlobStartCopyFromURLResponse, error) {
 	basics, srcAccess, destAccess, lease := options.pointers()
-	resp, err := b.client.StartCopyFromURL(ctx, copySource, basics, srcAccess, destAccess, lease)
+	uri, _ := url.Parse(copySource) // for some reason generated code does not use strings here.
+	resp, err := b.client.StartCopyFromURL(ctx, *uri, basics, srcAccess, destAccess, lease)
 
 	return resp, handleError(err)
 }
@@ -272,4 +229,34 @@ func (b BlobClient) GetTags(ctx context.Context, options *GetTagsBlobOptions) (B
 	resp, err := b.client.GetTags(ctx, blobGetTagsOptions, modifiedAccessConditions)
 
 	return resp, handleError(err)
+
+}
+
+func (b BlobClient) CanGetBlobSASToken() bool {
+	return b.cred != nil
+}
+
+// GetBlobSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
+// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetBlobSASToken().
+func (b BlobClient) GetBlobSASToken(permissions BlobSASPermissions, validityTime time.Duration) (SASQueryParameters, error) {
+	urlParts := NewBlobURLParts(b.URL())
+
+	t, err := time.Parse(SnapshotTimeFormat, urlParts.Snapshot)
+
+	if err != nil {
+		t = time.Time{}
+	}
+
+	return BlobSASSignatureValues{
+		ContainerName: urlParts.ContainerName,
+		BlobName: urlParts.BlobName,
+		SnapshotTime: t,
+		Version: SASVersion,
+
+		Permissions: permissions.String(),
+
+		StartTime: time.Now(),
+		ExpiryTime: time.Now().Add(validityTime),
+	}.NewSASQueryParameters(b.cred)
 }

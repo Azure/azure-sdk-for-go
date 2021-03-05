@@ -31,7 +31,7 @@ func (o *CreateAppendBlobOptions) pointers() (*AppendBlobCreateOptions, *BlobHtt
 	}
 
 	options := AppendBlobCreateOptions{
-		BlobTagsString: SerializeBlobTagsToStrPtr(o.BlobTagsMap),
+		BlobTagsString: serializeBlobTagsToStrPtr(o.BlobTagsMap),
 		Metadata:       o.Metadata,
 		RequestId:      o.RequestId,
 		Timeout:        o.Timeout,

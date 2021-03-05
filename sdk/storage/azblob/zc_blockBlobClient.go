@@ -26,37 +26,21 @@ const (
 type BlockBlobClient struct {
 	BlobClient
 	client *blockBlobClient
-	u      url.URL
 }
 
 // NewBlockBlobClient creates a BlockBlobClient object using the specified URL and request policy pipeline.
-func NewBlockBlobClient(blobURL string, cred azcore.Credential, options *connectionOptions) (BlockBlobClient, error) {
-	u, err := url.Parse(blobURL)
-	if err != nil {
-		return BlockBlobClient{}, err
-	}
-	con := newConnection(blobURL, cred, options)
+func NewBlockBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (BlockBlobClient, error) {
+	con := newConnection(blobURL, cred, options.getConnectionOptions())
 	return BlockBlobClient{
 		client:     &blockBlobClient{con: con},
-		u:          *u,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
 	//return bbc, nil
 }
 
-// WithPipeline creates a new BlockBlobClient object identical to the source but with the specific request policy pipeline.
-func (bb BlockBlobClient) WithPipeline(pipeline azcore.Pipeline) BlockBlobClient {
-	con := newConnectionWithPipeline(bb.u.String(), pipeline)
-	return BlockBlobClient{
-		client:     &blockBlobClient{con},
-		u:          bb.u,
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
-}
-
 // URL returns the URL endpoint used by the BlobClient object.
-func (bb BlockBlobClient) URL() url.URL {
-	return bb.u
+func (bb BlockBlobClient) URL() string {
+	return bb.client.con.u
 }
 
 // WithSnapshot creates a new BlockBlobClient object identical to the source but with the specified snapshot timestamp.
@@ -64,13 +48,11 @@ func (bb BlockBlobClient) URL() url.URL {
 func (bb BlockBlobClient) WithSnapshot(snapshot string) BlockBlobClient {
 	p := NewBlobURLParts(bb.URL())
 	p.Snapshot = snapshot
-	snapshotURL := p.URL()
-	con := newConnectionWithPipeline(snapshotURL.String(), bb.client.con.p)
+	con := newConnectionWithPipeline(p.URL(), bb.client.con.p)
 	return BlockBlobClient{
 		client: &blockBlobClient{
 			con: con,
 		},
-		u:          snapshotURL,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
@@ -80,11 +62,9 @@ func (bb BlockBlobClient) WithSnapshot(snapshot string) BlockBlobClient {
 func (ab BlockBlobClient) WithVersionID(versionID string) BlockBlobClient {
 	p := NewBlobURLParts(ab.URL())
 	p.VersionID = versionID
-	versionIDURL := p.URL()
-	con := newConnectionWithPipeline(versionIDURL.String(), ab.client.con.p)
+	con := newConnectionWithPipeline(p.URL(), ab.client.con.p)
 	return BlockBlobClient{
 		client:     &blockBlobClient{con: con},
-		u:          versionIDURL,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
@@ -127,10 +107,12 @@ func (bb BlockBlobClient) StageBlock(ctx context.Context, base64BlockID string, 
 // StageBlockFromURL copies the specified block from a source URL to the block blob's "staging area" to be later committed by a call to CommitBlockList.
 // If count is CountToEnd (0), then data is read from specified offset to the end.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/put-block-from-url.
-func (bb BlockBlobClient) StageBlockFromURL(ctx context.Context, base64BlockID string, sourceURL url.URL, contentLength int64, options *StageBlockFromURLOptions) (BlockBlobStageBlockFromURLResponse, error) {
+func (bb BlockBlobClient) StageBlockFromURL(ctx context.Context, base64BlockID string, sourceURL string, contentLength int64, options *StageBlockFromURLOptions) (BlockBlobStageBlockFromURLResponse, error) {
 	ac, smac, stageOptions, cpkInfo, cpkScope := options.pointers()
 
-	resp, err := bb.client.StageBlockFromURL(ctx, base64BlockID, contentLength, sourceURL, stageOptions, cpkInfo, cpkScope, ac, smac)
+	uri, _ := url.Parse(sourceURL)
+
+	resp, err := bb.client.StageBlockFromURL(ctx, base64BlockID, contentLength, *uri, stageOptions, cpkInfo, cpkScope, ac, smac)
 
 	return resp, handleError(err)
 }
@@ -163,14 +145,16 @@ func (bb BlockBlobClient) GetBlockList(ctx context.Context, listType BlockListTy
 
 // CopyFromURL synchronously copies the data at the source URL to a block blob, with sizes up to 256 MB.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url.
-func (bb BlockBlobClient) CopyFromURL(ctx context.Context, source url.URL, options *CopyBlockBlobFromURLOptions) (BlobCopyFromURLResponse, error) {
+func (bb BlockBlobClient) CopyFromURL(ctx context.Context, source string, options *CopyBlockBlobFromURLOptions) (BlobCopyFromURLResponse, error) {
 	copyOptions, smac, mac, lac := options.pointers()
 
 	bClient := blobClient{
 		con: bb.client.con,
 	}
 
-	resp, err := bClient.CopyFromURL(ctx, source, copyOptions, smac, mac, lac)
+	uri, _ := url.Parse(source)
+
+	resp, err := bClient.CopyFromURL(ctx, *uri, copyOptions, smac, mac, lac)
 
 	return resp, handleError(err)
 }

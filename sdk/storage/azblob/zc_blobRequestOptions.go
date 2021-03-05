@@ -274,7 +274,7 @@ func (o *StartCopyBlobOptions) pointers() (blobStartCopyFromUrlOptions *BlobStar
 	}
 
 	basics := BlobStartCopyFromURLOptions{
-		BlobTagsString:    SerializeBlobTagsToStrPtr(o.BlobTagsMap),
+		BlobTagsString:    serializeBlobTagsToStrPtr(o.BlobTagsMap),
 		Metadata:          o.Metadata,
 		RehydratePriority: o.RehydratePriority,
 		SealBlob:          o.SealBlob,
@@ -295,7 +295,7 @@ func (o *AbortCopyBlobOptions) pointers() (blobAbortCopyFromUrlOptions *BlobAbor
 	return nil, o.LeaseAccessConditions
 }
 
-func SerializeBlobTagsToStrPtr(blobTagsMap *map[string]string) *string {
+func serializeBlobTagsToStrPtr(blobTagsMap *map[string]string) *string {
 	if blobTagsMap == nil {
 		return nil
 	}
@@ -308,7 +308,7 @@ func SerializeBlobTagsToStrPtr(blobTagsMap *map[string]string) *string {
 	return &blobTagsString
 }
 
-func SerializeBlobTags(blobTagsMap *map[string]string) *BlobTags {
+func serializeBlobTags(blobTagsMap *map[string]string) *BlobTags {
 	if blobTagsMap == nil {
 		return nil
 	}
@@ -345,7 +345,7 @@ func (o *SetTagsBlobOptions) pointers() (*BlobSetTagsOptions, *ModifiedAccessCon
 
 	options := &BlobSetTagsOptions{
 		RequestId:                 o.RequestId,
-		Tags:                      SerializeBlobTags(o.BlobTagsMap),
+		Tags:                      serializeBlobTags(o.BlobTagsMap),
 		Timeout:                   o.Timeout,
 		TransactionalContentMd5:   o.TransactionalContentMd5,
 		TransactionalContentCrc64: o.TransactionalContentCrc64,

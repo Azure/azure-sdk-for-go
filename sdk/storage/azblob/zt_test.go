@@ -370,7 +370,7 @@ func disableSoftDelete(c *chk.C, bsu ServiceClient) {
 func validateUpload(c *chk.C, blobClient BlobClient) {
 	resp, err := blobClient.Download(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	data, _ := ioutil.ReadAll(resp.Response().Body)
+	data, _ := ioutil.ReadAll(resp.RawResponse.Body)
 	c.Assert(data, chk.HasLen, 0)
 }
 
@@ -381,7 +381,17 @@ func blockIDIntToBase64(blockID int) string {
 	return base64.StdEncoding.EncodeToString(binaryBlockID)
 }
 
-func validateStorageError(c *chk.C, err error, code ServiceCodeType) {
+func validateStorageError(c *chk.C, err error, code StorageErrorCode) {
 	storageError, _ := err.(*StorageError)
-	c.Assert(storageError.ServiceCode(), chk.Equals, code)
+	c.Assert(storageError.ErrorCode, chk.Equals, code)
+}
+
+func blobListToMap(list []string) map[string]bool {
+	out := make(map[string]bool)
+
+	for _,v := range list {
+		out[v] = true
+	}
+
+	return out
 }

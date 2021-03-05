@@ -107,15 +107,15 @@ func loadExceptions(exceptFile string) ([]string, error) {
 		return nil, err
 	}
 	defer f.Close()
-	exceps := []string{}
+	var exceptions []string
 
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
-		exceps = append(exceps, scanner.Text())
+		exceptions = append(exceptions, scanner.Text())
 	}
 	if err = scanner.Err(); err != nil {
 		return nil, err
 	}
 
-	return exceps, nil
+	return exceptions, nil
 }

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azblob
 
 import (
@@ -86,16 +89,15 @@ func defunkifyStorageError(responseError *runtime.ResponseError) error {
 	}
 }
 
-// // newStorageError creates an error object that implements the error interface.
-// func newStorageError(cause error, response *http.Response, description string) error {
-// 	return &StorageError{
-// 		cause: cause,
-// 		response: response,
-// 		description: description,
-//
-// 		serviceCode: ServiceCodeType(),
-// 	}
-// }
+// ServiceCode returns service-error information. The caller may examine these values but should not modify any of them.
+func (e *StorageError) ServiceCode() ServiceCodeType {
+	return e.serviceCode
+}
+
+// ServiceCode returns service-error information. The caller may examine these values but should not modify any of them.
+func (e *StorageError) StatusCode() int {
+	return e.response.StatusCode
+}
 
 // Error implements the error interface's Error method to return a string representation of the error.
 func (e StorageError) Error() string {

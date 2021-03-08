@@ -123,7 +123,7 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess_withCertificateCha
 	if err != nil {
 		t.Fatalf("Failed extract data from PEM file: %v", err)
 	}
-	assertion, err := createClientAssertionJWT(clientID, azcore.JoinPaths(AzurePublicCloud, tenantID, tokenEndpoint), cert, true)
+	assertion, err := createClientAssertionJWT(clientID, azcore.JoinPaths(AzurePublicCloud, tenantID, tokenEndpoint(oauthPath(tenantID))), cert, true)
 	if err != nil {
 		t.Fatalf("Failed to create client assertion: %v", err)
 	}

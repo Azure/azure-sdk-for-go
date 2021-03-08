@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"path"
 	"regexp"
 	"time"
 
@@ -208,4 +209,17 @@ func validTenantID(tenantID string) bool {
 		return false
 	}
 	return match
+}
+
+// tokenEndpoint takes a given path and appends "/token" to the end of the path
+func tokenEndpoint(p string) string {
+	return path.Join(p, "/token")
+}
+
+// oauthPath returns the oauth path for AAD or ADFS
+func oauthPath(tenantID string) string {
+	if tenantID == "adfs" {
+		return "/oauth2"
+	}
+	return "/oauth2/v2.0"
 }

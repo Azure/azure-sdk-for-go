@@ -61,6 +61,7 @@ func theCommand(args []string) error {
 	return VerifyPackages(rootDir, exceptFileFlag)
 }
 
+// VerifyPackages verifies all the track 1 packages under the root directory
 func VerifyPackages(root, exceptionFile string) error {
 	pkgs, err := track1.List(root)
 	if err != nil {
@@ -74,7 +75,7 @@ func VerifyPackages(root, exceptionFile string) error {
 	count := 0
 	for _, pkg := range pkgs {
 		for _, err := range verifier.Verify(pkg) {
-			if !contains(exceptions, err.Error()) {
+			if _, ok := exceptions[err.Error()]; !ok {
 				fmt.Fprintln(os.Stderr, err)
 				count++
 			}
@@ -86,19 +87,7 @@ func VerifyPackages(root, exceptionFile string) error {
 	return nil
 }
 
-func contains(items []string, item string) bool {
-	if items == nil {
-		return false
-	}
-	for _, i := range items {
-		if i == item {
-			return true
-		}
-	}
-	return false
-}
-
-func loadExceptions(exceptFile string) ([]string, error) {
+func loadExceptions(exceptFile string) (map[string]bool, error) {
 	if exceptFile == "" {
 		return nil, nil
 	}
@@ -107,11 +96,11 @@ func loadExceptions(exceptFile string) ([]string, error) {
 		return nil, err
 	}
 	defer f.Close()
-	var exceptions []string
 
+	exceptions := make(map[string]bool)
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
-		exceptions = append(exceptions, scanner.Text())
+		exceptions[scanner.Text()] = true
 	}
 	if err = scanner.Err(); err != nil {
 		return nil, err

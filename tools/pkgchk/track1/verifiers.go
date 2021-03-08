@@ -21,6 +21,10 @@ func (v verifiers) Verify(pkg packages.Package) []error {
 	return errors
 }
 
+// GetDefaultVerifier gets the default track 1 verifiers which verifies the following:
+// - verifies that the package name matches the leaf directory name
+// - verifies that the package path only consists of lower case letters
+// - verifies that the package path must follow the desired directory structure
 func GetDefaultVerifier() packages.Verifier {
 	return verifiers([]packages.VerifyFunc{
 		verifyPkgMatchesDir,

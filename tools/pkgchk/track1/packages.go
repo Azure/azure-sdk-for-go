@@ -10,33 +10,40 @@ import (
 	"strings"
 )
 
+// Package represents a track 1 SDK package
 type Package struct {
 	root    string
 	dir     string
 	pkgName string
 }
 
+// Root ...
 func (p Package) Root() string {
 	return p.root
 }
 
+// Path ...
 func (p Package) Path() string {
 	path, _ := filepath.Rel(p.root, p.dir)
 	return strings.ReplaceAll(path, "\\", "/")
 }
 
+// FullPath ...
 func (p Package) FullPath() string {
 	return p.dir
 }
 
+// Name ...
 func (p Package) Name() string {
 	return p.pkgName
 }
 
+// IsARMPackage ...
 func (p Package) IsARMPackage() bool {
 	return strings.Index(p.Path(), "/mgmt/") > -1
 }
 
+// List lists all the track 1 SDK packages under the root directory
 func List(root string) ([]Package, error) {
 	var results []Package
 	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {

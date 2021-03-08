@@ -21,7 +21,6 @@ import (
 	"path/filepath"
 
 	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/track1"
-	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -56,7 +55,7 @@ func Execute() {
 func theCommand(args []string) error {
 	root, err := filepath.Abs(args[0])
 	if err != nil {
-		return errors.Wrap(err, "failed to get absolute path")
+		return fmt.Errorf("failed to get absolute path: %+v", err)
 	}
 	exceptions, err := loadExceptions(exceptFileFlag)
 	if err != nil {

@@ -78,12 +78,32 @@ func (v BlobSASSignatureValues) NewSASQueryParameters(credential StorageAccountC
 
 	signedIdentifier := v.Identifier
 
-	udk := credential.GetUDKParams()
+	p := SASQueryParameters{
+		// Common SAS parameters
+		version:     v.Version,
+		protocol:    v.Protocol,
+		startTime:   v.StartTime,
+		expiryTime:  v.ExpiryTime,
+		permissions: v.Permissions,
+		ipRange:     v.IPRange,
 
-	if udk != nil {
+		// Container/Blob-specific SAS parameters
+		resource:           resource,
+		identifier:         v.Identifier,
+		cacheControl:       v.CacheControl,
+		contentDisposition: v.ContentDisposition,
+		contentEncoding:    v.ContentEncoding,
+		contentLanguage:    v.ContentLanguage,
+		contentType:        v.ContentType,
+		snapshotTime:       v.SnapshotTime,
+	}
+
+	if udc, ok := credential.(UserDelegationCredential); ok {
+		udk := udc.GetUDKParams()
+
 		udkStart, udkExpiry, _ := FormatTimesForSASSigning(*udk.SignedStart, *udk.SignedExpiry, time.Time{})
-		//I don't like this answer to combining the functions
-		//But because signedIdentifier and the user delegation key strings share a place, this is an _OK_ way to do it.
+		// I don't like this answer to combining the functions
+		// But because signedIdentifier and the user delegation key strings share a place, this is an _OK_ way to do it.
 		signedIdentifier = strings.Join([]string{
 			*udk.SignedOid,
 			*udk.SignedTid,
@@ -92,6 +112,13 @@ func (v BlobSASSignatureValues) NewSASQueryParameters(credential StorageAccountC
 			*udk.SignedService,
 			*udk.SignedVersion,
 		}, "\n")
+
+		p.signedOid = *udk.SignedOid
+		p.signedTid = *udk.SignedTid
+		p.signedStart = *udk.SignedStart
+		p.signedExpiry = *udk.SignedExpiry
+		p.signedService = *udk.SignedService
+		p.signedVersion = *udk.SignedVersion
 	}
 
 	// String to sign: http://msdn.microsoft.com/en-us/library/azure/dn140255.aspx
@@ -113,41 +140,7 @@ func (v BlobSASSignatureValues) NewSASQueryParameters(credential StorageAccountC
 		v.ContentType},       // rsct
 		"\n")
 
-	signature := ""
-	signature = credential.ComputeHMACSHA256(stringToSign)
-
-	p := SASQueryParameters{
-		// Common SAS parameters
-		version:     v.Version,
-		protocol:    v.Protocol,
-		startTime:   v.StartTime,
-		expiryTime:  v.ExpiryTime,
-		permissions: v.Permissions,
-		ipRange:     v.IPRange,
-
-		// Container/Blob-specific SAS parameters
-		resource:           resource,
-		identifier:         v.Identifier,
-		cacheControl:       v.CacheControl,
-		contentDisposition: v.ContentDisposition,
-		contentEncoding:    v.ContentEncoding,
-		contentLanguage:    v.ContentLanguage,
-		contentType:        v.ContentType,
-		snapshotTime:       v.SnapshotTime,
-
-		// Calculated SAS signature
-		signature: signature,
-	}
-
-	//User delegation SAS specific parameters
-	if udk != nil {
-		p.signedOid = *udk.SignedOid
-		p.signedTid = *udk.SignedTid
-		p.signedStart = *udk.SignedStart
-		p.signedExpiry = *udk.SignedExpiry
-		p.signedService = *udk.SignedService
-		p.signedVersion = *udk.SignedVersion
-	}
+	p.signature = credential.ComputeHMACSHA256(stringToSign)
 
 	return p, nil
 }

@@ -3,6 +3,14 @@
 
 package azblob
 
+import (
+	"time"
+)
+
+type GetUserDelegationKeyOptions struct {
+	startTime *time.Time
+}
+
 type ListContainersSegmentOptions struct {
 	Include ListContainersDetail
 

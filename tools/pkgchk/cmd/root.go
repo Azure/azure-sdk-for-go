@@ -54,37 +54,15 @@ func Execute() {
 }
 
 func theCommand(args []string) error {
-	rootDir, err := filepath.Abs(args[0])
+	root, err := filepath.Abs(args[0])
 	if err != nil {
 		return errors.Wrap(err, "failed to get absolute path")
 	}
-	return VerifyPackages(rootDir, exceptFileFlag)
-}
-
-// VerifyPackages verifies all the track 1 packages under the root directory
-func VerifyPackages(root, exceptionFile string) error {
-	pkgs, err := track1.List(root)
-	if err != nil {
-		return fmt.Errorf("failed to get packages: %+v", err)
-	}
-	exceptions, err := loadExceptions(exceptionFile)
+	exceptions, err := loadExceptions(exceptFileFlag)
 	if err != nil {
 		return fmt.Errorf("failed to load exceptions: %+v", err)
 	}
-	verifier := track1.GetDefaultVerifier()
-	count := 0
-	for _, pkg := range pkgs {
-		for _, err := range verifier.Verify(pkg) {
-			if _, ok := exceptions[err.Error()]; !ok {
-				fmt.Fprintln(os.Stderr, err)
-				count++
-			}
-		}
-	}
-	if count > 0 {
-		return fmt.Errorf("found %d errors", count)
-	}
-	return nil
+	return track1.VerifyWithDefaultVerifiers(root, exceptions)
 }
 
 func loadExceptions(exceptFile string) (map[string]bool, error) {

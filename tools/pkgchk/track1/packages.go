@@ -102,3 +102,25 @@ func List(root string) ([]Package, error) {
 	})
 	return results, err
 }
+
+// VerifyWithDefaultVerifiers verifies packages under the root directory with the given exceptions
+func VerifyWithDefaultVerifiers(root string, exceptions map[string]bool) error {
+	pkgs, err := List(root)
+	if err != nil {
+		return fmt.Errorf("failed to get packages: %+v", err)
+	}
+	verifier := GetDefaultVerifier()
+	count := 0
+	for _, pkg := range pkgs {
+		for _, err := range verifier.Verify(pkg) {
+			if _, ok := exceptions[err.Error()]; !ok {
+				fmt.Fprintln(os.Stderr, err)
+				count++
+			}
+		}
+	}
+	if count > 0 {
+		return fmt.Errorf("found %d errors", count)
+	}
+	return nil
+}

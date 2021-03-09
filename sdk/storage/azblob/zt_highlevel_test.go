@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azblob
 
 import (
@@ -39,14 +42,14 @@ func performUploadStreamToBlockBlobTest(c *chk.C, blobSize, bufferSize, maxBuffe
 
 	// Assert that upload was successful
 	c.Assert(err, chk.Equals, nil)
-	c.Assert(uploadResp.Response().StatusCode, chk.Equals, 201)
+	c.Assert(uploadResp.RawResponse.StatusCode, chk.Equals, 201)
 
 	// Download the blob to verify
 	downloadResponse, err := blobClient.Download(ctx, nil)
 	c.Assert(err, chk.IsNil)
 
 	// Assert that the content is correct
-	actualBlobData, err := ioutil.ReadAll(downloadResponse.Response().Body)
+	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
 	c.Assert(err, chk.IsNil)
 	c.Assert(len(actualBlobData), chk.Equals, blobSize)
 	c.Assert(actualBlobData, chk.DeepEquals, blobData)
@@ -117,7 +120,7 @@ func performUploadAndDownloadFileTest(c *chk.C, fileSize, blockSize, parallelism
 			},
 		})
 	c.Assert(err, chk.Equals, nil)
-	c.Assert(response.Response().StatusCode, chk.Equals, 201)
+	c.Assert(response.StatusCode, chk.Equals, 201)
 
 	// Set up file to download the blob to
 	destFileName := "BigFile-downloaded.bin"
@@ -243,7 +246,7 @@ func performUploadAndDownloadBufferTest(c *chk.C, blobSize, blockSize, paralleli
 			},
 		})
 	c.Assert(err, chk.Equals, nil)
-	c.Assert(response.Response().StatusCode, chk.Equals, 201)
+	c.Assert(response.StatusCode, chk.Equals, 201)
 
 	// Set up buffer to download the blob to
 	var destBuffer []byte

@@ -2,7 +2,6 @@ package azblob
 
 import (
 	"context"
-	"net/url"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -11,35 +10,21 @@ import (
 // A ContainerClient represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type ContainerClient struct {
 	client *containerClient
-	u      url.URL
+	cred   StorageAccountCredential
 }
 
 // NewContainerClient creates a ContainerClient object using the specified URL and request policy pipeline.
-func NewContainerClient(containerURL string, cred azcore.Credential, options *connectionOptions) (ContainerClient, error) {
-	u, err := url.Parse(containerURL)
-	if err != nil {
-		return ContainerClient{}, err
-	}
+func NewContainerClient(containerURL string, cred azcore.Credential, options *ClientOptions) (ContainerClient, error) {
+	c, _ := cred.(*SharedKeyCredential)
+
 	return ContainerClient{client: &containerClient{
-		con: newConnection(containerURL, cred, options),
-	}, u: *u}, nil
+		con: newConnection(containerURL, cred, options.getConnectionOptions()),
+	}, cred: c}, nil
 }
 
 // URL returns the URL endpoint used by the ContainerClient object.
-func (c ContainerClient) URL() url.URL {
-	return c.u
-}
-
-// String returns the URL as a string.
-func (c ContainerClient) String() string {
-	u := c.URL()
-	return u.String()
-}
-
-// WithPipeline creates a new ContainerClient object identical to the source but with the specified request policy pipeline.
-func (c ContainerClient) WithPipeline(pipeline azcore.Pipeline) ContainerClient {
-	con := newConnectionWithPipeline(c.u.String(), pipeline)
-	return ContainerClient{client: &containerClient{con: con}, u: c.u}
+func (c ContainerClient) URL() string {
+	return c.client.con.u
 }
 
 // NewBlobClient creates a new BlobClient object by concatenating blobName to the end of
@@ -47,13 +32,12 @@ func (c ContainerClient) WithPipeline(pipeline azcore.Pipeline) ContainerClient 
 // To change the pipeline, create the BlobClient and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewBlobClient instead of calling this object's
 // NewBlobClient method.
-func (c ContainerClient) NewBlobClient(blobName string, mode *PathRenameMode) BlobClient {
+func (c ContainerClient) NewBlobClient(blobName string) BlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
-	newCon := newConnectionWithPipeline(blobURL.String(), c.client.con.p)
+	newCon := newConnectionWithPipeline(blobURL, c.client.con.p)
 
 	return BlobClient{
-		client: &blobClient{newCon, mode},
-		u:      blobURL,
+		client: &blobClient{newCon, nil},
 	}
 }
 
@@ -64,11 +48,10 @@ func (c ContainerClient) NewBlobClient(blobName string, mode *PathRenameMode) Bl
 // NewAppendBlobURL method.
 func (c ContainerClient) NewAppendBlobURL(blobName string) AppendBlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
-	newCon := newConnectionWithPipeline(blobURL.String(), c.client.con.p)
+	newCon := newConnectionWithPipeline(blobURL, c.client.con.p)
 
 	return AppendBlobClient{
 		client:     &appendBlobClient{newCon},
-		u:          blobURL,
 		BlobClient: BlobClient{client: &blobClient{con: newCon}},
 	}
 }
@@ -80,11 +63,10 @@ func (c ContainerClient) NewAppendBlobURL(blobName string) AppendBlobClient {
 // NewBlockBlobClient method.
 func (c ContainerClient) NewBlockBlobClient(blobName string) BlockBlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
-	newCon := newConnectionWithPipeline(blobURL.String(), c.client.con.p)
+	newCon := newConnectionWithPipeline(blobURL, c.client.con.p)
 
 	return BlockBlobClient{
 		client:     &blockBlobClient{newCon},
-		u:          blobURL,
 		BlobClient: BlobClient{client: &blobClient{con: newCon}},
 	}
 }
@@ -96,11 +78,10 @@ func (c ContainerClient) NewBlockBlobClient(blobName string) BlockBlobClient {
 // NewPageBlobURL method.
 func (c ContainerClient) NewPageBlobClient(blobName string) PageBlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
-	newCon := newConnectionWithPipeline(blobURL.String(), c.client.con.p)
+	newCon := newConnectionWithPipeline(blobURL, c.client.con.p)
 
 	return PageBlobClient{
 		client:     &pageBlobClient{newCon},
-		u:          blobURL,
 		BlobClient: BlobClient{client: &blobClient{con: newCon}},
 	}
 }
@@ -203,36 +184,11 @@ func (c ContainerClient) SetAccessPolicy(ctx context.Context, options *SetAccess
 	return resp, handleError(err)
 }
 
-// ListBlobsFlatSegment returns a channel of blobs starting from the specified Marker. Use an empty
+// ListBlobsFlatSegment returns a pager for blobs starting from the specified Marker. Use an empty
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
-// The returned channel contains individual blob items.
-// AutoPagerTimeout specifies the amount of time with no read operations before the channel times out and closes. Specify no time and it will be ignored.
-// AutoPagerBufferSize specifies the channel's buffer size.
-// Both the blob item channel and error channel should be watched. Only one error will be released via this channel (or a nil error, to register a clean exit.)
-func (c ContainerClient) ListBlobsFlatSegment(ctx context.Context, AutoPagerBufferSize uint, AutoPagerTimeout time.Duration, listOptions *ContainerListBlobFlatSegmentOptions) (chan BlobItemInternal, chan error) {
-	pager := c.client.ListBlobFlatSegment(listOptions)
-
-	output := make(chan BlobItemInternal, AutoPagerBufferSize)
-	errChan := make(chan error, 1)
-
-	if err := pager.Err(); err != nil {
-		errChan <- err
-		close(output)
-		close(errChan)
-		return output, errChan
-	}
-
-	go listBlobsFlatSegmentAutoPager{
-		pager,
-		output,
-		errChan,
-		ctx,
-		AutoPagerTimeout,
-		nil,
-	}.Go()
-
-	return output, errChan
+func (c ContainerClient) ListBlobsFlatSegment(listOptions *ContainerListBlobFlatSegmentOptions) ListBlobsFlatSegmentResponsePager {
+	return c.client.ListBlobFlatSegment(listOptions)
 }
 
 // ListBlobsHierarchySegment returns a channel of blobs starting from the specified Marker. Use an empty
@@ -243,27 +199,28 @@ func (c ContainerClient) ListBlobsFlatSegment(ctx context.Context, AutoPagerBuff
 // AutoPagerTimeout specifies the amount of time with no read operations before the channel times out and closes. Specify no time and it will be ignored.
 // AutoPagerBufferSize specifies the channel's buffer size.
 // Both the blob item channel and error channel should be watched. Only one error will be released via this channel (or a nil error, to register a clean exit.)
-func (c ContainerClient) ListBlobsHierarchySegment(ctx context.Context, delimiter string, AutoPagerBufferSize uint, AutoPagerTimeout time.Duration, listOptions *ContainerListBlobHierarchySegmentOptions) (chan BlobItemInternal, chan error) {
-	pager := c.client.ListBlobHierarchySegment(delimiter, listOptions)
+func (c ContainerClient) ListBlobsHierarchySegment(delimiter string, listOptions *ContainerListBlobHierarchySegmentOptions) ListBlobsHierarchySegmentResponsePager {
+	return c.client.ListBlobHierarchySegment(delimiter, listOptions)
+}
 
-	output := make(chan BlobItemInternal, AutoPagerBufferSize)
-	errChan := make(chan error, 1)
+func (c ContainerClient) CanGetContainerSASToken() bool {
+	return c.cred != nil
+}
 
-	if err := pager.Err(); err != nil {
-		errChan <- err
-		close(output)
-		close(errChan)
-		return output, errChan
-	}
+// GetContainerSASToken is a convenience method for generating a SAS token for the currently pointed at container.
+// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetContainerSASToken().
+func (c ContainerClient) GetContainerSASToken(permissions BlobSASPermissions, validityTime time.Duration) (SASQueryParameters, error) {
+	urlParts := NewBlobURLParts(c.URL())
 
-	go listBlobsHierarchySegmentAutoPager{
-		pager,
-		output,
-		errChan,
-		ctx,
-		AutoPagerTimeout,
-		nil,
-	}.Go()
+	// Containers do not have snapshots, nor versions.
 
-	return output, errChan
+	return BlobSASSignatureValues{
+		ContainerName: urlParts.ContainerName,
+
+		Permissions: permissions.String(),
+
+		StartTime:  time.Now(),
+		ExpiryTime: time.Now().Add(validityTime),
+	}.NewSASQueryParameters(c.cred)
 }

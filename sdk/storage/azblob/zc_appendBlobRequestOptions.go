@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azblob
 
 type CreateAppendBlobOptions struct {
@@ -28,7 +31,7 @@ func (o *CreateAppendBlobOptions) pointers() (*AppendBlobCreateOptions, *BlobHtt
 	}
 
 	options := AppendBlobCreateOptions{
-		BlobTagsString: SerializeBlobTagsToStrPtr(o.BlobTagsMap),
+		BlobTagsString: serializeBlobTagsToStrPtr(o.BlobTagsMap),
 		Metadata:       o.Metadata,
 		RequestId:      o.RequestId,
 		Timeout:        o.Timeout,

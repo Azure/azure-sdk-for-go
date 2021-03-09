@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azblob
 
 import (
@@ -49,7 +52,7 @@ func (o *CreatePageBlobOptions) pointers() (*PageBlobCreateOptions, *BlobHttpHea
 
 	options := &PageBlobCreateOptions{
 		BlobSequenceNumber: o.BlobSequenceNumber,
-		BlobTagsString:     SerializeBlobTagsToStrPtr(o.BlobTagsMap),
+		BlobTagsString:     serializeBlobTagsToStrPtr(o.BlobTagsMap),
 		Metadata:           o.Metadata,
 		Tier:               o.Tier,
 	}

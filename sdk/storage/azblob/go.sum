@@ -5,8 +5,8 @@ github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.6.0 h1:ksvSe0GxLR0H4narxWihj
 github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.6.0/go.mod h1:BfjVb0eeNKsOveaOBnAgUv6nSq5hwScOz7mCm9lqUx8=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.5.0 h1:HG1ggl8L3ZkV/Ydanf7lKr5kkhhPGCpWdnr1J6v7cO4=
 github.com/Azure/azure-sdk-for-go/sdk/internal v0.5.0/go.mod h1:k4KbFSunV/+0hOHL1vyFaPsiYQ1Vmvy1TBpmtvCDLZM=
-github.com/Azure/azure-sdk-for-go/sdk/to v0.1.2 h1:TZTVOb/ce7nCmOZYga9+ELtPPVVFG2Px4s/w5OycYS0=
-github.com/Azure/azure-sdk-for-go/sdk/to v0.1.2/go.mod h1:UL/d4lvWAzSJUuX+19uKdN0ktyjoOyQhgY+HWNgtIYI=
+github.com/Azure/azure-sdk-for-go/sdk/to v0.1.3 h1:5p7WsYlB8FqcpXdi0rOpppjV8xN3yonEZr1ArSetzZo=
+github.com/Azure/azure-sdk-for-go/sdk/to v0.1.3/go.mod h1:UL/d4lvWAzSJUuX+19uKdN0ktyjoOyQhgY+HWNgtIYI=
 github.com/google/uuid v1.1.1 h1:Gkbcsh/GbpXz7lPftLA3P6TYMwjCLYm83jiFQZF/3gY=
 github.com/google/uuid v1.1.1/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/kr/pretty v0.2.1 h1:Fmg33tUaq4/8ym9TJN1x7sLJnHVwhP33CNkpYV/7rwI=

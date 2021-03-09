@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azblob
 
 import (
@@ -367,7 +370,7 @@ func disableSoftDelete(c *chk.C, bsu ServiceClient) {
 func validateUpload(c *chk.C, blobClient BlobClient) {
 	resp, err := blobClient.Download(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	data, _ := ioutil.ReadAll(resp.Response().Body)
+	data, _ := ioutil.ReadAll(resp.RawResponse.Body)
 	c.Assert(data, chk.HasLen, 0)
 }
 
@@ -378,7 +381,19 @@ func blockIDIntToBase64(blockID int) string {
 	return base64.StdEncoding.EncodeToString(binaryBlockID)
 }
 
-func validateStorageError(c *chk.C, err error, code ServiceCodeType) {
-	storageError, _ := err.(*StorageError)
-	c.Assert(storageError.ServiceCode(), chk.Equals, code)
+// TODO: Figure out in which scenario, the parsing will fail.
+func validateStorageError(c *chk.C, err error, code StorageErrorCode) {
+	stgError, _ := err.(*StorageError)
+	c.Assert(stgError, chk.NotNil)
+	c.Assert(stgError.ErrorCode, chk.Equals, code)
+}
+
+func blobListToMap(list []string) map[string]bool {
+	out := make(map[string]bool)
+
+	for _, v := range list {
+		out[v] = true
+	}
+
+	return out
 }

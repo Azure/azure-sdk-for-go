@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azblob
 
 import (
@@ -59,7 +62,7 @@ func (s *aztestsSuite) TestUploadPagesFromURL(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	contentSize := 8 * 1024 // 8KB
+	contentSize := 4 * 1024 * 1024 // 8KB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	ctx := context.Background() // Use default Background context
 	srcBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(contentSize))
@@ -189,7 +192,7 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeMd5Mismatch)
+	validateStorageError(c, err, StorageErrorCodeMD5Mismatch)
 }
 
 func (s *aztestsSuite) TestClearDiffPages(c *chk.C) {
@@ -389,7 +392,7 @@ func (s *aztestsSuite) TestPutPagesWithMD5(c *chk.C) {
 	putResp, err = pbClient.UploadPages(context.Background(), readerToBody, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeMd5Mismatch)
+	validateStorageError(c, err, StorageErrorCodeMD5Mismatch)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageSizeInvalid(c *chk.C) {
@@ -405,7 +408,7 @@ func (s *aztestsSuite) TestBlobCreatePageSizeInvalid(c *chk.C) {
 	_, err := pbClient.Create(ctx, 1, &createPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeInvalidHeaderValue)
+	validateStorageError(c, err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageSequenceInvalid(c *chk.C) {
@@ -438,7 +441,8 @@ func (s *aztestsSuite) TestBlobCreatePageMetadataNonEmpty(c *chk.C) {
 
 	resp, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(resp.Metadata, chk.NotNil)
+	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageMetadataEmpty(c *chk.C) {
@@ -456,7 +460,7 @@ func (s *aztestsSuite) TestBlobCreatePageMetadataEmpty(c *chk.C) {
 
 	resp, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.HasLen, 0)
+	c.Assert(resp.Metadata, chk.IsNil)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageMetadataInvalid(c *chk.C) {
@@ -499,7 +503,8 @@ func (s *aztestsSuite) TestBlobCreatePageHTTPHeaders(c *chk.C) {
 func validatePageBlobPut(c *chk.C, pbClient PageBlobClient) {
 	resp, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(resp.Metadata, chk.NotNil)
+	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
 	c.Assert(resp.NewHTTPHeaders(), chk.DeepEquals, basicHeaders)
 }
 
@@ -550,7 +555,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfModifiedSinceFalse(c *chk.C) {
 	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageIfUnmodifiedSinceTrue(c *chk.C) {
@@ -600,7 +605,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfUnmodifiedSinceFalse(c *chk.C) {
 	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageIfMatchTrue(c *chk.C) {
@@ -650,7 +655,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfMatchFalse(c *chk.C) {
 	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageIfNoneMatchTrue(c *chk.C) {
@@ -699,7 +704,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfNoneMatchFalse(c *chk.C) {
 	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesInvalidRange(c *chk.C) {
@@ -752,7 +757,7 @@ func (s *aztestsSuite) TestBlobPutPagesNonExistentBlob(c *chk.C) {
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeBlobNotFound)
+	validateStorageError(c, err, StorageErrorCodeBlobNotFound)
 }
 
 func validateUploadPages(c *chk.C, pbClient PageBlobClient) {
@@ -810,7 +815,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfModifiedSinceFalse(c *chk.C) {
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfUnmodifiedSinceTrue(c *chk.C) {
@@ -860,7 +865,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfUnmodifiedSinceFalse(c *chk.C) {
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfMatchTrue(c *chk.C) {
@@ -909,7 +914,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfMatchFalse(c *chk.C) {
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfNoneMatchTrue(c *chk.C) {
@@ -958,7 +963,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfNoneMatchFalse(c *chk.C) {
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue(c *chk.C) {
@@ -1011,7 +1016,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse(c *chk.C) {
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne(c *chk.C) {
@@ -1033,7 +1038,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne(c *chk.C) 
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeInvalidInput)
+	validateStorageError(c, err, StorageErrorCodeInvalidInput)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTETrue(c *chk.C) {
@@ -1095,7 +1100,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse(c *chk.C) {
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTENegOne(c *chk.C) {
@@ -1170,7 +1175,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualFalse(c *chk.C) {
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualNegOne(c *chk.C) {
@@ -1262,7 +1267,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfModifiedSinceFalse(c *chk.C) {
 	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfUnmodifiedSinceTrue(c *chk.C) {
@@ -1300,7 +1305,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfUnmodifiedSinceFalse(c *chk.C) {
 	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfMatchTrue(c *chk.C) {
@@ -1337,7 +1342,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfMatchFalse(c *chk.C) {
 	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfNoneMatchTrue(c *chk.C) {
@@ -1374,7 +1379,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfNoneMatchFalse(c *chk.C) {
 	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue(c *chk.C) {
@@ -1415,7 +1420,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse(c *chk.C)
 	_, err = pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne(c *chk.C) {
@@ -1431,7 +1436,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne(c *chk.C
 	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeInvalidInput)
+	validateStorageError(c, err, StorageErrorCodeInvalidInput)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTETrue(c *chk.C) {
@@ -1472,7 +1477,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTEFalse(c *chk.C) {
 	_, err = pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTENegOne(c *chk.C) {
@@ -1488,7 +1493,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTENegOne(c *chk.C) {
 	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions) // This will cause the library to set the value of the header to 0
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeInvalidInput)
+	validateStorageError(c, err, StorageErrorCodeInvalidInput)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualTrue(c *chk.C) {
@@ -1538,7 +1543,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualFalse(c *chk.C) {
 	_, err = pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeSequenceNumberConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeSequenceNumberConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne(c *chk.C) {
@@ -1554,7 +1559,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne(c *chk.C) {
 	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions) // This will cause the library to set the value of the header to 0
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeInvalidInput)
+	validateStorageError(c, err, StorageErrorCodeInvalidInput)
 }
 
 func setupGetPageRangesTest(c *chk.C) (containerClient ContainerClient, pbClient PageBlobClient) {
@@ -1729,7 +1734,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse(c *chk.C) {
 	_, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesIfMatchTrue(c *chk.C) {
@@ -1766,7 +1771,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfMatchFalse(c *chk.C) {
 	_, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesIfNoneMatchTrue(c *chk.C) {
@@ -1852,7 +1857,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangesNonExistentSnapshot(c *chk.C) {
 	_, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshotTime.Format(SnapshotTimeFormat), nil)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodePreviousSnapshotNotFound)
+	validateStorageError(c, err, StorageErrorCodePreviousSnapshotNotFound)
 }
 
 func (s *aztestsSuite) TestBlobDiffPageRangeInvalidRange(c *chk.C) {
@@ -1934,7 +1939,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(c *chk.C) {
 	_, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobDiffPageRangeIfMatchTrue(c *chk.C) {
@@ -1970,7 +1975,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfMatchFalse(c *chk.C) {
 	_, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobDiffPageRangeIfNoneMatchTrue(c *chk.C) {
@@ -2089,7 +2094,7 @@ func (s *aztestsSuite) TestBlobResizeIfModifiedSinceFalse(c *chk.C) {
 	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobResizeIfUnmodifiedSinceTrue(c *chk.C) {
@@ -2131,7 +2136,7 @@ func (s *aztestsSuite) TestBlobResizeIfUnmodifiedSinceFalse(c *chk.C) {
 	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobResizeIfMatchTrue(c *chk.C) {
@@ -2172,7 +2177,7 @@ func (s *aztestsSuite) TestBlobResizeIfMatchFalse(c *chk.C) {
 	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobResizeIfNoneMatchTrue(c *chk.C) {
@@ -2213,7 +2218,7 @@ func (s *aztestsSuite) TestBlobResizeIfNoneMatchFalse(c *chk.C) {
 	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobSetSequenceNumberActionTypeInvalid(c *chk.C) {
@@ -2231,7 +2236,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberActionTypeInvalid(c *chk.C) {
 	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeInvalidHeaderValue)
+	validateStorageError(c, err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func (s *aztestsSuite) TestBlobSetSequenceNumberSequenceNumberInvalid(c *chk.C) {
@@ -2254,7 +2259,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberSequenceNumberInvalid(c *chk.C) 
 	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeInvalidHeaderValue)
+	validateStorageError(c, err, StorageErrorCodeInvalidHeaderValue)
 }
 
 func validateSequenceNumberSet(c *chk.C, pbClient PageBlobClient) {
@@ -2306,7 +2311,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse(c *chk.C) {
 	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue(c *chk.C) {
@@ -2352,7 +2357,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse(c *chk.C)
 	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobSetSequenceNumberIfMatchTrue(c *chk.C) {
@@ -2397,7 +2402,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfMatchFalse(c *chk.C) {
 	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobSetSequenceNumberIfNoneMatchTrue(c *chk.C) {
@@ -2442,7 +2447,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfNoneMatchFalse(c *chk.C) {
 	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func setupStartIncrementalCopyTest(c *chk.C) (containerClient ContainerClient, pbClient PageBlobClient, copyPBClient PageBlobClient, snapshot string) {
@@ -2490,7 +2495,7 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopySnapshotNotExist(c *chk.C) {
 	_, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, nil)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeCannotVerifyCopySource)
+	validateStorageError(c, err, StorageErrorCodeCannotVerifyCopySource)
 }
 
 func (s *aztestsSuite) TestBlobStartIncrementalCopyIfModifiedSinceTrue(c *chk.C) {
@@ -2526,7 +2531,7 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfModifiedSinceFalse(c *chk.C
 	_, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceTrue(c *chk.C) {
@@ -2562,7 +2567,7 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceFalse(c *chk
 	_, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobStartIncrementalCopyIfMatchTrue(c *chk.C) {
@@ -2597,7 +2602,7 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfMatchFalse(c *chk.C) {
 	_, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeTargetConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeTargetConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobStartIncrementalCopyIfNoneMatchTrue(c *chk.C) {
@@ -2632,5 +2637,5 @@ func (s *aztestsSuite) TestBlobStartIncrementalCopyIfNoneMatchFalse(c *chk.C) {
 	_, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
 	c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }

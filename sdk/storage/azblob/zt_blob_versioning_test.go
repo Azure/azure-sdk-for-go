@@ -1,10 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azblob
 
 import (
 	"context"
-	chk "gopkg.in/check.v1"
 	"io/ioutil"
 	"strings"
+
+	chk "gopkg.in/check.v1"
 )
 
 func (s *aztestsSuite) TestBlockBlobGetPropertiesUsingVID(c *chk.C) {
@@ -67,10 +71,19 @@ func (s *aztestsSuite) TestSetBlobMetadataReturnsVID(c *chk.C) {
 	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
 		Include: &include,
 	}
-	listBlobResp, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
+	pager := containerClient.ListBlobsFlatSegment(&containerListBlobFlatSegmentOptions)
 
-	c.Assert(<-errChan, chk.IsNil)
-	blobResp1 := <-listBlobResp
+	if !pager.NextPage(ctx) {
+		c.Assert(pager.Err(), chk.IsNil) // check for an error first
+		c.Fail()                         // no page was gotten
+	}
+
+	pageResp := pager.PageResponse()
+
+	c.Assert(pageResp.EnumerationResults.Segment.BlobItems, chk.NotNil)
+	blobList := *pageResp.EnumerationResults.Segment.BlobItems
+	c.Assert(len(blobList), chk.Equals, 1)
+	blobResp1 := blobList[0]
 	c.Assert(*blobResp1.Name, chk.Equals, blobName)
 	c.Assert(*blobResp1.Metadata, chk.HasLen, 2)
 	c.Assert(*blobResp1.Metadata, chk.DeepEquals, metadata)

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azblob
 
 import (
@@ -10,39 +13,24 @@ import (
 
 const (
 	AppendBlobMaxAppendBlockBytes = 4 * 1024 * 1024
-	AppendBlobMaxBlocks           = 5000
+	AppendBlobMaxBlocks           = 50_000
 )
 
 type AppendBlobClient struct {
 	BlobClient
 	client *appendBlobClient
-	u      url.URL
 }
 
-func NewAppendBlobClient(blobURL string, cred azcore.Credential, options *connectionOptions) (AppendBlobClient, error) {
-	u, err := url.Parse(blobURL)
-	if err != nil {
-		return AppendBlobClient{}, err
-	}
-	con := newConnection(blobURL, cred, options)
+func NewAppendBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (AppendBlobClient, error) {
+	con := newConnection(blobURL, cred, options.getConnectionOptions())
 	return AppendBlobClient{
 		client:     &appendBlobClient{con: con},
-		u:          *u,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
 }
 
-func (ab AppendBlobClient) URL() url.URL {
-	return ab.u
-}
-
-func (ab AppendBlobClient) WithPipeline(pipeline azcore.Pipeline) AppendBlobClient {
-	con := newConnectionWithPipeline(ab.u.String(), pipeline)
-	return AppendBlobClient{
-		client:     &appendBlobClient{con},
-		u:          ab.u,
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
+func (ab AppendBlobClient) URL() string {
+	return ab.client.con.u
 }
 
 // WithSnapshot creates a new AppendBlobURL object identical to the source but with the specified snapshot timestamp.
@@ -50,11 +38,9 @@ func (ab AppendBlobClient) WithPipeline(pipeline azcore.Pipeline) AppendBlobClie
 func (ab AppendBlobClient) WithSnapshot(snapshot string) AppendBlobClient {
 	p := NewBlobURLParts(ab.URL())
 	p.Snapshot = snapshot
-	snapshotURL := p.URL()
-	con := newConnectionWithPipeline(snapshotURL.String(), ab.client.con.p)
+	con := newConnectionWithPipeline(p.URL(), ab.client.con.p)
 	return AppendBlobClient{
 		client:     &appendBlobClient{con: con},
-		u:          snapshotURL,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
@@ -64,11 +50,9 @@ func (ab AppendBlobClient) WithSnapshot(snapshot string) AppendBlobClient {
 func (ab AppendBlobClient) WithVersionID(versionID string) AppendBlobClient {
 	p := NewBlobURLParts(ab.URL())
 	p.VersionID = versionID
-	versionIDURL := p.URL()
-	con := newConnectionWithPipeline(versionIDURL.String(), ab.client.con.p)
+	con := newConnectionWithPipeline(p.URL(), ab.client.con.p)
 	return AppendBlobClient{
 		client:     &appendBlobClient{con: con},
-		u:          versionIDURL,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
@@ -101,10 +85,12 @@ func (ab AppendBlobClient) AppendBlock(ctx context.Context, body io.ReadSeeker, 
 
 // AppendBlockFromURL copies a new block of data from source URL to the end of the existing append blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/append-block-from-url.
-func (ab AppendBlobClient) AppendBlockFromURL(ctx context.Context, source url.URL, contentLength int64, options *AppendBlockURLOptions) (AppendBlobAppendBlockFromURLResponse, error) {
+func (ab AppendBlobClient) AppendBlockFromURL(ctx context.Context, source string, contentLength int64, options *AppendBlockURLOptions) (AppendBlobAppendBlockFromURLResponse, error) {
 	appendOptions, aac, cpkinfo, cpkscope, mac, lac, smac := options.pointers()
 
-	resp, err := ab.client.AppendBlockFromURL(ctx, source, contentLength, appendOptions, cpkinfo, cpkscope, lac, aac, mac, smac)
+	uri, _ := url.Parse(source)
+
+	resp, err := ab.client.AppendBlockFromURL(ctx, *uri, contentLength, appendOptions, cpkinfo, cpkscope, lac, aac, mac, smac)
 
 	return resp, handleError(err)
 }

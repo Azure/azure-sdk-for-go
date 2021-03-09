@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azblob
 
 import (
@@ -18,33 +21,18 @@ const (
 type PageBlobClient struct {
 	BlobClient
 	client *pageBlobClient
-	u      url.URL
 }
 
-func NewPageBlobClient(blobURL string, cred azcore.Credential, options *connectionOptions) (PageBlobClient, error) {
-	u, err := url.Parse(blobURL)
-	if err != nil {
-		return PageBlobClient{}, err
-	}
-	con := newConnection(blobURL, cred, options)
+func NewPageBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (PageBlobClient, error) {
+	con := newConnection(blobURL, cred, options.getConnectionOptions())
 	return PageBlobClient{
 		client:     &pageBlobClient{con: con},
-		u:          *u,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
 }
 
-func (pb PageBlobClient) WithPipeline(pipeline azcore.Pipeline) PageBlobClient {
-	con := newConnectionWithPipeline(pb.u.String(), pipeline)
-	return PageBlobClient{
-		client:     &pageBlobClient{con},
-		u:          pb.u,
-		BlobClient: BlobClient{client: &blobClient{con: con}},
-	}
-}
-
-func (pb PageBlobClient) URL() url.URL {
-	return pb.u
+func (pb PageBlobClient) URL() string {
+	return pb.client.con.u
 }
 
 // WithSnapshot creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
@@ -52,12 +40,10 @@ func (pb PageBlobClient) URL() url.URL {
 func (pb PageBlobClient) WithSnapshot(snapshot string) PageBlobClient {
 	p := NewBlobURLParts(pb.URL())
 	p.Snapshot = snapshot
-	snapshotURL := p.URL()
 
-	con := newConnectionWithPipeline(snapshotURL.String(), pb.client.con.p)
+	con := newConnectionWithPipeline(p.URL(), pb.client.con.p)
 	return PageBlobClient{
 		client:     &pageBlobClient{con: con},
-		u:          snapshotURL,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
@@ -67,11 +53,10 @@ func (pb PageBlobClient) WithSnapshot(snapshot string) PageBlobClient {
 func (pb PageBlobClient) WithVersionID(versionID string) PageBlobClient {
 	p := NewBlobURLParts(pb.URL())
 	p.VersionID = versionID
-	versionIDURL := p.URL()
-	con := newConnectionWithPipeline(versionIDURL.String(), pb.client.con.p)
+
+	con := newConnectionWithPipeline(p.URL(), pb.client.con.p)
 	return PageBlobClient{
 		client:     &pageBlobClient{con: con},
-		u:          versionIDURL,
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
 }
@@ -109,10 +94,12 @@ func (pb PageBlobClient) UploadPages(ctx context.Context, body io.ReadSeeker, op
 // The destOffset specifies the start offset of data in page blob will be written to.
 // The count must be a multiple of 512 bytes.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page-from-url.
-func (pb PageBlobClient) UploadPagesFromURL(ctx context.Context, source url.URL, sourceOffset, destOffset, count int64, options *UploadPagesFromURLOptions) (PageBlobUploadPagesFromURLResponse, error) {
+func (pb PageBlobClient) UploadPagesFromURL(ctx context.Context, source string, sourceOffset, destOffset, count int64, options *UploadPagesFromURLOptions) (PageBlobUploadPagesFromURLResponse, error) {
 	uploadOptions, cpkInfo, cpkScope, snac, smac, lac, mac := options.pointers()
 
-	resp, err := pb.client.UploadPagesFromURL(ctx, source, rangeToString(sourceOffset, count), 0, rangeToString(destOffset, count), uploadOptions, cpkInfo, cpkScope, lac, snac, mac, smac)
+	uri, _ := url.Parse(source)
+
+	resp, err := pb.client.UploadPagesFromURL(ctx, *uri, rangeToString(sourceOffset, count), 0, rangeToString(destOffset, count), uploadOptions, cpkInfo, cpkScope, lac, snac, mac, smac)
 
 	return resp, handleError(err)
 }
@@ -199,13 +186,15 @@ func (pb PageBlobClient) UpdateSequenceNumber(ctx context.Context, options *Upda
 // The copied snapshots are complete copies of the original snapshot and can be read or copied from as usual.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob and
 // https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots.
-func (pb PageBlobClient) StartCopyIncremental(ctx context.Context, source url.URL, prevSnapshot string, options *CopyIncrementalPageBlobOptions) (PageBlobCopyIncrementalResponse, error) {
-	queryParams := source.Query()
+func (pb PageBlobClient) StartCopyIncremental(ctx context.Context, source string, prevSnapshot string, options *CopyIncrementalPageBlobOptions) (PageBlobCopyIncrementalResponse, error) {
+	srcURL, _ := url.Parse(source)
+
+	queryParams := srcURL.Query()
 	queryParams.Set("snapshot", prevSnapshot)
-	source.RawQuery = queryParams.Encode()
+	srcURL.RawQuery = queryParams.Encode()
 
 	pageBlobCopyIncrementalOptions, modifiedAccessConditions := options.pointers()
-	resp, err := pb.client.CopyIncremental(ctx, source, pageBlobCopyIncrementalOptions, modifiedAccessConditions)
+	resp, err := pb.client.CopyIncremental(ctx, *srcURL, pageBlobCopyIncrementalOptions, modifiedAccessConditions)
 
 	return resp, handleError(err)
 }

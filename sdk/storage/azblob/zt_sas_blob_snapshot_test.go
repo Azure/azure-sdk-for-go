@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azblob
 
 import (
@@ -73,8 +76,7 @@ func (s *aztestsSuite) TestSnapshotSAS(c *chk.C) {
 	//Attach SAS query to block blob URL
 	snapParts := NewBlobURLParts(blobURL.URL())
 	snapParts.SAS = snapSASQueryParams
-	url1 := snapParts.URL()
-	sbUrl, err := NewBlockBlobClient(url1.String(), NewAnonymousCredential(), nil)
+	sbUrl, err := NewBlockBlobClient(snapParts.URL(), NewAnonymousCredential(), nil)
 
 	//Test the snapshot
 	downloadResponse, err := sbUrl.Download(ctx, nil)
@@ -111,8 +113,7 @@ func (s *aztestsSuite) TestSnapshotSAS(c *chk.C) {
 
 	fsbUrlParts := NewBlobURLParts(fsbUrl.URL())
 	fsbUrlParts.SAS = snapSASQueryParams
-	url2 := fsbUrlParts.URL()
-	fsbUrl, err = NewBlockBlobClient(url2.String(), NewAnonymousCredential(), nil) //re-use fsbUrl as we don't need the sharedkey version anymore
+	fsbUrl, err = NewBlockBlobClient(fsbUrlParts.URL(), NewAnonymousCredential(), nil) //re-use fsbUrl as we don't need the sharedkey version anymore
 
 	resp, err := fsbUrl.Delete(ctx, nil)
 	if err == nil {

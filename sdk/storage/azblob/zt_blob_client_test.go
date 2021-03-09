@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azblob
 
 import (
@@ -27,8 +30,7 @@ func (s *aztestsSuite) TestCreateBlobClient(c *chk.C) {
 	c.Assert(parts.ContainerName, chk.Equals, containerName)
 
 	correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + containerName + "/" + testName
-	temp := testURL.URL()
-	c.Assert(temp.String(), chk.Equals, correctURL)
+	c.Assert(testURL.URL(), chk.Equals, correctURL)
 }
 
 func (s *aztestsSuite) TestCreateBlobClientWithSnapshotAndSAS(c *chk.C) {
@@ -61,21 +63,21 @@ func (s *aztestsSuite) TestCreateBlobClientWithSnapshotAndSAS(c *chk.C) {
 	// it is copied here
 	correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + containerName + "/" + blobName +
 		"?" + "snapshot=" + currentTime.Format("2006-01-02T15:04:05.0000000Z07:00") + "&" + sasQueryParams.Encode()
-	c.Assert(testURL.String(), chk.Equals, correctURL)
+	c.Assert(testURL, chk.Equals, correctURL)
 }
 
-func (s *aztestsSuite) TestBlobWithNewPipeline(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := getContainerClient(c, bsu)
-	blobClient := containerClient.NewBlockBlobClient(blobPrefix)
-
-	newBlobClient := blobClient.WithPipeline(newTestPipeline())
-
-	// exercise the new pipeline
-	_, err := newBlobClient.GetAccountInfo(ctx)
-	c.Assert(err, chk.NotNil)
-	c.Assert(err.Error(), chk.Equals, testPipelineMessage)
-}
+// func (s *aztestsSuite) TestBlobWithNewPipeline(c *chk.C) {
+// 	bsu := getBSU()
+// 	containerClient, _ := getContainerClient(c, bsu)
+// 	blobClient := containerClient.NewBlockBlobClient(blobPrefix)
+//
+// 	newBlobClient := blobClient.WithPipeline(newTestPipeline())
+//
+// 	// exercise the new pipeline
+// 	_, err := newBlobClient.GetAccountInfo(ctx)
+// 	c.Assert(err, chk.NotNil)
+// 	c.Assert(err.Error(), chk.Equals, testPipelineMessage)
+// }
 
 func waitForCopy(c *chk.C, copyBlobClient BlockBlobClient, blobCopyResponse BlobStartCopyFromURLResponse) {
 	status := *blobCopyResponse.CopyStatus
@@ -106,8 +108,8 @@ func (s *aztestsSuite) TestBlobStartCopyDestEmpty(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	// Read the blob data to verify the copy
-	data, err := ioutil.ReadAll(resp.Response().Body)
-	c.Assert(*resp.ContentLength(), chk.Equals, int64(len(blockBlobDefaultData)))
+	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	c.Assert(*resp.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
 	resp.Body(RetryReaderOptions{}).Close()
 }
@@ -130,7 +132,7 @@ func (s *aztestsSuite) TestBlobStartCopyMetadata(c *chk.C) {
 
 	resp2, err := copyBlobClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp2.NewMetadata(), chk.DeepEquals, metadata)
+	c.Assert(*resp2.Metadata, chk.DeepEquals, metadata)
 }
 
 func (s *aztestsSuite) TestBlobStartCopyMetadataNil(c *chk.C) {
@@ -151,7 +153,7 @@ func (s *aztestsSuite) TestBlobStartCopyMetadataNil(c *chk.C) {
 
 	resp2, err := copyBlobClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp2.NewMetadata(), chk.HasLen, 0)
+	c.Assert(*resp2.Metadata, chk.HasLen, 0)
 }
 
 func (s *aztestsSuite) TestBlobStartCopyMetadataEmpty(c *chk.C) {
@@ -176,7 +178,7 @@ func (s *aztestsSuite) TestBlobStartCopyMetadataEmpty(c *chk.C) {
 
 	resp2, err := copyBlobClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp2.NewMetadata(), chk.HasLen, 0)
+	c.Assert(*resp2.Metadata, chk.HasLen, 0)
 }
 
 func (s *aztestsSuite) TestBlobStartCopyMetadataInvalidField(c *chk.C) {
@@ -226,11 +228,11 @@ func (s *aztestsSuite) TestBlobStartCopySourcePrivate(c *chk.C) {
 	defer deleteContainer(c, copyContainerClient)
 	copyBlobClient, _ := getBlockBlobClient(c, copyContainerClient)
 
-	if bsu.String() == bsu2.String() {
+	if bsu.URL() == bsu2.URL() {
 		c.Skip("Test not valid because primary and secondary accounts are the same")
 	}
 	_, err = copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), nil)
-	validateStorageError(c, err, ServiceCodeCannotVerifyCopySource)
+	validateStorageError(c, err, StorageErrorCodeCannotVerifyCopySource)
 }
 
 func (s *aztestsSuite) TestBlobStartCopyUsingSASSrc(c *chk.C) {
@@ -255,8 +257,8 @@ func (s *aztestsSuite) TestBlobStartCopyUsingSASSrc(c *chk.C) {
 	}
 
 	// Create URLs to the destination blob with sas parameters
-	sasURL := blobClient.URL()
-	sasURL.RawQuery = queryParams.Encode()
+	sasURL := NewBlobURLParts(blobClient.URL())
+	sasURL.SAS = queryParams
 
 	// Create a new container for the destination
 	bsu2, err := getAlternateBSU()
@@ -268,7 +270,7 @@ func (s *aztestsSuite) TestBlobStartCopyUsingSASSrc(c *chk.C) {
 	defer deleteContainer(c, copyContainerClient)
 	copyBlobClient, _ := getBlockBlobClient(c, copyContainerClient)
 
-	resp, err := copyBlobClient.StartCopyFromURL(ctx, sasURL, nil)
+	resp, err := copyBlobClient.StartCopyFromURL(ctx, sasURL.URL(), nil)
 	c.Assert(err, chk.IsNil)
 
 	waitForCopy(c, copyBlobClient, resp)
@@ -281,8 +283,8 @@ func (s *aztestsSuite) TestBlobStartCopyUsingSASSrc(c *chk.C) {
 	resp2, err := copyBlobClient.Download(ctx, &downloadBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	data, err := ioutil.ReadAll(resp2.Response().Body)
-	c.Assert(resp2.ContentLength(), chk.Equals, int64(len(blockBlobDefaultData)))
+	data, err := ioutil.ReadAll(resp2.RawResponse.Body)
+	c.Assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
 	resp2.Body(RetryReaderOptions{}).Close()
 }
@@ -333,9 +335,9 @@ func (s *aztestsSuite) TestBlobStartCopyUsingSASDest(c *chk.C) {
 	}
 
 	// Generate anonymous URL to destination with SAS
-	anonURL := bsu2.URL()
-	anonURL.RawQuery = copyQueryParams.Encode()
-	anonymousBSU, err := NewServiceClient(anonURL.String(), NewAnonymousCredential(), nil)
+	anonURL := NewBlobURLParts(bsu2.URL())
+	anonURL.SAS = copyQueryParams
+	anonymousBSU, err := NewServiceClient(anonURL.URL(), NewAnonymousCredential(), nil)
 	if err != nil {
 		c.Fatal(err)
 	}
@@ -344,10 +346,10 @@ func (s *aztestsSuite) TestBlobStartCopyUsingSASDest(c *chk.C) {
 	anonymousBlobClient := anonymousContainerClient.NewBlockBlobClient(copyBlobName)
 
 	// Apply sas to source
-	srcBlobWithSasURL := blobClient.URL()
-	srcBlobWithSasURL.RawQuery = queryParams.Encode()
+	srcBlobWithSasURL := NewBlobURLParts(blobClient.URL())
+	srcBlobWithSasURL.SAS = queryParams
 
-	resp, err := anonymousBlobClient.StartCopyFromURL(ctx, srcBlobWithSasURL, nil)
+	resp, err := anonymousBlobClient.StartCopyFromURL(ctx, srcBlobWithSasURL.URL(), nil)
 	c.Assert(err, chk.IsNil)
 
 	// Allow copy to happen
@@ -361,9 +363,9 @@ func (s *aztestsSuite) TestBlobStartCopyUsingSASDest(c *chk.C) {
 	resp2, err := copyBlobClient.Download(ctx, &downloadBlobOptions)
 	c.Assert(err, chk.IsNil)
 
-	data, err := ioutil.ReadAll(resp2.Response().Body)
+	data, err := ioutil.ReadAll(resp2.RawResponse.Body)
 	_, err = resp2.Body(RetryReaderOptions{}).Read(data)
-	c.Assert(resp2.ContentLength(), chk.Equals, int64(len(blockBlobDefaultData)))
+	c.Assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
 	resp2.Body(RetryReaderOptions{}).Close()
 }
@@ -744,7 +746,7 @@ func (s *aztestsSuite) TestBlobAbortCopyInProgress(c *chk.C) {
 	if err != nil {
 		// If the error is nil, the test continues as normal.
 		// If the error is not nil, we want to check if it's because the copy is finished and send a message indicating this.
-		validateStorageError(c, err, ServiceCodeNoPendingCopyOperation)
+		validateStorageError(c, err, StorageErrorCodeNoPendingCopyOperation)
 		c.Error("The test failed because the copy completed because it was aborted")
 	}
 
@@ -780,7 +782,7 @@ func (s *aztestsSuite) TestBlobSnapshotMetadata(c *chk.C) {
 	snapshotURL := blobClient.WithSnapshot(*resp.Snapshot)
 	resp2, err := snapshotURL.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp2.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(resp2.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobSnapshotMetadataEmpty(c *chk.C) {
@@ -800,7 +802,7 @@ func (s *aztestsSuite) TestBlobSnapshotMetadataEmpty(c *chk.C) {
 	snapshotURL := blobClient.WithSnapshot(*resp.Snapshot)
 	resp2, err := snapshotURL.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp2.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(*resp2.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobSnapshotMetadataNil(c *chk.C) {
@@ -819,7 +821,7 @@ func (s *aztestsSuite) TestBlobSnapshotMetadataNil(c *chk.C) {
 	snapshotURL := blobClient.WithSnapshot(*resp.Snapshot)
 	resp2, err := snapshotURL.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp2.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(*resp2.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobSnapshotMetadataInvalid(c *chk.C) {
@@ -1069,7 +1071,7 @@ func (s *aztestsSuite) TestBlobDownloadDataCountZero(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	// Specifying a count of 0 results in the value being ignored
-	data, err := ioutil.ReadAll(resp.Response().Body)
+	data, err := ioutil.ReadAll(resp.RawResponse.Body)
 	c.Assert(err, chk.IsNil)
 	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
 }
@@ -1087,7 +1089,7 @@ func (s *aztestsSuite) TestBlobDownloadDataCountExact(c *chk.C) {
 	resp, err := blobClient.Download(ctx, &options)
 	c.Assert(err, chk.IsNil)
 
-	data, err := ioutil.ReadAll(resp.Response().Body)
+	data, err := ioutil.ReadAll(resp.RawResponse.Body)
 	c.Assert(err, chk.IsNil)
 	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
 }
@@ -1105,7 +1107,7 @@ func (s *aztestsSuite) TestBlobDownloadDataCountOutOfRange(c *chk.C) {
 	resp, err := blobClient.Download(ctx, &options)
 	c.Assert(err, chk.IsNil)
 
-	data, err := ioutil.ReadAll(resp.Response().Body)
+	data, err := ioutil.ReadAll(resp.RawResponse.Body)
 	c.Assert(err, chk.IsNil)
 	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
 }
@@ -1125,7 +1127,7 @@ func (s *aztestsSuite) TestBlobDownloadDataEmptyRangeStruct(c *chk.C) {
 	resp, err := blobClient.Download(ctx, &options)
 	c.Assert(err, chk.IsNil)
 
-	data, err := ioutil.ReadAll(resp.Response().Body)
+	data, err := ioutil.ReadAll(resp.RawResponse.Body)
 	c.Assert(err, chk.IsNil)
 	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
 }
@@ -1147,7 +1149,7 @@ func (s *aztestsSuite) TestBlobDownloadDataContentMD5(c *chk.C) {
 	resp, err := blobClient.Download(ctx, &options)
 	c.Assert(err, chk.IsNil)
 	mdf := md5.Sum([]byte(blockBlobDefaultData)[10:13])
-	c.Assert(*resp.ContentMD5(), chk.DeepEquals, mdf[:])
+	c.Assert(*resp.ContentMD5, chk.DeepEquals, mdf[:])
 }
 
 func (s *aztestsSuite) TestBlobDownloadDataIfModifiedSinceTrue(c *chk.C) {
@@ -1166,7 +1168,7 @@ func (s *aztestsSuite) TestBlobDownloadDataIfModifiedSinceTrue(c *chk.C) {
 	}
 	resp, err := blobClient.Download(ctx, &options)
 	c.Assert(err, chk.IsNil)
-	c.Assert(*resp.ContentLength(), chk.Equals, int64(len(blockBlobDefaultData)))
+	c.Assert(*resp.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 }
 
 func (s *aztestsSuite) TestBlobDownloadDataIfModifiedSinceFalse(c *chk.C) {
@@ -1202,7 +1204,7 @@ func (s *aztestsSuite) TestBlobDownloadDataIfUnmodifiedSinceTrue(c *chk.C) {
 	}
 	resp, err := blobClient.Download(ctx, &options)
 	c.Assert(err, chk.IsNil)
-	c.Assert(*resp.ContentLength(), chk.Equals, int64(len(blockBlobDefaultData)))
+	c.Assert(*resp.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 }
 
 func (s *aztestsSuite) TestBlobDownloadDataIfUnmodifiedSinceFalse(c *chk.C) {
@@ -1239,7 +1241,7 @@ func (s *aztestsSuite) TestBlobDownloadDataIfMatchTrue(c *chk.C) {
 
 	resp2, err := blobClient.Download(ctx, &options)
 	c.Assert(err, chk.IsNil)
-	c.Assert(*resp2.ContentLength(), chk.Equals, int64(len(blockBlobDefaultData)))
+	c.Assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 }
 
 func (s *aztestsSuite) TestBlobDownloadDataIfMatchFalse(c *chk.C) {
@@ -1284,7 +1286,7 @@ func (s *aztestsSuite) TestBlobDownloadDataIfNoneMatchTrue(c *chk.C) {
 
 	resp2, err := blobClient.Download(ctx, &options)
 	c.Assert(err, chk.IsNil)
-	c.Assert(*resp2.ContentLength(), chk.Equals, int64(len(blockBlobDefaultData)))
+	c.Assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 }
 
 func (s *aztestsSuite) TestBlobDownloadDataIfNoneMatchFalse(c *chk.C) {
@@ -1397,8 +1399,9 @@ func validateBlobDeleted(c *chk.C, blobClient BlobClient) {
 	_, err := blobClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.NotNil)
 
-	storageError := err.(*StorageError) // Delete blob is a HEAD request and does not return a ServiceCode in the body
-	c.Assert(strings.Contains(storageError.Error(), "not exist"), chk.Equals, true)
+	// TODO cannot be checked right now
+	serr := err.(*StorageError) // Delete blob is a HEAD request and does not return a StorageErrorCode in the body
+	c.Assert(strings.Contains(serr.Error(), "not exist"), chk.Equals, true)
 }
 
 func (s *aztestsSuite) TestBlobDeleteIfModifiedSinceTrue(c *chk.C) {
@@ -1429,7 +1432,7 @@ func (s *aztestsSuite) TestBlobDeleteIfModifiedSinceFalse(c *chk.C) {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 	}
 	_, err := blobClient.Delete(ctx, &deleteBlobOptions)
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobDeleteIfUnmodifiedSinceTrue(c *chk.C) {
@@ -1461,7 +1464,7 @@ func (s *aztestsSuite) TestBlobDeleteIfUnmodifiedSinceFalse(c *chk.C) {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 	}
 	_, err := blobClient.Delete(ctx, &deleteBlobOptions)
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobDeleteIfMatchTrue(c *chk.C) {
@@ -1498,7 +1501,7 @@ func (s *aztestsSuite) TestBlobDeleteIfMatchFalse(c *chk.C) {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: etag},
 	}
 	_, err = blobClient.Delete(ctx, &deleteBlobOptions)
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobDeleteIfNoneMatchTrue(c *chk.C) {
@@ -1534,7 +1537,7 @@ func (s *aztestsSuite) TestBlobDeleteIfNoneMatchFalse(c *chk.C) {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: etag},
 	}
 	_, err := blobClient.Delete(ctx, &deleteBlobOptions)
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfModifiedSinceTrue(c *chk.C) {
@@ -1553,7 +1556,7 @@ func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfModifiedSinceTrue(c *chk.C) 
 	}
 	resp, err := blobClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfModifiedSinceFalse(c *chk.C) {
@@ -1592,7 +1595,7 @@ func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceTrue(c *chk.C
 	}
 	resp, err := blobClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceFalse(c *chk.C) {
@@ -1629,21 +1632,21 @@ func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfMatchTrue(c *chk.C) {
 	}
 	resp2, err := blobClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp2.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(*resp2.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobGetPropsOnMissingBlob(c *chk.C) {
 	bsu := getBSU()
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
-	blobClient := containerClient.NewBlobClient("MISSING", nil)
+	blobClient := containerClient.NewBlobClient("MISSING")
 
 	_, err := blobClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.NotNil)
 	storageError := err.(*StorageError)
 	c.Assert(storageError.response.StatusCode, chk.Equals, 404)
-	//c.Assert(storageError.ServiceCode(), chk.Equals, ServiceCodeBlobNotFound)
-	c.Assert(storageError.response.Header.Get("x-ms-error-code"), chk.Equals, string(ServiceCodeBlobNotFound))
+	//c.Assert(storageError.ErrorCode(), chk.Equals, StorageErrorCodeBlobNotFound)
+	c.Assert(storageError.response.Header.Get("x-ms-error-code"), chk.Equals, string(StorageErrorCodeBlobNotFound))
 }
 
 func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfMatchFalse(c *chk.C) {
@@ -1677,7 +1680,7 @@ func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfNoneMatchTrue(c *chk.C) {
 	}
 	resp, err := blobClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfNoneMatchFalse(c *chk.C) {
@@ -1871,7 +1874,7 @@ func (s *aztestsSuite) TestBlobSetMetadataNil(c *chk.C) {
 
 	resp, err := blobClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.HasLen, 0)
+	c.Assert(resp.Metadata, chk.IsNil)
 }
 
 func (s *aztestsSuite) TestBlobSetMetadataEmpty(c *chk.C) {
@@ -1888,7 +1891,7 @@ func (s *aztestsSuite) TestBlobSetMetadataEmpty(c *chk.C) {
 
 	resp, err := blobClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.HasLen, 0)
+	c.Assert(*resp.Metadata, chk.HasLen, 0)
 }
 
 func (s *aztestsSuite) TestBlobSetMetadataInvalidField(c *chk.C) {
@@ -1905,7 +1908,7 @@ func (s *aztestsSuite) TestBlobSetMetadataInvalidField(c *chk.C) {
 func validateMetadataSet(c *chk.C, blobClient BlockBlobClient) {
 	resp, err := blobClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.NewMetadata(), chk.DeepEquals, basicMetadata)
+	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobSetMetadataIfModifiedSinceTrue(c *chk.C) {
@@ -1937,7 +1940,7 @@ func (s *aztestsSuite) TestBlobSetMetadataIfModifiedSinceFalse(c *chk.C) {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 	}
 	_, err := blobClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobSetMetadataIfUnmodifiedSinceTrue(c *chk.C) {
@@ -1969,7 +1972,7 @@ func (s *aztestsSuite) TestBlobSetMetadataIfUnmodifiedSinceFalse(c *chk.C) {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 	}
 	_, err := blobClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobSetMetadataIfMatchTrue(c *chk.C) {
@@ -2001,7 +2004,7 @@ func (s *aztestsSuite) TestBlobSetMetadataIfMatchFalse(c *chk.C) {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag},
 	}
 	_, err := blobClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func (s *aztestsSuite) TestBlobSetMetadataIfNoneMatchTrue(c *chk.C) {
@@ -2033,7 +2036,7 @@ func (s *aztestsSuite) TestBlobSetMetadataIfNoneMatchFalse(c *chk.C) {
 		ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag},
 	}
 	_, err = blobClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-	validateStorageError(c, err, ServiceCodeConditionNotMet)
+	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
 func testBlobsUndeleteImpl(c *chk.C, bsu ServiceClient) error {
@@ -2051,7 +2054,7 @@ func testBlobsUndeleteImpl(c *chk.C, bsu ServiceClient) error {
 	//
 	//resp, err := blobURL.GetProperties(ctx, BlobAccessConditions{})
 	//if err != nil {
-	//	return errors.New(string(err.(StorageError).ServiceCode()))
+	//	return errors.New(string(err.(StorageError).ErrorCode()))
 	//}
 	//c.Assert(resp.BlobType(), chk.Equals, BlobBlockBlob) // We could check any property. This is just to double check it was undeleted.
 	return nil
@@ -2186,7 +2189,7 @@ func (s *aztestsSuite) TestBlobSetTierAllTiers(c *chk.C) {
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	_, err = blobClient.SetTier(ctx, AccessTierType("garbage"), LeaseAccessConditions{})
-//	validateStorageError(c, err, ServiceCodeInvalidHeaderValue)
+//	validateStorageError(c, err, StorageErrorCodeInvalidHeaderValue)
 //}
 //
 func (s *aztestsSuite) TestblobClientPartsSASQueryTimes(c *chk.C) {
@@ -2225,9 +2228,8 @@ func (s *aztestsSuite) TestblobClientPartsSASQueryTimes(c *chk.C) {
 				"sr=b&" +
 				"st=" + url.QueryEscape(StartTimesInputs[i]) + "&" +
 				"sv=2019-10-10"
-		url, _ := url.Parse(urlString)
 
-		parts := NewBlobURLParts(*url)
+		parts := NewBlobURLParts(urlString)
 		c.Assert(parts.Scheme, chk.Equals, "https")
 		c.Assert(parts.Host, chk.Equals, "myaccount.blob.core.windows.net")
 		c.Assert(parts.ContainerName, chk.Equals, "mycontainer")
@@ -2237,8 +2239,7 @@ func (s *aztestsSuite) TestblobClientPartsSASQueryTimes(c *chk.C) {
 		c.Assert(sas.StartTime(), chk.Equals, StartTimesExpected[i])
 		c.Assert(sas.ExpiryTime(), chk.Equals, ExpiryTimesExpected[i])
 
-		uResult := parts.URL()
-		c.Assert(uResult.String(), chk.Equals, urlString)
+		c.Assert(parts.URL(), chk.Equals, urlString)
 	}
 }
 

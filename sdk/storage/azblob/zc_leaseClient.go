@@ -3,7 +3,6 @@ package azblob
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"net/url"
 	"time"
 )
 
@@ -15,32 +14,27 @@ type BlobLeaseClient struct {
 }
 
 func NewBlobLeaseClient(blobURL string, cred azcore.Credential, pathRenameMode *PathRenameMode, options *connectionOptions, leaseId *string) (BlobLeaseClient, error) {
-	u, err := url.Parse(blobURL)
-	if err != nil {
-		return BlobLeaseClient{}, err
-	}
 	con := newConnection(blobURL, cred, options)
-	blobClient := BlobClient{client: &blobClient{con, pathRenameMode}, u: *u}
+	c, _ := cred.(*SharedKeyCredential)
+	blobClient := BlobClient{client: &blobClient{con, pathRenameMode}, cred: c}
 	return BlobLeaseClient{BlobClient: blobClient, leaseId: leaseId}, nil
 }
 
 // URL returns the URL endpoint used by the BlobLeaseClient object.
-func (blc BlobLeaseClient) URL() url.URL {
-	return blc.u
+func (blc BlobLeaseClient) URL() string {
+	return blc.client.con.u
 }
 
-// String returns the URL as a string.
-func (blc BlobLeaseClient) String() string {
-	u := blc.URL()
-	return u.String()
-}
-
-// WithPipeline creates a new BlobLeaseClient object identical to the source but with the specified request policy pipeline.
-func (blc BlobLeaseClient) WithPipeline(pipeline azcore.Pipeline) BlobLeaseClient {
-	con := newConnectionWithPipeline(blc.u.String(), pipeline)
-	blobClient := BlobClient{client: &blobClient{con, blc.client.pathRenameMode}, u: blc.u}
-	return BlobLeaseClient{BlobClient: blobClient}
-}
+//// WithPipeline creates a new BlobLeaseClient object identical to the source but with the specified request policy pipeline.
+//func (blc BlobLeaseClient) WithPipeline(pipeline azcore.Pipeline) BlobLeaseClient {
+//	blobClient := BlobClient{
+//		client: &blobClient{
+//			newConnectionWithPipeline(blc.URL(), blc.client.con.p),
+//			blc.client.pathRenameMode,
+//		},
+//	}
+//	return BlobLeaseClient{BlobClient: blobClient}
+//}
 
 // AcquireLease acquires a lease on the blob for write and delete operations. The lease Duration must be between
 // 15 to 60 seconds, or infinite (-1).
@@ -92,14 +86,11 @@ type ContainerLeaseClient struct {
 }
 
 func NewContainerLeaseClient(containerURL string, cred azcore.Credential, options *connectionOptions, leaseId *string) (ContainerLeaseClient, error) {
-	u, err := url.Parse(containerURL)
-	if err != nil {
-		return ContainerLeaseClient{}, err
-	}
+	c, _ := cred.(*SharedKeyCredential)
 	containerClient := ContainerClient{
 		client: &containerClient{
 			con: newConnection(containerURL, cred, options),
-		}, u: *u,
+		}, cred: c,
 	}
 	return ContainerLeaseClient{
 		ContainerClient: containerClient,
@@ -108,23 +99,8 @@ func NewContainerLeaseClient(containerURL string, cred azcore.Credential, option
 }
 
 // URL returns the URL endpoint used by the ContainerClient object.
-func (clc ContainerLeaseClient) URL() url.URL {
-	return clc.u
-}
-
-// String returns the URL as a string.
-func (clc ContainerLeaseClient) String() string {
-	u := clc.URL()
-	return u.String()
-}
-
-// WithPipeline creates a new ContainerLeaseClient object identical to the source but with the specified request policy pipeline.
-func (clc ContainerLeaseClient) WithPipeline(pipeline azcore.Pipeline) ContainerLeaseClient {
-	con := newConnectionWithPipeline(clc.u.String(), pipeline)
-	containerClient := ContainerClient{client: &containerClient{con: con}, u: clc.u}
-	return ContainerLeaseClient{
-		ContainerClient: containerClient,
-	}
+func (clc ContainerLeaseClient) URL() string {
+	return clc.client.con.u
 }
 
 // AcquireLease acquires a lease on the container for delete operations. The lease Duration must be between 15 to 60 seconds, or infinite (-1).

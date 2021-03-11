@@ -22,7 +22,7 @@ package storagecache
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2020-10-01/storagecache"
+	original "github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2021-03-01/storagecache"
 )
 
 const (
@@ -120,13 +120,13 @@ const (
 	QuotaID                     ReasonCode = original.QuotaID
 )
 
-type TargetType = original.TargetType
+type StorageTargetType = original.StorageTargetType
 
 const (
-	TargetTypeClfs                    TargetType = original.TargetTypeClfs
-	TargetTypeNfs3                    TargetType = original.TargetTypeNfs3
-	TargetTypeStorageTargetProperties TargetType = original.TargetTypeStorageTargetProperties
-	TargetTypeUnknown                 TargetType = original.TargetTypeUnknown
+	StorageTargetTypeBlobNfs StorageTargetType = original.StorageTargetTypeBlobNfs
+	StorageTargetTypeClfs    StorageTargetType = original.StorageTargetTypeClfs
+	StorageTargetTypeNfs3    StorageTargetType = original.StorageTargetTypeNfs3
+	StorageTargetTypeUnknown StorageTargetType = original.StorageTargetTypeUnknown
 )
 
 type UsernameDownloadedType = original.UsernameDownloadedType
@@ -157,7 +157,7 @@ type AscOperation = original.AscOperation
 type AscOperationProperties = original.AscOperationProperties
 type AscOperationsClient = original.AscOperationsClient
 type BaseClient = original.BaseClient
-type BasicStorageTargetProperties = original.BasicStorageTargetProperties
+type BlobNfsTarget = original.BlobNfsTarget
 type Cache = original.Cache
 type CacheActiveDirectorySettings = original.CacheActiveDirectorySettings
 type CacheActiveDirectorySettingsCredentials = original.CacheActiveDirectorySettingsCredentials
@@ -184,9 +184,9 @@ type CachesStartFuture = original.CachesStartFuture
 type CachesStopFuture = original.CachesStopFuture
 type CachesUpgradeFirmwareFuture = original.CachesUpgradeFirmwareFuture
 type ClfsTarget = original.ClfsTarget
-type ClfsTargetProperties = original.ClfsTargetProperties
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type Condition = original.Condition
 type ErrorResponse = original.ErrorResponse
 type KeyVaultKeyReference = original.KeyVaultKeyReference
 type KeyVaultKeyReferenceSourceVault = original.KeyVaultKeyReferenceSourceVault
@@ -194,7 +194,6 @@ type MetricDimension = original.MetricDimension
 type MetricSpecification = original.MetricSpecification
 type NamespaceJunction = original.NamespaceJunction
 type Nfs3Target = original.Nfs3Target
-type Nfs3TargetProperties = original.Nfs3TargetProperties
 type NfsAccessPolicy = original.NfsAccessPolicy
 type NfsAccessRule = original.NfsAccessRule
 type OperationsClient = original.OperationsClient
@@ -211,13 +210,13 @@ type StorageTargetProperties = original.StorageTargetProperties
 type StorageTargetResource = original.StorageTargetResource
 type StorageTargetsClient = original.StorageTargetsClient
 type StorageTargetsCreateOrUpdateFuture = original.StorageTargetsCreateOrUpdateFuture
+type StorageTargetsDNSRefreshFuture = original.StorageTargetsDNSRefreshFuture
 type StorageTargetsDeleteFuture = original.StorageTargetsDeleteFuture
 type StorageTargetsResult = original.StorageTargetsResult
 type StorageTargetsResultIterator = original.StorageTargetsResultIterator
 type StorageTargetsResultPage = original.StorageTargetsResultPage
 type SystemData = original.SystemData
 type UnknownTarget = original.UnknownTarget
-type UnknownTargetProperties = original.UnknownTargetProperties
 type UsageModel = original.UsageModel
 type UsageModelDisplay = original.UsageModelDisplay
 type UsageModelsClient = original.UsageModelsClient
@@ -327,8 +326,8 @@ func PossibleProvisioningStateTypeValues() []ProvisioningStateType {
 func PossibleReasonCodeValues() []ReasonCode {
 	return original.PossibleReasonCodeValues()
 }
-func PossibleTargetTypeValues() []TargetType {
-	return original.PossibleTargetTypeValues()
+func PossibleStorageTargetTypeValues() []StorageTargetType {
+	return original.PossibleStorageTargetTypeValues()
 }
 func PossibleUsernameDownloadedTypeValues() []UsernameDownloadedType {
 	return original.PossibleUsernameDownloadedTypeValues()

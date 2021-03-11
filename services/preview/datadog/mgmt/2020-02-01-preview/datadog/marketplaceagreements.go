@@ -42,10 +42,10 @@ func NewMarketplaceAgreementsClientWithBaseURI(baseURI string, subscriptionID st
 	return MarketplaceAgreementsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create sends the create request.
-func (client MarketplaceAgreementsClient) Create(ctx context.Context, body *AgreementResource) (result AgreementResource, err error) {
+// CreateOrUpdate sends the create or update request.
+func (client MarketplaceAgreementsClient) CreateOrUpdate(ctx context.Context, body *AgreementResource) (result AgreementResource, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/MarketplaceAgreementsClient.Create")
+		ctx = tracing.StartSpan(ctx, fqdn+"/MarketplaceAgreementsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -54,32 +54,37 @@ func (client MarketplaceAgreementsClient) Create(ctx context.Context, body *Agre
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreatePreparer(ctx, body)
+	req, err := client.CreateOrUpdatePreparer(ctx, body)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datadog.MarketplaceAgreementsClient", "Create", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "datadog.MarketplaceAgreementsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datadog.MarketplaceAgreementsClient", "Create", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datadog.MarketplaceAgreementsClient", "CreateOrUpdate", resp, "Failure sending request")
 		return
 	}
 
-	result, err = client.CreateResponder(resp)
+	result, err = client.CreateOrUpdateResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datadog.MarketplaceAgreementsClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "datadog.MarketplaceAgreementsClient", "CreateOrUpdate", resp, "Failure responding to request")
 		return
 	}
 
 	return
 }
 
-// CreatePreparer prepares the Create request.
-func (client MarketplaceAgreementsClient) CreatePreparer(ctx context.Context, body *AgreementResource) (*http.Request, error) {
+// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
+func (client MarketplaceAgreementsClient) CreateOrUpdatePreparer(ctx context.Context, body *AgreementResource) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-02-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
 	}
 
 	body.ID = nil
@@ -89,7 +94,8 @@ func (client MarketplaceAgreementsClient) CreatePreparer(ctx context.Context, bo
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/agreements/default", pathParameters))
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/agreements/default", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 	if body != nil {
 		preparer = autorest.DecoratePreparer(preparer,
 			autorest.WithJSON(body))
@@ -97,15 +103,15 @@ func (client MarketplaceAgreementsClient) CreatePreparer(ctx context.Context, bo
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateSender sends the Create request. The method will close the
+// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client MarketplaceAgreementsClient) CreateSender(req *http.Request) (*http.Response, error) {
+func (client MarketplaceAgreementsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
-// CreateResponder handles the response to the Create request. The method always
+// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client MarketplaceAgreementsClient) CreateResponder(resp *http.Response) (result AgreementResource, err error) {
+func (client MarketplaceAgreementsClient) CreateOrUpdateResponder(resp *http.Response) (result AgreementResource, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -160,10 +166,16 @@ func (client MarketplaceAgreementsClient) ListPreparer(ctx context.Context) (*ht
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2020-02-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/agreements", pathParameters))
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/agreements", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 

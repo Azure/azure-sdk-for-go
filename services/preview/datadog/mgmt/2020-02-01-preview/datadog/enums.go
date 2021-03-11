@@ -53,13 +53,17 @@ type MarketplaceSubscriptionStatus string
 const (
 	// Active ...
 	Active MarketplaceSubscriptionStatus = "Active"
+	// Provisioning ...
+	Provisioning MarketplaceSubscriptionStatus = "Provisioning"
 	// Suspended ...
 	Suspended MarketplaceSubscriptionStatus = "Suspended"
+	// Unsubscribed ...
+	Unsubscribed MarketplaceSubscriptionStatus = "Unsubscribed"
 )
 
 // PossibleMarketplaceSubscriptionStatusValues returns an array of possible values for the MarketplaceSubscriptionStatus const type.
 func PossibleMarketplaceSubscriptionStatusValues() []MarketplaceSubscriptionStatus {
-	return []MarketplaceSubscriptionStatus{Active, Suspended}
+	return []MarketplaceSubscriptionStatus{Active, Provisioning, Suspended, Unsubscribed}
 }
 
 // MonitoringStatus enumerates the values for monitoring status.

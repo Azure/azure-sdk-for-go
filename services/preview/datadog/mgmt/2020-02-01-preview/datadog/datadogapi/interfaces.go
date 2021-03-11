@@ -25,46 +25,37 @@ import (
 
 // MarketplaceAgreementsClientAPI contains the set of methods on the MarketplaceAgreementsClient type.
 type MarketplaceAgreementsClientAPI interface {
-	Create(ctx context.Context, body *datadog.AgreementResource) (result datadog.AgreementResource, err error)
+	CreateOrUpdate(ctx context.Context, body *datadog.AgreementResource) (result datadog.AgreementResource, err error)
 	List(ctx context.Context) (result datadog.AgreementResourceListResponsePage, err error)
 	ListComplete(ctx context.Context) (result datadog.AgreementResourceListResponseIterator, err error)
 }
 
 var _ MarketplaceAgreementsClientAPI = (*datadog.MarketplaceAgreementsClient)(nil)
 
-// APIKeysClientAPI contains the set of methods on the APIKeysClient type.
-type APIKeysClientAPI interface {
+// MonitorsClientAPI contains the set of methods on the MonitorsClient type.
+type MonitorsClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, monitorName string, body *datadog.MonitorResource) (result datadog.MonitorsCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.MonitorsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.MonitorResource, err error)
 	GetDefaultKey(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.APIKey, err error)
-	List(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.APIKeyListResponsePage, err error)
-	ListComplete(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.APIKeyListResponseIterator, err error)
+	List(ctx context.Context) (result datadog.MonitorResourceListResponsePage, err error)
+	ListComplete(ctx context.Context) (result datadog.MonitorResourceListResponseIterator, err error)
+	ListAPIKeys(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.APIKeyListResponsePage, err error)
+	ListAPIKeysComplete(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.APIKeyListResponseIterator, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result datadog.MonitorResourceListResponsePage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result datadog.MonitorResourceListResponseIterator, err error)
+	ListHosts(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.HostListResponsePage, err error)
+	ListHostsComplete(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.HostListResponseIterator, err error)
+	ListLinkedResources(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.LinkedResourceListResponsePage, err error)
+	ListLinkedResourcesComplete(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.LinkedResourceListResponseIterator, err error)
+	ListMonitoredResources(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.MonitoredResourceListResponsePage, err error)
+	ListMonitoredResourcesComplete(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.MonitoredResourceListResponseIterator, err error)
+	RefreshSetPasswordLink(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.SetPasswordLink, err error)
 	SetDefaultKey(ctx context.Context, resourceGroupName string, monitorName string, body *datadog.APIKey) (result autorest.Response, err error)
+	Update(ctx context.Context, resourceGroupName string, monitorName string, body *datadog.MonitorResourceUpdateParameters) (result datadog.MonitorResource, err error)
 }
 
-var _ APIKeysClientAPI = (*datadog.APIKeysClient)(nil)
-
-// HostsClientAPI contains the set of methods on the HostsClient type.
-type HostsClientAPI interface {
-	List(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.HostListResponsePage, err error)
-	ListComplete(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.HostListResponseIterator, err error)
-}
-
-var _ HostsClientAPI = (*datadog.HostsClient)(nil)
-
-// LinkedResourcesClientAPI contains the set of methods on the LinkedResourcesClient type.
-type LinkedResourcesClientAPI interface {
-	List(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.LinkedResourceListResponsePage, err error)
-	ListComplete(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.LinkedResourceListResponseIterator, err error)
-}
-
-var _ LinkedResourcesClientAPI = (*datadog.LinkedResourcesClient)(nil)
-
-// MonitoredResourcesClientAPI contains the set of methods on the MonitoredResourcesClient type.
-type MonitoredResourcesClientAPI interface {
-	List(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.MonitoredResourceListResponsePage, err error)
-	ListComplete(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.MonitoredResourceListResponseIterator, err error)
-}
-
-var _ MonitoredResourcesClientAPI = (*datadog.MonitoredResourcesClient)(nil)
+var _ MonitorsClientAPI = (*datadog.MonitorsClient)(nil)
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
@@ -73,27 +64,6 @@ type OperationsClientAPI interface {
 }
 
 var _ OperationsClientAPI = (*datadog.OperationsClient)(nil)
-
-// MonitorsClientAPI contains the set of methods on the MonitorsClient type.
-type MonitorsClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, monitorName string, body *datadog.MonitorResource) (result datadog.MonitorsCreateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.MonitorsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.MonitorResource, err error)
-	List(ctx context.Context) (result datadog.MonitorResourceListResponsePage, err error)
-	ListComplete(ctx context.Context) (result datadog.MonitorResourceListResponseIterator, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result datadog.MonitorResourceListResponsePage, err error)
-	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result datadog.MonitorResourceListResponseIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, monitorName string, body *datadog.MonitorResourceUpdateParameters) (result datadog.MonitorResource, err error)
-}
-
-var _ MonitorsClientAPI = (*datadog.MonitorsClient)(nil)
-
-// RefreshSetPasswordClientAPI contains the set of methods on the RefreshSetPasswordClient type.
-type RefreshSetPasswordClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, monitorName string) (result datadog.SetPasswordLink, err error)
-}
-
-var _ RefreshSetPasswordClientAPI = (*datadog.RefreshSetPasswordClient)(nil)
 
 // TagRulesClientAPI contains the set of methods on the TagRulesClient type.
 type TagRulesClientAPI interface {

@@ -22,43 +22,52 @@ package kubernetesconfiguration
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/kubernetesconfiguration/mgmt/2019-11-01-preview/kubernetesconfiguration"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/kubernetesconfiguration/mgmt/2020-07-01-preview/kubernetesconfiguration"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type ComplianceState = original.ComplianceState
+type ComplianceStateType = original.ComplianceStateType
 
 const (
-	Compliant    ComplianceState = original.Compliant
-	Failed       ComplianceState = original.Failed
-	Installed    ComplianceState = original.Installed
-	Noncompliant ComplianceState = original.Noncompliant
-	Pending      ComplianceState = original.Pending
+	Compliant    ComplianceStateType = original.Compliant
+	Failed       ComplianceStateType = original.Failed
+	Installed    ComplianceStateType = original.Installed
+	Noncompliant ComplianceStateType = original.Noncompliant
+	Pending      ComplianceStateType = original.Pending
 )
 
-type EnableHelmOperator = original.EnableHelmOperator
+type InstallStateType = original.InstallStateType
 
 const (
-	False EnableHelmOperator = original.False
-	True  EnableHelmOperator = original.True
+	InstallStateTypeFailed    InstallStateType = original.InstallStateTypeFailed
+	InstallStateTypeInstalled InstallStateType = original.InstallStateTypeInstalled
+	InstallStateTypePending   InstallStateType = original.InstallStateTypePending
 )
 
-type MessageLevel = original.MessageLevel
+type LevelType = original.LevelType
 
 const (
-	Error       MessageLevel = original.Error
-	Information MessageLevel = original.Information
-	Warning     MessageLevel = original.Warning
+	Error       LevelType = original.Error
+	Information LevelType = original.Information
+	Warning     LevelType = original.Warning
 )
 
-type OperatorScope = original.OperatorScope
+type MessageLevelType = original.MessageLevelType
 
 const (
-	Cluster   OperatorScope = original.Cluster
-	Namespace OperatorScope = original.Namespace
+	MessageLevelTypeError       MessageLevelType = original.MessageLevelTypeError
+	MessageLevelTypeInformation MessageLevelType = original.MessageLevelTypeInformation
+	MessageLevelTypeWarning     MessageLevelType = original.MessageLevelTypeWarning
+)
+
+type OperatorScopeType = original.OperatorScopeType
+
+const (
+	Cluster   OperatorScopeType = original.Cluster
+	Namespace OperatorScopeType = original.Namespace
 )
 
 type OperatorType = original.OperatorType
@@ -67,20 +76,37 @@ const (
 	Flux OperatorType = original.Flux
 )
 
-type ProvisioningState = original.ProvisioningState
+type ProvisioningStateType = original.ProvisioningStateType
 
 const (
-	ProvisioningStateAccepted  ProvisioningState = original.ProvisioningStateAccepted
-	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
-	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
-	ProvisioningStateRunning   ProvisioningState = original.ProvisioningStateRunning
-	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateTypeAccepted  ProvisioningStateType = original.ProvisioningStateTypeAccepted
+	ProvisioningStateTypeDeleting  ProvisioningStateType = original.ProvisioningStateTypeDeleting
+	ProvisioningStateTypeFailed    ProvisioningStateType = original.ProvisioningStateTypeFailed
+	ProvisioningStateTypeRunning   ProvisioningStateType = original.ProvisioningStateTypeRunning
+	ProvisioningStateTypeSucceeded ProvisioningStateType = original.ProvisioningStateTypeSucceeded
+)
+
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	None           ResourceIdentityType = original.None
+	SystemAssigned ResourceIdentityType = original.SystemAssigned
 )
 
 type BaseClient = original.BaseClient
 type ComplianceStatus = original.ComplianceStatus
+type ConfigurationIdentity = original.ConfigurationIdentity
 type ErrorDefinition = original.ErrorDefinition
 type ErrorResponse = original.ErrorResponse
+type ExtensionInstance = original.ExtensionInstance
+type ExtensionInstanceProperties = original.ExtensionInstanceProperties
+type ExtensionInstanceUpdate = original.ExtensionInstanceUpdate
+type ExtensionInstanceUpdateProperties = original.ExtensionInstanceUpdateProperties
+type ExtensionInstancesList = original.ExtensionInstancesList
+type ExtensionInstancesListIterator = original.ExtensionInstancesListIterator
+type ExtensionInstancesListPage = original.ExtensionInstancesListPage
+type ExtensionStatus = original.ExtensionStatus
+type ExtensionsClient = original.ExtensionsClient
 type HelmOperatorProperties = original.HelmOperatorProperties
 type OperationsClient = original.OperationsClient
 type ProxyResource = original.ProxyResource
@@ -91,6 +117,9 @@ type ResourceProviderOperationList = original.ResourceProviderOperationList
 type ResourceProviderOperationListIterator = original.ResourceProviderOperationListIterator
 type ResourceProviderOperationListPage = original.ResourceProviderOperationListPage
 type Result = original.Result
+type Scope = original.Scope
+type ScopeCluster = original.ScopeCluster
+type ScopeNamespace = original.ScopeNamespace
 type SourceControlConfiguration = original.SourceControlConfiguration
 type SourceControlConfigurationList = original.SourceControlConfigurationList
 type SourceControlConfigurationListIterator = original.SourceControlConfigurationListIterator
@@ -98,9 +127,22 @@ type SourceControlConfigurationListPage = original.SourceControlConfigurationLis
 type SourceControlConfigurationProperties = original.SourceControlConfigurationProperties
 type SourceControlConfigurationsClient = original.SourceControlConfigurationsClient
 type SourceControlConfigurationsDeleteFuture = original.SourceControlConfigurationsDeleteFuture
+type SystemData = original.SystemData
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewExtensionInstancesListIterator(page ExtensionInstancesListPage) ExtensionInstancesListIterator {
+	return original.NewExtensionInstancesListIterator(page)
+}
+func NewExtensionInstancesListPage(cur ExtensionInstancesList, getNextPage func(context.Context, ExtensionInstancesList) (ExtensionInstancesList, error)) ExtensionInstancesListPage {
+	return original.NewExtensionInstancesListPage(cur, getNextPage)
+}
+func NewExtensionsClient(subscriptionID string) ExtensionsClient {
+	return original.NewExtensionsClient(subscriptionID)
+}
+func NewExtensionsClientWithBaseURI(baseURI string, subscriptionID string) ExtensionsClient {
+	return original.NewExtensionsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
@@ -129,23 +171,29 @@ func NewSourceControlConfigurationsClientWithBaseURI(baseURI string, subscriptio
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleComplianceStateValues() []ComplianceState {
-	return original.PossibleComplianceStateValues()
+func PossibleComplianceStateTypeValues() []ComplianceStateType {
+	return original.PossibleComplianceStateTypeValues()
 }
-func PossibleEnableHelmOperatorValues() []EnableHelmOperator {
-	return original.PossibleEnableHelmOperatorValues()
+func PossibleInstallStateTypeValues() []InstallStateType {
+	return original.PossibleInstallStateTypeValues()
 }
-func PossibleMessageLevelValues() []MessageLevel {
-	return original.PossibleMessageLevelValues()
+func PossibleLevelTypeValues() []LevelType {
+	return original.PossibleLevelTypeValues()
 }
-func PossibleOperatorScopeValues() []OperatorScope {
-	return original.PossibleOperatorScopeValues()
+func PossibleMessageLevelTypeValues() []MessageLevelType {
+	return original.PossibleMessageLevelTypeValues()
+}
+func PossibleOperatorScopeTypeValues() []OperatorScopeType {
+	return original.PossibleOperatorScopeTypeValues()
 }
 func PossibleOperatorTypeValues() []OperatorType {
 	return original.PossibleOperatorTypeValues()
 }
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
+func PossibleProvisioningStateTypeValues() []ProvisioningStateType {
+	return original.PossibleProvisioningStateTypeValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

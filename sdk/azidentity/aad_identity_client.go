@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"path"
 	"strings"
 	"time"
 
@@ -17,8 +18,6 @@ import (
 
 const (
 	clientAssertionType = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-	tokenEndpoint       = "/oauth2/v2.0/token"
-	authEndpoint        = "/oauth2/v2.0/authorize"
 )
 
 const (
@@ -194,7 +193,7 @@ func (c *aadIdentityClient) createRefreshTokenRequest(ctx context.Context, tenan
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.authorityHost, tenantID, tokenEndpoint))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.authorityHost, tenantID, tokenEndpoint(oauthPath(tenantID))))
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +211,7 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(ctx context.Context, t
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.authorityHost, tenantID, tokenEndpoint))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.authorityHost, tenantID, tokenEndpoint(oauthPath(tenantID))))
 	if err != nil {
 		return nil, err
 	}
@@ -224,7 +223,7 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(ctx context.Context, t
 }
 
 func (c *aadIdentityClient) createClientCertificateAuthRequest(ctx context.Context, tenantID string, clientID string, cert *certContents, sendCertificateChain bool, scopes []string) (*azcore.Request, error) {
-	u := azcore.JoinPaths(c.authorityHost, tenantID, tokenEndpoint)
+	u := azcore.JoinPaths(c.authorityHost, tenantID, tokenEndpoint(oauthPath(tenantID)))
 	clientAssertion, err := createClientAssertionJWT(clientID, u, cert, sendCertificateChain)
 	if err != nil {
 		return nil, err
@@ -284,7 +283,7 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(ctx context.Contex
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.authorityHost, tenantID, tokenEndpoint))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.authorityHost, tenantID, tokenEndpoint(oauthPath(tenantID))))
 	if err != nil {
 		return nil, err
 	}
@@ -335,7 +334,7 @@ func (c *aadIdentityClient) createDeviceCodeAuthRequest(ctx context.Context, ten
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.authorityHost, tenantID, tokenEndpoint))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.authorityHost, tenantID, tokenEndpoint(oauthPath(tenantID))))
 	if err != nil {
 		return nil, err
 	}
@@ -369,7 +368,7 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, t
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
 	// endpoint that will return a device code along with the other necessary authentication flow parameters in the DeviceCodeResult struct
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.authorityHost, tenantID, "/oauth2/v2.0/devicecode"))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.authorityHost, tenantID, path.Join(oauthPath(tenantID), "/devicecode")))
 	if err != nil {
 		return nil, err
 	}
@@ -432,7 +431,7 @@ func (c *aadIdentityClient) createAuthorizationCodeAuthRequest(ctx context.Conte
 	data.Set(qpCode, authCode)
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.authorityHost, tenantID, tokenEndpoint))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(c.authorityHost, tenantID, tokenEndpoint(oauthPath(tenantID))))
 	if err != nil {
 		return nil, err
 	}

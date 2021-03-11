@@ -22,7 +22,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-08-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
 )
 
 const (
@@ -1766,6 +1766,7 @@ type FirewallPolicy = original.FirewallPolicy
 type FirewallPolicyCertificateAuthority = original.FirewallPolicyCertificateAuthority
 type FirewallPolicyFilterRuleCollection = original.FirewallPolicyFilterRuleCollection
 type FirewallPolicyFilterRuleCollectionAction = original.FirewallPolicyFilterRuleCollectionAction
+type FirewallPolicyInsights = original.FirewallPolicyInsights
 type FirewallPolicyIntrusionDetection = original.FirewallPolicyIntrusionDetection
 type FirewallPolicyIntrusionDetectionBypassTrafficSpecifications = original.FirewallPolicyIntrusionDetectionBypassTrafficSpecifications
 type FirewallPolicyIntrusionDetectionConfiguration = original.FirewallPolicyIntrusionDetectionConfiguration
@@ -1773,6 +1774,8 @@ type FirewallPolicyIntrusionDetectionSignatureSpecification = original.FirewallP
 type FirewallPolicyListResult = original.FirewallPolicyListResult
 type FirewallPolicyListResultIterator = original.FirewallPolicyListResultIterator
 type FirewallPolicyListResultPage = original.FirewallPolicyListResultPage
+type FirewallPolicyLogAnalyticsResources = original.FirewallPolicyLogAnalyticsResources
+type FirewallPolicyLogAnalyticsWorkspace = original.FirewallPolicyLogAnalyticsWorkspace
 type FirewallPolicyNatRuleCollection = original.FirewallPolicyNatRuleCollection
 type FirewallPolicyNatRuleCollectionAction = original.FirewallPolicyNatRuleCollectionAction
 type FirewallPolicyPropertiesFormat = original.FirewallPolicyPropertiesFormat
@@ -1787,6 +1790,7 @@ type FirewallPolicyRuleCollectionGroupProperties = original.FirewallPolicyRuleCo
 type FirewallPolicyRuleCollectionGroupsClient = original.FirewallPolicyRuleCollectionGroupsClient
 type FirewallPolicyRuleCollectionGroupsCreateOrUpdateFuture = original.FirewallPolicyRuleCollectionGroupsCreateOrUpdateFuture
 type FirewallPolicyRuleCollectionGroupsDeleteFuture = original.FirewallPolicyRuleCollectionGroupsDeleteFuture
+type FirewallPolicySNAT = original.FirewallPolicySNAT
 type FirewallPolicySku = original.FirewallPolicySku
 type FirewallPolicyThreatIntelWhitelist = original.FirewallPolicyThreatIntelWhitelist
 type FirewallPolicyTransportSecurity = original.FirewallPolicyTransportSecurity
@@ -2360,6 +2364,7 @@ type VirtualNetworkGatewayConnectionsClient = original.VirtualNetworkGatewayConn
 type VirtualNetworkGatewayConnectionsCreateOrUpdateFuture = original.VirtualNetworkGatewayConnectionsCreateOrUpdateFuture
 type VirtualNetworkGatewayConnectionsDeleteFuture = original.VirtualNetworkGatewayConnectionsDeleteFuture
 type VirtualNetworkGatewayConnectionsGetIkeSasFuture = original.VirtualNetworkGatewayConnectionsGetIkeSasFuture
+type VirtualNetworkGatewayConnectionsResetConnectionFuture = original.VirtualNetworkGatewayConnectionsResetConnectionFuture
 type VirtualNetworkGatewayConnectionsResetSharedKeyFuture = original.VirtualNetworkGatewayConnectionsResetSharedKeyFuture
 type VirtualNetworkGatewayConnectionsSetSharedKeyFuture = original.VirtualNetworkGatewayConnectionsSetSharedKeyFuture
 type VirtualNetworkGatewayConnectionsStartPacketCaptureFuture = original.VirtualNetworkGatewayConnectionsStartPacketCaptureFuture
@@ -2482,6 +2487,8 @@ type VpnGatewaysStopPacketCaptureFuture = original.VpnGatewaysStopPacketCaptureF
 type VpnGatewaysUpdateTagsFuture = original.VpnGatewaysUpdateTagsFuture
 type VpnLinkBgpSettings = original.VpnLinkBgpSettings
 type VpnLinkConnectionsClient = original.VpnLinkConnectionsClient
+type VpnLinkConnectionsGetIkeSasFuture = original.VpnLinkConnectionsGetIkeSasFuture
+type VpnLinkConnectionsResetConnectionFuture = original.VpnLinkConnectionsResetConnectionFuture
 type VpnLinkProviderProperties = original.VpnLinkProviderProperties
 type VpnNatRuleMapping = original.VpnNatRuleMapping
 type VpnPacketCaptureStartParameters = original.VpnPacketCaptureStartParameters

@@ -21,13 +21,8 @@ package datadogapi
 
 import original "github.com/Azure/azure-sdk-for-go/services/preview/datadog/mgmt/2020-02-01-preview/datadog/datadogapi"
 
-type APIKeysClientAPI = original.APIKeysClientAPI
-type HostsClientAPI = original.HostsClientAPI
-type LinkedResourcesClientAPI = original.LinkedResourcesClientAPI
 type MarketplaceAgreementsClientAPI = original.MarketplaceAgreementsClientAPI
-type MonitoredResourcesClientAPI = original.MonitoredResourcesClientAPI
 type MonitorsClientAPI = original.MonitorsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
-type RefreshSetPasswordClientAPI = original.RefreshSetPasswordClientAPI
 type SingleSignOnConfigurationsClientAPI = original.SingleSignOnConfigurationsClientAPI
 type TagRulesClientAPI = original.TagRulesClientAPI

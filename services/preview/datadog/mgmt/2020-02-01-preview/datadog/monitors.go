@@ -337,6 +337,82 @@ func (client MonitorsClient) GetResponder(resp *http.Response) (result MonitorRe
 	return
 }
 
+// GetDefaultKey sends the get default key request.
+// Parameters:
+// resourceGroupName - the name of the resource group to which the Datadog resource belongs.
+// monitorName - monitor resource name
+func (client MonitorsClient) GetDefaultKey(ctx context.Context, resourceGroupName string, monitorName string) (result APIKey, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorsClient.GetDefaultKey")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.GetDefaultKeyPreparer(ctx, resourceGroupName, monitorName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "GetDefaultKey", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetDefaultKeySender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "GetDefaultKey", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetDefaultKeyResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "GetDefaultKey", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// GetDefaultKeyPreparer prepares the GetDefaultKey request.
+func (client MonitorsClient) GetDefaultKeyPreparer(ctx context.Context, resourceGroupName string, monitorName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"monitorName":       autorest.Encode("path", monitorName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-02-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/getDefaultKey", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetDefaultKeySender sends the GetDefaultKey request. The method will close the
+// http.Response Body if it receives an error.
+func (client MonitorsClient) GetDefaultKeySender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetDefaultKeyResponder handles the response to the GetDefaultKey request. The method always
+// closes the http.Response Body.
+func (client MonitorsClient) GetDefaultKeyResponder(resp *http.Response) (result APIKey, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // List sends the list request.
 func (client MonitorsClient) List(ctx context.Context) (result MonitorResourceListResponsePage, err error) {
 	if tracing.IsEnabled() {
@@ -447,6 +523,124 @@ func (client MonitorsClient) ListComplete(ctx context.Context) (result MonitorRe
 		}()
 	}
 	result.page, err = client.List(ctx)
+	return
+}
+
+// ListAPIKeys sends the list api keys request.
+// Parameters:
+// resourceGroupName - the name of the resource group to which the Datadog resource belongs.
+// monitorName - monitor resource name
+func (client MonitorsClient) ListAPIKeys(ctx context.Context, resourceGroupName string, monitorName string) (result APIKeyListResponsePage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorsClient.ListAPIKeys")
+		defer func() {
+			sc := -1
+			if result.aklr.Response.Response != nil {
+				sc = result.aklr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listAPIKeysNextResults
+	req, err := client.ListAPIKeysPreparer(ctx, resourceGroupName, monitorName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "ListAPIKeys", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListAPIKeysSender(req)
+	if err != nil {
+		result.aklr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "ListAPIKeys", resp, "Failure sending request")
+		return
+	}
+
+	result.aklr, err = client.ListAPIKeysResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "ListAPIKeys", resp, "Failure responding to request")
+		return
+	}
+	if result.aklr.hasNextLink() && result.aklr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListAPIKeysPreparer prepares the ListAPIKeys request.
+func (client MonitorsClient) ListAPIKeysPreparer(ctx context.Context, resourceGroupName string, monitorName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"monitorName":       autorest.Encode("path", monitorName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-02-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listApiKeys", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListAPIKeysSender sends the ListAPIKeys request. The method will close the
+// http.Response Body if it receives an error.
+func (client MonitorsClient) ListAPIKeysSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListAPIKeysResponder handles the response to the ListAPIKeys request. The method always
+// closes the http.Response Body.
+func (client MonitorsClient) ListAPIKeysResponder(resp *http.Response) (result APIKeyListResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listAPIKeysNextResults retrieves the next set of results, if any.
+func (client MonitorsClient) listAPIKeysNextResults(ctx context.Context, lastResults APIKeyListResponse) (result APIKeyListResponse, err error) {
+	req, err := lastResults.aPIKeyListResponsePreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listAPIKeysNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListAPIKeysSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listAPIKeysNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListAPIKeysResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listAPIKeysNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListAPIKeysComplete enumerates all values, automatically crossing page boundaries as required.
+func (client MonitorsClient) ListAPIKeysComplete(ctx context.Context, resourceGroupName string, monitorName string) (result APIKeyListResponseIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorsClient.ListAPIKeys")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListAPIKeys(ctx, resourceGroupName, monitorName)
 	return
 }
 
@@ -563,6 +757,523 @@ func (client MonitorsClient) ListByResourceGroupComplete(ctx context.Context, re
 		}()
 	}
 	result.page, err = client.ListByResourceGroup(ctx, resourceGroupName)
+	return
+}
+
+// ListHosts sends the list hosts request.
+// Parameters:
+// resourceGroupName - the name of the resource group to which the Datadog resource belongs.
+// monitorName - monitor resource name
+func (client MonitorsClient) ListHosts(ctx context.Context, resourceGroupName string, monitorName string) (result HostListResponsePage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorsClient.ListHosts")
+		defer func() {
+			sc := -1
+			if result.hlr.Response.Response != nil {
+				sc = result.hlr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listHostsNextResults
+	req, err := client.ListHostsPreparer(ctx, resourceGroupName, monitorName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "ListHosts", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListHostsSender(req)
+	if err != nil {
+		result.hlr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "ListHosts", resp, "Failure sending request")
+		return
+	}
+
+	result.hlr, err = client.ListHostsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "ListHosts", resp, "Failure responding to request")
+		return
+	}
+	if result.hlr.hasNextLink() && result.hlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListHostsPreparer prepares the ListHosts request.
+func (client MonitorsClient) ListHostsPreparer(ctx context.Context, resourceGroupName string, monitorName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"monitorName":       autorest.Encode("path", monitorName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-02-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listHosts", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListHostsSender sends the ListHosts request. The method will close the
+// http.Response Body if it receives an error.
+func (client MonitorsClient) ListHostsSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListHostsResponder handles the response to the ListHosts request. The method always
+// closes the http.Response Body.
+func (client MonitorsClient) ListHostsResponder(resp *http.Response) (result HostListResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listHostsNextResults retrieves the next set of results, if any.
+func (client MonitorsClient) listHostsNextResults(ctx context.Context, lastResults HostListResponse) (result HostListResponse, err error) {
+	req, err := lastResults.hostListResponsePreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listHostsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListHostsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listHostsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListHostsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listHostsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListHostsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client MonitorsClient) ListHostsComplete(ctx context.Context, resourceGroupName string, monitorName string) (result HostListResponseIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorsClient.ListHosts")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListHosts(ctx, resourceGroupName, monitorName)
+	return
+}
+
+// ListLinkedResources sends the list linked resources request.
+// Parameters:
+// resourceGroupName - the name of the resource group to which the Datadog resource belongs.
+// monitorName - monitor resource name
+func (client MonitorsClient) ListLinkedResources(ctx context.Context, resourceGroupName string, monitorName string) (result LinkedResourceListResponsePage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorsClient.ListLinkedResources")
+		defer func() {
+			sc := -1
+			if result.lrlr.Response.Response != nil {
+				sc = result.lrlr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listLinkedResourcesNextResults
+	req, err := client.ListLinkedResourcesPreparer(ctx, resourceGroupName, monitorName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "ListLinkedResources", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListLinkedResourcesSender(req)
+	if err != nil {
+		result.lrlr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "ListLinkedResources", resp, "Failure sending request")
+		return
+	}
+
+	result.lrlr, err = client.ListLinkedResourcesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "ListLinkedResources", resp, "Failure responding to request")
+		return
+	}
+	if result.lrlr.hasNextLink() && result.lrlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListLinkedResourcesPreparer prepares the ListLinkedResources request.
+func (client MonitorsClient) ListLinkedResourcesPreparer(ctx context.Context, resourceGroupName string, monitorName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"monitorName":       autorest.Encode("path", monitorName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-02-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listLinkedResources", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListLinkedResourcesSender sends the ListLinkedResources request. The method will close the
+// http.Response Body if it receives an error.
+func (client MonitorsClient) ListLinkedResourcesSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListLinkedResourcesResponder handles the response to the ListLinkedResources request. The method always
+// closes the http.Response Body.
+func (client MonitorsClient) ListLinkedResourcesResponder(resp *http.Response) (result LinkedResourceListResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listLinkedResourcesNextResults retrieves the next set of results, if any.
+func (client MonitorsClient) listLinkedResourcesNextResults(ctx context.Context, lastResults LinkedResourceListResponse) (result LinkedResourceListResponse, err error) {
+	req, err := lastResults.linkedResourceListResponsePreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listLinkedResourcesNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListLinkedResourcesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listLinkedResourcesNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListLinkedResourcesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listLinkedResourcesNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListLinkedResourcesComplete enumerates all values, automatically crossing page boundaries as required.
+func (client MonitorsClient) ListLinkedResourcesComplete(ctx context.Context, resourceGroupName string, monitorName string) (result LinkedResourceListResponseIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorsClient.ListLinkedResources")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListLinkedResources(ctx, resourceGroupName, monitorName)
+	return
+}
+
+// ListMonitoredResources sends the list monitored resources request.
+// Parameters:
+// resourceGroupName - the name of the resource group to which the Datadog resource belongs.
+// monitorName - monitor resource name
+func (client MonitorsClient) ListMonitoredResources(ctx context.Context, resourceGroupName string, monitorName string) (result MonitoredResourceListResponsePage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorsClient.ListMonitoredResources")
+		defer func() {
+			sc := -1
+			if result.mrlr.Response.Response != nil {
+				sc = result.mrlr.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.fn = client.listMonitoredResourcesNextResults
+	req, err := client.ListMonitoredResourcesPreparer(ctx, resourceGroupName, monitorName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "ListMonitoredResources", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListMonitoredResourcesSender(req)
+	if err != nil {
+		result.mrlr.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "ListMonitoredResources", resp, "Failure sending request")
+		return
+	}
+
+	result.mrlr, err = client.ListMonitoredResourcesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "ListMonitoredResources", resp, "Failure responding to request")
+		return
+	}
+	if result.mrlr.hasNextLink() && result.mrlr.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListMonitoredResourcesPreparer prepares the ListMonitoredResources request.
+func (client MonitorsClient) ListMonitoredResourcesPreparer(ctx context.Context, resourceGroupName string, monitorName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"monitorName":       autorest.Encode("path", monitorName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-02-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listMonitoredResources", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListMonitoredResourcesSender sends the ListMonitoredResources request. The method will close the
+// http.Response Body if it receives an error.
+func (client MonitorsClient) ListMonitoredResourcesSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListMonitoredResourcesResponder handles the response to the ListMonitoredResources request. The method always
+// closes the http.Response Body.
+func (client MonitorsClient) ListMonitoredResourcesResponder(resp *http.Response) (result MonitoredResourceListResponse, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listMonitoredResourcesNextResults retrieves the next set of results, if any.
+func (client MonitorsClient) listMonitoredResourcesNextResults(ctx context.Context, lastResults MonitoredResourceListResponse) (result MonitoredResourceListResponse, err error) {
+	req, err := lastResults.monitoredResourceListResponsePreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listMonitoredResourcesNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListMonitoredResourcesSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listMonitoredResourcesNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListMonitoredResourcesResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "listMonitoredResourcesNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListMonitoredResourcesComplete enumerates all values, automatically crossing page boundaries as required.
+func (client MonitorsClient) ListMonitoredResourcesComplete(ctx context.Context, resourceGroupName string, monitorName string) (result MonitoredResourceListResponseIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorsClient.ListMonitoredResources")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListMonitoredResources(ctx, resourceGroupName, monitorName)
+	return
+}
+
+// RefreshSetPasswordLink sends the refresh set password link request.
+// Parameters:
+// resourceGroupName - the name of the resource group to which the Datadog resource belongs.
+// monitorName - monitor resource name
+func (client MonitorsClient) RefreshSetPasswordLink(ctx context.Context, resourceGroupName string, monitorName string) (result SetPasswordLink, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorsClient.RefreshSetPasswordLink")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	req, err := client.RefreshSetPasswordLinkPreparer(ctx, resourceGroupName, monitorName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "RefreshSetPasswordLink", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.RefreshSetPasswordLinkSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "RefreshSetPasswordLink", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.RefreshSetPasswordLinkResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "RefreshSetPasswordLink", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// RefreshSetPasswordLinkPreparer prepares the RefreshSetPasswordLink request.
+func (client MonitorsClient) RefreshSetPasswordLinkPreparer(ctx context.Context, resourceGroupName string, monitorName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"monitorName":       autorest.Encode("path", monitorName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-02-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/refreshSetPasswordLink", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RefreshSetPasswordLinkSender sends the RefreshSetPasswordLink request. The method will close the
+// http.Response Body if it receives an error.
+func (client MonitorsClient) RefreshSetPasswordLinkSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// RefreshSetPasswordLinkResponder handles the response to the RefreshSetPasswordLink request. The method always
+// closes the http.Response Body.
+func (client MonitorsClient) RefreshSetPasswordLinkResponder(resp *http.Response) (result SetPasswordLink, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// SetDefaultKey sends the set default key request.
+// Parameters:
+// resourceGroupName - the name of the resource group to which the Datadog resource belongs.
+// monitorName - monitor resource name
+func (client MonitorsClient) SetDefaultKey(ctx context.Context, resourceGroupName string, monitorName string, body *APIKey) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorsClient.SetDefaultKey")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: body,
+			Constraints: []validation.Constraint{{Target: "body", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "body.Key", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
+		return result, validation.NewError("datadog.MonitorsClient", "SetDefaultKey", err.Error())
+	}
+
+	req, err := client.SetDefaultKeyPreparer(ctx, resourceGroupName, monitorName, body)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "SetDefaultKey", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.SetDefaultKeySender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "SetDefaultKey", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.SetDefaultKeyResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "SetDefaultKey", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// SetDefaultKeyPreparer prepares the SetDefaultKey request.
+func (client MonitorsClient) SetDefaultKeyPreparer(ctx context.Context, resourceGroupName string, monitorName string, body *APIKey) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"monitorName":       autorest.Encode("path", monitorName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-02-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/setDefaultKey", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	if body != nil {
+		preparer = autorest.DecoratePreparer(preparer,
+			autorest.WithJSON(body))
+	}
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// SetDefaultKeySender sends the SetDefaultKey request. The method will close the
+// http.Response Body if it receives an error.
+func (client MonitorsClient) SetDefaultKeySender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// SetDefaultKeyResponder handles the response to the SetDefaultKey request. The method always
+// closes the http.Response Body.
+func (client MonitorsClient) SetDefaultKeyResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }
 

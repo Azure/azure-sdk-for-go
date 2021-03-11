@@ -1176,8 +1176,10 @@ func NewMonitoringTagRulesListResponsePage(cur MonitoringTagRulesListResponse, g
 
 // MonitoringTagRulesProperties definition of the properties for a TagRules resource.
 type MonitoringTagRulesProperties struct {
-	LogRules    *LogRules    `json:"logRules,omitempty"`
-	MetricRules *MetricRules `json:"metricRules,omitempty"`
+	// ProvisioningState - Possible values include: 'Accepted', 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled', 'Deleted', 'NotSpecified'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	LogRules          *LogRules         `json:"logRules,omitempty"`
+	MetricRules       *MetricRules      `json:"metricRules,omitempty"`
 }
 
 // MonitorProperties properties specific to the monitor resource.
@@ -1186,7 +1188,7 @@ type MonitorProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// MonitoringStatus - Possible values include: 'Enabled', 'Disabled'
 	MonitoringStatus MonitoringStatus `json:"monitoringStatus,omitempty"`
-	// MarketplaceSubscriptionStatus - Possible values include: 'Active', 'Suspended'
+	// MarketplaceSubscriptionStatus - Possible values include: 'Provisioning', 'Active', 'Suspended', 'Unsubscribed'
 	MarketplaceSubscriptionStatus MarketplaceSubscriptionStatus `json:"marketplaceSubscriptionStatus,omitempty"`
 	DatadogOrganizationProperties *OrganizationProperties       `json:"datadogOrganizationProperties,omitempty"`
 	UserInfo                      *UserInfo                     `json:"userInfo,omitempty"`
@@ -1650,6 +1652,12 @@ type OrganizationProperties struct {
 	LinkingAuthCode *string `json:"linkingAuthCode,omitempty"`
 	// LinkingClientID - The client_id from an existing in exchange for an auth token to link organization.
 	LinkingClientID *string `json:"linkingClientId,omitempty"`
+	// RedirectURI - The redirect uri for linking.
+	RedirectURI *string `json:"redirectUri,omitempty"`
+	// APIKey - Api key associated to the Datadog organization.
+	APIKey *string `json:"apiKey,omitempty"`
+	// ApplicationKey - Application key associated to the Datadog organization.
+	ApplicationKey *string `json:"applicationKey,omitempty"`
 	// EnterpriseAppID - The Id of the Enterprise App used for Single sign on.
 	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
 }
@@ -1662,6 +1670,15 @@ func (op OrganizationProperties) MarshalJSON() ([]byte, error) {
 	}
 	if op.LinkingClientID != nil {
 		objectMap["linkingClientId"] = op.LinkingClientID
+	}
+	if op.RedirectURI != nil {
+		objectMap["redirectUri"] = op.RedirectURI
+	}
+	if op.APIKey != nil {
+		objectMap["apiKey"] = op.APIKey
+	}
+	if op.ApplicationKey != nil {
+		objectMap["applicationKey"] = op.ApplicationKey
 	}
 	if op.EnterpriseAppID != nil {
 		objectMap["enterpriseAppId"] = op.EnterpriseAppID
@@ -1697,12 +1714,29 @@ type SingleSignOnConfigurationsCreateOrUpdateFuture struct {
 
 // SingleSignOnProperties ...
 type SingleSignOnProperties struct {
+	// ProvisioningState - Possible values include: 'Accepted', 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled', 'Deleted', 'NotSpecified'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// SingleSignOnState - Possible values include: 'Initial', 'Enable', 'Disable', 'Existing'
 	SingleSignOnState SingleSignOnStates `json:"singleSignOnState,omitempty"`
 	// EnterpriseAppID - The Id of the Enterprise App used for Single sign-on.
 	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
-	// SingleSignOnURL - The login URL specific to this Datadog Organization.
+	// SingleSignOnURL - READ-ONLY; The login URL specific to this Datadog Organization.
 	SingleSignOnURL *string `json:"singleSignOnUrl,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SingleSignOnProperties.
+func (ssop SingleSignOnProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ssop.ProvisioningState != "" {
+		objectMap["provisioningState"] = ssop.ProvisioningState
+	}
+	if ssop.SingleSignOnState != "" {
+		objectMap["singleSignOnState"] = ssop.SingleSignOnState
+	}
+	if ssop.EnterpriseAppID != nil {
+		objectMap["enterpriseAppId"] = ssop.EnterpriseAppID
+	}
+	return json.Marshal(objectMap)
 }
 
 // SingleSignOnResource ...

@@ -46,8 +46,10 @@ const (
 type MarketplaceSubscriptionStatus = original.MarketplaceSubscriptionStatus
 
 const (
-	Active    MarketplaceSubscriptionStatus = original.Active
-	Suspended MarketplaceSubscriptionStatus = original.Suspended
+	Active       MarketplaceSubscriptionStatus = original.Active
+	Provisioning MarketplaceSubscriptionStatus = original.Provisioning
+	Suspended    MarketplaceSubscriptionStatus = original.Suspended
+	Unsubscribed MarketplaceSubscriptionStatus = original.Unsubscribed
 )
 
 type MonitoringStatus = original.MonitoringStatus
@@ -91,7 +93,6 @@ type APIKey = original.APIKey
 type APIKeyListResponse = original.APIKeyListResponse
 type APIKeyListResponseIterator = original.APIKeyListResponseIterator
 type APIKeyListResponsePage = original.APIKeyListResponsePage
-type APIKeysClient = original.APIKeysClient
 type AgreementProperties = original.AgreementProperties
 type AgreementResource = original.AgreementResource
 type AgreementResourceListResponse = original.AgreementResourceListResponse
@@ -105,14 +106,12 @@ type HostListResponse = original.HostListResponse
 type HostListResponseIterator = original.HostListResponseIterator
 type HostListResponsePage = original.HostListResponsePage
 type HostMetadata = original.HostMetadata
-type HostsClient = original.HostsClient
 type IdentityProperties = original.IdentityProperties
 type InstallMethod = original.InstallMethod
 type LinkedResource = original.LinkedResource
 type LinkedResourceListResponse = original.LinkedResourceListResponse
 type LinkedResourceListResponseIterator = original.LinkedResourceListResponseIterator
 type LinkedResourceListResponsePage = original.LinkedResourceListResponsePage
-type LinkedResourcesClient = original.LinkedResourcesClient
 type LogRules = original.LogRules
 type LogsAgent = original.LogsAgent
 type MarketplaceAgreementsClient = original.MarketplaceAgreementsClient
@@ -128,7 +127,6 @@ type MonitoredResource = original.MonitoredResource
 type MonitoredResourceListResponse = original.MonitoredResourceListResponse
 type MonitoredResourceListResponseIterator = original.MonitoredResourceListResponseIterator
 type MonitoredResourceListResponsePage = original.MonitoredResourceListResponsePage
-type MonitoredResourcesClient = original.MonitoredResourcesClient
 type MonitoringTagRules = original.MonitoringTagRules
 type MonitoringTagRulesListResponse = original.MonitoringTagRulesListResponse
 type MonitoringTagRulesListResponseIterator = original.MonitoringTagRulesListResponseIterator
@@ -144,7 +142,6 @@ type OperationListResultPage = original.OperationListResultPage
 type OperationResult = original.OperationResult
 type OperationsClient = original.OperationsClient
 type OrganizationProperties = original.OrganizationProperties
-type RefreshSetPasswordClient = original.RefreshSetPasswordClient
 type ResourceProviderDefaultErrorResponse = original.ResourceProviderDefaultErrorResponse
 type ResourceSku = original.ResourceSku
 type SetPasswordLink = original.SetPasswordLink
@@ -167,12 +164,6 @@ func NewAPIKeyListResponseIterator(page APIKeyListResponsePage) APIKeyListRespon
 func NewAPIKeyListResponsePage(cur APIKeyListResponse, getNextPage func(context.Context, APIKeyListResponse) (APIKeyListResponse, error)) APIKeyListResponsePage {
 	return original.NewAPIKeyListResponsePage(cur, getNextPage)
 }
-func NewAPIKeysClient(subscriptionID string) APIKeysClient {
-	return original.NewAPIKeysClient(subscriptionID)
-}
-func NewAPIKeysClientWithBaseURI(baseURI string, subscriptionID string) APIKeysClient {
-	return original.NewAPIKeysClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewAgreementResourceListResponseIterator(page AgreementResourceListResponsePage) AgreementResourceListResponseIterator {
 	return original.NewAgreementResourceListResponseIterator(page)
 }
@@ -185,23 +176,11 @@ func NewHostListResponseIterator(page HostListResponsePage) HostListResponseIter
 func NewHostListResponsePage(cur HostListResponse, getNextPage func(context.Context, HostListResponse) (HostListResponse, error)) HostListResponsePage {
 	return original.NewHostListResponsePage(cur, getNextPage)
 }
-func NewHostsClient(subscriptionID string) HostsClient {
-	return original.NewHostsClient(subscriptionID)
-}
-func NewHostsClientWithBaseURI(baseURI string, subscriptionID string) HostsClient {
-	return original.NewHostsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewLinkedResourceListResponseIterator(page LinkedResourceListResponsePage) LinkedResourceListResponseIterator {
 	return original.NewLinkedResourceListResponseIterator(page)
 }
 func NewLinkedResourceListResponsePage(cur LinkedResourceListResponse, getNextPage func(context.Context, LinkedResourceListResponse) (LinkedResourceListResponse, error)) LinkedResourceListResponsePage {
 	return original.NewLinkedResourceListResponsePage(cur, getNextPage)
-}
-func NewLinkedResourcesClient(subscriptionID string) LinkedResourcesClient {
-	return original.NewLinkedResourcesClient(subscriptionID)
-}
-func NewLinkedResourcesClientWithBaseURI(baseURI string, subscriptionID string) LinkedResourcesClient {
-	return original.NewLinkedResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewMarketplaceAgreementsClient(subscriptionID string) MarketplaceAgreementsClient {
 	return original.NewMarketplaceAgreementsClient(subscriptionID)
@@ -220,12 +199,6 @@ func NewMonitoredResourceListResponseIterator(page MonitoredResourceListResponse
 }
 func NewMonitoredResourceListResponsePage(cur MonitoredResourceListResponse, getNextPage func(context.Context, MonitoredResourceListResponse) (MonitoredResourceListResponse, error)) MonitoredResourceListResponsePage {
 	return original.NewMonitoredResourceListResponsePage(cur, getNextPage)
-}
-func NewMonitoredResourcesClient(subscriptionID string) MonitoredResourcesClient {
-	return original.NewMonitoredResourcesClient(subscriptionID)
-}
-func NewMonitoredResourcesClientWithBaseURI(baseURI string, subscriptionID string) MonitoredResourcesClient {
-	return original.NewMonitoredResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewMonitoringTagRulesListResponseIterator(page MonitoringTagRulesListResponsePage) MonitoringTagRulesListResponseIterator {
 	return original.NewMonitoringTagRulesListResponseIterator(page)
@@ -250,12 +223,6 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewRefreshSetPasswordClient(subscriptionID string) RefreshSetPasswordClient {
-	return original.NewRefreshSetPasswordClient(subscriptionID)
-}
-func NewRefreshSetPasswordClientWithBaseURI(baseURI string, subscriptionID string) RefreshSetPasswordClient {
-	return original.NewRefreshSetPasswordClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewSingleSignOnConfigurationsClient(subscriptionID string) SingleSignOnConfigurationsClient {
 	return original.NewSingleSignOnConfigurationsClient(subscriptionID)

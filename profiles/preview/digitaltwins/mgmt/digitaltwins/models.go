@@ -22,11 +22,27 @@ package digitaltwins
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/digitaltwins/mgmt/2020-10-31/digitaltwins"
+	original "github.com/Azure/azure-sdk-for-go/services/digitaltwins/mgmt/2020-12-01/digitaltwins"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type AuthenticationType = original.AuthenticationType
+
+const (
+	IdentityBased AuthenticationType = original.IdentityBased
+	KeyBased      AuthenticationType = original.KeyBased
+)
+
+type ConnectionPropertiesProvisioningState = original.ConnectionPropertiesProvisioningState
+
+const (
+	Approved     ConnectionPropertiesProvisioningState = original.Approved
+	Disconnected ConnectionPropertiesProvisioningState = original.Disconnected
+	Pending      ConnectionPropertiesProvisioningState = original.Pending
+	Rejected     ConnectionPropertiesProvisioningState = original.Rejected
 )
 
 type EndpointProvisioningState = original.EndpointProvisioningState
@@ -54,6 +70,22 @@ const (
 	EndpointTypeServiceBus                             EndpointType = original.EndpointTypeServiceBus
 )
 
+type IdentityType = original.IdentityType
+
+const (
+	None           IdentityType = original.None
+	SystemAssigned IdentityType = original.SystemAssigned
+)
+
+type PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatus
+
+const (
+	PrivateLinkServiceConnectionStatusApproved     PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusApproved
+	PrivateLinkServiceConnectionStatusDisconnected PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusDisconnected
+	PrivateLinkServiceConnectionStatusPending      PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusPending
+	PrivateLinkServiceConnectionStatusRejected     PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusRejected
+)
+
 type ProvisioningState = original.ProvisioningState
 
 const (
@@ -66,7 +98,15 @@ const (
 	ProvisioningStateRestoring    ProvisioningState = original.ProvisioningStateRestoring
 	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
 	ProvisioningStateSuspending   ProvisioningState = original.ProvisioningStateSuspending
+	ProvisioningStateUpdating     ProvisioningState = original.ProvisioningStateUpdating
 	ProvisioningStateWarning      ProvisioningState = original.ProvisioningStateWarning
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
 )
 
 type Reason = original.Reason
@@ -81,6 +121,10 @@ type BasicEndpointResourceProperties = original.BasicEndpointResourceProperties
 type CheckNameRequest = original.CheckNameRequest
 type CheckNameResult = original.CheckNameResult
 type Client = original.Client
+type ConnectionProperties = original.ConnectionProperties
+type ConnectionPropertiesPrivateEndpoint = original.ConnectionPropertiesPrivateEndpoint
+type ConnectionPropertiesPrivateLinkServiceConnectionState = original.ConnectionPropertiesPrivateLinkServiceConnectionState
+type ConnectionState = original.ConnectionState
 type CreateOrUpdateFuture = original.CreateOrUpdateFuture
 type DeleteFuture = original.DeleteFuture
 type Description = original.Description
@@ -100,6 +144,11 @@ type ErrorResponse = original.ErrorResponse
 type EventGrid = original.EventGrid
 type EventHub = original.EventHub
 type ExternalResource = original.ExternalResource
+type GroupIDInformation = original.GroupIDInformation
+type GroupIDInformationProperties = original.GroupIDInformationProperties
+type GroupIDInformationPropertiesModel = original.GroupIDInformationPropertiesModel
+type GroupIDInformationResponse = original.GroupIDInformationResponse
+type Identity = original.Identity
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -107,9 +156,19 @@ type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type PatchDescription = original.PatchDescription
+type PatchProperties = original.PatchProperties
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsCreateOrUpdateFuture = original.PrivateEndpointConnectionsCreateOrUpdateFuture
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateEndpointConnectionsResponse = original.PrivateEndpointConnectionsResponse
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type Properties = original.Properties
 type Resource = original.Resource
 type ServiceBus = original.ServiceBus
+type UpdateFuture = original.UpdateFuture
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -150,8 +209,26 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return original.PossibleAuthenticationTypeValues()
+}
+func PossibleConnectionPropertiesProvisioningStateValues() []ConnectionPropertiesProvisioningState {
+	return original.PossibleConnectionPropertiesProvisioningStateValues()
 }
 func PossibleEndpointProvisioningStateValues() []EndpointProvisioningState {
 	return original.PossibleEndpointProvisioningStateValues()
@@ -159,8 +236,17 @@ func PossibleEndpointProvisioningStateValues() []EndpointProvisioningState {
 func PossibleEndpointTypeValues() []EndpointType {
 	return original.PossibleEndpointTypeValues()
 }
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
+}
+func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConnectionStatus {
+	return original.PossiblePrivateLinkServiceConnectionStatusValues()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()

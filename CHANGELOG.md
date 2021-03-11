@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## `v52.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/digitaltwins/mgmt/2020-12-01/digitaltwins`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/preview/kubernetesconfiguration/mgmt/2020-07-01-preview/kubernetesconfiguration`
+- `github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2021-03-01/storagecache`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/datadog/mgmt/2020-02-01-preview/datadog` | [details](services/preview/datadog/mgmt/2020-02-01-preview/datadog/CHANGELOG.md) |
+
 ## `v52.3.0`
 
 ### New Packages
@@ -11,7 +26,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers` | [details](services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v52.3.0/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers/CHANGELOG.md) |
 
 ## `v52.2.0`
 

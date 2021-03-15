@@ -131,22 +131,20 @@ func (req *Request) MarshalAsByteArray(v []byte, format Base64Encoding) error {
 }
 
 // MarshalAsJSON calls json.Marshal() to get the JSON encoding of v then calls SetBody.
-// If json.Marshal fails a MarshalError is returned.  Any error from SetBody is returned.
 func (req *Request) MarshalAsJSON(v interface{}) error {
 	v = cloneWithoutReadOnlyFields(v)
 	b, err := json.Marshal(v)
 	if err != nil {
-		return fmt.Errorf("error marshalling type %s: %w", reflect.TypeOf(v).Name(), err)
+		return fmt.Errorf("error marshalling type %T: %s", v, err)
 	}
 	return req.SetBody(NopCloser(bytes.NewReader(b)), contentTypeAppJSON)
 }
 
 // MarshalAsXML calls xml.Marshal() to get the XML encoding of v then calls SetBody.
-// If xml.Marshal fails a MarshalError is returned.  Any error from SetBody is returned.
 func (req *Request) MarshalAsXML(v interface{}) error {
 	b, err := xml.Marshal(v)
 	if err != nil {
-		return fmt.Errorf("error marshalling type %s: %w", reflect.TypeOf(v).Name(), err)
+		return fmt.Errorf("error marshalling type %T: %s", v, err)
 	}
 	return req.SetBody(NopCloser(bytes.NewReader(b)), contentTypeAppXML)
 }

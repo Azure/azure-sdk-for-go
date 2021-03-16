@@ -151,7 +151,7 @@ type Pager interface {
 var nullables map[reflect.Type]interface{} = map[reflect.Type]interface{}{}
 
 // NullValue is used to send an explicit 'null' within a request.
-// This is typically used in JSON-PATCH operations to delete a value.
+// This is typically used in JSON-MERGE-PATCH operations to delete a value.
 func NullValue(v interface{}) interface{} {
 	t := reflect.TypeOf(v)
 	if t.Kind() != reflect.Ptr {

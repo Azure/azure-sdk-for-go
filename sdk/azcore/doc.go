@@ -127,7 +127,7 @@ back to the beginning before retrying the network request and re-uploading the b
 
 Sending an Explicit Null
 
-Operations like JSON-PATCH send a JSON null to indicate a value should be deleted.
+Operations like JSON-MERGE-PATCH send a JSON null to indicate a value should be deleted.
 
    {
       "delete-me": null

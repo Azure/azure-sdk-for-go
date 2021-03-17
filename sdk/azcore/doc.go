@@ -125,6 +125,36 @@ If the Request should contain a body, call the SetBody method.
 A seekable stream is required so that upon retry, the retry Policy instance can seek the stream
 back to the beginning before retrying the network request and re-uploading the body.
 
+Sending an Explicit Null
+
+Operations like JSON-MERGE-PATCH send a JSON null to indicate a value should be deleted.
+
+   {
+      "delete-me": null
+   }
+
+This requirement conflicts with the SDK's default marshalling that specifies "omitempty" as
+a means to resolve the ambiguity between a field to be excluded and its zero-value.
+
+   type Widget struct {
+      Name  *string `json:",omitempty"`
+      Count *int    `json:",omitempty"`
+   }
+
+In the above example, Name and Count are defined as pointer-to-type to disambiguate between
+a missing value (nil) and a zero-value (0) which might have semantic differences.
+
+In a PATCH operation, any fields left as `nil` are to have their values preserved.  When updating
+a Widget's count, one simply specifies the new value for Count, leaving Name nil.
+
+To fulfill the requirement for sending a JSON null, the NullValue() function can be used.
+
+   w := Widget{
+      Count: azcore.NullValue(0).(*int),
+   }
+
+This sends an explict "null" for Count, indicating that any current value for Count should be deleted.
+
 Processing the Response
 
 When the HTTP response is received, the underlying *http.Response is wrapped in a Response type.

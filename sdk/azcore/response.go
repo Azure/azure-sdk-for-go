@@ -14,7 +14,6 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
-	"reflect"
 	"sort"
 	"strconv"
 	"strings"
@@ -89,7 +88,6 @@ func (r *Response) UnmarshalAsByteArray(v **[]byte, format Base64Encoding) error
 }
 
 // UnmarshalAsJSON calls json.Unmarshal() to unmarshal the received payload into the value pointed to by v.
-// If no payload was received a RequestError is returned.  If json.Unmarshal fails a UnmarshalError is returned.
 func (r *Response) UnmarshalAsJSON(v interface{}) error {
 	payload, err := r.payload()
 	if err != nil {
@@ -105,13 +103,12 @@ func (r *Response) UnmarshalAsJSON(v interface{}) error {
 	}
 	err = json.Unmarshal(payload, v)
 	if err != nil {
-		err = fmt.Errorf("unmarshalling type %s: %w", reflect.TypeOf(v).Elem().Name(), err)
+		err = fmt.Errorf("unmarshalling type %T: %s", v, err)
 	}
 	return err
 }
 
 // UnmarshalAsXML calls xml.Unmarshal() to unmarshal the received payload into the value pointed to by v.
-// If no payload was received a RequestError is returned.  If xml.Unmarshal fails a UnmarshalError is returned.
 func (r *Response) UnmarshalAsXML(v interface{}) error {
 	payload, err := r.payload()
 	if err != nil {
@@ -127,7 +124,7 @@ func (r *Response) UnmarshalAsXML(v interface{}) error {
 	}
 	err = xml.Unmarshal(payload, v)
 	if err != nil {
-		err = fmt.Errorf("unmarshalling type %s: %w", reflect.TypeOf(v).Elem().Name(), err)
+		err = fmt.Errorf("unmarshalling type %T: %s", v, err)
 	}
 	return err
 }

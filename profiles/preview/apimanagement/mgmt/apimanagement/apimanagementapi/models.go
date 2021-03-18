@@ -19,7 +19,7 @@
 
 package apimanagementapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2019-12-01/apimanagement/apimanagementapi"
+import original "github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2020-12-01/apimanagement/apimanagementapi"
 
 type APIClientAPI = original.APIClientAPI
 type APIDiagnosticClientAPI = original.APIDiagnosticClientAPI
@@ -42,11 +42,12 @@ type CacheClientAPI = original.CacheClientAPI
 type CertificateClientAPI = original.CertificateClientAPI
 type ContentItemClientAPI = original.ContentItemClientAPI
 type ContentTypeClientAPI = original.ContentTypeClientAPI
-type ContentTypesClientAPI = original.ContentTypesClientAPI
 type DelegationSettingsClientAPI = original.DelegationSettingsClientAPI
+type DeletedServicesClientAPI = original.DeletedServicesClientAPI
 type DiagnosticClientAPI = original.DiagnosticClientAPI
 type EmailTemplateClientAPI = original.EmailTemplateClientAPI
 type GatewayAPIClientAPI = original.GatewayAPIClientAPI
+type GatewayCertificateAuthorityClientAPI = original.GatewayCertificateAuthorityClientAPI
 type GatewayClientAPI = original.GatewayClientAPI
 type GatewayHostnameConfigurationClientAPI = original.GatewayHostnameConfigurationClientAPI
 type GroupClientAPI = original.GroupClientAPI
@@ -64,6 +65,8 @@ type OperationClientAPI = original.OperationClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PolicyClientAPI = original.PolicyClientAPI
 type PolicyDescriptionClientAPI = original.PolicyDescriptionClientAPI
+type PortalRevisionClientAPI = original.PortalRevisionClientAPI
+type PortalSettingsClientAPI = original.PortalSettingsClientAPI
 type ProductAPIClientAPI = original.ProductAPIClientAPI
 type ProductClientAPI = original.ProductClientAPI
 type ProductGroupClientAPI = original.ProductGroupClientAPI
@@ -77,12 +80,14 @@ type ServiceClientAPI = original.ServiceClientAPI
 type ServiceSkusClientAPI = original.ServiceSkusClientAPI
 type SignInSettingsClientAPI = original.SignInSettingsClientAPI
 type SignUpSettingsClientAPI = original.SignUpSettingsClientAPI
+type SkusClientAPI = original.SkusClientAPI
 type SubscriptionClientAPI = original.SubscriptionClientAPI
 type TagClientAPI = original.TagClientAPI
 type TagResourceClientAPI = original.TagResourceClientAPI
 type TenantAccessClientAPI = original.TenantAccessClientAPI
 type TenantAccessGitClientAPI = original.TenantAccessGitClientAPI
 type TenantConfigurationClientAPI = original.TenantConfigurationClientAPI
+type TenantSettingsClientAPI = original.TenantSettingsClientAPI
 type UserClientAPI = original.UserClientAPI
 type UserConfirmationPasswordClientAPI = original.UserConfirmationPasswordClientAPI
 type UserGroupClientAPI = original.UserGroupClientAPI

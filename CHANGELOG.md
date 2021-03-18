@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## `v52.5.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2020-12-01/apimanagement`
+- `github.com/Azure/azure-sdk-for-go/services/communication/mgmt/2020-08-20/communication`
+- `github.com/Azure/azure-sdk-for-go/services/datadog/mgmt/2021-03-01/datadog`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-12-01/netapp`
+
 ## `v52.4.0`
 
 ### New Packages
@@ -13,7 +22,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/datadog/mgmt/2020-02-01-preview/datadog` | [details](services/preview/datadog/mgmt/2020-02-01-preview/datadog/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/datadog/mgmt/2020-02-01-preview/datadog` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v52.4.0/services/preview/datadog/mgmt/2020-02-01-preview/datadog/CHANGELOG.md) |
 
 ## `v52.3.0`
 

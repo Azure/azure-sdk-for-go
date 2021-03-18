@@ -22,7 +22,7 @@ package netapp
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-11-01/netapp"
+	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-12-01/netapp"
 )
 
 const (
@@ -78,12 +78,6 @@ type InAvailabilityReasonType = original.InAvailabilityReasonType
 const (
 	AlreadyExists InAvailabilityReasonType = original.AlreadyExists
 	Invalid       InAvailabilityReasonType = original.Invalid
-)
-
-type KeySource = original.KeySource
-
-const (
-	MicrosoftNetApp KeySource = original.MicrosoftNetApp
 )
 
 type MirrorState = original.MirrorState
@@ -157,6 +151,7 @@ type BackupPolicyDetails = original.BackupPolicyDetails
 type BackupPolicyPatch = original.BackupPolicyPatch
 type BackupPolicyProperties = original.BackupPolicyProperties
 type BackupProperties = original.BackupProperties
+type BackupStatus = original.BackupStatus
 type BackupsClient = original.BackupsClient
 type BackupsCreateFuture = original.BackupsCreateFuture
 type BackupsDeleteFuture = original.BackupsDeleteFuture
@@ -196,6 +191,7 @@ type QuotaAvailabilityRequest = original.QuotaAvailabilityRequest
 type ReplicationObject = original.ReplicationObject
 type ReplicationStatus = original.ReplicationStatus
 type ResourceClient = original.ResourceClient
+type ResourceIdentity = original.ResourceIdentity
 type ResourceNameAvailabilityRequest = original.ResourceNameAvailabilityRequest
 type ServiceSpecification = original.ServiceSpecification
 type Snapshot = original.Snapshot
@@ -221,6 +217,7 @@ type VaultProperties = original.VaultProperties
 type VaultsClient = original.VaultsClient
 type Volume = original.Volume
 type VolumeBackupProperties = original.VolumeBackupProperties
+type VolumeBackupStatusClient = original.VolumeBackupStatusClient
 type VolumeBackups = original.VolumeBackups
 type VolumeList = original.VolumeList
 type VolumeListIterator = original.VolumeListIterator
@@ -322,6 +319,12 @@ func NewVaultsClient(subscriptionID string) VaultsClient {
 func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsClient {
 	return original.NewVaultsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewVolumeBackupStatusClient(subscriptionID string) VolumeBackupStatusClient {
+	return original.NewVolumeBackupStatusClient(subscriptionID)
+}
+func NewVolumeBackupStatusClientWithBaseURI(baseURI string, subscriptionID string) VolumeBackupStatusClient {
+	return original.NewVolumeBackupStatusClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewVolumeListIterator(page VolumeListPage) VolumeListIterator {
 	return original.NewVolumeListIterator(page)
 }
@@ -354,9 +357,6 @@ func PossibleEndpointTypeValues() []EndpointType {
 }
 func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 	return original.PossibleInAvailabilityReasonTypeValues()
-}
-func PossibleKeySourceValues() []KeySource {
-	return original.PossibleKeySourceValues()
 }
 func PossibleMirrorStateValues() []MirrorState {
 	return original.PossibleMirrorStateValues()

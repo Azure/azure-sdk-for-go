@@ -97,7 +97,7 @@ func cosmosEndpointSuffix() string {
 	}
 }
 
-func createTableClient(endpointType EndpointType) (*TableClient, error) {
+func createTableClient(endpointType EndpointType) (TableClient, error) {
 	if endpointType == StorageEndpoint {
 		storageCred, _ := NewSharedKeyCredential(storageAccountName(), storageAccountKey())
 		return NewTableClient(storageURI(), storageCred, nil)

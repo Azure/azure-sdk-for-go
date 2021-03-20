@@ -1,0 +1,368 @@
+// +build go1.13
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package testframework
+
+import (
+	"fmt"
+	"io/ioutil"
+	"math/rand"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strconv"
+	"strings"
+	"time"
+
+	"github.com/dnaeon/go-vcr/cassette"
+	"github.com/dnaeon/go-vcr/recorder"
+
+	chk "gopkg.in/check.v1"
+	"gopkg.in/yaml.v2"
+)
+
+type Recording struct {
+	SessionName              string
+	RecordingFile            string
+	VariablesFile            string
+	Mode                     RecordMode
+	variables                map[string]string `yaml:"variables"`
+	previousSessionVariables map[string]string `yaml:"variables"`
+	recorder                 *recorder.Recorder
+	src                      rand.Source
+	sanitizer                *RecordingSanitizer
+	c                        *chk.C
+}
+
+const (
+	alphanumericBytes           = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+	alphanumericLowercaseBytes  = "abcdefghijklmnopqrstuvwxyz1234567890"
+	randomSeedVariableName      = "randomSeed"
+	ModeEnvironmentVariableName = "AZURE_TEST_MODE"
+)
+
+// Inspired by https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go
+const (
+	letterIdxBits = 6                    // 6 bits to represent a letter index
+	letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
+	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
+)
+
+type RecordMode string
+
+const (
+	Record   RecordMode = "record"
+	Playback RecordMode = "playback"
+	Live     RecordMode = "live"
+)
+
+type VariableType string
+
+const (
+	Default             VariableType = "default"
+	Secret_String       VariableType = "secret_string"
+	Secret_Base64String VariableType = "secret_base64String"
+)
+
+func NewRecording(c *chk.C, mode RecordMode, testSuffixes ...string) (*Recording, error) {
+	// create recorder based on the test name, recordMode, variables, and sanitizers
+	recPath, varPath := getFilePaths(c, testSuffixes)
+	rec, err := recorder.NewAsMode(recPath, modeMap[mode], nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	// If the mode is set in the environment, let that override the requested mode
+	// This is to enable support for nightly live test pipelines
+	envMode := GetOptionalEnv(ModeEnvironmentVariableName, string(mode))
+	mode = RecordMode(envMode)
+
+	// initialize the Recording
+	recording := &Recording{
+		SessionName:              recPath,
+		RecordingFile:            recPath + ".yaml",
+		VariablesFile:            varPath,
+		Mode:                     mode,
+		variables:                make(map[string]string),
+		previousSessionVariables: make(map[string]string),
+		recorder:                 rec,
+		c:                        c}
+
+	// Try loading the recording if it already exists to hydrate the variables
+	err = recording.initVariables()
+	if err != nil {
+		return nil, err
+	}
+
+	// set the recorder Matcher
+	rec.SetMatcher(recording.matchRequest)
+
+	// wire up the sanitizer
+	DefaultSanitizer(rec)
+
+	return recording, err
+}
+
+// Gets a recorded variable. If the variable is not found we panic
+// variableType is optional and defaults to Default
+func (r *Recording) GetRecordedVariable(name string, variableType ...VariableType) string {
+	result, ok := r.previousSessionVariables[name]
+	if !ok || r.Mode == Live {
+		result = GetRequiredEnv(name)
+		r.variables[name] = applyVariableOptions(&result, variableType...)
+	}
+	return result
+}
+
+// Gets a recorded variable with a fallback default value
+// variableType is optional and defaults to Default
+func (r *Recording) GetOptionalRecordedVariable(name string, defaultValue string, variableType ...VariableType) string {
+	result, ok := r.previousSessionVariables[name]
+	if !ok || r.Mode == Live {
+		result = GetOptionalEnv(name, defaultValue)
+		r.variables[name] = applyVariableOptions(&result, variableType...)
+	}
+	return result
+}
+
+// To satisfy the azcore.Transport interface
+func (r *Recording) Do(req *http.Request) (*http.Response, error) {
+	resp, err := r.recorder.RoundTrip(req)
+	if err == cassette.ErrInteractionNotFound {
+		error := missingRequestError(req)
+		r.c.Log(error)
+		r.c.Fail()
+		// TODO: remove this if https://github.com/go-check/check/pull/127 merges
+		panic(error)
+	}
+	return resp, err
+}
+
+// Stops the recording and saves them, including any captured variables, to disk
+func (r *Recording) Stop() error {
+
+	r.recorder.Stop()
+	if r.Mode == Live {
+		return nil
+	}
+
+	if len(r.variables) > 0 {
+		// Save the variables after merging them
+
+		//TODO: Merge values from previousVariables that are not in variables to variables
+
+		// Marshal to YAML and save variables
+		data, err := yaml.Marshal(r.variables)
+		if err != nil {
+			return err
+		}
+
+		f, err := r.createVariablesFileIfNotExists()
+		if err != nil {
+			return err
+		}
+
+		defer f.Close()
+
+		// http://www.yaml.org/spec/1.2/spec.html#id2760395
+		_, err = f.Write([]byte("---\n"))
+		if err != nil {
+			return err
+		}
+
+		_, err = f.Write(data)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// Gets an environment variable by name and panics if it is not found
+func GetRequiredEnv(name string) string {
+	env, ok := os.LookupEnv(name)
+	if ok {
+		return env
+	} else {
+		panic(envNotExistsError(name))
+	}
+}
+
+// gets an environment variable by name and returns the defaultValue if not found
+func GetOptionalEnv(name string, defaultValue string) string {
+	env, ok := os.LookupEnv(name)
+	if ok {
+		return env
+	} else {
+		return defaultValue
+	}
+}
+
+// generate a recorded random alpha numeric id
+// if the recording has a randomSeed already set, the value will be generated from that seed, else a new random seed will be used
+func (r *Recording) GenerateAlphaNumericId(prefix string, length int, lowercaseOnly bool) string {
+
+	if length <= len(prefix) {
+		panic("length must be greater than prefix")
+	}
+
+	r.initRandomSource()
+
+	sb := strings.Builder{}
+	sb.Grow(length)
+	sb.WriteString(prefix)
+	i := length - len(prefix) - 1
+	// A src.Int63() generates 63 random bits, enough for letterIdxMax characters!
+	for cache, remain := r.src.Int63(), letterIdxMax; i >= 0; {
+		if remain == 0 {
+			cache, remain = r.src.Int63(), letterIdxMax
+		}
+		if lowercaseOnly {
+			if idx := int(cache & letterIdxMask); idx < len(alphanumericLowercaseBytes) {
+				sb.WriteByte(alphanumericLowercaseBytes[idx])
+				i--
+			}
+		} else {
+			if idx := int(cache & letterIdxMask); idx < len(alphanumericBytes) {
+				sb.WriteByte(alphanumericBytes[idx])
+				i--
+			}
+		}
+		cache >>= letterIdxBits
+		remain--
+	}
+
+	return sb.String()
+}
+
+func (r *Recording) matchRequest(req *http.Request, rec cassette.Request) bool {
+	isMatch := compareMethods(req, rec, r.c) &&
+		compareURLs(req, rec, r.c) &&
+		compareHeaders(req, rec, r.c) &&
+		compareBodies(req, rec, r.c)
+
+	return isMatch
+}
+
+func missingRequestError(req *http.Request) string {
+	reqUrl := req.URL.String()
+	return fmt.Sprintf("\nNo matching recorded request found.\nRequest: [%s] %s\n", req.Method, reqUrl)
+}
+
+func envNotExistsError(varName string) string {
+	return "Required environment variable not set: " + varName
+}
+
+// Applies the VariableType transform to the value
+// If variableType is not provided or Default, return result
+// If variableType is Secret_String, return SanitizedValue
+// If variableType isSecret_Base64String return SanitizedBase64Value
+func applyVariableOptions(val *string, variableType ...VariableType) string {
+
+	switch len(variableType) {
+	case 0:
+		return *val
+	default:
+		switch vt := variableType[0]; vt {
+		case Secret_String:
+			return SanitizedValue
+		case Secret_Base64String:
+			return SanitizedBase64Value
+		default:
+			return *val
+		}
+	}
+}
+
+// Initializes the Source to be used for random value creation in this Recording
+func (r *Recording) initRandomSource() {
+	// if we already have a Source generated, return immediately
+	if r.src != nil {
+		return
+	}
+
+	var seed int64
+	var err error
+
+	// check to see if we already have a random seed stored, use that if so
+	seedString, ok := r.previousSessionVariables[randomSeedVariableName]
+	if ok {
+		seed, err = strconv.ParseInt(seedString, 10, 64)
+	}
+
+	// We did not have a random seed already stored; create a new one
+	if !ok || err != nil || r.Mode == Live {
+		seed = time.Now().Unix()
+		r.variables[randomSeedVariableName] = strconv.FormatInt(seed, 10)
+	}
+
+	// create a Source with the seed
+	r.src = rand.NewSource(seed)
+}
+
+// returns (recordingFilePath, variablesFilePath)
+func getFilePaths(c *chk.C, suffixes []string) (string, string) {
+	testName := strings.Split(c.TestName(), ".")
+	var suffix string = ""
+	if len(suffixes) > 0 {
+		suffix = "(" + strings.Join(suffixes, ",") + ")"
+	}
+	recPath := "recordings/" + testName[0] + suffix + "/" + testName[1]
+	varPath := fmt.Sprintf("%s-variables.yaml", recPath)
+	return recPath, varPath
+}
+
+// Calls os.Create on the VariablesFile and creates it if it or the path does not exist
+// Callers must call Close on the result
+func (r *Recording) createVariablesFileIfNotExists() (*os.File, error) {
+	f, err := os.Create(r.VariablesFile)
+	if err != nil {
+		// Create directory for the variables if missing
+		variablesDir := filepath.Dir(r.VariablesFile)
+		if _, err := os.Stat(variablesDir); os.IsNotExist(err) {
+			if err = os.MkdirAll(variablesDir, 0755); err != nil {
+				return nil, err
+			}
+		}
+
+		f, err = os.Create(r.VariablesFile)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return f, nil
+}
+
+func (r *Recording) unmarshalVariablesFile(out interface{}) error {
+	data, err := ioutil.ReadFile(r.VariablesFile)
+	if err != nil {
+		// If the file or dir do not exist, this is not an error to report
+		if os.IsNotExist(err) {
+			return nil
+		} else {
+			return err
+		}
+	} else {
+		err = yaml.Unmarshal(data, out)
+	}
+	return nil
+}
+
+func (r *Recording) initVariables() error {
+	err := r.unmarshalVariablesFile(r.previousSessionVariables)
+	if err != nil {
+		return nil
+	}
+
+	return nil
+}
+
+var modeMap = map[RecordMode]recorder.Mode{
+	Record:   recorder.ModeRecording,
+	Live:     recorder.ModeDisabled,
+	Playback: recorder.ModeReplaying,
+}

@@ -262,6 +262,26 @@ func getOptionalEnv(name string, defaultValue string) *string {
 	}
 }
 
+// getRequiredEnv gets an environment variable by name and returns an error if it is not found
+func getRequiredEnv(name string) (*string, error) {
+	env, ok := os.LookupEnv(name)
+	if ok {
+		return &env, nil
+	} else {
+		return nil, errors.New(envNotExistsError(name))
+	}
+}
+
+// getOptionalEnv gets an environment variable by name and returns the defaultValue if not found
+func getOptionalEnv(name string, defaultValue string) *string {
+	env, ok := os.LookupEnv(name)
+	if ok {
+		return &env
+	} else {
+		return &defaultValue
+	}
+}
+
 func (r *Recording) matchRequest(req *http.Request, rec cassette.Request) bool {
 	isMatch := compareMethods(req, rec, r.c) &&
 		compareURLs(req, rec, r.c) &&

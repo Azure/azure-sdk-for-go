@@ -591,6 +591,7 @@ Security issues and bugs should be reported privately, via email, to the Microso
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+   
 ```
 
 ## Contribute
@@ -598,3 +599,5 @@ Security issues and bugs should be reported privately, via email, to the Microso
 See [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-go/blob/master/CONTRIBUTING.md).
 
 [samples_repo]: https://github.com/Azure-Samples/azure-sdk-for-go-samples
+
+

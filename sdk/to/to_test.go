@@ -90,12 +90,12 @@ func TestTimePtr(t *testing.T) {
 	}
 }
 
-func TestArrayOfInt32Ptr(t *testing.T) {
-	arr := ArrayOfInt32Ptr()
+func TestInt32PtrArray(t *testing.T) {
+	arr := Int32PtrArray()
 	if len(arr) != 0 {
 		t.Fatal("expected zero length")
 	}
-	arr = ArrayOfInt32Ptr(1, 2, 3, 4, 5)
+	arr = Int32PtrArray(1, 2, 3, 4, 5)
 	for i, v := range arr {
 		if *v != int32(i+1) {
 			t.Fatal("values don't match")
@@ -103,12 +103,12 @@ func TestArrayOfInt32Ptr(t *testing.T) {
 	}
 }
 
-func TestArrayOfInt64Ptr(t *testing.T) {
-	arr := ArrayOfInt64Ptr()
+func TestInt64PtrArray(t *testing.T) {
+	arr := Int64PtrArray()
 	if len(arr) != 0 {
 		t.Fatal("expected zero length")
 	}
-	arr = ArrayOfInt64Ptr(1, 2, 3, 4, 5)
+	arr = Int64PtrArray(1, 2, 3, 4, 5)
 	for i, v := range arr {
 		if *v != int64(i+1) {
 			t.Fatal("values don't match")
@@ -116,12 +116,12 @@ func TestArrayOfInt64Ptr(t *testing.T) {
 	}
 }
 
-func TestArrayOfFloat32Ptr(t *testing.T) {
-	arr := ArrayOfFloat32Ptr()
+func TestFloat32PtrArray(t *testing.T) {
+	arr := Float32PtrArray()
 	if len(arr) != 0 {
 		t.Fatal("expected zero length")
 	}
-	arr = ArrayOfFloat32Ptr(1.1, 2.2, 3.3, 4.4, 5.5)
+	arr = Float32PtrArray(1.1, 2.2, 3.3, 4.4, 5.5)
 	for i, v := range arr {
 		f, err := strconv.ParseFloat(fmt.Sprintf("%d.%d", i+1, i+1), 32)
 		if err != nil {
@@ -133,12 +133,12 @@ func TestArrayOfFloat32Ptr(t *testing.T) {
 	}
 }
 
-func TestArrayOfFloat64Ptr(t *testing.T) {
-	arr := ArrayOfFloat64Ptr()
+func TestFloat64PtrArray(t *testing.T) {
+	arr := Float64PtrArray()
 	if len(arr) != 0 {
 		t.Fatal("expected zero length")
 	}
-	arr = ArrayOfFloat64Ptr(1.1, 2.2, 3.3, 4.4, 5.5)
+	arr = Float64PtrArray(1.1, 2.2, 3.3, 4.4, 5.5)
 	for i, v := range arr {
 		f, err := strconv.ParseFloat(fmt.Sprintf("%d.%d", i+1, i+1), 64)
 		if err != nil {
@@ -150,12 +150,12 @@ func TestArrayOfFloat64Ptr(t *testing.T) {
 	}
 }
 
-func TestArrayOfBoolPtr(t *testing.T) {
-	arr := ArrayOfBoolPtr()
+func TestBoolPtrArray(t *testing.T) {
+	arr := BoolPtrArray()
 	if len(arr) != 0 {
 		t.Fatal("expected zero length")
 	}
-	arr = ArrayOfBoolPtr(true, false, true)
+	arr = BoolPtrArray(true, false, true)
 	curr := true
 	for _, v := range arr {
 		if *v != curr {
@@ -165,26 +165,26 @@ func TestArrayOfBoolPtr(t *testing.T) {
 	}
 }
 
-func TestArrayOfStringPtr(t *testing.T) {
-	arr := ArrayOfStringPtr()
+func TestStringPtrArray(t *testing.T) {
+	arr := StringPtrArray()
 	if len(arr) != 0 {
 		t.Fatal("expected zero length")
 	}
-	arr = ArrayOfStringPtr("one", "", "three")
+	arr = StringPtrArray("one", "", "three")
 	if !reflect.DeepEqual(arr, []*string{StringPtr("one"), StringPtr(""), StringPtr("three")}) {
 		t.Fatal("values don't match")
 	}
 }
 
-func TestArrayOfTimePtr(t *testing.T) {
-	arr := ArrayOfTimePtr()
+func TestTimePtrArray(t *testing.T) {
+	arr := TimePtrArray()
 	if len(arr) != 0 {
 		t.Fatal("expected zero length")
 	}
 	t1 := time.Now()
 	t2 := time.Time{}
 	t3 := t1.Add(24 * time.Hour)
-	arr = ArrayOfTimePtr(t1, t2, t3)
+	arr = TimePtrArray(t1, t2, t3)
 	if !reflect.DeepEqual(arr, []*time.Time{&t1, &t2, &t3}) {
 		t.Fatal("values don't match")
 	}

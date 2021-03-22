@@ -87,13 +87,6 @@ First, we need to construct a `TableServiceClient`.
 ### Create an Azure table
 Next, we can create a new table.
 
-```C# Snippet:TablesSample1CreateTable
-// Create a new table. The <see cref="TableItem" /> class stores properties of the created table.
-
-string tableName = "OfficeSupplies1p1";
-TableItem table = serviceClient.CreateTable(tableName);
-Console.WriteLine($"The created table's name is {table.TableName}.");
-```
 
 ### Get an Azure table
 The set of existing Azure tables can be queries using an OData filter.

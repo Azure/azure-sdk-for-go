@@ -58,29 +58,29 @@ type CloudErrorBody struct {
 }
 
 // Describes an identity resource.
-type IDentity struct {
+type Identity struct {
 	TrackedResource
 	// READ-ONLY; The properties associated with the identity.
-	Properties *UserAssignedIDentityProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *UserAssignedIdentityProperties `json:"properties,omitempty" azure:"ro"`
 }
 
-// IDentityResponse is the response envelope for operations that return a IDentity type.
-type IDentityResponse struct {
+// IdentityResponse is the response envelope for operations that return a Identity type.
+type IdentityResponse struct {
 	// Describes an identity resource.
-	IDentity *IDentity
+	Identity *Identity
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // Describes an identity resource.
-type IDentityUpdate struct {
+type IdentityUpdate struct {
 	Resource
 	// The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// READ-ONLY; The properties associated with the identity.
-	Properties *UserAssignedIDentityProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *UserAssignedIdentityProperties `json:"properties,omitempty" azure:"ro"`
 
 	// Resource tags
 	Tags *map[string]string `json:"tags,omitempty"`
@@ -150,26 +150,26 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// SystemAssignedIDentitiesGetByScopeOptions contains the optional parameters for the SystemAssignedIDentities.GetByScope method.
-type SystemAssignedIDentitiesGetByScopeOptions struct {
+// SystemAssignedIdentitiesGetByScopeOptions contains the optional parameters for the SystemAssignedIdentities.GetByScope method.
+type SystemAssignedIdentitiesGetByScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
 // Describes a system assigned identity resource.
-type SystemAssignedIDentity struct {
+type SystemAssignedIdentity struct {
 	Resource
 	// The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
 	// READ-ONLY; The properties associated with the identity.
-	Properties *SystemAssignedIDentityProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *SystemAssignedIdentityProperties `json:"properties,omitempty" azure:"ro"`
 
 	// Resource tags
 	Tags *map[string]string `json:"tags,omitempty"`
 }
 
 // The properties associated with the system assigned identity.
-type SystemAssignedIDentityProperties struct {
+type SystemAssignedIdentityProperties struct {
 	// READ-ONLY; The id of the app associated with the identity. This is a random generated UUID by MSI.
 	ClientID *string `json:"clientId,omitempty" azure:"ro"`
 
@@ -183,13 +183,13 @@ type SystemAssignedIDentityProperties struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 }
 
-// SystemAssignedIDentityResponse is the response envelope for operations that return a SystemAssignedIDentity type.
-type SystemAssignedIDentityResponse struct {
+// SystemAssignedIdentityResponse is the response envelope for operations that return a SystemAssignedIdentity type.
+type SystemAssignedIdentityResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 
 	// Describes a system assigned identity resource.
-	SystemAssignedIDentity *SystemAssignedIDentity
+	SystemAssignedIdentity *SystemAssignedIdentity
 }
 
 // The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
@@ -202,56 +202,56 @@ type TrackedResource struct {
 	Tags *map[string]string `json:"tags,omitempty"`
 }
 
-// UserAssignedIDentitiesCreateOrUpdateOptions contains the optional parameters for the UserAssignedIDentities.CreateOrUpdate method.
-type UserAssignedIDentitiesCreateOrUpdateOptions struct {
+// UserAssignedIdentitiesCreateOrUpdateOptions contains the optional parameters for the UserAssignedIdentities.CreateOrUpdate method.
+type UserAssignedIdentitiesCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UserAssignedIDentitiesDeleteOptions contains the optional parameters for the UserAssignedIDentities.Delete method.
-type UserAssignedIDentitiesDeleteOptions struct {
+// UserAssignedIdentitiesDeleteOptions contains the optional parameters for the UserAssignedIdentities.Delete method.
+type UserAssignedIdentitiesDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UserAssignedIDentitiesGetOptions contains the optional parameters for the UserAssignedIDentities.Get method.
-type UserAssignedIDentitiesGetOptions struct {
+// UserAssignedIdentitiesGetOptions contains the optional parameters for the UserAssignedIdentities.Get method.
+type UserAssignedIdentitiesGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UserAssignedIDentitiesListByResourceGroupOptions contains the optional parameters for the UserAssignedIDentities.ListByResourceGroup method.
-type UserAssignedIDentitiesListByResourceGroupOptions struct {
+// UserAssignedIdentitiesListByResourceGroupOptions contains the optional parameters for the UserAssignedIdentities.ListByResourceGroup method.
+type UserAssignedIdentitiesListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UserAssignedIDentitiesListBySubscriptionOptions contains the optional parameters for the UserAssignedIDentities.ListBySubscription method.
-type UserAssignedIDentitiesListBySubscriptionOptions struct {
+// UserAssignedIdentitiesListBySubscriptionOptions contains the optional parameters for the UserAssignedIdentities.ListBySubscription method.
+type UserAssignedIdentitiesListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
 // Values returned by the List operation.
-type UserAssignedIDentitiesListResult struct {
+type UserAssignedIdentitiesListResult struct {
 	// The url to get the next page of results, if any.
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// The collection of userAssignedIdentities returned by the listing operation.
-	Value *[]IDentity `json:"value,omitempty"`
+	Value *[]Identity `json:"value,omitempty"`
 }
 
-// UserAssignedIDentitiesListResultResponse is the response envelope for operations that return a UserAssignedIDentitiesListResult type.
-type UserAssignedIDentitiesListResultResponse struct {
+// UserAssignedIdentitiesListResultResponse is the response envelope for operations that return a UserAssignedIdentitiesListResult type.
+type UserAssignedIdentitiesListResultResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 
 	// Values returned by the List operation.
-	UserAssignedIDentitiesListResult *UserAssignedIDentitiesListResult
+	UserAssignedIdentitiesListResult *UserAssignedIdentitiesListResult
 }
 
-// UserAssignedIDentitiesUpdateOptions contains the optional parameters for the UserAssignedIDentities.Update method.
-type UserAssignedIDentitiesUpdateOptions struct {
+// UserAssignedIdentitiesUpdateOptions contains the optional parameters for the UserAssignedIdentities.Update method.
+type UserAssignedIdentitiesUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
 // The properties associated with the user assigned identity.
-type UserAssignedIDentityProperties struct {
+type UserAssignedIdentityProperties struct {
 	// READ-ONLY; The id of the app associated with the identity. This is a random generated UUID by MSI.
 	ClientID *string `json:"clientId,omitempty" azure:"ro"`
 

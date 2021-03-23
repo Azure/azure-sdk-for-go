@@ -16,36 +16,36 @@ import (
 	"strings"
 )
 
-// UserAssignedIDentitiesClient contains the methods for the UserAssignedIDentities group.
-// Don't use this type directly, use NewUserAssignedIDentitiesClient() instead.
-type UserAssignedIDentitiesClient struct {
+// UserAssignedIdentitiesClient contains the methods for the UserAssignedIdentities group.
+// Don't use this type directly, use NewUserAssignedIdentitiesClient() instead.
+type UserAssignedIdentitiesClient struct {
 	con            *armcore.Connection
 	subscriptionID string
 }
 
-// NewUserAssignedIDentitiesClient creates a new instance of UserAssignedIDentitiesClient with the specified values.
-func NewUserAssignedIDentitiesClient(con *armcore.Connection, subscriptionID string) *UserAssignedIDentitiesClient {
-	return &UserAssignedIDentitiesClient{con: con, subscriptionID: subscriptionID}
+// NewUserAssignedIdentitiesClient creates a new instance of UserAssignedIdentitiesClient with the specified values.
+func NewUserAssignedIdentitiesClient(con *armcore.Connection, subscriptionID string) *UserAssignedIdentitiesClient {
+	return &UserAssignedIdentitiesClient{con: con, subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Create or update an identity in the specified subscription and resource group.
-func (client *UserAssignedIDentitiesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters IDentity, options *UserAssignedIDentitiesCreateOrUpdateOptions) (IDentityResponse, error) {
+func (client *UserAssignedIdentitiesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters Identity, options *UserAssignedIdentitiesCreateOrUpdateOptions) (IdentityResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
-		return IDentityResponse{}, err
+		return IdentityResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return IDentityResponse{}, err
+		return IdentityResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return IDentityResponse{}, client.createOrUpdateHandleError(resp)
+		return IdentityResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *UserAssignedIDentitiesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters IDentity, options *UserAssignedIDentitiesCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *UserAssignedIdentitiesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters Identity, options *UserAssignedIdentitiesCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -63,16 +63,16 @@ func (client *UserAssignedIDentitiesClient) createOrUpdateCreateRequest(ctx cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *UserAssignedIDentitiesClient) createOrUpdateHandleResponse(resp *azcore.Response) (IDentityResponse, error) {
-	var val *IDentity
+func (client *UserAssignedIdentitiesClient) createOrUpdateHandleResponse(resp *azcore.Response) (IdentityResponse, error) {
+	var val *Identity
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return IDentityResponse{}, err
+		return IdentityResponse{}, err
 	}
-	return IDentityResponse{RawResponse: resp.Response, IDentity: val}, nil
+	return IdentityResponse{RawResponse: resp.Response, Identity: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *UserAssignedIDentitiesClient) createOrUpdateHandleError(resp *azcore.Response) error {
+func (client *UserAssignedIdentitiesClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -81,7 +81,7 @@ func (client *UserAssignedIDentitiesClient) createOrUpdateHandleError(resp *azco
 }
 
 // Delete - Deletes the identity.
-func (client *UserAssignedIDentitiesClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *UserAssignedIDentitiesDeleteOptions) (*http.Response, error) {
+func (client *UserAssignedIdentitiesClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, options *UserAssignedIdentitiesDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
 		return nil, err
@@ -97,7 +97,7 @@ func (client *UserAssignedIDentitiesClient) Delete(ctx context.Context, resource
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *UserAssignedIDentitiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *UserAssignedIDentitiesDeleteOptions) (*azcore.Request, error) {
+func (client *UserAssignedIdentitiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *UserAssignedIdentitiesDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -115,7 +115,7 @@ func (client *UserAssignedIDentitiesClient) deleteCreateRequest(ctx context.Cont
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *UserAssignedIDentitiesClient) deleteHandleError(resp *azcore.Response) error {
+func (client *UserAssignedIdentitiesClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -124,23 +124,23 @@ func (client *UserAssignedIDentitiesClient) deleteHandleError(resp *azcore.Respo
 }
 
 // Get - Gets the identity.
-func (client *UserAssignedIDentitiesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *UserAssignedIDentitiesGetOptions) (IDentityResponse, error) {
+func (client *UserAssignedIdentitiesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, options *UserAssignedIdentitiesGetOptions) (IdentityResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, options)
 	if err != nil {
-		return IDentityResponse{}, err
+		return IdentityResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return IDentityResponse{}, err
+		return IdentityResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return IDentityResponse{}, client.getHandleError(resp)
+		return IdentityResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *UserAssignedIDentitiesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *UserAssignedIDentitiesGetOptions) (*azcore.Request, error) {
+func (client *UserAssignedIdentitiesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *UserAssignedIdentitiesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -158,16 +158,16 @@ func (client *UserAssignedIDentitiesClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *UserAssignedIDentitiesClient) getHandleResponse(resp *azcore.Response) (IDentityResponse, error) {
-	var val *IDentity
+func (client *UserAssignedIdentitiesClient) getHandleResponse(resp *azcore.Response) (IdentityResponse, error) {
+	var val *Identity
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return IDentityResponse{}, err
+		return IdentityResponse{}, err
 	}
-	return IDentityResponse{RawResponse: resp.Response, IDentity: val}, nil
+	return IdentityResponse{RawResponse: resp.Response, Identity: val}, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *UserAssignedIDentitiesClient) getHandleError(resp *azcore.Response) error {
+func (client *UserAssignedIdentitiesClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -176,23 +176,23 @@ func (client *UserAssignedIDentitiesClient) getHandleError(resp *azcore.Response
 }
 
 // ListByResourceGroup - Lists all the userAssignedIdentities available under the specified ResourceGroup.
-func (client *UserAssignedIDentitiesClient) ListByResourceGroup(resourceGroupName string, options *UserAssignedIDentitiesListByResourceGroupOptions) UserAssignedIDentitiesListResultPager {
-	return &userAssignedIDentitiesListResultPager{
+func (client *UserAssignedIdentitiesClient) ListByResourceGroup(resourceGroupName string, options *UserAssignedIdentitiesListByResourceGroupOptions) UserAssignedIdentitiesListResultPager {
+	return &userAssignedIdentitiesListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
 		responder: client.listByResourceGroupHandleResponse,
 		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp UserAssignedIDentitiesListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.UserAssignedIDentitiesListResult.NextLink)
+		advancer: func(ctx context.Context, resp UserAssignedIdentitiesListResultResponse) (*azcore.Request, error) {
+			return azcore.NewRequest(ctx, http.MethodGet, *resp.UserAssignedIdentitiesListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *UserAssignedIDentitiesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *UserAssignedIDentitiesListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *UserAssignedIdentitiesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *UserAssignedIdentitiesListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -209,16 +209,16 @@ func (client *UserAssignedIDentitiesClient) listByResourceGroupCreateRequest(ctx
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *UserAssignedIDentitiesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (UserAssignedIDentitiesListResultResponse, error) {
-	var val *UserAssignedIDentitiesListResult
+func (client *UserAssignedIdentitiesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (UserAssignedIdentitiesListResultResponse, error) {
+	var val *UserAssignedIdentitiesListResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return UserAssignedIDentitiesListResultResponse{}, err
+		return UserAssignedIdentitiesListResultResponse{}, err
 	}
-	return UserAssignedIDentitiesListResultResponse{RawResponse: resp.Response, UserAssignedIDentitiesListResult: val}, nil
+	return UserAssignedIdentitiesListResultResponse{RawResponse: resp.Response, UserAssignedIdentitiesListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *UserAssignedIDentitiesClient) listByResourceGroupHandleError(resp *azcore.Response) error {
+func (client *UserAssignedIdentitiesClient) listByResourceGroupHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -227,23 +227,23 @@ func (client *UserAssignedIDentitiesClient) listByResourceGroupHandleError(resp 
 }
 
 // ListBySubscription - Lists all the userAssignedIdentities available under the specified subscription.
-func (client *UserAssignedIDentitiesClient) ListBySubscription(options *UserAssignedIDentitiesListBySubscriptionOptions) UserAssignedIDentitiesListResultPager {
-	return &userAssignedIDentitiesListResultPager{
+func (client *UserAssignedIdentitiesClient) ListBySubscription(options *UserAssignedIdentitiesListBySubscriptionOptions) UserAssignedIdentitiesListResultPager {
+	return &userAssignedIdentitiesListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
 		responder: client.listBySubscriptionHandleResponse,
 		errorer:   client.listBySubscriptionHandleError,
-		advancer: func(ctx context.Context, resp UserAssignedIDentitiesListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.UserAssignedIDentitiesListResult.NextLink)
+		advancer: func(ctx context.Context, resp UserAssignedIdentitiesListResultResponse) (*azcore.Request, error) {
+			return azcore.NewRequest(ctx, http.MethodGet, *resp.UserAssignedIdentitiesListResult.NextLink)
 		},
 		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *UserAssignedIDentitiesClient) listBySubscriptionCreateRequest(ctx context.Context, options *UserAssignedIDentitiesListBySubscriptionOptions) (*azcore.Request, error) {
+func (client *UserAssignedIdentitiesClient) listBySubscriptionCreateRequest(ctx context.Context, options *UserAssignedIdentitiesListBySubscriptionOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedIdentity/userAssignedIdentities"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
@@ -259,16 +259,16 @@ func (client *UserAssignedIDentitiesClient) listBySubscriptionCreateRequest(ctx 
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *UserAssignedIDentitiesClient) listBySubscriptionHandleResponse(resp *azcore.Response) (UserAssignedIDentitiesListResultResponse, error) {
-	var val *UserAssignedIDentitiesListResult
+func (client *UserAssignedIdentitiesClient) listBySubscriptionHandleResponse(resp *azcore.Response) (UserAssignedIdentitiesListResultResponse, error) {
+	var val *UserAssignedIdentitiesListResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return UserAssignedIDentitiesListResultResponse{}, err
+		return UserAssignedIdentitiesListResultResponse{}, err
 	}
-	return UserAssignedIDentitiesListResultResponse{RawResponse: resp.Response, UserAssignedIDentitiesListResult: val}, nil
+	return UserAssignedIdentitiesListResultResponse{RawResponse: resp.Response, UserAssignedIdentitiesListResult: val}, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *UserAssignedIDentitiesClient) listBySubscriptionHandleError(resp *azcore.Response) error {
+func (client *UserAssignedIdentitiesClient) listBySubscriptionHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -277,23 +277,23 @@ func (client *UserAssignedIDentitiesClient) listBySubscriptionHandleError(resp *
 }
 
 // Update - Update an identity in the specified subscription and resource group.
-func (client *UserAssignedIDentitiesClient) Update(ctx context.Context, resourceGroupName string, resourceName string, parameters IDentityUpdate, options *UserAssignedIDentitiesUpdateOptions) (IDentityResponse, error) {
+func (client *UserAssignedIdentitiesClient) Update(ctx context.Context, resourceGroupName string, resourceName string, parameters IdentityUpdate, options *UserAssignedIdentitiesUpdateOptions) (IdentityResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
 	if err != nil {
-		return IDentityResponse{}, err
+		return IdentityResponse{}, err
 	}
 	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
-		return IDentityResponse{}, err
+		return IdentityResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return IDentityResponse{}, client.updateHandleError(resp)
+		return IdentityResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *UserAssignedIDentitiesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters IDentityUpdate, options *UserAssignedIDentitiesUpdateOptions) (*azcore.Request, error) {
+func (client *UserAssignedIdentitiesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters IdentityUpdate, options *UserAssignedIdentitiesUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{resourceName}"
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
@@ -311,16 +311,16 @@ func (client *UserAssignedIDentitiesClient) updateCreateRequest(ctx context.Cont
 }
 
 // updateHandleResponse handles the Update response.
-func (client *UserAssignedIDentitiesClient) updateHandleResponse(resp *azcore.Response) (IDentityResponse, error) {
-	var val *IDentity
+func (client *UserAssignedIdentitiesClient) updateHandleResponse(resp *azcore.Response) (IdentityResponse, error) {
+	var val *Identity
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return IDentityResponse{}, err
+		return IdentityResponse{}, err
 	}
-	return IDentityResponse{RawResponse: resp.Response, IDentity: val}, nil
+	return IdentityResponse{RawResponse: resp.Response, Identity: val}, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *UserAssignedIDentitiesClient) updateHandleError(resp *azcore.Response) error {
+func (client *UserAssignedIdentitiesClient) updateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err

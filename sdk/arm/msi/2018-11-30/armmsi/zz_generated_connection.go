@@ -7,4 +7,4 @@
 
 package armmsi
 
-const telemetryInfo = "azsdk-go-armmsi/v0.1.0"
+const telemetryInfo = "azsdk-go-armmsi/v0.2.0"

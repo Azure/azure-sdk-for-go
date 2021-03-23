@@ -89,50 +89,50 @@ func (p *operationListResultPager) PageResponse() OperationListResultResponse {
 	return p.current
 }
 
-// UserAssignedIDentitiesListResultPager provides iteration over UserAssignedIDentitiesListResult pages.
-type UserAssignedIDentitiesListResultPager interface {
+// UserAssignedIdentitiesListResultPager provides iteration over UserAssignedIdentitiesListResult pages.
+type UserAssignedIdentitiesListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current UserAssignedIDentitiesListResultResponse.
-	PageResponse() UserAssignedIDentitiesListResultResponse
+	// Page returns the current UserAssignedIdentitiesListResultResponse.
+	PageResponse() UserAssignedIdentitiesListResultResponse
 }
 
-type userAssignedIDentitiesListResultCreateRequest func(context.Context) (*azcore.Request, error)
+type userAssignedIdentitiesListResultCreateRequest func(context.Context) (*azcore.Request, error)
 
-type userAssignedIDentitiesListResultHandleError func(*azcore.Response) error
+type userAssignedIdentitiesListResultHandleError func(*azcore.Response) error
 
-type userAssignedIDentitiesListResultHandleResponse func(*azcore.Response) (UserAssignedIDentitiesListResultResponse, error)
+type userAssignedIdentitiesListResultHandleResponse func(*azcore.Response) (UserAssignedIdentitiesListResultResponse, error)
 
-type userAssignedIDentitiesListResultAdvancePage func(context.Context, UserAssignedIDentitiesListResultResponse) (*azcore.Request, error)
+type userAssignedIdentitiesListResultAdvancePage func(context.Context, UserAssignedIdentitiesListResultResponse) (*azcore.Request, error)
 
-type userAssignedIDentitiesListResultPager struct {
+type userAssignedIdentitiesListResultPager struct {
 	// the pipeline for making the request
 	pipeline azcore.Pipeline
 	// creates the initial request (non-LRO case)
-	requester userAssignedIDentitiesListResultCreateRequest
+	requester userAssignedIdentitiesListResultCreateRequest
 	// callback for handling response errors
-	errorer userAssignedIDentitiesListResultHandleError
+	errorer userAssignedIdentitiesListResultHandleError
 	// callback for handling the HTTP response
-	responder userAssignedIDentitiesListResultHandleResponse
+	responder userAssignedIdentitiesListResultHandleResponse
 	// callback for advancing to the next page
-	advancer userAssignedIDentitiesListResultAdvancePage
+	advancer userAssignedIdentitiesListResultAdvancePage
 	// contains the current response
-	current UserAssignedIDentitiesListResultResponse
+	current UserAssignedIdentitiesListResultResponse
 	// status codes for successful retrieval
 	statusCodes []int
 	// any error encountered
 	err error
 }
 
-func (p *userAssignedIDentitiesListResultPager) Err() error {
+func (p *userAssignedIdentitiesListResultPager) Err() error {
 	return p.err
 }
 
-func (p *userAssignedIDentitiesListResultPager) NextPage(ctx context.Context) bool {
+func (p *userAssignedIdentitiesListResultPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.UserAssignedIDentitiesListResult.NextLink == nil || len(*p.current.UserAssignedIDentitiesListResult.NextLink) == 0 {
+		if p.current.UserAssignedIdentitiesListResult.NextLink == nil || len(*p.current.UserAssignedIdentitiesListResult.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -161,6 +161,6 @@ func (p *userAssignedIDentitiesListResultPager) NextPage(ctx context.Context) bo
 	return true
 }
 
-func (p *userAssignedIDentitiesListResultPager) PageResponse() UserAssignedIDentitiesListResultResponse {
+func (p *userAssignedIdentitiesListResultPager) PageResponse() UserAssignedIdentitiesListResultResponse {
 	return p.current
 }

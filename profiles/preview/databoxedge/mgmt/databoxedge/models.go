@@ -22,7 +22,7 @@ package databoxedge
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/databoxedge/mgmt/2019-08-01/databoxedge"
+	original "github.com/Azure/azure-sdk-for-go/services/databoxedge/mgmt/2020-12-01/databoxedge"
 )
 
 const (
@@ -36,6 +36,18 @@ const (
 	GeneralPurposeStorage AccountType = original.GeneralPurposeStorage
 )
 
+type AddonState = original.AddonState
+
+const (
+	Created       AddonState = original.Created
+	Creating      AddonState = original.Creating
+	Deleting      AddonState = original.Deleting
+	Failed        AddonState = original.Failed
+	Invalid       AddonState = original.Invalid
+	Reconfiguring AddonState = original.Reconfiguring
+	Updating      AddonState = original.Updating
+)
+
 type AlertSeverity = original.AlertSeverity
 
 const (
@@ -47,8 +59,8 @@ const (
 type AuthenticationType = original.AuthenticationType
 
 const (
-	AzureActiveDirectory AuthenticationType = original.AzureActiveDirectory
-	Invalid              AuthenticationType = original.Invalid
+	AuthenticationTypeAzureActiveDirectory AuthenticationType = original.AuthenticationTypeAzureActiveDirectory
+	AuthenticationTypeInvalid              AuthenticationType = original.AuthenticationTypeInvalid
 )
 
 type AzureContainerDataFormat = original.AzureContainerDataFormat
@@ -70,11 +82,20 @@ const (
 type ContainerStatus = original.ContainerStatus
 
 const (
-	NeedsAttention ContainerStatus = original.NeedsAttention
-	Offline        ContainerStatus = original.Offline
-	OK             ContainerStatus = original.OK
-	Unknown        ContainerStatus = original.Unknown
-	Updating       ContainerStatus = original.Updating
+	ContainerStatusNeedsAttention ContainerStatus = original.ContainerStatusNeedsAttention
+	ContainerStatusOffline        ContainerStatus = original.ContainerStatusOffline
+	ContainerStatusOK             ContainerStatus = original.ContainerStatusOK
+	ContainerStatusUnknown        ContainerStatus = original.ContainerStatusUnknown
+	ContainerStatusUpdating       ContainerStatus = original.ContainerStatusUpdating
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type DataPolicy = original.DataPolicy
@@ -96,16 +117,25 @@ const (
 	Wednesday DayOfWeek = original.Wednesday
 )
 
+type DeviceKind = original.DeviceKind
+
+const (
+	AzureDataBoxGateway    DeviceKind = original.AzureDataBoxGateway
+	AzureModularDataCentre DeviceKind = original.AzureModularDataCentre
+	AzureStackEdge         DeviceKind = original.AzureStackEdge
+	AzureStackHub          DeviceKind = original.AzureStackHub
+)
+
 type DeviceStatus = original.DeviceStatus
 
 const (
-	DeviceStatusDisconnected          DeviceStatus = original.DeviceStatusDisconnected
-	DeviceStatusMaintenance           DeviceStatus = original.DeviceStatusMaintenance
-	DeviceStatusNeedsAttention        DeviceStatus = original.DeviceStatusNeedsAttention
-	DeviceStatusOffline               DeviceStatus = original.DeviceStatusOffline
-	DeviceStatusOnline                DeviceStatus = original.DeviceStatusOnline
-	DeviceStatusPartiallyDisconnected DeviceStatus = original.DeviceStatusPartiallyDisconnected
-	DeviceStatusReadyToSetup          DeviceStatus = original.DeviceStatusReadyToSetup
+	Disconnected          DeviceStatus = original.Disconnected
+	Maintenance           DeviceStatus = original.Maintenance
+	NeedsAttention        DeviceStatus = original.NeedsAttention
+	Offline               DeviceStatus = original.Offline
+	Online                DeviceStatus = original.Online
+	PartiallyDisconnected DeviceStatus = original.PartiallyDisconnected
+	ReadyToSetup          DeviceStatus = original.ReadyToSetup
 )
 
 type DeviceType = original.DeviceType
@@ -117,10 +147,10 @@ const (
 type DownloadPhase = original.DownloadPhase
 
 const (
-	DownloadPhaseDownloading  DownloadPhase = original.DownloadPhaseDownloading
-	DownloadPhaseInitializing DownloadPhase = original.DownloadPhaseInitializing
-	DownloadPhaseUnknown      DownloadPhase = original.DownloadPhaseUnknown
-	DownloadPhaseVerifying    DownloadPhase = original.DownloadPhaseVerifying
+	Downloading  DownloadPhase = original.Downloading
+	Initializing DownloadPhase = original.Initializing
+	Unknown      DownloadPhase = original.Unknown
+	Verifying    DownloadPhase = original.Verifying
 )
 
 type EncryptionAlgorithm = original.EncryptionAlgorithm
@@ -129,6 +159,13 @@ const (
 	AES256        EncryptionAlgorithm = original.AES256
 	None          EncryptionAlgorithm = original.None
 	RSAESPKCS1V15 EncryptionAlgorithm = original.RSAESPKCS1V15
+)
+
+type HostPlatformType = original.HostPlatformType
+
+const (
+	KubernetesCluster HostPlatformType = original.KubernetesCluster
+	LinuxVM           HostPlatformType = original.LinuxVM
 )
 
 type InstallRebootBehavior = original.InstallRebootBehavior
@@ -154,19 +191,43 @@ const (
 type JobType = original.JobType
 
 const (
-	JobTypeDownloadUpdates  JobType = original.JobTypeDownloadUpdates
-	JobTypeInstallUpdates   JobType = original.JobTypeInstallUpdates
-	JobTypeInvalid          JobType = original.JobTypeInvalid
-	JobTypeRefreshContainer JobType = original.JobTypeRefreshContainer
-	JobTypeRefreshShare     JobType = original.JobTypeRefreshShare
-	JobTypeScanForUpdates   JobType = original.JobTypeScanForUpdates
+	JobTypeBackup                JobType = original.JobTypeBackup
+	JobTypeDownloadUpdates       JobType = original.JobTypeDownloadUpdates
+	JobTypeInstallUpdates        JobType = original.JobTypeInstallUpdates
+	JobTypeInvalid               JobType = original.JobTypeInvalid
+	JobTypeRefreshContainer      JobType = original.JobTypeRefreshContainer
+	JobTypeRefreshShare          JobType = original.JobTypeRefreshShare
+	JobTypeRestore               JobType = original.JobTypeRestore
+	JobTypeScanForUpdates        JobType = original.JobTypeScanForUpdates
+	JobTypeTriggerSupportPackage JobType = original.JobTypeTriggerSupportPackage
+)
+
+type KeyVaultSyncStatus = original.KeyVaultSyncStatus
+
+const (
+	KeyVaultNotConfigured KeyVaultSyncStatus = original.KeyVaultNotConfigured
+	KeyVaultSynced        KeyVaultSyncStatus = original.KeyVaultSynced
+	KeyVaultSyncFailed    KeyVaultSyncStatus = original.KeyVaultSyncFailed
+	KeyVaultSyncing       KeyVaultSyncStatus = original.KeyVaultSyncing
+	KeyVaultSyncPending   KeyVaultSyncStatus = original.KeyVaultSyncPending
 )
 
 type Kind = original.Kind
 
 const (
-	KindIOT  Kind = original.KindIOT
-	KindRole Kind = original.KindRole
+	KindAddon            Kind = original.KindAddon
+	KindArcForKubernetes Kind = original.KindArcForKubernetes
+	KindIotEdge          Kind = original.KindIotEdge
+)
+
+type KindBasicRole = original.KindBasicRole
+
+const (
+	KindCloudEdgeManagement KindBasicRole = original.KindCloudEdgeManagement
+	KindIOT                 KindBasicRole = original.KindIOT
+	KindKubernetes          KindBasicRole = original.KindKubernetes
+	KindMEC                 KindBasicRole = original.KindMEC
+	KindRole                KindBasicRole = original.KindRole
 )
 
 type KindBasicTrigger = original.KindBasicTrigger
@@ -175,6 +236,26 @@ const (
 	KindFileEvent          KindBasicTrigger = original.KindFileEvent
 	KindPeriodicTimerEvent KindBasicTrigger = original.KindPeriodicTimerEvent
 	KindTrigger            KindBasicTrigger = original.KindTrigger
+)
+
+type KubernetesNodeType = original.KubernetesNodeType
+
+const (
+	KubernetesNodeTypeInvalid KubernetesNodeType = original.KubernetesNodeTypeInvalid
+	KubernetesNodeTypeMaster  KubernetesNodeType = original.KubernetesNodeTypeMaster
+	KubernetesNodeTypeWorker  KubernetesNodeType = original.KubernetesNodeTypeWorker
+)
+
+type KubernetesState = original.KubernetesState
+
+const (
+	KubernetesStateCreated       KubernetesState = original.KubernetesStateCreated
+	KubernetesStateCreating      KubernetesState = original.KubernetesStateCreating
+	KubernetesStateDeleting      KubernetesState = original.KubernetesStateDeleting
+	KubernetesStateFailed        KubernetesState = original.KubernetesStateFailed
+	KubernetesStateInvalid       KubernetesState = original.KubernetesStateInvalid
+	KubernetesStateReconfiguring KubernetesState = original.KubernetesStateReconfiguring
+	KubernetesStateUpdating      KubernetesState = original.KubernetesStateUpdating
 )
 
 type MetricAggregationType = original.MetricAggregationType
@@ -214,6 +295,21 @@ type MonitoringStatus = original.MonitoringStatus
 const (
 	Disabled MonitoringStatus = original.Disabled
 	Enabled  MonitoringStatus = original.Enabled
+)
+
+type MountType = original.MountType
+
+const (
+	HostPath MountType = original.HostPath
+	Volume   MountType = original.Volume
+)
+
+type MsiIdentityType = original.MsiIdentityType
+
+const (
+	MsiIdentityTypeNone           MsiIdentityType = original.MsiIdentityTypeNone
+	MsiIdentityTypeSystemAssigned MsiIdentityType = original.MsiIdentityTypeSystemAssigned
+	MsiIdentityTypeUserAssigned   MsiIdentityType = original.MsiIdentityTypeUserAssigned
 )
 
 type NetworkAdapterDHCPStatus = original.NetworkAdapterDHCPStatus
@@ -259,7 +355,9 @@ type OrderState = original.OrderState
 
 const (
 	Arriving               OrderState = original.Arriving
+	AwaitingDrop           OrderState = original.AwaitingDrop
 	AwaitingFulfilment     OrderState = original.AwaitingFulfilment
+	AwaitingPickup         OrderState = original.AwaitingPickup
 	AwaitingPreparation    OrderState = original.AwaitingPreparation
 	AwaitingReturnShipment OrderState = original.AwaitingReturnShipment
 	AwaitingShipment       OrderState = original.AwaitingShipment
@@ -267,6 +365,7 @@ const (
 	Declined               OrderState = original.Declined
 	Delivered              OrderState = original.Delivered
 	LostDevice             OrderState = original.LostDevice
+	PickupCompleted        OrderState = original.PickupCompleted
 	ReplacementRequested   OrderState = original.ReplacementRequested
 	ReturnInitiated        OrderState = original.ReturnInitiated
 	Shipped                OrderState = original.Shipped
@@ -281,6 +380,22 @@ const (
 	Windows PlatformType = original.Windows
 )
 
+type PosixComplianceStatus = original.PosixComplianceStatus
+
+const (
+	PosixComplianceStatusDisabled PosixComplianceStatus = original.PosixComplianceStatusDisabled
+	PosixComplianceStatusEnabled  PosixComplianceStatus = original.PosixComplianceStatusEnabled
+	PosixComplianceStatusInvalid  PosixComplianceStatus = original.PosixComplianceStatusInvalid
+)
+
+type ResourceMoveStatus = original.ResourceMoveStatus
+
+const (
+	ResourceMoveStatusNone                   ResourceMoveStatus = original.ResourceMoveStatusNone
+	ResourceMoveStatusResourceMoveFailed     ResourceMoveStatus = original.ResourceMoveStatusResourceMoveFailed
+	ResourceMoveStatusResourceMoveInProgress ResourceMoveStatus = original.ResourceMoveStatusResourceMoveInProgress
+)
+
 type RoleStatus = original.RoleStatus
 
 const (
@@ -291,10 +406,13 @@ const (
 type RoleTypes = original.RoleTypes
 
 const (
-	ASA       RoleTypes = original.ASA
-	Cognitive RoleTypes = original.Cognitive
-	Functions RoleTypes = original.Functions
-	IOT       RoleTypes = original.IOT
+	ASA                 RoleTypes = original.ASA
+	CloudEdgeManagement RoleTypes = original.CloudEdgeManagement
+	Cognitive           RoleTypes = original.Cognitive
+	Functions           RoleTypes = original.Functions
+	IOT                 RoleTypes = original.IOT
+	Kubernetes          RoleTypes = original.Kubernetes
+	MEC                 RoleTypes = original.MEC
 )
 
 type SSLStatus = original.SSLStatus
@@ -329,11 +447,38 @@ const (
 	ShareStatusUpdating       ShareStatus = original.ShareStatusUpdating
 )
 
+type ShipmentType = original.ShipmentType
+
+const (
+	NotApplicable     ShipmentType = original.NotApplicable
+	SelfPickup        ShipmentType = original.SelfPickup
+	ShippedToCustomer ShipmentType = original.ShippedToCustomer
+)
+
+type SkuAvailability = original.SkuAvailability
+
+const (
+	Available   SkuAvailability = original.Available
+	Unavailable SkuAvailability = original.Unavailable
+)
+
 type SkuName = original.SkuName
 
 const (
 	Edge              SkuName = original.Edge
+	EdgeMRMini        SkuName = original.EdgeMRMini
+	EdgePBase         SkuName = original.EdgePBase
+	EdgePHigh         SkuName = original.EdgePHigh
+	EdgePRBase        SkuName = original.EdgePRBase
+	EdgePRBaseUPS     SkuName = original.EdgePRBaseUPS
 	Gateway           SkuName = original.Gateway
+	GPU               SkuName = original.GPU
+	RCALarge          SkuName = original.RCALarge
+	RCASmall          SkuName = original.RCASmall
+	RDC               SkuName = original.RDC
+	TCALarge          SkuName = original.TCALarge
+	TCASmall          SkuName = original.TCASmall
+	TDC               SkuName = original.TDC
 	TEA1Node          SkuName = original.TEA1Node
 	TEA1NodeHeater    SkuName = original.TEA1NodeHeater
 	TEA1NodeUPS       SkuName = original.TEA1NodeUPS
@@ -343,17 +488,24 @@ const (
 	TMA               SkuName = original.TMA
 )
 
-type SkuRestrictionReasonCode = original.SkuRestrictionReasonCode
+type SkuSignupOption = original.SkuSignupOption
 
 const (
-	NotAvailableForSubscription SkuRestrictionReasonCode = original.NotAvailableForSubscription
-	QuotaID                     SkuRestrictionReasonCode = original.QuotaID
+	SkuSignupOptionAvailable SkuSignupOption = original.SkuSignupOptionAvailable
+	SkuSignupOptionNone      SkuSignupOption = original.SkuSignupOptionNone
 )
 
 type SkuTier = original.SkuTier
 
 const (
 	Standard SkuTier = original.Standard
+)
+
+type SkuVersion = original.SkuVersion
+
+const (
+	Preview SkuVersion = original.Preview
+	Stable  SkuVersion = original.Stable
 )
 
 type StorageAccountStatus = original.StorageAccountStatus
@@ -364,6 +516,16 @@ const (
 	StorageAccountStatusOK             StorageAccountStatus = original.StorageAccountStatusOK
 	StorageAccountStatusUnknown        StorageAccountStatus = original.StorageAccountStatusUnknown
 	StorageAccountStatusUpdating       StorageAccountStatus = original.StorageAccountStatusUpdating
+)
+
+type SubscriptionState = original.SubscriptionState
+
+const (
+	Deleted      SubscriptionState = original.Deleted
+	Registered   SubscriptionState = original.Registered
+	Suspended    SubscriptionState = original.Suspended
+	Unregistered SubscriptionState = original.Unregistered
+	Warned       SubscriptionState = original.Warned
 )
 
 type TimeGrain = original.TimeGrain
@@ -419,6 +581,14 @@ const (
 )
 
 type ARMBaseModel = original.ARMBaseModel
+type Addon = original.Addon
+type AddonList = original.AddonList
+type AddonListIterator = original.AddonListIterator
+type AddonListPage = original.AddonListPage
+type AddonModel = original.AddonModel
+type AddonsClient = original.AddonsClient
+type AddonsCreateOrUpdateFuture = original.AddonsCreateOrUpdateFuture
+type AddonsDeleteFuture = original.AddonsDeleteFuture
 type Address = original.Address
 type Alert = original.Alert
 type AlertErrorDetails = original.AlertErrorDetails
@@ -427,8 +597,11 @@ type AlertListIterator = original.AlertListIterator
 type AlertListPage = original.AlertListPage
 type AlertProperties = original.AlertProperties
 type AlertsClient = original.AlertsClient
+type ArcAddon = original.ArcAddon
+type ArcAddonProperties = original.ArcAddonProperties
 type AsymmetricEncryptedSecret = original.AsymmetricEncryptedSecret
 type Authentication = original.Authentication
+type AvailableSkusClient = original.AvailableSkusClient
 type AzureContainerInfo = original.AzureContainerInfo
 type BandwidthSchedule = original.BandwidthSchedule
 type BandwidthScheduleProperties = original.BandwidthScheduleProperties
@@ -439,11 +612,16 @@ type BandwidthSchedulesList = original.BandwidthSchedulesList
 type BandwidthSchedulesListIterator = original.BandwidthSchedulesListIterator
 type BandwidthSchedulesListPage = original.BandwidthSchedulesListPage
 type BaseClient = original.BaseClient
+type BasicAddon = original.BasicAddon
 type BasicRole = original.BasicRole
 type BasicTrigger = original.BasicTrigger
 type ClientAccessRight = original.ClientAccessRight
+type CloudEdgeManagementRole = original.CloudEdgeManagementRole
+type CloudEdgeManagementRoleProperties = original.CloudEdgeManagementRoleProperties
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type CniConfig = original.CniConfig
+type ComputeResource = original.ComputeResource
 type ContactDetails = original.ContactDetails
 type Container = original.Container
 type ContainerList = original.ContainerList
@@ -454,14 +632,19 @@ type ContainersClient = original.ContainersClient
 type ContainersCreateOrUpdateFuture = original.ContainersCreateOrUpdateFuture
 type ContainersDeleteFuture = original.ContainersDeleteFuture
 type ContainersRefreshFuture = original.ContainersRefreshFuture
+type DCAccessCode = original.DCAccessCode
+type DCAccessCodeProperties = original.DCAccessCodeProperties
 type Device = original.Device
 type DeviceExtendedInfo = original.DeviceExtendedInfo
+type DeviceExtendedInfoPatch = original.DeviceExtendedInfoPatch
 type DeviceExtendedInfoProperties = original.DeviceExtendedInfoProperties
 type DeviceList = original.DeviceList
 type DeviceListIterator = original.DeviceListIterator
 type DeviceListPage = original.DeviceListPage
 type DevicePatch = original.DevicePatch
 type DeviceProperties = original.DeviceProperties
+type DevicePropertiesPatch = original.DevicePropertiesPatch
+type DeviceSecrets = original.DeviceSecrets
 type DevicesClient = original.DevicesClient
 type DevicesCreateOrUpdateFuture = original.DevicesCreateOrUpdateFuture
 type DevicesCreateOrUpdateSecuritySettingsFuture = original.DevicesCreateOrUpdateSecuritySettingsFuture
@@ -469,10 +652,20 @@ type DevicesDeleteFuture = original.DevicesDeleteFuture
 type DevicesDownloadUpdatesFuture = original.DevicesDownloadUpdatesFuture
 type DevicesInstallUpdatesFuture = original.DevicesInstallUpdatesFuture
 type DevicesScanForUpdatesFuture = original.DevicesScanForUpdatesFuture
+type EdgeProfile = original.EdgeProfile
+type EdgeProfilePatch = original.EdgeProfilePatch
+type EdgeProfileSubscription = original.EdgeProfileSubscription
+type EdgeProfileSubscriptionPatch = original.EdgeProfileSubscriptionPatch
+type EtcdInfo = original.EtcdInfo
 type FileEventTrigger = original.FileEventTrigger
 type FileSourceInfo = original.FileSourceInfo
 type FileTriggerProperties = original.FileTriggerProperties
+type GenerateCertResponse = original.GenerateCertResponse
+type ImageRepositoryCredential = original.ImageRepositoryCredential
+type IoTAddon = original.IoTAddon
+type IoTAddonProperties = original.IoTAddonProperties
 type IoTDeviceInfo = original.IoTDeviceInfo
+type IoTEdgeAgentInfo = original.IoTEdgeAgentInfo
 type IoTRole = original.IoTRole
 type IoTRoleProperties = original.IoTRoleProperties
 type Ipv4Config = original.Ipv4Config
@@ -482,15 +675,43 @@ type JobErrorDetails = original.JobErrorDetails
 type JobErrorItem = original.JobErrorItem
 type JobProperties = original.JobProperties
 type JobsClient = original.JobsClient
+type KubernetesClusterInfo = original.KubernetesClusterInfo
+type KubernetesIPConfiguration = original.KubernetesIPConfiguration
+type KubernetesRole = original.KubernetesRole
+type KubernetesRoleCompute = original.KubernetesRoleCompute
+type KubernetesRoleNetwork = original.KubernetesRoleNetwork
+type KubernetesRoleProperties = original.KubernetesRoleProperties
+type KubernetesRoleResources = original.KubernetesRoleResources
+type KubernetesRoleStorage = original.KubernetesRoleStorage
+type KubernetesRoleStorageClassInfo = original.KubernetesRoleStorageClassInfo
+type LoadBalancerConfig = original.LoadBalancerConfig
+type MECRole = original.MECRole
+type MECRoleProperties = original.MECRoleProperties
+type MetricConfiguration = original.MetricConfiguration
+type MetricCounter = original.MetricCounter
+type MetricCounterSet = original.MetricCounterSet
+type MetricDimension = original.MetricDimension
 type MetricDimensionV1 = original.MetricDimensionV1
 type MetricSpecificationV1 = original.MetricSpecificationV1
+type MonitoringConfigClient = original.MonitoringConfigClient
+type MonitoringConfigCreateOrUpdateFuture = original.MonitoringConfigCreateOrUpdateFuture
+type MonitoringConfigDeleteFuture = original.MonitoringConfigDeleteFuture
+type MonitoringMetricConfiguration = original.MonitoringMetricConfiguration
+type MonitoringMetricConfigurationList = original.MonitoringMetricConfigurationList
+type MonitoringMetricConfigurationListIterator = original.MonitoringMetricConfigurationListIterator
+type MonitoringMetricConfigurationListPage = original.MonitoringMetricConfigurationListPage
+type MonitoringMetricConfigurationProperties = original.MonitoringMetricConfigurationProperties
 type MountPointMap = original.MountPointMap
+type MoveRequest = original.MoveRequest
 type NetworkAdapter = original.NetworkAdapter
 type NetworkAdapterPosition = original.NetworkAdapterPosition
 type NetworkSettings = original.NetworkSettings
 type NetworkSettingsProperties = original.NetworkSettingsProperties
 type Node = original.Node
+type NodeInfo = original.NodeInfo
 type NodeList = original.NodeList
+type NodeListIterator = original.NodeListIterator
+type NodeListPage = original.NodeListPage
 type NodeProperties = original.NodeProperties
 type NodesClient = original.NodesClient
 type Operation = original.Operation
@@ -515,6 +736,8 @@ type PeriodicTimerProperties = original.PeriodicTimerProperties
 type PeriodicTimerSourceInfo = original.PeriodicTimerSourceInfo
 type RawCertificateData = original.RawCertificateData
 type RefreshDetails = original.RefreshDetails
+type ResourceIdentity = original.ResourceIdentity
+type ResourceMoveDetails = original.ResourceMoveDetails
 type ResourceTypeSku = original.ResourceTypeSku
 type Role = original.Role
 type RoleList = original.RoleList
@@ -525,6 +748,7 @@ type RoleSinkInfo = original.RoleSinkInfo
 type RolesClient = original.RolesClient
 type RolesCreateOrUpdateFuture = original.RolesCreateOrUpdateFuture
 type RolesDeleteFuture = original.RolesDeleteFuture
+type Secret = original.Secret
 type SecuritySettings = original.SecuritySettings
 type SecuritySettingsProperties = original.SecuritySettingsProperties
 type ServiceSpecification = original.ServiceSpecification
@@ -539,12 +763,15 @@ type SharesCreateOrUpdateFuture = original.SharesCreateOrUpdateFuture
 type SharesDeleteFuture = original.SharesDeleteFuture
 type SharesRefreshFuture = original.SharesRefreshFuture
 type Sku = original.Sku
+type SkuCapability = original.SkuCapability
 type SkuCost = original.SkuCost
+type SkuInformation = original.SkuInformation
 type SkuInformationList = original.SkuInformationList
+type SkuList = original.SkuList
+type SkuListIterator = original.SkuListIterator
+type SkuListPage = original.SkuListPage
 type SkuLocationInfo = original.SkuLocationInfo
-type SkuRestriction = original.SkuRestriction
-type SkuRestrictionInfo = original.SkuRestrictionInfo
-type SkusClient = original.SkusClient
+type SkuType = original.SkuType
 type StorageAccount = original.StorageAccount
 type StorageAccountCredential = original.StorageAccountCredential
 type StorageAccountCredentialList = original.StorageAccountCredentialList
@@ -561,7 +788,10 @@ type StorageAccountProperties = original.StorageAccountProperties
 type StorageAccountsClient = original.StorageAccountsClient
 type StorageAccountsCreateOrUpdateFuture = original.StorageAccountsCreateOrUpdateFuture
 type StorageAccountsDeleteFuture = original.StorageAccountsDeleteFuture
+type SubscriptionProperties = original.SubscriptionProperties
+type SubscriptionRegisteredFeatures = original.SubscriptionRegisteredFeatures
 type SymmetricKey = original.SymmetricKey
+type SystemData = original.SystemData
 type TrackingInfo = original.TrackingInfo
 type Trigger = original.Trigger
 type TriggerList = original.TriggerList
@@ -590,6 +820,18 @@ type UsersDeleteFuture = original.UsersDeleteFuture
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
 }
+func NewAddonListIterator(page AddonListPage) AddonListIterator {
+	return original.NewAddonListIterator(page)
+}
+func NewAddonListPage(cur AddonList, getNextPage func(context.Context, AddonList) (AddonList, error)) AddonListPage {
+	return original.NewAddonListPage(cur, getNextPage)
+}
+func NewAddonsClient(subscriptionID string) AddonsClient {
+	return original.NewAddonsClient(subscriptionID)
+}
+func NewAddonsClientWithBaseURI(baseURI string, subscriptionID string) AddonsClient {
+	return original.NewAddonsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewAlertListIterator(page AlertListPage) AlertListIterator {
 	return original.NewAlertListIterator(page)
 }
@@ -601,6 +843,12 @@ func NewAlertsClient(subscriptionID string) AlertsClient {
 }
 func NewAlertsClientWithBaseURI(baseURI string, subscriptionID string) AlertsClient {
 	return original.NewAlertsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewAvailableSkusClient(subscriptionID string) AvailableSkusClient {
+	return original.NewAvailableSkusClient(subscriptionID)
+}
+func NewAvailableSkusClientWithBaseURI(baseURI string, subscriptionID string) AvailableSkusClient {
+	return original.NewAvailableSkusClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewBandwidthSchedulesClient(subscriptionID string) BandwidthSchedulesClient {
 	return original.NewBandwidthSchedulesClient(subscriptionID)
@@ -643,6 +891,24 @@ func NewJobsClient(subscriptionID string) JobsClient {
 }
 func NewJobsClientWithBaseURI(baseURI string, subscriptionID string) JobsClient {
 	return original.NewJobsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMonitoringConfigClient(subscriptionID string) MonitoringConfigClient {
+	return original.NewMonitoringConfigClient(subscriptionID)
+}
+func NewMonitoringConfigClientWithBaseURI(baseURI string, subscriptionID string) MonitoringConfigClient {
+	return original.NewMonitoringConfigClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewMonitoringMetricConfigurationListIterator(page MonitoringMetricConfigurationListPage) MonitoringMetricConfigurationListIterator {
+	return original.NewMonitoringMetricConfigurationListIterator(page)
+}
+func NewMonitoringMetricConfigurationListPage(cur MonitoringMetricConfigurationList, getNextPage func(context.Context, MonitoringMetricConfigurationList) (MonitoringMetricConfigurationList, error)) MonitoringMetricConfigurationListPage {
+	return original.NewMonitoringMetricConfigurationListPage(cur, getNextPage)
+}
+func NewNodeListIterator(page NodeListPage) NodeListIterator {
+	return original.NewNodeListIterator(page)
+}
+func NewNodeListPage(cur NodeList, getNextPage func(context.Context, NodeList) (NodeList, error)) NodeListPage {
+	return original.NewNodeListPage(cur, getNextPage)
 }
 func NewNodesClient(subscriptionID string) NodesClient {
 	return original.NewNodesClient(subscriptionID)
@@ -704,11 +970,11 @@ func NewSharesClient(subscriptionID string) SharesClient {
 func NewSharesClientWithBaseURI(baseURI string, subscriptionID string) SharesClient {
 	return original.NewSharesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewSkusClient(subscriptionID string) SkusClient {
-	return original.NewSkusClient(subscriptionID)
+func NewSkuListIterator(page SkuListPage) SkuListIterator {
+	return original.NewSkuListIterator(page)
 }
-func NewSkusClientWithBaseURI(baseURI string, subscriptionID string) SkusClient {
-	return original.NewSkusClientWithBaseURI(baseURI, subscriptionID)
+func NewSkuListPage(cur SkuList, getNextPage func(context.Context, SkuList) (SkuList, error)) SkuListPage {
+	return original.NewSkuListPage(cur, getNextPage)
 }
 func NewStorageAccountCredentialListIterator(page StorageAccountCredentialListPage) StorageAccountCredentialListIterator {
 	return original.NewStorageAccountCredentialListIterator(page)
@@ -764,6 +1030,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleAccountTypeValues() []AccountType {
 	return original.PossibleAccountTypeValues()
 }
+func PossibleAddonStateValues() []AddonState {
+	return original.PossibleAddonStateValues()
+}
 func PossibleAlertSeverityValues() []AlertSeverity {
 	return original.PossibleAlertSeverityValues()
 }
@@ -779,11 +1048,17 @@ func PossibleClientPermissionTypeValues() []ClientPermissionType {
 func PossibleContainerStatusValues() []ContainerStatus {
 	return original.PossibleContainerStatusValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleDataPolicyValues() []DataPolicy {
 	return original.PossibleDataPolicyValues()
 }
 func PossibleDayOfWeekValues() []DayOfWeek {
 	return original.PossibleDayOfWeekValues()
+}
+func PossibleDeviceKindValues() []DeviceKind {
+	return original.PossibleDeviceKindValues()
 }
 func PossibleDeviceStatusValues() []DeviceStatus {
 	return original.PossibleDeviceStatusValues()
@@ -797,6 +1072,9 @@ func PossibleDownloadPhaseValues() []DownloadPhase {
 func PossibleEncryptionAlgorithmValues() []EncryptionAlgorithm {
 	return original.PossibleEncryptionAlgorithmValues()
 }
+func PossibleHostPlatformTypeValues() []HostPlatformType {
+	return original.PossibleHostPlatformTypeValues()
+}
 func PossibleInstallRebootBehaviorValues() []InstallRebootBehavior {
 	return original.PossibleInstallRebootBehaviorValues()
 }
@@ -806,11 +1084,23 @@ func PossibleJobStatusValues() []JobStatus {
 func PossibleJobTypeValues() []JobType {
 	return original.PossibleJobTypeValues()
 }
+func PossibleKeyVaultSyncStatusValues() []KeyVaultSyncStatus {
+	return original.PossibleKeyVaultSyncStatusValues()
+}
+func PossibleKindBasicRoleValues() []KindBasicRole {
+	return original.PossibleKindBasicRoleValues()
+}
 func PossibleKindBasicTriggerValues() []KindBasicTrigger {
 	return original.PossibleKindBasicTriggerValues()
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
+}
+func PossibleKubernetesNodeTypeValues() []KubernetesNodeType {
+	return original.PossibleKubernetesNodeTypeValues()
+}
+func PossibleKubernetesStateValues() []KubernetesState {
+	return original.PossibleKubernetesStateValues()
 }
 func PossibleMetricAggregationTypeValues() []MetricAggregationType {
 	return original.PossibleMetricAggregationTypeValues()
@@ -823,6 +1113,12 @@ func PossibleMetricUnitValues() []MetricUnit {
 }
 func PossibleMonitoringStatusValues() []MonitoringStatus {
 	return original.PossibleMonitoringStatusValues()
+}
+func PossibleMountTypeValues() []MountType {
+	return original.PossibleMountTypeValues()
+}
+func PossibleMsiIdentityTypeValues() []MsiIdentityType {
+	return original.PossibleMsiIdentityTypeValues()
 }
 func PossibleNetworkAdapterDHCPStatusValues() []NetworkAdapterDHCPStatus {
 	return original.PossibleNetworkAdapterDHCPStatusValues()
@@ -845,6 +1141,12 @@ func PossibleOrderStateValues() []OrderState {
 func PossiblePlatformTypeValues() []PlatformType {
 	return original.PossiblePlatformTypeValues()
 }
+func PossiblePosixComplianceStatusValues() []PosixComplianceStatus {
+	return original.PossiblePosixComplianceStatusValues()
+}
+func PossibleResourceMoveStatusValues() []ResourceMoveStatus {
+	return original.PossibleResourceMoveStatusValues()
+}
 func PossibleRoleStatusValues() []RoleStatus {
 	return original.PossibleRoleStatusValues()
 }
@@ -863,17 +1165,29 @@ func PossibleShareAccessTypeValues() []ShareAccessType {
 func PossibleShareStatusValues() []ShareStatus {
 	return original.PossibleShareStatusValues()
 }
+func PossibleShipmentTypeValues() []ShipmentType {
+	return original.PossibleShipmentTypeValues()
+}
+func PossibleSkuAvailabilityValues() []SkuAvailability {
+	return original.PossibleSkuAvailabilityValues()
+}
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()
 }
-func PossibleSkuRestrictionReasonCodeValues() []SkuRestrictionReasonCode {
-	return original.PossibleSkuRestrictionReasonCodeValues()
+func PossibleSkuSignupOptionValues() []SkuSignupOption {
+	return original.PossibleSkuSignupOptionValues()
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()
 }
+func PossibleSkuVersionValues() []SkuVersion {
+	return original.PossibleSkuVersionValues()
+}
 func PossibleStorageAccountStatusValues() []StorageAccountStatus {
 	return original.PossibleStorageAccountStatusValues()
+}
+func PossibleSubscriptionStateValues() []SubscriptionState {
+	return original.PossibleSubscriptionStateValues()
 }
 func PossibleTimeGrainValues() []TimeGrain {
 	return original.PossibleTimeGrainValues()

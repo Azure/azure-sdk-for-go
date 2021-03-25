@@ -51,6 +51,7 @@ type ClassicAdministratorListResultIterator = original.ClassicAdministratorListR
 type ClassicAdministratorListResultPage = original.ClassicAdministratorListResultPage
 type ClassicAdministratorProperties = original.ClassicAdministratorProperties
 type ClassicAdministratorsClient = original.ClassicAdministratorsClient
+type CustomErrorResponse = original.CustomErrorResponse
 type DenyAssignment = original.DenyAssignment
 type DenyAssignmentFilter = original.DenyAssignmentFilter
 type DenyAssignmentListResult = original.DenyAssignmentListResult
@@ -82,6 +83,8 @@ type RoleAssignmentFilter = original.RoleAssignmentFilter
 type RoleAssignmentListResult = original.RoleAssignmentListResult
 type RoleAssignmentListResultIterator = original.RoleAssignmentListResultIterator
 type RoleAssignmentListResultPage = original.RoleAssignmentListResultPage
+type RoleAssignmentMetricsClient = original.RoleAssignmentMetricsClient
+type RoleAssignmentMetricsResult = original.RoleAssignmentMetricsResult
 type RoleAssignmentProperties = original.RoleAssignmentProperties
 type RoleAssignmentPropertiesWithScope = original.RoleAssignmentPropertiesWithScope
 type RoleAssignmentsClient = original.RoleAssignmentsClient
@@ -155,6 +158,12 @@ func NewRoleAssignmentListResultIterator(page RoleAssignmentListResultPage) Role
 }
 func NewRoleAssignmentListResultPage(cur RoleAssignmentListResult, getNextPage func(context.Context, RoleAssignmentListResult) (RoleAssignmentListResult, error)) RoleAssignmentListResultPage {
 	return original.NewRoleAssignmentListResultPage(cur, getNextPage)
+}
+func NewRoleAssignmentMetricsClient(subscriptionID string) RoleAssignmentMetricsClient {
+	return original.NewRoleAssignmentMetricsClient(subscriptionID)
+}
+func NewRoleAssignmentMetricsClientWithBaseURI(baseURI string, subscriptionID string) RoleAssignmentMetricsClient {
+	return original.NewRoleAssignmentMetricsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewRoleAssignmentsClient(subscriptionID string) RoleAssignmentsClient {
 	return original.NewRoleAssignmentsClient(subscriptionID)

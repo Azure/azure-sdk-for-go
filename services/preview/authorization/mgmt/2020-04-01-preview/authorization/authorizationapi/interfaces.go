@@ -104,3 +104,10 @@ type RoleAssignmentsClientAPI interface {
 }
 
 var _ RoleAssignmentsClientAPI = (*authorization.RoleAssignmentsClient)(nil)
+
+// RoleAssignmentMetricsClientAPI contains the set of methods on the RoleAssignmentMetricsClient type.
+type RoleAssignmentMetricsClientAPI interface {
+	GetMetricsForSubscription(ctx context.Context) (result authorization.RoleAssignmentMetricsResult, err error)
+}
+
+var _ RoleAssignmentMetricsClientAPI = (*authorization.RoleAssignmentMetricsClient)(nil)

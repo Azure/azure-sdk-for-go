@@ -66,6 +66,7 @@ type AccountsDeleteFuture = original.AccountsDeleteFuture
 type AccountsUpdateFuture = original.AccountsUpdateFuture
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorDefinition = original.ErrorDefinition
 type ErrorResponse = original.ErrorResponse
 type Instance = original.Instance

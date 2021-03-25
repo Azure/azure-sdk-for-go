@@ -26,5 +26,6 @@ type DenyAssignmentsClientAPI = original.DenyAssignmentsClientAPI
 type GlobalAdministratorClientAPI = original.GlobalAdministratorClientAPI
 type PermissionsClientAPI = original.PermissionsClientAPI
 type ProviderOperationsMetadataClientAPI = original.ProviderOperationsMetadataClientAPI
+type RoleAssignmentMetricsClientAPI = original.RoleAssignmentMetricsClientAPI
 type RoleAssignmentsClientAPI = original.RoleAssignmentsClientAPI
 type RoleDefinitionsClientAPI = original.RoleDefinitionsClientAPI

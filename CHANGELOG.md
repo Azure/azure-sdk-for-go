@@ -1,5 +1,27 @@
 # CHANGELOG
 
+## `v52.6.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/changeanalysis/mgmt/2021-04-01/changeanalysis`
+- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute`
+- `github.com/Azure/azure-sdk-for-go/services/databoxedge/mgmt/2020-12-01/databoxedge`
+- `github.com/Azure/azure-sdk-for-go/services/delegatednetwork/mgmt/2021-03-15/delegatednetwork`
+- `github.com/Azure/azure-sdk-for-go/services/preview/extendedlocation/mgmt/2021-03-15-preview/extendedlocation`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2020-04-01-preview/authorization` | [details](services/preview/authorization/mgmt/2020-04-01-preview/authorization/CHANGELOG.md) |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2020-03-01-preview/deviceupdate` | [details](services/preview/deviceupdate/mgmt/2020-03-01-preview/deviceupdate/CHANGELOG.md) |
+
 ## `v52.5.0`
 
 ### New Packages

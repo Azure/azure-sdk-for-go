@@ -22,7 +22,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-12-01/compute"
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute"
 )
 
 const (
@@ -59,6 +59,14 @@ const (
 	CachingTypesNone      CachingTypes = original.CachingTypesNone
 	CachingTypesReadOnly  CachingTypes = original.CachingTypesReadOnly
 	CachingTypesReadWrite CachingTypes = original.CachingTypesReadWrite
+)
+
+type CloudServiceUpgradeMode = original.CloudServiceUpgradeMode
+
+const (
+	Auto         CloudServiceUpgradeMode = original.Auto
+	Manual       CloudServiceUpgradeMode = original.Manual
+	Simultaneous CloudServiceUpgradeMode = original.Simultaneous
 )
 
 type ComponentNames = original.ComponentNames
@@ -128,6 +136,12 @@ const (
 	EncryptionAtRestWithPlatformAndCustomerKeys DiskEncryptionSetType = original.EncryptionAtRestWithPlatformAndCustomerKeys
 )
 
+type DiskSecurityTypes = original.DiskSecurityTypes
+
+const (
+	TrustedLaunch DiskSecurityTypes = original.TrustedLaunch
+)
+
 type DiskState = original.DiskState
 
 const (
@@ -143,8 +157,10 @@ type DiskStorageAccountTypes = original.DiskStorageAccountTypes
 
 const (
 	PremiumLRS     DiskStorageAccountTypes = original.PremiumLRS
+	PremiumZRS     DiskStorageAccountTypes = original.PremiumZRS
 	StandardLRS    DiskStorageAccountTypes = original.StandardLRS
 	StandardSSDLRS DiskStorageAccountTypes = original.StandardSSDLRS
+	StandardSSDZRS DiskStorageAccountTypes = original.StandardSSDZRS
 	UltraSSDLRS    DiskStorageAccountTypes = original.UltraSSDLRS
 )
 
@@ -465,7 +481,7 @@ const (
 type SecurityTypes = original.SecurityTypes
 
 const (
-	TrustedLaunch SecurityTypes = original.TrustedLaunch
+	SecurityTypesTrustedLaunch SecurityTypes = original.SecurityTypesTrustedLaunch
 )
 
 type SettingNames = original.SettingNames
@@ -503,17 +519,19 @@ type StorageAccountTypes = original.StorageAccountTypes
 
 const (
 	StorageAccountTypesPremiumLRS     StorageAccountTypes = original.StorageAccountTypesPremiumLRS
+	StorageAccountTypesPremiumZRS     StorageAccountTypes = original.StorageAccountTypesPremiumZRS
 	StorageAccountTypesStandardLRS    StorageAccountTypes = original.StorageAccountTypesStandardLRS
 	StorageAccountTypesStandardSSDLRS StorageAccountTypes = original.StorageAccountTypesStandardSSDLRS
+	StorageAccountTypesStandardSSDZRS StorageAccountTypes = original.StorageAccountTypesStandardSSDZRS
 	StorageAccountTypesUltraSSDLRS    StorageAccountTypes = original.StorageAccountTypesUltraSSDLRS
 )
 
 type UpgradeMode = original.UpgradeMode
 
 const (
-	Automatic UpgradeMode = original.Automatic
-	Manual    UpgradeMode = original.Manual
-	Rolling   UpgradeMode = original.Rolling
+	UpgradeModeAutomatic UpgradeMode = original.UpgradeModeAutomatic
+	UpgradeModeManual    UpgradeMode = original.UpgradeModeManual
+	UpgradeModeRolling   UpgradeMode = original.UpgradeModeRolling
 )
 
 type UpgradeOperationInvoker = original.UpgradeOperationInvoker
@@ -820,6 +838,47 @@ type BillingProfile = original.BillingProfile
 type BootDiagnostics = original.BootDiagnostics
 type BootDiagnosticsInstanceView = original.BootDiagnosticsInstanceView
 type CloudError = original.CloudError
+type CloudService = original.CloudService
+type CloudServiceExtensionProfile = original.CloudServiceExtensionProfile
+type CloudServiceExtensionProperties = original.CloudServiceExtensionProperties
+type CloudServiceInstanceView = original.CloudServiceInstanceView
+type CloudServiceListResult = original.CloudServiceListResult
+type CloudServiceListResultIterator = original.CloudServiceListResultIterator
+type CloudServiceListResultPage = original.CloudServiceListResultPage
+type CloudServiceNetworkProfile = original.CloudServiceNetworkProfile
+type CloudServiceOperatingSystemsClient = original.CloudServiceOperatingSystemsClient
+type CloudServiceOsProfile = original.CloudServiceOsProfile
+type CloudServiceProperties = original.CloudServiceProperties
+type CloudServiceRole = original.CloudServiceRole
+type CloudServiceRoleInstancesClient = original.CloudServiceRoleInstancesClient
+type CloudServiceRoleInstancesDeleteFuture = original.CloudServiceRoleInstancesDeleteFuture
+type CloudServiceRoleInstancesRebuildFuture = original.CloudServiceRoleInstancesRebuildFuture
+type CloudServiceRoleInstancesReimageFuture = original.CloudServiceRoleInstancesReimageFuture
+type CloudServiceRoleInstancesRestartFuture = original.CloudServiceRoleInstancesRestartFuture
+type CloudServiceRoleListResult = original.CloudServiceRoleListResult
+type CloudServiceRoleListResultIterator = original.CloudServiceRoleListResultIterator
+type CloudServiceRoleListResultPage = original.CloudServiceRoleListResultPage
+type CloudServiceRoleProfile = original.CloudServiceRoleProfile
+type CloudServiceRoleProfileProperties = original.CloudServiceRoleProfileProperties
+type CloudServiceRoleProperties = original.CloudServiceRoleProperties
+type CloudServiceRoleSku = original.CloudServiceRoleSku
+type CloudServiceRolesClient = original.CloudServiceRolesClient
+type CloudServiceUpdate = original.CloudServiceUpdate
+type CloudServiceVaultAndSecretReference = original.CloudServiceVaultAndSecretReference
+type CloudServiceVaultCertificate = original.CloudServiceVaultCertificate
+type CloudServiceVaultSecretGroup = original.CloudServiceVaultSecretGroup
+type CloudServicesClient = original.CloudServicesClient
+type CloudServicesCreateOrUpdateFuture = original.CloudServicesCreateOrUpdateFuture
+type CloudServicesDeleteFuture = original.CloudServicesDeleteFuture
+type CloudServicesDeleteInstancesFuture = original.CloudServicesDeleteInstancesFuture
+type CloudServicesPowerOffFuture = original.CloudServicesPowerOffFuture
+type CloudServicesRebuildFuture = original.CloudServicesRebuildFuture
+type CloudServicesReimageFuture = original.CloudServicesReimageFuture
+type CloudServicesRestartFuture = original.CloudServicesRestartFuture
+type CloudServicesStartFuture = original.CloudServicesStartFuture
+type CloudServicesUpdateDomainClient = original.CloudServicesUpdateDomainClient
+type CloudServicesUpdateDomainWalkUpdateDomainFuture = original.CloudServicesUpdateDomainWalkUpdateDomainFuture
+type CloudServicesUpdateFuture = original.CloudServicesUpdateFuture
 type CreationData = original.CreationData
 type DataDisk = original.DataDisk
 type DataDiskImage = original.DataDiskImage
@@ -887,6 +946,7 @@ type DiskRestorePointList = original.DiskRestorePointList
 type DiskRestorePointListIterator = original.DiskRestorePointListIterator
 type DiskRestorePointListPage = original.DiskRestorePointListPage
 type DiskRestorePointProperties = original.DiskRestorePointProperties
+type DiskSecurityProfile = original.DiskSecurityProfile
 type DiskSku = original.DiskSku
 type DiskUpdate = original.DiskUpdate
 type DiskUpdateProperties = original.DiskUpdateProperties
@@ -903,6 +963,7 @@ type EncryptionSetProperties = original.EncryptionSetProperties
 type EncryptionSettingsCollection = original.EncryptionSettingsCollection
 type EncryptionSettingsElement = original.EncryptionSettingsElement
 type ExtendedLocation = original.ExtendedLocation
+type Extension = original.Extension
 type GalleriesClient = original.GalleriesClient
 type GalleriesCreateOrUpdateFuture = original.GalleriesCreateOrUpdateFuture
 type GalleriesDeleteFuture = original.GalleriesDeleteFuture
@@ -984,7 +1045,9 @@ type ImagesCreateOrUpdateFuture = original.ImagesCreateOrUpdateFuture
 type ImagesDeleteFuture = original.ImagesDeleteFuture
 type ImagesUpdateFuture = original.ImagesUpdateFuture
 type InnerError = original.InnerError
+type InstanceSku = original.InstanceSku
 type InstanceViewStatus = original.InstanceViewStatus
+type InstanceViewStatusesSummary = original.InstanceViewStatusesSummary
 type KeyForDiskEncryptionSet = original.KeyForDiskEncryptionSet
 type KeyVaultAndKeyReference = original.KeyVaultAndKeyReference
 type KeyVaultAndSecretReference = original.KeyVaultAndSecretReference
@@ -999,6 +1062,10 @@ type ListUsagesResultIterator = original.ListUsagesResultIterator
 type ListUsagesResultPage = original.ListUsagesResultPage
 type ListVirtualMachineExtensionImage = original.ListVirtualMachineExtensionImage
 type ListVirtualMachineImageResource = original.ListVirtualMachineImageResource
+type LoadBalancerConfiguration = original.LoadBalancerConfiguration
+type LoadBalancerConfigurationProperties = original.LoadBalancerConfigurationProperties
+type LoadBalancerFrontendIPConfiguration = original.LoadBalancerFrontendIPConfiguration
+type LoadBalancerFrontendIPConfigurationProperties = original.LoadBalancerFrontendIPConfigurationProperties
 type LogAnalyticsClient = original.LogAnalyticsClient
 type LogAnalyticsExportRequestRateByIntervalFuture = original.LogAnalyticsExportRequestRateByIntervalFuture
 type LogAnalyticsExportThrottledRequestsFuture = original.LogAnalyticsExportThrottledRequestsFuture
@@ -1014,7 +1081,18 @@ type NetworkProfile = original.NetworkProfile
 type OSDisk = original.OSDisk
 type OSDiskImage = original.OSDiskImage
 type OSDiskImageEncryption = original.OSDiskImageEncryption
+type OSFamily = original.OSFamily
+type OSFamilyListResult = original.OSFamilyListResult
+type OSFamilyListResultIterator = original.OSFamilyListResultIterator
+type OSFamilyListResultPage = original.OSFamilyListResultPage
+type OSFamilyProperties = original.OSFamilyProperties
 type OSProfile = original.OSProfile
+type OSVersion = original.OSVersion
+type OSVersionListResult = original.OSVersionListResult
+type OSVersionListResultIterator = original.OSVersionListResultIterator
+type OSVersionListResultPage = original.OSVersionListResultPage
+type OSVersionProperties = original.OSVersionProperties
+type OSVersionPropertiesBase = original.OSVersionPropertiesBase
 type OperationListResult = original.OperationListResult
 type OperationValue = original.OperationValue
 type OperationValueDisplay = original.OperationValueDisplay
@@ -1034,6 +1112,7 @@ type PrivateLinkResource = original.PrivateLinkResource
 type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
 type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
+type PropertyUpdatesInProgress = original.PropertyUpdatesInProgress
 type ProximityPlacementGroup = original.ProximityPlacementGroup
 type ProximityPlacementGroupListResult = original.ProximityPlacementGroupListResult
 type ProximityPlacementGroupListResultIterator = original.ProximityPlacementGroupListResultIterator
@@ -1043,12 +1122,14 @@ type ProximityPlacementGroupUpdate = original.ProximityPlacementGroupUpdate
 type ProximityPlacementGroupsClient = original.ProximityPlacementGroupsClient
 type ProxyOnlyResource = original.ProxyOnlyResource
 type PurchasePlan = original.PurchasePlan
+type ReadCloser = original.ReadCloser
 type RecommendedMachineConfiguration = original.RecommendedMachineConfiguration
 type RecoveryWalkResponse = original.RecoveryWalkResponse
 type RegionalReplicationStatus = original.RegionalReplicationStatus
 type ReplicationStatus = original.ReplicationStatus
 type RequestRateByIntervalInput = original.RequestRateByIntervalInput
 type Resource = original.Resource
+type ResourceInstanceViewStatus = original.ResourceInstanceViewStatus
 type ResourceRange = original.ResourceRange
 type ResourceSku = original.ResourceSku
 type ResourceSkuCapabilities = original.ResourceSkuCapabilities
@@ -1066,6 +1147,14 @@ type ResourceURIList = original.ResourceURIList
 type ResourceURIListIterator = original.ResourceURIListIterator
 type ResourceURIListPage = original.ResourceURIListPage
 type RetrieveBootDiagnosticsDataResult = original.RetrieveBootDiagnosticsDataResult
+type RoleInstance = original.RoleInstance
+type RoleInstanceInstanceView = original.RoleInstanceInstanceView
+type RoleInstanceListResult = original.RoleInstanceListResult
+type RoleInstanceListResultIterator = original.RoleInstanceListResultIterator
+type RoleInstanceListResultPage = original.RoleInstanceListResultPage
+type RoleInstanceNetworkProfile = original.RoleInstanceNetworkProfile
+type RoleInstanceProperties = original.RoleInstanceProperties
+type RoleInstances = original.RoleInstances
 type RollbackStatusInfo = original.RollbackStatusInfo
 type RollingUpgradePolicy = original.RollingUpgradePolicy
 type RollingUpgradeProgressInfo = original.RollingUpgradeProgressInfo
@@ -1111,6 +1200,7 @@ type SnapshotsGrantAccessFuture = original.SnapshotsGrantAccessFuture
 type SnapshotsRevokeAccessFuture = original.SnapshotsRevokeAccessFuture
 type SnapshotsUpdateFuture = original.SnapshotsUpdateFuture
 type SourceVault = original.SourceVault
+type StatusCodeCount = original.StatusCodeCount
 type StorageProfile = original.StorageProfile
 type SubResource = original.SubResource
 type SubResourceReadOnly = original.SubResourceReadOnly
@@ -1119,6 +1209,10 @@ type TargetRegion = original.TargetRegion
 type TerminateNotificationProfile = original.TerminateNotificationProfile
 type ThrottledRequestsInput = original.ThrottledRequestsInput
 type UefiSettings = original.UefiSettings
+type UpdateDomain = original.UpdateDomain
+type UpdateDomainListResult = original.UpdateDomainListResult
+type UpdateDomainListResultIterator = original.UpdateDomainListResultIterator
+type UpdateDomainListResultPage = original.UpdateDomainListResultPage
 type UpdateResource = original.UpdateResource
 type UpdateResourceDefinition = original.UpdateResourceDefinition
 type UpgradeOperationHistoricalStatusInfo = original.UpgradeOperationHistoricalStatusInfo
@@ -1341,6 +1435,48 @@ func NewAvailabilitySetsClient(subscriptionID string) AvailabilitySetsClient {
 func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string) AvailabilitySetsClient {
 	return original.NewAvailabilitySetsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewCloudServiceListResultIterator(page CloudServiceListResultPage) CloudServiceListResultIterator {
+	return original.NewCloudServiceListResultIterator(page)
+}
+func NewCloudServiceListResultPage(cur CloudServiceListResult, getNextPage func(context.Context, CloudServiceListResult) (CloudServiceListResult, error)) CloudServiceListResultPage {
+	return original.NewCloudServiceListResultPage(cur, getNextPage)
+}
+func NewCloudServiceOperatingSystemsClient(subscriptionID string) CloudServiceOperatingSystemsClient {
+	return original.NewCloudServiceOperatingSystemsClient(subscriptionID)
+}
+func NewCloudServiceOperatingSystemsClientWithBaseURI(baseURI string, subscriptionID string) CloudServiceOperatingSystemsClient {
+	return original.NewCloudServiceOperatingSystemsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCloudServiceRoleInstancesClient(subscriptionID string) CloudServiceRoleInstancesClient {
+	return original.NewCloudServiceRoleInstancesClient(subscriptionID)
+}
+func NewCloudServiceRoleInstancesClientWithBaseURI(baseURI string, subscriptionID string) CloudServiceRoleInstancesClient {
+	return original.NewCloudServiceRoleInstancesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCloudServiceRoleListResultIterator(page CloudServiceRoleListResultPage) CloudServiceRoleListResultIterator {
+	return original.NewCloudServiceRoleListResultIterator(page)
+}
+func NewCloudServiceRoleListResultPage(cur CloudServiceRoleListResult, getNextPage func(context.Context, CloudServiceRoleListResult) (CloudServiceRoleListResult, error)) CloudServiceRoleListResultPage {
+	return original.NewCloudServiceRoleListResultPage(cur, getNextPage)
+}
+func NewCloudServiceRolesClient(subscriptionID string) CloudServiceRolesClient {
+	return original.NewCloudServiceRolesClient(subscriptionID)
+}
+func NewCloudServiceRolesClientWithBaseURI(baseURI string, subscriptionID string) CloudServiceRolesClient {
+	return original.NewCloudServiceRolesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCloudServicesClient(subscriptionID string) CloudServicesClient {
+	return original.NewCloudServicesClient(subscriptionID)
+}
+func NewCloudServicesClientWithBaseURI(baseURI string, subscriptionID string) CloudServicesClient {
+	return original.NewCloudServicesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCloudServicesUpdateDomainClient(subscriptionID string) CloudServicesUpdateDomainClient {
+	return original.NewCloudServicesUpdateDomainClient(subscriptionID)
+}
+func NewCloudServicesUpdateDomainClientWithBaseURI(baseURI string, subscriptionID string) CloudServicesUpdateDomainClient {
+	return original.NewCloudServicesUpdateDomainClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewDedicatedHostGroupListResultIterator(page DedicatedHostGroupListResultPage) DedicatedHostGroupListResultIterator {
 	return original.NewDedicatedHostGroupListResultIterator(page)
 }
@@ -1497,6 +1633,18 @@ func NewLogAnalyticsClient(subscriptionID string) LogAnalyticsClient {
 func NewLogAnalyticsClientWithBaseURI(baseURI string, subscriptionID string) LogAnalyticsClient {
 	return original.NewLogAnalyticsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewOSFamilyListResultIterator(page OSFamilyListResultPage) OSFamilyListResultIterator {
+	return original.NewOSFamilyListResultIterator(page)
+}
+func NewOSFamilyListResultPage(cur OSFamilyListResult, getNextPage func(context.Context, OSFamilyListResult) (OSFamilyListResult, error)) OSFamilyListResultPage {
+	return original.NewOSFamilyListResultPage(cur, getNextPage)
+}
+func NewOSVersionListResultIterator(page OSVersionListResultPage) OSVersionListResultIterator {
+	return original.NewOSVersionListResultIterator(page)
+}
+func NewOSVersionListResultPage(cur OSVersionListResult, getNextPage func(context.Context, OSVersionListResult) (OSVersionListResult, error)) OSVersionListResultPage {
+	return original.NewOSVersionListResultPage(cur, getNextPage)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -1539,6 +1687,12 @@ func NewResourceURIListIterator(page ResourceURIListPage) ResourceURIListIterato
 func NewResourceURIListPage(cur ResourceURIList, getNextPage func(context.Context, ResourceURIList) (ResourceURIList, error)) ResourceURIListPage {
 	return original.NewResourceURIListPage(cur, getNextPage)
 }
+func NewRoleInstanceListResultIterator(page RoleInstanceListResultPage) RoleInstanceListResultIterator {
+	return original.NewRoleInstanceListResultIterator(page)
+}
+func NewRoleInstanceListResultPage(cur RoleInstanceListResult, getNextPage func(context.Context, RoleInstanceListResult) (RoleInstanceListResult, error)) RoleInstanceListResultPage {
+	return original.NewRoleInstanceListResultPage(cur, getNextPage)
+}
 func NewRunCommandListResultIterator(page RunCommandListResultPage) RunCommandListResultIterator {
 	return original.NewRunCommandListResultIterator(page)
 }
@@ -1568,6 +1722,12 @@ func NewSnapshotsClient(subscriptionID string) SnapshotsClient {
 }
 func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) SnapshotsClient {
 	return original.NewSnapshotsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewUpdateDomainListResultIterator(page UpdateDomainListResultPage) UpdateDomainListResultIterator {
+	return original.NewUpdateDomainListResultIterator(page)
+}
+func NewUpdateDomainListResultPage(cur UpdateDomainListResult, getNextPage func(context.Context, UpdateDomainListResult) (UpdateDomainListResult, error)) UpdateDomainListResultPage {
+	return original.NewUpdateDomainListResultPage(cur, getNextPage)
 }
 func NewUsageClient(subscriptionID string) UsageClient {
 	return original.NewUsageClient(subscriptionID)
@@ -1716,6 +1876,9 @@ func PossibleAvailabilitySetSkuTypesValues() []AvailabilitySetSkuTypes {
 func PossibleCachingTypesValues() []CachingTypes {
 	return original.PossibleCachingTypesValues()
 }
+func PossibleCloudServiceUpgradeModeValues() []CloudServiceUpgradeMode {
+	return original.PossibleCloudServiceUpgradeModeValues()
+}
 func PossibleComponentNamesValues() []ComponentNames {
 	return original.PossibleComponentNamesValues()
 }
@@ -1742,6 +1905,9 @@ func PossibleDiskEncryptionSetIdentityTypeValues() []DiskEncryptionSetIdentityTy
 }
 func PossibleDiskEncryptionSetTypeValues() []DiskEncryptionSetType {
 	return original.PossibleDiskEncryptionSetTypeValues()
+}
+func PossibleDiskSecurityTypesValues() []DiskSecurityTypes {
+	return original.PossibleDiskSecurityTypesValues()
 }
 func PossibleDiskStateValues() []DiskState {
 	return original.PossibleDiskStateValues()

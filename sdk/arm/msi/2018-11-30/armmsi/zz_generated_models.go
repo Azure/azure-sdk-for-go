@@ -8,8 +8,11 @@
 package armmsi
 
 import (
+	"encoding/json"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
+	"reflect"
 )
 
 // An error response from the ManagedServiceIdentity service.
@@ -48,7 +51,7 @@ type CloudErrorBody struct {
 	Code *string `json:"code,omitempty"`
 
 	// A list of additional details about the error.
-	Details *[]CloudErrorBody `json:"details,omitempty"`
+	Details *[]*CloudErrorBody `json:"details,omitempty"`
 
 	// A message describing the error, intended to be suitable for display in a user interface.
 	Message *string `json:"message,omitempty"`
@@ -83,7 +86,16 @@ type IdentityUpdate struct {
 	Properties *UserAssignedIdentityProperties `json:"properties,omitempty" azure:"ro"`
 
 	// Resource tags
-	Tags *map[string]string `json:"tags,omitempty"`
+	Tags *map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type IdentityUpdate.
+func (i IdentityUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := i.Resource.marshalInternal()
+	populate(objectMap, "location", i.Location)
+	populate(objectMap, "properties", i.Properties)
+	populate(objectMap, "tags", i.Tags)
+	return json.Marshal(objectMap)
 }
 
 // Operation supported by the Microsoft.ManagedIdentity REST API.
@@ -116,7 +128,7 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// A list of operations supported by Microsoft.ManagedIdentity Resource Provider.
-	Value *[]Operation `json:"value,omitempty"`
+	Value *[]*Operation `json:"value,omitempty"`
 }
 
 // OperationListResultResponse is the response envelope for operations that return a OperationListResult type.
@@ -150,6 +162,14 @@ type Resource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+func (r Resource) marshalInternal() map[string]interface{} {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "name", r.Name)
+	populate(objectMap, "type", r.Type)
+	return objectMap
+}
+
 // SystemAssignedIdentitiesGetByScopeOptions contains the optional parameters for the SystemAssignedIdentities.GetByScope method.
 type SystemAssignedIdentitiesGetByScopeOptions struct {
 	// placeholder for future optional parameters
@@ -157,7 +177,7 @@ type SystemAssignedIdentitiesGetByScopeOptions struct {
 
 // Describes a system assigned identity resource.
 type SystemAssignedIdentity struct {
-	Resource
+	ProxyResource
 	// The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
 
@@ -165,7 +185,7 @@ type SystemAssignedIdentity struct {
 	Properties *SystemAssignedIdentityProperties `json:"properties,omitempty" azure:"ro"`
 
 	// Resource tags
-	Tags *map[string]string `json:"tags,omitempty"`
+	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
 // The properties associated with the system assigned identity.
@@ -199,7 +219,7 @@ type TrackedResource struct {
 	Location *string `json:"location,omitempty"`
 
 	// Resource tags.
-	Tags *map[string]string `json:"tags,omitempty"`
+	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
 // UserAssignedIdentitiesCreateOrUpdateOptions contains the optional parameters for the UserAssignedIdentities.CreateOrUpdate method.
@@ -233,7 +253,7 @@ type UserAssignedIdentitiesListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// The collection of userAssignedIdentities returned by the listing operation.
-	Value *[]Identity `json:"value,omitempty"`
+	Value *[]*Identity `json:"value,omitempty"`
 }
 
 // UserAssignedIdentitiesListResultResponse is the response envelope for operations that return a UserAssignedIdentitiesListResult type.
@@ -260,4 +280,12 @@ type UserAssignedIdentityProperties struct {
 
 	// READ-ONLY; The id of the tenant which the identity belongs to.
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+func populate(m map[string]interface{}, k string, v interface{}) {
+	if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
 }

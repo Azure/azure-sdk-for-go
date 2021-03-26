@@ -9,6 +9,7 @@ package armmsi
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
@@ -45,6 +46,9 @@ func (client *SystemAssignedIdentitiesClient) GetByScope(ctx context.Context, sc
 // getByScopeCreateRequest creates the GetByScope request.
 func (client *SystemAssignedIdentitiesClient) getByScopeCreateRequest(ctx context.Context, scope string, options *SystemAssignedIdentitiesGetByScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.ManagedIdentity/identities/default"
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {

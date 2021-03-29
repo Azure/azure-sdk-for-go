@@ -542,12 +542,12 @@ func TestRequestValidFail(t *testing.T) {
 	}
 }
 
-func TestWriteMultipartFormData(t *testing.T) {
+func TestSetMultipartFormData(t *testing.T) {
 	req, err := NewRequest(context.Background(), http.MethodPost, "https://contoso.com")
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = req.WriteMultipartFormData(map[string]interface{}{
+	err = req.SetMultipartFormData(map[string]interface{}{
 		"string": "value",
 		"int":    1,
 		"data":   NopCloser(strings.NewReader("some data")),

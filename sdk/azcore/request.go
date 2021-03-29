@@ -188,10 +188,10 @@ func (req *Request) SetBody(body ReadSeekCloser, contentType string) error {
 	return nil
 }
 
-// WriteMultipartFormData writes the specified keys/values as multi-part form
+// SetMultipartFormData writes the specified keys/values as multi-part form
 // fields with the specified value.  File content must be specified as a ReadSeekCloser.
 // All other values are treated as string values.
-func (req *Request) WriteMultipartFormData(formData map[string]interface{}) error {
+func (req *Request) SetMultipartFormData(formData map[string]interface{}) error {
 	body := bytes.Buffer{}
 	writer := multipart.NewWriter(&body)
 	for k, v := range formData {

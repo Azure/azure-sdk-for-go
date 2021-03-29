@@ -10,10 +10,14 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"io"
 	"io/ioutil"
+	"mime"
+	"mime/multipart"
 	"net/http"
 	"reflect"
 	"strconv"
+	"strings"
 	"testing"
 	"unsafe"
 )
@@ -535,5 +539,67 @@ func TestRequestValidFail(t *testing.T) {
 	}
 	if resp != nil {
 		t.Fatal("unexpected response")
+	}
+}
+
+func TestSetMultipartFormData(t *testing.T) {
+	req, err := NewRequest(context.Background(), http.MethodPost, "https://contoso.com")
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = req.SetMultipartFormData(map[string]interface{}{
+		"string": "value",
+		"int":    1,
+		"data":   NopCloser(strings.NewReader("some data")),
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	mt, params, err := mime.ParseMediaType(req.Header.Get(HeaderContentType))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if mt != "multipart/form-data" {
+		t.Fatalf("unexpected media type %s", mt)
+	}
+	reader := multipart.NewReader(req.Body, params["boundary"])
+	for {
+		part, err := reader.NextPart()
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			t.Fatal(err)
+		}
+		switch fn := part.FormName(); fn {
+		case "string":
+			strPart := make([]byte, 16)
+			_, err = part.Read(strPart)
+			if err != io.EOF {
+				t.Fatal(err)
+			}
+			if tr := string(strPart[:5]); tr != "value" {
+				t.Fatalf("unexpected value %s", tr)
+			}
+		case "int":
+			intPart := make([]byte, 16)
+			_, err = part.Read(intPart)
+			if err != io.EOF {
+				t.Fatal(err)
+			}
+			if tr := string(intPart[:1]); tr != "1" {
+				t.Fatalf("unexpected value %s", tr)
+			}
+		case "data":
+			dataPart := make([]byte, 16)
+			_, err = part.Read(dataPart)
+			if err != io.EOF {
+				t.Fatal(err)
+			}
+			if tr := string(dataPart[:9]); tr != "some data" {
+				t.Fatalf("unexpected value %s", tr)
+			}
+		default:
+			t.Fatalf("unexpected part %s", fn)
+		}
 	}
 }

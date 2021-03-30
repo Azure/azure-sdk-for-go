@@ -1,5 +1,5 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82//specification/datamigration/resource-manager/readme.md tag: `package-2018-07-15-preview`
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/169c6171bad2f782dc1cd5f23bcb803ce7649b0b/specification/datamigration/resource-manager/readme.md tag: `package-2018-07-15-preview`
 
-Code generator @microsoft.azure/autorest.go@2.1.175
+Code generator 
 
 

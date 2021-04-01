@@ -206,3 +206,27 @@ type ManagedPrivateEndpointsClientAPI interface {
 }
 
 var _ ManagedPrivateEndpointsClientAPI = (*datafactory.ManagedPrivateEndpointsClient)(nil)
+
+// PrivateEndPointConnectionsClientAPI contains the set of methods on the PrivateEndPointConnectionsClient type.
+type PrivateEndPointConnectionsClientAPI interface {
+	ListByFactory(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.PrivateEndpointConnectionListResponsePage, err error)
+	ListByFactoryComplete(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.PrivateEndpointConnectionListResponseIterator, err error)
+}
+
+var _ PrivateEndPointConnectionsClientAPI = (*datafactory.PrivateEndPointConnectionsClient)(nil)
+
+// PrivateEndpointConnectionClientAPI contains the set of methods on the PrivateEndpointConnectionClient type.
+type PrivateEndpointConnectionClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, privateEndpointConnectionName string, privateEndpointWrapper datafactory.PrivateLinkConnectionApprovalRequestResource, ifMatch string) (result datafactory.PrivateEndpointConnectionResource, err error)
+	Delete(ctx context.Context, resourceGroupName string, factoryName string, privateEndpointConnectionName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, factoryName string, privateEndpointConnectionName string, ifNoneMatch string) (result datafactory.PrivateEndpointConnectionResource, err error)
+}
+
+var _ PrivateEndpointConnectionClientAPI = (*datafactory.PrivateEndpointConnectionClient)(nil)
+
+// PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
+type PrivateLinkResourcesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, factoryName string) (result datafactory.PrivateLinkResourcesWrapper, err error)
+}
+
+var _ PrivateLinkResourcesClientAPI = (*datafactory.PrivateLinkResourcesClient)(nil)

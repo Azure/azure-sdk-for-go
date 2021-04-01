@@ -94,6 +94,20 @@ const (
 	PreserveHierarchy CopyBehaviorType = original.PreserveHierarchy
 )
 
+type CosmosDbConnectionMode = original.CosmosDbConnectionMode
+
+const (
+	Direct  CosmosDbConnectionMode = original.Direct
+	Gateway CosmosDbConnectionMode = original.Gateway
+)
+
+type CosmosDbServicePrincipalCredentialType = original.CosmosDbServicePrincipalCredentialType
+
+const (
+	ServicePrincipalCert CosmosDbServicePrincipalCredentialType = original.ServicePrincipalCert
+	ServicePrincipalKey  CosmosDbServicePrincipalCredentialType = original.ServicePrincipalKey
+)
+
 type DataFlowComputeType = original.DataFlowComputeType
 
 const (
@@ -178,6 +192,14 @@ const (
 	Enabled        EventSubscriptionStatus = original.Enabled
 	Provisioning   EventSubscriptionStatus = original.Provisioning
 	Unknown        EventSubscriptionStatus = original.Unknown
+)
+
+type FactoryIdentityType = original.FactoryIdentityType
+
+const (
+	SystemAssigned             FactoryIdentityType = original.SystemAssigned
+	SystemAssignedUserAssigned FactoryIdentityType = original.SystemAssignedUserAssigned
+	UserAssigned               FactoryIdentityType = original.UserAssigned
 )
 
 type FtpAuthenticationType = original.FtpAuthenticationType
@@ -386,8 +408,8 @@ const (
 type ODataAadServicePrincipalCredentialType = original.ODataAadServicePrincipalCredentialType
 
 const (
-	ServicePrincipalCert ODataAadServicePrincipalCredentialType = original.ServicePrincipalCert
-	ServicePrincipalKey  ODataAadServicePrincipalCredentialType = original.ServicePrincipalKey
+	ODataAadServicePrincipalCredentialTypeServicePrincipalCert ODataAadServicePrincipalCredentialType = original.ODataAadServicePrincipalCredentialTypeServicePrincipalCert
+	ODataAadServicePrincipalCredentialTypeServicePrincipalKey  ODataAadServicePrincipalCredentialType = original.ODataAadServicePrincipalCredentialTypeServicePrincipalKey
 )
 
 type ODataAuthenticationType = original.ODataAuthenticationType
@@ -604,6 +626,7 @@ type SftpAuthenticationType = original.SftpAuthenticationType
 
 const (
 	SftpAuthenticationTypeBasic        SftpAuthenticationType = original.SftpAuthenticationTypeBasic
+	SftpAuthenticationTypeMultiFactor  SftpAuthenticationType = original.SftpAuthenticationTypeMultiFactor
 	SftpAuthenticationTypeSSHPublicKey SftpAuthenticationType = original.SftpAuthenticationTypeSSHPublicKey
 )
 
@@ -1047,6 +1070,7 @@ const (
 type TypeBasicDatasetLocation = original.TypeBasicDatasetLocation
 
 const (
+	TypeAmazonS3CompatibleLocation TypeBasicDatasetLocation = original.TypeAmazonS3CompatibleLocation
 	TypeAmazonS3Location           TypeBasicDatasetLocation = original.TypeAmazonS3Location
 	TypeAzureBlobFSLocation        TypeBasicDatasetLocation = original.TypeAzureBlobFSLocation
 	TypeAzureBlobStorageLocation   TypeBasicDatasetLocation = original.TypeAzureBlobStorageLocation
@@ -1058,6 +1082,7 @@ const (
 	TypeGoogleCloudStorageLocation TypeBasicDatasetLocation = original.TypeGoogleCloudStorageLocation
 	TypeHdfsLocation               TypeBasicDatasetLocation = original.TypeHdfsLocation
 	TypeHTTPServerLocation         TypeBasicDatasetLocation = original.TypeHTTPServerLocation
+	TypeOracleCloudStorageLocation TypeBasicDatasetLocation = original.TypeOracleCloudStorageLocation
 	TypeSftpLocation               TypeBasicDatasetLocation = original.TypeSftpLocation
 )
 
@@ -1148,6 +1173,7 @@ const (
 	TypeAmazonMWS                TypeBasicLinkedService = original.TypeAmazonMWS
 	TypeAmazonRedshift           TypeBasicLinkedService = original.TypeAmazonRedshift
 	TypeAmazonS3                 TypeBasicLinkedService = original.TypeAmazonS3
+	TypeAmazonS3Compatible       TypeBasicLinkedService = original.TypeAmazonS3Compatible
 	TypeAzureBatch               TypeBasicLinkedService = original.TypeAzureBatch
 	TypeAzureBlobFS              TypeBasicLinkedService = original.TypeAzureBlobFS
 	TypeAzureBlobStorage         TypeBasicLinkedService = original.TypeAzureBlobStorage
@@ -1213,6 +1239,7 @@ const (
 	TypeOdbc                     TypeBasicLinkedService = original.TypeOdbc
 	TypeOffice365                TypeBasicLinkedService = original.TypeOffice365
 	TypeOracle                   TypeBasicLinkedService = original.TypeOracle
+	TypeOracleCloudStorage       TypeBasicLinkedService = original.TypeOracleCloudStorage
 	TypeOracleServiceCloud       TypeBasicLinkedService = original.TypeOracleServiceCloud
 	TypePaypal                   TypeBasicLinkedService = original.TypePaypal
 	TypePhoenix                  TypeBasicLinkedService = original.TypePhoenix
@@ -1259,6 +1286,7 @@ const (
 type TypeBasicStoreReadSettings = original.TypeBasicStoreReadSettings
 
 const (
+	TypeAmazonS3CompatibleReadSettings TypeBasicStoreReadSettings = original.TypeAmazonS3CompatibleReadSettings
 	TypeAmazonS3ReadSettings           TypeBasicStoreReadSettings = original.TypeAmazonS3ReadSettings
 	TypeAzureBlobFSReadSettings        TypeBasicStoreReadSettings = original.TypeAzureBlobFSReadSettings
 	TypeAzureBlobStorageReadSettings   TypeBasicStoreReadSettings = original.TypeAzureBlobStorageReadSettings
@@ -1269,6 +1297,7 @@ const (
 	TypeGoogleCloudStorageReadSettings TypeBasicStoreReadSettings = original.TypeGoogleCloudStorageReadSettings
 	TypeHdfsReadSettings               TypeBasicStoreReadSettings = original.TypeHdfsReadSettings
 	TypeHTTPReadSettings               TypeBasicStoreReadSettings = original.TypeHTTPReadSettings
+	TypeOracleCloudStorageReadSettings TypeBasicStoreReadSettings = original.TypeOracleCloudStorageReadSettings
 	TypeSftpReadSettings               TypeBasicStoreReadSettings = original.TypeSftpReadSettings
 	TypeStoreReadSettings              TypeBasicStoreReadSettings = original.TypeStoreReadSettings
 )
@@ -1340,6 +1369,10 @@ type AmazonRedshiftLinkedServiceTypeProperties = original.AmazonRedshiftLinkedSe
 type AmazonRedshiftSource = original.AmazonRedshiftSource
 type AmazonRedshiftTableDataset = original.AmazonRedshiftTableDataset
 type AmazonRedshiftTableDatasetTypeProperties = original.AmazonRedshiftTableDatasetTypeProperties
+type AmazonS3CompatibleLinkedService = original.AmazonS3CompatibleLinkedService
+type AmazonS3CompatibleLinkedServiceTypeProperties = original.AmazonS3CompatibleLinkedServiceTypeProperties
+type AmazonS3CompatibleLocation = original.AmazonS3CompatibleLocation
+type AmazonS3CompatibleReadSettings = original.AmazonS3CompatibleReadSettings
 type AmazonS3Dataset = original.AmazonS3Dataset
 type AmazonS3DatasetTypeProperties = original.AmazonS3DatasetTypeProperties
 type AmazonS3LinkedService = original.AmazonS3LinkedService
@@ -1348,6 +1381,7 @@ type AmazonS3Location = original.AmazonS3Location
 type AmazonS3ReadSettings = original.AmazonS3ReadSettings
 type AppendVariableActivity = original.AppendVariableActivity
 type AppendVariableActivityTypeProperties = original.AppendVariableActivityTypeProperties
+type ArmIDWrapper = original.ArmIDWrapper
 type AvroDataset = original.AvroDataset
 type AvroDatasetTypeProperties = original.AvroDatasetTypeProperties
 type AvroFormat = original.AvroFormat
@@ -1958,6 +1992,10 @@ type OperationMetricSpecification = original.OperationMetricSpecification
 type OperationProperties = original.OperationProperties
 type OperationServiceSpecification = original.OperationServiceSpecification
 type OperationsClient = original.OperationsClient
+type OracleCloudStorageLinkedService = original.OracleCloudStorageLinkedService
+type OracleCloudStorageLinkedServiceTypeProperties = original.OracleCloudStorageLinkedServiceTypeProperties
+type OracleCloudStorageLocation = original.OracleCloudStorageLocation
+type OracleCloudStorageReadSettings = original.OracleCloudStorageReadSettings
 type OracleLinkedService = original.OracleLinkedService
 type OracleLinkedServiceTypeProperties = original.OracleLinkedServiceTypeProperties
 type OraclePartitionSettings = original.OraclePartitionSettings
@@ -1993,10 +2031,12 @@ type PhoenixLinkedServiceTypeProperties = original.PhoenixLinkedServiceTypePrope
 type PhoenixObjectDataset = original.PhoenixObjectDataset
 type PhoenixSource = original.PhoenixSource
 type Pipeline = original.Pipeline
+type PipelineElapsedTimeMetricPolicy = original.PipelineElapsedTimeMetricPolicy
 type PipelineFolder = original.PipelineFolder
 type PipelineListResponse = original.PipelineListResponse
 type PipelineListResponseIterator = original.PipelineListResponseIterator
 type PipelineListResponsePage = original.PipelineListResponsePage
+type PipelinePolicy = original.PipelinePolicy
 type PipelineReference = original.PipelineReference
 type PipelineResource = original.PipelineResource
 type PipelineRun = original.PipelineRun
@@ -2015,6 +2055,19 @@ type PrestoLinkedService = original.PrestoLinkedService
 type PrestoLinkedServiceTypeProperties = original.PrestoLinkedServiceTypeProperties
 type PrestoObjectDataset = original.PrestoObjectDataset
 type PrestoSource = original.PrestoSource
+type PrivateEndPointConnectionsClient = original.PrivateEndPointConnectionsClient
+type PrivateEndpointConnectionClient = original.PrivateEndpointConnectionClient
+type PrivateEndpointConnectionListResponse = original.PrivateEndpointConnectionListResponse
+type PrivateEndpointConnectionListResponseIterator = original.PrivateEndpointConnectionListResponseIterator
+type PrivateEndpointConnectionListResponsePage = original.PrivateEndpointConnectionListResponsePage
+type PrivateEndpointConnectionResource = original.PrivateEndpointConnectionResource
+type PrivateLinkConnectionApprovalRequest = original.PrivateLinkConnectionApprovalRequest
+type PrivateLinkConnectionApprovalRequestResource = original.PrivateLinkConnectionApprovalRequestResource
+type PrivateLinkConnectionState = original.PrivateLinkConnectionState
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkResourcesWrapper = original.PrivateLinkResourcesWrapper
 type QueryDataFlowDebugSessionsResponse = original.QueryDataFlowDebugSessionsResponse
 type QueryDataFlowDebugSessionsResponseIterator = original.QueryDataFlowDebugSessionsResponseIterator
 type QueryDataFlowDebugSessionsResponsePage = original.QueryDataFlowDebugSessionsResponsePage
@@ -2029,6 +2082,7 @@ type RedshiftUnloadSettings = original.RedshiftUnloadSettings
 type RelationalSource = original.RelationalSource
 type RelationalTableDataset = original.RelationalTableDataset
 type RelationalTableDatasetTypeProperties = original.RelationalTableDatasetTypeProperties
+type RemotePrivateEndpointConnection = original.RemotePrivateEndpointConnection
 type RerunTumblingWindowTrigger = original.RerunTumblingWindowTrigger
 type RerunTumblingWindowTriggerTypeProperties = original.RerunTumblingWindowTriggerTypeProperties
 type Resource = original.Resource
@@ -2417,6 +2471,30 @@ func NewPipelinesClient(subscriptionID string) PipelinesClient {
 func NewPipelinesClientWithBaseURI(baseURI string, subscriptionID string) PipelinesClient {
 	return original.NewPipelinesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndPointConnectionsClient(subscriptionID string) PrivateEndPointConnectionsClient {
+	return original.NewPrivateEndPointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndPointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndPointConnectionsClient {
+	return original.NewPrivateEndPointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateEndpointConnectionClient(subscriptionID string) PrivateEndpointConnectionClient {
+	return original.NewPrivateEndpointConnectionClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionClient {
+	return original.NewPrivateEndpointConnectionClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateEndpointConnectionListResponseIterator(page PrivateEndpointConnectionListResponsePage) PrivateEndpointConnectionListResponseIterator {
+	return original.NewPrivateEndpointConnectionListResponseIterator(page)
+}
+func NewPrivateEndpointConnectionListResponsePage(cur PrivateEndpointConnectionListResponse, getNextPage func(context.Context, PrivateEndpointConnectionListResponse) (PrivateEndpointConnectionListResponse, error)) PrivateEndpointConnectionListResponsePage {
+	return original.NewPrivateEndpointConnectionListResponsePage(cur, getNextPage)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewQueryDataFlowDebugSessionsResponseIterator(page QueryDataFlowDebugSessionsResponsePage) QueryDataFlowDebugSessionsResponseIterator {
 	return original.NewQueryDataFlowDebugSessionsResponseIterator(page)
 }
@@ -2468,6 +2546,12 @@ func PossibleCassandraSourceReadConsistencyLevelsValues() []CassandraSourceReadC
 func PossibleCopyBehaviorTypeValues() []CopyBehaviorType {
 	return original.PossibleCopyBehaviorTypeValues()
 }
+func PossibleCosmosDbConnectionModeValues() []CosmosDbConnectionMode {
+	return original.PossibleCosmosDbConnectionModeValues()
+}
+func PossibleCosmosDbServicePrincipalCredentialTypeValues() []CosmosDbServicePrincipalCredentialType {
+	return original.PossibleCosmosDbServicePrincipalCredentialTypeValues()
+}
 func PossibleDataFlowComputeTypeValues() []DataFlowComputeType {
 	return original.PossibleDataFlowComputeTypeValues()
 }
@@ -2497,6 +2581,9 @@ func PossibleDynamicsSinkWriteBehaviorValues() []DynamicsSinkWriteBehavior {
 }
 func PossibleEventSubscriptionStatusValues() []EventSubscriptionStatus {
 	return original.PossibleEventSubscriptionStatusValues()
+}
+func PossibleFactoryIdentityTypeValues() []FactoryIdentityType {
+	return original.PossibleFactoryIdentityTypeValues()
 }
 func PossibleFtpAuthenticationTypeValues() []FtpAuthenticationType {
 	return original.PossibleFtpAuthenticationTypeValues()

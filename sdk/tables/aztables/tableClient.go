@@ -6,8 +6,6 @@ package aztables
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	//"net/url"
-	//"time"
 )
 
 // A TableClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
@@ -17,7 +15,7 @@ type TableClient struct {
 }
 
 // NewTableClient creates a TableClient object using the specified URL and request policy pipeline.
-func NewTableClient(serviceURL string, cred azcore.Credential, options *ClientOptions) (TableClient, error) {
+func NewTableClient(serviceURL string, cred azcore.Credential, options *TableClientOptions) (TableClient, error) {
 	con := newConnection(serviceURL, cred, options.getConnectionOptions())
 
 	c, _ := cred.(*SharedKeyCredential)

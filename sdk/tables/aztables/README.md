@@ -38,7 +38,7 @@ in the subscription `MySubscription` and a table named `MyTableName` in the acco
 
 ### Authenticate the Client
 
-Learn more about options for authentication _(including Connection Strings, Shared Key, and Shared Key Signatures)_ [in our samples.]()
+Learn more about options for authentication _(including Connection Strings, Shared Key, and Shared Key Signatures)_ in our samples.
 
 ## Key concepts
 
@@ -52,37 +52,9 @@ Common uses of the Table service include:
 - Storing TBs of structured data capable of serving web scale applications
 - Storing datasets that don't require complex joins, foreign keys, or stored procedures and can be de-normalized for fast access
 - Quickly querying data using a clustered index
-- Accessing data using the OData protocol and LINQ filter expressions
-
-### Thread safety
-We guarantee that all client instance methods are thread-safe and independent of each other ([guideline](https://azure.github.io/azure-sdk/dotnet_introduction.html#dotnet-service-methods-thread-safety)). This ensures that the recommendation of reusing client instances is always safe, even across threads.
-
-### Additional concepts
-<!-- CLIENT COMMON BAR -->
-[Client options]() |
-[Accessing the response]() |
-[Long-running operations]() |
-[Handling failures]() |
-[Diagnostics]() |
-[Mocking]() |
-[Client lifetime](https://devblogs.microsoft.com/azure-sdk/lifetime-management-and-thread-safety-guarantees-of-azure-sdk-net-clients/)
-<!-- CLIENT COMMON BAR -->
-
-## Examples
-- [Create the Table service client](#create-the-table-service-client)
-    - [Create an Azure table](#create-an-azure-table)
-    - [Get an Azure table](#get-an-azure-table)
-    - [Delete an Azure table](#delete-an-azure-table)
-- [Create the Table client](#create-the-table-client)
-    - [Add table entities](#add-table-entities)
-    - [Query table entities ](#query-table-entities)
-    - [Delete table entities](#delete-table-entities)
-
 ### Create the Table service client
 
 First, we need to construct a `TableServiceClient`.
-
-
 
 ### Create an Azure table
 Next, we can create a new table.
@@ -164,7 +136,6 @@ For more information see the [Code of Conduct FAQ][coc_faq] or contact
 [table_client_nuget_package]: https://www.nuget.org/packages?q=Azure.Data.Tables
 [table_client_samples]: https://github\.com/Azure/azure-sdk-for-go
 [table_client_src]: https://github\.com/Azure/azure-sdk-for-go
-[api_reference]: https://docs.microsoft.com/dotnet/api/overview/azure/data.tables-readme-pre?view=azure-dotnet-preview
 [logging]: https://github\.com/Azure/azure-sdk-for-go
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/

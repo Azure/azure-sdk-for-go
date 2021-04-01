@@ -7,7 +7,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-type ClientOptions struct {
+type TableClientOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient azcore.Transport
 	// Retry configures the built-in retry policy behavior.
@@ -16,7 +16,7 @@ type ClientOptions struct {
 	Telemetry azcore.TelemetryOptions
 }
 
-func (o *ClientOptions) getConnectionOptions() *connectionOptions {
+func (o *TableClientOptions) getConnectionOptions() *connectionOptions {
 	if o == nil {
 		return nil
 	}

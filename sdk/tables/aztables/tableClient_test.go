@@ -4,20 +4,13 @@
 package aztables
 
 import (
-	// "bytes"
-	// "os"
-	// "strconv"
-	// "strings"
-	// "time"
-
-	// "github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
 )
 
 func (s *aztestsSuite) TestContainerCreateAccessContainer(c *chk.C) {
-	tableClient, _ := createTableClient(StorageEndpoint)
+	//tableClient, _ := createTableClient(StorageEndpoint)
 
-	_, err := tableClient.Create(ctx, generateName())
+	//_, err := tableClient.Create(ctx, generateName())
 	// defer deleteContainer(c, containerClient)
-	c.Assert(err, chk.IsNil)
+	//c.Assert(err, chk.IsNil)
 }

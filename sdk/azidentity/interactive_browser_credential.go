@@ -9,6 +9,7 @@ import (
 	"encoding/base64"
 	"math/rand"
 	"net/url"
+	"path"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -148,7 +149,7 @@ func interactiveBrowserLogin(ctx context.Context, authorityHost string, opts *In
 	cvh := sha256.Sum256([]byte(cv))
 	values.Add("code_challenge", base64.RawURLEncoding.EncodeToString(cvh[:]))
 	values.Add("code_challenge_method", "S256")
-	u.Path = azcore.JoinPaths(u.Path, opts.TenantID, authEndpoint)
+	u.Path = azcore.JoinPaths(u.Path, opts.TenantID, path.Join(oauthPath(opts.TenantID), "/authorize"))
 	u.RawQuery = values.Encode()
 	// open browser window so user can select credentials
 	if err = browser.OpenURL(u.String()); err != nil {

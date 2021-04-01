@@ -8,6 +8,7 @@ package azcore_test
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -66,4 +67,34 @@ func ExampleLogger_SetListener() {
 	azcore.Log().SetListener(func(cls azcore.LogClassification, msg string) {
 		fmt.Printf("%s: %s\n", cls, msg)
 	})
+}
+
+type Widget struct {
+	Name  *string `json:",omitempty"`
+	Count *int    `json:",omitempty"`
+}
+
+func (w Widget) MarshalJSON() ([]byte, error) {
+	msg := map[string]interface{}{}
+	if azcore.IsNullValue(w.Name) {
+		msg["name"] = nil
+	} else if w.Name != nil {
+		msg["name"] = w.Name
+	}
+	if azcore.IsNullValue(w.Count) {
+		msg["count"] = nil
+	} else if w.Count != nil {
+		msg["count"] = w.Count
+	}
+	return json.Marshal(msg)
+}
+
+func ExampleNullValue() {
+	w := Widget{
+		Count: azcore.NullValue(0).(*int),
+	}
+	b, _ := json.Marshal(w)
+	fmt.Println(string(b))
+	// Output:
+	// {"count":null}
 }

@@ -1,16 +1,5 @@
-// Copyright 2018 Microsoft Corporation
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package report
 
@@ -122,7 +111,7 @@ func (p Package) writeBreakingChanges(md *markdown.Writer) {
 	if !p.HasBreakingChanges() {
 		return
 	}
-	md.WriteHeader("Breaking Changes")
+	md.WriteTopLevelHeader("Breaking Changes")
 	writeRemovedContent(p.BreakingChanges.Removed, md)
 	writeSigChanges(p.BreakingChanges, md)
 }
@@ -151,7 +140,7 @@ func writeSigChanges(bc *BreakingChanges, md *markdown.Writer) {
 	if len(bc.Consts) == 0 && len(bc.Funcs) == 0 && len(bc.Structs) == 0 {
 		return
 	}
-	md.WriteHeader("Signature Changes")
+	md.WriteTopLevelHeader("Signature Changes")
 	if len(bc.Consts) > 0 {
 		items := make([]string, len(bc.Consts))
 		i := 0
@@ -160,7 +149,7 @@ func writeSigChanges(bc *BreakingChanges, md *markdown.Writer) {
 			i++
 		}
 		sort.Strings(items)
-		md.WriteSubheader("Const Types")
+		md.WriteHeader("Const Types")
 		for _, item := range items {
 			md.WriteLine(item)
 		}
@@ -174,7 +163,7 @@ func writeSigChanges(bc *BreakingChanges, md *markdown.Writer) {
 			i++
 		}
 		sort.Strings(items)
-		md.WriteSubheader("Funcs")
+		md.WriteHeader("Funcs")
 		for _, item := range items {
 			// now add params/returns info
 			changes := bc.Funcs[item]
@@ -195,7 +184,7 @@ func writeSigChanges(bc *BreakingChanges, md *markdown.Writer) {
 			}
 		}
 		sort.Strings(items)
-		md.WriteSubheader("Struct Fields")
+		md.WriteHeader("Struct Fields")
 		for _, item := range items {
 			md.WriteLine(item)
 		}
@@ -214,7 +203,7 @@ func writeConsts(co map[string]exports.Const, subheader string, md *markdown.Wri
 		i++
 	}
 	sort.Strings(items)
-	md.WriteSubheader(subheader)
+	md.WriteHeader(subheader)
 	for _, item := range items {
 		md.WriteLine(item)
 	}
@@ -243,7 +232,7 @@ func writeFuncs(funcs map[string]exports.Func, subheader string, md *markdown.Wr
 		i++
 	}
 	sort.Strings(items)
-	md.WriteSubheader(subheader)
+	md.WriteHeader(subheader)
 	for _, item := range items {
 		md.WriteLine(item)
 	}
@@ -256,16 +245,16 @@ func writeStructs(content *delta.Content, sheader1, sheader2 string, md *markdow
 	if len(content.Structs) == 0 {
 		return
 	}
-	md.WriteHeader("Struct Changes")
+	md.WriteTopLevelHeader("Struct Changes")
 	if len(content.CompleteStructs) > 0 {
-		md.WriteSubheader(sheader1)
+		md.WriteHeader(sheader1)
 		for _, s := range content.CompleteStructs {
 			md.WriteLine(fmt.Sprintf("1. %s", s))
 		}
 	}
 	modified := content.GetModifiedStructs()
 	if len(modified) > 0 {
-		md.WriteSubheader(sheader2)
+		md.WriteHeader(sheader2)
 		items := make([]string, 0, len(content.Structs)-len(content.CompleteStructs))
 		for s, f := range modified {
 			for _, af := range f.AnonymousFields {

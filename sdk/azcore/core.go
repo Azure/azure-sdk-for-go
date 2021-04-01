@@ -10,6 +10,7 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"reflect"
 )
 
 // Policy represents an extensibility point for the Pipeline that can mutate the specified
@@ -144,4 +145,42 @@ type Pager interface {
 
 	// Err returns the last error encountered while paging.
 	Err() error
+}
+
+// holds sentinel values used to send nulls
+var nullables map[reflect.Type]interface{} = map[reflect.Type]interface{}{}
+
+// NullValue is used to send an explicit 'null' within a request.
+// This is typically used in JSON-MERGE-PATCH operations to delete a value.
+func NullValue(v interface{}) interface{} {
+	t := reflect.TypeOf(v)
+	if t.Kind() != reflect.Ptr {
+		// t is not of pointer type, make it be of pointer type
+		t = reflect.PtrTo(t)
+	}
+	v, found := nullables[t]
+	if !found {
+		o := reflect.New(t.Elem())
+		v = o.Interface()
+		nullables[t] = v
+	}
+	// return the sentinel object
+	return v
+}
+
+// IsNullValue returns true if the field contains a null sentinel value.
+// This is used by custom marshallers to properly encode a null value.
+func IsNullValue(v interface{}) bool {
+	// see if our map has a sentinel object for this *T
+	t := reflect.TypeOf(v)
+	if t.Kind() != reflect.Ptr {
+		// v isn't a pointer type so it can never be a null
+		return false
+	}
+	if o, found := nullables[t]; found {
+		// we found it; return true if v points to the sentinel object
+		return o == v
+	}
+	// no sentinel object for this *t
+	return false
 }

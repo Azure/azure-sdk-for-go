@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"reflect"
 	"strconv"
@@ -131,22 +132,20 @@ func (req *Request) MarshalAsByteArray(v []byte, format Base64Encoding) error {
 }
 
 // MarshalAsJSON calls json.Marshal() to get the JSON encoding of v then calls SetBody.
-// If json.Marshal fails a MarshalError is returned.  Any error from SetBody is returned.
 func (req *Request) MarshalAsJSON(v interface{}) error {
 	v = cloneWithoutReadOnlyFields(v)
 	b, err := json.Marshal(v)
 	if err != nil {
-		return fmt.Errorf("error marshalling type %s: %w", reflect.TypeOf(v).Name(), err)
+		return fmt.Errorf("error marshalling type %T: %s", v, err)
 	}
 	return req.SetBody(NopCloser(bytes.NewReader(b)), contentTypeAppJSON)
 }
 
 // MarshalAsXML calls xml.Marshal() to get the XML encoding of v then calls SetBody.
-// If xml.Marshal fails a MarshalError is returned.  Any error from SetBody is returned.
 func (req *Request) MarshalAsXML(v interface{}) error {
 	b, err := xml.Marshal(v)
 	if err != nil {
-		return fmt.Errorf("error marshalling type %s: %w", reflect.TypeOf(v).Name(), err)
+		return fmt.Errorf("error marshalling type %T: %s", v, err)
 	}
 	return req.SetBody(NopCloser(bytes.NewReader(b)), contentTypeAppXML)
 }
@@ -186,6 +185,44 @@ func (req *Request) SetBody(body ReadSeekCloser, contentType string) error {
 	req.Request.ContentLength = size
 	req.Header.Set(HeaderContentType, contentType)
 	req.Header.Set(HeaderContentLength, strconv.FormatInt(size, 10))
+	return nil
+}
+
+// SetMultipartFormData writes the specified keys/values as multi-part form
+// fields with the specified value.  File content must be specified as a ReadSeekCloser.
+// All other values are treated as string values.
+func (req *Request) SetMultipartFormData(formData map[string]interface{}) error {
+	body := bytes.Buffer{}
+	writer := multipart.NewWriter(&body)
+	for k, v := range formData {
+		if rsc, ok := v.(ReadSeekCloser); ok {
+			// this is the body to upload, the key is its file name
+			fd, err := writer.CreateFormFile(k, k)
+			if err != nil {
+				return err
+			}
+			// copy the data to the form file
+			if _, err = io.Copy(fd, rsc); err != nil {
+				return err
+			}
+			continue
+		}
+		// ensure the value is in string format
+		s, ok := v.(string)
+		if !ok {
+			s = fmt.Sprintf("%v", v)
+		}
+		if err := writer.WriteField(k, s); err != nil {
+			return err
+		}
+	}
+	if err := writer.Close(); err != nil {
+		return err
+	}
+	req.Body = NopCloser(bytes.NewReader(body.Bytes()))
+	req.ContentLength = int64(body.Len())
+	req.Header.Set(HeaderContentType, writer.FormDataContentType())
+	req.Header.Set(HeaderContentLength, strconv.FormatInt(req.ContentLength, 10))
 	return nil
 }
 

@@ -1,19 +1,8 @@
 // Package storage provides clients for Microsoft Azure Storage Services.
 package storage
 
-// Copyright 2017 Microsoft Corporation
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 import (
 	"bufio"
@@ -174,6 +163,23 @@ type AzureStorageServiceError struct {
 	RequestID                 string
 	Date                      string
 	APIVersion                string
+}
+
+// AzureTablesServiceError contains fields of the error response from
+// Azure Table Storage Service REST API in Atom format.
+// See https://msdn.microsoft.com/en-us/library/azure/dd179382.aspx
+type AzureTablesServiceError struct {
+	Code       string `xml:"code"`
+	Message    string `xml:"message"`
+	StatusCode int
+	RequestID  string
+	Date       string
+	APIVersion string
+}
+
+func (e AzureTablesServiceError) Error() string {
+	return fmt.Sprintf("storage: service returned error: StatusCode=%d, ErrorCode=%s, ErrorMessage=%s, RequestInitiated=%s, RequestId=%s, API Version=%s",
+		e.StatusCode, e.Code, e.Message, e.Date, e.RequestID, e.APIVersion)
 }
 
 type odataErrorMessage struct {
@@ -828,8 +834,21 @@ func (c Client) execInternalJSONCommon(verb, url string, headers map[string]stri
 			err = serviceErrFromStatusCode(resp.StatusCode, resp.Status, requestID, date, version)
 			return respToRet, req, resp, err
 		}
-		// try unmarshal as odata.error json
-		err = json.Unmarshal(respBody, &respToRet.odata)
+		// response contains storage service error object, unmarshal
+		if resp.Header.Get("Content-Type") == "application/xml" {
+			storageErr := AzureTablesServiceError{
+				StatusCode: resp.StatusCode,
+				RequestID:  requestID,
+				Date:       date,
+				APIVersion: version,
+			}
+			if err := xml.Unmarshal(respBody, &storageErr); err != nil {
+				storageErr.Message = fmt.Sprintf("Response body could no be unmarshaled: %v. Body: %v.", err, string(respBody))
+			}
+			err = storageErr
+		} else {
+			err = json.Unmarshal(respBody, &respToRet.odata)
+		}
 	}
 
 	return respToRet, req, resp, err

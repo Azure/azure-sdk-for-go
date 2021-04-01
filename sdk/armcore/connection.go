@@ -40,6 +40,14 @@ type ConnectionOptions struct {
 	// DisableRPRegistration disables the auto-RP registration policy.
 	// The default value is false.
 	DisableRPRegistration bool
+
+	// PerCallPolicies contains custom policies to inject into the pipeline.
+	// Each policy is executed once per request.
+	PerCallPolicies []azcore.Policy
+
+	// PerRetryPolicies contains custom policies to inject into the pipeline.
+	// Each policy is executed once per request, and for each retry request.
+	PerRetryPolicies []azcore.Policy
 }
 
 // Connection is a connection to an Azure Resource Manager endpoint.
@@ -83,16 +91,13 @@ func NewConnection(endpoint string, cred azcore.TokenCredential, options *Connec
 		}
 		policies = append(policies, NewRPRegistrationPolicy(endpoint, cred, &regRPOpts))
 	}
-	policies = append(policies, azcore.NewRetryPolicy(&options.Retry),
+	policies = append(policies, options.PerCallPolicies...)
+	policies = append(policies, azcore.NewRetryPolicy(&options.Retry))
+	policies = append(policies, options.PerRetryPolicies...)
+	policies = append(policies,
 		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}),
 		azcore.NewLogPolicy(&options.Logging))
 	p := azcore.NewPipeline(options.HTTPClient, policies...)
-	return NewConnectionWithPipeline(endpoint, p)
-}
-
-// NewConnectionWithPipeline creates an instance of the Connection type with the specified endpoint and pipeline.
-// Use this when a custom pipeline is required.
-func NewConnectionWithPipeline(endpoint string, p azcore.Pipeline) *Connection {
 	return &Connection{u: endpoint, p: p}
 }
 

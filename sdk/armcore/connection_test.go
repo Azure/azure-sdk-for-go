@@ -104,25 +104,6 @@ func TestNewConnectionWithCustomTelemetry(t *testing.T) {
 	}
 }
 
-func TestNewConnectionWithPipeline(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.AppendResponse()
-	p := getPipeline(srv)
-	con := NewConnectionWithPipeline(srv.URL(), p)
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
-	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
-	}
-	resp, err := con.Pipeline().Do(req)
-	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code: %d", resp.StatusCode)
-	}
-}
-
 func TestScope(t *testing.T) {
 	if s := endpointToScope(AzureGermany); s != "https://management.microsoftazure.de//.default" {
 		t.Fatalf("unexpected scope %s", s)
@@ -165,5 +146,47 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	// shouldn't be any log entries
 	if logEntries != 0 {
 		t.Fatalf("expected 0 log entries, got %d", logEntries)
+	}
+}
+
+// policy that tracks the number of times it was invoked
+type countingPolicy struct {
+	count int
+}
+
+func (p *countingPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
+	p.count++
+	return req.Next()
+}
+
+func TestConnectionWithCustomPolicies(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	// initial response is a failure to trigger retry
+	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	perCallPolicy := countingPolicy{}
+	perRetryPolicy := countingPolicy{}
+	con := NewConnection(srv.URL(), mockTokenCred{}, &ConnectionOptions{
+		DisableRPRegistration: true,
+		PerCallPolicies:       []azcore.Policy{&perCallPolicy},
+		PerRetryPolicies:      []azcore.Policy{&perRetryPolicy},
+	})
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp, err := con.Pipeline().Do(req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code %d", resp.StatusCode)
+	}
+	if perCallPolicy.count != 1 {
+		t.Fatalf("unexpected per call policy count %d", perCallPolicy.count)
+	}
+	if perRetryPolicy.count != 2 {
+		t.Fatalf("unexpected per retry policy count %d", perRetryPolicy.count)
 	}
 }

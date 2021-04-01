@@ -1,5 +1,51 @@
 # CHANGELOG
 
+## `v52.6.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/changeanalysis/mgmt/2021-04-01/changeanalysis`
+- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute`
+- `github.com/Azure/azure-sdk-for-go/services/databoxedge/mgmt/2020-12-01/databoxedge`
+- `github.com/Azure/azure-sdk-for-go/services/delegatednetwork/mgmt/2021-03-15/delegatednetwork`
+- `github.com/Azure/azure-sdk-for-go/services/preview/extendedlocation/mgmt/2021-03-15-preview/extendedlocation`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2020-04-01-preview/authorization` | [details](services/preview/authorization/mgmt/2020-04-01-preview/authorization/CHANGELOG.md) |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2020-03-01-preview/deviceupdate` | [details](services/preview/deviceupdate/mgmt/2020-03-01-preview/deviceupdate/CHANGELOG.md) |
+
+## `v52.5.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/apimanagement/mgmt/2020-12-01/apimanagement`
+- `github.com/Azure/azure-sdk-for-go/services/communication/mgmt/2020-08-20/communication`
+- `github.com/Azure/azure-sdk-for-go/services/datadog/mgmt/2021-03-01/datadog`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-12-01/netapp`
+
+## `v52.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/digitaltwins/mgmt/2020-12-01/digitaltwins`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/preview/kubernetesconfiguration/mgmt/2020-07-01-preview/kubernetesconfiguration`
+- `github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2021-03-01/storagecache`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/datadog/mgmt/2020-02-01-preview/datadog` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v52.4.0/services/preview/datadog/mgmt/2020-02-01-preview/datadog/CHANGELOG.md) |
+
 ## `v52.3.0`
 
 ### New Packages
@@ -11,7 +57,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers` | [details](services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v52.3.0/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers/CHANGELOG.md) |
 
 ## `v52.2.0`
 

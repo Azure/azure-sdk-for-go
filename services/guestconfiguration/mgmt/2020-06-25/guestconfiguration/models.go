@@ -7,12 +7,9 @@ package guestconfiguration
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
-	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/Azure/go-autorest/autorest/date"
-	"net/http"
 )
 
 // The package's fully qualified name.
@@ -263,84 +260,6 @@ func (art AssignmentReportType) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// AssignmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type AssignmentsCreateOrUpdateFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(AssignmentsClient) (Assignment, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *AssignmentsCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for AssignmentsCreateOrUpdateFuture.Result.
-func (future *AssignmentsCreateOrUpdateFuture) result(client AssignmentsClient) (a Assignment, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "guestconfiguration.AssignmentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("guestconfiguration.AssignmentsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
-		a, err = client.CreateOrUpdateResponder(a.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "guestconfiguration.AssignmentsCreateOrUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// AssignmentsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type AssignmentsDeleteFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(AssignmentsClient) (autorest.Response, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *AssignmentsDeleteFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for AssignmentsDeleteFuture.Result.
-func (future *AssignmentsDeleteFuture) result(client AssignmentsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "guestconfiguration.AssignmentsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("guestconfiguration.AssignmentsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // ConfigurationInfo information about the configuration.
 type ConfigurationInfo struct {
 	// Name - READ-ONLY; Name of the configuration.
@@ -361,14 +280,14 @@ type ConfigurationParameter struct {
 type ConfigurationSetting struct {
 	// ConfigurationMode - Specifies how the LCM(Local Configuration Manager) actually applies the configuration to the target nodes. Possible values are ApplyOnly, ApplyAndMonitor, and ApplyAndAutoCorrect. Possible values include: 'ApplyOnly', 'ApplyAndMonitor', 'ApplyAndAutoCorrect'
 	ConfigurationMode ConfigurationMode `json:"configurationMode,omitempty"`
-	// AllowModuleOverwrite - If true - new configurations downloaded from the pull service are allowed to overwrite the old ones on the target node. Otherwise, false. Possible values include: 'True', 'False'
-	AllowModuleOverwrite AllowModuleOverwrite `json:"allowModuleOverwrite,omitempty"`
+	// AllowModuleOverwrite - If true - new configurations downloaded from the pull service are allowed to overwrite the old ones on the target node. Otherwise, false
+	AllowModuleOverwrite *bool `json:"allowModuleOverwrite,omitempty"`
 	// ActionAfterReboot - Specifies what happens after a reboot during the application of a configuration. The possible values are ContinueConfiguration and StopConfiguration. Possible values include: 'ContinueConfiguration', 'StopConfiguration'
 	ActionAfterReboot ActionAfterReboot `json:"actionAfterReboot,omitempty"`
 	// RefreshFrequencyMins - The time interval, in minutes, at which the LCM checks a pull service to get updated configurations. This value is ignored if the LCM is not configured in pull mode. The default value is 30.
 	RefreshFrequencyMins *float64 `json:"refreshFrequencyMins,omitempty"`
-	// RebootIfNeeded - Set this to true to automatically reboot the node after a configuration that requires reboot is applied. Otherwise, you will have to manually reboot the node for any configuration that requires it. The default value is false. To use this setting when a reboot condition is enacted by something other than DSC (such as Windows Installer), combine this setting with the xPendingReboot module. Possible values include: 'RebootIfNeededTrue', 'RebootIfNeededFalse'
-	RebootIfNeeded RebootIfNeeded `json:"rebootIfNeeded,omitempty"`
+	// RebootIfNeeded - Set this to true to automatically reboot the node after a configuration that requires reboot is applied. Otherwise, you will have to manually reboot the node for any configuration that requires it. The default value is false. To use this setting when a reboot condition is enacted by something other than DSC (such as Windows Installer), combine this setting with the xPendingReboot module.
+	RebootIfNeeded *bool `json:"rebootIfNeeded,omitempty"`
 	// ConfigurationModeFrequencyMins - How often, in minutes, the current configuration is checked and applied. This property is ignored if the ConfigurationMode property is set to ApplyOnly. The default value is 15.
 	ConfigurationModeFrequencyMins *float64 `json:"configurationModeFrequencyMins,omitempty"`
 }
@@ -384,84 +303,6 @@ type ErrorResponseError struct {
 	Code *string `json:"code,omitempty"`
 	// Message - Detail error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
-}
-
-// HCRPAssignmentsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type HCRPAssignmentsCreateOrUpdateFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(HCRPAssignmentsClient) (Assignment, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *HCRPAssignmentsCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for HCRPAssignmentsCreateOrUpdateFuture.Result.
-func (future *HCRPAssignmentsCreateOrUpdateFuture) result(client HCRPAssignmentsClient) (a Assignment, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "guestconfiguration.HCRPAssignmentsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("guestconfiguration.HCRPAssignmentsCreateOrUpdateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
-		a, err = client.CreateOrUpdateResponder(a.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "guestconfiguration.HCRPAssignmentsCreateOrUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// HCRPAssignmentsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type HCRPAssignmentsDeleteFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(HCRPAssignmentsClient) (autorest.Response, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *HCRPAssignmentsDeleteFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for HCRPAssignmentsDeleteFuture.Result.
-func (future *HCRPAssignmentsDeleteFuture) result(client HCRPAssignmentsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "guestconfiguration.HCRPAssignmentsDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("guestconfiguration.HCRPAssignmentsDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
 }
 
 // Navigation guest configuration is an artifact that encapsulates DSC configuration and its dependencies.

@@ -9,12 +9,13 @@ package guestconfigurationapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2020-06-25/guestconfiguration"
+	"github.com/Azure/go-autorest/autorest"
 )
 
 // AssignmentsClientAPI contains the set of methods on the AssignmentsClient type.
 type AssignmentsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, guestConfigurationAssignmentName string, parameters guestconfiguration.Assignment, resourceGroupName string, VMName string) (result guestconfiguration.AssignmentsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, VMName string) (result guestconfiguration.AssignmentsDeleteFuture, err error)
+	CreateOrUpdate(ctx context.Context, guestConfigurationAssignmentName string, parameters guestconfiguration.Assignment, resourceGroupName string, VMName string) (result guestconfiguration.Assignment, err error)
+	Delete(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, VMName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, VMName string) (result guestconfiguration.Assignment, err error)
 	List(ctx context.Context, resourceGroupName string, VMName string) (result guestconfiguration.AssignmentList, err error)
 }
@@ -31,8 +32,8 @@ var _ AssignmentReportsClientAPI = (*guestconfiguration.AssignmentReportsClient)
 
 // HCRPAssignmentsClientAPI contains the set of methods on the HCRPAssignmentsClient type.
 type HCRPAssignmentsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, guestConfigurationAssignmentName string, parameters guestconfiguration.Assignment, resourceGroupName string, machineName string) (result guestconfiguration.HCRPAssignmentsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, machineName string) (result guestconfiguration.HCRPAssignmentsDeleteFuture, err error)
+	CreateOrUpdate(ctx context.Context, guestConfigurationAssignmentName string, parameters guestconfiguration.Assignment, resourceGroupName string, machineName string) (result guestconfiguration.Assignment, err error)
+	Delete(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, machineName string) (result autorest.Response, err error)
 	Get(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, machineName string) (result guestconfiguration.Assignment, err error)
 	List(ctx context.Context, resourceGroupName string, machineName string) (result guestconfiguration.AssignmentList, err error)
 }

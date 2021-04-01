@@ -37,13 +37,13 @@ func NewAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) Assi
 // parameters - parameters supplied to the create or update guest configuration assignment.
 // resourceGroupName - the resource group name.
 // VMName - the name of the virtual machine.
-func (client AssignmentsClient) CreateOrUpdate(ctx context.Context, guestConfigurationAssignmentName string, parameters Assignment, resourceGroupName string, VMName string) (result AssignmentsCreateOrUpdateFuture, err error) {
+func (client AssignmentsClient) CreateOrUpdate(ctx context.Context, guestConfigurationAssignmentName string, parameters Assignment, resourceGroupName string, VMName string) (result Assignment, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
-				sc = result.FutureAPI.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -60,9 +60,16 @@ func (client AssignmentsClient) CreateOrUpdate(ctx context.Context, guestConfigu
 		return
 	}
 
-	result, err = client.CreateOrUpdateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "guestconfiguration.AssignmentsClient", "CreateOrUpdate", nil, "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "guestconfiguration.AssignmentsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "guestconfiguration.AssignmentsClient", "CreateOrUpdate", resp, "Failure responding to request")
 		return
 	}
 
@@ -95,17 +102,8 @@ func (client AssignmentsClient) CreateOrUpdatePreparer(ctx context.Context, gues
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client AssignmentsClient) CreateOrUpdateSender(req *http.Request) (future AssignmentsCreateOrUpdateFuture, err error) {
-	var resp *http.Response
-	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	var azf azure.Future
-	azf, err = azure.NewFutureFromResponse(resp)
-	future.FutureAPI = &azf
-	future.Result = future.result
-	return
+func (client AssignmentsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -125,13 +123,13 @@ func (client AssignmentsClient) CreateOrUpdateResponder(resp *http.Response) (re
 // resourceGroupName - the resource group name.
 // guestConfigurationAssignmentName - name of the guest configuration assignment
 // VMName - the name of the virtual machine.
-func (client AssignmentsClient) Delete(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, VMName string) (result AssignmentsDeleteFuture, err error) {
+func (client AssignmentsClient) Delete(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, VMName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AssignmentsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
-				sc = result.FutureAPI.Response().StatusCode
+			if result.Response != nil {
+				sc = result.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -148,9 +146,16 @@ func (client AssignmentsClient) Delete(ctx context.Context, resourceGroupName st
 		return
 	}
 
-	result, err = client.DeleteSender(req)
+	resp, err := client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "guestconfiguration.AssignmentsClient", "Delete", nil, "Failure sending request")
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "guestconfiguration.AssignmentsClient", "Delete", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "guestconfiguration.AssignmentsClient", "Delete", resp, "Failure responding to request")
 		return
 	}
 
@@ -181,17 +186,8 @@ func (client AssignmentsClient) DeletePreparer(ctx context.Context, resourceGrou
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client AssignmentsClient) DeleteSender(req *http.Request) (future AssignmentsDeleteFuture, err error) {
-	var resp *http.Response
-	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	var azf azure.Future
-	azf, err = azure.NewFutureFromResponse(resp)
-	future.FutureAPI = &azf
-	future.Result = future.result
-	return
+func (client AssignmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always

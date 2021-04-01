@@ -37,13 +37,13 @@ func NewHCRPAssignmentsClientWithBaseURI(baseURI string, subscriptionID string) 
 // parameters - parameters supplied to the create or update guest configuration assignment.
 // resourceGroupName - the resource group name.
 // machineName - the name of the ARC machine.
-func (client HCRPAssignmentsClient) CreateOrUpdate(ctx context.Context, guestConfigurationAssignmentName string, parameters Assignment, resourceGroupName string, machineName string) (result HCRPAssignmentsCreateOrUpdateFuture, err error) {
+func (client HCRPAssignmentsClient) CreateOrUpdate(ctx context.Context, guestConfigurationAssignmentName string, parameters Assignment, resourceGroupName string, machineName string) (result Assignment, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/HCRPAssignmentsClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
-			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
-				sc = result.FutureAPI.Response().StatusCode
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -60,9 +60,16 @@ func (client HCRPAssignmentsClient) CreateOrUpdate(ctx context.Context, guestCon
 		return
 	}
 
-	result, err = client.CreateOrUpdateSender(req)
+	resp, err := client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "guestconfiguration.HCRPAssignmentsClient", "CreateOrUpdate", nil, "Failure sending request")
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "guestconfiguration.HCRPAssignmentsClient", "CreateOrUpdate", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.CreateOrUpdateResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "guestconfiguration.HCRPAssignmentsClient", "CreateOrUpdate", resp, "Failure responding to request")
 		return
 	}
 
@@ -95,17 +102,8 @@ func (client HCRPAssignmentsClient) CreateOrUpdatePreparer(ctx context.Context, 
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client HCRPAssignmentsClient) CreateOrUpdateSender(req *http.Request) (future HCRPAssignmentsCreateOrUpdateFuture, err error) {
-	var resp *http.Response
-	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	var azf azure.Future
-	azf, err = azure.NewFutureFromResponse(resp)
-	future.FutureAPI = &azf
-	future.Result = future.result
-	return
+func (client HCRPAssignmentsClient) CreateOrUpdateSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
@@ -125,13 +123,13 @@ func (client HCRPAssignmentsClient) CreateOrUpdateResponder(resp *http.Response)
 // resourceGroupName - the resource group name.
 // guestConfigurationAssignmentName - name of the guest configuration assignment
 // machineName - the name of the ARC machine.
-func (client HCRPAssignmentsClient) Delete(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, machineName string) (result HCRPAssignmentsDeleteFuture, err error) {
+func (client HCRPAssignmentsClient) Delete(ctx context.Context, resourceGroupName string, guestConfigurationAssignmentName string, machineName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/HCRPAssignmentsClient.Delete")
 		defer func() {
 			sc := -1
-			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
-				sc = result.FutureAPI.Response().StatusCode
+			if result.Response != nil {
+				sc = result.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -148,9 +146,16 @@ func (client HCRPAssignmentsClient) Delete(ctx context.Context, resourceGroupNam
 		return
 	}
 
-	result, err = client.DeleteSender(req)
+	resp, err := client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "guestconfiguration.HCRPAssignmentsClient", "Delete", nil, "Failure sending request")
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "guestconfiguration.HCRPAssignmentsClient", "Delete", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.DeleteResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "guestconfiguration.HCRPAssignmentsClient", "Delete", resp, "Failure responding to request")
 		return
 	}
 
@@ -181,17 +186,8 @@ func (client HCRPAssignmentsClient) DeletePreparer(ctx context.Context, resource
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client HCRPAssignmentsClient) DeleteSender(req *http.Request) (future HCRPAssignmentsDeleteFuture, err error) {
-	var resp *http.Response
-	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
-	if err != nil {
-		return
-	}
-	var azf azure.Future
-	azf, err = azure.NewFutureFromResponse(resp)
-	future.FutureAPI = &azf
-	future.Result = future.result
-	return
+func (client HCRPAssignmentsClient) DeleteSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // DeleteResponder handles the response to the Delete request. The method always

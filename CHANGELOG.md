@@ -14,7 +14,6 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/profiles/2020-09-01/compute/mgmt/compute` | [details](profiles/2020-09-01/compute/mgmt/compute/CHANGELOG.md) |
 | `github.com/Azure/azure-sdk-for-go/services/analysisservices/mgmt/2016-05-16/analysisservices` | [details](services/analysisservices/mgmt/2016-05-16/analysisservices/CHANGELOG.md) |
 | `github.com/Azure/azure-sdk-for-go/services/analysisservices/mgmt/2017-07-14/analysisservices` | [details](services/analysisservices/mgmt/2017-07-14/analysisservices/CHANGELOG.md) |
 | `github.com/Azure/azure-sdk-for-go/services/analysisservices/mgmt/2017-08-01/analysisservices` | [details](services/analysisservices/mgmt/2017-08-01/analysisservices/CHANGELOG.md) |

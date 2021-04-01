@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"os"
@@ -13,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/ioext"
+	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/track1"
 	"github.com/spf13/cobra"
 )
 
@@ -203,6 +205,13 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		results = append(results, set.toSlice()...)
 	}
 
+	// validate the sdk structure
+	log.Printf("Validating services directory structure...")
+	exceptions, err := loadExceptions(filepath.Join(ctx.sdkRoot, "tools/pkgchk/exceptions.txt"))
+	if err := track1.VerifyWithDefaultVerifiers(filepath.Join(ctx.sdkRoot, "services"), exceptions); err != nil {
+		return nil, err
+	}
+
 	return &pipeline.GenerateOutput{
 		Packages: results,
 	}, errorBuilder.build()
@@ -258,4 +267,26 @@ func (s *packageResultSet) toSlice() []pipeline.PackageResult {
 
 func getPackageIdentifier(pkg string) string {
 	return strings.TrimPrefix(utils.NormalizePath(pkg), "services/")
+}
+
+func loadExceptions(exceptFile string) (map[string]bool, error) {
+	if exceptFile == "" {
+		return nil, nil
+	}
+	f, err := os.Open(exceptFile)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	exceptions := make(map[string]bool)
+	scanner := bufio.NewScanner(f)
+	for scanner.Scan() {
+		exceptions[scanner.Text()] = true
+	}
+	if err = scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return exceptions, nil
 }

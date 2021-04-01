@@ -34,6 +34,6 @@ func (t TableClient) Create(ctx context.Context, name string) (TableResponseResp
 }
 
 // Delete
-func (t TableClient) Delete(ctx context.Context, name string) (TableDeleteResponse, error){
+func (t TableClient) Delete(ctx context.Context, name string) (TableDeleteResponse, error) {
 	return t.client.Delete(ctx, name, nil)
 }

@@ -4,26 +4,12 @@
 package aztables
 
 import (
-	// "bytes"
 	"context"
-	// "strings"
-	// "encoding/base64"
-	// "encoding/binary"
 	"errors"
 	"fmt"
-
-	// "io/ioutil"
-	// "math/rand"
-	// "net/url"
 	"os"
-	// "runtime"
-	// "strings"
 	"testing"
 	"time"
-
-	// "github.com/Azure/azure-sdk-for-go/sdk/to"
-
-	// "github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
 	chk "gopkg.in/check.v1"
 )

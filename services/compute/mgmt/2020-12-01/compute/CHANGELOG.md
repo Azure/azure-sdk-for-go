@@ -1,7 +1,23 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/a1eee0489c374782a934ec1f093abd16fa7718ca/specification/compute/resource-manager/readme.md tag: `package-2020-12-01`
+Generated from https://github.com/Azure/azure-rest-api-specs/tree/e0f8b9ab0f5fe5e71b7429ebfea8a33c19ec9d8d/specification/compute/resource-manager/readme.md tag: `package-2020-12-01`
 
 Code generator @microsoft.azure/autorest.go@2.1.178
 
+
+## Breaking Changes
+
+## Signature Changes
+
+### Const Types
+
+1. TrustedLaunch changed type from SecurityTypes to DiskSecurityTypes
+
+### New Constants
+
+1. DiskStorageAccountTypes.PremiumZRS
+1. DiskStorageAccountTypes.StandardSSDZRS
+1. SecurityTypes.SecurityTypesTrustedLaunch
+1. StorageAccountTypes.StorageAccountTypesPremiumZRS
+1. StorageAccountTypes.StorageAccountTypesStandardSSDZRS
 
 ### New Funcs
 
@@ -105,3 +121,28 @@ Code generator @microsoft.azure/autorest.go@2.1.178
 1. *VirtualMachinesRunCommandFuture.UnmarshalJSON([]byte) error
 1. *VirtualMachinesStartFuture.UnmarshalJSON([]byte) error
 1. *VirtualMachinesUpdateFuture.UnmarshalJSON([]byte) error
+1. DiskUpdateProperties.MarshalJSON() ([]byte, error)
+1. PossibleDiskSecurityTypesValues() []DiskSecurityTypes
+1. PrivateEndpointConnectionProperties.MarshalJSON() ([]byte, error)
+
+## Struct Changes
+
+### New Structs
+
+1. DiskSecurityProfile
+1. PropertyUpdatesInProgress
+
+### New Struct Fields
+
+1. DiskEncryptionSetUpdate.Identity
+1. DiskEncryptionSetUpdateProperties.RotationToLatestKeyVersionEnabled
+1. DiskProperties.PropertyUpdatesInProgress
+1. DiskProperties.SecurityProfile
+1. DiskProperties.SupportsHibernation
+1. DiskRestorePointProperties.SupportsHibernation
+1. DiskUpdateProperties.PropertyUpdatesInProgress
+1. DiskUpdateProperties.SupportsHibernation
+1. EncryptionSetProperties.LastKeyRotationTimestamp
+1. EncryptionSetProperties.RotationToLatestKeyVersionEnabled
+1. SnapshotProperties.SupportsHibernation
+1. SnapshotUpdateProperties.SupportsHibernation

@@ -21,21 +21,6 @@ func PossibleActionAfterRebootValues() []ActionAfterReboot {
 	return []ActionAfterReboot{ContinueConfiguration, StopConfiguration}
 }
 
-// AllowModuleOverwrite enumerates the values for allow module overwrite.
-type AllowModuleOverwrite string
-
-const (
-	// False ...
-	False AllowModuleOverwrite = "False"
-	// True ...
-	True AllowModuleOverwrite = "True"
-)
-
-// PossibleAllowModuleOverwriteValues returns an array of possible values for the AllowModuleOverwrite const type.
-func PossibleAllowModuleOverwriteValues() []AllowModuleOverwrite {
-	return []AllowModuleOverwrite{False, True}
-}
-
 // ComplianceStatus enumerates the values for compliance status.
 type ComplianceStatus string
 
@@ -100,21 +85,6 @@ const (
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{Canceled, Created, Failed, Succeeded}
-}
-
-// RebootIfNeeded enumerates the values for reboot if needed.
-type RebootIfNeeded string
-
-const (
-	// RebootIfNeededFalse ...
-	RebootIfNeededFalse RebootIfNeeded = "False"
-	// RebootIfNeededTrue ...
-	RebootIfNeededTrue RebootIfNeeded = "True"
-)
-
-// PossibleRebootIfNeededValues returns an array of possible values for the RebootIfNeeded const type.
-func PossibleRebootIfNeededValues() []RebootIfNeeded {
-	return []RebootIfNeeded{RebootIfNeededFalse, RebootIfNeededTrue}
 }
 
 // Type enumerates the values for type.

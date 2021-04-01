@@ -137,14 +137,12 @@ func (client FactoriesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 				{Target: "factoryName", Name: validation.MinLength, Rule: 3, Chain: nil},
 				{Target: "factoryName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: factory,
-			Constraints: []validation.Constraint{{Target: "factory.Identity", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "factory.Identity.Type", Name: validation.Null, Rule: true, Chain: nil}}},
-				{Target: "factory.FactoryProperties", Name: validation.Null, Rule: false,
-					Chain: []validation.Constraint{{Target: "factory.FactoryProperties.Encryption", Name: validation.Null, Rule: false,
-						Chain: []validation.Constraint{{Target: "factory.FactoryProperties.Encryption.KeyName", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "factory.FactoryProperties.Encryption.VaultBaseURL", Name: validation.Null, Rule: true, Chain: nil},
-						}},
-					}}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "factory.FactoryProperties", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "factory.FactoryProperties.Encryption", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "factory.FactoryProperties.Encryption.KeyName", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "factory.FactoryProperties.Encryption.VaultBaseURL", Name: validation.Null, Rule: true, Chain: nil},
+					}},
+				}}}}}); err != nil {
 		return result, validation.NewError("datafactory.FactoriesClient", "CreateOrUpdate", err.Error())
 	}
 

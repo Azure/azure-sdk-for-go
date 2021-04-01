@@ -609,12 +609,12 @@ type DataDisk struct {
 	ManagedDisk *ManagedDiskParameters `json:"managedDisk,omitempty"`
 	// ToBeDetached - Specifies whether the data disk is in process of detachment from the VirtualMachine/VirtualMachineScaleset
 	ToBeDetached *bool `json:"toBeDetached,omitempty"`
-	// DetachOption - Specifies the detach behavior to be used while detaching a disk or which is already in the process of detachment from the virtual machine. Supported values: **ForceDetach**. <br><br> detachOption: **ForceDetach** is applicable only for managed data disks. If a previous detachment attempt of the data disk did not complete due to an unexpected failure from the virtual machine and the disk is still not released then use force-detach as a last resort option to detach the disk forcibly from the VM. All writes might not have been flushed when using this detach behavior. <br><br> This feature is still in preview mode and is not supported for VirtualMachineScaleSet. To force-detach a data disk update toBeDetached to 'true' along with setting detachOption: 'ForceDetach'. Possible values include: 'ForceDetach'
-	DetachOption DiskDetachOptionTypes `json:"detachOption,omitempty"`
 	// DiskIOPSReadWrite - READ-ONLY; Specifies the Read-Write IOPS for the managed disk when StorageAccountType is UltraSSD_LRS. Returned only for VirtualMachine ScaleSet VM disks. Can be updated only via updates to the VirtualMachine Scale Set.
 	DiskIOPSReadWrite *int64 `json:"diskIOPSReadWrite,omitempty"`
 	// DiskMBpsReadWrite - READ-ONLY; Specifies the bandwidth in MB per second for the managed disk when StorageAccountType is UltraSSD_LRS. Returned only for VirtualMachine ScaleSet VM disks. Can be updated only via updates to the VirtualMachine Scale Set.
 	DiskMBpsReadWrite *int64 `json:"diskMBpsReadWrite,omitempty"`
+	// DetachOption - Specifies the detach behavior to be used while detaching a disk or which is already in the process of detachment from the virtual machine. Supported values: **ForceDetach**. <br><br> detachOption: **ForceDetach** is applicable only for managed data disks. If a previous detachment attempt of the data disk did not complete due to an unexpected failure from the virtual machine and the disk is still not released then use force-detach as a last resort option to detach the disk forcibly from the VM. All writes might not have been flushed when using this detach behavior. <br><br> This feature is still in preview mode and is not supported for VirtualMachineScaleSet. To force-detach a data disk update toBeDetached to 'true' along with setting detachOption: 'ForceDetach'. Possible values include: 'ForceDetach'
+	DetachOption DiskDetachOptionTypes `json:"detachOption,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DataDisk.
@@ -2672,7 +2672,8 @@ type DiskEncryptionSettings struct {
 type DiskEncryptionSetUpdate struct {
 	*DiskEncryptionSetUpdateProperties `json:"properties,omitempty"`
 	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
+	Tags     map[string]*string     `json:"tags"`
+	Identity *EncryptionSetIdentity `json:"identity,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DiskEncryptionSetUpdate.
@@ -2683,6 +2684,9 @@ func (desu DiskEncryptionSetUpdate) MarshalJSON() ([]byte, error) {
 	}
 	if desu.Tags != nil {
 		objectMap["tags"] = desu.Tags
+	}
+	if desu.Identity != nil {
+		objectMap["identity"] = desu.Identity
 	}
 	return json.Marshal(objectMap)
 }
@@ -2714,6 +2718,15 @@ func (desu *DiskEncryptionSetUpdate) UnmarshalJSON(body []byte) error {
 				}
 				desu.Tags = tags
 			}
+		case "identity":
+			if v != nil {
+				var identity EncryptionSetIdentity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				desu.Identity = &identity
+			}
 		}
 	}
 
@@ -2725,6 +2738,8 @@ type DiskEncryptionSetUpdateProperties struct {
 	// EncryptionType - Possible values include: 'EncryptionAtRestWithCustomerKey', 'EncryptionAtRestWithPlatformAndCustomerKeys'
 	EncryptionType DiskEncryptionSetType    `json:"encryptionType,omitempty"`
 	ActiveKey      *KeyForDiskEncryptionSet `json:"activeKey,omitempty"`
+	// RotationToLatestKeyVersionEnabled - Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.
+	RotationToLatestKeyVersionEnabled *bool `json:"rotationToLatestKeyVersionEnabled,omitempty"`
 }
 
 // DiskImageEncryption this is the disk image encryption base class.
@@ -2948,6 +2963,12 @@ type DiskProperties struct {
 	Tier *string `json:"tier,omitempty"`
 	// BurstingEnabled - Set to true to enable bursting beyond the provisioned performance target of the disk. Bursting is disabled by default. Does not apply to Ultra disks.
 	BurstingEnabled *bool `json:"burstingEnabled,omitempty"`
+	// PropertyUpdatesInProgress - READ-ONLY; Properties of the disk for which update is pending.
+	PropertyUpdatesInProgress *PropertyUpdatesInProgress `json:"propertyUpdatesInProgress,omitempty"`
+	// SupportsHibernation - Indicates the OS on a disk supports hibernation.
+	SupportsHibernation *bool `json:"supportsHibernation,omitempty"`
+	// SecurityProfile - Contains the security related information for the resource.
+	SecurityProfile *DiskSecurityProfile `json:"securityProfile,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DiskProperties.
@@ -3003,6 +3024,12 @@ func (dp DiskProperties) MarshalJSON() ([]byte, error) {
 	}
 	if dp.BurstingEnabled != nil {
 		objectMap["burstingEnabled"] = dp.BurstingEnabled
+	}
+	if dp.SupportsHibernation != nil {
+		objectMap["supportsHibernation"] = dp.SupportsHibernation
+	}
+	if dp.SecurityProfile != nil {
+		objectMap["securityProfile"] = dp.SecurityProfile
 	}
 	return json.Marshal(objectMap)
 }
@@ -3256,6 +3283,8 @@ type DiskRestorePointProperties struct {
 	SourceUniqueID *string `json:"sourceUniqueId,omitempty"`
 	// Encryption - READ-ONLY; Encryption property can be used to encrypt data at rest with customer managed keys or platform managed keys.
 	Encryption *Encryption `json:"encryption,omitempty"`
+	// SupportsHibernation - Indicates the OS on a disk supports hibernation.
+	SupportsHibernation *bool `json:"supportsHibernation,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DiskRestorePointProperties.
@@ -3266,6 +3295,9 @@ func (drpp DiskRestorePointProperties) MarshalJSON() ([]byte, error) {
 	}
 	if drpp.PurchasePlan != nil {
 		objectMap["purchasePlan"] = drpp.PurchasePlan
+	}
+	if drpp.SupportsHibernation != nil {
+		objectMap["supportsHibernation"] = drpp.SupportsHibernation
 	}
 	return json.Marshal(objectMap)
 }
@@ -3347,6 +3379,12 @@ func (future *DisksDeleteFuture) result(client DisksClient) (ar autorest.Respons
 	return
 }
 
+// DiskSecurityProfile contains the security related information for the resource.
+type DiskSecurityProfile struct {
+	// SecurityType - Possible values include: 'TrustedLaunch'
+	SecurityType DiskSecurityTypes `json:"securityType,omitempty"`
+}
+
 // DisksGrantAccessFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type DisksGrantAccessFuture struct {
@@ -3389,9 +3427,10 @@ func (future *DisksGrantAccessFuture) result(client DisksClient) (au AccessURI, 
 	return
 }
 
-// DiskSku the disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, or UltraSSD_LRS.
+// DiskSku the disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS,
+// Premium_ZRS, or StandardSSD_ZRS.
 type DiskSku struct {
-	// Name - The sku name. Possible values include: 'StandardLRS', 'PremiumLRS', 'StandardSSDLRS', 'UltraSSDLRS'
+	// Name - The sku name. Possible values include: 'StandardLRS', 'PremiumLRS', 'StandardSSDLRS', 'UltraSSDLRS', 'PremiumZRS', 'StandardSSDZRS'
 	Name DiskStorageAccountTypes `json:"name,omitempty"`
 	// Tier - READ-ONLY; The sku tier.
 	Tier *string `json:"tier,omitempty"`
@@ -3578,6 +3617,61 @@ type DiskUpdateProperties struct {
 	BurstingEnabled *bool `json:"burstingEnabled,omitempty"`
 	// PurchasePlan - Purchase plan information to be added on the OS disk
 	PurchasePlan *PurchasePlan `json:"purchasePlan,omitempty"`
+	// PropertyUpdatesInProgress - READ-ONLY; Properties of the disk for which update is pending.
+	PropertyUpdatesInProgress *PropertyUpdatesInProgress `json:"propertyUpdatesInProgress,omitempty"`
+	// SupportsHibernation - Indicates the OS on a disk supports hibernation.
+	SupportsHibernation *bool `json:"supportsHibernation,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DiskUpdateProperties.
+func (dup DiskUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dup.OsType != "" {
+		objectMap["osType"] = dup.OsType
+	}
+	if dup.DiskSizeGB != nil {
+		objectMap["diskSizeGB"] = dup.DiskSizeGB
+	}
+	if dup.EncryptionSettingsCollection != nil {
+		objectMap["encryptionSettingsCollection"] = dup.EncryptionSettingsCollection
+	}
+	if dup.DiskIOPSReadWrite != nil {
+		objectMap["diskIOPSReadWrite"] = dup.DiskIOPSReadWrite
+	}
+	if dup.DiskMBpsReadWrite != nil {
+		objectMap["diskMBpsReadWrite"] = dup.DiskMBpsReadWrite
+	}
+	if dup.DiskIOPSReadOnly != nil {
+		objectMap["diskIOPSReadOnly"] = dup.DiskIOPSReadOnly
+	}
+	if dup.DiskMBpsReadOnly != nil {
+		objectMap["diskMBpsReadOnly"] = dup.DiskMBpsReadOnly
+	}
+	if dup.MaxShares != nil {
+		objectMap["maxShares"] = dup.MaxShares
+	}
+	if dup.Encryption != nil {
+		objectMap["encryption"] = dup.Encryption
+	}
+	if dup.NetworkAccessPolicy != "" {
+		objectMap["networkAccessPolicy"] = dup.NetworkAccessPolicy
+	}
+	if dup.DiskAccessID != nil {
+		objectMap["diskAccessId"] = dup.DiskAccessID
+	}
+	if dup.Tier != nil {
+		objectMap["tier"] = dup.Tier
+	}
+	if dup.BurstingEnabled != nil {
+		objectMap["burstingEnabled"] = dup.BurstingEnabled
+	}
+	if dup.PurchasePlan != nil {
+		objectMap["purchasePlan"] = dup.PurchasePlan
+	}
+	if dup.SupportsHibernation != nil {
+		objectMap["supportsHibernation"] = dup.SupportsHibernation
+	}
+	return json.Marshal(objectMap)
 }
 
 // Encryption encryption at rest settings for disk or snapshot
@@ -3626,6 +3720,10 @@ type EncryptionSetProperties struct {
 	PreviousKeys *[]KeyForDiskEncryptionSet `json:"previousKeys,omitempty"`
 	// ProvisioningState - READ-ONLY; The disk encryption set provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// RotationToLatestKeyVersionEnabled - Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.
+	RotationToLatestKeyVersionEnabled *bool `json:"rotationToLatestKeyVersionEnabled,omitempty"`
+	// LastKeyRotationTimestamp - READ-ONLY; The time when the active key of this disk encryption set was updated.
+	LastKeyRotationTimestamp *date.Time `json:"lastKeyRotationTimestamp,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for EncryptionSetProperties.
@@ -3636,6 +3734,9 @@ func (esp EncryptionSetProperties) MarshalJSON() ([]byte, error) {
 	}
 	if esp.ActiveKey != nil {
 		objectMap["activeKey"] = esp.ActiveKey
+	}
+	if esp.RotationToLatestKeyVersionEnabled != nil {
+		objectMap["rotationToLatestKeyVersionEnabled"] = esp.RotationToLatestKeyVersionEnabled
 	}
 	return json.Marshal(objectMap)
 }
@@ -6508,7 +6609,7 @@ type ImageDataDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// DiskSizeGB - Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
-	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS', 'StorageAccountTypesPremiumZRS', 'StorageAccountTypesStandardSSDZRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 	// DiskEncryptionSet - Specifies the customer managed disk encryption set resource id for the managed image disk.
 	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`
@@ -6526,7 +6627,7 @@ type ImageDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// DiskSizeGB - Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
-	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS', 'StorageAccountTypesPremiumZRS', 'StorageAccountTypesStandardSSDZRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 	// DiskEncryptionSet - Specifies the customer managed disk encryption set resource id for the managed image disk.
 	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`
@@ -6715,7 +6816,7 @@ type ImageOSDisk struct {
 	Caching CachingTypes `json:"caching,omitempty"`
 	// DiskSizeGB - Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
 	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
-	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS', 'StorageAccountTypesPremiumZRS', 'StorageAccountTypesStandardSSDZRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 	// DiskEncryptionSet - Specifies the customer managed disk encryption set resource id for the managed image disk.
 	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`
@@ -6729,7 +6830,7 @@ type ImageProperties struct {
 	StorageProfile *ImageStorageProfile `json:"storageProfile,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
-	// HyperVGeneration - Gets the HyperVGenerationType of the VirtualMachine created from the image. Possible values include: 'HyperVGenerationTypesV1', 'HyperVGenerationTypesV2'
+	// HyperVGeneration - Specifies the HyperVGenerationType of the VirtualMachine created from the image. From API Version 2019-03-01 if the image source is a blob, then we need the user to specify the value, if the source is managed resource like disk or snapshot, we may require the user to specify the property if we cannot deduce it from the source managed resource. Possible values include: 'HyperVGenerationTypesV1', 'HyperVGenerationTypesV2'
 	HyperVGeneration HyperVGenerationTypes `json:"hyperVGeneration,omitempty"`
 }
 
@@ -7006,7 +7107,7 @@ type InstanceViewStatus struct {
 type KeyForDiskEncryptionSet struct {
 	// SourceVault - Resource id of the KeyVault containing the key or secret. This property is optional and cannot be used if the KeyVault subscription is not the same as the Disk Encryption Set subscription.
 	SourceVault *SourceVault `json:"sourceVault,omitempty"`
-	// KeyURL - Fully versioned Key Url pointing to a key in KeyVault
+	// KeyURL - Fully versioned Key Url pointing to a key in KeyVault. Version segment of the Url is required regardless of rotationToLatestKeyVersionEnabled value.
 	KeyURL *string `json:"keyUrl,omitempty"`
 }
 
@@ -7417,7 +7518,7 @@ type ManagedArtifact struct {
 
 // ManagedDiskParameters the parameters of a managed disk.
 type ManagedDiskParameters struct {
-	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS', 'StorageAccountTypesPremiumZRS', 'StorageAccountTypesStandardSSDZRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 	// DiskEncryptionSet - Specifies the customer managed disk encryption set resource id for the managed disk.
 	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`
@@ -7666,7 +7767,7 @@ type PatchInstallationDetail struct {
 
 // PatchSettings specifies settings related to VM Guest Patching on Windows.
 type PatchSettings struct {
-	// PatchMode - Specifies the mode of VM Guest Patching to IaaS virtual machine.<br /><br /> Possible values are:<br /><br /> **Manual** - You  control the application of patches to a virtual machine. You do this by applying patches manually inside the VM. In this mode, automatic updates are disabled; the property WindowsConfiguration.enableAutomaticUpdates must be false<br /><br /> **AutomaticByOS** - The virtual machine will automatically be updated by the OS. The property WindowsConfiguration.enableAutomaticUpdates must be true. <br /><br /> ** AutomaticByPlatform** - the virtual machine will automatically updated by the platform. The properties provisionVMAgent and WindowsConfiguration.enableAutomaticUpdates must be true. Possible values include: 'WindowsVMGuestPatchModeManual', 'WindowsVMGuestPatchModeAutomaticByOS', 'WindowsVMGuestPatchModeAutomaticByPlatform'
+	// PatchMode - Specifies the mode of VM Guest Patching to IaaS virtual machine.<br /><br /> Possible values are:<br /><br /> **Manual** - You  control the application of patches to a virtual machine. You do this by applying patches manually inside the VM. In this mode, automatic updates are disabled; the property WindowsConfiguration.enableAutomaticUpdates must be false<br /><br /> **AutomaticByOS** - The virtual machine will automatically be updated by the OS. The property WindowsConfiguration.enableAutomaticUpdates must be true. <br /><br /> **AutomaticByPlatform** - the virtual machine will automatically updated by the platform. The properties provisionVMAgent and WindowsConfiguration.enableAutomaticUpdates must be true. Possible values include: 'WindowsVMGuestPatchModeManual', 'WindowsVMGuestPatchModeAutomaticByOS', 'WindowsVMGuestPatchModeAutomaticByPlatform'
 	PatchMode WindowsVMGuestPatchMode `json:"patchMode,omitempty"`
 	// EnableHotpatching - Enables customers to patch their Azure VMs without requiring a reboot. For enableHotpatching, the 'provisionVMAgent' must be set to true and 'patchMode' must be set to 'AutomaticByPlatform'.
 	EnableHotpatching *bool `json:"enableHotpatching,omitempty"`
@@ -7929,12 +8030,24 @@ func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionLis
 
 // PrivateEndpointConnectionProperties properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
-	// PrivateEndpoint - The resource of private end point.
+	// PrivateEndpoint - READ-ONLY; The resource of private end point.
 	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
 	// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between DiskAccess and Virtual Network.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
 	// ProvisioningState - The provisioning state of the private endpoint connection resource. Possible values include: 'PrivateEndpointConnectionProvisioningStateSucceeded', 'PrivateEndpointConnectionProvisioningStateCreating', 'PrivateEndpointConnectionProvisioningStateDeleting', 'PrivateEndpointConnectionProvisioningStateFailed'
 	ProvisioningState PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpointConnectionProperties.
+func (pecp PrivateEndpointConnectionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pecp.PrivateLinkServiceConnectionState != nil {
+		objectMap["privateLinkServiceConnectionState"] = pecp.PrivateLinkServiceConnectionState
+	}
+	if pecp.ProvisioningState != "" {
+		objectMap["provisioningState"] = pecp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResource a private link resource
@@ -8044,6 +8157,12 @@ type PrivateLinkServiceConnectionState struct {
 	Description *string `json:"description,omitempty"`
 	// ActionsRequired - A message indicating if changes on the service provider require any updates on the consumer.
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
+}
+
+// PropertyUpdatesInProgress properties of the disk for which update is pending.
+type PropertyUpdatesInProgress struct {
+	// TargetTier - The target performance tier of the disk if a tier change operation is in progress.
+	TargetTier *string `json:"targetTier,omitempty"`
 }
 
 // ProximityPlacementGroup specifies information about the proximity placement group.
@@ -9298,7 +9417,7 @@ type SecurityProfile struct {
 	UefiSettings *UefiSettings `json:"uefiSettings,omitempty"`
 	// EncryptionAtHost - This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at host itself. <br><br> Default: The Encryption at host will be disabled unless this property is set to true for the resource.
 	EncryptionAtHost *bool `json:"encryptionAtHost,omitempty"`
-	// SecurityType - Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings. <br><br> Default: UefiSettings will not be enabled unless this property is set as TrustedLaunch. Possible values include: 'TrustedLaunch'
+	// SecurityType - Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings. <br><br> Default: UefiSettings will not be enabled unless this property is set as TrustedLaunch. Possible values include: 'SecurityTypesTrustedLaunch'
 	SecurityType SecurityTypes `json:"securityType,omitempty"`
 }
 
@@ -9649,6 +9768,8 @@ type SnapshotProperties struct {
 	NetworkAccessPolicy NetworkAccessPolicy `json:"networkAccessPolicy,omitempty"`
 	// DiskAccessID - ARM id of the DiskAccess resource for using private endpoints on disks.
 	DiskAccessID *string `json:"diskAccessId,omitempty"`
+	// SupportsHibernation - Indicates the OS on a snapshot supports hibernation.
+	SupportsHibernation *bool `json:"supportsHibernation,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SnapshotProperties.
@@ -9686,6 +9807,9 @@ func (sp SnapshotProperties) MarshalJSON() ([]byte, error) {
 	}
 	if sp.DiskAccessID != nil {
 		objectMap["diskAccessId"] = sp.DiskAccessID
+	}
+	if sp.SupportsHibernation != nil {
+		objectMap["supportsHibernation"] = sp.SupportsHibernation
 	}
 	return json.Marshal(objectMap)
 }
@@ -9986,6 +10110,8 @@ type SnapshotUpdateProperties struct {
 	NetworkAccessPolicy NetworkAccessPolicy `json:"networkAccessPolicy,omitempty"`
 	// DiskAccessID - ARM id of the DiskAccess resource for using private endpoints on disks.
 	DiskAccessID *string `json:"diskAccessId,omitempty"`
+	// SupportsHibernation - Indicates the OS on a snapshot supports hibernation.
+	SupportsHibernation *bool `json:"supportsHibernation,omitempty"`
 }
 
 // SourceVault the vault id is an Azure Resource Manager Resource id in the form
@@ -11821,8 +11947,6 @@ type VirtualMachineProperties struct {
 	VirtualMachineScaleSet *SubResource `json:"virtualMachineScaleSet,omitempty"`
 	// ProximityPlacementGroup - Specifies information about the proximity placement group that the virtual machine should be assigned to. <br><br>Minimum api-version: 2018-04-01.
 	ProximityPlacementGroup *SubResource `json:"proximityPlacementGroup,omitempty"`
-	// PlatformFaultDomain - Specifies the scale set logical fault domain into which the Virtual Machine will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best maintains balance across available fault domains.<br><li>This is applicable only if the 'virtualMachineScaleSet' property of this Virtual Machine is set.<li>The Virtual Machine Scale Set that is referenced, must have 'platformFaultDomainCount' &gt; 1.<li>This property cannot be updated once the Virtual Machine is created.<li>Fault domain assignment can be viewed in the Virtual Machine Instance View.<br><br>Minimum api‐version: 2020‐12‐01
-	PlatformFaultDomain *int32 `json:"platformFaultDomain,omitempty"`
 	// Priority - Specifies the priority for the virtual machine. <br><br>Minimum api-version: 2019-03-01. Possible values include: 'Regular', 'Low', 'Spot'
 	Priority VirtualMachinePriorityTypes `json:"priority,omitempty"`
 	// EvictionPolicy - Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot scale set. <br><br>For Azure Spot virtual machines, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2019-03-01. <br><br>For Azure Spot scale sets, both 'Deallocate' and 'Delete' are supported and the minimum api-version is 2017-10-30-preview. Possible values include: 'Deallocate', 'Delete'
@@ -11843,6 +11967,8 @@ type VirtualMachineProperties struct {
 	VMID *string `json:"vmId,omitempty"`
 	// ExtensionsTimeBudget - Specifies the time alloted for all extensions to start. The time duration should be between 15 minutes and 120 minutes (inclusive) and should be specified in ISO 8601 format. The default value is 90 minutes (PT1H30M). <br><br> Minimum api-version: 2020-06-01
 	ExtensionsTimeBudget *string `json:"extensionsTimeBudget,omitempty"`
+	// PlatformFaultDomain - Specifies the scale set logical fault domain into which the Virtual Machine will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best maintains balance across available fault domains.<br><li>This is applicable only if the 'virtualMachineScaleSet' property of this Virtual Machine is set.<li>The Virtual Machine Scale Set that is referenced, must have 'platformFaultDomainCount' &gt; 1.<li>This property cannot be updated once the Virtual Machine is created.<li>Fault domain assignment can be viewed in the Virtual Machine Instance View.<br><br>Minimum api‐version: 2020‐12‐01
+	PlatformFaultDomain *int32 `json:"platformFaultDomain,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for VirtualMachineProperties.
@@ -11878,9 +12004,6 @@ func (vmp VirtualMachineProperties) MarshalJSON() ([]byte, error) {
 	if vmp.ProximityPlacementGroup != nil {
 		objectMap["proximityPlacementGroup"] = vmp.ProximityPlacementGroup
 	}
-	if vmp.PlatformFaultDomain != nil {
-		objectMap["platformFaultDomain"] = vmp.PlatformFaultDomain
-	}
 	if vmp.Priority != "" {
 		objectMap["priority"] = vmp.Priority
 	}
@@ -11901,6 +12024,9 @@ func (vmp VirtualMachineProperties) MarshalJSON() ([]byte, error) {
 	}
 	if vmp.ExtensionsTimeBudget != nil {
 		objectMap["extensionsTimeBudget"] = vmp.ExtensionsTimeBudget
+	}
+	if vmp.PlatformFaultDomain != nil {
+		objectMap["platformFaultDomain"] = vmp.PlatformFaultDomain
 	}
 	return json.Marshal(objectMap)
 }
@@ -13960,7 +14086,7 @@ func NewVirtualMachineScaleSetListWithLinkResultPage(cur VirtualMachineScaleSetL
 
 // VirtualMachineScaleSetManagedDiskParameters describes the parameters of a ScaleSet managed disk.
 type VirtualMachineScaleSetManagedDiskParameters struct {
-	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS', 'StorageAccountTypesPremiumZRS', 'StorageAccountTypesStandardSSDZRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 	// DiskEncryptionSet - Specifies the customer managed disk encryption set resource id for the managed disk.
 	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`

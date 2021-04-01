@@ -21,13 +21,6 @@ const (
 	StopConfiguration     ActionAfterReboot = original.StopConfiguration
 )
 
-type AllowModuleOverwrite = original.AllowModuleOverwrite
-
-const (
-	False AllowModuleOverwrite = original.False
-	True  AllowModuleOverwrite = original.True
-)
-
 type ComplianceStatus = original.ComplianceStatus
 
 const (
@@ -59,13 +52,6 @@ const (
 	Succeeded ProvisioningState = original.Succeeded
 )
 
-type RebootIfNeeded = original.RebootIfNeeded
-
-const (
-	RebootIfNeededFalse RebootIfNeeded = original.RebootIfNeededFalse
-	RebootIfNeededTrue  RebootIfNeeded = original.RebootIfNeededTrue
-)
-
 type Type = original.Type
 
 const (
@@ -86,8 +72,6 @@ type AssignmentReportResourceComplianceReason = original.AssignmentReportResourc
 type AssignmentReportType = original.AssignmentReportType
 type AssignmentReportsClient = original.AssignmentReportsClient
 type AssignmentsClient = original.AssignmentsClient
-type AssignmentsCreateOrUpdateFuture = original.AssignmentsCreateOrUpdateFuture
-type AssignmentsDeleteFuture = original.AssignmentsDeleteFuture
 type BaseClient = original.BaseClient
 type ConfigurationInfo = original.ConfigurationInfo
 type ConfigurationParameter = original.ConfigurationParameter
@@ -96,8 +80,6 @@ type ErrorResponse = original.ErrorResponse
 type ErrorResponseError = original.ErrorResponseError
 type HCRPAssignmentReportsClient = original.HCRPAssignmentReportsClient
 type HCRPAssignmentsClient = original.HCRPAssignmentsClient
-type HCRPAssignmentsCreateOrUpdateFuture = original.HCRPAssignmentsCreateOrUpdateFuture
-type HCRPAssignmentsDeleteFuture = original.HCRPAssignmentsDeleteFuture
 type Navigation = original.Navigation
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -148,9 +130,6 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleActionAfterRebootValues() []ActionAfterReboot {
 	return original.PossibleActionAfterRebootValues()
 }
-func PossibleAllowModuleOverwriteValues() []AllowModuleOverwrite {
-	return original.PossibleAllowModuleOverwriteValues()
-}
 func PossibleComplianceStatusValues() []ComplianceStatus {
 	return original.PossibleComplianceStatusValues()
 }
@@ -162,9 +141,6 @@ func PossibleKindValues() []Kind {
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
-}
-func PossibleRebootIfNeededValues() []RebootIfNeeded {
-	return original.PossibleRebootIfNeededValues()
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()

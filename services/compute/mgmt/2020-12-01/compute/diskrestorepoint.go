@@ -83,7 +83,7 @@ func (client DiskRestorePointClient) GetPreparer(ctx context.Context, resourceGr
 		"vmRestorePointName":         autorest.Encode("path", VMRestorePointName),
 	}
 
-	const APIVersion = "2020-09-30"
+	const APIVersion = "2020-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -168,7 +168,7 @@ func (client DiskRestorePointClient) ListByRestorePointPreparer(ctx context.Cont
 		"vmRestorePointName":         autorest.Encode("path", VMRestorePointName),
 	}
 
-	const APIVersion = "2020-09-30"
+	const APIVersion = "2020-12-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -11,7 +11,7 @@ package synapse
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/synapse/mgmt/2020-12-01/synapse"
+	original "github.com/Azure/azure-sdk-for-go/services/synapse/mgmt/2021-03-01/synapse"
 )
 
 const (
@@ -498,6 +498,13 @@ const (
 	Recurring VulnerabilityAssessmentScanTriggerType = original.Recurring
 )
 
+type WorkspacePublicNetworkAccess = original.WorkspacePublicNetworkAccess
+
+const (
+	WorkspacePublicNetworkAccessDisabled WorkspacePublicNetworkAccess = original.WorkspacePublicNetworkAccessDisabled
+	WorkspacePublicNetworkAccessEnabled  WorkspacePublicNetworkAccess = original.WorkspacePublicNetworkAccessEnabled
+)
+
 type AadAdminProperties = original.AadAdminProperties
 type AutoPauseProperties = original.AutoPauseProperties
 type AutoScaleProperties = original.AutoScaleProperties
@@ -617,8 +624,14 @@ type KeyInfoListResultIterator = original.KeyInfoListResultIterator
 type KeyInfoListResultPage = original.KeyInfoListResultPage
 type KeyProperties = original.KeyProperties
 type KeysClient = original.KeysClient
+type LibrariesClient = original.LibrariesClient
+type LibraryClient = original.LibraryClient
 type LibraryInfo = original.LibraryInfo
+type LibraryListResponse = original.LibraryListResponse
+type LibraryListResponseIterator = original.LibraryListResponseIterator
+type LibraryListResponsePage = original.LibraryListResponsePage
 type LibraryRequirements = original.LibraryRequirements
+type LibraryResource = original.LibraryResource
 type LicensedComponentSetupTypeProperties = original.LicensedComponentSetupTypeProperties
 type LinkedIntegrationRuntime = original.LinkedIntegrationRuntime
 type LinkedIntegrationRuntimeKeyAuthorization = original.LinkedIntegrationRuntimeKeyAuthorization
@@ -1043,6 +1056,24 @@ func NewKeysClient(subscriptionID string) KeysClient {
 }
 func NewKeysClientWithBaseURI(baseURI string, subscriptionID string) KeysClient {
 	return original.NewKeysClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLibrariesClient(subscriptionID string) LibrariesClient {
+	return original.NewLibrariesClient(subscriptionID)
+}
+func NewLibrariesClientWithBaseURI(baseURI string, subscriptionID string) LibrariesClient {
+	return original.NewLibrariesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLibraryClient(subscriptionID string) LibraryClient {
+	return original.NewLibraryClient(subscriptionID)
+}
+func NewLibraryClientWithBaseURI(baseURI string, subscriptionID string) LibraryClient {
+	return original.NewLibraryClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewLibraryListResponseIterator(page LibraryListResponsePage) LibraryListResponseIterator {
+	return original.NewLibraryListResponseIterator(page)
+}
+func NewLibraryListResponsePage(cur LibraryListResponse, getNextPage func(context.Context, LibraryListResponse) (LibraryListResponse, error)) LibraryListResponsePage {
+	return original.NewLibraryListResponsePage(cur, getNextPage)
 }
 func NewListSQLPoolSecurityAlertPoliciesIterator(page ListSQLPoolSecurityAlertPoliciesPage) ListSQLPoolSecurityAlertPoliciesIterator {
 	return original.NewListSQLPoolSecurityAlertPoliciesIterator(page)
@@ -1625,6 +1656,9 @@ func PossibleVulnerabilityAssessmentScanStateValues() []VulnerabilityAssessmentS
 }
 func PossibleVulnerabilityAssessmentScanTriggerTypeValues() []VulnerabilityAssessmentScanTriggerType {
 	return original.PossibleVulnerabilityAssessmentScanTriggerTypeValues()
+}
+func PossibleWorkspacePublicNetworkAccessValues() []WorkspacePublicNetworkAccess {
+	return original.PossibleWorkspacePublicNetworkAccessValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

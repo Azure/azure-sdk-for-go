@@ -8,7 +8,7 @@
 
 package synapseapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/synapse/mgmt/2020-12-01/synapse/synapseapi"
+import original "github.com/Azure/azure-sdk-for-go/services/synapse/mgmt/2021-03-01/synapse/synapseapi"
 
 type BigDataPoolsClientAPI = original.BigDataPoolsClientAPI
 type DataMaskingPoliciesClientAPI = original.DataMaskingPoliciesClientAPI
@@ -25,6 +25,8 @@ type IntegrationRuntimeObjectMetadataClientAPI = original.IntegrationRuntimeObje
 type IntegrationRuntimeStatusClientAPI = original.IntegrationRuntimeStatusClientAPI
 type IntegrationRuntimesClientAPI = original.IntegrationRuntimesClientAPI
 type KeysClientAPI = original.KeysClientAPI
+type LibrariesClientAPI = original.LibrariesClientAPI
+type LibraryClientAPI = original.LibraryClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
 type PrivateEndpointConnectionsPrivateLinkHubClientAPI = original.PrivateEndpointConnectionsPrivateLinkHubClientAPI

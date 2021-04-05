@@ -15,12 +15,12 @@ type TableClient struct {
 }
 
 // NewTableClient creates a TableClient object using the specified URL and request policy pipeline.
-func NewTableClient(serviceURL string, cred azcore.Credential, options *TableClientOptions) (TableClient, error) {
+func NewTableClient(serviceURL string, cred azcore.Credential, options *TableClientOptions) (*TableClient, error) {
 	con := newConnection(serviceURL, cred, options.getConnectionOptions())
 
 	c, _ := cred.(*SharedKeyCredential)
 
-	return TableClient{client: &tableClient{con}, cred: *c}, nil
+	return &TableClient{client: &tableClient{con}, cred: *c}, nil
 }
 
 // Create

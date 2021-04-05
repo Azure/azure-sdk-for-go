@@ -8,9 +8,5 @@ import (
 )
 
 func (s *aztestsSuite) TestContainerCreateAccessContainer(c *chk.C) {
-	//tableClient, _ := createTableClient(StorageEndpoint)
-
-	//_, err := tableClient.Create(ctx, generateName())
-	// defer deleteContainer(c, containerClient)
-	//c.Assert(err, chk.IsNil)
+	// TODO
 }

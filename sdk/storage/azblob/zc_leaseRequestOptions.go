@@ -5,9 +5,6 @@ type AcquireLeaseBlobOptions struct {
 	// can be between 15 and 60 seconds. A lease Duration cannot be changed using renew or change.
 	Duration *int32
 
-	// Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is
-	// not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
-	ProposedLeaseId          *string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
@@ -16,8 +13,7 @@ func (o *AcquireLeaseBlobOptions) pointers() (*BlobAcquireLeaseOptions, *Modifie
 		return nil, nil
 	}
 	return &BlobAcquireLeaseOptions{
-		Duration:        o.Duration,
-		ProposedLeaseId: o.ProposedLeaseId,
+		Duration: o.Duration,
 	}, o.ModifiedAccessConditions
 }
 
@@ -47,48 +43,44 @@ func (o *BreakLeaseBlobOptions) pointers() (*BlobBreakLeaseOptions, *ModifiedAcc
 }
 
 type ChangeLeaseBlobOptions struct {
-	LeaseId                  string
 	ProposedLeaseId          string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ChangeLeaseBlobOptions) pointers() (leaseId string, proposedLeaseId string, modifiedAccessConditions *ModifiedAccessConditions) {
+func (o *ChangeLeaseBlobOptions) pointers() (proposedLeaseId string, modifiedAccessConditions *ModifiedAccessConditions) {
 	if o == nil {
-		return "", "", nil
+		return "", nil
 	}
 
-	return o.LeaseId, o.ProposedLeaseId, o.ModifiedAccessConditions
+	return o.ProposedLeaseId, o.ModifiedAccessConditions
 }
 
 type ReleaseLeaseBlobOptions struct {
-	LeaseId                  string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ReleaseLeaseBlobOptions) pointers() (leaseId string, blobReleaseLeaseOptions *BlobReleaseLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
+func (o *ReleaseLeaseBlobOptions) pointers() (blobReleaseLeaseOptions *BlobReleaseLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
 	if o == nil {
-		return "", nil, nil
+		return nil, nil
 	}
 
-	return o.LeaseId, nil, o.ModifiedAccessConditions
+	return nil, o.ModifiedAccessConditions
 }
 
 type RenewLeaseBlobOptions struct {
-	LeaseId                  string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *RenewLeaseBlobOptions) pointers() (leaseId string, blobRenewLeaseOptions *BlobRenewLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
+func (o *RenewLeaseBlobOptions) pointers() (blobRenewLeaseOptions *BlobRenewLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
 	if o == nil {
-		return "", nil, nil
+		return nil, nil
 	}
 
-	return o.LeaseId, nil, o.ModifiedAccessConditions
+	return nil, o.ModifiedAccessConditions
 }
 
 type AcquireLeaseContainerOptions struct {
 	Duration                 *int32
-	ProposedLeaseId          *string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
@@ -97,8 +89,7 @@ func (o *AcquireLeaseContainerOptions) pointers() (*ContainerAcquireLeaseOptions
 		return nil, nil
 	}
 	containerAcquireLeaseOptions := &ContainerAcquireLeaseOptions{
-		Duration:        o.Duration,
-		ProposedLeaseId: o.ProposedLeaseId,
+		Duration: o.Duration,
 	}
 
 	return containerAcquireLeaseOptions, o.ModifiedAccessConditions
@@ -122,43 +113,42 @@ func (o *BreakLeaseContainerOptions) pointers() (*ContainerBreakLeaseOptions, *M
 }
 
 type ChangeLeaseContainerOptions struct {
-	LeaseId                  string
 	ProposedLeaseId          string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ChangeLeaseContainerOptions) pointers() (leaseId string, proposedLeaseId string, modifiedAccessConditions *ModifiedAccessConditions) {
+func (o *ChangeLeaseContainerOptions) pointers() (proposedLeaseId string, modifiedAccessConditions *ModifiedAccessConditions) {
 	if o == nil {
-		return "", "", nil
+		return "", nil
 	}
 
-	return o.LeaseId, o.ProposedLeaseId, o.ModifiedAccessConditions
+	return o.ProposedLeaseId, o.ModifiedAccessConditions
 }
 
 type RenewLeaseContainerOptions struct {
-	LeaseId                  string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *RenewLeaseContainerOptions) pointers() (leaseId string, containerRenewLeaseOptions *ContainerRenewLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
+func (o *RenewLeaseContainerOptions) pointers() (containerRenewLeaseOptions *ContainerRenewLeaseOptions,
+	modifiedAccessConditions *ModifiedAccessConditions) {
 	if o == nil {
-		return "", nil, nil
+		return nil, nil
 	}
 
-	return o.LeaseId, nil, o.ModifiedAccessConditions
+	return nil, o.ModifiedAccessConditions
 }
 
 type ReleaseLeaseContainerOptions struct {
-	LeaseId                  string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ReleaseLeaseContainerOptions) pointers() (leaseId string, containerReleaseLeaseOptions *ContainerReleaseLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
+func (o *ReleaseLeaseContainerOptions) pointers() (containerReleaseLeaseOptions *ContainerReleaseLeaseOptions,
+	modifiedAccessConditions *ModifiedAccessConditions) {
 	if o == nil {
-		return "", nil, nil
+		return nil, nil
 	}
 
-	return o.LeaseId, nil, o.ModifiedAccessConditions
+	return nil, o.ModifiedAccessConditions
 }
 
 // LeaseBreakNaturally tells ContainerClient's or BlobClient's BreakLease method to break the lease using service semantics.

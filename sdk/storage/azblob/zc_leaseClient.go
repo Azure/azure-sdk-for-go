@@ -2,21 +2,23 @@ package azblob
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"time"
 )
 
 type BlobLeaseClient struct {
 	BlobClient
-	leaseId      *string
-	lastModified *time.Time
-	eTag         *string
+	leaseId string
 }
 
-func NewBlobLeaseClient(blobURL string, cred azcore.Credential, pathRenameMode *PathRenameMode, options *connectionOptions, leaseId *string) (BlobLeaseClient, error) {
+func NewBlobLeaseClient(blobURL string, leaseId string, cred azcore.Credential, pathRenameMode *PathRenameMode,
+	options *connectionOptions) (BlobLeaseClient, error) {
 	con := newConnection(blobURL, cred, options)
 	c, _ := cred.(*SharedKeyCredential)
 	blobClient := BlobClient{client: &blobClient{con, pathRenameMode}, cred: c}
+	if leaseId == "" {
+		return BlobLeaseClient{}, errors.New("lease Id is a mandatory field and cannot be empty")
+	}
 	return BlobLeaseClient{BlobClient: blobClient, leaseId: leaseId}, nil
 }
 
@@ -25,22 +27,13 @@ func (blc BlobLeaseClient) URL() string {
 	return blc.client.con.u
 }
 
-//// WithPipeline creates a new BlobLeaseClient object identical to the source but with the specified request policy pipeline.
-//func (blc BlobLeaseClient) WithPipeline(pipeline azcore.Pipeline) BlobLeaseClient {
-//	blobClient := BlobClient{
-//		client: &blobClient{
-//			newConnectionWithPipeline(blc.URL(), blc.client.con.p),
-//			blc.client.pathRenameMode,
-//		},
-//	}
-//	return BlobLeaseClient{BlobClient: blobClient}
-//}
-
 // AcquireLease acquires a lease on the blob for write and delete operations. The lease Duration must be between
 // 15 to 60 seconds, or infinite (-1).
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (blc *BlobLeaseClient) AcquireLease(ctx context.Context, options *AcquireLeaseBlobOptions) (BlobAcquireLeaseResponse, error) {
 	blobAcquireLeaseOptions, modifiedAccessConditions := options.pointers()
+	blobAcquireLeaseOptions.ProposedLeaseId = &blc.leaseId
+
 	resp, err := blc.client.AcquireLease(ctx, blobAcquireLeaseOptions, modifiedAccessConditions)
 	return resp, handleError(err)
 }
@@ -57,35 +50,33 @@ func (blc *BlobLeaseClient) BreakLease(ctx context.Context, options *BreakLeaseB
 // ChangeLease changes the blob's lease ID.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (blc *BlobLeaseClient) ChangeLease(ctx context.Context, options *ChangeLeaseBlobOptions) (BlobChangeLeaseResponse, error) {
-	leaseId, proposedLeaseId, modifiedAccessConditions := options.pointers()
-	resp, err := blc.client.ChangeLease(ctx, leaseId, proposedLeaseId, nil, modifiedAccessConditions)
+	proposedLeaseId, modifiedAccessConditions := options.pointers()
+	resp, err := blc.client.ChangeLease(ctx, blc.leaseId, proposedLeaseId, nil, modifiedAccessConditions)
 	return resp, handleError(err)
 }
 
 // RenewLease renews the blob's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (blc *BlobLeaseClient) RenewLease(ctx context.Context, options *RenewLeaseBlobOptions) (BlobRenewLeaseResponse, error) {
-	leaseId, renewLeaseBlobOptions, modifiedAccessConditions := options.pointers()
-	resp, err := blc.client.RenewLease(ctx, leaseId, renewLeaseBlobOptions, modifiedAccessConditions)
+	renewLeaseBlobOptions, modifiedAccessConditions := options.pointers()
+	resp, err := blc.client.RenewLease(ctx, blc.leaseId, renewLeaseBlobOptions, modifiedAccessConditions)
 	return resp, handleError(err)
 }
 
 // ReleaseLease releases the blob's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
 func (blc *BlobLeaseClient) ReleaseLease(ctx context.Context, options *ReleaseLeaseBlobOptions) (BlobReleaseLeaseResponse, error) {
-	leaseId, renewLeaseBlobOptions, modifiedAccessConditions := options.pointers()
-	resp, err := blc.client.ReleaseLease(ctx, leaseId, renewLeaseBlobOptions, modifiedAccessConditions)
+	renewLeaseBlobOptions, modifiedAccessConditions := options.pointers()
+	resp, err := blc.client.ReleaseLease(ctx, blc.leaseId, renewLeaseBlobOptions, modifiedAccessConditions)
 	return resp, handleError(err)
 }
 
 type ContainerLeaseClient struct {
 	ContainerClient
-	leaseId      *string
-	lastModified *time.Time
-	eTag         *string
+	leaseId string
 }
 
-func NewContainerLeaseClient(containerURL string, cred azcore.Credential, options *connectionOptions, leaseId *string) (ContainerLeaseClient, error) {
+func NewContainerLeaseClient(containerURL string, leaseId string, cred azcore.Credential, options *connectionOptions) (ContainerLeaseClient, error) {
 	c, _ := cred.(*SharedKeyCredential)
 	containerClient := ContainerClient{
 		client: &containerClient{
@@ -107,6 +98,8 @@ func (clc ContainerLeaseClient) URL() string {
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
 func (clc *ContainerLeaseClient) AcquireLease(ctx context.Context, options *AcquireLeaseContainerOptions) (ContainerAcquireLeaseResponse, error) {
 	containerAcquireLeaseOptions, modifiedAccessConditions := options.pointers()
+	containerAcquireLeaseOptions.ProposedLeaseId = &clc.leaseId
+
 	resp, err := clc.client.AcquireLease(ctx, containerAcquireLeaseOptions, modifiedAccessConditions)
 	return resp, handleError(err)
 }
@@ -122,23 +115,23 @@ func (clc *ContainerLeaseClient) BreakLease(ctx context.Context, options *BreakL
 // ChangeLease changes the container's lease ID.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
 func (clc *ContainerLeaseClient) ChangeLease(ctx context.Context, options *ChangeLeaseContainerOptions) (ContainerChangeLeaseResponse, error) {
-	leaseId, proposedLeaseId, modifiedAccessConditions := options.pointers()
-	resp, err := clc.client.ChangeLease(ctx, leaseId, proposedLeaseId, nil, modifiedAccessConditions)
+	proposedLeaseId, modifiedAccessConditions := options.pointers()
+	resp, err := clc.client.ChangeLease(ctx, clc.leaseId, proposedLeaseId, nil, modifiedAccessConditions)
 	return resp, handleError(err)
 }
 
 // ReleaseLease releases the container's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
 func (clc *ContainerLeaseClient) ReleaseLease(ctx context.Context, options *ReleaseLeaseContainerOptions) (ContainerReleaseLeaseResponse, error) {
-	leaseId, containerReleaseLeaseOptions, modifiedAccessConditions := options.pointers()
-	resp, err := clc.client.ReleaseLease(ctx, leaseId, containerReleaseLeaseOptions, modifiedAccessConditions)
+	containerReleaseLeaseOptions, modifiedAccessConditions := options.pointers()
+	resp, err := clc.client.ReleaseLease(ctx, clc.leaseId, containerReleaseLeaseOptions, modifiedAccessConditions)
 	return resp, handleError(err)
 }
 
 // RenewLease renews the container's previously-acquired lease.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
 func (clc *ContainerLeaseClient) RenewLease(ctx context.Context, options *RenewLeaseContainerOptions) (ContainerRenewLeaseResponse, error) {
-	leaseId, renewLeaseBlobOptions, modifiedAccessConditions := options.pointers()
-	resp, err := clc.client.RenewLease(ctx, leaseId, renewLeaseBlobOptions, modifiedAccessConditions)
+	renewLeaseBlobOptions, modifiedAccessConditions := options.pointers()
+	resp, err := clc.client.RenewLease(ctx, clc.leaseId, renewLeaseBlobOptions, modifiedAccessConditions)
 	return resp, handleError(err)
 }

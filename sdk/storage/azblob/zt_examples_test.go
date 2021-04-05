@@ -1096,7 +1096,8 @@ func ExampleLeaseContainer() {
 
 	// Create an containerClient object that wraps the container's URL and a default pipeline.
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
-	containerLeaseClient, err := NewContainerLeaseClient(u, credential, nil, nil)
+	leaseId := newUUID()
+	containerLeaseClient, err := NewContainerLeaseClient(u, leaseId.String(), credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1121,7 +1122,7 @@ func ExampleLeaseContainer() {
 	fmt.Println("The container cannot be deleted while there is an active lease")
 
 	// We can release the lease now and the container can be deleted.
-	_, err = containerLeaseClient.ReleaseLease(ctx, &ReleaseLeaseContainerOptions{LeaseId: *acquireLeaseResponse.LeaseID})
+	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1139,14 +1140,14 @@ func ExampleLeaseContainer() {
 	// A lease ID can be any valid GUID string format.
 	newLeaseID := newUUID()
 	newLeaseID[0] = 1
-	changeLeaseResponse, err := containerLeaseClient.ChangeLease(ctx, &ChangeLeaseContainerOptions{LeaseId: *acquireLeaseResponse.LeaseID, ProposedLeaseId: newLeaseID.String()})
+	changeLeaseResponse, err := containerLeaseClient.ChangeLease(ctx, &ChangeLeaseContainerOptions{ProposedLeaseId: newLeaseID.String()})
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("The lease ID was changed to", *changeLeaseResponse.LeaseID)
 
 	// The lease can be renewed.
-	renewLeaseResponse, err := containerLeaseClient.RenewLease(ctx, &RenewLeaseContainerOptions{LeaseId: *changeLeaseResponse.LeaseID})
+	renewLeaseResponse, err := containerLeaseClient.RenewLease(ctx, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1158,5 +1159,5 @@ func ExampleLeaseContainer() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("The lease was borken, and nobody can acquire a lease for 60 seconds")
+	fmt.Println("The lease was broken, and nobody can acquire a lease for 60 seconds")
 }

@@ -63,6 +63,24 @@ func (s ServiceClient) NewContainerClient(containerName string) ContainerClient 
 	}
 }
 
+func (s ServiceClient) NewContainerLeaseClient(containerName, leaseId string) ContainerLeaseClient {
+	containerURL := appendToURLPath(s.client.con.u, containerName)
+	containerConnection := newConnectionWithPipeline(containerURL, s.client.con.p)
+
+	if leaseId == "" {
+		leaseId = newUUID().String()
+	}
+
+	return ContainerLeaseClient{
+		ContainerClient: ContainerClient{
+			client: &containerClient{
+				con: containerConnection,
+			},
+		},
+		LeaseId: leaseId,
+	}
+}
+
 // appendToURLPath appends a string to the end of a URL's path (prefixing the string with a '/' if required)
 func appendToURLPath(u string, name string) string {
 	// e.g. "https://ms.com/a/b/?k1=v1&k2=v2#f"

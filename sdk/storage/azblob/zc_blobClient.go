@@ -43,6 +43,16 @@ func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
 	}
 }
 
+func (b BlobClient) NewBlobLeaseClient(leaseId string) BlobLeaseClient {
+	if leaseId == "" {
+		leaseId = newUUID().String()
+	}
+	return BlobLeaseClient{
+		BlobClient: b,
+		LeaseId:    leaseId,
+	}
+}
+
 func (b BlobClient) GetAccountInfo(ctx context.Context) (BlobGetAccountInfoResponse, error) {
 	return b.client.GetAccountInfo(ctx, nil)
 }

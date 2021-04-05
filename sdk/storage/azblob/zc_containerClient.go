@@ -89,6 +89,13 @@ func (c ContainerClient) NewPageBlobClient(blobName string) PageBlobClient {
 	}
 }
 
+func (c ContainerClient) NewContainerLeaseClient() ContainerLeaseClient {
+	return ContainerLeaseClient{
+		ContainerClient: c,
+		LeaseId:         newUUID().String(),
+	}
+}
+
 func (c ContainerClient) GetAccountInfo(ctx context.Context) (ContainerGetAccountInfoResponse, error) {
 	resp, err := c.client.GetAccountInfo(ctx, nil)
 

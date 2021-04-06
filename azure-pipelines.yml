@@ -78,7 +78,7 @@ jobs:
       displayName: 'Copyright Header Check'
       failOnStderr: true
       condition: succeededOrFailed()
-    - script: gofmt -s -l -w $(find . -path ./vendor -prune -o -name '*.go' -print) >&2
+    - script: gofmt -s -l -d $(find . -path ./vendor -prune -o -name '*.go' -print) >&2
       workingDirectory: '$(sdkPath)'
       displayName: 'Format Check'
       failOnStderr: true

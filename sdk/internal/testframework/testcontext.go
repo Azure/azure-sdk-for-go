@@ -5,8 +5,6 @@
 
 package testframework
 
-import ()
-
 type TestContext interface {
 	Fail(string)
 	Log(string)

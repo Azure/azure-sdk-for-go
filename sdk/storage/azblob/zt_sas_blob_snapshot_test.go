@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	chk "gopkg.in/check.v1"
 )
 
@@ -29,7 +30,7 @@ func (s *aztestsSuite) TestSnapshotSAS(c *chk.C) {
 
 	contentType := "text/plain"
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		BlobHttpHeaders: &BlobHttpHeaders{
+		BlobHTTPHeaders: &BlobHTTPHeaders{
 			BlobContentType: &contentType,
 		},
 	}
@@ -76,7 +77,7 @@ func (s *aztestsSuite) TestSnapshotSAS(c *chk.C) {
 	//Attach SAS query to block blob URL
 	snapParts := NewBlobURLParts(blobURL.URL())
 	snapParts.SAS = snapSASQueryParams
-	sbUrl, err := NewBlockBlobClient(snapParts.URL(), NewAnonymousCredential(), nil)
+	sbUrl, err := NewBlockBlobClient(snapParts.URL(), azcore.AnonymousCredential(), nil)
 
 	//Test the snapshot
 	downloadResponse, err := sbUrl.Download(ctx, nil)
@@ -101,7 +102,7 @@ func (s *aztestsSuite) TestSnapshotSAS(c *chk.C) {
 	//If this succeeds, it means a normal SAS token was created.
 
 	uploadBlockBlobOptions1 := UploadBlockBlobOptions{
-		BlobHttpHeaders: &BlobHttpHeaders{
+		BlobHTTPHeaders: &BlobHTTPHeaders{
 			BlobContentType: &contentType,
 		},
 	}
@@ -113,7 +114,7 @@ func (s *aztestsSuite) TestSnapshotSAS(c *chk.C) {
 
 	fsbUrlParts := NewBlobURLParts(fsbUrl.URL())
 	fsbUrlParts.SAS = snapSASQueryParams
-	fsbUrl, err = NewBlockBlobClient(fsbUrlParts.URL(), NewAnonymousCredential(), nil) //re-use fsbUrl as we don't need the sharedkey version anymore
+	fsbUrl, err = NewBlockBlobClient(fsbUrlParts.URL(), azcore.AnonymousCredential(), nil) //re-use fsbUrl as we don't need the sharedkey version anymore
 
 	resp, err := fsbUrl.Delete(ctx, nil)
 	if err == nil {

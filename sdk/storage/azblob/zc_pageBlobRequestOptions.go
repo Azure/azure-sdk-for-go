@@ -39,13 +39,13 @@ type CreatePageBlobOptions struct {
 	// Optional. Indicates the tier to be set on the page blob.
 	Tier *PremiumPageBlobAccessTier
 
-	BlobHttpHeaders *BlobHttpHeaders
+	BlobHTTPHeaders *BlobHTTPHeaders
 	CpkInfo         *CpkInfo
 	CpkScopeInfo    *CpkScopeInfo
 	BlobAccessConditions
 }
 
-func (o *CreatePageBlobOptions) pointers() (*PageBlobCreateOptions, *BlobHttpHeaders, *CpkInfo, *CpkScopeInfo, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *CreatePageBlobOptions) pointers() (*PageBlobCreateOptions, *BlobHTTPHeaders, *CpkInfo, *CpkScopeInfo, *LeaseAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
 	}
@@ -57,16 +57,15 @@ func (o *CreatePageBlobOptions) pointers() (*PageBlobCreateOptions, *BlobHttpHea
 		Tier:               o.Tier,
 	}
 
-	return options, o.BlobHttpHeaders, o.CpkInfo, o.CpkScopeInfo, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	return options, o.BlobHTTPHeaders, o.CpkInfo, o.CpkScopeInfo, o.LeaseAccessConditions, o.ModifiedAccessConditions
 }
 
 type UploadPagesOptions struct {
 	// Specify the transactional crc64 for the body, to be validated by the service.
-	Offset                    *int64
-	Count                     *int64
-	TransactionalContentCrc64 *[]byte
+	PageRange                 *HttpRange
+	TransactionalContentCRC64 *[]byte
 	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMd5 *[]byte
+	TransactionalContentMD5 *[]byte
 
 	CpkInfo                        *CpkInfo
 	CpkScopeInfo                   *CpkScopeInfo
@@ -80,9 +79,12 @@ func (o *UploadPagesOptions) pointers() (*PageBlobUploadPagesOptions, *CpkInfo, 
 	}
 
 	options := &PageBlobUploadPagesOptions{
-		RangeParameter:            getSourceRange(o.Offset, o.Count),
-		TransactionalContentCrc64: o.TransactionalContentCrc64,
-		TransactionalContentMd5:   o.TransactionalContentMd5,
+		TransactionalContentCRC64: o.TransactionalContentCRC64,
+		TransactionalContentMD5:   o.TransactionalContentMD5,
+	}
+
+	if o.PageRange != nil {
+		options.Range = o.PageRange.pointers()
 	}
 
 	return options, o.CpkInfo, o.CpkScopeInfo, o.SequenceNumberAccessConditions, o.LeaseAccessConditions, o.ModifiedAccessConditions
@@ -90,7 +92,7 @@ func (o *UploadPagesOptions) pointers() (*PageBlobUploadPagesOptions, *CpkInfo, 
 
 type UploadPagesFromURLOptions struct {
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
-	SourceContentMd5 *[]byte
+	SourceContentMD5 *[]byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
 	SourceContentcrc64 *[]byte
 
@@ -107,7 +109,7 @@ func (o *UploadPagesFromURLOptions) pointers() (*PageBlobUploadPagesFromURLOptio
 	}
 
 	options := &PageBlobUploadPagesFromURLOptions{
-		SourceContentMd5:   o.SourceContentMd5,
+		SourceContentMD5:   o.SourceContentMD5,
 		SourceContentcrc64: o.SourceContentcrc64,
 	}
 
@@ -183,7 +185,7 @@ func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumber
 type CopyIncrementalPageBlobOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 
-	RequestId *string
+	RequestID *string
 
 	Timeout *int32
 }
@@ -194,7 +196,7 @@ func (o *CopyIncrementalPageBlobOptions) pointers() (*PageBlobCopyIncrementalOpt
 	}
 
 	options := PageBlobCopyIncrementalOptions{
-		RequestId: o.RequestId,
+		RequestID: o.RequestID,
 		Timeout:   o.Timeout,
 	}
 

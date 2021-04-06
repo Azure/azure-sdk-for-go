@@ -10,28 +10,28 @@ import (
 )
 
 // NewHTTPHeaders returns the user-modifiable properties for this blob.
-func (bgpr BlobGetPropertiesResponse) NewHTTPHeaders() BlobHttpHeaders {
-	return BlobHttpHeaders{
+func (bgpr BlobGetPropertiesResponse) NewHTTPHeaders() BlobHTTPHeaders {
+	return BlobHTTPHeaders{
 		BlobContentType:        bgpr.ContentType,
 		BlobContentEncoding:    bgpr.ContentEncoding,
 		BlobContentLanguage:    bgpr.ContentLanguage,
 		BlobContentDisposition: bgpr.ContentDisposition,
 		BlobCacheControl:       bgpr.CacheControl,
-		BlobContentMd5:         bgpr.ContentMD5,
+		BlobContentMD5:         bgpr.ContentMD5,
 	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 // NewHTTPHeaders returns the user-modifiable properties for this blob.
-func (dr BlobDownloadResponse) NewHTTPHeaders() BlobHttpHeaders {
-	return BlobHttpHeaders{
+func (dr BlobDownloadResponse) NewHTTPHeaders() BlobHTTPHeaders {
+	return BlobHTTPHeaders{
 		BlobContentType:        dr.ContentType,
 		BlobContentEncoding:    dr.ContentEncoding,
 		BlobContentLanguage:    dr.ContentLanguage,
 		BlobContentDisposition: dr.ContentDisposition,
 		BlobCacheControl:       dr.CacheControl,
-		BlobContentMd5:         dr.ContentMD5,
+		BlobContentMD5:         dr.ContentMD5,
 	}
 }
 

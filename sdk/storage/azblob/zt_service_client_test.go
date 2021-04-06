@@ -72,7 +72,16 @@ func (s *aztestsSuite) TestListContainersBasic(c *chk.C) {
 				c.Assert(*container.Properties.LeaseState, chk.Equals, LeaseStateTypeAvailable)
 				c.Assert(container.Properties.LeaseDuration, chk.IsNil)
 				c.Assert(container.Properties.PublicAccess, chk.IsNil)
-				c.Assert(container.Metadata, chk.DeepEquals, &md)
+				c.Assert(container.Metadata, chk.NotNil)
+
+				unwrappedMeta := map[string]string{}
+				for k,v := range *container.Metadata {
+					if v != nil {
+						unwrappedMeta[k] = *v
+					}
+				}
+
+				c.Assert(unwrappedMeta, chk.DeepEquals, md)
 			}
 		}
 	}
@@ -125,7 +134,11 @@ func (s *aztestsSuite) TestListContainersPaged(c *chk.C) {
 
 	for pager.NextPage(ctx) {
 		for _, container := range *pager.PageResponse().EnumerationResults.ContainerItems {
-			results = append(results, container)
+			if container == nil {
+				continue
+			}
+
+			results = append(results, *container)
 			count += 1
 			c.Assert(container.Name, chk.NotNil)
 		}

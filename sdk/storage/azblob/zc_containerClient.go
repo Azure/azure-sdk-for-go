@@ -38,7 +38,7 @@ func (c ContainerClient) URL() string {
 // NewBlobClient method.
 func (c ContainerClient) NewBlobClient(blobName string) BlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
-	newCon := newConnectionWithPipeline(blobURL, c.client.con.p)
+	newCon := &connection{u: blobURL, p: c.client.con.p}
 
 	return BlobClient{
 		client: &blobClient{newCon, nil},
@@ -52,7 +52,7 @@ func (c ContainerClient) NewBlobClient(blobName string) BlobClient {
 // NewAppendBlobURL method.
 func (c ContainerClient) NewAppendBlobURL(blobName string) AppendBlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
-	newCon := newConnectionWithPipeline(blobURL, c.client.con.p)
+	newCon := &connection{blobURL, c.client.con.p}
 
 	return AppendBlobClient{
 		client:     &appendBlobClient{newCon},
@@ -67,7 +67,7 @@ func (c ContainerClient) NewAppendBlobURL(blobName string) AppendBlobClient {
 // NewBlockBlobClient method.
 func (c ContainerClient) NewBlockBlobClient(blobName string) BlockBlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
-	newCon := newConnectionWithPipeline(blobURL, c.client.con.p)
+	newCon := &connection{blobURL, c.client.con.p}
 
 	return BlockBlobClient{
 		client:     &blockBlobClient{newCon},
@@ -82,7 +82,7 @@ func (c ContainerClient) NewBlockBlobClient(blobName string) BlockBlobClient {
 // NewPageBlobURL method.
 func (c ContainerClient) NewPageBlobClient(blobName string) PageBlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
-	newCon := newConnectionWithPipeline(blobURL, c.client.con.p)
+	newCon := &connection{blobURL, c.client.con.p}
 
 	return PageBlobClient{
 		client:     &pageBlobClient{newCon},
@@ -121,7 +121,7 @@ func (c ContainerClient) GetMetadata(ctx context.Context, gpo *GetPropertiesOpti
 		return nil, handleError(err)
 	}
 
-	return *resp.Metadata, nil
+	return resp.Metadata, nil
 }
 
 //
@@ -159,7 +159,7 @@ func (c ContainerClient) SetMetadata(ctx context.Context, options *SetMetadataCo
 
 // GetAccessPolicy returns the container's access policy. The access policy indicates whether container's blobs may be accessed publicly.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-container-acl.
-func (c ContainerClient) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (SignedIDentifierArrayResponse, error) {
+func (c ContainerClient) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (SignedIdentifierArrayResponse, error) {
 	o, ac := options.pointers()
 
 	resp, err := c.client.GetAccessPolicy(ctx, o, ac)
@@ -172,8 +172,8 @@ func (c ContainerClient) GetAccessPolicy(ctx context.Context, options *GetAccess
 func (c ContainerClient) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (ContainerSetAccessPolicyResponse, error) {
 	//accessPolicy := options.ContainerAcquireLeaseOptions
 	// TODO: Ask Ze/Adele: Why we introduced this check. Service returned "200 OK" without this. And we should let service do this kind of validations.
-	//if accessPolicy.Access == nil || accessPolicy.ContainerAcl == nil {
-	//	return ContainerSetAccessPolicyResponse{}, errors.New("ContainerSetAccess must be specified with AT LEAST Access and ContainerAcl")
+	//if accessPolicy.Access == nil || accessPolicy.ContainerACL == nil {
+	//	return ContainerSetAccessPolicyResponse{}, errors.New("ContainerSetAccess must be specified with AT LEAST Access and ContainerACL")
 	//}
 
 	//ac := options.ContainerAccessConditions
@@ -192,7 +192,7 @@ func (c ContainerClient) SetAccessPolicy(ctx context.Context, options *SetAccess
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
 func (c ContainerClient) AcquireLease(ctx context.Context, leaseOptions *AcquireLeaseOptionsContainer) (ContainerAcquireLeaseResponse, error) {
 
-	if leaseOptions == nil || leaseOptions.ContainerAcquireLeaseOptions == nil || leaseOptions.ContainerAcquireLeaseOptions.Duration == nil || leaseOptions.ContainerAcquireLeaseOptions.ProposedLeaseId == nil {
+	if leaseOptions == nil || leaseOptions.ContainerAcquireLeaseOptions == nil || leaseOptions.ContainerAcquireLeaseOptions.Duration == nil || leaseOptions.ContainerAcquireLeaseOptions.ProposedLeaseID == nil {
 		return ContainerAcquireLeaseResponse{}, errors.New("leaseOptions must be specified, with at least ProposedLeaseID and Duration specified under ContainerAcquireLeaseOptions")
 	}
 
@@ -245,7 +245,18 @@ func (c ContainerClient) ChangeLease(ctx context.Context, leaseID string, propos
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
 func (c ContainerClient) ListBlobsFlatSegment(listOptions *ContainerListBlobFlatSegmentOptions) ListBlobsFlatSegmentResponsePager {
-	return c.client.ListBlobFlatSegment(listOptions)
+	pager := c.client.ListBlobFlatSegment(listOptions)
+	// override the generated pager to insert our handleError(error)
+	if pager.Err() != nil {
+		return pager
+	}
+
+	p := pager.(*listBlobsFlatSegmentResponsePager)
+	p.errorer = func(response *azcore.Response) error {
+		return handleError(c.client.listBlobFlatSegmentHandleError(response))
+	}
+
+	return p
 }
 
 // ListBlobsHierarchySegment returns a channel of blobs starting from the specified Marker. Use an empty
@@ -257,7 +268,18 @@ func (c ContainerClient) ListBlobsFlatSegment(listOptions *ContainerListBlobFlat
 // AutoPagerBufferSize specifies the channel's buffer size.
 // Both the blob item channel and error channel should be watched. Only one error will be released via this channel (or a nil error, to register a clean exit.)
 func (c ContainerClient) ListBlobsHierarchySegment(delimiter string, listOptions *ContainerListBlobHierarchySegmentOptions) ListBlobsHierarchySegmentResponsePager {
-	return c.client.ListBlobHierarchySegment(delimiter, listOptions)
+	pager := c.client.ListBlobHierarchySegment(delimiter, listOptions)
+	// override the generated pager to insert our handleError(error)
+	if pager.Err() != nil {
+		return pager
+	}
+
+	p := pager.(*listBlobsHierarchySegmentResponsePager)
+	p.errorer = func(response *azcore.Response) error {
+		return handleError(c.client.listBlobHierarchySegmentHandleError(response))
+	}
+
+	return p
 }
 
 func (c ContainerClient) CanGetContainerSASToken() bool {

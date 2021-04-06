@@ -74,14 +74,14 @@ func (s *aztestsSuite) TestSetBlobTagsWithVID(c *chk.C) {
 
 	setTagsBlobOptions := SetTagsBlobOptions{
 		BlobTagsMap: &blobTagsMap,
-		VersionId:   versionId1,
+		VersionID:   versionId1,
 	}
 	blobSetTagsResponse, err := bbClient.SetTags(ctx, &setTagsBlobOptions)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blobSetTagsResponse.RawResponse.StatusCode, chk.Equals, 204)
 
 	getTagsBlobOptions1 := GetTagsBlobOptions{
-		VersionId: versionId1,
+		VersionID: versionId1,
 	}
 	blobGetTagsResponse, err := bbClient.GetTags(ctx, &getTagsBlobOptions1)
 	c.Assert(err, chk.IsNil)
@@ -93,7 +93,7 @@ func (s *aztestsSuite) TestSetBlobTagsWithVID(c *chk.C) {
 	}
 
 	getTagsBlobOptions2 := GetTagsBlobOptions{
-		VersionId: versionId2,
+		VersionID: versionId2,
 	}
 	blobGetTagsResponse, err = bbClient.GetTags(ctx, &getTagsBlobOptions2)
 	c.Assert(err, chk.IsNil)
@@ -114,7 +114,7 @@ func (s *aztestsSuite) TestUploadBlockBlobWithSpecialCharactersInTags(c *chk.C) 
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
 		Metadata:        &basicMetadata,
-		BlobHttpHeaders: &basicHeaders,
+		BlobHTTPHeaders: &basicHeaders,
 		BlobTagsMap:     &blobTagsMap,
 	}
 	blockBlobUploadResp, err := bbClient.Upload(ctx, bytes.NewReader([]byte("data")), &uploadBlockBlobOptions)
@@ -174,7 +174,7 @@ func (s *aztestsSuite) TestStageBlockWithTags(c *chk.C) {
 	c.Assert(contentData, chk.DeepEquals, []uint8(strings.Join(data, "")))
 
 	getTagsBlobOptions := GetTagsBlobOptions{
-		VersionId: versionId,
+		VersionID: versionId,
 	}
 	blobGetTagsResp, err := bbClient.GetTags(ctx, &getTagsBlobOptions)
 	c.Assert(err, chk.IsNil)
@@ -340,7 +340,7 @@ func (s *aztestsSuite) TestCopyBlockBlobFromURLWithTags(c *chk.C) {
 	sourceContentMD5 := sourceDataMD5Value[:]
 	copyBlockBlobFromURLOptions1 := CopyBlockBlobFromURLOptions{
 		BlobTagsMap:      &map[string]string{"foo": "bar"},
-		SourceContentMd5: &sourceContentMD5,
+		SourceContentMD5: &sourceContentMD5,
 	}
 	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
 	c.Assert(err, chk.IsNil)
@@ -363,7 +363,7 @@ func (s *aztestsSuite) TestCopyBlockBlobFromURLWithTags(c *chk.C) {
 	_, badMD5 := getRandomDataAndReader(16)
 	copyBlockBlobFromURLOptions2 := CopyBlockBlobFromURLOptions{
 		BlobTagsMap:      &blobTagsMap,
-		SourceContentMd5: &badMD5,
+		SourceContentMD5: &badMD5,
 	}
 	_, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
 	c.Assert(err, chk.NotNil)
@@ -385,7 +385,7 @@ func (s *aztestsSuite) TestGetPropertiesReturnsTagsCount(c *chk.C) {
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
 		BlobTagsMap:     &basicBlobTagsMap,
-		BlobHttpHeaders: &basicHeaders,
+		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        &basicMetadata,
 	}
 	blockBlobUploadResp, err := bbClient.Upload(ctx, bytes.NewReader([]byte("data")), &uploadBlockBlobOptions)
@@ -571,8 +571,7 @@ func (s *aztestsSuite) TestCreatePageBlobWithTags(c *chk.C) {
 	contentSize := 1 * 1024
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count },
 	}
 	putResp, err := pbClient.UploadPages(ctx, getReaderToRandomBytes(1024), &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)

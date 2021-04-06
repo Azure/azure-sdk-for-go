@@ -22,7 +22,7 @@ func (s *aztestsSuite) TestPutGetPages(c *chk.C) {
 
 	contentSize := 1024
 	offset, end, count := int64(0), int64(contentSize-1), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
+	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	putResp, err := pbClient.UploadPages(context.Background(), getReaderToRandomBytes(1024), &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 	c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
@@ -36,7 +36,7 @@ func (s *aztestsSuite) TestPutGetPages(c *chk.C) {
 	c.Assert(putResp.Date, chk.NotNil)
 	c.Assert((*putResp.Date).IsZero(), chk.Equals, false)
 
-	pageList, err := pbClient.GetPageRanges(context.Background(), 0, 1023, nil)
+	pageList, err := pbClient.GetPageRanges(context.Background(), HttpRange{0, 1023}, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(pageList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(pageList.LastModified, chk.NotNil)
@@ -50,7 +50,9 @@ func (s *aztestsSuite) TestPutGetPages(c *chk.C) {
 	c.Assert(pageList.PageList, chk.NotNil)
 	pageRangeResp := pageList.PageList.PageRange
 	c.Assert(*pageRangeResp, chk.HasLen, 1)
-	c.Assert((*pageRangeResp)[0], chk.DeepEquals, PageRange{Start: &offset, End: &end})
+	rawStart, rawEnd := (*pageRangeResp)[0].Raw()
+	c.Assert(rawStart, chk.Equals, offset)
+	c.Assert(rawEnd, chk.Equals, end)
 }
 
 func (s *aztestsSuite) TestUploadPagesFromURL(c *chk.C) {
@@ -69,7 +71,7 @@ func (s *aztestsSuite) TestUploadPagesFromURL(c *chk.C) {
 	destBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(contentSize))
 
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
+	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	uploadSrcResp1, err := srcBlob.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 	c.Assert(uploadSrcResp1.RawResponse.StatusCode, chk.Equals, 201)
@@ -138,7 +140,7 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 
 	// Prepare source pbClient for copy.
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
+	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	uploadSrcResp1, err := srcBlob.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 	c.Assert(uploadSrcResp1.RawResponse.StatusCode, chk.Equals, 201)
@@ -161,7 +163,7 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 
 	// Upload page from URL with MD5.
 	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
-		SourceContentMd5: &contentMD5,
+		SourceContentMD5: &contentMD5,
 	}
 	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
 	c.Assert(err, chk.IsNil)
@@ -187,7 +189,7 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 	_, badMD5 := getRandomDataAndReader(16)
 	badContentMD5 := badMD5[:]
 	uploadPagesFromURLOptions = UploadPagesFromURLOptions{
-		SourceContentMd5: &badContentMD5,
+		SourceContentMD5: &badContentMD5,
 	}
 	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
 	c.Assert(err, chk.NotNil)
@@ -205,7 +207,7 @@ func (s *aztestsSuite) TestClearDiffPages(c *chk.C) {
 	contentSize := 2 * 1024
 	r := getReaderToRandomBytes(contentSize)
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
+	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err := pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 
@@ -213,22 +215,25 @@ func (s *aztestsSuite) TestClearDiffPages(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	offset1, end1, count1 := int64(contentSize), int64(2*contentSize-1), int64(contentSize)
-	uploadPagesOptions1 := UploadPagesOptions{Offset: &offset1, Count: &count1}
+	uploadPagesOptions1 := UploadPagesOptions{PageRange: &HttpRange{offset1, count1}}
 	_, err = pbClient.UploadPages(context.Background(), getReaderToRandomBytes(2048), &uploadPagesOptions1)
 	c.Assert(err, chk.IsNil)
 
-	pageListResp, err := pbClient.GetPageRangesDiff(context.Background(), 0, 4096, *snapshotResp.Snapshot, nil)
+	pageListResp, err := pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4096}, *snapshotResp.Snapshot, nil)
 	c.Assert(err, chk.IsNil)
 	pageRangeResp := pageListResp.PageList.PageRange
 	c.Assert(pageRangeResp, chk.NotNil)
 	c.Assert(*pageRangeResp, chk.HasLen, 1)
-	c.Assert((*pageRangeResp)[0], chk.DeepEquals, PageRange{Start: &offset1, End: &end1})
+	// c.Assert((*pageRangeResp)[0], chk.DeepEquals, PageRange{Start: &offset1, End: &end1})
+	rawStart, rawEnd := (*pageRangeResp)[0].Raw()
+	c.Assert(rawStart, chk.Equals, offset1)
+	c.Assert(rawEnd, chk.Equals, end1)
 
-	clearResp, err := pbClient.ClearPages(context.Background(), 2048, 2048, nil)
+	clearResp, err := pbClient.ClearPages(context.Background(), HttpRange{2048, 2048}, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(clearResp.RawResponse.StatusCode, chk.Equals, 201)
 
-	pageListResp, err = pbClient.GetPageRangesDiff(context.Background(), 0, 4095, *snapshotResp.Snapshot, nil)
+	pageListResp, err = pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4095}, *snapshotResp.Snapshot, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(pageListResp.PageList.PageRange, chk.IsNil)
 }
@@ -265,7 +270,7 @@ func (s *aztestsSuite) TestIncrementalCopy(c *chk.C) {
 	contentSize := 1024
 	r := getReaderToRandomBytes(contentSize)
 	offset, _, count := int64(0), int64(0)+int64(contentSize-1), int64(contentSize)
-	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
+	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = srcBlob.UploadPages(context.Background(), r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 
@@ -361,9 +366,8 @@ func (s *aztestsSuite) TestPutPagesWithMD5(c *chk.C) {
 	md5Value := md5.Sum(body)
 	contentMD5 := md5Value[:]
 	uploadPagesOptions := UploadPagesOptions{
-		Offset:                  &offset,
-		Count:                   &count,
-		TransactionalContentMd5: &contentMD5,
+		PageRange: &HttpRange{offset, count},
+		TransactionalContentMD5: &contentMD5,
 	}
 
 	putResp, err := pbClient.UploadPages(context.Background(), readerToBody, &uploadPagesOptions)
@@ -385,9 +389,8 @@ func (s *aztestsSuite) TestPutPagesWithMD5(c *chk.C) {
 	_, badMD5 := getRandomDataAndReader(16)
 	basContentMD5 := badMD5[:]
 	uploadPagesOptions = UploadPagesOptions{
-		Offset:                  &offset,
-		Count:                   &count,
-		TransactionalContentMd5: &basContentMD5,
+		PageRange: &HttpRange{offset, count},
+		TransactionalContentMD5: &basContentMD5,
 	}
 	putResp, err = pbClient.UploadPages(context.Background(), readerToBody, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
@@ -442,7 +445,7 @@ func (s *aztestsSuite) TestBlobCreatePageMetadataNonEmpty(c *chk.C) {
 	resp, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.Metadata, chk.NotNil)
-	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
+	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobCreatePageMetadataEmpty(c *chk.C) {
@@ -489,7 +492,7 @@ func (s *aztestsSuite) TestBlobCreatePageHTTPHeaders(c *chk.C) {
 	sequenceNumber := int64(0)
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
-		BlobHttpHeaders:    &basicHeaders,
+		BlobHTTPHeaders:    &basicHeaders,
 	}
 	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	c.Assert(err, chk.IsNil)
@@ -504,7 +507,7 @@ func validatePageBlobPut(c *chk.C, pbClient PageBlobClient) {
 	resp, err := pbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.Metadata, chk.NotNil)
-	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
+	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 	c.Assert(resp.NewHTTPHeaders(), chk.DeepEquals, basicHeaders)
 }
 
@@ -520,7 +523,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfModifiedSinceTrue(c *chk.C) {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           &basicMetadata,
-		BlobHttpHeaders:    &basicHeaders,
+		BlobHTTPHeaders:    &basicHeaders,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -545,7 +548,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfModifiedSinceFalse(c *chk.C) {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           &basicMetadata,
-		BlobHttpHeaders:    &basicHeaders,
+		BlobHTTPHeaders:    &basicHeaders,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -570,7 +573,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfUnmodifiedSinceTrue(c *chk.C) {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           &basicMetadata,
-		BlobHttpHeaders:    &basicHeaders,
+		BlobHTTPHeaders:    &basicHeaders,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -595,7 +598,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfUnmodifiedSinceFalse(c *chk.C) {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           &basicMetadata,
-		BlobHttpHeaders:    &basicHeaders,
+		BlobHTTPHeaders:    &basicHeaders,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -621,7 +624,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfMatchTrue(c *chk.C) {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           &basicMetadata,
-		BlobHttpHeaders:    &basicHeaders,
+		BlobHTTPHeaders:    &basicHeaders,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
@@ -645,7 +648,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfMatchFalse(c *chk.C) {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           &basicMetadata,
-		BlobHttpHeaders:    &basicHeaders,
+		BlobHTTPHeaders:    &basicHeaders,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: &eTag,
@@ -669,7 +672,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfNoneMatchTrue(c *chk.C) {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           &basicMetadata,
-		BlobHttpHeaders:    &basicHeaders,
+		BlobHTTPHeaders:    &basicHeaders,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
@@ -694,7 +697,7 @@ func (s *aztestsSuite) TestBlobCreatePageIfNoneMatchFalse(c *chk.C) {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           &basicMetadata,
-		BlobHttpHeaders:    &basicHeaders,
+		BlobHTTPHeaders:    &basicHeaders,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
@@ -716,7 +719,7 @@ func (s *aztestsSuite) TestBlobPutPagesInvalidRange(c *chk.C) {
 	contentSize := 1024
 	r := getReaderToRandomBytes(contentSize)
 	offset, count := int64(0), int64(contentSize/2)
-	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
+	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.Not(chk.IsNil))
 }
@@ -740,7 +743,7 @@ func (s *aztestsSuite) TestBlobPutPagesEmptyBody(c *chk.C) {
 
 	r := bytes.NewReader([]byte{})
 	offset, count := int64(0), int64(0)
-	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
+	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 }
@@ -753,7 +756,7 @@ func (s *aztestsSuite) TestBlobPutPagesNonExistentBlob(c *chk.C) {
 
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
-	uploadPagesOptions := UploadPagesOptions{Offset: &offset, Count: &count}
+	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.NotNil)
 
@@ -762,11 +765,13 @@ func (s *aztestsSuite) TestBlobPutPagesNonExistentBlob(c *chk.C) {
 
 func validateUploadPages(c *chk.C, pbClient PageBlobClient) {
 	// This will only validate a single put page at 0-PageBlobPageBytes-1
-	resp, err := pbClient.GetPageRanges(ctx, 0, CountToEnd, nil)
+	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, CountToEnd}, nil)
 	c.Assert(err, chk.IsNil)
 	pageListResp := resp.PageList.PageRange
 	start, end := int64(0), int64(PageBlobPageBytes-1)
-	c.Assert((*pageListResp)[0], chk.DeepEquals, PageRange{Start: &start, End: &end})
+	rawStart, rawEnd := (*pageListResp)[0].Raw()
+	c.Assert(rawStart, chk.Equals, start)
+	c.Assert(rawEnd, chk.Equals, end)
 }
 
 func (s *aztestsSuite) TestBlobPutPagesIfModifiedSinceTrue(c *chk.C) {
@@ -780,8 +785,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfModifiedSinceTrue(c *chk.C) {
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -804,8 +808,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfModifiedSinceFalse(c *chk.C) {
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -829,8 +832,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfUnmodifiedSinceTrue(c *chk.C) {
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -854,8 +856,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfUnmodifiedSinceFalse(c *chk.C) {
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -879,8 +880,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfMatchTrue(c *chk.C) {
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
@@ -903,8 +903,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfMatchFalse(c *chk.C) {
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	eTag := "garbage"
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: &eTag,
@@ -927,8 +926,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfNoneMatchTrue(c *chk.C) {
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	eTag := "garbage"
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
@@ -952,8 +950,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfNoneMatchFalse(c *chk.C) {
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
@@ -976,8 +973,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue(c *chk.C) {
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberLessThan := int64(10)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
@@ -1007,8 +1003,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse(c *chk.C) {
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberLessThan := int64(1)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
@@ -1029,8 +1024,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne(c *chk.C) 
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberLessThanOrEqualTo := int64(-1)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
@@ -1060,8 +1054,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTETrue(c *chk.C) {
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberLessThanOrEqualTo := int64(1)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
@@ -1091,8 +1084,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse(c *chk.C) {
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberLessThanOrEqualTo := int64(1)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
@@ -1113,8 +1105,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTENegOne(c *chk.C) {
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberLessThanOrEqualTo := int64(-1)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
@@ -1144,8 +1135,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualTrue(c *chk.C) {
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberEqualTo := int64(1)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
@@ -1166,8 +1156,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualFalse(c *chk.C) {
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberEqualTo := int64(1)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
@@ -1188,8 +1177,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualNegOne(c *chk.C) {
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	ifSequenceNumberEqualTo := int64(-1)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 		SequenceNumberAccessConditions: &SequenceNumberAccessConditions{
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
@@ -1208,8 +1196,7 @@ func setupClearPagesTest(c *chk.C) (ContainerClient, PageBlobClient) {
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 	}
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
@@ -1218,7 +1205,7 @@ func setupClearPagesTest(c *chk.C) (ContainerClient, PageBlobClient) {
 }
 
 func validateClearPagesTest(c *chk.C, pbClient PageBlobClient) {
-	resp, err := pbClient.GetPageRanges(ctx, 0, 0, nil)
+	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
 	c.Assert(err, chk.IsNil)
 	pageListResp := resp.PageList.PageRange
 	c.Assert(pageListResp, chk.IsNil)
@@ -1228,7 +1215,7 @@ func (s *aztestsSuite) TestBlobClearPagesInvalidRange(c *chk.C) {
 	containerClient, pbClient := setupClearPagesTest(c)
 	defer deleteContainer(c, containerClient)
 
-	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes+1, nil)
+	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes+1}, nil)
 	c.Assert(err, chk.Not(chk.IsNil))
 }
 
@@ -1245,7 +1232,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfModifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
 	c.Assert(err, chk.IsNil)
 
 	validateClearPagesTest(c, pbClient)
@@ -1264,7 +1251,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfModifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
@@ -1283,7 +1270,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfUnmodifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
 	c.Assert(err, chk.IsNil)
 
 	validateClearPagesTest(c, pbClient)
@@ -1302,7 +1289,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfUnmodifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
@@ -1321,7 +1308,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
 	c.Assert(err, chk.IsNil)
 
 	validateClearPagesTest(c, pbClient)
@@ -1339,7 +1326,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
@@ -1357,7 +1344,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfNoneMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
 	c.Assert(err, chk.IsNil)
 
 	validateClearPagesTest(c, pbClient)
@@ -1376,7 +1363,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfNoneMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
@@ -1392,7 +1379,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue(c *chk.C) 
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
 	}
-	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
 	c.Assert(err, chk.IsNil)
 
 	validateClearPagesTest(c, pbClient)
@@ -1417,7 +1404,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse(c *chk.C)
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
 	}
-	_, err = pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeSequenceNumberConditionNotMet)
@@ -1433,7 +1420,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne(c *chk.C
 			IfSequenceNumberLessThan: &ifSequenceNumberLessThan,
 		},
 	}
-	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeInvalidInput)
@@ -1449,7 +1436,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTETrue(c *chk.C) {
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
 	}
-	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
 	c.Assert(err, chk.IsNil)
 
 	validateClearPagesTest(c, pbClient)
@@ -1474,7 +1461,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTEFalse(c *chk.C) {
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
 	}
-	_, err = pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeSequenceNumberConditionNotMet)
@@ -1490,7 +1477,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTENegOne(c *chk.C) {
 			IfSequenceNumberLessThanOrEqualTo: &ifSequenceNumberLessThanOrEqualTo,
 		},
 	}
-	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions) // This will cause the library to set the value of the header to 0
+	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions) // This will cause the library to set the value of the header to 0
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeInvalidInput)
@@ -1515,7 +1502,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualTrue(c *chk.C) {
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
 	}
-	_, err = pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
 	c.Assert(err, chk.IsNil)
 
 	validateClearPagesTest(c, pbClient)
@@ -1540,7 +1527,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualFalse(c *chk.C) {
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
 	}
-	_, err = pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions)
+	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeSequenceNumberConditionNotMet)
@@ -1556,7 +1543,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne(c *chk.C) {
 			IfSequenceNumberEqualTo: &ifSequenceNumberEqualTo,
 		},
 	}
-	_, err := pbClient.ClearPages(ctx, 0, PageBlobPageBytes, &clearPageOptions) // This will cause the library to set the value of the header to 0
+	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions) // This will cause the library to set the value of the header to 0
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeInvalidInput)
@@ -1570,8 +1557,7 @@ func setupGetPageRangesTest(c *chk.C) (containerClient ContainerClient, pbClient
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 	}
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
@@ -1584,7 +1570,9 @@ func validateBasicGetPageRanges(c *chk.C, resp *PageList, err error) {
 	c.Assert(resp.PageRange, chk.NotNil)
 	c.Assert(*resp.PageRange, chk.HasLen, 1)
 	start, end := int64(0), int64(PageBlobPageBytes-1)
-	c.Assert((*resp.PageRange)[0], chk.DeepEquals, PageRange{Start: &start, End: &end})
+	rawStart, rawEnd := (*resp.PageRange)[0].Raw()
+	c.Assert(rawStart, chk.Equals, start)
+	c.Assert(rawEnd, chk.Equals, end)
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesEmptyBlob(c *chk.C) {
@@ -1593,7 +1581,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesEmptyBlob(c *chk.C) {
 	defer deleteContainer(c, containerClient)
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	resp, err := pbClient.GetPageRanges(ctx, 0, 0, nil)
+	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.PageList.PageRange, chk.IsNil)
 }
@@ -1602,7 +1590,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesEmptyRange(c *chk.C) {
 	containerClient, pbClient := setupGetPageRangesTest(c)
 	defer deleteContainer(c, containerClient)
 
-	resp, err := pbClient.GetPageRanges(ctx, 0, 0, nil)
+	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
 	c.Assert(err, chk.IsNil)
 	validateBasicGetPageRanges(c, resp.PageList, err)
 }
@@ -1611,7 +1599,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesInvalidRange(c *chk.C) {
 	containerClient, pbClient := setupGetPageRangesTest(c)
 	defer deleteContainer(c, containerClient)
 
-	_, err := pbClient.GetPageRanges(ctx, -2, 500, nil)
+	_, err := pbClient.GetPageRanges(ctx, HttpRange{-2, 500}, nil)
 	c.Assert(err, chk.IsNil)
 }
 
@@ -1622,28 +1610,33 @@ func (s *aztestsSuite) TestBlobGetPageRangesNonContiguousRanges(c *chk.C) {
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(2*PageBlobPageBytes), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 	}
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
 
-	resp, err := pbClient.GetPageRanges(ctx, 0, 0, nil)
+	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
 	c.Assert(err, chk.IsNil)
 	pageListResp := resp.PageList.PageRange
 	c.Assert(pageListResp, chk.NotNil)
 	c.Assert(*pageListResp, chk.HasLen, 2)
+
 	start, end := int64(0), int64(PageBlobPageBytes-1)
-	c.Assert((*pageListResp)[0], chk.DeepEquals, PageRange{Start: &start, End: &end})
+	rawStart, rawEnd := (*pageListResp)[0].Raw()
+	c.Assert(rawStart, chk.Equals, start)
+	c.Assert(rawEnd, chk.Equals, end)
+
 	start, end = int64(PageBlobPageBytes*2), int64((PageBlobPageBytes*3)-1)
-	c.Assert((*pageListResp)[1], chk.DeepEquals, PageRange{Start: &start, End: &end})
+	rawStart, rawEnd = (*pageListResp)[1].Raw()
+	c.Assert(rawStart, chk.Equals, start)
+	c.Assert(rawEnd, chk.Equals, end)
 }
 
 func (s *aztestsSuite) TestBlobGetPageRangesNotPageAligned(c *chk.C) {
 	containerClient, pbClient := setupGetPageRangesTest(c)
 	defer deleteContainer(c, containerClient)
 
-	resp, err := pbClient.GetPageRanges(ctx, 0, 2000, nil)
+	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 2000}, nil)
 	c.Assert(err, chk.IsNil)
 	validateBasicGetPageRanges(c, resp.PageList, err)
 }
@@ -1657,7 +1650,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesSnapshot(c *chk.C) {
 	c.Assert(resp.Snapshot, chk.NotNil)
 
 	snapshotURL := pbClient.WithSnapshot(*resp.Snapshot)
-	resp2, err := snapshotURL.GetPageRanges(ctx, 0, 0, nil)
+	resp2, err := snapshotURL.GetPageRanges(ctx, HttpRange{0, 0}, nil)
 	c.Assert(err, chk.IsNil)
 	validateBasicGetPageRanges(c, resp2.PageList, err)
 }
@@ -1675,7 +1668,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfModifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	resp, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateBasicGetPageRanges(c, resp.PageList, err)
 }
@@ -1693,7 +1686,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfModifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	_, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
 	//serr := err.(StorageError)
@@ -1713,7 +1706,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	resp, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateBasicGetPageRanges(c, resp.PageList, err)
 }
@@ -1731,7 +1724,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	_, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
@@ -1751,7 +1744,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	resp2, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	resp2, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateBasicGetPageRanges(c, resp2.PageList, err)
 }
@@ -1768,7 +1761,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	_, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
@@ -1786,7 +1779,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfNoneMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	resp, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateBasicGetPageRanges(c, resp.PageList, err)
 }
@@ -1804,7 +1797,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfNoneMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.GetPageRanges(ctx, 0, 0, &getPageRangesOptions)
+	_, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 	//serr := err.(StorageError)
 	//c.Assert(serr.RawResponse.StatusCode, chk.Equals, 304) // Service Code not returned in the body for a HEAD
@@ -1818,8 +1811,7 @@ func setupDiffPageRangesTest(c *chk.C) (containerClient ContainerClient, pbClien
 	r := getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 	}
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
@@ -1831,8 +1823,7 @@ func setupDiffPageRangesTest(c *chk.C) (containerClient ContainerClient, pbClien
 	r = getReaderToRandomBytes(PageBlobPageBytes)
 	offset, count = int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions = UploadPagesOptions{
-		Offset: &offset,
-		Count:  &count,
+		PageRange: &HttpRange{offset, count},
 	}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
@@ -1845,7 +1836,9 @@ func validateDiffPageRanges(c *chk.C, resp *PageList, err error) {
 	c.Assert(pageListResp, chk.NotNil)
 	c.Assert(*resp.PageRange, chk.HasLen, 1)
 	start, end := int64(0), int64(PageBlobPageBytes-1)
-	c.Assert((*pageListResp)[0], chk.DeepEquals, PageRange{Start: &start, End: &end})
+	rawStart, rawEnd := (*pageListResp)[0].Raw()
+	c.Assert(rawStart, chk.DeepEquals, start)
+	c.Assert(rawEnd, chk.DeepEquals, end)
 }
 
 func (s *aztestsSuite) TestBlobDiffPageRangesNonExistentSnapshot(c *chk.C) {
@@ -1854,7 +1847,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangesNonExistentSnapshot(c *chk.C) {
 
 	snapshotTime, _ := time.Parse(SnapshotTimeFormat, snapshot)
 	snapshotTime = snapshotTime.Add(time.Minute)
-	_, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshotTime.Format(SnapshotTimeFormat), nil)
+	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshotTime.Format(SnapshotTimeFormat), nil)
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodePreviousSnapshotNotFound)
@@ -1863,7 +1856,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangesNonExistentSnapshot(c *chk.C) {
 func (s *aztestsSuite) TestBlobDiffPageRangeInvalidRange(c *chk.C) {
 	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
 	defer deleteContainer(c, containerClient)
-	_, err := pbClient.GetPageRangesDiff(ctx, -22, 14, snapshot, nil)
+	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{-22, 14}, snapshot, nil)
 	c.Assert(err, chk.IsNil)
 }
 
@@ -1880,7 +1873,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfModifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	resp, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	resp, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateDiffPageRanges(c, resp.PageList, err)
 }
@@ -1898,7 +1891,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfModifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
 	//stgErr := err.(StorageError)
@@ -1918,7 +1911,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue(c *chk.C) {
 			},
 		},
 	}
-	resp, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	resp, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateDiffPageRanges(c, resp.PageList, err)
 }
@@ -1936,7 +1929,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
@@ -1955,7 +1948,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	resp2, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	resp2, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateDiffPageRanges(c, resp2.PageList, err)
 }
@@ -1972,7 +1965,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
@@ -1990,7 +1983,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfNoneMatchTrue(c *chk.C) {
 			},
 		},
 	}
-	resp, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	resp, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.IsNil)
 	validateDiffPageRanges(c, resp.PageList, err)
 }
@@ -2008,7 +2001,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfNoneMatchFalse(c *chk.C) {
 			},
 		},
 	}
-	_, err := pbClient.GetPageRangesDiff(ctx, 0, 0, snapshot, &getPageRangesOptions)
+	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
 	//serr := err.(StorageError)

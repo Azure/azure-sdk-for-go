@@ -12,7 +12,8 @@ import (
 	"strings"
 )
 
-type additionalProperties map[string]string
+
+type additionalProperties map[string]*string
 
 // UnmarshalXML implements the xml.Unmarshaler interface for additionalProperties.
 func (ap *additionalProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
@@ -29,7 +30,8 @@ func (ap *additionalProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElem
 			if *ap == nil {
 				*ap = additionalProperties{}
 			}
-			(*ap)[tokName] = string(tt)
+			s := string(tt)
+			(*ap)[tokName] = &s
 			tokName = ""
 			break
 		}

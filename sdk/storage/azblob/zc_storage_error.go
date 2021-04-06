@@ -30,7 +30,7 @@ type InternalError struct {
 	cause error
 }
 
-func (e InternalError) Error() string {
+func (e *InternalError) Error() string {
 	if (errors.Is(e.cause, StorageError{})) {
 		return e.cause.Error()
 	}
@@ -38,10 +38,22 @@ func (e InternalError) Error() string {
 	return fmt.Sprintf("===== INTERNAL ERROR =====\n%s", e.cause.Error())
 }
 
-func (e InternalError) Is(err error) bool {
-	_, ok := err.(InternalError)
+func (e *InternalError) Is(err error) bool {
+	_, ok := err.(*InternalError)
 
 	return ok
+}
+
+func (e *InternalError) As(target interface{}) bool {
+	nt, ok := target.(**InternalError)
+
+	if ok {
+		*nt = e
+		return ok
+	}
+
+	//goland:noinspection GoErrorsAs
+	return errors.As(e.cause, target)
 }
 
 // StorageError is the internal struct that replaces the generated StorageError.
@@ -57,11 +69,11 @@ type StorageError struct {
 
 func handleError(err error) error {
 	if err, ok := err.(*runtime.ResponseError); ok {
-		return InternalError{defunkifyStorageError(err) }
+		return &InternalError{defunkifyStorageError(err) }
 	}
 
 	if err != nil {
-		return InternalError{err}
+		return &InternalError{err}
 	}
 
 	return nil
@@ -84,14 +96,14 @@ func defunkifyStorageError(responseError *runtime.ResponseError) error {
 		return err
 	}
 
-	return InternalError{
+	return &InternalError{
 		cause: responseError,
 	}
 }
 
 // ServiceCode returns service-error information. The caller may examine these values but should not modify any of them.
-func (e *StorageError) ServiceCode() ServiceCodeType {
-	return e.serviceCode
+func (e *StorageError) ServiceCode() StorageErrorCode {
+	return e.ErrorCode
 }
 
 // ServiceCode returns service-error information. The caller may examine these values but should not modify any of them.
@@ -131,8 +143,9 @@ func (e StorageError) Error() string {
 
 func (e StorageError) Is(err error) bool {
 	_, ok := err.(StorageError)
+	_, ok2 := err.(*StorageError)
 
-	return ok
+	return ok || ok2
 }
 
 func (e StorageError) Response() *http.Response {
@@ -204,5 +217,6 @@ func (e *StorageError) UnmarshalXML(d *xml.Decoder, start xml.StartElement) (err
 			}
 		}
 	}
+	
 	return nil
 }

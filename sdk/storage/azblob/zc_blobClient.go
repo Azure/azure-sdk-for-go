@@ -5,9 +5,9 @@ package azblob
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"net/url"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
@@ -37,7 +37,7 @@ func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
 	p.Snapshot = snapshot
 	return BlobClient{
 		client: &blobClient{
-			newConnectionWithPipeline(p.URL(), b.client.con.p),
+			&connection{u: p.URL(), p: b.client.con.p},
 			b.client.pathRenameMode,
 		},
 	}
@@ -116,7 +116,7 @@ func (b BlobClient) GetProperties(ctx context.Context, options *GetBlobPropertie
 
 // SetBlobHTTPHeaders changes a blob's HTTP headers.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-blob-properties.
-func (b BlobClient) SetHTTPHeaders(ctx context.Context, blobHttpHeaders BlobHttpHeaders, options *SetBlobHTTPHeadersOptions) (BlobSetHTTPHeadersResponse, error) {
+func (b BlobClient) SetHTTPHeaders(ctx context.Context, blobHttpHeaders BlobHTTPHeaders, options *SetBlobHTTPHeadersOptions) (BlobSetHTTPHeadersResponse, error) {
 	basics, lease, access := options.pointers()
 	resp, err := b.client.SetHTTPHeaders(ctx, basics, &blobHttpHeaders, lease, access)
 
@@ -196,8 +196,7 @@ func (b BlobClient) ChangeLease(ctx context.Context, leaseID string, proposedID 
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/copy-blob.
 func (b BlobClient) StartCopyFromURL(ctx context.Context, copySource string, options *StartCopyBlobOptions) (BlobStartCopyFromURLResponse, error) {
 	basics, srcAccess, destAccess, lease := options.pointers()
-	uri, _ := url.Parse(copySource) // for some reason generated code does not use strings here.
-	resp, err := b.client.StartCopyFromURL(ctx, *uri, basics, srcAccess, destAccess, lease)
+	resp, err := b.client.StartCopyFromURL(ctx, copySource, basics, srcAccess, destAccess, lease)
 
 	return resp, handleError(err)
 }

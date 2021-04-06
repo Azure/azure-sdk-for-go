@@ -6,7 +6,7 @@ package azblob
 type CreateAppendBlobOptions struct {
 	BlobAccessConditions
 
-	BlobHttpHeaders *BlobHttpHeaders
+	BlobHTTPHeaders *BlobHTTPHeaders
 
 	CpkInfo *CpkInfo
 
@@ -20,12 +20,12 @@ type CreateAppendBlobOptions struct {
 	// See Naming and Referencing Containers, Blobs, and Metadata for more information.
 	Metadata *map[string]string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestId *string
+	RequestID *string
 
 	Timeout *int32
 }
 
-func (o *CreateAppendBlobOptions) pointers() (*AppendBlobCreateOptions, *BlobHttpHeaders, *LeaseAccessConditions, *CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions) {
+func (o *CreateAppendBlobOptions) pointers() (*AppendBlobCreateOptions, *BlobHTTPHeaders, *LeaseAccessConditions, *CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
 	}
@@ -33,17 +33,17 @@ func (o *CreateAppendBlobOptions) pointers() (*AppendBlobCreateOptions, *BlobHtt
 	options := AppendBlobCreateOptions{
 		BlobTagsString: serializeBlobTagsToStrPtr(o.BlobTagsMap),
 		Metadata:       o.Metadata,
-		RequestId:      o.RequestId,
+		RequestID:      o.RequestID,
 		Timeout:        o.Timeout,
 	}
-	return &options, o.BlobHttpHeaders, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions
+	return &options, o.BlobHTTPHeaders, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions
 }
 
 type AppendBlockOptions struct {
 	// Specify the transactional crc64 for the body, to be validated by the service.
-	TransactionalContentCrc64 *[]byte
+	TransactionalContentCRC64 *[]byte
 	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMd5 *[]byte
+	TransactionalContentMD5 *[]byte
 
 	AppendPositionAccessConditions *AppendPositionAccessConditions
 	CpkInfo                        *CpkInfo
@@ -57,8 +57,8 @@ func (o *AppendBlockOptions) pointers() (*AppendBlobAppendBlockOptions, *AppendP
 	}
 
 	options := &AppendBlobAppendBlockOptions{
-		TransactionalContentCrc64: o.TransactionalContentCrc64,
-		TransactionalContentMd5:   o.TransactionalContentMd5,
+		TransactionalContentCRC64: o.TransactionalContentCRC64,
+		TransactionalContentMD5:   o.TransactionalContentMD5,
 	}
 
 	return options, o.AppendPositionAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions, o.LeaseAccessConditions
@@ -66,11 +66,11 @@ func (o *AppendBlockOptions) pointers() (*AppendBlobAppendBlockOptions, *AppendP
 
 type AppendBlockURLOptions struct {
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
-	SourceContentMd5 *[]byte
+	SourceContentMD5 *[]byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentCrc64 *[]byte
+	SourceContentCRC64 *[]byte
 	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMd5 *[]byte
+	TransactionalContentMD5 *[]byte
 
 	AppendPositionAccessConditions *AppendPositionAccessConditions
 	CpkInfo                        *CpkInfo
@@ -89,9 +89,9 @@ func (o *AppendBlockURLOptions) pointers() (*AppendBlobAppendBlockFromURLOptions
 
 	options := &AppendBlobAppendBlockFromURLOptions{
 		SourceRange:             getSourceRange(o.Offset, o.Count),
-		SourceContentMd5:        o.SourceContentMd5,
-		SourceContentcrc64:      o.SourceContentCrc64,
-		TransactionalContentMd5: o.TransactionalContentMd5,
+		SourceContentMD5:        o.SourceContentMD5,
+		SourceContentcrc64:      o.SourceContentCRC64,
+		TransactionalContentMD5: o.TransactionalContentMD5,
 	}
 
 	return options, o.AppendPositionAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions, o.LeaseAccessConditions, o.SourceModifiedAccessConditions

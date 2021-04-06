@@ -1,3 +1,6 @@
+## Ignore generated bin files
+BigFile*.bin
+
 ## ignore .DS_Store on macOS
 *.DS_Store
 

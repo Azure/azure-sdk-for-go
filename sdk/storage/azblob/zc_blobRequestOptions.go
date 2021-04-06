@@ -32,7 +32,7 @@ func (o *DeleteBlobOptions) pointers() (*BlobDeleteOptions, *LeaseAccessConditio
 type DownloadBlobOptions struct {
 	// When set to true and specified together with the Range, the service returns the MD5 hash for the range, as long as the
 	// range is less than or equal to 4 MB in size.
-	RangeGetContentMd5 *bool
+	RangeGetContentMD5 *bool
 
 	// Optional, you can specify whether a particular range of the blob is read
 	Offset *int64
@@ -61,8 +61,8 @@ func (o *DownloadBlobOptions) pointers() (blobDownloadOptions *BlobDownloadOptio
 	}
 
 	basics := BlobDownloadOptions{
-		RangeGetContentMd5: o.RangeGetContentMd5,
-		RangeParameter: httpRange{
+		RangeGetContentMD5: o.RangeGetContentMD5,
+		Range: HttpRange{
 			offset: offset,
 			count:  count,
 		}.pointers(),
@@ -169,7 +169,7 @@ func (o *AcquireBlobLeaseOptions) pointers() (blobAcquireLeaseOptions *BlobAcqui
 
 	basics := BlobAcquireLeaseOptions{
 		Duration:        &o.Duration,
-		ProposedLeaseId: o.ProposedLeaseID,
+		ProposedLeaseID: o.ProposedLeaseID,
 	}
 
 	return &basics, o.ModifiedAccessConditions
@@ -312,26 +312,26 @@ func serializeBlobTags(blobTagsMap *map[string]string) *BlobTags {
 	if blobTagsMap == nil {
 		return nil
 	}
-	blobTagSet := make([]BlobTag, 0)
+	blobTagSet := make([]*BlobTag, 0)
 	for key, val := range *blobTagsMap {
 		newKey, newVal := key, val
-		blobTagSet = append(blobTagSet, BlobTag{Key: &newKey, Value: &newVal})
+		blobTagSet = append(blobTagSet, &BlobTag{Key: &newKey, Value: &newVal})
 	}
 	return &BlobTags{BlobTagSet: &blobTagSet}
 }
 
 type SetTagsBlobOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestId *string
+	RequestID *string
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
 	// The version id parameter is an opaque DateTime value that, when present,
 	// specifies the version of the blob to operate on. It's for service version 2019-10-10 and newer.
-	VersionId *string
+	VersionID *string
 	// Optional header, Specifies the transactional crc64 for the body, to be validated by the service.
-	TransactionalContentCrc64 *[]byte
+	TransactionalContentCRC64 *[]byte
 	// Optional header, Specifies the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMd5 *[]byte
+	TransactionalContentMD5 *[]byte
 
 	BlobTagsMap *map[string]string
 
@@ -344,12 +344,12 @@ func (o *SetTagsBlobOptions) pointers() (*BlobSetTagsOptions, *ModifiedAccessCon
 	}
 
 	options := &BlobSetTagsOptions{
-		RequestId:                 o.RequestId,
+		RequestID:                 o.RequestID,
 		Tags:                      serializeBlobTags(o.BlobTagsMap),
 		Timeout:                   o.Timeout,
-		TransactionalContentMd5:   o.TransactionalContentMd5,
-		TransactionalContentCrc64: o.TransactionalContentCrc64,
-		VersionId:                 o.VersionId,
+		TransactionalContentMD5:   o.TransactionalContentMD5,
+		TransactionalContentCRC64: o.TransactionalContentCRC64,
+		VersionID:                 o.VersionID,
 	}
 
 	return options, o.ModifiedAccessConditions
@@ -357,14 +357,14 @@ func (o *SetTagsBlobOptions) pointers() (*BlobSetTagsOptions, *ModifiedAccessCon
 
 type GetTagsBlobOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestId *string
+	RequestID *string
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve.
 	Snapshot *string
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
 	// The version id parameter is an opaque DateTime value that, when present, specifies the version of the blob to operate on.
 	// It's for service version 2019-10-10 and newer.
-	VersionId *string
+	VersionID *string
 
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
@@ -375,10 +375,10 @@ func (o *GetTagsBlobOptions) pointers() (*BlobGetTagsOptions, *ModifiedAccessCon
 	}
 
 	options := &BlobGetTagsOptions{
-		RequestId: o.RequestId,
+		RequestID: o.RequestID,
 		Snapshot:  o.Snapshot,
 		Timeout:   o.Timeout,
-		VersionId: o.VersionId,
+		VersionID: o.VersionID,
 	}
 
 	return options, o.ModifiedAccessConditions

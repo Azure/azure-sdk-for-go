@@ -9,22 +9,16 @@ package azblob
 
 import (
 	"context"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"reflect"
 )
 
 // ListBlobsFlatSegmentResponsePager provides iteration over ListBlobsFlatSegmentResponse pages.
 type ListBlobsFlatSegmentResponsePager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current ListBlobsFlatSegmentResponseResponse.
 	PageResponse() ListBlobsFlatSegmentResponseResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type listBlobsFlatSegmentResponseCreateRequest func(context.Context) (*azcore.Request, error)
@@ -66,20 +60,20 @@ func (p *listBlobsFlatSegmentResponsePager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-	} else {
+  } else {
 		req, err = p.requester(ctx)
-	}
+  }
 	if err != nil {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+  	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -97,15 +91,10 @@ func (p *listBlobsFlatSegmentResponsePager) PageResponse() ListBlobsFlatSegmentR
 
 // ListBlobsHierarchySegmentResponsePager provides iteration over ListBlobsHierarchySegmentResponse pages.
 type ListBlobsHierarchySegmentResponsePager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current ListBlobsHierarchySegmentResponseResponse.
 	PageResponse() ListBlobsHierarchySegmentResponseResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type listBlobsHierarchySegmentResponseCreateRequest func(context.Context) (*azcore.Request, error)
@@ -147,20 +136,20 @@ func (p *listBlobsHierarchySegmentResponsePager) NextPage(ctx context.Context) b
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-	} else {
+  } else {
 		req, err = p.requester(ctx)
-	}
+  }
 	if err != nil {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+  	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -178,15 +167,10 @@ func (p *listBlobsHierarchySegmentResponsePager) PageResponse() ListBlobsHierarc
 
 // ListContainersSegmentResponsePager provides iteration over ListContainersSegmentResponse pages.
 type ListContainersSegmentResponsePager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current ListContainersSegmentResponseResponse.
 	PageResponse() ListContainersSegmentResponseResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type listContainersSegmentResponseCreateRequest func(context.Context) (*azcore.Request, error)
@@ -228,20 +212,20 @@ func (p *listContainersSegmentResponsePager) NextPage(ctx context.Context) bool 
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-	} else {
+  } else {
 		req, err = p.requester(ctx)
-	}
+  }
 	if err != nil {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+  	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -256,3 +240,4 @@ func (p *listContainersSegmentResponsePager) NextPage(ctx context.Context) bool 
 func (p *listContainersSegmentResponsePager) PageResponse() ListContainersSegmentResponseResponse {
 	return p.current
 }
+

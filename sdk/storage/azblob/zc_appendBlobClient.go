@@ -6,7 +6,6 @@ package azblob
 import (
 	"context"
 	"io"
-	"net/url"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -38,7 +37,8 @@ func (ab AppendBlobClient) URL() string {
 func (ab AppendBlobClient) WithSnapshot(snapshot string) AppendBlobClient {
 	p := NewBlobURLParts(ab.URL())
 	p.Snapshot = snapshot
-	con := newConnectionWithPipeline(p.URL(), ab.client.con.p)
+	con := &connection{u: p.URL(), p: ab.client.con.p}
+
 	return AppendBlobClient{
 		client:     &appendBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
@@ -50,7 +50,8 @@ func (ab AppendBlobClient) WithSnapshot(snapshot string) AppendBlobClient {
 func (ab AppendBlobClient) WithVersionID(versionID string) AppendBlobClient {
 	p := NewBlobURLParts(ab.URL())
 	p.VersionID = versionID
-	con := newConnectionWithPipeline(p.URL(), ab.client.con.p)
+	con := &connection{u: p.URL(), p: ab.client.con.p}
+
 	return AppendBlobClient{
 		client:     &appendBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
@@ -85,12 +86,11 @@ func (ab AppendBlobClient) AppendBlock(ctx context.Context, body io.ReadSeeker, 
 
 // AppendBlockFromURL copies a new block of data from source URL to the end of the existing append blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/append-block-from-url.
-func (ab AppendBlobClient) AppendBlockFromURL(ctx context.Context, source string, contentLength int64, options *AppendBlockURLOptions) (AppendBlobAppendBlockFromURLResponse, error) {
+func (ab AppendBlobClient) AppendBlockFromURL(ctx context.Context, source string, options *AppendBlockURLOptions) (AppendBlobAppendBlockFromURLResponse, error) {
 	appendOptions, aac, cpkinfo, cpkscope, mac, lac, smac := options.pointers()
 
-	uri, _ := url.Parse(source)
-
-	resp, err := ab.client.AppendBlockFromURL(ctx, *uri, contentLength, appendOptions, cpkinfo, cpkscope, lac, aac, mac, smac)
+	// content length should be 0 on * from URL. always. It's a 400 if it isn't.
+	resp, err := ab.client.AppendBlockFromURL(ctx, source, 0, appendOptions, cpkinfo, cpkscope, lac, aac, mac, smac)
 
 	return resp, handleError(err)
 }

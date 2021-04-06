@@ -239,7 +239,7 @@ func (s *aztestsSuite) TestCopyBlockBlobFromURL(c *chk.C) {
 	sourceContentMD5 := contentMD5[:]
 	copyBlockBlobFromURLOptions := CopyBlockBlobFromURLOptions{
 		Metadata:         &map[string]string{"foo": "bar"},
-		SourceContentMd5: &sourceContentMD5,
+		SourceContentMD5: &sourceContentMD5,
 	}
 	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions)
 	c.Assert(err, chk.IsNil)
@@ -258,8 +258,8 @@ func (s *aztestsSuite) TestCopyBlockBlobFromURL(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	metadata := getPropResp.Metadata
 	c.Assert(metadata, chk.NotNil)
-	c.Assert(*metadata, chk.HasLen, 1)
-	c.Assert(*metadata, chk.DeepEquals, map[string]string{"foo": "bar"})
+	c.Assert(metadata, chk.HasLen, 1)
+	c.Assert(metadata, chk.DeepEquals, map[string]string{"Foo": "bar"})
 
 	// Check data integrity through downloading.
 	downloadResp, err := destBlob.Download(ctx, nil)
@@ -271,14 +271,14 @@ func (s *aztestsSuite) TestCopyBlockBlobFromURL(c *chk.C) {
 	// Edge case 1: Provide bad MD5 and make sure the copy fails
 	_, badMD5 := getRandomDataAndReader(16)
 	copyBlockBlobFromURLOptions1 := CopyBlockBlobFromURLOptions{
-		SourceContentMd5: &badMD5,
+		SourceContentMD5: &badMD5,
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
 	c.Assert(err, chk.NotNil)
 
 	// Edge case 2: Not providing any source MD5 should see the CRC getting returned instead
 	copyBlockBlobFromURLOptions2 := CopyBlockBlobFromURLOptions{
-		SourceContentMd5: &sourceContentMD5,
+		SourceContentMD5: &sourceContentMD5,
 	}
 	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
 	c.Assert(err, chk.IsNil)
@@ -365,7 +365,7 @@ func (s *aztestsSuite) TestStageBlockWithMD5(c *chk.C) {
 
 	stageBlockOptions := StageBlockOptions{
 		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
-			TransactionalContentMd5: &contentMD5,
+			TransactionalContentMD5: &contentMD5,
 		},
 	}
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
@@ -385,7 +385,7 @@ func (s *aztestsSuite) TestStageBlockWithMD5(c *chk.C) {
 
 	badStageBlockOptions := StageBlockOptions{
 		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
-			TransactionalContentMd5: &badContentMD5,
+			TransactionalContentMD5: &badContentMD5,
 		},
 	}
 	_, _ = rsc.Seek(0, io.SeekStart)
@@ -393,7 +393,7 @@ func (s *aztestsSuite) TestStageBlockWithMD5(c *chk.C) {
 	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &badStageBlockOptions)
 	c.Assert(err, chk.NotNil)
 
-	//c.Assert(err.(StorageError), chk.Equals, StorageErrorCodeMd5Mismatch)
+	//c.Assert(err.(StorageError), chk.Equals, StorageErrorCodeMD5Mismatch)
 }
 
 func (s *aztestsSuite) TestBlobPutBlobHTTPHeaders(c *chk.C) {
@@ -407,7 +407,7 @@ func (s *aztestsSuite) TestBlobPutBlobHTTPHeaders(c *chk.C) {
 	rsc := azcore.NopCloser(body)
 
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		BlobHttpHeaders: &basicHeaders,
+		BlobHTTPHeaders: &basicHeaders,
 	}
 	_, err := bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
 	c.Assert(err, chk.IsNil)
@@ -415,7 +415,7 @@ func (s *aztestsSuite) TestBlobPutBlobHTTPHeaders(c *chk.C) {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	h := resp.NewHTTPHeaders()
-	h.BlobContentMd5 = nil // the service generates a MD5 value, omit before comparing
+	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
 	c.Assert(h, chk.DeepEquals, basicHeaders)
 }
 
@@ -439,7 +439,7 @@ func (s *aztestsSuite) TestBlobPutBlobMetadataNotEmpty(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	actualMetadata := resp.Metadata
 	c.Assert(actualMetadata, chk.NotNil)
-	c.Assert(*actualMetadata, chk.DeepEquals, basicMetadata)
+	c.Assert(actualMetadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobPutBlobMetadataEmpty(c *chk.C) {
@@ -457,8 +457,7 @@ func (s *aztestsSuite) TestBlobPutBlobMetadataEmpty(c *chk.C) {
 
 	resp, err := bbClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.Metadata, chk.NotNil)
-	c.Assert(*resp.Metadata, chk.HasLen, 0)
+	c.Assert(resp.Metadata, chk.IsNil)
 }
 
 func (s *aztestsSuite) TestBlobPutBlobMetadataInvalid(c *chk.C) {
@@ -681,7 +680,7 @@ func (s *aztestsSuite) TestBlobPutBlockListHTTPHeadersEmpty(c *chk.C) {
 	defer deleteContainer(c, contClient)
 
 	commitBlockListOptions := CommitBlockListOptions{
-		BlobHTTPHeaders: &BlobHttpHeaders{BlobContentDisposition: &blobContentDisposition},
+		BlobHTTPHeaders: &BlobHTTPHeaders{BlobContentDisposition: &blobContentDisposition},
 	}
 	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
 	c.Assert(err, chk.IsNil)
@@ -874,7 +873,7 @@ func (s *aztestsSuite) TestSetTierOnBlobUpload(c *chk.C) {
 		bbClient, _ := getBlockBlobClient(c, containerClient)
 
 		uploadBlockBlobOptions := UploadBlockBlobOptions{
-			BlobHttpHeaders: &basicHeaders,
+			BlobHTTPHeaders: &basicHeaders,
 			Tier:            &tier,
 		}
 		_, err := bbClient.Upload(ctx, strings.NewReader(blockBlobDefaultData), &uploadBlockBlobOptions)

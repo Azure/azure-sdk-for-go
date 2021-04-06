@@ -49,7 +49,7 @@ type HighLevelUploadToBlockBlobOption struct {
 	Progress azcore.ProgressReceiver
 
 	// BlobHTTPHeaders indicates the HTTP headers to be associated with the blob.
-	BlobHTTPHeaders *BlobHttpHeaders
+	BlobHTTPHeaders *BlobHTTPHeaders
 
 	// Metadata indicates the metadata to be associated with the blob when PutBlockList is called.
 	Metadata *map[string]string
@@ -71,9 +71,9 @@ type HighLevelUploadToBlockBlobOption struct {
 	// Parallelism indicates the maximum number of blocks to upload in parallel (0=default)
 	Parallelism uint16
 
-	TransactionalContentCrc64 *[]byte
+	TransactionalContentCRC64 *[]byte
 	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMd5 *[]byte
+	TransactionalContentMD5 *[]byte
 }
 
 func (o HighLevelUploadToBlockBlobOption) getStageBlockOptions() *StageBlockOptions {
@@ -82,10 +82,10 @@ func (o HighLevelUploadToBlockBlobOption) getStageBlockOptions() *StageBlockOpti
 		CpkScopeInfo:          o.CpkScopeInfo,
 		LeaseAccessConditions: o.LeaseAccessCondition,
 		//BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
-		//	RequestId: nil,
+		//	RequestID: nil,
 		//	Timeout: nil,
-		//	TransactionalContentMd5: nil,
-		//	TransactionalContentCrc64: nil,
+		//	TransactionalContentMD5: nil,
+		//	TransactionalContentCRC64: nil,
 		//},
 	}
 }
@@ -95,8 +95,8 @@ func (o HighLevelUploadToBlockBlobOption) getUploadBlockBlobOptions() *UploadBlo
 		BlobTagsMap: o.BlobTagsMap,
 		Metadata:    o.Metadata,
 		Tier:        o.BlobAccessTier,
-		//TransactionalContentMd5:
-		BlobHttpHeaders:          o.BlobHTTPHeaders,
+		//TransactionalContentMD5:
+		BlobHTTPHeaders:          o.BlobHTTPHeaders,
 		LeaseAccessConditions:    o.LeaseAccessCondition,
 		ModifiedAccessConditions: o.ModifiedAccessCondition,
 		CpkInfo:                  o.CpkInfo,
@@ -248,7 +248,7 @@ func (o *HighLevelDownloadFromBlobOptions) getBlobPropertiesOptions() *GetBlobPr
 	}
 }
 
-func (o *HighLevelDownloadFromBlobOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMd5 *bool) *DownloadBlobOptions {
+func (o *HighLevelDownloadFromBlobOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadBlobOptions {
 	return &DownloadBlobOptions{
 		LeaseAccessConditions:    o.LeaseAccessConditions,
 		ModifiedAccessConditions: o.ModifiedAccessConditions,
@@ -256,7 +256,7 @@ func (o *HighLevelDownloadFromBlobOptions) getDownloadBlobOptions(offSet, count 
 		CpkScopeInfo:             o.CpkScopeInfo,
 		Offset:                   &offSet,
 		Count:                    &count,
-		RangeGetContentMd5:       rangeGetContentMd5,
+		RangeGetContentMD5:       rangeGetContentMD5,
 	}
 }
 
@@ -587,7 +587,7 @@ type UploadStreamToBlockBlobOptions struct {
 	BufferSize int
 	// MaxBuffers defines the number of simultaneous uploads will be performed to upload the file.
 	MaxBuffers       int
-	BlobHTTPHeaders  *BlobHttpHeaders
+	BlobHTTPHeaders  *BlobHTTPHeaders
 	Metadata         *map[string]string
 	AccessConditions *BlobAccessConditions
 	BlobAccessTier   *AccessTier

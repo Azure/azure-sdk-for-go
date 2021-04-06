@@ -55,7 +55,7 @@ func (s ServiceClient) URL() string {
 // NewContainerClient method.
 func (s ServiceClient) NewContainerClient(containerName string) ContainerClient {
 	containerURL := appendToURLPath(s.client.con.u, containerName)
-	containerConnection := newConnectionWithPipeline(containerURL, s.client.con.p)
+	containerConnection := &connection{containerURL, s.client.con.p}
 	return ContainerClient{
 		client: &containerClient{
 			con: containerConnection,
@@ -117,11 +117,11 @@ func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) Li
 	p := pager.(*listContainersSegmentResponsePager) // cast to the internal type first
 	p.advancer = func(cxt context.Context, response ListContainersSegmentResponseResponse) (*azcore.Request, error) {
 		if response.EnumerationResults.NextMarker == nil {
-			return nil, errors.New("unexpected missing NextMarker")
+			return nil, handleError(errors.New("unexpected missing NextMarker"))
 		}
 		req, err := s.client.listContainersSegmentCreateRequest(cxt, listOptions)
 		if err != nil {
-			return nil, err
+			return nil, handleError(err)
 		}
 		queryValues, _ := url.ParseQuery(req.URL.RawQuery)
 		queryValues.Set("marker", *response.EnumerationResults.NextMarker)

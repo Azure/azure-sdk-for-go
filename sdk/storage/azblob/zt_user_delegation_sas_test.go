@@ -54,7 +54,7 @@ func (s *aztestsSuite) TestUserDelegationSASContainer(c *chk.C) {
 	// Craft a container URL w/ container UDK SAS
 	cURL := NewBlobURLParts(containerClient.URL())
 	cURL.SAS = cSAS
-	cSASURL, err := NewContainerClient(cURL.URL(), NewAnonymousCredential(), nil)
+	cSASURL, err := NewContainerClient(cURL.URL(), azcore.AnonymousCredential(), nil)
 
 	bblob := cSASURL.NewBlockBlobClient("test")
 	_, err = bblob.Upload(ctx, strings.NewReader("hello world!"), nil)

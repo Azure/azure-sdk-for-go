@@ -14,16 +14,16 @@ type UploadBlockBlobOptions struct {
 	Tier *AccessTier
 
 	// Specify the transactional md5 for the body, to be validated by the service.
-	TransactionalContentMd5 *[]byte
+	TransactionalContentMD5 *[]byte
 
-	BlobHttpHeaders          *BlobHttpHeaders
+	BlobHTTPHeaders          *BlobHTTPHeaders
 	LeaseAccessConditions    *LeaseAccessConditions
 	CpkInfo                  *CpkInfo
 	CpkScopeInfo             *CpkScopeInfo
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *UploadBlockBlobOptions) pointers() (*BlockBlobUploadOptions, *BlobHttpHeaders, *LeaseAccessConditions,
+func (o *UploadBlockBlobOptions) pointers() (*BlockBlobUploadOptions, *BlobHTTPHeaders, *LeaseAccessConditions,
 	*CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
@@ -33,10 +33,10 @@ func (o *UploadBlockBlobOptions) pointers() (*BlockBlobUploadOptions, *BlobHttpH
 		BlobTagsString:          serializeBlobTagsToStrPtr(o.BlobTagsMap),
 		Metadata:                o.Metadata,
 		Tier:                    o.Tier,
-		TransactionalContentMd5: o.TransactionalContentMd5,
+		TransactionalContentMD5: o.TransactionalContentMD5,
 	}
 
-	return &basics, o.BlobHttpHeaders, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions
+	return &basics, o.BlobHTTPHeaders, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions
 }
 
 type StageBlockOptions struct {
@@ -58,9 +58,9 @@ type StageBlockFromURLOptions struct {
 	LeaseAccessConditions          *LeaseAccessConditions
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-	RequestId *string
+	RequestID *string
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
-	SourceContentMd5 *[]byte
+	SourceContentMD5 *[]byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
 	SourceContentcrc64 *[]byte
 
@@ -80,8 +80,8 @@ func (o *StageBlockFromURLOptions) pointers() (*LeaseAccessConditions, *SourceMo
 	}
 
 	options := &BlockBlobStageBlockFromURLOptions{
-		RequestId:          o.RequestId,
-		SourceContentMd5:   o.SourceContentMd5,
+		RequestID:          o.RequestID,
+		SourceContentMD5:   o.SourceContentMD5,
 		SourceContentcrc64: o.SourceContentcrc64,
 		SourceRange:        getSourceRange(o.Offset, o.Count),
 		Timeout:            o.Timeout,
@@ -93,18 +93,18 @@ func (o *StageBlockFromURLOptions) pointers() (*LeaseAccessConditions, *SourceMo
 type CommitBlockListOptions struct {
 	BlobTagsMap               *map[string]string
 	Metadata                  *map[string]string
-	RequestId                 *string
+	RequestID                 *string
 	Tier                      *AccessTier
 	Timeout                   *int32
-	TransactionalContentCrc64 *[]byte
-	TransactionalContentMd5   *[]byte
-	BlobHTTPHeaders           *BlobHttpHeaders
+	TransactionalContentCRC64 *[]byte
+	TransactionalContentMD5   *[]byte
+	BlobHTTPHeaders           *BlobHTTPHeaders
 	CpkInfo                   *CpkInfo
 	CpkScopeInfo              *CpkScopeInfo
 	BlobAccessConditions
 }
 
-func (o *CommitBlockListOptions) pointers() (*BlockBlobCommitBlockListOptions, *BlobHttpHeaders, *CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions, *LeaseAccessConditions) {
+func (o *CommitBlockListOptions) pointers() (*BlockBlobCommitBlockListOptions, *BlobHTTPHeaders, *CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions, *LeaseAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil, nil, nil
 	}
@@ -112,11 +112,11 @@ func (o *CommitBlockListOptions) pointers() (*BlockBlobCommitBlockListOptions, *
 	options := &BlockBlobCommitBlockListOptions{
 		BlobTagsString:            serializeBlobTagsToStrPtr(o.BlobTagsMap),
 		Metadata:                  o.Metadata,
-		RequestId:                 o.RequestId,
+		RequestID:                 o.RequestID,
 		Tier:                      o.Tier,
 		Timeout:                   o.Timeout,
-		TransactionalContentCrc64: o.TransactionalContentCrc64,
-		TransactionalContentMd5:   o.TransactionalContentMd5,
+		TransactionalContentCRC64: o.TransactionalContentCRC64,
+		TransactionalContentMD5:   o.TransactionalContentMD5,
 	}
 
 	return options, o.BlobHTTPHeaders, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions, o.LeaseAccessConditions
@@ -138,8 +138,8 @@ func (o *GetBlockListOptions) pointers() (*BlockBlobGetBlockListOptions, *Modifi
 type CopyBlockBlobFromURLOptions struct {
 	BlobTagsMap                    *map[string]string
 	Metadata                       *map[string]string
-	RequestId                      *string
-	SourceContentMd5               *[]byte
+	RequestID                      *string
+	SourceContentMD5               *[]byte
 	Tier                           *AccessTier
 	Timeout                        *int32
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
@@ -154,8 +154,8 @@ func (o *CopyBlockBlobFromURLOptions) pointers() (*BlobCopyFromURLOptions, *Sour
 	options := &BlobCopyFromURLOptions{
 		BlobTagsString:   serializeBlobTagsToStrPtr(o.BlobTagsMap),
 		Metadata:         o.Metadata,
-		RequestId:        o.RequestId,
-		SourceContentMd5: o.SourceContentMd5,
+		RequestID:        o.RequestID,
+		SourceContentMD5: o.SourceContentMD5,
 		Tier:             o.Tier,
 		Timeout:          o.Timeout,
 	}

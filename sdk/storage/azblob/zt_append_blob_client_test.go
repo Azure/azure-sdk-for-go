@@ -60,7 +60,7 @@ func (s *aztestsSuite) TestAppendBlockWithMD5(c *chk.C) {
 	md5Value := md5.Sum(body)
 	contentMD5 := md5Value[:]
 	appendBlockOptions := AppendBlockOptions{
-		TransactionalContentMd5: &contentMD5,
+		TransactionalContentMD5: &contentMD5,
 	}
 	appendResp, err := abClient.AppendBlock(context.Background(), readerToBody, &appendBlockOptions)
 	c.Assert(err, chk.IsNil)
@@ -81,7 +81,7 @@ func (s *aztestsSuite) TestAppendBlockWithMD5(c *chk.C) {
 	readerToBody, body = getRandomDataAndReader(1024)
 	_, badMD5 := getRandomDataAndReader(16)
 	appendBlockOptions = AppendBlockOptions{
-		TransactionalContentMd5: &badMD5,
+		TransactionalContentMD5: &badMD5,
 	}
 	appendResp, err = abClient.AppendBlock(context.Background(), readerToBody, &appendBlockOptions)
 	c.Assert(err, chk.NotNil)
@@ -152,7 +152,7 @@ func (s *aztestsSuite) TestAppendBlockFromURL(c *chk.C) {
 		Offset: &offset,
 		Count:  &count,
 	}
-	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, 0, &appendBlockURLOptions)
+	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
 	c.Assert(err, chk.IsNil)
 	c.Assert(appendFromURLResp.RawResponse.StatusCode, chk.Equals, 201)
 	c.Assert(*appendFromURLResp.BlobAppendOffset, chk.Equals, "0")
@@ -239,9 +239,9 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	appendBlockURLOptions := AppendBlockURLOptions{
 		Offset:           &offset,
 		Count:            &count,
-		SourceContentMd5: &contentMD5,
+		SourceContentMD5: &contentMD5,
 	}
-	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, 0, &appendBlockURLOptions)
+	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
 	c.Assert(err, chk.IsNil)
 	c.Assert(appendFromURLResp.RawResponse.StatusCode, chk.Equals, 201)
 	c.Assert(*appendFromURLResp.BlobAppendOffset, chk.Equals, "0")
@@ -268,9 +268,9 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	appendBlockURLOptions = AppendBlockURLOptions{
 		Offset:           &offset,
 		Count:            &count,
-		SourceContentMd5: &badMD5,
+		SourceContentMD5: &badMD5,
 	}
-	_, err = destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, int64(contentSize), nil)
+	_, err = destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeMD5Mismatch)
@@ -291,7 +291,7 @@ func (s *aztestsSuite) TestBlobCreateAppendMetadataNonEmpty(c *chk.C) {
 	resp, err := abClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.Metadata, chk.NotNil)
-	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
+	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobCreateAppendMetadataEmpty(c *chk.C) {
@@ -332,7 +332,7 @@ func (s *aztestsSuite) TestBlobCreateAppendHTTPHeaders(c *chk.C) {
 	abClient, _ := getAppendBlobClient(c, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHttpHeaders: &basicHeaders,
+		BlobHTTPHeaders: &basicHeaders,
 	}
 	_, err := abClient.Create(ctx, &createAppendBlobOptions)
 	c.Assert(err, chk.IsNil)
@@ -347,7 +347,7 @@ func validateAppendBlobPut(c *chk.C, abClient AppendBlobClient) {
 	resp, err := abClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.Metadata, chk.NotNil)
-	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
+	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 	c.Assert(resp.NewHTTPHeaders(), chk.DeepEquals, basicHeaders)
 }
 
@@ -360,7 +360,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfModifiedSinceTrue(c *chk.C) {
 	currentTime := getRelativeTimeGMT(-10)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHttpHeaders: &basicHeaders,
+		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        &basicMetadata,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -383,7 +383,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfModifiedSinceFalse(c *chk.C) {
 	currentTime := getRelativeTimeGMT(10)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHttpHeaders: &basicHeaders,
+		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        &basicMetadata,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -406,7 +406,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue(c *chk.C) {
 	currentTime := getRelativeTimeGMT(10)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHttpHeaders: &basicHeaders,
+		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        &basicMetadata,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -429,7 +429,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse(c *chk.C) {
 	currentTime := getRelativeTimeGMT(-10)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHttpHeaders: &basicHeaders,
+		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        &basicMetadata,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -452,7 +452,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfMatchTrue(c *chk.C) {
 	resp, _ := abClient.GetProperties(ctx, nil)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHttpHeaders: &basicHeaders,
+		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        &basicMetadata,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -474,7 +474,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfMatchFalse(c *chk.C) {
 
 	eTag := "garbage"
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHttpHeaders: &basicHeaders,
+		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        &basicMetadata,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -496,7 +496,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfNoneMatchTrue(c *chk.C) {
 
 	eTag := "garbage"
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHttpHeaders: &basicHeaders,
+		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        &basicMetadata,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
@@ -519,7 +519,7 @@ func (s *aztestsSuite) TestBlobCreateAppendIfNoneMatchFalse(c *chk.C) {
 	resp, _ := abClient.GetProperties(ctx, nil)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHttpHeaders: &basicHeaders,
+		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        &basicMetadata,
 		BlobAccessConditions: BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{

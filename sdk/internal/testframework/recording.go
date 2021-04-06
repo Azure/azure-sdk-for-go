@@ -19,7 +19,6 @@ import (
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
 
-	chk "gopkg.in/check.v1"
 	"gopkg.in/yaml.v2"
 )
 
@@ -33,7 +32,7 @@ type Recording struct {
 	recorder                 *recorder.Recorder
 	src                      rand.Source
 	sanitizer                *RecordingSanitizer
-	c                        *chk.C
+	c                        TestContext
 }
 
 const (
@@ -66,9 +65,9 @@ const (
 	Secret_Base64String VariableType = "secret_base64String"
 )
 
-func NewRecording(c *chk.C, mode RecordMode, testSuffixes ...string) (*Recording, error) {
+func NewRecording(c TestContext, mode RecordMode, testSuffixes ...string) (*Recording, error) {
 	// create recorder based on the test name, recordMode, variables, and sanitizers
-	recPath, varPath := getFilePaths(c, testSuffixes)
+	recPath, varPath := getFilePaths(c.Name(), testSuffixes)
 	rec, err := recorder.NewAsMode(recPath, modeMap[mode], nil)
 
 	if err != nil {
@@ -89,7 +88,8 @@ func NewRecording(c *chk.C, mode RecordMode, testSuffixes ...string) (*Recording
 		variables:                make(map[string]string),
 		previousSessionVariables: make(map[string]string),
 		recorder:                 rec,
-		c:                        c}
+		c:                        c,
+	}
 
 	// Try loading the recording if it already exists to hydrate the variables
 	err = recording.initVariables()
@@ -133,10 +133,7 @@ func (r *Recording) Do(req *http.Request) (*http.Response, error) {
 	resp, err := r.recorder.RoundTrip(req)
 	if err == cassette.ErrInteractionNotFound {
 		error := missingRequestError(req)
-		r.c.Log(error)
-		r.c.Fail()
-		// TODO: remove this if https://github.com/go-check/check/pull/127 merges
-		panic(error)
+		r.c.Fail(error)
 	}
 	return resp, err
 }
@@ -304,13 +301,19 @@ func (r *Recording) initRandomSource() {
 }
 
 // returns (recordingFilePath, variablesFilePath)
-func getFilePaths(c *chk.C, suffixes []string) (string, string) {
-	testName := strings.Split(c.TestName(), ".")
+func getFilePaths(name string, suffixes []string) (string, string) {
+	testName := strings.SplitN(name, ".", 2)
 	var suffix string = ""
 	if len(suffixes) > 0 {
 		suffix = "(" + strings.Join(suffixes, ",") + ")"
 	}
-	recPath := "recordings/" + testName[0] + suffix + "/" + testName[1]
+	var recPath string
+	if len(testName) == 2 {
+
+		recPath = "recordings/" + testName[0] + suffix + "/" + testName[1]
+	} else {
+		recPath = "recordings/" + name
+	}
 	varPath := fmt.Sprintf("%s-variables.yaml", recPath)
 	return recPath, varPath
 }

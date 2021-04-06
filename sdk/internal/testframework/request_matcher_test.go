@@ -28,18 +28,19 @@ const unMatchedBody string = "This body does not match."
 var _ = chk.Suite(&requestMatcherTests{})
 
 func (s *requestMatcherTests) TestCompareBodies(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 
 	req := http.Request{Body: closerFromString(matchedBody)}
 	recReq := cassette.Request{Body: matchedBody}
 
-	isMatch := compareBodies(&req, recReq, c)
+	isMatch := compareBodies(&req, recReq, context)
 
 	c.Assert(isMatch, chk.Equals, true)
 
 	// make the requests mis-match
 	req.Body = closerFromString((unMatchedBody))
 
-	isMatch = compareBodies(&req, recReq, c)
+	isMatch = compareBodies(&req, recReq, context)
 
 	c.Assert(isMatch, chk.Equals, false)
 	log := c.GetTestLog()
@@ -47,6 +48,7 @@ func (s *requestMatcherTests) TestCompareBodies(c *chk.C) {
 }
 
 func (s *requestMatcherTests) TestCompareHeadersIgnoresIgnoredHeaders(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 
 	// populate only ignored headers that do not match
 	reqHeaders := make(http.Header)
@@ -59,13 +61,14 @@ func (s *requestMatcherTests) TestCompareHeadersIgnoresIgnoredHeaders(c *chk.C) 
 	req := http.Request{Header: reqHeaders}
 	recReq := cassette.Request{Headers: recordedHeaders}
 
-	isMatch := compareHeaders(&req, recReq, c)
+	isMatch := compareHeaders(&req, recReq, context)
 
 	// All headers match
 	c.Assert(isMatch, chk.Equals, true)
 }
 
 func (s *requestMatcherTests) TestCompareHeadersMatchesHeaders(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 
 	// populate only ignored headers that do not match
 	reqHeaders := make(http.Header)
@@ -80,12 +83,13 @@ func (s *requestMatcherTests) TestCompareHeadersMatchesHeaders(c *chk.C) {
 	recReq := cassette.Request{Headers: recordedHeaders}
 
 	c.Assert(
-		compareHeaders(&req, recReq, c),
+		compareHeaders(&req, recReq, context),
 		chk.Equals,
 		true)
 }
 
 func (s *requestMatcherTests) TestCompareHeadersFailsMissingRecHeader(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 
 	// populate only ignored headers that do not match
 	reqHeaders := make(http.Header)
@@ -104,13 +108,14 @@ func (s *requestMatcherTests) TestCompareHeadersFailsMissingRecHeader(c *chk.C) 
 	reqHeaders[header2] = headerValue
 
 	c.Assert(
-		compareHeaders(&req, recReq, c),
+		compareHeaders(&req, recReq, context),
 		chk.Equals,
 		false)
 	c.Assert(c.GetTestLog(), chk.Equals, fmt.Sprintf(recordingHeaderMissing+"\n", header2))
 }
 
 func (s *requestMatcherTests) TestCompareHeadersFailsMissingReqHeader(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 
 	// populate only ignored headers that do not match
 	reqHeaders := make(http.Header)
@@ -129,13 +134,14 @@ func (s *requestMatcherTests) TestCompareHeadersFailsMissingReqHeader(c *chk.C) 
 	recordedHeaders[header2] = headerValue
 
 	c.Assert(
-		compareHeaders(&req, recReq, c),
+		compareHeaders(&req, recReq, context),
 		chk.Equals,
 		false)
 	c.Assert(c.GetTestLog(), chk.Equals, fmt.Sprintf(requestHeaderMissing+"\n", header2))
 }
 
 func (s *requestMatcherTests) TestCompareHeadersFailsMismatchedValues(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 
 	// populate only ignored headers that do not match
 	reqHeaders := make(http.Header)
@@ -156,27 +162,28 @@ func (s *requestMatcherTests) TestCompareHeadersFailsMismatchedValues(c *chk.C) 
 	reqHeaders[header2] = mismatch
 
 	c.Assert(
-		compareHeaders(&req, recReq, c),
+		compareHeaders(&req, recReq, context),
 		chk.Equals,
 		false)
 	c.Assert(c.GetTestLog(), chk.Equals, fmt.Sprintf(headerValuesMismatch+"\n", header2, mismatch, headerValue))
 }
 
 func (s *requestMatcherTests) TestCompareURLs(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 	scheme := "https"
 	host := "foo.bar"
 	req := http.Request{URL: &url.URL{Scheme: scheme, Host: host}}
 	recReq := cassette.Request{URL: scheme + "://" + host}
 
 	c.Assert(
-		compareURLs(&req, recReq, c),
+		compareURLs(&req, recReq, context),
 		chk.Equals,
 		true)
 
 	req.URL.Path = "noMatch"
 
 	c.Assert(
-		compareURLs(&req, recReq, c),
+		compareURLs(&req, recReq, context),
 		chk.Equals,
 		false)
 
@@ -184,20 +191,21 @@ func (s *requestMatcherTests) TestCompareURLs(c *chk.C) {
 }
 
 func (s *requestMatcherTests) TestCompareMethods(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 	methodPost := "POST"
 	methodPatch := "PATCH"
 	req := http.Request{Method: methodPost}
 	recReq := cassette.Request{Method: methodPost}
 
 	c.Assert(
-		compareMethods(&req, recReq, c),
+		compareMethods(&req, recReq, context),
 		chk.Equals,
 		true)
 
 	req.Method = methodPatch
 
 	c.Assert(
-		compareMethods(&req, recReq, c),
+		compareMethods(&req, recReq, context),
 		chk.Equals,
 		false)
 

@@ -22,10 +22,11 @@ type recordingTests struct{}
 var _ = chk.Suite(&recordingTests{})
 
 func (r *recordingTests) Test_InitializeRecording(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 
 	expectedMode := Playback
 
-	target, err := NewRecording(c, expectedMode)
+	target, err := NewRecording(context, expectedMode)
 	c.Assert(err, chk.IsNil)
 	c.Assert(target.RecordingFile, chk.NotNil)
 	c.Assert(target.VariablesFile, chk.NotNil)
@@ -36,8 +37,9 @@ func (r *recordingTests) Test_InitializeRecording(c *chk.C) {
 }
 
 func (r *recordingTests) Test_StopDoesNotSaveVariablesWhenNoVariablesExist(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 
-	target, err := NewRecording(c, Playback)
+	target, err := NewRecording(context, Playback)
 	c.Assert(err, chk.IsNil)
 
 	err = target.Stop()
@@ -48,12 +50,13 @@ func (r *recordingTests) Test_StopDoesNotSaveVariablesWhenNoVariablesExist(c *ch
 }
 
 func (r *recordingTests) Test_RecordedVariables(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 
 	nonExistingEnvVar := "nonExistingEnvVar"
 	expectedVariableValue := "foobar"
 	variablesMap := map[string]string{}
 
-	target, err := NewRecording(c, Playback)
+	target, err := NewRecording(context, Playback)
 	c.Assert(err, chk.IsNil)
 
 	// optional variables always succeed.
@@ -78,6 +81,7 @@ func (r *recordingTests) Test_RecordedVariables(c *chk.C) {
 }
 
 func (r *recordingTests) Test_RecordedVariablesSanitized(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 
 	SanitizedStringVar := "sanitizedvar"
 	SanitizedBase64StrigVar := "sanitizedbase64var"
@@ -85,7 +89,7 @@ func (r *recordingTests) Test_RecordedVariablesSanitized(c *chk.C) {
 	secretBase64 := "asdfasdf=="
 	variablesMap := map[string]string{}
 
-	target, err := NewRecording(c, Playback)
+	target, err := NewRecording(context, Playback)
 	c.Assert(err, chk.IsNil)
 
 	// call GetOptionalRecordedVariable with the Secret_String VariableType arg
@@ -113,12 +117,13 @@ func (r *recordingTests) Test_RecordedVariablesSanitized(c *chk.C) {
 }
 
 func (r *recordingTests) Test_StopSavesVariablesIfExistAndReadsPreviousVariables(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 
 	expectedVariableName := "someVariable"
 	expectedVariableValue := "foobar"
 	variablesMap := map[string]string{}
 
-	target, err := NewRecording(c, Playback)
+	target, err := NewRecording(context, Playback)
 	c.Assert(err, chk.IsNil)
 
 	target.GetOptionalRecordedVariable(expectedVariableName, expectedVariableValue)
@@ -133,7 +138,7 @@ func (r *recordingTests) Test_StopSavesVariablesIfExistAndReadsPreviousVariables
 	c.Assert(actualValue, chk.Equals, expectedVariableValue)
 
 	variablesMap = map[string]string{}
-	target2, err := NewRecording(c, Playback)
+	target2, err := NewRecording(context, Playback)
 	c.Assert(err, chk.IsNil)
 
 	err = target.Stop()
@@ -147,10 +152,11 @@ func (r *recordingTests) Test_StopSavesVariablesIfExistAndReadsPreviousVariables
 }
 
 func (r *recordingTests) Test_GenerateAlphaNumericId(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 
 	prefix := "myprefix"
 
-	target, err := NewRecording(c, Playback)
+	target, err := NewRecording(context, Playback)
 	c.Assert(err, chk.IsNil)
 
 	generated1 := target.GenerateAlphaNumericId(prefix, 10, true)
@@ -164,7 +170,7 @@ func (r *recordingTests) Test_GenerateAlphaNumericId(c *chk.C) {
 	err = target.Stop()
 	c.Assert(err, chk.IsNil)
 
-	target2, err := NewRecording(c, Playback)
+	target2, err := NewRecording(context, Playback)
 	c.Assert(err, chk.IsNil)
 
 	generated2 := target2.GenerateAlphaNumericId(prefix, 10, true)
@@ -177,12 +183,13 @@ func (r *recordingTests) Test_GenerateAlphaNumericId(c *chk.C) {
 }
 
 func (s *recordingTests) TestRecordRequestsAndDoMatching(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 	server, cleanup := mock.NewServer()
 	server.SetResponse()
 	defer cleanup()
 	rt := NewMockRoundTripper(server)
 
-	target, err := NewRecording(c, Playback)
+	target, err := NewRecording(context, Playback)
 	target.recorder.SetTransport(rt)
 
 	reqUrl := server.URL() + "/" + target.GenerateAlphaNumericId("", 5, true)
@@ -202,7 +209,7 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching(c *chk.C) {
 	}
 
 	// re-initialize the recording
-	target, err = NewRecording(c, Playback)
+	target, err = NewRecording(context, Playback)
 	target.recorder.SetTransport(rt)
 
 	// re-create the random url using the recorded variables
@@ -216,12 +223,13 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching(c *chk.C) {
 }
 
 func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording(c *chk.C) {
+	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
 	server, cleanup := mock.NewServer()
 	server.SetResponse()
 	defer cleanup()
 	rt := NewMockRoundTripper(server)
 
-	target, err := NewRecording(c, Playback)
+	target, err := NewRecording(context, Playback)
 	target.recorder.SetTransport(rt)
 
 	reqUrl := server.URL() + "/" + target.GenerateAlphaNumericId("", 5, true)
@@ -241,7 +249,7 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording(c 
 	}
 
 	// re-initialize the recording
-	target, err = NewRecording(c, Playback)
+	target, err = NewRecording(context, Playback)
 	target.recorder.SetTransport(rt)
 
 	// re-create the random url using the recorded variables

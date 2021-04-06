@@ -58,7 +58,8 @@ func recordedTestSetup(c *chk.C, testName string, endpointType EndpointType, mod
 	var uri string
 
 	// init the test framework
-	recording, err := testframework.NewRecording(c, mode, string(endpointType))
+	context := testframework.NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
+	recording, err := testframework.NewRecording(context, mode, string(endpointType))
 	c.Assert(err, chk.IsNil)
 
 	if endpointType == StorageEndpoint {

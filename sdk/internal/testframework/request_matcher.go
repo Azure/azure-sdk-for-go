@@ -7,12 +7,12 @@ package testframework
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"reflect"
 
 	"github.com/dnaeon/go-vcr/cassette"
-	chk "gopkg.in/check.v1"
 )
 
 type RequestMatcher struct {
@@ -36,7 +36,7 @@ var headerValuesMismatch = "Test recording header '%s' does not match. request: 
 var methodMismatch = "Test recording methods do not match. request: %s, recording: %s"
 var urlMismatch = "Test recording URLs do not match. request: %s, recording: %s"
 
-func compareBodies(r *http.Request, i cassette.Request, c *chk.C) bool {
+func compareBodies(r *http.Request, i cassette.Request, c TestContext) bool {
 	body := bytes.Buffer{}
 	if r.Body != nil {
 		_, err := body.ReadFrom(r.Body)
@@ -47,28 +47,28 @@ func compareBodies(r *http.Request, i cassette.Request, c *chk.C) bool {
 	}
 	bodiesMatch := body.String() == i.Body
 	if !bodiesMatch {
-		c.Logf("Test recording bodies do not match.\nrequest:   %s\nrecording: %s", body.String(), i.Body)
+		c.Log(fmt.Sprintf("Test recording bodies do not match.\nrequest: %s\nrecording: %s", body.String(), i.Body))
 	}
 	return bodiesMatch
 }
 
-func compareURLs(r *http.Request, i cassette.Request, c *chk.C) bool {
+func compareURLs(r *http.Request, i cassette.Request, c TestContext) bool {
 	if r.URL.String() != i.URL {
-		c.Logf(urlMismatch, r.URL.String(), i.URL)
+		c.Log(fmt.Sprintf(urlMismatch, r.URL.String(), i.URL))
 		return false
 	}
 	return true
 }
 
-func compareMethods(r *http.Request, i cassette.Request, c *chk.C) bool {
+func compareMethods(r *http.Request, i cassette.Request, c TestContext) bool {
 	if r.Method != i.Method {
-		c.Logf(methodMismatch, r.Method, i.Method)
+		c.Log(fmt.Sprintf(methodMismatch, r.Method, i.Method))
 		return false
 	}
 	return true
 }
 
-func compareHeaders(r *http.Request, i cassette.Request, c *chk.C) bool {
+func compareHeaders(r *http.Request, i cassette.Request, c TestContext) bool {
 	unVisitedCassetteKeys := make(map[string]*string, len(i.Headers))
 	// clone the cassette keys to track which we have seen
 	for k := range i.Headers {
@@ -89,20 +89,20 @@ func compareHeaders(r *http.Request, i cassette.Request, c *chk.C) bool {
 			headersMatch := reflect.DeepEqual(requestHeader, recordedHeader)
 			if !headersMatch {
 				// headers don't match
-				c.Logf(headerValuesMismatch, key, requestHeader, recordedHeader)
+				c.Log(fmt.Sprintf(headerValuesMismatch, key, requestHeader, recordedHeader))
 				return false
 			}
 
 		} else {
 			// header not found
-			c.Logf(recordingHeaderMissing, key)
+			c.Log(fmt.Sprintf(recordingHeaderMissing, key))
 			return false
 		}
 	}
 	if len(unVisitedCassetteKeys) > 0 {
 		// headers exist in the recording that do not exist in the request
 		for headerName := range unVisitedCassetteKeys {
-			c.Logf(requestHeaderMissing, headerName)
+			c.Log(fmt.Sprintf(requestHeaderMissing, headerName))
 		}
 		return false
 	}

@@ -40,7 +40,7 @@ steps:
 
   - script: |
       echo check source file formatting in $(pwd)
-      gofmt -s -l -w $(find . -name '*.go' -print) >&2
+      gofmt -s -l -d $(find . -name '*.go' -print) >&2
     displayName: 'Format Check'
     condition: succeededOrFailed()
     failOnStderr: true

@@ -21,13 +21,12 @@ type Failer func(string)
 type Logger func(string)
 type Name func() string
 
-func NewTestContext(f Failer, l Logger, name Name) TestContext {
-	return &testContext{fail: f, log: l, name: name()}
+func NewTestContext(failer Failer, logger Logger, name Name) TestContext {
+	return &testContext{fail: failer, log: logger, name: name()}
 }
 
 func (c *testContext) Fail(msg string) {
 	c.fail(msg)
-	panic(msg)
 }
 func (c *testContext) Log(msg string) {
 	c.log(msg)

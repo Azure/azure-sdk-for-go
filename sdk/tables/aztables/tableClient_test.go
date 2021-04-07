@@ -8,61 +8,71 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
-	chk "gopkg.in/check.v1"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
 
 type tableClientLiveTests struct {
+	suite.Suite
 	endpointType EndpointType
 	mode         testframework.RecordMode
 }
 
 // Hookup to the testing framework
-func Test(t *testing.T) { chk.TestingT(t) }
+func TestTableClient_Storage(t *testing.T) {
+	storage := tableClientLiveTests{endpointType: StorageEndpoint, mode: testframework.Playback /* change to Record to re-record tests */}
+	suite.Run(t, &storage)
+}
 
-// wire up chk to testing
-var _ = chk.Suite(&tableClientLiveTests{endpointType: StorageEndpoint, mode: testframework.Playback /* change to Record to re-record tests */})
-var _ = chk.Suite(&tableClientLiveTests{endpointType: CosmosEndpoint, mode: testframework.Playback /* change to Record to re-record tests */})
+// Hookup to the testing framework
+func TestTableClient_Cosmos(t *testing.T) {
+	cosmos := tableClientLiveTests{endpointType: CosmosEndpoint, mode: testframework.Playback /* change to Record to re-record tests */}
+	suite.Run(t, &cosmos)
+}
 
-func (s *tableClientLiveTests) TestServiceErrors(c *chk.C) {
-	client, delete := s.init(c, true)
+func (s *tableClientLiveTests) TestServiceErrors() {
+	client, delete := s.init(true)
 	defer delete()
 
 	// Create a duplicate table to produce an error
 	_, err := client.Create(ctx)
-	c.Assert(err.RawResponse().StatusCode, chk.Equals, http.StatusConflict)
+	assert.Equal(s.T(), err.RawResponse().StatusCode, http.StatusConflict)
 }
 
-func (s *tableClientLiveTests) TestCreateTable(c *chk.C) {
-	client, delete := s.init(c, false)
+func (s *tableClientLiveTests) TestCreateTable() {
+	assert := assert.New(s.T())
+	client, delete := s.init(false)
 	defer delete()
 
 	resp, err := client.Create(ctx)
 
-	c.Assert(err, chk.IsNil)
-	c.Assert(*resp.TableResponse.TableName, chk.Equals, client.Name())
+	assert.Nil(err)
+	assert.Equal(*resp.TableResponse.TableName, client.Name())
 }
 
-func (s *tableClientLiveTests) TestAddEntity(c *chk.C) {
-	client, delete := s.init(c, true)
+func (s *tableClientLiveTests) TestAddEntity() {
+	assert := assert.New(s.T())
+	client, delete := s.init(true)
 	defer delete()
 
 	entitiesToCreate := createSimpleEntities(1, "partition")
 
 	for _, e := range *entitiesToCreate {
 		_, err := client.AddEntity(ctx, &e)
-		c.Assert(err, chk.IsNil)
+		assert.Nil(err)
 	}
 }
 
-func (s *tableClientLiveTests) TestQuerySimpleEntity(c *chk.C) {
-	client, delete := s.init(c, true)
+func (s *tableClientLiveTests) TestQuerySimpleEntity() {
+	assert := assert.New(s.T())
+	client, delete := s.init(true)
 	defer delete()
 
 	// Add 5 entities
 	entitiesToCreate := createSimpleEntities(5, "partition")
 	for _, e := range *entitiesToCreate {
 		_, err := client.AddEntity(ctx, &e)
-		c.Assert(err, chk.IsNil)
+		assert.Nil(err)
 	}
 
 	filter := "RowKey lt '5'"
@@ -71,46 +81,47 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity(c *chk.C) {
 	pager := client.Query(QueryOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		resp = pager.PageResponse()
-		c.Assert(len(*resp.TableEntityQueryResponse.Value), chk.Equals, expectedCount)
+		assert.Equal(len(*resp.TableEntityQueryResponse.Value), expectedCount)
 	}
 	resp = pager.PageResponse()
-	c.Assert(pager.Err(), chk.IsNil)
+	assert.Nil(pager.Err())
 	for _, e := range *resp.TableEntityQueryResponse.Value {
 		_, ok := e[PartitionKey].(string)
-		c.Assert(ok, chk.Equals, true)
+		assert.True(ok)
 		_, ok = e[RowKey].(string)
-		c.Assert(ok, chk.Equals, true)
+		assert.True(ok)
 		_, ok = e[Timestamp].(string)
-		c.Assert(ok, chk.Equals, true)
+		assert.True(ok)
 		_, ok = e[EtagOdata].(string)
-		c.Assert(ok, chk.Equals, true)
+		assert.True(ok)
 		_, ok = e["StringProp"].(string)
-		c.Assert(ok, chk.Equals, true)
+		assert.True(ok)
 		//TODO: fix when serialization is implemented
 		_, ok = e["IntProp"].(float64)
-		c.Assert(ok, chk.Equals, true)
+		assert.True(ok)
 		_, ok = e["BoolProp"].(bool)
-		c.Assert(ok, chk.Equals, true)
+		assert.True(ok)
 	}
 }
 
-func (s *tableClientLiveTests) SetUpTest(c *chk.C) {
-	// setup the test environment
-	recordedTestSetup(c, testKey(c, s.endpointType), s.endpointType, s.mode)
+// setup the test environment
+func (s *tableClientLiveTests) BeforeTest(suite string, test string) {
+	recordedTestSetup(s.T(), s.T().Name(), s.endpointType, s.mode)
 }
 
-func (s *tableClientLiveTests) TearDownTest(c *chk.C) {
-	// teardown the test context
-	recordedTestTeardown(testKey(c, s.endpointType))
+// teardown the test context
+func (s *tableClientLiveTests) AfterTest(suite string, test string) {
+	recordedTestTeardown(s.T().Name())
 }
 
-func (s *tableClientLiveTests) init(c *chk.C, doCreate bool) (*TableClient, func()) {
-	context := getTestContext(testKey(c, s.endpointType))
-	tableName := getTableName(context)
-	client := context.client.GetTableClient(tableName)
+func (s *tableClientLiveTests) init(doCreate bool) (*TableClient, func()) {
+	assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	tableName, _ := getTableName(context)
+	client := context.client.GetTableClient(*tableName)
 	if doCreate {
 		_, err := client.Create(ctx)
-		c.Assert(err, chk.IsNil)
+		assert.Nil(err)
 	}
 	return client, func() {
 		client.Delete(ctx)

@@ -6,46 +6,60 @@ package aztables
 import (
 	"fmt"
 	"net/http"
+	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
-	chk "gopkg.in/check.v1"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
 
 type tableServiceClientLiveTests struct {
+	suite.Suite
 	endpointType EndpointType
 	mode         testframework.RecordMode
 }
 
 // Hookup to the testing framework
-var _ = chk.Suite(&tableServiceClientLiveTests{endpointType: StorageEndpoint, mode: testframework.Playback /* change to Record to re-record tests */})
-var _ = chk.Suite(&tableServiceClientLiveTests{endpointType: CosmosEndpoint, mode: testframework.Playback /* change to Record to re-record tests */})
+func TestServiceClient_Storage(t *testing.T) {
+	storage := tableServiceClientLiveTests{endpointType: StorageEndpoint, mode: testframework.Playback /* change to Record to re-record tests */}
+	suite.Run(t, &storage)
+}
 
-func (s *tableServiceClientLiveTests) TestServiceErrors(c *chk.C) {
-	context := getTestContext(testKey(c, s.endpointType))
-	tableName := getTableName(context)
+// Hookup to the testing framework
+func TestServiceClient_Cosmos(t *testing.T) {
+	cosmos := tableServiceClientLiveTests{endpointType: CosmosEndpoint, mode: testframework.Playback /* change to Record to re-record tests */}
+	suite.Run(t, &cosmos)
+}
 
-	_, err := context.client.Create(ctx, tableName)
-	defer context.client.Delete(ctx, tableName)
-	c.Assert(err, chk.IsNil)
+func (s *tableServiceClientLiveTests) TestServiceErrors() {
+	assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	tableName, err := getTableName(context)
+
+	_, err = context.client.Create(ctx, *tableName)
+	defer context.client.Delete(ctx, *tableName)
+	assert.Nil(err)
 
 	// Create a duplicate table to produce an error
-	_, err = context.client.Create(ctx, tableName)
-	c.Assert(err.RawResponse().StatusCode, chk.Equals, http.StatusConflict)
+	_, svcErr := context.client.Create(ctx, *tableName)
+	assert.Equal(svcErr.RawResponse().StatusCode, http.StatusConflict)
 }
 
-func (s *tableServiceClientLiveTests) TestCreateTable(c *chk.C) {
-	context := getTestContext(testKey(c, s.endpointType))
-	tableName := getTableName(context)
+func (s *tableServiceClientLiveTests) TestCreateTable() {
+	assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	tableName, err := getTableName(context)
 
-	resp, err := context.client.Create(ctx, tableName)
-	defer context.client.Delete(ctx, tableName)
+	resp, err := context.client.Create(ctx, *tableName)
+	defer context.client.Delete(ctx, *tableName)
 
-	c.Assert(err, chk.IsNil)
-	c.Assert(*resp.TableResponse.TableName, chk.Equals, tableName)
+	assert.Nil(err)
+	assert.Equal(*resp.TableResponse.TableName, *tableName)
 }
 
-func (s *tableServiceClientLiveTests) TestQueryTable(c *chk.C) {
-	context := getTestContext(testKey(c, s.endpointType))
+func (s *tableServiceClientLiveTests) TestQueryTable() {
+	assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
 	tableCount := 5
 	tableNames := make([]string, tableCount)
 	prefix1 := "zzza"
@@ -55,12 +69,14 @@ func (s *tableServiceClientLiveTests) TestQueryTable(c *chk.C) {
 	//create 10 tables with our exected prefix and 1 with a different prefix
 	for i := 0; i < tableCount; i++ {
 		if i < (tableCount - 1) {
-			tableNames[i] = getTableName(context, prefix1)
+			name, _ := getTableName(context, prefix1)
+			tableNames[i] = *name
 		} else {
-			tableNames[i] = getTableName(context, prefix2)
+			name, _ := getTableName(context, prefix2)
+			tableNames[i] = *name
 		}
 		_, err := context.client.Create(ctx, tableNames[i])
-		c.Assert(err, chk.IsNil)
+		assert.Nil(err)
 	}
 
 	// Query for tables with no pagination. The filter should exclude one table from the results
@@ -73,8 +89,8 @@ func (s *tableServiceClientLiveTests) TestQueryTable(c *chk.C) {
 		resultCount += len(*resp.TableQueryResponse.Value)
 	}
 
-	c.Assert(pager.Err(), chk.IsNil)
-	c.Assert(resultCount, chk.Equals, tableCount-1)
+	assert.Nil(pager.Err())
+	assert.Equal(resultCount, tableCount-1)
 
 	// Query for tables with pagination
 	top := int32(2)
@@ -88,17 +104,17 @@ func (s *tableServiceClientLiveTests) TestQueryTable(c *chk.C) {
 		pageCount++
 	}
 
-	c.Assert(pager.Err(), chk.IsNil)
-	c.Assert(resultCount, chk.Equals, tableCount-1)
-	c.Assert(pageCount, chk.Equals, int(top))
+	assert.Nil(pager.Err())
+	assert.Equal(resultCount, tableCount-1)
+	assert.Equal(pageCount, int(top))
 }
 
-func (s *tableServiceClientLiveTests) SetUpTest(c *chk.C) {
+func (s *tableServiceClientLiveTests) BeforeTest(suite string, test string) {
 	// setup the test environment
-	recordedTestSetup(c, testKey(c, s.endpointType), s.endpointType, s.mode)
+	recordedTestSetup(s.T(), s.T().Name(), s.endpointType, s.mode)
 }
 
-func (s *tableServiceClientLiveTests) TearDownTest(c *chk.C) {
+func (s *tableServiceClientLiveTests) AfterTest(suite string, test string) {
 	// teardown the test context
-	recordedTestTeardown(testKey(c, s.endpointType))
+	recordedTestTeardown(s.T().Name())
 }

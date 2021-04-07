@@ -6,6 +6,7 @@
 package testframework
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"math/rand"
@@ -27,8 +28,8 @@ type Recording struct {
 	RecordingFile            string
 	VariablesFile            string
 	Mode                     RecordMode
-	variables                map[string]string `yaml:"variables"`
-	previousSessionVariables map[string]string `yaml:"variables"`
+	variables                map[string]*string `yaml:"variables"`
+	previousSessionVariables map[string]*string `yaml:"variables"`
 	recorder                 *recorder.Recorder
 	src                      rand.Source
 	sanitizer                *RecordingSanitizer
@@ -65,9 +66,9 @@ const (
 	Secret_Base64String VariableType = "secret_base64String"
 )
 
-func NewRecording(c TestContext, mode RecordMode, testSuffixes ...string) (*Recording, error) {
+func NewRecording(c TestContext, mode RecordMode) (*Recording, error) {
 	// create recorder based on the test name, recordMode, variables, and sanitizers
-	recPath, varPath := getFilePaths(c.Name(), testSuffixes)
+	recPath, varPath := getFilePaths(c.Name())
 	rec, err := recorder.NewAsMode(recPath, modeMap[mode], nil)
 
 	if err != nil {
@@ -77,7 +78,7 @@ func NewRecording(c TestContext, mode RecordMode, testSuffixes ...string) (*Reco
 	// If the mode is set in the environment, let that override the requested mode
 	// This is to enable support for nightly live test pipelines
 	envMode := GetOptionalEnv(ModeEnvironmentVariableName, string(mode))
-	mode = RecordMode(envMode)
+	mode = RecordMode(*envMode)
 
 	// initialize the Recording
 	recording := &Recording{
@@ -85,8 +86,8 @@ func NewRecording(c TestContext, mode RecordMode, testSuffixes ...string) (*Reco
 		RecordingFile:            recPath + ".yaml",
 		VariablesFile:            varPath,
 		Mode:                     mode,
-		variables:                make(map[string]string),
-		previousSessionVariables: make(map[string]string),
+		variables:                make(map[string]*string),
+		previousSessionVariables: make(map[string]*string),
 		recorder:                 rec,
 		c:                        c,
 	}
@@ -106,15 +107,22 @@ func NewRecording(c TestContext, mode RecordMode, testSuffixes ...string) (*Reco
 	return recording, err
 }
 
-// Gets a recorded variable. If the variable is not found we panic
+// Gets a recorded variable. If the variable is not found we return an error
 // variableType is optional and defaults to Default
-func (r *Recording) GetRecordedVariable(name string, variableType ...VariableType) string {
+func (r *Recording) GetRecordedVariable(name string, variableType ...VariableType) (*string, error) {
+	var err error
 	result, ok := r.previousSessionVariables[name]
 	if !ok || r.Mode == Live {
-		result = GetRequiredEnv(name)
-		r.variables[name] = applyVariableOptions(&result, variableType...)
+
+		result, err = GetRequiredEnv(name)
+		if err != nil {
+			r.c.Fail(err.Error())
+			return nil, err
+		} else {
+			r.variables[name] = applyVariableOptions(result, variableType...)
+		}
 	}
-	return result
+	return result, err
 }
 
 // Gets a recorded variable with a fallback default value
@@ -123,9 +131,9 @@ func (r *Recording) GetOptionalRecordedVariable(name string, defaultValue string
 	result, ok := r.previousSessionVariables[name]
 	if !ok || r.Mode == Live {
 		result = GetOptionalEnv(name, defaultValue)
-		r.variables[name] = applyVariableOptions(&result, variableType...)
+		r.variables[name] = applyVariableOptions(result, variableType...)
 	}
-	return result
+	return *result
 }
 
 // To satisfy the azcore.Transport interface
@@ -134,6 +142,7 @@ func (r *Recording) Do(req *http.Request) (*http.Response, error) {
 	if err == cassette.ErrInteractionNotFound {
 		error := missingRequestError(req)
 		r.c.Fail(error)
+		return nil, errors.New(error)
 	}
 	return resp, err
 }
@@ -178,32 +187,32 @@ func (r *Recording) Stop() error {
 	return nil
 }
 
-// Gets an environment variable by name and panics if it is not found
-func GetRequiredEnv(name string) string {
+// Gets an environment variable by name and returns an error if it is not found
+func GetRequiredEnv(name string) (*string, error) {
 	env, ok := os.LookupEnv(name)
 	if ok {
-		return env
+		return &env, nil
 	} else {
-		panic(envNotExistsError(name))
+		return nil, errors.New(envNotExistsError(name))
 	}
 }
 
 // gets an environment variable by name and returns the defaultValue if not found
-func GetOptionalEnv(name string, defaultValue string) string {
+func GetOptionalEnv(name string, defaultValue string) *string {
 	env, ok := os.LookupEnv(name)
 	if ok {
-		return env
+		return &env
 	} else {
-		return defaultValue
+		return &defaultValue
 	}
 }
 
 // generate a recorded random alpha numeric id
 // if the recording has a randomSeed already set, the value will be generated from that seed, else a new random seed will be used
-func (r *Recording) GenerateAlphaNumericId(prefix string, length int, lowercaseOnly bool) string {
+func (r *Recording) GenerateAlphaNumericId(prefix string, length int, lowercaseOnly bool) (*string, error) {
 
 	if length <= len(prefix) {
-		panic("length must be greater than prefix")
+		return nil, errors.New("length must be greater than prefix")
 	}
 
 	r.initRandomSource()
@@ -231,8 +240,8 @@ func (r *Recording) GenerateAlphaNumericId(prefix string, length int, lowercaseO
 		cache >>= letterIdxBits
 		remain--
 	}
-
-	return sb.String()
+	str := sb.String()
+	return &str, nil
 }
 
 func (r *Recording) matchRequest(req *http.Request, rec cassette.Request) bool {
@@ -257,19 +266,21 @@ func envNotExistsError(varName string) string {
 // If variableType is not provided or Default, return result
 // If variableType is Secret_String, return SanitizedValue
 // If variableType isSecret_Base64String return SanitizedBase64Value
-func applyVariableOptions(val *string, variableType ...VariableType) string {
-
+func applyVariableOptions(val *string, variableType ...VariableType) *string {
+	var ret string
 	switch len(variableType) {
 	case 0:
-		return *val
+		return val
 	default:
 		switch vt := variableType[0]; vt {
 		case Secret_String:
-			return SanitizedValue
+			ret = SanitizedValue
+			return &ret
 		case Secret_Base64String:
-			return SanitizedBase64Value
+			ret = SanitizedBase64Value
+			return &ret
 		default:
-			return *val
+			return val
 		}
 	}
 }
@@ -287,13 +298,14 @@ func (r *Recording) initRandomSource() {
 	// check to see if we already have a random seed stored, use that if so
 	seedString, ok := r.previousSessionVariables[randomSeedVariableName]
 	if ok {
-		seed, err = strconv.ParseInt(seedString, 10, 64)
+		seed, err = strconv.ParseInt(*seedString, 10, 64)
 	}
 
 	// We did not have a random seed already stored; create a new one
 	if !ok || err != nil || r.Mode == Live {
 		seed = time.Now().Unix()
-		r.variables[randomSeedVariableName] = strconv.FormatInt(seed, 10)
+		val := strconv.FormatInt(seed, 10)
+		r.variables[randomSeedVariableName] = &val
 	}
 
 	// create a Source with the seed
@@ -301,19 +313,8 @@ func (r *Recording) initRandomSource() {
 }
 
 // returns (recordingFilePath, variablesFilePath)
-func getFilePaths(name string, suffixes []string) (string, string) {
-	testName := strings.SplitN(name, ".", 2)
-	var suffix string = ""
-	if len(suffixes) > 0 {
-		suffix = "(" + strings.Join(suffixes, ",") + ")"
-	}
-	var recPath string
-	if len(testName) == 2 {
-
-		recPath = "recordings/" + testName[0] + suffix + "/" + testName[1]
-	} else {
-		recPath = "recordings/" + name
-	}
+func getFilePaths(name string) (string, string) {
+	recPath := "recordings/" + name
 	varPath := fmt.Sprintf("%s-variables.yaml", recPath)
 	return recPath, varPath
 }
@@ -345,6 +346,7 @@ func (r *Recording) unmarshalVariablesFile(out interface{}) error {
 	if err != nil {
 		// If the file or dir do not exist, this is not an error to report
 		if os.IsNotExist(err) {
+			r.c.Log(fmt.Sprintf("Did not find recording for test '%s'", r.RecordingFile))
 			return nil
 		} else {
 			return err

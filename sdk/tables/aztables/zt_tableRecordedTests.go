@@ -6,11 +6,11 @@ package aztables
 import (
 	"context"
 	"fmt"
+	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
-
-	chk "gopkg.in/check.v1"
+	"github.com/stretchr/testify/assert"
 )
 
 type tablesRecordedTests struct{}
@@ -51,36 +51,43 @@ func cosmosURI(accountName string, endpointSuffix string) string {
 }
 
 // create the test specific TableClient and wire it up to recordings
-func recordedTestSetup(c *chk.C, testName string, endpointType EndpointType, mode testframework.RecordMode) {
-	var accountName string
+func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType, mode testframework.RecordMode) {
+	var accountName *string
 	var suffix string
 	var cred *SharedKeyCredential
+	var secret *string
 	var uri string
+	assert := assert.New(t)
 
 	// init the test framework
-	context := testframework.NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
-	recording, err := testframework.NewRecording(context, mode, string(endpointType))
-	c.Assert(err, chk.IsNil)
+	context := testframework.NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { t.Log(msg) }, func() string { return testName })
+	recording, err := testframework.NewRecording(context, mode)
+	assert.Nil(err)
 
 	if endpointType == StorageEndpoint {
-		accountName = recording.GetRecordedVariable(storageAccountNameEnvVar)
+		accountName, err = recording.GetRecordedVariable(storageAccountNameEnvVar)
 		suffix = recording.GetOptionalRecordedVariable(storageEndpointSuffixEnvVar, DefaultStorageSuffix)
-		cred, _ = NewSharedKeyCredential(accountName, recording.GetRecordedVariable(storageAccountKeyEnvVar, testframework.Secret_Base64String))
-		uri = storageURI(accountName, suffix)
+		secret, err = recording.GetRecordedVariable(storageAccountKeyEnvVar, testframework.Secret_Base64String)
+		cred, _ = NewSharedKeyCredential(*accountName, *secret)
+		uri = storageURI(*accountName, suffix)
 	} else {
-		accountName = recording.GetRecordedVariable(cosmosAccountNameEnnVar)
+		accountName, err = recording.GetRecordedVariable(cosmosAccountNameEnnVar)
 		suffix = recording.GetOptionalRecordedVariable(cosmosEndpointSuffixEnvVar, DefaultCosmosSuffix)
-		cred, _ = NewSharedKeyCredential(accountName, recording.GetRecordedVariable(cosmosAccountKeyEnvVar, testframework.Secret_Base64String))
-		uri = cosmosURI(accountName, suffix)
+		secret, err = recording.GetRecordedVariable(cosmosAccountKeyEnvVar, testframework.Secret_Base64String)
+		cred, _ = NewSharedKeyCredential(*accountName, *secret)
+		uri = cosmosURI(*accountName, suffix)
 	}
 
 	client, err := NewTableServiceClient(uri, cred, &TableClientOptions{HTTPClient: recording, Retry: azcore.RetryOptions{MaxRetries: -1}})
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 	clientsMap[testName] = &testContext{client: client, recording: recording}
 }
 
 func recordedTestTeardown(key string) {
-	clientsMap[key].recording.Stop()
+	context, ok := clientsMap[key]
+	if ok {
+		context.recording.Stop()
+	}
 }
 
 // cleans up the specified tables. If tables is nil, all tables will be deleted
@@ -104,16 +111,12 @@ func getTestContext(key string) *testContext {
 	return clientsMap[key]
 }
 
-func getTableName(context *testContext, prefix ...string) string {
+func getTableName(context *testContext, prefix ...string) (*string, error) {
 	if len(prefix) == 0 {
 		return context.recording.GenerateAlphaNumericId(tableNamePrefix, 20, true)
 	} else {
 		return context.recording.GenerateAlphaNumericId(prefix[0], 20, true)
 	}
-}
-
-func testKey(c *chk.C, ep EndpointType) string {
-	return c.TestName() + string(ep)
 }
 
 func createSimpleEntities(count int, pk string) *[]map[string]interface{} {

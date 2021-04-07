@@ -62,13 +62,16 @@ func (r *recordingTests) Test_RecordedVariables(c *chk.C) {
 	// optional variables always succeed.
 	c.Assert(target.GetOptionalRecordedVariable(nonExistingEnvVar, expectedVariableValue), chk.Equals, expectedVariableValue)
 
-	// non existent variables panic
-	c.Assert(func() { target.GetRecordedVariable(nonExistingEnvVar) }, chk.Panics, envNotExistsError(nonExistingEnvVar))
+	// non existent variables return an error
+	val, err := target.GetRecordedVariable(nonExistingEnvVar)
+	c.Succeed()
+	c.Assert(err.Error(), chk.Equals, envNotExistsError(nonExistingEnvVar))
 
 	// now create the env variable and check that it can be fetched
 	os.Setenv(nonExistingEnvVar, expectedVariableValue)
 	defer os.Unsetenv(nonExistingEnvVar)
-	c.Assert(target.GetRecordedVariable(nonExistingEnvVar), chk.Equals, expectedVariableValue)
+	val, err = target.GetRecordedVariable(nonExistingEnvVar)
+	c.Assert(*val, chk.Equals, expectedVariableValue)
 
 	err = target.Stop()
 	c.Assert(err, chk.IsNil)
@@ -159,12 +162,12 @@ func (r *recordingTests) Test_GenerateAlphaNumericId(c *chk.C) {
 	target, err := NewRecording(context, Playback)
 	c.Assert(err, chk.IsNil)
 
-	generated1 := target.GenerateAlphaNumericId(prefix, 10, true)
+	generated1, err := target.GenerateAlphaNumericId(prefix, 10, true)
 
-	c.Assert(len(generated1), chk.Equals, 10)
-	c.Assert(strings.HasPrefix(generated1, prefix), chk.Equals, true)
+	c.Assert(len(*generated1), chk.Equals, 10)
+	c.Assert(strings.HasPrefix(*generated1, prefix), chk.Equals, true)
 
-	generated1a := target.GenerateAlphaNumericId(prefix, 10, true)
+	generated1a, err := target.GenerateAlphaNumericId(prefix, 10, true)
 	c.Assert(generated1a, chk.Not(chk.Equals), generated1)
 
 	err = target.Stop()
@@ -173,10 +176,10 @@ func (r *recordingTests) Test_GenerateAlphaNumericId(c *chk.C) {
 	target2, err := NewRecording(context, Playback)
 	c.Assert(err, chk.IsNil)
 
-	generated2 := target2.GenerateAlphaNumericId(prefix, 10, true)
+	generated2, err := target2.GenerateAlphaNumericId(prefix, 10, true)
 
 	// The two generated Ids should be the same since target2 loaded the saved random seed from target
-	c.Assert(generated1, chk.Equals, generated2)
+	c.Assert(*generated1, chk.Equals, *generated2)
 
 	err = target.Stop()
 	c.Assert(err, chk.IsNil)
@@ -192,7 +195,8 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching(c *chk.C) {
 	target, err := NewRecording(context, Playback)
 	target.recorder.SetTransport(rt)
 
-	reqUrl := server.URL() + "/" + target.GenerateAlphaNumericId("", 5, true)
+	path, err := target.GenerateAlphaNumericId("", 5, true)
+	reqUrl := server.URL() + "/" + *path
 
 	req, _ := http.NewRequest(http.MethodPost, reqUrl, nil)
 
@@ -213,7 +217,8 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching(c *chk.C) {
 	target.recorder.SetTransport(rt)
 
 	// re-create the random url using the recorded variables
-	reqUrl = server.URL() + "/" + target.GenerateAlphaNumericId("", 5, true)
+	path, err = target.GenerateAlphaNumericId("", 5, true)
+	reqUrl = server.URL() + "/" + *path
 	req, _ = http.NewRequest(http.MethodPost, reqUrl, nil)
 
 	// playback the request
@@ -232,7 +237,8 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording(c 
 	target, err := NewRecording(context, Playback)
 	target.recorder.SetTransport(rt)
 
-	reqUrl := server.URL() + "/" + target.GenerateAlphaNumericId("", 5, true)
+	path, err := target.GenerateAlphaNumericId("", 5, true)
+	reqUrl := server.URL() + "/" + *path
 
 	req, _ := http.NewRequest(http.MethodPost, reqUrl, nil)
 
@@ -257,7 +263,8 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording(c 
 	req, _ = http.NewRequest(http.MethodPost, reqUrl, nil)
 
 	// playback the request
-	c.Assert(func() { target.Do(req) }, chk.Panics, missingRequestError(req))
+	_, err = target.Do(req)
+	c.Assert(err.Error(), chk.Equals, missingRequestError(req))
 	c.Succeed()
 	err = target.Stop()
 	c.Assert(err, chk.IsNil)

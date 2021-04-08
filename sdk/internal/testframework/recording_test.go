@@ -10,81 +10,90 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/dnaeon/go-vcr/cassette"
-
-	chk "gopkg.in/check.v1"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
 
-type recordingTests struct{}
+type recordingTests struct {
+	suite.Suite
+}
 
-var _ = chk.Suite(&recordingTests{})
+func TestRecording(t *testing.T) {
+	suite.Run(t, new(recordingTests))
+}
 
-func (r *recordingTests) Test_InitializeRecording(c *chk.C) {
-	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
+func (s *recordingTests) Test_InitializeRecording() {
+	assert := assert.New(s.T())
+	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	expectedMode := Playback
 
 	target, err := NewRecording(context, expectedMode)
-	c.Assert(err, chk.IsNil)
-	c.Assert(target.RecordingFile, chk.NotNil)
-	c.Assert(target.VariablesFile, chk.NotNil)
-	c.Assert(target.Mode, chk.Equals, expectedMode)
+	assert.Nil(err)
+	assert.NotNil(target.RecordingFile)
+	assert.NotNil(target.VariablesFile)
+	assert.Equal(expectedMode, target.Mode)
 
 	err = target.Stop()
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 }
 
-func (r *recordingTests) Test_StopDoesNotSaveVariablesWhenNoVariablesExist(c *chk.C) {
-	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
+func (s *recordingTests) Test_StopDoesNotSaveVariablesWhenNoVariablesExist() {
+	assert := assert.New(s.T())
+	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	target, err := NewRecording(context, Playback)
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	err = target.Stop()
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	_, err = ioutil.ReadFile(target.VariablesFile)
-	c.Assert(os.IsNotExist(err), chk.Equals, true)
+	assert.Equal(true, os.IsNotExist(err))
 }
 
-func (r *recordingTests) Test_RecordedVariables(c *chk.C) {
-	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
+func (s *recordingTests) Test_RecordedVariables() {
+	assert := assert.New(s.T())
+	context := NewTestContext(func(msg string) { s.T().Log(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	nonExistingEnvVar := "nonExistingEnvVar"
 	expectedVariableValue := "foobar"
 	variablesMap := map[string]string{}
 
 	target, err := NewRecording(context, Playback)
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	// optional variables always succeed.
-	c.Assert(target.GetOptionalRecordedVariable(nonExistingEnvVar, expectedVariableValue), chk.Equals, expectedVariableValue)
+	assert.Equal(expectedVariableValue, target.GetOptionalRecordedVariable(nonExistingEnvVar, expectedVariableValue))
 
 	// non existent variables return an error
 	val, err := target.GetRecordedVariable(nonExistingEnvVar)
-	c.Succeed()
-	c.Assert(err.Error(), chk.Equals, envNotExistsError(nonExistingEnvVar))
+	// mark test as succeeded
+	assert.Equal(envNotExistsError(nonExistingEnvVar), err.Error())
 
 	// now create the env variable and check that it can be fetched
 	os.Setenv(nonExistingEnvVar, expectedVariableValue)
 	defer os.Unsetenv(nonExistingEnvVar)
 	val, err = target.GetRecordedVariable(nonExistingEnvVar)
-	c.Assert(*val, chk.Equals, expectedVariableValue)
+	assert.Equal(expectedVariableValue, *val)
 
 	err = target.Stop()
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	// check that a variables file was created with the correct variable
 	target.unmarshalVariablesFile(variablesMap)
 	actualValue, ok := variablesMap[nonExistingEnvVar]
-	c.Assert(ok, chk.Equals, true)
-	c.Assert(actualValue, chk.Equals, expectedVariableValue)
+	assert.Equal(true, ok)
+	assert.Equal(expectedVariableValue, actualValue)
 }
 
-func (r *recordingTests) Test_RecordedVariablesSanitized(c *chk.C) {
-	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
+func (s *recordingTests) Test_RecordedVariablesSanitized() {
+	assert := assert.New(s.T())
+	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	SanitizedStringVar := "sanitizedvar"
 	SanitizedBase64StrigVar := "sanitizedbase64var"
@@ -93,100 +102,103 @@ func (r *recordingTests) Test_RecordedVariablesSanitized(c *chk.C) {
 	variablesMap := map[string]string{}
 
 	target, err := NewRecording(context, Playback)
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	// call GetOptionalRecordedVariable with the Secret_String VariableType arg
-	c.Assert(target.GetOptionalRecordedVariable(SanitizedStringVar, secret, Secret_String), chk.Equals, secret)
+	assert.Equal(secret, target.GetOptionalRecordedVariable(SanitizedStringVar, secret, Secret_String))
 
 	// call GetOptionalRecordedVariable with the Secret_Base64String VariableType arg
-	c.Assert(target.GetOptionalRecordedVariable(SanitizedBase64StrigVar, secretBase64, Secret_Base64String), chk.Equals, secretBase64)
+	assert.Equal(secretBase64, target.GetOptionalRecordedVariable(SanitizedBase64StrigVar, secretBase64, Secret_Base64String))
 
 	// Calling Stop will save the variables and apply the sanitization options
 	err = target.Stop()
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	// check that a variables file was created with the correct variables
 	target.unmarshalVariablesFile(variablesMap)
 	actualValue, ok := variablesMap[SanitizedStringVar]
-	c.Assert(ok, chk.Equals, true)
+	assert.Equal(true, ok)
 	// the saved value is sanitized
-	c.Assert(actualValue, chk.Equals, SanitizedValue)
+	assert.Equal(SanitizedValue, actualValue)
 
 	target.unmarshalVariablesFile(variablesMap)
 	actualValue, ok = variablesMap[SanitizedBase64StrigVar]
-	c.Assert(ok, chk.Equals, true)
+	assert.Equal(true, ok)
 	// the saved value is sanitized
-	c.Assert(actualValue, chk.Equals, SanitizedBase64Value)
+	assert.Equal(SanitizedBase64Value, actualValue)
 }
 
-func (r *recordingTests) Test_StopSavesVariablesIfExistAndReadsPreviousVariables(c *chk.C) {
-	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
+func (s *recordingTests) Test_StopSavesVariablesIfExistAndReadsPreviousVariables() {
+	assert := assert.New(s.T())
+	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	expectedVariableName := "someVariable"
 	expectedVariableValue := "foobar"
 	variablesMap := map[string]string{}
 
 	target, err := NewRecording(context, Playback)
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	target.GetOptionalRecordedVariable(expectedVariableName, expectedVariableValue)
 
 	err = target.Stop()
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	// check that a variables file was created with the correct variable
 	target.unmarshalVariablesFile(variablesMap)
 	actualValue, ok := variablesMap[expectedVariableName]
-	c.Assert(ok, chk.Equals, true)
-	c.Assert(actualValue, chk.Equals, expectedVariableValue)
+	assert.Equal(true, ok)
+	assert.Equal(expectedVariableValue, actualValue)
 
 	variablesMap = map[string]string{}
 	target2, err := NewRecording(context, Playback)
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	err = target.Stop()
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	// check that a variables file was created with the variables loaded from the previous recording
 	target2.unmarshalVariablesFile(variablesMap)
 	actualValue, ok = variablesMap[expectedVariableName]
-	c.Assert(ok, chk.Equals, true)
-	c.Assert(actualValue, chk.Equals, expectedVariableValue)
+	assert.Equal(true, ok)
+	assert.Equal(expectedVariableValue, actualValue)
 }
 
-func (r *recordingTests) Test_GenerateAlphaNumericId(c *chk.C) {
-	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
+func (s *recordingTests) Test_GenerateAlphaNumericId() {
+	assert := assert.New(s.T())
+	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
 	prefix := "myprefix"
 
 	target, err := NewRecording(context, Playback)
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	generated1, err := target.GenerateAlphaNumericId(prefix, 10, true)
 
-	c.Assert(len(*generated1), chk.Equals, 10)
-	c.Assert(strings.HasPrefix(*generated1, prefix), chk.Equals, true)
+	assert.Equal(10, len(*generated1))
+	assert.Equal(true, strings.HasPrefix(*generated1, prefix))
 
 	generated1a, err := target.GenerateAlphaNumericId(prefix, 10, true)
-	c.Assert(generated1a, chk.Not(chk.Equals), generated1)
+	assert.NotEqual(generated1, generated1a)
 
 	err = target.Stop()
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	target2, err := NewRecording(context, Playback)
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	generated2, err := target2.GenerateAlphaNumericId(prefix, 10, true)
 
 	// The two generated Ids should be the same since target2 loaded the saved random seed from target
-	c.Assert(*generated1, chk.Equals, *generated2)
+	assert.Equal(*generated2, *generated1)
 
 	err = target.Stop()
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 }
 
-func (s *recordingTests) TestRecordRequestsAndDoMatching(c *chk.C) {
-	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
+func (s *recordingTests) TestRecordRequestsAndDoMatching() {
+	assert := assert.New(s.T())
+	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 	server, cleanup := mock.NewServer()
 	server.SetResponse()
 	defer cleanup()
@@ -203,13 +215,13 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching(c *chk.C) {
 	// record the request
 	target.Do(req)
 	err = target.Stop()
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	rec, err := cassette.Load(target.SessionName)
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	for _, i := range rec.Interactions {
-		c.Assert(i.Request.URL, chk.Equals, reqUrl)
+		assert.Equal(reqUrl, i.Request.URL)
 	}
 
 	// re-initialize the recording
@@ -224,11 +236,12 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching(c *chk.C) {
 	// playback the request
 	target.Do(req)
 	err = target.Stop()
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 }
 
-func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording(c *chk.C) {
-	context := NewTestContext(func(msg string) { c.Log(msg); c.Fail() }, func(msg string) { c.Log(msg) }, func() string { return c.TestName() })
+func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() {
+	assert := assert.New(s.T())
+	context := NewTestContext(func(msg string) { s.T().Log(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 	server, cleanup := mock.NewServer()
 	server.SetResponse()
 	defer cleanup()
@@ -245,13 +258,13 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording(c 
 	// record the request
 	target.Do(req)
 	err = target.Stop()
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	rec, err := cassette.Load(target.SessionName)
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 
 	for _, i := range rec.Interactions {
-		c.Assert(i.Request.URL, chk.Equals, reqUrl)
+		assert.Equal(reqUrl, i.Request.URL)
 	}
 
 	// re-initialize the recording
@@ -264,15 +277,15 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording(c 
 
 	// playback the request
 	_, err = target.Do(req)
-	c.Assert(err.Error(), chk.Equals, missingRequestError(req))
-	c.Succeed()
+	assert.Equal(missingRequestError(req), err.Error())
+	// mark succeeded
 	err = target.Stop()
-	c.Assert(err, chk.IsNil)
+	assert.Nil(err)
 }
 
-func (r *recordingTests) TearDownSuite(c *chk.C) {
+func (s *recordingTests) TearDownSuite() {
 
 	// cleanup test files
 	err := os.RemoveAll("recordings")
-	c.Log(err)
+	assert.Nil(s.T(), err)
 }

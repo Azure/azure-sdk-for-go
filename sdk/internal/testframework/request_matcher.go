@@ -35,6 +35,7 @@ var requestHeaderMissing = "Test recording headers do not match. Header '%s' is 
 var headerValuesMismatch = "Test recording header '%s' does not match. request: %s, recording: %s"
 var methodMismatch = "Test recording methods do not match. request: %s, recording: %s"
 var urlMismatch = "Test recording URLs do not match. request: %s, recording: %s"
+var bodiesMismatch = "Test recording bodies do not match.\nrequest: %s\nrecording: %s"
 
 func compareBodies(r *http.Request, i cassette.Request, c TestContext) bool {
 	body := bytes.Buffer{}
@@ -47,7 +48,7 @@ func compareBodies(r *http.Request, i cassette.Request, c TestContext) bool {
 	}
 	bodiesMatch := body.String() == i.Body
 	if !bodiesMatch {
-		c.Log(fmt.Sprintf("Test recording bodies do not match.\nrequest: %s\nrecording: %s", body.String(), i.Body))
+		c.Log(fmt.Sprintf(bodiesMismatch, body.String(), i.Body))
 	}
 	return bodiesMatch
 }

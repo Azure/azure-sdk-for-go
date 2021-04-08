@@ -14,27 +14,30 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
-	chk "gopkg.in/check.v1"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
 
-type recordingSanitizerTests struct{}
-
-// Hookup to the testing framework
-func Test(t *testing.T) { chk.TestingT(t) }
-
-var _ = chk.Suite(&recordingSanitizerTests{})
+type recordingSanitizerTests struct {
+	suite.Suite
+}
 
 const authHeader string = "Authorization"
 const customHeader1 string = "Fooheader"
 const customHeader2 string = "Barheader"
 const nonSanitizedHeader string = "notsanitized"
 
-func (s *recordingSanitizerTests) TestDefaultSanitizerSanitizesAuthHeader(c *chk.C) {
+func TestRecordingSanitizer(t *testing.T) {
+	suite.Run(t, new(recordingSanitizerTests))
+}
+
+func (s *recordingSanitizerTests) TestDefaultSanitizerSanitizesAuthHeader() {
+	assert := assert.New(s.T())
 	server, cleanup := mock.NewServer()
 	server.SetResponse()
 	defer cleanup()
 	rt := NewMockRoundTripper(server)
-	r, _ := recorder.NewAsMode(getTestFileName(c, false), recorder.ModeRecording, rt)
+	r, _ := recorder.NewAsMode(getTestFileName(s.T(), false), recorder.ModeRecording, rt)
 
 	DefaultSanitizer(r)
 
@@ -44,22 +47,23 @@ func (s *recordingSanitizerTests) TestDefaultSanitizerSanitizesAuthHeader(c *chk
 	r.RoundTrip(req)
 	r.Stop()
 
-	c.Assert(req.Header.Get(authHeader), chk.Equals, SanitizedValue)
+	assert.Equal(SanitizedValue, req.Header.Get(authHeader))
 
-	rec, err := cassette.Load(getTestFileName(c, false))
-	c.Assert(err, chk.IsNil)
+	rec, err := cassette.Load(getTestFileName(s.T(), false))
+	assert.Nil(err)
 
 	for _, i := range rec.Interactions {
-		c.Assert(i.Request.Headers.Get(authHeader), chk.Equals, SanitizedValue)
+		assert.Equal(SanitizedValue, i.Request.Headers.Get(authHeader))
 	}
 }
 
-func (s *recordingSanitizerTests) TestAddSanitizedHeadersSanitizes(c *chk.C) {
+func (s *recordingSanitizerTests) TestAddSanitizedHeadersSanitizes() {
+	assert := assert.New(s.T())
 	server, cleanup := mock.NewServer()
 	server.SetResponse()
 	defer cleanup()
 	rt := NewMockRoundTripper(server)
-	r, _ := recorder.NewAsMode(getTestFileName(c, false), recorder.ModeRecording, rt)
+	r, _ := recorder.NewAsMode(getTestFileName(s.T(), false), recorder.ModeRecording, rt)
 
 	target := DefaultSanitizer(r)
 	target.AddSanitizedHeaders(customHeader1, customHeader2)
@@ -73,26 +77,27 @@ func (s *recordingSanitizerTests) TestAddSanitizedHeadersSanitizes(c *chk.C) {
 	r.RoundTrip(req)
 	r.Stop()
 
-	c.Assert(req.Header.Get(customHeader1), chk.Equals, SanitizedValue)
-	c.Assert(req.Header.Get(customHeader2), chk.Equals, SanitizedValue)
-	c.Assert(req.Header.Get(nonSanitizedHeader), chk.Equals, safeValue)
+	assert.Equal(SanitizedValue, req.Header.Get(customHeader1))
+	assert.Equal(SanitizedValue, req.Header.Get(customHeader2))
+	assert.Equal(safeValue, req.Header.Get(nonSanitizedHeader))
 
-	rec, err := cassette.Load(getTestFileName(c, false))
-	c.Assert(err, chk.IsNil)
+	rec, err := cassette.Load(getTestFileName(s.T(), false))
+	assert.Nil(err)
 
 	for _, i := range rec.Interactions {
-		c.Assert(i.Request.Headers.Get(customHeader1), chk.Equals, SanitizedValue)
-		c.Assert(i.Request.Headers.Get(customHeader2), chk.Equals, SanitizedValue)
-		c.Assert(i.Request.Headers.Get(nonSanitizedHeader), chk.Equals, safeValue)
+		assert.Equal(SanitizedValue, i.Request.Headers.Get(customHeader1))
+		assert.Equal(SanitizedValue, i.Request.Headers.Get(customHeader2))
+		assert.Equal(safeValue, i.Request.Headers.Get(nonSanitizedHeader))
 	}
 }
 
-func (s *recordingSanitizerTests) TestAddUrlSanitizerSanitizes(c *chk.C) {
+func (s *recordingSanitizerTests) TestAddUrlSanitizerSanitizes() {
+	assert := assert.New(s.T())
 	server, cleanup := mock.NewServer()
 	server.SetResponse(mock.WithStatusCode(http.StatusNoContent))
 	defer cleanup()
 	rt := NewMockRoundTripper(server)
-	r, _ := recorder.NewAsMode(getTestFileName(c, false), recorder.ModeRecording, rt)
+	r, _ := recorder.NewAsMode(getTestFileName(s.T(), false), recorder.ModeRecording, rt)
 
 	sanitizedUrl := server.URL()
 	secret := "/secretvalue"
@@ -108,23 +113,24 @@ func (s *recordingSanitizerTests) TestAddUrlSanitizerSanitizes(c *chk.C) {
 	r.RoundTrip(req)
 	r.Stop()
 
-	rec, err := cassette.Load(getTestFileName(c, false))
-	c.Assert(err, chk.IsNil)
+	rec, err := cassette.Load(getTestFileName(s.T(), false))
+	assert.Nil(err)
 
 	for _, i := range rec.Interactions {
-		c.Assert(i.Request.URL, chk.Not(chk.Equals), sanitizedUrl+secret)
-		c.Assert(i.Request.URL, chk.Equals, sanitizedUrl)
+		assert.NotEqual(sanitizedUrl+secret, i.Request.URL)
+		assert.Equal(sanitizedUrl, i.Request.URL)
 	}
 }
 
-func (s *recordingSanitizerTests) TearDownSuite(c *chk.C) {
+func (s *recordingSanitizerTests) TearDownSuite() {
+	assert := assert.New(s.T())
 	// cleanup test files
 	err := os.RemoveAll("testfiles")
-	c.Log(err)
+	assert.Nil(err)
 }
 
-func getTestFileName(c *chk.C, addSuffix bool) string {
-	name := "testfiles/" + c.TestName()
+func getTestFileName(t *testing.T, addSuffix bool) string {
+	name := "testfiles/" + t.Name()
 	if addSuffix {
 		name = name + ".yaml"
 	}

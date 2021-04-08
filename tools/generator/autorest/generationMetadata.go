@@ -82,7 +82,11 @@ func GetGenerationMetadata(pkg string) (*GenerationMetadata, error) {
 		return nil, fmt.Errorf("cannot open file %s: %+v", changelogPath, err)
 	}
 	defer file.Close()
-	return Parse(file)
+	metadata, err := Parse(file)
+	if err != nil {
+		return nil, fmt.Errorf("cannot parse metadata in '%s': %+v", pkg, err)
+	}
+	return metadata, nil
 }
 
 func parseFirstLine(line string) (*GenerationMetadata, error) {

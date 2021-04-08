@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
@@ -66,17 +67,18 @@ func execute(inputPath, outputPath string, flags Flags) error {
 	if err != nil {
 		return err
 	}
-	log.Printf("Backuping azure-sdk-for-go to temp directory...")
-	backupRoot, err := backupSDKRepository(cwd)
-	if err != nil {
-		return err
-	}
-	defer eraseBackup(backupRoot)
-	log.Printf("Finished backuping to '%s'", backupRoot)
+
+	// we no longer need to back up the repo
+	//log.Printf("Backuping azure-sdk-for-go to temp directory...")
+	//backupRoot, err := backupSDKRepository(cwd)
+	//if err != nil {
+	//	return err
+	//}
+	//defer eraseBackup(backupRoot)
+	//log.Printf("Finished backuping to '%s'", backupRoot)
 
 	ctx := generateContext{
 		sdkRoot:    utils.NormalizePath(cwd),
-		clnRoot:    backupRoot,
 		specRoot:   input.SpecFolder,
 		commitHash: input.HeadSha,
 		optionPath: flags.OptionPath,
@@ -118,6 +120,8 @@ type generateContext struct {
 	specRoot   string
 	commitHash string
 	optionPath string
+
+	repoContent map[string]exports.Content
 }
 
 // TODO -- support dry run
@@ -125,7 +129,11 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	if input.DryRun {
 		return nil, fmt.Errorf("dry run not supported yet")
 	}
-	log.Printf("Reading options from file '%s'...", ctx.optionPath)
+
+	log.Printf("Reading packages in azure-sdk-for-go...")
+	if err := ctx.readRepoContent(); err != nil {
+		return nil, err
+	}
 
 	// now we summary all the metadata in sdk
 	log.Printf("Cleaning up all the packages related with the following readme files: [%s]", strings.Join(input.RelatedReadmeMdFiles, ", "))
@@ -143,6 +151,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	}
 	log.Printf("The following %d package(s) have been cleaned up: [%s]", len(removedPackagePaths), strings.Join(removedPackagePaths, ", "))
 
+	log.Printf("Reading options from file '%s'...", ctx.optionPath)
 	optionFile, err := os.Open(ctx.optionPath)
 	if err != nil {
 		return nil, err
@@ -178,6 +187,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 			codeGenVer:      options.CodeGeneratorVersion(),
 			readme:          readme,
 			removedPackages: removedPackages[readme],
+			repoContent:     ctx.repoContent,
 		}
 		log.Printf("Processing metadata generated in readme '%s'...", readme)
 		packages, err := m.process(g.metadataOutput)
@@ -215,6 +225,32 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	return &pipeline.GenerateOutput{
 		Packages: results,
 	}, errorBuilder.build()
+}
+
+func (ctx *generateContext) readRepoContent() error {
+	ctx.repoContent = make(map[string]exports.Content)
+	pkgs, err := track1.List(filepath.Join(ctx.sdkRoot, "services"))
+	if err != nil {
+		return fmt.Errorf("failed to list track 1 packages: %+v", err)
+	}
+
+	for _, pkg := range pkgs {
+		relativePath, err := filepath.Rel(ctx.sdkRoot, pkg.FullPath())
+		if err != nil {
+			return err
+		}
+		relativePath = utils.NormalizePath(relativePath)
+		if _, ok := ctx.repoContent[relativePath]; ok {
+			return fmt.Errorf("duplicate package: %s", pkg.Path())
+		}
+		exp, err := exports.Get(pkg.FullPath())
+		if err != nil {
+			return err
+		}
+		ctx.repoContent[relativePath] = exp
+	}
+
+	return nil
 }
 
 type generateErrorBuilder struct {

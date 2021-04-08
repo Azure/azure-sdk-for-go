@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
+
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/validate"
@@ -19,26 +21,16 @@ type changelogContext struct {
 	codeGenVer      string
 	readme          string
 	removedPackages []packageOutput
+
+	repoContent map[string]exports.Content
 }
 
 func (ctx changelogContext) SDKRoot() string {
 	return ctx.sdkRoot
 }
 
-func (ctx changelogContext) SDKCloneRoot() string {
-	return ctx.clnRoot
-}
-
-func (ctx changelogContext) SpecRoot() string {
-	return ctx.specRoot
-}
-
-func (ctx changelogContext) SpecCommitHash() string {
-	return ctx.commitHash
-}
-
-func (ctx changelogContext) CodeGenVersion() string {
-	return ctx.codeGenVer
+func (ctx changelogContext) RepoContent() map[string]exports.Content {
+	return ctx.repoContent
 }
 
 func (ctx changelogContext) process(metadataLocation string) ([]autorest.ChangelogResult, error) {
@@ -53,7 +45,7 @@ func (ctx changelogContext) process(metadataLocation string) ([]autorest.Changel
 		return nil, err
 	}
 	// generate the changelogs
-	p := autorest.NewChangelogProcessorFromContext(ctx).WithLocation(metadataLocation).WithReadme(ctx.readme)
+	p := autorest.NewChangelogProcessorFromContext(ctx)
 	changelogResults, err := p.Process(metadataMap)
 	if err != nil {
 		return nil, err
@@ -71,19 +63,28 @@ func (ctx changelogContext) process(metadataLocation string) ([]autorest.Changel
 			// this package has been regenerated
 			continue
 		}
-		result, err := p.GenerateChangelog(rp.outputFolder, rp.tag)
+		result, err := p.GenerateChangelog(rp.outputFolder)
 		if err != nil {
 			return nil, err
 		}
 		removedResults = append(removedResults, *result)
 	}
 	changelogResults = append(changelogResults, removedResults...)
-	return changelogResults, nil
+
+	// omit the packages not in services directory
+	var results []autorest.ChangelogResult
+	for _, result := range changelogResults {
+		if strings.HasPrefix(result.PackageName, "services/") {
+			results = append(results, result)
+		}
+	}
+
+	return results, nil
 }
 
 func contains(array []autorest.ChangelogResult, item string) bool {
 	for _, r := range array {
-		if r.PackagePath == item {
+		if r.PackageFullPath == item {
 			return true
 		}
 	}
@@ -91,10 +92,8 @@ func contains(array []autorest.ChangelogResult, item string) bool {
 }
 
 func writeChangelogFile(result autorest.ChangelogResult) error {
-	fileContent := fmt.Sprintf(`%s
-
-%s`, result.GenerationMetadata.String(), result.Changelog.ToMarkdown())
-	changelogFile, err := os.Create(filepath.Join(result.PackagePath, autorest.ChangelogFilename))
+	fileContent := result.Changelog.ToMarkdown()
+	changelogFile, err := os.Create(filepath.Join(result.PackageFullPath, autorest.ChangelogFilename))
 	if err != nil {
 		return err
 	}

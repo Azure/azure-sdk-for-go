@@ -5,6 +5,13 @@ package aztables
 
 import (
 	"context"
+	"errors"
+	"fmt"
+	"strconv"
+	"strings"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
 // Pager for Table entity queries
@@ -92,36 +99,40 @@ func castAndRemoveAnnotationsSlice(entities *[]map[string]interface{}) {
 
 }
 
-func castAndRemoveAnnotations(entity *map[string]interface{}) {
-	/*
-			foreach (var propertyName in entity.Keys)
-		            {
-		                var spanPropertyName = propertyName.AsSpan();
-		                var iSuffix = spanPropertyName.IndexOf(spanOdataSuffix);
-		                if (iSuffix > 0)
-		                {
-		                    // This property is an Odata annotation. Save it in the typeAnnoations dictionary.
-		                    typeAnnotationsWithKeys[spanPropertyName.Slice(0, iSuffix).ToString()] = ((entity[propertyName] as string)!, propertyName);
-		                }
-		            }
+func castAndRemoveAnnotations(entity *map[string]interface{}) (*map[string]interface{}, error) {
+	value := (*entity)["value"].([]interface{})[0].(map[string]interface{})
+	for k, v := range value {
 
-		            // Iterate through the types that are serialized as string by default and Parse them as the correct type, as indicated by the type annotations.
-		            foreach (var annotation in typeAnnotationsWithKeys.Keys)
-		            {
-		                entity[annotation] = typeAnnotationsWithKeys[annotation].TypeAnnotation switch
-		                {
-		                    TableConstants.Odata.EdmBinary => Convert.FromBase64String(entity[annotation] as string),
-		                    TableConstants.Odata.EdmDateTime => DateTimeOffset.Parse(entity[annotation] as string, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-		                    TableConstants.Odata.EdmGuid => Guid.Parse(entity[annotation] as string),
-		                    TableConstants.Odata.EdmInt64 => long.Parse(entity[annotation] as string, CultureInfo.InvariantCulture),
-		                    _ => throw new NotSupportedException("Not supported type " + typeAnnotationsWithKeys[annotation])
-		                };
+		iSuffix := strings.Index(k, OdataType)
+		if iSuffix > 0 {
+			// Get the name of the property that this odataType key describes.
+			valueKey := k[0:iSuffix]
+			// get the string value of the value at the valueKey
+			valAsString := value[valueKey].(string)
 
-		                // Remove the type annotation property from the dictionary.
-		                entity.Remove(typeAnnotationsWithKeys[annotation].AnnotationKey);
-		            }
-	*/
-	// for name, val := range *entity {
-
-	// }
+			switch v {
+			case EdmBinary:
+				value[valueKey] = []byte(valAsString)
+			case EdmDateTime:
+				t, err := time.Parse(time.RFC3339Nano, valAsString)
+				if err != nil {
+					return nil, err
+				}
+				value[valueKey] = t
+			case EdmGuid:
+				value[valueKey] = uuid.Parse(valAsString)
+			case EdmInt64:
+				i, err := strconv.ParseInt(valAsString, 10, 64)
+				if err != nil {
+					return nil, err
+				}
+				value[valueKey] = i
+			default:
+				return nil, errors.New(fmt.Sprintf("unsupported annotation found: %s", k))
+			}
+			// remove the annotation key
+			delete(value, k)
+		}
+	}
+	return &value, nil
 }

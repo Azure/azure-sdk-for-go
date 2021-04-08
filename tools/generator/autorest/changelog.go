@@ -127,7 +127,7 @@ func (p *ChangelogProcessor) GenerateChangelog(packagePath, tag string) (*Change
 	if err != nil {
 		return nil, fmt.Errorf("failed to get exports from package '%s' in the sdk '%s': %+v", packageName, p.ctx.SDKRoot(), err)
 	}
-	r, err := getChangelogForPackage(lhs, rhs)
+	r, err := GetChangelogForPackage(lhs, rhs)
 	if err != nil {
 		return nil, fmt.Errorf("failed to generate changelog for package '%s': %+v", packagePath, err)
 	}
@@ -157,7 +157,8 @@ func getExportsForPackage(dir string) (*exports.Content, error) {
 	return &exp, nil
 }
 
-func getChangelogForPackage(lhs, rhs *exports.Content) (*model.Changelog, error) {
+// GetChangelogForPackage generates the changelog report with the given two Contents
+func GetChangelogForPackage(lhs, rhs *exports.Content) (*model.Changelog, error) {
 	if lhs == nil && rhs == nil {
 		return nil, fmt.Errorf("this package does not exist even after the generation, this should never happen")
 	}

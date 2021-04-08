@@ -11,7 +11,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-02-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-03-01/containerservice"
 )
 
 const (
@@ -64,6 +64,22 @@ const (
 	MostPods   Expander = original.MostPods
 	Priority   Expander = original.Priority
 	Random     Expander = original.Random
+)
+
+type ExtendedLocationTypes = original.ExtendedLocationTypes
+
+const (
+	EdgeZone ExtendedLocationTypes = original.EdgeZone
+)
+
+type GPUInstanceProfile = original.GPUInstanceProfile
+
+const (
+	MIG1g GPUInstanceProfile = original.MIG1g
+	MIG2g GPUInstanceProfile = original.MIG2g
+	MIG3g GPUInstanceProfile = original.MIG3g
+	MIG4g GPUInstanceProfile = original.MIG4g
+	MIG7g GPUInstanceProfile = original.MIG7g
 )
 
 type KubeletDiskType = original.KubeletDiskType
@@ -137,6 +153,13 @@ const (
 	Managed   OSDiskType = original.Managed
 )
 
+type OSSKU = original.OSSKU
+
+const (
+	CBLMariner OSSKU = original.CBLMariner
+	Ubuntu     OSSKU = original.Ubuntu
+)
+
 type OSType = original.OSType
 
 const (
@@ -192,10 +215,11 @@ const (
 type UpgradeChannel = original.UpgradeChannel
 
 const (
-	UpgradeChannelNone   UpgradeChannel = original.UpgradeChannelNone
-	UpgradeChannelPatch  UpgradeChannel = original.UpgradeChannelPatch
-	UpgradeChannelRapid  UpgradeChannel = original.UpgradeChannelRapid
-	UpgradeChannelStable UpgradeChannel = original.UpgradeChannelStable
+	UpgradeChannelNodeImage UpgradeChannel = original.UpgradeChannelNodeImage
+	UpgradeChannelNone      UpgradeChannel = original.UpgradeChannelNone
+	UpgradeChannelPatch     UpgradeChannel = original.UpgradeChannelPatch
+	UpgradeChannelRapid     UpgradeChannel = original.UpgradeChannelRapid
+	UpgradeChannelStable    UpgradeChannel = original.UpgradeChannelStable
 )
 
 type VMSizeTypes = original.VMSizeTypes
@@ -408,9 +432,11 @@ type AgentPoolsUpgradeNodeImageVersionFuture = original.AgentPoolsUpgradeNodeIma
 type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
+type CommandResultProperties = original.CommandResultProperties
 type CredentialResult = original.CredentialResult
 type CredentialResults = original.CredentialResults
 type DiagnosticsProfile = original.DiagnosticsProfile
+type ExtendedLocation = original.ExtendedLocation
 type KubeletConfig = original.KubeletConfig
 type LinuxOSConfig = original.LinuxOSConfig
 type LinuxProfile = original.LinuxProfile
@@ -429,6 +455,7 @@ type ManagedClusterAddonProfileIdentity = original.ManagedClusterAddonProfileIde
 type ManagedClusterAgentPoolProfile = original.ManagedClusterAgentPoolProfile
 type ManagedClusterAgentPoolProfileProperties = original.ManagedClusterAgentPoolProfileProperties
 type ManagedClusterAutoUpgradeProfile = original.ManagedClusterAutoUpgradeProfile
+type ManagedClusterHTTPProxyConfig = original.ManagedClusterHTTPProxyConfig
 type ManagedClusterIdentity = original.ManagedClusterIdentity
 type ManagedClusterIdentityUserAssignedIdentitiesValue = original.ManagedClusterIdentityUserAssignedIdentitiesValue
 type ManagedClusterListResult = original.ManagedClusterListResult
@@ -458,11 +485,15 @@ type ManagedClustersDeleteFuture = original.ManagedClustersDeleteFuture
 type ManagedClustersResetAADProfileFuture = original.ManagedClustersResetAADProfileFuture
 type ManagedClustersResetServicePrincipalProfileFuture = original.ManagedClustersResetServicePrincipalProfileFuture
 type ManagedClustersRotateClusterCertificatesFuture = original.ManagedClustersRotateClusterCertificatesFuture
+type ManagedClustersRunCommandFuture = original.ManagedClustersRunCommandFuture
 type ManagedClustersStartFuture = original.ManagedClustersStartFuture
 type ManagedClustersStopFuture = original.ManagedClustersStopFuture
 type ManagedClustersUpdateTagsFuture = original.ManagedClustersUpdateTagsFuture
 type MasterProfile = original.MasterProfile
 type NetworkProfile = original.NetworkProfile
+type OSOptionProfile = original.OSOptionProfile
+type OSOptionProperty = original.OSOptionProperty
+type OSOptionPropertyList = original.OSOptionPropertyList
 type OperationListResult = original.OperationListResult
 type OperationValue = original.OperationValue
 type OperationValueDisplay = original.OperationValueDisplay
@@ -481,6 +512,8 @@ type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionSt
 type ResolvePrivateLinkServiceIDClient = original.ResolvePrivateLinkServiceIDClient
 type Resource = original.Resource
 type ResourceReference = original.ResourceReference
+type RunCommandRequest = original.RunCommandRequest
+type RunCommandResult = original.RunCommandResult
 type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey
 type SubResource = original.SubResource
@@ -576,6 +609,12 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 func PossibleExpanderValues() []Expander {
 	return original.PossibleExpanderValues()
 }
+func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
+	return original.PossibleExtendedLocationTypesValues()
+}
+func PossibleGPUInstanceProfileValues() []GPUInstanceProfile {
+	return original.PossibleGPUInstanceProfileValues()
+}
 func PossibleKubeletDiskTypeValues() []KubeletDiskType {
 	return original.PossibleKubeletDiskTypeValues()
 }
@@ -605,6 +644,9 @@ func PossibleNetworkPolicyValues() []NetworkPolicy {
 }
 func PossibleOSDiskTypeValues() []OSDiskType {
 	return original.PossibleOSDiskTypeValues()
+}
+func PossibleOSSKUValues() []OSSKU {
+	return original.PossibleOSSKUValues()
 }
 func PossibleOSTypeValues() []OSType {
 	return original.PossibleOSTypeValues()

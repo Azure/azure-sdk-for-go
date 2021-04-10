@@ -9,12 +9,14 @@ type TestContext interface {
 	Fail(string)
 	Log(string)
 	Name() string
+	IsFailed() bool
 }
 
 type testContext struct {
-	fail Failer
-	log  Logger
-	name string
+	failed bool
+	fail   Failer
+	log    Logger
+	name   string
 }
 
 type Failer func(string)
@@ -26,6 +28,7 @@ func NewTestContext(failer Failer, logger Logger, name Name) TestContext {
 }
 
 func (c *testContext) Fail(msg string) {
+	c.failed = true
 	c.fail(msg)
 }
 func (c *testContext) Log(msg string) {
@@ -33,4 +36,7 @@ func (c *testContext) Log(msg string) {
 }
 func (c *testContext) Name() string {
 	return c.name
+}
+func (c *testContext) IsFailed() bool {
+	return c.failed
 }

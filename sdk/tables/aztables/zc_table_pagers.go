@@ -5,8 +5,10 @@ package aztables
 
 import (
 	"context"
+	"encoding/base64"
 	"errors"
 	"fmt"
+	"reflect"
 	"strconv"
 	"strings"
 	"time"
@@ -99,6 +101,8 @@ func castAndRemoveAnnotationsSlice(entities *[]map[string]interface{}) {
 
 }
 
+// TODO: The default behavior of json.Unmarshal is to deserialize all json numbers as Float64.
+// This can be a problem for table entities which store float and int differently
 func castAndRemoveAnnotations(entity *map[string]interface{}) (*map[string]interface{}, error) {
 	value := (*entity)["value"].([]interface{})[0].(map[string]interface{})
 	for k, v := range value {
@@ -114,7 +118,7 @@ func castAndRemoveAnnotations(entity *map[string]interface{}) (*map[string]inter
 			case EdmBinary:
 				value[valueKey] = []byte(valAsString)
 			case EdmDateTime:
-				t, err := time.Parse(time.RFC3339Nano, valAsString)
+				t, err := time.Parse(ISO8601, valAsString)
 				if err != nil {
 					return nil, err
 				}
@@ -135,4 +139,79 @@ func castAndRemoveAnnotations(entity *map[string]interface{}) (*map[string]inter
 		}
 	}
 	return &value, nil
+}
+
+func toMap(ent interface{}) (*map[string]interface{}, error) {
+	entMap := make(map[string]interface{})
+	var s reflect.Value
+	if reflect.ValueOf(ent).Kind() == reflect.Ptr {
+		s = reflect.ValueOf(ent).Elem()
+	} else {
+		s = reflect.ValueOf(&ent).Elem().Elem()
+	}
+	typeOfT := s.Type()
+
+	for i := 0; i < s.NumField(); i++ {
+		v := s.Field(i)
+	Switch:
+		f := typeOfT.Field(i)
+		name := f.Name
+		// add odata annotations for the types that require it.
+		switch k := v.Type().Kind(); k {
+		case reflect.Array, reflect.Map, reflect.Slice:
+			if GetTypeArray(v.Interface()) != reflect.TypeOf(byte(0)) {
+				return nil, errors.New("arrays and slices must be of type byte")
+			}
+			// check if this is a uuid field as decorated by a tag
+			if _, ok := f.Tag.Lookup("uuid"); ok {
+				entMap[odataType(name)] = EdmGuid
+				u := v.Interface().([16]byte)
+				var uu uuid.UUID = u
+				entMap[name] = uu.String()
+				continue
+			} else {
+				entMap[odataType(name)] = EdmBinary
+				b := v.Interface().([]byte)
+				entMap[name] = base64.StdEncoding.EncodeToString(b)
+				continue
+			}
+		case reflect.Struct:
+			switch tn := v.Type().String(); tn {
+			case "time.Time":
+				entMap[odataType(name)] = EdmDateTime
+				time := v.Interface().(time.Time)
+				entMap[name] = time.UTC().Format(ISO8601)
+				continue
+			default:
+				return nil, errors.New(fmt.Sprintf("Invalid struct for entity field '%s' of type '%s'", typeOfT.Field(i).Name, tn))
+			}
+		case reflect.Float32, reflect.Float64:
+			entMap[odataType(name)] = EdmDouble
+		case reflect.Int64:
+			entMap[odataType(name)] = EdmInt64
+			i64 := v.Interface().(int64)
+			entMap[name] = strconv.FormatInt(i64, 10)
+			continue
+		case reflect.Ptr:
+			if v.IsNil() {
+				// if the pointer is nil, ignore it.
+				continue
+			}
+			// follow the pointer to the type and re-run the switch
+			v = v.Elem()
+			goto Switch
+
+			// typeOfT.Field(i).Name, f.Type(), f.Interface())
+		}
+		entMap[name] = v.Interface()
+	}
+	return &entMap, nil
+}
+
+func odataType(n string) string {
+	return fmt.Sprintf("%s%s", n, OdataType)
+}
+
+func GetTypeArray(arr interface{}) reflect.Type {
+	return reflect.TypeOf(arr).Elem()
 }

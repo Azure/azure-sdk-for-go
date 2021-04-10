@@ -4,14 +4,19 @@
 package aztables
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"io"
 	"io/ioutil"
+	"math"
 	"net/http"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -33,12 +38,90 @@ func TestCastAndRemoveAnnotations(t *testing.T) {
 		assert.NotContains(k, OdataType)
 	}
 
-	assert.IsType((*entity)["SomeDateProperty"], time.Now())
+	assert.IsType(time.Now(), (*entity)["SomeDateProperty"])
+	assert.IsType([]byte{}, (*entity)["SomeBinaryProperty"])
+	assert.IsType(float64(0), (*entity)["SomeDoubleProperty0"])
+	// TODO: fix this
+	// assert.IsType(int(0), (*entity)["SomeIntProperty"])
+}
+
+func TestToMap(t *testing.T) {
+	assert := assert.New(t)
+
+	ent := createComplexEntity()
+
+	entMap, err := toMap(ent)
+	assert.Nil(err)
+
+	// Validate that we have all the @odata.type properties for types []byte, int64, float64, time.Time, and uuid
+	for k, v := range odataHintProps {
+		vv, ok := (*entMap)[odataType(k)]
+		assert.Truef(ok, "Should have found map key of name '%s'", odataType(k))
+		assert.Equal(v, vv)
+	}
+
+	// validate all the types were properly casted / converted
+	assert.Equal(ent.PartitionKey, (*entMap)["PartitionKey"])
+	assert.Equal(ent.RowKey, (*entMap)["RowKey"])
+	ts, _ := time.Parse(ISO8601, (*entMap)["Timestamp"].(string))
+	assert.Equal(ent.Timestamp.UTC().String(), ts.String())
+	assert.Equal(base64.StdEncoding.EncodeToString(ent.SomeBinaryProperty), string((*entMap)["SomeBinaryProperty"].(string)))
+	ts, _ = time.Parse(ISO8601, (*entMap)["SomeDateProperty"].(string))
+	assert.Equal(ent.SomeDateProperty.UTC().String(), ts.String())
+	assert.Equal(ent.SomeDoubleProperty0, (*entMap)["SomeDoubleProperty0"])
+	assert.Equal(ent.SomeDoubleProperty1, (*entMap)["SomeDoubleProperty1"])
+	var u uuid.UUID = ent.SomeGuidProperty
+	assert.Equal(u.String(), (*entMap)["SomeGuidProperty"].(string))
+	assert.Equal(strconv.FormatInt(ent.SomeInt64Property, 10), (*entMap)["SomeInt64Property"].(string))
+	assert.Equal(ent.SomeIntProperty, (*entMap)["SomeIntProperty"])
+	assert.Equal(ent.SomeStringProperty, (*entMap)["SomeStringProperty"])
+	assert.Equal(*ent.SomePtrStringProperty, (*entMap)["SomePtrStringProperty"])
+}
+
+func TestEntitySerialization(t *testing.T) {
+	assert := assert.New(t)
+
+	ent := createComplexEntity()
+
+	b, err := json.Marshal(ent)
+	assert.Nil(err)
+	assert.NotEmpty(b)
+	s := string(b)
+	//assert.FailNow(s)
+	assert.NotEmpty(s)
+}
+
+func createComplexEntity() complexEntity {
+	sp := "some pointer to string"
+	var e = complexEntity{
+		PartitionKey:          "partition",
+		ETag:                  "*",
+		RowKey:                "row",
+		Timestamp:             time.Now(),
+		SomeBinaryProperty:    []byte("some bytes"),
+		SomeDateProperty:      time.Now(),
+		SomeDoubleProperty0:   float64(1),
+		SomeDoubleProperty1:   float64(1.2345),
+		SomeGuidProperty:      uuid.New(),
+		SomeInt64Property:     math.MaxInt64,
+		SomeIntProperty:       42,
+		SomeStringProperty:    "some string",
+		SomePtrStringProperty: &sp}
+	return e
 }
 
 func closerFromString(content string) io.ReadCloser {
 	return ioutil.NopCloser(strings.NewReader(content))
 }
+
+var odataHintProps = map[string]string{
+	"Timestamp":           EdmDateTime,
+	"SomeBinaryProperty":  EdmBinary,
+	"SomeDateProperty":    EdmDateTime,
+	"SomeDoubleProperty0": EdmDouble,
+	"SomeDoubleProperty1": EdmDouble,
+	"SomeGuidProperty":    EdmGuid,
+	"SomeInt64Property":   EdmInt64}
 
 const complexPayload = "{\"odata.metadata\": \"https://jverazsdkprim.table.core.windows.net/$metadata#testtableifprd13i\"," +
 	"\"value\": [" +

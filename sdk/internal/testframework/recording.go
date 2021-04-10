@@ -17,9 +17,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/dnaeon/go-vcr/cassette"
 	"github.com/dnaeon/go-vcr/recorder"
-
 	"gopkg.in/yaml.v2"
 )
 
@@ -32,6 +32,7 @@ type Recording struct {
 	previousSessionVariables map[string]*string `yaml:"variables"`
 	recorder                 *recorder.Recorder
 	src                      rand.Source
+	now                      *time.Time
 	sanitizer                *RecordingSanitizer
 	c                        TestContext
 }
@@ -40,6 +41,7 @@ const (
 	alphanumericBytes           = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
 	alphanumericLowercaseBytes  = "abcdefghijklmnopqrstuvwxyz1234567890"
 	randomSeedVariableName      = "randomSeed"
+	nowVariableName             = "now"
 	ModeEnvironmentVariableName = "AZURE_TEST_MODE"
 )
 
@@ -77,7 +79,7 @@ func NewRecording(c TestContext, mode RecordMode) (*Recording, error) {
 
 	// If the mode is set in the environment, let that override the requested mode
 	// This is to enable support for nightly live test pipelines
-	envMode := GetOptionalEnv(ModeEnvironmentVariableName, string(mode))
+	envMode := getOptionalEnv(ModeEnvironmentVariableName, string(mode))
 	mode = RecordMode(*envMode)
 
 	// initialize the Recording
@@ -114,7 +116,7 @@ func (r *Recording) GetRecordedVariable(name string, variableType ...VariableTyp
 	result, ok := r.previousSessionVariables[name]
 	if !ok || r.Mode == Live {
 
-		result, err = GetRequiredEnv(name)
+		result, err = getRequiredEnv(name)
 		if err != nil {
 			r.c.Fail(err.Error())
 			return nil, err
@@ -130,7 +132,7 @@ func (r *Recording) GetRecordedVariable(name string, variableType ...VariableTyp
 func (r *Recording) GetOptionalRecordedVariable(name string, defaultValue string, variableType ...VariableType) string {
 	result, ok := r.previousSessionVariables[name]
 	if !ok || r.Mode == Live {
-		result = GetOptionalEnv(name, defaultValue)
+		result = getOptionalEnv(name, defaultValue)
 		r.variables[name] = applyVariableOptions(result, variableType...)
 	}
 	return *result
@@ -156,9 +158,14 @@ func (r *Recording) Stop() error {
 	}
 
 	if len(r.variables) > 0 {
-		// Save the variables after merging them
-
-		//TODO: Merge values from previousVariables that are not in variables to variables
+		// Merge values from previousVariables that are not in variables to variables
+		for k, v := range r.previousSessionVariables {
+			if _, ok := r.variables[k]; ok {
+				// skip variables that were new in the current session
+				continue
+			}
+			r.variables[k] = v
+		}
 
 		// Marshal to YAML and save variables
 		data, err := yaml.Marshal(r.variables)
@@ -188,7 +195,7 @@ func (r *Recording) Stop() error {
 }
 
 // Gets an environment variable by name and returns an error if it is not found
-func GetRequiredEnv(name string) (*string, error) {
+func getRequiredEnv(name string) (*string, error) {
 	env, ok := os.LookupEnv(name)
 	if ok {
 		return &env, nil
@@ -198,13 +205,25 @@ func GetRequiredEnv(name string) (*string, error) {
 }
 
 // gets an environment variable by name and returns the defaultValue if not found
-func GetOptionalEnv(name string, defaultValue string) *string {
+func getOptionalEnv(name string, defaultValue string) *string {
 	env, ok := os.LookupEnv(name)
 	if ok {
 		return &env
 	} else {
 		return &defaultValue
 	}
+}
+
+func (r *Recording) Now() time.Time {
+	r.initNow()
+
+	return *r.now
+}
+
+func (r *Recording) UUID() uuid.UUID {
+	r.initRandomSource()
+
+	return uuid.FromSource(r.src)
 }
 
 // generate a recorded random alpha numeric id
@@ -310,6 +329,35 @@ func (r *Recording) initRandomSource() {
 
 	// create a Source with the seed
 	r.src = rand.NewSource(seed)
+}
+
+// Initializes the Source to be used for random value creation in this Recording
+func (r *Recording) initNow() {
+	// if we already have a now generated, return immediately
+	if r.now != nil {
+		return
+	}
+
+	var err error
+	var nowStr *string
+	var newNow time.Time
+
+	// check to see if we already have a random seed stored, use that if so
+	nowStr, ok := r.previousSessionVariables[nowVariableName]
+	if ok {
+		newNow, err = time.Parse(time.RFC3339Nano, *nowStr)
+	}
+
+	// We did not have a random seed already stored; create a new one
+	if !ok || err != nil || r.Mode == Live {
+		newNow = time.Now()
+		nowStr = new(string)
+		*nowStr = newNow.Format(time.RFC3339Nano)
+		r.variables[nowVariableName] = nowStr
+	}
+
+	// save the now value.
+	r.now = &newNow
 }
 
 // returns (recordingFilePath, variablesFilePath)

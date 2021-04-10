@@ -4,6 +4,9 @@
 package aztables
 
 import (
+	"bytes"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"testing"
 
@@ -58,6 +61,20 @@ func (s *tableClientLiveTests) TestAddEntity() {
 	entitiesToCreate := createSimpleEntities(1, "partition")
 
 	for _, e := range *entitiesToCreate {
+		_, err := client.AddMapEntity(ctx, &e)
+		assert.Nil(err)
+	}
+}
+
+func (s *tableClientLiveTests) aTestAddComplexEntity() {
+	assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	client, delete := s.init(true)
+	defer delete()
+
+	entitiesToCreate := createComplexEntities(context, 1, "partition")
+
+	for _, e := range *entitiesToCreate {
 		_, err := client.AddEntity(ctx, &e)
 		assert.Nil(err)
 	}
@@ -71,7 +88,7 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	// Add 5 entities
 	entitiesToCreate := createSimpleEntities(5, "partition")
 	for _, e := range *entitiesToCreate {
-		_, err := client.AddEntity(ctx, &e)
+		_, err := client.AddMapEntity(ctx, &e)
 		assert.Nil(err)
 	}
 
@@ -121,9 +138,25 @@ func (s *tableClientLiveTests) init(doCreate bool) (*TableClient, func()) {
 	client := context.client.GetTableClient(*tableName)
 	if doCreate {
 		_, err := client.Create(ctx)
-		assert.Nil(err)
+		if err != nil {
+			r := err.RawResponse()
+			assert.FailNow(r.Status)
+		}
 	}
 	return client, func() {
 		client.Delete(ctx)
 	}
+}
+
+func getStringFromBody(b io.ReadCloser) string {
+	body := bytes.Buffer{}
+	b.Close()
+	if b != nil {
+		_, err := body.ReadFrom(b)
+		if err != nil {
+			return "<emtpy body>"
+		}
+		b = ioutil.NopCloser(&body)
+	}
+	return body.String()
 }

@@ -6,7 +6,9 @@ package aztables
 import (
 	"context"
 	"fmt"
+	"math"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
@@ -18,6 +20,7 @@ type tablesRecordedTests struct{}
 type testContext struct {
 	recording *testframework.Recording
 	client    *TableServiceClient
+	context   *testframework.TestContext
 }
 
 const (
@@ -80,12 +83,12 @@ func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType,
 
 	client, err := NewTableServiceClient(uri, cred, &TableClientOptions{HTTPClient: recording, Retry: azcore.RetryOptions{MaxRetries: -1}})
 	assert.Nil(err)
-	clientsMap[testName] = &testContext{client: client, recording: recording}
+	clientsMap[testName] = &testContext{client: client, recording: recording, context: &context}
 }
 
 func recordedTestTeardown(key string) {
 	context, ok := clientsMap[key]
-	if ok {
+	if ok && !(*context.context).IsFailed() {
 		context.recording.Stop()
 	}
 }
@@ -133,4 +136,44 @@ func createSimpleEntities(count int, pk string) *[]map[string]interface{} {
 		result[i-1] = e
 	}
 	return &result
+}
+
+func createComplexEntities(context *testContext, count int, pk string) *[]complexEntity {
+	result := make([]complexEntity, count)
+
+	sp := "some pointer to string"
+	for i := 1; i <= count; i++ {
+		var e = complexEntity{
+			PartitionKey:          "partition",
+			ETag:                  "*",
+			RowKey:                "row",
+			Timestamp:             context.recording.Now(),
+			SomeBinaryProperty:    []byte("some bytes"),
+			SomeDateProperty:      context.recording.Now(),
+			SomeDoubleProperty0:   float64(1),
+			SomeDoubleProperty1:   float64(1.2345),
+			SomeGuidProperty:      context.recording.UUID(),
+			SomeInt64Property:     math.MaxInt64,
+			SomeIntProperty:       42,
+			SomeStringProperty:    "some string",
+			SomePtrStringProperty: &sp}
+		result[i-1] = e
+	}
+	return &result
+}
+
+type complexEntity struct {
+	ETag                  string
+	PartitionKey          string
+	RowKey                string
+	Timestamp             time.Time
+	SomeBinaryProperty    []byte
+	SomeDateProperty      time.Time
+	SomeDoubleProperty0   float64
+	SomeDoubleProperty1   float64
+	SomeGuidProperty      [16]byte `uuid:""`
+	SomeInt64Property     int64
+	SomeIntProperty       int
+	SomeStringProperty    string
+	SomePtrStringProperty *string
 }

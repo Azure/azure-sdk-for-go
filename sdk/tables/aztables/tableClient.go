@@ -44,8 +44,23 @@ func (t *TableClient) Query(queryOptions QueryOptions) TableEntityQueryResponseP
 }
 
 // Creates an entity
-func (t *TableClient) AddEntity(ctx context.Context, entity *map[string]interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
+func (t *TableClient) AddMapEntity(ctx context.Context, entity *map[string]interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
 	resp, err := t.client.InsertEntity(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
+	if err == nil {
+		insertResp := resp.(TableInsertEntityResponse)
+		return &insertResp, nil
+	} else {
+		return nil, convertErr(err)
+	}
+}
+
+// Creates an entity
+func (t *TableClient) AddEntity(ctx context.Context, entity interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
+	entmap, err := toMap(entity)
+	if err != nil {
+		return nil, azcore.NewResponseError(err, nil).(*runtime.ResponseError)
+	}
+	resp, err := t.client.InsertEntity(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: entmap, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
 	if err == nil {
 		insertResp := resp.(TableInsertEntityResponse)
 		return &insertResp, nil

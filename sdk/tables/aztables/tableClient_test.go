@@ -5,11 +5,11 @@ package aztables
 
 import (
 	"bytes"
-	"io"
 	"io/ioutil"
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -66,7 +66,7 @@ func (s *tableClientLiveTests) TestAddEntity() {
 	}
 }
 
-func (s *tableClientLiveTests) aTestAddComplexEntity() {
+func (s *tableClientLiveTests) TestAddComplexEntity() {
 	assert := assert.New(s.T())
 	context := getTestContext(s.T().Name())
 	client, delete := s.init(true)
@@ -76,7 +76,7 @@ func (s *tableClientLiveTests) aTestAddComplexEntity() {
 
 	for _, e := range *entitiesToCreate {
 		_, err := client.AddEntity(ctx, &e)
-		assert.Nil(err)
+		assert.Nilf(err, getStringFromBody(err))
 	}
 }
 
@@ -139,8 +139,7 @@ func (s *tableClientLiveTests) init(doCreate bool) (*TableClient, func()) {
 	if doCreate {
 		_, err := client.Create(ctx)
 		if err != nil {
-			r := err.RawResponse()
-			assert.FailNow(r.Status)
+			assert.FailNow(getStringFromBody(err))
 		}
 	}
 	return client, func() {
@@ -148,8 +147,13 @@ func (s *tableClientLiveTests) init(doCreate bool) (*TableClient, func()) {
 	}
 }
 
-func getStringFromBody(b io.ReadCloser) string {
+func getStringFromBody(e *runtime.ResponseError) string {
+	if e == nil {
+		return "Error is nil"
+	}
+	r := e.RawResponse()
 	body := bytes.Buffer{}
+	b := r.Body
 	b.Close()
 	if b != nil {
 		_, err := body.ReadFrom(b)

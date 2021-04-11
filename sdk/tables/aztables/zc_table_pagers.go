@@ -156,6 +156,10 @@ func toMap(ent interface{}) (*map[string]interface{}, error) {
 	Switch:
 		f := typeOfT.Field(i)
 		name := f.Name
+		if name == ETag || name == Timestamp {
+			// we do not need to serialize ETag or TimeStamp
+			continue
+		}
 		// add odata annotations for the types that require it.
 		switch k := v.Type().Kind(); k {
 		case reflect.Array, reflect.Map, reflect.Slice:

@@ -63,10 +63,8 @@ func TestToMap(t *testing.T) {
 	// validate all the types were properly casted / converted
 	assert.Equal(ent.PartitionKey, (*entMap)["PartitionKey"])
 	assert.Equal(ent.RowKey, (*entMap)["RowKey"])
-	ts, _ := time.Parse(ISO8601, (*entMap)["Timestamp"].(string))
-	assert.Equal(ent.Timestamp.UTC().String(), ts.String())
 	assert.Equal(base64.StdEncoding.EncodeToString(ent.SomeBinaryProperty), string((*entMap)["SomeBinaryProperty"].(string)))
-	ts, _ = time.Parse(ISO8601, (*entMap)["SomeDateProperty"].(string))
+	ts, _ := time.Parse(ISO8601, (*entMap)["SomeDateProperty"].(string))
 	assert.Equal(ent.SomeDateProperty.UTC().String(), ts.String())
 	assert.Equal(ent.SomeDoubleProperty0, (*entMap)["SomeDoubleProperty0"])
 	assert.Equal(ent.SomeDoubleProperty1, (*entMap)["SomeDoubleProperty1"])
@@ -115,7 +113,6 @@ func closerFromString(content string) io.ReadCloser {
 }
 
 var odataHintProps = map[string]string{
-	"Timestamp":           EdmDateTime,
 	"SomeBinaryProperty":  EdmBinary,
 	"SomeDateProperty":    EdmDateTime,
 	"SomeDoubleProperty0": EdmDouble,

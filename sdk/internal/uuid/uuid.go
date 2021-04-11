@@ -41,6 +41,7 @@ func New() UUID {
 	return u
 }
 
+// FromSource returns a new uuid based on the supplied rand.Source as a seed.
 func FromSource(src rand.Source) UUID {
 	u := UUID{}
 	// Set all bits to randomly (or pseudo-randomly) chosen values.

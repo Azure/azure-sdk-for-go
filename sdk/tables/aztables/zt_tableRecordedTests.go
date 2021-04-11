@@ -68,14 +68,14 @@ func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType,
 	assert.Nil(err)
 
 	if endpointType == StorageEndpoint {
-		accountName, err = recording.GetRecordedVariable(storageAccountNameEnvVar)
-		suffix = recording.GetOptionalRecordedVariable(storageEndpointSuffixEnvVar, DefaultStorageSuffix)
+		accountName, err = recording.GetRecordedVariable(storageAccountNameEnvVar, testframework.Default)
+		suffix = recording.GetOptionalRecordedVariable(storageEndpointSuffixEnvVar, DefaultStorageSuffix, testframework.Default)
 		secret, err = recording.GetRecordedVariable(storageAccountKeyEnvVar, testframework.Secret_Base64String)
 		cred, _ = NewSharedKeyCredential(*accountName, *secret)
 		uri = storageURI(*accountName, suffix)
 	} else {
-		accountName, err = recording.GetRecordedVariable(cosmosAccountNameEnnVar)
-		suffix = recording.GetOptionalRecordedVariable(cosmosEndpointSuffixEnvVar, DefaultCosmosSuffix)
+		accountName, err = recording.GetRecordedVariable(cosmosAccountNameEnnVar, testframework.Default)
+		suffix = recording.GetOptionalRecordedVariable(cosmosEndpointSuffixEnvVar, DefaultCosmosSuffix, testframework.Default)
 		secret, err = recording.GetRecordedVariable(cosmosAccountKeyEnvVar, testframework.Secret_Base64String)
 		cred, _ = NewSharedKeyCredential(*accountName, *secret)
 		uri = cosmosURI(*accountName, suffix)
@@ -116,9 +116,9 @@ func getTestContext(key string) *testContext {
 
 func getTableName(context *testContext, prefix ...string) (*string, error) {
 	if len(prefix) == 0 {
-		return context.recording.GenerateAlphaNumericId(tableNamePrefix, 20, true)
+		return context.recording.GenerateAlphaNumericID(tableNamePrefix, 20, true)
 	} else {
-		return context.recording.GenerateAlphaNumericId(prefix[0], 20, true)
+		return context.recording.GenerateAlphaNumericID(prefix[0], 20, true)
 	}
 }
 

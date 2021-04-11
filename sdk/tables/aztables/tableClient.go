@@ -28,22 +28,22 @@ func (t *TableClient) Name() string {
 	return t.name
 }
 
-// Creates the table with the name specified in NewTableClient
+// Create creates the table with the name specified in NewTableClient
 func (t *TableClient) Create(ctx context.Context) (*TableResponseResponse, *runtime.ResponseError) {
 	return t.service.Create(ctx, t.name)
 }
 
-// Deletes the current table
+// Delete deletes the current table
 func (t *TableClient) Delete(ctx context.Context) (*TableDeleteResponse, *runtime.ResponseError) {
 	return t.service.Delete(ctx, t.name)
 }
 
-// Queries the tables using the specified QueryOptions
+// Query queries the tables using the specified QueryOptions
 func (t *TableClient) Query(queryOptions QueryOptions) TableEntityQueryResponsePager {
 	return &tableEntityQueryResponsePager{tableClient: t, queryOptions: &queryOptions, tableQueryOptions: &TableQueryEntitiesOptions{}}
 }
 
-// Creates an entity
+// AddMapEntity Creates an entity from a map value.
 func (t *TableClient) AddMapEntity(ctx context.Context, entity *map[string]interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
 	resp, err := t.client.InsertEntity(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
 	if err == nil {
@@ -54,7 +54,7 @@ func (t *TableClient) AddMapEntity(ctx context.Context, entity *map[string]inter
 	}
 }
 
-// Creates an entity
+// AddEntity creates an entity from an arbitrary struct value.
 func (t *TableClient) AddEntity(ctx context.Context, entity interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
 	entmap, err := toMap(entity)
 	if err != nil {

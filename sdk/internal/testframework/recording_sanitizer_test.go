@@ -93,22 +93,25 @@ func (s *recordingSanitizerTests) TestAddSanitizedHeadersSanitizes() {
 
 func (s *recordingSanitizerTests) TestAddUrlSanitizerSanitizes() {
 	assert := assert.New(s.T())
+	secret := "secretvalue"
+	secretBody := "some body content that contains a " + secret
 	server, cleanup := mock.NewServer()
-	server.SetResponse(mock.WithStatusCode(http.StatusNoContent))
+	server.SetResponse(mock.WithStatusCode(http.StatusCreated), mock.WithBody([]byte(secretBody)))
 	defer cleanup()
 	rt := NewMockRoundTripper(server)
 	r, _ := recorder.NewAsMode(getTestFileName(s.T(), false), recorder.ModeRecording, rt)
 
-	sanitizedUrl := server.URL()
-	secret := "/secretvalue"
+	baseUrl := server.URL() + "/"
 
 	target := DefaultSanitizer(r)
-	target.AddUrlSanitizer(func(url *string) error {
-		*url = strings.Replace(*url, secret, "", -1)
-		return nil
+	target.AddUrlSanitizer(func(url *string) {
+		*url = strings.Replace(*url, secret, SanitizedValue, -1)
+	})
+	target.AddBodysanitizer(func(body *string) {
+		*body = strings.Replace(*body, secret, SanitizedValue, -1)
 	})
 
-	req, _ := http.NewRequest(http.MethodPost, sanitizedUrl+secret, nil)
+	req, _ := http.NewRequest(http.MethodPost, baseUrl+secret, closerFromString(secretBody))
 
 	r.RoundTrip(req)
 	r.Stop()
@@ -117,8 +120,12 @@ func (s *recordingSanitizerTests) TestAddUrlSanitizerSanitizes() {
 	assert.Nil(err)
 
 	for _, i := range rec.Interactions {
-		assert.NotEqual(sanitizedUrl+secret, i.Request.URL)
-		assert.Equal(sanitizedUrl, i.Request.URL)
+		assert.NotContains(i.Response.Body, secret)
+		assert.NotContains(i.Request.URL, secret)
+		assert.NotContains(i.Request.Body, secret)
+		assert.Contains(i.Request.URL, SanitizedValue)
+		assert.Contains(i.Request.Body, SanitizedValue)
+		assert.Contains(i.Response.Body, SanitizedValue)
 	}
 }
 

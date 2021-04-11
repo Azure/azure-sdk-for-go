@@ -34,7 +34,7 @@ func TestCastAndRemoveAnnotations(t *testing.T) {
 	entity, err := castAndRemoveAnnotations(&val)
 	assert.Nil(err)
 	// assert all odata annotations are removed.
-	for k, _ := range *entity {
+	for k := range *entity {
 		assert.NotContains(k, OdataType)
 	}
 
@@ -65,7 +65,7 @@ func TestToMap(t *testing.T) {
 	assert.Equal(ent.RowKey, (*entMap)["RowKey"])
 	assert.Equal(base64.StdEncoding.EncodeToString(ent.SomeBinaryProperty), string((*entMap)["SomeBinaryProperty"].(string)))
 	ts, _ := time.Parse(ISO8601, (*entMap)["SomeDateProperty"].(string))
-	assert.Equal(ent.SomeDateProperty.UTC().String(), ts.String())
+	assert.Equal(ent.SomeDateProperty.UTC().Format(ISO8601), ts.Format(ISO8601))
 	assert.Equal(ent.SomeDoubleProperty0, (*entMap)["SomeDoubleProperty0"])
 	assert.Equal(ent.SomeDoubleProperty1, (*entMap)["SomeDoubleProperty1"])
 	var u uuid.UUID = ent.SomeGuidProperty

@@ -70,17 +70,17 @@ func (s *recordingTests) TestRecordedVariables() {
 	assert.Nil(err)
 
 	// optional variables always succeed.
-	assert.Equal(expectedVariableValue, target.GetOptionalRecordedVariable(nonExistingEnvVar, expectedVariableValue))
+	assert.Equal(expectedVariableValue, target.GetOptionalRecordedVariable(nonExistingEnvVar, expectedVariableValue, Default))
 
 	// non existent variables return an error
-	val, err := target.GetRecordedVariable(nonExistingEnvVar)
+	val, err := target.GetRecordedVariable(nonExistingEnvVar, Default)
 	// mark test as succeeded
 	assert.Equal(envNotExistsError(nonExistingEnvVar), err.Error())
 
 	// now create the env variable and check that it can be fetched
 	os.Setenv(nonExistingEnvVar, expectedVariableValue)
 	defer os.Unsetenv(nonExistingEnvVar)
-	val, err = target.GetRecordedVariable(nonExistingEnvVar)
+	val, err = target.GetRecordedVariable(nonExistingEnvVar, Default)
 	assert.Equal(expectedVariableValue, *val)
 
 	err = target.Stop()
@@ -143,7 +143,7 @@ func (s *recordingTests) TestStopSavesVariablesIfExistAndReadsPreviousVariables(
 	target, err := NewRecording(context, Playback)
 	assert.Nil(err)
 
-	target.GetOptionalRecordedVariable(expectedVariableName, expectedVariableValue)
+	target.GetOptionalRecordedVariable(expectedVariableName, expectedVariableValue, Default)
 
 	err = target.Stop()
 	assert.Nil(err)
@@ -159,7 +159,7 @@ func (s *recordingTests) TestStopSavesVariablesIfExistAndReadsPreviousVariables(
 	assert.Nil(err)
 
 	// add a new variable to the existing batch
-	target2.GetOptionalRecordedVariable(addedVariableName, addedVariableValue)
+	target2.GetOptionalRecordedVariable(addedVariableName, addedVariableValue, Default)
 
 	err = target2.Stop()
 	assert.Nil(err)
@@ -229,7 +229,7 @@ func (s *recordingTests) TestNow() {
 	assert.Nil(err)
 }
 
-func (s *recordingTests) TestGenerateAlphaNumericId() {
+func (s *recordingTests) TestGenerateAlphaNumericID() {
 	assert := assert.New(s.T())
 	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
 
@@ -238,12 +238,12 @@ func (s *recordingTests) TestGenerateAlphaNumericId() {
 	target, err := NewRecording(context, Playback)
 	assert.Nil(err)
 
-	generated1, err := target.GenerateAlphaNumericId(prefix, 10, true)
+	generated1, err := target.GenerateAlphaNumericID(prefix, 10, true)
 
 	assert.Equal(10, len(*generated1))
 	assert.Equal(true, strings.HasPrefix(*generated1, prefix))
 
-	generated1a, err := target.GenerateAlphaNumericId(prefix, 10, true)
+	generated1a, err := target.GenerateAlphaNumericID(prefix, 10, true)
 	assert.NotEqual(generated1, generated1a)
 
 	err = target.Stop()
@@ -252,7 +252,7 @@ func (s *recordingTests) TestGenerateAlphaNumericId() {
 	target2, err := NewRecording(context, Playback)
 	assert.Nil(err)
 
-	generated2, err := target2.GenerateAlphaNumericId(prefix, 10, true)
+	generated2, err := target2.GenerateAlphaNumericID(prefix, 10, true)
 
 	// The two generated Ids should be the same since target2 loaded the saved random seed from target
 	assert.Equal(*generated2, *generated1)
@@ -272,7 +272,7 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching() {
 	target, err := NewRecording(context, Playback)
 	target.recorder.SetTransport(rt)
 
-	path, err := target.GenerateAlphaNumericId("", 5, true)
+	path, err := target.GenerateAlphaNumericID("", 5, true)
 	reqUrl := server.URL() + "/" + *path
 
 	req, _ := http.NewRequest(http.MethodPost, reqUrl, nil)
@@ -294,7 +294,7 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching() {
 	target.recorder.SetTransport(rt)
 
 	// re-create the random url using the recorded variables
-	path, err = target.GenerateAlphaNumericId("", 5, true)
+	path, err = target.GenerateAlphaNumericID("", 5, true)
 	reqUrl = server.URL() + "/" + *path
 	req, _ = http.NewRequest(http.MethodPost, reqUrl, nil)
 
@@ -315,7 +315,7 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() 
 	target, err := NewRecording(context, Playback)
 	target.recorder.SetTransport(rt)
 
-	path, err := target.GenerateAlphaNumericId("", 5, true)
+	path, err := target.GenerateAlphaNumericID("", 5, true)
 	reqUrl := server.URL() + "/" + *path
 
 	req, _ := http.NewRequest(http.MethodPost, reqUrl, nil)

@@ -116,6 +116,9 @@ func (s *StorageDirSuite) TestCreateDirectoryIfNotExists(c *chk.C) {
 func (s *StorageDirSuite) TestCreateDirectoryIfExists(c *chk.C) {
 	// create share
 	cli := getFileClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
 	share := cli.GetShareReference(shareName(c))
 	share.Create(nil)
 	defer share.Delete(nil)
@@ -124,10 +127,6 @@ func (s *StorageDirSuite) TestCreateDirectoryIfExists(c *chk.C) {
 	root := share.GetRootDirectoryReference()
 	dir := root.GetDirectoryReference("dir")
 	dir.Create(nil)
-
-	rec := cli.client.appendRecorder(c)
-	dir.fsc = &cli
-	defer rec.Stop()
 
 	// try to create directory
 	exists, err := dir.CreateIfNotExists(nil)

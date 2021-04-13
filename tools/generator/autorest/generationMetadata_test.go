@@ -32,7 +32,7 @@ func TestParse(t *testing.T) {
 		if err != nil {
 			t.Fatalf("unexpected error: %+v", err)
 		}
-		if *m != c.expected {
+		if m.String() != c.expected.String() {
 			t.Fatalf("expect %+v, but got %+v", c.expected, *m)
 		}
 	}

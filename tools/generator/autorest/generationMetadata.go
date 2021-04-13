@@ -12,7 +12,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
+	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/track1"
 )
 
 // GeneratedFrom gives the information of the generation metadata, including the commit hash that this package is generated from,
@@ -23,10 +23,14 @@ func GeneratedFrom(commitHash, readme, tag string) string {
 
 // GenerationMetadata contains all the metadata that has been used when generating a track 1 package
 type GenerationMetadata struct {
-	CommitHash     string
-	Readme         string
-	Tag            string
-	CodeGenVersion string
+	AutorestVersion      string                 `json:"autorest,omitempty"`
+	CommitHash           string                 `json:"commit,omitempty"`
+	Readme               string                 `json:"readme,omitempty"`
+	Tag                  string                 `json:"tag,omitempty"`
+	CodeGenVersion       string                 `json:"use,omitempty"`
+	RepositoryURL        string                 `json:"repository_url,omitempty"`
+	AutorestCommand      string                 `json:"autorest_command,omitempty"`
+	AdditionalProperties map[string]interface{} `json:"additional_properties,omitempty"`
 }
 
 // String ...
@@ -62,7 +66,7 @@ func Parse(reader io.Reader) (*GenerationMetadata, error) {
 // CollectGenerationMetadata iterates every track 1 go sdk package under root, and collect all the GenerationMetadata into a map
 // using relative path of the package as keys
 func CollectGenerationMetadata(root string) (map[string]GenerationMetadata, error) {
-	pkgs, err := utils.ListTrack1SDKPackages(root)
+	pkgs, err := track1.List(root)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get track 1 package list under root '%s': %+v", root, err)
 	}
@@ -72,14 +76,14 @@ func CollectGenerationMetadata(root string) (map[string]GenerationMetadata, erro
 		if err != nil {
 			return nil, err
 		}
-		result[pkg] = *m
+		result[pkg.FullPath()] = *m
 	}
 	return result, nil
 }
 
 // GetGenerationMetadata gets the GenerationMetadata in one specific package
-func GetGenerationMetadata(pkg string) (*GenerationMetadata, error) {
-	changelogPath := filepath.Join(pkg, ChangelogFilename)
+func GetGenerationMetadata(pkg track1.Package) (*GenerationMetadata, error) {
+	changelogPath := filepath.Join(pkg.FullPath(), ChangelogFilename)
 	file, err := os.Open(changelogPath)
 	if err != nil {
 		return nil, fmt.Errorf("cannot open file %s: %+v", changelogPath, err)

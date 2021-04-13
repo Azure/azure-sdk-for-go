@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package cmd
 
 import (
@@ -7,9 +10,9 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
-
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/validate"
 )
 
@@ -84,7 +87,7 @@ func (ctx changelogContext) process(metadataLocation string) ([]autorest.Changel
 
 func contains(array []autorest.ChangelogResult, item string) bool {
 	for _, r := range array {
-		if r.PackageFullPath == item {
+		if utils.NormalizePath(r.PackageFullPath) == utils.NormalizePath(item) {
 			return true
 		}
 	}
@@ -92,6 +95,7 @@ func contains(array []autorest.ChangelogResult, item string) bool {
 }
 
 func writeChangelogFile(result autorest.ChangelogResult) error {
+	// TODO -- format of changelog
 	fileContent := result.Changelog.ToMarkdown()
 	changelogFile, err := os.Create(filepath.Join(result.PackageFullPath, autorest.ChangelogFilename))
 	if err != nil {
@@ -113,7 +117,6 @@ func (ctx changelogContext) validateMetadata(metadataMap map[string]model.Metada
 		SDKRoot: ctx.sdkRoot,
 		Validators: []validate.MetadataValidateFunc{
 			validate.PreviewCheck,
-			// TODO -- we do have some exceptions (see file tools/pkgchk/exceptions.txt) that might need to be considered here
 			validate.MgmtCheck,
 			validate.NamespaceCheck,
 		},

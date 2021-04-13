@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package autorest_test
 
 import (
@@ -29,7 +32,7 @@ func TestParse(t *testing.T) {
 		if err != nil {
 			t.Fatalf("unexpected error: %+v", err)
 		}
-		if *m != c.expected {
+		if m.String() != c.expected.String() {
 			t.Fatalf("expect %+v, but got %+v", c.expected, *m)
 		}
 	}

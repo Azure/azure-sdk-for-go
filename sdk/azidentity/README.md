@@ -258,7 +258,7 @@ The Go client libraries listed [here](https://azure.github.io/azure-sdk/releases
 If you encounter bugs or have suggestions, please
 [open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Azure.Identity` label.
 
-# Contributing
+## Contributing
 
 This project welcomes contributions and suggestions. Most contributions require
 you to agree to a Contributor License Agreement (CLA) declaring that you have

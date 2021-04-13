@@ -249,16 +249,14 @@ azcore.Log().SetClassifications(azidentity.LogCredential)
 > CAUTION: logs from credentials contain sensitive information.
 > These logs must be protected to avoid compromising account security.
 
-# Next steps
+## Next steps
+
+The Go client libraries listed [here](https://azure.github.io/azure-sdk/releases/latest/go.html) support authenticating with `TokenCredential` and the Azure Identity library.  You can learn more about their use, and find additional documentation on use of these client libraries along samples with can be found in the links mentioned [here](https://azure.github.io/azure-sdk/releases/latest/go.html).
 
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
 [open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Azure.Identity` label.
-
-## Next steps
-
-The Go client libraries listed [here](https://azure.github.io/azure-sdk/releases/latest/go.html) support authenticating with `TokenCredential` and the Azure Identity library.  You can learn more about their use, and find additional documentation on use of these client libraries along samples with can be found in the links mentioned [here](https://azure.github.io/azure-sdk/releases/latest/go.html).
 
 # Contributing
 

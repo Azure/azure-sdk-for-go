@@ -55,7 +55,7 @@ func (ctx changelogContext) process(metadataLocation string) ([]autorest.Changel
 	}
 	for _, result := range changelogResults {
 		// we need to write the changelog file to the corresponding package here
-		if err := writeChangelogFile(result); err != nil {
+		if err := WriteChangelogFile(result); err != nil {
 			return nil, err
 		}
 	}
@@ -94,14 +94,19 @@ func contains(array []autorest.ChangelogResult, item string) bool {
 	return false
 }
 
-func writeChangelogFile(result autorest.ChangelogResult) error {
-	// TODO -- format of changelog
-	fileContent := result.Changelog.ToMarkdown()
+func WriteChangelogFile(result autorest.ChangelogResult) error {
+	fileContent := result.Write()
+	
 	changelogFile, err := os.Create(filepath.Join(result.PackageFullPath, autorest.ChangelogFilename))
 	if err != nil {
 		return err
 	}
 	defer changelogFile.Close()
+
+	fileContent = fmt.Sprintf(`# Unreleased content
+
+%s`, fileContent)
+
 	if _, err := changelogFile.WriteString(fileContent); err != nil {
 		return err
 	}

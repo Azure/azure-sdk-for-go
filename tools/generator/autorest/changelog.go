@@ -5,13 +5,13 @@ package autorest
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 	"os"
 	"path/filepath"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 )
 
 // ChangelogContext describes all necessary data that would be needed in the processing of changelogs
@@ -163,3 +163,12 @@ func GetChangelogForPackage(lhs, rhs *exports.Content) (*model.Changelog, error)
 		Modified: &p,
 	}, nil
 }
+
+func (r ChangelogResult) Write() string {
+	return r.Changelog.ToMarkdown()
+}
+
+const (
+	// ChangelogFilename ...
+	ChangelogFilename = "CHANGELOG.md"
+)

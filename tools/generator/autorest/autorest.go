@@ -70,6 +70,10 @@ func (g *Generator) buildCommand() {
 	g.cmd = exec.Command("autorest", g.arguments...)
 }
 
+func (g *Generator) Arguments() []string {
+	return g.arguments
+}
+
 // Start starts the generation
 func (g *Generator) Start() error {
 	g.buildCommand()

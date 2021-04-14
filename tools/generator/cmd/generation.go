@@ -17,13 +17,15 @@ type autorestContext struct {
 	absReadme      string
 	metadataOutput string
 	options        model.Options
+
+	g *autorest.Generator
 }
 
 func (c autorestContext) generate() error {
-	g := autorest.NewGeneratorFromOptions(c.options).WithReadme(c.absReadme).WithMetadataOutput(c.metadataOutput)
+	c.g = autorest.NewGeneratorFromOptions(c.options).WithReadme(c.absReadme).WithMetadataOutput(c.metadataOutput)
 
-	stdout, _ := g.StdoutPipe()
-	stderr, _ := g.StderrPipe()
+	stdout, _ := c.g.StdoutPipe()
+	stderr, _ := c.g.StderrPipe()
 	defer stdout.Close()
 	defer stderr.Close()
 	outScanner := bufio.NewScanner(stdout)
@@ -31,18 +33,22 @@ func (c autorestContext) generate() error {
 	errScanner := bufio.NewScanner(stderr)
 	errScanner.Split(bufio.ScanLines)
 
-	if err := g.Start(); err != nil {
+	if err := c.g.Start(); err != nil {
 		return err
 	}
 
 	go printWithPrefixTo(outScanner, os.Stdout, "[AUTOREST] ")
 	go printWithPrefixTo(errScanner, os.Stderr, "[AUTOREST] ")
 
-	if err := g.Wait(); err != nil {
+	if err := c.g.Wait(); err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (c autorestContext) autorestArguments() []string {
+	return c.g.Arguments()
 }
 
 func printWithPrefixTo(scanner *bufio.Scanner, writer io.Writer, prefix string) error {

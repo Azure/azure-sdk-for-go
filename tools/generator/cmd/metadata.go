@@ -4,6 +4,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -17,15 +18,16 @@ import (
 )
 
 type changelogContext struct {
-	sdkRoot         string
-	clnRoot         string
-	specRoot        string
-	commitHash      string
-	codeGenVer      string
-	readme          string
+	sdkRoot string
+	readme  string
+
 	removedPackages []packageOutput
 
 	repoContent map[string]exports.Content
+
+	commonMetadata autorest.GenerationMetadata
+
+	autorestArguments []string
 }
 
 func (ctx changelogContext) SDKRoot() string {
@@ -58,7 +60,14 @@ func (ctx changelogContext) process(metadataLocation string) ([]autorest.Changel
 		if err := WriteChangelogFile(result); err != nil {
 			return nil, err
 		}
+		// we need to write the generation metadata to the corresponding package here
+		metadata := ctx.commonMetadata
+		metadata.Tag = "" // TODO -- find how to populate tag here
+		if err := WriteGenerationMetadata(result.PackageFullPath, metadata); err != nil {
+			return nil, err
+		}
 	}
+
 	// iterate over the removed packages, generate changelogs for them as well
 	var removedResults []autorest.ChangelogResult
 	for _, rp := range ctx.removedPackages {
@@ -94,9 +103,27 @@ func contains(array []autorest.ChangelogResult, item string) bool {
 	return false
 }
 
+func WriteGenerationMetadata(path string, metadata autorest.GenerationMetadata) error {
+	b, err := json.MarshalIndent(metadata, "", "  ")
+	if err != nil {
+		return fmt.Errorf("cannot marshal metadata: %+v", err)
+	}
+
+	metadataFile, err := os.Create(filepath.Join(path, autorest.MetadataFilename))
+	if err != nil {
+		return err
+	}
+	defer metadataFile.Close()
+
+	if _, err := metadataFile.Write(b); err != nil {
+		return err
+	}
+	return nil
+}
+
 func WriteChangelogFile(result autorest.ChangelogResult) error {
 	fileContent := result.Write()
-	
+
 	changelogFile, err := os.Create(filepath.Join(result.PackageFullPath, autorest.ChangelogFilename))
 	if err != nil {
 		return err

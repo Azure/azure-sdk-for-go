@@ -13,6 +13,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
+
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
@@ -184,13 +186,20 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		}
 		m := changelogContext{
 			sdkRoot:         ctx.sdkRoot,
-			clnRoot:         ctx.clnRoot,
-			specRoot:        ctx.specRoot,
-			commitHash:      ctx.commitHash,
-			codeGenVer:      options.CodeGeneratorVersion(),
 			readme:          readme,
 			removedPackages: removedPackages[readme],
-			repoContent:     ctx.repoContent,
+			commonMetadata: autorest.GenerationMetadata{
+				CommitHash:      ctx.commitHash,
+				Readme:          readme,
+				CodeGenVersion:  options.CodeGeneratorVersion(),
+				RepositoryURL:   "https://github.com/Azure/azure-rest-api-specs.git",
+				AutorestCommand: fmt.Sprintf("autorest %s", strings.Join(g.autorestArguments(), " ")), // TODO -- find a way to normalize the readme path and go-sdk-folder path
+				AdditionalProperties: map[string]interface{}{
+					"additional_options": additionalOptions(g.autorestArguments()),
+				},
+			},
+			repoContent:       ctx.repoContent,
+			autorestArguments: g.autorestArguments(),
 		}
 		log.Printf("Processing metadata generated in readme '%s'...", readme)
 		packages, err := m.process(g.metadataOutput)
@@ -328,4 +337,9 @@ func loadExceptions(exceptFile string) (map[string]bool, error) {
 	}
 
 	return exceptions, nil
+}
+
+// additionalOptions removes flags that may change over scenarios
+func additionalOptions(arguments []string) []string {
+	return arguments
 }

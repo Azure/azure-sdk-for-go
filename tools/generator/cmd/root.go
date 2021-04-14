@@ -13,14 +13,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
-
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/ioext"
 	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/track1"
+	"github.com/Azure/azure-sdk-for-go/version"
 	"github.com/spf13/cobra"
 )
 
@@ -215,12 +215,14 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 			content := p.Changelog.ToCompactMarkdown()
 			breaking := p.Changelog.HasBreakingChanges()
 			set.add(pipeline.PackageResult{
+				Version:     version.Number,
 				PackageName: getPackageIdentifier(p.PackageName),
 				Path:        []string{p.PackageName},
 				ReadmeMd:    []string{readme},
 				Changelog: &pipeline.Changelog{
-					Content:           &content,
-					HasBreakingChange: &breaking,
+					Content:             &content,
+					HasBreakingChange:   &breaking,
+					BreakingChangeItems: p.Changelog.GetBreakingChangeItems(),
 				},
 			})
 		}

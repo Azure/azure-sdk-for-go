@@ -122,22 +122,19 @@ func WriteGenerationMetadata(path string, metadata autorest.GenerationMetadata) 
 }
 
 func WriteChangelogFile(result autorest.ChangelogResult) error {
-	fileContent := result.Write()
-
 	changelogFile, err := os.Create(filepath.Join(result.PackageFullPath, autorest.ChangelogFilename))
 	if err != nil {
 		return err
 	}
 	defer changelogFile.Close()
 
-	fileContent = fmt.Sprintf(`# Unreleased content
+	if _, err := changelogFile.WriteString(`# Unreleased Content
 
-%s`, fileContent)
-
-	if _, err := changelogFile.WriteString(fileContent); err != nil {
+`); err != nil {
 		return err
 	}
-	return nil
+
+	return result.Write(changelogFile)
 }
 
 func (ctx changelogContext) validateMetadata(metadataMap map[string]model.Metadata) error {

@@ -5,6 +5,7 @@ package autorest
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 
@@ -164,8 +165,13 @@ func GetChangelogForPackage(lhs, rhs *exports.Content) (*model.Changelog, error)
 	}, nil
 }
 
-func (r ChangelogResult) Write() string {
+func (r ChangelogResult) ToMarkdown() string {
 	return r.Changelog.ToMarkdown()
+}
+
+func (r ChangelogResult) Write(writer io.Writer) error {
+	_, err := writer.Write([]byte(r.ToMarkdown()))
+	return err
 }
 
 const (

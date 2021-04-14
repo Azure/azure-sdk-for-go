@@ -5,10 +5,12 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 )
 
 type cleanUpContext struct {
@@ -43,7 +45,7 @@ func (ctx *cleanUpContext) clean() (readmePackageOutputMap, error) {
 }
 
 func removeEmptyParents(parent string) error {
-	fi, err := os.ReadDir(parent)
+	fi, err := ioutil.ReadDir(parent)
 	if err != nil {
 		return err
 	}

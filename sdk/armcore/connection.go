@@ -82,7 +82,7 @@ func NewConnection(endpoint string, cred azcore.TokenCredential, options *Connec
 	policies := []azcore.Policy{
 		azcore.NewTelemetryPolicy(&options.Telemetry),
 	}
-	if options.DisableRPRegistration == false {
+	if !options.DisableRPRegistration {
 		regRPOpts := RegistrationOptions{
 			HTTPClient: options.HTTPClient,
 			Logging:    options.Logging,

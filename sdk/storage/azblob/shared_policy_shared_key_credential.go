@@ -37,11 +37,6 @@ type SharedKeyCredential struct {
 	accountKey  atomic.Value // []byte
 }
 
-// noop function to satisfy StorageAccountCredential interface
-func (c *SharedKeyCredential) GetUDKParams() *UserDelegationKey {
-	return nil
-}
-
 // AccountName returns the Storage account's name.
 func (c *SharedKeyCredential) AccountName() string {
 	return c.accountName

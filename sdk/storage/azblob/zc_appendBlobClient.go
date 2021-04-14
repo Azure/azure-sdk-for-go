@@ -6,6 +6,7 @@ package azblob
 import (
 	"context"
 	"io"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -93,4 +94,29 @@ func (ab AppendBlobClient) AppendBlockFromURL(ctx context.Context, source string
 	resp, err := ab.client.AppendBlockFromURL(ctx, source, 0, appendOptions, cpkinfo, cpkscope, lac, aac, mac, smac)
 
 	return resp, handleError(err)
+}
+
+// GetBlobSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
+// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetBlobSASToken().
+func (ab AppendBlobClient) GetBlobSASToken(permissions BlobSASPermissions, validityTime time.Duration) (SASQueryParameters, error) {
+	urlParts := NewBlobURLParts(ab.URL())
+
+	t, err := time.Parse(SnapshotTimeFormat, urlParts.Snapshot)
+
+	if err != nil {
+		t = time.Time{}
+	}
+
+	return BlobSASSignatureValues{
+		ContainerName: urlParts.ContainerName,
+		BlobName:      urlParts.BlobName,
+		SnapshotTime:  t,
+		Version:       SASVersion,
+
+		Permissions: permissions.String(),
+
+		StartTime:  time.Now(),
+		ExpiryTime: time.Now().Add(validityTime),
+	}.NewSASQueryParameters(ab.cred)
 }

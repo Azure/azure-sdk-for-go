@@ -174,8 +174,8 @@ const (
 type DynamicsDeploymentType = original.DynamicsDeploymentType
 
 const (
-	Online            DynamicsDeploymentType = original.Online
 	OnPremisesWithIfd DynamicsDeploymentType = original.OnPremisesWithIfd
+	Online            DynamicsDeploymentType = original.Online
 )
 
 type DynamicsSinkWriteBehavior = original.DynamicsSinkWriteBehavior
@@ -548,6 +548,13 @@ const (
 	RunQueryOrderByFieldTriggerRunTimestamp RunQueryOrderByField = original.RunQueryOrderByFieldTriggerRunTimestamp
 )
 
+type SQLAlwaysEncryptedAkvAuthType = original.SQLAlwaysEncryptedAkvAuthType
+
+const (
+	ManagedIdentity  SQLAlwaysEncryptedAkvAuthType = original.ManagedIdentity
+	ServicePrincipal SQLAlwaysEncryptedAkvAuthType = original.ServicePrincipal
+)
+
 type SQLPartitionOption = original.SQLPartitionOption
 
 const (
@@ -752,10 +759,10 @@ const (
 	TypeContainer                TypeBasicActivity = original.TypeContainer
 	TypeCopy                     TypeBasicActivity = original.TypeCopy
 	TypeCustom                   TypeBasicActivity = original.TypeCustom
+	TypeDataLakeAnalyticsUSQL    TypeBasicActivity = original.TypeDataLakeAnalyticsUSQL
 	TypeDatabricksNotebook       TypeBasicActivity = original.TypeDatabricksNotebook
 	TypeDatabricksSparkJar       TypeBasicActivity = original.TypeDatabricksSparkJar
 	TypeDatabricksSparkPython    TypeBasicActivity = original.TypeDatabricksSparkPython
-	TypeDataLakeAnalyticsUSQL    TypeBasicActivity = original.TypeDataLakeAnalyticsUSQL
 	TypeDelete                   TypeBasicActivity = original.TypeDelete
 	TypeExecuteDataFlow          TypeBasicActivity = original.TypeExecuteDataFlow
 	TypeExecutePipeline          TypeBasicActivity = original.TypeExecutePipeline
@@ -771,8 +778,8 @@ const (
 	TypeHDInsightStreaming       TypeBasicActivity = original.TypeHDInsightStreaming
 	TypeIfCondition              TypeBasicActivity = original.TypeIfCondition
 	TypeLookup                   TypeBasicActivity = original.TypeLookup
-	TypeSetVariable              TypeBasicActivity = original.TypeSetVariable
 	TypeSQLServerStoredProcedure TypeBasicActivity = original.TypeSQLServerStoredProcedure
+	TypeSetVariable              TypeBasicActivity = original.TypeSetVariable
 	TypeSwitch                   TypeBasicActivity = original.TypeSwitch
 	TypeUntil                    TypeBasicActivity = original.TypeUntil
 	TypeValidation               TypeBasicActivity = original.TypeValidation
@@ -795,14 +802,14 @@ type TypeBasicCopySink = original.TypeBasicCopySink
 const (
 	TypeAvroSink                     TypeBasicCopySink = original.TypeAvroSink
 	TypeAzureBlobFSSink              TypeBasicCopySink = original.TypeAzureBlobFSSink
-	TypeAzureDatabricksDeltaLakeSink TypeBasicCopySink = original.TypeAzureDatabricksDeltaLakeSink
 	TypeAzureDataExplorerSink        TypeBasicCopySink = original.TypeAzureDataExplorerSink
 	TypeAzureDataLakeStoreSink       TypeBasicCopySink = original.TypeAzureDataLakeStoreSink
+	TypeAzureDatabricksDeltaLakeSink TypeBasicCopySink = original.TypeAzureDatabricksDeltaLakeSink
 	TypeAzureMySQLSink               TypeBasicCopySink = original.TypeAzureMySQLSink
 	TypeAzurePostgreSQLSink          TypeBasicCopySink = original.TypeAzurePostgreSQLSink
 	TypeAzureQueueSink               TypeBasicCopySink = original.TypeAzureQueueSink
-	TypeAzureSearchIndexSink         TypeBasicCopySink = original.TypeAzureSearchIndexSink
 	TypeAzureSQLSink                 TypeBasicCopySink = original.TypeAzureSQLSink
+	TypeAzureSearchIndexSink         TypeBasicCopySink = original.TypeAzureSearchIndexSink
 	TypeAzureTableSink               TypeBasicCopySink = original.TypeAzureTableSink
 	TypeBinarySink                   TypeBasicCopySink = original.TypeBinarySink
 	TypeBlobSink                     TypeBasicCopySink = original.TypeBlobSink
@@ -818,19 +825,21 @@ const (
 	TypeInformixSink                 TypeBasicCopySink = original.TypeInformixSink
 	TypeJSONSink                     TypeBasicCopySink = original.TypeJSONSink
 	TypeMicrosoftAccessSink          TypeBasicCopySink = original.TypeMicrosoftAccessSink
+	TypeMongoDbAtlasSink             TypeBasicCopySink = original.TypeMongoDbAtlasSink
+	TypeMongoDbV2Sink                TypeBasicCopySink = original.TypeMongoDbV2Sink
 	TypeOdbcSink                     TypeBasicCopySink = original.TypeOdbcSink
 	TypeOracleSink                   TypeBasicCopySink = original.TypeOracleSink
 	TypeOrcSink                      TypeBasicCopySink = original.TypeOrcSink
 	TypeParquetSink                  TypeBasicCopySink = original.TypeParquetSink
 	TypeRestSink                     TypeBasicCopySink = original.TypeRestSink
-	TypeSalesforceServiceCloudSink   TypeBasicCopySink = original.TypeSalesforceServiceCloudSink
-	TypeSalesforceSink               TypeBasicCopySink = original.TypeSalesforceSink
-	TypeSapCloudForCustomerSink      TypeBasicCopySink = original.TypeSapCloudForCustomerSink
-	TypeSnowflakeSink                TypeBasicCopySink = original.TypeSnowflakeSink
 	TypeSQLDWSink                    TypeBasicCopySink = original.TypeSQLDWSink
 	TypeSQLMISink                    TypeBasicCopySink = original.TypeSQLMISink
 	TypeSQLServerSink                TypeBasicCopySink = original.TypeSQLServerSink
 	TypeSQLSink                      TypeBasicCopySink = original.TypeSQLSink
+	TypeSalesforceServiceCloudSink   TypeBasicCopySink = original.TypeSalesforceServiceCloudSink
+	TypeSalesforceSink               TypeBasicCopySink = original.TypeSalesforceSink
+	TypeSapCloudForCustomerSink      TypeBasicCopySink = original.TypeSapCloudForCustomerSink
+	TypeSnowflakeSink                TypeBasicCopySink = original.TypeSnowflakeSink
 )
 
 type TypeBasicCopySource = original.TypeBasicCopySource
@@ -840,9 +849,9 @@ const (
 	TypeAmazonRedshiftSource           TypeBasicCopySource = original.TypeAmazonRedshiftSource
 	TypeAvroSource                     TypeBasicCopySource = original.TypeAvroSource
 	TypeAzureBlobFSSource              TypeBasicCopySource = original.TypeAzureBlobFSSource
-	TypeAzureDatabricksDeltaLakeSource TypeBasicCopySource = original.TypeAzureDatabricksDeltaLakeSource
 	TypeAzureDataExplorerSource        TypeBasicCopySource = original.TypeAzureDataExplorerSource
 	TypeAzureDataLakeStoreSource       TypeBasicCopySource = original.TypeAzureDataLakeStoreSource
+	TypeAzureDatabricksDeltaLakeSource TypeBasicCopySource = original.TypeAzureDatabricksDeltaLakeSource
 	TypeAzureMariaDBSource             TypeBasicCopySource = original.TypeAzureMariaDBSource
 	TypeAzureMySQLSource               TypeBasicCopySource = original.TypeAzureMySQLSource
 	TypeAzurePostgreSQLSource          TypeBasicCopySource = original.TypeAzurePostgreSQLSource
@@ -871,14 +880,14 @@ const (
 	TypeGoogleBigQuerySource           TypeBasicCopySource = original.TypeGoogleBigQuerySource
 	TypeGreenplumSource                TypeBasicCopySource = original.TypeGreenplumSource
 	TypeHBaseSource                    TypeBasicCopySource = original.TypeHBaseSource
+	TypeHTTPSource                     TypeBasicCopySource = original.TypeHTTPSource
 	TypeHdfsSource                     TypeBasicCopySource = original.TypeHdfsSource
 	TypeHiveSource                     TypeBasicCopySource = original.TypeHiveSource
-	TypeHTTPSource                     TypeBasicCopySource = original.TypeHTTPSource
 	TypeHubspotSource                  TypeBasicCopySource = original.TypeHubspotSource
 	TypeImpalaSource                   TypeBasicCopySource = original.TypeImpalaSource
 	TypeInformixSource                 TypeBasicCopySource = original.TypeInformixSource
-	TypeJiraSource                     TypeBasicCopySource = original.TypeJiraSource
 	TypeJSONSource                     TypeBasicCopySource = original.TypeJSONSource
+	TypeJiraSource                     TypeBasicCopySource = original.TypeJiraSource
 	TypeMagentoSource                  TypeBasicCopySource = original.TypeMagentoSource
 	TypeMariaDBSource                  TypeBasicCopySource = original.TypeMariaDBSource
 	TypeMarketoSource                  TypeBasicCopySource = original.TypeMarketoSource
@@ -903,6 +912,10 @@ const (
 	TypeRelationalSource               TypeBasicCopySource = original.TypeRelationalSource
 	TypeResponsysSource                TypeBasicCopySource = original.TypeResponsysSource
 	TypeRestSource                     TypeBasicCopySource = original.TypeRestSource
+	TypeSQLDWSource                    TypeBasicCopySource = original.TypeSQLDWSource
+	TypeSQLMISource                    TypeBasicCopySource = original.TypeSQLMISource
+	TypeSQLServerSource                TypeBasicCopySource = original.TypeSQLServerSource
+	TypeSQLSource                      TypeBasicCopySource = original.TypeSQLSource
 	TypeSalesforceMarketingCloudSource TypeBasicCopySource = original.TypeSalesforceMarketingCloudSource
 	TypeSalesforceServiceCloudSource   TypeBasicCopySource = original.TypeSalesforceServiceCloudSource
 	TypeSalesforceSource               TypeBasicCopySource = original.TypeSalesforceSource
@@ -917,18 +930,14 @@ const (
 	TypeShopifySource                  TypeBasicCopySource = original.TypeShopifySource
 	TypeSnowflakeSource                TypeBasicCopySource = original.TypeSnowflakeSource
 	TypeSparkSource                    TypeBasicCopySource = original.TypeSparkSource
-	TypeSQLDWSource                    TypeBasicCopySource = original.TypeSQLDWSource
-	TypeSQLMISource                    TypeBasicCopySource = original.TypeSQLMISource
-	TypeSQLServerSource                TypeBasicCopySource = original.TypeSQLServerSource
-	TypeSQLSource                      TypeBasicCopySource = original.TypeSQLSource
 	TypeSquareSource                   TypeBasicCopySource = original.TypeSquareSource
 	TypeSybaseSource                   TypeBasicCopySource = original.TypeSybaseSource
 	TypeTabularSource                  TypeBasicCopySource = original.TypeTabularSource
 	TypeTeradataSource                 TypeBasicCopySource = original.TypeTeradataSource
 	TypeVerticaSource                  TypeBasicCopySource = original.TypeVerticaSource
 	TypeWebSource                      TypeBasicCopySource = original.TypeWebSource
-	TypeXeroSource                     TypeBasicCopySource = original.TypeXeroSource
 	TypeXMLSource                      TypeBasicCopySource = original.TypeXMLSource
+	TypeXeroSource                     TypeBasicCopySource = original.TypeXeroSource
 	TypeZohoSource                     TypeBasicCopySource = original.TypeZohoSource
 )
 
@@ -965,16 +974,16 @@ const (
 	TypeAvro                            TypeBasicDataset = original.TypeAvro
 	TypeAzureBlob                       TypeBasicDataset = original.TypeAzureBlob
 	TypeAzureBlobFSFile                 TypeBasicDataset = original.TypeAzureBlobFSFile
-	TypeAzureDatabricksDeltaLakeDataset TypeBasicDataset = original.TypeAzureDatabricksDeltaLakeDataset
 	TypeAzureDataExplorerTable          TypeBasicDataset = original.TypeAzureDataExplorerTable
 	TypeAzureDataLakeStoreFile          TypeBasicDataset = original.TypeAzureDataLakeStoreFile
+	TypeAzureDatabricksDeltaLakeDataset TypeBasicDataset = original.TypeAzureDatabricksDeltaLakeDataset
 	TypeAzureMariaDBTable               TypeBasicDataset = original.TypeAzureMariaDBTable
 	TypeAzureMySQLTable                 TypeBasicDataset = original.TypeAzureMySQLTable
 	TypeAzurePostgreSQLTable            TypeBasicDataset = original.TypeAzurePostgreSQLTable
-	TypeAzureSearchIndex                TypeBasicDataset = original.TypeAzureSearchIndex
 	TypeAzureSQLDWTable                 TypeBasicDataset = original.TypeAzureSQLDWTable
 	TypeAzureSQLMITable                 TypeBasicDataset = original.TypeAzureSQLMITable
 	TypeAzureSQLTable                   TypeBasicDataset = original.TypeAzureSQLTable
+	TypeAzureSearchIndex                TypeBasicDataset = original.TypeAzureSearchIndex
 	TypeAzureTable                      TypeBasicDataset = original.TypeAzureTable
 	TypeBinary                          TypeBasicDataset = original.TypeBinary
 	TypeCassandraTable                  TypeBasicDataset = original.TypeCassandraTable
@@ -999,13 +1008,13 @@ const (
 	TypeGoogleBigQueryObject            TypeBasicDataset = original.TypeGoogleBigQueryObject
 	TypeGreenplumTable                  TypeBasicDataset = original.TypeGreenplumTable
 	TypeHBaseObject                     TypeBasicDataset = original.TypeHBaseObject
-	TypeHiveObject                      TypeBasicDataset = original.TypeHiveObject
 	TypeHTTPFile                        TypeBasicDataset = original.TypeHTTPFile
+	TypeHiveObject                      TypeBasicDataset = original.TypeHiveObject
 	TypeHubspotObject                   TypeBasicDataset = original.TypeHubspotObject
 	TypeImpalaObject                    TypeBasicDataset = original.TypeImpalaObject
 	TypeInformixTable                   TypeBasicDataset = original.TypeInformixTable
-	TypeJiraObject                      TypeBasicDataset = original.TypeJiraObject
 	TypeJSON                            TypeBasicDataset = original.TypeJSON
+	TypeJiraObject                      TypeBasicDataset = original.TypeJiraObject
 	TypeMagentoObject                   TypeBasicDataset = original.TypeMagentoObject
 	TypeMariaDBTable                    TypeBasicDataset = original.TypeMariaDBTable
 	TypeMarketoObject                   TypeBasicDataset = original.TypeMarketoObject
@@ -1030,6 +1039,7 @@ const (
 	TypeRelationalTable                 TypeBasicDataset = original.TypeRelationalTable
 	TypeResponsysObject                 TypeBasicDataset = original.TypeResponsysObject
 	TypeRestResource                    TypeBasicDataset = original.TypeRestResource
+	TypeSQLServerTable                  TypeBasicDataset = original.TypeSQLServerTable
 	TypeSalesforceMarketingCloudObject  TypeBasicDataset = original.TypeSalesforceMarketingCloudObject
 	TypeSalesforceObject                TypeBasicDataset = original.TypeSalesforceObject
 	TypeSalesforceServiceCloudObject    TypeBasicDataset = original.TypeSalesforceServiceCloudObject
@@ -1044,14 +1054,13 @@ const (
 	TypeShopifyObject                   TypeBasicDataset = original.TypeShopifyObject
 	TypeSnowflakeTable                  TypeBasicDataset = original.TypeSnowflakeTable
 	TypeSparkObject                     TypeBasicDataset = original.TypeSparkObject
-	TypeSQLServerTable                  TypeBasicDataset = original.TypeSQLServerTable
 	TypeSquareObject                    TypeBasicDataset = original.TypeSquareObject
 	TypeSybaseTable                     TypeBasicDataset = original.TypeSybaseTable
 	TypeTeradataTable                   TypeBasicDataset = original.TypeTeradataTable
 	TypeVerticaTable                    TypeBasicDataset = original.TypeVerticaTable
 	TypeWebTable                        TypeBasicDataset = original.TypeWebTable
-	TypeXeroObject                      TypeBasicDataset = original.TypeXeroObject
 	TypeXML                             TypeBasicDataset = original.TypeXML
+	TypeXeroObject                      TypeBasicDataset = original.TypeXeroObject
 	TypeZohoObject                      TypeBasicDataset = original.TypeZohoObject
 )
 
@@ -1080,8 +1089,8 @@ const (
 	TypeFileServerLocation         TypeBasicDatasetLocation = original.TypeFileServerLocation
 	TypeFtpServerLocation          TypeBasicDatasetLocation = original.TypeFtpServerLocation
 	TypeGoogleCloudStorageLocation TypeBasicDatasetLocation = original.TypeGoogleCloudStorageLocation
-	TypeHdfsLocation               TypeBasicDatasetLocation = original.TypeHdfsLocation
 	TypeHTTPServerLocation         TypeBasicDatasetLocation = original.TypeHTTPServerLocation
+	TypeHdfsLocation               TypeBasicDatasetLocation = original.TypeHdfsLocation
 	TypeOracleCloudStorageLocation TypeBasicDatasetLocation = original.TypeOracleCloudStorageLocation
 	TypeSftpLocation               TypeBasicDatasetLocation = original.TypeSftpLocation
 )
@@ -1177,23 +1186,23 @@ const (
 	TypeAzureBatch               TypeBasicLinkedService = original.TypeAzureBatch
 	TypeAzureBlobFS              TypeBasicLinkedService = original.TypeAzureBlobFS
 	TypeAzureBlobStorage         TypeBasicLinkedService = original.TypeAzureBlobStorage
-	TypeAzureDatabricks          TypeBasicLinkedService = original.TypeAzureDatabricks
-	TypeAzureDatabricksDeltaLake TypeBasicLinkedService = original.TypeAzureDatabricksDeltaLake
 	TypeAzureDataExplorer        TypeBasicLinkedService = original.TypeAzureDataExplorer
 	TypeAzureDataLakeAnalytics   TypeBasicLinkedService = original.TypeAzureDataLakeAnalytics
 	TypeAzureDataLakeStore       TypeBasicLinkedService = original.TypeAzureDataLakeStore
+	TypeAzureDatabricks          TypeBasicLinkedService = original.TypeAzureDatabricks
+	TypeAzureDatabricksDeltaLake TypeBasicLinkedService = original.TypeAzureDatabricksDeltaLake
 	TypeAzureFileStorage         TypeBasicLinkedService = original.TypeAzureFileStorage
 	TypeAzureFunction            TypeBasicLinkedService = original.TypeAzureFunction
 	TypeAzureKeyVault            TypeBasicLinkedService = original.TypeAzureKeyVault
-	TypeAzureMariaDB             TypeBasicLinkedService = original.TypeAzureMariaDB
 	TypeAzureML                  TypeBasicLinkedService = original.TypeAzureML
 	TypeAzureMLService           TypeBasicLinkedService = original.TypeAzureMLService
+	TypeAzureMariaDB             TypeBasicLinkedService = original.TypeAzureMariaDB
 	TypeAzureMySQL               TypeBasicLinkedService = original.TypeAzureMySQL
 	TypeAzurePostgreSQL          TypeBasicLinkedService = original.TypeAzurePostgreSQL
-	TypeAzureSearch              TypeBasicLinkedService = original.TypeAzureSearch
-	TypeAzureSQLDatabase         TypeBasicLinkedService = original.TypeAzureSQLDatabase
 	TypeAzureSQLDW               TypeBasicLinkedService = original.TypeAzureSQLDW
+	TypeAzureSQLDatabase         TypeBasicLinkedService = original.TypeAzureSQLDatabase
 	TypeAzureSQLMI               TypeBasicLinkedService = original.TypeAzureSQLMI
+	TypeAzureSearch              TypeBasicLinkedService = original.TypeAzureSearch
 	TypeAzureStorage             TypeBasicLinkedService = original.TypeAzureStorage
 	TypeAzureTableStorage        TypeBasicLinkedService = original.TypeAzureTableStorage
 	TypeCassandra                TypeBasicLinkedService = original.TypeCassandra
@@ -1216,11 +1225,11 @@ const (
 	TypeGoogleCloudStorage       TypeBasicLinkedService = original.TypeGoogleCloudStorage
 	TypeGreenplum                TypeBasicLinkedService = original.TypeGreenplum
 	TypeHBase                    TypeBasicLinkedService = original.TypeHBase
-	TypeHdfs                     TypeBasicLinkedService = original.TypeHdfs
 	TypeHDInsight                TypeBasicLinkedService = original.TypeHDInsight
 	TypeHDInsightOnDemand        TypeBasicLinkedService = original.TypeHDInsightOnDemand
-	TypeHive                     TypeBasicLinkedService = original.TypeHive
 	TypeHTTPServer               TypeBasicLinkedService = original.TypeHTTPServer
+	TypeHdfs                     TypeBasicLinkedService = original.TypeHdfs
+	TypeHive                     TypeBasicLinkedService = original.TypeHive
 	TypeHubspot                  TypeBasicLinkedService = original.TypeHubspot
 	TypeImpala                   TypeBasicLinkedService = original.TypeImpala
 	TypeInformix                 TypeBasicLinkedService = original.TypeInformix
@@ -1248,6 +1257,7 @@ const (
 	TypeQuickBooks               TypeBasicLinkedService = original.TypeQuickBooks
 	TypeResponsys                TypeBasicLinkedService = original.TypeResponsys
 	TypeRestService              TypeBasicLinkedService = original.TypeRestService
+	TypeSQLServer                TypeBasicLinkedService = original.TypeSQLServer
 	TypeSalesforce               TypeBasicLinkedService = original.TypeSalesforce
 	TypeSalesforceMarketingCloud TypeBasicLinkedService = original.TypeSalesforceMarketingCloud
 	TypeSalesforceServiceCloud   TypeBasicLinkedService = original.TypeSalesforceServiceCloud
@@ -1263,7 +1273,6 @@ const (
 	TypeShopify                  TypeBasicLinkedService = original.TypeShopify
 	TypeSnowflake                TypeBasicLinkedService = original.TypeSnowflake
 	TypeSpark                    TypeBasicLinkedService = original.TypeSpark
-	TypeSQLServer                TypeBasicLinkedService = original.TypeSQLServer
 	TypeSquare                   TypeBasicLinkedService = original.TypeSquare
 	TypeSybase                   TypeBasicLinkedService = original.TypeSybase
 	TypeTeradata                 TypeBasicLinkedService = original.TypeTeradata
@@ -1295,8 +1304,8 @@ const (
 	TypeFileServerReadSettings         TypeBasicStoreReadSettings = original.TypeFileServerReadSettings
 	TypeFtpReadSettings                TypeBasicStoreReadSettings = original.TypeFtpReadSettings
 	TypeGoogleCloudStorageReadSettings TypeBasicStoreReadSettings = original.TypeGoogleCloudStorageReadSettings
-	TypeHdfsReadSettings               TypeBasicStoreReadSettings = original.TypeHdfsReadSettings
 	TypeHTTPReadSettings               TypeBasicStoreReadSettings = original.TypeHTTPReadSettings
+	TypeHdfsReadSettings               TypeBasicStoreReadSettings = original.TypeHdfsReadSettings
 	TypeOracleCloudStorageReadSettings TypeBasicStoreReadSettings = original.TypeOracleCloudStorageReadSettings
 	TypeSftpReadSettings               TypeBasicStoreReadSettings = original.TypeSftpReadSettings
 	TypeStoreReadSettings              TypeBasicStoreReadSettings = original.TypeStoreReadSettings
@@ -1940,6 +1949,7 @@ type MongoDbAtlasCollectionDataset = original.MongoDbAtlasCollectionDataset
 type MongoDbAtlasCollectionDatasetTypeProperties = original.MongoDbAtlasCollectionDatasetTypeProperties
 type MongoDbAtlasLinkedService = original.MongoDbAtlasLinkedService
 type MongoDbAtlasLinkedServiceTypeProperties = original.MongoDbAtlasLinkedServiceTypeProperties
+type MongoDbAtlasSink = original.MongoDbAtlasSink
 type MongoDbAtlasSource = original.MongoDbAtlasSource
 type MongoDbCollectionDataset = original.MongoDbCollectionDataset
 type MongoDbCollectionDatasetTypeProperties = original.MongoDbCollectionDatasetTypeProperties
@@ -1951,6 +1961,7 @@ type MongoDbV2CollectionDataset = original.MongoDbV2CollectionDataset
 type MongoDbV2CollectionDatasetTypeProperties = original.MongoDbV2CollectionDatasetTypeProperties
 type MongoDbV2LinkedService = original.MongoDbV2LinkedService
 type MongoDbV2LinkedServiceTypeProperties = original.MongoDbV2LinkedServiceTypeProperties
+type MongoDbV2Sink = original.MongoDbV2Sink
 type MongoDbV2Source = original.MongoDbV2Source
 type MultiplePipelineTrigger = original.MultiplePipelineTrigger
 type MySQLLinkedService = original.MySQLLinkedService
@@ -2100,6 +2111,7 @@ type RetryPolicy = original.RetryPolicy
 type RunFilterParameters = original.RunFilterParameters
 type RunQueryFilter = original.RunQueryFilter
 type RunQueryOrderBy = original.RunQueryOrderBy
+type SQLAlwaysEncryptedProperties = original.SQLAlwaysEncryptedProperties
 type SQLDWSink = original.SQLDWSink
 type SQLDWSource = original.SQLDWSource
 type SQLMISink = original.SQLMISink
@@ -2704,6 +2716,9 @@ func PossibleRunQueryOrderByFieldValues() []RunQueryOrderByField {
 }
 func PossibleRunQueryOrderValues() []RunQueryOrder {
 	return original.PossibleRunQueryOrderValues()
+}
+func PossibleSQLAlwaysEncryptedAkvAuthTypeValues() []SQLAlwaysEncryptedAkvAuthType {
+	return original.PossibleSQLAlwaysEncryptedAkvAuthTypeValues()
 }
 func PossibleSQLPartitionOptionValues() []SQLPartitionOption {
 	return original.PossibleSQLPartitionOptionValues()

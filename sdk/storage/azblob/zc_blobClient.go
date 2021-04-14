@@ -220,7 +220,7 @@ func (b BlobClient) GetBlobSASToken(permissions BlobSASPermissions, validityTime
 
 		Permissions: permissions.String(),
 
-		StartTime:  time.Now(),
-		ExpiryTime: time.Now().Add(validityTime),
+		StartTime:  time.Now().UTC(),
+		ExpiryTime: time.Now().UTC().Add(validityTime),
 	}.NewSASQueryParameters(b.cred)
 }

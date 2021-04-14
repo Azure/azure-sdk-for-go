@@ -252,7 +252,7 @@ func (c ContainerClient) GetContainerSASToken(permissions BlobSASPermissions, va
 
 		Permissions: permissions.String(),
 
-		StartTime:  time.Now(),
-		ExpiryTime: time.Now().Add(validityTime),
+		StartTime:  time.Now().UTC(),
+		ExpiryTime: time.Now().UTC().Add(validityTime),
 	}.NewSASQueryParameters(c.cred)
 }

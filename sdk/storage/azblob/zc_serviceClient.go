@@ -66,7 +66,7 @@ func (s ServiceClient) NewContainerClient(containerName string) ContainerClient 
 
 func (s ServiceClient) NewContainerLeaseClient(containerName, leaseId string) ContainerLeaseClient {
 	containerURL := appendToURLPath(s.client.con.u, containerName)
-	containerConnection := newConnectionWithPipeline(containerURL, s.client.con.p)
+	containerConnection := &connection{containerURL, s.client.con.p}
 
 	if leaseId == "" {
 		leaseId = newUUID().String()
@@ -192,7 +192,7 @@ func (s ServiceClient) GetAccountSASToken(services AccountSASServices, resources
 		Services:      services.String(),
 		ResourceTypes: resources.String(),
 
-		StartTime:  time.Now(),
-		ExpiryTime: time.Now().Add(validityTime),
+		StartTime:  time.Now().UTC(),
+		ExpiryTime: time.Now().UTC().Add(validityTime),
 	}.NewSASQueryParameters(s.cred.(*SharedKeyCredential))
 }

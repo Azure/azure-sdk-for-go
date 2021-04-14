@@ -201,6 +201,38 @@ func ExampleBlobURLParts() {
 	fmt.Print(parts.URL())
 }
 
+// This example demonstrates how to use the SAS token convenience generators.
+// Though this example focuses on account SAS, these generators exist across all clients (Service, Container, Blob, and specialized Blob clients)
+func ExampleSASConvenienceGenerators() {
+	// Initialize a service client
+	accountName, accountKey := accountInfo()
+	credential, err := NewSharedKeyCredential(accountName, accountKey)
+	if err != nil {
+		log.Fatal(err)
+	}
+	serviceURL, err := NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), credential, nil)
+
+	// Provide the convenience function with relevant info (services, resource types, permissions, and duration)
+	// The SAS token will be valid from this moment onwards.
+	accountSAS, err := serviceURL.GetAccountSASToken(AccountSASServices{Blob: true}, AccountSASResourceTypes{Object: true, Service: true, Container: true}, AccountSASPermissions{Read: true, List: true}, time.Hour * 48)
+
+	qp := accountSAS.Encode()
+	urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, qp)
+	// You can hand off this URL to someone else via any mechanism you choose.
+
+	// ******************************************
+
+	// When someone receives the URL, they can access the resource using it in code like this, or a tool of some variety.
+	serviceURL, err = NewServiceClient(urlToSend, azcore.AnonymousCredential(), nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// You can also break a blob URL up into it's constituent parts
+	blobURLParts := NewBlobURLParts(serviceURL.URL())
+	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
+}
+
 // This example shows how to create and use an Azure Storage account Shared Access Signature (SAS).
 func ExampleAccountSASSignatureValues() {
 	accountName, accountKey := accountInfo()

@@ -182,8 +182,8 @@ func (bb BlockBlobClient) GetBlobSASToken(permissions BlobSASPermissions, validi
 
 		Permissions: permissions.String(),
 
-		StartTime:  time.Now(),
-		ExpiryTime: time.Now().Add(validityTime),
+		StartTime:  time.Now().UTC(),
+		ExpiryTime: time.Now().UTC().Add(validityTime),
 	}.NewSASQueryParameters(bb.cred)
 }
 

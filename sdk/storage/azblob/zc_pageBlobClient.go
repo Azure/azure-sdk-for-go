@@ -219,7 +219,7 @@ func (pb PageBlobClient) GetBlobSASToken(permissions BlobSASPermissions, validit
 
 		Permissions: permissions.String(),
 
-		StartTime:  time.Now(),
-		ExpiryTime: time.Now().Add(validityTime),
+		StartTime:  time.Now().UTC(),
+		ExpiryTime: time.Now().UTC().Add(validityTime),
 	}.NewSASQueryParameters(pb.cred)
 }

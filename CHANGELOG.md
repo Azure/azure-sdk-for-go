@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## `v53.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/signalr/mgmt/2021-04-01-preview/signalr`
+- `github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-02-01/storage`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
 ## `v53.1.0`
 
 ### New Packages

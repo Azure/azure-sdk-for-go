@@ -174,11 +174,10 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	for _, readme := range input.RelatedReadmeMdFiles {
 		log.Printf("Processing readme '%s'...", readme)
 		absReadme := filepath.Join(input.SpecFolder, readme)
+		metadataOutput := filepath.Dir(absReadme)
 		// generate code
 		g := autorestContext{
-			absReadme:      absReadme,
-			metadataOutput: filepath.Dir(absReadme),
-			options:        options,
+			generator: autorest.NewGeneratorFromOptions(options).WithReadme(absReadme).WithMetadataOutput(metadataOutput),
 		}
 		if err := g.generate(); err != nil {
 			errorBuilder.add(fmt.Errorf("cannot generate readme '%s': %+v", readme, err))
@@ -190,19 +189,15 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 			removedPackages: removedPackages[readme],
 			commonMetadata: autorest.GenerationMetadata{
 				CommitHash:      ctx.commitHash,
-				Readme:          readme,
+				Readme:          autorest.NormalizedSpecRoot + utils.NormalizePath(readme),
 				CodeGenVersion:  options.CodeGeneratorVersion(),
 				RepositoryURL:   "https://github.com/Azure/azure-rest-api-specs.git",
-				AutorestCommand: fmt.Sprintf("autorest %s", strings.Join(g.autorestArguments(), " ")), // TODO -- find a way to normalize the readme path and go-sdk-folder path
-				AdditionalProperties: map[string]interface{}{
-					"additional_options": additionalOptions(g.autorestArguments()),
-				},
 			},
 			repoContent:       ctx.repoContent,
 			autorestArguments: g.autorestArguments(),
 		}
 		log.Printf("Processing metadata generated in readme '%s'...", readme)
-		packages, err := m.process(g.metadataOutput)
+		packages, err := m.process(metadataOutput)
 		if err != nil {
 			errorBuilder.add(fmt.Errorf("cannot process metadata for readme '%s': %+v", readme, err))
 			continue
@@ -339,9 +334,4 @@ func loadExceptions(exceptFile string) (map[string]bool, error) {
 	}
 
 	return exceptions, nil
-}
-
-// additionalOptions removes flags that may change over scenarios
-func additionalOptions(arguments []string) []string {
-	return arguments
 }

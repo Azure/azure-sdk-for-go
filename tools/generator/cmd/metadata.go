@@ -62,7 +62,13 @@ func (ctx changelogContext) process(metadataLocation string) ([]autorest.Changel
 		}
 		// we need to write the generation metadata to the corresponding package here
 		metadata := ctx.commonMetadata
-		metadata.Tag = "" // TODO -- find how to populate tag here
+		metadata.Tag = result.Tag
+		options := additionalOptions(ctx.autorestArguments)
+		metadata.AdditionalProperties = map[string]interface{}{
+			"additional_options": strings.Join(options, " "),
+		}
+		metadata.AutorestCommand = fmt.Sprintf("autorest --tag=%s --go-sdk-folder=/_/azure-sdk-for-go %s /_/azure-rest-api-specs/%s",
+			result.Tag, strings.Join(options, " "), utils.NormalizePath(ctx.readme))
 		if err := WriteGenerationMetadata(result.PackageFullPath, metadata); err != nil {
 			return nil, err
 		}
@@ -75,7 +81,7 @@ func (ctx changelogContext) process(metadataLocation string) ([]autorest.Changel
 			// this package has been regenerated
 			continue
 		}
-		result, err := p.GenerateChangelog(rp.outputFolder)
+		result, err := p.GenerateChangelog(rp.outputFolder, "")
 		if err != nil {
 			return nil, err
 		}
@@ -182,4 +188,31 @@ func (b *validationErrorBuilder) build() error {
 		messages = append(messages, e.Error())
 	}
 	return fmt.Errorf("validation failed in readme '%s' with %d error(s): \n%s", b.readme, len(b.errors), strings.Join(messages, "\n"))
+}
+
+// additionalOptions removes flags that may change over scenarios
+func additionalOptions(arguments []string) []string {
+	var transformed []string
+	for _, argument := range arguments {
+		// remove the readme path
+		if !strings.HasPrefix(argument, "--") {
+			continue
+		}
+		// remove the go-sdk-folder
+		if strings.HasPrefix(argument, "--go-sdk-folder") {
+			continue
+		}
+		if strings.HasPrefix(argument, "--use") {
+			continue
+		}
+		if strings.HasPrefix(argument, "--metadata-output-folder") {
+			continue
+		}
+		// remove multiapi
+		if argument == "--multiapi" {
+			continue
+		}
+		transformed = append(transformed, argument)
+	}
+	return transformed
 }

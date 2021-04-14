@@ -10,20 +10,34 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/track1"
 )
 
 // GenerationMetadata contains all the metadata that has been used when generating a track 1 package
 type GenerationMetadata struct {
+	// AutorestVersion is the version of autorest.core
 	AutorestVersion      string                 `json:"autorest,omitempty"`
+	// CommitHash is the commit hash of azure-rest-api-specs from which this SDK package is generated
 	CommitHash           string                 `json:"commit,omitempty"`
+	// Readme is the normalized path of the readme file from which this SDK package is generated. It should be in this pattern: /_/azure-rest-api-specs/{relative_path}
 	Readme               string                 `json:"readme,omitempty"`
+	// Tag is the tag from which this SDK package is generated
 	Tag                  string                 `json:"tag,omitempty"`
+	// CodeGenVersion is the version of autorest.go using when this package is generated
 	CodeGenVersion       string                 `json:"use,omitempty"`
+	// RepositoryURL is the URL of the azure-rest-api-specs. This should always be a constant "https://github.com/Azure/azure-rest-api-specs.git"
 	RepositoryURL        string                 `json:"repository_url,omitempty"`
+	// AutorestCommand is the full command that generates this package
 	AutorestCommand      string                 `json:"autorest_command,omitempty"`
+	// AdditionalProperties is a map of addition information in this metadata
 	AdditionalProperties map[string]interface{} `json:"additional_properties,omitempty"`
+}
+
+// RelativeReadme returns the relative readme path
+func (meta *GenerationMetadata) RelativeReadme() string {
+	return strings.TrimPrefix(meta.Readme, NormalizedSpecRoot)
 }
 
 // CollectGenerationMetadata iterates every track 1 go sdk package under root, and collect all the GenerationMetadata into a map
@@ -68,6 +82,12 @@ func GetGenerationMetadata(pkg track1.Package) (*GenerationMetadata, error) {
 }
 
 const (
-	// MetadataFilename
+	// NormalizedSpecRoot this is the prefix for readme
+	NormalizedSpecRoot = "/_/azure-rest-api-specs/"
+
+	// NormalizedSDKRoot this is the prefix for readme
+	NormalizedSDKRoot = "/_/azure-sdk-for-go/"
+
+	// MetadataFilename ...
 	MetadataFilename = "_meta.json"
 )

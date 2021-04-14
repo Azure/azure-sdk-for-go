@@ -37,6 +37,7 @@ func NewChangelogProcessorFromContext(ctx ChangelogContext) *ChangelogProcessor 
 
 // ChangelogResult describes the result of the generated changelog for one package
 type ChangelogResult struct {
+	Tag             string
 	PackageName     string
 	PackageFullPath string
 	Changelog       model.Changelog
@@ -74,14 +75,14 @@ func (b *changelogErrorBuilder) build() error {
 func (p *ChangelogProcessor) Process(metadataMap map[string]model.Metadata) ([]ChangelogResult, error) {
 	builder := changelogErrorBuilder{}
 	var results []ChangelogResult
-	for _, metadata := range metadataMap {
+	for tag, metadata := range metadataMap {
 		outputFolder := filepath.Clean(metadata.PackagePath())
 		// format the package before getting the changelog
 		if err := FormatPackage(outputFolder); err != nil {
 			builder.add(err)
 			continue
 		}
-		result, err := p.GenerateChangelog(outputFolder)
+		result, err := p.GenerateChangelog(outputFolder, tag)
 		if err != nil {
 			builder.add(err)
 			continue
@@ -92,7 +93,7 @@ func (p *ChangelogProcessor) Process(metadataMap map[string]model.Metadata) ([]C
 }
 
 // GenerateChangelog generates a changelog for one package
-func (p *ChangelogProcessor) GenerateChangelog(packageFullPath string) (*ChangelogResult, error) {
+func (p *ChangelogProcessor) GenerateChangelog(packageFullPath, tag string) (*ChangelogResult, error) {
 	relativePackagePath, err := p.getRelativePackagePath(packageFullPath)
 	if err != nil {
 		return nil, err
@@ -107,6 +108,7 @@ func (p *ChangelogProcessor) GenerateChangelog(packageFullPath string) (*Changel
 		return nil, fmt.Errorf("failed to generate changelog for package '%s': %+v", relativePackagePath, err)
 	}
 	return &ChangelogResult{
+		Tag:             tag,
 		PackageName:     relativePackagePath,
 		PackageFullPath: packageFullPath,
 		Changelog:       *r,

@@ -5,12 +5,10 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 )
 
 type cleanUpContext struct {
@@ -66,7 +64,7 @@ func summaryReadmePackageOutputMap(root string) (readmePackageOutputMap, error) 
 	}
 	result := readmePackageOutputMap{}
 	for pkg, metadata := range m {
-		result.add(strings.TrimPrefix(metadata.Readme, "/"), packageOutput{
+		result.add(metadata.RelativeReadme(), packageOutput{
 			tag:          metadata.Tag,
 			outputFolder: pkg,
 		})

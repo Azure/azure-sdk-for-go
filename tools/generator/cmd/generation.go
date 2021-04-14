@@ -10,22 +10,15 @@ import (
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 )
 
 type autorestContext struct {
-	absReadme      string
-	metadataOutput string
-	options        model.Options
-
-	g *autorest.Generator
+	generator *autorest.Generator
 }
 
 func (c autorestContext) generate() error {
-	c.g = autorest.NewGeneratorFromOptions(c.options).WithReadme(c.absReadme).WithMetadataOutput(c.metadataOutput)
-
-	stdout, _ := c.g.StdoutPipe()
-	stderr, _ := c.g.StderrPipe()
+	stdout, _ := c.generator.StdoutPipe()
+	stderr, _ := c.generator.StderrPipe()
 	defer stdout.Close()
 	defer stderr.Close()
 	outScanner := bufio.NewScanner(stdout)
@@ -33,14 +26,14 @@ func (c autorestContext) generate() error {
 	errScanner := bufio.NewScanner(stderr)
 	errScanner.Split(bufio.ScanLines)
 
-	if err := c.g.Start(); err != nil {
+	if err := c.generator.Start(); err != nil {
 		return err
 	}
 
 	go printWithPrefixTo(outScanner, os.Stdout, "[AUTOREST] ")
 	go printWithPrefixTo(errScanner, os.Stderr, "[AUTOREST] ")
 
-	if err := c.g.Wait(); err != nil {
+	if err := c.generator.Wait(); err != nil {
 		return err
 	}
 
@@ -48,7 +41,7 @@ func (c autorestContext) generate() error {
 }
 
 func (c autorestContext) autorestArguments() []string {
-	return c.g.Arguments()
+	return c.generator.Arguments()
 }
 
 func printWithPrefixTo(scanner *bufio.Scanner, writer io.Writer, prefix string) error {

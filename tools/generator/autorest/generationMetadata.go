@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -84,6 +85,13 @@ func CollectGenerationMetadata(root string) (map[string]GenerationMetadata, erro
 // GetGenerationMetadata gets the GenerationMetadata in one specific package
 func GetGenerationMetadata(pkg track1.Package) (*GenerationMetadata, error) {
 	changelogPath := filepath.Join(pkg.FullPath(), ChangelogFilename)
+
+	// some classical package might not have a changelog, therefore we need to identify whether the changelog file exist or not
+	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
+		log.Printf("package '%s' does not have a changelog file", pkg.Path())
+		return &GenerationMetadata{}, nil
+	}
+
 	file, err := os.Open(changelogPath)
 	if err != nil {
 		return nil, fmt.Errorf("cannot open file %s: %+v", changelogPath, err)

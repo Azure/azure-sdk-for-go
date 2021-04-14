@@ -11,7 +11,7 @@ package signalr
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/signalr/mgmt/2020-07-01-preview/signalr"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/signalr/mgmt/2021-04-01-preview/signalr"
 )
 
 const (
@@ -25,10 +25,20 @@ const (
 	Deny  ACLAction = original.Deny
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
 type FeatureFlags = original.FeatureFlags
 
 const (
 	EnableConnectivityLogs FeatureFlags = original.EnableConnectivityLogs
+	EnableLiveTrace        FeatureFlags = original.EnableLiveTrace
 	EnableMessagingLogs    FeatureFlags = original.EnableMessagingLogs
 	ServiceMode            FeatureFlags = original.ServiceMode
 )
@@ -77,6 +87,7 @@ const (
 	ClientConnection RequestType = original.ClientConnection
 	RESTAPI          RequestType = original.RESTAPI
 	ServerConnection RequestType = original.ServerConnection
+	Trace            RequestType = original.Trace
 )
 
 type ServiceKind = original.ServiceKind
@@ -84,6 +95,16 @@ type ServiceKind = original.ServiceKind
 const (
 	RawWebSockets ServiceKind = original.RawWebSockets
 	SignalR       ServiceKind = original.SignalR
+)
+
+type SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatus
+
+const (
+	SharedPrivateLinkResourceStatusApproved     SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatusApproved
+	SharedPrivateLinkResourceStatusDisconnected SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatusDisconnected
+	SharedPrivateLinkResourceStatusPending      SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatusPending
+	SharedPrivateLinkResourceStatusRejected     SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatusRejected
+	SharedPrivateLinkResourceStatusTimeout      SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatusTimeout
 )
 
 type SkuTier = original.SkuTier
@@ -106,11 +127,11 @@ type BaseClient = original.BaseClient
 type Client = original.Client
 type CorsSettings = original.CorsSettings
 type CreateOrUpdateFuture = original.CreateOrUpdateFuture
-type CreateOrUpdateProperties = original.CreateOrUpdateProperties
 type DeleteFuture = original.DeleteFuture
 type Dimension = original.Dimension
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
+type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
-type ErrorResponseBody = original.ErrorResponseBody
 type Feature = original.Feature
 type Keys = original.Keys
 type LogSpecification = original.LogSpecification
@@ -131,6 +152,9 @@ type OperationsClient = original.OperationsClient
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointACL = original.PrivateEndpointACL
 type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionList = original.PrivateEndpointConnectionList
+type PrivateEndpointConnectionListIterator = original.PrivateEndpointConnectionListIterator
+type PrivateEndpointConnectionListPage = original.PrivateEndpointConnectionListPage
 type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
 type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
 type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
@@ -154,6 +178,17 @@ type ResourceType = original.ResourceType
 type RestartFuture = original.RestartFuture
 type ServerlessUpstreamSettings = original.ServerlessUpstreamSettings
 type ServiceSpecification = original.ServiceSpecification
+type ShareablePrivateLinkResourceProperties = original.ShareablePrivateLinkResourceProperties
+type ShareablePrivateLinkResourceType = original.ShareablePrivateLinkResourceType
+type SharedPrivateLinkResource = original.SharedPrivateLinkResource
+type SharedPrivateLinkResourceList = original.SharedPrivateLinkResourceList
+type SharedPrivateLinkResourceListIterator = original.SharedPrivateLinkResourceListIterator
+type SharedPrivateLinkResourceListPage = original.SharedPrivateLinkResourceListPage
+type SharedPrivateLinkResourceProperties = original.SharedPrivateLinkResourceProperties
+type SharedPrivateLinkResourcesClient = original.SharedPrivateLinkResourcesClient
+type SharedPrivateLinkResourcesCreateOrUpdateFuture = original.SharedPrivateLinkResourcesCreateOrUpdateFuture
+type SharedPrivateLinkResourcesDeleteFuture = original.SharedPrivateLinkResourcesDeleteFuture
+type SystemData = original.SystemData
 type TLSSettings = original.TLSSettings
 type TrackedResource = original.TrackedResource
 type UpdateFuture = original.UpdateFuture
@@ -188,6 +223,12 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionListIterator(page PrivateEndpointConnectionListPage) PrivateEndpointConnectionListIterator {
+	return original.NewPrivateEndpointConnectionListIterator(page)
+}
+func NewPrivateEndpointConnectionListPage(cur PrivateEndpointConnectionList, getNextPage func(context.Context, PrivateEndpointConnectionList) (PrivateEndpointConnectionList, error)) PrivateEndpointConnectionListPage {
+	return original.NewPrivateEndpointConnectionListPage(cur, getNextPage)
+}
 func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
 	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
 }
@@ -212,6 +253,18 @@ func NewResourceListIterator(page ResourceListPage) ResourceListIterator {
 func NewResourceListPage(cur ResourceList, getNextPage func(context.Context, ResourceList) (ResourceList, error)) ResourceListPage {
 	return original.NewResourceListPage(cur, getNextPage)
 }
+func NewSharedPrivateLinkResourceListIterator(page SharedPrivateLinkResourceListPage) SharedPrivateLinkResourceListIterator {
+	return original.NewSharedPrivateLinkResourceListIterator(page)
+}
+func NewSharedPrivateLinkResourceListPage(cur SharedPrivateLinkResourceList, getNextPage func(context.Context, SharedPrivateLinkResourceList) (SharedPrivateLinkResourceList, error)) SharedPrivateLinkResourceListPage {
+	return original.NewSharedPrivateLinkResourceListPage(cur, getNextPage)
+}
+func NewSharedPrivateLinkResourcesClient(subscriptionID string) SharedPrivateLinkResourcesClient {
+	return original.NewSharedPrivateLinkResourcesClient(subscriptionID)
+}
+func NewSharedPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) SharedPrivateLinkResourcesClient {
+	return original.NewSharedPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewUsageListIterator(page UsageListPage) UsageListIterator {
 	return original.NewUsageListIterator(page)
 }
@@ -229,6 +282,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleACLActionValues() []ACLAction {
 	return original.PossibleACLActionValues()
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleFeatureFlagsValues() []FeatureFlags {
 	return original.PossibleFeatureFlagsValues()
@@ -250,6 +306,9 @@ func PossibleRequestTypeValues() []RequestType {
 }
 func PossibleServiceKindValues() []ServiceKind {
 	return original.PossibleServiceKindValues()
+}
+func PossibleSharedPrivateLinkResourceStatusValues() []SharedPrivateLinkResourceStatus {
+	return original.PossibleSharedPrivateLinkResourceStatusValues()
 }
 func PossibleSkuTierValues() []SkuTier {
 	return original.PossibleSkuTierValues()

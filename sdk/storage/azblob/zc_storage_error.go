@@ -60,7 +60,7 @@ func (e *InternalError) As(target interface{}) bool {
 // TL;DR: This implements xml.Unmarshaler, and when the original StorageError is substituted, this unmarshaler kicks in.
 // This handles the description and details. defunkifyStorageError handles the response, cause, and service code.
 type StorageError struct {
-	response *http.Response
+	response    *http.Response
 	description string
 
 	ErrorCode StorageErrorCode
@@ -69,7 +69,7 @@ type StorageError struct {
 
 func handleError(err error) error {
 	if err, ok := err.(*runtime.ResponseError); ok {
-		return &InternalError{defunkifyStorageError(err) }
+		return InternalError{defunkifyStorageError(err)}
 	}
 
 	if err != nil {
@@ -192,7 +192,7 @@ func (e *StorageError) Temporary() bool {
 			return true
 		}
 	}
-  
+
 	return false
 }
 

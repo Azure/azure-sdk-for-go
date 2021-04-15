@@ -81,7 +81,7 @@ func (ctx changelogContext) process(metadataLocation string) ([]autorest.Changel
 			// this package has been regenerated
 			continue
 		}
-		result, err := p.GenerateChangelog(rp.outputFolder, "")
+		result, err := p.GenerateChangelog(rp.outputFolder, rp.tag)
 		if err != nil {
 			return nil, err
 		}

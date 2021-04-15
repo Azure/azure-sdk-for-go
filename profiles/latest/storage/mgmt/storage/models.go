@@ -11,7 +11,7 @@ package storage
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-01-01/storage"
+	original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-02-01/storage"
 )
 
 const (
@@ -511,6 +511,8 @@ type Identity = original.Identity
 type ImmutabilityPolicy = original.ImmutabilityPolicy
 type ImmutabilityPolicyProperties = original.ImmutabilityPolicyProperties
 type ImmutabilityPolicyProperty = original.ImmutabilityPolicyProperty
+type KeyCreationTime = original.KeyCreationTime
+type KeyPolicy = original.KeyPolicy
 type KeyVaultProperties = original.KeyVaultProperties
 type LastAccessTimeTrackingPolicy = original.LastAccessTimeTrackingPolicy
 type LeaseContainerRequest = original.LeaseContainerRequest
@@ -583,6 +585,7 @@ type RestorePolicyProperties = original.RestorePolicyProperties
 type Restriction = original.Restriction
 type RoutingPreference = original.RoutingPreference
 type SKUCapability = original.SKUCapability
+type SasPolicy = original.SasPolicy
 type ServiceSasParameters = original.ServiceSasParameters
 type ServiceSpecification = original.ServiceSpecification
 type Sku = original.Sku

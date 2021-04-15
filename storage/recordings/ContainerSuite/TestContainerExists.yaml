@@ -6,12 +6,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:bNjyzH6P4xYo+9V08tE0oWtR9NMmzHjpk7ox3iJNC2g=
+      - SharedKey golangrocksonazure:WIJyCUt93ynA3+IKq45n+D1mm6KK4PAXuuVWoo8hTew=
       User-Agent:
       - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 13 Apr 2021 15:57:34 GMT
+      - Thu, 15 Apr 2021 14:35:33 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.blob.core.windows.net/134containersuitetestcontainerex?restype=container
@@ -20,13 +20,13 @@ interactions:
     body: ""
     headers:
       Date:
-      - Tue, 13 Apr 2021 15:57:33 GMT
+      - Thu, 15 Apr 2021 14:35:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - ContainerNotFound
       X-Ms-Request-Id:
-      - 2c9dab07-801e-004c-667d-300fdd000000
+      - b6969b14-e01e-005a-7804-32f90a000000
       X-Ms-Version:
       - "2018-03-28"
     status: 404 The specified container does not exist.
@@ -37,12 +37,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:jiJMAEFCRvlflMQjpPk20nhKwngewhvEA2XKNSA7e5s=
+      - SharedKey golangrocksonazure:/9OHyM3jTZqsqtxcelrTembYA0xv+KYaEliKTEiBWQc=
       User-Agent:
       - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 13 Apr 2021 15:57:35 GMT
+      - Thu, 15 Apr 2021 14:35:33 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.blob.core.windows.net/234containersuitetestcontainerex?restype=container
@@ -53,15 +53,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 13 Apr 2021 15:57:33 GMT
+      - Thu, 15 Apr 2021 14:35:32 GMT
       Etag:
-      - '"0x8D8FE94DA831FC0"'
+      - '"0x8D9001BB9ED0E7C"'
       Last-Modified:
-      - Tue, 13 Apr 2021 15:57:34 GMT
+      - Thu, 15 Apr 2021 14:35:33 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 2c9dab0e-801e-004c-6c7d-300fdd000000
+      - b6969b1c-e01e-005a-7d04-32f90a000000
       X-Ms-Version:
       - "2018-03-28"
     status: 201 Created
@@ -72,12 +72,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:IZRiyJtCsLufplZYFVsHpZ7loPAShSooXblKuCvnEFk=
+      - SharedKey golangrocksonazure:5kxSnTRc5sM3ZywyQgE2bG8HfXB6iC4J4Roh56Arb0Q=
       User-Agent:
       - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 13 Apr 2021 15:57:35 GMT
+      - Thu, 15 Apr 2021 14:35:33 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.blob.core.windows.net/234containersuitetestcontainerex?restype=container
@@ -88,11 +88,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 13 Apr 2021 15:57:33 GMT
+      - Thu, 15 Apr 2021 14:35:32 GMT
       Etag:
-      - '"0x8D8FE94DA831FC0"'
+      - '"0x8D9001BB9ED0E7C"'
       Last-Modified:
-      - Tue, 13 Apr 2021 15:57:34 GMT
+      - Thu, 15 Apr 2021 14:35:33 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Has-Immutability-Policy:
@@ -104,7 +104,7 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 2c9dab13-801e-004c-707d-300fdd000000
+      - b6969b28-e01e-005a-0604-32f90a000000
       X-Ms-Version:
       - "2018-03-28"
     status: 200 OK
@@ -118,7 +118,7 @@ interactions:
       - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 13 Apr 2021 15:57:35 GMT
+      - Thu, 15 Apr 2021 14:35:33 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.blob.core.windows.net/134containersuitetestcontainerex?restype=container&se=2050-12-20T21%3A55%3A06Z&sig=wyMWryo%2B9f%2FsTryk6UFHAo3StUSLwFGhJPl14Z5RZxs%3D&sp=racwdl&sr=c&sv=2018-03-28
@@ -127,13 +127,13 @@ interactions:
     body: ""
     headers:
       Date:
-      - Tue, 13 Apr 2021 15:57:33 GMT
+      - Thu, 15 Apr 2021 14:35:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - AuthorizationFailure
       X-Ms-Request-Id:
-      - 2c9dab1f-801e-004c-7b7d-300fdd000000
+      - b6969b31-e01e-005a-0d04-32f90a000000
       X-Ms-Version:
       - "2018-03-28"
     status: 403 This request is not authorized to perform this operation.
@@ -147,7 +147,7 @@ interactions:
       - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 13 Apr 2021 15:57:35 GMT
+      - Thu, 15 Apr 2021 14:35:33 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.blob.core.windows.net/234containersuitetestcontainerex?restype=container&se=2050-12-20T21%3A55%3A06Z&sig=7KI%2FPuN1FtViz75QT7H4sxwILdapppcmIiS8znBFPa8%3D&sp=racwdl&sr=c&sv=2018-03-28
@@ -156,13 +156,13 @@ interactions:
     body: ""
     headers:
       Date:
-      - Tue, 13 Apr 2021 15:57:33 GMT
+      - Thu, 15 Apr 2021 14:35:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - AuthorizationFailure
       X-Ms-Request-Id:
-      - 2c9dab25-801e-004c-7f7d-300fdd000000
+      - b6969b38-e01e-005a-1304-32f90a000000
       X-Ms-Version:
       - "2018-03-28"
     status: 403 This request is not authorized to perform this operation.
@@ -176,7 +176,7 @@ interactions:
       - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 13 Apr 2021 15:57:35 GMT
+      - Thu, 15 Apr 2021 14:35:33 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.blob.core.windows.net/134containersuitetestcontainerex?restype=container&se=2050-12-20T21%3A55%3A06Z&sig=YrSNFHLIBz9pTwGYutjO4TkMFjpUO%2BUnmT6DiqjhoAw%3D&sp=rwdlacup&spr=https&srt=sco&ss=b&sv=2018-03-28
@@ -185,13 +185,13 @@ interactions:
     body: ""
     headers:
       Date:
-      - Tue, 13 Apr 2021 15:57:33 GMT
+      - Thu, 15 Apr 2021 14:35:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - ContainerNotFound
       X-Ms-Request-Id:
-      - 2c9dab2d-801e-004c-077d-300fdd000000
+      - b6969b3d-e01e-005a-1804-32f90a000000
       X-Ms-Version:
       - "2018-03-28"
     status: 404 The specified container does not exist.
@@ -205,7 +205,7 @@ interactions:
       - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 13 Apr 2021 15:57:35 GMT
+      - Thu, 15 Apr 2021 14:35:33 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.blob.core.windows.net/234containersuitetestcontainerex?restype=container&se=2050-12-20T21%3A55%3A06Z&sig=YrSNFHLIBz9pTwGYutjO4TkMFjpUO%2BUnmT6DiqjhoAw%3D&sp=rwdlacup&spr=https&srt=sco&ss=b&sv=2018-03-28
@@ -216,11 +216,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 13 Apr 2021 15:57:33 GMT
+      - Thu, 15 Apr 2021 14:35:32 GMT
       Etag:
-      - '"0x8D8FE94DA831FC0"'
+      - '"0x8D9001BB9ED0E7C"'
       Last-Modified:
-      - Tue, 13 Apr 2021 15:57:34 GMT
+      - Thu, 15 Apr 2021 14:35:33 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Has-Immutability-Policy:
@@ -232,7 +232,7 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 2c9dab39-801e-004c-117d-300fdd000000
+      - b6969b43-e01e-005a-1d04-32f90a000000
       X-Ms-Version:
       - "2018-03-28"
     status: 200 OK
@@ -243,12 +243,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:YZsw4YDUsANqLXSz6JnOBh/5E5B+Z3NLa5EHyZ/GIDA=
+      - SharedKey golangrocksonazure:SKizbp+GhSm4hyOMXZOxWdsd9qHrCkNQFpSzFjlAHQc=
       User-Agent:
       - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 13 Apr 2021 15:57:35 GMT
+      - Thu, 15 Apr 2021 14:35:33 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.blob.core.windows.net/234containersuitetestcontainerex?restype=container
@@ -259,11 +259,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 13 Apr 2021 15:57:33 GMT
+      - Thu, 15 Apr 2021 14:35:32 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 2c9dab44-801e-004c-1a7d-300fdd000000
+      - b6969b53-e01e-005a-2a04-32f90a000000
       X-Ms-Version:
       - "2018-03-28"
     status: 202 Accepted

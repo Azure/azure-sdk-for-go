@@ -6,12 +6,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:/in75xorMD9P+fYstQbZLjGy+9LMZbLpkpZkqr2Jfzc=
+      - SharedKey golangrocksonazure:oevrqJPgpXrp647R1ButhGnHVLB27eKFnxX/KOzpM0w=
       User-Agent:
       - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 13 Apr 2021 15:57:37 GMT
+      - Thu, 15 Apr 2021 14:35:36 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.blob.core.windows.net/54containersuitetestsetcontainer?restype=container
@@ -22,15 +22,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 13 Apr 2021 15:57:36 GMT
+      - Thu, 15 Apr 2021 14:35:35 GMT
       Etag:
-      - '"0x8D8FE94DC493C15"'
+      - '"0x8D9001BBBDBA315"'
       Last-Modified:
-      - Tue, 13 Apr 2021 15:57:37 GMT
+      - Thu, 15 Apr 2021 14:35:36 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 2c9db2a8-801e-004c-037d-300fdd000000
+      - b696a400-e01e-005a-4004-32f90a000000
       X-Ms-Version:
       - "2018-03-28"
     status: 201 Created
@@ -41,7 +41,7 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:S7zZo6Ns46HtMfiS80aXPgYe6co7aEat67YK82PjsS0=
+      - SharedKey golangrocksonazure:65D6xLlAsK8yepRFlLUBcHVHthd/aN4L4jXDnktjgXQ=
       Content-Length:
       - "232"
       User-Agent:
@@ -50,7 +50,7 @@ interactions:
       x-ms-blob-public-access:
       - blob
       x-ms-date:
-      - Tue, 13 Apr 2021 15:57:38 GMT
+      - Thu, 15 Apr 2021 14:35:36 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.blob.core.windows.net/54containersuitetestsetcontainer?comp=acl&restype=container
@@ -61,15 +61,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 13 Apr 2021 15:57:36 GMT
+      - Thu, 15 Apr 2021 14:35:35 GMT
       Etag:
-      - '"0x8D8FE94DC565FDA"'
+      - '"0x8D9001BBBE82D2D"'
       Last-Modified:
-      - Tue, 13 Apr 2021 15:57:37 GMT
+      - Thu, 15 Apr 2021 14:35:36 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 2c9db2af-801e-004c-087d-300fdd000000
+      - b696a411-e01e-005a-4c04-32f90a000000
       X-Ms-Version:
       - "2018-03-28"
     status: 200 OK
@@ -80,12 +80,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:HRVjTDokMTCW8+prum40EoLPVlZJieiV0+rFDmXRGbE=
+      - SharedKey golangrocksonazure:61ZdofRn4NTc7UCwPIsaFTIr5MzTg8+KUxvj0BL7zTk=
       User-Agent:
       - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 13 Apr 2021 15:57:38 GMT
+      - Thu, 15 Apr 2021 14:35:36 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.blob.core.windows.net/54containersuitetestsetcontainer?restype=container
@@ -96,11 +96,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 13 Apr 2021 15:57:36 GMT
+      - Thu, 15 Apr 2021 14:35:35 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 2c9db2c5-801e-004c-1b7d-300fdd000000
+      - b696a433-e01e-005a-6e04-32f90a000000
       X-Ms-Version:
       - "2018-03-28"
     status: 202 Accepted

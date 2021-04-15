@@ -6,12 +6,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:hpbbmzrDb+L0150Z6TuTLC8q35VrqxoWwu35vQ8JBKU=
+      - SharedKey golangrocksonazure:WorLgnEBQyENey/XnckO36ug3yhvVOwufQa5Kp80fcU=
       User-Agent:
       - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         file
       x-ms-date:
-      - Tue, 13 Apr 2021 16:04:11 GMT
+      - Thu, 15 Apr 2021 14:37:33 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.file.core.windows.net/share-notexists44storagesharesuitetestcreateshareifnotexists?restype=share
@@ -22,15 +22,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 13 Apr 2021 16:04:10 GMT
+      - Thu, 15 Apr 2021 14:37:32 GMT
       Etag:
-      - '"0x8D8FE95C6CB92D0"'
+      - '"0x8D9001C016FA8E2"'
       Last-Modified:
-      - Tue, 13 Apr 2021 16:04:11 GMT
+      - Thu, 15 Apr 2021 14:37:33 GMT
       Server:
       - Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 92d9caab-801a-0087-247e-300c88000000
+      - a1f1cf9f-d01a-006e-6504-32cac2000000
       X-Ms-Version:
       - "2018-03-28"
     status: 201 Created
@@ -41,12 +41,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:qvXIY2O8g5bhq8TonA2EgzhAiL9wew2tadLXpvyfV/g=
+      - SharedKey golangrocksonazure:euukSHI8BAVmtJwmWHCQmDxpyptPiKVaznBo7ZzIF3c=
       User-Agent:
       - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         file
       x-ms-date:
-      - Tue, 13 Apr 2021 16:04:11 GMT
+      - Thu, 15 Apr 2021 14:37:33 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.file.core.windows.net/share-notexists44storagesharesuitetestcreateshareifnotexists?restype=share
@@ -57,11 +57,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 13 Apr 2021 16:04:10 GMT
+      - Thu, 15 Apr 2021 14:37:32 GMT
       Server:
       - Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 92d9caad-801a-0087-257e-300c88000000
+      - a1f1cfa1-d01a-006e-6604-32cac2000000
       X-Ms-Version:
       - "2018-03-28"
     status: 202 Accepted

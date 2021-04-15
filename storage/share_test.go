@@ -73,9 +73,9 @@ func (s *StorageShareSuite) TestDeleteShareIfNotExists(c *chk.C) {
 
 func (s *StorageShareSuite) TestListShares(c *chk.C) {
 	cli := getFileClient(c)
-	cli.deleteAllShares()
 	rec := cli.client.appendRecorder(c)
 	defer rec.Stop()
+	cli.deleteAllShares()
 
 	name := shareName(c)
 	share := cli.GetShareReference(name)

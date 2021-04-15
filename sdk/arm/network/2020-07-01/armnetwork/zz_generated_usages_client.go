@@ -20,7 +20,7 @@ import (
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
 type UsagesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -30,7 +30,7 @@ func NewUsagesClient(con *armcore.Connection, subscriptionID string) *UsagesClie
 }
 
 // List - List network usages for a subscription.
-func (client *UsagesClient) List(location string, options *UsagesListOptions) (UsagesListResultPager) {
+func (client *UsagesClient) List(location string, options *UsagesListOptions) UsagesListResultPager {
 	return &usagesListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -74,15 +74,14 @@ func (client *UsagesClient) listHandleResponse(resp *azcore.Response) (UsagesLis
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return UsagesListResultResponse{}, err
 	}
-return UsagesListResultResponse{RawResponse: resp.Response, UsagesListResult: val}, nil
+	return UsagesListResultResponse{RawResponse: resp.Response, UsagesListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *UsagesClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

@@ -20,7 +20,7 @@ import (
 // LoadBalancerNetworkInterfacesClient contains the methods for the LoadBalancerNetworkInterfaces group.
 // Don't use this type directly, use NewLoadBalancerNetworkInterfacesClient() instead.
 type LoadBalancerNetworkInterfacesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -30,7 +30,7 @@ func NewLoadBalancerNetworkInterfacesClient(con *armcore.Connection, subscriptio
 }
 
 // List - Gets associated load balancer network interfaces.
-func (client *LoadBalancerNetworkInterfacesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesListOptions) (NetworkInterfaceListResultPager) {
+func (client *LoadBalancerNetworkInterfacesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerNetworkInterfacesListOptions) NetworkInterfaceListResultPager {
 	return &networkInterfaceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -78,15 +78,14 @@ func (client *LoadBalancerNetworkInterfacesClient) listHandleResponse(resp *azco
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceListResultResponse{}, err
 	}
-return NetworkInterfaceListResultResponse{RawResponse: resp.Response, NetworkInterfaceListResult: val}, nil
+	return NetworkInterfaceListResultResponse{RawResponse: resp.Response, NetworkInterfaceListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *LoadBalancerNetworkInterfacesClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

@@ -21,7 +21,7 @@ import (
 // ConnectionMonitorsClient contains the methods for the ConnectionMonitors group.
 // Don't use this type directly, use NewConnectionMonitorsClient() instead.
 type ConnectionMonitorsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *ConnectionMonitorsClient) BeginCreateOrUpdate(ctx context.Context,
 		return ConnectionMonitorResultPollerResponse{}, err
 	}
 	poller := &connectionMonitorResultPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *ConnectionMonitorsClient) ResumeCreateOrUpdate(token string) (Conn
 	}
 	return &connectionMonitorResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *ConnectionMonitorsClient) createOrUpdate(ctx context.Context, reso
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,12 +123,12 @@ func (client *ConnectionMonitorsClient) createOrUpdateHandleResponse(resp *azcor
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ConnectionMonitorResultResponse{}, err
 	}
-return ConnectionMonitorResultResponse{RawResponse: resp.Response, ConnectionMonitorResult: val}, nil
+	return ConnectionMonitorResultResponse{RawResponse: resp.Response, ConnectionMonitorResult: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *ConnectionMonitorsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err ErrorResponse
+	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -149,7 +149,7 @@ func (client *ConnectionMonitorsClient) BeginDelete(ctx context.Context, resourc
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -168,7 +168,7 @@ func (client *ConnectionMonitorsClient) ResumeDelete(token string) (HTTPPoller, 
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -185,7 +185,7 @@ func (client *ConnectionMonitorsClient) deleteOperation(ctx context.Context, res
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -221,7 +221,7 @@ func (client *ConnectionMonitorsClient) deleteCreateRequest(ctx context.Context,
 
 // deleteHandleError handles the Delete error response.
 func (client *ConnectionMonitorsClient) deleteHandleError(resp *azcore.Response) error {
-var err ErrorResponse
+	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -281,12 +281,12 @@ func (client *ConnectionMonitorsClient) getHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ConnectionMonitorResultResponse{}, err
 	}
-return ConnectionMonitorResultResponse{RawResponse: resp.Response, ConnectionMonitorResult: val}, nil
+	return ConnectionMonitorResultResponse{RawResponse: resp.Response, ConnectionMonitorResult: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *ConnectionMonitorsClient) getHandleError(resp *azcore.Response) error {
-var err ErrorResponse
+	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -342,12 +342,12 @@ func (client *ConnectionMonitorsClient) listHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ConnectionMonitorListResultResponse{}, err
 	}
-return ConnectionMonitorListResultResponse{RawResponse: resp.Response, ConnectionMonitorListResult: val}, nil
+	return ConnectionMonitorListResultResponse{RawResponse: resp.Response, ConnectionMonitorListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *ConnectionMonitorsClient) listHandleError(resp *azcore.Response) error {
-var err ErrorResponse
+	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -368,7 +368,7 @@ func (client *ConnectionMonitorsClient) BeginQuery(ctx context.Context, resource
 		return ConnectionMonitorQueryResultPollerResponse{}, err
 	}
 	poller := &connectionMonitorQueryResultPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -387,7 +387,7 @@ func (client *ConnectionMonitorsClient) ResumeQuery(token string) (ConnectionMon
 	}
 	return &connectionMonitorQueryResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -404,7 +404,7 @@ func (client *ConnectionMonitorsClient) query(ctx context.Context, resourceGroup
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.queryHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // queryCreateRequest creates the Query request.
@@ -444,12 +444,12 @@ func (client *ConnectionMonitorsClient) queryHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ConnectionMonitorQueryResultResponse{}, err
 	}
-return ConnectionMonitorQueryResultResponse{RawResponse: resp.Response, ConnectionMonitorQueryResult: val}, nil
+	return ConnectionMonitorQueryResultResponse{RawResponse: resp.Response, ConnectionMonitorQueryResult: val}, nil
 }
 
 // queryHandleError handles the Query error response.
 func (client *ConnectionMonitorsClient) queryHandleError(resp *azcore.Response) error {
-var err ErrorResponse
+	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -470,7 +470,7 @@ func (client *ConnectionMonitorsClient) BeginStart(ctx context.Context, resource
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -489,7 +489,7 @@ func (client *ConnectionMonitorsClient) ResumeStart(token string) (HTTPPoller, e
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -506,7 +506,7 @@ func (client *ConnectionMonitorsClient) start(ctx context.Context, resourceGroup
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.startHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
@@ -542,7 +542,7 @@ func (client *ConnectionMonitorsClient) startCreateRequest(ctx context.Context, 
 
 // startHandleError handles the Start error response.
 func (client *ConnectionMonitorsClient) startHandleError(resp *azcore.Response) error {
-var err ErrorResponse
+	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -563,7 +563,7 @@ func (client *ConnectionMonitorsClient) BeginStop(ctx context.Context, resourceG
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -582,7 +582,7 @@ func (client *ConnectionMonitorsClient) ResumeStop(token string) (HTTPPoller, er
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -599,7 +599,7 @@ func (client *ConnectionMonitorsClient) stop(ctx context.Context, resourceGroupN
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.stopHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // stopCreateRequest creates the Stop request.
@@ -635,7 +635,7 @@ func (client *ConnectionMonitorsClient) stopCreateRequest(ctx context.Context, r
 
 // stopHandleError handles the Stop error response.
 func (client *ConnectionMonitorsClient) stopHandleError(resp *azcore.Response) error {
-var err ErrorResponse
+	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -695,15 +695,14 @@ func (client *ConnectionMonitorsClient) updateTagsHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ConnectionMonitorResultResponse{}, err
 	}
-return ConnectionMonitorResultResponse{RawResponse: resp.Response, ConnectionMonitorResult: val}, nil
+	return ConnectionMonitorResultResponse{RawResponse: resp.Response, ConnectionMonitorResult: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
 func (client *ConnectionMonitorsClient) updateTagsHandleError(resp *azcore.Response) error {
-var err ErrorResponse
+	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

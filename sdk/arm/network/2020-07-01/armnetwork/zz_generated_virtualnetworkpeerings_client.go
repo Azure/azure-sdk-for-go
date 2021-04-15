@@ -21,7 +21,7 @@ import (
 // VirtualNetworkPeeringsClient contains the methods for the VirtualNetworkPeerings group.
 // Don't use this type directly, use NewVirtualNetworkPeeringsClient() instead.
 type VirtualNetworkPeeringsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *VirtualNetworkPeeringsClient) BeginCreateOrUpdate(ctx context.Cont
 		return VirtualNetworkPeeringPollerResponse{}, err
 	}
 	poller := &virtualNetworkPeeringPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *VirtualNetworkPeeringsClient) ResumeCreateOrUpdate(token string) (
 	}
 	return &virtualNetworkPeeringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *VirtualNetworkPeeringsClient) createOrUpdate(ctx context.Context, 
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -120,12 +120,12 @@ func (client *VirtualNetworkPeeringsClient) createOrUpdateHandleResponse(resp *a
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkPeeringResponse{}, err
 	}
-return VirtualNetworkPeeringResponse{RawResponse: resp.Response, VirtualNetworkPeering: val}, nil
+	return VirtualNetworkPeeringResponse{RawResponse: resp.Response, VirtualNetworkPeering: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *VirtualNetworkPeeringsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func (client *VirtualNetworkPeeringsClient) BeginDelete(ctx context.Context, res
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -165,7 +165,7 @@ func (client *VirtualNetworkPeeringsClient) ResumeDelete(token string) (HTTPPoll
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -182,7 +182,7 @@ func (client *VirtualNetworkPeeringsClient) deleteOperation(ctx context.Context,
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -218,7 +218,7 @@ func (client *VirtualNetworkPeeringsClient) deleteCreateRequest(ctx context.Cont
 
 // deleteHandleError handles the Delete error response.
 func (client *VirtualNetworkPeeringsClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -278,12 +278,12 @@ func (client *VirtualNetworkPeeringsClient) getHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkPeeringResponse{}, err
 	}
-return VirtualNetworkPeeringResponse{RawResponse: resp.Response, VirtualNetworkPeering: val}, nil
+	return VirtualNetworkPeeringResponse{RawResponse: resp.Response, VirtualNetworkPeering: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *VirtualNetworkPeeringsClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -291,7 +291,7 @@ var err CloudError
 }
 
 // List - Gets all virtual network peerings in a virtual network.
-func (client *VirtualNetworkPeeringsClient) List(resourceGroupName string, virtualNetworkName string, options *VirtualNetworkPeeringsListOptions) (VirtualNetworkPeeringListResultPager) {
+func (client *VirtualNetworkPeeringsClient) List(resourceGroupName string, virtualNetworkName string, options *VirtualNetworkPeeringsListOptions) VirtualNetworkPeeringListResultPager {
 	return &virtualNetworkPeeringListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -339,15 +339,14 @@ func (client *VirtualNetworkPeeringsClient) listHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkPeeringListResultResponse{}, err
 	}
-return VirtualNetworkPeeringListResultResponse{RawResponse: resp.Response, VirtualNetworkPeeringListResult: val}, nil
+	return VirtualNetworkPeeringListResultResponse{RawResponse: resp.Response, VirtualNetworkPeeringListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *VirtualNetworkPeeringsClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

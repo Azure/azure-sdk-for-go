@@ -21,7 +21,7 @@ import (
 // RouteFiltersClient contains the methods for the RouteFilters group.
 // Don't use this type directly, use NewRouteFiltersClient() instead.
 type RouteFiltersClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *RouteFiltersClient) BeginCreateOrUpdate(ctx context.Context, resou
 		return RouteFilterPollerResponse{}, err
 	}
 	poller := &routeFilterPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *RouteFiltersClient) ResumeCreateOrUpdate(token string) (RouteFilte
 	}
 	return &routeFilterPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *RouteFiltersClient) createOrUpdate(ctx context.Context, resourceGr
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,12 +116,12 @@ func (client *RouteFiltersClient) createOrUpdateHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteFilterResponse{}, err
 	}
-return RouteFilterResponse{RawResponse: resp.Response, RouteFilter: val}, nil
+	return RouteFilterResponse{RawResponse: resp.Response, RouteFilter: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *RouteFiltersClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func (client *RouteFiltersClient) BeginDelete(ctx context.Context, resourceGroup
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -161,7 +161,7 @@ func (client *RouteFiltersClient) ResumeDelete(token string) (HTTPPoller, error)
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -178,7 +178,7 @@ func (client *RouteFiltersClient) deleteOperation(ctx context.Context, resourceG
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -210,7 +210,7 @@ func (client *RouteFiltersClient) deleteCreateRequest(ctx context.Context, resou
 
 // deleteHandleError handles the Delete error response.
 func (client *RouteFiltersClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -269,12 +269,12 @@ func (client *RouteFiltersClient) getHandleResponse(resp *azcore.Response) (Rout
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteFilterResponse{}, err
 	}
-return RouteFilterResponse{RawResponse: resp.Response, RouteFilter: val}, nil
+	return RouteFilterResponse{RawResponse: resp.Response, RouteFilter: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *RouteFiltersClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -282,7 +282,7 @@ var err CloudError
 }
 
 // List - Gets all route filters in a subscription.
-func (client *RouteFiltersClient) List(options *RouteFiltersListOptions) (RouteFilterListResultPager) {
+func (client *RouteFiltersClient) List(options *RouteFiltersListOptions) RouteFilterListResultPager {
 	return &routeFilterListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -322,12 +322,12 @@ func (client *RouteFiltersClient) listHandleResponse(resp *azcore.Response) (Rou
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteFilterListResultResponse{}, err
 	}
-return RouteFilterListResultResponse{RawResponse: resp.Response, RouteFilterListResult: val}, nil
+	return RouteFilterListResultResponse{RawResponse: resp.Response, RouteFilterListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *RouteFiltersClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -335,7 +335,7 @@ var err CloudError
 }
 
 // ListByResourceGroup - Gets all route filters in a resource group.
-func (client *RouteFiltersClient) ListByResourceGroup(resourceGroupName string, options *RouteFiltersListByResourceGroupOptions) (RouteFilterListResultPager) {
+func (client *RouteFiltersClient) ListByResourceGroup(resourceGroupName string, options *RouteFiltersListByResourceGroupOptions) RouteFilterListResultPager {
 	return &routeFilterListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -379,12 +379,12 @@ func (client *RouteFiltersClient) listByResourceGroupHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteFilterListResultResponse{}, err
 	}
-return RouteFilterListResultResponse{RawResponse: resp.Response, RouteFilterListResult: val}, nil
+	return RouteFilterListResultResponse{RawResponse: resp.Response, RouteFilterListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *RouteFiltersClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -440,15 +440,14 @@ func (client *RouteFiltersClient) updateTagsHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteFilterResponse{}, err
 	}
-return RouteFilterResponse{RawResponse: resp.Response, RouteFilter: val}, nil
+	return RouteFilterResponse{RawResponse: resp.Response, RouteFilter: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
 func (client *RouteFiltersClient) updateTagsHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

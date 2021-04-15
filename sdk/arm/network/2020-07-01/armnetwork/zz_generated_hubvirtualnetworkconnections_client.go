@@ -21,7 +21,7 @@ import (
 // HubVirtualNetworkConnectionsClient contains the methods for the HubVirtualNetworkConnections group.
 // Don't use this type directly, use NewHubVirtualNetworkConnectionsClient() instead.
 type HubVirtualNetworkConnectionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *HubVirtualNetworkConnectionsClient) BeginCreateOrUpdate(ctx contex
 		return HubVirtualNetworkConnectionPollerResponse{}, err
 	}
 	poller := &hubVirtualNetworkConnectionPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *HubVirtualNetworkConnectionsClient) ResumeCreateOrUpdate(token str
 	}
 	return &hubVirtualNetworkConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *HubVirtualNetworkConnectionsClient) createOrUpdate(ctx context.Con
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -120,12 +120,12 @@ func (client *HubVirtualNetworkConnectionsClient) createOrUpdateHandleResponse(r
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return HubVirtualNetworkConnectionResponse{}, err
 	}
-return HubVirtualNetworkConnectionResponse{RawResponse: resp.Response, HubVirtualNetworkConnection: val}, nil
+	return HubVirtualNetworkConnectionResponse{RawResponse: resp.Response, HubVirtualNetworkConnection: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *HubVirtualNetworkConnectionsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func (client *HubVirtualNetworkConnectionsClient) BeginDelete(ctx context.Contex
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -165,7 +165,7 @@ func (client *HubVirtualNetworkConnectionsClient) ResumeDelete(token string) (HT
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -182,7 +182,7 @@ func (client *HubVirtualNetworkConnectionsClient) deleteOperation(ctx context.Co
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -218,7 +218,7 @@ func (client *HubVirtualNetworkConnectionsClient) deleteCreateRequest(ctx contex
 
 // deleteHandleError handles the Delete error response.
 func (client *HubVirtualNetworkConnectionsClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -278,12 +278,12 @@ func (client *HubVirtualNetworkConnectionsClient) getHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return HubVirtualNetworkConnectionResponse{}, err
 	}
-return HubVirtualNetworkConnectionResponse{RawResponse: resp.Response, HubVirtualNetworkConnection: val}, nil
+	return HubVirtualNetworkConnectionResponse{RawResponse: resp.Response, HubVirtualNetworkConnection: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *HubVirtualNetworkConnectionsClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -291,7 +291,7 @@ var err CloudError
 }
 
 // List - Retrieves the details of all HubVirtualNetworkConnections.
-func (client *HubVirtualNetworkConnectionsClient) List(resourceGroupName string, virtualHubName string, options *HubVirtualNetworkConnectionsListOptions) (ListHubVirtualNetworkConnectionsResultPager) {
+func (client *HubVirtualNetworkConnectionsClient) List(resourceGroupName string, virtualHubName string, options *HubVirtualNetworkConnectionsListOptions) ListHubVirtualNetworkConnectionsResultPager {
 	return &listHubVirtualNetworkConnectionsResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -339,15 +339,14 @@ func (client *HubVirtualNetworkConnectionsClient) listHandleResponse(resp *azcor
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListHubVirtualNetworkConnectionsResultResponse{}, err
 	}
-return ListHubVirtualNetworkConnectionsResultResponse{RawResponse: resp.Response, ListHubVirtualNetworkConnectionsResult: val}, nil
+	return ListHubVirtualNetworkConnectionsResultResponse{RawResponse: resp.Response, ListHubVirtualNetworkConnectionsResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *HubVirtualNetworkConnectionsClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

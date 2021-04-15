@@ -20,7 +20,7 @@ import (
 // VPNSiteLinkConnectionsClient contains the methods for the VPNSiteLinkConnections group.
 // Don't use this type directly, use NewVPNSiteLinkConnectionsClient() instead.
 type VPNSiteLinkConnectionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -86,15 +86,14 @@ func (client *VPNSiteLinkConnectionsClient) getHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VPNSiteLinkConnectionResponse{}, err
 	}
-return VPNSiteLinkConnectionResponse{RawResponse: resp.Response, VPNSiteLinkConnection: val}, nil
+	return VPNSiteLinkConnectionResponse{RawResponse: resp.Response, VPNSiteLinkConnection: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *VPNSiteLinkConnectionsClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

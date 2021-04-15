@@ -21,7 +21,7 @@ import (
 // VPNSitesConfigurationClient contains the methods for the VPNSitesConfiguration group.
 // Don't use this type directly, use NewVPNSitesConfigurationClient() instead.
 type VPNSitesConfigurationClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *VPNSitesConfigurationClient) BeginDownload(ctx context.Context, re
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *VPNSitesConfigurationClient) ResumeDownload(token string) (HTTPPol
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *VPNSitesConfigurationClient) download(ctx context.Context, resourc
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.downloadHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // downloadCreateRequest creates the Download request.
@@ -112,10 +112,9 @@ func (client *VPNSitesConfigurationClient) downloadCreateRequest(ctx context.Con
 
 // downloadHandleError handles the Download error response.
 func (client *VPNSitesConfigurationClient) downloadHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

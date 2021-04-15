@@ -26,7 +26,7 @@ func NewOperationsClient(con *armcore.Connection) *OperationsClient {
 }
 
 // List - Lists all of the available Network Rest API operations.
-func (client *OperationsClient) List(options *OperationsListOptions) (OperationListResultPager) {
+func (client *OperationsClient) List(options *OperationsListOptions) OperationListResultPager {
 	return &operationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -62,15 +62,14 @@ func (client *OperationsClient) listHandleResponse(resp *azcore.Response) (Opera
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return OperationListResultResponse{}, err
 	}
-return OperationListResultResponse{RawResponse: resp.Response, OperationListResult: val}, nil
+	return OperationListResultResponse{RawResponse: resp.Response, OperationListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *OperationsClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

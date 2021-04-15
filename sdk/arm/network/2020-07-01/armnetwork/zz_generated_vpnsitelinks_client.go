@@ -20,7 +20,7 @@ import (
 // VPNSiteLinksClient contains the methods for the VPNSiteLinks group.
 // Don't use this type directly, use NewVPNSiteLinksClient() instead.
 type VPNSiteLinksClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -82,12 +82,12 @@ func (client *VPNSiteLinksClient) getHandleResponse(resp *azcore.Response) (VPNS
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VPNSiteLinkResponse{}, err
 	}
-return VPNSiteLinkResponse{RawResponse: resp.Response, VPNSiteLink: val}, nil
+	return VPNSiteLinkResponse{RawResponse: resp.Response, VPNSiteLink: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *VPNSiteLinksClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -95,7 +95,7 @@ var err CloudError
 }
 
 // ListByVPNSite - Lists all the vpnSiteLinks in a resource group for a vpn site.
-func (client *VPNSiteLinksClient) ListByVPNSite(resourceGroupName string, vpnSiteName string, options *VPNSiteLinksListByVPNSiteOptions) (ListVPNSiteLinksResultPager) {
+func (client *VPNSiteLinksClient) ListByVPNSite(resourceGroupName string, vpnSiteName string, options *VPNSiteLinksListByVPNSiteOptions) ListVPNSiteLinksResultPager {
 	return &listVPNSiteLinksResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -143,15 +143,14 @@ func (client *VPNSiteLinksClient) listByVPNSiteHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVPNSiteLinksResultResponse{}, err
 	}
-return ListVPNSiteLinksResultResponse{RawResponse: resp.Response, ListVPNSiteLinksResult: val}, nil
+	return ListVPNSiteLinksResultResponse{RawResponse: resp.Response, ListVPNSiteLinksResult: val}, nil
 }
 
 // listByVPNSiteHandleError handles the ListByVPNSite error response.
 func (client *VPNSiteLinksClient) listByVPNSiteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

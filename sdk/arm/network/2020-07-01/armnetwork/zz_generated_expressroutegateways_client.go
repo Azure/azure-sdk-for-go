@@ -21,7 +21,7 @@ import (
 // ExpressRouteGatewaysClient contains the methods for the ExpressRouteGateways group.
 // Don't use this type directly, use NewExpressRouteGatewaysClient() instead.
 type ExpressRouteGatewaysClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *ExpressRouteGatewaysClient) BeginCreateOrUpdate(ctx context.Contex
 		return ExpressRouteGatewayPollerResponse{}, err
 	}
 	poller := &expressRouteGatewayPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *ExpressRouteGatewaysClient) ResumeCreateOrUpdate(token string) (Ex
 	}
 	return &expressRouteGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *ExpressRouteGatewaysClient) createOrUpdate(ctx context.Context, re
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,12 +116,12 @@ func (client *ExpressRouteGatewaysClient) createOrUpdateHandleResponse(resp *azc
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRouteGatewayResponse{}, err
 	}
-return ExpressRouteGatewayResponse{RawResponse: resp.Response, ExpressRouteGateway: val}, nil
+	return ExpressRouteGatewayResponse{RawResponse: resp.Response, ExpressRouteGateway: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *ExpressRouteGatewaysClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -143,7 +143,7 @@ func (client *ExpressRouteGatewaysClient) BeginDelete(ctx context.Context, resou
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -162,7 +162,7 @@ func (client *ExpressRouteGatewaysClient) ResumeDelete(token string) (HTTPPoller
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -180,7 +180,7 @@ func (client *ExpressRouteGatewaysClient) deleteOperation(ctx context.Context, r
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -212,7 +212,7 @@ func (client *ExpressRouteGatewaysClient) deleteCreateRequest(ctx context.Contex
 
 // deleteHandleError handles the Delete error response.
 func (client *ExpressRouteGatewaysClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -268,12 +268,12 @@ func (client *ExpressRouteGatewaysClient) getHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRouteGatewayResponse{}, err
 	}
-return ExpressRouteGatewayResponse{RawResponse: resp.Response, ExpressRouteGateway: val}, nil
+	return ExpressRouteGatewayResponse{RawResponse: resp.Response, ExpressRouteGateway: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *ExpressRouteGatewaysClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -325,12 +325,12 @@ func (client *ExpressRouteGatewaysClient) listByResourceGroupHandleResponse(resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRouteGatewayListResponse{}, err
 	}
-return ExpressRouteGatewayListResponse{RawResponse: resp.Response, ExpressRouteGatewayList: val}, nil
+	return ExpressRouteGatewayListResponse{RawResponse: resp.Response, ExpressRouteGatewayList: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *ExpressRouteGatewaysClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -378,15 +378,14 @@ func (client *ExpressRouteGatewaysClient) listBySubscriptionHandleResponse(resp 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRouteGatewayListResponse{}, err
 	}
-return ExpressRouteGatewayListResponse{RawResponse: resp.Response, ExpressRouteGatewayList: val}, nil
+	return ExpressRouteGatewayListResponse{RawResponse: resp.Response, ExpressRouteGatewayList: val}, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
 func (client *ExpressRouteGatewaysClient) listBySubscriptionHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

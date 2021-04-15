@@ -20,7 +20,7 @@ import (
 // LoadBalancerProbesClient contains the methods for the LoadBalancerProbes group.
 // Don't use this type directly, use NewLoadBalancerProbesClient() instead.
 type LoadBalancerProbesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -82,12 +82,12 @@ func (client *LoadBalancerProbesClient) getHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ProbeResponse{}, err
 	}
-return ProbeResponse{RawResponse: resp.Response, Probe: val}, nil
+	return ProbeResponse{RawResponse: resp.Response, Probe: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *LoadBalancerProbesClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -95,7 +95,7 @@ var err CloudError
 }
 
 // List - Gets all the load balancer probes.
-func (client *LoadBalancerProbesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesListOptions) (LoadBalancerProbeListResultPager) {
+func (client *LoadBalancerProbesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesListOptions) LoadBalancerProbeListResultPager {
 	return &loadBalancerProbeListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -143,15 +143,14 @@ func (client *LoadBalancerProbesClient) listHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LoadBalancerProbeListResultResponse{}, err
 	}
-return LoadBalancerProbeListResultResponse{RawResponse: resp.Response, LoadBalancerProbeListResult: val}, nil
+	return LoadBalancerProbeListResultResponse{RawResponse: resp.Response, LoadBalancerProbeListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *LoadBalancerProbesClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

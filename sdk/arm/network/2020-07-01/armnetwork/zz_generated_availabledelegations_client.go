@@ -20,7 +20,7 @@ import (
 // AvailableDelegationsClient contains the methods for the AvailableDelegations group.
 // Don't use this type directly, use NewAvailableDelegationsClient() instead.
 type AvailableDelegationsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -30,7 +30,7 @@ func NewAvailableDelegationsClient(con *armcore.Connection, subscriptionID strin
 }
 
 // List - Gets all of the available subnet delegations for this subscription in this region.
-func (client *AvailableDelegationsClient) List(location string, options *AvailableDelegationsListOptions) (AvailableDelegationsResultPager) {
+func (client *AvailableDelegationsClient) List(location string, options *AvailableDelegationsListOptions) AvailableDelegationsResultPager {
 	return &availableDelegationsResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -74,15 +74,14 @@ func (client *AvailableDelegationsClient) listHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AvailableDelegationsResultResponse{}, err
 	}
-return AvailableDelegationsResultResponse{RawResponse: resp.Response, AvailableDelegationsResult: val}, nil
+	return AvailableDelegationsResultResponse{RawResponse: resp.Response, AvailableDelegationsResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *AvailableDelegationsClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

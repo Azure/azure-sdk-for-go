@@ -21,7 +21,7 @@ import (
 // NetworkSecurityGroupsClient contains the methods for the NetworkSecurityGroups group.
 // Don't use this type directly, use NewNetworkSecurityGroupsClient() instead.
 type NetworkSecurityGroupsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *NetworkSecurityGroupsClient) BeginCreateOrUpdate(ctx context.Conte
 		return NetworkSecurityGroupPollerResponse{}, err
 	}
 	poller := &networkSecurityGroupPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *NetworkSecurityGroupsClient) ResumeCreateOrUpdate(token string) (N
 	}
 	return &networkSecurityGroupPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *NetworkSecurityGroupsClient) createOrUpdate(ctx context.Context, r
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,12 +116,12 @@ func (client *NetworkSecurityGroupsClient) createOrUpdateHandleResponse(resp *az
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkSecurityGroupResponse{}, err
 	}
-return NetworkSecurityGroupResponse{RawResponse: resp.Response, NetworkSecurityGroup: val}, nil
+	return NetworkSecurityGroupResponse{RawResponse: resp.Response, NetworkSecurityGroup: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *NetworkSecurityGroupsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func (client *NetworkSecurityGroupsClient) BeginDelete(ctx context.Context, reso
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -161,7 +161,7 @@ func (client *NetworkSecurityGroupsClient) ResumeDelete(token string) (HTTPPolle
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -178,7 +178,7 @@ func (client *NetworkSecurityGroupsClient) deleteOperation(ctx context.Context, 
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -210,7 +210,7 @@ func (client *NetworkSecurityGroupsClient) deleteCreateRequest(ctx context.Conte
 
 // deleteHandleError handles the Delete error response.
 func (client *NetworkSecurityGroupsClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -269,12 +269,12 @@ func (client *NetworkSecurityGroupsClient) getHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkSecurityGroupResponse{}, err
 	}
-return NetworkSecurityGroupResponse{RawResponse: resp.Response, NetworkSecurityGroup: val}, nil
+	return NetworkSecurityGroupResponse{RawResponse: resp.Response, NetworkSecurityGroup: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *NetworkSecurityGroupsClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -282,7 +282,7 @@ var err CloudError
 }
 
 // List - Gets all network security groups in a resource group.
-func (client *NetworkSecurityGroupsClient) List(resourceGroupName string, options *NetworkSecurityGroupsListOptions) (NetworkSecurityGroupListResultPager) {
+func (client *NetworkSecurityGroupsClient) List(resourceGroupName string, options *NetworkSecurityGroupsListOptions) NetworkSecurityGroupListResultPager {
 	return &networkSecurityGroupListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -326,12 +326,12 @@ func (client *NetworkSecurityGroupsClient) listHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkSecurityGroupListResultResponse{}, err
 	}
-return NetworkSecurityGroupListResultResponse{RawResponse: resp.Response, NetworkSecurityGroupListResult: val}, nil
+	return NetworkSecurityGroupListResultResponse{RawResponse: resp.Response, NetworkSecurityGroupListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *NetworkSecurityGroupsClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -339,7 +339,7 @@ var err CloudError
 }
 
 // ListAll - Gets all network security groups in a subscription.
-func (client *NetworkSecurityGroupsClient) ListAll(options *NetworkSecurityGroupsListAllOptions) (NetworkSecurityGroupListResultPager) {
+func (client *NetworkSecurityGroupsClient) ListAll(options *NetworkSecurityGroupsListAllOptions) NetworkSecurityGroupListResultPager {
 	return &networkSecurityGroupListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -379,12 +379,12 @@ func (client *NetworkSecurityGroupsClient) listAllHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkSecurityGroupListResultResponse{}, err
 	}
-return NetworkSecurityGroupListResultResponse{RawResponse: resp.Response, NetworkSecurityGroupListResult: val}, nil
+	return NetworkSecurityGroupListResultResponse{RawResponse: resp.Response, NetworkSecurityGroupListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
 func (client *NetworkSecurityGroupsClient) listAllHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -440,15 +440,14 @@ func (client *NetworkSecurityGroupsClient) updateTagsHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkSecurityGroupResponse{}, err
 	}
-return NetworkSecurityGroupResponse{RawResponse: resp.Response, NetworkSecurityGroup: val}, nil
+	return NetworkSecurityGroupResponse{RawResponse: resp.Response, NetworkSecurityGroup: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
 func (client *NetworkSecurityGroupsClient) updateTagsHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

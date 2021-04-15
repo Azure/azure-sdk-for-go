@@ -21,7 +21,7 @@ import (
 // VirtualNetworkTapsClient contains the methods for the VirtualNetworkTaps group.
 // Don't use this type directly, use NewVirtualNetworkTapsClient() instead.
 type VirtualNetworkTapsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *VirtualNetworkTapsClient) BeginCreateOrUpdate(ctx context.Context,
 		return VirtualNetworkTapPollerResponse{}, err
 	}
 	poller := &virtualNetworkTapPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *VirtualNetworkTapsClient) ResumeCreateOrUpdate(token string) (Virt
 	}
 	return &virtualNetworkTapPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *VirtualNetworkTapsClient) createOrUpdate(ctx context.Context, reso
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,12 +116,12 @@ func (client *VirtualNetworkTapsClient) createOrUpdateHandleResponse(resp *azcor
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkTapResponse{}, err
 	}
-return VirtualNetworkTapResponse{RawResponse: resp.Response, VirtualNetworkTap: val}, nil
+	return VirtualNetworkTapResponse{RawResponse: resp.Response, VirtualNetworkTap: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *VirtualNetworkTapsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func (client *VirtualNetworkTapsClient) BeginDelete(ctx context.Context, resourc
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -161,7 +161,7 @@ func (client *VirtualNetworkTapsClient) ResumeDelete(token string) (HTTPPoller, 
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -178,7 +178,7 @@ func (client *VirtualNetworkTapsClient) deleteOperation(ctx context.Context, res
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -210,7 +210,7 @@ func (client *VirtualNetworkTapsClient) deleteCreateRequest(ctx context.Context,
 
 // deleteHandleError handles the Delete error response.
 func (client *VirtualNetworkTapsClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -266,12 +266,12 @@ func (client *VirtualNetworkTapsClient) getHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkTapResponse{}, err
 	}
-return VirtualNetworkTapResponse{RawResponse: resp.Response, VirtualNetworkTap: val}, nil
+	return VirtualNetworkTapResponse{RawResponse: resp.Response, VirtualNetworkTap: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *VirtualNetworkTapsClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -279,7 +279,7 @@ var err CloudError
 }
 
 // ListAll - Gets all the VirtualNetworkTaps in a subscription.
-func (client *VirtualNetworkTapsClient) ListAll(options *VirtualNetworkTapsListAllOptions) (VirtualNetworkTapListResultPager) {
+func (client *VirtualNetworkTapsClient) ListAll(options *VirtualNetworkTapsListAllOptions) VirtualNetworkTapListResultPager {
 	return &virtualNetworkTapListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -319,12 +319,12 @@ func (client *VirtualNetworkTapsClient) listAllHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkTapListResultResponse{}, err
 	}
-return VirtualNetworkTapListResultResponse{RawResponse: resp.Response, VirtualNetworkTapListResult: val}, nil
+	return VirtualNetworkTapListResultResponse{RawResponse: resp.Response, VirtualNetworkTapListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
 func (client *VirtualNetworkTapsClient) listAllHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -332,7 +332,7 @@ var err CloudError
 }
 
 // ListByResourceGroup - Gets all the VirtualNetworkTaps in a subscription.
-func (client *VirtualNetworkTapsClient) ListByResourceGroup(resourceGroupName string, options *VirtualNetworkTapsListByResourceGroupOptions) (VirtualNetworkTapListResultPager) {
+func (client *VirtualNetworkTapsClient) ListByResourceGroup(resourceGroupName string, options *VirtualNetworkTapsListByResourceGroupOptions) VirtualNetworkTapListResultPager {
 	return &virtualNetworkTapListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -376,12 +376,12 @@ func (client *VirtualNetworkTapsClient) listByResourceGroupHandleResponse(resp *
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkTapListResultResponse{}, err
 	}
-return VirtualNetworkTapListResultResponse{RawResponse: resp.Response, VirtualNetworkTapListResult: val}, nil
+	return VirtualNetworkTapListResultResponse{RawResponse: resp.Response, VirtualNetworkTapListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *VirtualNetworkTapsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -437,15 +437,14 @@ func (client *VirtualNetworkTapsClient) updateTagsHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkTapResponse{}, err
 	}
-return VirtualNetworkTapResponse{RawResponse: resp.Response, VirtualNetworkTap: val}, nil
+	return VirtualNetworkTapResponse{RawResponse: resp.Response, VirtualNetworkTap: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
 func (client *VirtualNetworkTapsClient) updateTagsHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

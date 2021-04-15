@@ -21,7 +21,7 @@ import (
 // DscpConfigurationClient contains the methods for the DscpConfiguration group.
 // Don't use this type directly, use NewDscpConfigurationClient() instead.
 type DscpConfigurationClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *DscpConfigurationClient) BeginCreateOrUpdate(ctx context.Context, 
 		return DscpConfigurationPollerResponse{}, err
 	}
 	poller := &dscpConfigurationPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *DscpConfigurationClient) ResumeCreateOrUpdate(token string) (DscpC
 	}
 	return &dscpConfigurationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *DscpConfigurationClient) createOrUpdate(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,12 +116,12 @@ func (client *DscpConfigurationClient) createOrUpdateHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DscpConfigurationResponse{}, err
 	}
-return DscpConfigurationResponse{RawResponse: resp.Response, DscpConfiguration: val}, nil
+	return DscpConfigurationResponse{RawResponse: resp.Response, DscpConfiguration: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *DscpConfigurationClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func (client *DscpConfigurationClient) BeginDelete(ctx context.Context, resource
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -161,7 +161,7 @@ func (client *DscpConfigurationClient) ResumeDelete(token string) (HTTPPoller, e
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -178,7 +178,7 @@ func (client *DscpConfigurationClient) deleteOperation(ctx context.Context, reso
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -210,7 +210,7 @@ func (client *DscpConfigurationClient) deleteCreateRequest(ctx context.Context, 
 
 // deleteHandleError handles the Delete error response.
 func (client *DscpConfigurationClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -266,12 +266,12 @@ func (client *DscpConfigurationClient) getHandleResponse(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DscpConfigurationResponse{}, err
 	}
-return DscpConfigurationResponse{RawResponse: resp.Response, DscpConfiguration: val}, nil
+	return DscpConfigurationResponse{RawResponse: resp.Response, DscpConfiguration: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *DscpConfigurationClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -279,7 +279,7 @@ var err CloudError
 }
 
 // List - Gets a DSCP Configuration.
-func (client *DscpConfigurationClient) List(resourceGroupName string, options *DscpConfigurationListOptions) (DscpConfigurationListResultPager) {
+func (client *DscpConfigurationClient) List(resourceGroupName string, options *DscpConfigurationListOptions) DscpConfigurationListResultPager {
 	return &dscpConfigurationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -323,12 +323,12 @@ func (client *DscpConfigurationClient) listHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DscpConfigurationListResultResponse{}, err
 	}
-return DscpConfigurationListResultResponse{RawResponse: resp.Response, DscpConfigurationListResult: val}, nil
+	return DscpConfigurationListResultResponse{RawResponse: resp.Response, DscpConfigurationListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *DscpConfigurationClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -336,7 +336,7 @@ var err CloudError
 }
 
 // ListAll - Gets all dscp configurations in a subscription.
-func (client *DscpConfigurationClient) ListAll(options *DscpConfigurationListAllOptions) (DscpConfigurationListResultPager) {
+func (client *DscpConfigurationClient) ListAll(options *DscpConfigurationListAllOptions) DscpConfigurationListResultPager {
 	return &dscpConfigurationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -376,15 +376,14 @@ func (client *DscpConfigurationClient) listAllHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DscpConfigurationListResultResponse{}, err
 	}
-return DscpConfigurationListResultResponse{RawResponse: resp.Response, DscpConfigurationListResult: val}, nil
+	return DscpConfigurationListResultResponse{RawResponse: resp.Response, DscpConfigurationListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
 func (client *DscpConfigurationClient) listAllHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

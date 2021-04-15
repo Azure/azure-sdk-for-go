@@ -20,7 +20,7 @@ import (
 // ApplicationGatewayPrivateLinkResourcesClient contains the methods for the ApplicationGatewayPrivateLinkResources group.
 // Don't use this type directly, use NewApplicationGatewayPrivateLinkResourcesClient() instead.
 type ApplicationGatewayPrivateLinkResourcesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -30,7 +30,7 @@ func NewApplicationGatewayPrivateLinkResourcesClient(con *armcore.Connection, su
 }
 
 // List - Lists all private link resources on an application gateway.
-func (client *ApplicationGatewayPrivateLinkResourcesClient) List(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateLinkResourcesListOptions) (ApplicationGatewayPrivateLinkResourceListResultPager) {
+func (client *ApplicationGatewayPrivateLinkResourcesClient) List(resourceGroupName string, applicationGatewayName string, options *ApplicationGatewayPrivateLinkResourcesListOptions) ApplicationGatewayPrivateLinkResourceListResultPager {
 	return &applicationGatewayPrivateLinkResourceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -78,15 +78,14 @@ func (client *ApplicationGatewayPrivateLinkResourcesClient) listHandleResponse(r
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ApplicationGatewayPrivateLinkResourceListResultResponse{}, err
 	}
-return ApplicationGatewayPrivateLinkResourceListResultResponse{RawResponse: resp.Response, ApplicationGatewayPrivateLinkResourceListResult: val}, nil
+	return ApplicationGatewayPrivateLinkResourceListResultResponse{RawResponse: resp.Response, ApplicationGatewayPrivateLinkResourceListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *ApplicationGatewayPrivateLinkResourcesClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

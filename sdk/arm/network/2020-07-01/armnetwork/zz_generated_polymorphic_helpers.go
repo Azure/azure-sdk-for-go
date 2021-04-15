@@ -92,4 +92,3 @@ func unmarshalFirewallPolicyRuleCollectionClassificationArray(rawMsg *json.RawMe
 func strptr(s string) *string {
 	return &s
 }
-

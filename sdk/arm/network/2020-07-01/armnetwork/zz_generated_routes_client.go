@@ -21,7 +21,7 @@ import (
 // RoutesClient contains the methods for the Routes group.
 // Don't use this type directly, use NewRoutesClient() instead.
 type RoutesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *RoutesClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 		return RoutePollerResponse{}, err
 	}
 	poller := &routePoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *RoutesClient) ResumeCreateOrUpdate(token string) (RoutePoller, err
 	}
 	return &routePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *RoutesClient) createOrUpdate(ctx context.Context, resourceGroupNam
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -120,12 +120,12 @@ func (client *RoutesClient) createOrUpdateHandleResponse(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteResponse{}, err
 	}
-return RouteResponse{RawResponse: resp.Response, Route: val}, nil
+	return RouteResponse{RawResponse: resp.Response, Route: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *RoutesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func (client *RoutesClient) BeginDelete(ctx context.Context, resourceGroupName s
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -165,7 +165,7 @@ func (client *RoutesClient) ResumeDelete(token string) (HTTPPoller, error) {
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -182,7 +182,7 @@ func (client *RoutesClient) deleteOperation(ctx context.Context, resourceGroupNa
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -218,7 +218,7 @@ func (client *RoutesClient) deleteCreateRequest(ctx context.Context, resourceGro
 
 // deleteHandleError handles the Delete error response.
 func (client *RoutesClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -278,12 +278,12 @@ func (client *RoutesClient) getHandleResponse(resp *azcore.Response) (RouteRespo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteResponse{}, err
 	}
-return RouteResponse{RawResponse: resp.Response, Route: val}, nil
+	return RouteResponse{RawResponse: resp.Response, Route: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *RoutesClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -291,7 +291,7 @@ var err CloudError
 }
 
 // List - Gets all routes in a route table.
-func (client *RoutesClient) List(resourceGroupName string, routeTableName string, options *RoutesListOptions) (RouteListResultPager) {
+func (client *RoutesClient) List(resourceGroupName string, routeTableName string, options *RoutesListOptions) RouteListResultPager {
 	return &routeListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -339,15 +339,14 @@ func (client *RoutesClient) listHandleResponse(resp *azcore.Response) (RouteList
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteListResultResponse{}, err
 	}
-return RouteListResultResponse{RawResponse: resp.Response, RouteListResult: val}, nil
+	return RouteListResultResponse{RawResponse: resp.Response, RouteListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *RoutesClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

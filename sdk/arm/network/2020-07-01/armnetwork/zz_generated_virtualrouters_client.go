@@ -21,7 +21,7 @@ import (
 // VirtualRoutersClient contains the methods for the VirtualRouters group.
 // Don't use this type directly, use NewVirtualRoutersClient() instead.
 type VirtualRoutersClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *VirtualRoutersClient) BeginCreateOrUpdate(ctx context.Context, res
 		return VirtualRouterPollerResponse{}, err
 	}
 	poller := &virtualRouterPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *VirtualRoutersClient) ResumeCreateOrUpdate(token string) (VirtualR
 	}
 	return &virtualRouterPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *VirtualRoutersClient) createOrUpdate(ctx context.Context, resource
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,12 +116,12 @@ func (client *VirtualRoutersClient) createOrUpdateHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualRouterResponse{}, err
 	}
-return VirtualRouterResponse{RawResponse: resp.Response, VirtualRouter: val}, nil
+	return VirtualRouterResponse{RawResponse: resp.Response, VirtualRouter: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *VirtualRoutersClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err Error
+	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func (client *VirtualRoutersClient) BeginDelete(ctx context.Context, resourceGro
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -161,7 +161,7 @@ func (client *VirtualRoutersClient) ResumeDelete(token string) (HTTPPoller, erro
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -178,7 +178,7 @@ func (client *VirtualRoutersClient) deleteOperation(ctx context.Context, resourc
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -210,7 +210,7 @@ func (client *VirtualRoutersClient) deleteCreateRequest(ctx context.Context, res
 
 // deleteHandleError handles the Delete error response.
 func (client *VirtualRoutersClient) deleteHandleError(resp *azcore.Response) error {
-var err Error
+	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -269,12 +269,12 @@ func (client *VirtualRoutersClient) getHandleResponse(resp *azcore.Response) (Vi
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualRouterResponse{}, err
 	}
-return VirtualRouterResponse{RawResponse: resp.Response, VirtualRouter: val}, nil
+	return VirtualRouterResponse{RawResponse: resp.Response, VirtualRouter: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *VirtualRoutersClient) getHandleError(resp *azcore.Response) error {
-var err Error
+	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -282,7 +282,7 @@ var err Error
 }
 
 // List - Gets all the Virtual Routers in a subscription.
-func (client *VirtualRoutersClient) List(options *VirtualRoutersListOptions) (VirtualRouterListResultPager) {
+func (client *VirtualRoutersClient) List(options *VirtualRoutersListOptions) VirtualRouterListResultPager {
 	return &virtualRouterListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -322,12 +322,12 @@ func (client *VirtualRoutersClient) listHandleResponse(resp *azcore.Response) (V
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualRouterListResultResponse{}, err
 	}
-return VirtualRouterListResultResponse{RawResponse: resp.Response, VirtualRouterListResult: val}, nil
+	return VirtualRouterListResultResponse{RawResponse: resp.Response, VirtualRouterListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *VirtualRoutersClient) listHandleError(resp *azcore.Response) error {
-var err Error
+	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -335,7 +335,7 @@ var err Error
 }
 
 // ListByResourceGroup - Lists all Virtual Routers in a resource group.
-func (client *VirtualRoutersClient) ListByResourceGroup(resourceGroupName string, options *VirtualRoutersListByResourceGroupOptions) (VirtualRouterListResultPager) {
+func (client *VirtualRoutersClient) ListByResourceGroup(resourceGroupName string, options *VirtualRoutersListByResourceGroupOptions) VirtualRouterListResultPager {
 	return &virtualRouterListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -379,15 +379,14 @@ func (client *VirtualRoutersClient) listByResourceGroupHandleResponse(resp *azco
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualRouterListResultResponse{}, err
 	}
-return VirtualRouterListResultResponse{RawResponse: resp.Response, VirtualRouterListResult: val}, nil
+	return VirtualRouterListResultResponse{RawResponse: resp.Response, VirtualRouterListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *VirtualRoutersClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-var err Error
+	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

@@ -20,7 +20,7 @@ import (
 // ResourceNavigationLinksClient contains the methods for the ResourceNavigationLinks group.
 // Don't use this type directly, use NewResourceNavigationLinksClient() instead.
 type ResourceNavigationLinksClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -82,15 +82,14 @@ func (client *ResourceNavigationLinksClient) listHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ResourceNavigationLinksListResultResponse{}, err
 	}
-return ResourceNavigationLinksListResultResponse{RawResponse: resp.Response, ResourceNavigationLinksListResult: val}, nil
+	return ResourceNavigationLinksListResultResponse{RawResponse: resp.Response, ResourceNavigationLinksListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *ResourceNavigationLinksClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

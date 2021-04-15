@@ -21,7 +21,7 @@ import (
 // ExpressRouteCrossConnectionPeeringsClient contains the methods for the ExpressRouteCrossConnectionPeerings group.
 // Don't use this type directly, use NewExpressRouteCrossConnectionPeeringsClient() instead.
 type ExpressRouteCrossConnectionPeeringsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) BeginCreateOrUpdate(ctx
 		return ExpressRouteCrossConnectionPeeringPollerResponse{}, err
 	}
 	poller := &expressRouteCrossConnectionPeeringPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) ResumeCreateOrUpdate(to
 	}
 	return &expressRouteCrossConnectionPeeringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) createOrUpdate(ctx cont
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -120,12 +120,12 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) createOrUpdateHandleRes
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRouteCrossConnectionPeeringResponse{}, err
 	}
-return ExpressRouteCrossConnectionPeeringResponse{RawResponse: resp.Response, ExpressRouteCrossConnectionPeering: val}, nil
+	return ExpressRouteCrossConnectionPeeringResponse{RawResponse: resp.Response, ExpressRouteCrossConnectionPeering: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *ExpressRouteCrossConnectionPeeringsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) BeginDelete(ctx context
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -165,7 +165,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) ResumeDelete(token stri
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -182,7 +182,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) deleteOperation(ctx con
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -218,7 +218,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) deleteCreateRequest(ctx
 
 // deleteHandleError handles the Delete error response.
 func (client *ExpressRouteCrossConnectionPeeringsClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -278,12 +278,12 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) getHandleResponse(resp 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRouteCrossConnectionPeeringResponse{}, err
 	}
-return ExpressRouteCrossConnectionPeeringResponse{RawResponse: resp.Response, ExpressRouteCrossConnectionPeering: val}, nil
+	return ExpressRouteCrossConnectionPeeringResponse{RawResponse: resp.Response, ExpressRouteCrossConnectionPeering: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *ExpressRouteCrossConnectionPeeringsClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -291,7 +291,7 @@ var err CloudError
 }
 
 // List - Gets all peerings in a specified ExpressRouteCrossConnection.
-func (client *ExpressRouteCrossConnectionPeeringsClient) List(resourceGroupName string, crossConnectionName string, options *ExpressRouteCrossConnectionPeeringsListOptions) (ExpressRouteCrossConnectionPeeringListPager) {
+func (client *ExpressRouteCrossConnectionPeeringsClient) List(resourceGroupName string, crossConnectionName string, options *ExpressRouteCrossConnectionPeeringsListOptions) ExpressRouteCrossConnectionPeeringListPager {
 	return &expressRouteCrossConnectionPeeringListPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -339,15 +339,14 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) listHandleResponse(resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRouteCrossConnectionPeeringListResponse{}, err
 	}
-return ExpressRouteCrossConnectionPeeringListResponse{RawResponse: resp.Response, ExpressRouteCrossConnectionPeeringList: val}, nil
+	return ExpressRouteCrossConnectionPeeringListResponse{RawResponse: resp.Response, ExpressRouteCrossConnectionPeeringList: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *ExpressRouteCrossConnectionPeeringsClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

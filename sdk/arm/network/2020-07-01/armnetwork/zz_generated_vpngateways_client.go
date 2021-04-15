@@ -21,7 +21,7 @@ import (
 // VPNGatewaysClient contains the methods for the VPNGateways group.
 // Don't use this type directly, use NewVPNGatewaysClient() instead.
 type VPNGatewaysClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *VPNGatewaysClient) BeginCreateOrUpdate(ctx context.Context, resour
 		return VPNGatewayPollerResponse{}, err
 	}
 	poller := &vpnGatewayPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *VPNGatewaysClient) ResumeCreateOrUpdate(token string) (VPNGatewayP
 	}
 	return &vpnGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *VPNGatewaysClient) createOrUpdate(ctx context.Context, resourceGro
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,12 +116,12 @@ func (client *VPNGatewaysClient) createOrUpdateHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VPNGatewayResponse{}, err
 	}
-return VPNGatewayResponse{RawResponse: resp.Response, VPNGateway: val}, nil
+	return VPNGatewayResponse{RawResponse: resp.Response, VPNGateway: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *VPNGatewaysClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func (client *VPNGatewaysClient) BeginDelete(ctx context.Context, resourceGroupN
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -161,7 +161,7 @@ func (client *VPNGatewaysClient) ResumeDelete(token string) (HTTPPoller, error) 
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -178,7 +178,7 @@ func (client *VPNGatewaysClient) deleteOperation(ctx context.Context, resourceGr
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -210,7 +210,7 @@ func (client *VPNGatewaysClient) deleteCreateRequest(ctx context.Context, resour
 
 // deleteHandleError handles the Delete error response.
 func (client *VPNGatewaysClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -266,12 +266,12 @@ func (client *VPNGatewaysClient) getHandleResponse(resp *azcore.Response) (VPNGa
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VPNGatewayResponse{}, err
 	}
-return VPNGatewayResponse{RawResponse: resp.Response, VPNGateway: val}, nil
+	return VPNGatewayResponse{RawResponse: resp.Response, VPNGateway: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *VPNGatewaysClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -279,7 +279,7 @@ var err CloudError
 }
 
 // List - Lists all the VpnGateways in a subscription.
-func (client *VPNGatewaysClient) List(options *VPNGatewaysListOptions) (ListVPNGatewaysResultPager) {
+func (client *VPNGatewaysClient) List(options *VPNGatewaysListOptions) ListVPNGatewaysResultPager {
 	return &listVPNGatewaysResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -319,12 +319,12 @@ func (client *VPNGatewaysClient) listHandleResponse(resp *azcore.Response) (List
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVPNGatewaysResultResponse{}, err
 	}
-return ListVPNGatewaysResultResponse{RawResponse: resp.Response, ListVPNGatewaysResult: val}, nil
+	return ListVPNGatewaysResultResponse{RawResponse: resp.Response, ListVPNGatewaysResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *VPNGatewaysClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -332,7 +332,7 @@ var err CloudError
 }
 
 // ListByResourceGroup - Lists all the VpnGateways in a resource group.
-func (client *VPNGatewaysClient) ListByResourceGroup(resourceGroupName string, options *VPNGatewaysListByResourceGroupOptions) (ListVPNGatewaysResultPager) {
+func (client *VPNGatewaysClient) ListByResourceGroup(resourceGroupName string, options *VPNGatewaysListByResourceGroupOptions) ListVPNGatewaysResultPager {
 	return &listVPNGatewaysResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -376,12 +376,12 @@ func (client *VPNGatewaysClient) listByResourceGroupHandleResponse(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVPNGatewaysResultResponse{}, err
 	}
-return ListVPNGatewaysResultResponse{RawResponse: resp.Response, ListVPNGatewaysResult: val}, nil
+	return ListVPNGatewaysResultResponse{RawResponse: resp.Response, ListVPNGatewaysResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *VPNGatewaysClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -402,7 +402,7 @@ func (client *VPNGatewaysClient) BeginReset(ctx context.Context, resourceGroupNa
 		return VPNGatewayPollerResponse{}, err
 	}
 	poller := &vpnGatewayPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -421,7 +421,7 @@ func (client *VPNGatewaysClient) ResumeReset(token string) (VPNGatewayPoller, er
 	}
 	return &vpnGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -438,7 +438,7 @@ func (client *VPNGatewaysClient) reset(ctx context.Context, resourceGroupName st
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.resetHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // resetCreateRequest creates the Reset request.
@@ -474,12 +474,12 @@ func (client *VPNGatewaysClient) resetHandleResponse(resp *azcore.Response) (VPN
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VPNGatewayResponse{}, err
 	}
-return VPNGatewayResponse{RawResponse: resp.Response, VPNGateway: val}, nil
+	return VPNGatewayResponse{RawResponse: resp.Response, VPNGateway: val}, nil
 }
 
 // resetHandleError handles the Reset error response.
 func (client *VPNGatewaysClient) resetHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -500,7 +500,7 @@ func (client *VPNGatewaysClient) BeginStartPacketCapture(ctx context.Context, re
 		return StringPollerResponse{}, err
 	}
 	poller := &stringPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -519,7 +519,7 @@ func (client *VPNGatewaysClient) ResumeStartPacketCapture(token string) (StringP
 	}
 	return &stringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -536,7 +536,7 @@ func (client *VPNGatewaysClient) startPacketCapture(ctx context.Context, resourc
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.startPacketCaptureHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // startPacketCaptureCreateRequest creates the StartPacketCapture request.
@@ -575,12 +575,12 @@ func (client *VPNGatewaysClient) startPacketCaptureHandleResponse(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return StringResponse{}, err
 	}
-return StringResponse{RawResponse: resp.Response, Value: val}, nil
+	return StringResponse{RawResponse: resp.Response, Value: val}, nil
 }
 
 // startPacketCaptureHandleError handles the StartPacketCapture error response.
 func (client *VPNGatewaysClient) startPacketCaptureHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -601,7 +601,7 @@ func (client *VPNGatewaysClient) BeginStopPacketCapture(ctx context.Context, res
 		return StringPollerResponse{}, err
 	}
 	poller := &stringPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -620,7 +620,7 @@ func (client *VPNGatewaysClient) ResumeStopPacketCapture(token string) (StringPo
 	}
 	return &stringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -637,7 +637,7 @@ func (client *VPNGatewaysClient) stopPacketCapture(ctx context.Context, resource
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.stopPacketCaptureHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // stopPacketCaptureCreateRequest creates the StopPacketCapture request.
@@ -676,12 +676,12 @@ func (client *VPNGatewaysClient) stopPacketCaptureHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return StringResponse{}, err
 	}
-return StringResponse{RawResponse: resp.Response, Value: val}, nil
+	return StringResponse{RawResponse: resp.Response, Value: val}, nil
 }
 
 // stopPacketCaptureHandleError handles the StopPacketCapture error response.
 func (client *VPNGatewaysClient) stopPacketCaptureHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -702,7 +702,7 @@ func (client *VPNGatewaysClient) BeginUpdateTags(ctx context.Context, resourceGr
 		return VPNGatewayPollerResponse{}, err
 	}
 	poller := &vpnGatewayPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -721,7 +721,7 @@ func (client *VPNGatewaysClient) ResumeUpdateTags(token string) (VPNGatewayPolle
 	}
 	return &vpnGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -738,7 +738,7 @@ func (client *VPNGatewaysClient) updateTags(ctx context.Context, resourceGroupNa
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateTagsHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -774,15 +774,14 @@ func (client *VPNGatewaysClient) updateTagsHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VPNGatewayResponse{}, err
 	}
-return VPNGatewayResponse{RawResponse: resp.Response, VPNGateway: val}, nil
+	return VPNGatewayResponse{RawResponse: resp.Response, VPNGateway: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
 func (client *VPNGatewaysClient) updateTagsHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

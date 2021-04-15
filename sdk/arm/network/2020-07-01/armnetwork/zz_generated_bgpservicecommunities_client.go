@@ -20,7 +20,7 @@ import (
 // BgpServiceCommunitiesClient contains the methods for the BgpServiceCommunities group.
 // Don't use this type directly, use NewBgpServiceCommunitiesClient() instead.
 type BgpServiceCommunitiesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -30,7 +30,7 @@ func NewBgpServiceCommunitiesClient(con *armcore.Connection, subscriptionID stri
 }
 
 // List - Gets all the available bgp service communities.
-func (client *BgpServiceCommunitiesClient) List(options *BgpServiceCommunitiesListOptions) (BgpServiceCommunityListResultPager) {
+func (client *BgpServiceCommunitiesClient) List(options *BgpServiceCommunitiesListOptions) BgpServiceCommunityListResultPager {
 	return &bgpServiceCommunityListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -70,15 +70,14 @@ func (client *BgpServiceCommunitiesClient) listHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BgpServiceCommunityListResultResponse{}, err
 	}
-return BgpServiceCommunityListResultResponse{RawResponse: resp.Response, BgpServiceCommunityListResult: val}, nil
+	return BgpServiceCommunityListResultResponse{RawResponse: resp.Response, BgpServiceCommunityListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *BgpServiceCommunitiesClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

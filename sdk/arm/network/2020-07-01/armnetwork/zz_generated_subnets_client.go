@@ -21,7 +21,7 @@ import (
 // SubnetsClient contains the methods for the Subnets group.
 // Don't use this type directly, use NewSubnetsClient() instead.
 type SubnetsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *SubnetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 		return SubnetPollerResponse{}, err
 	}
 	poller := &subnetPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *SubnetsClient) ResumeCreateOrUpdate(token string) (SubnetPoller, e
 	}
 	return &subnetPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *SubnetsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -120,12 +120,12 @@ func (client *SubnetsClient) createOrUpdateHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SubnetResponse{}, err
 	}
-return SubnetResponse{RawResponse: resp.Response, Subnet: val}, nil
+	return SubnetResponse{RawResponse: resp.Response, Subnet: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *SubnetsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func (client *SubnetsClient) BeginDelete(ctx context.Context, resourceGroupName 
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -165,7 +165,7 @@ func (client *SubnetsClient) ResumeDelete(token string) (HTTPPoller, error) {
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -182,7 +182,7 @@ func (client *SubnetsClient) deleteOperation(ctx context.Context, resourceGroupN
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -218,7 +218,7 @@ func (client *SubnetsClient) deleteCreateRequest(ctx context.Context, resourceGr
 
 // deleteHandleError handles the Delete error response.
 func (client *SubnetsClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -281,12 +281,12 @@ func (client *SubnetsClient) getHandleResponse(resp *azcore.Response) (SubnetRes
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SubnetResponse{}, err
 	}
-return SubnetResponse{RawResponse: resp.Response, Subnet: val}, nil
+	return SubnetResponse{RawResponse: resp.Response, Subnet: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *SubnetsClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -294,7 +294,7 @@ var err CloudError
 }
 
 // List - Gets all subnets in a virtual network.
-func (client *SubnetsClient) List(resourceGroupName string, virtualNetworkName string, options *SubnetsListOptions) (SubnetListResultPager) {
+func (client *SubnetsClient) List(resourceGroupName string, virtualNetworkName string, options *SubnetsListOptions) SubnetListResultPager {
 	return &subnetListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -342,12 +342,12 @@ func (client *SubnetsClient) listHandleResponse(resp *azcore.Response) (SubnetLi
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SubnetListResultResponse{}, err
 	}
-return SubnetListResultResponse{RawResponse: resp.Response, SubnetListResult: val}, nil
+	return SubnetListResultResponse{RawResponse: resp.Response, SubnetListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *SubnetsClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -368,7 +368,7 @@ func (client *SubnetsClient) BeginPrepareNetworkPolicies(ctx context.Context, re
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -387,7 +387,7 @@ func (client *SubnetsClient) ResumePrepareNetworkPolicies(token string) (HTTPPol
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -404,7 +404,7 @@ func (client *SubnetsClient) prepareNetworkPolicies(ctx context.Context, resourc
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.prepareNetworkPoliciesHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // prepareNetworkPoliciesCreateRequest creates the PrepareNetworkPolicies request.
@@ -440,7 +440,7 @@ func (client *SubnetsClient) prepareNetworkPoliciesCreateRequest(ctx context.Con
 
 // prepareNetworkPoliciesHandleError handles the PrepareNetworkPolicies error response.
 func (client *SubnetsClient) prepareNetworkPoliciesHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -461,7 +461,7 @@ func (client *SubnetsClient) BeginUnprepareNetworkPolicies(ctx context.Context, 
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -480,7 +480,7 @@ func (client *SubnetsClient) ResumeUnprepareNetworkPolicies(token string) (HTTPP
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -497,7 +497,7 @@ func (client *SubnetsClient) unprepareNetworkPolicies(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.unprepareNetworkPoliciesHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // unprepareNetworkPoliciesCreateRequest creates the UnprepareNetworkPolicies request.
@@ -533,10 +533,9 @@ func (client *SubnetsClient) unprepareNetworkPoliciesCreateRequest(ctx context.C
 
 // unprepareNetworkPoliciesHandleError handles the UnprepareNetworkPolicies error response.
 func (client *SubnetsClient) unprepareNetworkPoliciesHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

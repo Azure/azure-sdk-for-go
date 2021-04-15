@@ -21,7 +21,7 @@ import (
 // InboundSecurityRuleClient contains the methods for the InboundSecurityRule group.
 // Don't use this type directly, use NewInboundSecurityRuleClient() instead.
 type InboundSecurityRuleClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context
 		return InboundSecurityRulePollerResponse{}, err
 	}
 	poller := &inboundSecurityRulePoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *InboundSecurityRuleClient) ResumeCreateOrUpdate(token string) (Inb
 	}
 	return &inboundSecurityRulePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *InboundSecurityRuleClient) createOrUpdate(ctx context.Context, res
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -120,15 +120,14 @@ func (client *InboundSecurityRuleClient) createOrUpdateHandleResponse(resp *azco
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return InboundSecurityRuleResponse{}, err
 	}
-return InboundSecurityRuleResponse{RawResponse: resp.Response, InboundSecurityRule: val}, nil
+	return InboundSecurityRuleResponse{RawResponse: resp.Response, InboundSecurityRule: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *InboundSecurityRuleClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

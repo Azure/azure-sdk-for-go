@@ -21,7 +21,7 @@ import (
 // NatGatewaysClient contains the methods for the NatGateways group.
 // Don't use this type directly, use NewNatGatewaysClient() instead.
 type NatGatewaysClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *NatGatewaysClient) BeginCreateOrUpdate(ctx context.Context, resour
 		return NatGatewayPollerResponse{}, err
 	}
 	poller := &natGatewayPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *NatGatewaysClient) ResumeCreateOrUpdate(token string) (NatGatewayP
 	}
 	return &natGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *NatGatewaysClient) createOrUpdate(ctx context.Context, resourceGro
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,12 +116,12 @@ func (client *NatGatewaysClient) createOrUpdateHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NatGatewayResponse{}, err
 	}
-return NatGatewayResponse{RawResponse: resp.Response, NatGateway: val}, nil
+	return NatGatewayResponse{RawResponse: resp.Response, NatGateway: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *NatGatewaysClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func (client *NatGatewaysClient) BeginDelete(ctx context.Context, resourceGroupN
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -161,7 +161,7 @@ func (client *NatGatewaysClient) ResumeDelete(token string) (HTTPPoller, error) 
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -178,7 +178,7 @@ func (client *NatGatewaysClient) deleteOperation(ctx context.Context, resourceGr
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -210,7 +210,7 @@ func (client *NatGatewaysClient) deleteCreateRequest(ctx context.Context, resour
 
 // deleteHandleError handles the Delete error response.
 func (client *NatGatewaysClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -269,12 +269,12 @@ func (client *NatGatewaysClient) getHandleResponse(resp *azcore.Response) (NatGa
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NatGatewayResponse{}, err
 	}
-return NatGatewayResponse{RawResponse: resp.Response, NatGateway: val}, nil
+	return NatGatewayResponse{RawResponse: resp.Response, NatGateway: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *NatGatewaysClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -282,7 +282,7 @@ var err CloudError
 }
 
 // List - Gets all nat gateways in a resource group.
-func (client *NatGatewaysClient) List(resourceGroupName string, options *NatGatewaysListOptions) (NatGatewayListResultPager) {
+func (client *NatGatewaysClient) List(resourceGroupName string, options *NatGatewaysListOptions) NatGatewayListResultPager {
 	return &natGatewayListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -326,12 +326,12 @@ func (client *NatGatewaysClient) listHandleResponse(resp *azcore.Response) (NatG
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NatGatewayListResultResponse{}, err
 	}
-return NatGatewayListResultResponse{RawResponse: resp.Response, NatGatewayListResult: val}, nil
+	return NatGatewayListResultResponse{RawResponse: resp.Response, NatGatewayListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *NatGatewaysClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -339,7 +339,7 @@ var err CloudError
 }
 
 // ListAll - Gets all the Nat Gateways in a subscription.
-func (client *NatGatewaysClient) ListAll(options *NatGatewaysListAllOptions) (NatGatewayListResultPager) {
+func (client *NatGatewaysClient) ListAll(options *NatGatewaysListAllOptions) NatGatewayListResultPager {
 	return &natGatewayListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -379,12 +379,12 @@ func (client *NatGatewaysClient) listAllHandleResponse(resp *azcore.Response) (N
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NatGatewayListResultResponse{}, err
 	}
-return NatGatewayListResultResponse{RawResponse: resp.Response, NatGatewayListResult: val}, nil
+	return NatGatewayListResultResponse{RawResponse: resp.Response, NatGatewayListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
 func (client *NatGatewaysClient) listAllHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -440,15 +440,14 @@ func (client *NatGatewaysClient) updateTagsHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NatGatewayResponse{}, err
 	}
-return NatGatewayResponse{RawResponse: resp.Response, NatGateway: val}, nil
+	return NatGatewayResponse{RawResponse: resp.Response, NatGateway: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
 func (client *NatGatewaysClient) updateTagsHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

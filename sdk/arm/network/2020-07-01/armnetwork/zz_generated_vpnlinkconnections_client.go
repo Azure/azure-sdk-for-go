@@ -20,7 +20,7 @@ import (
 // VPNLinkConnectionsClient contains the methods for the VPNLinkConnections group.
 // Don't use this type directly, use NewVPNLinkConnectionsClient() instead.
 type VPNLinkConnectionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -30,7 +30,7 @@ func NewVPNLinkConnectionsClient(con *armcore.Connection, subscriptionID string)
 }
 
 // ListByVPNConnection - Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
-func (client *VPNLinkConnectionsClient) ListByVPNConnection(resourceGroupName string, gatewayName string, connectionName string, options *VPNLinkConnectionsListByVPNConnectionOptions) (ListVPNSiteLinkConnectionsResultPager) {
+func (client *VPNLinkConnectionsClient) ListByVPNConnection(resourceGroupName string, gatewayName string, connectionName string, options *VPNLinkConnectionsListByVPNConnectionOptions) ListVPNSiteLinkConnectionsResultPager {
 	return &listVPNSiteLinkConnectionsResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -82,15 +82,14 @@ func (client *VPNLinkConnectionsClient) listByVPNConnectionHandleResponse(resp *
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVPNSiteLinkConnectionsResultResponse{}, err
 	}
-return ListVPNSiteLinkConnectionsResultResponse{RawResponse: resp.Response, ListVPNSiteLinkConnectionsResult: val}, nil
+	return ListVPNSiteLinkConnectionsResultResponse{RawResponse: resp.Response, ListVPNSiteLinkConnectionsResult: val}, nil
 }
 
 // listByVPNConnectionHandleError handles the ListByVPNConnection error response.
 func (client *VPNLinkConnectionsClient) listByVPNConnectionHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

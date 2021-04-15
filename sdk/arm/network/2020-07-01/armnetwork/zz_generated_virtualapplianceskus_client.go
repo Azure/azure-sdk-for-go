@@ -20,7 +20,7 @@ import (
 // VirtualApplianceSKUsClient contains the methods for the VirtualApplianceSKUs group.
 // Don't use this type directly, use NewVirtualApplianceSKUsClient() instead.
 type VirtualApplianceSKUsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -74,12 +74,12 @@ func (client *VirtualApplianceSKUsClient) getHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkVirtualApplianceSKUResponse{}, err
 	}
-return NetworkVirtualApplianceSKUResponse{RawResponse: resp.Response, NetworkVirtualApplianceSKU: val}, nil
+	return NetworkVirtualApplianceSKUResponse{RawResponse: resp.Response, NetworkVirtualApplianceSKU: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *VirtualApplianceSKUsClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -87,7 +87,7 @@ var err CloudError
 }
 
 // List - List all SKUs available for a virtual appliance.
-func (client *VirtualApplianceSKUsClient) List(options *VirtualApplianceSKUsListOptions) (NetworkVirtualApplianceSKUListResultPager) {
+func (client *VirtualApplianceSKUsClient) List(options *VirtualApplianceSKUsListOptions) NetworkVirtualApplianceSKUListResultPager {
 	return &networkVirtualApplianceSKUListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -127,15 +127,14 @@ func (client *VirtualApplianceSKUsClient) listHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkVirtualApplianceSKUListResultResponse{}, err
 	}
-return NetworkVirtualApplianceSKUListResultResponse{RawResponse: resp.Response, NetworkVirtualApplianceSKUListResult: val}, nil
+	return NetworkVirtualApplianceSKUListResultResponse{RawResponse: resp.Response, NetworkVirtualApplianceSKUListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *VirtualApplianceSKUsClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

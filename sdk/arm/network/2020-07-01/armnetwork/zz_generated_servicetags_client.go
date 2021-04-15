@@ -20,7 +20,7 @@ import (
 // ServiceTagsClient contains the methods for the ServiceTags group.
 // Don't use this type directly, use NewServiceTagsClient() instead.
 type ServiceTagsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -74,15 +74,14 @@ func (client *ServiceTagsClient) listHandleResponse(resp *azcore.Response) (Serv
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ServiceTagsListResultResponse{}, err
 	}
-return ServiceTagsListResultResponse{RawResponse: resp.Response, ServiceTagsListResult: val}, nil
+	return ServiceTagsListResultResponse{RawResponse: resp.Response, ServiceTagsListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *ServiceTagsClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

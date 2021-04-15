@@ -21,7 +21,7 @@ import (
 // VirtualHubBgpConnectionClient contains the methods for the VirtualHubBgpConnection group.
 // Don't use this type directly, use NewVirtualHubBgpConnectionClient() instead.
 type VirtualHubBgpConnectionClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *VirtualHubBgpConnectionClient) BeginCreateOrUpdate(ctx context.Con
 		return BgpConnectionPollerResponse{}, err
 	}
 	poller := &bgpConnectionPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *VirtualHubBgpConnectionClient) ResumeCreateOrUpdate(token string) 
 	}
 	return &bgpConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *VirtualHubBgpConnectionClient) createOrUpdate(ctx context.Context,
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -120,12 +120,12 @@ func (client *VirtualHubBgpConnectionClient) createOrUpdateHandleResponse(resp *
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BgpConnectionResponse{}, err
 	}
-return BgpConnectionResponse{RawResponse: resp.Response, BgpConnection: val}, nil
+	return BgpConnectionResponse{RawResponse: resp.Response, BgpConnection: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *VirtualHubBgpConnectionClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func (client *VirtualHubBgpConnectionClient) BeginDelete(ctx context.Context, re
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -165,7 +165,7 @@ func (client *VirtualHubBgpConnectionClient) ResumeDelete(token string) (HTTPPol
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -182,7 +182,7 @@ func (client *VirtualHubBgpConnectionClient) deleteOperation(ctx context.Context
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -218,7 +218,7 @@ func (client *VirtualHubBgpConnectionClient) deleteCreateRequest(ctx context.Con
 
 // deleteHandleError handles the Delete error response.
 func (client *VirtualHubBgpConnectionClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -278,15 +278,14 @@ func (client *VirtualHubBgpConnectionClient) getHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BgpConnectionResponse{}, err
 	}
-return BgpConnectionResponse{RawResponse: resp.Response, BgpConnection: val}, nil
+	return BgpConnectionResponse{RawResponse: resp.Response, BgpConnection: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *VirtualHubBgpConnectionClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

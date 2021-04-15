@@ -21,7 +21,7 @@ import (
 // VPNSitesClient contains the methods for the VPNSites group.
 // Don't use this type directly, use NewVPNSitesClient() instead.
 type VPNSitesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *VPNSitesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 		return VPNSitePollerResponse{}, err
 	}
 	poller := &vpnSitePoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *VPNSitesClient) ResumeCreateOrUpdate(token string) (VPNSitePoller,
 	}
 	return &vpnSitePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *VPNSitesClient) createOrUpdate(ctx context.Context, resourceGroupN
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,12 +116,12 @@ func (client *VPNSitesClient) createOrUpdateHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VPNSiteResponse{}, err
 	}
-return VPNSiteResponse{RawResponse: resp.Response, VPNSite: val}, nil
+	return VPNSiteResponse{RawResponse: resp.Response, VPNSite: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *VPNSitesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func (client *VPNSitesClient) BeginDelete(ctx context.Context, resourceGroupName
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -161,7 +161,7 @@ func (client *VPNSitesClient) ResumeDelete(token string) (HTTPPoller, error) {
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -178,7 +178,7 @@ func (client *VPNSitesClient) deleteOperation(ctx context.Context, resourceGroup
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -210,7 +210,7 @@ func (client *VPNSitesClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // deleteHandleError handles the Delete error response.
 func (client *VPNSitesClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -266,12 +266,12 @@ func (client *VPNSitesClient) getHandleResponse(resp *azcore.Response) (VPNSiteR
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VPNSiteResponse{}, err
 	}
-return VPNSiteResponse{RawResponse: resp.Response, VPNSite: val}, nil
+	return VPNSiteResponse{RawResponse: resp.Response, VPNSite: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *VPNSitesClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -279,7 +279,7 @@ var err CloudError
 }
 
 // List - Lists all the VpnSites in a subscription.
-func (client *VPNSitesClient) List(options *VPNSitesListOptions) (ListVPNSitesResultPager) {
+func (client *VPNSitesClient) List(options *VPNSitesListOptions) ListVPNSitesResultPager {
 	return &listVPNSitesResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -319,12 +319,12 @@ func (client *VPNSitesClient) listHandleResponse(resp *azcore.Response) (ListVPN
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVPNSitesResultResponse{}, err
 	}
-return ListVPNSitesResultResponse{RawResponse: resp.Response, ListVPNSitesResult: val}, nil
+	return ListVPNSitesResultResponse{RawResponse: resp.Response, ListVPNSitesResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *VPNSitesClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -332,7 +332,7 @@ var err CloudError
 }
 
 // ListByResourceGroup - Lists all the vpnSites in a resource group.
-func (client *VPNSitesClient) ListByResourceGroup(resourceGroupName string, options *VPNSitesListByResourceGroupOptions) (ListVPNSitesResultPager) {
+func (client *VPNSitesClient) ListByResourceGroup(resourceGroupName string, options *VPNSitesListByResourceGroupOptions) ListVPNSitesResultPager {
 	return &listVPNSitesResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -376,12 +376,12 @@ func (client *VPNSitesClient) listByResourceGroupHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVPNSitesResultResponse{}, err
 	}
-return ListVPNSitesResultResponse{RawResponse: resp.Response, ListVPNSitesResult: val}, nil
+	return ListVPNSitesResultResponse{RawResponse: resp.Response, ListVPNSitesResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *VPNSitesClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -437,15 +437,14 @@ func (client *VPNSitesClient) updateTagsHandleResponse(resp *azcore.Response) (V
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VPNSiteResponse{}, err
 	}
-return VPNSiteResponse{RawResponse: resp.Response, VPNSite: val}, nil
+	return VPNSiteResponse{RawResponse: resp.Response, VPNSite: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
 func (client *VPNSitesClient) updateTagsHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

@@ -21,7 +21,7 @@ import (
 // NetworkVirtualAppliancesClient contains the methods for the NetworkVirtualAppliances group.
 // Don't use this type directly, use NewNetworkVirtualAppliancesClient() instead.
 type NetworkVirtualAppliancesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *NetworkVirtualAppliancesClient) BeginCreateOrUpdate(ctx context.Co
 		return NetworkVirtualAppliancePollerResponse{}, err
 	}
 	poller := &networkVirtualAppliancePoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *NetworkVirtualAppliancesClient) ResumeCreateOrUpdate(token string)
 	}
 	return &networkVirtualAppliancePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *NetworkVirtualAppliancesClient) createOrUpdate(ctx context.Context
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,12 +116,12 @@ func (client *NetworkVirtualAppliancesClient) createOrUpdateHandleResponse(resp 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkVirtualApplianceResponse{}, err
 	}
-return NetworkVirtualApplianceResponse{RawResponse: resp.Response, NetworkVirtualAppliance: val}, nil
+	return NetworkVirtualApplianceResponse{RawResponse: resp.Response, NetworkVirtualAppliance: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *NetworkVirtualAppliancesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func (client *NetworkVirtualAppliancesClient) BeginDelete(ctx context.Context, r
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -161,7 +161,7 @@ func (client *NetworkVirtualAppliancesClient) ResumeDelete(token string) (HTTPPo
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -178,7 +178,7 @@ func (client *NetworkVirtualAppliancesClient) deleteOperation(ctx context.Contex
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -210,7 +210,7 @@ func (client *NetworkVirtualAppliancesClient) deleteCreateRequest(ctx context.Co
 
 // deleteHandleError handles the Delete error response.
 func (client *NetworkVirtualAppliancesClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -269,12 +269,12 @@ func (client *NetworkVirtualAppliancesClient) getHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkVirtualApplianceResponse{}, err
 	}
-return NetworkVirtualApplianceResponse{RawResponse: resp.Response, NetworkVirtualAppliance: val}, nil
+	return NetworkVirtualApplianceResponse{RawResponse: resp.Response, NetworkVirtualAppliance: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *NetworkVirtualAppliancesClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -282,7 +282,7 @@ var err CloudError
 }
 
 // List - Gets all Network Virtual Appliances in a subscription.
-func (client *NetworkVirtualAppliancesClient) List(options *NetworkVirtualAppliancesListOptions) (NetworkVirtualApplianceListResultPager) {
+func (client *NetworkVirtualAppliancesClient) List(options *NetworkVirtualAppliancesListOptions) NetworkVirtualApplianceListResultPager {
 	return &networkVirtualApplianceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -322,12 +322,12 @@ func (client *NetworkVirtualAppliancesClient) listHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkVirtualApplianceListResultResponse{}, err
 	}
-return NetworkVirtualApplianceListResultResponse{RawResponse: resp.Response, NetworkVirtualApplianceListResult: val}, nil
+	return NetworkVirtualApplianceListResultResponse{RawResponse: resp.Response, NetworkVirtualApplianceListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *NetworkVirtualAppliancesClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -335,7 +335,7 @@ var err CloudError
 }
 
 // ListByResourceGroup - Lists all Network Virtual Appliances in a resource group.
-func (client *NetworkVirtualAppliancesClient) ListByResourceGroup(resourceGroupName string, options *NetworkVirtualAppliancesListByResourceGroupOptions) (NetworkVirtualApplianceListResultPager) {
+func (client *NetworkVirtualAppliancesClient) ListByResourceGroup(resourceGroupName string, options *NetworkVirtualAppliancesListByResourceGroupOptions) NetworkVirtualApplianceListResultPager {
 	return &networkVirtualApplianceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -379,12 +379,12 @@ func (client *NetworkVirtualAppliancesClient) listByResourceGroupHandleResponse(
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkVirtualApplianceListResultResponse{}, err
 	}
-return NetworkVirtualApplianceListResultResponse{RawResponse: resp.Response, NetworkVirtualApplianceListResult: val}, nil
+	return NetworkVirtualApplianceListResultResponse{RawResponse: resp.Response, NetworkVirtualApplianceListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *NetworkVirtualAppliancesClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -440,15 +440,14 @@ func (client *NetworkVirtualAppliancesClient) updateTagsHandleResponse(resp *azc
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkVirtualApplianceResponse{}, err
 	}
-return NetworkVirtualApplianceResponse{RawResponse: resp.Response, NetworkVirtualAppliance: val}, nil
+	return NetworkVirtualApplianceResponse{RawResponse: resp.Response, NetworkVirtualAppliance: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
 func (client *NetworkVirtualAppliancesClient) updateTagsHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

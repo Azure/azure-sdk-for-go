@@ -21,7 +21,7 @@ import (
 // CustomIPPrefixesClient contains the methods for the CustomIPPrefixes group.
 // Don't use this type directly, use NewCustomIPPrefixesClient() instead.
 type CustomIPPrefixesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *CustomIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, r
 		return CustomIPPrefixPollerResponse{}, err
 	}
 	poller := &customIPPrefixPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *CustomIPPrefixesClient) ResumeCreateOrUpdate(token string) (Custom
 	}
 	return &customIPPrefixPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *CustomIPPrefixesClient) createOrUpdate(ctx context.Context, resour
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,12 +116,12 @@ func (client *CustomIPPrefixesClient) createOrUpdateHandleResponse(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CustomIPPrefixResponse{}, err
 	}
-return CustomIPPrefixResponse{RawResponse: resp.Response, CustomIPPrefix: val}, nil
+	return CustomIPPrefixResponse{RawResponse: resp.Response, CustomIPPrefix: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *CustomIPPrefixesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func (client *CustomIPPrefixesClient) BeginDelete(ctx context.Context, resourceG
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -161,7 +161,7 @@ func (client *CustomIPPrefixesClient) ResumeDelete(token string) (HTTPPoller, er
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -178,7 +178,7 @@ func (client *CustomIPPrefixesClient) deleteOperation(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -210,7 +210,7 @@ func (client *CustomIPPrefixesClient) deleteCreateRequest(ctx context.Context, r
 
 // deleteHandleError handles the Delete error response.
 func (client *CustomIPPrefixesClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -269,12 +269,12 @@ func (client *CustomIPPrefixesClient) getHandleResponse(resp *azcore.Response) (
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CustomIPPrefixResponse{}, err
 	}
-return CustomIPPrefixResponse{RawResponse: resp.Response, CustomIPPrefix: val}, nil
+	return CustomIPPrefixResponse{RawResponse: resp.Response, CustomIPPrefix: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *CustomIPPrefixesClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -282,7 +282,7 @@ var err CloudError
 }
 
 // List - Gets all custom IP prefixes in a resource group.
-func (client *CustomIPPrefixesClient) List(resourceGroupName string, options *CustomIPPrefixesListOptions) (CustomIPPrefixListResultPager) {
+func (client *CustomIPPrefixesClient) List(resourceGroupName string, options *CustomIPPrefixesListOptions) CustomIPPrefixListResultPager {
 	return &customIPPrefixListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -326,12 +326,12 @@ func (client *CustomIPPrefixesClient) listHandleResponse(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CustomIPPrefixListResultResponse{}, err
 	}
-return CustomIPPrefixListResultResponse{RawResponse: resp.Response, CustomIPPrefixListResult: val}, nil
+	return CustomIPPrefixListResultResponse{RawResponse: resp.Response, CustomIPPrefixListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *CustomIPPrefixesClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -339,7 +339,7 @@ var err CloudError
 }
 
 // ListAll - Gets all the custom IP prefixes in a subscription.
-func (client *CustomIPPrefixesClient) ListAll(options *CustomIPPrefixesListAllOptions) (CustomIPPrefixListResultPager) {
+func (client *CustomIPPrefixesClient) ListAll(options *CustomIPPrefixesListAllOptions) CustomIPPrefixListResultPager {
 	return &customIPPrefixListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -379,12 +379,12 @@ func (client *CustomIPPrefixesClient) listAllHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CustomIPPrefixListResultResponse{}, err
 	}
-return CustomIPPrefixListResultResponse{RawResponse: resp.Response, CustomIPPrefixListResult: val}, nil
+	return CustomIPPrefixListResultResponse{RawResponse: resp.Response, CustomIPPrefixListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
 func (client *CustomIPPrefixesClient) listAllHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -440,15 +440,14 @@ func (client *CustomIPPrefixesClient) updateTagsHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CustomIPPrefixResponse{}, err
 	}
-return CustomIPPrefixResponse{RawResponse: resp.Response, CustomIPPrefix: val}, nil
+	return CustomIPPrefixResponse{RawResponse: resp.Response, CustomIPPrefix: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
 func (client *CustomIPPrefixesClient) updateTagsHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

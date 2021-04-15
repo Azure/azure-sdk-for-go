@@ -21,7 +21,7 @@ import (
 // VPNServerConfigurationsAssociatedWithVirtualWanClient contains the methods for the VPNServerConfigurationsAssociatedWithVirtualWan group.
 // Don't use this type directly, use NewVPNServerConfigurationsAssociatedWithVirtualWanClient() instead.
 type VPNServerConfigurationsAssociatedWithVirtualWanClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) BeginList(c
 		return VPNServerConfigurationsResponsePollerResponse{}, err
 	}
 	poller := &vpnServerConfigurationsResponsePoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) ResumeList(
 	}
 	return &vpnServerConfigurationsResponsePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listOperati
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.listHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // listCreateRequest creates the List request.
@@ -116,15 +116,14 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listHandleR
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VPNServerConfigurationsResponseResponse{}, err
 	}
-return VPNServerConfigurationsResponseResponse{RawResponse: resp.Response, VPNServerConfigurationsResponse: val}, nil
+	return VPNServerConfigurationsResponseResponse{RawResponse: resp.Response, VPNServerConfigurationsResponse: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

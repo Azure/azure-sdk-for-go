@@ -21,7 +21,7 @@ import (
 // DdosCustomPoliciesClient contains the methods for the DdosCustomPolicies group.
 // Don't use this type directly, use NewDdosCustomPoliciesClient() instead.
 type DdosCustomPoliciesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *DdosCustomPoliciesClient) BeginCreateOrUpdate(ctx context.Context,
 		return DdosCustomPolicyPollerResponse{}, err
 	}
 	poller := &ddosCustomPolicyPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *DdosCustomPoliciesClient) ResumeCreateOrUpdate(token string) (Ddos
 	}
 	return &ddosCustomPolicyPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *DdosCustomPoliciesClient) createOrUpdate(ctx context.Context, reso
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,12 +116,12 @@ func (client *DdosCustomPoliciesClient) createOrUpdateHandleResponse(resp *azcor
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DdosCustomPolicyResponse{}, err
 	}
-return DdosCustomPolicyResponse{RawResponse: resp.Response, DdosCustomPolicy: val}, nil
+	return DdosCustomPolicyResponse{RawResponse: resp.Response, DdosCustomPolicy: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *DdosCustomPoliciesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func (client *DdosCustomPoliciesClient) BeginDelete(ctx context.Context, resourc
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -161,7 +161,7 @@ func (client *DdosCustomPoliciesClient) ResumeDelete(token string) (HTTPPoller, 
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -178,7 +178,7 @@ func (client *DdosCustomPoliciesClient) deleteOperation(ctx context.Context, res
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -210,7 +210,7 @@ func (client *DdosCustomPoliciesClient) deleteCreateRequest(ctx context.Context,
 
 // deleteHandleError handles the Delete error response.
 func (client *DdosCustomPoliciesClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -266,12 +266,12 @@ func (client *DdosCustomPoliciesClient) getHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DdosCustomPolicyResponse{}, err
 	}
-return DdosCustomPolicyResponse{RawResponse: resp.Response, DdosCustomPolicy: val}, nil
+	return DdosCustomPolicyResponse{RawResponse: resp.Response, DdosCustomPolicy: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *DdosCustomPoliciesClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -327,15 +327,14 @@ func (client *DdosCustomPoliciesClient) updateTagsHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DdosCustomPolicyResponse{}, err
 	}
-return DdosCustomPolicyResponse{RawResponse: resp.Response, DdosCustomPolicy: val}, nil
+	return DdosCustomPolicyResponse{RawResponse: resp.Response, DdosCustomPolicy: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
 func (client *DdosCustomPoliciesClient) updateTagsHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

@@ -21,7 +21,7 @@ import (
 // AzureFirewallsClient contains the methods for the AzureFirewalls group.
 // Don't use this type directly, use NewAzureFirewallsClient() instead.
 type AzureFirewallsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *AzureFirewallsClient) BeginCreateOrUpdate(ctx context.Context, res
 		return AzureFirewallPollerResponse{}, err
 	}
 	poller := &azureFirewallPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *AzureFirewallsClient) ResumeCreateOrUpdate(token string) (AzureFir
 	}
 	return &azureFirewallPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *AzureFirewallsClient) createOrUpdate(ctx context.Context, resource
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,12 +116,12 @@ func (client *AzureFirewallsClient) createOrUpdateHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AzureFirewallResponse{}, err
 	}
-return AzureFirewallResponse{RawResponse: resp.Response, AzureFirewall: val}, nil
+	return AzureFirewallResponse{RawResponse: resp.Response, AzureFirewall: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *AzureFirewallsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func (client *AzureFirewallsClient) BeginDelete(ctx context.Context, resourceGro
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -161,7 +161,7 @@ func (client *AzureFirewallsClient) ResumeDelete(token string) (HTTPPoller, erro
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -178,7 +178,7 @@ func (client *AzureFirewallsClient) deleteOperation(ctx context.Context, resourc
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -210,7 +210,7 @@ func (client *AzureFirewallsClient) deleteCreateRequest(ctx context.Context, res
 
 // deleteHandleError handles the Delete error response.
 func (client *AzureFirewallsClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -266,12 +266,12 @@ func (client *AzureFirewallsClient) getHandleResponse(resp *azcore.Response) (Az
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AzureFirewallResponse{}, err
 	}
-return AzureFirewallResponse{RawResponse: resp.Response, AzureFirewall: val}, nil
+	return AzureFirewallResponse{RawResponse: resp.Response, AzureFirewall: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *AzureFirewallsClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -279,7 +279,7 @@ var err CloudError
 }
 
 // List - Lists all Azure Firewalls in a resource group.
-func (client *AzureFirewallsClient) List(resourceGroupName string, options *AzureFirewallsListOptions) (AzureFirewallListResultPager) {
+func (client *AzureFirewallsClient) List(resourceGroupName string, options *AzureFirewallsListOptions) AzureFirewallListResultPager {
 	return &azureFirewallListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -323,12 +323,12 @@ func (client *AzureFirewallsClient) listHandleResponse(resp *azcore.Response) (A
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AzureFirewallListResultResponse{}, err
 	}
-return AzureFirewallListResultResponse{RawResponse: resp.Response, AzureFirewallListResult: val}, nil
+	return AzureFirewallListResultResponse{RawResponse: resp.Response, AzureFirewallListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *AzureFirewallsClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -336,7 +336,7 @@ var err CloudError
 }
 
 // ListAll - Gets all the Azure Firewalls in a subscription.
-func (client *AzureFirewallsClient) ListAll(options *AzureFirewallsListAllOptions) (AzureFirewallListResultPager) {
+func (client *AzureFirewallsClient) ListAll(options *AzureFirewallsListAllOptions) AzureFirewallListResultPager {
 	return &azureFirewallListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -376,12 +376,12 @@ func (client *AzureFirewallsClient) listAllHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AzureFirewallListResultResponse{}, err
 	}
-return AzureFirewallListResultResponse{RawResponse: resp.Response, AzureFirewallListResult: val}, nil
+	return AzureFirewallListResultResponse{RawResponse: resp.Response, AzureFirewallListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
 func (client *AzureFirewallsClient) listAllHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -402,7 +402,7 @@ func (client *AzureFirewallsClient) BeginUpdateTags(ctx context.Context, resourc
 		return AzureFirewallPollerResponse{}, err
 	}
 	poller := &azureFirewallPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -421,7 +421,7 @@ func (client *AzureFirewallsClient) ResumeUpdateTags(token string) (AzureFirewal
 	}
 	return &azureFirewallPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -438,7 +438,7 @@ func (client *AzureFirewallsClient) updateTags(ctx context.Context, resourceGrou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateTagsHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -474,15 +474,14 @@ func (client *AzureFirewallsClient) updateTagsHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AzureFirewallResponse{}, err
 	}
-return AzureFirewallResponse{RawResponse: resp.Response, AzureFirewall: val}, nil
+	return AzureFirewallResponse{RawResponse: resp.Response, AzureFirewall: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
 func (client *AzureFirewallsClient) updateTagsHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

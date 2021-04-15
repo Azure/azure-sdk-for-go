@@ -21,7 +21,7 @@ import (
 // PublicIPAddressesClient contains the methods for the PublicIPAddresses group.
 // Don't use this type directly, use NewPublicIPAddressesClient() instead.
 type PublicIPAddressesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *PublicIPAddressesClient) BeginCreateOrUpdate(ctx context.Context, 
 		return PublicIPAddressPollerResponse{}, err
 	}
 	poller := &publicIPAddressPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *PublicIPAddressesClient) ResumeCreateOrUpdate(token string) (Publi
 	}
 	return &publicIPAddressPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *PublicIPAddressesClient) createOrUpdate(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,12 +116,12 @@ func (client *PublicIPAddressesClient) createOrUpdateHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPAddressResponse{}, err
 	}
-return PublicIPAddressResponse{RawResponse: resp.Response, PublicIPAddress: val}, nil
+	return PublicIPAddressResponse{RawResponse: resp.Response, PublicIPAddress: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *PublicIPAddressesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func (client *PublicIPAddressesClient) BeginDelete(ctx context.Context, resource
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -161,7 +161,7 @@ func (client *PublicIPAddressesClient) ResumeDelete(token string) (HTTPPoller, e
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -178,7 +178,7 @@ func (client *PublicIPAddressesClient) deleteOperation(ctx context.Context, reso
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -210,7 +210,7 @@ func (client *PublicIPAddressesClient) deleteCreateRequest(ctx context.Context, 
 
 // deleteHandleError handles the Delete error response.
 func (client *PublicIPAddressesClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -269,12 +269,12 @@ func (client *PublicIPAddressesClient) getHandleResponse(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPAddressResponse{}, err
 	}
-return PublicIPAddressResponse{RawResponse: resp.Response, PublicIPAddress: val}, nil
+	return PublicIPAddressResponse{RawResponse: resp.Response, PublicIPAddress: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *PublicIPAddressesClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -349,12 +349,12 @@ func (client *PublicIPAddressesClient) getCloudServicePublicIPAddressHandleRespo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPAddressResponse{}, err
 	}
-return PublicIPAddressResponse{RawResponse: resp.Response, PublicIPAddress: val}, nil
+	return PublicIPAddressResponse{RawResponse: resp.Response, PublicIPAddress: val}, nil
 }
 
 // getCloudServicePublicIPAddressHandleError handles the GetCloudServicePublicIPAddress error response.
 func (client *PublicIPAddressesClient) getCloudServicePublicIPAddressHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -429,12 +429,12 @@ func (client *PublicIPAddressesClient) getVirtualMachineScaleSetPublicIPAddressH
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPAddressResponse{}, err
 	}
-return PublicIPAddressResponse{RawResponse: resp.Response, PublicIPAddress: val}, nil
+	return PublicIPAddressResponse{RawResponse: resp.Response, PublicIPAddress: val}, nil
 }
 
 // getVirtualMachineScaleSetPublicIPAddressHandleError handles the GetVirtualMachineScaleSetPublicIPAddress error response.
 func (client *PublicIPAddressesClient) getVirtualMachineScaleSetPublicIPAddressHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -442,7 +442,7 @@ var err CloudError
 }
 
 // List - Gets all public IP addresses in a resource group.
-func (client *PublicIPAddressesClient) List(resourceGroupName string, options *PublicIPAddressesListOptions) (PublicIPAddressListResultPager) {
+func (client *PublicIPAddressesClient) List(resourceGroupName string, options *PublicIPAddressesListOptions) PublicIPAddressListResultPager {
 	return &publicIPAddressListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -486,12 +486,12 @@ func (client *PublicIPAddressesClient) listHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPAddressListResultResponse{}, err
 	}
-return PublicIPAddressListResultResponse{RawResponse: resp.Response, PublicIPAddressListResult: val}, nil
+	return PublicIPAddressListResultResponse{RawResponse: resp.Response, PublicIPAddressListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *PublicIPAddressesClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -499,7 +499,7 @@ var err CloudError
 }
 
 // ListAll - Gets all the public IP addresses in a subscription.
-func (client *PublicIPAddressesClient) ListAll(options *PublicIPAddressesListAllOptions) (PublicIPAddressListResultPager) {
+func (client *PublicIPAddressesClient) ListAll(options *PublicIPAddressesListAllOptions) PublicIPAddressListResultPager {
 	return &publicIPAddressListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -539,12 +539,12 @@ func (client *PublicIPAddressesClient) listAllHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPAddressListResultResponse{}, err
 	}
-return PublicIPAddressListResultResponse{RawResponse: resp.Response, PublicIPAddressListResult: val}, nil
+	return PublicIPAddressListResultResponse{RawResponse: resp.Response, PublicIPAddressListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
 func (client *PublicIPAddressesClient) listAllHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -552,7 +552,7 @@ var err CloudError
 }
 
 // ListCloudServicePublicIPAddresses - Gets information about all public IP addresses on a cloud service level.
-func (client *PublicIPAddressesClient) ListCloudServicePublicIPAddresses(resourceGroupName string, cloudServiceName string, options *PublicIPAddressesListCloudServicePublicIPAddressesOptions) (PublicIPAddressListResultPager) {
+func (client *PublicIPAddressesClient) ListCloudServicePublicIPAddresses(resourceGroupName string, cloudServiceName string, options *PublicIPAddressesListCloudServicePublicIPAddressesOptions) PublicIPAddressListResultPager {
 	return &publicIPAddressListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -600,12 +600,12 @@ func (client *PublicIPAddressesClient) listCloudServicePublicIPAddressesHandleRe
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPAddressListResultResponse{}, err
 	}
-return PublicIPAddressListResultResponse{RawResponse: resp.Response, PublicIPAddressListResult: val}, nil
+	return PublicIPAddressListResultResponse{RawResponse: resp.Response, PublicIPAddressListResult: val}, nil
 }
 
 // listCloudServicePublicIPAddressesHandleError handles the ListCloudServicePublicIPAddresses error response.
 func (client *PublicIPAddressesClient) listCloudServicePublicIPAddressesHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -613,7 +613,7 @@ var err CloudError
 }
 
 // ListCloudServiceRoleInstancePublicIPAddresses - Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
-func (client *PublicIPAddressesClient) ListCloudServiceRoleInstancePublicIPAddresses(resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesListCloudServiceRoleInstancePublicIPAddressesOptions) (PublicIPAddressListResultPager) {
+func (client *PublicIPAddressesClient) ListCloudServiceRoleInstancePublicIPAddresses(resourceGroupName string, cloudServiceName string, roleInstanceName string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesListCloudServiceRoleInstancePublicIPAddressesOptions) PublicIPAddressListResultPager {
 	return &publicIPAddressListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -673,12 +673,12 @@ func (client *PublicIPAddressesClient) listCloudServiceRoleInstancePublicIPAddre
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPAddressListResultResponse{}, err
 	}
-return PublicIPAddressListResultResponse{RawResponse: resp.Response, PublicIPAddressListResult: val}, nil
+	return PublicIPAddressListResultResponse{RawResponse: resp.Response, PublicIPAddressListResult: val}, nil
 }
 
 // listCloudServiceRoleInstancePublicIPAddressesHandleError handles the ListCloudServiceRoleInstancePublicIPAddresses error response.
 func (client *PublicIPAddressesClient) listCloudServiceRoleInstancePublicIPAddressesHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -686,7 +686,7 @@ var err CloudError
 }
 
 // ListVirtualMachineScaleSetPublicIPAddresses - Gets information about all public IP addresses on a virtual machine scale set level.
-func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetPublicIPAddresses(resourceGroupName string, virtualMachineScaleSetName string, options *PublicIPAddressesListVirtualMachineScaleSetPublicIPAddressesOptions) (PublicIPAddressListResultPager) {
+func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetPublicIPAddresses(resourceGroupName string, virtualMachineScaleSetName string, options *PublicIPAddressesListVirtualMachineScaleSetPublicIPAddressesOptions) PublicIPAddressListResultPager {
 	return &publicIPAddressListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -734,12 +734,12 @@ func (client *PublicIPAddressesClient) listVirtualMachineScaleSetPublicIPAddress
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPAddressListResultResponse{}, err
 	}
-return PublicIPAddressListResultResponse{RawResponse: resp.Response, PublicIPAddressListResult: val}, nil
+	return PublicIPAddressListResultResponse{RawResponse: resp.Response, PublicIPAddressListResult: val}, nil
 }
 
 // listVirtualMachineScaleSetPublicIPAddressesHandleError handles the ListVirtualMachineScaleSetPublicIPAddresses error response.
 func (client *PublicIPAddressesClient) listVirtualMachineScaleSetPublicIPAddressesHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -748,7 +748,7 @@ var err CloudError
 
 // ListVirtualMachineScaleSetVMPublicIPAddresses - Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine
 // scale set.
-func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetVMPublicIPAddresses(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesListVirtualMachineScaleSetVMPublicIPAddressesOptions) (PublicIPAddressListResultPager) {
+func (client *PublicIPAddressesClient) ListVirtualMachineScaleSetVMPublicIPAddresses(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, ipConfigurationName string, options *PublicIPAddressesListVirtualMachineScaleSetVMPublicIPAddressesOptions) PublicIPAddressListResultPager {
 	return &publicIPAddressListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -808,12 +808,12 @@ func (client *PublicIPAddressesClient) listVirtualMachineScaleSetVMPublicIPAddre
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPAddressListResultResponse{}, err
 	}
-return PublicIPAddressListResultResponse{RawResponse: resp.Response, PublicIPAddressListResult: val}, nil
+	return PublicIPAddressListResultResponse{RawResponse: resp.Response, PublicIPAddressListResult: val}, nil
 }
 
 // listVirtualMachineScaleSetVMPublicIPAddressesHandleError handles the ListVirtualMachineScaleSetVMPublicIPAddresses error response.
 func (client *PublicIPAddressesClient) listVirtualMachineScaleSetVMPublicIPAddressesHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -869,15 +869,14 @@ func (client *PublicIPAddressesClient) updateTagsHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPAddressResponse{}, err
 	}
-return PublicIPAddressResponse{RawResponse: resp.Response, PublicIPAddress: val}, nil
+	return PublicIPAddressResponse{RawResponse: resp.Response, PublicIPAddress: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
 func (client *PublicIPAddressesClient) updateTagsHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

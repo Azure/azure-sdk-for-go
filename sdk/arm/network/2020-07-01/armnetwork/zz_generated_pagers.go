@@ -60,20 +60,20 @@ func (p *applicationGatewayAvailableSSLPredefinedPoliciesPager) NextPage(ctx con
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -136,20 +136,20 @@ func (p *applicationGatewayListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -212,20 +212,20 @@ func (p *applicationGatewayPrivateEndpointConnectionListResultPager) NextPage(ct
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -288,20 +288,20 @@ func (p *applicationGatewayPrivateLinkResourceListResultPager) NextPage(ctx cont
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -364,20 +364,20 @@ func (p *applicationSecurityGroupListResultPager) NextPage(ctx context.Context) 
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -440,20 +440,20 @@ func (p *authorizationListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -516,20 +516,20 @@ func (p *autoApprovedPrivateLinkServicesResultPager) NextPage(ctx context.Contex
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -592,20 +592,20 @@ func (p *availableDelegationsResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -668,20 +668,20 @@ func (p *availablePrivateEndpointTypesResultPager) NextPage(ctx context.Context)
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -744,20 +744,20 @@ func (p *availableServiceAliasesResultPager) NextPage(ctx context.Context) bool 
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -820,20 +820,20 @@ func (p *azureFirewallFqdnTagListResultPager) NextPage(ctx context.Context) bool
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -896,20 +896,20 @@ func (p *azureFirewallListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -972,20 +972,20 @@ func (p *azureWebCategoryListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -1034,8 +1034,8 @@ type bastionActiveSessionListResultPager struct {
 	statusCodes []int
 	// any error encountered
 	err error
-      // previous response from the endpoint (LRO case)
-      resp *azcore.Response
+	// previous response from the endpoint (LRO case)
+	resp *azcore.Response
 }
 
 func (p *bastionActiveSessionListResultPager) Err() error {
@@ -1050,25 +1050,25 @@ func (p *bastionActiveSessionListResultPager) NextPage(ctx context.Context) bool
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else if p.resp == nil {
+	} else if p.resp == nil {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  resp := p.resp
+	resp := p.resp
 	if resp == nil {
 		resp, err = p.pipeline.Do(req)
 	} else {
 		p.resp = nil
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -1131,20 +1131,20 @@ func (p *bastionHostListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -1207,20 +1207,20 @@ func (p *bastionSessionDeleteResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -1269,8 +1269,8 @@ type bastionShareableLinkListResultPager struct {
 	statusCodes []int
 	// any error encountered
 	err error
-      // previous response from the endpoint (LRO case)
-      resp *azcore.Response
+	// previous response from the endpoint (LRO case)
+	resp *azcore.Response
 }
 
 func (p *bastionShareableLinkListResultPager) Err() error {
@@ -1285,25 +1285,25 @@ func (p *bastionShareableLinkListResultPager) NextPage(ctx context.Context) bool
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else if p.resp == nil {
+	} else if p.resp == nil {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  resp := p.resp
+	resp := p.resp
 	if resp == nil {
 		resp, err = p.pipeline.Do(req)
 	} else {
 		p.resp = nil
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -1366,20 +1366,20 @@ func (p *bgpServiceCommunityListResultPager) NextPage(ctx context.Context) bool 
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -1442,20 +1442,20 @@ func (p *customIPPrefixListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -1518,20 +1518,20 @@ func (p *ddosProtectionPlanListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -1594,20 +1594,20 @@ func (p *dscpConfigurationListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -1670,20 +1670,20 @@ func (p *endpointServicesListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -1746,20 +1746,20 @@ func (p *expressRouteCircuitConnectionListResultPager) NextPage(ctx context.Cont
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -1822,20 +1822,20 @@ func (p *expressRouteCircuitListResultPager) NextPage(ctx context.Context) bool 
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -1898,20 +1898,20 @@ func (p *expressRouteCircuitPeeringListResultPager) NextPage(ctx context.Context
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -1974,20 +1974,20 @@ func (p *expressRouteCrossConnectionListResultPager) NextPage(ctx context.Contex
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -2050,20 +2050,20 @@ func (p *expressRouteCrossConnectionPeeringListPager) NextPage(ctx context.Conte
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -2126,20 +2126,20 @@ func (p *expressRouteLinkListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -2202,20 +2202,20 @@ func (p *expressRoutePortListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -2278,20 +2278,20 @@ func (p *expressRoutePortsLocationListResultPager) NextPage(ctx context.Context)
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -2354,20 +2354,20 @@ func (p *expressRouteServiceProviderListResultPager) NextPage(ctx context.Contex
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -2430,20 +2430,20 @@ func (p *firewallPolicyListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -2506,20 +2506,20 @@ func (p *firewallPolicyRuleCollectionGroupListResultPager) NextPage(ctx context.
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -2582,20 +2582,20 @@ func (p *flowLogListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -2658,20 +2658,20 @@ func (p *ipAllocationListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -2734,20 +2734,20 @@ func (p *ipGroupListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -2810,20 +2810,20 @@ func (p *inboundNatRuleListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -2886,20 +2886,20 @@ func (p *listHubRouteTablesResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -2962,20 +2962,20 @@ func (p *listHubVirtualNetworkConnectionsResultPager) NextPage(ctx context.Conte
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -3038,20 +3038,20 @@ func (p *listP2SVPNGatewaysResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -3114,20 +3114,20 @@ func (p *listVPNConnectionsResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -3190,20 +3190,20 @@ func (p *listVPNGatewaysResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -3266,20 +3266,20 @@ func (p *listVPNServerConfigurationsResultPager) NextPage(ctx context.Context) b
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -3342,20 +3342,20 @@ func (p *listVPNSiteLinkConnectionsResultPager) NextPage(ctx context.Context) bo
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -3418,20 +3418,20 @@ func (p *listVPNSiteLinksResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -3494,20 +3494,20 @@ func (p *listVPNSitesResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -3570,20 +3570,20 @@ func (p *listVirtualHubBgpConnectionResultsPager) NextPage(ctx context.Context) 
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -3646,20 +3646,20 @@ func (p *listVirtualHubIPConfigurationResultsPager) NextPage(ctx context.Context
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -3722,20 +3722,20 @@ func (p *listVirtualHubRouteTableV2SResultPager) NextPage(ctx context.Context) b
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -3798,20 +3798,20 @@ func (p *listVirtualHubsResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -3874,20 +3874,20 @@ func (p *listVirtualWANsResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -3950,20 +3950,20 @@ func (p *loadBalancerBackendAddressPoolListResultPager) NextPage(ctx context.Con
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -4026,20 +4026,20 @@ func (p *loadBalancerFrontendIPConfigurationListResultPager) NextPage(ctx contex
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -4102,20 +4102,20 @@ func (p *loadBalancerListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -4178,20 +4178,20 @@ func (p *loadBalancerLoadBalancingRuleListResultPager) NextPage(ctx context.Cont
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -4254,20 +4254,20 @@ func (p *loadBalancerOutboundRuleListResultPager) NextPage(ctx context.Context) 
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -4330,20 +4330,20 @@ func (p *loadBalancerProbeListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -4406,20 +4406,20 @@ func (p *localNetworkGatewayListResultPager) NextPage(ctx context.Context) bool 
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -4482,20 +4482,20 @@ func (p *natGatewayListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -4558,20 +4558,20 @@ func (p *networkInterfaceIPConfigurationListResultPager) NextPage(ctx context.Co
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -4634,20 +4634,20 @@ func (p *networkInterfaceListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -4710,20 +4710,20 @@ func (p *networkInterfaceLoadBalancerListResultPager) NextPage(ctx context.Conte
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -4786,20 +4786,20 @@ func (p *networkInterfaceTapConfigurationListResultPager) NextPage(ctx context.C
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -4862,20 +4862,20 @@ func (p *networkProfileListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -4938,20 +4938,20 @@ func (p *networkSecurityGroupListResultPager) NextPage(ctx context.Context) bool
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -5014,20 +5014,20 @@ func (p *networkVirtualApplianceListResultPager) NextPage(ctx context.Context) b
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -5090,20 +5090,20 @@ func (p *networkVirtualApplianceSKUListResultPager) NextPage(ctx context.Context
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -5166,20 +5166,20 @@ func (p *networkVirtualApplianceSiteListResultPager) NextPage(ctx context.Contex
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -5242,20 +5242,20 @@ func (p *operationListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -5318,20 +5318,20 @@ func (p *peerExpressRouteCircuitConnectionListResultPager) NextPage(ctx context.
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -5394,20 +5394,20 @@ func (p *privateDNSZoneGroupListResultPager) NextPage(ctx context.Context) bool 
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -5470,20 +5470,20 @@ func (p *privateEndpointConnectionListResultPager) NextPage(ctx context.Context)
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -5546,20 +5546,20 @@ func (p *privateEndpointListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -5622,20 +5622,20 @@ func (p *privateLinkServiceListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -5698,20 +5698,20 @@ func (p *publicIPAddressListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -5774,20 +5774,20 @@ func (p *publicIPPrefixListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -5850,20 +5850,20 @@ func (p *routeFilterListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -5926,20 +5926,20 @@ func (p *routeFilterRuleListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -6002,20 +6002,20 @@ func (p *routeListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -6078,20 +6078,20 @@ func (p *routeTableListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -6154,20 +6154,20 @@ func (p *securityPartnerProviderListResultPager) NextPage(ctx context.Context) b
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -6230,20 +6230,20 @@ func (p *securityRuleListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -6306,20 +6306,20 @@ func (p *serviceEndpointPolicyDefinitionListResultPager) NextPage(ctx context.Co
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -6382,20 +6382,20 @@ func (p *serviceEndpointPolicyListResultPager) NextPage(ctx context.Context) boo
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -6458,20 +6458,20 @@ func (p *subnetListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -6534,20 +6534,20 @@ func (p *usagesListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -6610,20 +6610,20 @@ func (p *virtualNetworkGatewayConnectionListResultPager) NextPage(ctx context.Co
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -6686,20 +6686,20 @@ func (p *virtualNetworkGatewayListConnectionsResultPager) NextPage(ctx context.C
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -6762,20 +6762,20 @@ func (p *virtualNetworkGatewayListResultPager) NextPage(ctx context.Context) boo
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -6838,20 +6838,20 @@ func (p *virtualNetworkListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -6914,20 +6914,20 @@ func (p *virtualNetworkListUsageResultPager) NextPage(ctx context.Context) bool 
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -6990,20 +6990,20 @@ func (p *virtualNetworkPeeringListResultPager) NextPage(ctx context.Context) boo
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -7066,20 +7066,20 @@ func (p *virtualNetworkTapListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -7142,20 +7142,20 @@ func (p *virtualRouterListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -7218,20 +7218,20 @@ func (p *virtualRouterPeeringListResultPager) NextPage(ctx context.Context) bool
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -7294,20 +7294,20 @@ func (p *webApplicationFirewallPolicyListResultPager) NextPage(ctx context.Conte
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -7322,4 +7322,3 @@ func (p *webApplicationFirewallPolicyListResultPager) NextPage(ctx context.Conte
 func (p *webApplicationFirewallPolicyListResultPager) PageResponse() WebApplicationFirewallPolicyListResultResponse {
 	return p.current
 }
-

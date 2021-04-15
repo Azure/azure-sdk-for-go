@@ -21,7 +21,7 @@ import (
 // PublicIPPrefixesClient contains the methods for the PublicIPPrefixes group.
 // Don't use this type directly, use NewPublicIPPrefixesClient() instead.
 type PublicIPPrefixesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *PublicIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, r
 		return PublicIPPrefixPollerResponse{}, err
 	}
 	poller := &publicIPPrefixPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *PublicIPPrefixesClient) ResumeCreateOrUpdate(token string) (Public
 	}
 	return &publicIPPrefixPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *PublicIPPrefixesClient) createOrUpdate(ctx context.Context, resour
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,12 +116,12 @@ func (client *PublicIPPrefixesClient) createOrUpdateHandleResponse(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPPrefixResponse{}, err
 	}
-return PublicIPPrefixResponse{RawResponse: resp.Response, PublicIPPrefix: val}, nil
+	return PublicIPPrefixResponse{RawResponse: resp.Response, PublicIPPrefix: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *PublicIPPrefixesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -142,7 +142,7 @@ func (client *PublicIPPrefixesClient) BeginDelete(ctx context.Context, resourceG
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -161,7 +161,7 @@ func (client *PublicIPPrefixesClient) ResumeDelete(token string) (HTTPPoller, er
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -178,7 +178,7 @@ func (client *PublicIPPrefixesClient) deleteOperation(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -210,7 +210,7 @@ func (client *PublicIPPrefixesClient) deleteCreateRequest(ctx context.Context, r
 
 // deleteHandleError handles the Delete error response.
 func (client *PublicIPPrefixesClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -269,12 +269,12 @@ func (client *PublicIPPrefixesClient) getHandleResponse(resp *azcore.Response) (
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPPrefixResponse{}, err
 	}
-return PublicIPPrefixResponse{RawResponse: resp.Response, PublicIPPrefix: val}, nil
+	return PublicIPPrefixResponse{RawResponse: resp.Response, PublicIPPrefix: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *PublicIPPrefixesClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -282,7 +282,7 @@ var err CloudError
 }
 
 // List - Gets all public IP prefixes in a resource group.
-func (client *PublicIPPrefixesClient) List(resourceGroupName string, options *PublicIPPrefixesListOptions) (PublicIPPrefixListResultPager) {
+func (client *PublicIPPrefixesClient) List(resourceGroupName string, options *PublicIPPrefixesListOptions) PublicIPPrefixListResultPager {
 	return &publicIPPrefixListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -326,12 +326,12 @@ func (client *PublicIPPrefixesClient) listHandleResponse(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPPrefixListResultResponse{}, err
 	}
-return PublicIPPrefixListResultResponse{RawResponse: resp.Response, PublicIPPrefixListResult: val}, nil
+	return PublicIPPrefixListResultResponse{RawResponse: resp.Response, PublicIPPrefixListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *PublicIPPrefixesClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -339,7 +339,7 @@ var err CloudError
 }
 
 // ListAll - Gets all the public IP prefixes in a subscription.
-func (client *PublicIPPrefixesClient) ListAll(options *PublicIPPrefixesListAllOptions) (PublicIPPrefixListResultPager) {
+func (client *PublicIPPrefixesClient) ListAll(options *PublicIPPrefixesListAllOptions) PublicIPPrefixListResultPager {
 	return &publicIPPrefixListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -379,12 +379,12 @@ func (client *PublicIPPrefixesClient) listAllHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPPrefixListResultResponse{}, err
 	}
-return PublicIPPrefixListResultResponse{RawResponse: resp.Response, PublicIPPrefixListResult: val}, nil
+	return PublicIPPrefixListResultResponse{RawResponse: resp.Response, PublicIPPrefixListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
 func (client *PublicIPPrefixesClient) listAllHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -440,15 +440,14 @@ func (client *PublicIPPrefixesClient) updateTagsHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPPrefixResponse{}, err
 	}
-return PublicIPPrefixResponse{RawResponse: resp.Response, PublicIPPrefix: val}, nil
+	return PublicIPPrefixResponse{RawResponse: resp.Response, PublicIPPrefix: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
 func (client *PublicIPPrefixesClient) updateTagsHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

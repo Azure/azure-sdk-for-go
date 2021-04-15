@@ -21,7 +21,7 @@ import (
 // LoadBalancerBackendAddressPoolsClient contains the methods for the LoadBalancerBackendAddressPools group.
 // Don't use this type directly, use NewLoadBalancerBackendAddressPoolsClient() instead.
 type LoadBalancerBackendAddressPoolsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginCreateOrUpdate(ctx con
 		return BackendAddressPoolPollerResponse{}, err
 	}
 	poller := &backendAddressPoolPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) ResumeCreateOrUpdate(token 
 	}
 	return &backendAddressPoolPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) createOrUpdate(ctx context.
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -120,12 +120,12 @@ func (client *LoadBalancerBackendAddressPoolsClient) createOrUpdateHandleRespons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BackendAddressPoolResponse{}, err
 	}
-return BackendAddressPoolResponse{RawResponse: resp.Response, BackendAddressPool: val}, nil
+	return BackendAddressPoolResponse{RawResponse: resp.Response, BackendAddressPool: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *LoadBalancerBackendAddressPoolsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginDelete(ctx context.Con
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -165,7 +165,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) ResumeDelete(token string) 
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -182,7 +182,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) deleteOperation(ctx context
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -218,7 +218,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) deleteCreateRequest(ctx con
 
 // deleteHandleError handles the Delete error response.
 func (client *LoadBalancerBackendAddressPoolsClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -278,12 +278,12 @@ func (client *LoadBalancerBackendAddressPoolsClient) getHandleResponse(resp *azc
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BackendAddressPoolResponse{}, err
 	}
-return BackendAddressPoolResponse{RawResponse: resp.Response, BackendAddressPool: val}, nil
+	return BackendAddressPoolResponse{RawResponse: resp.Response, BackendAddressPool: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *LoadBalancerBackendAddressPoolsClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -291,7 +291,7 @@ var err CloudError
 }
 
 // List - Gets all the load balancer backed address pools.
-func (client *LoadBalancerBackendAddressPoolsClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerBackendAddressPoolsListOptions) (LoadBalancerBackendAddressPoolListResultPager) {
+func (client *LoadBalancerBackendAddressPoolsClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerBackendAddressPoolsListOptions) LoadBalancerBackendAddressPoolListResultPager {
 	return &loadBalancerBackendAddressPoolListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -339,15 +339,14 @@ func (client *LoadBalancerBackendAddressPoolsClient) listHandleResponse(resp *az
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LoadBalancerBackendAddressPoolListResultResponse{}, err
 	}
-return LoadBalancerBackendAddressPoolListResultResponse{RawResponse: resp.Response, LoadBalancerBackendAddressPoolListResult: val}, nil
+	return LoadBalancerBackendAddressPoolListResultResponse{RawResponse: resp.Response, LoadBalancerBackendAddressPoolListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *LoadBalancerBackendAddressPoolsClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

@@ -21,7 +21,7 @@ import (
 // SecurityRulesClient contains the methods for the SecurityRules group.
 // Don't use this type directly, use NewSecurityRulesClient() instead.
 type SecurityRulesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *SecurityRulesClient) BeginCreateOrUpdate(ctx context.Context, reso
 		return SecurityRulePollerResponse{}, err
 	}
 	poller := &securityRulePoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *SecurityRulesClient) ResumeCreateOrUpdate(token string) (SecurityR
 	}
 	return &securityRulePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *SecurityRulesClient) createOrUpdate(ctx context.Context, resourceG
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -120,12 +120,12 @@ func (client *SecurityRulesClient) createOrUpdateHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SecurityRuleResponse{}, err
 	}
-return SecurityRuleResponse{RawResponse: resp.Response, SecurityRule: val}, nil
+	return SecurityRuleResponse{RawResponse: resp.Response, SecurityRule: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *SecurityRulesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func (client *SecurityRulesClient) BeginDelete(ctx context.Context, resourceGrou
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -165,7 +165,7 @@ func (client *SecurityRulesClient) ResumeDelete(token string) (HTTPPoller, error
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -182,7 +182,7 @@ func (client *SecurityRulesClient) deleteOperation(ctx context.Context, resource
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -218,7 +218,7 @@ func (client *SecurityRulesClient) deleteCreateRequest(ctx context.Context, reso
 
 // deleteHandleError handles the Delete error response.
 func (client *SecurityRulesClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -278,12 +278,12 @@ func (client *SecurityRulesClient) getHandleResponse(resp *azcore.Response) (Sec
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SecurityRuleResponse{}, err
 	}
-return SecurityRuleResponse{RawResponse: resp.Response, SecurityRule: val}, nil
+	return SecurityRuleResponse{RawResponse: resp.Response, SecurityRule: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *SecurityRulesClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -291,7 +291,7 @@ var err CloudError
 }
 
 // List - Gets all security rules in a network security group.
-func (client *SecurityRulesClient) List(resourceGroupName string, networkSecurityGroupName string, options *SecurityRulesListOptions) (SecurityRuleListResultPager) {
+func (client *SecurityRulesClient) List(resourceGroupName string, networkSecurityGroupName string, options *SecurityRulesListOptions) SecurityRuleListResultPager {
 	return &securityRuleListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -339,15 +339,14 @@ func (client *SecurityRulesClient) listHandleResponse(resp *azcore.Response) (Se
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SecurityRuleListResultResponse{}, err
 	}
-return SecurityRuleListResultResponse{RawResponse: resp.Response, SecurityRuleListResult: val}, nil
+	return SecurityRuleListResultResponse{RawResponse: resp.Response, SecurityRuleListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *SecurityRulesClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

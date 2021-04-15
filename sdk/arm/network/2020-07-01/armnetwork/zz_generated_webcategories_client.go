@@ -20,7 +20,7 @@ import (
 // WebCategoriesClient contains the methods for the WebCategories group.
 // Don't use this type directly, use NewWebCategoriesClient() instead.
 type WebCategoriesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -77,12 +77,12 @@ func (client *WebCategoriesClient) getHandleResponse(resp *azcore.Response) (Azu
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AzureWebCategoryResponse{}, err
 	}
-return AzureWebCategoryResponse{RawResponse: resp.Response, AzureWebCategory: val}, nil
+	return AzureWebCategoryResponse{RawResponse: resp.Response, AzureWebCategory: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *WebCategoriesClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -90,7 +90,7 @@ var err CloudError
 }
 
 // ListBySubscription - Gets all the Azure Web Categories in a subscription.
-func (client *WebCategoriesClient) ListBySubscription(options *WebCategoriesListBySubscriptionOptions) (AzureWebCategoryListResultPager) {
+func (client *WebCategoriesClient) ListBySubscription(options *WebCategoriesListBySubscriptionOptions) AzureWebCategoryListResultPager {
 	return &azureWebCategoryListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -130,15 +130,14 @@ func (client *WebCategoriesClient) listBySubscriptionHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AzureWebCategoryListResultResponse{}, err
 	}
-return AzureWebCategoryListResultResponse{RawResponse: resp.Response, AzureWebCategoryListResult: val}, nil
+	return AzureWebCategoryListResultResponse{RawResponse: resp.Response, AzureWebCategoryListResult: val}, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
 func (client *WebCategoriesClient) listBySubscriptionHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

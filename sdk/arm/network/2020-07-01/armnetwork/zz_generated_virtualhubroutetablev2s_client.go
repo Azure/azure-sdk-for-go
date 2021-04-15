@@ -21,7 +21,7 @@ import (
 // VirtualHubRouteTableV2SClient contains the methods for the VirtualHubRouteTableV2S group.
 // Don't use this type directly, use NewVirtualHubRouteTableV2SClient() instead.
 type VirtualHubRouteTableV2SClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *VirtualHubRouteTableV2SClient) BeginCreateOrUpdate(ctx context.Con
 		return VirtualHubRouteTableV2PollerResponse{}, err
 	}
 	poller := &virtualHubRouteTableV2Poller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *VirtualHubRouteTableV2SClient) ResumeCreateOrUpdate(token string) 
 	}
 	return &virtualHubRouteTableV2Poller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *VirtualHubRouteTableV2SClient) createOrUpdate(ctx context.Context,
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -120,12 +120,12 @@ func (client *VirtualHubRouteTableV2SClient) createOrUpdateHandleResponse(resp *
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualHubRouteTableV2Response{}, err
 	}
-return VirtualHubRouteTableV2Response{RawResponse: resp.Response, VirtualHubRouteTableV2: val}, nil
+	return VirtualHubRouteTableV2Response{RawResponse: resp.Response, VirtualHubRouteTableV2: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *VirtualHubRouteTableV2SClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err Error
+	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func (client *VirtualHubRouteTableV2SClient) BeginDelete(ctx context.Context, re
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -165,7 +165,7 @@ func (client *VirtualHubRouteTableV2SClient) ResumeDelete(token string) (HTTPPol
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -182,7 +182,7 @@ func (client *VirtualHubRouteTableV2SClient) deleteOperation(ctx context.Context
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -218,7 +218,7 @@ func (client *VirtualHubRouteTableV2SClient) deleteCreateRequest(ctx context.Con
 
 // deleteHandleError handles the Delete error response.
 func (client *VirtualHubRouteTableV2SClient) deleteHandleError(resp *azcore.Response) error {
-var err Error
+	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -278,12 +278,12 @@ func (client *VirtualHubRouteTableV2SClient) getHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualHubRouteTableV2Response{}, err
 	}
-return VirtualHubRouteTableV2Response{RawResponse: resp.Response, VirtualHubRouteTableV2: val}, nil
+	return VirtualHubRouteTableV2Response{RawResponse: resp.Response, VirtualHubRouteTableV2: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *VirtualHubRouteTableV2SClient) getHandleError(resp *azcore.Response) error {
-var err Error
+	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -291,7 +291,7 @@ var err Error
 }
 
 // List - Retrieves the details of all VirtualHubRouteTableV2s.
-func (client *VirtualHubRouteTableV2SClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubRouteTableV2SListOptions) (ListVirtualHubRouteTableV2SResultPager) {
+func (client *VirtualHubRouteTableV2SClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubRouteTableV2SListOptions) ListVirtualHubRouteTableV2SResultPager {
 	return &listVirtualHubRouteTableV2SResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -339,15 +339,14 @@ func (client *VirtualHubRouteTableV2SClient) listHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVirtualHubRouteTableV2SResultResponse{}, err
 	}
-return ListVirtualHubRouteTableV2SResultResponse{RawResponse: resp.Response, ListVirtualHubRouteTableV2SResult: val}, nil
+	return ListVirtualHubRouteTableV2SResultResponse{RawResponse: resp.Response, ListVirtualHubRouteTableV2SResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *VirtualHubRouteTableV2SClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

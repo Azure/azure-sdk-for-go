@@ -21,7 +21,7 @@ import (
 // NetworkInterfaceTapConfigurationsClient contains the methods for the NetworkInterfaceTapConfigurations group.
 // Don't use this type directly, use NewNetworkInterfaceTapConfigurationsClient() instead.
 type NetworkInterfaceTapConfigurationsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -44,7 +44,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) BeginCreateOrUpdate(ctx c
 		return NetworkInterfaceTapConfigurationPollerResponse{}, err
 	}
 	poller := &networkInterfaceTapConfigurationPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -63,7 +63,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) ResumeCreateOrUpdate(toke
 	}
 	return &networkInterfaceTapConfigurationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -80,7 +80,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) createOrUpdate(ctx contex
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -120,12 +120,12 @@ func (client *NetworkInterfaceTapConfigurationsClient) createOrUpdateHandleRespo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceTapConfigurationResponse{}, err
 	}
-return NetworkInterfaceTapConfigurationResponse{RawResponse: resp.Response, NetworkInterfaceTapConfiguration: val}, nil
+	return NetworkInterfaceTapConfigurationResponse{RawResponse: resp.Response, NetworkInterfaceTapConfiguration: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *NetworkInterfaceTapConfigurationsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -146,7 +146,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) BeginDelete(ctx context.C
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt: pt,
+		pt:       pt,
 		pipeline: client.con.Pipeline(),
 	}
 	result.Poller = poller
@@ -165,7 +165,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) ResumeDelete(token string
 	}
 	return &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}, nil
 }
 
@@ -182,7 +182,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) deleteOperation(ctx conte
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -218,7 +218,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) deleteCreateRequest(ctx c
 
 // deleteHandleError handles the Delete error response.
 func (client *NetworkInterfaceTapConfigurationsClient) deleteHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -278,12 +278,12 @@ func (client *NetworkInterfaceTapConfigurationsClient) getHandleResponse(resp *a
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceTapConfigurationResponse{}, err
 	}
-return NetworkInterfaceTapConfigurationResponse{RawResponse: resp.Response, NetworkInterfaceTapConfiguration: val}, nil
+	return NetworkInterfaceTapConfigurationResponse{RawResponse: resp.Response, NetworkInterfaceTapConfiguration: val}, nil
 }
 
 // getHandleError handles the Get error response.
 func (client *NetworkInterfaceTapConfigurationsClient) getHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
@@ -291,7 +291,7 @@ var err CloudError
 }
 
 // List - Get all Tap configurations in a network interface.
-func (client *NetworkInterfaceTapConfigurationsClient) List(resourceGroupName string, networkInterfaceName string, options *NetworkInterfaceTapConfigurationsListOptions) (NetworkInterfaceTapConfigurationListResultPager) {
+func (client *NetworkInterfaceTapConfigurationsClient) List(resourceGroupName string, networkInterfaceName string, options *NetworkInterfaceTapConfigurationsListOptions) NetworkInterfaceTapConfigurationListResultPager {
 	return &networkInterfaceTapConfigurationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -339,15 +339,14 @@ func (client *NetworkInterfaceTapConfigurationsClient) listHandleResponse(resp *
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceTapConfigurationListResultResponse{}, err
 	}
-return NetworkInterfaceTapConfigurationListResultResponse{RawResponse: resp.Response, NetworkInterfaceTapConfigurationListResult: val}, nil
+	return NetworkInterfaceTapConfigurationListResultResponse{RawResponse: resp.Response, NetworkInterfaceTapConfigurationListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *NetworkInterfaceTapConfigurationsClient) listHandleError(resp *azcore.Response) error {
-var err CloudError
+	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

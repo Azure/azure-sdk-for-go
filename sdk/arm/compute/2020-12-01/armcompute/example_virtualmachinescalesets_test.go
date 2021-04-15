@@ -62,7 +62,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate() {
 						AdminPassword:      to.StringPtr(password),
 						LinuxConfiguration: &armcompute.LinuxConfiguration{
 							SSH: &armcompute.SSHConfiguration{
-								PublicKeys: &[]armcompute.SSHPublicKey{
+								PublicKeys: &[]*armcompute.SSHPublicKey{
 									{
 										Path:    to.StringPtr(fmt.Sprintf("/home/%s/.ssh/authorized_keys", username)),
 										KeyData: to.StringPtr(sshKeyData),
@@ -80,13 +80,13 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate() {
 						},
 					},
 					NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-						NetworkInterfaceConfigurations: &[]armcompute.VirtualMachineScaleSetNetworkConfiguration{
+						NetworkInterfaceConfigurations: &[]*armcompute.VirtualMachineScaleSetNetworkConfiguration{
 							{
 								Name: to.StringPtr(vmssName),
 								Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
 									Primary:            to.BoolPtr(true),
 									EnableIPForwarding: to.BoolPtr(true),
-									IPConfigurations: &[]armcompute.VirtualMachineScaleSetIPConfiguration{
+									IPConfigurations: &[]*armcompute.VirtualMachineScaleSetIPConfiguration{
 										{
 											Name: to.StringPtr(vmssName),
 											Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
@@ -140,9 +140,9 @@ func ExampleVirtualMachineScaleSetsClient_BeginUpdate() {
 		"<VM scale set name>",
 		armcompute.VirtualMachineScaleSetUpdate{
 			UpdateResource: armcompute.UpdateResource{
-				Tags: &map[string]string{
-					"who rocks": "golang",
-					"where":     "on azure",
+				Tags: &map[string]*string{
+					"who rocks": to.StringPtr("golang"),
+					"where":     to.StringPtr("on azure"),
 				},
 			},
 		},

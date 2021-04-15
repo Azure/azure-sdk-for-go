@@ -25,9 +25,9 @@ func (s *ContainerSuite) Test_containerBuildPath(c *chk.C) {
 
 func (s *ContainerSuite) TestListContainersPagination(c *chk.C) {
 	cli := getBlobClient(c)
-	cli.deleteTestContainers(c)
 	rec := cli.client.appendRecorder(c)
 	defer rec.Stop()
+	cli.deleteTestContainers(c)
 
 	const n = 5
 	const pageSize = 2
@@ -181,12 +181,12 @@ func (s *ContainerSuite) TestCreateContainerIfNotExists(c *chk.C) {
 
 func (s *ContainerSuite) TestCreateContainerIfExists(c *chk.C) {
 	cli := getBlobClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
 	cnt := cli.GetContainerReference(containerName(c))
 	cnt.Create(nil)
 	defer cnt.Delete(nil)
-	rec := cli.client.appendRecorder(c)
-	cnt.bsc = &cli
-	defer rec.Stop()
 
 	// Try to create already exisiting container
 	ok, err := cnt.CreateIfNotExists(nil)
@@ -683,7 +683,7 @@ func (s *ContainerSuite) TestGetContainerProperties(c *chk.C) {
 
 	err := cnt1.GetProperties()
 	c.Assert(err, chk.IsNil)
-	c.Assert(cnt1.Properties.Etag, chk.Equals, `"0x8D6E3BCDC30372B"`)
+	c.Assert(cnt1.Properties.Etag, chk.Equals, `"0x8D9001BBA6C4080"`)
 	c.Assert(cnt1.Properties.PublicAccess, chk.Equals, ContainerAccessType(""))
 }
 
@@ -707,5 +707,5 @@ func (cli *BlobStorageClient) deleteTestContainers(c *chk.C) error {
 }
 
 func containerName(c *chk.C, extras ...string) string {
-	return nameGenerator(32, "cnt-", alphanum, c, extras)
+	return nameGenerator(32, "", alphanum, c, extras)
 }

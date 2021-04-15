@@ -90,9 +90,9 @@ func createAndDeleteTable(cli TableServiceClient, ml MetadataLevel, c *chk.C, ex
 
 func (s *StorageTableSuite) TestQueryTablesNextResults(c *chk.C) {
 	cli := getTableClient(c)
-	cli.deleteAllTables()
 	rec := cli.client.appendRecorder(c)
 	defer rec.Stop()
+	cli.deleteAllTables()
 
 	for i := 0; i < 3; i++ {
 		table := cli.GetTableReference(tableName(c, strconv.Itoa(i)))

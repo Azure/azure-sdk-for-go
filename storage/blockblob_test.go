@@ -160,11 +160,22 @@ func (s *BlockBlobSuite) TestPutBlockFromURL(c *chk.C) {
 	defer rec.Stop()
 
 	cnt := cli.GetContainerReference(containerName(c))
-	c.Assert(cnt.Create(nil), chk.IsNil)
+	c.Assert(cnt.Create(&CreateContainerOptions{
+		Access: ContainerAccessTypeContainer,
+	}), chk.IsNil)
 	defer cnt.Delete(nil)
 
+	length := 512
+	data := content(length)
+	lr := io.LimitReader(bytes.NewReader(data), 256)
 	srcBlob := cnt.GetBlobReference(blobName(c, "src"))
+	c.Assert(srcBlob.PutBlockWithLength("0000", 256, lr, nil), chk.IsNil)
+	c.Assert(srcBlob.PutBlockList([]Block{
+		{
+			ID:     "0000",
+			Status: BlockStatusLatest,
+		},
+	}, nil), chk.IsNil)
 	dstBlob := cnt.GetBlobReference(blobName(c, "dst"))
-
-	c.Assert(dstBlob.PutBlockFromURL("00000", srcBlob.GetURL(), 0, 64, nil), chk.IsNil)
+	c.Assert(dstBlob.PutBlockFromURL("0000", srcBlob.GetURL(), 0, 64, nil), chk.IsNil)
 }

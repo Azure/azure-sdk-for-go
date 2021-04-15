@@ -18,9 +18,9 @@ var _ = chk.Suite(&StorageFileSuite{})
 
 func (s *StorageFileSuite) TestCreateFile(c *chk.C) {
 	cli := getFileClient(c)
-	cli.deleteAllShares()
 	rec := cli.client.appendRecorder(c)
 	defer rec.Stop()
+	cli.deleteAllShares()
 
 	// create share
 	share := cli.GetShareReference(shareName(c))

@@ -27,6 +27,7 @@ func (s *StorageSuite) TestGetServiceProperties(c *chk.C) {
 func (s *StorageSuite) TestSetServiceProperties(c *chk.C) {
 	cli := getBlobClient(c)
 	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
 
 	t := true
 	num := 7
@@ -79,8 +80,6 @@ func (s *StorageSuite) TestSetServiceProperties(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	c.Assert(spOutput, chk.NotNil)
 	c.Assert(*spOutput, chk.DeepEquals, spInput)
-
-	rec.Stop()
 
 	// Back to defaults
 	defaultRP := RetentionPolicy{

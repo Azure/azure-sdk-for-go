@@ -39,13 +39,12 @@ func (s *StorageShareSuite) TestCreateShareIfNotExists(c *chk.C) {
 
 func (s *StorageShareSuite) TestCreateShareIfExists(c *chk.C) {
 	cli := getFileClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
 	share := cli.GetShareReference(shareName(c, "exists"))
 	share.Create(nil)
 	defer share.Delete(nil)
-
-	rec := cli.client.appendRecorder(c)
-	share.fsc = &cli
-	defer rec.Stop()
 
 	// Try to create exisiting
 	ok, err := share.CreateIfNotExists(nil)
@@ -74,9 +73,9 @@ func (s *StorageShareSuite) TestDeleteShareIfNotExists(c *chk.C) {
 
 func (s *StorageShareSuite) TestListShares(c *chk.C) {
 	cli := getFileClient(c)
-	cli.deleteAllShares()
 	rec := cli.client.appendRecorder(c)
 	defer rec.Stop()
+	cli.deleteAllShares()
 
 	name := shareName(c)
 	share := cli.GetShareReference(name)
@@ -101,13 +100,13 @@ func (s *StorageShareSuite) TestShareExists(c *chk.C) {
 	defer rec.Stop()
 
 	// Share does not exist
-	share1 := cli.GetShareReference(shareName(c, "1"))
+	share1 := cli.GetShareReference(shareName(c, "3"))
 	ok, err := share1.Exists()
 	c.Assert(err, chk.IsNil)
 	c.Assert(ok, chk.Equals, false)
 
 	// Share exists
-	share2 := cli.GetShareReference(shareName(c, "2"))
+	share2 := cli.GetShareReference(shareName(c, "4"))
 	c.Assert(share2.Create(nil), chk.IsNil)
 	defer share1.Delete(nil)
 	ok, err = share2.Exists()
@@ -150,7 +149,7 @@ func (s *StorageShareSuite) TestGetAndSetShareMetadata(c *chk.C) {
 	c.Assert(share1.FetchAttributes(nil), chk.IsNil)
 	c.Assert(share1.Metadata, chk.IsNil)
 
-	share2 := cli.GetShareReference(shareName(c, "2"))
+	share2 := cli.GetShareReference(shareName(c, "5"))
 	c.Assert(share2.Create(nil), chk.IsNil)
 	defer share2.Delete(nil)
 

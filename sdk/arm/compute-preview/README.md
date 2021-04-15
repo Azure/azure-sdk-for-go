@@ -1,10 +1,10 @@
 # Azure Compute Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/arm/compute)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/arm/compute)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/arm/compute-preview)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/arm/compute-preview)
 
 The `compute` module provides operations for working with Azure compute.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/arm/compute)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/arm/compute-preview)
 
 # Getting started
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Compute module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/arm/compute
+go get github.com/Azure/azure-sdk-for-go/sdk/arm/compute-preview
 ```
 
 ## Authorization

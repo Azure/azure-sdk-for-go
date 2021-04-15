@@ -33,7 +33,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate() {
 			},
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
-					AddressPrefixes: &[]string{"10.0.0.0/8"},
+					AddressPrefixes: &[]*string{to.StringPtr("10.0.0.0/8")},
 				},
 			},
 		},
@@ -66,9 +66,9 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_withSubnets() {
 			},
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
-					AddressPrefixes: &[]string{"10.0.0.0/8"},
+					AddressPrefixes: &[]*string{to.StringPtr("10.0.0.0/8")},
 				},
-				Subnets: &[]armnetwork.Subnet{
+				Subnets: &[]*armnetwork.Subnet{
 					{
 						Name: to.StringPtr("<subnet name 1>"),
 						Properties: &armnetwork.SubnetPropertiesFormat{

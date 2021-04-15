@@ -60,7 +60,7 @@ func ExampleNetworkSecurityGroupsClient_BeginCreateOrUpdate_withSSHandHTTPSrules
 				Location: to.StringPtr("<Azure location>"),
 			},
 			Properties: &armnetwork.NetworkSecurityGroupPropertiesFormat{
-				SecurityRules: &[]armnetwork.SecurityRule{
+				SecurityRules: &[]*armnetwork.SecurityRule{
 					{
 						Name: to.StringPtr("allow_ssh"),
 						Properties: &armnetwork.SecurityRulePropertiesFormat{

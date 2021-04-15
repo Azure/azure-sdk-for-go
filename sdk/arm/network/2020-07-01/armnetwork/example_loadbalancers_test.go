@@ -45,7 +45,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate() {
 				Location: to.StringPtr(location),
 			},
 			Properties: &armnetwork.LoadBalancerPropertiesFormat{
-				FrontendIPConfigurations: &[]armnetwork.FrontendIPConfiguration{
+				FrontendIPConfigurations: &[]*armnetwork.FrontendIPConfiguration{
 					{
 						Name: to.StringPtr(frontEndIPConfigName),
 						Properties: &armnetwork.FrontendIPConfigurationPropertiesFormat{
@@ -54,12 +54,12 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate() {
 						},
 					},
 				},
-				BackendAddressPools: &[]armnetwork.BackendAddressPool{
+				BackendAddressPools: &[]*armnetwork.BackendAddressPool{
 					{
 						Name: &backEndAddressPoolName,
 					},
 				},
-				Probes: &[]armnetwork.Probe{
+				Probes: &[]*armnetwork.Probe{
 					{
 						Name: &probeName,
 						Properties: &armnetwork.ProbePropertiesFormat{
@@ -71,14 +71,14 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate() {
 						},
 					},
 				},
-				LoadBalancingRules: &[]armnetwork.LoadBalancingRule{
+				LoadBalancingRules: &[]*armnetwork.LoadBalancingRule{
 					{
 						Name: to.StringPtr("lbRule"),
 						Properties: &armnetwork.LoadBalancingRulePropertiesFormat{
 							Protocol:             armnetwork.TransportProtocolTCP.ToPtr(),
 							FrontendPort:         to.Int32Ptr(80),
 							BackendPort:          to.Int32Ptr(80),
-							IDleTimeoutInMinutes: to.Int32Ptr(4),
+							IdleTimeoutInMinutes: to.Int32Ptr(4),
 							EnableFloatingIP:     to.BoolPtr(false),
 							LoadDistribution:     armnetwork.LoadDistributionDefault.ToPtr(),
 							FrontendIPConfiguration: &armnetwork.SubResource{
@@ -93,7 +93,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate() {
 						},
 					},
 				},
-				InboundNatRules: &[]armnetwork.InboundNatRule{
+				InboundNatRules: &[]*armnetwork.InboundNatRule{
 					{
 						Name: to.StringPtr("natRule1"),
 						Properties: &armnetwork.InboundNatRulePropertiesFormat{
@@ -101,7 +101,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate() {
 							FrontendPort:         to.Int32Ptr(21),
 							BackendPort:          to.Int32Ptr(22),
 							EnableFloatingIP:     to.BoolPtr(false),
-							IDleTimeoutInMinutes: to.Int32Ptr(4),
+							IdleTimeoutInMinutes: to.Int32Ptr(4),
 							FrontendIPConfiguration: &armnetwork.SubResource{
 								ID: to.StringPtr(fmt.Sprintf("/%s/%s/frontendIPConfigurations/%s", idPrefix, loadBalancerName, frontEndIPConfigName)),
 							},
@@ -114,7 +114,7 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate() {
 							FrontendPort:         to.Int32Ptr(23),
 							BackendPort:          to.Int32Ptr(22),
 							EnableFloatingIP:     to.BoolPtr(false),
-							IDleTimeoutInMinutes: to.Int32Ptr(4),
+							IdleTimeoutInMinutes: to.Int32Ptr(4),
 							FrontendIPConfiguration: &armnetwork.SubResource{
 								ID: to.StringPtr(fmt.Sprintf("/%s/%s/frontendIPConfigurations/%s", idPrefix, loadBalancerName, frontEndIPConfigName)),
 							},

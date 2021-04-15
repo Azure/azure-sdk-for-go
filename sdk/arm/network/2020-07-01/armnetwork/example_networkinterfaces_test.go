@@ -38,7 +38,7 @@ func ExampleNetworkInterfacesClient_BeginCreateOrUpdate() {
 				Location: to.StringPtr("<Azure location>"),
 			},
 			Properties: &armnetwork.NetworkInterfacePropertiesFormat{
-				IPConfigurations: &[]armnetwork.NetworkInterfaceIPConfiguration{
+				IPConfigurations: &[]*armnetwork.NetworkInterfaceIPConfiguration{
 					{
 						Name: to.StringPtr("<NIC name>"),
 						Properties: &armnetwork.NetworkInterfaceIPConfigurationPropertiesFormat{

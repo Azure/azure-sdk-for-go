@@ -64,8 +64,8 @@ func (ctx changelogContext) process(metadataLocation string) ([]autorest.Changel
 		metadata := ctx.commonMetadata
 		metadata.Tag = result.Tag
 		options := additionalOptions(ctx.autorestArguments)
-		metadata.AdditionalProperties = map[string]interface{}{
-			"additional_options": strings.Join(options, " "),
+		metadata.AdditionalProperties = autorest.GenerationMetadataAdditionalProperties{
+			AdditionalOptions: strings.Join(options, " "),
 		}
 		metadata.AutorestCommand = fmt.Sprintf("autorest --tag=%s --go-sdk-folder=/_/azure-sdk-for-go %s /_/azure-rest-api-specs/%s",
 			result.Tag, strings.Join(options, " "), utils.NormalizePath(ctx.readme))

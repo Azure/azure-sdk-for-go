@@ -18,21 +18,25 @@ import (
 // GenerationMetadata contains all the metadata that has been used when generating a track 1 package
 type GenerationMetadata struct {
 	// AutorestVersion is the version of autorest.core
-	AutorestVersion      string                 `json:"autorest,omitempty"`
+	AutorestVersion string `json:"autorest,omitempty"`
 	// CommitHash is the commit hash of azure-rest-api-specs from which this SDK package is generated
-	CommitHash           string                 `json:"commit,omitempty"`
+	CommitHash string `json:"commit,omitempty"`
 	// Readme is the normalized path of the readme file from which this SDK package is generated. It should be in this pattern: /_/azure-rest-api-specs/{relative_path}
-	Readme               string                 `json:"readme,omitempty"`
+	Readme string `json:"readme,omitempty"`
 	// Tag is the tag from which this SDK package is generated
-	Tag                  string                 `json:"tag,omitempty"`
+	Tag string `json:"tag,omitempty"`
 	// CodeGenVersion is the version of autorest.go using when this package is generated
-	CodeGenVersion       string                 `json:"use,omitempty"`
+	CodeGenVersion string `json:"use,omitempty"`
 	// RepositoryURL is the URL of the azure-rest-api-specs. This should always be a constant "https://github.com/Azure/azure-rest-api-specs.git"
-	RepositoryURL        string                 `json:"repository_url,omitempty"`
+	RepositoryURL string `json:"repository_url,omitempty"`
 	// AutorestCommand is the full command that generates this package
-	AutorestCommand      string                 `json:"autorest_command,omitempty"`
+	AutorestCommand string `json:"autorest_command,omitempty"`
 	// AdditionalProperties is a map of addition information in this metadata
-	AdditionalProperties map[string]interface{} `json:"additional_properties,omitempty"`
+	AdditionalProperties GenerationMetadataAdditionalProperties `json:"additional_properties,omitempty"`
+}
+
+type GenerationMetadataAdditionalProperties struct {
+	AdditionalOptions string `json:"additional_options,omitempty"`
 }
 
 // RelativeReadme returns the relative readme path

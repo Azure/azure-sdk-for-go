@@ -6,6 +6,7 @@ package cmd
 import (
 	"bufio"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"io"
 	"os"
 
@@ -40,7 +41,7 @@ func (c autorestContext) generate() error {
 	return nil
 }
 
-func (c autorestContext) autorestArguments() []string {
+func (c autorestContext) autorestArguments() []model.Option {
 	return c.generator.Arguments()
 }
 

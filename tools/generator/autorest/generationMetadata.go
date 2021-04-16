@@ -6,6 +6,7 @@ package autorest
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"io/ioutil"
 	"log"
 	"os"
@@ -83,6 +84,38 @@ func GetGenerationMetadata(pkg track1.Package) (*GenerationMetadata, error) {
 	}
 
 	return &metadata, nil
+}
+
+// AdditionalOptions removes flags that may change over scenarios
+func AdditionalOptions(arguments []model.Option) []model.Option {
+	var transformed []model.Option
+	for _, argument := range arguments {
+		switch o := argument.(type) {
+		case model.ArgumentOption: // omit the readme path argument
+			continue
+		case model.FlagOption:
+			if o.Flag() == "multiapi" { // omit the multiapi flag or use
+				continue
+			}
+		case model.KeyValueOption:
+			// omit go-sdk-folder, use, tag and metadata-output-folder
+			if o.Key() == "go-sdk-folder" || o.Key() == "use" || o.Key() == "tag" || o.Key() == "metadata-output-folder" {
+				continue
+			}
+		}
+		transformed = append(transformed, argument)
+	}
+	return transformed
+}
+
+// AdditionalOptionsToString removes flags that may change over scenarios and cast them to strings
+func AdditionalOptionsToString(arguments []model.Option) []string {
+	transformed := AdditionalOptions(arguments)
+	result := make([]string, len(transformed))
+	for i, o := range transformed {
+		result[i] = o.Format()
+	}
+	return result
 }
 
 const (

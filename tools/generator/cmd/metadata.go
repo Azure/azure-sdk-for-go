@@ -27,7 +27,7 @@ type changelogContext struct {
 
 	commonMetadata autorest.GenerationMetadata
 
-	autorestArguments []string
+	autorestArguments []model.Option
 }
 
 func (ctx changelogContext) SDKRoot() string {
@@ -63,12 +63,12 @@ func (ctx changelogContext) process(metadataLocation string) ([]autorest.Changel
 		// we need to write the generation metadata to the corresponding package here
 		metadata := ctx.commonMetadata
 		metadata.Tag = result.Tag
-		options := additionalOptions(ctx.autorestArguments)
+		options := autorest.AdditionalOptionsToString(ctx.autorestArguments)
 		metadata.AdditionalProperties = autorest.GenerationMetadataAdditionalProperties{
 			AdditionalOptions: strings.Join(options, " "),
 		}
-		metadata.AutorestCommand = fmt.Sprintf("autorest --tag=%s --go-sdk-folder=/_/azure-sdk-for-go %s /_/azure-rest-api-specs/%s",
-			result.Tag, strings.Join(options, " "), utils.NormalizePath(ctx.readme))
+		metadata.AutorestCommand = fmt.Sprintf("autorest --use=%s --tag=%s --go-sdk-folder=/_/azure-sdk-for-go %s /_/azure-rest-api-specs/%s",
+			metadata.CodeGenVersion, result.Tag, strings.Join(options, " "), utils.NormalizePath(ctx.readme))
 		if err := WriteGenerationMetadata(result.PackageFullPath, metadata); err != nil {
 			return nil, err
 		}
@@ -188,31 +188,4 @@ func (b *validationErrorBuilder) build() error {
 		messages = append(messages, e.Error())
 	}
 	return fmt.Errorf("validation failed in readme '%s' with %d error(s): \n%s", b.readme, len(b.errors), strings.Join(messages, "\n"))
-}
-
-// additionalOptions removes flags that may change over scenarios
-func additionalOptions(arguments []string) []string {
-	var transformed []string
-	for _, argument := range arguments {
-		// remove the readme path
-		if !strings.HasPrefix(argument, "--") {
-			continue
-		}
-		// remove the go-sdk-folder
-		if strings.HasPrefix(argument, "--go-sdk-folder") {
-			continue
-		}
-		if strings.HasPrefix(argument, "--use") {
-			continue
-		}
-		if strings.HasPrefix(argument, "--metadata-output-folder") {
-			continue
-		}
-		// remove multiapi
-		if argument == "--multiapi" {
-			continue
-		}
-		transformed = append(transformed, argument)
-	}
-	return transformed
 }

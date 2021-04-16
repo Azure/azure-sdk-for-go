@@ -6,13 +6,13 @@ package autorest
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/track1"
 )
 

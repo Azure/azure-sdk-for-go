@@ -696,102 +696,6 @@ type AccountSasParameters struct {
 	KeyToSign *string `json:"keyToSign,omitempty"`
 }
 
-// AccountUpdateParameters the parameters that can be provided when updating the storage account
-// properties.
-type AccountUpdateParameters struct {
-	// Sku - Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those SKU names be updated to any other value.
-	Sku *Sku `json:"sku,omitempty"`
-	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
-	Tags map[string]*string `json:"tags"`
-	// Identity - The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
-	// AccountPropertiesUpdateParameters - The parameters used when updating a storage account.
-	*AccountPropertiesUpdateParameters `json:"properties,omitempty"`
-	// Kind - Optional. Indicates the type of storage account. Currently only StorageV2 value supported by server. Possible values include: 'Storage', 'StorageV2', 'BlobStorage', 'FileStorage', 'BlockBlobStorage'
-	Kind Kind `json:"kind,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AccountUpdateParameters.
-func (aup AccountUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if aup.Sku != nil {
-		objectMap["sku"] = aup.Sku
-	}
-	if aup.Tags != nil {
-		objectMap["tags"] = aup.Tags
-	}
-	if aup.Identity != nil {
-		objectMap["identity"] = aup.Identity
-	}
-	if aup.AccountPropertiesUpdateParameters != nil {
-		objectMap["properties"] = aup.AccountPropertiesUpdateParameters
-	}
-	if aup.Kind != "" {
-		objectMap["kind"] = aup.Kind
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for AccountUpdateParameters struct.
-func (aup *AccountUpdateParameters) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "sku":
-			if v != nil {
-				var sku Sku
-				err = json.Unmarshal(*v, &sku)
-				if err != nil {
-					return err
-				}
-				aup.Sku = &sku
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				aup.Tags = tags
-			}
-		case "identity":
-			if v != nil {
-				var identity Identity
-				err = json.Unmarshal(*v, &identity)
-				if err != nil {
-					return err
-				}
-				aup.Identity = &identity
-			}
-		case "properties":
-			if v != nil {
-				var accountPropertiesUpdateParameters AccountPropertiesUpdateParameters
-				err = json.Unmarshal(*v, &accountPropertiesUpdateParameters)
-				if err != nil {
-					return err
-				}
-				aup.AccountPropertiesUpdateParameters = &accountPropertiesUpdateParameters
-			}
-		case "kind":
-			if v != nil {
-				var kind Kind
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				aup.Kind = kind
-			}
-		}
-	}
-
-	return nil
-}
-
 // AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type AccountsCreateFuture struct {
@@ -910,6 +814,102 @@ func (future *AccountsRestoreBlobRangesFuture) result(client AccountsClient) (br
 		}
 	}
 	return
+}
+
+// AccountUpdateParameters the parameters that can be provided when updating the storage account
+// properties.
+type AccountUpdateParameters struct {
+	// Sku - Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those SKU names be updated to any other value.
+	Sku *Sku `json:"sku,omitempty"`
+	// Tags - Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
+	Tags map[string]*string `json:"tags"`
+	// Identity - The identity of the resource.
+	Identity *Identity `json:"identity,omitempty"`
+	// AccountPropertiesUpdateParameters - The parameters used when updating a storage account.
+	*AccountPropertiesUpdateParameters `json:"properties,omitempty"`
+	// Kind - Optional. Indicates the type of storage account. Currently only StorageV2 value supported by server. Possible values include: 'Storage', 'StorageV2', 'BlobStorage', 'FileStorage', 'BlockBlobStorage'
+	Kind Kind `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountUpdateParameters.
+func (aup AccountUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aup.Sku != nil {
+		objectMap["sku"] = aup.Sku
+	}
+	if aup.Tags != nil {
+		objectMap["tags"] = aup.Tags
+	}
+	if aup.Identity != nil {
+		objectMap["identity"] = aup.Identity
+	}
+	if aup.AccountPropertiesUpdateParameters != nil {
+		objectMap["properties"] = aup.AccountPropertiesUpdateParameters
+	}
+	if aup.Kind != "" {
+		objectMap["kind"] = aup.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AccountUpdateParameters struct.
+func (aup *AccountUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "sku":
+			if v != nil {
+				var sku Sku
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				aup.Sku = &sku
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				aup.Tags = tags
+			}
+		case "identity":
+			if v != nil {
+				var identity Identity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				aup.Identity = &identity
+			}
+		case "properties":
+			if v != nil {
+				var accountPropertiesUpdateParameters AccountPropertiesUpdateParameters
+				err = json.Unmarshal(*v, &accountPropertiesUpdateParameters)
+				if err != nil {
+					return err
+				}
+				aup.AccountPropertiesUpdateParameters = &accountPropertiesUpdateParameters
+			}
+		case "kind":
+			if v != nil {
+				var kind Kind
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				aup.Kind = kind
+			}
+		}
+	}
+
+	return nil
 }
 
 // ActiveDirectoryProperties settings properties for Active Directory (AD).
@@ -1453,14 +1453,6 @@ type DateAfterModification struct {
 	DaysAfterLastAccessTimeGreaterThan *float64 `json:"daysAfterLastAccessTimeGreaterThan,omitempty"`
 }
 
-// DeleteRetentionPolicy the service properties for soft delete.
-type DeleteRetentionPolicy struct {
-	// Enabled - Indicates whether DeleteRetentionPolicy is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
-	// Days - Indicates the number of days that the deleted item should be retained. The minimum specified value can be 1 and the maximum value can be 365.
-	Days *int32 `json:"days,omitempty"`
-}
-
 // DeletedAccount deleted storage account
 type DeletedAccount struct {
 	autorest.Response `json:"-"`
@@ -1713,6 +1705,14 @@ type DeletedShare struct {
 	DeletedShareName *string `json:"deletedShareName,omitempty"`
 	// DeletedShareVersion - Required. Identify the version of the deleted share that will be restored.
 	DeletedShareVersion *string `json:"deletedShareVersion,omitempty"`
+}
+
+// DeleteRetentionPolicy the service properties for soft delete.
+type DeleteRetentionPolicy struct {
+	// Enabled - Indicates whether DeleteRetentionPolicy is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Days - Indicates the number of days that the deleted item should be retained. The minimum specified value can be 1 and the maximum value can be 365.
+	Days *int32 `json:"days,omitempty"`
 }
 
 // Dimension dimension of blobs, possibly be blob type or access tier.
@@ -2611,14 +2611,6 @@ type GeoReplicationStats struct {
 	CanFailover *bool `json:"canFailover,omitempty"`
 }
 
-// IPRule IP rule with specific IP or IP range in CIDR format.
-type IPRule struct {
-	// IPAddressOrRange - Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
-	IPAddressOrRange *string `json:"value,omitempty"`
-	// Action - The action of IP ACL rule. Possible values include: 'Allow'
-	Action Action `json:"action,omitempty"`
-}
-
 // Identity identity for the resource.
 type Identity struct {
 	// PrincipalID - READ-ONLY; The principal ID of resource identity.
@@ -2809,6 +2801,14 @@ func (ipp ImmutabilityPolicyProperty) MarshalJSON() ([]byte, error) {
 		objectMap["allowProtectedAppendWrites"] = ipp.AllowProtectedAppendWrites
 	}
 	return json.Marshal(objectMap)
+}
+
+// IPRule IP rule with specific IP or IP range in CIDR format.
+type IPRule struct {
+	// IPAddressOrRange - Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
+	IPAddressOrRange *string `json:"value,omitempty"`
+	// Action - The action of IP ACL rule. Possible values include: 'Allow'
+	Action Action `json:"action,omitempty"`
 }
 
 // KeyCreationTime storage account keys creation time.
@@ -4521,15 +4521,6 @@ type RoutingPreference struct {
 	PublishInternetEndpoints *bool `json:"publishInternetEndpoints,omitempty"`
 }
 
-// SKUCapability the capability information in the specified SKU, including file encryption, network ACLs,
-// change notification, etc.
-type SKUCapability struct {
-	// Name - READ-ONLY; The name of capability, The capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
-	Name *string `json:"name,omitempty"`
-	// Value - READ-ONLY; A string value to indicate states of given capability. Possibly 'true' or 'false'.
-	Value *string `json:"value,omitempty"`
-}
-
 // SasPolicy sasPolicy assigned to the storage account.
 type SasPolicy struct {
 	// SasExpirationPeriod - The SAS expiration period, DD.HH:MM:SS.
@@ -4590,6 +4581,15 @@ type Sku struct {
 	Name SkuName `json:"name,omitempty"`
 	// Tier - Possible values include: 'Standard', 'Premium'
 	Tier SkuTier `json:"tier,omitempty"`
+}
+
+// SKUCapability the capability information in the specified SKU, including file encryption, network ACLs,
+// change notification, etc.
+type SKUCapability struct {
+	// Name - READ-ONLY; The name of capability, The capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
+	Name *string `json:"name,omitempty"`
+	// Value - READ-ONLY; A string value to indicate states of given capability. Possibly 'true' or 'false'.
+	Value *string `json:"value,omitempty"`
 }
 
 // SkuInformation storage SKU and its properties

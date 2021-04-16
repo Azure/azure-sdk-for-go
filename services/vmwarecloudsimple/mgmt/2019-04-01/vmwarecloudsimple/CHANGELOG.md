@@ -1,14 +1,2 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82//specification/vmwarecloudsimple/resource-manager/readme.md tag: `package-2019-04-01`
+# Change History
 
-Code generator @microsoft.azure/autorest.go@2.1.178
-
-
-### New Funcs
-
-1. *DedicatedCloudNodesCreateOrUpdateFuture.UnmarshalJSON([]byte) error
-1. *DedicatedCloudServicesDeleteFuture.UnmarshalJSON([]byte) error
-1. *VirtualMachinesCreateOrUpdateFuture.UnmarshalJSON([]byte) error
-1. *VirtualMachinesDeleteFuture.UnmarshalJSON([]byte) error
-1. *VirtualMachinesStartFuture.UnmarshalJSON([]byte) error
-1. *VirtualMachinesStopFuture.UnmarshalJSON([]byte) error
-1. *VirtualMachinesUpdateFuture.UnmarshalJSON([]byte) error

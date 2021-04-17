@@ -175,6 +175,7 @@ func (future *SupportPlanTypesCreateOrUpdateFuture) result(client SupportPlanTyp
 		return
 	}
 	if !done {
+		cspre.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("addons.SupportPlanTypesCreateOrUpdateFuture")
 		return
 	}
@@ -217,6 +218,7 @@ func (future *SupportPlanTypesDeleteFuture) result(client SupportPlanTypesClient
 		return
 	}
 	if !done {
+		cspre.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("addons.SupportPlanTypesDeleteFuture")
 		return
 	}

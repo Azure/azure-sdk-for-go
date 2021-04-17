@@ -62,6 +62,7 @@ func (future *CreateFuture) result(client Client) (dlsa DataLakeStoreAccount, er
 		return
 	}
 	if !done {
+		dlsa.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("account.CreateFuture")
 		return
 	}
@@ -507,6 +508,7 @@ func (future *DeleteFuture) result(client Client) (ar autorest.Response, err err
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("account.DeleteFuture")
 		return
 	}
@@ -652,6 +654,7 @@ func (future *UpdateFuture) result(client Client) (dlsa DataLakeStoreAccount, er
 		return
 	}
 	if !done {
+		dlsa.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("account.UpdateFuture")
 		return
 	}

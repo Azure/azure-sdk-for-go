@@ -471,6 +471,7 @@ func (future *ContainerGroupsCreateOrUpdateFuture) result(client ContainerGroups
 		return
 	}
 	if !done {
+		cg.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerinstance.ContainerGroupsCreateOrUpdateFuture")
 		return
 	}
@@ -513,6 +514,7 @@ func (future *ContainerGroupsRestartFuture) result(client ContainerGroupsClient)
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerinstance.ContainerGroupsRestartFuture")
 		return
 	}

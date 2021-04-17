@@ -2495,6 +2495,7 @@ func (future *DscCompilationJobCreateFuture) result(client DscCompilationJobClie
 		return
 	}
 	if !done {
+		dcj.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("automation.DscCompilationJobCreateFuture")
 		return
 	}
@@ -3567,6 +3568,7 @@ func (future *DscNodeConfigurationCreateOrUpdateFuture) result(client DscNodeCon
 		return
 	}
 	if !done {
+		dnc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("automation.DscNodeConfigurationCreateOrUpdateFuture")
 		return
 	}
@@ -6677,6 +6679,7 @@ func (future *RunbookDraftPublishFuture) result(client RunbookDraftClient) (ar a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("automation.RunbookDraftPublishFuture")
 		return
 	}
@@ -6713,6 +6716,7 @@ func (future *RunbookDraftReplaceContentFuture) result(client RunbookDraftClient
 		return
 	}
 	if !done {
+		rc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("automation.RunbookDraftReplaceContentFuture")
 		return
 	}

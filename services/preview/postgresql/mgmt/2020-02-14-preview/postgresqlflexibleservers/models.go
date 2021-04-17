@@ -493,6 +493,7 @@ func (future *ConfigurationsUpdateFuture) result(client ConfigurationsClient) (c
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("postgresqlflexibleservers.ConfigurationsUpdateFuture")
 		return
 	}
@@ -806,6 +807,7 @@ func (future *FirewallRulesCreateOrUpdateFuture) result(client FirewallRulesClie
 		return
 	}
 	if !done {
+		fr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("postgresqlflexibleservers.FirewallRulesCreateOrUpdateFuture")
 		return
 	}
@@ -848,6 +850,7 @@ func (future *FirewallRulesDeleteFuture) result(client FirewallRulesClient) (ar 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("postgresqlflexibleservers.FirewallRulesDeleteFuture")
 		return
 	}
@@ -1602,6 +1605,7 @@ func (future *ServersCreateFuture) result(client ServersClient) (s Server, err e
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("postgresqlflexibleservers.ServersCreateFuture")
 		return
 	}
@@ -1644,6 +1648,7 @@ func (future *ServersDeleteFuture) result(client ServersClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("postgresqlflexibleservers.ServersDeleteFuture")
 		return
 	}
@@ -1680,6 +1685,7 @@ func (future *ServersRestartFuture) result(client ServersClient) (ar autorest.Re
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("postgresqlflexibleservers.ServersRestartFuture")
 		return
 	}
@@ -1715,6 +1721,7 @@ func (future *ServersStartFuture) result(client ServersClient) (ar autorest.Resp
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("postgresqlflexibleservers.ServersStartFuture")
 		return
 	}
@@ -1750,6 +1757,7 @@ func (future *ServersStopFuture) result(client ServersClient) (ar autorest.Respo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("postgresqlflexibleservers.ServersStopFuture")
 		return
 	}
@@ -1786,6 +1794,7 @@ func (future *ServersUpdateFuture) result(client ServersClient) (s Server, err e
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("postgresqlflexibleservers.ServersUpdateFuture")
 		return
 	}

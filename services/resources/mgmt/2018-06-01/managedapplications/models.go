@@ -554,6 +554,7 @@ func (future *ApplicationDefinitionsCreateOrUpdateByIDFuture) result(client Appl
 		return
 	}
 	if !done {
+		ad.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationDefinitionsCreateOrUpdateByIDFuture")
 		return
 	}
@@ -596,6 +597,7 @@ func (future *ApplicationDefinitionsCreateOrUpdateFuture) result(client Applicat
 		return
 	}
 	if !done {
+		ad.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationDefinitionsCreateOrUpdateFuture")
 		return
 	}
@@ -638,6 +640,7 @@ func (future *ApplicationDefinitionsDeleteByIDFuture) result(client ApplicationD
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationDefinitionsDeleteByIDFuture")
 		return
 	}
@@ -674,6 +677,7 @@ func (future *ApplicationDefinitionsDeleteFuture) result(client ApplicationDefin
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationDefinitionsDeleteFuture")
 		return
 	}
@@ -1105,6 +1109,7 @@ func (future *ApplicationsCreateOrUpdateByIDFuture) result(client ApplicationsCl
 		return
 	}
 	if !done {
+		a.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationsCreateOrUpdateByIDFuture")
 		return
 	}
@@ -1147,6 +1152,7 @@ func (future *ApplicationsCreateOrUpdateFuture) result(client ApplicationsClient
 		return
 	}
 	if !done {
+		a.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationsCreateOrUpdateFuture")
 		return
 	}
@@ -1189,6 +1195,7 @@ func (future *ApplicationsDeleteByIDFuture) result(client ApplicationsClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationsDeleteByIDFuture")
 		return
 	}
@@ -1225,6 +1232,7 @@ func (future *ApplicationsDeleteFuture) result(client ApplicationsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplicationsDeleteFuture")
 		return
 	}

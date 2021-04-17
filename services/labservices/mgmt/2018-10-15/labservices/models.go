@@ -388,6 +388,7 @@ func (future *EnvironmentsDeleteFuture) result(client EnvironmentsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentsDeleteFuture")
 		return
 	}
@@ -697,6 +698,7 @@ func (future *EnvironmentSettingsCreateOrUpdateFuture) result(client Environment
 		return
 	}
 	if !done {
+		es.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentSettingsCreateOrUpdateFuture")
 		return
 	}
@@ -739,6 +741,7 @@ func (future *EnvironmentSettingsDeleteFuture) result(client EnvironmentSettings
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentSettingsDeleteFuture")
 		return
 	}
@@ -775,6 +778,7 @@ func (future *EnvironmentSettingsStartFuture) result(client EnvironmentSettingsC
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentSettingsStartFuture")
 		return
 	}
@@ -811,6 +815,7 @@ func (future *EnvironmentSettingsStopFuture) result(client EnvironmentSettingsCl
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentSettingsStopFuture")
 		return
 	}
@@ -882,6 +887,7 @@ func (future *EnvironmentsResetPasswordFuture) result(client EnvironmentsClient)
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentsResetPasswordFuture")
 		return
 	}
@@ -918,6 +924,7 @@ func (future *EnvironmentsStartFuture) result(client EnvironmentsClient) (ar aut
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentsStartFuture")
 		return
 	}
@@ -954,6 +961,7 @@ func (future *EnvironmentsStopFuture) result(client EnvironmentsClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("labservices.EnvironmentsStopFuture")
 		return
 	}
@@ -1305,6 +1313,7 @@ func (future *GlobalUsersResetPasswordFuture) result(client GlobalUsersClient) (
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("labservices.GlobalUsersResetPasswordFuture")
 		return
 	}
@@ -1341,6 +1350,7 @@ func (future *GlobalUsersStartEnvironmentFuture) result(client GlobalUsersClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("labservices.GlobalUsersStartEnvironmentFuture")
 		return
 	}
@@ -1377,6 +1387,7 @@ func (future *GlobalUsersStopEnvironmentFuture) result(client GlobalUsersClient)
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("labservices.GlobalUsersStopEnvironmentFuture")
 		return
 	}
@@ -1754,6 +1765,7 @@ func (future *LabAccountsDeleteFuture) result(client LabAccountsClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("labservices.LabAccountsDeleteFuture")
 		return
 	}
@@ -1983,6 +1995,7 @@ func (future *LabsDeleteFuture) result(client LabsClient) (ar autorest.Response,
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("labservices.LabsDeleteFuture")
 		return
 	}
@@ -3724,6 +3737,7 @@ func (future *UsersDeleteFuture) result(client UsersClient) (ar autorest.Respons
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("labservices.UsersDeleteFuture")
 		return
 	}

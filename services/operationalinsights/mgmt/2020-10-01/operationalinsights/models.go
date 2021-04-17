@@ -505,6 +505,7 @@ func (future *ClustersCreateOrUpdateFuture) result(client ClustersClient) (c Clu
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("operationalinsights.ClustersCreateOrUpdateFuture")
 		return
 	}
@@ -547,6 +548,7 @@ func (future *ClustersDeleteFuture) result(client ClustersClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("operationalinsights.ClustersDeleteFuture")
 		return
 	}
@@ -1194,6 +1196,7 @@ func (future *WorkspacesCreateOrUpdateFuture) result(client WorkspacesClient) (w
 		return
 	}
 	if !done {
+		w.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("operationalinsights.WorkspacesCreateOrUpdateFuture")
 		return
 	}
@@ -1236,6 +1239,7 @@ func (future *WorkspacesDeleteFuture) result(client WorkspacesClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("operationalinsights.WorkspacesDeleteFuture")
 		return
 	}

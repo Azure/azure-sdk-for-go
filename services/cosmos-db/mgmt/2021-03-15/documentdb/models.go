@@ -490,6 +490,7 @@ func (future *CassandraResourcesCreateUpdateCassandraKeyspaceFuture) result(clie
 		return
 	}
 	if !done {
+		ckgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesCreateUpdateCassandraKeyspaceFuture")
 		return
 	}
@@ -532,6 +533,7 @@ func (future *CassandraResourcesCreateUpdateCassandraTableFuture) result(client 
 		return
 	}
 	if !done {
+		ctgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesCreateUpdateCassandraTableFuture")
 		return
 	}
@@ -574,6 +576,7 @@ func (future *CassandraResourcesDeleteCassandraKeyspaceFuture) result(client Cas
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesDeleteCassandraKeyspaceFuture")
 		return
 	}
@@ -610,6 +613,7 @@ func (future *CassandraResourcesDeleteCassandraTableFuture) result(client Cassan
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesDeleteCassandraTableFuture")
 		return
 	}
@@ -646,6 +650,7 @@ func (future *CassandraResourcesMigrateCassandraKeyspaceToAutoscaleFuture) resul
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesMigrateCassandraKeyspaceToAutoscaleFuture")
 		return
 	}
@@ -688,6 +693,7 @@ func (future *CassandraResourcesMigrateCassandraKeyspaceToManualThroughputFuture
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesMigrateCassandraKeyspaceToManualThroughputFuture")
 		return
 	}
@@ -730,6 +736,7 @@ func (future *CassandraResourcesMigrateCassandraTableToAutoscaleFuture) result(c
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesMigrateCassandraTableToAutoscaleFuture")
 		return
 	}
@@ -772,6 +779,7 @@ func (future *CassandraResourcesMigrateCassandraTableToManualThroughputFuture) r
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesMigrateCassandraTableToManualThroughputFuture")
 		return
 	}
@@ -814,6 +822,7 @@ func (future *CassandraResourcesUpdateCassandraKeyspaceThroughputFuture) result(
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesUpdateCassandraKeyspaceThroughputFuture")
 		return
 	}
@@ -856,6 +865,7 @@ func (future *CassandraResourcesUpdateCassandraTableThroughputFuture) result(cli
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.CassandraResourcesUpdateCassandraTableThroughputFuture")
 		return
 	}
@@ -2262,6 +2272,7 @@ func (future *DatabaseAccountsCreateOrUpdateFuture) result(client DatabaseAccoun
 		return
 	}
 	if !done {
+		dagr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsCreateOrUpdateFuture")
 		return
 	}
@@ -2304,6 +2315,7 @@ func (future *DatabaseAccountsDeleteFuture) result(client DatabaseAccountsClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsDeleteFuture")
 		return
 	}
@@ -2340,6 +2352,7 @@ func (future *DatabaseAccountsFailoverPriorityChangeFuture) result(client Databa
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsFailoverPriorityChangeFuture")
 		return
 	}
@@ -2384,6 +2397,7 @@ func (future *DatabaseAccountsOfflineRegionFuture) result(client DatabaseAccount
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsOfflineRegionFuture")
 		return
 	}
@@ -2420,6 +2434,7 @@ func (future *DatabaseAccountsOnlineRegionFuture) result(client DatabaseAccounts
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsOnlineRegionFuture")
 		return
 	}
@@ -2456,6 +2471,7 @@ func (future *DatabaseAccountsRegenerateKeyFuture) result(client DatabaseAccount
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsRegenerateKeyFuture")
 		return
 	}
@@ -2492,6 +2508,7 @@ func (future *DatabaseAccountsUpdateFuture) result(client DatabaseAccountsClient
 		return
 	}
 	if !done {
+		dagr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsUpdateFuture")
 		return
 	}
@@ -3465,6 +3482,7 @@ func (future *GremlinResourcesCreateUpdateGremlinDatabaseFuture) result(client G
 		return
 	}
 	if !done {
+		gdgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourcesCreateUpdateGremlinDatabaseFuture")
 		return
 	}
@@ -3507,6 +3525,7 @@ func (future *GremlinResourcesCreateUpdateGremlinGraphFuture) result(client Grem
 		return
 	}
 	if !done {
+		gggr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourcesCreateUpdateGremlinGraphFuture")
 		return
 	}
@@ -3549,6 +3568,7 @@ func (future *GremlinResourcesDeleteGremlinDatabaseFuture) result(client Gremlin
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourcesDeleteGremlinDatabaseFuture")
 		return
 	}
@@ -3585,6 +3605,7 @@ func (future *GremlinResourcesDeleteGremlinGraphFuture) result(client GremlinRes
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourcesDeleteGremlinGraphFuture")
 		return
 	}
@@ -3621,6 +3642,7 @@ func (future *GremlinResourcesMigrateGremlinDatabaseToAutoscaleFuture) result(cl
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourcesMigrateGremlinDatabaseToAutoscaleFuture")
 		return
 	}
@@ -3663,6 +3685,7 @@ func (future *GremlinResourcesMigrateGremlinDatabaseToManualThroughputFuture) re
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourcesMigrateGremlinDatabaseToManualThroughputFuture")
 		return
 	}
@@ -3705,6 +3728,7 @@ func (future *GremlinResourcesMigrateGremlinGraphToAutoscaleFuture) result(clien
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourcesMigrateGremlinGraphToAutoscaleFuture")
 		return
 	}
@@ -3747,6 +3771,7 @@ func (future *GremlinResourcesMigrateGremlinGraphToManualThroughputFuture) resul
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourcesMigrateGremlinGraphToManualThroughputFuture")
 		return
 	}
@@ -3789,6 +3814,7 @@ func (future *GremlinResourcesUpdateGremlinDatabaseThroughputFuture) result(clie
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourcesUpdateGremlinDatabaseThroughputFuture")
 		return
 	}
@@ -3831,6 +3857,7 @@ func (future *GremlinResourcesUpdateGremlinGraphThroughputFuture) result(client 
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.GremlinResourcesUpdateGremlinGraphThroughputFuture")
 		return
 	}
@@ -4624,6 +4651,7 @@ func (future *MongoDBResourcesCreateUpdateMongoDBCollectionFuture) result(client
 		return
 	}
 	if !done {
+		mdcgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.MongoDBResourcesCreateUpdateMongoDBCollectionFuture")
 		return
 	}
@@ -4666,6 +4694,7 @@ func (future *MongoDBResourcesCreateUpdateMongoDBDatabaseFuture) result(client M
 		return
 	}
 	if !done {
+		mddgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.MongoDBResourcesCreateUpdateMongoDBDatabaseFuture")
 		return
 	}
@@ -4708,6 +4737,7 @@ func (future *MongoDBResourcesDeleteMongoDBCollectionFuture) result(client Mongo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.MongoDBResourcesDeleteMongoDBCollectionFuture")
 		return
 	}
@@ -4744,6 +4774,7 @@ func (future *MongoDBResourcesDeleteMongoDBDatabaseFuture) result(client MongoDB
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.MongoDBResourcesDeleteMongoDBDatabaseFuture")
 		return
 	}
@@ -4780,6 +4811,7 @@ func (future *MongoDBResourcesMigrateMongoDBCollectionToAutoscaleFuture) result(
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.MongoDBResourcesMigrateMongoDBCollectionToAutoscaleFuture")
 		return
 	}
@@ -4822,6 +4854,7 @@ func (future *MongoDBResourcesMigrateMongoDBCollectionToManualThroughputFuture) 
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.MongoDBResourcesMigrateMongoDBCollectionToManualThroughputFuture")
 		return
 	}
@@ -4864,6 +4897,7 @@ func (future *MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleFuture) result(cl
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleFuture")
 		return
 	}
@@ -4906,6 +4940,7 @@ func (future *MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputFuture) re
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputFuture")
 		return
 	}
@@ -4948,6 +4983,7 @@ func (future *MongoDBResourcesUpdateMongoDBCollectionThroughputFuture) result(cl
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.MongoDBResourcesUpdateMongoDBCollectionThroughputFuture")
 		return
 	}
@@ -4990,6 +5026,7 @@ func (future *MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture) result(clie
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.MongoDBResourcesUpdateMongoDBDatabaseThroughputFuture")
 		return
 	}
@@ -5161,6 +5198,7 @@ func (future *NotebookWorkspacesCreateOrUpdateFuture) result(client NotebookWork
 		return
 	}
 	if !done {
+		nw.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.NotebookWorkspacesCreateOrUpdateFuture")
 		return
 	}
@@ -5203,6 +5241,7 @@ func (future *NotebookWorkspacesDeleteFuture) result(client NotebookWorkspacesCl
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.NotebookWorkspacesDeleteFuture")
 		return
 	}
@@ -5239,6 +5278,7 @@ func (future *NotebookWorkspacesRegenerateAuthTokenFuture) result(client Noteboo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.NotebookWorkspacesRegenerateAuthTokenFuture")
 		return
 	}
@@ -5275,6 +5315,7 @@ func (future *NotebookWorkspacesStartFuture) result(client NotebookWorkspacesCli
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.NotebookWorkspacesStartFuture")
 		return
 	}
@@ -5772,6 +5813,7 @@ func (future *PrivateEndpointConnectionsCreateOrUpdateFuture) result(client Priv
 		return
 	}
 	if !done {
+		pec.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.PrivateEndpointConnectionsCreateOrUpdateFuture")
 		return
 	}
@@ -5814,6 +5856,7 @@ func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.PrivateEndpointConnectionsDeleteFuture")
 		return
 	}
@@ -6565,6 +6608,7 @@ func (future *SQLResourcesCreateUpdateSQLContainerFuture) result(client SQLResou
 		return
 	}
 	if !done {
+		scgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesCreateUpdateSQLContainerFuture")
 		return
 	}
@@ -6607,6 +6651,7 @@ func (future *SQLResourcesCreateUpdateSQLDatabaseFuture) result(client SQLResour
 		return
 	}
 	if !done {
+		sdgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesCreateUpdateSQLDatabaseFuture")
 		return
 	}
@@ -6649,6 +6694,7 @@ func (future *SQLResourcesCreateUpdateSQLStoredProcedureFuture) result(client SQ
 		return
 	}
 	if !done {
+		sspgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesCreateUpdateSQLStoredProcedureFuture")
 		return
 	}
@@ -6691,6 +6737,7 @@ func (future *SQLResourcesCreateUpdateSQLTriggerFuture) result(client SQLResourc
 		return
 	}
 	if !done {
+		stgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesCreateUpdateSQLTriggerFuture")
 		return
 	}
@@ -6733,6 +6780,7 @@ func (future *SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture) result(clien
 		return
 	}
 	if !done {
+		sudfgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture")
 		return
 	}
@@ -6775,6 +6823,7 @@ func (future *SQLResourcesDeleteSQLContainerFuture) result(client SQLResourcesCl
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesDeleteSQLContainerFuture")
 		return
 	}
@@ -6811,6 +6860,7 @@ func (future *SQLResourcesDeleteSQLDatabaseFuture) result(client SQLResourcesCli
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesDeleteSQLDatabaseFuture")
 		return
 	}
@@ -6847,6 +6897,7 @@ func (future *SQLResourcesDeleteSQLStoredProcedureFuture) result(client SQLResou
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesDeleteSQLStoredProcedureFuture")
 		return
 	}
@@ -6883,6 +6934,7 @@ func (future *SQLResourcesDeleteSQLTriggerFuture) result(client SQLResourcesClie
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesDeleteSQLTriggerFuture")
 		return
 	}
@@ -6919,6 +6971,7 @@ func (future *SQLResourcesDeleteSQLUserDefinedFunctionFuture) result(client SQLR
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesDeleteSQLUserDefinedFunctionFuture")
 		return
 	}
@@ -6955,6 +7008,7 @@ func (future *SQLResourcesMigrateSQLContainerToAutoscaleFuture) result(client SQ
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesMigrateSQLContainerToAutoscaleFuture")
 		return
 	}
@@ -6997,6 +7051,7 @@ func (future *SQLResourcesMigrateSQLContainerToManualThroughputFuture) result(cl
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesMigrateSQLContainerToManualThroughputFuture")
 		return
 	}
@@ -7039,6 +7094,7 @@ func (future *SQLResourcesMigrateSQLDatabaseToAutoscaleFuture) result(client SQL
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesMigrateSQLDatabaseToAutoscaleFuture")
 		return
 	}
@@ -7081,6 +7137,7 @@ func (future *SQLResourcesMigrateSQLDatabaseToManualThroughputFuture) result(cli
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesMigrateSQLDatabaseToManualThroughputFuture")
 		return
 	}
@@ -7123,6 +7180,7 @@ func (future *SQLResourcesUpdateSQLContainerThroughputFuture) result(client SQLR
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesUpdateSQLContainerThroughputFuture")
 		return
 	}
@@ -7165,6 +7223,7 @@ func (future *SQLResourcesUpdateSQLDatabaseThroughputFuture) result(client SQLRe
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.SQLResourcesUpdateSQLDatabaseThroughputFuture")
 		return
 	}
@@ -8240,6 +8299,7 @@ func (future *TableResourcesCreateUpdateTableFuture) result(client TableResource
 		return
 	}
 	if !done {
+		tgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.TableResourcesCreateUpdateTableFuture")
 		return
 	}
@@ -8282,6 +8342,7 @@ func (future *TableResourcesDeleteTableFuture) result(client TableResourcesClien
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.TableResourcesDeleteTableFuture")
 		return
 	}
@@ -8318,6 +8379,7 @@ func (future *TableResourcesMigrateTableToAutoscaleFuture) result(client TableRe
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.TableResourcesMigrateTableToAutoscaleFuture")
 		return
 	}
@@ -8360,6 +8422,7 @@ func (future *TableResourcesMigrateTableToManualThroughputFuture) result(client 
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.TableResourcesMigrateTableToManualThroughputFuture")
 		return
 	}
@@ -8402,6 +8465,7 @@ func (future *TableResourcesUpdateTableThroughputFuture) result(client TableReso
 		return
 	}
 	if !done {
+		tsgr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.TableResourcesUpdateTableThroughputFuture")
 		return
 	}

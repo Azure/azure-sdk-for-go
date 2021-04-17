@@ -161,6 +161,7 @@ func (future *AccountBackupsDeleteFuture) result(client AccountBackupsClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.AccountBackupsDeleteFuture")
 		return
 	}
@@ -484,6 +485,7 @@ func (future *AccountsCreateOrUpdateFuture) result(client AccountsClient) (a Acc
 		return
 	}
 	if !done {
+		a.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.AccountsCreateOrUpdateFuture")
 		return
 	}
@@ -526,6 +528,7 @@ func (future *AccountsDeleteFuture) result(client AccountsClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.AccountsDeleteFuture")
 		return
 	}
@@ -562,6 +565,7 @@ func (future *AccountsUpdateFuture) result(client AccountsClient) (a Account, er
 		return
 	}
 	if !done {
+		a.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.AccountsUpdateFuture")
 		return
 	}
@@ -844,6 +848,7 @@ func (future *BackupPoliciesCreateFuture) result(client BackupPoliciesClient) (b
 		return
 	}
 	if !done {
+		bp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.BackupPoliciesCreateFuture")
 		return
 	}
@@ -886,6 +891,7 @@ func (future *BackupPoliciesDeleteFuture) result(client BackupPoliciesClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.BackupPoliciesDeleteFuture")
 		return
 	}
@@ -1306,6 +1312,7 @@ func (future *BackupsCreateFuture) result(client BackupsClient) (b Backup, err e
 		return
 	}
 	if !done {
+		b.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.BackupsCreateFuture")
 		return
 	}
@@ -1348,6 +1355,7 @@ func (future *BackupsDeleteFuture) result(client BackupsClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.BackupsDeleteFuture")
 		return
 	}
@@ -1391,6 +1399,7 @@ func (future *BackupsUpdateFuture) result(client BackupsClient) (b Backup, err e
 		return
 	}
 	if !done {
+		b.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.BackupsUpdateFuture")
 		return
 	}
@@ -2200,6 +2209,7 @@ func (future *PoolsCreateOrUpdateFuture) result(client PoolsClient) (cp Capacity
 		return
 	}
 	if !done {
+		cp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.PoolsCreateOrUpdateFuture")
 		return
 	}
@@ -2241,6 +2251,7 @@ func (future *PoolsDeleteFuture) result(client PoolsClient) (ar autorest.Respons
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.PoolsDeleteFuture")
 		return
 	}
@@ -2276,6 +2287,7 @@ func (future *PoolsUpdateFuture) result(client PoolsClient) (cp CapacityPool, er
 		return
 	}
 	if !done {
+		cp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.PoolsUpdateFuture")
 		return
 	}
@@ -2460,6 +2472,7 @@ func (future *SnapshotPoliciesDeleteFuture) result(client SnapshotPoliciesClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.SnapshotPoliciesDeleteFuture")
 		return
 	}
@@ -2503,6 +2516,7 @@ func (future *SnapshotPoliciesUpdateFuture) result(client SnapshotPoliciesClient
 		return
 	}
 	if !done {
+		sp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.SnapshotPoliciesUpdateFuture")
 		return
 	}
@@ -2902,6 +2916,7 @@ func (future *SnapshotsCreateFuture) result(client SnapshotsClient) (s Snapshot,
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.SnapshotsCreateFuture")
 		return
 	}
@@ -2944,6 +2959,7 @@ func (future *SnapshotsDeleteFuture) result(client SnapshotsClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.SnapshotsDeleteFuture")
 		return
 	}
@@ -2987,6 +3003,7 @@ func (future *SnapshotsUpdateFuture) result(client SnapshotsClient) (s Snapshot,
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.SnapshotsUpdateFuture")
 		return
 	}
@@ -3682,6 +3699,7 @@ func (future *VolumesAuthorizeReplicationFuture) result(client VolumesClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.VolumesAuthorizeReplicationFuture")
 		return
 	}
@@ -3718,6 +3736,7 @@ func (future *VolumesBreakReplicationFuture) result(client VolumesClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.VolumesBreakReplicationFuture")
 		return
 	}
@@ -3754,6 +3773,7 @@ func (future *VolumesCreateOrUpdateFuture) result(client VolumesClient) (vVar Vo
 		return
 	}
 	if !done {
+		vVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.VolumesCreateOrUpdateFuture")
 		return
 	}
@@ -3796,6 +3816,7 @@ func (future *VolumesDeleteFuture) result(client VolumesClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.VolumesDeleteFuture")
 		return
 	}
@@ -3832,6 +3853,7 @@ func (future *VolumesDeleteReplicationFuture) result(client VolumesClient) (ar a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.VolumesDeleteReplicationFuture")
 		return
 	}
@@ -3874,6 +3896,7 @@ func (future *VolumesPoolChangeFuture) result(client VolumesClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.VolumesPoolChangeFuture")
 		return
 	}
@@ -3910,6 +3933,7 @@ func (future *VolumesReInitializeReplicationFuture) result(client VolumesClient)
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.VolumesReInitializeReplicationFuture")
 		return
 	}
@@ -3946,6 +3970,7 @@ func (future *VolumesResyncReplicationFuture) result(client VolumesClient) (ar a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.VolumesResyncReplicationFuture")
 		return
 	}
@@ -3982,6 +4007,7 @@ func (future *VolumesRevertFuture) result(client VolumesClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.VolumesRevertFuture")
 		return
 	}
@@ -4018,6 +4044,7 @@ func (future *VolumesUpdateFuture) result(client VolumesClient) (vVar Volume, er
 		return
 	}
 	if !done {
+		vVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.VolumesUpdateFuture")
 		return
 	}

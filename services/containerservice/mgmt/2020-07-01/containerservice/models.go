@@ -441,6 +441,7 @@ func (future *AgentPoolsCreateOrUpdateFuture) result(client AgentPoolsClient) (a
 		return
 	}
 	if !done {
+		ap.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.AgentPoolsCreateOrUpdateFuture")
 		return
 	}
@@ -483,6 +484,7 @@ func (future *AgentPoolsDeleteFuture) result(client AgentPoolsClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.AgentPoolsDeleteFuture")
 		return
 	}
@@ -519,6 +521,7 @@ func (future *AgentPoolsUpgradeNodeImageVersionFuture) result(client AgentPoolsC
 		return
 	}
 	if !done {
+		ap.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.AgentPoolsUpgradeNodeImageVersionFuture")
 		return
 	}
@@ -779,6 +782,7 @@ func (future *ContainerServicesCreateOrUpdateFutureType) result(client Container
 		return
 	}
 	if !done {
+		cs.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.ContainerServicesCreateOrUpdateFutureType")
 		return
 	}
@@ -821,6 +825,7 @@ func (future *ContainerServicesDeleteFutureType) result(client ContainerServices
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.ContainerServicesDeleteFutureType")
 		return
 	}
@@ -1990,6 +1995,7 @@ func (future *ManagedClustersCreateOrUpdateFuture) result(client ManagedClusters
 		return
 	}
 	if !done {
+		mc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersCreateOrUpdateFuture")
 		return
 	}
@@ -2032,6 +2038,7 @@ func (future *ManagedClustersDeleteFuture) result(client ManagedClustersClient) 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersDeleteFuture")
 		return
 	}
@@ -2085,6 +2092,7 @@ func (future *ManagedClustersResetAADProfileFuture) result(client ManagedCluster
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersResetAADProfileFuture")
 		return
 	}
@@ -2121,6 +2129,7 @@ func (future *ManagedClustersResetServicePrincipalProfileFuture) result(client M
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersResetServicePrincipalProfileFuture")
 		return
 	}
@@ -2157,6 +2166,7 @@ func (future *ManagedClustersRotateClusterCertificatesFuture) result(client Mana
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersRotateClusterCertificatesFuture")
 		return
 	}
@@ -2193,6 +2203,7 @@ func (future *ManagedClustersUpdateTagsFuture) result(client ManagedClustersClie
 		return
 	}
 	if !done {
+		mc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersUpdateTagsFuture")
 		return
 	}
@@ -2943,6 +2954,7 @@ func (future *OpenShiftManagedClustersCreateOrUpdateFuture) result(client OpenSh
 		return
 	}
 	if !done {
+		osmc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.OpenShiftManagedClustersCreateOrUpdateFuture")
 		return
 	}
@@ -2985,6 +2997,7 @@ func (future *OpenShiftManagedClustersDeleteFuture) result(client OpenShiftManag
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.OpenShiftManagedClustersDeleteFuture")
 		return
 	}
@@ -3021,6 +3034,7 @@ func (future *OpenShiftManagedClustersUpdateTagsFuture) result(client OpenShiftM
 		return
 	}
 	if !done {
+		osmc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.OpenShiftManagedClustersUpdateTagsFuture")
 		return
 	}
@@ -3381,6 +3395,7 @@ func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.PrivateEndpointConnectionsDeleteFuture")
 		return
 	}

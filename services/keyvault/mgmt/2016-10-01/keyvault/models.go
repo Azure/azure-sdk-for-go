@@ -1075,6 +1075,7 @@ func (future *VaultsPurgeDeletedFuture) result(client VaultsClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("keyvault.VaultsPurgeDeletedFuture")
 		return
 	}

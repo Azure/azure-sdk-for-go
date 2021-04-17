@@ -451,6 +451,7 @@ func (future *BandwidthSchedulesCreateOrUpdateFuture) result(client BandwidthSch
 		return
 	}
 	if !done {
+		bs.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.BandwidthSchedulesCreateOrUpdateFuture")
 		return
 	}
@@ -493,6 +494,7 @@ func (future *BandwidthSchedulesDeleteFuture) result(client BandwidthSchedulesCl
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.BandwidthSchedulesDeleteFuture")
 		return
 	}
@@ -978,6 +980,7 @@ func (future *ContainersCreateOrUpdateFuture) result(client ContainersClient) (c
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.ContainersCreateOrUpdateFuture")
 		return
 	}
@@ -1020,6 +1023,7 @@ func (future *ContainersDeleteFuture) result(client ContainersClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.ContainersDeleteFuture")
 		return
 	}
@@ -1056,6 +1060,7 @@ func (future *ContainersRefreshFuture) result(client ContainersClient) (ar autor
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.ContainersRefreshFuture")
 		return
 	}
@@ -1540,6 +1545,7 @@ func (future *DevicesCreateOrUpdateFuture) result(client DevicesClient) (d Devic
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.DevicesCreateOrUpdateFuture")
 		return
 	}
@@ -1582,6 +1588,7 @@ func (future *DevicesCreateOrUpdateSecuritySettingsFuture) result(client Devices
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.DevicesCreateOrUpdateSecuritySettingsFuture")
 		return
 	}
@@ -1618,6 +1625,7 @@ func (future *DevicesDeleteFuture) result(client DevicesClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.DevicesDeleteFuture")
 		return
 	}
@@ -1654,6 +1662,7 @@ func (future *DevicesDownloadUpdatesFuture) result(client DevicesClient) (ar aut
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.DevicesDownloadUpdatesFuture")
 		return
 	}
@@ -1690,6 +1699,7 @@ func (future *DevicesInstallUpdatesFuture) result(client DevicesClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.DevicesInstallUpdatesFuture")
 		return
 	}
@@ -1726,6 +1736,7 @@ func (future *DevicesScanForUpdatesFuture) result(client DevicesClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.DevicesScanForUpdatesFuture")
 		return
 	}
@@ -3064,6 +3075,7 @@ func (future *OrdersCreateOrUpdateFuture) result(client OrdersClient) (o Order, 
 		return
 	}
 	if !done {
+		o.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.OrdersCreateOrUpdateFuture")
 		return
 	}
@@ -3105,6 +3117,7 @@ func (future *OrdersDeleteFuture) result(client OrdersClient) (ar autorest.Respo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.OrdersDeleteFuture")
 		return
 	}
@@ -3626,6 +3639,7 @@ func (future *RolesCreateOrUpdateFuture) result(client RolesClient) (rm RoleMode
 		return
 	}
 	if !done {
+		rm.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.RolesCreateOrUpdateFuture")
 		return
 	}
@@ -3667,6 +3681,7 @@ func (future *RolesDeleteFuture) result(client RolesClient) (ar autorest.Respons
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.RolesDeleteFuture")
 		return
 	}
@@ -4091,6 +4106,7 @@ func (future *SharesCreateOrUpdateFuture) result(client SharesClient) (s Share, 
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.SharesCreateOrUpdateFuture")
 		return
 	}
@@ -4132,6 +4148,7 @@ func (future *SharesDeleteFuture) result(client SharesClient) (ar autorest.Respo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.SharesDeleteFuture")
 		return
 	}
@@ -4168,6 +4185,7 @@ func (future *SharesRefreshFuture) result(client SharesClient) (ar autorest.Resp
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.SharesRefreshFuture")
 		return
 	}
@@ -4664,6 +4682,7 @@ func (future *StorageAccountCredentialsCreateOrUpdateFuture) result(client Stora
 		return
 	}
 	if !done {
+		sac.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.StorageAccountCredentialsCreateOrUpdateFuture")
 		return
 	}
@@ -4706,6 +4725,7 @@ func (future *StorageAccountCredentialsDeleteFuture) result(client StorageAccoun
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.StorageAccountCredentialsDeleteFuture")
 		return
 	}
@@ -4935,6 +4955,7 @@ func (future *StorageAccountsCreateOrUpdateFuture) result(client StorageAccounts
 		return
 	}
 	if !done {
+		sa.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.StorageAccountsCreateOrUpdateFuture")
 		return
 	}
@@ -4977,6 +4998,7 @@ func (future *StorageAccountsDeleteFuture) result(client StorageAccountsClient) 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.StorageAccountsDeleteFuture")
 		return
 	}
@@ -5330,6 +5352,7 @@ func (future *TriggersCreateOrUpdateFuture) result(client TriggersClient) (tm Tr
 		return
 	}
 	if !done {
+		tm.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.TriggersCreateOrUpdateFuture")
 		return
 	}
@@ -5372,6 +5395,7 @@ func (future *TriggersDeleteFuture) result(client TriggersClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.TriggersDeleteFuture")
 		return
 	}
@@ -5894,6 +5918,7 @@ func (future *UsersCreateOrUpdateFuture) result(client UsersClient) (u User, err
 		return
 	}
 	if !done {
+		u.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.UsersCreateOrUpdateFuture")
 		return
 	}
@@ -5935,6 +5960,7 @@ func (future *UsersDeleteFuture) result(client UsersClient) (ar autorest.Respons
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databoxedge.UsersDeleteFuture")
 		return
 	}

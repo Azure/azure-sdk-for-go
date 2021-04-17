@@ -843,6 +843,7 @@ func (future *ZonesDeleteFuture) result(client ZonesClient) (zdr ZoneDeleteResul
 		return
 	}
 	if !done {
+		zdr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dns.ZonesDeleteFuture")
 		return
 	}

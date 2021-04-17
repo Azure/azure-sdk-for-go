@@ -386,6 +386,7 @@ func (future *CachesCreateFuture) result(client CachesClient) (c Cache, err erro
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesCreateFuture")
 		return
 	}
@@ -427,6 +428,7 @@ func (future *CachesDeleteFuture) result(client CachesClient) (so SetObject, err
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesDeleteFuture")
 		return
 	}
@@ -468,6 +470,7 @@ func (future *CachesFlushFuture) result(client CachesClient) (so SetObject, err 
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesFlushFuture")
 		return
 	}
@@ -675,6 +678,7 @@ func (future *CachesStartFuture) result(client CachesClient) (so SetObject, err 
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesStartFuture")
 		return
 	}
@@ -716,6 +720,7 @@ func (future *CachesStopFuture) result(client CachesClient) (so SetObject, err e
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesStopFuture")
 		return
 	}
@@ -758,6 +763,7 @@ func (future *CachesUpgradeFirmwareFuture) result(client CachesClient) (so SetOb
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesUpgradeFirmwareFuture")
 		return
 	}
@@ -1188,6 +1194,7 @@ func (future *StorageTargetsCreateFuture) result(client StorageTargetsClient) (s
 		return
 	}
 	if !done {
+		st.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.StorageTargetsCreateFuture")
 		return
 	}
@@ -1230,6 +1237,7 @@ func (future *StorageTargetsDeleteFuture) result(client StorageTargetsClient) (s
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.StorageTargetsDeleteFuture")
 		return
 	}

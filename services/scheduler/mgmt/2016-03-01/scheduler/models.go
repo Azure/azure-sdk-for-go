@@ -593,6 +593,7 @@ func (future *JobCollectionsDeleteFuture) result(client JobCollectionsClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("scheduler.JobCollectionsDeleteFuture")
 		return
 	}
@@ -629,6 +630,7 @@ func (future *JobCollectionsDisableFuture) result(client JobCollectionsClient) (
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("scheduler.JobCollectionsDisableFuture")
 		return
 	}
@@ -665,6 +667,7 @@ func (future *JobCollectionsEnableFuture) result(client JobCollectionsClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("scheduler.JobCollectionsEnableFuture")
 		return
 	}

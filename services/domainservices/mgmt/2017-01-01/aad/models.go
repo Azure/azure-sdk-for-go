@@ -400,6 +400,7 @@ func (future *DomainServicesCreateOrUpdateFuture) result(client DomainServicesCl
 		return
 	}
 	if !done {
+		ds.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("aad.DomainServicesCreateOrUpdateFuture")
 		return
 	}
@@ -442,6 +443,7 @@ func (future *DomainServicesDeleteFuture) result(client DomainServicesClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("aad.DomainServicesDeleteFuture")
 		return
 	}
@@ -478,6 +480,7 @@ func (future *DomainServicesUpdateFuture) result(client DomainServicesClient) (d
 		return
 	}
 	if !done {
+		ds.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("aad.DomainServicesUpdateFuture")
 		return
 	}

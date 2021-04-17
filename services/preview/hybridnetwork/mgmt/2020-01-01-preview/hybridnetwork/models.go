@@ -426,6 +426,7 @@ func (future *DevicesCreateOrUpdateFuture) result(client DevicesClient) (d Devic
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridnetwork.DevicesCreateOrUpdateFuture")
 		return
 	}
@@ -468,6 +469,7 @@ func (future *DevicesDeleteFuture) result(client DevicesClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridnetwork.DevicesDeleteFuture")
 		return
 	}
@@ -1063,6 +1065,7 @@ func (future *NetworkFunctionsCreateOrUpdateFuture) result(client NetworkFunctio
 		return
 	}
 	if !done {
+		nf.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridnetwork.NetworkFunctionsCreateOrUpdateFuture")
 		return
 	}
@@ -1105,6 +1108,7 @@ func (future *NetworkFunctionsDeleteFuture) result(client NetworkFunctionsClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridnetwork.NetworkFunctionsDeleteFuture")
 		return
 	}
@@ -2275,6 +2279,7 @@ func (future *RoleInstancesRestartFuture) result(client RoleInstancesClient) (ar
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridnetwork.RoleInstancesRestartFuture")
 		return
 	}
@@ -2311,6 +2316,7 @@ func (future *RoleInstancesStartFuture) result(client RoleInstancesClient) (ar a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridnetwork.RoleInstancesStartFuture")
 		return
 	}
@@ -2347,6 +2353,7 @@ func (future *RoleInstancesStopFuture) result(client RoleInstancesClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridnetwork.RoleInstancesStopFuture")
 		return
 	}
@@ -2981,6 +2988,7 @@ func (future *VendorNetworkFunctionsCreateOrUpdateFuture) result(client VendorNe
 		return
 	}
 	if !done {
+		vnf.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorNetworkFunctionsCreateOrUpdateFuture")
 		return
 	}
@@ -3031,6 +3039,7 @@ func (future *VendorsCreateOrUpdateFuture) result(client VendorsClient) (vVar Ve
 		return
 	}
 	if !done {
+		vVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorsCreateOrUpdateFuture")
 		return
 	}
@@ -3073,6 +3082,7 @@ func (future *VendorsDeleteFuture) result(client VendorsClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorsDeleteFuture")
 		return
 	}
@@ -3350,6 +3360,7 @@ func (future *VendorSkuPreviewCreateOrUpdateFuture) result(client VendorSkuPrevi
 		return
 	}
 	if !done {
+		ps.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorSkuPreviewCreateOrUpdateFuture")
 		return
 	}
@@ -3392,6 +3403,7 @@ func (future *VendorSkuPreviewDeleteFuture) result(client VendorSkuPreviewClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorSkuPreviewDeleteFuture")
 		return
 	}
@@ -3470,6 +3482,7 @@ func (future *VendorSkusCreateOrUpdateFuture) result(client VendorSkusClient) (v
 		return
 	}
 	if !done {
+		vs.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorSkusCreateOrUpdateFuture")
 		return
 	}
@@ -3512,6 +3525,7 @@ func (future *VendorSkusDeleteFuture) result(client VendorSkusClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridnetwork.VendorSkusDeleteFuture")
 		return
 	}

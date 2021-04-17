@@ -774,6 +774,7 @@ func (future *CachesCreateOrUpdateFuture) result(client CachesClient) (c Cache, 
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesCreateOrUpdateFuture")
 		return
 	}
@@ -816,6 +817,7 @@ func (future *CachesDebugInfoFuture) result(client CachesClient) (ar autorest.Re
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesDebugInfoFuture")
 		return
 	}
@@ -851,6 +853,7 @@ func (future *CachesDeleteFuture) result(client CachesClient) (ar autorest.Respo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesDeleteFuture")
 		return
 	}
@@ -892,6 +895,7 @@ func (future *CachesFlushFuture) result(client CachesClient) (ar autorest.Respon
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesFlushFuture")
 		return
 	}
@@ -1093,6 +1097,7 @@ func (future *CachesStartFuture) result(client CachesClient) (ar autorest.Respon
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesStartFuture")
 		return
 	}
@@ -1128,6 +1133,7 @@ func (future *CachesStopFuture) result(client CachesClient) (ar autorest.Respons
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesStopFuture")
 		return
 	}
@@ -1164,6 +1170,7 @@ func (future *CachesUpgradeFirmwareFuture) result(client CachesClient) (ar autor
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesUpgradeFirmwareFuture")
 		return
 	}
@@ -2010,6 +2017,7 @@ func (future *StorageTargetsCreateOrUpdateFuture) result(client StorageTargetsCl
 		return
 	}
 	if !done {
+		st.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.StorageTargetsCreateOrUpdateFuture")
 		return
 	}
@@ -2052,6 +2060,7 @@ func (future *StorageTargetsDeleteFuture) result(client StorageTargetsClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.StorageTargetsDeleteFuture")
 		return
 	}

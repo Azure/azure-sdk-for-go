@@ -548,6 +548,7 @@ func (future *ApplianceDefinitionsCreateOrUpdateByIDFuture) result(client Applia
 		return
 	}
 	if !done {
+		ad.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplianceDefinitionsCreateOrUpdateByIDFuture")
 		return
 	}
@@ -590,6 +591,7 @@ func (future *ApplianceDefinitionsCreateOrUpdateFuture) result(client ApplianceD
 		return
 	}
 	if !done {
+		ad.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplianceDefinitionsCreateOrUpdateFuture")
 		return
 	}
@@ -632,6 +634,7 @@ func (future *ApplianceDefinitionsDeleteByIDFuture) result(client ApplianceDefin
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplianceDefinitionsDeleteByIDFuture")
 		return
 	}
@@ -668,6 +671,7 @@ func (future *ApplianceDefinitionsDeleteFuture) result(client ApplianceDefinitio
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.ApplianceDefinitionsDeleteFuture")
 		return
 	}
@@ -1109,6 +1113,7 @@ func (future *AppliancesCreateOrUpdateByIDFuture) result(client AppliancesClient
 		return
 	}
 	if !done {
+		a.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.AppliancesCreateOrUpdateByIDFuture")
 		return
 	}
@@ -1151,6 +1156,7 @@ func (future *AppliancesCreateOrUpdateFuture) result(client AppliancesClient) (a
 		return
 	}
 	if !done {
+		a.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.AppliancesCreateOrUpdateFuture")
 		return
 	}
@@ -1193,6 +1199,7 @@ func (future *AppliancesDeleteByIDFuture) result(client AppliancesClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.AppliancesDeleteByIDFuture")
 		return
 	}
@@ -1229,6 +1236,7 @@ func (future *AppliancesDeleteFuture) result(client AppliancesClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managedapplications.AppliancesDeleteFuture")
 		return
 	}

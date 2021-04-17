@@ -61,6 +61,7 @@ func (future *AuthorizationsCreateOrUpdateFuture) result(client AuthorizationsCl
 		return
 	}
 	if !done {
+		era.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.AuthorizationsCreateOrUpdateFuture")
 		return
 	}
@@ -103,6 +104,7 @@ func (future *AuthorizationsDeleteFuture) result(client AuthorizationsClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.AuthorizationsDeleteFuture")
 		return
 	}
@@ -424,6 +426,7 @@ func (future *ClustersCreateOrUpdateFuture) result(client ClustersClient) (c Clu
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.ClustersCreateOrUpdateFuture")
 		return
 	}
@@ -466,6 +469,7 @@ func (future *ClustersDeleteFuture) result(client ClustersClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.ClustersDeleteFuture")
 		return
 	}
@@ -502,6 +506,7 @@ func (future *ClustersUpdateFuture) result(client ClustersClient) (c Cluster, er
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.ClustersUpdateFuture")
 		return
 	}
@@ -1141,6 +1146,7 @@ func (future *GlobalReachConnectionsCreateOrUpdateFuture) result(client GlobalRe
 		return
 	}
 	if !done {
+		grc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.GlobalReachConnectionsCreateOrUpdateFuture")
 		return
 	}
@@ -1183,6 +1189,7 @@ func (future *GlobalReachConnectionsDeleteFuture) result(client GlobalReachConne
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.GlobalReachConnectionsDeleteFuture")
 		return
 	}
@@ -2088,6 +2095,7 @@ func (future *PrivateCloudsCreateOrUpdateFuture) result(client PrivateCloudsClie
 		return
 	}
 	if !done {
+		pc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.PrivateCloudsCreateOrUpdateFuture")
 		return
 	}
@@ -2130,6 +2138,7 @@ func (future *PrivateCloudsDeleteFuture) result(client PrivateCloudsClient) (ar 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.PrivateCloudsDeleteFuture")
 		return
 	}
@@ -2166,6 +2175,7 @@ func (future *PrivateCloudsUpdateFuture) result(client PrivateCloudsClient) (pc 
 		return
 	}
 	if !done {
+		pc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.PrivateCloudsUpdateFuture")
 		return
 	}
@@ -3324,6 +3334,7 @@ func (future *WorkloadNetworksCreateDhcpFuture) result(client WorkloadNetworksCl
 		return
 	}
 	if !done {
+		wnd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksCreateDhcpFuture")
 		return
 	}
@@ -3366,6 +3377,7 @@ func (future *WorkloadNetworksCreatePortMirroringFuture) result(client WorkloadN
 		return
 	}
 	if !done {
+		wnpm.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksCreatePortMirroringFuture")
 		return
 	}
@@ -3408,6 +3420,7 @@ func (future *WorkloadNetworksCreateSegmentsFuture) result(client WorkloadNetwor
 		return
 	}
 	if !done {
+		wns.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksCreateSegmentsFuture")
 		return
 	}
@@ -3450,6 +3463,7 @@ func (future *WorkloadNetworksCreateVMGroupFuture) result(client WorkloadNetwork
 		return
 	}
 	if !done {
+		wnvg.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksCreateVMGroupFuture")
 		return
 	}
@@ -3492,6 +3506,7 @@ func (future *WorkloadNetworksDeleteDhcpFuture) result(client WorkloadNetworksCl
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksDeleteDhcpFuture")
 		return
 	}
@@ -3528,6 +3543,7 @@ func (future *WorkloadNetworksDeletePortMirroringFuture) result(client WorkloadN
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksDeletePortMirroringFuture")
 		return
 	}
@@ -3564,6 +3580,7 @@ func (future *WorkloadNetworksDeleteSegmentFuture) result(client WorkloadNetwork
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksDeleteSegmentFuture")
 		return
 	}
@@ -3600,6 +3617,7 @@ func (future *WorkloadNetworksDeleteVMGroupFuture) result(client WorkloadNetwork
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksDeleteVMGroupFuture")
 		return
 	}
@@ -3919,6 +3937,7 @@ func (future *WorkloadNetworksUpdateDhcpFuture) result(client WorkloadNetworksCl
 		return
 	}
 	if !done {
+		wnd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksUpdateDhcpFuture")
 		return
 	}
@@ -3961,6 +3980,7 @@ func (future *WorkloadNetworksUpdatePortMirroringFuture) result(client WorkloadN
 		return
 	}
 	if !done {
+		wnpm.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksUpdatePortMirroringFuture")
 		return
 	}
@@ -4003,6 +4023,7 @@ func (future *WorkloadNetworksUpdateSegmentsFuture) result(client WorkloadNetwor
 		return
 	}
 	if !done {
+		wns.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksUpdateSegmentsFuture")
 		return
 	}
@@ -4045,6 +4066,7 @@ func (future *WorkloadNetworksUpdateVMGroupFuture) result(client WorkloadNetwork
 		return
 	}
 	if !done {
+		wnvg.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksUpdateVMGroupFuture")
 		return
 	}

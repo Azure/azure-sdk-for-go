@@ -374,6 +374,7 @@ func (future *AccountsUpdateFuture) result(client AccountsClient) (a Account, er
 		return
 	}
 	if !done {
+		a.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.AccountsUpdateFuture")
 		return
 	}
@@ -2157,6 +2158,7 @@ func (future *InvoiceSectionsCreateFuture) result(client InvoiceSectionsClient) 
 		return
 	}
 	if !done {
+		is.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.InvoiceSectionsCreateFuture")
 		return
 	}
@@ -2199,6 +2201,7 @@ func (future *InvoiceSectionsUpdateFuture) result(client InvoiceSectionsClient) 
 		return
 	}
 	if !done {
+		is.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.InvoiceSectionsUpdateFuture")
 		return
 	}
@@ -2439,6 +2442,7 @@ func (future *LineOfCreditsUpdateFuture) result(client LineOfCreditsClient) (loc
 		return
 	}
 	if !done {
+		loc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.LineOfCreditsUpdateFuture")
 		return
 	}
@@ -3059,6 +3063,7 @@ func (future *PriceSheetDownloadFuture) result(client PriceSheetClient) (du Down
 		return
 	}
 	if !done {
+		du.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.PriceSheetDownloadFuture")
 		return
 	}
@@ -3682,6 +3687,7 @@ func (future *ProfilesCreateFuture) result(client ProfilesClient) (p Profile, er
 		return
 	}
 	if !done {
+		p.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.ProfilesCreateFuture")
 		return
 	}
@@ -3724,6 +3730,7 @@ func (future *ProfilesUpdateFuture) result(client ProfilesClient) (p Profile, er
 		return
 	}
 	if !done {
+		p.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.ProfilesUpdateFuture")
 		return
 	}
@@ -4557,6 +4564,7 @@ func (future *SubscriptionsTransferFuture) result(client SubscriptionsClient) (t
 		return
 	}
 	if !done {
+		tbsr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.SubscriptionsTransferFuture")
 		return
 	}

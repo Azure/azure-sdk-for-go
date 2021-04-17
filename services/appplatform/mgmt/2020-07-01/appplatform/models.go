@@ -287,6 +287,7 @@ func (future *AppsCreateOrUpdateFuture) result(client AppsClient) (ar AppResourc
 		return
 	}
 	if !done {
+		ar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.AppsCreateOrUpdateFuture")
 		return
 	}
@@ -328,6 +329,7 @@ func (future *AppsDeleteFuture) result(client AppsClient) (ar autorest.Response,
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.AppsDeleteFuture")
 		return
 	}
@@ -363,6 +365,7 @@ func (future *AppsUpdateFuture) result(client AppsClient) (ar AppResource, err e
 		return
 	}
 	if !done {
+		ar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.AppsUpdateFuture")
 		return
 	}
@@ -790,6 +793,7 @@ func (future *BindingsCreateOrUpdateFuture) result(client BindingsClient) (br Bi
 		return
 	}
 	if !done {
+		br.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.BindingsCreateOrUpdateFuture")
 		return
 	}
@@ -832,6 +836,7 @@ func (future *BindingsDeleteFuture) result(client BindingsClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.BindingsDeleteFuture")
 		return
 	}
@@ -868,6 +873,7 @@ func (future *BindingsUpdateFuture) result(client BindingsClient) (br BindingRes
 		return
 	}
 	if !done {
+		br.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.BindingsUpdateFuture")
 		return
 	}
@@ -1132,6 +1138,7 @@ func (future *CertificatesCreateOrUpdateFuture) result(client CertificatesClient
 		return
 	}
 	if !done {
+		cr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.CertificatesCreateOrUpdateFuture")
 		return
 	}
@@ -1174,6 +1181,7 @@ func (future *CertificatesDeleteFuture) result(client CertificatesClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.CertificatesDeleteFuture")
 		return
 	}
@@ -1342,6 +1350,7 @@ func (future *ConfigServersUpdatePatchFuture) result(client ConfigServersClient)
 		return
 	}
 	if !done {
+		csr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.ConfigServersUpdatePatchFuture")
 		return
 	}
@@ -1384,6 +1393,7 @@ func (future *ConfigServersUpdatePutFuture) result(client ConfigServersClient) (
 		return
 	}
 	if !done {
+		csr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.ConfigServersUpdatePutFuture")
 		return
 	}
@@ -1426,6 +1436,7 @@ func (future *ConfigServersValidateFuture) result(client ConfigServersClient) (c
 		return
 	}
 	if !done {
+		cssvr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.ConfigServersValidateFuture")
 		return
 	}
@@ -1673,6 +1684,7 @@ func (future *CustomDomainsCreateOrUpdateFuture) result(client CustomDomainsClie
 		return
 	}
 	if !done {
+		cdr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.CustomDomainsCreateOrUpdateFuture")
 		return
 	}
@@ -1715,6 +1727,7 @@ func (future *CustomDomainsDeleteFuture) result(client CustomDomainsClient) (ar 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.CustomDomainsDeleteFuture")
 		return
 	}
@@ -1751,6 +1764,7 @@ func (future *CustomDomainsUpdateFuture) result(client CustomDomainsClient) (cdr
 		return
 	}
 	if !done {
+		cdr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.CustomDomainsUpdateFuture")
 		return
 	}
@@ -2042,6 +2056,7 @@ func (future *DeploymentsCreateOrUpdateFuture) result(client DeploymentsClient) 
 		return
 	}
 	if !done {
+		dr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsCreateOrUpdateFuture")
 		return
 	}
@@ -2084,6 +2099,7 @@ func (future *DeploymentsDeleteFuture) result(client DeploymentsClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsDeleteFuture")
 		return
 	}
@@ -2160,6 +2176,7 @@ func (future *DeploymentsRestartFuture) result(client DeploymentsClient) (ar aut
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsRestartFuture")
 		return
 	}
@@ -2196,6 +2213,7 @@ func (future *DeploymentsStartFuture) result(client DeploymentsClient) (ar autor
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsStartFuture")
 		return
 	}
@@ -2232,6 +2250,7 @@ func (future *DeploymentsStopFuture) result(client DeploymentsClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsStopFuture")
 		return
 	}
@@ -2268,6 +2287,7 @@ func (future *DeploymentsUpdateFuture) result(client DeploymentsClient) (dr Depl
 		return
 	}
 	if !done {
+		dr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsUpdateFuture")
 		return
 	}
@@ -2452,6 +2472,7 @@ func (future *MonitoringSettingsUpdatePatchFuture) result(client MonitoringSetti
 		return
 	}
 	if !done {
+		msr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.MonitoringSettingsUpdatePatchFuture")
 		return
 	}
@@ -2494,6 +2515,7 @@ func (future *MonitoringSettingsUpdatePutFuture) result(client MonitoringSetting
 		return
 	}
 	if !done {
+		msr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.MonitoringSettingsUpdatePutFuture")
 		return
 	}
@@ -3114,6 +3136,7 @@ func (future *ServicesCreateOrUpdateFuture) result(client ServicesClient) (sr Se
 		return
 	}
 	if !done {
+		sr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.ServicesCreateOrUpdateFuture")
 		return
 	}
@@ -3156,6 +3179,7 @@ func (future *ServicesDeleteFuture) result(client ServicesClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.ServicesDeleteFuture")
 		return
 	}
@@ -3200,6 +3224,7 @@ func (future *ServicesUpdateFuture) result(client ServicesClient) (sr ServiceRes
 		return
 	}
 	if !done {
+		sr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.ServicesUpdateFuture")
 		return
 	}

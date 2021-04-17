@@ -561,6 +561,7 @@ func (future *DatabasesCreateImportOperationFuture) result(client DatabasesClien
 		return
 	}
 	if !done {
+		ier.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DatabasesCreateImportOperationFuture")
 		return
 	}
@@ -603,6 +604,7 @@ func (future *DatabasesCreateOrUpdateFuture) result(client DatabasesClient) (d D
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DatabasesCreateOrUpdateFuture")
 		return
 	}
@@ -763,6 +765,7 @@ func (future *DatabasesExportFuture) result(client DatabasesClient) (ier ImportE
 		return
 	}
 	if !done {
+		ier.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DatabasesExportFuture")
 		return
 	}
@@ -805,6 +808,7 @@ func (future *DatabasesImportFuture) result(client DatabasesClient) (ier ImportE
 		return
 	}
 	if !done {
+		ier.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DatabasesImportFuture")
 		return
 	}
@@ -847,6 +851,7 @@ func (future *DatabasesPauseFuture) result(client DatabasesClient) (ar autorest.
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DatabasesPauseFuture")
 		return
 	}
@@ -883,6 +888,7 @@ func (future *DatabasesResumeFuture) result(client DatabasesClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DatabasesResumeFuture")
 		return
 	}
@@ -919,6 +925,7 @@ func (future *DatabasesUpdateFuture) result(client DatabasesClient) (d Database,
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DatabasesUpdateFuture")
 		return
 	}
@@ -1616,6 +1623,7 @@ func (future *DisasterRecoveryConfigurationsCreateOrUpdateFuture) result(client 
 		return
 	}
 	if !done {
+		drc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DisasterRecoveryConfigurationsCreateOrUpdateFuture")
 		return
 	}
@@ -1658,6 +1666,7 @@ func (future *DisasterRecoveryConfigurationsDeleteFuture) result(client Disaster
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DisasterRecoveryConfigurationsDeleteFuture")
 		return
 	}
@@ -1694,6 +1703,7 @@ func (future *DisasterRecoveryConfigurationsFailoverAllowDataLossFuture) result(
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DisasterRecoveryConfigurationsFailoverAllowDataLossFuture")
 		return
 	}
@@ -1730,6 +1740,7 @@ func (future *DisasterRecoveryConfigurationsFailoverFuture) result(client Disast
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DisasterRecoveryConfigurationsFailoverFuture")
 		return
 	}
@@ -2254,6 +2265,7 @@ func (future *ElasticPoolsCreateOrUpdateFuture) result(client ElasticPoolsClient
 		return
 	}
 	if !done {
+		ep.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ElasticPoolsCreateOrUpdateFuture")
 		return
 	}
@@ -2296,6 +2308,7 @@ func (future *ElasticPoolsUpdateFuture) result(client ElasticPoolsClient) (ep El
 		return
 	}
 	if !done {
+		ep.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ElasticPoolsUpdateFuture")
 		return
 	}
@@ -3546,6 +3559,7 @@ func (future *ReplicationLinksFailoverAllowDataLossFuture) result(client Replica
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ReplicationLinksFailoverAllowDataLossFuture")
 		return
 	}
@@ -3582,6 +3596,7 @@ func (future *ReplicationLinksFailoverFuture) result(client ReplicationLinksClie
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ReplicationLinksFailoverFuture")
 		return
 	}
@@ -3618,6 +3633,7 @@ func (future *ReplicationLinksUnlinkFuture) result(client ReplicationLinksClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ReplicationLinksUnlinkFuture")
 		return
 	}
@@ -4068,6 +4084,7 @@ func (future *ServerAzureADAdministratorsCreateOrUpdateFuture) result(client Ser
 		return
 	}
 	if !done {
+		saaa.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ServerAzureADAdministratorsCreateOrUpdateFuture")
 		return
 	}
@@ -4110,6 +4127,7 @@ func (future *ServerAzureADAdministratorsDeleteFuture) result(client ServerAzure
 		return
 	}
 	if !done {
+		saaa.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ServerAzureADAdministratorsDeleteFuture")
 		return
 	}
@@ -4271,6 +4289,7 @@ func (future *ServerCommunicationLinksCreateOrUpdateFuture) result(client Server
 		return
 	}
 	if !done {
+		scl.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ServerCommunicationLinksCreateOrUpdateFuture")
 		return
 	}

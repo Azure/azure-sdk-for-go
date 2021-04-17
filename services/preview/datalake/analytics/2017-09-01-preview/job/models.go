@@ -140,6 +140,7 @@ func (future *CancelFuture) result(client Client) (ar autorest.Response, err err
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("job.CancelFuture")
 		return
 	}
@@ -2005,6 +2006,7 @@ func (future *UpdateFuture) result(client Client) (i Information, err error) {
 		return
 	}
 	if !done {
+		i.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("job.UpdateFuture")
 		return
 	}
@@ -2160,6 +2162,7 @@ func (future *YieldFuture) result(client Client) (ar autorest.Response, err erro
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("job.YieldFuture")
 		return
 	}

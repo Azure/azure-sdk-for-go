@@ -187,6 +187,7 @@ func (future *ConnectedClusterCreateFuture) result(client ConnectedClusterClient
 		return
 	}
 	if !done {
+		cc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridkubernetes.ConnectedClusterCreateFuture")
 		return
 	}
@@ -229,6 +230,7 @@ func (future *ConnectedClusterDeleteFuture) result(client ConnectedClusterClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridkubernetes.ConnectedClusterDeleteFuture")
 		return
 	}

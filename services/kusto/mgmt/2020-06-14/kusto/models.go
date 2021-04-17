@@ -172,6 +172,7 @@ func (future *AttachedDatabaseConfigurationsCreateOrUpdateFuture) result(client 
 		return
 	}
 	if !done {
+		adc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.AttachedDatabaseConfigurationsCreateOrUpdateFuture")
 		return
 	}
@@ -214,6 +215,7 @@ func (future *AttachedDatabaseConfigurationsDeleteFuture) result(client Attached
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.AttachedDatabaseConfigurationsDeleteFuture")
 		return
 	}
@@ -579,6 +581,7 @@ func (future *ClusterPrincipalAssignmentsCreateOrUpdateFuture) result(client Clu
 		return
 	}
 	if !done {
+		cpa.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.ClusterPrincipalAssignmentsCreateOrUpdateFuture")
 		return
 	}
@@ -621,6 +624,7 @@ func (future *ClusterPrincipalAssignmentsDeleteFuture) result(client ClusterPrin
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.ClusterPrincipalAssignmentsDeleteFuture")
 		return
 	}
@@ -755,6 +759,7 @@ func (future *ClustersAddLanguageExtensionsFuture) result(client ClustersClient)
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.ClustersAddLanguageExtensionsFuture")
 		return
 	}
@@ -791,6 +796,7 @@ func (future *ClustersCreateOrUpdateFuture) result(client ClustersClient) (c Clu
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.ClustersCreateOrUpdateFuture")
 		return
 	}
@@ -833,6 +839,7 @@ func (future *ClustersDeleteFuture) result(client ClustersClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.ClustersDeleteFuture")
 		return
 	}
@@ -869,6 +876,7 @@ func (future *ClustersDetachFollowerDatabasesFuture) result(client ClustersClien
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.ClustersDetachFollowerDatabasesFuture")
 		return
 	}
@@ -905,6 +913,7 @@ func (future *ClustersDiagnoseVirtualNetworkFuture) result(client ClustersClient
 		return
 	}
 	if !done {
+		dvnr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.ClustersDiagnoseVirtualNetworkFuture")
 		return
 	}
@@ -947,6 +956,7 @@ func (future *ClustersRemoveLanguageExtensionsFuture) result(client ClustersClie
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.ClustersRemoveLanguageExtensionsFuture")
 		return
 	}
@@ -983,6 +993,7 @@ func (future *ClustersStartFuture) result(client ClustersClient) (ar autorest.Re
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.ClustersStartFuture")
 		return
 	}
@@ -1018,6 +1029,7 @@ func (future *ClustersStopFuture) result(client ClustersClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.ClustersStopFuture")
 		return
 	}
@@ -1054,6 +1066,7 @@ func (future *ClustersUpdateFuture) result(client ClustersClient) (c Cluster, er
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.ClustersUpdateFuture")
 		return
 	}
@@ -1497,6 +1510,7 @@ func (future *DatabasePrincipalAssignmentsCreateOrUpdateFuture) result(client Da
 		return
 	}
 	if !done {
+		dpa.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.DatabasePrincipalAssignmentsCreateOrUpdateFuture")
 		return
 	}
@@ -1539,6 +1553,7 @@ func (future *DatabasePrincipalAssignmentsDeleteFuture) result(client DatabasePr
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.DatabasePrincipalAssignmentsDeleteFuture")
 		return
 	}
@@ -1624,6 +1639,7 @@ func (future *DatabasesCreateOrUpdateFuture) result(client DatabasesClient) (dm 
 		return
 	}
 	if !done {
+		dm.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.DatabasesCreateOrUpdateFuture")
 		return
 	}
@@ -1666,6 +1682,7 @@ func (future *DatabasesDeleteFuture) result(client DatabasesClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.DatabasesDeleteFuture")
 		return
 	}
@@ -1708,6 +1725,7 @@ func (future *DatabasesUpdateFuture) result(client DatabasesClient) (dm Database
 		return
 	}
 	if !done {
+		dm.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.DatabasesUpdateFuture")
 		return
 	}
@@ -1911,6 +1929,7 @@ func (future *DataConnectionsCreateOrUpdateFuture) result(client DataConnections
 		return
 	}
 	if !done {
+		dcm.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.DataConnectionsCreateOrUpdateFuture")
 		return
 	}
@@ -1953,6 +1972,7 @@ func (future *DataConnectionsDataConnectionValidationMethodFuture) result(client
 		return
 	}
 	if !done {
+		dcvlr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.DataConnectionsDataConnectionValidationMethodFuture")
 		return
 	}
@@ -1995,6 +2015,7 @@ func (future *DataConnectionsDeleteFuture) result(client DataConnectionsClient) 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.DataConnectionsDeleteFuture")
 		return
 	}
@@ -2031,6 +2052,7 @@ func (future *DataConnectionsUpdateFuture) result(client DataConnectionsClient) 
 		return
 	}
 	if !done {
+		dcm.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kusto.DataConnectionsUpdateFuture")
 		return
 	}

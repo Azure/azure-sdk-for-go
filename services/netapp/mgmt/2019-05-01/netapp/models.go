@@ -272,6 +272,7 @@ func (future *AccountsCreateOrUpdateFuture) result(client AccountsClient) (a Acc
 		return
 	}
 	if !done {
+		a.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.AccountsCreateOrUpdateFuture")
 		return
 	}
@@ -314,6 +315,7 @@ func (future *AccountsDeleteFuture) result(client AccountsClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.AccountsDeleteFuture")
 		return
 	}
@@ -912,6 +914,7 @@ func (future *PoolsCreateOrUpdateFuture) result(client PoolsClient) (cp Capacity
 		return
 	}
 	if !done {
+		cp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.PoolsCreateOrUpdateFuture")
 		return
 	}
@@ -953,6 +956,7 @@ func (future *PoolsDeleteFuture) result(client PoolsClient) (ar autorest.Respons
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.PoolsDeleteFuture")
 		return
 	}
@@ -1144,6 +1148,7 @@ func (future *SnapshotsCreateFuture) result(client SnapshotsClient) (s Snapshot,
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.SnapshotsCreateFuture")
 		return
 	}
@@ -1186,6 +1191,7 @@ func (future *SnapshotsDeleteFuture) result(client SnapshotsClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.SnapshotsDeleteFuture")
 		return
 	}
@@ -1515,6 +1521,7 @@ func (future *VolumesCreateOrUpdateFuture) result(client VolumesClient) (vVar Vo
 		return
 	}
 	if !done {
+		vVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.VolumesCreateOrUpdateFuture")
 		return
 	}
@@ -1557,6 +1564,7 @@ func (future *VolumesDeleteFuture) result(client VolumesClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("netapp.VolumesDeleteFuture")
 		return
 	}

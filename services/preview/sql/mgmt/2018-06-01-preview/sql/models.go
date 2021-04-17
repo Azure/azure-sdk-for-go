@@ -474,6 +474,7 @@ func (future *DatabasesFailoverFuture) result(client DatabasesClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DatabasesFailoverFuture")
 		return
 	}
@@ -510,6 +511,7 @@ func (future *ElasticPoolsFailoverFuture) result(client ElasticPoolsClient) (ar 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ElasticPoolsFailoverFuture")
 		return
 	}
@@ -830,6 +832,7 @@ func (future *InstancePoolsCreateOrUpdateFuture) result(client InstancePoolsClie
 		return
 	}
 	if !done {
+		IP.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.InstancePoolsCreateOrUpdateFuture")
 		return
 	}
@@ -872,6 +875,7 @@ func (future *InstancePoolsDeleteFuture) result(client InstancePoolsClient) (ar 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.InstancePoolsDeleteFuture")
 		return
 	}
@@ -908,6 +912,7 @@ func (future *InstancePoolsUpdateFuture) result(client InstancePoolsClient) (IP 
 		return
 	}
 	if !done {
+		IP.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.InstancePoolsUpdateFuture")
 		return
 	}
@@ -965,6 +970,7 @@ func (future *LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.LongTermRetentionManagedInstanceBackupsDeleteByResourceGroupFuture")
 		return
 	}
@@ -1001,6 +1007,7 @@ func (future *LongTermRetentionManagedInstanceBackupsDeleteFuture) result(client
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.LongTermRetentionManagedInstanceBackupsDeleteFuture")
 		return
 	}
@@ -1464,6 +1471,7 @@ func (future *ManagedDatabasesCompleteRestoreFuture) result(client ManagedDataba
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ManagedDatabasesCompleteRestoreFuture")
 		return
 	}
@@ -1500,6 +1508,7 @@ func (future *ManagedDatabasesCreateOrUpdateFuture) result(client ManagedDatabas
 		return
 	}
 	if !done {
+		md.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ManagedDatabasesCreateOrUpdateFuture")
 		return
 	}
@@ -1542,6 +1551,7 @@ func (future *ManagedDatabasesDeleteFuture) result(client ManagedDatabasesClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ManagedDatabasesDeleteFuture")
 		return
 	}
@@ -1578,6 +1588,7 @@ func (future *ManagedDatabasesUpdateFuture) result(client ManagedDatabasesClient
 		return
 	}
 	if !done {
+		md.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ManagedDatabasesUpdateFuture")
 		return
 	}
@@ -2212,6 +2223,7 @@ func (future *ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture) resu
 		return
 	}
 	if !done {
+		miltrp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstanceLongTermRetentionPoliciesCreateOrUpdateFuture")
 		return
 	}
@@ -2883,6 +2895,7 @@ func (future *ManagedInstancesCreateOrUpdateFuture) result(client ManagedInstanc
 		return
 	}
 	if !done {
+		mi.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstancesCreateOrUpdateFuture")
 		return
 	}
@@ -2925,6 +2938,7 @@ func (future *ManagedInstancesDeleteFuture) result(client ManagedInstancesClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstancesDeleteFuture")
 		return
 	}
@@ -2961,6 +2975,7 @@ func (future *ManagedInstancesUpdateFuture) result(client ManagedInstancesClient
 		return
 	}
 	if !done {
+		mi.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstancesUpdateFuture")
 		return
 	}
@@ -3581,6 +3596,7 @@ func (future *PrivateEndpointConnectionsCreateOrUpdateFuture) result(client Priv
 		return
 	}
 	if !done {
+		pec.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.PrivateEndpointConnectionsCreateOrUpdateFuture")
 		return
 	}
@@ -3623,6 +3639,7 @@ func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.PrivateEndpointConnectionsDeleteFuture")
 		return
 	}
@@ -4115,6 +4132,7 @@ func (future *ServerAzureADAdministratorsCreateOrUpdateFuture) result(client Ser
 		return
 	}
 	if !done {
+		saaa.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ServerAzureADAdministratorsCreateOrUpdateFuture")
 		return
 	}
@@ -4157,6 +4175,7 @@ func (future *ServerAzureADAdministratorsDeleteFuture) result(client ServerAzure
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ServerAzureADAdministratorsDeleteFuture")
 		return
 	}

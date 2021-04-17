@@ -53477,6 +53477,7 @@ func (future *IntegrationRuntimesStartFuture) result(client IntegrationRuntimesC
 		return
 	}
 	if !done {
+		irsr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("datafactory.IntegrationRuntimesStartFuture")
 		return
 	}
@@ -53519,6 +53520,7 @@ func (future *IntegrationRuntimesStopFuture) result(client IntegrationRuntimesCl
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("datafactory.IntegrationRuntimesStopFuture")
 		return
 	}
@@ -96186,6 +96188,7 @@ func (future *TriggersStartFuture) result(client TriggersClient) (ar autorest.Re
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("datafactory.TriggersStartFuture")
 		return
 	}
@@ -96221,6 +96224,7 @@ func (future *TriggersStopFuture) result(client TriggersClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("datafactory.TriggersStopFuture")
 		return
 	}

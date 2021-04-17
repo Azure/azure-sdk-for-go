@@ -1130,6 +1130,7 @@ func (future *IotHubResourceCreateOrUpdateFuture) result(client IotHubResourceCl
 		return
 	}
 	if !done {
+		ihd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("devices.IotHubResourceCreateOrUpdateFuture")
 		return
 	}
@@ -1172,6 +1173,7 @@ func (future *IotHubResourceDeleteFuture) result(client IotHubResourceClient) (s
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("devices.IotHubResourceDeleteFuture")
 		return
 	}
@@ -1214,6 +1216,7 @@ func (future *IotHubResourceUpdateFuture) result(client IotHubResourceClient) (i
 		return
 	}
 	if !done {
+		ihd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("devices.IotHubResourceUpdateFuture")
 		return
 	}

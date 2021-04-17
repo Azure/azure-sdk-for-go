@@ -471,6 +471,7 @@ func (future *ClustersCreateOrUpdateFuture) result(client ClustersClient) (c Clu
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("operationalinsights.ClustersCreateOrUpdateFuture")
 		return
 	}
@@ -513,6 +514,7 @@ func (future *ClustersDeleteFuture) result(client ClustersClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("operationalinsights.ClustersDeleteFuture")
 		return
 	}
@@ -1292,6 +1294,7 @@ func (future *LinkedServicesCreateOrUpdateFuture) result(client LinkedServicesCl
 		return
 	}
 	if !done {
+		ls.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("operationalinsights.LinkedServicesCreateOrUpdateFuture")
 		return
 	}
@@ -1334,6 +1337,7 @@ func (future *LinkedServicesDeleteFuture) result(client LinkedServicesClient) (l
 		return
 	}
 	if !done {
+		ls.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("operationalinsights.LinkedServicesDeleteFuture")
 		return
 	}
@@ -2758,6 +2762,7 @@ func (future *WorkspacesCreateOrUpdateFuture) result(client WorkspacesClient) (w
 		return
 	}
 	if !done {
+		w.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("operationalinsights.WorkspacesCreateOrUpdateFuture")
 		return
 	}
@@ -2800,6 +2805,7 @@ func (future *WorkspacesDeleteFuture) result(client WorkspacesClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("operationalinsights.WorkspacesDeleteFuture")
 		return
 	}

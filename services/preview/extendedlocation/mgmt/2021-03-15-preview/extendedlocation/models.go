@@ -604,6 +604,7 @@ func (future *CustomLocationsCreateOrUpdateFuture) result(client CustomLocations
 		return
 	}
 	if !done {
+		cl.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("extendedlocation.CustomLocationsCreateOrUpdateFuture")
 		return
 	}
@@ -646,6 +647,7 @@ func (future *CustomLocationsDeleteFuture) result(client CustomLocationsClient) 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("extendedlocation.CustomLocationsDeleteFuture")
 		return
 	}

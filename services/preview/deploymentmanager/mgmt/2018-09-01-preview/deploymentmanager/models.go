@@ -774,6 +774,7 @@ func (future *RolloutsCreateOrUpdateFuture) result(client RolloutsClient) (rr Ro
 		return
 	}
 	if !done {
+		rr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("deploymentmanager.RolloutsCreateOrUpdateFuture")
 		return
 	}
@@ -1308,6 +1309,7 @@ func (future *ServiceUnitsCreateOrUpdateFuture) result(client ServiceUnitsClient
 		return
 	}
 	if !done {
+		sur.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("deploymentmanager.ServiceUnitsCreateOrUpdateFuture")
 		return
 	}

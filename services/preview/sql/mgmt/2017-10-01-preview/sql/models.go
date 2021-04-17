@@ -50,6 +50,7 @@ func (future *BackupShortTermRetentionPoliciesCreateOrUpdateFuture) result(clien
 		return
 	}
 	if !done {
+		bstrp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.BackupShortTermRetentionPoliciesCreateOrUpdateFuture")
 		return
 	}
@@ -92,6 +93,7 @@ func (future *BackupShortTermRetentionPoliciesUpdateFuture) result(client Backup
 		return
 	}
 	if !done {
+		bstrp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.BackupShortTermRetentionPoliciesUpdateFuture")
 		return
 	}
@@ -1087,6 +1089,7 @@ func (future *DatabasesCreateOrUpdateFuture) result(client DatabasesClient) (d D
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DatabasesCreateOrUpdateFuture")
 		return
 	}
@@ -1129,6 +1132,7 @@ func (future *DatabasesDeleteFuture) result(client DatabasesClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DatabasesDeleteFuture")
 		return
 	}
@@ -1165,6 +1169,7 @@ func (future *DatabasesPauseFuture) result(client DatabasesClient) (d Database, 
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DatabasesPauseFuture")
 		return
 	}
@@ -1207,6 +1212,7 @@ func (future *DatabasesResumeFuture) result(client DatabasesClient) (d Database,
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DatabasesResumeFuture")
 		return
 	}
@@ -1249,6 +1255,7 @@ func (future *DatabasesUpdateFuture) result(client DatabasesClient) (d Database,
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DatabasesUpdateFuture")
 		return
 	}
@@ -1291,6 +1298,7 @@ func (future *DatabasesUpgradeDataWarehouseFuture) result(client DatabasesClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DatabasesUpgradeDataWarehouseFuture")
 		return
 	}
@@ -1805,6 +1813,7 @@ func (future *DatabaseVulnerabilityAssessmentScansInitiateScanFuture) result(cli
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.DatabaseVulnerabilityAssessmentScansInitiateScanFuture")
 		return
 	}
@@ -2562,6 +2571,7 @@ func (future *ElasticPoolsCreateOrUpdateFuture) result(client ElasticPoolsClient
 		return
 	}
 	if !done {
+		ep.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ElasticPoolsCreateOrUpdateFuture")
 		return
 	}
@@ -2604,6 +2614,7 @@ func (future *ElasticPoolsDeleteFuture) result(client ElasticPoolsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ElasticPoolsDeleteFuture")
 		return
 	}
@@ -2640,6 +2651,7 @@ func (future *ElasticPoolsUpdateFuture) result(client ElasticPoolsClient) (ep El
 		return
 	}
 	if !done {
+		ep.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ElasticPoolsUpdateFuture")
 		return
 	}
@@ -3041,6 +3053,7 @@ func (future *InstanceFailoverGroupsCreateOrUpdateFuture) result(client Instance
 		return
 	}
 	if !done {
+		ifg.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.InstanceFailoverGroupsCreateOrUpdateFuture")
 		return
 	}
@@ -3083,6 +3096,7 @@ func (future *InstanceFailoverGroupsDeleteFuture) result(client InstanceFailover
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.InstanceFailoverGroupsDeleteFuture")
 		return
 	}
@@ -3119,6 +3133,7 @@ func (future *InstanceFailoverGroupsFailoverFuture) result(client InstanceFailov
 		return
 	}
 	if !done {
+		ifg.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.InstanceFailoverGroupsFailoverFuture")
 		return
 	}
@@ -3161,6 +3176,7 @@ func (future *InstanceFailoverGroupsForceFailoverAllowDataLossFuture) result(cli
 		return
 	}
 	if !done {
+		ifg.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.InstanceFailoverGroupsForceFailoverAllowDataLossFuture")
 		return
 	}
@@ -3254,6 +3270,7 @@ func (future *ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture) res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ManagedDatabaseVulnerabilityAssessmentScansInitiateScanFuture")
 		return
 	}
@@ -3580,6 +3597,7 @@ func (future *ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture) result(cl
 		return
 	}
 	if !done {
+		miep.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstanceEncryptionProtectorsCreateOrUpdateFuture")
 		return
 	}
@@ -3622,6 +3640,7 @@ func (future *ManagedInstanceEncryptionProtectorsRevalidateFuture) result(client
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstanceEncryptionProtectorsRevalidateFuture")
 		return
 	}
@@ -3954,6 +3973,7 @@ func (future *ManagedInstanceKeysCreateOrUpdateFuture) result(client ManagedInst
 		return
 	}
 	if !done {
+		mik.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstanceKeysCreateOrUpdateFuture")
 		return
 	}
@@ -3996,6 +4016,7 @@ func (future *ManagedInstanceKeysDeleteFuture) result(client ManagedInstanceKeys
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstanceKeysDeleteFuture")
 		return
 	}
@@ -4040,6 +4061,7 @@ func (future *ManagedInstanceTdeCertificatesCreateFuture) result(client ManagedI
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.ManagedInstanceTdeCertificatesCreateFuture")
 		return
 	}
@@ -4589,6 +4611,7 @@ func (future *TdeCertificatesCreateFuture) result(client TdeCertificatesClient) 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("sql.TdeCertificatesCreateFuture")
 		return
 	}

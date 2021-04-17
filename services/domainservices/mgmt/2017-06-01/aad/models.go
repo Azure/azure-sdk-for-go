@@ -488,6 +488,7 @@ func (future *DomainServicesCreateOrUpdateFuture) result(client DomainServicesCl
 		return
 	}
 	if !done {
+		ds.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("aad.DomainServicesCreateOrUpdateFuture")
 		return
 	}
@@ -530,6 +531,7 @@ func (future *DomainServicesDeleteFuture) result(client DomainServicesClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("aad.DomainServicesDeleteFuture")
 		return
 	}
@@ -566,6 +568,7 @@ func (future *DomainServicesUpdateFuture) result(client DomainServicesClient) (d
 		return
 	}
 	if !done {
+		ds.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("aad.DomainServicesUpdateFuture")
 		return
 	}
@@ -1003,6 +1006,7 @@ func (future *OuContainerCreateFuture) result(client OuContainerClient) (oc OuCo
 		return
 	}
 	if !done {
+		oc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("aad.OuContainerCreateFuture")
 		return
 	}
@@ -1045,6 +1049,7 @@ func (future *OuContainerDeleteFuture) result(client OuContainerClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("aad.OuContainerDeleteFuture")
 		return
 	}
@@ -1278,6 +1283,7 @@ func (future *OuContainerUpdateFuture) result(client OuContainerClient) (oc OuCo
 		return
 	}
 	if !done {
+		oc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("aad.OuContainerUpdateFuture")
 		return
 	}

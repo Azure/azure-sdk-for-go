@@ -1804,6 +1804,7 @@ func (future *NamespacesCreateOrUpdateFuture) result(client NamespacesClient) (e
 		return
 	}
 	if !done {
+		en.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("eventhub.NamespacesCreateOrUpdateFuture")
 		return
 	}
@@ -1846,6 +1847,7 @@ func (future *NamespacesDeleteFuture) result(client NamespacesClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("eventhub.NamespacesDeleteFuture")
 		return
 	}

@@ -458,6 +458,7 @@ func (future *CreateFuture) result(client Client) (c Cluster, err error) {
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("redisenterprise.CreateFuture")
 		return
 	}
@@ -781,6 +782,7 @@ func (future *DatabasesCreateFuture) result(client DatabasesClient) (d Database,
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabasesCreateFuture")
 		return
 	}
@@ -823,6 +825,7 @@ func (future *DatabasesDeleteFuture) result(client DatabasesClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabasesDeleteFuture")
 		return
 	}
@@ -859,6 +862,7 @@ func (future *DatabasesExportFuture) result(client DatabasesClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabasesExportFuture")
 		return
 	}
@@ -895,6 +899,7 @@ func (future *DatabasesImportFuture) result(client DatabasesClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabasesImportFuture")
 		return
 	}
@@ -931,6 +936,7 @@ func (future *DatabasesRegenerateKeyFuture) result(client DatabasesClient) (ak A
 		return
 	}
 	if !done {
+		ak.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabasesRegenerateKeyFuture")
 		return
 	}
@@ -973,6 +979,7 @@ func (future *DatabasesUpdateFuture) result(client DatabasesClient) (d Database,
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("redisenterprise.DatabasesUpdateFuture")
 		return
 	}
@@ -1053,6 +1060,7 @@ func (future *DeleteFuture) result(client Client) (ar autorest.Response, err err
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("redisenterprise.DeleteFuture")
 		return
 	}
@@ -1461,6 +1469,7 @@ func (future *PrivateEndpointConnectionsPutFuture) result(client PrivateEndpoint
 		return
 	}
 	if !done {
+		pec.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("redisenterprise.PrivateEndpointConnectionsPutFuture")
 		return
 	}
@@ -1673,6 +1682,7 @@ func (future *UpdateFuture) result(client Client) (c Cluster, err error) {
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("redisenterprise.UpdateFuture")
 		return
 	}

@@ -1168,6 +1168,7 @@ func (future *DedicatedCloudNodesCreateOrUpdateFuture) result(client DedicatedCl
 		return
 	}
 	if !done {
+		dcn.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.DedicatedCloudNodesCreateOrUpdateFuture")
 		return
 	}
@@ -1492,6 +1493,7 @@ func (future *DedicatedCloudServicesDeleteFuture) result(client DedicatedCloudSe
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.DedicatedCloudServicesDeleteFuture")
 		return
 	}
@@ -2962,6 +2964,7 @@ func (future *VirtualMachinesCreateOrUpdateFuture) result(client VirtualMachines
 		return
 	}
 	if !done {
+		VM.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesCreateOrUpdateFuture")
 		return
 	}
@@ -3004,6 +3007,7 @@ func (future *VirtualMachinesDeleteFuture) result(client VirtualMachinesClient) 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesDeleteFuture")
 		return
 	}
@@ -3040,6 +3044,7 @@ func (future *VirtualMachinesStartFuture) result(client VirtualMachinesClient) (
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesStartFuture")
 		return
 	}
@@ -3076,6 +3081,7 @@ func (future *VirtualMachinesStopFuture) result(client VirtualMachinesClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesStopFuture")
 		return
 	}
@@ -3118,6 +3124,7 @@ func (future *VirtualMachinesUpdateFuture) result(client VirtualMachinesClient) 
 		return
 	}
 	if !done {
+		VM.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("vmwarecloudsimple.VirtualMachinesUpdateFuture")
 		return
 	}

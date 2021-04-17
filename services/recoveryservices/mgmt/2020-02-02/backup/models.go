@@ -14568,6 +14568,7 @@ func (future *PrivateEndpointConnectionDeleteFuture) result(client PrivateEndpoi
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("backup.PrivateEndpointConnectionDeleteFuture")
 		return
 	}
@@ -14604,6 +14605,7 @@ func (future *PrivateEndpointConnectionPutFuture) result(client PrivateEndpointC
 		return
 	}
 	if !done {
+		pecr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("backup.PrivateEndpointConnectionPutFuture")
 		return
 	}

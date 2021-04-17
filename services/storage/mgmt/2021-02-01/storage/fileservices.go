@@ -87,8 +87,8 @@ func (client FileServicesClient) GetServiceProperties(ctx context.Context, resou
 // GetServicePropertiesPreparer prepares the GetServiceProperties request.
 func (client FileServicesClient) GetServicePropertiesPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"FileServicesName":  autorest.Encode("path", "default"),
 		"accountName":       autorest.Encode("path", accountName),
+		"FileServicesName":  autorest.Encode("path", "default"),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -282,8 +282,8 @@ func (client FileServicesClient) SetServiceProperties(ctx context.Context, resou
 // SetServicePropertiesPreparer prepares the SetServiceProperties request.
 func (client FileServicesClient) SetServicePropertiesPreparer(ctx context.Context, resourceGroupName string, accountName string, parameters FileServiceProperties) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"FileServicesName":  autorest.Encode("path", "default"),
 		"accountName":       autorest.Encode("path", accountName),
+		"FileServicesName":  autorest.Encode("path", "default"),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}

@@ -696,6 +696,129 @@ type AccountSasParameters struct {
 	KeyToSign *string `json:"keyToSign,omitempty"`
 }
 
+// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AccountsCreateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AccountsClient) (Account, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *AccountsCreateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for AccountsCreateFuture.Result.
+func (future *AccountsCreateFuture) result(client AccountsClient) (a Account, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.AccountsCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		a.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("storage.AccountsCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
+		a, err = client.CreateResponder(a.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storage.AccountsCreateFuture", "Result", a.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// AccountsFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type AccountsFailoverFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AccountsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *AccountsFailoverFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for AccountsFailoverFuture.Result.
+func (future *AccountsFailoverFuture) result(client AccountsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.AccountsFailoverFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("storage.AccountsFailoverFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// AccountsRestoreBlobRangesFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type AccountsRestoreBlobRangesFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(AccountsClient) (BlobRestoreStatus, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *AccountsRestoreBlobRangesFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for AccountsRestoreBlobRangesFuture.Result.
+func (future *AccountsRestoreBlobRangesFuture) result(client AccountsClient) (brs BlobRestoreStatus, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storage.AccountsRestoreBlobRangesFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		brs.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("storage.AccountsRestoreBlobRangesFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if brs.Response.Response, err = future.GetResult(sender); err == nil && brs.Response.Response.StatusCode != http.StatusNoContent {
+		brs, err = client.RestoreBlobRangesResponder(brs.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "storage.AccountsRestoreBlobRangesFuture", "Result", brs.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // AccountUpdateParameters the parameters that can be provided when updating the storage account
 // properties.
 type AccountUpdateParameters struct {
@@ -790,126 +913,6 @@ func (aup *AccountUpdateParameters) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// AccountsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type AccountsCreateFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(AccountsClient) (Account, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *AccountsCreateFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for AccountsCreateFuture.Result.
-func (future *AccountsCreateFuture) result(client AccountsClient) (a Account, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.AccountsCreateFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storage.AccountsCreateFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
-		a, err = client.CreateResponder(a.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storage.AccountsCreateFuture", "Result", a.Response.Response, "Failure responding to request")
-		}
-	}
-	return
-}
-
-// AccountsFailoverFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type AccountsFailoverFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(AccountsClient) (autorest.Response, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *AccountsFailoverFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for AccountsFailoverFuture.Result.
-func (future *AccountsFailoverFuture) result(client AccountsClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.AccountsFailoverFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storage.AccountsFailoverFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
-// AccountsRestoreBlobRangesFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type AccountsRestoreBlobRangesFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(AccountsClient) (BlobRestoreStatus, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *AccountsRestoreBlobRangesFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for AccountsRestoreBlobRangesFuture.Result.
-func (future *AccountsRestoreBlobRangesFuture) result(client AccountsClient) (brs BlobRestoreStatus, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.AccountsRestoreBlobRangesFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		err = azure.NewAsyncOpIncompleteError("storage.AccountsRestoreBlobRangesFuture")
-		return
-	}
-	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-	if brs.Response.Response, err = future.GetResult(sender); err == nil && brs.Response.Response.StatusCode != http.StatusNoContent {
-		brs, err = client.RestoreBlobRangesResponder(brs.Response.Response)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "storage.AccountsRestoreBlobRangesFuture", "Result", brs.Response.Response, "Failure responding to request")
-		}
-	}
-	return
 }
 
 // ActiveDirectoryProperties settings properties for Active Directory (AD).
@@ -1453,14 +1456,6 @@ type DateAfterModification struct {
 	DaysAfterLastAccessTimeGreaterThan *float64 `json:"daysAfterLastAccessTimeGreaterThan,omitempty"`
 }
 
-// DeleteRetentionPolicy the service properties for soft delete.
-type DeleteRetentionPolicy struct {
-	// Enabled - Indicates whether DeleteRetentionPolicy is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
-	// Days - Indicates the number of days that the deleted item should be retained. The minimum specified value can be 1 and the maximum value can be 365.
-	Days *int32 `json:"days,omitempty"`
-}
-
 // DeletedAccount deleted storage account
 type DeletedAccount struct {
 	autorest.Response `json:"-"`
@@ -1713,6 +1708,14 @@ type DeletedShare struct {
 	DeletedShareName *string `json:"deletedShareName,omitempty"`
 	// DeletedShareVersion - Required. Identify the version of the deleted share that will be restored.
 	DeletedShareVersion *string `json:"deletedShareVersion,omitempty"`
+}
+
+// DeleteRetentionPolicy the service properties for soft delete.
+type DeleteRetentionPolicy struct {
+	// Enabled - Indicates whether DeleteRetentionPolicy is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Days - Indicates the number of days that the deleted item should be retained. The minimum specified value can be 1 and the maximum value can be 365.
+	Days *int32 `json:"days,omitempty"`
 }
 
 // Dimension dimension of blobs, possibly be blob type or access tier.
@@ -2611,14 +2614,6 @@ type GeoReplicationStats struct {
 	CanFailover *bool `json:"canFailover,omitempty"`
 }
 
-// IPRule IP rule with specific IP or IP range in CIDR format.
-type IPRule struct {
-	// IPAddressOrRange - Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
-	IPAddressOrRange *string `json:"value,omitempty"`
-	// Action - The action of IP ACL rule. Possible values include: 'Allow'
-	Action Action `json:"action,omitempty"`
-}
-
 // Identity identity for the resource.
 type Identity struct {
 	// PrincipalID - READ-ONLY; The principal ID of resource identity.
@@ -2809,6 +2804,14 @@ func (ipp ImmutabilityPolicyProperty) MarshalJSON() ([]byte, error) {
 		objectMap["allowProtectedAppendWrites"] = ipp.AllowProtectedAppendWrites
 	}
 	return json.Marshal(objectMap)
+}
+
+// IPRule IP rule with specific IP or IP range in CIDR format.
+type IPRule struct {
+	// IPAddressOrRange - Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
+	IPAddressOrRange *string `json:"value,omitempty"`
+	// Action - The action of IP ACL rule. Possible values include: 'Allow'
+	Action Action `json:"action,omitempty"`
 }
 
 // KeyCreationTime storage account keys creation time.
@@ -4521,15 +4524,6 @@ type RoutingPreference struct {
 	PublishInternetEndpoints *bool `json:"publishInternetEndpoints,omitempty"`
 }
 
-// SKUCapability the capability information in the specified SKU, including file encryption, network ACLs,
-// change notification, etc.
-type SKUCapability struct {
-	// Name - READ-ONLY; The name of capability, The capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
-	Name *string `json:"name,omitempty"`
-	// Value - READ-ONLY; A string value to indicate states of given capability. Possibly 'true' or 'false'.
-	Value *string `json:"value,omitempty"`
-}
-
 // SasPolicy sasPolicy assigned to the storage account.
 type SasPolicy struct {
 	// SasExpirationPeriod - The SAS expiration period, DD.HH:MM:SS.
@@ -4590,6 +4584,15 @@ type Sku struct {
 	Name SkuName `json:"name,omitempty"`
 	// Tier - Possible values include: 'Standard', 'Premium'
 	Tier SkuTier `json:"tier,omitempty"`
+}
+
+// SKUCapability the capability information in the specified SKU, including file encryption, network ACLs,
+// change notification, etc.
+type SKUCapability struct {
+	// Name - READ-ONLY; The name of capability, The capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
+	Name *string `json:"name,omitempty"`
+	// Value - READ-ONLY; A string value to indicate states of given capability. Possibly 'true' or 'false'.
+	Value *string `json:"value,omitempty"`
 }
 
 // SkuInformation storage SKU and its properties

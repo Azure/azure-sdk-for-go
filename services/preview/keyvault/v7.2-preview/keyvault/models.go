@@ -2047,6 +2047,7 @@ func (future *FullBackupFuture) result(client BaseClient) (fbo FullBackupOperati
 		return
 	}
 	if !done {
+		fbo.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("keyvault.FullBackupFuture")
 		return
 	}
@@ -2108,6 +2109,7 @@ func (future *FullRestoreOperationFuture) result(client BaseClient) (ro RestoreO
 		return
 	}
 	if !done {
+		ro.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("keyvault.FullRestoreOperationFuture")
 		return
 	}
@@ -2150,6 +2152,7 @@ func (future *HSMSecurityDomainUploadFuture) result(client HSMSecurityDomainClie
 		return
 	}
 	if !done {
+		sdos.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("keyvault.HSMSecurityDomainUploadFuture")
 		return
 	}
@@ -4013,6 +4016,7 @@ func (future *SelectiveKeyRestoreOperationMethodFuture) result(client BaseClient
 		return
 	}
 	if !done {
+		skro.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("keyvault.SelectiveKeyRestoreOperationMethodFuture")
 		return
 	}

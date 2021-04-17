@@ -359,6 +359,7 @@ func (future *EndpointsPurgeContentFuture) result(client EndpointsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.EndpointsPurgeContentFuture")
 		return
 	}
@@ -578,6 +579,7 @@ func (future *FrontDoorsCreateOrUpdateFutureType) result(client FrontDoorsClient
 		return
 	}
 	if !done {
+		fd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.FrontDoorsCreateOrUpdateFutureType")
 		return
 	}
@@ -620,6 +622,7 @@ func (future *FrontDoorsDeleteFutureType) result(client FrontDoorsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.FrontDoorsDeleteFutureType")
 		return
 	}
@@ -783,6 +786,7 @@ func (future *FrontendEndpointsDisableHTTPSFuture) result(client FrontendEndpoin
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.FrontendEndpointsDisableHTTPSFuture")
 		return
 	}
@@ -819,6 +823,7 @@ func (future *FrontendEndpointsEnableHTTPSFuture) result(client FrontendEndpoint
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.FrontendEndpointsEnableHTTPSFuture")
 		return
 	}
@@ -1845,6 +1850,7 @@ func (future *PoliciesCreateOrUpdateFuture) result(client PoliciesClient) (wafp 
 		return
 	}
 	if !done {
+		wafp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.PoliciesCreateOrUpdateFuture")
 		return
 	}
@@ -1887,6 +1893,7 @@ func (future *PoliciesDeleteFuture) result(client PoliciesClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.PoliciesDeleteFuture")
 		return
 	}

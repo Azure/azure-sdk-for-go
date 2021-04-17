@@ -239,6 +239,7 @@ func (future *WorkspaceCollectionsDeleteFuture) result(client WorkspaceCollectio
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("powerbiembedded.WorkspaceCollectionsDeleteFuture")
 		return
 	}

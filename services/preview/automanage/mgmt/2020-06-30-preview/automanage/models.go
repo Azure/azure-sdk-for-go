@@ -209,6 +209,7 @@ func (future *ConfigurationProfileAssignmentsCreateOrUpdateFuture) result(client
 		return
 	}
 	if !done {
+		cpa.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("automanage.ConfigurationProfileAssignmentsCreateOrUpdateFuture")
 		return
 	}

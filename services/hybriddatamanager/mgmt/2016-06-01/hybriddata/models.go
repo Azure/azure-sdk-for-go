@@ -310,6 +310,7 @@ func (future *DataManagersCreateFuture) result(client DataManagersClient) (dm Da
 		return
 	}
 	if !done {
+		dm.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybriddata.DataManagersCreateFuture")
 		return
 	}
@@ -352,6 +353,7 @@ func (future *DataManagersDeleteFuture) result(client DataManagersClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybriddata.DataManagersDeleteFuture")
 		return
 	}
@@ -388,6 +390,7 @@ func (future *DataManagersUpdateFuture) result(client DataManagersClient) (dm Da
 		return
 	}
 	if !done {
+		dm.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybriddata.DataManagersUpdateFuture")
 		return
 	}
@@ -945,6 +948,7 @@ func (future *DataStoresCreateOrUpdateFuture) result(client DataStoresClient) (d
 		return
 	}
 	if !done {
+		ds.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybriddata.DataStoresCreateOrUpdateFuture")
 		return
 	}
@@ -987,6 +991,7 @@ func (future *DataStoresDeleteFuture) result(client DataStoresClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybriddata.DataStoresDeleteFuture")
 		return
 	}
@@ -1690,6 +1695,7 @@ func (future *JobDefinitionsCreateOrUpdateFuture) result(client JobDefinitionsCl
 		return
 	}
 	if !done {
+		jd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybriddata.JobDefinitionsCreateOrUpdateFuture")
 		return
 	}
@@ -1732,6 +1738,7 @@ func (future *JobDefinitionsDeleteFuture) result(client JobDefinitionsClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybriddata.JobDefinitionsDeleteFuture")
 		return
 	}
@@ -1768,6 +1775,7 @@ func (future *JobDefinitionsRunFuture) result(client JobDefinitionsClient) (ar a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybriddata.JobDefinitionsRunFuture")
 		return
 	}
@@ -2002,6 +2010,7 @@ func (future *JobsCancelFuture) result(client JobsClient) (ar autorest.Response,
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybriddata.JobsCancelFuture")
 		return
 	}
@@ -2037,6 +2046,7 @@ func (future *JobsResumeFuture) result(client JobsClient) (ar autorest.Response,
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybriddata.JobsResumeFuture")
 		return
 	}

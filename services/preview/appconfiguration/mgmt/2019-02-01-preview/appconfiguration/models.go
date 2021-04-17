@@ -504,6 +504,7 @@ func (future *ConfigurationStoresCreateFuture) result(client ConfigurationStores
 		return
 	}
 	if !done {
+		cs.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appconfiguration.ConfigurationStoresCreateFuture")
 		return
 	}
@@ -546,6 +547,7 @@ func (future *ConfigurationStoresDeleteFuture) result(client ConfigurationStores
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appconfiguration.ConfigurationStoresDeleteFuture")
 		return
 	}
@@ -582,6 +584,7 @@ func (future *ConfigurationStoresUpdateFuture) result(client ConfigurationStores
 		return
 	}
 	if !done {
+		cs.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appconfiguration.ConfigurationStoresUpdateFuture")
 		return
 	}

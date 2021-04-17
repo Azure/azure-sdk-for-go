@@ -327,6 +327,7 @@ func (future *AccountsUpdateFuture) result(client AccountsClient) (a Account, er
 		return
 	}
 	if !done {
+		a.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.AccountsUpdateFuture")
 		return
 	}
@@ -2214,6 +2215,7 @@ func (future *InvoicesDownloadBillingSubscriptionInvoiceFuture) result(client In
 		return
 	}
 	if !done {
+		du.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.InvoicesDownloadBillingSubscriptionInvoiceFuture")
 		return
 	}
@@ -2256,6 +2258,7 @@ func (future *InvoicesDownloadInvoiceFuture) result(client InvoicesClient) (du D
 		return
 	}
 	if !done {
+		du.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.InvoicesDownloadInvoiceFuture")
 		return
 	}
@@ -2298,6 +2301,7 @@ func (future *InvoicesDownloadMultipleBillingProfileInvoicesFuture) result(clien
 		return
 	}
 	if !done {
+		du.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.InvoicesDownloadMultipleBillingProfileInvoicesFuture")
 		return
 	}
@@ -2340,6 +2344,7 @@ func (future *InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture) result(
 		return
 	}
 	if !done {
+		du.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.InvoicesDownloadMultipleBillingSubscriptionInvoicesFuture")
 		return
 	}
@@ -2817,6 +2822,7 @@ func (future *InvoiceSectionsCreateOrUpdateFuture) result(client InvoiceSections
 		return
 	}
 	if !done {
+		is.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.InvoiceSectionsCreateOrUpdateFuture")
 		return
 	}
@@ -4223,6 +4229,7 @@ func (future *ProfilesCreateOrUpdateFuture) result(client ProfilesClient) (p Pro
 		return
 	}
 	if !done {
+		p.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.ProfilesCreateOrUpdateFuture")
 		return
 	}
@@ -5245,6 +5252,7 @@ func (future *SubscriptionsMoveFuture) result(client SubscriptionsClient) (s Sub
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("billing.SubscriptionsMoveFuture")
 		return
 	}

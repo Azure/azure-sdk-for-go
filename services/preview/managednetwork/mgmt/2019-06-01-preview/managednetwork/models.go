@@ -360,6 +360,7 @@ func (future *GroupsCreateOrUpdateFuture) result(client GroupsClient) (g Group, 
 		return
 	}
 	if !done {
+		g.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managednetwork.GroupsCreateOrUpdateFuture")
 		return
 	}
@@ -401,6 +402,7 @@ func (future *GroupsDeleteFuture) result(client GroupsClient) (ar autorest.Respo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managednetwork.GroupsDeleteFuture")
 		return
 	}
@@ -732,6 +734,7 @@ func (future *ManagedNetworksDeleteFutureType) result(client ManagedNetworksClie
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managednetwork.ManagedNetworksDeleteFutureType")
 		return
 	}
@@ -768,6 +771,7 @@ func (future *ManagedNetworksUpdateFutureType) result(client ManagedNetworksClie
 		return
 	}
 	if !done {
+		mn.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managednetwork.ManagedNetworksUpdateFutureType")
 		return
 	}
@@ -1022,6 +1026,7 @@ func (future *PeeringPoliciesCreateOrUpdateFuture) result(client PeeringPolicies
 		return
 	}
 	if !done {
+		pp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managednetwork.PeeringPoliciesCreateOrUpdateFuture")
 		return
 	}
@@ -1064,6 +1069,7 @@ func (future *PeeringPoliciesDeleteFuture) result(client PeeringPoliciesClient) 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managednetwork.PeeringPoliciesDeleteFuture")
 		return
 	}

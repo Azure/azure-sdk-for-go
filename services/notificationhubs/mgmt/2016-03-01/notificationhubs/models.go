@@ -1078,6 +1078,7 @@ func (future *NamespacesDeleteFuture) result(client NamespacesClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("notificationhubs.NamespacesDeleteFuture")
 		return
 	}

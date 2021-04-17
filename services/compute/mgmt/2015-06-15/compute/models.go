@@ -1481,6 +1481,7 @@ func (future *VirtualMachineExtensionsCreateOrUpdateFuture) result(client Virtua
 		return
 	}
 	if !done {
+		vme.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineExtensionsCreateOrUpdateFuture")
 		return
 	}
@@ -1523,6 +1524,7 @@ func (future *VirtualMachineExtensionsDeleteFuture) result(client VirtualMachine
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineExtensionsDeleteFuture")
 		return
 	}
@@ -1565,6 +1567,7 @@ func (future *VirtualMachineExtensionsUpdateFuture) result(client VirtualMachine
 		return
 	}
 	if !done {
+		vme.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineExtensionsUpdateFuture")
 		return
 	}
@@ -2988,6 +2991,7 @@ func (future *VirtualMachineScaleSetsCreateOrUpdateFuture) result(client Virtual
 		return
 	}
 	if !done {
+		vmss.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsCreateOrUpdateFuture")
 		return
 	}
@@ -3030,6 +3034,7 @@ func (future *VirtualMachineScaleSetsDeallocateFuture) result(client VirtualMach
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsDeallocateFuture")
 		return
 	}
@@ -3072,6 +3077,7 @@ func (future *VirtualMachineScaleSetsDeleteFuture) result(client VirtualMachineS
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsDeleteFuture")
 		return
 	}
@@ -3114,6 +3120,7 @@ func (future *VirtualMachineScaleSetsDeleteInstancesFuture) result(client Virtua
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsDeleteInstancesFuture")
 		return
 	}
@@ -3178,6 +3185,7 @@ func (future *VirtualMachineScaleSetsPowerOffFuture) result(client VirtualMachin
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsPowerOffFuture")
 		return
 	}
@@ -3220,6 +3228,7 @@ func (future *VirtualMachineScaleSetsReimageFuture) result(client VirtualMachine
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsReimageFuture")
 		return
 	}
@@ -3262,6 +3271,7 @@ func (future *VirtualMachineScaleSetsRestartFuture) result(client VirtualMachine
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsRestartFuture")
 		return
 	}
@@ -3304,6 +3314,7 @@ func (future *VirtualMachineScaleSetsStartFuture) result(client VirtualMachineSc
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsStartFuture")
 		return
 	}
@@ -3354,6 +3365,7 @@ func (future *VirtualMachineScaleSetsUpdateInstancesFuture) result(client Virtua
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetsUpdateInstancesFuture")
 		return
 	}
@@ -3814,6 +3826,7 @@ func (future *VirtualMachineScaleSetVMsDeallocateFuture) result(client VirtualMa
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsDeallocateFuture")
 		return
 	}
@@ -3856,6 +3869,7 @@ func (future *VirtualMachineScaleSetVMsDeleteFuture) result(client VirtualMachin
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsDeleteFuture")
 		return
 	}
@@ -3898,6 +3912,7 @@ func (future *VirtualMachineScaleSetVMsPowerOffFuture) result(client VirtualMach
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsPowerOffFuture")
 		return
 	}
@@ -3940,6 +3955,7 @@ func (future *VirtualMachineScaleSetVMsReimageFuture) result(client VirtualMachi
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsReimageFuture")
 		return
 	}
@@ -3982,6 +3998,7 @@ func (future *VirtualMachineScaleSetVMsRestartFuture) result(client VirtualMachi
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsRestartFuture")
 		return
 	}
@@ -4024,6 +4041,7 @@ func (future *VirtualMachineScaleSetVMsStartFuture) result(client VirtualMachine
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachineScaleSetVMsStartFuture")
 		return
 	}
@@ -4066,6 +4084,7 @@ func (future *VirtualMachinesCaptureFuture) result(client VirtualMachinesClient)
 		return
 	}
 	if !done {
+		vmcr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesCaptureFuture")
 		return
 	}
@@ -4108,6 +4127,7 @@ func (future *VirtualMachinesCreateOrUpdateFuture) result(client VirtualMachines
 		return
 	}
 	if !done {
+		VM.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesCreateOrUpdateFuture")
 		return
 	}
@@ -4150,6 +4170,7 @@ func (future *VirtualMachinesDeallocateFuture) result(client VirtualMachinesClie
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesDeallocateFuture")
 		return
 	}
@@ -4192,6 +4213,7 @@ func (future *VirtualMachinesDeleteFuture) result(client VirtualMachinesClient) 
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesDeleteFuture")
 		return
 	}
@@ -4257,6 +4279,7 @@ func (future *VirtualMachinesPowerOffFuture) result(client VirtualMachinesClient
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesPowerOffFuture")
 		return
 	}
@@ -4299,6 +4322,7 @@ func (future *VirtualMachinesRedeployFuture) result(client VirtualMachinesClient
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesRedeployFuture")
 		return
 	}
@@ -4341,6 +4365,7 @@ func (future *VirtualMachinesRestartFuture) result(client VirtualMachinesClient)
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesRestartFuture")
 		return
 	}
@@ -4383,6 +4408,7 @@ func (future *VirtualMachinesStartFuture) result(client VirtualMachinesClient) (
 		return
 	}
 	if !done {
+		osr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.VirtualMachinesStartFuture")
 		return
 	}

@@ -206,6 +206,7 @@ func (future *ContainerServicesCreateOrUpdateFutureType) result(client Container
 		return
 	}
 	if !done {
+		cs.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.ContainerServicesCreateOrUpdateFutureType")
 		return
 	}
@@ -248,6 +249,7 @@ func (future *ContainerServicesDeleteFutureType) result(client ContainerServices
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.ContainerServicesDeleteFutureType")
 		return
 	}

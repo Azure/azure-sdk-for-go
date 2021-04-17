@@ -510,6 +510,7 @@ func (future *OrganizationCreateFuture) result(client OrganizationClient) (or Or
 		return
 	}
 	if !done {
+		or.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("confluent.OrganizationCreateFuture")
 		return
 	}
@@ -552,6 +553,7 @@ func (future *OrganizationDeleteFuture) result(client OrganizationClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("confluent.OrganizationDeleteFuture")
 		return
 	}

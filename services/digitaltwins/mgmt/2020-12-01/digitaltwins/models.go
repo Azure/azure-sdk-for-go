@@ -119,6 +119,7 @@ func (future *CreateOrUpdateFuture) result(client Client) (d Description, err er
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("digitaltwins.CreateOrUpdateFuture")
 		return
 	}
@@ -160,6 +161,7 @@ func (future *DeleteFuture) result(client Client) (d Description, err error) {
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("digitaltwins.DeleteFuture")
 		return
 	}
@@ -476,6 +478,7 @@ func (future *EndpointCreateOrUpdateFuture) result(client EndpointClient) (er En
 		return
 	}
 	if !done {
+		er.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("digitaltwins.EndpointCreateOrUpdateFuture")
 		return
 	}
@@ -518,6 +521,7 @@ func (future *EndpointDeleteFuture) result(client EndpointClient) (er EndpointRe
 		return
 	}
 	if !done {
+		er.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("digitaltwins.EndpointDeleteFuture")
 		return
 	}
@@ -1438,6 +1442,7 @@ func (future *PrivateEndpointConnectionsCreateOrUpdateFuture) result(client Priv
 		return
 	}
 	if !done {
+		pec.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("digitaltwins.PrivateEndpointConnectionsCreateOrUpdateFuture")
 		return
 	}
@@ -1480,6 +1485,7 @@ func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("digitaltwins.PrivateEndpointConnectionsDeleteFuture")
 		return
 	}
@@ -1660,6 +1666,7 @@ func (future *UpdateFuture) result(client Client) (d Description, err error) {
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("digitaltwins.UpdateFuture")
 		return
 	}

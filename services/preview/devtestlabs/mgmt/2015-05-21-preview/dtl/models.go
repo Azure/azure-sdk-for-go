@@ -587,6 +587,7 @@ func (future *CostInsightRefreshDataFuture) result(client CostInsightClient) (ar
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.CostInsightRefreshDataFuture")
 		return
 	}
@@ -641,6 +642,7 @@ func (future *CostRefreshDataFuture) result(client CostClient) (ar autorest.Resp
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.CostRefreshDataFuture")
 		return
 	}
@@ -787,6 +789,7 @@ func (future *CustomImageCreateOrUpdateResourceFuture) result(client CustomImage
 		return
 	}
 	if !done {
+		ci.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.CustomImageCreateOrUpdateResourceFuture")
 		return
 	}
@@ -829,6 +832,7 @@ func (future *CustomImageDeleteResourceFuture) result(client CustomImageClient) 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.CustomImageDeleteResourceFuture")
 		return
 	}
@@ -1040,6 +1044,7 @@ func (future *FormulaCreateOrUpdateResourceFuture) result(client FormulaClient) 
 		return
 	}
 	if !done {
+		f.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.FormulaCreateOrUpdateResourceFuture")
 		return
 	}
@@ -1384,6 +1389,7 @@ func (future *LabCreateEnvironmentFuture) result(client LabClient) (ar autorest.
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.LabCreateEnvironmentFuture")
 		return
 	}
@@ -1420,6 +1426,7 @@ func (future *LabCreateOrUpdateResourceFuture) result(client LabClient) (l Lab, 
 		return
 	}
 	if !done {
+		l.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.LabCreateOrUpdateResourceFuture")
 		return
 	}
@@ -1462,6 +1469,7 @@ func (future *LabDeleteResourceFuture) result(client LabClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.LabDeleteResourceFuture")
 		return
 	}
@@ -4015,6 +4023,7 @@ func (future *ScheduleCreateOrUpdateResourceFuture) result(client ScheduleClient
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.ScheduleCreateOrUpdateResourceFuture")
 		return
 	}
@@ -4057,6 +4066,7 @@ func (future *ScheduleDeleteResourceFuture) result(client ScheduleClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.ScheduleDeleteResourceFuture")
 		return
 	}
@@ -4093,6 +4103,7 @@ func (future *ScheduleExecuteFuture) result(client ScheduleClient) (ar autorest.
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.ScheduleExecuteFuture")
 		return
 	}
@@ -4180,6 +4191,7 @@ func (future *VirtualMachineApplyArtifactsFuture) result(client VirtualMachineCl
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.VirtualMachineApplyArtifactsFuture")
 		return
 	}
@@ -4216,6 +4228,7 @@ func (future *VirtualMachineCreateOrUpdateResourceFuture) result(client VirtualM
 		return
 	}
 	if !done {
+		lvm.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.VirtualMachineCreateOrUpdateResourceFuture")
 		return
 	}
@@ -4258,6 +4271,7 @@ func (future *VirtualMachineDeleteResourceFuture) result(client VirtualMachineCl
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.VirtualMachineDeleteResourceFuture")
 		return
 	}
@@ -4294,6 +4308,7 @@ func (future *VirtualMachineStartFuture) result(client VirtualMachineClient) (ar
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.VirtualMachineStartFuture")
 		return
 	}
@@ -4330,6 +4345,7 @@ func (future *VirtualMachineStopFuture) result(client VirtualMachineClient) (ar 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.VirtualMachineStopFuture")
 		return
 	}
@@ -4476,6 +4492,7 @@ func (future *VirtualNetworkCreateOrUpdateResourceFuture) result(client VirtualN
 		return
 	}
 	if !done {
+		vn.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.VirtualNetworkCreateOrUpdateResourceFuture")
 		return
 	}
@@ -4518,6 +4535,7 @@ func (future *VirtualNetworkDeleteResourceFuture) result(client VirtualNetworkCl
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dtl.VirtualNetworkDeleteResourceFuture")
 		return
 	}

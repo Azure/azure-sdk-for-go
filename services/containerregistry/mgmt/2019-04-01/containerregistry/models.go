@@ -1611,6 +1611,7 @@ func (future *RegistriesCreateFuture) result(client RegistriesClient) (r Registr
 		return
 	}
 	if !done {
+		r.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.RegistriesCreateFuture")
 		return
 	}
@@ -1653,6 +1654,7 @@ func (future *RegistriesDeleteFuture) result(client RegistriesClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.RegistriesDeleteFuture")
 		return
 	}
@@ -1689,6 +1691,7 @@ func (future *RegistriesImportImageFuture) result(client RegistriesClient) (ar a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.RegistriesImportImageFuture")
 		return
 	}
@@ -1725,6 +1728,7 @@ func (future *RegistriesScheduleRunFuture) result(client RegistriesClient) (r Ru
 		return
 	}
 	if !done {
+		r.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.RegistriesScheduleRunFuture")
 		return
 	}
@@ -1767,6 +1771,7 @@ func (future *RegistriesUpdateFuture) result(client RegistriesClient) (r Registr
 		return
 	}
 	if !done {
+		r.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.RegistriesUpdateFuture")
 		return
 	}
@@ -1809,6 +1814,7 @@ func (future *RegistriesUpdatePoliciesFuture) result(client RegistriesClient) (r
 		return
 	}
 	if !done {
+		rp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.RegistriesUpdatePoliciesFuture")
 		return
 	}
@@ -2567,6 +2573,7 @@ func (future *ReplicationsCreateFuture) result(client ReplicationsClient) (r Rep
 		return
 	}
 	if !done {
+		r.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.ReplicationsCreateFuture")
 		return
 	}
@@ -2609,6 +2616,7 @@ func (future *ReplicationsDeleteFuture) result(client ReplicationsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.ReplicationsDeleteFuture")
 		return
 	}
@@ -2645,6 +2653,7 @@ func (future *ReplicationsUpdateFuture) result(client ReplicationsClient) (r Rep
 		return
 	}
 	if !done {
+		r.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.ReplicationsUpdateFuture")
 		return
 	}
@@ -3212,6 +3221,7 @@ func (future *RunsCancelFuture) result(client RunsClient) (ar autorest.Response,
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.RunsCancelFuture")
 		return
 	}
@@ -3247,6 +3257,7 @@ func (future *RunsUpdateFuture) result(client RunsClient) (r Run, err error) {
 		return
 	}
 	if !done {
+		r.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.RunsUpdateFuture")
 		return
 	}
@@ -4038,6 +4049,7 @@ func (future *TasksCreateFuture) result(client TasksClient) (t Task, err error) 
 		return
 	}
 	if !done {
+		t.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.TasksCreateFuture")
 		return
 	}
@@ -4079,6 +4091,7 @@ func (future *TasksDeleteFuture) result(client TasksClient) (ar autorest.Respons
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.TasksDeleteFuture")
 		return
 	}
@@ -4324,6 +4337,7 @@ func (future *TasksUpdateFuture) result(client TasksClient) (t Task, err error) 
 		return
 	}
 	if !done {
+		t.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.TasksUpdateFuture")
 		return
 	}
@@ -4929,6 +4943,7 @@ func (future *WebhooksCreateFuture) result(client WebhooksClient) (w Webhook, er
 		return
 	}
 	if !done {
+		w.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.WebhooksCreateFuture")
 		return
 	}
@@ -4971,6 +4986,7 @@ func (future *WebhooksDeleteFuture) result(client WebhooksClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.WebhooksDeleteFuture")
 		return
 	}
@@ -5007,6 +5023,7 @@ func (future *WebhooksUpdateFuture) result(client WebhooksClient) (w Webhook, er
 		return
 	}
 	if !done {
+		w.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.WebhooksUpdateFuture")
 		return
 	}

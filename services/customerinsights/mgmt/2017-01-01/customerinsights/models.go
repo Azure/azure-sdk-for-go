@@ -984,6 +984,7 @@ func (future *ConnectorsCreateOrUpdateFuture) result(client ConnectorsClient) (c
 		return
 	}
 	if !done {
+		crf.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("customerinsights.ConnectorsCreateOrUpdateFuture")
 		return
 	}
@@ -1026,6 +1027,7 @@ func (future *ConnectorsDeleteFuture) result(client ConnectorsClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("customerinsights.ConnectorsDeleteFuture")
 		return
 	}
@@ -1633,6 +1635,7 @@ func (future *HubsDeleteFuture) result(client HubsClient) (ar autorest.Response,
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("customerinsights.HubsDeleteFuture")
 		return
 	}
@@ -1911,6 +1914,7 @@ func (future *InteractionsCreateOrUpdateFuture) result(client InteractionsClient
 		return
 	}
 	if !done {
+		irf.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("customerinsights.InteractionsCreateOrUpdateFuture")
 		return
 	}
@@ -2296,6 +2300,7 @@ func (future *KpiCreateOrUpdateFuture) result(client KpiClient) (krf KpiResource
 		return
 	}
 	if !done {
+		krf.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("customerinsights.KpiCreateOrUpdateFuture")
 		return
 	}
@@ -2427,6 +2432,7 @@ func (future *KpiDeleteFuture) result(client KpiClient) (ar autorest.Response, e
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("customerinsights.KpiDeleteFuture")
 		return
 	}
@@ -3030,6 +3036,7 @@ func (future *LinksCreateOrUpdateFuture) result(client LinksClient) (lrf LinkRes
 		return
 	}
 	if !done {
+		lrf.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("customerinsights.LinksCreateOrUpdateFuture")
 		return
 	}
@@ -3609,6 +3616,7 @@ func (future *ProfilesCreateOrUpdateFuture) result(client ProfilesClient) (prf P
 		return
 	}
 	if !done {
+		prf.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("customerinsights.ProfilesCreateOrUpdateFuture")
 		return
 	}
@@ -3651,6 +3659,7 @@ func (future *ProfilesDeleteFuture) result(client ProfilesClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("customerinsights.ProfilesDeleteFuture")
 		return
 	}
@@ -4228,6 +4237,7 @@ func (future *RelationshipLinksCreateOrUpdateFuture) result(client RelationshipL
 		return
 	}
 	if !done {
+		rlrf.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("customerinsights.RelationshipLinksCreateOrUpdateFuture")
 		return
 	}
@@ -4270,6 +4280,7 @@ func (future *RelationshipLinksDeleteFuture) result(client RelationshipLinksClie
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("customerinsights.RelationshipLinksDeleteFuture")
 		return
 	}
@@ -4538,6 +4549,7 @@ func (future *RelationshipsCreateOrUpdateFuture) result(client RelationshipsClie
 		return
 	}
 	if !done {
+		rrf.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("customerinsights.RelationshipsCreateOrUpdateFuture")
 		return
 	}
@@ -4580,6 +4592,7 @@ func (future *RelationshipsDeleteFuture) result(client RelationshipsClient) (ar 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("customerinsights.RelationshipsDeleteFuture")
 		return
 	}
@@ -5019,6 +5032,7 @@ func (future *RoleAssignmentsCreateOrUpdateFuture) result(client RoleAssignments
 		return
 	}
 	if !done {
+		rarf.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("customerinsights.RoleAssignmentsCreateOrUpdateFuture")
 		return
 	}

@@ -452,6 +452,7 @@ func (future *DiskPoolsCreateOrUpdateFuture) result(client DiskPoolsClient) (dp 
 		return
 	}
 	if !done {
+		dp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagepool.DiskPoolsCreateOrUpdateFuture")
 		return
 	}
@@ -494,6 +495,7 @@ func (future *DiskPoolsDeleteFuture) result(client DiskPoolsClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagepool.DiskPoolsDeleteFuture")
 		return
 	}
@@ -839,6 +841,7 @@ func (future *IscsiTargetsCreateOrUpdateFuture) result(client IscsiTargetsClient
 		return
 	}
 	if !done {
+		it.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagepool.IscsiTargetsCreateOrUpdateFuture")
 		return
 	}
@@ -881,6 +884,7 @@ func (future *IscsiTargetsDeleteFuture) result(client IscsiTargetsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagepool.IscsiTargetsDeleteFuture")
 		return
 	}

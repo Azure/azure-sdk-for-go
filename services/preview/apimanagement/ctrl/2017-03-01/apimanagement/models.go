@@ -4331,6 +4331,7 @@ func (future *TenantConfigurationDeployFuture) result(client TenantConfiguration
 		return
 	}
 	if !done {
+		orc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("apimanagement.TenantConfigurationDeployFuture")
 		return
 	}
@@ -4373,6 +4374,7 @@ func (future *TenantConfigurationSaveFuture) result(client TenantConfigurationCl
 		return
 	}
 	if !done {
+		orc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("apimanagement.TenantConfigurationSaveFuture")
 		return
 	}
@@ -4434,6 +4436,7 @@ func (future *TenantConfigurationValidateFuture) result(client TenantConfigurati
 		return
 	}
 	if !done {
+		orc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("apimanagement.TenantConfigurationValidateFuture")
 		return
 	}

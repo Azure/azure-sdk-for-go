@@ -235,6 +235,7 @@ func (future *HanaInstancesCreateFuture) result(client HanaInstancesClient) (hi 
 		return
 	}
 	if !done {
+		hi.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesCreateFuture")
 		return
 	}
@@ -277,6 +278,7 @@ func (future *HanaInstancesDeleteFuture) result(client HanaInstancesClient) (ar 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesDeleteFuture")
 		return
 	}
@@ -472,6 +474,7 @@ func (future *HanaInstancesRestartFuture) result(client HanaInstancesClient) (ar
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesRestartFuture")
 		return
 	}
@@ -508,6 +511,7 @@ func (future *HanaInstancesShutdownFuture) result(client HanaInstancesClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesShutdownFuture")
 		return
 	}
@@ -544,6 +548,7 @@ func (future *HanaInstancesStartFuture) result(client HanaInstancesClient) (ar a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hanaonazure.HanaInstancesStartFuture")
 		return
 	}
@@ -1034,6 +1039,7 @@ func (future *SapMonitorsCreateFuture) result(client SapMonitorsClient) (sm SapM
 		return
 	}
 	if !done {
+		sm.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hanaonazure.SapMonitorsCreateFuture")
 		return
 	}
@@ -1076,6 +1082,7 @@ func (future *SapMonitorsDeleteFuture) result(client SapMonitorsClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hanaonazure.SapMonitorsDeleteFuture")
 		return
 	}

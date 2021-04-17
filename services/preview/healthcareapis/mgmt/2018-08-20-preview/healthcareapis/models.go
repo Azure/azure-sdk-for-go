@@ -367,6 +367,7 @@ func (future *ServicesCreateOrUpdateFuture) result(client ServicesClient) (sd Se
 		return
 	}
 	if !done {
+		sd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("healthcareapis.ServicesCreateOrUpdateFuture")
 		return
 	}
@@ -409,6 +410,7 @@ func (future *ServicesDeleteFuture) result(client ServicesClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("healthcareapis.ServicesDeleteFuture")
 		return
 	}
@@ -714,6 +716,7 @@ func (future *ServicesUpdateFuture) result(client ServicesClient) (sd ServicesDe
 		return
 	}
 	if !done {
+		sd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("healthcareapis.ServicesUpdateFuture")
 		return
 	}

@@ -54,6 +54,7 @@ func (future *CreateOrUpdateFuture) result(client Client) (rt ResourceType, err 
 		return
 	}
 	if !done {
+		rt.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("signalr.CreateOrUpdateFuture")
 		return
 	}
@@ -112,6 +113,7 @@ func (future *DeleteFuture) result(client Client) (ar autorest.Response, err err
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("signalr.DeleteFuture")
 		return
 	}
@@ -623,6 +625,7 @@ func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("signalr.PrivateEndpointConnectionsDeleteFuture")
 		return
 	}
@@ -978,6 +981,7 @@ func (future *RegenerateKeyFuture) result(client Client) (kVar Keys, err error) 
 		return
 	}
 	if !done {
+		kVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("signalr.RegenerateKeyFuture")
 		return
 	}
@@ -1360,6 +1364,7 @@ func (future *RestartFuture) result(client Client) (ar autorest.Response, err er
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("signalr.RestartFuture")
 		return
 	}
@@ -1441,6 +1446,7 @@ func (future *UpdateFuture) result(client Client) (rt ResourceType, err error) {
 		return
 	}
 	if !done {
+		rt.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("signalr.UpdateFuture")
 		return
 	}

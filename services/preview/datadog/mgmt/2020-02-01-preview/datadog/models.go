@@ -1455,6 +1455,7 @@ func (future *MonitorsCreateFuture) result(client MonitorsClient) (mr MonitorRes
 		return
 	}
 	if !done {
+		mr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("datadog.MonitorsCreateFuture")
 		return
 	}
@@ -1497,6 +1498,7 @@ func (future *MonitorsDeleteFuture) result(client MonitorsClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("datadog.MonitorsDeleteFuture")
 		return
 	}
@@ -1781,6 +1783,7 @@ func (future *SingleSignOnConfigurationsCreateOrUpdateFuture) result(client Sing
 		return
 	}
 	if !done {
+		ssor.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("datadog.SingleSignOnConfigurationsCreateOrUpdateFuture")
 		return
 	}

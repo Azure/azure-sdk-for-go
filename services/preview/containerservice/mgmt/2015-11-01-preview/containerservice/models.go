@@ -178,6 +178,7 @@ func (future *CreateOrUpdateFuture) result(client Client) (cs ContainerService, 
 		return
 	}
 	if !done {
+		cs.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.CreateOrUpdateFuture")
 		return
 	}
@@ -219,6 +220,7 @@ func (future *DeleteFuture) result(client Client) (ar autorest.Response, err err
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.DeleteFuture")
 		return
 	}

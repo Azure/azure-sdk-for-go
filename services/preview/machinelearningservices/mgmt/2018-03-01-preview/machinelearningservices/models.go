@@ -851,6 +851,7 @@ func (future *MachineLearningComputeCreateOrUpdateFuture) result(client MachineL
 		return
 	}
 	if !done {
+		cr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("machinelearningservices.MachineLearningComputeCreateOrUpdateFuture")
 		return
 	}
@@ -893,6 +894,7 @@ func (future *MachineLearningComputeDeleteFuture) result(client MachineLearningC
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("machinelearningservices.MachineLearningComputeDeleteFuture")
 		return
 	}
@@ -929,6 +931,7 @@ func (future *MachineLearningComputeSystemUpdateFuture) result(client MachineLea
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("machinelearningservices.MachineLearningComputeSystemUpdateFuture")
 		return
 	}
@@ -1731,6 +1734,7 @@ func (future *WorkspacesDeleteFuture) result(client WorkspacesClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("machinelearningservices.WorkspacesDeleteFuture")
 		return
 	}

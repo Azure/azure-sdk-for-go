@@ -314,6 +314,7 @@ func (future *CloudEndpointsCreateFuture) result(client CloudEndpointsClient) (c
 		return
 	}
 	if !done {
+		ce.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsCreateFuture")
 		return
 	}
@@ -356,6 +357,7 @@ func (future *CloudEndpointsDeleteFuture) result(client CloudEndpointsClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsDeleteFuture")
 		return
 	}
@@ -392,6 +394,7 @@ func (future *CloudEndpointsPostBackupFuture) result(client CloudEndpointsClient
 		return
 	}
 	if !done {
+		pbr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsPostBackupFuture")
 		return
 	}
@@ -434,6 +437,7 @@ func (future *CloudEndpointsPostRestoreFuture) result(client CloudEndpointsClien
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsPostRestoreFuture")
 		return
 	}
@@ -470,6 +474,7 @@ func (future *CloudEndpointsPreBackupFuture) result(client CloudEndpointsClient)
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsPreBackupFuture")
 		return
 	}
@@ -506,6 +511,7 @@ func (future *CloudEndpointsPreRestoreFuture) result(client CloudEndpointsClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsPreRestoreFuture")
 		return
 	}
@@ -542,6 +548,7 @@ func (future *CloudEndpointsTriggerChangeDetectionFuture) result(client CloudEnd
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagesync.CloudEndpointsTriggerChangeDetectionFuture")
 		return
 	}
@@ -1127,6 +1134,7 @@ func (future *RegisteredServersCreateFuture) result(client RegisteredServersClie
 		return
 	}
 	if !done {
+		rs.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagesync.RegisteredServersCreateFuture")
 		return
 	}
@@ -1169,6 +1177,7 @@ func (future *RegisteredServersDeleteFuture) result(client RegisteredServersClie
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagesync.RegisteredServersDeleteFuture")
 		return
 	}
@@ -1205,6 +1214,7 @@ func (future *RegisteredServersTriggerRolloverFuture) result(client RegisteredSe
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagesync.RegisteredServersTriggerRolloverFuture")
 		return
 	}
@@ -1545,6 +1555,7 @@ func (future *ServerEndpointsCreateFuture) result(client ServerEndpointsClient) 
 		return
 	}
 	if !done {
+		se.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagesync.ServerEndpointsCreateFuture")
 		return
 	}
@@ -1587,6 +1598,7 @@ func (future *ServerEndpointsDeleteFuture) result(client ServerEndpointsClient) 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagesync.ServerEndpointsDeleteFuture")
 		return
 	}
@@ -1623,6 +1635,7 @@ func (future *ServerEndpointsRecallActionFuture) result(client ServerEndpointsCl
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagesync.ServerEndpointsRecallActionFuture")
 		return
 	}
@@ -1659,6 +1672,7 @@ func (future *ServerEndpointsUpdateFuture) result(client ServerEndpointsClient) 
 		return
 	}
 	if !done {
+		se.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagesync.ServerEndpointsUpdateFuture")
 		return
 	}

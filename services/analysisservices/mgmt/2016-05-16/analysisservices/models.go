@@ -292,6 +292,7 @@ func (future *ServersCreateFuture) result(client ServersClient) (s Server, err e
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("analysisservices.ServersCreateFuture")
 		return
 	}
@@ -334,6 +335,7 @@ func (future *ServersDeleteFuture) result(client ServersClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("analysisservices.ServersDeleteFuture")
 		return
 	}
@@ -370,6 +372,7 @@ func (future *ServersResumeFuture) result(client ServersClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("analysisservices.ServersResumeFuture")
 		return
 	}
@@ -406,6 +409,7 @@ func (future *ServersSuspendFuture) result(client ServersClient) (ar autorest.Re
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("analysisservices.ServersSuspendFuture")
 		return
 	}
@@ -442,6 +446,7 @@ func (future *ServersUpdateFuture) result(client ServersClient) (s Server, err e
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("analysisservices.ServersUpdateFuture")
 		return
 	}

@@ -58,7 +58,9 @@ func CollectGenerationMetadata(root string) (map[string]GenerationMetadata, erro
 		if err != nil {
 			return nil, err
 		}
-		result[pkg.FullPath()] = *m
+		if m != nil {
+			result[pkg.FullPath()] = *m
+		}
 	}
 	return result, nil
 }
@@ -70,7 +72,7 @@ func GetGenerationMetadata(pkg track1.Package) (*GenerationMetadata, error) {
 	// some classical package might not have a changelog, therefore we need to identify whether the changelog file exist or not
 	if _, err := os.Stat(metadataFilepath); os.IsNotExist(err) {
 		log.Printf("package '%s' does not have a metadata file", pkg.Path())
-		return &GenerationMetadata{}, nil
+		return nil, nil
 	}
 
 	b, err := ioutil.ReadFile(metadataFilepath)

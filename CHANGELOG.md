@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## `v53.3.0`
+
+Fixes https://github.com/Azure/azure-sdk-for-go/issues/14540
+
 ## `v53.2.0`
 
 ### New Packages

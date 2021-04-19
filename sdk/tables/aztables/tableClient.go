@@ -43,6 +43,10 @@ func (t *TableClient) Query(queryOptions QueryOptions) TableEntityQueryResponseP
 	return &tableEntityQueryResponsePager{tableClient: t, queryOptions: &queryOptions, tableQueryOptions: &TableQueryEntitiesOptions{}}
 }
 
+func (t *TableClient) QueryAsStruct(opt QueryOptions, s FromMapper) StructEntityQueryResponsePager {
+	return &structQueryResponsePager{mapper: s, tableClient: t, queryOptions: &opt, tableQueryOptions: &TableQueryEntitiesOptions{}}
+}
+
 // AddMapEntity Creates an entity from a map value.
 func (t *TableClient) AddMapEntity(ctx context.Context, entity *map[string]interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
 	resp, err := t.client.InsertEntity(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})

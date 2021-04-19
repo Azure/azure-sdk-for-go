@@ -6,6 +6,7 @@ package aztables
 import (
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"math"
@@ -31,18 +32,84 @@ func TestCastAndRemoveAnnotations(t *testing.T) {
 	var val map[string]interface{}
 	err := resp.UnmarshalAsJSON(&val)
 	assert.Nil(err)
-	entity, err := castAndRemoveAnnotations(&val)
+	err = castAndRemoveAnnotations(&val)
 	assert.Nil(err)
 	// assert all odata annotations are removed.
-	for k := range *entity {
+	for k := range val {
 		assert.NotContains(k, OdataType)
 	}
 
-	assert.IsType(time.Now(), (*entity)["SomeDateProperty"])
-	assert.IsType([]byte{}, (*entity)["SomeBinaryProperty"])
-	assert.IsType(float64(0), (*entity)["SomeDoubleProperty0"])
+	assert.IsType(time.Now(), val["SomeDateProperty"])
+	assert.IsType([]byte{}, val["SomeBinaryProperty"])
+	assert.IsType(float64(0), val["SomeDoubleProperty0"])
 	// TODO: fix this
 	// assert.IsType(int(0), (*entity)["SomeIntProperty"])
+}
+
+func TestToOdataAnnotatedDictionary(t *testing.T) {
+	assert := assert.New(t)
+
+	var val = createComplexEntityMap()
+	err := toOdataAnnotatedDictionary(&val)
+	assert.Nil(err)
+	// assert all odata annotations are removed.
+	for k := range odataHintProps {
+		_, ok := val[k]
+		assert.Truef(ok, fmt.Sprintf("map does not contain %s", k))
+		iSuffix := strings.Index(k, OdataType)
+		if iSuffix > 0 {
+			// Get the name of the property that this odataType key describes.
+			valueKey := k[0:iSuffix]
+			if !strings.Contains(valueKey, "SomeDoubleProperty") {
+				assert.IsTypef("", val[valueKey], fmt.Sprintf("should be type string %s", valueKey))
+			}
+		}
+		_, ok = val[odataType(k)]
+		assert.Truef(ok, fmt.Sprintf("map does not contain %s", odataType(k)))
+	}
+}
+
+func BenchmarkUnMarshal_AsJson_CastAndRemove_Map(b *testing.B) {
+	assert := assert.New(b)
+	b.ReportAllocs()
+	bt := []byte(complexPayload)
+	for i := 0; i < b.N; i++ {
+		var val = make(map[string]interface{})
+		json.Unmarshal(bt, &val)
+		castAndRemoveAnnotations(&val)
+		assert.Equal("somePartition", val["PartitionKey"])
+	}
+}
+
+func BenchmarkUnMarshal_FromMap_Entity(b *testing.B) {
+	assert := assert.New(b)
+	fmap := getTypeValueMap(complexEntity{})
+	bt := []byte(complexPayload)
+	for i := 0; i < b.N; i++ {
+		var val = make(map[string]interface{})
+		json.Unmarshal(bt, &val)
+		result, err := fromMap(complexEntity{}, fmap, &val)
+		assert.Nil(err)
+		ent := result.(complexEntity)
+		assert.Equal("somePartition", ent.PartitionKey)
+	}
+}
+
+func BenchmarkMarshal_Entity_ToMap_ToOdataDict_Map(b *testing.B) {
+	ent := createComplexEntity()
+	for i := 0; i < b.N; i++ {
+		m, _ := toMap(ent)
+		toOdataAnnotatedDictionary(m)
+		json.Marshal(m)
+	}
+}
+
+func BenchmarkMarshal_Map_ToOdataDict_Map(b *testing.B) {
+	ent := createComplexEntityMap()
+	for i := 0; i < b.N; i++ {
+		toOdataAnnotatedDictionary(&ent)
+		json.Marshal(ent)
+	}
 }
 
 func TestToMap(t *testing.T) {
@@ -89,22 +156,60 @@ func TestEntitySerialization(t *testing.T) {
 	assert.NotEmpty(s)
 }
 
+func TestDeserializeFromMap(t *testing.T) {
+	assert := assert.New(t)
+
+	expected := createComplexEntity()
+	bt := []byte(complexPayload)
+	var val = make(map[string]interface{})
+	json.Unmarshal(bt, &val)
+	result, err := fromMap(complexEntity{}, getTypeValueMap(complexEntity{}), &val)
+	assert.Nil(err)
+	ent := result.(complexEntity)
+	assert.EqualValues(expected, ent)
+}
+
 func createComplexEntity() complexEntity {
 	sp := "some pointer to string"
+	t, _ := time.Parse(ISO8601, "2021-03-23T18:29:15.9686039Z")
+	t2, _ := time.Parse(ISO8601, "2020-01-01T01:02:00Z")
+	b, _ := base64.StdEncoding.DecodeString("AQIDBAU=")
 	var e = complexEntity{
-		PartitionKey:          "partition",
-		ETag:                  "*",
-		RowKey:                "row",
-		Timestamp:             time.Now(),
-		SomeBinaryProperty:    []byte("some bytes"),
-		SomeDateProperty:      time.Now(),
-		SomeDoubleProperty0:   float64(1),
-		SomeDoubleProperty1:   float64(1.2345),
-		SomeGuidProperty:      uuid.New(),
-		SomeInt64Property:     math.MaxInt64,
+		PartitionKey:          "somePartition",
+		ETag:                  "W/\"datetime'2021-04-05T05%3A02%3A40.7371784Z'\"",
+		RowKey:                "01",
+		Timestamp:             t,
+		SomeBinaryProperty:    b,
+		SomeDateProperty:      t2,
+		SomeDoubleProperty0:   float64(1.0),
+		SomeDoubleProperty1:   float64(1.5),
+		SomeGuidProperty:      uuid.Parse("0d391d16-97f1-4b9a-be68-4cc871f90001"),
+		SomeInt64Property:     int64(math.MaxInt64),
 		SomeIntProperty:       42,
-		SomeStringProperty:    "some string",
+		SomeStringProperty:    "This is table entity number 01",
 		SomePtrStringProperty: &sp}
+	return e
+}
+
+func createComplexEntityMap() map[string]interface{} {
+	sp := "some pointer to string"
+	t, _ := time.Parse(ISO8601, "2021-03-23T18:29:15.9686039Z")
+	t2, _ := time.Parse(ISO8601, "2020-01-01T01:02:00Z")
+	b, _ := base64.StdEncoding.DecodeString("AQIDBAU=")
+	var e = map[string]interface{}{
+		"PartitionKey":          "somePartition",
+		"ETag":                  "W/\"datetime'2021-04-05T05%3A02%3A40.7371784Z'\"",
+		"RowKey":                "01",
+		"Timestamp":             t,
+		"SomeBinaryProperty":    b,
+		"SomeDateProperty":      t2,
+		"SomeDoubleProperty0":   float64(1.0),
+		"SomeDoubleProperty1":   float64(1.5),
+		"SomeGuidProperty":      uuid.Parse("0d391d16-97f1-4b9a-be68-4cc871f90001"),
+		"SomeInt64Property":     int64(math.MaxInt64),
+		"SomeIntProperty":       42,
+		"SomeStringProperty":    "This is table entity number 01",
+		"SomePtrStringProperty": &sp}
 	return e
 }
 
@@ -120,10 +225,8 @@ var odataHintProps = map[string]string{
 	"SomeGuidProperty":    EdmGuid,
 	"SomeInt64Property":   EdmInt64}
 
-const complexPayload = "{\"odata.metadata\": \"https://jverazsdkprim.table.core.windows.net/$metadata#testtableifprd13i\"," +
-	"\"value\": [" +
-	"{\"odata.etag\": \"W/\\u0022datetime\\u00272021-03-23T18%3A29%3A15.9686039Z\\u0027\\u0022\"," +
-	"\"PartitionKey\": \"somPartition\"," +
+var complexPayload = "{\"odata.etag\": \"W/\\\"datetime'2021-04-05T05%3A02%3A40.7371784Z'\\\"\"," +
+	"\"PartitionKey\": \"somePartition\"," +
 	"\"RowKey\": \"01\"," +
 	"\"Timestamp\": \"2021-03-23T18:29:15.9686039Z\"," +
 	"\"SomeBinaryProperty@odata.type\": \"Edm.Binary\"," +
@@ -135,6 +238,7 @@ const complexPayload = "{\"odata.metadata\": \"https://jverazsdkprim.table.core.
 	"\"SomeGuidProperty@odata.type\": \"Edm.Guid\"," +
 	"\"SomeGuidProperty\": \"0d391d16-97f1-4b9a-be68-4cc871f90001\"," +
 	"\"SomeInt64Property@odata.type\": \"Edm.Int64\"," +
-	"\"SomeInt64Property\": \"1\"," +
-	"\"SomeIntProperty\": 1," +
-	"\"SomeStringProperty\": \"This is table entity number 01\"  }]  }"
+	"\"SomeInt64Property\": \"" + strconv.FormatInt(math.MaxInt64, 10) + "\"," +
+	"\"SomeIntProperty\": 42," +
+	"\"SomeStringProperty\": \"This is table entity number 01\"," +
+	"\"SomePtrStringProperty\": \"some pointer to string\"  }"

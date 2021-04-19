@@ -13,6 +13,82 @@ import (
 	"reflect"
 )
 
+// DeletedAccountListResultPager provides iteration over DeletedAccountListResult pages.
+type DeletedAccountListResultPager interface {
+	azcore.Pager
+
+	// Page returns the current DeletedAccountListResultResponse.
+	PageResponse() DeletedAccountListResultResponse
+}
+
+type deletedAccountListResultCreateRequest func(context.Context) (*azcore.Request, error)
+
+type deletedAccountListResultHandleError func(*azcore.Response) error
+
+type deletedAccountListResultHandleResponse func(*azcore.Response) (DeletedAccountListResultResponse, error)
+
+type deletedAccountListResultAdvancePage func(context.Context, DeletedAccountListResultResponse) (*azcore.Request, error)
+
+type deletedAccountListResultPager struct {
+	// the pipeline for making the request
+	pipeline azcore.Pipeline
+	// creates the initial request (non-LRO case)
+	requester deletedAccountListResultCreateRequest
+	// callback for handling response errors
+	errorer deletedAccountListResultHandleError
+	// callback for handling the HTTP response
+	responder deletedAccountListResultHandleResponse
+	// callback for advancing to the next page
+	advancer deletedAccountListResultAdvancePage
+	// contains the current response
+	current DeletedAccountListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
+	// any error encountered
+	err error
+}
+
+func (p *deletedAccountListResultPager) Err() error {
+	return p.err
+}
+
+func (p *deletedAccountListResultPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DeletedAccountListResult.NextLink == nil || len(*p.current.DeletedAccountListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.pipeline.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(p.statusCodes...) {
+		p.err = p.errorer(resp)
+		return false
+	}
+	result, err := p.responder(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *deletedAccountListResultPager) PageResponse() DeletedAccountListResultResponse {
+	return p.current
+}
+
 // EncryptionScopeListResultPager provides iteration over EncryptionScopeListResult pages.
 type EncryptionScopeListResultPager interface {
 	azcore.Pager

@@ -8943,6 +8943,7 @@ func (future *ServiceApplyNetworkConfigurationUpdatesFuture) result(client Servi
 		return
 	}
 	if !done {
+		sr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("apimanagement.ServiceApplyNetworkConfigurationUpdatesFuture")
 		return
 	}
@@ -8985,6 +8986,7 @@ func (future *ServiceBackupFuture) result(client ServiceClient) (sr ServiceResou
 		return
 	}
 	if !done {
+		sr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("apimanagement.ServiceBackupFuture")
 		return
 	}
@@ -9111,6 +9113,7 @@ func (future *ServiceCreateOrUpdateFuture) result(client ServiceClient) (sr Serv
 		return
 	}
 	if !done {
+		sr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("apimanagement.ServiceCreateOrUpdateFuture")
 		return
 	}
@@ -9573,6 +9576,7 @@ func (future *ServiceRestoreFuture) result(client ServiceClient) (sr ServiceReso
 		return
 	}
 	if !done {
+		sr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("apimanagement.ServiceRestoreFuture")
 		return
 	}
@@ -9623,6 +9627,7 @@ func (future *ServiceUpdateFuture) result(client ServiceClient) (sr ServiceResou
 		return
 	}
 	if !done {
+		sr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("apimanagement.ServiceUpdateFuture")
 		return
 	}
@@ -9665,6 +9670,7 @@ func (future *ServiceUpdateHostnameFuture) result(client ServiceClient) (sr Serv
 		return
 	}
 	if !done {
+		sr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("apimanagement.ServiceUpdateHostnameFuture")
 		return
 	}
@@ -11104,6 +11110,7 @@ func (future *TenantConfigurationDeployFuture) result(client TenantConfiguration
 		return
 	}
 	if !done {
+		orc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("apimanagement.TenantConfigurationDeployFuture")
 		return
 	}
@@ -11146,6 +11153,7 @@ func (future *TenantConfigurationSaveFuture) result(client TenantConfigurationCl
 		return
 	}
 	if !done {
+		orc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("apimanagement.TenantConfigurationSaveFuture")
 		return
 	}
@@ -11207,6 +11215,7 @@ func (future *TenantConfigurationValidateFuture) result(client TenantConfigurati
 		return
 	}
 	if !done {
+		orc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("apimanagement.TenantConfigurationValidateFuture")
 		return
 	}

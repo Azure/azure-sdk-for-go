@@ -1080,6 +1080,7 @@ func (future *SourceControlConfigurationsDeleteFuture) result(client SourceContr
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("kubernetesconfiguration.SourceControlConfigurationsDeleteFuture")
 		return
 	}

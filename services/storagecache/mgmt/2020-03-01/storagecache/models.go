@@ -588,6 +588,7 @@ func (future *CachesCreateOrUpdateFuture) result(client CachesClient) (c Cache, 
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesCreateOrUpdateFuture")
 		return
 	}
@@ -629,6 +630,7 @@ func (future *CachesDeleteFuture) result(client CachesClient) (so SetObject, err
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesDeleteFuture")
 		return
 	}
@@ -676,6 +678,7 @@ func (future *CachesFlushFuture) result(client CachesClient) (so SetObject, err 
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesFlushFuture")
 		return
 	}
@@ -883,6 +886,7 @@ func (future *CachesStartFuture) result(client CachesClient) (so SetObject, err 
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesStartFuture")
 		return
 	}
@@ -924,6 +928,7 @@ func (future *CachesStopFuture) result(client CachesClient) (so SetObject, err e
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesStopFuture")
 		return
 	}
@@ -966,6 +971,7 @@ func (future *CachesUpgradeFirmwareFuture) result(client CachesClient) (so SetOb
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.CachesUpgradeFirmwareFuture")
 		return
 	}
@@ -1718,6 +1724,7 @@ func (future *StorageTargetsCreateOrUpdateFuture) result(client StorageTargetsCl
 		return
 	}
 	if !done {
+		st.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.StorageTargetsCreateOrUpdateFuture")
 		return
 	}
@@ -1760,6 +1767,7 @@ func (future *StorageTargetsDeleteFuture) result(client StorageTargetsClient) (s
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storagecache.StorageTargetsDeleteFuture")
 		return
 	}

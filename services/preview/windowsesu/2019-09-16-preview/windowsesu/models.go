@@ -387,6 +387,7 @@ func (future *MultipleActivationKeysCreateFuture) result(client MultipleActivati
 		return
 	}
 	if !done {
+		mak.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("windowsesu.MultipleActivationKeysCreateFuture")
 		return
 	}

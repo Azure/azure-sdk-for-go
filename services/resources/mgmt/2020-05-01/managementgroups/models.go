@@ -297,6 +297,7 @@ func (future *CreateOrUpdateFuture) result(client Client) (so SetObject, err err
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managementgroups.CreateOrUpdateFuture")
 		return
 	}
@@ -404,6 +405,7 @@ func (future *DeleteFuture) result(client Client) (aaor AzureAsyncOperationResul
 		return
 	}
 	if !done {
+		aaor.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("managementgroups.DeleteFuture")
 		return
 	}

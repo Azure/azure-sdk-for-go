@@ -699,6 +699,7 @@ func (future *PipelinesCreateOrUpdateFuture) result(client PipelinesClient) (p P
 		return
 	}
 	if !done {
+		p.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("devops.PipelinesCreateOrUpdateFuture")
 		return
 	}

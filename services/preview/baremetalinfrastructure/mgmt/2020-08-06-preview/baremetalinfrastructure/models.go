@@ -195,6 +195,7 @@ func (future *AzureBareMetalInstancesDeleteFuture) result(client AzureBareMetalI
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesDeleteFuture")
 		return
 	}
@@ -391,6 +392,7 @@ func (future *AzureBareMetalInstancesRestartFuture) result(client AzureBareMetal
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesRestartFuture")
 		return
 	}
@@ -427,6 +429,7 @@ func (future *AzureBareMetalInstancesShutdownFuture) result(client AzureBareMeta
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesShutdownFuture")
 		return
 	}
@@ -463,6 +466,7 @@ func (future *AzureBareMetalInstancesStartFuture) result(client AzureBareMetalIn
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesStartFuture")
 		return
 	}

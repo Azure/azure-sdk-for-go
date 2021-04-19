@@ -6799,6 +6799,7 @@ func (future *HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture) result(
 		return
 	}
 	if !done {
+		he.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture")
 		return
 	}
@@ -6841,6 +6842,7 @@ func (future *HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture) result(clien
 		return
 	}
 	if !done {
+		wp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture")
 		return
 	}
@@ -6883,6 +6885,7 @@ func (future *HostingEnvironmentsCreateOrUpdateWorkerPoolFuture) result(client H
 		return
 	}
 	if !done {
+		wp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.HostingEnvironmentsCreateOrUpdateWorkerPoolFuture")
 		return
 	}
@@ -6925,6 +6928,7 @@ func (future *HostingEnvironmentsDeleteHostingEnvironmentFuture) result(client H
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.HostingEnvironmentsDeleteHostingEnvironmentFuture")
 		return
 	}
@@ -6982,6 +6986,7 @@ func (future *HostingEnvironmentsResumeHostingEnvironmentAllFuture) result(clien
 		return
 	}
 	if !done {
+		scp.sc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.HostingEnvironmentsResumeHostingEnvironmentAllFuture")
 		return
 	}
@@ -7024,6 +7029,7 @@ func (future *HostingEnvironmentsResumeHostingEnvironmentFuture) result(client H
 		return
 	}
 	if !done {
+		scp.sc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.HostingEnvironmentsResumeHostingEnvironmentFuture")
 		return
 	}
@@ -7066,6 +7072,7 @@ func (future *HostingEnvironmentsSuspendHostingEnvironmentAllFuture) result(clie
 		return
 	}
 	if !done {
+		scp.sc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.HostingEnvironmentsSuspendHostingEnvironmentAllFuture")
 		return
 	}
@@ -7108,6 +7115,7 @@ func (future *HostingEnvironmentsSuspendHostingEnvironmentFuture) result(client 
 		return
 	}
 	if !done {
+		scp.sc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.HostingEnvironmentsSuspendHostingEnvironmentFuture")
 		return
 	}
@@ -7994,6 +8002,7 @@ func (future *ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentF
 		return
 	}
 	if !done {
+		he.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture")
 		return
 	}
@@ -8036,6 +8045,7 @@ func (future *ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture) r
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture")
 		return
 	}
@@ -10123,6 +10133,7 @@ func (future *ServerFarmsCreateOrUpdateServerFarmFuture) result(client ServerFar
 		return
 	}
 	if !done {
+		sfwrs.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.ServerFarmsCreateOrUpdateServerFarmFuture")
 		return
 	}
@@ -11530,6 +11541,7 @@ func (future *SitesCreateOrUpdateSiteFuture) result(client SitesClient) (s Site,
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.SitesCreateOrUpdateSiteFuture")
 		return
 	}
@@ -11572,6 +11584,7 @@ func (future *SitesCreateOrUpdateSiteSlotFuture) result(client SitesClient) (s S
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.SitesCreateOrUpdateSiteSlotFuture")
 		return
 	}
@@ -11614,6 +11627,7 @@ func (future *SitesListSitePublishingCredentialsFuture) result(client SitesClien
 		return
 	}
 	if !done {
+		u.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.SitesListSitePublishingCredentialsFuture")
 		return
 	}
@@ -11656,6 +11670,7 @@ func (future *SitesListSitePublishingCredentialsSlotFuture) result(client SitesC
 		return
 	}
 	if !done {
+		u.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.SitesListSitePublishingCredentialsSlotFuture")
 		return
 	}
@@ -11835,6 +11850,7 @@ func (future *SitesRecoverSiteFuture) result(client SitesClient) (s Site, err er
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.SitesRecoverSiteFuture")
 		return
 	}
@@ -11877,6 +11893,7 @@ func (future *SitesRecoverSiteSlotFuture) result(client SitesClient) (s Site, er
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.SitesRecoverSiteSlotFuture")
 		return
 	}
@@ -11919,6 +11936,7 @@ func (future *SitesRestoreSiteFuture) result(client SitesClient) (rr RestoreResp
 		return
 	}
 	if !done {
+		rr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.SitesRestoreSiteFuture")
 		return
 	}
@@ -11961,6 +11979,7 @@ func (future *SitesRestoreSiteSlotFuture) result(client SitesClient) (rr Restore
 		return
 	}
 	if !done {
+		rr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.SitesRestoreSiteSlotFuture")
 		return
 	}
@@ -12003,6 +12022,7 @@ func (future *SitesSwapSlotsSlotFuture) result(client SitesClient) (so SetObject
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.SitesSwapSlotsSlotFuture")
 		return
 	}
@@ -12045,6 +12065,7 @@ func (future *SitesSwapSlotWithProductionFuture) result(client SitesClient) (so 
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.SitesSwapSlotWithProductionFuture")
 		return
 	}

@@ -287,6 +287,7 @@ func (future *AppsCreateOrUpdateFuture) result(client AppsClient) (ar AppResourc
 		return
 	}
 	if !done {
+		ar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.AppsCreateOrUpdateFuture")
 		return
 	}
@@ -328,6 +329,7 @@ func (future *AppsUpdateFuture) result(client AppsClient) (ar AppResource, err e
 		return
 	}
 	if !done {
+		ar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.AppsUpdateFuture")
 		return
 	}
@@ -1526,6 +1528,7 @@ func (future *DeploymentsCreateOrUpdateFuture) result(client DeploymentsClient) 
 		return
 	}
 	if !done {
+		dr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsCreateOrUpdateFuture")
 		return
 	}
@@ -1613,6 +1616,7 @@ func (future *DeploymentsRestartFuture) result(client DeploymentsClient) (ar aut
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsRestartFuture")
 		return
 	}
@@ -1649,6 +1653,7 @@ func (future *DeploymentsStartFuture) result(client DeploymentsClient) (ar autor
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsStartFuture")
 		return
 	}
@@ -1685,6 +1690,7 @@ func (future *DeploymentsStopFuture) result(client DeploymentsClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsStopFuture")
 		return
 	}
@@ -1721,6 +1727,7 @@ func (future *DeploymentsUpdateFuture) result(client DeploymentsClient) (dr Depl
 		return
 	}
 	if !done {
+		dr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.DeploymentsUpdateFuture")
 		return
 	}
@@ -2431,6 +2438,7 @@ func (future *ServicesCreateOrUpdateFuture) result(client ServicesClient) (sr Se
 		return
 	}
 	if !done {
+		sr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.ServicesCreateOrUpdateFuture")
 		return
 	}
@@ -2473,6 +2481,7 @@ func (future *ServicesDeleteFuture) result(client ServicesClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.ServicesDeleteFuture")
 		return
 	}
@@ -2517,6 +2526,7 @@ func (future *ServicesUpdateFuture) result(client ServicesClient) (sr ServiceRes
 		return
 	}
 	if !done {
+		sr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("appplatform.ServicesUpdateFuture")
 		return
 	}

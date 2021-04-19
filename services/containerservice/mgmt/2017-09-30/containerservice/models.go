@@ -212,6 +212,7 @@ func (future *ContainerServicesCreateOrUpdateFutureType) result(client Container
 		return
 	}
 	if !done {
+		cs.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.ContainerServicesCreateOrUpdateFutureType")
 		return
 	}
@@ -254,6 +255,7 @@ func (future *ContainerServicesDeleteFutureType) result(client ContainerServices
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.ContainerServicesDeleteFutureType")
 		return
 	}
@@ -909,6 +911,7 @@ func (future *ManagedClustersCreateOrUpdateFuture) result(client ManagedClusters
 		return
 	}
 	if !done {
+		mc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersCreateOrUpdateFuture")
 		return
 	}
@@ -951,6 +954,7 @@ func (future *ManagedClustersDeleteFuture) result(client ManagedClustersClient) 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerservice.ManagedClustersDeleteFuture")
 		return
 	}

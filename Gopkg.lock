@@ -39,14 +39,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:120d7208bc9ef91b1d337d362f309e5a00eaef3a6843f6129e8322e84fee52af"
+  digest = "1:8eeffdeea12263d2f33a1a915db373be27a8b198b6e9526899b25446aee0984b"
   name = "github.com/dnaeon/go-vcr"
   packages = [
     "cassette",
     "recorder",
   ]
   pruneopts = "UT"
-  revision = "5fe2421c342a5afeb8181d4a6c1cbb19c2e0761c"
+  revision = "7e02de29c04550ab0fa86feab15f1c0c13425e28"
 
 [[projects]]
   digest = "1:3be7b7206a3fd8686175fd974eb33a1c9dd109c149bdf19801e32b8f48733530"
@@ -71,12 +71,12 @@
   revision = "eeefdecb41b842af6dc652aaea4026e8403e62df"
 
 [[projects]]
-  digest = "1:73770491417b7cb646b28610eec6481187aba7b5c3703da0d42f8d590d016f5f"
+  digest = "1:b4c37f161f9abc89aede53a621205cda38d2df6659dff7b8044d8295ed24291f"
   name = "github.com/gofrs/uuid"
   packages = ["."]
   pruneopts = "UT"
-  revision = "abfe1881e60ef34074c1b8d8c63b42565c356ed6"
-  version = "v3.4.0"
+  revision = "4b36aa0ea796d49630bbae624f8f05ab7013af77"
+  version = "v4.0.0"
 
 [[projects]]
   digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
@@ -127,14 +127,6 @@
   revision = "ce105d075bb4b07d775ac3e595dececaa077eab1"
 
 [[projects]]
-  digest = "1:9e1d37b58d17113ec3cb5608ac0382313c5b59470b94ed97d0976e69c7022314"
-  name = "github.com/pkg/errors"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "614d223910a179a466c1767a985424175c39b465"
-  version = "v0.9.1"
-
-[[projects]]
   digest = "1:ae3c4c486b4de2c71f6e1b9e53d125d13c80aaecc549e9a93342e8274ec761f4"
   name = "github.com/shopspring/decimal"
   packages = ["."]
@@ -167,22 +159,22 @@
     "pkcs12/internal/rc2",
   ]
   pruneopts = "UT"
-  revision = "5ea612d1eb830b38bc4e914e37f55311eb58adce"
+  revision = "4f45737414dc36c02b62c3adac99418bd1fa70db"
 
 [[projects]]
-  digest = "1:4c6e4e4e7d0f334dd6201c3172d9795c5c87e19b2612a83ec309c899c4aa0903"
+  digest = "1:719c9561433767f273d18f7508bb0f00c098caee9af48cbb7d02c9e6d2354b32"
   name = "golang.org/x/mod"
   packages = [
     "module",
     "semver",
   ]
   pruneopts = "UT"
-  revision = "6ce8bb3f08e0e47592fe93e007071d86dcf214bb"
-  version = "v0.4.1"
+  revision = "d6ab96f2441f9631f81862375ef66782fc4a9c12"
+  version = "v0.4.2"
 
 [[projects]]
   branch = "master"
-  digest = "1:e925b81e28eaf96a4e4078c9c2385e30818669c0678c9d7caeaa4bb7de9722e2"
+  digest = "1:ac468a38e9185df579ec927199704bb13a825417ac94d858387500762c29ae69"
   name = "golang.org/x/net"
   packages = [
     "http/httpguts",
@@ -191,11 +183,11 @@
     "idna",
   ]
   pruneopts = "UT"
-  revision = "9060382bd4573352ac5bd6af10f02c31001a8786"
+  revision = "e915ea6b2b7d7f3955e2d6d432eaebd7cf5921e7"
 
 [[projects]]
   branch = "master"
-  digest = "1:7119568147045183de0b285b9a2497d9c545bfdb82833e2056a04d4b91ef1606"
+  digest = "1:2e2b5a89dfa972ce677ab8673bee4fc57699b431f43ca9fdb45fedddbe685691"
   name = "golang.org/x/sys"
   packages = [
     "execabs",
@@ -203,10 +195,10 @@
     "windows",
   ]
   pruneopts = "UT"
-  revision = "eede4237b3684e80c608c85a5cc6fd98603c412c"
+  revision = "66c3f260301cac915959651293c11c8207d331e8"
 
 [[projects]]
-  digest = "1:33168e887aff0e3eae823593f38433f28928104925e54a6252937e6e3939f904"
+  digest = "1:d343bfab7897dd73ee9bf8172d1fc83d935b7512067856ed596aaf57a9345f3c"
   name = "golang.org/x/text"
   packages = [
     "collate",
@@ -227,12 +219,12 @@
     "unicode/rangetable",
   ]
   pruneopts = "UT"
-  revision = "75a595aef632b07c6eeaaa805adb6f0f66e4130e"
-  version = "v0.3.5"
+  revision = "e328d63cff14134669501e0e154e4f141c784322"
+  version = "v0.3.6"
 
 [[projects]]
   branch = "master"
-  digest = "1:a4c7fb2fae7acb63352d6ada30da6caebdd51b389592807478d432350a759235"
+  digest = "1:880fe1e6068d71dc4bc55bb29b5e388d296b76b2598153025a02041699b26e83"
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
@@ -247,7 +239,7 @@
     "internal/imports",
   ]
   pruneopts = "UT"
-  revision = "0150491f5f0a1af95c6e9215e405c6200090bbeb"
+  revision = "07295caad09cddc39fc3b5631934f4780c2014de"
 
 [[projects]]
   branch = "master"
@@ -295,7 +287,6 @@
     "github.com/gofrs/uuid",
     "github.com/jongio/azidext/go/azidext",
     "github.com/pkg/browser",
-    "github.com/pkg/errors",
     "github.com/shopspring/decimal",
     "github.com/spf13/cobra",
     "golang.org/x/crypto/pkcs12",

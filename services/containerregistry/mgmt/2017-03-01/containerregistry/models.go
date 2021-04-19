@@ -234,6 +234,7 @@ func (future *RegistriesCreateFuture) result(client RegistriesClient) (r Registr
 		return
 	}
 	if !done {
+		r.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("containerregistry.RegistriesCreateFuture")
 		return
 	}

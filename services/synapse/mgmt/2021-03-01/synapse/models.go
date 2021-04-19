@@ -572,6 +572,7 @@ func (future *BigDataPoolsCreateOrUpdateFuture) result(client BigDataPoolsClient
 		return
 	}
 	if !done {
+		bdpri.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.BigDataPoolsCreateOrUpdateFuture")
 		return
 	}
@@ -614,6 +615,7 @@ func (future *BigDataPoolsDeleteFuture) result(client BigDataPoolsClient) (so Se
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.BigDataPoolsDeleteFuture")
 		return
 	}
@@ -3398,6 +3400,7 @@ func (future *IntegrationRuntimeObjectMetadataRefreshFuture) result(client Integ
 		return
 	}
 	if !done {
+		somsr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.IntegrationRuntimeObjectMetadataRefreshFuture")
 		return
 	}
@@ -3527,6 +3530,7 @@ func (future *IntegrationRuntimesCreateFuture) result(client IntegrationRuntimes
 		return
 	}
 	if !done {
+		irr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.IntegrationRuntimesCreateFuture")
 		return
 	}
@@ -3569,6 +3573,7 @@ func (future *IntegrationRuntimesDeleteFuture) result(client IntegrationRuntimes
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.IntegrationRuntimesDeleteFuture")
 		return
 	}
@@ -3605,6 +3610,7 @@ func (future *IntegrationRuntimesDisableInteractiveQueryFuture) result(client In
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.IntegrationRuntimesDisableInteractiveQueryFuture")
 		return
 	}
@@ -3641,6 +3647,7 @@ func (future *IntegrationRuntimesEnableInteractiveQueryFuture) result(client Int
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.IntegrationRuntimesEnableInteractiveQueryFuture")
 		return
 	}
@@ -3900,6 +3907,7 @@ func (future *IntegrationRuntimesStartFuture) result(client IntegrationRuntimesC
 		return
 	}
 	if !done {
+		irsr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.IntegrationRuntimesStartFuture")
 		return
 	}
@@ -3942,6 +3950,7 @@ func (future *IntegrationRuntimesStopFuture) result(client IntegrationRuntimesCl
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.IntegrationRuntimesStopFuture")
 		return
 	}
@@ -4511,6 +4520,7 @@ func (future *IPFirewallRulesCreateOrUpdateFuture) result(client IPFirewallRules
 		return
 	}
 	if !done {
+		ifri.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.IPFirewallRulesCreateOrUpdateFuture")
 		return
 	}
@@ -4553,6 +4563,7 @@ func (future *IPFirewallRulesDeleteFuture) result(client IPFirewallRulesClient) 
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.IPFirewallRulesDeleteFuture")
 		return
 	}
@@ -4595,6 +4606,7 @@ func (future *IPFirewallRulesReplaceAllFuture) result(client IPFirewallRulesClie
 		return
 	}
 	if !done {
+		rafror.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.IPFirewallRulesReplaceAllFuture")
 		return
 	}
@@ -6875,6 +6887,7 @@ func (future *PrivateEndpointConnectionsCreateFuture) result(client PrivateEndpo
 		return
 	}
 	if !done {
+		pec.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.PrivateEndpointConnectionsCreateFuture")
 		return
 	}
@@ -6917,6 +6930,7 @@ func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpo
 		return
 	}
 	if !done {
+		or.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.PrivateEndpointConnectionsDeleteFuture")
 		return
 	}
@@ -7251,6 +7265,7 @@ func (future *PrivateLinkHubsDeleteFuture) result(client PrivateLinkHubsClient) 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.PrivateLinkHubsDeleteFuture")
 		return
 	}
@@ -11822,6 +11837,7 @@ func (future *SQLPoolRestorePointsCreateFuture) result(client SQLPoolRestorePoin
 		return
 	}
 	if !done {
+		rp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.SQLPoolRestorePointsCreateFuture")
 		return
 	}
@@ -12034,6 +12050,7 @@ func (future *SQLPoolsCreateFuture) result(client SQLPoolsClient) (sp SQLPool, e
 		return
 	}
 	if !done {
+		sp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.SQLPoolsCreateFuture")
 		return
 	}
@@ -12076,6 +12093,7 @@ func (future *SQLPoolsDeleteFuture) result(client SQLPoolsClient) (so SetObject,
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.SQLPoolsDeleteFuture")
 		return
 	}
@@ -12191,6 +12209,7 @@ func (future *SQLPoolsPauseFuture) result(client SQLPoolsClient) (so SetObject, 
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.SQLPoolsPauseFuture")
 		return
 	}
@@ -12233,6 +12252,7 @@ func (future *SQLPoolsResumeFuture) result(client SQLPoolsClient) (so SetObject,
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.SQLPoolsResumeFuture")
 		return
 	}
@@ -13042,6 +13062,7 @@ func (future *SQLPoolVulnerabilityAssessmentScansInitiateScanFuture) result(clie
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.SQLPoolVulnerabilityAssessmentScansInitiateScanFuture")
 		return
 	}
@@ -13078,6 +13099,7 @@ func (future *SQLPoolWorkloadClassifierCreateOrUpdateFuture) result(client SQLPo
 		return
 	}
 	if !done {
+		wc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.SQLPoolWorkloadClassifierCreateOrUpdateFuture")
 		return
 	}
@@ -13120,6 +13142,7 @@ func (future *SQLPoolWorkloadClassifierDeleteFuture) result(client SQLPoolWorklo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.SQLPoolWorkloadClassifierDeleteFuture")
 		return
 	}
@@ -13156,6 +13179,7 @@ func (future *SQLPoolWorkloadGroupCreateOrUpdateFuture) result(client SQLPoolWor
 		return
 	}
 	if !done {
+		wg.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.SQLPoolWorkloadGroupCreateOrUpdateFuture")
 		return
 	}
@@ -13198,6 +13222,7 @@ func (future *SQLPoolWorkloadGroupDeleteFuture) result(client SQLPoolWorkloadGro
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.SQLPoolWorkloadGroupDeleteFuture")
 		return
 	}
@@ -15053,6 +15078,7 @@ func (future *WorkspaceAadAdminsCreateOrUpdateFuture) result(client WorkspaceAad
 		return
 	}
 	if !done {
+		waai.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.WorkspaceAadAdminsCreateOrUpdateFuture")
 		return
 	}
@@ -15095,6 +15121,7 @@ func (future *WorkspaceAadAdminsDeleteFuture) result(client WorkspaceAadAdminsCl
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.WorkspaceAadAdminsDeleteFuture")
 		return
 	}
@@ -15298,6 +15325,7 @@ func (future *WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdateFuture) re
 		return
 	}
 	if !done {
+		miscsm.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.WorkspaceManagedIdentitySQLControlSettingsCreateOrUpdateFuture")
 		return
 	}
@@ -15340,6 +15368,7 @@ func (future *WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateFuture)
 		return
 	}
 	if !done {
+		sbap.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.WorkspaceManagedSQLServerBlobAuditingPoliciesCreateOrUpdateFuture")
 		return
 	}
@@ -15382,6 +15411,7 @@ func (future *WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdateFuture) 
 		return
 	}
 	if !done {
+		ep.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.WorkspaceManagedSQLServerEncryptionProtectorCreateOrUpdateFuture")
 		return
 	}
@@ -15424,6 +15454,7 @@ func (future *WorkspaceManagedSQLServerEncryptionProtectorRevalidateFuture) resu
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.WorkspaceManagedSQLServerEncryptionProtectorRevalidateFuture")
 		return
 	}
@@ -15460,6 +15491,7 @@ func (future *WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdat
 		return
 	}
 	if !done {
+		esbap.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.WorkspaceManagedSQLServerExtendedBlobAuditingPoliciesCreateOrUpdateFuture")
 		return
 	}
@@ -15502,6 +15534,7 @@ func (future *WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateFuture) 
 		return
 	}
 	if !done {
+		ssap.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.WorkspaceManagedSQLServerSecurityAlertPolicyCreateOrUpdateFuture")
 		return
 	}
@@ -15758,6 +15791,7 @@ func (future *WorkspacesCreateOrUpdateFuture) result(client WorkspacesClient) (w
 		return
 	}
 	if !done {
+		w.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.WorkspacesCreateOrUpdateFuture")
 		return
 	}
@@ -15800,6 +15834,7 @@ func (future *WorkspacesDeleteFuture) result(client WorkspacesClient) (so SetObj
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.WorkspacesDeleteFuture")
 		return
 	}
@@ -15842,6 +15877,7 @@ func (future *WorkspaceSQLAadAdminsCreateOrUpdateFuture) result(client Workspace
 		return
 	}
 	if !done {
+		waai.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.WorkspaceSQLAadAdminsCreateOrUpdateFuture")
 		return
 	}
@@ -15884,6 +15920,7 @@ func (future *WorkspaceSQLAadAdminsDeleteFuture) result(client WorkspaceSQLAadAd
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.WorkspaceSQLAadAdminsDeleteFuture")
 		return
 	}
@@ -15920,6 +15957,7 @@ func (future *WorkspacesUpdateFuture) result(client WorkspacesClient) (w Workspa
 		return
 	}
 	if !done {
+		w.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("synapse.WorkspacesUpdateFuture")
 		return
 	}

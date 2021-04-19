@@ -307,6 +307,7 @@ func (future *DefinitionsCreateFuture) result(client DefinitionsClient) (d Defin
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("subscription.DefinitionsCreateFuture")
 		return
 	}

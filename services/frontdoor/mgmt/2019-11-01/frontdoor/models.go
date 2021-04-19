@@ -368,6 +368,7 @@ func (future *EndpointsPurgeContentFuture) result(client EndpointsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.EndpointsPurgeContentFuture")
 		return
 	}
@@ -738,6 +739,7 @@ func (future *ExperimentsCreateOrUpdateFuture) result(client ExperimentsClient) 
 		return
 	}
 	if !done {
+		e.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.ExperimentsCreateOrUpdateFuture")
 		return
 	}
@@ -780,6 +782,7 @@ func (future *ExperimentsDeleteFuture) result(client ExperimentsClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.ExperimentsDeleteFuture")
 		return
 	}
@@ -816,6 +819,7 @@ func (future *ExperimentsUpdateFuture) result(client ExperimentsClient) (e Exper
 		return
 	}
 	if !done {
+		e.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.ExperimentsUpdateFuture")
 		return
 	}
@@ -1077,6 +1081,7 @@ func (future *FrontDoorsCreateOrUpdateFutureType) result(client FrontDoorsClient
 		return
 	}
 	if !done {
+		fd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.FrontDoorsCreateOrUpdateFutureType")
 		return
 	}
@@ -1119,6 +1124,7 @@ func (future *FrontDoorsDeleteFutureType) result(client FrontDoorsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.FrontDoorsDeleteFutureType")
 		return
 	}
@@ -1282,6 +1288,7 @@ func (future *FrontendEndpointsDisableHTTPSFuture) result(client FrontendEndpoin
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.FrontendEndpointsDisableHTTPSFuture")
 		return
 	}
@@ -1318,6 +1325,7 @@ func (future *FrontendEndpointsEnableHTTPSFuture) result(client FrontendEndpoint
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.FrontendEndpointsEnableHTTPSFuture")
 		return
 	}
@@ -2500,6 +2508,7 @@ func (future *NetworkExperimentProfilesCreateOrUpdateFuture) result(client Netwo
 		return
 	}
 	if !done {
+		p.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.NetworkExperimentProfilesCreateOrUpdateFuture")
 		return
 	}
@@ -2542,6 +2551,7 @@ func (future *NetworkExperimentProfilesDeleteFuture) result(client NetworkExperi
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.NetworkExperimentProfilesDeleteFuture")
 		return
 	}
@@ -2578,6 +2588,7 @@ func (future *NetworkExperimentProfilesUpdateFuture) result(client NetworkExperi
 		return
 	}
 	if !done {
+		p.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.NetworkExperimentProfilesUpdateFuture")
 		return
 	}
@@ -2620,6 +2631,7 @@ func (future *PoliciesCreateOrUpdateFuture) result(client PoliciesClient) (wafp 
 		return
 	}
 	if !done {
+		wafp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.PoliciesCreateOrUpdateFuture")
 		return
 	}
@@ -2662,6 +2674,7 @@ func (future *PoliciesDeleteFuture) result(client PoliciesClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("frontdoor.PoliciesDeleteFuture")
 		return
 	}

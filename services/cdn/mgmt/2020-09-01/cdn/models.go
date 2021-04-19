@@ -49,6 +49,7 @@ func (future *AFDCustomDomainsCreateFuture) result(client AFDCustomDomainsClient
 		return
 	}
 	if !done {
+		ad.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.AFDCustomDomainsCreateFuture")
 		return
 	}
@@ -91,6 +92,7 @@ func (future *AFDCustomDomainsDeleteFuture) result(client AFDCustomDomainsClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.AFDCustomDomainsDeleteFuture")
 		return
 	}
@@ -127,6 +129,7 @@ func (future *AFDCustomDomainsRefreshValidationTokenFuture) result(client AFDCus
 		return
 	}
 	if !done {
+		vt.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.AFDCustomDomainsRefreshValidationTokenFuture")
 		return
 	}
@@ -169,6 +172,7 @@ func (future *AFDCustomDomainsUpdateFuture) result(client AFDCustomDomainsClient
 		return
 	}
 	if !done {
+		ad.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.AFDCustomDomainsUpdateFuture")
 		return
 	}
@@ -870,6 +874,7 @@ func (future *AFDEndpointsCreateFuture) result(client AFDEndpointsClient) (ae AF
 		return
 	}
 	if !done {
+		ae.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.AFDEndpointsCreateFuture")
 		return
 	}
@@ -912,6 +917,7 @@ func (future *AFDEndpointsDeleteFuture) result(client AFDEndpointsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.AFDEndpointsDeleteFuture")
 		return
 	}
@@ -948,6 +954,7 @@ func (future *AFDEndpointsPurgeContentFuture) result(client AFDEndpointsClient) 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.AFDEndpointsPurgeContentFuture")
 		return
 	}
@@ -984,6 +991,7 @@ func (future *AFDEndpointsUpdateFuture) result(client AFDEndpointsClient) (ae AF
 		return
 	}
 	if !done {
+		ae.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.AFDEndpointsUpdateFuture")
 		return
 	}
@@ -1462,6 +1470,7 @@ func (future *AFDOriginGroupsCreateFuture) result(client AFDOriginGroupsClient) 
 		return
 	}
 	if !done {
+		aog.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.AFDOriginGroupsCreateFuture")
 		return
 	}
@@ -1504,6 +1513,7 @@ func (future *AFDOriginGroupsDeleteFuture) result(client AFDOriginGroupsClient) 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.AFDOriginGroupsDeleteFuture")
 		return
 	}
@@ -1540,6 +1550,7 @@ func (future *AFDOriginGroupsUpdateFuture) result(client AFDOriginGroupsClient) 
 		return
 	}
 	if !done {
+		aog.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.AFDOriginGroupsUpdateFuture")
 		return
 	}
@@ -1863,6 +1874,7 @@ func (future *AFDOriginsCreateFuture) result(client AFDOriginsClient) (ao AFDOri
 		return
 	}
 	if !done {
+		ao.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.AFDOriginsCreateFuture")
 		return
 	}
@@ -1905,6 +1917,7 @@ func (future *AFDOriginsDeleteFuture) result(client AFDOriginsClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.AFDOriginsDeleteFuture")
 		return
 	}
@@ -1941,6 +1954,7 @@ func (future *AFDOriginsUpdateFuture) result(client AFDOriginsClient) (ao AFDOri
 		return
 	}
 	if !done {
+		ao.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.AFDOriginsUpdateFuture")
 		return
 	}
@@ -2585,6 +2599,7 @@ func (future *CustomDomainsCreateFuture) result(client CustomDomainsClient) (cd 
 		return
 	}
 	if !done {
+		cd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.CustomDomainsCreateFuture")
 		return
 	}
@@ -2627,6 +2642,7 @@ func (future *CustomDomainsDeleteFuture) result(client CustomDomainsClient) (cd 
 		return
 	}
 	if !done {
+		cd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.CustomDomainsDeleteFuture")
 		return
 	}
@@ -5716,6 +5732,7 @@ func (future *EndpointsCreateFuture) result(client EndpointsClient) (e Endpoint,
 		return
 	}
 	if !done {
+		e.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsCreateFuture")
 		return
 	}
@@ -5758,6 +5775,7 @@ func (future *EndpointsDeleteFuture) result(client EndpointsClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsDeleteFuture")
 		return
 	}
@@ -5794,6 +5812,7 @@ func (future *EndpointsLoadContentFuture) result(client EndpointsClient) (ar aut
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsLoadContentFuture")
 		return
 	}
@@ -5830,6 +5849,7 @@ func (future *EndpointsPurgeContentFuture) result(client EndpointsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsPurgeContentFuture")
 		return
 	}
@@ -5866,6 +5886,7 @@ func (future *EndpointsStartFuture) result(client EndpointsClient) (e Endpoint, 
 		return
 	}
 	if !done {
+		e.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsStartFuture")
 		return
 	}
@@ -5908,6 +5929,7 @@ func (future *EndpointsStopFuture) result(client EndpointsClient) (e Endpoint, e
 		return
 	}
 	if !done {
+		e.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsStopFuture")
 		return
 	}
@@ -5950,6 +5972,7 @@ func (future *EndpointsUpdateFuture) result(client EndpointsClient) (e Endpoint,
 		return
 	}
 	if !done {
+		e.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsUpdateFuture")
 		return
 	}
@@ -7302,6 +7325,7 @@ func (future *OriginGroupsCreateFuture) result(client OriginGroupsClient) (og Or
 		return
 	}
 	if !done {
+		og.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.OriginGroupsCreateFuture")
 		return
 	}
@@ -7344,6 +7368,7 @@ func (future *OriginGroupsDeleteFuture) result(client OriginGroupsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.OriginGroupsDeleteFuture")
 		return
 	}
@@ -7380,6 +7405,7 @@ func (future *OriginGroupsUpdateFuture) result(client OriginGroupsClient) (og Or
 		return
 	}
 	if !done {
+		og.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.OriginGroupsUpdateFuture")
 		return
 	}
@@ -7712,6 +7738,7 @@ func (future *OriginsCreateFuture) result(client OriginsClient) (o Origin, err e
 		return
 	}
 	if !done {
+		o.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.OriginsCreateFuture")
 		return
 	}
@@ -7754,6 +7781,7 @@ func (future *OriginsDeleteFuture) result(client OriginsClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.OriginsDeleteFuture")
 		return
 	}
@@ -7790,6 +7818,7 @@ func (future *OriginsUpdateFuture) result(client OriginsClient) (o Origin, err e
 		return
 	}
 	if !done {
+		o.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.OriginsUpdateFuture")
 		return
 	}
@@ -7896,6 +7925,7 @@ func (future *PoliciesCreateOrUpdateFuture) result(client PoliciesClient) (wafp 
 		return
 	}
 	if !done {
+		wafp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.PoliciesCreateOrUpdateFuture")
 		return
 	}
@@ -7938,6 +7968,7 @@ func (future *PoliciesUpdateFuture) result(client PoliciesClient) (wafp WebAppli
 		return
 	}
 	if !done {
+		wafp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.PoliciesUpdateFuture")
 		return
 	}
@@ -8314,6 +8345,7 @@ func (future *ProfilesCreateFuture) result(client ProfilesClient) (p Profile, er
 		return
 	}
 	if !done {
+		p.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.ProfilesCreateFuture")
 		return
 	}
@@ -8356,6 +8388,7 @@ func (future *ProfilesDeleteFuture) result(client ProfilesClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.ProfilesDeleteFuture")
 		return
 	}
@@ -8392,6 +8425,7 @@ func (future *ProfilesUpdateFuture) result(client ProfilesClient) (p Profile, er
 		return
 	}
 	if !done {
+		p.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.ProfilesUpdateFuture")
 		return
 	}
@@ -9171,6 +9205,7 @@ func (future *RoutesCreateFuture) result(client RoutesClient) (r Route, err erro
 		return
 	}
 	if !done {
+		r.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.RoutesCreateFuture")
 		return
 	}
@@ -9212,6 +9247,7 @@ func (future *RoutesDeleteFuture) result(client RoutesClient) (ar autorest.Respo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.RoutesDeleteFuture")
 		return
 	}
@@ -9247,6 +9283,7 @@ func (future *RoutesUpdateFuture) result(client RoutesClient) (r Route, err erro
 		return
 	}
 	if !done {
+		r.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.RoutesUpdateFuture")
 		return
 	}
@@ -9707,6 +9744,7 @@ func (future *RulesCreateFuture) result(client RulesClient) (r Rule, err error) 
 		return
 	}
 	if !done {
+		r.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.RulesCreateFuture")
 		return
 	}
@@ -9748,6 +9786,7 @@ func (future *RulesDeleteFuture) result(client RulesClient) (ar autorest.Respons
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.RulesDeleteFuture")
 		return
 	}
@@ -10044,6 +10083,7 @@ func (future *RuleSetsCreateFuture) result(client RuleSetsClient) (rs RuleSet, e
 		return
 	}
 	if !done {
+		rs.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.RuleSetsCreateFuture")
 		return
 	}
@@ -10086,6 +10126,7 @@ func (future *RuleSetsDeleteFuture) result(client RuleSetsClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.RuleSetsDeleteFuture")
 		return
 	}
@@ -10121,6 +10162,7 @@ func (future *RulesUpdateFuture) result(client RulesClient) (r Rule, err error) 
 		return
 	}
 	if !done {
+		r.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.RulesUpdateFuture")
 		return
 	}
@@ -10666,6 +10708,7 @@ func (future *SecretsCreateFuture) result(client SecretsClient) (s Secret, err e
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.SecretsCreateFuture")
 		return
 	}
@@ -10708,6 +10751,7 @@ func (future *SecretsDeleteFuture) result(client SecretsClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.SecretsDeleteFuture")
 		return
 	}
@@ -10744,6 +10788,7 @@ func (future *SecretsUpdateFuture) result(client SecretsClient) (s Secret, err e
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.SecretsUpdateFuture")
 		return
 	}
@@ -10786,6 +10831,7 @@ func (future *SecurityPoliciesCreateFuture) result(client SecurityPoliciesClient
 		return
 	}
 	if !done {
+		sp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.SecurityPoliciesCreateFuture")
 		return
 	}
@@ -10828,6 +10874,7 @@ func (future *SecurityPoliciesDeleteFuture) result(client SecurityPoliciesClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.SecurityPoliciesDeleteFuture")
 		return
 	}
@@ -10864,6 +10911,7 @@ func (future *SecurityPoliciesPatchFuture) result(client SecurityPoliciesClient)
 		return
 	}
 	if !done {
+		sp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.SecurityPoliciesPatchFuture")
 		return
 	}

@@ -390,6 +390,7 @@ func (future *CustomDomainsCreateFuture) result(client CustomDomainsClient) (cd 
 		return
 	}
 	if !done {
+		cd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.CustomDomainsCreateFuture")
 		return
 	}
@@ -432,6 +433,7 @@ func (future *CustomDomainsDeleteFuture) result(client CustomDomainsClient) (cd 
 		return
 	}
 	if !done {
+		cd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.CustomDomainsDeleteFuture")
 		return
 	}
@@ -1148,6 +1150,7 @@ func (future *EndpointsCreateFuture) result(client EndpointsClient) (e Endpoint,
 		return
 	}
 	if !done {
+		e.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsCreateFuture")
 		return
 	}
@@ -1190,6 +1193,7 @@ func (future *EndpointsDeleteFuture) result(client EndpointsClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsDeleteFuture")
 		return
 	}
@@ -1226,6 +1230,7 @@ func (future *EndpointsLoadContentFuture) result(client EndpointsClient) (ar aut
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsLoadContentFuture")
 		return
 	}
@@ -1262,6 +1267,7 @@ func (future *EndpointsPurgeContentFuture) result(client EndpointsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsPurgeContentFuture")
 		return
 	}
@@ -1298,6 +1304,7 @@ func (future *EndpointsStartFuture) result(client EndpointsClient) (e Endpoint, 
 		return
 	}
 	if !done {
+		e.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsStartFuture")
 		return
 	}
@@ -1340,6 +1347,7 @@ func (future *EndpointsStopFuture) result(client EndpointsClient) (e Endpoint, e
 		return
 	}
 	if !done {
+		e.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsStopFuture")
 		return
 	}
@@ -1382,6 +1390,7 @@ func (future *EndpointsUpdateFuture) result(client EndpointsClient) (e Endpoint,
 		return
 	}
 	if !done {
+		e.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.EndpointsUpdateFuture")
 		return
 	}
@@ -2017,6 +2026,7 @@ func (future *OriginsUpdateFuture) result(client OriginsClient) (o Origin, err e
 		return
 	}
 	if !done {
+		o.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.OriginsUpdateFuture")
 		return
 	}
@@ -2389,6 +2399,7 @@ func (future *ProfilesCreateFuture) result(client ProfilesClient) (p Profile, er
 		return
 	}
 	if !done {
+		p.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.ProfilesCreateFuture")
 		return
 	}
@@ -2431,6 +2442,7 @@ func (future *ProfilesDeleteFuture) result(client ProfilesClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.ProfilesDeleteFuture")
 		return
 	}
@@ -2467,6 +2479,7 @@ func (future *ProfilesUpdateFuture) result(client ProfilesClient) (p Profile, er
 		return
 	}
 	if !done {
+		p.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("cdn.ProfilesUpdateFuture")
 		return
 	}

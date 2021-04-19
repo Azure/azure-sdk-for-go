@@ -2192,6 +2192,7 @@ func (future *ClustersCreateOrUpdateFuture) result(client ClustersClient) (c Clu
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("streamanalytics.ClustersCreateOrUpdateFuture")
 		return
 	}
@@ -2234,6 +2235,7 @@ func (future *ClustersDeleteFuture) result(client ClustersClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("streamanalytics.ClustersDeleteFuture")
 		return
 	}
@@ -2279,6 +2281,7 @@ func (future *ClustersUpdateFuture) result(client ClustersClient) (c Cluster, er
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("streamanalytics.ClustersUpdateFuture")
 		return
 	}
@@ -4017,6 +4020,7 @@ func (future *FunctionsTestFuture) result(client FunctionsClient) (rts ResourceT
 		return
 	}
 	if !done {
+		rts.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("streamanalytics.FunctionsTestFuture")
 		return
 	}
@@ -4466,6 +4470,7 @@ func (future *InputsTestFuture) result(client InputsClient) (rts ResourceTestSta
 		return
 	}
 	if !done {
+		rts.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("streamanalytics.InputsTestFuture")
 		return
 	}
@@ -5604,6 +5609,7 @@ func (future *OutputsTestFuture) result(client OutputsClient) (rts ResourceTestS
 		return
 	}
 	if !done {
+		rts.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("streamanalytics.OutputsTestFuture")
 		return
 	}
@@ -6047,6 +6053,7 @@ func (future *PrivateEndpointsDeleteFuture) result(client PrivateEndpointsClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("streamanalytics.PrivateEndpointsDeleteFuture")
 		return
 	}
@@ -7343,6 +7350,7 @@ func (future *StreamingJobsCreateOrReplaceFuture) result(client StreamingJobsCli
 		return
 	}
 	if !done {
+		sj.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("streamanalytics.StreamingJobsCreateOrReplaceFuture")
 		return
 	}
@@ -7385,6 +7393,7 @@ func (future *StreamingJobsDeleteFuture) result(client StreamingJobsClient) (ar 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("streamanalytics.StreamingJobsDeleteFuture")
 		return
 	}
@@ -7427,6 +7436,7 @@ func (future *StreamingJobsStartFuture) result(client StreamingJobsClient) (ar a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("streamanalytics.StreamingJobsStartFuture")
 		return
 	}
@@ -7463,6 +7473,7 @@ func (future *StreamingJobsStopFuture) result(client StreamingJobsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("streamanalytics.StreamingJobsStopFuture")
 		return
 	}

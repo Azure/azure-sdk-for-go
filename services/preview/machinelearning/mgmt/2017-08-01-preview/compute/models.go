@@ -463,6 +463,7 @@ func (future *OperationalizationClustersCreateOrUpdateFuture) result(client Oper
 		return
 	}
 	if !done {
+		oc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.OperationalizationClustersCreateOrUpdateFuture")
 		return
 	}
@@ -505,6 +506,7 @@ func (future *OperationalizationClustersDeleteFuture) result(client Operationali
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.OperationalizationClustersDeleteFuture")
 		return
 	}
@@ -541,6 +543,7 @@ func (future *OperationalizationClustersUpdateSystemServicesFuture) result(clien
 		return
 	}
 	if !done {
+		ussr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("compute.OperationalizationClustersUpdateSystemServicesFuture")
 		return
 	}

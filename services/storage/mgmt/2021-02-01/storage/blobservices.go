@@ -87,8 +87,8 @@ func (client BlobServicesClient) GetServiceProperties(ctx context.Context, resou
 // GetServicePropertiesPreparer prepares the GetServiceProperties request.
 func (client BlobServicesClient) GetServicePropertiesPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"BlobServicesName":  autorest.Encode("path", "default"),
 		"accountName":       autorest.Encode("path", accountName),
+		"BlobServicesName":  autorest.Encode("path", "default"),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
@@ -303,8 +303,8 @@ func (client BlobServicesClient) SetServiceProperties(ctx context.Context, resou
 // SetServicePropertiesPreparer prepares the SetServiceProperties request.
 func (client BlobServicesClient) SetServicePropertiesPreparer(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"BlobServicesName":  autorest.Encode("path", "default"),
 		"accountName":       autorest.Encode("path", accountName),
+		"BlobServicesName":  autorest.Encode("path", "default"),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}

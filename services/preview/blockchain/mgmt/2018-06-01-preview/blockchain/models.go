@@ -623,6 +623,7 @@ func (future *MembersCreateFuture) result(client MembersClient) (mVar Member, er
 		return
 	}
 	if !done {
+		mVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("blockchain.MembersCreateFuture")
 		return
 	}
@@ -665,6 +666,7 @@ func (future *MembersDeleteFuture) result(client MembersClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("blockchain.MembersDeleteFuture")
 		return
 	}
@@ -1330,6 +1332,7 @@ func (future *TransactionNodesCreateFuture) result(client TransactionNodesClient
 		return
 	}
 	if !done {
+		tn.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("blockchain.TransactionNodesCreateFuture")
 		return
 	}
@@ -1372,6 +1375,7 @@ func (future *TransactionNodesDeleteFuture) result(client TransactionNodesClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("blockchain.TransactionNodesDeleteFuture")
 		return
 	}

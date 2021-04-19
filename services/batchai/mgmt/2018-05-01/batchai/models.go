@@ -513,6 +513,7 @@ func (future *ClustersCreateFuture) result(client ClustersClient) (c Cluster, er
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batchai.ClustersCreateFuture")
 		return
 	}
@@ -555,6 +556,7 @@ func (future *ClustersDeleteFuture) result(client ClustersClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batchai.ClustersDeleteFuture")
 		return
 	}
@@ -956,6 +958,7 @@ func (future *ExperimentsCreateFuture) result(client ExperimentsClient) (e Exper
 		return
 	}
 	if !done {
+		e.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batchai.ExperimentsCreateFuture")
 		return
 	}
@@ -998,6 +1001,7 @@ func (future *ExperimentsDeleteFuture) result(client ExperimentsClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batchai.ExperimentsDeleteFuture")
 		return
 	}
@@ -1615,6 +1619,7 @@ func (future *FileServersCreateFuture) result(client FileServersClient) (fs File
 		return
 	}
 	if !done {
+		fs.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batchai.FileServersCreateFuture")
 		return
 	}
@@ -1657,6 +1662,7 @@ func (future *FileServersDeleteFuture) result(client FileServersClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batchai.FileServersDeleteFuture")
 		return
 	}
@@ -2211,6 +2217,7 @@ func (future *JobsCreateFuture) result(client JobsClient) (j Job, err error) {
 		return
 	}
 	if !done {
+		j.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batchai.JobsCreateFuture")
 		return
 	}
@@ -2252,6 +2259,7 @@ func (future *JobsDeleteFuture) result(client JobsClient) (ar autorest.Response,
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batchai.JobsDeleteFuture")
 		return
 	}
@@ -2288,6 +2296,7 @@ func (future *JobsTerminateFuture) result(client JobsClient) (ar autorest.Respon
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batchai.JobsTerminateFuture")
 		return
 	}
@@ -3389,6 +3398,7 @@ func (future *WorkspacesCreateFuture) result(client WorkspacesClient) (w Workspa
 		return
 	}
 	if !done {
+		w.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batchai.WorkspacesCreateFuture")
 		return
 	}
@@ -3431,6 +3441,7 @@ func (future *WorkspacesDeleteFuture) result(client WorkspacesClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batchai.WorkspacesDeleteFuture")
 		return
 	}

@@ -556,6 +556,7 @@ func (future *EnvironmentsCreateOrUpdateFuture) result(client EnvironmentsClient
 		return
 	}
 	if !done {
+		er.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("timeseriesinsights.EnvironmentsCreateOrUpdateFuture")
 		return
 	}
@@ -613,6 +614,7 @@ func (future *EnvironmentsUpdateFuture) result(client EnvironmentsClient) (er En
 		return
 	}
 	if !done {
+		er.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("timeseriesinsights.EnvironmentsUpdateFuture")
 		return
 	}

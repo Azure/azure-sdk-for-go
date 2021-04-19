@@ -500,6 +500,7 @@ func (future *ConfigurationsUpdateFuture) result(client ConfigurationsClient) (c
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.ConfigurationsUpdateFuture")
 		return
 	}
@@ -782,6 +783,7 @@ func (future *DatabasesCreateOrUpdateFuture) result(client DatabasesClient) (d D
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.DatabasesCreateOrUpdateFuture")
 		return
 	}
@@ -824,6 +826,7 @@ func (future *DatabasesDeleteFuture) result(client DatabasesClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.DatabasesDeleteFuture")
 		return
 	}
@@ -1137,6 +1140,7 @@ func (future *FirewallRulesCreateOrUpdateFuture) result(client FirewallRulesClie
 		return
 	}
 	if !done {
+		fr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.FirewallRulesCreateOrUpdateFuture")
 		return
 	}
@@ -1179,6 +1183,7 @@ func (future *FirewallRulesDeleteFuture) result(client FirewallRulesClient) (ar 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.FirewallRulesDeleteFuture")
 		return
 	}
@@ -1909,6 +1914,7 @@ func (future *ServerKeysCreateOrUpdateFuture) result(client ServerKeysClient) (s
 		return
 	}
 	if !done {
+		sk.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.ServerKeysCreateOrUpdateFuture")
 		return
 	}
@@ -1951,6 +1957,7 @@ func (future *ServerKeysDeleteFuture) result(client ServerKeysClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.ServerKeysDeleteFuture")
 		return
 	}
@@ -2265,6 +2272,7 @@ func (future *ServersCreateFuture) result(client ServersClient) (s Server, err e
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.ServersCreateFuture")
 		return
 	}
@@ -2307,6 +2315,7 @@ func (future *ServersDeleteFuture) result(client ServersClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.ServersDeleteFuture")
 		return
 	}
@@ -2343,6 +2352,7 @@ func (future *ServersRestartFuture) result(client ServersClient) (ar autorest.Re
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.ServersRestartFuture")
 		return
 	}
@@ -2378,6 +2388,7 @@ func (future *ServersStartFuture) result(client ServersClient) (ar autorest.Resp
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.ServersStartFuture")
 		return
 	}
@@ -2413,6 +2424,7 @@ func (future *ServersStopFuture) result(client ServersClient) (ar autorest.Respo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.ServersStopFuture")
 		return
 	}
@@ -2449,6 +2461,7 @@ func (future *ServersUpdateFuture) result(client ServersClient) (s Server, err e
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.ServersUpdateFuture")
 		return
 	}

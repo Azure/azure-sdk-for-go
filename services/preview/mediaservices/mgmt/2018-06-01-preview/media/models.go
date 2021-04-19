@@ -5463,6 +5463,7 @@ func (future *LiveEventsCreateFuture) result(client LiveEventsClient) (le LiveEv
 		return
 	}
 	if !done {
+		le.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("media.LiveEventsCreateFuture")
 		return
 	}
@@ -5505,6 +5506,7 @@ func (future *LiveEventsDeleteFuture) result(client LiveEventsClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("media.LiveEventsDeleteFuture")
 		return
 	}
@@ -5541,6 +5543,7 @@ func (future *LiveEventsResetFuture) result(client LiveEventsClient) (ar autores
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("media.LiveEventsResetFuture")
 		return
 	}
@@ -5577,6 +5580,7 @@ func (future *LiveEventsStartFuture) result(client LiveEventsClient) (ar autores
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("media.LiveEventsStartFuture")
 		return
 	}
@@ -5613,6 +5617,7 @@ func (future *LiveEventsStopFuture) result(client LiveEventsClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("media.LiveEventsStopFuture")
 		return
 	}
@@ -5649,6 +5654,7 @@ func (future *LiveEventsUpdateFuture) result(client LiveEventsClient) (le LiveEv
 		return
 	}
 	if !done {
+		le.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("media.LiveEventsUpdateFuture")
 		return
 	}
@@ -5973,6 +5979,7 @@ func (future *LiveOutputsCreateFuture) result(client LiveOutputsClient) (lo Live
 		return
 	}
 	if !done {
+		lo.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("media.LiveOutputsCreateFuture")
 		return
 	}
@@ -6015,6 +6022,7 @@ func (future *LiveOutputsDeleteFuture) result(client LiveOutputsClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("media.LiveOutputsDeleteFuture")
 		return
 	}
@@ -7729,6 +7737,7 @@ func (future *StreamingEndpointsCreateFuture) result(client StreamingEndpointsCl
 		return
 	}
 	if !done {
+		se.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("media.StreamingEndpointsCreateFuture")
 		return
 	}
@@ -7771,6 +7780,7 @@ func (future *StreamingEndpointsDeleteFuture) result(client StreamingEndpointsCl
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("media.StreamingEndpointsDeleteFuture")
 		return
 	}
@@ -7807,6 +7817,7 @@ func (future *StreamingEndpointsScaleFuture) result(client StreamingEndpointsCli
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("media.StreamingEndpointsScaleFuture")
 		return
 	}
@@ -7843,6 +7854,7 @@ func (future *StreamingEndpointsStartFuture) result(client StreamingEndpointsCli
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("media.StreamingEndpointsStartFuture")
 		return
 	}
@@ -7879,6 +7891,7 @@ func (future *StreamingEndpointsStopFuture) result(client StreamingEndpointsClie
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("media.StreamingEndpointsStopFuture")
 		return
 	}
@@ -7915,6 +7928,7 @@ func (future *StreamingEndpointsUpdateFuture) result(client StreamingEndpointsCl
 		return
 	}
 	if !done {
+		se.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("media.StreamingEndpointsUpdateFuture")
 		return
 	}

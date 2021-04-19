@@ -4132,6 +4132,7 @@ func (future *ServicesCreateOrUpdateFuture) result(client ServicesClient) (s Ser
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("datamigration.ServicesCreateOrUpdateFuture")
 		return
 	}
@@ -4174,6 +4175,7 @@ func (future *ServicesDeleteFuture) result(client ServicesClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("datamigration.ServicesDeleteFuture")
 		return
 	}
@@ -4383,6 +4385,7 @@ func (future *ServicesStartFuture) result(client ServicesClient) (ar autorest.Re
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("datamigration.ServicesStartFuture")
 		return
 	}
@@ -4418,6 +4421,7 @@ func (future *ServicesStopFuture) result(client ServicesClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("datamigration.ServicesStopFuture")
 		return
 	}
@@ -4467,6 +4471,7 @@ func (future *ServicesUpdateFuture) result(client ServicesClient) (s Service, er
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("datamigration.ServicesUpdateFuture")
 		return
 	}

@@ -1322,6 +1322,7 @@ func (future *WorkflowsRunFuture) result(client WorkflowsClient) (wr WorkflowRun
 		return
 	}
 	if !done {
+		wr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("logic.WorkflowsRunFuture")
 		return
 	}

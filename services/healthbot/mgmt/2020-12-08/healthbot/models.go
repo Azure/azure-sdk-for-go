@@ -367,6 +367,7 @@ func (future *BotsCreateFuture) result(client BotsClient) (hb HealthBot, err err
 		return
 	}
 	if !done {
+		hb.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("healthbot.BotsCreateFuture")
 		return
 	}
@@ -408,6 +409,7 @@ func (future *BotsDeleteFuture) result(client BotsClient) (ar autorest.Response,
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("healthbot.BotsDeleteFuture")
 		return
 	}

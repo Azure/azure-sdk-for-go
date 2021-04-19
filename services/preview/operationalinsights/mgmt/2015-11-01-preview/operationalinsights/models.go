@@ -890,6 +890,7 @@ func (future *WorkspacesCreateOrUpdateFuture) result(client WorkspacesClient) (w
 		return
 	}
 	if !done {
+		w.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("operationalinsights.WorkspacesCreateOrUpdateFuture")
 		return
 	}

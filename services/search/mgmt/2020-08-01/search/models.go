@@ -941,6 +941,7 @@ func (future *ServicesCreateOrUpdateFuture) result(client ServicesClient) (s Ser
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("search.ServicesCreateOrUpdateFuture")
 		return
 	}
@@ -1340,6 +1341,7 @@ func (future *SharedPrivateLinkResourcesCreateOrUpdateFuture) result(client Shar
 		return
 	}
 	if !done {
+		splr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("search.SharedPrivateLinkResourcesCreateOrUpdateFuture")
 		return
 	}
@@ -1382,6 +1384,7 @@ func (future *SharedPrivateLinkResourcesDeleteFuture) result(client SharedPrivat
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("search.SharedPrivateLinkResourcesDeleteFuture")
 		return
 	}

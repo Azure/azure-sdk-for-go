@@ -1955,6 +1955,7 @@ func (future *MachineLearningComputeCreateOrUpdateFuture) result(client MachineL
 		return
 	}
 	if !done {
+		cr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("machinelearningservices.MachineLearningComputeCreateOrUpdateFuture")
 		return
 	}
@@ -1997,6 +1998,7 @@ func (future *MachineLearningComputeDeleteFuture) result(client MachineLearningC
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("machinelearningservices.MachineLearningComputeDeleteFuture")
 		return
 	}
@@ -2033,6 +2035,7 @@ func (future *MachineLearningComputeUpdateFuture) result(client MachineLearningC
 		return
 	}
 	if !done {
+		cr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("machinelearningservices.MachineLearningComputeUpdateFuture")
 		return
 	}
@@ -2113,6 +2116,7 @@ func (future *NotebooksPrepareFuture) result(client NotebooksClient) (nri Notebo
 		return
 	}
 	if !done {
+		nri.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("machinelearningservices.NotebooksPrepareFuture")
 		return
 	}
@@ -3715,6 +3719,7 @@ func (future *WorkspacesCreateOrUpdateFuture) result(client WorkspacesClient) (w
 		return
 	}
 	if !done {
+		w.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("machinelearningservices.WorkspacesCreateOrUpdateFuture")
 		return
 	}
@@ -3757,6 +3762,7 @@ func (future *WorkspacesDeleteFuture) result(client WorkspacesClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("machinelearningservices.WorkspacesDeleteFuture")
 		return
 	}

@@ -176,6 +176,7 @@ func (future *ADCCatalogsDeleteFuture) result(client ADCCatalogsClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("datacatalog.ADCCatalogsDeleteFuture")
 		return
 	}

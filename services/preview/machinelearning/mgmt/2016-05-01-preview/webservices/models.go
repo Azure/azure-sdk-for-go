@@ -128,6 +128,7 @@ func (future *CreateOrUpdateFuture) result(client Client) (ws WebService, err er
 		return
 	}
 	if !done {
+		ws.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("webservices.CreateOrUpdateFuture")
 		return
 	}
@@ -503,6 +504,7 @@ func (future *PatchFuture) result(client Client) (ws WebService, err error) {
 		return
 	}
 	if !done {
+		ws.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("webservices.PatchFuture")
 		return
 	}
@@ -826,6 +828,7 @@ func (future *RemoveFuture) result(client Client) (ar autorest.Response, err err
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("webservices.RemoveFuture")
 		return
 	}

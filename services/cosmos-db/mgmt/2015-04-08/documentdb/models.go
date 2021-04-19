@@ -903,6 +903,7 @@ func (future *DatabaseAccountsCreateOrUpdateFuture) result(client DatabaseAccoun
 		return
 	}
 	if !done {
+		da.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsCreateOrUpdateFuture")
 		return
 	}
@@ -945,6 +946,7 @@ func (future *DatabaseAccountsCreateUpdateCassandraKeyspaceFuture) result(client
 		return
 	}
 	if !done {
+		ck.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsCreateUpdateCassandraKeyspaceFuture")
 		return
 	}
@@ -987,6 +989,7 @@ func (future *DatabaseAccountsCreateUpdateCassandraTableFuture) result(client Da
 		return
 	}
 	if !done {
+		ct.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsCreateUpdateCassandraTableFuture")
 		return
 	}
@@ -1029,6 +1032,7 @@ func (future *DatabaseAccountsCreateUpdateGremlinDatabaseFuture) result(client D
 		return
 	}
 	if !done {
+		gd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsCreateUpdateGremlinDatabaseFuture")
 		return
 	}
@@ -1071,6 +1075,7 @@ func (future *DatabaseAccountsCreateUpdateGremlinGraphFuture) result(client Data
 		return
 	}
 	if !done {
+		gg.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsCreateUpdateGremlinGraphFuture")
 		return
 	}
@@ -1113,6 +1118,7 @@ func (future *DatabaseAccountsCreateUpdateMongoDBCollectionFuture) result(client
 		return
 	}
 	if !done {
+		mdc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsCreateUpdateMongoDBCollectionFuture")
 		return
 	}
@@ -1155,6 +1161,7 @@ func (future *DatabaseAccountsCreateUpdateMongoDBDatabaseFuture) result(client D
 		return
 	}
 	if !done {
+		mdd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsCreateUpdateMongoDBDatabaseFuture")
 		return
 	}
@@ -1197,6 +1204,7 @@ func (future *DatabaseAccountsCreateUpdateSQLContainerFuture) result(client Data
 		return
 	}
 	if !done {
+		sc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsCreateUpdateSQLContainerFuture")
 		return
 	}
@@ -1239,6 +1247,7 @@ func (future *DatabaseAccountsCreateUpdateSQLDatabaseFuture) result(client Datab
 		return
 	}
 	if !done {
+		sd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsCreateUpdateSQLDatabaseFuture")
 		return
 	}
@@ -1281,6 +1290,7 @@ func (future *DatabaseAccountsCreateUpdateTableFuture) result(client DatabaseAcc
 		return
 	}
 	if !done {
+		t.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsCreateUpdateTableFuture")
 		return
 	}
@@ -1323,6 +1333,7 @@ func (future *DatabaseAccountsDeleteCassandraKeyspaceFuture) result(client Datab
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsDeleteCassandraKeyspaceFuture")
 		return
 	}
@@ -1359,6 +1370,7 @@ func (future *DatabaseAccountsDeleteCassandraTableFuture) result(client Database
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsDeleteCassandraTableFuture")
 		return
 	}
@@ -1395,6 +1407,7 @@ func (future *DatabaseAccountsDeleteFuture) result(client DatabaseAccountsClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsDeleteFuture")
 		return
 	}
@@ -1431,6 +1444,7 @@ func (future *DatabaseAccountsDeleteGremlinDatabaseFuture) result(client Databas
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsDeleteGremlinDatabaseFuture")
 		return
 	}
@@ -1467,6 +1481,7 @@ func (future *DatabaseAccountsDeleteGremlinGraphFuture) result(client DatabaseAc
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsDeleteGremlinGraphFuture")
 		return
 	}
@@ -1503,6 +1518,7 @@ func (future *DatabaseAccountsDeleteMongoDBCollectionFuture) result(client Datab
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsDeleteMongoDBCollectionFuture")
 		return
 	}
@@ -1539,6 +1555,7 @@ func (future *DatabaseAccountsDeleteMongoDBDatabaseFuture) result(client Databas
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsDeleteMongoDBDatabaseFuture")
 		return
 	}
@@ -1575,6 +1592,7 @@ func (future *DatabaseAccountsDeleteSQLContainerFuture) result(client DatabaseAc
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsDeleteSQLContainerFuture")
 		return
 	}
@@ -1611,6 +1629,7 @@ func (future *DatabaseAccountsDeleteSQLDatabaseFuture) result(client DatabaseAcc
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsDeleteSQLDatabaseFuture")
 		return
 	}
@@ -1647,6 +1666,7 @@ func (future *DatabaseAccountsDeleteTableFuture) result(client DatabaseAccountsC
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsDeleteTableFuture")
 		return
 	}
@@ -1683,6 +1703,7 @@ func (future *DatabaseAccountsFailoverPriorityChangeFuture) result(client Databa
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsFailoverPriorityChangeFuture")
 		return
 	}
@@ -1727,6 +1748,7 @@ func (future *DatabaseAccountsOfflineRegionFuture) result(client DatabaseAccount
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsOfflineRegionFuture")
 		return
 	}
@@ -1763,6 +1785,7 @@ func (future *DatabaseAccountsOnlineRegionFuture) result(client DatabaseAccounts
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsOnlineRegionFuture")
 		return
 	}
@@ -1799,6 +1822,7 @@ func (future *DatabaseAccountsPatchFuture) result(client DatabaseAccountsClient)
 		return
 	}
 	if !done {
+		da.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsPatchFuture")
 		return
 	}
@@ -1841,6 +1865,7 @@ func (future *DatabaseAccountsRegenerateKeyFuture) result(client DatabaseAccount
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsRegenerateKeyFuture")
 		return
 	}
@@ -1877,6 +1902,7 @@ func (future *DatabaseAccountsUpdateCassandraKeyspaceThroughputFuture) result(cl
 		return
 	}
 	if !done {
+		t.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsUpdateCassandraKeyspaceThroughputFuture")
 		return
 	}
@@ -1919,6 +1945,7 @@ func (future *DatabaseAccountsUpdateCassandraTableThroughputFuture) result(clien
 		return
 	}
 	if !done {
+		t.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsUpdateCassandraTableThroughputFuture")
 		return
 	}
@@ -1961,6 +1988,7 @@ func (future *DatabaseAccountsUpdateGremlinDatabaseThroughputFuture) result(clie
 		return
 	}
 	if !done {
+		t.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsUpdateGremlinDatabaseThroughputFuture")
 		return
 	}
@@ -2003,6 +2031,7 @@ func (future *DatabaseAccountsUpdateGremlinGraphThroughputFuture) result(client 
 		return
 	}
 	if !done {
+		t.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsUpdateGremlinGraphThroughputFuture")
 		return
 	}
@@ -2045,6 +2074,7 @@ func (future *DatabaseAccountsUpdateMongoDBCollectionThroughputFuture) result(cl
 		return
 	}
 	if !done {
+		t.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsUpdateMongoDBCollectionThroughputFuture")
 		return
 	}
@@ -2087,6 +2117,7 @@ func (future *DatabaseAccountsUpdateMongoDBDatabaseThroughputFuture) result(clie
 		return
 	}
 	if !done {
+		t.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsUpdateMongoDBDatabaseThroughputFuture")
 		return
 	}
@@ -2129,6 +2160,7 @@ func (future *DatabaseAccountsUpdateSQLContainerThroughputFuture) result(client 
 		return
 	}
 	if !done {
+		t.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsUpdateSQLContainerThroughputFuture")
 		return
 	}
@@ -2171,6 +2203,7 @@ func (future *DatabaseAccountsUpdateSQLDatabaseThroughputFuture) result(client D
 		return
 	}
 	if !done {
+		t.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsUpdateSQLDatabaseThroughputFuture")
 		return
 	}
@@ -2213,6 +2246,7 @@ func (future *DatabaseAccountsUpdateTableThroughputFuture) result(client Databas
 		return
 	}
 	if !done {
+		t.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("documentdb.DatabaseAccountsUpdateTableThroughputFuture")
 		return
 	}

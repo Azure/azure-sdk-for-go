@@ -1616,6 +1616,7 @@ func (future *AppsApproveOrRejectPrivateEndpointConnectionFuture) result(client 
 		return
 	}
 	if !done {
+		rpecar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsApproveOrRejectPrivateEndpointConnectionFuture")
 		return
 	}
@@ -1658,6 +1659,7 @@ func (future *AppsApproveOrRejectPrivateEndpointConnectionSlotFuture) result(cli
 		return
 	}
 	if !done {
+		rpecar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsApproveOrRejectPrivateEndpointConnectionSlotFuture")
 		return
 	}
@@ -1700,6 +1702,7 @@ func (future *AppsCreateFunctionFuture) result(client AppsClient) (fe FunctionEn
 		return
 	}
 	if !done {
+		fe.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsCreateFunctionFuture")
 		return
 	}
@@ -1742,6 +1745,7 @@ func (future *AppsCreateInstanceFunctionSlotFuture) result(client AppsClient) (f
 		return
 	}
 	if !done {
+		fe.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsCreateInstanceFunctionSlotFuture")
 		return
 	}
@@ -1784,6 +1788,7 @@ func (future *AppsCreateInstanceMSDeployOperationFuture) result(client AppsClien
 		return
 	}
 	if !done {
+		mds.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsCreateInstanceMSDeployOperationFuture")
 		return
 	}
@@ -1826,6 +1831,7 @@ func (future *AppsCreateInstanceMSDeployOperationSlotFuture) result(client AppsC
 		return
 	}
 	if !done {
+		mds.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsCreateInstanceMSDeployOperationSlotFuture")
 		return
 	}
@@ -1868,6 +1874,7 @@ func (future *AppsCreateMSDeployOperationFuture) result(client AppsClient) (mds 
 		return
 	}
 	if !done {
+		mds.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsCreateMSDeployOperationFuture")
 		return
 	}
@@ -1910,6 +1917,7 @@ func (future *AppsCreateMSDeployOperationSlotFuture) result(client AppsClient) (
 		return
 	}
 	if !done {
+		mds.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsCreateMSDeployOperationSlotFuture")
 		return
 	}
@@ -1952,6 +1960,7 @@ func (future *AppsCreateOrUpdateFuture) result(client AppsClient) (s Site, err e
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsCreateOrUpdateFuture")
 		return
 	}
@@ -1994,6 +2003,7 @@ func (future *AppsCreateOrUpdateSlotFuture) result(client AppsClient) (s Site, e
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsCreateOrUpdateSlotFuture")
 		return
 	}
@@ -2036,6 +2046,7 @@ func (future *AppsCreateOrUpdateSourceControlFuture) result(client AppsClient) (
 		return
 	}
 	if !done {
+		ssc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsCreateOrUpdateSourceControlFuture")
 		return
 	}
@@ -2078,6 +2089,7 @@ func (future *AppsCreateOrUpdateSourceControlSlotFuture) result(client AppsClien
 		return
 	}
 	if !done {
+		ssc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsCreateOrUpdateSourceControlSlotFuture")
 		return
 	}
@@ -2120,6 +2132,7 @@ func (future *AppsDeletePrivateEndpointConnectionFuture) result(client AppsClien
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsDeletePrivateEndpointConnectionFuture")
 		return
 	}
@@ -2162,6 +2175,7 @@ func (future *AppsDeletePrivateEndpointConnectionSlotFuture) result(client AppsC
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsDeletePrivateEndpointConnectionSlotFuture")
 		return
 	}
@@ -2909,6 +2923,7 @@ func (future *AppServiceCertificateOrdersCreateOrUpdateCertificateFuture) result
 		return
 	}
 	if !done {
+		ascr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppServiceCertificateOrdersCreateOrUpdateCertificateFuture")
 		return
 	}
@@ -2951,6 +2966,7 @@ func (future *AppServiceCertificateOrdersCreateOrUpdateFuture) result(client App
 		return
 	}
 	if !done {
+		asco.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppServiceCertificateOrdersCreateOrUpdateFuture")
 		return
 	}
@@ -3631,6 +3647,7 @@ func (future *AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionFutu
 		return
 	}
 	if !done {
+		rpecar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionFuture")
 		return
 	}
@@ -3673,6 +3690,7 @@ func (future *AppServiceEnvironmentsChangeVnetAllFuture) result(client AppServic
 		return
 	}
 	if !done {
+		acp.ac.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsChangeVnetAllFuture")
 		return
 	}
@@ -3715,6 +3733,7 @@ func (future *AppServiceEnvironmentsChangeVnetFuture) result(client AppServiceEn
 		return
 	}
 	if !done {
+		acp.ac.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsChangeVnetFuture")
 		return
 	}
@@ -3757,6 +3776,7 @@ func (future *AppServiceEnvironmentsCreateOrUpdateFuture) result(client AppServi
 		return
 	}
 	if !done {
+		aser.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsCreateOrUpdateFuture")
 		return
 	}
@@ -3799,6 +3819,7 @@ func (future *AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture) result(cl
 		return
 	}
 	if !done {
+		wpr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture")
 		return
 	}
@@ -3841,6 +3862,7 @@ func (future *AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture) result(clien
 		return
 	}
 	if !done {
+		wpr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture")
 		return
 	}
@@ -3883,6 +3905,7 @@ func (future *AppServiceEnvironmentsDeleteFuture) result(client AppServiceEnviro
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsDeleteFuture")
 		return
 	}
@@ -3919,6 +3942,7 @@ func (future *AppServiceEnvironmentsDeletePrivateEndpointConnectionFuture) resul
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsDeletePrivateEndpointConnectionFuture")
 		return
 	}
@@ -3961,6 +3985,7 @@ func (future *AppServiceEnvironmentsResumeAllFuture) result(client AppServiceEnv
 		return
 	}
 	if !done {
+		acp.ac.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsResumeAllFuture")
 		return
 	}
@@ -4003,6 +4028,7 @@ func (future *AppServiceEnvironmentsResumeFuture) result(client AppServiceEnviro
 		return
 	}
 	if !done {
+		acp.ac.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsResumeFuture")
 		return
 	}
@@ -4045,6 +4071,7 @@ func (future *AppServiceEnvironmentsSuspendAllFuture) result(client AppServiceEn
 		return
 	}
 	if !done {
+		acp.ac.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsSuspendAllFuture")
 		return
 	}
@@ -4087,6 +4114,7 @@ func (future *AppServiceEnvironmentsSuspendFuture) result(client AppServiceEnvir
 		return
 	}
 	if !done {
+		acp.ac.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppServiceEnvironmentsSuspendFuture")
 		return
 	}
@@ -4714,6 +4742,7 @@ func (future *AppServicePlansCreateOrUpdateFuture) result(client AppServicePlans
 		return
 	}
 	if !done {
+		asp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppServicePlansCreateOrUpdateFuture")
 		return
 	}
@@ -4756,6 +4785,7 @@ func (future *AppsInstallSiteExtensionFuture) result(client AppsClient) (sei Sit
 		return
 	}
 	if !done {
+		sei.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsInstallSiteExtensionFuture")
 		return
 	}
@@ -4798,6 +4828,7 @@ func (future *AppsInstallSiteExtensionSlotFuture) result(client AppsClient) (sei
 		return
 	}
 	if !done {
+		sei.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsInstallSiteExtensionSlotFuture")
 		return
 	}
@@ -4840,6 +4871,7 @@ func (future *AppsListPublishingCredentialsFuture) result(client AppsClient) (u 
 		return
 	}
 	if !done {
+		u.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsListPublishingCredentialsFuture")
 		return
 	}
@@ -4882,6 +4914,7 @@ func (future *AppsListPublishingCredentialsSlotFuture) result(client AppsClient)
 		return
 	}
 	if !done {
+		u.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsListPublishingCredentialsSlotFuture")
 		return
 	}
@@ -4924,6 +4957,7 @@ func (future *AppsMigrateMySQLFuture) result(client AppsClient) (o Operation, er
 		return
 	}
 	if !done {
+		o.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsMigrateMySQLFuture")
 		return
 	}
@@ -4966,6 +5000,7 @@ func (future *AppsMigrateStorageFuture) result(client AppsClient) (smr StorageMi
 		return
 	}
 	if !done {
+		smr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsMigrateStorageFuture")
 		return
 	}
@@ -5008,6 +5043,7 @@ func (future *AppsRestoreFromBackupBlobFuture) result(client AppsClient) (ar aut
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsRestoreFromBackupBlobFuture")
 		return
 	}
@@ -5044,6 +5080,7 @@ func (future *AppsRestoreFromBackupBlobSlotFuture) result(client AppsClient) (ar
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsRestoreFromBackupBlobSlotFuture")
 		return
 	}
@@ -5080,6 +5117,7 @@ func (future *AppsRestoreFromDeletedAppFuture) result(client AppsClient) (ar aut
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsRestoreFromDeletedAppFuture")
 		return
 	}
@@ -5116,6 +5154,7 @@ func (future *AppsRestoreFromDeletedAppSlotFuture) result(client AppsClient) (ar
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsRestoreFromDeletedAppSlotFuture")
 		return
 	}
@@ -5151,6 +5190,7 @@ func (future *AppsRestoreFuture) result(client AppsClient) (ar autorest.Response
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsRestoreFuture")
 		return
 	}
@@ -5187,6 +5227,7 @@ func (future *AppsRestoreSlotFuture) result(client AppsClient) (ar autorest.Resp
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsRestoreSlotFuture")
 		return
 	}
@@ -5223,6 +5264,7 @@ func (future *AppsRestoreSnapshotFuture) result(client AppsClient) (ar autorest.
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsRestoreSnapshotFuture")
 		return
 	}
@@ -5259,6 +5301,7 @@ func (future *AppsRestoreSnapshotSlotFuture) result(client AppsClient) (ar autor
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsRestoreSnapshotSlotFuture")
 		return
 	}
@@ -5295,6 +5338,7 @@ func (future *AppsStartNetworkTraceFuture) result(client AppsClient) (lnt ListNe
 		return
 	}
 	if !done {
+		lnt.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsStartNetworkTraceFuture")
 		return
 	}
@@ -5337,6 +5381,7 @@ func (future *AppsStartNetworkTraceSlotFuture) result(client AppsClient) (lnt Li
 		return
 	}
 	if !done {
+		lnt.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsStartNetworkTraceSlotFuture")
 		return
 	}
@@ -5379,6 +5424,7 @@ func (future *AppsStartWebSiteNetworkTraceOperationFuture) result(client AppsCli
 		return
 	}
 	if !done {
+		lnt.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsStartWebSiteNetworkTraceOperationFuture")
 		return
 	}
@@ -5421,6 +5467,7 @@ func (future *AppsStartWebSiteNetworkTraceOperationSlotFuture) result(client App
 		return
 	}
 	if !done {
+		lnt.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsStartWebSiteNetworkTraceOperationSlotFuture")
 		return
 	}
@@ -5463,6 +5510,7 @@ func (future *AppsSwapSlotSlotFuture) result(client AppsClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsSwapSlotSlotFuture")
 		return
 	}
@@ -5499,6 +5547,7 @@ func (future *AppsSwapSlotWithProductionFuture) result(client AppsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.AppsSwapSlotWithProductionFuture")
 		return
 	}
@@ -12633,6 +12682,7 @@ func (future *DomainsCreateOrUpdateFuture) result(client DomainsClient) (d Domai
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.DomainsCreateOrUpdateFuture")
 		return
 	}
@@ -28485,6 +28535,7 @@ func (future *StaticSitesApproveOrRejectPrivateEndpointConnectionFuture) result(
 		return
 	}
 	if !done {
+		rpecar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.StaticSitesApproveOrRejectPrivateEndpointConnectionFuture")
 		return
 	}
@@ -28527,6 +28578,7 @@ func (future *StaticSitesCreateOrUpdateStaticSiteCustomDomainFuture) result(clie
 		return
 	}
 	if !done {
+		sscdoar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.StaticSitesCreateOrUpdateStaticSiteCustomDomainFuture")
 		return
 	}
@@ -28569,6 +28621,7 @@ func (future *StaticSitesCreateOrUpdateStaticSiteFuture) result(client StaticSit
 		return
 	}
 	if !done {
+		ssar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.StaticSitesCreateOrUpdateStaticSiteFuture")
 		return
 	}
@@ -28611,6 +28664,7 @@ func (future *StaticSitesCreateZipDeploymentForStaticSiteBuildFuture) result(cli
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.StaticSitesCreateZipDeploymentForStaticSiteBuildFuture")
 		return
 	}
@@ -28647,6 +28701,7 @@ func (future *StaticSitesCreateZipDeploymentForStaticSiteFuture) result(client S
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.StaticSitesCreateZipDeploymentForStaticSiteFuture")
 		return
 	}
@@ -28683,6 +28738,7 @@ func (future *StaticSitesDeletePrivateEndpointConnectionFuture) result(client St
 		return
 	}
 	if !done {
+		so.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.StaticSitesDeletePrivateEndpointConnectionFuture")
 		return
 	}
@@ -28725,6 +28781,7 @@ func (future *StaticSitesDeleteStaticSiteBuildFuture) result(client StaticSitesC
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.StaticSitesDeleteStaticSiteBuildFuture")
 		return
 	}
@@ -28761,6 +28818,7 @@ func (future *StaticSitesDeleteStaticSiteCustomDomainFuture) result(client Stati
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.StaticSitesDeleteStaticSiteCustomDomainFuture")
 		return
 	}
@@ -28797,6 +28855,7 @@ func (future *StaticSitesDeleteStaticSiteFuture) result(client StaticSitesClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.StaticSitesDeleteStaticSiteFuture")
 		return
 	}
@@ -28833,6 +28892,7 @@ func (future *StaticSitesDetachStaticSiteFuture) result(client StaticSitesClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.StaticSitesDetachStaticSiteFuture")
 		return
 	}
@@ -28869,6 +28929,7 @@ func (future *StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildFutur
 		return
 	}
 	if !done {
+		ssupfaar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildFuture")
 		return
 	}
@@ -28911,6 +28972,7 @@ func (future *StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteFuture) re
 		return
 	}
 	if !done {
+		ssupfaar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteFuture")
 		return
 	}
@@ -28953,6 +29015,7 @@ func (future *StaticSitesValidateCustomDomainCanBeAddedToStaticSiteFuture) resul
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("web.StaticSitesValidateCustomDomainCanBeAddedToStaticSiteFuture")
 		return
 	}

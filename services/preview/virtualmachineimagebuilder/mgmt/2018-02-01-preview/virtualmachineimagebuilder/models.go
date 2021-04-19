@@ -1454,6 +1454,7 @@ func (future *VirtualMachineImageTemplateCreateOrUpdateFuture) result(client Vir
 		return
 	}
 	if !done {
+		it.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplateCreateOrUpdateFuture")
 		return
 	}
@@ -1496,6 +1497,7 @@ func (future *VirtualMachineImageTemplateDeleteFuture) result(client VirtualMach
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplateDeleteFuture")
 		return
 	}
@@ -1532,6 +1534,7 @@ func (future *VirtualMachineImageTemplateRunFuture) result(client VirtualMachine
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("virtualmachineimagebuilder.VirtualMachineImageTemplateRunFuture")
 		return
 	}

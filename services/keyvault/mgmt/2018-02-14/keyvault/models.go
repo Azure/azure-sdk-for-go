@@ -737,6 +737,7 @@ func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpo
 		return
 	}
 	if !done {
+		pec.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("keyvault.PrivateEndpointConnectionsDeleteFuture")
 		return
 	}
@@ -1468,6 +1469,7 @@ func (future *VaultsCreateOrUpdateFuture) result(client VaultsClient) (vVar Vaul
 		return
 	}
 	if !done {
+		vVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("keyvault.VaultsCreateOrUpdateFuture")
 		return
 	}
@@ -1510,6 +1512,7 @@ func (future *VaultsPurgeDeletedFuture) result(client VaultsClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("keyvault.VaultsPurgeDeletedFuture")
 		return
 	}

@@ -172,6 +172,7 @@ func (future *CommunicationsCreateFuture) result(client CommunicationsClient) (c
 		return
 	}
 	if !done {
+		cd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("support.CommunicationsCreateFuture")
 		return
 	}
@@ -861,6 +862,7 @@ func (future *TicketsCreateFuture) result(client TicketsClient) (td TicketDetail
 		return
 	}
 	if !done {
+		td.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("support.TicketsCreateFuture")
 		return
 	}

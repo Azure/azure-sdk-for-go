@@ -48,6 +48,7 @@ func (future *ControllerCreateFuture) result(client ControllerClient) (dc Delega
 		return
 	}
 	if !done {
+		dc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("delegatednetwork.ControllerCreateFuture")
 		return
 	}
@@ -90,6 +91,7 @@ func (future *ControllerDeleteFuture) result(client ControllerClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("delegatednetwork.ControllerDeleteFuture")
 		return
 	}
@@ -619,6 +621,7 @@ func (future *DelegatedSubnetServiceDeleteDetailsFuture) result(client Delegated
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("delegatednetwork.DelegatedSubnetServiceDeleteDetailsFuture")
 		return
 	}
@@ -655,6 +658,7 @@ func (future *DelegatedSubnetServicePatchDetailsFuture) result(client DelegatedS
 		return
 	}
 	if !done {
+		ds.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("delegatednetwork.DelegatedSubnetServicePatchDetailsFuture")
 		return
 	}
@@ -697,6 +701,7 @@ func (future *DelegatedSubnetServicePutDetailsFuture) result(client DelegatedSub
 		return
 	}
 	if !done {
+		ds.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("delegatednetwork.DelegatedSubnetServicePutDetailsFuture")
 		return
 	}
@@ -1261,6 +1266,7 @@ func (future *OrchestratorInstanceServiceCreateFuture) result(client Orchestrato
 		return
 	}
 	if !done {
+		o.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("delegatednetwork.OrchestratorInstanceServiceCreateFuture")
 		return
 	}
@@ -1303,6 +1309,7 @@ func (future *OrchestratorInstanceServiceDeleteFuture) result(client Orchestrato
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("delegatednetwork.OrchestratorInstanceServiceDeleteFuture")
 		return
 	}

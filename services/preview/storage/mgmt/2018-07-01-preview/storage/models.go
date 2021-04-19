@@ -528,6 +528,7 @@ func (future *AccountsCreateFuture) result(client AccountsClient) (a Account, er
 		return
 	}
 	if !done {
+		a.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storage.AccountsCreateFuture")
 		return
 	}
@@ -570,6 +571,7 @@ func (future *AccountsFailoverFuture) result(client AccountsClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storage.AccountsFailoverFuture")
 		return
 	}

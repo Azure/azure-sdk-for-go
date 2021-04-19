@@ -2128,6 +2128,7 @@ func (future *ApplicationGatewaysBackendHealthFuture) result(client ApplicationG
 		return
 	}
 	if !done {
+		agbh.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.ApplicationGatewaysBackendHealthFuture")
 		return
 	}
@@ -2170,6 +2171,7 @@ func (future *ApplicationGatewaysCreateOrUpdateFuture) result(client Application
 		return
 	}
 	if !done {
+		ag.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.ApplicationGatewaysCreateOrUpdateFuture")
 		return
 	}
@@ -2212,6 +2214,7 @@ func (future *ApplicationGatewaysDeleteFuture) result(client ApplicationGateways
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.ApplicationGatewaysDeleteFuture")
 		return
 	}
@@ -2455,6 +2458,7 @@ func (future *ApplicationGatewaysStartFuture) result(client ApplicationGatewaysC
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.ApplicationGatewaysStartFuture")
 		return
 	}
@@ -2491,6 +2495,7 @@ func (future *ApplicationGatewaysStopFuture) result(client ApplicationGatewaysCl
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.ApplicationGatewaysStopFuture")
 		return
 	}
@@ -3897,6 +3902,7 @@ func (future *ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture) result(clie
 		return
 	}
 	if !done {
+		erca.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitAuthorizationsCreateOrUpdateFuture")
 		return
 	}
@@ -3939,6 +3945,7 @@ func (future *ExpressRouteCircuitAuthorizationsDeleteFuture) result(client Expre
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitAuthorizationsDeleteFuture")
 		return
 	}
@@ -4428,6 +4435,7 @@ func (future *ExpressRouteCircuitPeeringsCreateOrUpdateFuture) result(client Exp
 		return
 	}
 	if !done {
+		ercp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitPeeringsCreateOrUpdateFuture")
 		return
 	}
@@ -4470,6 +4478,7 @@ func (future *ExpressRouteCircuitPeeringsDeleteFuture) result(client ExpressRout
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitPeeringsDeleteFuture")
 		return
 	}
@@ -4568,6 +4577,7 @@ func (future *ExpressRouteCircuitsCreateOrUpdateFuture) result(client ExpressRou
 		return
 	}
 	if !done {
+		erc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitsCreateOrUpdateFuture")
 		return
 	}
@@ -4610,6 +4620,7 @@ func (future *ExpressRouteCircuitsDeleteFuture) result(client ExpressRouteCircui
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitsDeleteFuture")
 		return
 	}
@@ -4667,6 +4678,7 @@ func (future *ExpressRouteCircuitsListArpTableFuture) result(client ExpressRoute
 		return
 	}
 	if !done {
+		ercatlr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitsListArpTableFuture")
 		return
 	}
@@ -4709,6 +4721,7 @@ func (future *ExpressRouteCircuitsListRoutesTableFuture) result(client ExpressRo
 		return
 	}
 	if !done {
+		ercrtlr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitsListRoutesTableFuture")
 		return
 	}
@@ -4751,6 +4764,7 @@ func (future *ExpressRouteCircuitsListRoutesTableSummaryFuture) result(client Ex
 		return
 	}
 	if !done {
+		ercrtslr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.ExpressRouteCircuitsListRoutesTableSummaryFuture")
 		return
 	}
@@ -5733,6 +5747,7 @@ func (future *InboundNatRulesCreateOrUpdateFuture) result(client InboundNatRules
 		return
 	}
 	if !done {
+		inr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.InboundNatRulesCreateOrUpdateFuture")
 		return
 	}
@@ -5775,6 +5790,7 @@ func (future *InboundNatRulesDeleteFuture) result(client InboundNatRulesClient) 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.InboundNatRulesDeleteFuture")
 		return
 	}
@@ -6595,6 +6611,7 @@ func (future *InterfacesCreateOrUpdateFuture) result(client InterfacesClient) (i
 		return
 	}
 	if !done {
+		i.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.InterfacesCreateOrUpdateFuture")
 		return
 	}
@@ -6637,6 +6654,7 @@ func (future *InterfacesDeleteFuture) result(client InterfacesClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.InterfacesDeleteFuture")
 		return
 	}
@@ -6673,6 +6691,7 @@ func (future *InterfacesGetEffectiveRouteTableFuture) result(client InterfacesCl
 		return
 	}
 	if !done {
+		erlr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.InterfacesGetEffectiveRouteTableFuture")
 		return
 	}
@@ -6715,6 +6734,7 @@ func (future *InterfacesListEffectiveNetworkSecurityGroupsFuture) result(client 
 		return
 	}
 	if !done {
+		ensglr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.InterfacesListEffectiveNetworkSecurityGroupsFuture")
 		return
 	}
@@ -7892,6 +7912,7 @@ func (future *LoadBalancersCreateOrUpdateFuture) result(client LoadBalancersClie
 		return
 	}
 	if !done {
+		lb.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.LoadBalancersCreateOrUpdateFuture")
 		return
 	}
@@ -7934,6 +7955,7 @@ func (future *LoadBalancersDeleteFuture) result(client LoadBalancersClient) (ar 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.LoadBalancersDeleteFuture")
 		return
 	}
@@ -8403,6 +8425,7 @@ func (future *LocalNetworkGatewaysCreateOrUpdateFuture) result(client LocalNetwo
 		return
 	}
 	if !done {
+		lng.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.LocalNetworkGatewaysCreateOrUpdateFuture")
 		return
 	}
@@ -8445,6 +8468,7 @@ func (future *LocalNetworkGatewaysDeleteFuture) result(client LocalNetworkGatewa
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.LocalNetworkGatewaysDeleteFuture")
 		return
 	}
@@ -8777,6 +8801,7 @@ func (future *PacketCapturesCreateFuture) result(client PacketCapturesClient) (p
 		return
 	}
 	if !done {
+		pcr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.PacketCapturesCreateFuture")
 		return
 	}
@@ -8819,6 +8844,7 @@ func (future *PacketCapturesDeleteFuture) result(client PacketCapturesClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.PacketCapturesDeleteFuture")
 		return
 	}
@@ -8855,6 +8881,7 @@ func (future *PacketCapturesGetStatusFuture) result(client PacketCapturesClient)
 		return
 	}
 	if !done {
+		pcqsr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.PacketCapturesGetStatusFuture")
 		return
 	}
@@ -8897,6 +8924,7 @@ func (future *PacketCapturesStopFuture) result(client PacketCapturesClient) (ar 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.PacketCapturesStopFuture")
 		return
 	}
@@ -9410,6 +9438,7 @@ func (future *PublicIPAddressesCreateOrUpdateFuture) result(client PublicIPAddre
 		return
 	}
 	if !done {
+		pia.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.PublicIPAddressesCreateOrUpdateFuture")
 		return
 	}
@@ -9452,6 +9481,7 @@ func (future *PublicIPAddressesDeleteFuture) result(client PublicIPAddressesClie
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.PublicIPAddressesDeleteFuture")
 		return
 	}
@@ -10512,6 +10542,7 @@ func (future *RouteFilterRulesCreateOrUpdateFuture) result(client RouteFilterRul
 		return
 	}
 	if !done {
+		rfr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.RouteFilterRulesCreateOrUpdateFuture")
 		return
 	}
@@ -10554,6 +10585,7 @@ func (future *RouteFilterRulesDeleteFuture) result(client RouteFilterRulesClient
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.RouteFilterRulesDeleteFuture")
 		return
 	}
@@ -10590,6 +10622,7 @@ func (future *RouteFilterRulesUpdateFuture) result(client RouteFilterRulesClient
 		return
 	}
 	if !done {
+		rfr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.RouteFilterRulesUpdateFuture")
 		return
 	}
@@ -10632,6 +10665,7 @@ func (future *RouteFiltersCreateOrUpdateFuture) result(client RouteFiltersClient
 		return
 	}
 	if !done {
+		rf.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.RouteFiltersCreateOrUpdateFuture")
 		return
 	}
@@ -10674,6 +10708,7 @@ func (future *RouteFiltersDeleteFuture) result(client RouteFiltersClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.RouteFiltersDeleteFuture")
 		return
 	}
@@ -10710,6 +10745,7 @@ func (future *RouteFiltersUpdateFuture) result(client RouteFiltersClient) (rf Ro
 		return
 	}
 	if !done {
+		rf.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.RouteFiltersUpdateFuture")
 		return
 	}
@@ -10923,6 +10959,7 @@ func (future *RoutesCreateOrUpdateFuture) result(client RoutesClient) (r Route, 
 		return
 	}
 	if !done {
+		r.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.RoutesCreateOrUpdateFuture")
 		return
 	}
@@ -10964,6 +11001,7 @@ func (future *RoutesDeleteFuture) result(client RoutesClient) (ar autorest.Respo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.RoutesDeleteFuture")
 		return
 	}
@@ -11299,6 +11337,7 @@ func (future *RouteTablesCreateOrUpdateFuture) result(client RouteTablesClient) 
 		return
 	}
 	if !done {
+		rt.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.RouteTablesCreateOrUpdateFuture")
 		return
 	}
@@ -11341,6 +11380,7 @@ func (future *RouteTablesDeleteFuture) result(client RouteTablesClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.RouteTablesDeleteFuture")
 		return
 	}
@@ -11695,6 +11735,7 @@ func (future *SecurityGroupsCreateOrUpdateFuture) result(client SecurityGroupsCl
 		return
 	}
 	if !done {
+		sg.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.SecurityGroupsCreateOrUpdateFuture")
 		return
 	}
@@ -11737,6 +11778,7 @@ func (future *SecurityGroupsDeleteFuture) result(client SecurityGroupsClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.SecurityGroupsDeleteFuture")
 		return
 	}
@@ -12070,6 +12112,7 @@ func (future *SecurityRulesCreateOrUpdateFuture) result(client SecurityRulesClie
 		return
 	}
 	if !done {
+		sr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.SecurityRulesCreateOrUpdateFuture")
 		return
 	}
@@ -12112,6 +12155,7 @@ func (future *SecurityRulesDeleteFuture) result(client SecurityRulesClient) (ar 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.SecurityRulesDeleteFuture")
 		return
 	}
@@ -12465,6 +12509,7 @@ func (future *SubnetsCreateOrUpdateFuture) result(client SubnetsClient) (s Subne
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.SubnetsCreateOrUpdateFuture")
 		return
 	}
@@ -12507,6 +12552,7 @@ func (future *SubnetsDeleteFuture) result(client SubnetsClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.SubnetsDeleteFuture")
 		return
 	}
@@ -13747,6 +13793,7 @@ func (future *VirtualNetworkGatewayConnectionsCreateOrUpdateFuture) result(clien
 		return
 	}
 	if !done {
+		vngc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewayConnectionsCreateOrUpdateFuture")
 		return
 	}
@@ -13789,6 +13836,7 @@ func (future *VirtualNetworkGatewayConnectionsDeleteFuture) result(client Virtua
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewayConnectionsDeleteFuture")
 		return
 	}
@@ -13825,6 +13873,7 @@ func (future *VirtualNetworkGatewayConnectionsResetSharedKeyFuture) result(clien
 		return
 	}
 	if !done {
+		crsk.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewayConnectionsResetSharedKeyFuture")
 		return
 	}
@@ -13867,6 +13916,7 @@ func (future *VirtualNetworkGatewayConnectionsSetSharedKeyFuture) result(client 
 		return
 	}
 	if !done {
+		csk.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewayConnectionsSetSharedKeyFuture")
 		return
 	}
@@ -14419,6 +14469,7 @@ func (future *VirtualNetworkGatewaysCreateOrUpdateFuture) result(client VirtualN
 		return
 	}
 	if !done {
+		vng.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysCreateOrUpdateFuture")
 		return
 	}
@@ -14461,6 +14512,7 @@ func (future *VirtualNetworkGatewaysDeleteFuture) result(client VirtualNetworkGa
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysDeleteFuture")
 		return
 	}
@@ -14497,6 +14549,7 @@ func (future *VirtualNetworkGatewaysGeneratevpnclientpackageFuture) result(clien
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysGeneratevpnclientpackageFuture")
 		return
 	}
@@ -14539,6 +14592,7 @@ func (future *VirtualNetworkGatewaysGenerateVpnProfileFuture) result(client Virt
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysGenerateVpnProfileFuture")
 		return
 	}
@@ -14581,6 +14635,7 @@ func (future *VirtualNetworkGatewaysGetAdvertisedRoutesFuture) result(client Vir
 		return
 	}
 	if !done {
+		grlr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysGetAdvertisedRoutesFuture")
 		return
 	}
@@ -14623,6 +14678,7 @@ func (future *VirtualNetworkGatewaysGetBgpPeerStatusFuture) result(client Virtua
 		return
 	}
 	if !done {
+		bpslr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysGetBgpPeerStatusFuture")
 		return
 	}
@@ -14665,6 +14721,7 @@ func (future *VirtualNetworkGatewaysGetLearnedRoutesFuture) result(client Virtua
 		return
 	}
 	if !done {
+		grlr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysGetLearnedRoutesFuture")
 		return
 	}
@@ -14707,6 +14764,7 @@ func (future *VirtualNetworkGatewaysGetVpnProfilePackageURLFuture) result(client
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysGetVpnProfilePackageURLFuture")
 		return
 	}
@@ -14759,6 +14817,7 @@ func (future *VirtualNetworkGatewaysResetFuture) result(client VirtualNetworkGat
 		return
 	}
 	if !done {
+		vng.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkGatewaysResetFuture")
 		return
 	}
@@ -15390,6 +15449,7 @@ func (future *VirtualNetworkPeeringsCreateOrUpdateFuture) result(client VirtualN
 		return
 	}
 	if !done {
+		vnp.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkPeeringsCreateOrUpdateFuture")
 		return
 	}
@@ -15432,6 +15492,7 @@ func (future *VirtualNetworkPeeringsDeleteFuture) result(client VirtualNetworkPe
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworkPeeringsDeleteFuture")
 		return
 	}
@@ -15484,6 +15545,7 @@ func (future *VirtualNetworksCreateOrUpdateFuture) result(client VirtualNetworks
 		return
 	}
 	if !done {
+		vn.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworksCreateOrUpdateFuture")
 		return
 	}
@@ -15526,6 +15588,7 @@ func (future *VirtualNetworksDeleteFuture) result(client VirtualNetworksClient) 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.VirtualNetworksDeleteFuture")
 		return
 	}
@@ -15938,6 +16001,7 @@ func (future *WatchersCheckConnectivityFuture) result(client WatchersClient) (ci
 		return
 	}
 	if !done {
+		ci.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.WatchersCheckConnectivityFuture")
 		return
 	}
@@ -15980,6 +16044,7 @@ func (future *WatchersDeleteFuture) result(client WatchersClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.WatchersDeleteFuture")
 		return
 	}
@@ -16016,6 +16081,7 @@ func (future *WatchersGetFlowLogStatusFuture) result(client WatchersClient) (fli
 		return
 	}
 	if !done {
+		fli.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.WatchersGetFlowLogStatusFuture")
 		return
 	}
@@ -16058,6 +16124,7 @@ func (future *WatchersGetNextHopFuture) result(client WatchersClient) (nhr NextH
 		return
 	}
 	if !done {
+		nhr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.WatchersGetNextHopFuture")
 		return
 	}
@@ -16100,6 +16167,7 @@ func (future *WatchersGetTroubleshootingFuture) result(client WatchersClient) (t
 		return
 	}
 	if !done {
+		tr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.WatchersGetTroubleshootingFuture")
 		return
 	}
@@ -16142,6 +16210,7 @@ func (future *WatchersGetTroubleshootingResultFuture) result(client WatchersClie
 		return
 	}
 	if !done {
+		tr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.WatchersGetTroubleshootingResultFuture")
 		return
 	}
@@ -16184,6 +16253,7 @@ func (future *WatchersGetVMSecurityRulesFuture) result(client WatchersClient) (s
 		return
 	}
 	if !done {
+		sgvr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.WatchersGetVMSecurityRulesFuture")
 		return
 	}
@@ -16226,6 +16296,7 @@ func (future *WatchersSetFlowLogConfigurationFuture) result(client WatchersClien
 		return
 	}
 	if !done {
+		fli.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.WatchersSetFlowLogConfigurationFuture")
 		return
 	}
@@ -16268,6 +16339,7 @@ func (future *WatchersVerifyIPFlowFuture) result(client WatchersClient) (vifr Ve
 		return
 	}
 	if !done {
+		vifr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("network.WatchersVerifyIPFlowFuture")
 		return
 	}

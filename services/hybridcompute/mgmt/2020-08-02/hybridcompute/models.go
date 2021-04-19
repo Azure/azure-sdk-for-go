@@ -485,6 +485,7 @@ func (future *MachineExtensionsCreateOrUpdateFuture) result(client MachineExtens
 		return
 	}
 	if !done {
+		me.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridcompute.MachineExtensionsCreateOrUpdateFuture")
 		return
 	}
@@ -527,6 +528,7 @@ func (future *MachineExtensionsDeleteFuture) result(client MachineExtensionsClie
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridcompute.MachineExtensionsDeleteFuture")
 		return
 	}
@@ -722,6 +724,7 @@ func (future *MachineExtensionsUpdateFuture) result(client MachineExtensionsClie
 		return
 	}
 	if !done {
+		me.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hybridcompute.MachineExtensionsUpdateFuture")
 		return
 	}

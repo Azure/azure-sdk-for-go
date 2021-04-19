@@ -156,6 +156,7 @@ func (future *AccountCreateFuture) result(client AccountClient) (a Account, err 
 		return
 	}
 	if !done {
+		a.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batch.AccountCreateFuture")
 		return
 	}
@@ -265,6 +266,7 @@ func (future *AccountDeleteFuture) result(client AccountClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batch.AccountDeleteFuture")
 		return
 	}

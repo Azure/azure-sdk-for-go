@@ -1,11 +1,2 @@
-Generated from https://github.com/Azure/azure-rest-api-specs/tree/3c764635e7d442b3e74caf593029fcd440b3ef82//specification/iothub/resource-manager/readme.md tag: `package-preview-2019-03`
+# Change History
 
-Code generator @microsoft.azure/autorest.go@2.1.178
-
-
-### New Funcs
-
-1. *IotHubManualFailoverFuture.UnmarshalJSON([]byte) error
-1. *IotHubResourceCreateOrUpdateFuture.UnmarshalJSON([]byte) error
-1. *IotHubResourceDeleteFuture.UnmarshalJSON([]byte) error
-1. *IotHubResourceUpdateFuture.UnmarshalJSON([]byte) error

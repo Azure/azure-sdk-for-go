@@ -356,6 +356,7 @@ func (future *ConfigurationsCreateOrUpdateFuture) result(client ConfigurationsCl
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.ConfigurationsCreateOrUpdateFuture")
 		return
 	}
@@ -398,6 +399,7 @@ func (future *CreateRecommendedActionSessionFuture) result(client BaseClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.CreateRecommendedActionSessionFuture")
 		return
 	}
@@ -522,6 +524,7 @@ func (future *DatabasesCreateOrUpdateFuture) result(client DatabasesClient) (d D
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.DatabasesCreateOrUpdateFuture")
 		return
 	}
@@ -564,6 +567,7 @@ func (future *DatabasesDeleteFuture) result(client DatabasesClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.DatabasesDeleteFuture")
 		return
 	}
@@ -711,6 +715,7 @@ func (future *FirewallRulesCreateOrUpdateFuture) result(client FirewallRulesClie
 		return
 	}
 	if !done {
+		fr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.FirewallRulesCreateOrUpdateFuture")
 		return
 	}
@@ -753,6 +758,7 @@ func (future *FirewallRulesDeleteFuture) result(client FirewallRulesClient) (ar 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.FirewallRulesDeleteFuture")
 		return
 	}
@@ -1240,6 +1246,7 @@ func (future *PrivateEndpointConnectionsCreateOrUpdateFuture) result(client Priv
 		return
 	}
 	if !done {
+		pec.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.PrivateEndpointConnectionsCreateOrUpdateFuture")
 		return
 	}
@@ -1282,6 +1289,7 @@ func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.PrivateEndpointConnectionsDeleteFuture")
 		return
 	}
@@ -1318,6 +1326,7 @@ func (future *PrivateEndpointConnectionsUpdateTagsFuture) result(client PrivateE
 		return
 	}
 	if !done {
+		pec.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.PrivateEndpointConnectionsUpdateTagsFuture")
 		return
 	}
@@ -2977,6 +2986,7 @@ func (future *ServersCreateFuture) result(client ServersClient) (s Server, err e
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.ServersCreateFuture")
 		return
 	}
@@ -3019,6 +3029,7 @@ func (future *ServersDeleteFuture) result(client ServersClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.ServersDeleteFuture")
 		return
 	}
@@ -3055,6 +3066,7 @@ func (future *ServerSecurityAlertPoliciesCreateOrUpdateFuture) result(client Ser
 		return
 	}
 	if !done {
+		ssap.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.ServerSecurityAlertPoliciesCreateOrUpdateFuture")
 		return
 	}
@@ -3170,6 +3182,7 @@ func (future *ServersRestartFuture) result(client ServersClient) (ar autorest.Re
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.ServersRestartFuture")
 		return
 	}
@@ -3205,6 +3218,7 @@ func (future *ServersStartFuture) result(client ServersClient) (ar autorest.Resp
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.ServersStartFuture")
 		return
 	}
@@ -3240,6 +3254,7 @@ func (future *ServersStopFuture) result(client ServersClient) (ar autorest.Respo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.ServersStopFuture")
 		return
 	}
@@ -3276,6 +3291,7 @@ func (future *ServersUpdateFuture) result(client ServersClient) (s Server, err e
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.ServersUpdateFuture")
 		return
 	}
@@ -3937,6 +3953,7 @@ func (future *VirtualNetworkRulesCreateOrUpdateFuture) result(client VirtualNetw
 		return
 	}
 	if !done {
+		vnr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.VirtualNetworkRulesCreateOrUpdateFuture")
 		return
 	}
@@ -3979,6 +3996,7 @@ func (future *VirtualNetworkRulesDeleteFuture) result(client VirtualNetworkRules
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mariadb.VirtualNetworkRulesDeleteFuture")
 		return
 	}

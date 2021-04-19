@@ -432,6 +432,7 @@ func (future *PrivateEndpointConnectionsCreateOrUpdateFuture) result(client Priv
 		return
 	}
 	if !done {
+		pec.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("powerplatform.PrivateEndpointConnectionsCreateOrUpdateFuture")
 		return
 	}
@@ -474,6 +475,7 @@ func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("powerplatform.PrivateEndpointConnectionsDeleteFuture")
 		return
 	}

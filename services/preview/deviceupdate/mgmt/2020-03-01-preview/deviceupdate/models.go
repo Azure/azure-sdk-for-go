@@ -316,6 +316,7 @@ func (future *AccountsCreateFuture) result(client AccountsClient) (a Account, er
 		return
 	}
 	if !done {
+		a.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("deviceupdate.AccountsCreateFuture")
 		return
 	}
@@ -358,6 +359,7 @@ func (future *AccountsDeleteFuture) result(client AccountsClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("deviceupdate.AccountsDeleteFuture")
 		return
 	}
@@ -394,6 +396,7 @@ func (future *AccountsUpdateFuture) result(client AccountsClient) (a Account, er
 		return
 	}
 	if !done {
+		a.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("deviceupdate.AccountsUpdateFuture")
 		return
 	}
@@ -776,6 +779,7 @@ func (future *InstancesCreateFuture) result(client InstancesClient) (i Instance,
 		return
 	}
 	if !done {
+		i.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("deviceupdate.InstancesCreateFuture")
 		return
 	}
@@ -818,6 +822,7 @@ func (future *InstancesDeleteFuture) result(client InstancesClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("deviceupdate.InstancesDeleteFuture")
 		return
 	}

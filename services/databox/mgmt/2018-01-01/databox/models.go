@@ -2313,6 +2313,7 @@ func (future *JobsCreateFuture) result(client JobsClient) (jr JobResource, err e
 		return
 	}
 	if !done {
+		jr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databox.JobsCreateFuture")
 		return
 	}
@@ -2354,6 +2355,7 @@ func (future *JobsDeleteFuture) result(client JobsClient) (ar autorest.Response,
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databox.JobsDeleteFuture")
 		return
 	}
@@ -2545,6 +2547,7 @@ func (future *JobsUpdateFuture) result(client JobsClient) (jr JobResource, err e
 		return
 	}
 	if !done {
+		jr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("databox.JobsUpdateFuture")
 		return
 	}

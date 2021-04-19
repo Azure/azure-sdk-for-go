@@ -307,6 +307,7 @@ func (future *ProjectsCreateFuture) result(client ProjectsClient) (pr ProjectRes
 		return
 	}
 	if !done {
+		pr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("visualstudio.ProjectsCreateFuture")
 		return
 	}

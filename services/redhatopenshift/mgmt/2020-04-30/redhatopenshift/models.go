@@ -435,6 +435,7 @@ func (future *OpenShiftClustersCreateOrUpdateFuture) result(client OpenShiftClus
 		return
 	}
 	if !done {
+		osc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("redhatopenshift.OpenShiftClustersCreateOrUpdateFuture")
 		return
 	}
@@ -477,6 +478,7 @@ func (future *OpenShiftClustersDeleteFuture) result(client OpenShiftClustersClie
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("redhatopenshift.OpenShiftClustersDeleteFuture")
 		return
 	}
@@ -513,6 +515,7 @@ func (future *OpenShiftClustersUpdateFuture) result(client OpenShiftClustersClie
 		return
 	}
 	if !done {
+		osc.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("redhatopenshift.OpenShiftClustersUpdateFuture")
 		return
 	}

@@ -144,6 +144,7 @@ func (future *AccountCreateFuture) result(client AccountClient) (a Account, err 
 		return
 	}
 	if !done {
+		a.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batch.AccountCreateFuture")
 		return
 	}
@@ -263,6 +264,7 @@ func (future *AccountDeleteFuture) result(client AccountClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batch.AccountDeleteFuture")
 		return
 	}
@@ -932,6 +934,7 @@ func (future *CertificateCreateFuture) result(client CertificateClient) (c Certi
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batch.CertificateCreateFuture")
 		return
 	}
@@ -1071,6 +1074,7 @@ func (future *CertificateDeleteFuture) result(client CertificateClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batch.CertificateDeleteFuture")
 		return
 	}
@@ -2282,6 +2286,7 @@ func (future *PoolCreateFuture) result(client PoolClient) (p Pool, err error) {
 		return
 	}
 	if !done {
+		p.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batch.PoolCreateFuture")
 		return
 	}
@@ -2323,6 +2328,7 @@ func (future *PoolDeleteFuture) result(client PoolClient) (ar autorest.Response,
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("batch.PoolDeleteFuture")
 		return
 	}

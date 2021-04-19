@@ -596,6 +596,7 @@ func (future *ManagedHsmsCreateOrUpdateFuture) result(client ManagedHsmsClient) 
 		return
 	}
 	if !done {
+		mh.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("keyvault.ManagedHsmsCreateOrUpdateFuture")
 		return
 	}
@@ -638,6 +639,7 @@ func (future *ManagedHsmsDeleteFuture) result(client ManagedHsmsClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("keyvault.ManagedHsmsDeleteFuture")
 		return
 	}
@@ -682,6 +684,7 @@ func (future *ManagedHsmsUpdateFuture) result(client ManagedHsmsClient) (mh Mana
 		return
 	}
 	if !done {
+		mh.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("keyvault.ManagedHsmsUpdateFuture")
 		return
 	}
@@ -1157,6 +1160,7 @@ func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpo
 		return
 	}
 	if !done {
+		pec.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("keyvault.PrivateEndpointConnectionsDeleteFuture")
 		return
 	}
@@ -1902,6 +1906,7 @@ func (future *VaultsCreateOrUpdateFuture) result(client VaultsClient) (vVar Vaul
 		return
 	}
 	if !done {
+		vVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("keyvault.VaultsCreateOrUpdateFuture")
 		return
 	}
@@ -1944,6 +1949,7 @@ func (future *VaultsPurgeDeletedFuture) result(client VaultsClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("keyvault.VaultsPurgeDeletedFuture")
 		return
 	}

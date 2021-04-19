@@ -187,6 +187,7 @@ func (future *ConfigurationsCreateOrUpdateFuture) result(client ConfigurationsCl
 		return
 	}
 	if !done {
+		c.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysql.ConfigurationsCreateOrUpdateFuture")
 		return
 	}
@@ -317,6 +318,7 @@ func (future *DatabasesCreateOrUpdateFuture) result(client DatabasesClient) (d D
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysql.DatabasesCreateOrUpdateFuture")
 		return
 	}
@@ -359,6 +361,7 @@ func (future *DatabasesDeleteFuture) result(client DatabasesClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysql.DatabasesDeleteFuture")
 		return
 	}
@@ -483,6 +486,7 @@ func (future *FirewallRulesCreateOrUpdateFuture) result(client FirewallRulesClie
 		return
 	}
 	if !done {
+		fr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysql.FirewallRulesCreateOrUpdateFuture")
 		return
 	}
@@ -525,6 +529,7 @@ func (future *FirewallRulesDeleteFuture) result(client FirewallRulesClient) (ar 
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysql.FirewallRulesDeleteFuture")
 		return
 	}
@@ -1089,6 +1094,7 @@ func (future *ServerAdministratorsCreateOrUpdateFuture) result(client ServerAdmi
 		return
 	}
 	if !done {
+		sar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysql.ServerAdministratorsCreateOrUpdateFuture")
 		return
 	}
@@ -1131,6 +1137,7 @@ func (future *ServerAdministratorsDeleteFuture) result(client ServerAdministrato
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysql.ServerAdministratorsDeleteFuture")
 		return
 	}
@@ -1758,6 +1765,7 @@ func (future *ServersCreateFuture) result(client ServersClient) (s Server, err e
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysql.ServersCreateFuture")
 		return
 	}
@@ -1800,6 +1808,7 @@ func (future *ServersDeleteFuture) result(client ServersClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysql.ServersDeleteFuture")
 		return
 	}
@@ -1836,6 +1845,7 @@ func (future *ServerSecurityAlertPoliciesCreateOrUpdateFuture) result(client Ser
 		return
 	}
 	if !done {
+		ssap.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysql.ServerSecurityAlertPoliciesCreateOrUpdateFuture")
 		return
 	}
@@ -1951,6 +1961,7 @@ func (future *ServersRestartFuture) result(client ServersClient) (ar autorest.Re
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysql.ServersRestartFuture")
 		return
 	}
@@ -1987,6 +1998,7 @@ func (future *ServersUpdateFuture) result(client ServersClient) (s Server, err e
 		return
 	}
 	if !done {
+		s.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysql.ServersUpdateFuture")
 		return
 	}
@@ -2419,6 +2431,7 @@ func (future *VirtualNetworkRulesCreateOrUpdateFuture) result(client VirtualNetw
 		return
 	}
 	if !done {
+		vnr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysql.VirtualNetworkRulesCreateOrUpdateFuture")
 		return
 	}
@@ -2461,6 +2474,7 @@ func (future *VirtualNetworkRulesDeleteFuture) result(client VirtualNetworkRules
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("mysql.VirtualNetworkRulesDeleteFuture")
 		return
 	}

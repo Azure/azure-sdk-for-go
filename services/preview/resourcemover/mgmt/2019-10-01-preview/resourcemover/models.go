@@ -637,6 +637,7 @@ func (future *MoveCollectionsBulkRemoveFuture) result(client MoveCollectionsClie
 		return
 	}
 	if !done {
+		osVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsBulkRemoveFuture")
 		return
 	}
@@ -679,6 +680,7 @@ func (future *MoveCollectionsCommitFuture) result(client MoveCollectionsClient) 
 		return
 	}
 	if !done {
+		osVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsCommitFuture")
 		return
 	}
@@ -721,6 +723,7 @@ func (future *MoveCollectionsDeleteFuture) result(client MoveCollectionsClient) 
 		return
 	}
 	if !done {
+		osVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsDeleteFuture")
 		return
 	}
@@ -763,6 +766,7 @@ func (future *MoveCollectionsDiscardFuture) result(client MoveCollectionsClient)
 		return
 	}
 	if !done {
+		osVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsDiscardFuture")
 		return
 	}
@@ -805,6 +809,7 @@ func (future *MoveCollectionsInitiateMoveFuture) result(client MoveCollectionsCl
 		return
 	}
 	if !done {
+		osVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsInitiateMoveFuture")
 		return
 	}
@@ -847,6 +852,7 @@ func (future *MoveCollectionsPrepareFuture) result(client MoveCollectionsClient)
 		return
 	}
 	if !done {
+		osVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsPrepareFuture")
 		return
 	}
@@ -889,6 +895,7 @@ func (future *MoveCollectionsResolveDependenciesFuture) result(client MoveCollec
 		return
 	}
 	if !done {
+		osVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveCollectionsResolveDependenciesFuture")
 		return
 	}
@@ -1350,6 +1357,7 @@ func (future *MoveResourcesCreateFuture) result(client MoveResourcesClient) (mr 
 		return
 	}
 	if !done {
+		mr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveResourcesCreateFuture")
 		return
 	}
@@ -1392,6 +1400,7 @@ func (future *MoveResourcesDeleteFuture) result(client MoveResourcesClient) (osV
 		return
 	}
 	if !done {
+		osVar.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("resourcemover.MoveResourcesDeleteFuture")
 		return
 	}

@@ -948,6 +948,7 @@ func (future *ReservationMergeFuture) result(client Client) (lr ListResponse, er
 		return
 	}
 	if !done {
+		lr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("reservations.ReservationMergeFuture")
 		return
 	}
@@ -990,6 +991,7 @@ func (future *ReservationUpdateFuture) result(client Client) (r Response, err er
 		return
 	}
 	if !done {
+		r.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("reservations.ReservationUpdateFuture")
 		return
 	}
@@ -1085,6 +1087,7 @@ func (future *SplitFuture) result(client Client) (lr ListResponse, err error) {
 		return
 	}
 	if !done {
+		lr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("reservations.SplitFuture")
 		return
 	}

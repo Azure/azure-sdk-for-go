@@ -5029,6 +5029,7 @@ func (future *PrivateEndpointConnectionsCreateOrUpdateFuture) result(client Priv
 		return
 	}
 	if !done {
+		pec.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("insights.PrivateEndpointConnectionsCreateOrUpdateFuture")
 		return
 	}
@@ -5071,6 +5072,7 @@ func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpo
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("insights.PrivateEndpointConnectionsDeleteFuture")
 		return
 	}
@@ -5354,6 +5356,7 @@ func (future *PrivateLinkScopedResourcesCreateOrUpdateFuture) result(client Priv
 		return
 	}
 	if !done {
+		sr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("insights.PrivateLinkScopedResourcesCreateOrUpdateFuture")
 		return
 	}
@@ -5396,6 +5399,7 @@ func (future *PrivateLinkScopedResourcesDeleteFuture) result(client PrivateLinkS
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("insights.PrivateLinkScopedResourcesDeleteFuture")
 		return
 	}
@@ -5432,6 +5436,7 @@ func (future *PrivateLinkScopesDeleteFuture) result(client PrivateLinkScopesClie
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("insights.PrivateLinkScopesDeleteFuture")
 		return
 	}

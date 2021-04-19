@@ -48,6 +48,7 @@ func (future *CreateOrUpdateFuture) result(client Client) (d Description, err er
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("iotspaces.CreateOrUpdateFuture")
 		return
 	}
@@ -89,6 +90,7 @@ func (future *DeleteFuture) result(client Client) (d Description, err error) {
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("iotspaces.DeleteFuture")
 		return
 	}
@@ -644,6 +646,7 @@ func (future *UpdateFuture) result(client Client) (d Description, err error) {
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("iotspaces.UpdateFuture")
 		return
 	}

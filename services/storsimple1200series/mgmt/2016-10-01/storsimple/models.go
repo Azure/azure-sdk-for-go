@@ -135,6 +135,7 @@ func (future *AccessControlRecordsCreateOrUpdateFuture) result(client AccessCont
 		return
 	}
 	if !done {
+		acr.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.AccessControlRecordsCreateOrUpdateFuture")
 		return
 	}
@@ -177,6 +178,7 @@ func (future *AccessControlRecordsDeleteFuture) result(client AccessControlRecor
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.AccessControlRecordsDeleteFuture")
 		return
 	}
@@ -1288,6 +1290,7 @@ func (future *BackupScheduleGroupsCreateOrUpdateFuture) result(client BackupSche
 		return
 	}
 	if !done {
+		bsg.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.BackupScheduleGroupsCreateOrUpdateFuture")
 		return
 	}
@@ -1330,6 +1333,7 @@ func (future *BackupScheduleGroupsDeleteFuture) result(client BackupScheduleGrou
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.BackupScheduleGroupsDeleteFuture")
 		return
 	}
@@ -1365,6 +1369,7 @@ func (future *BackupsCloneFuture) result(client BackupsClient) (ar autorest.Resp
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.BackupsCloneFuture")
 		return
 	}
@@ -1401,6 +1406,7 @@ func (future *BackupsDeleteFuture) result(client BackupsClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.BackupsDeleteFuture")
 		return
 	}
@@ -1526,6 +1532,7 @@ func (future *ChapSettingsCreateOrUpdateFuture) result(client ChapSettingsClient
 		return
 	}
 	if !done {
+		cs.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.ChapSettingsCreateOrUpdateFuture")
 		return
 	}
@@ -1568,6 +1575,7 @@ func (future *ChapSettingsDeleteFuture) result(client ChapSettingsClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.ChapSettingsDeleteFuture")
 		return
 	}
@@ -1813,6 +1821,7 @@ func (future *DevicesCreateOrUpdateAlertSettingsFuture) result(client DevicesCli
 		return
 	}
 	if !done {
+		as.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesCreateOrUpdateAlertSettingsFuture")
 		return
 	}
@@ -1855,6 +1864,7 @@ func (future *DevicesCreateOrUpdateSecuritySettingsFuture) result(client Devices
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesCreateOrUpdateSecuritySettingsFuture")
 		return
 	}
@@ -1891,6 +1901,7 @@ func (future *DevicesDeactivateFuture) result(client DevicesClient) (ar autorest
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesDeactivateFuture")
 		return
 	}
@@ -1927,6 +1938,7 @@ func (future *DevicesDeleteFuture) result(client DevicesClient) (ar autorest.Res
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesDeleteFuture")
 		return
 	}
@@ -1963,6 +1975,7 @@ func (future *DevicesDownloadUpdatesFuture) result(client DevicesClient) (ar aut
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesDownloadUpdatesFuture")
 		return
 	}
@@ -1999,6 +2012,7 @@ func (future *DevicesFailoverFuture) result(client DevicesClient) (ar autorest.R
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesFailoverFuture")
 		return
 	}
@@ -2035,6 +2049,7 @@ func (future *DevicesInstallUpdatesFuture) result(client DevicesClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesInstallUpdatesFuture")
 		return
 	}
@@ -2070,6 +2085,7 @@ func (future *DevicesPatchFuture) result(client DevicesClient) (d Device, err er
 		return
 	}
 	if !done {
+		d.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesPatchFuture")
 		return
 	}
@@ -2112,6 +2128,7 @@ func (future *DevicesScanForUpdatesFuture) result(client DevicesClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.DevicesScanForUpdatesFuture")
 		return
 	}
@@ -2336,6 +2353,7 @@ func (future *FileServersBackupNowFuture) result(client FileServersClient) (ar a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.FileServersBackupNowFuture")
 		return
 	}
@@ -2372,6 +2390,7 @@ func (future *FileServersCreateOrUpdateFuture) result(client FileServersClient) 
 		return
 	}
 	if !done {
+		fs.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.FileServersCreateOrUpdateFuture")
 		return
 	}
@@ -2414,6 +2433,7 @@ func (future *FileServersDeleteFuture) result(client FileServersClient) (ar auto
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.FileServersDeleteFuture")
 		return
 	}
@@ -2574,6 +2594,7 @@ func (future *FileSharesCreateOrUpdateFuture) result(client FileSharesClient) (f
 		return
 	}
 	if !done {
+		fs.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.FileSharesCreateOrUpdateFuture")
 		return
 	}
@@ -2616,6 +2637,7 @@ func (future *FileSharesDeleteFuture) result(client FileSharesClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.FileSharesDeleteFuture")
 		return
 	}
@@ -2786,6 +2808,7 @@ func (future *IscsiDisksCreateOrUpdateFuture) result(client IscsiDisksClient) (I
 		return
 	}
 	if !done {
+		ID.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.IscsiDisksCreateOrUpdateFuture")
 		return
 	}
@@ -2828,6 +2851,7 @@ func (future *IscsiDisksDeleteFuture) result(client IscsiDisksClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.IscsiDisksDeleteFuture")
 		return
 	}
@@ -2958,6 +2982,7 @@ func (future *IscsiServersBackupNowFuture) result(client IscsiServersClient) (ar
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.IscsiServersBackupNowFuture")
 		return
 	}
@@ -2994,6 +3019,7 @@ func (future *IscsiServersCreateOrUpdateFuture) result(client IscsiServersClient
 		return
 	}
 	if !done {
+		is.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.IscsiServersCreateOrUpdateFuture")
 		return
 	}
@@ -3036,6 +3062,7 @@ func (future *IscsiServersDeleteFuture) result(client IscsiServersClient) (ar au
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.IscsiServersDeleteFuture")
 		return
 	}
@@ -4206,6 +4233,7 @@ func (future *StorageAccountCredentialsCreateOrUpdateFuture) result(client Stora
 		return
 	}
 	if !done {
+		sac.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.StorageAccountCredentialsCreateOrUpdateFuture")
 		return
 	}
@@ -4248,6 +4276,7 @@ func (future *StorageAccountCredentialsDeleteFuture) result(client StorageAccoun
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.StorageAccountCredentialsDeleteFuture")
 		return
 	}
@@ -4374,6 +4403,7 @@ func (future *StorageDomainsCreateOrUpdateFuture) result(client StorageDomainsCl
 		return
 	}
 	if !done {
+		sd.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.StorageDomainsCreateOrUpdateFuture")
 		return
 	}
@@ -4416,6 +4446,7 @@ func (future *StorageDomainsDeleteFuture) result(client StorageDomainsClient) (a
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("storsimple.StorageDomainsDeleteFuture")
 		return
 	}

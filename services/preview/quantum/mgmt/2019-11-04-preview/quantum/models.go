@@ -982,6 +982,7 @@ func (future *WorkspacesCreateOrUpdateFuture) result(client WorkspacesClient) (w
 		return
 	}
 	if !done {
+		w.Response.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("quantum.WorkspacesCreateOrUpdateFuture")
 		return
 	}
@@ -1024,6 +1025,7 @@ func (future *WorkspacesDeleteFuture) result(client WorkspacesClient) (ar autore
 		return
 	}
 	if !done {
+		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("quantum.WorkspacesDeleteFuture")
 		return
 	}

@@ -167,10 +167,12 @@ func GetChangelogForPackage(lhs, rhs *exports.Content) (*model.Changelog, error)
 	}, nil
 }
 
+// ToMarkdown convert this ChangelogResult to markdown string
 func (r ChangelogResult) ToMarkdown() string {
 	return r.Changelog.ToMarkdown()
 }
 
+// Write writes this ChangelogResult to the specified writer in markdown format
 func (r ChangelogResult) Write(writer io.Writer) error {
 	_, err := writer.Write([]byte(r.ToMarkdown()))
 	return err

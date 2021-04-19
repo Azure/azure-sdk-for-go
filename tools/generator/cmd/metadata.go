@@ -109,6 +109,7 @@ func contains(array []autorest.ChangelogResult, item string) bool {
 	return false
 }
 
+// WriteGenerationMetadata writes the metadata to _meta.json file
 func WriteGenerationMetadata(path string, metadata autorest.GenerationMetadata) error {
 	b, err := json.MarshalIndent(metadata, "", "  ")
 	if err != nil {
@@ -127,6 +128,7 @@ func WriteGenerationMetadata(path string, metadata autorest.GenerationMetadata) 
 	return nil
 }
 
+// WriteChangelogFile writes the changelog to CHANGELOG.md
 func WriteChangelogFile(result autorest.ChangelogResult) error {
 	changelogFile, err := os.Create(filepath.Join(result.PackageFullPath, autorest.ChangelogFilename))
 	if err != nil {

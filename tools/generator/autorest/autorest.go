@@ -75,6 +75,7 @@ func (g *Generator) buildCommand() {
 	g.cmd = exec.Command("autorest", arguments...)
 }
 
+// Arguments returns the arguments which are using in the autorest command ('autorest' itself excluded)
 func (g *Generator) Arguments() []model.Option {
 	return g.arguments
 }

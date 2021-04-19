@@ -36,6 +36,7 @@ type GenerationMetadata struct {
 	AdditionalProperties GenerationMetadataAdditionalProperties `json:"additional_properties,omitempty"`
 }
 
+// GenerationMetadataAdditionalProperties contains all the additional options other than go-sdk-foler, tag, multiapi, use or the readme path
 type GenerationMetadataAdditionalProperties struct {
 	AdditionalOptions string `json:"additional_options,omitempty"`
 }

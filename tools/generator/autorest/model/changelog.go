@@ -54,6 +54,7 @@ func (c Changelog) ToCompactMarkdown() string {
 	return writeChangelogForPackage(c.Modified)
 }
 
+// GetBreakingChangeItems returns an array of the breaking change items
 func (c Changelog) GetBreakingChangeItems() []string {
 	if c.Modified == nil {
 		return nil

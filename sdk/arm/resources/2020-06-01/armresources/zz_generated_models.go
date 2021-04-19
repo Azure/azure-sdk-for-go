@@ -11,7 +11,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
+	"reflect"
 	"time"
 )
 
@@ -38,7 +40,7 @@ type Alias struct {
 	Name *string `json:"name,omitempty"`
 
 	// The paths for an alias.
-	Paths *[]AliasPath `json:"paths,omitempty"`
+	Paths *[]*AliasPath `json:"paths,omitempty"`
 
 	// The type of the alias.
 	Type *AliasType `json:"type,omitempty"`
@@ -47,7 +49,7 @@ type Alias struct {
 // The type of the paths for alias.
 type AliasPath struct {
 	// The API versions.
-	APIVersions *[]string `json:"apiVersions,omitempty"`
+	APIVersions *[]*string `json:"apiVersions,omitempty"`
 
 	// READ-ONLY; The metadata of the alias path. If missing, fall back to the default metadata of the alias.
 	Metadata *AliasPathMetadata `json:"metadata,omitempty" azure:"ro"`
@@ -147,7 +149,7 @@ type DebugSetting struct {
 // Deployment dependency information.
 type Dependency struct {
 	// The list of dependencies.
-	DependsOn *[]BasicDependency `json:"dependsOn,omitempty"`
+	DependsOn *[]*BasicDependency `json:"dependsOn,omitempty"`
 
 	// The ID of the dependency.
 	ID *string `json:"id,omitempty"`
@@ -168,7 +170,7 @@ type Deployment struct {
 	Properties *DeploymentProperties `json:"properties,omitempty"`
 
 	// Deployment tags
-	Tags *map[string]string `json:"tags,omitempty"`
+	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
 // The deployment export result.
@@ -201,7 +203,7 @@ type DeploymentExtended struct {
 	Properties *DeploymentPropertiesExtended `json:"properties,omitempty"`
 
 	// Deployment tags
-	Tags *map[string]string `json:"tags,omitempty"`
+	Tags *map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; The type of the deployment.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -240,7 +242,7 @@ type DeploymentListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// An array of deployments.
-	Value *[]DeploymentExtended `json:"value,omitempty"`
+	Value *[]*DeploymentExtended `json:"value,omitempty"`
 }
 
 // DeploymentListResultResponse is the response envelope for operations that return a DeploymentListResult type.
@@ -301,36 +303,16 @@ type DeploymentOperationProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type DeploymentOperationProperties.
 func (d DeploymentOperationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if d.Duration != nil {
-		objectMap["duration"] = d.Duration
-	}
-	if d.ProvisioningOperation != nil {
-		objectMap["provisioningOperation"] = d.ProvisioningOperation
-	}
-	if d.ProvisioningState != nil {
-		objectMap["provisioningState"] = d.ProvisioningState
-	}
-	if d.Request != nil {
-		objectMap["request"] = d.Request
-	}
-	if d.Response != nil {
-		objectMap["response"] = d.Response
-	}
-	if d.ServiceRequestID != nil {
-		objectMap["serviceRequestId"] = d.ServiceRequestID
-	}
-	if d.StatusCode != nil {
-		objectMap["statusCode"] = d.StatusCode
-	}
-	if d.StatusMessage != nil {
-		objectMap["statusMessage"] = d.StatusMessage
-	}
-	if d.TargetResource != nil {
-		objectMap["targetResource"] = d.TargetResource
-	}
-	if d.Timestamp != nil {
-		objectMap["timestamp"] = (*timeRFC3339)(d.Timestamp)
-	}
+	populate(objectMap, "duration", d.Duration)
+	populate(objectMap, "provisioningOperation", d.ProvisioningOperation)
+	populate(objectMap, "provisioningState", d.ProvisioningState)
+	populate(objectMap, "request", d.Request)
+	populate(objectMap, "response", d.Response)
+	populate(objectMap, "serviceRequestId", d.ServiceRequestID)
+	populate(objectMap, "statusCode", d.StatusCode)
+	populate(objectMap, "statusMessage", d.StatusMessage)
+	populate(objectMap, "targetResource", d.TargetResource)
+	populate(objectMap, "timestamp", (*timeRFC3339)(d.Timestamp))
 	return json.Marshal(objectMap)
 }
 
@@ -344,56 +326,36 @@ func (d *DeploymentOperationProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "duration":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.Duration)
-			}
+			err = unpopulate(val, &d.Duration)
 			delete(rawMsg, key)
 		case "provisioningOperation":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.ProvisioningOperation)
-			}
+			err = unpopulate(val, &d.ProvisioningOperation)
 			delete(rawMsg, key)
 		case "provisioningState":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.ProvisioningState)
-			}
+			err = unpopulate(val, &d.ProvisioningState)
 			delete(rawMsg, key)
 		case "request":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.Request)
-			}
+			err = unpopulate(val, &d.Request)
 			delete(rawMsg, key)
 		case "response":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.Response)
-			}
+			err = unpopulate(val, &d.Response)
 			delete(rawMsg, key)
 		case "serviceRequestId":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.ServiceRequestID)
-			}
+			err = unpopulate(val, &d.ServiceRequestID)
 			delete(rawMsg, key)
 		case "statusCode":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.StatusCode)
-			}
+			err = unpopulate(val, &d.StatusCode)
 			delete(rawMsg, key)
 		case "statusMessage":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.StatusMessage)
-			}
+			err = unpopulate(val, &d.StatusMessage)
 			delete(rawMsg, key)
 		case "targetResource":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.TargetResource)
-			}
+			err = unpopulate(val, &d.TargetResource)
 			delete(rawMsg, key)
 		case "timestamp":
-			if val != nil {
-				var aux timeRFC3339
-				err = json.Unmarshal(*val, &aux)
-				d.Timestamp = (*time.Time)(&aux)
-			}
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			d.Timestamp = (*time.Time)(&aux)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -473,7 +435,7 @@ type DeploymentOperationsListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// An array of deployment operations.
-	Value *[]DeploymentOperation `json:"value,omitempty"`
+	Value *[]*DeploymentOperation `json:"value,omitempty"`
 }
 
 // DeploymentOperationsListResultResponse is the response envelope for operations that return a DeploymentOperationsListResult type.
@@ -531,7 +493,7 @@ type DeploymentPropertiesExtended struct {
 	DebugSetting *DebugSetting `json:"debugSetting,omitempty" azure:"ro"`
 
 	// READ-ONLY; The list of deployment dependencies.
-	Dependencies *[]Dependency `json:"dependencies,omitempty" azure:"ro"`
+	Dependencies *[]*Dependency `json:"dependencies,omitempty" azure:"ro"`
 
 	// READ-ONLY; The duration of the template deployment.
 	Duration *string `json:"duration,omitempty" azure:"ro"`
@@ -546,7 +508,7 @@ type DeploymentPropertiesExtended struct {
 	OnErrorDeployment *OnErrorDeploymentExtended `json:"onErrorDeployment,omitempty" azure:"ro"`
 
 	// READ-ONLY; Array of provisioned resources.
-	OutputResources *[]ResourceReference `json:"outputResources,omitempty" azure:"ro"`
+	OutputResources *[]*ResourceReference `json:"outputResources,omitempty" azure:"ro"`
 
 	// READ-ONLY; Key/value pairs that represent deployment output.
 	Outputs interface{} `json:"outputs,omitempty" azure:"ro"`
@@ -558,7 +520,7 @@ type DeploymentPropertiesExtended struct {
 	ParametersLink *ParametersLink `json:"parametersLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; The list of resource providers needed for the deployment.
-	Providers *[]Provider `json:"providers,omitempty" azure:"ro"`
+	Providers *[]*Provider `json:"providers,omitempty" azure:"ro"`
 
 	// READ-ONLY; Denotes the state of provisioning.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -573,63 +535,29 @@ type DeploymentPropertiesExtended struct {
 	Timestamp *time.Time `json:"timestamp,omitempty" azure:"ro"`
 
 	// READ-ONLY; Array of validated resources.
-	ValidatedResources *[]ResourceReference `json:"validatedResources,omitempty" azure:"ro"`
+	ValidatedResources *[]*ResourceReference `json:"validatedResources,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type DeploymentPropertiesExtended.
 func (d DeploymentPropertiesExtended) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if d.CorrelationID != nil {
-		objectMap["correlationId"] = d.CorrelationID
-	}
-	if d.DebugSetting != nil {
-		objectMap["debugSetting"] = d.DebugSetting
-	}
-	if d.Dependencies != nil {
-		objectMap["dependencies"] = d.Dependencies
-	}
-	if d.Duration != nil {
-		objectMap["duration"] = d.Duration
-	}
-	if d.Error != nil {
-		objectMap["error"] = d.Error
-	}
-	if d.Mode != nil {
-		objectMap["mode"] = d.Mode
-	}
-	if d.OnErrorDeployment != nil {
-		objectMap["onErrorDeployment"] = d.OnErrorDeployment
-	}
-	if d.OutputResources != nil {
-		objectMap["outputResources"] = d.OutputResources
-	}
-	if d.Outputs != nil {
-		objectMap["outputs"] = d.Outputs
-	}
-	if d.Parameters != nil {
-		objectMap["parameters"] = d.Parameters
-	}
-	if d.ParametersLink != nil {
-		objectMap["parametersLink"] = d.ParametersLink
-	}
-	if d.Providers != nil {
-		objectMap["providers"] = d.Providers
-	}
-	if d.ProvisioningState != nil {
-		objectMap["provisioningState"] = d.ProvisioningState
-	}
-	if d.TemplateHash != nil {
-		objectMap["templateHash"] = d.TemplateHash
-	}
-	if d.TemplateLink != nil {
-		objectMap["templateLink"] = d.TemplateLink
-	}
-	if d.Timestamp != nil {
-		objectMap["timestamp"] = (*timeRFC3339)(d.Timestamp)
-	}
-	if d.ValidatedResources != nil {
-		objectMap["validatedResources"] = d.ValidatedResources
-	}
+	populate(objectMap, "correlationId", d.CorrelationID)
+	populate(objectMap, "debugSetting", d.DebugSetting)
+	populate(objectMap, "dependencies", d.Dependencies)
+	populate(objectMap, "duration", d.Duration)
+	populate(objectMap, "error", d.Error)
+	populate(objectMap, "mode", d.Mode)
+	populate(objectMap, "onErrorDeployment", d.OnErrorDeployment)
+	populate(objectMap, "outputResources", d.OutputResources)
+	populate(objectMap, "outputs", d.Outputs)
+	populate(objectMap, "parameters", d.Parameters)
+	populate(objectMap, "parametersLink", d.ParametersLink)
+	populate(objectMap, "providers", d.Providers)
+	populate(objectMap, "provisioningState", d.ProvisioningState)
+	populate(objectMap, "templateHash", d.TemplateHash)
+	populate(objectMap, "templateLink", d.TemplateLink)
+	populate(objectMap, "timestamp", (*timeRFC3339)(d.Timestamp))
+	populate(objectMap, "validatedResources", d.ValidatedResources)
 	return json.Marshal(objectMap)
 }
 
@@ -643,91 +571,57 @@ func (d *DeploymentPropertiesExtended) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "correlationId":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.CorrelationID)
-			}
+			err = unpopulate(val, &d.CorrelationID)
 			delete(rawMsg, key)
 		case "debugSetting":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.DebugSetting)
-			}
+			err = unpopulate(val, &d.DebugSetting)
 			delete(rawMsg, key)
 		case "dependencies":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.Dependencies)
-			}
+			err = unpopulate(val, &d.Dependencies)
 			delete(rawMsg, key)
 		case "duration":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.Duration)
-			}
+			err = unpopulate(val, &d.Duration)
 			delete(rawMsg, key)
 		case "error":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.Error)
-			}
+			err = unpopulate(val, &d.Error)
 			delete(rawMsg, key)
 		case "mode":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.Mode)
-			}
+			err = unpopulate(val, &d.Mode)
 			delete(rawMsg, key)
 		case "onErrorDeployment":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.OnErrorDeployment)
-			}
+			err = unpopulate(val, &d.OnErrorDeployment)
 			delete(rawMsg, key)
 		case "outputResources":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.OutputResources)
-			}
+			err = unpopulate(val, &d.OutputResources)
 			delete(rawMsg, key)
 		case "outputs":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.Outputs)
-			}
+			err = unpopulate(val, &d.Outputs)
 			delete(rawMsg, key)
 		case "parameters":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.Parameters)
-			}
+			err = unpopulate(val, &d.Parameters)
 			delete(rawMsg, key)
 		case "parametersLink":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.ParametersLink)
-			}
+			err = unpopulate(val, &d.ParametersLink)
 			delete(rawMsg, key)
 		case "providers":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.Providers)
-			}
+			err = unpopulate(val, &d.Providers)
 			delete(rawMsg, key)
 		case "provisioningState":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.ProvisioningState)
-			}
+			err = unpopulate(val, &d.ProvisioningState)
 			delete(rawMsg, key)
 		case "templateHash":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.TemplateHash)
-			}
+			err = unpopulate(val, &d.TemplateHash)
 			delete(rawMsg, key)
 		case "templateLink":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.TemplateLink)
-			}
+			err = unpopulate(val, &d.TemplateLink)
 			delete(rawMsg, key)
 		case "timestamp":
-			if val != nil {
-				var aux timeRFC3339
-				err = json.Unmarshal(*val, &aux)
-				d.Timestamp = (*time.Time)(&aux)
-			}
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			d.Timestamp = (*time.Time)(&aux)
 			delete(rawMsg, key)
 		case "validatedResources":
-			if val != nil {
-				err = json.Unmarshal(*val, &d.ValidatedResources)
-			}
+			err = unpopulate(val, &d.ValidatedResources)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1044,13 +938,13 @@ type ErrorAdditionalInfo struct {
 // format.)
 type ErrorResponse struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo *[]*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
 
 	// READ-ONLY; The error code.
 	Code *string `json:"code,omitempty" azure:"ro"`
 
 	// READ-ONLY; The error details.
-	Details *[]ErrorResponse `json:"details,omitempty" azure:"ro"`
+	Details *[]*ErrorResponse `json:"details,omitempty" azure:"ro"`
 
 	// READ-ONLY; The error message.
 	Message *string `json:"message,omitempty" azure:"ro"`
@@ -1066,7 +960,7 @@ type ExportTemplateRequest struct {
 	Options *string `json:"options,omitempty"`
 
 	// The IDs of the resources to filter the export by. To export all resources, supply an array with single entry '*'.
-	Resources *[]string `json:"resources,omitempty"`
+	Resources *[]*string `json:"resources,omitempty"`
 }
 
 // Specifies whether template expressions are evaluated within the scope of the parent template or nested template.
@@ -1079,7 +973,7 @@ type ExpressionEvaluationOptions struct {
 type GenericResource struct {
 	Resource
 	// The identity of the resource.
-	IDentity *IDentity `json:"identity,omitempty"`
+	Identity *Identity `json:"identity,omitempty"`
 
 	// The kind of the resource.
 	Kind *string `json:"kind,omitempty"`
@@ -1114,24 +1008,12 @@ func (g *GenericResource) UnmarshalJSON(data []byte) error {
 
 func (g GenericResource) marshalInternal() map[string]interface{} {
 	objectMap := g.Resource.marshalInternal()
-	if g.IDentity != nil {
-		objectMap["identity"] = g.IDentity
-	}
-	if g.Kind != nil {
-		objectMap["kind"] = g.Kind
-	}
-	if g.ManagedBy != nil {
-		objectMap["managedBy"] = g.ManagedBy
-	}
-	if g.Plan != nil {
-		objectMap["plan"] = g.Plan
-	}
-	if g.Properties != nil {
-		objectMap["properties"] = g.Properties
-	}
-	if g.SKU != nil {
-		objectMap["sku"] = g.SKU
-	}
+	populate(objectMap, "identity", g.Identity)
+	populate(objectMap, "kind", g.Kind)
+	populate(objectMap, "managedBy", g.ManagedBy)
+	populate(objectMap, "plan", g.Plan)
+	populate(objectMap, "properties", g.Properties)
+	populate(objectMap, "sku", g.SKU)
 	return objectMap
 }
 
@@ -1140,34 +1022,22 @@ func (g *GenericResource) unmarshalInternal(rawMsg map[string]*json.RawMessage) 
 		var err error
 		switch key {
 		case "identity":
-			if val != nil {
-				err = json.Unmarshal(*val, &g.IDentity)
-			}
+			err = unpopulate(val, &g.Identity)
 			delete(rawMsg, key)
 		case "kind":
-			if val != nil {
-				err = json.Unmarshal(*val, &g.Kind)
-			}
+			err = unpopulate(val, &g.Kind)
 			delete(rawMsg, key)
 		case "managedBy":
-			if val != nil {
-				err = json.Unmarshal(*val, &g.ManagedBy)
-			}
+			err = unpopulate(val, &g.ManagedBy)
 			delete(rawMsg, key)
 		case "plan":
-			if val != nil {
-				err = json.Unmarshal(*val, &g.Plan)
-			}
+			err = unpopulate(val, &g.Plan)
 			delete(rawMsg, key)
 		case "properties":
-			if val != nil {
-				err = json.Unmarshal(*val, &g.Properties)
-			}
+			err = unpopulate(val, &g.Properties)
 			delete(rawMsg, key)
 		case "sku":
-			if val != nil {
-				err = json.Unmarshal(*val, &g.SKU)
-			}
+			err = unpopulate(val, &g.SKU)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1193,15 +1063,9 @@ type GenericResourceExpanded struct {
 // MarshalJSON implements the json.Marshaller interface for type GenericResourceExpanded.
 func (g GenericResourceExpanded) MarshalJSON() ([]byte, error) {
 	objectMap := g.GenericResource.marshalInternal()
-	if g.ChangedTime != nil {
-		objectMap["changedTime"] = (*timeRFC3339)(g.ChangedTime)
-	}
-	if g.CreatedTime != nil {
-		objectMap["createdTime"] = (*timeRFC3339)(g.CreatedTime)
-	}
-	if g.ProvisioningState != nil {
-		objectMap["provisioningState"] = g.ProvisioningState
-	}
+	populate(objectMap, "changedTime", (*timeRFC3339)(g.ChangedTime))
+	populate(objectMap, "createdTime", (*timeRFC3339)(g.CreatedTime))
+	populate(objectMap, "provisioningState", g.ProvisioningState)
 	return json.Marshal(objectMap)
 }
 
@@ -1215,23 +1079,17 @@ func (g *GenericResourceExpanded) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "changedTime":
-			if val != nil {
-				var aux timeRFC3339
-				err = json.Unmarshal(*val, &aux)
-				g.ChangedTime = (*time.Time)(&aux)
-			}
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			g.ChangedTime = (*time.Time)(&aux)
 			delete(rawMsg, key)
 		case "createdTime":
-			if val != nil {
-				var aux timeRFC3339
-				err = json.Unmarshal(*val, &aux)
-				g.CreatedTime = (*time.Time)(&aux)
-			}
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			g.CreatedTime = (*time.Time)(&aux)
 			delete(rawMsg, key)
 		case "provisioningState":
-			if val != nil {
-				err = json.Unmarshal(*val, &g.ProvisioningState)
-			}
+			err = unpopulate(val, &g.ProvisioningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1293,7 +1151,7 @@ type HTTPPollerResponse struct {
 }
 
 // Identity for the resource.
-type IDentity struct {
+type Identity struct {
 	// READ-ONLY; The principal ID of resource identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 
@@ -1301,14 +1159,14 @@ type IDentity struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 
 	// The identity type.
-	Type *ResourceIDentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType `json:"type,omitempty"`
 
 	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIDentities *map[string]IDentityUserAssignedIdentitiesValue `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities *map[string]*IdentityUserAssignedIdentitiesValue `json:"userAssignedIdentities,omitempty"`
 }
 
-type IDentityUserAssignedIdentitiesValue struct {
+type IdentityUserAssignedIdentitiesValue struct {
 	// READ-ONLY; The client id of user assigned identity.
 	ClientID *string `json:"clientId,omitempty" azure:"ro"`
 
@@ -1367,7 +1225,7 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// List of Microsoft.Resources operations.
-	Value *[]Operation `json:"value,omitempty"`
+	Value *[]*Operation `json:"value,omitempty"`
 }
 
 // OperationListResultResponse is the response envelope for operations that return a OperationListResult type.
@@ -1426,7 +1284,7 @@ type Provider struct {
 	RegistrationState *string `json:"registrationState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The collection of provider resource types.
-	ResourceTypes *[]ProviderResourceType `json:"resourceTypes,omitempty" azure:"ro"`
+	ResourceTypes *[]*ProviderResourceType `json:"resourceTypes,omitempty" azure:"ro"`
 }
 
 // List of resource providers.
@@ -1435,7 +1293,7 @@ type ProviderListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// An array of resource providers.
-	Value *[]Provider `json:"value,omitempty"`
+	Value *[]*Provider `json:"value,omitempty"`
 }
 
 // ProviderListResultResponse is the response envelope for operations that return a ProviderListResult type.
@@ -1450,13 +1308,13 @@ type ProviderListResultResponse struct {
 // Resource type managed by the resource provider.
 type ProviderResourceType struct {
 	// READ-ONLY; The API profiles for the resource provider.
-	APIProfiles *[]APIProfile `json:"apiProfiles,omitempty" azure:"ro"`
+	APIProfiles *[]*APIProfile `json:"apiProfiles,omitempty" azure:"ro"`
 
 	// The API version.
-	APIVersions *[]string `json:"apiVersions,omitempty"`
+	APIVersions *[]*string `json:"apiVersions,omitempty"`
 
 	// The aliases that are supported by this resource type.
-	Aliases *[]Alias `json:"aliases,omitempty"`
+	Aliases *[]*Alias `json:"aliases,omitempty"`
 
 	// The additional capabilities offered by this resource type.
 	Capabilities *string `json:"capabilities,omitempty"`
@@ -1465,10 +1323,10 @@ type ProviderResourceType struct {
 	DefaultAPIVersion *string `json:"defaultApiVersion,omitempty" azure:"ro"`
 
 	// The collection of locations where this resource type can be created.
-	Locations *[]string `json:"locations,omitempty"`
+	Locations *[]*string `json:"locations,omitempty"`
 
 	// The properties.
-	Properties *map[string]string `json:"properties,omitempty"`
+	Properties *map[string]*string `json:"properties,omitempty"`
 
 	// The resource type.
 	ResourceType *string `json:"resourceType,omitempty"`
@@ -1540,7 +1398,7 @@ type Resource struct {
 	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// Resource tags
-	Tags *map[string]string `json:"tags,omitempty"`
+	Tags *map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; Resource type
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -1548,59 +1406,12 @@ type Resource struct {
 
 func (r Resource) marshalInternal() map[string]interface{} {
 	objectMap := make(map[string]interface{})
-	if r.ID != nil {
-		objectMap["id"] = r.ID
-	}
-	if r.Location != nil {
-		objectMap["location"] = r.Location
-	}
-	if r.Name != nil {
-		objectMap["name"] = r.Name
-	}
-	if r.Tags != nil {
-		objectMap["tags"] = r.Tags
-	}
-	if r.Type != nil {
-		objectMap["type"] = r.Type
-	}
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "location", r.Location)
+	populate(objectMap, "name", r.Name)
+	populate(objectMap, "tags", r.Tags)
+	populate(objectMap, "type", r.Type)
 	return objectMap
-}
-
-func (r *Resource) unmarshalInternal(rawMsg map[string]*json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			if val != nil {
-				err = json.Unmarshal(*val, &r.ID)
-			}
-			delete(rawMsg, key)
-		case "location":
-			if val != nil {
-				err = json.Unmarshal(*val, &r.Location)
-			}
-			delete(rawMsg, key)
-		case "name":
-			if val != nil {
-				err = json.Unmarshal(*val, &r.Name)
-			}
-			delete(rawMsg, key)
-		case "tags":
-			if val != nil {
-				err = json.Unmarshal(*val, &r.Tags)
-			}
-			delete(rawMsg, key)
-		case "type":
-			if val != nil {
-				err = json.Unmarshal(*val, &r.Type)
-			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 // Resource group information.
@@ -1621,7 +1432,7 @@ type ResourceGroup struct {
 	Properties *ResourceGroupProperties `json:"properties,omitempty"`
 
 	// The tags attached to the resource group.
-	Tags *map[string]string `json:"tags,omitempty"`
+	Tags *map[string]*string `json:"tags,omitempty"`
 
 	// READ-ONLY; The type of the resource group.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -1672,7 +1483,7 @@ type ResourceGroupListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// An array of resource groups.
-	Value *[]ResourceGroup `json:"value,omitempty"`
+	Value *[]*ResourceGroup `json:"value,omitempty"`
 }
 
 // ResourceGroupListResultResponse is the response envelope for operations that return a ResourceGroupListResult type.
@@ -1696,7 +1507,17 @@ type ResourceGroupPatchable struct {
 	Properties *ResourceGroupProperties `json:"properties,omitempty"`
 
 	// The tags attached to the resource group.
-	Tags *map[string]string `json:"tags,omitempty"`
+	Tags *map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ResourceGroupPatchable.
+func (r ResourceGroupPatchable) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "managedBy", r.ManagedBy)
+	populate(objectMap, "name", r.Name)
+	populate(objectMap, "properties", r.Properties)
+	populate(objectMap, "tags", r.Tags)
+	return json.Marshal(objectMap)
 }
 
 // The resource group properties.
@@ -1716,8 +1537,7 @@ type ResourceGroupResponse struct {
 
 // ResourceGroupsBeginDeleteOptions contains the optional parameters for the ResourceGroups.BeginDelete method.
 type ResourceGroupsBeginDeleteOptions struct {
-	// The resource types you want to force delete. Currently, only the following is supported: forceDeletionResourceTypes=Microsoft.Compute/virtualMachines
-	ForceDeletionResourceTypes *string
+	// placeholder for future optional parameters
 }
 
 // ResourceGroupsBeginExportTemplateOptions contains the optional parameters for the ResourceGroups.BeginExportTemplate method.
@@ -1760,7 +1580,7 @@ type ResourceListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// An array of resources.
-	Value *[]GenericResourceExpanded `json:"value,omitempty"`
+	Value *[]*GenericResourceExpanded `json:"value,omitempty"`
 }
 
 // ResourceListResultResponse is the response envelope for operations that return a ResourceListResult type.
@@ -1895,7 +1715,7 @@ type ResourcesListOptions struct {
 // Parameters of move resources.
 type ResourcesMoveInfo struct {
 	// The IDs of the resources.
-	Resources *[]string `json:"resources,omitempty"`
+	Resources *[]*string `json:"resources,omitempty"`
 
 	// The target resource group.
 	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
@@ -1931,7 +1751,7 @@ type ScopedDeployment struct {
 	Properties *DeploymentProperties `json:"properties,omitempty"`
 
 	// Deployment tags
-	Tags *map[string]string `json:"tags,omitempty"`
+	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
 // Deployment What-if operation parameters.
@@ -1979,7 +1799,7 @@ type TagDetails struct {
 	TagName *string `json:"tagName,omitempty"`
 
 	// The list of tag values.
-	Values *[]TagValue `json:"values,omitempty"`
+	Values *[]*TagValue `json:"values,omitempty"`
 }
 
 // TagDetailsResponse is the response envelope for operations that return a TagDetails type.
@@ -2015,7 +1835,7 @@ type TagValueResponse struct {
 // A dictionary of name and value pairs.
 type Tags struct {
 	// Dictionary of
-	Tags *map[string]string `json:"tags,omitempty"`
+	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
 // TagsCreateOrUpdateAtScopeOptions contains the optional parameters for the Tags.CreateOrUpdateAtScope method.
@@ -2064,7 +1884,7 @@ type TagsListResult struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// An array of tags.
-	Value *[]TagDetails `json:"value,omitempty"`
+	Value *[]*TagDetails `json:"value,omitempty"`
 }
 
 // TagsListResultResponse is the response envelope for operations that return a TagsListResult type.
@@ -2083,6 +1903,14 @@ type TagsPatchResource struct {
 
 	// The set of tags.
 	Properties *Tags `json:"properties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type TagsPatchResource.
+func (t TagsPatchResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "operation", t.Operation)
+	populate(objectMap, "properties", t.Properties)
+	return json.Marshal(objectMap)
 }
 
 // Wrapper resource for tags API requests and responses.
@@ -2172,7 +2000,7 @@ type WhatIfChange struct {
 	ChangeType *ChangeType `json:"changeType,omitempty"`
 
 	// The predicted changes to resource properties.
-	Delta *[]WhatIfPropertyChange `json:"delta,omitempty"`
+	Delta *[]*WhatIfPropertyChange `json:"delta,omitempty"`
 
 	// Resource ID
 	ResourceID *string `json:"resourceId,omitempty"`
@@ -2181,7 +2009,7 @@ type WhatIfChange struct {
 // Deployment operation properties.
 type WhatIfOperationProperties struct {
 	// List of resource changes predicted by What-If operation.
-	Changes *[]WhatIfChange `json:"changes,omitempty"`
+	Changes *[]*WhatIfChange `json:"changes,omitempty"`
 }
 
 // Result of the What-If operation. Contains a list of predicted changes and a URL link to get to the next set of results.
@@ -2226,11 +2054,26 @@ type WhatIfPropertyChange struct {
 	Before interface{} `json:"before,omitempty"`
 
 	// Nested property changes.
-	Children *[]WhatIfPropertyChange `json:"children,omitempty"`
+	Children *[]*WhatIfPropertyChange `json:"children,omitempty"`
 
 	// The path of the property.
 	Path *string `json:"path,omitempty"`
 
 	// The type of property change.
 	PropertyChangeType *PropertyChangeType `json:"propertyChangeType,omitempty"`
+}
+
+func populate(m map[string]interface{}, k string, v interface{}) {
+	if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func unpopulate(data *json.RawMessage, v interface{}) error {
+	if data == nil {
+		return nil
+	}
+	return json.Unmarshal(*data, v)
 }

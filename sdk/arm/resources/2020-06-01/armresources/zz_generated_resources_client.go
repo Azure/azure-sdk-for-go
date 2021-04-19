@@ -9,6 +9,7 @@ package armresources
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
@@ -52,20 +53,38 @@ func (client *ResourcesClient) CheckExistence(ctx context.Context, resourceGroup
 // checkExistenceCreateRequest creates the CheckExistence request.
 func (client *ResourcesClient) checkExistenceCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesCheckExistenceOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if parentResourcePath == "" {
+		return nil, errors.New("parameter parentResourcePath cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -80,8 +99,8 @@ func (client *ResourcesClient) checkExistenceHandleError(resp *azcore.Response) 
 }
 
 // CheckExistenceByID - Checks by ID whether a resource exists.
-func (client *ResourcesClient) CheckExistenceByID(ctx context.Context, resourceId string, apiVersion string, options *ResourcesCheckExistenceByIDOptions) (BooleanResponse, error) {
-	req, err := client.checkExistenceByIdCreateRequest(ctx, resourceId, apiVersion, options)
+func (client *ResourcesClient) CheckExistenceByID(ctx context.Context, resourceID string, apiVersion string, options *ResourcesCheckExistenceByIDOptions) (BooleanResponse, error) {
+	req, err := client.checkExistenceByIDCreateRequest(ctx, resourceID, apiVersion, options)
 	if err != nil {
 		return BooleanResponse{}, err
 	}
@@ -94,28 +113,31 @@ func (client *ResourcesClient) CheckExistenceByID(ctx context.Context, resourceI
 	} else if resp.StatusCode >= 400 && resp.StatusCode < 500 {
 		return BooleanResponse{RawResponse: resp.Response, Success: false}, nil
 	} else {
-		return BooleanResponse{}, client.checkExistenceByIdHandleError(resp)
+		return BooleanResponse{}, client.checkExistenceByIDHandleError(resp)
 	}
 }
 
-// checkExistenceByIdCreateRequest creates the CheckExistenceByID request.
-func (client *ResourcesClient) checkExistenceByIdCreateRequest(ctx context.Context, resourceId string, apiVersion string, options *ResourcesCheckExistenceByIDOptions) (*azcore.Request, error) {
+// checkExistenceByIDCreateRequest creates the CheckExistenceByID request.
+func (client *ResourcesClient) checkExistenceByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, options *ResourcesCheckExistenceByIDOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceId)
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// checkExistenceByIdHandleError handles the CheckExistenceByID error response.
-func (client *ResourcesClient) checkExistenceByIdHandleError(resp *azcore.Response) error {
+// checkExistenceByIDHandleError handles the CheckExistenceByID error response.
+func (client *ResourcesClient) checkExistenceByIDHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -179,20 +201,38 @@ func (client *ResourcesClient) createOrUpdate(ctx context.Context, resourceGroup
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ResourcesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if parentResourcePath == "" {
+		return nil, errors.New("parameter parentResourcePath cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
@@ -216,15 +256,15 @@ func (client *ResourcesClient) createOrUpdateHandleError(resp *azcore.Response) 
 }
 
 // BeginCreateOrUpdateByID - Create a resource by ID.
-func (client *ResourcesClient) BeginCreateOrUpdateByID(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateByIDOptions) (GenericResourcePollerResponse, error) {
-	resp, err := client.createOrUpdateByID(ctx, resourceId, apiVersion, parameters, options)
+func (client *ResourcesClient) BeginCreateOrUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateByIDOptions) (GenericResourcePollerResponse, error) {
+	resp, err := client.createOrUpdateByID(ctx, resourceID, apiVersion, parameters, options)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
 	result := GenericResourcePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourcesClient.CreateOrUpdateByID", "", resp, client.createOrUpdateByIdHandleError)
+	pt, err := armcore.NewPoller("ResourcesClient.CreateOrUpdateByID", "", resp, client.createOrUpdateByIDHandleError)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
@@ -242,7 +282,7 @@ func (client *ResourcesClient) BeginCreateOrUpdateByID(ctx context.Context, reso
 // ResumeCreateOrUpdateByID creates a new GenericResourcePoller from the specified resume token.
 // token - The value must come from a previous call to GenericResourcePoller.ResumeToken().
 func (client *ResourcesClient) ResumeCreateOrUpdateByID(token string) (GenericResourcePoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.CreateOrUpdateByID", token, client.createOrUpdateByIdHandleError)
+	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.CreateOrUpdateByID", token, client.createOrUpdateByIDHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -253,8 +293,8 @@ func (client *ResourcesClient) ResumeCreateOrUpdateByID(token string) (GenericRe
 }
 
 // CreateOrUpdateByID - Create a resource by ID.
-func (client *ResourcesClient) createOrUpdateByID(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateByIDOptions) (*azcore.Response, error) {
-	req, err := client.createOrUpdateByIdCreateRequest(ctx, resourceId, apiVersion, parameters, options)
+func (client *ResourcesClient) createOrUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateByIDOptions) (*azcore.Response, error) {
+	req, err := client.createOrUpdateByIDCreateRequest(ctx, resourceID, apiVersion, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -263,29 +303,32 @@ func (client *ResourcesClient) createOrUpdateByID(ctx context.Context, resourceI
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateByIdHandleError(resp)
+		return nil, client.createOrUpdateByIDHandleError(resp)
 	}
 	return resp, nil
 }
 
-// createOrUpdateByIdCreateRequest creates the CreateOrUpdateByID request.
-func (client *ResourcesClient) createOrUpdateByIdCreateRequest(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateByIDOptions) (*azcore.Request, error) {
+// createOrUpdateByIDCreateRequest creates the CreateOrUpdateByID request.
+func (client *ResourcesClient) createOrUpdateByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateByIDOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceId)
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// createOrUpdateByIdHandleResponse handles the CreateOrUpdateByID response.
-func (client *ResourcesClient) createOrUpdateByIdHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
+// createOrUpdateByIDHandleResponse handles the CreateOrUpdateByID response.
+func (client *ResourcesClient) createOrUpdateByIDHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
 	var val *GenericResource
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GenericResourceResponse{}, err
@@ -293,8 +336,8 @@ func (client *ResourcesClient) createOrUpdateByIdHandleResponse(resp *azcore.Res
 	return GenericResourceResponse{RawResponse: resp.Response, GenericResource: val}, nil
 }
 
-// createOrUpdateByIdHandleError handles the CreateOrUpdateByID error response.
-func (client *ResourcesClient) createOrUpdateByIdHandleError(resp *azcore.Response) error {
+// createOrUpdateByIDHandleError handles the CreateOrUpdateByID error response.
+func (client *ResourcesClient) createOrUpdateByIDHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -304,7 +347,7 @@ func (client *ResourcesClient) createOrUpdateByIdHandleError(resp *azcore.Respon
 
 // BeginDelete - Deletes a resource.
 func (client *ResourcesClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesBeginDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.delete(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
+	resp, err := client.deleteOperation(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -340,7 +383,7 @@ func (client *ResourcesClient) ResumeDelete(token string) (HTTPPoller, error) {
 }
 
 // Delete - Deletes a resource.
-func (client *ResourcesClient) delete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *ResourcesClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
 	if err != nil {
 		return nil, err
@@ -358,20 +401,38 @@ func (client *ResourcesClient) delete(ctx context.Context, resourceGroupName str
 // deleteCreateRequest creates the Delete request.
 func (client *ResourcesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if parentResourcePath == "" {
+		return nil, errors.New("parameter parentResourcePath cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -386,15 +447,15 @@ func (client *ResourcesClient) deleteHandleError(resp *azcore.Response) error {
 }
 
 // BeginDeleteByID - Deletes a resource by ID.
-func (client *ResourcesClient) BeginDeleteByID(ctx context.Context, resourceId string, apiVersion string, options *ResourcesBeginDeleteByIDOptions) (HTTPPollerResponse, error) {
-	resp, err := client.deleteByID(ctx, resourceId, apiVersion, options)
+func (client *ResourcesClient) BeginDeleteByID(ctx context.Context, resourceID string, apiVersion string, options *ResourcesBeginDeleteByIDOptions) (HTTPPollerResponse, error) {
+	resp, err := client.deleteByID(ctx, resourceID, apiVersion, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourcesClient.DeleteByID", "", resp, client.deleteByIdHandleError)
+	pt, err := armcore.NewPoller("ResourcesClient.DeleteByID", "", resp, client.deleteByIDHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -412,7 +473,7 @@ func (client *ResourcesClient) BeginDeleteByID(ctx context.Context, resourceId s
 // ResumeDeleteByID creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *ResourcesClient) ResumeDeleteByID(token string) (HTTPPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.DeleteByID", token, client.deleteByIdHandleError)
+	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.DeleteByID", token, client.deleteByIDHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -423,8 +484,8 @@ func (client *ResourcesClient) ResumeDeleteByID(token string) (HTTPPoller, error
 }
 
 // DeleteByID - Deletes a resource by ID.
-func (client *ResourcesClient) deleteByID(ctx context.Context, resourceId string, apiVersion string, options *ResourcesBeginDeleteByIDOptions) (*azcore.Response, error) {
-	req, err := client.deleteByIdCreateRequest(ctx, resourceId, apiVersion, options)
+func (client *ResourcesClient) deleteByID(ctx context.Context, resourceID string, apiVersion string, options *ResourcesBeginDeleteByIDOptions) (*azcore.Response, error) {
+	req, err := client.deleteByIDCreateRequest(ctx, resourceID, apiVersion, options)
 	if err != nil {
 		return nil, err
 	}
@@ -433,29 +494,32 @@ func (client *ResourcesClient) deleteByID(ctx context.Context, resourceId string
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteByIdHandleError(resp)
+		return nil, client.deleteByIDHandleError(resp)
 	}
 	return resp, nil
 }
 
-// deleteByIdCreateRequest creates the DeleteByID request.
-func (client *ResourcesClient) deleteByIdCreateRequest(ctx context.Context, resourceId string, apiVersion string, options *ResourcesBeginDeleteByIDOptions) (*azcore.Request, error) {
+// deleteByIDCreateRequest creates the DeleteByID request.
+func (client *ResourcesClient) deleteByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, options *ResourcesBeginDeleteByIDOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceId)
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteByIdHandleError handles the DeleteByID error response.
-func (client *ResourcesClient) deleteByIdHandleError(resp *azcore.Response) error {
+// deleteByIDHandleError handles the DeleteByID error response.
+func (client *ResourcesClient) deleteByIDHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -482,20 +546,38 @@ func (client *ResourcesClient) Get(ctx context.Context, resourceGroupName string
 // getCreateRequest creates the Get request.
 func (client *ResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if parentResourcePath == "" {
+		return nil, errors.New("parameter parentResourcePath cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -519,8 +601,8 @@ func (client *ResourcesClient) getHandleError(resp *azcore.Response) error {
 }
 
 // GetByID - Gets a resource by ID.
-func (client *ResourcesClient) GetByID(ctx context.Context, resourceId string, apiVersion string, options *ResourcesGetByIDOptions) (GenericResourceResponse, error) {
-	req, err := client.getByIdCreateRequest(ctx, resourceId, apiVersion, options)
+func (client *ResourcesClient) GetByID(ctx context.Context, resourceID string, apiVersion string, options *ResourcesGetByIDOptions) (GenericResourceResponse, error) {
+	req, err := client.getByIDCreateRequest(ctx, resourceID, apiVersion, options)
 	if err != nil {
 		return GenericResourceResponse{}, err
 	}
@@ -529,29 +611,32 @@ func (client *ResourcesClient) GetByID(ctx context.Context, resourceId string, a
 		return GenericResourceResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return GenericResourceResponse{}, client.getByIdHandleError(resp)
+		return GenericResourceResponse{}, client.getByIDHandleError(resp)
 	}
-	return client.getByIdHandleResponse(resp)
+	return client.getByIDHandleResponse(resp)
 }
 
-// getByIdCreateRequest creates the GetByID request.
-func (client *ResourcesClient) getByIdCreateRequest(ctx context.Context, resourceId string, apiVersion string, options *ResourcesGetByIDOptions) (*azcore.Request, error) {
+// getByIDCreateRequest creates the GetByID request.
+func (client *ResourcesClient) getByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, options *ResourcesGetByIDOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceId)
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// getByIdHandleResponse handles the GetByID response.
-func (client *ResourcesClient) getByIdHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
+// getByIDHandleResponse handles the GetByID response.
+func (client *ResourcesClient) getByIDHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
 	var val *GenericResource
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GenericResourceResponse{}, err
@@ -559,8 +644,8 @@ func (client *ResourcesClient) getByIdHandleResponse(resp *azcore.Response) (Gen
 	return GenericResourceResponse{RawResponse: resp.Response, GenericResource: val}, nil
 }
 
-// getByIdHandleError handles the GetByID error response.
-func (client *ResourcesClient) getByIdHandleError(resp *azcore.Response) error {
+// getByIDHandleError handles the GetByID error response.
+func (client *ResourcesClient) getByIDHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -587,24 +672,27 @@ func (client *ResourcesClient) List(options *ResourcesListOptions) ResourceListR
 // listCreateRequest creates the List request.
 func (client *ResourcesClient) listCreateRequest(ctx context.Context, options *ResourcesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resources"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
+	reqQP := req.URL.Query()
 	if options != nil && options.Filter != nil {
-		query.Set("$filter", *options.Filter)
+		reqQP.Set("$filter", *options.Filter)
 	}
 	if options != nil && options.Expand != nil {
-		query.Set("$expand", *options.Expand)
+		reqQP.Set("$expand", *options.Expand)
 	}
 	if options != nil && options.Top != nil {
-		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP.Set("api-version", "2020-06-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -646,25 +734,31 @@ func (client *ResourcesClient) ListByResourceGroup(resourceGroupName string, opt
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *ResourcesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ResourcesListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
+	reqQP := req.URL.Query()
 	if options != nil && options.Filter != nil {
-		query.Set("$filter", *options.Filter)
+		reqQP.Set("$filter", *options.Filter)
 	}
 	if options != nil && options.Expand != nil {
-		query.Set("$expand", *options.Expand)
+		reqQP.Set("$expand", *options.Expand)
 	}
 	if options != nil && options.Top != nil {
-		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP.Set("api-version", "2020-06-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -747,16 +841,22 @@ func (client *ResourcesClient) moveResources(ctx context.Context, sourceResource
 // moveResourcesCreateRequest creates the MoveResources request.
 func (client *ResourcesClient) moveResourcesCreateRequest(ctx context.Context, sourceResourceGroupName string, parameters ResourcesMoveInfo, options *ResourcesBeginMoveResourcesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/moveResources"
+	if sourceResourceGroupName == "" {
+		return nil, errors.New("parameter sourceResourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{sourceResourceGroupName}", url.PathEscape(sourceResourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2020-06-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
@@ -826,20 +926,38 @@ func (client *ResourcesClient) update(ctx context.Context, resourceGroupName str
 // updateCreateRequest creates the Update request.
 func (client *ResourcesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if parentResourcePath == "" {
+		return nil, errors.New("parameter parentResourcePath cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
@@ -863,15 +981,15 @@ func (client *ResourcesClient) updateHandleError(resp *azcore.Response) error {
 }
 
 // BeginUpdateByID - Updates a resource by ID.
-func (client *ResourcesClient) BeginUpdateByID(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateByIDOptions) (GenericResourcePollerResponse, error) {
-	resp, err := client.updateByID(ctx, resourceId, apiVersion, parameters, options)
+func (client *ResourcesClient) BeginUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateByIDOptions) (GenericResourcePollerResponse, error) {
+	resp, err := client.updateByID(ctx, resourceID, apiVersion, parameters, options)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
 	result := GenericResourcePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourcesClient.UpdateByID", "", resp, client.updateByIdHandleError)
+	pt, err := armcore.NewPoller("ResourcesClient.UpdateByID", "", resp, client.updateByIDHandleError)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
@@ -889,7 +1007,7 @@ func (client *ResourcesClient) BeginUpdateByID(ctx context.Context, resourceId s
 // ResumeUpdateByID creates a new GenericResourcePoller from the specified resume token.
 // token - The value must come from a previous call to GenericResourcePoller.ResumeToken().
 func (client *ResourcesClient) ResumeUpdateByID(token string) (GenericResourcePoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.UpdateByID", token, client.updateByIdHandleError)
+	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.UpdateByID", token, client.updateByIDHandleError)
 	if err != nil {
 		return nil, err
 	}
@@ -900,8 +1018,8 @@ func (client *ResourcesClient) ResumeUpdateByID(token string) (GenericResourcePo
 }
 
 // UpdateByID - Updates a resource by ID.
-func (client *ResourcesClient) updateByID(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateByIDOptions) (*azcore.Response, error) {
-	req, err := client.updateByIdCreateRequest(ctx, resourceId, apiVersion, parameters, options)
+func (client *ResourcesClient) updateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateByIDOptions) (*azcore.Response, error) {
+	req, err := client.updateByIDCreateRequest(ctx, resourceID, apiVersion, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -910,29 +1028,32 @@ func (client *ResourcesClient) updateByID(ctx context.Context, resourceId string
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateByIdHandleError(resp)
+		return nil, client.updateByIDHandleError(resp)
 	}
 	return resp, nil
 }
 
-// updateByIdCreateRequest creates the UpdateByID request.
-func (client *ResourcesClient) updateByIdCreateRequest(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateByIDOptions) (*azcore.Request, error) {
+// updateByIDCreateRequest creates the UpdateByID request.
+func (client *ResourcesClient) updateByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateByIDOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceId)
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// updateByIdHandleResponse handles the UpdateByID response.
-func (client *ResourcesClient) updateByIdHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
+// updateByIDHandleResponse handles the UpdateByID response.
+func (client *ResourcesClient) updateByIDHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
 	var val *GenericResource
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GenericResourceResponse{}, err
@@ -940,8 +1061,8 @@ func (client *ResourcesClient) updateByIdHandleResponse(resp *azcore.Response) (
 	return GenericResourceResponse{RawResponse: resp.Response, GenericResource: val}, nil
 }
 
-// updateByIdHandleError handles the UpdateByID error response.
-func (client *ResourcesClient) updateByIdHandleError(resp *azcore.Response) error {
+// updateByIDHandleError handles the UpdateByID error response.
+func (client *ResourcesClient) updateByIDHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
 		return err
@@ -1013,16 +1134,22 @@ func (client *ResourcesClient) validateMoveResources(ctx context.Context, source
 // validateMoveResourcesCreateRequest creates the ValidateMoveResources request.
 func (client *ResourcesClient) validateMoveResourcesCreateRequest(ctx context.Context, sourceResourceGroupName string, parameters ResourcesMoveInfo, options *ResourcesBeginValidateMoveResourcesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/validateMoveResources"
+	if sourceResourceGroupName == "" {
+		return nil, errors.New("parameter sourceResourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{sourceResourceGroupName}", url.PathEscape(sourceResourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2020-06-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }

@@ -17,10 +17,12 @@ import (
 
 // DeploymentExtendedPoller provides polling facilities until the operation completes
 type DeploymentExtendedPoller interface {
-	Done() bool
-	Poll(ctx context.Context) (*http.Response, error)
+	azcore.Poller
+
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final DeploymentExtendedResponse will be returned.
 	FinalResponse(ctx context.Context) (DeploymentExtendedResponse, error)
-	ResumeToken() (string, error)
 }
 
 type deploymentExtendedPoller struct {
@@ -67,10 +69,12 @@ func (p *deploymentExtendedPoller) pollUntilDone(ctx context.Context, frequency 
 
 // DeploymentValidateResultPoller provides polling facilities until the operation completes
 type DeploymentValidateResultPoller interface {
-	Done() bool
-	Poll(ctx context.Context) (*http.Response, error)
+	azcore.Poller
+
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final DeploymentValidateResultResponse will be returned.
 	FinalResponse(ctx context.Context) (DeploymentValidateResultResponse, error)
-	ResumeToken() (string, error)
 }
 
 type deploymentValidateResultPoller struct {
@@ -117,10 +121,12 @@ func (p *deploymentValidateResultPoller) pollUntilDone(ctx context.Context, freq
 
 // GenericResourcePoller provides polling facilities until the operation completes
 type GenericResourcePoller interface {
-	Done() bool
-	Poll(ctx context.Context) (*http.Response, error)
+	azcore.Poller
+
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final GenericResourceResponse will be returned.
 	FinalResponse(ctx context.Context) (GenericResourceResponse, error)
-	ResumeToken() (string, error)
 }
 
 type genericResourcePoller struct {
@@ -167,10 +173,12 @@ func (p *genericResourcePoller) pollUntilDone(ctx context.Context, frequency tim
 
 // HTTPPoller provides polling facilities until the operation completes
 type HTTPPoller interface {
-	Done() bool
-	Poll(ctx context.Context) (*http.Response, error)
+	azcore.Poller
+
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final HTTPResponse will be returned.
 	FinalResponse(ctx context.Context) (*http.Response, error)
-	ResumeToken() (string, error)
 }
 
 type httpPoller struct {
@@ -205,10 +213,12 @@ func (p *httpPoller) pollUntilDone(ctx context.Context, frequency time.Duration)
 
 // ResourceGroupExportResultPoller provides polling facilities until the operation completes
 type ResourceGroupExportResultPoller interface {
-	Done() bool
-	Poll(ctx context.Context) (*http.Response, error)
+	azcore.Poller
+
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final ResourceGroupExportResultResponse will be returned.
 	FinalResponse(ctx context.Context) (ResourceGroupExportResultResponse, error)
-	ResumeToken() (string, error)
 }
 
 type resourceGroupExportResultPoller struct {
@@ -255,10 +265,12 @@ func (p *resourceGroupExportResultPoller) pollUntilDone(ctx context.Context, fre
 
 // WhatIfOperationResultPoller provides polling facilities until the operation completes
 type WhatIfOperationResultPoller interface {
-	Done() bool
-	Poll(ctx context.Context) (*http.Response, error)
+	azcore.Poller
+
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final WhatIfOperationResultResponse will be returned.
 	FinalResponse(ctx context.Context) (WhatIfOperationResultResponse, error)
-	ResumeToken() (string, error)
 }
 
 type whatIfOperationResultPoller struct {

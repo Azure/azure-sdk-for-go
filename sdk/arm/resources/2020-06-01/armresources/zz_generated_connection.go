@@ -7,4 +7,6 @@
 
 package armresources
 
-const telemetryInfo = "azsdk-go-armresources/v0.2.0"
+import "github.com/Azure/azure-sdk-for-go/sdk/arm/resources"
+
+const telemetryInfo = "azsdk-go-armresources/2020-06-01" + resources.Version

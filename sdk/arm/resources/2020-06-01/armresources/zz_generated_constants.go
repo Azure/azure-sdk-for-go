@@ -25,6 +25,7 @@ func PossibleAliasPathAttributesValues() []AliasPathAttributes {
 	}
 }
 
+// ToPtr() returns a *AliasPathAttributes pointing to the current value.
 func (c AliasPathAttributes) ToPtr() *AliasPathAttributes {
 	return &c
 }
@@ -65,6 +66,7 @@ func PossibleAliasPathTokenTypeValues() []AliasPathTokenType {
 	}
 }
 
+// ToPtr() returns a *AliasPathTokenType pointing to the current value.
 func (c AliasPathTokenType) ToPtr() *AliasPathTokenType {
 	return &c
 }
@@ -87,6 +89,7 @@ func PossibleAliasPatternTypeValues() []AliasPatternType {
 	}
 }
 
+// ToPtr() returns a *AliasPatternType pointing to the current value.
 func (c AliasPatternType) ToPtr() *AliasPatternType {
 	return &c
 }
@@ -112,6 +115,7 @@ func PossibleAliasTypeValues() []AliasType {
 	}
 }
 
+// ToPtr() returns a *AliasType pointing to the current value.
 func (c AliasType) ToPtr() *AliasType {
 	return &c
 }
@@ -152,6 +156,7 @@ func PossibleChangeTypeValues() []ChangeType {
 	}
 }
 
+// ToPtr() returns a *ChangeType pointing to the current value.
 func (c ChangeType) ToPtr() *ChangeType {
 	return &c
 }
@@ -176,6 +181,7 @@ func PossibleDeploymentModeValues() []DeploymentMode {
 	}
 }
 
+// ToPtr() returns a *DeploymentMode pointing to the current value.
 func (c DeploymentMode) ToPtr() *DeploymentMode {
 	return &c
 }
@@ -198,6 +204,7 @@ func PossibleExpressionEvaluationOptionsScopeTypeValues() []ExpressionEvaluation
 	}
 }
 
+// ToPtr() returns a *ExpressionEvaluationOptionsScopeType pointing to the current value.
 func (c ExpressionEvaluationOptionsScopeType) ToPtr() *ExpressionEvaluationOptionsScopeType {
 	return &c
 }
@@ -218,6 +225,7 @@ func PossibleOnErrorDeploymentTypeValues() []OnErrorDeploymentType {
 	}
 }
 
+// ToPtr() returns a *OnErrorDeploymentType pointing to the current value.
 func (c OnErrorDeploymentType) ToPtr() *OnErrorDeploymentType {
 	return &c
 }
@@ -249,6 +257,7 @@ func PossiblePropertyChangeTypeValues() []PropertyChangeType {
 	}
 }
 
+// ToPtr() returns a *PropertyChangeType pointing to the current value.
 func (c PropertyChangeType) ToPtr() *PropertyChangeType {
 	return &c
 }
@@ -295,6 +304,7 @@ func PossibleProvisioningOperationValues() []ProvisioningOperation {
 	}
 }
 
+// ToPtr() returns a *ProvisioningOperation pointing to the current value.
 func (c ProvisioningOperation) ToPtr() *ProvisioningOperation {
 	return &c
 }
@@ -335,31 +345,33 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
+// ToPtr() returns a *ProvisioningState pointing to the current value.
 func (c ProvisioningState) ToPtr() *ProvisioningState {
 	return &c
 }
 
-// ResourceIDentityType - The identity type.
-type ResourceIDentityType string
+// ResourceIdentityType - The identity type.
+type ResourceIdentityType string
 
 const (
-	ResourceIDentityTypeSystemAssigned             ResourceIDentityType = "SystemAssigned"
-	ResourceIDentityTypeUserAssigned               ResourceIDentityType = "UserAssigned"
-	ResourceIDentityTypeSystemAssignedUserAssigned ResourceIDentityType = "SystemAssigned, UserAssigned"
-	ResourceIDentityTypeNone                       ResourceIDentityType = "None"
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = "SystemAssigned"
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = "UserAssigned"
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = "SystemAssigned, UserAssigned"
+	ResourceIdentityTypeNone                       ResourceIdentityType = "None"
 )
 
-// PossibleResourceIDentityTypeValues returns the possible values for the ResourceIDentityType const type.
-func PossibleResourceIDentityTypeValues() []ResourceIDentityType {
-	return []ResourceIDentityType{
-		ResourceIDentityTypeSystemAssigned,
-		ResourceIDentityTypeUserAssigned,
-		ResourceIDentityTypeSystemAssignedUserAssigned,
-		ResourceIDentityTypeNone,
+// PossibleResourceIdentityTypeValues returns the possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{
+		ResourceIdentityTypeSystemAssigned,
+		ResourceIdentityTypeUserAssigned,
+		ResourceIdentityTypeSystemAssignedUserAssigned,
+		ResourceIdentityTypeNone,
 	}
 }
 
-func (c ResourceIDentityType) ToPtr() *ResourceIDentityType {
+// ToPtr() returns a *ResourceIdentityType pointing to the current value.
+func (c ResourceIdentityType) ToPtr() *ResourceIdentityType {
 	return &c
 }
 
@@ -384,6 +396,7 @@ func PossibleTagsPatchOperationValues() []TagsPatchOperation {
 	}
 }
 
+// ToPtr() returns a *TagsPatchOperation pointing to the current value.
 func (c TagsPatchOperation) ToPtr() *TagsPatchOperation {
 	return &c
 }
@@ -404,6 +417,7 @@ func PossibleWhatIfResultFormatValues() []WhatIfResultFormat {
 	}
 }
 
+// ToPtr() returns a *WhatIfResultFormat pointing to the current value.
 func (c WhatIfResultFormat) ToPtr() *WhatIfResultFormat {
 	return &c
 }

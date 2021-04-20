@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## `v53.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/webpubsub/mgmt/2021-04-01-preview/webpubsub`
+
 ## `v53.3.0`
 
 Fixes https://github.com/Azure/azure-sdk-for-go/issues/14540

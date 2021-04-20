@@ -28,7 +28,7 @@ func ExampleStorageAccountsClient_BeginCreate() {
 		"<storage account name>",
 		armstorage.StorageAccountCreateParameters{
 			SKU: &armstorage.SKU{
-				Name: armstorage.SKUNameStandardLrs.ToPtr(),
+				Name: armstorage.SKUNameStandardLRS.ToPtr(),
 				Tier: armstorage.SKUTierStandard.ToPtr(),
 			},
 			Kind:     armstorage.KindBlobStorage.ToPtr(),
@@ -156,9 +156,9 @@ func ExampleStorageAccountsClient_Update() {
 		"<resource group name>",
 		"<storage account name>",
 		armstorage.StorageAccountUpdateParameters{
-			Tags: &map[string]string{
-				"who rocks": "golang",
-				"where":     "on azure"}}, nil)
+			Tags: &map[string]*string{
+				"who rocks": to.StringPtr("golang"),
+				"where":     to.StringPtr("on azure")}}, nil)
 	if err != nil {
 		log.Fatalf("failed to delete account: %v", err)
 	}

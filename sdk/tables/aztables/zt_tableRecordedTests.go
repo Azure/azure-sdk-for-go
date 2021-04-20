@@ -55,10 +55,10 @@ func cosmosURI(accountName string, endpointSuffix string) string {
 
 // create the test specific TableClient and wire it up to recordings
 func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType, mode testframework.RecordMode) {
-	var accountName *string
+	var accountName string
 	var suffix string
 	var cred *SharedKeyCredential
-	var secret *string
+	var secret string
 	var uri string
 	assert := assert.New(t)
 
@@ -71,14 +71,14 @@ func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType,
 		accountName, err = recording.GetRecordedVariable(storageAccountNameEnvVar, testframework.Default)
 		suffix = recording.GetOptionalRecordedVariable(storageEndpointSuffixEnvVar, DefaultStorageSuffix, testframework.Default)
 		secret, err = recording.GetRecordedVariable(storageAccountKeyEnvVar, testframework.Secret_Base64String)
-		cred, _ = NewSharedKeyCredential(*accountName, *secret)
-		uri = storageURI(*accountName, suffix)
+		cred, _ = NewSharedKeyCredential(accountName, secret)
+		uri = storageURI(accountName, suffix)
 	} else {
 		accountName, err = recording.GetRecordedVariable(cosmosAccountNameEnnVar, testframework.Default)
 		suffix = recording.GetOptionalRecordedVariable(cosmosEndpointSuffixEnvVar, DefaultCosmosSuffix, testframework.Default)
 		secret, err = recording.GetRecordedVariable(cosmosAccountKeyEnvVar, testframework.Secret_Base64String)
-		cred, _ = NewSharedKeyCredential(*accountName, *secret)
-		uri = cosmosURI(*accountName, suffix)
+		cred, _ = NewSharedKeyCredential(accountName, secret)
+		uri = cosmosURI(accountName, suffix)
 	}
 
 	client, err := NewTableServiceClient(uri, cred, &TableClientOptions{HTTPClient: recording, Retry: azcore.RetryOptions{MaxRetries: -1}})

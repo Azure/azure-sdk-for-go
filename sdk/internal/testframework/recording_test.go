@@ -81,7 +81,7 @@ func (s *recordingTests) TestRecordedVariables() {
 	os.Setenv(nonExistingEnvVar, expectedVariableValue)
 	defer os.Unsetenv(nonExistingEnvVar)
 	val, err = target.GetRecordedVariable(nonExistingEnvVar, Default)
-	assert.Equal(expectedVariableValue, *val)
+	assert.Equal(expectedVariableValue, val)
 
 	err = target.Stop()
 	assert.Nil(err)

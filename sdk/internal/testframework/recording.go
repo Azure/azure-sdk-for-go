@@ -111,7 +111,7 @@ func NewRecording(c TestContext, mode RecordMode) (*Recording, error) {
 
 // GetRecordedVariable returns a recorded variable. If the variable is not found we return an error
 // variableType determines how the recorded variable will be saved. Default indicates that the value should be saved without any sanitation.
-func (r *Recording) GetRecordedVariable(name string, variableType VariableType) (*string, error) {
+func (r *Recording) GetRecordedVariable(name string, variableType VariableType) (string, error) {
 	var err error
 	result, ok := r.previousSessionVariables[name]
 	if !ok || r.Mode == Live {
@@ -119,11 +119,11 @@ func (r *Recording) GetRecordedVariable(name string, variableType VariableType) 
 		result, err = getRequiredEnv(name)
 		if err != nil {
 			r.c.Fail(err.Error())
-			return nil, err
+			return "", err
 		}
 		r.variables[name] = applyVariableOptions(result, variableType)
 	}
-	return result, err
+	return *result, err
 }
 
 // GetOptionalRecordedVariable returns a recorded variable with a fallback default value

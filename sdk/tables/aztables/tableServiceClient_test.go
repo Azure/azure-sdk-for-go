@@ -36,12 +36,12 @@ func (s *tableServiceClientLiveTests) TestServiceErrors() {
 	context := getTestContext(s.T().Name())
 	tableName, err := getTableName(context)
 
-	_, err = context.client.Create(ctx, *tableName)
-	defer context.client.Delete(ctx, *tableName)
+	_, err = context.client.Create(ctx, tableName)
+	defer context.client.Delete(ctx, tableName)
 	assert.Nil(err)
 
 	// Create a duplicate table to produce an error
-	_, svcErr := context.client.Create(ctx, *tableName)
+	_, svcErr := context.client.Create(ctx, tableName)
 	assert.Equal(svcErr.RawResponse().StatusCode, http.StatusConflict)
 }
 
@@ -50,11 +50,11 @@ func (s *tableServiceClientLiveTests) TestCreateTable() {
 	context := getTestContext(s.T().Name())
 	tableName, err := getTableName(context)
 
-	resp, err := context.client.Create(ctx, *tableName)
-	defer context.client.Delete(ctx, *tableName)
+	resp, err := context.client.Create(ctx, tableName)
+	defer context.client.Delete(ctx, tableName)
 
 	assert.Nil(err)
-	assert.Equal(*resp.TableResponse.TableName, *tableName)
+	assert.Equal(*resp.TableResponse.TableName, tableName)
 }
 
 func (s *tableServiceClientLiveTests) TestQueryTable() {
@@ -70,10 +70,10 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 	for i := 0; i < tableCount; i++ {
 		if i < (tableCount - 1) {
 			name, _ := getTableName(context, prefix1)
-			tableNames[i] = *name
+			tableNames[i] = name
 		} else {
 			name, _ := getTableName(context, prefix2)
-			tableNames[i] = *name
+			tableNames[i] = name
 		}
 		_, err := context.client.Create(ctx, tableNames[i])
 		assert.Nil(err)

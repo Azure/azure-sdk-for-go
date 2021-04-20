@@ -135,7 +135,7 @@ func (s *tableClientLiveTests) init(doCreate bool) (*TableClient, func()) {
 	assert := assert.New(s.T())
 	context := getTestContext(s.T().Name())
 	tableName, _ := getTableName(context)
-	client := context.client.GetTableClient(*tableName)
+	client := context.client.GetTableClient(tableName)
 	if doCreate {
 		_, err := client.Create(ctx)
 		if err != nil {

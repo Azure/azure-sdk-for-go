@@ -207,10 +207,10 @@ func (r *Recording) UUID() uuid.UUID {
 
 // GenerateAlphaNumericID will generate a recorded random alpha numeric id
 // if the recording has a randomSeed already set, the value will be generated from that seed, else a new random seed will be used
-func (r *Recording) GenerateAlphaNumericID(prefix string, length int, lowercaseOnly bool) (*string, error) {
+func (r *Recording) GenerateAlphaNumericID(prefix string, length int, lowercaseOnly bool) (string, error) {
 
 	if length <= len(prefix) {
-		return nil, errors.New("length must be greater than prefix")
+		return "", errors.New("length must be greater than prefix")
 	}
 
 	r.initRandomSource()
@@ -239,7 +239,7 @@ func (r *Recording) GenerateAlphaNumericID(prefix string, length int, lowercaseO
 		remain--
 	}
 	str := sb.String()
-	return &str, nil
+	return str, nil
 }
 
 // getRequiredEnv gets an environment variable by name and returns an error if it is not found

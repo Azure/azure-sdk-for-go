@@ -240,8 +240,8 @@ func (s *recordingTests) TestGenerateAlphaNumericID() {
 
 	generated1, err := target.GenerateAlphaNumericID(prefix, 10, true)
 
-	assert.Equal(10, len(*generated1))
-	assert.Equal(true, strings.HasPrefix(*generated1, prefix))
+	assert.Equal(10, len(generated1))
+	assert.Equal(true, strings.HasPrefix(generated1, prefix))
 
 	generated1a, err := target.GenerateAlphaNumericID(prefix, 10, true)
 	assert.NotEqual(generated1, generated1a)
@@ -255,7 +255,7 @@ func (s *recordingTests) TestGenerateAlphaNumericID() {
 	generated2, err := target2.GenerateAlphaNumericID(prefix, 10, true)
 
 	// The two generated Ids should be the same since target2 loaded the saved random seed from target
-	assert.Equal(*generated2, *generated1)
+	assert.Equal(generated2, generated1)
 
 	err = target.Stop()
 	assert.Nil(err)
@@ -273,7 +273,7 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching() {
 	target.recorder.SetTransport(rt)
 
 	path, err := target.GenerateAlphaNumericID("", 5, true)
-	reqUrl := server.URL() + "/" + *path
+	reqUrl := server.URL() + "/" + path
 
 	req, _ := http.NewRequest(http.MethodPost, reqUrl, nil)
 
@@ -295,7 +295,7 @@ func (s *recordingTests) TestRecordRequestsAndDoMatching() {
 
 	// re-create the random url using the recorded variables
 	path, err = target.GenerateAlphaNumericID("", 5, true)
-	reqUrl = server.URL() + "/" + *path
+	reqUrl = server.URL() + "/" + path
 	req, _ = http.NewRequest(http.MethodPost, reqUrl, nil)
 
 	// playback the request
@@ -316,7 +316,7 @@ func (s *recordingTests) TestRecordRequestsAndFailMatchingForMissingRecording() 
 	target.recorder.SetTransport(rt)
 
 	path, err := target.GenerateAlphaNumericID("", 5, true)
-	reqUrl := server.URL() + "/" + *path
+	reqUrl := server.URL() + "/" + path
 
 	req, _ := http.NewRequest(http.MethodPost, reqUrl, nil)
 

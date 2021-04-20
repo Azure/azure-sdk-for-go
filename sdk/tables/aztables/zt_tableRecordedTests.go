@@ -114,7 +114,7 @@ func getTestContext(key string) *testContext {
 	return clientsMap[key]
 }
 
-func getTableName(context *testContext, prefix ...string) (*string, error) {
+func getTableName(context *testContext, prefix ...string) (string, error) {
 	if len(prefix) == 0 {
 		return context.recording.GenerateAlphaNumericID(tableNamePrefix, 20, true)
 	} else {

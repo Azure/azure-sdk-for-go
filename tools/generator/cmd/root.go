@@ -209,6 +209,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 			log.Printf("Getting package result for package '%s'", p.PackageName)
 			content := p.Changelog.ToCompactMarkdown()
 			breaking := p.Changelog.HasBreakingChanges()
+			breakingChangeItems := p.Changelog.GetBreakingChangeItems()
 			set.add(pipeline.PackageResult{
 				Version:     version.Number,
 				PackageName: getPackageIdentifier(p.PackageName),
@@ -217,7 +218,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 				Changelog: &pipeline.Changelog{
 					Content:             &content,
 					HasBreakingChange:   &breaking,
-					BreakingChangeItems: p.Changelog.GetBreakingChangeItems(),
+					BreakingChangeItems: &breakingChangeItems,
 				},
 			})
 		}

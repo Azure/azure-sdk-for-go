@@ -57,7 +57,7 @@ func (c Changelog) ToCompactMarkdown() string {
 // GetBreakingChangeItems returns an array of the breaking change items
 func (c Changelog) GetBreakingChangeItems() []string {
 	if c.Modified == nil {
-		return nil
+		return []string{}
 	}
 	return getBreakingChanges(c.Modified.BreakingChanges)
 }
@@ -155,11 +155,10 @@ func getNewContents(c *delta.Content) []string {
 }
 
 func getBreakingChanges(b *report.BreakingChanges) []string {
+	items := make([]string, 0)
 	if b == nil || b.IsEmpty() {
-		return nil
+		return items
 	}
-
-	var items []string
 
 	// get signature changes
 	items = append(items, getSignatureChangeItems(b)...)

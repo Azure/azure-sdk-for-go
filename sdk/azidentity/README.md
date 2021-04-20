@@ -62,21 +62,91 @@ Directory (AAD). It offers a variety of credential types capable of acquiring
 an AAD access token. See [Credential Types](#credential-types "Credential Types") below for a list of this module's credential types.
 
 ### DefaultAzureCredential
+The `DefaultAzureCredential` is appropriate for most scenarios where the application is ultimately intended to run in Azure Cloud. This is because `DefaultAzureCredential` combines credentials commonly used to authenticate when deployed, with credentials used to authenticate in a development environment.
 
-`DefaultAzureCredential` is appropriate for most applications which will run in
-the Azure Cloud because it combines common production credentials with
-development credentials. `DefaultAzureCredential` attempts to authenticate via
-the following mechanisms in this order, stopping when one succeeds:
+> Note: `DefaultAzureCredential` is intended to simplify getting started with the SDK by handling common scenarios with reasonable default behaviors. Developers who want more control or whose scenario isn't served by the default settings should use other credential types.
 
+ The `DefaultAzureCredential` will attempt to authenticate via the following mechanisms in order.
+ 
 ![DefaultAzureCredential authentication flow](img/DAC_flow.PNG)
 
-- Environment - `DefaultAzureCredential` will read account information specified
-  via [environment variables](#environment-variables "environment variables")
-  and use it to authenticate.
-- Managed Identity - if the application is deployed to an Azure host with
-  Managed Identity enabled, `DefaultAzureCredential` will authenticate with it.
-- Azure CLI - If a user has signed in via the Azure CLI `az login` command,
-  `DefaultAzureCredential` will authenticate as that user.
+ - Environment - The `DefaultAzureCredential` will read account information specified via [environment variables](#environment-variables) and use it to authenticate.
+ - Managed Identity - If the application is deployed to an Azure host with Managed Identity enabled, the `DefaultAzureCredential` will authenticate with that account.
+ - Azure CLI - If the developer has authenticated an account via the Azure CLI `az login` command, the `DefaultAzureCredential` will authenticate with that account.
+
+
+## Examples
+You can find more examples of using various credentials in [Azure Identity Examples Wiki page](https://github.com/Azure/azure-sdk-for-go/wiki/Azure-Identity-Examples). 
+
+### Authenticating with `DefaultAzureCredential`
+This example demonstrates authenticating the `ResourcesClient` from the [armresources][armresources_library] module using `DefaultAzureCredential`. 
+
+```go
+// The default credential checks environment variables for configuration.
+cred, err := azidentity.NewDefaultAzureCredential(nil)
+if err != nil {
+  // handle error
+}
+
+// Azure SDK Azure Resource Management clients accept the credential as a parameter
+client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+```
+
+See more how to configure the `DefaultAzureCredential` on your workstation or Azure in [Configure DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#configure-defaultazurecredential).
+
+### Authenticating a user assigned managed identity with `DefaultAzureCredential`
+This example demonstrates authenticating the `ResourcesClient` from the [armresources][armresources_library] module using the `DefaultAzureCredential`, deployed to an Azure resource with a user assigned managed identity configured.
+
+See more about how to configure a user assigned managed identity for an Azure resource in [Enable managed identity for Azure resources](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#enable-managed-identity-for-azure-resources).
+
+```go
+// The default credential will use the user assigned managed identity with the specified client ID.
+// The client_ID for the user assigned is set through an environment variable.
+cred, err := azidentity.NewDefaultAzureCredential(nil)
+if err != nil {
+  // handle error
+}
+
+// Azure SDK Azure Resource Management clients accept the credential as a parameter
+client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+```
+
+## Managed Identity Support
+The [Managed identity authentication](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) is supported via either the `DefaultAzureCredential` or the `ManagedIdentityCredential` directly for the following Azure Services:
+* [Azure Virtual Machines](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token)
+* [Azure App Service](https://docs.microsoft.com/azure/app-service/overview-managed-identity?tabs=dotnet)
+* [Azure Kubernetes Service](https://docs.microsoft.com/azure/aks/use-managed-identity)
+* [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/msi-authorization)
+* [Azure Arc](https://docs.microsoft.com/azure/azure-arc/servers/managed-identity-authentication)
+* [Azure Service Fabric](https://docs.microsoft.com/azure/service-fabric/concepts-managed-identity)
+
+### Examples
+####  Authenticating in Azure with Managed Identity
+This examples demonstrates authenticating the `ResourcesClient` from the [armresources][armresources_library] module using `ManagedIdentityCredential` in a virtual machine, app service, function app, cloud shell, or AKS environment on Azure, with system assigned, or user assigned managed identity enabled.
+
+See more about how to configure your Azure resource for managed identity in [Enable managed identity for Azure resources](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#enable-managed-identity-for-azure-resources)
+
+```go
+// Authenticate with a User Assigned Managed Identity.
+cred, err := azidentity.NewManagedIdentityCredential("<USER ASSIGNED MANAGED IDENTITY CLIENT ID>", nil) // specify a client_ID for the user assigned identity
+if err != nil {
+  // handle error
+}
+
+// Azure SDK Azure Resource Management clients accept the credential as a parameter
+client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+```
+
+```go
+// Authenticate with a System Assigned Managed Identity.
+cred, err := azidentity.NewManagedIdentityCredential("", nil) // do not specify a client_ID to use the system assigned identity
+if err != nil {
+  // handle error
+}
+
+// Azure SDK Azure Resource Management clients accept the credential as a parameter
+client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+```
 
 ## Credential Types
 
@@ -179,14 +249,16 @@ azcore.Log().SetClassifications(azidentity.LogCredential)
 > CAUTION: logs from credentials contain sensitive information.
 > These logs must be protected to avoid compromising account security.
 
-# Next steps
+## Next steps
+
+The Go client libraries listed [here](https://azure.github.io/azure-sdk/releases/latest/go.html) support authenticating with `TokenCredential` and the Azure Identity library.  You can learn more about their use, and find additional documentation on use of these client libraries along samples with can be found in the links mentioned [here](https://azure.github.io/azure-sdk/releases/latest/go.html).
 
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
 [open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Azure.Identity` label.
 
-# Contributing
+## Contributing
 
 This project welcomes contributions and suggestions. Most contributions require
 you to agree to a Contributor License Agreement (CLA) declaring that you have
@@ -206,6 +278,7 @@ or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
 [azure_cli]: https://docs.microsoft.com/cli/azure
+[armresources_library]: https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/arm/resources
 [azblob]: https://github.com/Azure/azure-sdk-for-go/tree/master/sdk
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fidentity%2Fazure-identity%2FREADME.png)

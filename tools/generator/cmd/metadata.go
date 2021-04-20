@@ -4,44 +4,38 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/validate"
 )
 
 type changelogContext struct {
-	sdkRoot         string
-	clnRoot         string
-	specRoot        string
-	commitHash      string
-	codeGenVer      string
-	readme          string
+	sdkRoot string
+	readme  string
+
 	removedPackages []packageOutput
+
+	repoContent map[string]exports.Content
+
+	commonMetadata autorest.GenerationMetadata
+
+	autorestArguments []model.Option
 }
 
 func (ctx changelogContext) SDKRoot() string {
 	return ctx.sdkRoot
 }
 
-func (ctx changelogContext) SDKCloneRoot() string {
-	return ctx.clnRoot
-}
-
-func (ctx changelogContext) SpecRoot() string {
-	return ctx.specRoot
-}
-
-func (ctx changelogContext) SpecCommitHash() string {
-	return ctx.commitHash
-}
-
-func (ctx changelogContext) CodeGenVersion() string {
-	return ctx.codeGenVer
+func (ctx changelogContext) RepoContent() map[string]exports.Content {
+	return ctx.repoContent
 }
 
 func (ctx changelogContext) process(metadataLocation string) ([]autorest.ChangelogResult, error) {
@@ -56,17 +50,30 @@ func (ctx changelogContext) process(metadataLocation string) ([]autorest.Changel
 		return nil, err
 	}
 	// generate the changelogs
-	p := autorest.NewChangelogProcessorFromContext(ctx).WithLocation(metadataLocation).WithReadme(ctx.readme)
+	p := autorest.NewChangelogProcessorFromContext(ctx)
 	changelogResults, err := p.Process(metadataMap)
 	if err != nil {
 		return nil, err
 	}
 	for _, result := range changelogResults {
 		// we need to write the changelog file to the corresponding package here
-		if err := writeChangelogFile(result); err != nil {
+		if err := WriteChangelogFile(result); err != nil {
+			return nil, err
+		}
+		// we need to write the generation metadata to the corresponding package here
+		metadata := ctx.commonMetadata
+		metadata.Tag = result.Tag
+		options := autorest.AdditionalOptionsToString(ctx.autorestArguments)
+		metadata.AdditionalProperties = autorest.GenerationMetadataAdditionalProperties{
+			AdditionalOptions: strings.Join(options, " "),
+		}
+		metadata.AutorestCommand = fmt.Sprintf("autorest --use=%s --tag=%s --go-sdk-folder=/_/azure-sdk-for-go %s /_/azure-rest-api-specs/%s",
+			metadata.CodeGenVersion, result.Tag, strings.Join(options, " "), utils.NormalizePath(ctx.readme))
+		if err := WriteGenerationMetadata(result.PackageFullPath, metadata); err != nil {
 			return nil, err
 		}
 	}
+
 	// iterate over the removed packages, generate changelogs for them as well
 	var removedResults []autorest.ChangelogResult
 	for _, rp := range ctx.removedPackages {
@@ -81,31 +88,61 @@ func (ctx changelogContext) process(metadataLocation string) ([]autorest.Changel
 		removedResults = append(removedResults, *result)
 	}
 	changelogResults = append(changelogResults, removedResults...)
-	return changelogResults, nil
+
+	// omit the packages not in services directory
+	var results []autorest.ChangelogResult
+	for _, result := range changelogResults {
+		if strings.HasPrefix(result.PackageName, "services/") {
+			results = append(results, result)
+		}
+	}
+
+	return results, nil
 }
 
 func contains(array []autorest.ChangelogResult, item string) bool {
 	for _, r := range array {
-		if r.PackagePath == item {
+		if utils.NormalizePath(r.PackageFullPath) == utils.NormalizePath(item) {
 			return true
 		}
 	}
 	return false
 }
 
-func writeChangelogFile(result autorest.ChangelogResult) error {
-	fileContent := fmt.Sprintf(`%s
+// WriteGenerationMetadata writes the metadata to _meta.json file
+func WriteGenerationMetadata(path string, metadata autorest.GenerationMetadata) error {
+	b, err := json.MarshalIndent(metadata, "", "  ")
+	if err != nil {
+		return fmt.Errorf("cannot marshal metadata: %+v", err)
+	}
 
-%s`, result.GenerationMetadata.String(), result.Changelog.ToMarkdown())
-	changelogFile, err := os.Create(filepath.Join(result.PackagePath, autorest.ChangelogFilename))
+	metadataFile, err := os.Create(filepath.Join(path, autorest.MetadataFilename))
+	if err != nil {
+		return err
+	}
+	defer metadataFile.Close()
+
+	if _, err := metadataFile.Write(b); err != nil {
+		return err
+	}
+	return nil
+}
+
+// WriteChangelogFile writes the changelog to CHANGELOG.md
+func WriteChangelogFile(result autorest.ChangelogResult) error {
+	changelogFile, err := os.Create(filepath.Join(result.PackageFullPath, autorest.ChangelogFilename))
 	if err != nil {
 		return err
 	}
 	defer changelogFile.Close()
-	if _, err := changelogFile.WriteString(fileContent); err != nil {
+
+	if _, err := changelogFile.WriteString(`# Unreleased Content
+
+`); err != nil {
 		return err
 	}
-	return nil
+
+	return result.Write(changelogFile)
 }
 
 func (ctx changelogContext) validateMetadata(metadataMap map[string]model.Metadata) error {
@@ -117,7 +154,6 @@ func (ctx changelogContext) validateMetadata(metadataMap map[string]model.Metada
 		SDKRoot: ctx.sdkRoot,
 		Validators: []validate.MetadataValidateFunc{
 			validate.PreviewCheck,
-			// TODO -- we do have some exceptions (see file tools/pkgchk/exceptions.txt) that might need to be considered here
 			validate.MgmtCheck,
 			validate.NamespaceCheck,
 		},

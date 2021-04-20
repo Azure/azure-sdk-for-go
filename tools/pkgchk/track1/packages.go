@@ -84,10 +84,10 @@ func List(root string) ([]Package, error) {
 					return err
 				}
 				if len(packages) < 1 {
-					return fmt.Errorf("did not find any packages which is unexpected")
+					return fmt.Errorf("did not find any packages in '%s' which is unexpected", path)
 				}
 				if len(packages) > 1 {
-					return fmt.Errorf("found more than one package which is unexpected")
+					return fmt.Errorf("found more than one package in '%s' which is unexpected", path)
 				}
 				pkgName := ""
 				for _, pkg := range packages {

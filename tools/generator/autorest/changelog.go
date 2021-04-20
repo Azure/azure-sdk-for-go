@@ -5,9 +5,9 @@ package autorest
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
@@ -18,10 +18,7 @@ import (
 // ChangelogContext describes all necessary data that would be needed in the processing of changelogs
 type ChangelogContext interface {
 	SDKRoot() string
-	SDKCloneRoot() string
-	SpecRoot() string
-	SpecCommitHash() string
-	CodeGenVersion() string
+	RepoContent() map[string]exports.Content
 }
 
 // ChangelogProcessor processes the metadata and output changelog with the desired format
@@ -38,30 +35,12 @@ func NewChangelogProcessorFromContext(ctx ChangelogContext) *ChangelogProcessor 
 	}
 }
 
-// WithLocation adds the information of the metadata-output-folder
-func (p *ChangelogProcessor) WithLocation(metadataLocation string) *ChangelogProcessor {
-	p.metadataLocation = metadataLocation
-	return p
-}
-
-// WithReadme adds the information of the path of readme.md file. This path could be relative or absolute.
-func (p *ChangelogProcessor) WithReadme(readme string) *ChangelogProcessor {
-	// make sure the readme here is a relative path to the root of spec
-	readme = utils.NormalizePath(readme)
-	root := utils.NormalizePath(p.ctx.SpecRoot())
-	if filepath.IsAbs(readme) {
-		readme = strings.TrimPrefix(readme, root)
-	}
-	p.readme = readme
-	return p
-}
-
 // ChangelogResult describes the result of the generated changelog for one package
 type ChangelogResult struct {
-	PackageName        string
-	PackagePath        string
-	GenerationMetadata GenerationMetadata
-	Changelog          model.Changelog
+	Tag             string
+	PackageName     string
+	PackageFullPath string
+	Changelog       model.Changelog
 }
 
 // ChangelogProcessError describes the errors during the processing
@@ -114,37 +93,41 @@ func (p *ChangelogProcessor) Process(metadataMap map[string]model.Metadata) ([]C
 }
 
 // GenerateChangelog generates a changelog for one package
-func (p *ChangelogProcessor) GenerateChangelog(packagePath, tag string) (*ChangelogResult, error) {
-	// use the relative path to the sdk root as package name
-	packageName, err := filepath.Rel(p.ctx.SDKRoot(), packagePath)
+func (p *ChangelogProcessor) GenerateChangelog(packageFullPath, tag string) (*ChangelogResult, error) {
+	relativePackagePath, err := p.getRelativePackagePath(packageFullPath)
 	if err != nil {
 		return nil, err
 	}
-	// normalize the package name
-	packageName = utils.NormalizePath(packageName)
-	lhs, err := getExportsForPackage(filepath.Join(p.ctx.SDKCloneRoot(), packageName))
+	lhs := p.getLHSContent(relativePackagePath)
+	rhs, err := getExportsForPackage(packageFullPath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get exports from package '%s' in the clone '%s': %+v", packageName, p.ctx.SDKCloneRoot(), err)
+		return nil, fmt.Errorf("failed to get exports from package '%s' in the sdk '%s': %+v", relativePackagePath, p.ctx.SDKRoot(), err)
 	}
-	rhs, err := getExportsForPackage(packagePath)
+	r, err := GetChangelogForPackage(lhs, rhs)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get exports from package '%s' in the sdk '%s': %+v", packageName, p.ctx.SDKRoot(), err)
-	}
-	r, err := getChangelogForPackage(lhs, rhs)
-	if err != nil {
-		return nil, fmt.Errorf("failed to generate changelog for package '%s': %+v", packagePath, err)
+		return nil, fmt.Errorf("failed to generate changelog for package '%s': %+v", relativePackagePath, err)
 	}
 	return &ChangelogResult{
-		PackageName: packageName,
-		PackagePath: packagePath,
-		GenerationMetadata: GenerationMetadata{
-			CommitHash:     p.ctx.SpecCommitHash(),
-			Readme:         p.readme,
-			Tag:            tag,
-			CodeGenVersion: p.ctx.CodeGenVersion(),
-		},
-		Changelog: *r,
+		Tag:             tag,
+		PackageName:     relativePackagePath,
+		PackageFullPath: packageFullPath,
+		Changelog:       *r,
 	}, nil
+}
+
+func (p *ChangelogProcessor) getRelativePackagePath(fullPath string) (string, error) {
+	relative, err := filepath.Rel(p.ctx.SDKRoot(), fullPath)
+	if err != nil {
+		return "", err
+	}
+	return utils.NormalizePath(relative), nil
+}
+
+func (p *ChangelogProcessor) getLHSContent(relativePackagePath string) *exports.Content {
+	if v, ok := p.ctx.RepoContent()[relativePackagePath]; ok {
+		return &v
+	}
+	return nil
 }
 
 func getExportsForPackage(dir string) (*exports.Content, error) {
@@ -160,7 +143,8 @@ func getExportsForPackage(dir string) (*exports.Content, error) {
 	return &exp, nil
 }
 
-func getChangelogForPackage(lhs, rhs *exports.Content) (*model.Changelog, error) {
+// GetChangelogForPackage generates the changelog report with the given two Contents
+func GetChangelogForPackage(lhs, rhs *exports.Content) (*model.Changelog, error) {
 	if lhs == nil && rhs == nil {
 		return nil, fmt.Errorf("this package does not exist even after the generation, this should never happen")
 	}
@@ -182,3 +166,19 @@ func getChangelogForPackage(lhs, rhs *exports.Content) (*model.Changelog, error)
 		Modified: &p,
 	}, nil
 }
+
+// ToMarkdown convert this ChangelogResult to markdown string
+func (r ChangelogResult) ToMarkdown() string {
+	return r.Changelog.ToMarkdown()
+}
+
+// Write writes this ChangelogResult to the specified writer in markdown format
+func (r ChangelogResult) Write(writer io.Writer) error {
+	_, err := writer.Write([]byte(r.ToMarkdown()))
+	return err
+}
+
+const (
+	// ChangelogFilename ...
+	ChangelogFilename = "CHANGELOG.md"
+)

@@ -7,13 +7,14 @@ import (
 	"fmt"
 	"io"
 	"os/exec"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 )
 
 // Generator collects all the related context of an autorest generation
 type Generator struct {
-	arguments []string
+	arguments []model.Option
 	cmd       *exec.Cmd
 }
 
@@ -26,7 +27,7 @@ func NewGeneratorFromOptions(o model.Options) *Generator {
 
 // WithOption appends an model.Option to the argument list of the autorest generation
 func (g *Generator) WithOption(option model.Option) *Generator {
-	g.arguments = append(g.arguments, option.Format())
+	g.arguments = append(g.arguments, option)
 	return g
 }
 
@@ -67,7 +68,16 @@ func (g *Generator) buildCommand() {
 	if g.cmd != nil {
 		return
 	}
-	g.cmd = exec.Command("autorest", g.arguments...)
+	arguments := make([]string, len(g.arguments))
+	for i, o := range g.arguments {
+		arguments[i] = o.Format()
+	}
+	g.cmd = exec.Command("autorest", arguments...)
+}
+
+// Arguments returns the arguments which are using in the autorest command ('autorest' itself excluded)
+func (g *Generator) Arguments() []model.Option {
+	return g.arguments
 }
 
 // Start starts the generation
@@ -120,11 +130,15 @@ func (g *Generator) StderrPipe() (io.ReadCloser, error) {
 
 // GenerateError ...
 type GenerateError struct {
-	Arguments []string
+	Arguments []model.Option
 	Message   string
 }
 
 // Error ...
 func (e *GenerateError) Error() string {
-	return fmt.Sprintf("autorest error with arguments '%s': \n%s", e.Arguments, e.Message)
+	arguments := make([]string, len(e.Arguments))
+	for i, o := range e.Arguments {
+		arguments[i] = o.Format()
+	}
+	return fmt.Sprintf("autorest error with arguments '%s': \n%s", strings.Join(arguments, ", "), e.Message)
 }

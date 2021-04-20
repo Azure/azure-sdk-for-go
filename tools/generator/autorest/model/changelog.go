@@ -54,23 +54,41 @@ func (c Changelog) ToCompactMarkdown() string {
 	return writeChangelogForPackage(c.Modified)
 }
 
+// GetBreakingChangeItems returns an array of the breaking change items
+func (c Changelog) GetBreakingChangeItems() []string {
+	if c.Modified == nil {
+		return nil
+	}
+	return getBreakingChanges(c.Modified.BreakingChanges)
+}
+
 func writeChangelogForPackage(r *report.Package) string {
 	if r == nil || r.IsEmpty() {
 		return "No exported changes"
 	}
 
 	md := &markdown.Writer{}
-	// write breaking changes
-	writeBreakingChanges(r.BreakingChanges, md)
-	// write additional changes
-	writeNewContent(r.AdditiveChanges, md)
 
-	writeSummaries(r.BreakingChanges, r.AdditiveChanges, md)
+	// write breaking changes
+	md.WriteHeader("Breaking Changes")
+	for _, item := range getBreakingChanges(r.BreakingChanges) {
+		md.WriteLine(item)
+	}
+
+	// write additional changes
+	md.WriteHeader("New Content")
+	for _, item := range getNewContents(r.AdditiveChanges) {
+		md.WriteLine(item)
+	}
+
+	md.EmptyLine()
+	summaries := getSummaries(r.BreakingChanges, r.AdditiveChanges)
+	md.WriteLine(summaries)
 
 	return md.String()
 }
 
-func writeSummaries(breaking *report.BreakingChanges, additive *delta.Content, md *markdown.Writer) {
+func getSummaries(breaking *report.BreakingChanges, additive *delta.Content) string {
 	bc := 0
 	if breaking != nil {
 		bc = breaking.Count()
@@ -79,19 +97,21 @@ func writeSummaries(breaking *report.BreakingChanges, additive *delta.Content, m
 	if additive != nil {
 		ac = additive.Count()
 	}
-	md.WriteLine("")
-	md.WriteLine(fmt.Sprintf("Total %d breaking change(s), %d additive change(s).", bc, ac))
+
+	return fmt.Sprintf("Total %d breaking change(s), %d additive change(s).", bc, ac)
 }
 
-func writeNewContent(c *delta.Content, md *markdown.Writer) {
+func getNewContents(c *delta.Content) []string {
 	if c == nil || c.IsEmpty() {
-		return
+		return nil
 	}
-	md.WriteHeader("New Content")
+
+	var items []string
+
 	if len(c.Consts) > 0 {
 		for k := range c.Consts {
 			line := fmt.Sprintf("- New const `%s`", k)
-			md.WriteLine(line)
+			items = append(items, line)
 		}
 	}
 	if len(c.Funcs) > 0 {
@@ -108,13 +128,13 @@ func writeNewContent(c *delta.Content, md *markdown.Writer) {
 				}
 			}
 			line := fmt.Sprintf("- New function `%s(%s) %s`", k, params, returns)
-			md.WriteLine(line)
+			items = append(items, line)
 		}
 	}
 	if len(c.CompleteStructs) > 0 {
 		for _, v := range c.CompleteStructs {
 			line := fmt.Sprintf("- New struct `%s`", v)
-			md.WriteLine(line)
+			items = append(items, line)
 		}
 	}
 	if len(c.Structs) > 0 {
@@ -122,34 +142,46 @@ func writeNewContent(c *delta.Content, md *markdown.Writer) {
 		for s, f := range modified {
 			for _, af := range f.AnonymousFields {
 				line := fmt.Sprintf("- New anonymous field `%s` in struct `%s`", af, s)
-				md.WriteLine(line)
+				items = append(items, line)
 			}
 			for f := range f.Fields {
 				line := fmt.Sprintf("- New field `%s` in struct `%s`", f, s)
-				md.WriteLine(line)
+				items = append(items, line)
 			}
 		}
 	}
+
+	return items
 }
 
-func writeBreakingChanges(b *report.BreakingChanges, md *markdown.Writer) {
+func getBreakingChanges(b *report.BreakingChanges) []string {
 	if b == nil || b.IsEmpty() {
-		return
+		return nil
 	}
-	md.WriteHeader("Breaking Changes")
-	writeSignatureChanges(b, md)
-	writeRemovedContent(b.Removed, md)
+
+	var items []string
+
+	// get signature changes
+	items = append(items, getSignatureChangeItems(b)...)
+
+	// get removed content
+	items = append(items, getRemovedContent(b.Removed)...)
+
+	return items
 }
 
-func writeSignatureChanges(b *report.BreakingChanges, md *markdown.Writer) {
+func getSignatureChangeItems(b *report.BreakingChanges) []string {
 	if b.IsEmpty() {
-		return
+		return nil
 	}
+
+	var items []string
+
 	// write const changes
 	if len(b.Consts) > 0 {
 		for k, v := range b.Consts {
 			line := fmt.Sprintf("- Const `%s` type has been changed from `%s` to `%s`", k, v.From, v.To)
-			md.WriteLine(line)
+			items = append(items, line)
 		}
 		// TODO -- sort?
 	}
@@ -158,11 +190,11 @@ func writeSignatureChanges(b *report.BreakingChanges, md *markdown.Writer) {
 		for k, v := range b.Funcs {
 			if v.Params != nil {
 				line := fmt.Sprintf("- Function `%s` parameter(s) have been changed from `(%s)` to `(%s)`", k, v.Params.From, v.Params.To)
-				md.WriteLine(line)
+				items = append(items, line)
 			}
 			if v.Returns != nil {
 				line := fmt.Sprintf("- Function `%s` return value(s) have been changed from `(%s)` to `(%s)`", k, v.Returns.From, v.Returns.To)
-				md.WriteLine(line)
+				items = append(items, line)
 			}
 		}
 	}
@@ -171,36 +203,40 @@ func writeSignatureChanges(b *report.BreakingChanges, md *markdown.Writer) {
 		for k, v := range b.Structs {
 			for f, d := range v.Fields {
 				line := fmt.Sprintf("- Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
-				md.WriteLine(line)
+				items = append(items, line)
 			}
 		}
 	}
 	// interfaces are skipped, which are identical to some of the functions
+
+	return items
 }
 
-func writeRemovedContent(removed *delta.Content, md *markdown.Writer) {
+func getRemovedContent(removed *delta.Content) []string {
 	if removed == nil {
-		return
+		return nil
 	}
+
+	var items []string
 	// write constants
 	if len(removed.Consts) > 0 {
 		for k := range removed.Consts {
 			line := fmt.Sprintf("- Const `%s` has been removed", k)
-			md.WriteLine(line)
+			items = append(items, line)
 		}
 	}
 	// write functions
 	if len(removed.Funcs) > 0 {
 		for k := range removed.Funcs {
 			line := fmt.Sprintf("- Function `%s` has been removed", k)
-			md.WriteLine(line)
+			items = append(items, line)
 		}
 	}
 	// write complete struct removal
 	if len(removed.CompleteStructs) > 0 {
 		for _, v := range removed.CompleteStructs {
 			line := fmt.Sprintf("- Struct `%s` has been removed", v)
-			md.WriteLine(line)
+			items = append(items, line)
 		}
 	}
 	// write struct modification (some fields are removed)
@@ -209,12 +245,14 @@ func writeRemovedContent(removed *delta.Content, md *markdown.Writer) {
 		for s, f := range modified {
 			for _, af := range f.AnonymousFields {
 				line := fmt.Sprintf("- Field `%s` of struct `%s` has been removed", af, s)
-				md.WriteLine(line)
+				items = append(items, line)
 			}
 			for f := range f.Fields {
 				line := fmt.Sprintf("- Field `%s` of struct `%s` has been removed", f, s)
-				md.WriteLine(line)
+				items = append(items, line)
 			}
 		}
 	}
+
+	return items
 }

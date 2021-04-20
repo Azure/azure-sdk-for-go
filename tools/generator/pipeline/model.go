@@ -87,7 +87,7 @@ type PackageResult struct {
 type Changelog struct {
 	Content             *string  `json:"content,omitempty"`
 	HasBreakingChange   *bool    `json:"hasBreakingChange,omitempty"`
-	BreakingChangeItems []string `json:"breakingChangeItems,omitempty"`
+	BreakingChangeItems *[]string `json:"breakingChangeItems,omitempty"`
 }
 
 // InstallInstructionScriptOutput ...

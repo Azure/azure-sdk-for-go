@@ -6,9 +6,10 @@ package azblob
 import (
 	"context"
 	"io"
-	"net/url"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
 const (
@@ -48,7 +49,7 @@ func (bb BlockBlobClient) URL() string {
 func (bb BlockBlobClient) WithSnapshot(snapshot string) BlockBlobClient {
 	p := NewBlobURLParts(bb.URL())
 	p.Snapshot = snapshot
-	con := newConnectionWithPipeline(p.URL(), bb.client.con.p)
+	con := &connection{u: p.URL(), p: bb.client.con.p}
 	return BlockBlobClient{
 		client: &blockBlobClient{
 			con: con,
@@ -62,7 +63,7 @@ func (bb BlockBlobClient) WithSnapshot(snapshot string) BlockBlobClient {
 func (ab BlockBlobClient) WithVersionID(versionID string) BlockBlobClient {
 	p := NewBlobURLParts(ab.URL())
 	p.VersionID = versionID
-	con := newConnectionWithPipeline(p.URL(), ab.client.con.p)
+	con := &connection{u: p.URL(), p: ab.client.con.p}
 	return BlockBlobClient{
 		client:     &blockBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
@@ -110,9 +111,7 @@ func (bb BlockBlobClient) StageBlock(ctx context.Context, base64BlockID string, 
 func (bb BlockBlobClient) StageBlockFromURL(ctx context.Context, base64BlockID string, sourceURL string, contentLength int64, options *StageBlockFromURLOptions) (BlockBlobStageBlockFromURLResponse, error) {
 	ac, smac, stageOptions, cpkInfo, cpkScope := options.pointers()
 
-	uri, _ := url.Parse(sourceURL)
-
-	resp, err := bb.client.StageBlockFromURL(ctx, base64BlockID, contentLength, *uri, stageOptions, cpkInfo, cpkScope, ac, smac)
+	resp, err := bb.client.StageBlockFromURL(ctx, base64BlockID, contentLength, sourceURL, stageOptions, cpkInfo, cpkScope, ac, smac)
 
 	return resp, handleError(err)
 }
@@ -126,8 +125,14 @@ func (bb BlockBlobClient) StageBlockFromURL(ctx context.Context, base64BlockID s
 func (bb BlockBlobClient) CommitBlockList(ctx context.Context, base64BlockIDs []string, options *CommitBlockListOptions) (BlockBlobCommitBlockListResponse, error) {
 	commitOptions, headers, cpkInfo, cpkScope, modifiedAccess, leaseAccess := options.pointers()
 
+	// this is a code smell in the generated code
+	blockIds := make([]*string, len(base64BlockIDs))
+	for k,v := range base64BlockIDs {
+		blockIds[k] = to.StringPtr(v)
+	}
+
 	resp, err := bb.client.CommitBlockList(ctx, BlockLookupList{
-		Latest: &base64BlockIDs,
+		Latest: &blockIds,
 	}, commitOptions, headers, leaseAccess, cpkInfo, cpkScope, modifiedAccess)
 
 	return resp, handleError(err)
@@ -152,9 +157,33 @@ func (bb BlockBlobClient) CopyFromURL(ctx context.Context, source string, option
 		con: bb.client.con,
 	}
 
-	uri, _ := url.Parse(source)
-
-	resp, err := bClient.CopyFromURL(ctx, *uri, copyOptions, smac, mac, lac)
+	resp, err := bClient.CopyFromURL(ctx, source, copyOptions, smac, mac, lac)
 
 	return resp, handleError(err)
 }
+
+// GetBlobSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
+// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetBlobSASToken().
+func (bb BlockBlobClient) GetBlobSASToken(permissions BlobSASPermissions, validityTime time.Duration) (SASQueryParameters, error) {
+	urlParts := NewBlobURLParts(bb.URL())
+
+	t, err := time.Parse(SnapshotTimeFormat, urlParts.Snapshot)
+
+	if err != nil {
+		t = time.Time{}
+	}
+
+	return BlobSASSignatureValues{
+		ContainerName: urlParts.ContainerName,
+		BlobName:      urlParts.BlobName,
+		SnapshotTime:  t,
+		Version:       SASVersion,
+
+		Permissions: permissions.String(),
+
+		StartTime:  time.Now().UTC(),
+		ExpiryTime: time.Now().UTC().Add(validityTime),
+	}.NewSASQueryParameters(bb.cred)
+}
+

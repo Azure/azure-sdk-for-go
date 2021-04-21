@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package azblob
 
 import (
@@ -20,7 +23,7 @@ func (o *ClientOptions) getConnectionOptions() *connectionOptions {
 
 	return &connectionOptions{
 		HTTPClient: o.HTTPClient,
-		Retry: o.Retry,
-		Telemetry: o.Telemetry,
+		Retry:      o.Retry,
+		Telemetry:  o.Telemetry,
 	}
 }

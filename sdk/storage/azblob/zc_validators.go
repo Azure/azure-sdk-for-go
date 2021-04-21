@@ -12,15 +12,26 @@ import (
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// httpRange defines a range of bytes within an HTTP resource, starting at offset and
-// ending at offset+count. A zero-value httpRange indicates the entire resource. An httpRange
+func (pr *PageRange) Raw() (start, end int64) {
+	if pr.Start != nil {
+		start = *pr.Start
+	}
+	if pr.End != nil {
+		end = *pr.End
+	}
+
+	return
+}
+
+// HttpRange defines a range of bytes within an HTTP resource, starting at offset and
+// ending at offset+count. A zero-value HttpRange indicates the entire resource. An HttpRange
 // which has an offset but na zero value count indicates from the offset to the resource's end.
-type httpRange struct {
+type HttpRange struct {
 	offset int64
 	count  int64
 }
 
-func (r httpRange) pointers() *string {
+func (r HttpRange) pointers() *string {
 	if r.offset == 0 && r.count == 0 { // Do common case first for performance
 		return nil // No specified range
 	}
@@ -47,7 +58,7 @@ func getSourceRange(offset, count *int64) *string {
 		newCount = *count
 	}
 
-	return httpRange{offset: newOffset, count: newCount}.pointers()
+	return HttpRange{offset: newOffset, count: newCount}.pointers()
 }
 
 func validateSeekableStreamAt0AndGetCount(body io.ReadSeeker) (int64, error) {

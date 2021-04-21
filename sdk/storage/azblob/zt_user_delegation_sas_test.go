@@ -20,8 +20,8 @@ func (s *aztestsSuite) TestUserDelegationSASContainer(c *chk.C) {
 	currentTime := time.Now().UTC()
 	// Ensuring currTime <= time of sending delegating request request
 	keyInfo := KeyInfo{
-		Start: to.StringPtr(currentTime.Format(SASTimeFormat)),
-		Expiry: to.StringPtr(currentTime.Add(48*time.Hour).Format(SASTimeFormat)),
+		Start:  to.StringPtr(currentTime.Format(SASTimeFormat)),
+		Expiry: to.StringPtr(currentTime.Add(48 * time.Hour).Format(SASTimeFormat)),
 	}
 	time.Sleep(2 * time.Second)
 
@@ -54,7 +54,7 @@ func (s *aztestsSuite) TestUserDelegationSASContainer(c *chk.C) {
 	// Craft a container URL w/ container UDK SAS
 	cURL := NewBlobURLParts(containerClient.URL())
 	cURL.SAS = cSAS
-	cSASURL, err := NewContainerClient(cURL.URL(), NewAnonymousCredential(), nil)
+	cSASURL, err := NewContainerClient(cURL.URL(), azcore.AnonymousCredential(), nil)
 
 	bblob := cSASURL.NewBlockBlobClient("test")
 	_, err = bblob.Upload(ctx, strings.NewReader("hello world!"), nil)
@@ -103,7 +103,7 @@ func (s *aztestsSuite) TestUserDelegationSASBlob(c *chk.C) {
 	}
 
 	// Prepare user delegation key
-	keyInfo := KeyInfo{Start: to.StringPtr(currentTime.String()), Expiry: to.StringPtr(currentTime.Add(48*time.Hour).String())}
+	keyInfo := KeyInfo{Start: to.StringPtr(currentTime.String()), Expiry: to.StringPtr(currentTime.Add(48 * time.Hour).String())}
 	cudk, err := serviceClient.GetUserDelegationCredential(ctx, keyInfo)
 	c.Assert(err, chk.IsNil)
 	c.Assert(cudk, chk.NotNil)

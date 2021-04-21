@@ -8,6 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"io"
 	"net/url"
+	"time"
 )
 
 const (
@@ -41,7 +42,7 @@ func (pb PageBlobClient) WithSnapshot(snapshot string) PageBlobClient {
 	p := NewBlobURLParts(pb.URL())
 	p.Snapshot = snapshot
 
-	con := newConnectionWithPipeline(p.URL(), pb.client.con.p)
+	con := &connection{p.URL(), pb.client.con.p}
 	return PageBlobClient{
 		client:     &pageBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
@@ -54,7 +55,7 @@ func (pb PageBlobClient) WithVersionID(versionID string) PageBlobClient {
 	p := NewBlobURLParts(pb.URL())
 	p.VersionID = versionID
 
-	con := newConnectionWithPipeline(p.URL(), pb.client.con.p)
+	con := &connection{p.URL(), pb.client.con.p}
 	return PageBlobClient{
 		client:     &pageBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
@@ -97,18 +98,16 @@ func (pb PageBlobClient) UploadPages(ctx context.Context, body io.ReadSeeker, op
 func (pb PageBlobClient) UploadPagesFromURL(ctx context.Context, source string, sourceOffset, destOffset, count int64, options *UploadPagesFromURLOptions) (PageBlobUploadPagesFromURLResponse, error) {
 	uploadOptions, cpkInfo, cpkScope, snac, smac, lac, mac := options.pointers()
 
-	uri, _ := url.Parse(source)
-
-	resp, err := pb.client.UploadPagesFromURL(ctx, *uri, rangeToString(sourceOffset, count), 0, rangeToString(destOffset, count), uploadOptions, cpkInfo, cpkScope, lac, snac, mac, smac)
+	resp, err := pb.client.UploadPagesFromURL(ctx, source, rangeToString(sourceOffset, count), 0, rangeToString(destOffset, count), uploadOptions, cpkInfo, cpkScope, lac, snac, mac, smac)
 
 	return resp, handleError(err)
 }
 
 // ClearPages frees the specified pages from the page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page.
-func (pb PageBlobClient) ClearPages(ctx context.Context, offset, count int64, options *ClearPagesOptions) (PageBlobClearPagesResponse, error) {
+func (pb PageBlobClient) ClearPages(ctx context.Context, pageRange HttpRange, options *ClearPagesOptions) (PageBlobClearPagesResponse, error) {
 	clearOptions := &PageBlobClearPagesOptions{
-		RangeParameter: rangeToStringPtr(offset, count),
+		Range: pageRange.pointers(),
 	}
 
 	cpkInfo, cpkScope, snac, lac, mac := options.pointers()
@@ -120,11 +119,11 @@ func (pb PageBlobClient) ClearPages(ctx context.Context, offset, count int64, op
 
 // GetPageRanges returns the list of valid page ranges for a page blob or snapshot of a page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-func (pb PageBlobClient) GetPageRanges(ctx context.Context, offset, count int64, options *GetPageRangesOptions) (PageListResponse, error) {
+func (pb PageBlobClient) GetPageRanges(ctx context.Context, pageRange HttpRange, options *GetPageRangesOptions) (PageListResponse, error) {
 	snapshot, lac, mac := options.pointers()
 
 	getRangesOptions := &PageBlobGetPageRangesOptions{
-		RangeParameter: rangeToStringPtr(offset, count),
+		Range: pageRange.pointers(),
 		Snapshot:       snapshot,
 	}
 
@@ -140,7 +139,7 @@ func (pb PageBlobClient) GetPageRanges(ctx context.Context, offset, count int64,
 //
 //	return pb.pbClient.GetPageRangesDiff(ctx, nil, nil, prevSnapshot,
 //		prevSnapshotURL, // Get managed disk diff
-//		httpRange{offset: offset, count: count}.pointers(),
+//		HttpRange{offset: offset, count: count}.pointers(),
 //		ac.LeaseAccessConditions.pointers(),
 //		ifModifiedSince, ifUnmodifiedSince, ifMatchETag, ifNoneMatchETag,
 //		nil, // Blob ifTags
@@ -149,12 +148,12 @@ func (pb PageBlobClient) GetPageRanges(ctx context.Context, offset, count int64,
 
 // GetPageRangesDiff gets the collection of page ranges that differ between a specified snapshot and this page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-func (pb PageBlobClient) GetPageRangesDiff(ctx context.Context, offset, count int64, prevSnapshot string, options *GetPageRangesOptions) (PageListResponse, error) {
+func (pb PageBlobClient) GetPageRangesDiff(ctx context.Context, pageRange HttpRange, prevSnapshot string, options *GetPageRangesOptions) (PageListResponse, error) {
 	snapshot, lac, mac := options.pointers()
 
 	diffOptions := &PageBlobGetPageRangesDiffOptions{
 		Prevsnapshot:   &prevSnapshot,
-		RangeParameter: rangeToStringPtr(offset, count),
+		Range: pageRange.pointers(),
 		Snapshot:       snapshot,
 	}
 
@@ -194,7 +193,33 @@ func (pb PageBlobClient) StartCopyIncremental(ctx context.Context, source string
 	srcURL.RawQuery = queryParams.Encode()
 
 	pageBlobCopyIncrementalOptions, modifiedAccessConditions := options.pointers()
-	resp, err := pb.client.CopyIncremental(ctx, *srcURL, pageBlobCopyIncrementalOptions, modifiedAccessConditions)
+	resp, err := pb.client.CopyIncremental(ctx, srcURL.String(), pageBlobCopyIncrementalOptions, modifiedAccessConditions)
 
 	return resp, handleError(err)
+}
+
+
+// GetBlobSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
+// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// This validity can be checked with CanGetBlobSASToken().
+func (pb PageBlobClient) GetBlobSASToken(permissions BlobSASPermissions, validityTime time.Duration) (SASQueryParameters, error) {
+	urlParts := NewBlobURLParts(pb.URL())
+
+	t, err := time.Parse(SnapshotTimeFormat, urlParts.Snapshot)
+
+	if err != nil {
+		t = time.Time{}
+	}
+
+	return BlobSASSignatureValues{
+		ContainerName: urlParts.ContainerName,
+		BlobName:      urlParts.BlobName,
+		SnapshotTime:  t,
+		Version:       SASVersion,
+
+		Permissions: permissions.String(),
+
+		StartTime:  time.Now().UTC(),
+		ExpiryTime: time.Now().UTC().Add(validityTime),
+	}.NewSASQueryParameters(pb.cred)
 }

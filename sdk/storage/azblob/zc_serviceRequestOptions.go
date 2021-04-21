@@ -3,6 +3,14 @@
 
 package azblob
 
+import (
+	"time"
+)
+
+type GetUserDelegationKeyOptions struct {
+	startTime *time.Time
+}
+
 type ListContainersSegmentOptions struct {
 	Include ListContainersDetail
 
@@ -28,7 +36,7 @@ func (o *ListContainersSegmentOptions) pointers() *ServiceListContainersSegmentO
 	}
 
 	return &ServiceListContainersSegmentOptions{
-		Include:    o.Include.pointer(),
+		Include:    o.Include.pointers(),
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,
 		Prefix:     o.Prefix,
@@ -45,7 +53,7 @@ type ListContainersDetail struct {
 }
 
 // string produces the Include query parameter's value.
-func (d *ListContainersDetail) pointer() *[]ListContainersIncludeType {
+func (d *ListContainersDetail) pointers() *[]ListContainersIncludeType {
 	if d.Metadata == false && d.Deleted == false {
 		return nil
 	}

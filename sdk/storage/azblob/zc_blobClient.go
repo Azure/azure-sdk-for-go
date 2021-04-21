@@ -5,9 +5,9 @@ package azblob
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"net/url"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
@@ -37,9 +37,19 @@ func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
 	p.Snapshot = snapshot
 	return BlobClient{
 		client: &blobClient{
-			newConnectionWithPipeline(p.URL(), b.client.con.p),
+			&connection{u: p.URL(), p: b.client.con.p},
 			b.client.pathRenameMode,
 		},
+	}
+}
+
+func (b BlobClient) NewBlobLeaseClient(leaseId string) BlobLeaseClient {
+	if leaseId == "" {
+		leaseId = newUUID().String()
+	}
+	return BlobLeaseClient{
+		BlobClient: b,
+		LeaseId:    leaseId,
 	}
 }
 
@@ -67,10 +77,10 @@ func (b BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) 
 		count = *options.Count
 	}
 	return &DownloadResponse{
-		b:       b,
-		BlobDownloadResponse:       dr,
-		ctx:     ctx,
-		getInfo: HTTPGetterInfo{Offset: offset, Count: count, ETag: *dr.ETag},
+		b:                    b,
+		BlobDownloadResponse: dr,
+		ctx:                  ctx,
+		getInfo:              HTTPGetterInfo{Offset: offset, Count: count, ETag: *dr.ETag},
 	}, err
 }
 
@@ -116,7 +126,7 @@ func (b BlobClient) GetProperties(ctx context.Context, options *GetBlobPropertie
 
 // SetBlobHTTPHeaders changes a blob's HTTP headers.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-blob-properties.
-func (b BlobClient) SetHTTPHeaders(ctx context.Context, blobHttpHeaders BlobHttpHeaders, options *SetBlobHTTPHeadersOptions) (BlobSetHTTPHeadersResponse, error) {
+func (b BlobClient) SetHTTPHeaders(ctx context.Context, blobHttpHeaders BlobHTTPHeaders, options *SetBlobHTTPHeadersOptions) (BlobSetHTTPHeadersResponse, error) {
 	basics, lease, access := options.pointers()
 	resp, err := b.client.SetHTTPHeaders(ctx, basics, &blobHttpHeaders, lease, access)
 
@@ -147,57 +157,11 @@ func (b BlobClient) CreateSnapshot(ctx context.Context, options *CreateBlobSnaps
 	return resp, handleError(err)
 }
 
-// AcquireLease acquires a lease on the blob for write and delete operations. The lease duration must be between
-// 15 to 60 seconds, or infinite (-1).
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (b BlobClient) AcquireLease(ctx context.Context, options *AcquireBlobLeaseOptions) (BlobAcquireLeaseResponse, error) {
-	basics, access := options.pointers()
-	resp, err := b.client.AcquireLease(ctx, basics, access)
-
-	return resp, handleError(err)
-}
-
-// RenewLease renews the blob's previously-acquired lease.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (b BlobClient) RenewLease(ctx context.Context, leaseID string, options *RenewBlobLeaseOptions) (BlobRenewLeaseResponse, error) {
-	basics, access := options.pointers()
-	return b.client.RenewLease(ctx, leaseID, basics, access)
-}
-
-// ReleaseLease releases the blob's previously-acquired lease.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (b BlobClient) ReleaseLease(ctx context.Context, leaseID string, options *ReleaseBlobLeaseOptions) (BlobReleaseLeaseResponse, error) {
-	basics, access := options.pointers()
-	resp, err := b.client.ReleaseLease(ctx, leaseID, basics, access)
-
-	return resp, handleError(err)
-}
-
-// BreakLease breaks the blob's previously-acquired lease (if it exists). Pass the LeaseBreakDefault (-1)
-// constant to break a fixed-duration lease when it expires or an infinite lease immediately.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (b BlobClient) BreakLease(ctx context.Context, options *BreakBlobLeaseOptions) (BlobBreakLeaseResponse, error) {
-	basics, access := options.pointers()
-	resp, err := b.client.BreakLease(ctx, basics, access)
-
-	return resp, handleError(err)
-}
-
-// ChangeLease changes the blob's lease ID.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-blob.
-func (b BlobClient) ChangeLease(ctx context.Context, leaseID string, proposedID string, options *ChangeBlobLeaseOptions) (BlobChangeLeaseResponse, error) {
-	basics, access := options.pointers()
-	resp, err := b.client.ChangeLease(ctx, leaseID, proposedID, basics, access)
-
-	return resp, handleError(err)
-}
-
 // StartCopyFromURL copies the data at the source URL to a blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/copy-blob.
 func (b BlobClient) StartCopyFromURL(ctx context.Context, copySource string, options *StartCopyBlobOptions) (BlobStartCopyFromURLResponse, error) {
 	basics, srcAccess, destAccess, lease := options.pointers()
-	uri, _ := url.Parse(copySource) // for some reason generated code does not use strings here.
-	resp, err := b.client.StartCopyFromURL(ctx, *uri, basics, srcAccess, destAccess, lease)
+	resp, err := b.client.StartCopyFromURL(ctx, copySource, basics, srcAccess, destAccess, lease)
 
 	return resp, handleError(err)
 }
@@ -250,13 +214,13 @@ func (b BlobClient) GetBlobSASToken(permissions BlobSASPermissions, validityTime
 
 	return BlobSASSignatureValues{
 		ContainerName: urlParts.ContainerName,
-		BlobName: urlParts.BlobName,
-		SnapshotTime: t,
-		Version: SASVersion,
+		BlobName:      urlParts.BlobName,
+		SnapshotTime:  t,
+		Version:       SASVersion,
 
 		Permissions: permissions.String(),
 
-		StartTime: time.Now(),
-		ExpiryTime: time.Now().Add(validityTime),
+		StartTime:  time.Now().UTC(),
+		ExpiryTime: time.Now().UTC().Add(validityTime),
 	}.NewSASQueryParameters(b.cred)
 }

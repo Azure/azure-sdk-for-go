@@ -64,16 +64,16 @@ var (
 	blobContentEncoding    string = "my_encoding"
 )
 
-var basicHeaders = BlobHttpHeaders{
+var basicHeaders = BlobHTTPHeaders{
 	BlobContentType:        &blobContentType,
 	BlobContentDisposition: &blobContentDisposition,
 	BlobCacheControl:       &blobCacheControl,
-	BlobContentMd5:         nil,
+	BlobContentMD5:         nil,
 	BlobContentLanguage:    &blobContentLanguage,
 	BlobContentEncoding:    &blobContentEncoding,
 }
 
-var basicMetadata = map[string]string{"foo": "bar"}
+var basicMetadata = map[string]string{"Foo": "bar"}
 
 var basicBlobTagsMap = map[string]string{
 	"azure": "blob",
@@ -381,15 +381,19 @@ func blockIDIntToBase64(blockID int) string {
 	return base64.StdEncoding.EncodeToString(binaryBlockID)
 }
 
+// TODO: Figure out in which scenario, the parsing will fail.
 func validateStorageError(c *chk.C, err error, code StorageErrorCode) {
-	storageError, _ := err.(*StorageError)
+	c.Assert(err, chk.NotNil)
+	var storageError *StorageError
+	c.Assert(errors.As(err, &storageError), chk.Equals, true)
+
 	c.Assert(storageError.ErrorCode, chk.Equals, code)
 }
 
 func blobListToMap(list []string) map[string]bool {
 	out := make(map[string]bool)
 
-	for _,v := range list {
+	for _, v := range list {
 		out[v] = true
 	}
 

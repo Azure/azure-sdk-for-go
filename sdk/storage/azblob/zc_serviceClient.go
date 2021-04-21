@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
 const (
@@ -55,11 +56,29 @@ func (s ServiceClient) URL() string {
 // NewContainerClient method.
 func (s ServiceClient) NewContainerClient(containerName string) ContainerClient {
 	containerURL := appendToURLPath(s.client.con.u, containerName)
-	containerConnection := newConnectionWithPipeline(containerURL, s.client.con.p)
+	containerConnection := &connection{containerURL, s.client.con.p}
 	return ContainerClient{
 		client: &containerClient{
 			con: containerConnection,
 		},
+	}
+}
+
+func (s ServiceClient) NewContainerLeaseClient(containerName, leaseId string) ContainerLeaseClient {
+	containerURL := appendToURLPath(s.client.con.u, containerName)
+	containerConnection := &connection{containerURL, s.client.con.p}
+
+	if leaseId == "" {
+		leaseId = newUUID().String()
+	}
+
+	return ContainerLeaseClient{
+		ContainerClient: ContainerClient{
+			client: &containerClient{
+				con: containerConnection,
+			},
+		},
+		LeaseId: leaseId,
 	}
 }
 
@@ -94,8 +113,15 @@ func (s ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountInf
 // GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceClient object.
 // OAuth is required for this call, as well as any role that can delegate access to the storage account.
 // Strings in KeyInfo should be formatted with SASTimeFormat.
-func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, info KeyInfo) (UserDelegationCredential, error) {
-	udk, err := s.client.GetUserDelegationKey(ctx, info, nil)
+func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, expiry time.Time, startTime *time.Time) (UserDelegationCredential, error) {
+	if startTime == nil {
+		startTime = to.TimePtr(time.Now().UTC())
+	}
+
+	udk, err := s.client.GetUserDelegationKey(ctx, KeyInfo{
+		Start: to.StringPtr(startTime.UTC().Format(SASTimeFormat)),
+		Expiry: to.StringPtr(expiry.UTC().Format(SASTimeFormat)),
+	}, nil)
 	if err != nil {
 		return UserDelegationCredential{}, handleError(err)
 	}
@@ -117,11 +143,11 @@ func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) Li
 	p := pager.(*listContainersSegmentResponsePager) // cast to the internal type first
 	p.advancer = func(cxt context.Context, response ListContainersSegmentResponseResponse) (*azcore.Request, error) {
 		if response.EnumerationResults.NextMarker == nil {
-			return nil, errors.New("unexpected missing NextMarker")
+			return nil, handleError(errors.New("unexpected missing NextMarker"))
 		}
 		req, err := s.client.listContainersSegmentCreateRequest(cxt, listOptions)
 		if err != nil {
-			return nil, err
+			return nil, handleError(err)
 		}
 		queryValues, _ := url.ParseQuery(req.URL.RawQuery)
 		queryValues.Set("marker", *response.EnumerationResults.NextMarker)
@@ -162,11 +188,11 @@ func (s ServiceClient) GetAccountSASToken(services AccountSASServices, resources
 	return AccountSASSignatureValues{
 		Version: SASVersion,
 
-		Permissions: permissions.String(),
-		Services: services.String(),
+		Permissions:   permissions.String(),
+		Services:      services.String(),
 		ResourceTypes: resources.String(),
 
-		StartTime: time.Now(),
-		ExpiryTime: time.Now().Add(validityTime),
+		StartTime:  time.Now().UTC(),
+		ExpiryTime: time.Now().UTC().Add(validityTime),
 	}.NewSASQueryParameters(s.cred.(*SharedKeyCredential))
 }

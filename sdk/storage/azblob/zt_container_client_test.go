@@ -12,7 +12,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
-
 )
 
 func (s *aztestsSuite) TestNewContainerClientValidName(c *chk.C) {
@@ -433,7 +432,7 @@ func (s *aztestsSuite) TestContainerListBlobsValidDelimiter(c *chk.C) {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _,blob := range *resp.EnumerationResults.Segment.BlobItems {
+		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
 			count++
 			c.Assert(*blob.Name, chk.Equals, blobNames[3])
 		}
@@ -456,13 +455,31 @@ func (s *aztestsSuite) TestContainerListBlobsWithSnapshots(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	containerListBlobHierarchySegmentOptions := ContainerListBlobHierarchySegmentOptions{
-		Include: &[]ListBlobsIncludeItem{},
-	}
-	pager := containerClient.ListBlobsHierarchySegment("/", &containerListBlobHierarchySegmentOptions)
+	// initialize a blob and create a snapshot of it
+	snapBlob, snapBlobName := createNewBlockBlob(c, containerClient)
+	snap, err := snapBlob.CreateSnapshot(ctx, nil)
+	// snap.
+	c.Assert(err, chk.IsNil)
 
-	pager.NextPage(ctx)
-	c.Assert(pager.Err(), chk.NotNil)
+	listBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
+		Include: &[]ListBlobsIncludeItem{ ListBlobsIncludeItemSnapshots },
+	}
+	pager := containerClient.ListBlobsFlatSegment(&listBlobFlatSegmentOptions)
+
+	wasFound := false // hold the for loop accountable for finding the blob and it's snapshot
+	for pager.NextPage(ctx) {
+		c.Assert(pager.Err(), chk.IsNil)
+
+		resp := pager.PageResponse()
+
+		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+			if *blob.Name == snapBlobName && blob.Snapshot != nil {
+				wasFound = true
+				c.Assert(*blob.Snapshot, chk.Equals, *snap.Snapshot)
+			}
+		}
+	}
+	c.Assert(wasFound, chk.Equals, true)
 }
 
 func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter(c *chk.C) {
@@ -478,7 +495,7 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter(c *chk.C) {
 
 	pager.NextPage(ctx)
 	c.Assert(pager.Err(), chk.IsNil)
-	c.Assert(*pager.PageResponse().EnumerationResults.Segment.BlobPrefixes, chk.HasLen, len(prefixes))
+	c.Assert(pager.PageResponse().EnumerationResults.Segment.BlobPrefixes, chk.IsNil)
 }
 
 //func (s *aztestsSuite) TestContainerListBlobsIncludeTypeMetadata(c *chk.C) {
@@ -681,7 +698,6 @@ func (s *aztestsSuite) TestContainerListBlobsMaxResultsExact(c *chk.C) {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		c.Assert(len(*resp.EnumerationResults.Segment.BlobItems), chk.Equals, blobNames)
 		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
 			c.Assert(nameMap[*blob.Name], chk.Equals, true)
 		}
@@ -740,7 +756,7 @@ func (s *aztestsSuite) TestContainerGetSetPermissionsMultiplePolicies(c *chk.C) 
 	readWrite := AccessPolicyPermission{Read: true, Write: true}.String()
 	readOnly := AccessPolicyPermission{Read: true}.String()
 	id1, id2 := "0000", "0001"
-	permissions := []SignedIDentifier{
+	permissions := []*SignedIdentifier{
 		{ID: &id1,
 			AccessPolicy: &AccessPolicy{
 				Start:      &start,
@@ -759,7 +775,7 @@ func (s *aztestsSuite) TestContainerGetSetPermissionsMultiplePolicies(c *chk.C) 
 
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
-			ContainerAcl: &permissions,
+			ContainerACL: &permissions,
 		},
 	}
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -768,7 +784,7 @@ func (s *aztestsSuite) TestContainerGetSetPermissionsMultiplePolicies(c *chk.C) 
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(*resp.SignedIdentifiers, chk.DeepEquals, permissions)
+	c.Assert(resp.SignedIdentifiers, chk.DeepEquals, permissions)
 }
 
 func (s *aztestsSuite) TestContainerGetPermissionsPublicAccessNotNone(c *chk.C) {
@@ -801,24 +817,25 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessNone(c *chk.C) {
 	_, err := containerClient.SetAccessPolicy(ctx, nil)
 	c.Assert(err, chk.IsNil)
 
-	//pipeline := NewPipeline(NewAnonymousCredential(), PipelineOptions{})
-	credential, err := getGenericCredential("")
 	c.Assert(err, chk.IsNil)
-	bsu2, err := NewServiceClient(bsu.URL(), credential, nil)
+	bsu2, err := NewServiceClient(bsu.URL(), azcore.AnonymousCredential(), nil)
 	c.Assert(err, chk.IsNil)
 
 	containerClient2 := bsu2.NewContainerClient(containerName)
 	blobURL2 := containerClient2.NewBlockBlobClient(blobName)
-	_, err = blobURL2.Download(ctx, nil)
 
 	// Get permissions via the original container URL so the request succeeds
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 	c.Assert(resp.BlobPublicAccess, chk.IsNil)
-	c.Assert(err, chk.NotNil)
-	// If we cannot access a blob's data, we will also not be able to enumerate blobs
+	c.Assert(err, chk.IsNil)
 
+	// If we cannot access a blob's data, we will also not be able to enumerate blobs
+	p := containerClient2.ListBlobsFlatSegment(nil)
+	p.NextPage(ctx); err = p.Err() // grab the next page
 	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
 
+	_, err = blobURL2.Download(ctx, nil)
+	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
 }
 
 func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessBlob(c *chk.C) {
@@ -876,7 +893,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer(c *chk.C
 //	expiry := start.Add(5 * time.Minute).UTC()
 //	listOnly := AccessPolicyPermission{List: true}.String()
 //	id := "0000"
-//	permissions := []SignedIDentifier{{
+//	permissions := []SignedIdentifier{{
 //		ID: &id,
 //		AccessPolicy: &AccessPolicy{
 //			Start:      &start,
@@ -887,7 +904,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer(c *chk.C
 //
 //	setAccessPolicyOptions := SetAccessPolicyOptions{
 //		ContainerAcquireLeaseOptions: ContainerAcquireLeaseOptions{
-//			ContainerAcl: &permissions,
+//			ContainerACL: &permissions,
 //		},
 //	}
 //	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -925,11 +942,11 @@ func (s *aztestsSuite) TestContainerSetPermissionsACLMoreThanFive(c *chk.C) {
 
 	start := time.Now().UTC()
 	expiry := start.Add(5 * time.Minute).UTC()
-	permissions := make([]SignedIDentifier, 6, 6)
+	permissions := make([]*SignedIdentifier, 6, 6)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 6; i++ {
 		id := "000" + strconv.Itoa(i)
-		permissions[i] = SignedIDentifier{
+		permissions[i] = &SignedIdentifier{
 			ID: &id,
 			AccessPolicy: &AccessPolicy{
 				Start:      &start,
@@ -943,7 +960,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsACLMoreThanFive(c *chk.C) {
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
-			ContainerAcl: &permissions,
+			ContainerACL: &permissions,
 		},
 	}
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -961,10 +978,10 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAndModifyACL(c *chk.C) {
 	start := generateCurrentTimeWithModerateResolution()
 	expiry := start.Add(5 * time.Minute).UTC()
 	listOnly := AccessPolicyPermission{Read: true}.String()
-	permissions := make([]SignedIDentifier, 2, 2)
+	permissions := make([]*SignedIdentifier, 2, 2)
 	for i := 0; i < 2; i++ {
 		id := "000" + strconv.Itoa(i)
-		permissions[i] = SignedIDentifier{
+		permissions[i] = &SignedIdentifier{
 			ID: &id,
 			AccessPolicy: &AccessPolicy{
 				Start:      &start,
@@ -978,7 +995,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAndModifyACL(c *chk.C) {
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
-			ContainerAcl: &permissions,
+			ContainerACL: &permissions,
 		},
 	}
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -986,23 +1003,23 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAndModifyACL(c *chk.C) {
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(*resp.SignedIdentifiers, chk.DeepEquals, permissions)
+	c.Assert(resp.SignedIdentifiers, chk.DeepEquals, permissions)
 
-	permissions = (*resp.SignedIdentifiers)[:1] // Delete the first policy by removing it from the slice
+	permissions = resp.SignedIdentifiers[:1] // Delete the first policy by removing it from the slice
 	newId := "0004"
 	permissions[0].ID = &newId // Modify the remaining policy which is at index 0 in the new slice
 	setAccessPolicyOptions1 := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
-			ContainerAcl: &permissions,
+			ContainerACL: &permissions,
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions1)
 
 	resp, err = containerClient.GetAccessPolicy(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(*resp.SignedIdentifiers, chk.HasLen, 1)
-	c.Assert(*resp.SignedIdentifiers, chk.DeepEquals, permissions)
+	c.Assert(resp.SignedIdentifiers, chk.HasLen, 1)
+	c.Assert(resp.SignedIdentifiers, chk.DeepEquals, permissions)
 }
 
 func (s *aztestsSuite) TestContainerSetPermissionsDeleteAllPolicies(c *chk.C) {
@@ -1013,11 +1030,11 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAllPolicies(c *chk.C) {
 
 	start := time.Now().UTC()
 	expiry := start.Add(5 * time.Minute).UTC()
-	permissions := make([]SignedIDentifier, 2, 2)
+	permissions := make([]*SignedIdentifier, 2, 2)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 2; i++ {
 		id := "000" + strconv.Itoa(i)
-		permissions[i] = SignedIDentifier{
+		permissions[i] = &SignedIdentifier{
 			ID: &id,
 			AccessPolicy: &AccessPolicy{
 				Start:      &start,
@@ -1031,7 +1048,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAllPolicies(c *chk.C) {
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
-			ContainerAcl: &permissions,
+			ContainerACL: &permissions,
 		},
 	}
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -1039,13 +1056,13 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAllPolicies(c *chk.C) {
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(*resp.SignedIdentifiers, chk.HasLen, len(permissions))
-	c.Assert(*resp.SignedIdentifiers, chk.DeepEquals, permissions)
+	c.Assert(resp.SignedIdentifiers, chk.HasLen, len(permissions))
+	c.Assert(resp.SignedIdentifiers, chk.DeepEquals, permissions)
 
 	setAccessPolicyOptions = SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
-			ContainerAcl: &[]SignedIDentifier{},
+			ContainerACL: &[]*SignedIdentifier{},
 		},
 	}
 	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -1065,11 +1082,11 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAllPolicies(c *chk.C) {
 //	// Swap start and expiry
 //	expiry := time.Now().UTC()
 //	start := expiry.Add(5 * time.Minute).UTC()
-//	permissions := make([]SignedIDentifier, 2, 2)
+//	permissions := make([]SignedIdentifier, 2, 2)
 //	listOnly := AccessPolicyPermission{Read: true}.String()
 //	for i := 0; i < 2; i++ {
 //		id := "000" + strconv.Itoa(i)
-//		permissions[i] = SignedIDentifier{
+//		permissions[i] = SignedIdentifier{
 //			ID: &id,
 //			AccessPolicy: &AccessPolicy{
 //				Start:      &start,
@@ -1083,7 +1100,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAllPolicies(c *chk.C) {
 //	setAccessPolicyOptions := SetAccessPolicyOptions{
 //		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 //			Access:       &access,
-//			ContainerAcl: &permissions,
+//			ContainerACL: &permissions,
 //		},
 //	}
 //	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -1112,10 +1129,10 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong(c *chk
 	}
 	expiry := time.Now().UTC()
 	start := expiry.Add(5 * time.Minute).UTC()
-	permissions := make([]SignedIDentifier, 2, 2)
+	permissions := make([]*SignedIdentifier, 2, 2)
 	listOnly := AccessPolicyPermission{Read: true}.String()
 	for i := 0; i < 2; i++ {
-		permissions[i] = SignedIDentifier{
+		permissions[i] = &SignedIdentifier{
 			ID: &id,
 			AccessPolicy: &AccessPolicy{
 				Start:      &start,
@@ -1129,7 +1146,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong(c *chk
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
-			ContainerAcl: &permissions,
+			ContainerACL: &permissions,
 		},
 	}
 	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
@@ -1326,7 +1343,7 @@ func (s *aztestsSuite) TestContainerSetMetadataIfModifiedSinceTrue(c *chk.C) {
 	resp, err := containerClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.Metadata, chk.NotNil)
-	c.Assert(*resp.Metadata, chk.DeepEquals, basicMetadata)
+	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 
 }
 

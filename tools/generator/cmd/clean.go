@@ -1,9 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package cmd
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 )
@@ -29,9 +34,28 @@ func (ctx *cleanUpContext) clean() (readmePackageOutputMap, error) {
 				return nil, fmt.Errorf("cannot remove package '%s': %+v", p.outputFolder, err)
 			}
 			removedPackages.add(readme, p)
+
+			// recursively remove all its parent if this directory is empty after the deletion
+			if err := removeEmptyParents(filepath.Dir(p.outputFolder)); err != nil {
+				return nil, err
+			}
 		}
 	}
 	return removedPackages, nil
+}
+
+func removeEmptyParents(parent string) error {
+	fi, err := ioutil.ReadDir(parent)
+	if err != nil {
+		return err
+	}
+	if len(fi) == 0 {
+		if err := os.RemoveAll(parent); err != nil {
+			return err
+		}
+		return removeEmptyParents(filepath.Dir(parent))
+	}
+	return nil
 }
 
 func summaryReadmePackageOutputMap(root string) (readmePackageOutputMap, error) {
@@ -42,7 +66,7 @@ func summaryReadmePackageOutputMap(root string) (readmePackageOutputMap, error) 
 	}
 	result := readmePackageOutputMap{}
 	for pkg, metadata := range m {
-		result.add(metadata.Readme, packageOutput{
+		result.add(metadata.RelativeReadme(), packageOutput{
 			tag:          metadata.Tag,
 			outputFolder: pkg,
 		})

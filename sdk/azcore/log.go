@@ -77,7 +77,7 @@ func (l *Logger) Should(cls LogClassification) bool {
 // Write invokes the underlying Listener with the specified classification and message.
 // If the classification shouldn't be logged or there is no listener then Write does nothing.
 func (l *Logger) Write(cls LogClassification, message string) {
-	if l.lst == nil || !l.Should(cls) {
+	if !l.Should(cls) {
 		return
 	}
 	l.lst(cls, message)
@@ -86,7 +86,7 @@ func (l *Logger) Write(cls LogClassification, message string) {
 // Writef invokes the underlying Listener with the specified classification and formatted message.
 // If the classification shouldn't be logged or there is no listener then Writef does nothing.
 func (l *Logger) Writef(cls LogClassification, format string, a ...interface{}) {
-	if l.lst == nil || !l.Should(cls) {
+	if !l.Should(cls) {
 		return
 	}
 	l.lst(cls, fmt.Sprintf(format, a...))

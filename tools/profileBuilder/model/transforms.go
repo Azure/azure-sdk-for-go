@@ -1,18 +1,7 @@
 // +build go1.9
 
-// Copyright 2018 Microsoft Corporation and contributors
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 // Package model holds the business logic for the operations made available by
 // profileBuilder.
@@ -24,6 +13,7 @@ package model
 import (
 	"bytes"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 	"go/ast"
 	"go/parser"
 	"go/printer"
@@ -35,9 +25,6 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
-	"time"
-
-	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 
 	"golang.org/x/tools/imports"
 )
@@ -218,19 +205,8 @@ func writeAliasPackage(ap *AliasPackage, outputPath string, outputLog, errLog *l
 
 	generatorStampBuilder := new(bytes.Buffer)
 
-	fmt.Fprintf(generatorStampBuilder, "// Copyright %4d Microsoft Corporation\n", time.Now().Year())
-	fmt.Fprintln(generatorStampBuilder, `//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.`)
+	fmt.Fprintln(generatorStampBuilder, `// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.`)
 
 	fmt.Fprintln(outputFile, generatorStampBuilder.String())
 

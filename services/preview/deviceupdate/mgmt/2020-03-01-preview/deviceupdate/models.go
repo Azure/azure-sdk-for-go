@@ -296,6 +296,40 @@ type AccountsCreateFuture struct {
 	Result func(AccountsClient) (Account, error)
 }
 
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *AccountsCreateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for AccountsCreateFuture.Result.
+func (future *AccountsCreateFuture) result(client AccountsClient) (a Account, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "deviceupdate.AccountsCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		a.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("deviceupdate.AccountsCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
+		a, err = client.CreateResponder(a.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "deviceupdate.AccountsCreateFuture", "Result", a.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // AccountsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type AccountsDeleteFuture struct {
@@ -305,6 +339,34 @@ type AccountsDeleteFuture struct {
 	Result func(AccountsClient) (autorest.Response, error)
 }
 
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *AccountsDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for AccountsDeleteFuture.Result.
+func (future *AccountsDeleteFuture) result(client AccountsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "deviceupdate.AccountsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("deviceupdate.AccountsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // AccountsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type AccountsUpdateFuture struct {
@@ -312,6 +374,40 @@ type AccountsUpdateFuture struct {
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
 	Result func(AccountsClient) (Account, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *AccountsUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for AccountsUpdateFuture.Result.
+func (future *AccountsUpdateFuture) result(client AccountsClient) (a Account, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "deviceupdate.AccountsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		a.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("deviceupdate.AccountsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if a.Response.Response, err = future.GetResult(sender); err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
+		a, err = client.UpdateResponder(a.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "deviceupdate.AccountsUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // AccountUpdate request payload used to update and existing Accounts.
@@ -346,31 +442,33 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// ErrorDefinition error definition.
+// ErrorAdditionalInfo the resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// Type - READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty"`
+	// Info - READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty"`
+}
+
+// ErrorDefinition error response indicates that the service is not able to process the incoming request.
 type ErrorDefinition struct {
-	// Code - READ-ONLY; Error status code.
-	Code *string `json:"code,omitempty"`
-	// Message - READ-ONLY; Error message.
-	Message *string `json:"message,omitempty"`
-	// Details - Error details.
-	Details *[]ErrorDefinition `json:"details,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ErrorDefinition.
-func (ed ErrorDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ed.Details != nil {
-		objectMap["details"] = ed.Details
-	}
-	return json.Marshal(objectMap)
-}
-
-// ErrorResponse error response indicates that the service is not able to process the incoming request.
-type ErrorResponse struct {
-	// Code - READ-ONLY; Error status code.
-	Code *string `json:"code,omitempty"`
 	// Error - READ-ONLY; Error details.
-	Error *ErrorDefinition `json:"error,omitempty"`
+	Error *ErrorResponse `json:"error,omitempty"`
+}
+
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.)
+type ErrorResponse struct {
+	// Code - READ-ONLY; The error code.
+	Code *string `json:"code,omitempty"`
+	// Message - READ-ONLY; The error message.
+	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; The error target.
+	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The error details.
+	Details *[]ErrorResponse `json:"details,omitempty"`
+	// AdditionalInfo - READ-ONLY; The error additional info.
+	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
 // Instance device Update instance details.
@@ -661,6 +759,40 @@ type InstancesCreateFuture struct {
 	Result func(InstancesClient) (Instance, error)
 }
 
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *InstancesCreateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for InstancesCreateFuture.Result.
+func (future *InstancesCreateFuture) result(client InstancesClient) (i Instance, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "deviceupdate.InstancesCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		i.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("deviceupdate.InstancesCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if i.Response.Response, err = future.GetResult(sender); err == nil && i.Response.Response.StatusCode != http.StatusNoContent {
+		i, err = client.CreateResponder(i.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "deviceupdate.InstancesCreateFuture", "Result", i.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // InstancesDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type InstancesDeleteFuture struct {
@@ -668,6 +800,34 @@ type InstancesDeleteFuture struct {
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
 	Result func(InstancesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *InstancesDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for InstancesDeleteFuture.Result.
+func (future *InstancesDeleteFuture) result(client InstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "deviceupdate.InstancesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("deviceupdate.InstancesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // IotHubSettings device Update account integration with IoT Hub settings.

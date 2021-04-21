@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package validate
 
 import (
@@ -115,6 +118,6 @@ var (
 	previewSwaggerRegex = regexp.MustCompile(`^preview|.+[/\\]preview[/\\]`)
 	previewOutputRegex  = regexp.MustCompile(`^services/preview/`)
 	mgmtReadmeRegex     = regexp.MustCompile(`[/\\]resource-manager[/\\]`)
-	mgmtOutputRegex     = regexp.MustCompile(`^services(/preview)?/[^/]+/mgmt/[^/]+/[^/]+$|^profiles/[^/]+/[^/]+/mgmt/[^/]+$`)
+	mgmtOutputRegex     = regexp.MustCompile(`/mgmt/`)
 	namespaceRegex      = regexp.MustCompile(`^[a-z][a-z0-9_]*[a-z0-9]?$`)
 )

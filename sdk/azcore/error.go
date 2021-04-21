@@ -50,3 +50,5 @@ type NonRetriableError interface {
 func NewResponseError(inner error, resp *http.Response) error {
 	return sdkruntime.NewResponseError(inner, resp)
 }
+
+var _ NonRetriableError = (*sdkruntime.ResponseError)(nil)

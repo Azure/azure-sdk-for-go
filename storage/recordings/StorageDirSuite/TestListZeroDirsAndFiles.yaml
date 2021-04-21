@@ -6,12 +6,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:8POL5aWp8QxfAAsL0Cti8tDeSRSGxifuoGkTjySyIDk=
+      - SharedKey golangrocksonazure:g2GaaW+OA6IxBfzstYy6KN9kA0sk1k7kmBZpAK/1mOM=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         file
       x-ms-date:
-      - Tue, 28 May 2019 22:36:03 GMT
+      - Tue, 13 Apr 2021 16:04:07 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.file.core.windows.net/share-40storagedirsuitetestlistzerodirsandfiles?restype=share
@@ -22,15 +22,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:03 GMT
+      - Tue, 13 Apr 2021 16:04:06 GMT
       Etag:
-      - '"0x8D6E3BCDDEF80F7"'
+      - '"0x8D8FE95C43B9684"'
       Last-Modified:
-      - Tue, 28 May 2019 22:36:03 GMT
+      - Tue, 13 Apr 2021 16:04:06 GMT
       Server:
       - Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - f2ac02df-101a-009c-2ca5-15556b000000
+      - 92d9ca3d-801a-0087-447e-300c88000000
       X-Ms-Version:
       - "2018-03-28"
     status: 201 Created
@@ -41,12 +41,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:/Oq+ZggWon60WgQD/rAax4LURKhrbfsDL+YbVlbEqNg=
+      - SharedKey golangrocksonazure:Uc9nb/Nv5yHkg3agtgkcwogXSO0CLUMaeG7ZdEC5MOM=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         file
       x-ms-date:
-      - Tue, 28 May 2019 22:36:03 GMT
+      - Tue, 13 Apr 2021 16:04:07 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.file.core.windows.net/share-40storagedirsuitetestlistzerodirsandfiles?comp=list&restype=directory
@@ -57,11 +57,11 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Tue, 28 May 2019 22:36:03 GMT
+      - Tue, 13 Apr 2021 16:04:06 GMT
       Server:
       - Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - f2ac02e1-101a-009c-2da5-15556b000000
+      - 92d9ca3f-801a-0087-457e-300c88000000
       X-Ms-Version:
       - "2018-03-28"
     status: 200 OK
@@ -72,12 +72,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:sy0GuHPOSjS9lNcG7ointUkgut3jk8REgrB8iSvGjC8=
+      - SharedKey golangrocksonazure:3x9QrQ9yiXvxJqlimpEUkg+rO3myZii/H1eMZg06GyE=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         file
       x-ms-date:
-      - Tue, 28 May 2019 22:36:03 GMT
+      - Tue, 13 Apr 2021 16:04:07 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.file.core.windows.net/share-40storagedirsuitetestlistzerodirsandfiles?restype=share
@@ -88,11 +88,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:03 GMT
+      - Tue, 13 Apr 2021 16:04:06 GMT
       Server:
       - Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - f2ac02e2-101a-009c-2ea5-15556b000000
+      - 92d9ca40-801a-0087-467e-300c88000000
       X-Ms-Version:
       - "2018-03-28"
     status: 202 Accepted

@@ -6,6 +6,9 @@
 package to
 
 import (
+	"fmt"
+	"reflect"
+	"strconv"
 	"testing"
 	"time"
 )
@@ -84,5 +87,105 @@ func TestTimePtr(t *testing.T) {
 	}
 	if *pt != tt {
 		t.Fatalf("got %v, want %v", *pt, tt)
+	}
+}
+
+func TestInt32PtrArray(t *testing.T) {
+	arr := Int32PtrArray()
+	if len(arr) != 0 {
+		t.Fatal("expected zero length")
+	}
+	arr = Int32PtrArray(1, 2, 3, 4, 5)
+	for i, v := range arr {
+		if *v != int32(i+1) {
+			t.Fatal("values don't match")
+		}
+	}
+}
+
+func TestInt64PtrArray(t *testing.T) {
+	arr := Int64PtrArray()
+	if len(arr) != 0 {
+		t.Fatal("expected zero length")
+	}
+	arr = Int64PtrArray(1, 2, 3, 4, 5)
+	for i, v := range arr {
+		if *v != int64(i+1) {
+			t.Fatal("values don't match")
+		}
+	}
+}
+
+func TestFloat32PtrArray(t *testing.T) {
+	arr := Float32PtrArray()
+	if len(arr) != 0 {
+		t.Fatal("expected zero length")
+	}
+	arr = Float32PtrArray(1.1, 2.2, 3.3, 4.4, 5.5)
+	for i, v := range arr {
+		f, err := strconv.ParseFloat(fmt.Sprintf("%d.%d", i+1, i+1), 32)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if *v != float32(f) {
+			t.Fatal("values don't match")
+		}
+	}
+}
+
+func TestFloat64PtrArray(t *testing.T) {
+	arr := Float64PtrArray()
+	if len(arr) != 0 {
+		t.Fatal("expected zero length")
+	}
+	arr = Float64PtrArray(1.1, 2.2, 3.3, 4.4, 5.5)
+	for i, v := range arr {
+		f, err := strconv.ParseFloat(fmt.Sprintf("%d.%d", i+1, i+1), 64)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if *v != f {
+			t.Fatal("values don't match")
+		}
+	}
+}
+
+func TestBoolPtrArray(t *testing.T) {
+	arr := BoolPtrArray()
+	if len(arr) != 0 {
+		t.Fatal("expected zero length")
+	}
+	arr = BoolPtrArray(true, false, true)
+	curr := true
+	for _, v := range arr {
+		if *v != curr {
+			t.Fatal("values don'p match")
+		}
+		curr = !curr
+	}
+}
+
+func TestStringPtrArray(t *testing.T) {
+	arr := StringPtrArray()
+	if len(arr) != 0 {
+		t.Fatal("expected zero length")
+	}
+	arr = StringPtrArray("one", "", "three")
+	if !reflect.DeepEqual(arr, []*string{StringPtr("one"), StringPtr(""), StringPtr("three")}) {
+		t.Fatal("values don't match")
+	}
+}
+
+func TestTimePtrArray(t *testing.T) {
+	arr := TimePtrArray()
+	if len(arr) != 0 {
+		t.Fatal("expected zero length")
+	}
+	t1 := time.Now()
+	t2 := time.Time{}
+	t3 := t1.Add(24 * time.Hour)
+	arr = TimePtrArray(t1, t2, t3)
+	if !reflect.DeepEqual(arr, []*time.Time{&t1, &t2, &t3}) {
+		t.Fatal("values don't match")
 	}
 }

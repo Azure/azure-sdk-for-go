@@ -15,7 +15,7 @@ Fixes https://github.com/Azure/azure-sdk-for-go/issues/14540
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v53.2.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
 
 ## `v53.1.0`
 

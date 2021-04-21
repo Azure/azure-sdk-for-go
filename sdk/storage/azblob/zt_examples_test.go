@@ -1127,8 +1127,8 @@ func ExampleLeaseContainer() {
 
 	// Create an containerClient object that wraps the container's URL and a default pipeline.
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
-	leaseId := newUUID().String()
-	containerLeaseClient, err := NewContainerLeaseClient(u, leaseId, credential, nil)
+	leaseID := to.StringPtr(newUUID().String())
+	containerLeaseClient, err := NewContainerLeaseClient(u, leaseID, credential, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -1171,7 +1171,8 @@ func ExampleLeaseContainer() {
 	// A lease ID can be any valid GUID string format.
 	newLeaseID := newUUID()
 	newLeaseID[0] = 1
-	changeLeaseResponse, err := containerLeaseClient.ChangeLease(ctx, &ChangeLeaseContainerOptions{ProposedLeaseId: newLeaseID.String()})
+	changeLeaseResponse, err := containerLeaseClient.ChangeLease(ctx,
+		&ChangeLeaseContainerOptions{ProposedLeaseID: to.StringPtr(newLeaseID.String())})
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -36,3 +36,8 @@ func (e *ResponseError) Unwrap() error {
 func (e *ResponseError) RawResponse() *http.Response {
 	return e.resp
 }
+
+// NonRetriable indicates this error is non-transient.
+func (e *ResponseError) NonRetriable() {
+	// marker method
+}

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package pipeline
 
 import (
@@ -71,6 +74,7 @@ func (o GenerateOutput) WriteTo(writer io.Writer) (int64, error) {
 
 // PackageResult ...
 type PackageResult struct {
+	Version             string                          `json:"version,omitempty"`
 	PackageName         string                          `json:"packageName,omitempty"`
 	Path                []string                        `json:"path,omitempty"`
 	ReadmeMd            []string                        `json:"readmeMd,omitempty"`
@@ -81,8 +85,9 @@ type PackageResult struct {
 
 // Changelog ...
 type Changelog struct {
-	Content           *string `json:"content,omitempty"`
-	HasBreakingChange *bool   `json:"hasBreakingChange,omitempty"`
+	Content             *string   `json:"content,omitempty"`
+	HasBreakingChange   *bool     `json:"hasBreakingChange,omitempty"`
+	BreakingChangeItems *[]string `json:"breakingChangeItems,omitempty"`
 }
 
 // InstallInstructionScriptOutput ...

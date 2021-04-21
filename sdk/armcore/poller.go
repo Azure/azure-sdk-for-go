@@ -912,7 +912,7 @@ func (pt *pollingTrackerPut) provisioningStateApplicable() bool {
 // gets the polling URL from the Azure-AsyncOperation header.
 // ensures the URL is well-formed and absolute.
 func getURLFromAsyncOpHeader(resp *azcore.Response) (string, error) {
-	s := resp.Header.Get(http.CanonicalHeaderKey(headerAsyncOperation))
+	s := resp.Header.Get(headerAsyncOperation)
 	if s == "" {
 		return "", nil
 	}
@@ -925,7 +925,7 @@ func getURLFromAsyncOpHeader(resp *azcore.Response) (string, error) {
 // gets the polling URL from the Location header.
 // ensures the URL is well-formed and absolute.
 func getURLFromLocationHeader(resp *azcore.Response) (string, error) {
-	s := resp.Header.Get(http.CanonicalHeaderKey(headerLocation))
+	s := resp.Header.Get(headerLocation)
 	if s == "" {
 		return "", nil
 	}

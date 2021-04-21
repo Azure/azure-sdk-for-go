@@ -1,18 +1,7 @@
 package storage
 
-// Copyright 2017 Microsoft Corporation
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 import (
 	"bytes"
@@ -171,11 +160,22 @@ func (s *BlockBlobSuite) TestPutBlockFromURL(c *chk.C) {
 	defer rec.Stop()
 
 	cnt := cli.GetContainerReference(containerName(c))
-	c.Assert(cnt.Create(nil), chk.IsNil)
+	c.Assert(cnt.Create(&CreateContainerOptions{
+		Access: ContainerAccessTypeContainer,
+	}), chk.IsNil)
 	defer cnt.Delete(nil)
 
+	length := 512
+	data := content(length)
+	lr := io.LimitReader(bytes.NewReader(data), 256)
 	srcBlob := cnt.GetBlobReference(blobName(c, "src"))
+	c.Assert(srcBlob.PutBlockWithLength("0000", 256, lr, nil), chk.IsNil)
+	c.Assert(srcBlob.PutBlockList([]Block{
+		{
+			ID:     "0000",
+			Status: BlockStatusLatest,
+		},
+	}, nil), chk.IsNil)
 	dstBlob := cnt.GetBlobReference(blobName(c, "dst"))
-
-	c.Assert(dstBlob.PutBlockFromURL("00000", srcBlob.GetURL(), 0, 64, nil), chk.IsNil)
+	c.Assert(dstBlob.PutBlockFromURL("0000", srcBlob.GetURL(), 0, 64, nil), chk.IsNil)
 }

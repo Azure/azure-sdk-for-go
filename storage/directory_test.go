@@ -1,18 +1,7 @@
 package storage
 
-// Copyright 2017 Microsoft Corporation
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 import chk "gopkg.in/check.v1"
 
@@ -127,6 +116,9 @@ func (s *StorageDirSuite) TestCreateDirectoryIfNotExists(c *chk.C) {
 func (s *StorageDirSuite) TestCreateDirectoryIfExists(c *chk.C) {
 	// create share
 	cli := getFileClient(c)
+	rec := cli.client.appendRecorder(c)
+	defer rec.Stop()
+
 	share := cli.GetShareReference(shareName(c))
 	share.Create(nil)
 	defer share.Delete(nil)
@@ -135,10 +127,6 @@ func (s *StorageDirSuite) TestCreateDirectoryIfExists(c *chk.C) {
 	root := share.GetRootDirectoryReference()
 	dir := root.GetDirectoryReference("dir")
 	dir.Create(nil)
-
-	rec := cli.client.appendRecorder(c)
-	dir.fsc = &cli
-	defer rec.Stop()
 
 	// try to create directory
 	exists, err := dir.CreateIfNotExists(nil)

@@ -6,12 +6,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:7RXfGDJvy+kBp1LbLUIvXIgm672FO95+uBikq+BpY+I=
+      - SharedKey golangrocksonazure:7XCe0xrZVE9cFmTjM69KUCLZZ8mVQ2VhMEChPjEJswM=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         queue
       x-ms-date:
-      - Tue, 28 May 2019 22:36:09 GMT
+      - Tue, 13 Apr 2021 15:57:55 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.queue.core.windows.net/queue-156storagequeuesuitetestsetmetadatagetmetadataroundtrips
@@ -22,11 +22,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:08 GMT
+      - Tue, 13 Apr 2021 15:57:54 GMT
       Server:
       - Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - c47aa04a-a003-0042-26a5-15418d000000
+      - cfe7bdb8-a003-005b-067d-30a6d6000000
       X-Ms-Version:
       - "2018-03-28"
     status: 201 Created
@@ -37,12 +37,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:/awVBgiE747MEtHwbFKoJPLRjYkzzSXJlOvYgswb9MU=
+      - SharedKey golangrocksonazure:7ap2QHfw+NiB++uqGtMLg2sd42Vkp1hicQl7a/dSY5Y=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         queue
       x-ms-date:
-      - Tue, 28 May 2019 22:36:09 GMT
+      - Tue, 13 Apr 2021 15:57:55 GMT
       x-ms-meta-Lol1:
       - rofl1
       x-ms-meta-lolBaz:
@@ -57,11 +57,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:09 GMT
+      - Tue, 13 Apr 2021 15:57:54 GMT
       Server:
       - Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - c47aa054-a003-0042-2ca5-15418d000000
+      - cfe7bdd2-a003-005b-1f7d-30a6d6000000
       X-Ms-Version:
       - "2018-03-28"
     status: 204 No Content
@@ -72,12 +72,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:KPv1PQqLo/2bsB2vxQUpKTdmDPckJrtKT2alQPJ3uIM=
+      - SharedKey golangrocksonazure:3I3WK2caCWSSgHzPBA4t6DHFDu23dCXFodqKukVLwFM=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         queue
       x-ms-date:
-      - Tue, 28 May 2019 22:36:10 GMT
+      - Tue, 13 Apr 2021 15:57:55 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.queue.core.windows.net/queue-156storagequeuesuitetestsetmetadatagetmetadataroundtrips?comp=metadata
@@ -90,7 +90,7 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:09 GMT
+      - Tue, 13 Apr 2021 15:57:54 GMT
       Server:
       - Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Approximate-Messages-Count:
@@ -100,7 +100,7 @@ interactions:
       X-Ms-Meta-Lolbaz:
       - rofl
       X-Ms-Request-Id:
-      - c47aa060-a003-0042-38a5-15418d000000
+      - cfe7bde7-a003-005b-347d-30a6d6000000
       X-Ms-Version:
       - "2018-03-28"
     status: 200 OK
@@ -111,12 +111,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:u8fKZu/M6E4xf8hKrUyp2ztOZ8U8ew246ZUv+/Ah9Xg=
+      - SharedKey golangrocksonazure:MAt1InwoodigsBB7FxgKQK/XfNOrJWqFUyWksZnvJww=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         queue
       x-ms-date:
-      - Tue, 28 May 2019 22:36:10 GMT
+      - Tue, 13 Apr 2021 15:57:55 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.queue.core.windows.net/queue-156storagequeuesuitetestsetmetadatagetmetadataroundtrips
@@ -127,11 +127,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:09 GMT
+      - Tue, 13 Apr 2021 15:57:54 GMT
       Server:
       - Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - c47aa064-a003-0042-3ca5-15418d000000
+      - cfe7bdf8-a003-005b-457d-30a6d6000000
       X-Ms-Version:
       - "2018-03-28"
     status: 204 No Content

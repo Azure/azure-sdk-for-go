@@ -104,30 +104,7 @@ func (client AccountsClient) CreateSender(req *http.Request) (future AccountsCre
 	var azf azure.Future
 	azf, err = azure.NewFutureFromResponse(resp)
 	future.FutureAPI = &azf
-	future.Result = func(client AccountsClient) (a Account, err error) {
-		var done bool
-		done, err = future.DoneWithContext(context.Background(), client)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "deviceupdate.AccountsCreateFuture", "Result", future.Response(), "Polling failure")
-			return
-		}
-		if !done {
-			err = azure.NewAsyncOpIncompleteError("deviceupdate.AccountsCreateFuture")
-			return
-		}
-		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		a.Response.Response, err = future.GetResult(sender)
-		if a.Response.Response == nil && err == nil {
-			err = autorest.NewErrorWithError(err, "deviceupdate.AccountsCreateFuture", "Result", nil, "received nil response and error")
-		}
-		if err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
-			a, err = client.CreateResponder(a.Response.Response)
-			if err != nil {
-				err = autorest.NewErrorWithError(err, "deviceupdate.AccountsCreateFuture", "Result", a.Response.Response, "Failure responding to request")
-			}
-		}
-		return
-	}
+	future.Result = future.result
 	return
 }
 
@@ -213,20 +190,7 @@ func (client AccountsClient) DeleteSender(req *http.Request) (future AccountsDel
 	var azf azure.Future
 	azf, err = azure.NewFutureFromResponse(resp)
 	future.FutureAPI = &azf
-	future.Result = func(client AccountsClient) (ar autorest.Response, err error) {
-		var done bool
-		done, err = future.DoneWithContext(context.Background(), client)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "deviceupdate.AccountsDeleteFuture", "Result", future.Response(), "Polling failure")
-			return
-		}
-		if !done {
-			err = azure.NewAsyncOpIncompleteError("deviceupdate.AccountsDeleteFuture")
-			return
-		}
-		ar.Response = future.Response()
-		return
-	}
+	future.Result = future.result
 	return
 }
 
@@ -627,30 +591,7 @@ func (client AccountsClient) UpdateSender(req *http.Request) (future AccountsUpd
 	var azf azure.Future
 	azf, err = azure.NewFutureFromResponse(resp)
 	future.FutureAPI = &azf
-	future.Result = func(client AccountsClient) (a Account, err error) {
-		var done bool
-		done, err = future.DoneWithContext(context.Background(), client)
-		if err != nil {
-			err = autorest.NewErrorWithError(err, "deviceupdate.AccountsUpdateFuture", "Result", future.Response(), "Polling failure")
-			return
-		}
-		if !done {
-			err = azure.NewAsyncOpIncompleteError("deviceupdate.AccountsUpdateFuture")
-			return
-		}
-		sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
-		a.Response.Response, err = future.GetResult(sender)
-		if a.Response.Response == nil && err == nil {
-			err = autorest.NewErrorWithError(err, "deviceupdate.AccountsUpdateFuture", "Result", nil, "received nil response and error")
-		}
-		if err == nil && a.Response.Response.StatusCode != http.StatusNoContent {
-			a, err = client.UpdateResponder(a.Response.Response)
-			if err != nil {
-				err = autorest.NewErrorWithError(err, "deviceupdate.AccountsUpdateFuture", "Result", a.Response.Response, "Failure responding to request")
-			}
-		}
-		return
-	}
+	future.Result = future.result
 	return
 }
 

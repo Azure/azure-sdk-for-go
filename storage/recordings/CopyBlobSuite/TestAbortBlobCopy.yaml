@@ -6,15 +6,15 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:wNWD4/J5KShTJVP/W758lvQYjv2f0L6uLVkRdNJ+eOo=
+      - SharedKey golangrocksonazure:Yri09pvEcURcOwr5fxvZTFPVU/8AY9uzgzvPj6drHAU=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 28 May 2019 22:36:01 GMT
+      - Tue, 13 Apr 2021 15:57:38 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-31copyblobsuitetestabortblob?restype=container
+    url: https://golangrocksonazure.blob.core.windows.net/31copyblobsuitetestabortblobcopy?restype=container
     method: PUT
   response:
     body: ""
@@ -22,15 +22,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:01 GMT
+      - Tue, 13 Apr 2021 15:57:37 GMT
       Etag:
-      - '"0x8D6E3BCDCE55054"'
+      - '"0x8D8FE94DC9FCFD5"'
       Last-Modified:
-      - Tue, 28 May 2019 22:36:01 GMT
+      - Tue, 13 Apr 2021 15:57:38 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 3781b623-e01e-00b7-25a5-15d5a7000000
+      - 2c9db3be-801e-004c-767d-300fdd000000
       X-Ms-Version:
       - "2018-03-28"
     status: 201 Created
@@ -53,19 +53,19 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:Q2kqACAkBZlZEgyFafwZPw/YAiLqANGrcQeyccUnhtY=
+      - SharedKey golangrocksonazure:rd04Xf+GBgwYpxQP1Z0Ez2l+yfqobA8r0TsZT+pY8zc=
       Content-Length:
       - "1024"
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-blob-type:
       - BlockBlob
       x-ms-date:
-      - Tue, 28 May 2019 22:36:02 GMT
+      - Tue, 13 Apr 2021 15:57:38 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-31copyblobsuitetestabortblob/blob/src31copyblobsuitetestabortblobcopy
+    url: https://golangrocksonazure.blob.core.windows.net/31copyblobsuitetestabortblobcopy/blob/src31copyblobsuitetestabortblobcopy
     method: PUT
   response:
     body: ""
@@ -75,15 +75,15 @@ interactions:
       Content-Md5:
       - 0rZVY1m4cHz874drfCSd/w==
       Date:
-      - Tue, 28 May 2019 22:36:01 GMT
+      - Tue, 13 Apr 2021 15:57:37 GMT
       Etag:
-      - '"0x8D6E3BCDCE759A1"'
+      - '"0x8D8FE94DCAD157B"'
       Last-Modified:
-      - Tue, 28 May 2019 22:36:01 GMT
+      - Tue, 13 Apr 2021 15:57:38 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 3781b638-e01e-00b7-37a5-15d5a7000000
+      - 2c9db3d3-801e-004c-087d-300fdd000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -96,17 +96,17 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:SY4xYHPjG3pIPSwPJOtUrvDbmwvrDnI5Ay99gBDFX4M=
+      - SharedKey golangrocksonazure:54sAZaGIOwNbdvAqS0ja2q+5B+kmyJXbQrnkws+FK2A=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-copy-source:
-      - https://golangrocksonazure.blob.core.windows.net/cnt-31copyblobsuitetestabortblob/blob/src31copyblobsuitetestabortblobcopy
+      - https://golangrocksonazure.blob.core.windows.net/31copyblobsuitetestabortblobcopy/blob/src31copyblobsuitetestabortblobcopy
       x-ms-date:
-      - Tue, 28 May 2019 22:36:02 GMT
+      - Tue, 13 Apr 2021 15:57:38 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-31copyblobsuitetestabortblob/blob/dst31copyblobsuitetestabortblobcopy
+    url: https://golangrocksonazure.blob.core.windows.net/31copyblobsuitetestabortblobcopy/blob/dst31copyblobsuitetestabortblobcopy
     method: PUT
   response:
     body: ""
@@ -114,19 +114,19 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:01 GMT
+      - Tue, 13 Apr 2021 15:57:37 GMT
       Etag:
-      - '"0x8D6E3BCDCE9F229"'
+      - '"0x8D8FE94DCB15C04"'
       Last-Modified:
-      - Tue, 28 May 2019 22:36:01 GMT
+      - Tue, 13 Apr 2021 15:57:38 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Copy-Id:
-      - e2ce9f2f-99f0-4f33-a382-76e1fc97a229
+      - 505e081a-7394-493c-8789-a378f3fc257c
       X-Ms-Copy-Status:
       - success
       X-Ms-Request-Id:
-      - 3781b647-e01e-00b7-43a5-15d5a7000000
+      - 2c9db418-801e-004c-4d7d-300fdd000000
       X-Ms-Version:
       - "2018-03-28"
     status: 202 Accepted
@@ -137,15 +137,15 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:BZ9ZnYNPWWr3CoBbzv28FHfxzytdE6+hwsK4zyC00Pg=
+      - SharedKey golangrocksonazure:7/FWvHn4M6ds+kQD+uTVeGgOyZWQ0dGYH2gFxsIrhnE=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 28 May 2019 22:36:02 GMT
+      - Tue, 13 Apr 2021 15:57:38 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-31copyblobsuitetestabortblob/blob/dst31copyblobsuitetestabortblobcopy
+    url: https://golangrocksonazure.blob.core.windows.net/31copyblobsuitetestabortblobcopy/blob/dst31copyblobsuitetestabortblobcopy
     method: HEAD
   response:
     body: ""
@@ -159,11 +159,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 28 May 2019 22:36:01 GMT
+      - Tue, 13 Apr 2021 15:57:37 GMT
       Etag:
-      - '"0x8D6E3BCDCE9F229"'
+      - '"0x8D8FE94DCB15C04"'
       Last-Modified:
-      - Tue, 28 May 2019 22:36:01 GMT
+      - Tue, 13 Apr 2021 15:57:38 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -173,23 +173,23 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Copy-Completion-Time:
-      - Tue, 28 May 2019 22:36:01 GMT
+      - Tue, 13 Apr 2021 15:57:38 GMT
       X-Ms-Copy-Id:
-      - e2ce9f2f-99f0-4f33-a382-76e1fc97a229
+      - 505e081a-7394-493c-8789-a378f3fc257c
       X-Ms-Copy-Progress:
       - 1024/1024
       X-Ms-Copy-Source:
-      - https://golangrocksonazure.blob.core.windows.net/cnt-31copyblobsuitetestabortblob/blob/src31copyblobsuitetestabortblobcopy
+      - https://golangrocksonazure.blob.core.windows.net/31copyblobsuitetestabortblobcopy/blob/src31copyblobsuitetestabortblobcopy
       X-Ms-Copy-Status:
       - success
       X-Ms-Creation-Time:
-      - Tue, 28 May 2019 22:36:01 GMT
+      - Tue, 13 Apr 2021 15:57:38 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 3781b661-e01e-00b7-59a5-15d5a7000000
+      - 2c9db427-801e-004c-5c7d-300fdd000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -202,33 +202,33 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:2UwJLYvJHA5NoB9phkcSUzNxv/Jm5SqNxPHGGVuArO0=
+      - SharedKey golangrocksonazure:Z5hwdKTXwDUDcqtfUB4k2udN2oZDJq3QqDwcBB1+Ja0=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-copy-action:
       - abort
       x-ms-date:
-      - Tue, 28 May 2019 22:36:02 GMT
+      - Tue, 13 Apr 2021 15:57:38 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-31copyblobsuitetestabortblob/blob/dst31copyblobsuitetestabortblobcopy?comp=copy&copyid=e2ce9f2f-99f0-4f33-a382-76e1fc97a229
+    url: https://golangrocksonazure.blob.core.windows.net/31copyblobsuitetestabortblobcopy/blob/dst31copyblobsuitetestabortblobcopy?comp=copy&copyid=505e081a-7394-493c-8789-a378f3fc257c
     method: PUT
   response:
-    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x4E\x6F\x50\x65\x6E\x64\x69\x6E\x67\x43\x6F\x70\x79\x4F\x70\x65\x72\x61\x74\x69\x6F\x6E\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x72\x65\x20\x69\x73\x20\x63\x75\x72\x72\x65\x6E\x74\x6C\x79\x20\x6E\x6F\x20\x70\x65\x6E\x64\x69\x6E\x67\x20\x63\x6F\x70\x79\x20\x6F\x70\x65\x72\x61\x74\x69\x6F\x6E\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x33\x37\x38\x31\x62\x36\x36\x64\x2D\x65\x30\x31\x65\x2D\x30\x30\x62\x37\x2D\x36\x32\x61\x35\x2D\x31\x35\x64\x35\x61\x37\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x31\x39\x2D\x30\x35\x2D\x32\x38\x54\x32\x32\x3A\x33\x36\x3A\x30\x31\x2E\x39\x38\x32\x37\x31\x38\x39\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x4E\x6F\x50\x65\x6E\x64\x69\x6E\x67\x43\x6F\x70\x79\x4F\x70\x65\x72\x61\x74\x69\x6F\x6E\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x72\x65\x20\x69\x73\x20\x63\x75\x72\x72\x65\x6E\x74\x6C\x79\x20\x6E\x6F\x20\x70\x65\x6E\x64\x69\x6E\x67\x20\x63\x6F\x70\x79\x20\x6F\x70\x65\x72\x61\x74\x69\x6F\x6E\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x32\x63\x39\x64\x62\x34\x32\x61\x2D\x38\x30\x31\x65\x2D\x30\x30\x34\x63\x2D\x35\x66\x37\x64\x2D\x33\x30\x30\x66\x64\x64\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x31\x2D\x30\x34\x2D\x31\x33\x54\x31\x35\x3A\x35\x37\x3A\x33\x38\x2E\x34\x39\x32\x32\x33\x37\x39\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
     headers:
       Content-Length:
       - "236"
       Content-Type:
       - application/xml
       Date:
-      - Tue, 28 May 2019 22:36:01 GMT
+      - Tue, 13 Apr 2021 15:57:37 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - NoPendingCopyOperation
       X-Ms-Request-Id:
-      - 3781b66d-e01e-00b7-62a5-15d5a7000000
+      - 2c9db42a-801e-004c-5f7d-300fdd000000
       X-Ms-Version:
       - "2018-03-28"
     status: 409 There is currently no pending copy operation.
@@ -239,15 +239,15 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:mPYjejqgq085J5NNdU68QN1Wa8VuXuPE5L+ioWHT2wE=
+      - SharedKey golangrocksonazure:vylibaUwysbXKC8bHcJG6FF5KQqfoF58Zhkbf/l5Z34=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 28 May 2019 22:36:02 GMT
+      - Tue, 13 Apr 2021 15:57:38 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-31copyblobsuitetestabortblob/blob/src31copyblobsuitetestabortblobcopy
+    url: https://golangrocksonazure.blob.core.windows.net/31copyblobsuitetestabortblobcopy/blob/src31copyblobsuitetestabortblobcopy
     method: DELETE
   response:
     body: ""
@@ -255,13 +255,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:01 GMT
+      - Tue, 13 Apr 2021 15:57:37 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Delete-Type-Permanent:
-      - "true"
+      - "false"
       X-Ms-Request-Id:
-      - 3781b6c7-e01e-00b7-2ca5-15d5a7000000
+      - 2c9db437-801e-004c-6c7d-300fdd000000
       X-Ms-Version:
       - "2018-03-28"
     status: 202 Accepted
@@ -272,15 +272,15 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:Y26+HAZsXTd7F8AiulNAjyTp0jVIBmkiRjCh+oLER0Q=
+      - SharedKey golangrocksonazure:r4kj3Msi1jbwDF+iZ8Wq/IuJehMD64HZ0xDuQRixxaA=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 28 May 2019 22:36:02 GMT
+      - Tue, 13 Apr 2021 15:57:38 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-31copyblobsuitetestabortblob?restype=container
+    url: https://golangrocksonazure.blob.core.windows.net/31copyblobsuitetestabortblobcopy?restype=container
     method: DELETE
   response:
     body: ""
@@ -288,11 +288,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:01 GMT
+      - Tue, 13 Apr 2021 15:57:37 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 3781b6d8-e01e-00b7-3aa5-15d5a7000000
+      - 2c9db442-801e-004c-767d-300fdd000000
       X-Ms-Version:
       - "2018-03-28"
     status: 202 Accepted

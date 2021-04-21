@@ -32,8 +32,6 @@ type InstancesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, accountName string, instanceName string) (result deviceupdate.Instance, err error)
 	ListByAccount(ctx context.Context, resourceGroupName string, accountName string) (result deviceupdate.InstanceListPage, err error)
 	ListByAccountComplete(ctx context.Context, resourceGroupName string, accountName string) (result deviceupdate.InstanceListIterator, err error)
-	ListBySubscription(ctx context.Context, accountName string) (result deviceupdate.InstanceListPage, err error)
-	ListBySubscriptionComplete(ctx context.Context, accountName string) (result deviceupdate.InstanceListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, instanceName string, tagUpdatePayload deviceupdate.TagUpdate) (result deviceupdate.Instance, err error)
 }
 

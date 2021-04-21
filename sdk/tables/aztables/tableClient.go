@@ -5,6 +5,7 @@ package aztables
 
 import (
 	"context"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 

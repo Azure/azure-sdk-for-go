@@ -5,6 +5,7 @@ package azblob
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -86,13 +87,6 @@ func (c ContainerClient) NewPageBlobClient(blobName string) PageBlobClient {
 	return PageBlobClient{
 		client:     &pageBlobClient{newCon},
 		BlobClient: BlobClient{client: &blobClient{con: newCon}},
-	}
-}
-
-func (c ContainerClient) NewContainerLeaseClient() ContainerLeaseClient {
-	return ContainerLeaseClient{
-		ContainerClient: c,
-		LeaseId:         newUUID().String(),
 	}
 }
 
@@ -194,6 +188,59 @@ func (c ContainerClient) SetAccessPolicy(ctx context.Context, options *SetAccess
 	return resp, handleError(err)
 }
 
+// AcquireLease acquires a lease on the container for delete operations. The lease duration must be between 15 to 60 seconds, or infinite (-1).
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
+func (c ContainerClient) AcquireLease(ctx context.Context, leaseOptions *AcquireLeaseOptionsContainer) (ContainerAcquireLeaseResponse, error) {
+
+	if leaseOptions == nil || leaseOptions.ContainerAcquireLeaseOptions == nil || leaseOptions.ContainerAcquireLeaseOptions.Duration == nil || leaseOptions.ContainerAcquireLeaseOptions.ProposedLeaseId == nil {
+		return ContainerAcquireLeaseResponse{}, errors.New("leaseOptions must be specified, with at least ProposedLeaseID and Duration specified under ContainerAcquireLeaseOptions")
+	}
+
+	resp, err := c.client.AcquireLease(ctx, leaseOptions.ContainerAcquireLeaseOptions, leaseOptions.ModifiedAccessConditions)
+
+	return resp, handleError(err)
+}
+
+// RenewLease renews the container's previously-acquired lease.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
+func (c ContainerClient) RenewLease(ctx context.Context, leaseId string, leaseOptions *RenewLeaseOptionsContainer) (ContainerRenewLeaseResponse, error) {
+	renewOptions, accessConditions := leaseOptions.pointers()
+
+	resp, err := c.client.RenewLease(ctx, leaseId, renewOptions, accessConditions)
+
+	return resp, handleError(err)
+}
+
+// ReleaseLease releases the container's previously-acquired lease.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
+func (c ContainerClient) ReleaseLease(ctx context.Context, leaseID string, leaseOptions *ReleaseLeaseOptionsContainer) (ContainerReleaseLeaseResponse, error) {
+	options, ac := leaseOptions.pointers()
+
+	resp, err := c.client.ReleaseLease(ctx, leaseID, options, ac)
+
+	return resp, handleError(err)
+}
+
+// BreakLease breaks the container's previously-acquired lease (if it exists).
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
+func (c ContainerClient) BreakLease(ctx context.Context, container *BreakLeaseOptionsContainer) (ContainerBreakLeaseResponse, error) {
+	options, ac := container.pointers()
+
+	resp, err := c.client.BreakLease(ctx, options, ac)
+
+	return resp, handleError(err)
+}
+
+// ChangeLease changes the container's lease ID.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/lease-container.
+func (c ContainerClient) ChangeLease(ctx context.Context, leaseID string, proposedID string, options *ChangeLeaseOptionsContainer) (ContainerChangeLeaseResponse, error) {
+	clo, ac := options.pointers()
+
+	resp, err := c.client.ChangeLease(ctx, leaseID, proposedID, clo, ac)
+
+	return resp, handleError(err)
+}
+
 // ListBlobsFlatSegment returns a pager for blobs starting from the specified Marker. Use an empty
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
@@ -230,7 +277,7 @@ func (c ContainerClient) GetContainerSASToken(permissions BlobSASPermissions, va
 
 		Permissions: permissions.String(),
 
-		StartTime:  time.Now(),
+		StartTime: time.Now(),
 		ExpiryTime: time.Now().Add(validityTime),
 	}.NewSASQueryParameters(c.cred)
 }

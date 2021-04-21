@@ -381,17 +381,15 @@ func blockIDIntToBase64(blockID int) string {
 	return base64.StdEncoding.EncodeToString(binaryBlockID)
 }
 
-// TODO: Figure out in which scenario, the parsing will fail.
 func validateStorageError(c *chk.C, err error, code StorageErrorCode) {
-	stgError, _ := err.(*StorageError)
-	c.Assert(stgError, chk.NotNil)
-	c.Assert(stgError.ErrorCode, chk.Equals, code)
+	storageError, _ := err.(*StorageError)
+	c.Assert(storageError.ErrorCode, chk.Equals, code)
 }
 
 func blobListToMap(list []string) map[string]bool {
 	out := make(map[string]bool)
 
-	for _, v := range list {
+	for _,v := range list {
 		out[v] = true
 	}
 

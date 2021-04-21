@@ -28,7 +28,7 @@ func (o *ListContainersSegmentOptions) pointers() *ServiceListContainersSegmentO
 	}
 
 	return &ServiceListContainersSegmentOptions{
-		Include:    o.Include.pointers(),
+		Include:    o.Include.pointer(),
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,
 		Prefix:     o.Prefix,
@@ -45,7 +45,7 @@ type ListContainersDetail struct {
 }
 
 // string produces the Include query parameter's value.
-func (d *ListContainersDetail) pointers() *[]ListContainersIncludeType {
+func (d *ListContainersDetail) pointer() *[]ListContainersIncludeType {
 	if d.Metadata == false && d.Deleted == false {
 		return nil
 	}

@@ -20,8 +20,8 @@ func (s *aztestsSuite) TestUserDelegationSASContainer(c *chk.C) {
 	currentTime := time.Now().UTC()
 	// Ensuring currTime <= time of sending delegating request request
 	keyInfo := KeyInfo{
-		Start:  to.StringPtr(currentTime.Format(SASTimeFormat)),
-		Expiry: to.StringPtr(currentTime.Add(48 * time.Hour).Format(SASTimeFormat)),
+		Start: to.StringPtr(currentTime.Format(SASTimeFormat)),
+		Expiry: to.StringPtr(currentTime.Add(48*time.Hour).Format(SASTimeFormat)),
 	}
 	time.Sleep(2 * time.Second)
 
@@ -103,7 +103,7 @@ func (s *aztestsSuite) TestUserDelegationSASBlob(c *chk.C) {
 	}
 
 	// Prepare user delegation key
-	keyInfo := KeyInfo{Start: to.StringPtr(currentTime.String()), Expiry: to.StringPtr(currentTime.Add(48 * time.Hour).String())}
+	keyInfo := KeyInfo{Start: to.StringPtr(currentTime.String()), Expiry: to.StringPtr(currentTime.Add(48*time.Hour).String())}
 	cudk, err := serviceClient.GetUserDelegationCredential(ctx, keyInfo)
 	c.Assert(err, chk.IsNil)
 	c.Assert(cudk, chk.NotNil)

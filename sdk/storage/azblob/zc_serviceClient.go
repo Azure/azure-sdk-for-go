@@ -64,12 +64,12 @@ func (s ServiceClient) NewContainerClient(containerName string) ContainerClient 
 	}
 }
 
-func (s ServiceClient) NewContainerLeaseClient(containerName, leaseId string) ContainerLeaseClient {
+func (s ServiceClient) NewContainerLeaseClient(containerName string, leaseID *string) ContainerLeaseClient {
 	containerURL := appendToURLPath(s.client.con.u, containerName)
 	containerConnection := &connection{containerURL, s.client.con.p}
 
-	if leaseId == "" {
-		leaseId = newUUID().String()
+	if leaseID == nil {
+		leaseID = to.StringPtr(newUUID().String())
 	}
 
 	return ContainerLeaseClient{
@@ -78,7 +78,7 @@ func (s ServiceClient) NewContainerLeaseClient(containerName, leaseId string) Co
 				con: containerConnection,
 			},
 		},
-		LeaseId: leaseId,
+		LeaseID: leaseID,
 	}
 }
 

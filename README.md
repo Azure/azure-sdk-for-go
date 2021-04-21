@@ -1,12 +1,7 @@
 # Azure SDK for Go
 
 [![godoc](https://godoc.org/github.com/Azure/azure-sdk-for-go?status.svg)](https://godoc.org/github.com/Azure/azure-sdk-for-go)
-
-[![Build Status](https://travis-ci.org/Azure/azure-sdk-for-go.svg?branch=master)](https://travis-ci.org/Azure/azure-sdk-for-go)
-
-[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/Azure.azure-sdk-for-go?branchName=latest)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=640&branchName=latest)
-
-[![Go Report Card](https://goreportcard.com/badge/github.com/Azure/azure-sdk-for-go)](https://goreportcard.com/report/github.com/Azure/azure-sdk-for-go)
+[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/Azure.azure-sdk-for-go?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=640&branchName=master)
 
 azure-sdk-for-go provides Go packages for managing and using Azure services.
 It officially supports the last two major releases of Go.  Older versions of
@@ -162,7 +157,7 @@ Authorization header and bearer token received from Azure AD.
 
 The SDK itself provides a simple way to get an authorizer which first checks
 for OAuth client credentials in environment variables and then falls back to
-Azure's [Managed Service Identity]() when available, e.g. when on an Azure
+Azure's [Managed Service Identity](https://github.com/Azure/azure-sdk-for-go/) when available, e.g. when on an Azure
 VM. The following snippet from [the previous section](#use) demonstrates
 this helper.
 
@@ -190,7 +185,7 @@ The following environment variables help determine authentication configuration:
   Service Identity (MSI).
 - `AZURE_AD_RESOURCE`: Specifies the AAD resource ID to use. If not set, it
   defaults to `ResourceManagerEndpoint` for operations with Azure Resource
-  Manager. You can also choose an alternate resource programatically with
+  Manager. You can also choose an alternate resource programmatically with
   `auth.NewAuthorizerFromEnvironmentWithResource(resource string)`.
 
 ### More Authentication Details
@@ -206,7 +201,7 @@ below.
 > for more info. Copy the new principal's ID, secret, and tenant ID for use in
 > your app, or consider the `--sdk-auth` parameter for serialized output.
 
-[azure managed service identity]: https://docs.microsoft.com/en-us/azure/active-directory/msi-overview
+[azure managed service identity]: https://docs.microsoft.com/azure/active-directory/msi-overview
 
 - The `auth.NewAuthorizerFromEnvironment()` described above creates an authorizer
   from the first available of the following configuration:
@@ -235,7 +230,7 @@ below.
       4. **Azure Managed Service Identity**: Delegate credential management to the
          platform. Requires that code is running in Azure, e.g. on a VM. All
          configuration is handled by Azure. See [Azure Managed Service
-         Identity](https://docs.microsoft.com/en-us/azure/active-directory/msi-overview)
+         Identity](https://docs.microsoft.com/azure/active-directory/msi-overview)
          for more details.
 
 - The `auth.NewAuthorizerFromFile()` method creates an authorizer using
@@ -249,10 +244,26 @@ below.
      client as described above.
 
 - The `auth.NewAuthorizerFromCLI()` method creates an authorizer which
-  uses [Azure CLI][] to obtain its credentials. To use this method follow
-  these steps:
+  uses [Azure CLI][] to obtain its credentials.
+  
+  The default audience being requested is `https://management.azure.com` (Azure ARM API).
+  To specify your own audience, export `AZURE_AD_RESOURCE` as an evironment variable.
+  This is read by `auth.NewAuthorizerFromCLI()` and passed to Azure CLI to acquire the access token.
+  
+  For example, to request an access token for Azure Key Vault, export
+  ```
+  AZURE_AD_RESOURCE="https://vault.azure.net"
+  ```
+  
+- `auth.NewAuthorizerFromCLIWithResource(AUDIENCE_URL_OR_APPLICATION_ID)` - this method is self contained and does
+  not require exporting environment variables. For example, to request an access token for Azure Key Vault:
+  ```
+  auth.NewAuthorizerFromCLIWithResource("https://vault.azure.net")
+  ```
 
-  1. Install [Azure CLI v2.0.12](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) or later. Upgrade earlier versions.
+  To use `NewAuthorizerFromCLI()` or `NewAuthorizerFromCLIWithResource()`, follow these steps:
+
+  1. Install [Azure CLI v2.0.12](https://docs.microsoft.com/cli/azure/install-azure-cli) or later. Upgrade earlier versions.
   2. Use `az login` to sign in to Azure.
 
   If you receive an error, use `az account get-access-token` to verify access.
@@ -398,7 +409,7 @@ Combined, these techniques will ensure that breaking changes should not occur. I
 Starting with `go-autorest v10.15.0` you can enable basic logging of requests and responses through setting environment variables.
 Setting `AZURE_GO_SDK_LOG_LEVEL` to `INFO` will log request/response without their bodies. To include the bodies set the log level to `DEBUG`.
 
-By default the logger writes to strerr, however it can also write to stdout or a file
+By default the logger writes to stderr, however it can also write to stdout or a file
 if specified in `AZURE_GO_SDK_LOG_FILE`. Note that if the specified file already exists it will be truncated.
 
 **IMPORTANT:** by default the logger will redact the Authorization and Ocp-Apim-Subscription-Key
@@ -469,7 +480,7 @@ To hook up a tracer simply call `tracing.Register()` passing in a type that sati
 
 ### Usage
 
-Once enabled, all SDK calls will emit traces and metrics and the traces will correlate the SDK calls with the raw http calls made to Azure API's. To consume those traces, if are not doing it yet, you need to register an exporter of your choice such as [Azure App Insights](https://docs.microsoft.com/en-us/azure/application-insights/opencensus-local-forwarder) or [Zipkin](https://opencensus.io/quickstart/go/tracing/#exporting-traces).
+Once enabled, all SDK calls will emit traces and metrics and the traces will correlate the SDK calls with the raw http calls made to Azure API's. To consume those traces, if are not doing it yet, you need to register an exporter of your choice such as [Azure App Insights](https://docs.microsoft.com/azure/application-insights/opencensus-local-forwarder) or [Zipkin](https://opencensus.io/quickstart/go/tracing/#exporting-traces).
 
 To correlate the SDK calls between them and with the rest of your code, pass in a context that has a span initiated using the [opencensus-go library](https://github.com/census-instrumentation/opencensus-go) using the `trace.Startspan(ctx context.Context, name string, o ...StartOption)` function. Here is an example:
 
@@ -554,23 +565,31 @@ Security issues and bugs should be reported privately, via email, to the Microso
 ## License
 
 ```
-   Copyright 2020 Microsoft Corporation
+   The MIT License (MIT)
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+   Copyright (c) 2021 Microsoft
 
-       http://www.apache.org/licenses/LICENSE-2.0
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+   The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
 ```
 
 ## Contribute
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-go/blob/master/CONTRIBUTING.md).
 
 [samples_repo]: https://github.com/Azure-Samples/azure-sdk-for-go-samples

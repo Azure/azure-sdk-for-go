@@ -45,7 +45,7 @@ func (s *aztestsSuite) TestContainerDeleteContainerWithoutLeaseId(c *chk.C) {
 	leaseId := containerLeaseClient.LeaseId
 	_, err = containerClient.Delete(ctx, &DeleteContainerOptions{
 		LeaseAccessConditions: &LeaseAccessConditions{
-			LeaseId: &leaseId,
+			LeaseID: &leaseId,
 		},
 	})
 	c.Assert(err, chk.IsNil)
@@ -160,7 +160,7 @@ func (s *aztestsSuite) TestDeleteBlobWithoutLeaseId(c *chk.C) {
 	leaseId := blobLeaseClient.LeaseId
 	_, err = blobLeaseClient.Delete(ctx, &DeleteBlobOptions{
 		LeaseAccessConditions: &LeaseAccessConditions{
-			LeaseId: &leaseId,
+			LeaseID: &leaseId,
 		},
 	})
 	c.Assert(err, chk.IsNil)

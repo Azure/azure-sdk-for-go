@@ -68,14 +68,14 @@ func (s *aztestsSuite) TestListContainersBasic(c *chk.C) {
 				c.Assert(container.Properties, chk.NotNil)
 				c.Assert(container.Properties.LastModified, chk.NotNil)
 				c.Assert(container.Properties.Etag, chk.NotNil)
-				c.Assert(*container.Properties.LeaseStatus, chk.Equals, LeaseStatusTypeUnlocked)
-				c.Assert(*container.Properties.LeaseState, chk.Equals, LeaseStateTypeAvailable)
+				c.Assert(*container.Properties.LeaseStatus, chk.Equals, LeaseStatusUnlocked)
+				c.Assert(*container.Properties.LeaseState, chk.Equals, LeaseStateAvailable)
 				c.Assert(container.Properties.LeaseDuration, chk.IsNil)
 				c.Assert(container.Properties.PublicAccess, chk.IsNil)
 				c.Assert(container.Metadata, chk.NotNil)
 
 				unwrappedMeta := map[string]string{}
-				for k,v := range *container.Metadata {
+				for k, v := range *container.Metadata {
 					if v != nil {
 						unwrappedMeta[k] = *v
 					}

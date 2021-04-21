@@ -5,7 +5,7 @@ package azblob
 
 type CreateContainerOptions struct {
 	// Specifies whether data in the container may be accessed publicly and the level of access
-	Access *PublicAccessType
+	Access *PublicAccess
 
 	// Optional. Specifies a user-defined name-value pair associated with the blob.
 	Metadata *map[string]string

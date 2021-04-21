@@ -36,7 +36,7 @@ func (s *aztestsSuite) TestCreateRootContainerURL(c *chk.C) {
 // 	bsu = bsu.WithPipeline(pipeline) // testPipeline returns an identifying message as an error
 // 	containerClient := bsu.NewContainerClient("name")
 //
-// 	access := PublicAccessTypeBlob
+// 	access := PublicAccessBlob
 // 	createContainerOptions := CreateContainerOptions{
 // 		Access:   &access,
 // 		Metadata: &map[string]string{},
@@ -50,7 +50,7 @@ func (s *aztestsSuite) TestContainerCreateInvalidName(c *chk.C) {
 	bsu := getBSU()
 	containerClient := bsu.NewContainerClient("foo bar")
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
 		Metadata: &map[string]string{},
@@ -64,7 +64,7 @@ func (s *aztestsSuite) TestContainerCreateEmptyName(c *chk.C) {
 	bsu := getBSU()
 	containerClient := bsu.NewContainerClient("")
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
 		Metadata: &map[string]string{},
@@ -81,7 +81,7 @@ func (s *aztestsSuite) TestContainerCreateNameCollision(c *chk.C) {
 
 	defer deleteContainer(c, containerClient)
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
 		Metadata: &map[string]string{},
@@ -97,7 +97,7 @@ func (s *aztestsSuite) TestContainerCreateInvalidMetadata(c *chk.C) {
 	bsu := getBSU()
 	containerClient, _ := getContainerClient(c, bsu)
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
 		Metadata: &map[string]string{"1 foo": "bar"},
@@ -112,7 +112,7 @@ func (s *aztestsSuite) TestContainerCreateNilMetadata(c *chk.C) {
 	bsu := getBSU()
 	containerClient, _ := getContainerClient(c, bsu)
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
 		Metadata: &map[string]string{},
@@ -130,7 +130,7 @@ func (s *aztestsSuite) TestContainerCreateEmptyMetadata(c *chk.C) {
 	bsu := getBSU()
 	containerClient, _ := getContainerClient(c, bsu)
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
 		Metadata: &map[string]string{},
@@ -153,7 +153,7 @@ func (s *aztestsSuite) TestContainerCreateAccessContainer(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 	containerClient, _ := getContainerClient(c, bsu)
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access: &access,
 	}
@@ -193,7 +193,7 @@ func (s *aztestsSuite) TestContainerCreateAccessBlob(c *chk.C) {
 	bsu := getBSU()
 	containerClient, _ := getContainerClient(c, bsu)
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access: &access,
 	}
@@ -462,7 +462,7 @@ func (s *aztestsSuite) TestContainerListBlobsWithSnapshots(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	listBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
-		Include: &[]ListBlobsIncludeItem{ ListBlobsIncludeItemSnapshots },
+		Include: &[]ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots},
 	}
 	pager := containerClient.ListBlobsFlatSegment(&listBlobFlatSegmentOptions)
 
@@ -791,7 +791,7 @@ func (s *aztestsSuite) TestContainerGetPermissionsPublicAccessNotNone(c *chk.C) 
 	bsu := getBSU()
 	containerClient, _ := getContainerClient(c, bsu)
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access: &access,
 	}
@@ -802,7 +802,7 @@ func (s *aztestsSuite) TestContainerGetPermissionsPublicAccessNotNone(c *chk.C) 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 
 	c.Assert(err, chk.IsNil)
-	c.Assert(*resp.BlobPublicAccess, chk.Equals, PublicAccessTypeBlob)
+	c.Assert(*resp.BlobPublicAccess, chk.Equals, PublicAccessBlob)
 }
 
 func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessNone(c *chk.C) {
@@ -831,7 +831,8 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessNone(c *chk.C) {
 
 	// If we cannot access a blob's data, we will also not be able to enumerate blobs
 	p := containerClient2.ListBlobsFlatSegment(nil)
-	p.NextPage(ctx); err = p.Err() // grab the next page
+	p.NextPage(ctx)
+	err = p.Err() // grab the next page
 	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
 
 	_, err = blobURL2.Download(ctx, nil)
@@ -844,7 +845,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessBlob(c *chk.C) {
 
 	defer deleteContainer(c, containerClient)
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access: &access,
@@ -855,7 +856,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessBlob(c *chk.C) {
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(*resp.BlobPublicAccess, chk.Equals, PublicAccessTypeBlob)
+	c.Assert(*resp.BlobPublicAccess, chk.Equals, PublicAccessBlob)
 }
 
 func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer(c *chk.C) {
@@ -864,7 +865,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer(c *chk.C
 
 	defer deleteContainer(c, containerClient)
 
-	access := PublicAccessTypeContainer
+	access := PublicAccessContainer
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access: &access,
@@ -875,7 +876,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer(c *chk.C
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(*resp.BlobPublicAccess, chk.Equals, PublicAccessTypeContainer)
+	c.Assert(*resp.BlobPublicAccess, chk.Equals, PublicAccessContainer)
 }
 
 //// TODO: After Pacer is ready
@@ -956,7 +957,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsACLMoreThanFive(c *chk.C) {
 		}
 	}
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
@@ -991,7 +992,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAndModifyACL(c *chk.C) {
 		}
 	}
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
@@ -1044,7 +1045,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAllPolicies(c *chk.C) {
 		}
 	}
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
@@ -1096,7 +1097,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAllPolicies(c *chk.C) {
 //		}
 //	}
 //
-//	access := PublicAccessTypeBlob
+//	access := PublicAccessBlob
 //	setAccessPolicyOptions := SetAccessPolicyOptions{
 //		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 //			Access:       &access,
@@ -1142,7 +1143,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong(c *chk
 		}
 	}
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access:       &access,
@@ -1259,7 +1260,7 @@ func (s *aztestsSuite) TestContainerSetMetadataEmpty(c *chk.C) {
 	bsu := getBSU()
 	containerClient, _ := getContainerClient(c, bsu)
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Metadata: &basicMetadata,
 		Access:   &access,
@@ -1282,7 +1283,7 @@ func (s *aztestsSuite) TestContainerSetMetadataEmpty(c *chk.C) {
 func (*aztestsSuite) TestContainerSetMetadataNil(c *chk.C) {
 	bsu := getBSU()
 	containerClient, _ := getContainerClient(c, bsu)
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
 		Metadata: &basicMetadata,

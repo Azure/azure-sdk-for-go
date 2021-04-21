@@ -6,7 +6,6 @@ package azidentity
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 	"testing"
 
@@ -28,13 +27,14 @@ var (
 )
 
 func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
-	cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TokenProvider: mockCLITokenProviderSuccess})
+	options := AzureCLICredentialOptions{}
+	options.TokenProvider = mockCLITokenProviderSuccess
+	cred, err := NewAzureCLICredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
 	at, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
-		fmt.Println(err.Error())
 		t.Fatalf("Expected an empty error but received: %v", err)
 	}
 	if len(at.Token) == 0 {
@@ -46,7 +46,9 @@ func TestAzureCLICredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestAzureCLICredential_GetTokenInvalidToken(t *testing.T) {
-	cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TokenProvider: mockCLITokenProviderFailure})
+	options := AzureCLICredentialOptions{}
+	options.TokenProvider = mockCLITokenProviderFailure
+	cred, err := NewAzureCLICredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -60,18 +62,18 @@ func TestBearerPolicy_AzureCLICredential(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	cred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TokenProvider: mockCLITokenProviderSuccess})
+	options := AzureCLICredentialOptions{}
+	options.TokenProvider = mockCLITokenProviderSuccess
+	cred, err := NewAzureCLICredential(&options)
 	if err != nil {
 		t.Fatalf("Did not expect an error but received: %v", err)
 	}
-	pipeline := azcore.NewPipeline(
-		srv,
-		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
-		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(nil),
-		cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
-	_, err = pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
+	pipeline := defaultTestPipeline(srv, cred, scope)
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = pipeline.Do(req)
 	if err != nil {
 		t.Fatal("Expected nil error but received one")
 	}

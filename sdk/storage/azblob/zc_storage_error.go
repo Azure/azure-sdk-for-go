@@ -212,6 +212,6 @@ func (e *StorageError) UnmarshalXML(d *xml.Decoder, start xml.StartElement) (err
 			}
 		}
 	}
-	
+
 	return nil
 }

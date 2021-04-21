@@ -1,20 +1,10 @@
-// Copyright 2018 Microsoft Corporation
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package exports
 
 import (
+	"fmt"
 	"go/ast"
 	"strings"
 )
@@ -39,6 +29,11 @@ type Content struct {
 	Structs map[string]Struct `json:"structs,omitempty"`
 }
 
+// Count returns the count of items
+func (c Content) Count() int {
+	return len(c.Consts) + len(c.Funcs) + len(c.Interfaces) + len(c.Structs)
+}
+
 // Const is a const definition.
 type Const struct {
 	// the type of the constant
@@ -59,6 +54,10 @@ type Func struct {
 
 // Interface contains the list of methods for an interface.
 type Interface struct {
+	// a list of embedded interfaces
+	AnonymousFields []string `json:"anon,omitempty"`
+
+	// key/value pairs of the methd names and their definitions
 	Methods map[string]Func
 }
 
@@ -94,8 +93,16 @@ func (c *Content) addConst(pkg Package, g *ast.GenDecl) {
 		v := ""
 		// Type is nil for untyped consts
 		if vs.Type != nil {
-			co.Type = vs.Type.(*ast.Ident).Name
-			v = vs.Values[0].(*ast.BasicLit).Value
+			switch x := vs.Type.(type) {
+			case *ast.Ident:
+				co.Type = x.Name
+				v = vs.Values[0].(*ast.BasicLit).Value
+			case *ast.SelectorExpr:
+				co.Type = x.Sel.Name
+				v = vs.Values[0].(*ast.BasicLit).Value
+			default:
+				panic(fmt.Sprintf("wrong type %T", vs.Type))
+			}
 		} else {
 			// get the type from the token type
 			if bl, ok := vs.Values[0].(*ast.BasicLit); ok {
@@ -105,10 +112,15 @@ func (c *Content) addConst(pkg Package, g *ast.GenDecl) {
 				// const FooConst = FooType("value")
 				co.Type = pkg.getText(ce.Fun.Pos(), ce.Fun.End())
 				v = pkg.getText(ce.Args[0].Pos(), ce.Args[0].End())
+			} else if ce, ok := vs.Values[0].(*ast.BinaryExpr); ok {
+				// const FooConst = "value" + Bar
+				co.Type = "*ast.BinaryExpr"
+				v = pkg.getText(ce.X.Pos(), ce.Y.End())
 			} else {
-				panic("unhandled case for adding constant")
+				panic(fmt.Sprintf("unhandled case for adding constant: %s", pkg.getText(vs.Pos(), vs.End())))
 			}
 		}
+		// TODO should this also be removed?
 		// remove any surrounding quotes
 		if v[0] == '"' {
 			v = v[1 : len(v)-1]
@@ -135,11 +147,16 @@ func (c *Content) addFunc(pkg Package, f *ast.FuncDecl) {
 func (c *Content) addInterface(pkg Package, name string, i *ast.InterfaceType) {
 	in := Interface{Methods: map[string]Func{}}
 	if i.Methods != nil {
-		for _, m := range i.Methods.List {
-			n := m.Names[0].Name
-			f := pkg.buildFunc(m.Type.(*ast.FuncType))
-			in.Methods[n] = f
-		}
+		pkg.translateFieldList(i.Methods.List, func(n *string, t string, f *ast.Field) {
+			if n == nil {
+				in.AnonymousFields = append(in.AnonymousFields, t)
+			} else {
+				if in.Methods == nil {
+					in.Methods = map[string]Func{}
+				}
+				in.Methods[*n] = pkg.buildFunc(f.Type.(*ast.FuncType))
+			}
+		})
 	}
 	c.Interfaces[name] = in
 }
@@ -148,7 +165,7 @@ func (c *Content) addInterface(pkg Package, name string, i *ast.InterfaceType) {
 func (c *Content) addStruct(pkg Package, name string, s *ast.StructType) {
 	sd := Struct{}
 	// assumes all struct types have fields
-	pkg.translateFieldList(s.Fields.List, func(n *string, t string) {
+	pkg.translateFieldList(s.Fields.List, func(n *string, t string, f *ast.Field) {
 		if n == nil {
 			sd.AnonymousFields = append(sd.AnonymousFields, t)
 		} else {

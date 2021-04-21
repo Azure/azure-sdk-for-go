@@ -110,7 +110,7 @@ func (client *containerClient) acquireLeaseHandleResponse(resp *azcore.Response)
 
 // acquireLeaseHandleError handles the AcquireLease error response.
 func (client *containerClient) acquireLeaseHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -207,7 +207,7 @@ func (client *containerClient) breakLeaseHandleResponse(resp *azcore.Response) (
 
 // breakLeaseHandleError handles the BreakLease error response.
 func (client *containerClient) breakLeaseHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -298,7 +298,7 @@ func (client *containerClient) changeLeaseHandleResponse(resp *azcore.Response) 
 
 // changeLeaseHandleError handles the ChangeLease error response.
 func (client *containerClient) changeLeaseHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -390,7 +390,7 @@ func (client *containerClient) createHandleResponse(resp *azcore.Response) (Cont
 
 // createHandleError handles the Create error response.
 func (client *containerClient) createHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -467,7 +467,7 @@ func (client *containerClient) deleteHandleResponse(resp *azcore.Response) (Cont
 
 // deleteHandleError handles the Delete error response.
 func (client *containerClient) deleteHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -522,7 +522,7 @@ func (client *containerClient) getAccessPolicyHandleResponse(resp *azcore.Respon
 		return SignedIdentifierArrayResponse{}, err
 	}
 	if val := resp.Header.Get("x-ms-blob-public-access"); val != "" {
-		result.BlobPublicAccess = (*PublicAccessType)(&val)
+		result.BlobPublicAccess = (*PublicAccess)(&val)
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
@@ -555,7 +555,7 @@ func (client *containerClient) getAccessPolicyHandleResponse(resp *azcore.Respon
 
 // getAccessPolicyHandleError handles the GetAccessPolicy error response.
 func (client *containerClient) getAccessPolicyHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -624,7 +624,7 @@ func (client *containerClient) getAccountInfoHandleResponse(resp *azcore.Respons
 
 // getAccountInfoHandleError handles the GetAccountInfo error response.
 func (client *containerClient) getAccountInfoHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -695,13 +695,13 @@ func (client *containerClient) getPropertiesHandleResponse(resp *azcore.Response
 		result.LastModified = &lastModified
 	}
 	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
-		result.LeaseDuration = (*LeaseDurationType)(&val)
+		result.LeaseDuration = (*LeaseDuration)(&val)
 	}
 	if val := resp.Header.Get("x-ms-lease-state"); val != "" {
-		result.LeaseState = (*LeaseStateType)(&val)
+		result.LeaseState = (*LeaseState)(&val)
 	}
 	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
-		result.LeaseStatus = (*LeaseStatusType)(&val)
+		result.LeaseStatus = (*LeaseStatus)(&val)
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -720,7 +720,7 @@ func (client *containerClient) getPropertiesHandleResponse(resp *azcore.Response
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-blob-public-access"); val != "" {
-		result.BlobPublicAccess = (*PublicAccessType)(&val)
+		result.BlobPublicAccess = (*PublicAccess)(&val)
 	}
 	if val := resp.Header.Get("x-ms-has-immutability-policy"); val != "" {
 		hasImmutabilityPolicy, err := strconv.ParseBool(val)
@@ -751,7 +751,7 @@ func (client *containerClient) getPropertiesHandleResponse(resp *azcore.Response
 
 // getPropertiesHandleError handles the GetProperties error response.
 func (client *containerClient) getPropertiesHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -759,7 +759,7 @@ var err StorageError
 }
 
 // ListBlobFlatSegment - [Update] The List Blobs operation returns a list of the blobs under the specified container
-func (client *containerClient) ListBlobFlatSegment(options *ContainerListBlobFlatSegmentOptions) (ListBlobsFlatSegmentResponsePager) {
+func (client *containerClient) ListBlobFlatSegment(options *ContainerListBlobFlatSegmentOptions) ListBlobsFlatSegmentResponsePager {
 	return &listBlobsFlatSegmentResponsePager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -839,7 +839,7 @@ func (client *containerClient) listBlobFlatSegmentHandleResponse(resp *azcore.Re
 
 // listBlobFlatSegmentHandleError handles the ListBlobFlatSegment error response.
 func (client *containerClient) listBlobFlatSegmentHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -847,7 +847,7 @@ var err StorageError
 }
 
 // ListBlobHierarchySegment - [Update] The List Blobs operation returns a list of the blobs under the specified container
-func (client *containerClient) ListBlobHierarchySegment(delimiter string, options *ContainerListBlobHierarchySegmentOptions) (ListBlobsHierarchySegmentResponsePager) {
+func (client *containerClient) ListBlobHierarchySegment(delimiter string, options *ContainerListBlobHierarchySegmentOptions) ListBlobsHierarchySegmentResponsePager {
 	return &listBlobsHierarchySegmentResponsePager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -928,7 +928,7 @@ func (client *containerClient) listBlobHierarchySegmentHandleResponse(resp *azco
 
 // listBlobHierarchySegmentHandleError handles the ListBlobHierarchySegment error response.
 func (client *containerClient) listBlobHierarchySegmentHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -1015,7 +1015,7 @@ func (client *containerClient) releaseLeaseHandleResponse(resp *azcore.Response)
 
 // releaseLeaseHandleError handles the ReleaseLease error response.
 func (client *containerClient) releaseLeaseHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -1105,7 +1105,7 @@ func (client *containerClient) renewLeaseHandleResponse(resp *azcore.Response) (
 
 // renewLeaseHandleError handles the RenewLease error response.
 func (client *containerClient) renewLeaseHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -1180,7 +1180,7 @@ func (client *containerClient) restoreHandleResponse(resp *azcore.Response) (Con
 
 // restoreHandleError handles the Restore error response.
 func (client *containerClient) restoreHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -1235,7 +1235,7 @@ func (client *containerClient) setAccessPolicyCreateRequest(ctx context.Context,
 	}
 	req.Header.Set("Accept", "application/xml")
 	type wrapper struct {
-		XMLName xml.Name `xml:"SignedIdentifiers"`
+		XMLName      xml.Name             `xml:"SignedIdentifiers"`
 		ContainerACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
 	}
 	if containerSetAccessPolicyOptions != nil && containerSetAccessPolicyOptions.ContainerACL != nil {
@@ -1278,7 +1278,7 @@ func (client *containerClient) setAccessPolicyHandleResponse(resp *azcore.Respon
 
 // setAccessPolicyHandleError handles the SetAccessPolicy error response.
 func (client *containerClient) setAccessPolicyHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -1368,10 +1368,9 @@ func (client *containerClient) setMetadataHandleResponse(resp *azcore.Response) 
 
 // setMetadataHandleError handles the SetMetadata error response.
 func (client *containerClient) setMetadataHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

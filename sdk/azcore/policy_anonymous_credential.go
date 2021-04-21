@@ -5,14 +5,16 @@
 
 package azcore
 
-import "context"
+func anonCredAuthPolicyFunc(AuthenticationPolicyOptions) Policy {
+	return PolicyFunc(anonCredPolicyFunc)
+}
+
+func anonCredPolicyFunc(req *Request) (*Response, error) {
+	return req.Next()
+}
 
 // AnonymousCredential is for use with HTTP(S) requests that read public resource
 // or for use with Shared Access Signatures (SAS).
 func AnonymousCredential() Credential {
-	return credentialFunc(func(AuthenticationPolicyOptions) Policy {
-		return PolicyFunc(func(ctx context.Context, req *Request) (*Response, error) {
-			return req.Next(ctx)
-		})
-	})
+	return credentialFunc(anonCredAuthPolicyFunc)
 }

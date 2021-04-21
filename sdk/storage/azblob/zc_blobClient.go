@@ -57,7 +57,7 @@ func (b BlobClient) GetAccountInfo(ctx context.Context) (BlobGetAccountInfoRespo
 	return b.client.GetAccountInfo(ctx, nil)
 }
 
-// DownloadBlob reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
+// Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
 func (b BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) (*DownloadResponse, error) {
 	o, lease, cpk, accessConditions := options.pointers()

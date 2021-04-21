@@ -213,7 +213,7 @@ func ExampleSASConvenienceGenerators() {
 
 	// Provide the convenience function with relevant info (services, resource types, permissions, and duration)
 	// The SAS token will be valid from this moment onwards.
-	accountSAS, err := serviceURL.GetAccountSASToken(AccountSASServices{Blob: true}, AccountSASResourceTypes{Object: true, Service: true, Container: true}, AccountSASPermissions{Read: true, List: true}, time.Hour * 48)
+	accountSAS, err := serviceURL.GetAccountSASToken(AccountSASServices{Blob: true}, AccountSASResourceTypes{Object: true, Service: true, Container: true}, AccountSASPermissions{Read: true, List: true}, time.Hour*48)
 
 	qp := accountSAS.Encode()
 	urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, qp)
@@ -353,7 +353,7 @@ func ExampleContainerClient_SetAccessPolicy() {
 		log.Fatal(err)
 	}
 	if get.StatusCode == http.StatusNotFound {
-		_, err := container.SetAccessPolicy(ctx, &SetAccessPolicyOptions{ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: PublicAccessTypeBlob.ToPtr()}})
+		_, err := container.SetAccessPolicy(ctx, &SetAccessPolicyOptions{ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: PublicAccessBlob.ToPtr()}})
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -567,7 +567,7 @@ func ExampleBlobHTTPHeaders() {
 	// Create a blob with HTTP headers
 	_, err = blobClient.Upload(ctx, strings.NewReader("Some text"),
 		&UploadBlockBlobOptions{BlobHTTPHeaders: &BlobHTTPHeaders{
-			BlobContentType: to.StringPtr("text/html; charset=utf-8"),
+			BlobContentType:        to.StringPtr("text/html; charset=utf-8"),
 			BlobContentDisposition: to.StringPtr("attachment"),
 		}})
 	if err != nil {
@@ -657,7 +657,7 @@ func ExampleBlockBlobClient() {
 	}
 
 	// For the blob, show each block (ID and size) that is a committed part of it.
-	getBlock, err := BlobClient.GetBlockList(ctx, BlockListTypeAll, nil)
+	getBlock, err := BlobClient.GetBlockList(ctx, BlockListAll, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -753,12 +753,12 @@ func ExamplePageBlobClient() {
 	}
 
 	copy(page[:], "Page 1")
-	_, err = blobClient.UploadPages(ctx, bytes.NewReader(page[:]), &UploadPagesOptions{PageRange: &HttpRange{0, 2*PageBlobPageBytes}})
+	_, err = blobClient.UploadPages(ctx, bytes.NewReader(page[:]), &UploadPagesOptions{PageRange: &HttpRange{0, 2 * PageBlobPageBytes}})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	getPages, err := blobClient.GetPageRanges(ctx, HttpRange{0*PageBlobPageBytes, 10*PageBlobPageBytes}, nil)
+	getPages, err := blobClient.GetPageRanges(ctx, HttpRange{0 * PageBlobPageBytes, 10 * PageBlobPageBytes}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -766,12 +766,12 @@ func ExamplePageBlobClient() {
 		fmt.Printf("Start=%d, End=%d\n", pr.Start, pr.End)
 	}
 
-	_, err = blobClient.ClearPages(ctx, HttpRange{0*PageBlobPageBytes, 1*PageBlobPageBytes}, nil)
+	_, err = blobClient.ClearPages(ctx, HttpRange{0 * PageBlobPageBytes, 1 * PageBlobPageBytes}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	getPages, err = blobClient.GetPageRanges(ctx, HttpRange{0*PageBlobPageBytes, 10*PageBlobPageBytes}, nil)
+	getPages, err = blobClient.GetPageRanges(ctx, HttpRange{0 * PageBlobPageBytes, 10 * PageBlobPageBytes}, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -877,7 +877,7 @@ func Example_blobSnapshots() {
 	// DeleteSnapshotsOptionOnly deletes all the base blob's snapshots but not the base blob itself
 	// DeleteSnapshotsOptionInclude deletes the base blob & all its snapshots.
 	// DeleteSnapshotOptionNone produces an error if the base blob has any snapshots.
-	_, err = baseBlobClient.Delete(ctx, &DeleteBlobOptions{DeleteSnapshots: DeleteSnapshotsOptionTypeInclude.ToPtr()})
+	_, err = baseBlobClient.Delete(ctx, &DeleteBlobOptions{DeleteSnapshots: DeleteSnapshotsOptionInclude.ToPtr()})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -907,8 +907,8 @@ func Example_progressUploadDownload() {
 	// Wrap the request body in a RequestBodyProgress and pass a callback function for progress reporting.
 	_, err = blobClient.Upload(ctx, azcore.NewRequestBodyProgress(azcore.NopCloser(requestBody), func(bytesTransferred int64) {
 		fmt.Printf("Wrote %d of %d bytes.", bytesTransferred, requestBody.Size())
-	}), &UploadBlockBlobOptions{ BlobHTTPHeaders: &BlobHTTPHeaders{
-		BlobContentType: to.StringPtr("text/html; charset=utf-8"),
+	}), &UploadBlockBlobOptions{BlobHTTPHeaders: &BlobHTTPHeaders{
+		BlobContentType:        to.StringPtr("text/html; charset=utf-8"),
 		BlobContentDisposition: to.StringPtr("attachment"),
 	}})
 	if err != nil {
@@ -960,7 +960,7 @@ func ExampleBlobClient_startCopy() {
 
 	copyID := *startCopy.CopyID
 	copyStatus := *startCopy.CopyStatus
-	for copyStatus == CopyStatusTypePending {
+	for copyStatus == CopyStatusPending {
 		time.Sleep(time.Second * 2)
 		getMetadata, err := blobClient.GetProperties(ctx, nil)
 		if err != nil {

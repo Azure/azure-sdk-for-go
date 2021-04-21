@@ -233,7 +233,7 @@ func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPK(c *chk.C) {
 	c.Assert(stageResp2.Date.IsZero(), chk.Equals, false)
 
 	// Check block list.
-	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
+	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(blockList.BlockList, chk.NotNil)
@@ -257,7 +257,7 @@ func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPK(c *chk.C) {
 	c.Assert((*listResp.Date).IsZero(), chk.Equals, false)
 
 	// Check block list.
-	blockList, err = destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
+	blockList, err = destBlob.GetBlockList(context.Background(), BlockListAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(blockList.BlockList, chk.NotNil)
@@ -344,7 +344,7 @@ func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPKWithScope(c *chk.C) {
 	c.Assert(stageResp2.Date.IsZero(), chk.Equals, false)
 
 	// Check block list.
-	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
+	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(blockList.BlockList, chk.NotNil)
@@ -368,7 +368,7 @@ func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPKWithScope(c *chk.C) {
 	c.Assert((*listResp.Date).IsZero(), chk.Equals, false)
 
 	// Check block list.
-	blockList, err = destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
+	blockList, err = destBlob.GetBlockList(context.Background(), BlockListAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(blockList.BlockList, chk.NotNil)
@@ -572,7 +572,7 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithCPK(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	contentSize := 8 * 1024 // 8KB
+	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := getRandomDataAndReader(contentSize)
 	md5Sum := md5.Sum(srcData)
 	contentMD5 := md5Sum[:]
@@ -678,7 +678,7 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithCPKScope(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	contentSize := 8 * 1024 // 8KB
+	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := getRandomDataAndReader(contentSize)
 	md5Sum := md5.Sum(srcData)
 	contentMD5 := md5Sum[:]
@@ -780,14 +780,14 @@ func (s *aztestsSuite) TestPageBlockWithCPK(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	contentSize := 8 * 1024 // 8KB
+	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := getRandomDataAndReader(contentSize)
 	pbClient, _ := createNewPageBlobWithCPK(c, containerClient, int64(contentSize), &testCPKByValue, nil)
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
-		CpkInfo: &testCPKByValue,
+		CpkInfo:   &testCPKByValue,
 	}
 	uploadResp, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
@@ -830,13 +830,13 @@ func (s *aztestsSuite) TestPageBlockWithCPKScope(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	contentSize := 8 * 1024 // 8KB
+	contentSize := 4 * 1024 * 1024 // 4MB
 	r, srcData := getRandomDataAndReader(contentSize)
 	pbClient, _ := createNewPageBlobWithCPK(c, containerClient, int64(contentSize), nil, &testCPKByScope)
 
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
-		PageRange: &HttpRange{offset, count},
+		PageRange:    &HttpRange{offset, count},
 		CpkScopeInfo: &testCPKByScope,
 	}
 	uploadResp, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)

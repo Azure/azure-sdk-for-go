@@ -7,29 +7,22 @@ import (
 	"context"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure the pipeline used with Managed Identity Credential.
+// All zero-value fields will be initialized with their default values.
 type ManagedIdentityCredentialOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	// Leave this as nil to use the default HTTP transport.
 	HTTPClient azcore.Transport
 
-	// LogOptions configures the built-in request logging policy behavior.
-	LogOptions azcore.RequestLogOptions
-
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry azcore.TelemetryOptions
-}
 
-func (m *ManagedIdentityCredentialOptions) setDefaultValues() *ManagedIdentityCredentialOptions {
-	if m == nil {
-		m = defaultMSIOpts
-	}
-	return m
+	// Logging configures the built-in logging policy behavior.
+	Logging azcore.LogOptions
 }
 
 // ManagedIdentityCredential attempts authentication using a managed identity that has been assigned to the deployment environment. This authentication type works in several
@@ -47,15 +40,15 @@ type ManagedIdentityCredential struct {
 // https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview#how-a-user-assigned-managed-identity-works-with-an-azure-vm
 func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
 	// Create a new Managed Identity Client with default options
+	if options == nil {
+		options = &ManagedIdentityCredentialOptions{}
+	}
 	client := newManagedIdentityClient(options)
-	// Create a context that will timeout after 500 milliseconds (that is the amount of time designated to find out if the IMDS endpoint is available)
-	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Duration(client.imdsAvailableTimeoutMS)*time.Millisecond)
-	defer cancelFunc()
-	msiType, err := client.getMSIType(ctx)
+	msiType, err := client.getMSIType()
 	// If there is an error that means that the code is not running in a Managed Identity environment
 	if err != nil {
-		credErr := &CredentialUnavailableError{CredentialType: "Managed Identity Credential", Message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
-		azcore.Log().Write(azcore.LogError, logCredentialError(credErr.CredentialType, credErr))
+		credErr := &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
+		logCredentialError(credErr.credentialType, credErr)
 		return nil, credErr
 	}
 	// Assign the msiType discovered onto the client
@@ -73,16 +66,16 @@ func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCrede
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	tk, err := c.client.authenticate(ctx, c.clientID, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Managed Identity Credential", err)
+		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err
 	}
-	azcore.Log().Write(LogCredential, logGetTokenSuccess(c, opts))
-	azcore.Log().Write(LogCredential, logMSIEnv(c.client.msiType))
+	logGetTokenSuccess(c, opts)
+	logMSIEnv(c.client.msiType)
 	return tk, err
 }
 
 // AuthenticationPolicy implements the azcore.Credential interface on ManagedIdentityCredential.
-// Please note: the TokenRequestOptions included in AuthenticationPolicyOptions must be a slice of resources in this case and not scopes
+// NOTE: The TokenRequestOptions included in AuthenticationPolicyOptions must be a slice of resources in this case and not scopes.
 func (c *ManagedIdentityCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
 	// The following code will remove the /.default suffix from any scopes passed into the method since ManagedIdentityCredentials expect a resource string instead of a scope string
 	for i := range options.Options.Scopes {

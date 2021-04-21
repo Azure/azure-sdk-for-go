@@ -16,7 +16,7 @@ import (
 )
 
 type directoryClient struct {
-	con *connection
+	con            *connection
 	pathRenameMode *PathRenameMode
 }
 
@@ -141,7 +141,7 @@ func (client *directoryClient) createHandleResponse(resp *azcore.Response) (Dire
 
 // createHandleError handles the Create error response.
 func (client *directoryClient) createHandleError(resp *azcore.Response) error {
-var err DataLakeStorageError
+	var err DataLakeStorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -230,7 +230,7 @@ func (client *directoryClient) deleteHandleResponse(resp *azcore.Response) (Dire
 
 // deleteHandleError handles the Delete error response.
 func (client *directoryClient) deleteHandleError(resp *azcore.Response) error {
-var err DataLakeStorageError
+	var err DataLakeStorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -335,7 +335,7 @@ func (client *directoryClient) getAccessControlHandleResponse(resp *azcore.Respo
 
 // getAccessControlHandleError handles the GetAccessControl error response.
 func (client *directoryClient) getAccessControlHandleError(resp *azcore.Response) error {
-var err DataLakeStorageError
+	var err DataLakeStorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -487,7 +487,7 @@ func (client *directoryClient) renameHandleResponse(resp *azcore.Response) (Dire
 
 // renameHandleError handles the Rename error response.
 func (client *directoryClient) renameHandleError(resp *azcore.Response) error {
-var err DataLakeStorageError
+	var err DataLakeStorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -589,10 +589,9 @@ func (client *directoryClient) setAccessControlHandleResponse(resp *azcore.Respo
 
 // setAccessControlHandleError handles the SetAccessControl error response.
 func (client *directoryClient) setAccessControlHandleError(resp *azcore.Response) error {
-var err DataLakeStorageError
+	var err DataLakeStorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

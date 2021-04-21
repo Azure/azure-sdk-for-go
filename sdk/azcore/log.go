@@ -5,14 +5,16 @@
 
 package azcore
 
+import (
+	"fmt"
+	"os"
+	"time"
+)
+
 // LogClassification is used to group entries.  Each group can be toggled on or off.
 type LogClassification string
 
 const (
-	// LogError entries contain detailed error information.
-	// This includes the error message and stack trace.
-	LogError LogClassification = "Error"
-
 	// LogRequest entries contain information about HTTP requests.
 	// This includes information like the URL, query parameters, and headers.
 	LogRequest LogClassification = "Request"
@@ -24,8 +26,9 @@ const (
 	// LogRetryPolicy entries contain information specific to the retry policy in use.
 	LogRetryPolicy LogClassification = "RetryPolicy"
 
-	// LogSlowResponse entries contain information for responses that take longer than the specified threshold.
-	LogSlowResponse LogClassification = "SlowResponse"
+	// LogLongRunningOperation entries contain information specific to long-running operations.
+	// This includes information like polling location, operation state and sleep intervals.
+	LogLongRunningOperation LogClassification = "LongRunningOperation"
 )
 
 // Listener is the function signature invoked when writing log entries.
@@ -74,10 +77,19 @@ func (l *Logger) Should(cls LogClassification) bool {
 // Write invokes the underlying Listener with the specified classification and message.
 // If the classification shouldn't be logged or there is no listener then Write does nothing.
 func (l *Logger) Write(cls LogClassification, message string) {
-	if l.lst == nil || !l.Should(cls) {
+	if !l.Should(cls) {
 		return
 	}
 	l.lst(cls, message)
+}
+
+// Writef invokes the underlying Listener with the specified classification and formatted message.
+// If the classification shouldn't be logged or there is no listener then Writef does nothing.
+func (l *Logger) Writef(cls LogClassification, format string, a ...interface{}) {
+	if !l.Should(cls) {
+		return
+	}
+	l.lst(cls, fmt.Sprintf(format, a...))
 }
 
 // for testing purposes
@@ -85,9 +97,20 @@ func (l *Logger) resetClassifications() {
 	l.cls = nil
 }
 
-var log Logger
+var logger Logger
 
 // Log returns the process-wide logger.
 func Log() *Logger {
-	return &log
+	return &logger
+}
+
+func init() {
+	if cls := os.Getenv("AZURE_SDK_GO_LOGGING"); cls == "all" {
+		// cls could be enhanced to support a comma-delimited list of log classifications
+		logger.lst = func(cls LogClassification, msg string) {
+			// simple console logger, it writes to stderr in the following format:
+			// [time-stamp] Classification: message
+			fmt.Fprintf(os.Stderr, "[%s] %s: %s\n", time.Now().Format(time.StampMicro), cls, msg)
+		}
+	}
 }

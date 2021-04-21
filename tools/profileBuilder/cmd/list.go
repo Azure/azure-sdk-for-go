@@ -1,18 +1,7 @@
 // +build go1.9
 
-// Copyright 2018 Microsoft Corporation
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package cmd
 
@@ -122,12 +111,12 @@ $> ../model/testdata/smallProfile.txt > profileBuilder list --name small_profile
 		fmt.Printf("Executes profileBuilder in %s\n", outputRootDir)
 		outputLog.Printf("Output-Location set to: %s", outputRootDir)
 		if clearOutputFlag {
-			if err := dirs.DeleteChildDirs(outputRootDir); err != nil {
+			if err := clearOutputFolder(outputRootDir, listDef.IgnoredPaths); err != nil {
 				errLog.Fatalf("Unable to clear output-folder: %v", err)
 			}
 		}
 		// use recursive build to include the *api packages
-		model.BuildProfile(listDef, profileName, outputRootDir, outputLog, errLog, true, modulesFlag)
+		model.BuildProfile(listDef, profileName, outputRootDir, outputLog, errLog, true, modulesFlag, semLimit)
 	},
 }
 
@@ -200,4 +189,31 @@ func generateGoMod(modDir string) error {
 	}
 	_, err = fmt.Fprintf(gomod, gomodFormat, mod)
 	return err
+}
+
+func clearOutputFolder(root string, excepts []string) error {
+	children, err := dirs.GetSubdirs(root)
+	if err != nil && !os.IsNotExist(err) {
+		return err
+	}
+	for _, child := range children {
+		if contains(excepts, child) {
+			continue
+		}
+		childPath := filepath.Join(root, child)
+		err = os.RemoveAll(childPath)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func contains(array []string, item string) bool {
+	for _, e := range array {
+		if e == item {
+			return true
+		}
+	}
+	return false
 }

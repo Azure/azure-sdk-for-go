@@ -8,7 +8,7 @@ steps:
       $serviceDir = "${{parameters.ServiceDirectory}}"
       $scope = (./eng/scripts/scoped_discover.ps1 -serviceDir "$serviceDir")
 
-      Write-Host 
+      Write-Host $scope
       Write-Host "##vso[task.setvariable variable=SCOPE]$scope"
     displayName: 'Set Target Scope'
     workingDirectory: "${{ parameters.GoWorkspace }}"

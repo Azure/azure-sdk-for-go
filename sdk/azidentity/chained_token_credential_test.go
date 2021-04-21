@@ -64,15 +64,17 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not set environment variables for testing: %v", err)
 	}
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srvURL := srv.URL()
-	secCred, err := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	options := ClientSecretCredentialOptions{}
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	secCred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	envCred, err := NewEnvironmentCredential(&TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
 	if err != nil {
 		t.Fatalf("Failed to create environment credential: %v", err)
 	}
@@ -93,11 +95,13 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 }
 
 func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	testURL := srv.URL()
-	secCred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &testURL})
+	options := ClientSecretCredentialOptions{}
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	secCred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -119,12 +123,14 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 }
 
 func TestChainedTokenCredential_GetTokenWithUnavailableCredentialInChain(t *testing.T) {
-	srv, close := mock.NewServer()
+	srv, close := mock.NewTLSServer()
 	defer close()
-	srv.AppendError(&CredentialUnavailableError{CredentialType: "MockCredential", Message: "Mocking a credential unavailable error"})
+	srv.AppendError(&CredentialUnavailableError{credentialType: "MockCredential", message: "Mocking a credential unavailable error"})
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	testURL := srv.URL()
-	secCred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &testURL})
+	options := ClientSecretCredentialOptions{}
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	secCred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -158,8 +164,10 @@ func TestBearerPolicy_ChainedTokenCredential(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	srvURL := srv.URL()
-	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &TokenCredentialOptions{HTTPClient: srv, AuthorityHost: &srvURL})
+	options := ClientSecretCredentialOptions{}
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -167,14 +175,12 @@ func TestBearerPolicy_ChainedTokenCredential(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	pipeline := azcore.NewPipeline(
-		srv,
-		azcore.NewTelemetryPolicy(azcore.TelemetryOptions{}),
-		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(nil),
-		chainedCred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-		azcore.NewRequestLogPolicy(azcore.RequestLogOptions{}))
-	_, err = pipeline.Do(context.Background(), azcore.NewRequest(http.MethodGet, srv.URL()))
+	pipeline := defaultTestPipeline(srv, chainedCred, scope)
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = pipeline.Do(req)
 	if err != nil {
 		t.Fatalf("Expected an empty error but receive: %v", err)
 	}

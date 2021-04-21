@@ -97,7 +97,7 @@ func (client *serviceClient) filterBlobsHandleResponse(resp *azcore.Response) (F
 
 // filterBlobsHandleError handles the FilterBlobs error response.
 func (client *serviceClient) filterBlobsHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -173,7 +173,7 @@ func (client *serviceClient) getAccountInfoHandleResponse(resp *azcore.Response)
 
 // getAccountInfoHandleError handles the GetAccountInfo error response.
 func (client *serviceClient) getAccountInfoHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -240,7 +240,7 @@ func (client *serviceClient) getPropertiesHandleResponse(resp *azcore.Response) 
 
 // getPropertiesHandleError handles the GetProperties error response.
 func (client *serviceClient) getPropertiesHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -314,7 +314,7 @@ func (client *serviceClient) getStatisticsHandleResponse(resp *azcore.Response) 
 
 // getStatisticsHandleError handles the GetStatistics error response.
 func (client *serviceClient) getStatisticsHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -387,7 +387,7 @@ func (client *serviceClient) getUserDelegationKeyHandleResponse(resp *azcore.Res
 
 // getUserDelegationKeyHandleError handles the GetUserDelegationKey error response.
 func (client *serviceClient) getUserDelegationKeyHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -395,7 +395,7 @@ var err StorageError
 }
 
 // ListContainersSegment - The List Containers Segment operation returns a list of the containers under the specified account
-func (client *serviceClient) ListContainersSegment(options *ServiceListContainersSegmentOptions) (ListContainersSegmentResponsePager) {
+func (client *serviceClient) ListContainersSegment(options *ServiceListContainersSegmentOptions) ListContainersSegmentResponsePager {
 	return &listContainersSegmentResponsePager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -464,7 +464,7 @@ func (client *serviceClient) listContainersSegmentHandleResponse(resp *azcore.Re
 
 // listContainersSegmentHandleError handles the ListContainersSegment error response.
 func (client *serviceClient) listContainersSegmentHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -527,7 +527,7 @@ func (client *serviceClient) setPropertiesHandleResponse(resp *azcore.Response) 
 
 // setPropertiesHandleError handles the SetProperties error response.
 func (client *serviceClient) setPropertiesHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -591,10 +591,9 @@ func (client *serviceClient) submitBatchHandleResponse(resp *azcore.Response) (S
 
 // submitBatchHandleError handles the SubmitBatch error response.
 func (client *serviceClient) submitBatchHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

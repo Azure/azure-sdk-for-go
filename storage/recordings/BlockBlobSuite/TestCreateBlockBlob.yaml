@@ -6,15 +6,15 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:yTaj4HVzWM2s/3GjrCHPaV5pcOvjMgNrq0wMBCJEzDY=
+      - SharedKey golangrocksonazure:kqgwv6hhQfcaEmmyf44yYtFswXfVD+i03pn1Et2F2RA=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 28 May 2019 22:35:38 GMT
+      - Tue, 13 Apr 2021 15:57:12 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-34blockblobsuitetestcreatebl?restype=container
+    url: https://golangrocksonazure.blob.core.windows.net/34blockblobsuitetestcreateblockb?restype=container
     method: PUT
   response:
     body: ""
@@ -22,15 +22,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:35:38 GMT
+      - Tue, 13 Apr 2021 15:57:11 GMT
       Etag:
-      - '"0x8D6E3BCCF2AD96C"'
+      - '"0x8D8FE94CD17D229"'
       Last-Modified:
-      - Tue, 28 May 2019 22:35:38 GMT
+      - Tue, 13 Apr 2021 15:57:12 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 378144a8-e01e-00b7-60a5-15d5a7000000
+      - 2c9d7b35-801e-004c-2d7d-300fdd000000
       X-Ms-Version:
       - "2018-03-28"
     status: 201 Created
@@ -41,19 +41,19 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:UrsokNIQEVjw2o88rwV5mpt/gRjeByhIBqzLtcAexhA=
+      - SharedKey golangrocksonazure:2ygHgN0M7YUuvZsCawNMmWv3IgxdER995zOmUqfgB1U=
       Content-Length:
       - "0"
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-blob-type:
       - BlockBlob
       x-ms-date:
-      - Tue, 28 May 2019 22:35:38 GMT
+      - Tue, 13 Apr 2021 15:57:12 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-34blockblobsuitetestcreatebl/blob/34blockblobsuitetestcreateblockblob
+    url: https://golangrocksonazure.blob.core.windows.net/34blockblobsuitetestcreateblockb/blob/34blockblobsuitetestcreateblockblob
     method: PUT
   response:
     body: ""
@@ -63,15 +63,15 @@ interactions:
       Content-Md5:
       - 1B2M2Y8AsgTpgAmY7PhCfg==
       Date:
-      - Tue, 28 May 2019 22:35:38 GMT
+      - Tue, 13 Apr 2021 15:57:11 GMT
       Etag:
-      - '"0x8D6E3BCCF2D7FD7"'
+      - '"0x8D8FE94CD1BAE35"'
       Last-Modified:
-      - Tue, 28 May 2019 22:35:38 GMT
+      - Tue, 13 Apr 2021 15:57:12 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 378144c1-e01e-00b7-78a5-15d5a7000000
+      - 2c9d7b3e-801e-004c-337d-300fdd000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -84,15 +84,15 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:HqbI7jTk0CB7n0Zvl6NTmpdFRWDdHNaYYd+CaPqlzCE=
+      - SharedKey golangrocksonazure:ANZJoJc5ZYUZBNjVO1UWa7ckvBF+iufNbVlGXDRYj3E=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 28 May 2019 22:35:38 GMT
+      - Tue, 13 Apr 2021 15:57:12 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-34blockblobsuitetestcreatebl/blob/34blockblobsuitetestcreateblockblob?blocklisttype=all&comp=blocklist
+    url: https://golangrocksonazure.blob.core.windows.net/34blockblobsuitetestcreateblockb/blob/34blockblobsuitetestcreateblockblob?blocklisttype=all&comp=blocklist
     method: GET
   response:
     body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x42\x6C\x6F\x63\x6B\x4C\x69\x73\x74\x3E\x3C\x43\x6F\x6D\x6D\x69\x74\x74\x65\x64\x42\x6C\x6F\x63\x6B\x73\x20\x2F\x3E\x3C\x55\x6E\x63\x6F\x6D\x6D\x69\x74\x74\x65\x64\x42\x6C\x6F\x63\x6B\x73\x20\x2F\x3E\x3C\x2F\x42\x6C\x6F\x63\x6B\x4C\x69\x73\x74\x3E"
@@ -100,17 +100,17 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Tue, 28 May 2019 22:35:38 GMT
+      - Tue, 13 Apr 2021 15:57:11 GMT
       Etag:
-      - '"0x8D6E3BCCF2D7FD7"'
+      - '"0x8D8FE94CD1BAE35"'
       Last-Modified:
-      - Tue, 28 May 2019 22:35:38 GMT
+      - Tue, 13 Apr 2021 15:57:12 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Content-Length:
       - "0"
       X-Ms-Request-Id:
-      - 378144d3-e01e-00b7-0aa5-15d5a7000000
+      - 2c9d7b44-801e-004c-397d-300fdd000000
       X-Ms-Version:
       - "2018-03-28"
     status: 200 OK
@@ -121,15 +121,15 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:s6clKz5frd/mRwJh8vy1/X3NlfSJ0iV3/7fCgMfE6wg=
+      - SharedKey golangrocksonazure:QiIA0lqOnupxiPXaLCfxydY7iStxSobzdJFyYKGE1kE=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         blob
       x-ms-date:
-      - Tue, 28 May 2019 22:35:39 GMT
+      - Tue, 13 Apr 2021 15:57:12 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.blob.core.windows.net/cnt-34blockblobsuitetestcreatebl?restype=container
+    url: https://golangrocksonazure.blob.core.windows.net/34blockblobsuitetestcreateblockb?restype=container
     method: DELETE
   response:
     body: ""
@@ -137,11 +137,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:35:38 GMT
+      - Tue, 13 Apr 2021 15:57:11 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 378144e4-e01e-00b7-1ba5-15d5a7000000
+      - 2c9d7b4a-801e-004c-3e7d-300fdd000000
       X-Ms-Version:
       - "2018-03-28"
     status: 202 Accepted

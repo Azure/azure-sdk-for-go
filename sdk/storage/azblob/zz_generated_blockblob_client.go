@@ -192,7 +192,7 @@ func (client *blockBlobClient) commitBlockListHandleResponse(resp *azcore.Respon
 
 // commitBlockListHandleError handles the CommitBlockList error response.
 func (client *blockBlobClient) commitBlockListHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -294,7 +294,7 @@ func (client *blockBlobClient) getBlockListHandleResponse(resp *azcore.Response)
 
 // getBlockListHandleError handles the GetBlockList error response.
 func (client *blockBlobClient) getBlockListHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -412,7 +412,7 @@ func (client *blockBlobClient) stageBlockHandleResponse(resp *azcore.Response) (
 
 // stageBlockHandleError handles the StageBlock error response.
 func (client *blockBlobClient) stageBlockHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -546,7 +546,7 @@ func (client *blockBlobClient) stageBlockFromURLHandleResponse(resp *azcore.Resp
 
 // stageBlockFromURLHandleError handles the StageBlockFromURL error response.
 func (client *blockBlobClient) stageBlockFromURLHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -713,10 +713,9 @@ func (client *blockBlobClient) uploadHandleResponse(resp *azcore.Response) (Bloc
 
 // uploadHandleError handles the Upload error response.
 func (client *blockBlobClient) uploadHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

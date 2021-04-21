@@ -160,13 +160,13 @@ func (o *ResizePageBlobOptions) pointers() (*CpkInfo, *CpkScopeInfo, *LeaseAcces
 }
 
 type UpdateSequenceNumberPageBlob struct {
-	ActionType         *SequenceNumberActionType
+	ActionType         *SequenceNumberAction
 	BlobSequenceNumber *int64
 
 	BlobAccessConditions
 }
 
-func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumberOptions, *SequenceNumberActionType, *LeaseAccessConditions, *ModifiedAccessConditions) {
+func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumberOptions, *SequenceNumberAction, *LeaseAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
 		return nil, nil, nil, nil
 	}
@@ -175,7 +175,7 @@ func (o *UpdateSequenceNumberPageBlob) pointers() (*PageBlobUpdateSequenceNumber
 		BlobSequenceNumber: o.BlobSequenceNumber,
 	}
 
-	if *o.ActionType == SequenceNumberActionTypeIncrement {
+	if *o.ActionType == SequenceNumberActionIncrement {
 		options.BlobSequenceNumber = nil
 	}
 

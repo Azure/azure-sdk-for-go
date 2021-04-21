@@ -1,16 +1,5 @@
-// Copyright 2018 Microsoft Corporation
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package delta_test
 
@@ -73,11 +62,11 @@ func Test_GetAddedExports(t *testing.T) {
 
 	fAdded := map[string]exports.Func{
 		"DoNothing2":                 {},
-		"Client.ExportData":          {Params: strPtr("context.Context,string,string,ExportRDBParameters"), Returns: strPtr("ExportDataFuture,error")},
-		"Client.ExportDataPreparer":  {Params: strPtr("context.Context,string,string,ExportRDBParameters"), Returns: strPtr("*http.Request,error")},
-		"Client.ExportDataSender":    {Params: strPtr("*http.Request"), Returns: strPtr("ExportDataFuture,error")},
-		"Client.ExportDataResponder": {Params: strPtr("*http.Response"), Returns: strPtr("autorest.Response,error")},
-		"ExportDataFuture.Result":    {Params: strPtr("Client"), Returns: strPtr("autorest.Response,error")},
+		"Client.ExportData":          {Params: strPtr("context.Context, string, string, ExportRDBParameters"), Returns: strPtr("ExportDataFuture, error")},
+		"Client.ExportDataPreparer":  {Params: strPtr("context.Context, string, string, ExportRDBParameters"), Returns: strPtr("*http.Request, error")},
+		"Client.ExportDataSender":    {Params: strPtr("*http.Request"), Returns: strPtr("ExportDataFuture, error")},
+		"Client.ExportDataResponder": {Params: strPtr("*http.Response"), Returns: strPtr("autorest.Response, error")},
+		"ExportDataFuture.Result":    {Params: strPtr("Client"), Returns: strPtr("autorest.Response, error")},
 	}
 
 	for k, v := range fAdded {
@@ -105,7 +94,7 @@ func Test_GetAddedExports(t *testing.T) {
 			"Two": {Returns: strPtr("error")},
 		}},
 		"SomeInterface": {Methods: map[string]exports.Func{
-			"NewMethod": {Params: strPtr("string"), Returns: strPtr("bool,error")},
+			"NewMethod": {Params: strPtr("string"), Returns: strPtr("bool, error")},
 		}},
 	}
 
@@ -199,7 +188,7 @@ func Test_GetAddedInterfaceMethods(t *testing.T) {
 	added := map[string]exports.Interface{
 		"SomeInterface": {
 			Methods: map[string]exports.Func{
-				"NewMethod": {Params: strPtr("string"), Returns: strPtr("bool,error")},
+				"NewMethod": {Params: strPtr("string"), Returns: strPtr("bool, error")},
 			},
 		},
 	}
@@ -275,17 +264,17 @@ func Test_GetFuncSigChanges(t *testing.T) {
 			Params: &delta.Signature{From: "int", To: delta.None},
 		},
 		"Client.List": {
-			Params:  &delta.Signature{From: "context.Context", To: "context.Context,string"},
-			Returns: &delta.Signature{From: "ListResultPage,error", To: "ListResult,error"},
+			Params:  &delta.Signature{From: "context.Context", To: "context.Context, string"},
+			Returns: &delta.Signature{From: "ListResultPage, error", To: "ListResult, error"},
 		},
 		"Client.ListPreparer": {
-			Params: &delta.Signature{From: "context.Context", To: "context.Context,string"},
+			Params: &delta.Signature{From: "context.Context", To: "context.Context, string"},
 		},
 		"Client.Delete": {
-			Params: &delta.Signature{From: "context.Context,string,string", To: "context.Context,string"},
+			Params: &delta.Signature{From: "context.Context, string, string", To: "context.Context, string"},
 		},
 		"Client.DeletePreparer": {
-			Params: &delta.Signature{From: "context.Context,string,string", To: "context.Context,string"},
+			Params: &delta.Signature{From: "context.Context, string, string", To: "context.Context, string"},
 		},
 	}
 
@@ -316,7 +305,7 @@ func Test_GetInterfaceMethodSigChanges(t *testing.T) {
 		"SomeInterface": {
 			MethodSigs: map[string]delta.FuncSig{
 				"One": {Params: &delta.Signature{From: delta.None, To: "string"}},
-				"Two": {Params: &delta.Signature{From: "bool", To: "bool,int"}},
+				"Two": {Params: &delta.Signature{From: "bool", To: "bool, int"}},
 			},
 		},
 	}

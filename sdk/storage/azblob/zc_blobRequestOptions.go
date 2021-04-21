@@ -150,6 +150,103 @@ func (o *CreateBlobSnapshotOptions) pointers() (blobSetMetadataOptions *BlobCrea
 	return &basics, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions, o.LeaseAccessConditions
 }
 
+type AcquireBlobLeaseOptions struct {
+	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
+	// can be between 15 and 60 seconds. A lease duration cannot be changed using renew or change.
+	Duration int32
+
+	// Proposed lease ID, in a GUID string format. The Blob service returns 400 (Invalid request) if the proposed lease ID is
+	// not in the correct format. See Guid Constructor (String) for a list of valid GUID string formats.
+	ProposedLeaseID *string
+
+	ModifiedAccessConditions *ModifiedAccessConditions
+}
+
+func (o *AcquireBlobLeaseOptions) pointers() (blobAcquireLeaseOptions *BlobAcquireLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	basics := BlobAcquireLeaseOptions{
+		Duration:        &o.Duration,
+		ProposedLeaseId: o.ProposedLeaseID,
+	}
+
+	return &basics, o.ModifiedAccessConditions
+}
+
+type RenewBlobLeaseOptions struct {
+	ModifiedAccessConditions *ModifiedAccessConditions
+}
+
+func (o *RenewBlobLeaseOptions) pointers() (blobRenewLeaseOptions *BlobRenewLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	return nil, o.ModifiedAccessConditions
+}
+
+type ReleaseBlobLeaseOptions struct {
+	ModifiedAccessConditions *ModifiedAccessConditions
+}
+
+func (o *ReleaseBlobLeaseOptions) pointers() (blobReleaseLeaseOptions *BlobReleaseLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	return nil, o.ModifiedAccessConditions
+}
+
+type BreakBlobLeaseOptions struct {
+	// For a break operation, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This
+	// break period is only used if it is shorter than the time remaining on the lease. If longer, the time remaining on the lease
+	// is used. A new lease will not be available before the break period has expired, but the lease may be held for longer than
+	// the break period. If this header does not appear with a break operation, a fixed-duration lease breaks after the remaining
+	// lease period elapses, and an infinite lease breaks immediately.
+	BreakPeriod              *int32
+	ModifiedAccessConditions *ModifiedAccessConditions
+}
+
+func (o *BreakBlobLeaseOptions) pointers() (blobBreakLeaseOptions *BlobBreakLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	if o.BreakPeriod != nil {
+		period := leasePeriodPointer(*o.BreakPeriod)
+		basics := BlobBreakLeaseOptions{
+			BreakPeriod: period,
+		}
+		return &basics, o.ModifiedAccessConditions
+	}
+
+	return nil, o.ModifiedAccessConditions
+}
+
+// LeaseBreakNaturally tells ContainerURL's or BlobClient's BreakLease method to break the lease using service semantics.
+const LeaseBreakNaturally = -1
+
+func leasePeriodPointer(period int32) (p *int32) {
+	if period != LeaseBreakNaturally {
+		p = &period
+	}
+	return nil
+}
+
+type ChangeBlobLeaseOptions struct {
+	ModifiedAccessConditions *ModifiedAccessConditions
+}
+
+func (o *ChangeBlobLeaseOptions) pointers() (blobChangeLeaseOptions *BlobChangeLeaseOptions, modifiedAccessConditions *ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+
+	return nil, o.ModifiedAccessConditions
+}
+
 type StartCopyBlobOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
 	BlobTagsMap *map[string]string

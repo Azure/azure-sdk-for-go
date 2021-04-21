@@ -12,6 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
+
 )
 
 func (s *aztestsSuite) TestNewContainerClientValidName(c *chk.C) {
@@ -432,7 +433,7 @@ func (s *aztestsSuite) TestContainerListBlobsValidDelimiter(c *chk.C) {
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 
-		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+		for _,blob := range *resp.EnumerationResults.Segment.BlobItems {
 			count++
 			c.Assert(*blob.Name, chk.Equals, blobNames[3])
 		}

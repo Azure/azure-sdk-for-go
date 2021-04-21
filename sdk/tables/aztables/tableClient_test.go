@@ -4,9 +4,15 @@
 package aztables
 
 import (
-	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
+	"testing"
 )
 
-func (s *aztestsSuite) TestContainerCreateAccessContainer(c *chk.C) {
+func TestContainerCreateAccessContainer(t *testing.T) {
 	// TODO
+	cred, err := NewSharedKeyCredential("foo", "Kg==")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	NewTableClient("https://foo", cred, &TableClientOptions{})
 }

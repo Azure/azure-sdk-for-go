@@ -535,7 +535,7 @@ type BlobCreateSnapshotResponse struct {
 type BlobDeleteOptions struct {
 	// Required if the blob has associated snapshots. Specify one of the following two options: include: Delete the base blob and all of its snapshots. only:
 	// Delete only the blob's snapshots and not the blob itself
-	DeleteSnapshots *DeleteSnapshotsOptionType
+	DeleteSnapshots *DeleteSnapshotsOption
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
 	RequestID *string
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with
@@ -652,7 +652,7 @@ type BlobDownloadResponse struct {
 	CopySource *string
 
 	// CopyStatus contains the information returned from the x-ms-copy-status header response.
-	CopyStatus *CopyStatusType
+	CopyStatus *CopyStatus
 
 	// CopyStatusDescription contains the information returned from the x-ms-copy-status-description header response.
 	CopyStatusDescription *string
@@ -682,13 +682,13 @@ type BlobDownloadResponse struct {
 	LastModified *time.Time
 
 	// LeaseDuration contains the information returned from the x-ms-lease-duration header response.
-	LeaseDuration *LeaseDurationType
+	LeaseDuration *LeaseDuration
 
 	// LeaseState contains the information returned from the x-ms-lease-state header response.
-	LeaseState *LeaseStateType
+	LeaseState *LeaseState
 
 	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
-	LeaseStatus *LeaseStatusType
+	LeaseStatus *LeaseStatus
 
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]string
@@ -873,7 +873,7 @@ type BlobGetPropertiesResponse struct {
 	CopySource *string
 
 	// CopyStatus contains the information returned from the x-ms-copy-status header response.
-	CopyStatus *CopyStatusType
+	CopyStatus *CopyStatus
 
 	// CopyStatusDescription contains the information returned from the x-ms-copy-status-description header response.
 	CopyStatusDescription *string
@@ -915,13 +915,13 @@ type BlobGetPropertiesResponse struct {
 	LastModified *time.Time
 
 	// LeaseDuration contains the information returned from the x-ms-lease-duration header response.
-	LeaseDuration *LeaseDurationType
+	LeaseDuration *LeaseDuration
 
 	// LeaseState contains the information returned from the x-ms-lease-state header response.
-	LeaseState *LeaseStateType
+	LeaseState *LeaseState
 
 	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
-	LeaseStatus *LeaseStatusType
+	LeaseStatus *LeaseStatus
 
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]string
@@ -1047,30 +1047,30 @@ type BlobPropertiesInternal struct {
 	ContentLanguage      *string        `xml:"Content-Language"`
 
 	// Size in bytes
-	ContentLength             *int64          `xml:"Content-Length"`
-	ContentMD5                *[]byte         `xml:"Content-MD5"`
-	ContentType               *string         `xml:"Content-Type"`
-	CopyCompletionTime        *time.Time      `xml:"CopyCompletionTime"`
-	CopyID                    *string         `xml:"CopyId"`
-	CopyProgress              *string         `xml:"CopyProgress"`
-	CopySource                *string         `xml:"CopySource"`
-	CopyStatus                *CopyStatusType `xml:"CopyStatus"`
-	CopyStatusDescription     *string         `xml:"CopyStatusDescription"`
-	CreationTime              *time.Time      `xml:"Creation-Time"`
-	CustomerProvidedKeySHA256 *string         `xml:"CustomerProvidedKeySha256"`
-	DeletedTime               *time.Time      `xml:"DeletedTime"`
-	DestinationSnapshot       *string         `xml:"DestinationSnapshot"`
+	ContentLength             *int64      `xml:"Content-Length"`
+	ContentMD5                *[]byte     `xml:"Content-MD5"`
+	ContentType               *string     `xml:"Content-Type"`
+	CopyCompletionTime        *time.Time  `xml:"CopyCompletionTime"`
+	CopyID                    *string     `xml:"CopyId"`
+	CopyProgress              *string     `xml:"CopyProgress"`
+	CopySource                *string     `xml:"CopySource"`
+	CopyStatus                *CopyStatus `xml:"CopyStatus"`
+	CopyStatusDescription     *string     `xml:"CopyStatusDescription"`
+	CreationTime              *time.Time  `xml:"Creation-Time"`
+	CustomerProvidedKeySHA256 *string     `xml:"CustomerProvidedKeySha256"`
+	DeletedTime               *time.Time  `xml:"DeletedTime"`
+	DestinationSnapshot       *string     `xml:"DestinationSnapshot"`
 
 	// The name of the encryption scope under which the blob is encrypted.
-	EncryptionScope *string            `xml:"EncryptionScope"`
-	Etag            *string            `xml:"Etag"`
-	ExpiresOn       *time.Time         `xml:"Expiry-Time"`
-	IncrementalCopy *bool              `xml:"IncrementalCopy"`
-	IsSealed        *bool              `xml:"Sealed"`
-	LastModified    *time.Time         `xml:"Last-Modified"`
-	LeaseDuration   *LeaseDurationType `xml:"LeaseDuration"`
-	LeaseState      *LeaseStateType    `xml:"LeaseState"`
-	LeaseStatus     *LeaseStatusType   `xml:"LeaseStatus"`
+	EncryptionScope *string        `xml:"EncryptionScope"`
+	Etag            *string        `xml:"Etag"`
+	ExpiresOn       *time.Time     `xml:"Expiry-Time"`
+	IncrementalCopy *bool          `xml:"IncrementalCopy"`
+	IsSealed        *bool          `xml:"Sealed"`
+	LastModified    *time.Time     `xml:"Last-Modified"`
+	LeaseDuration   *LeaseDuration `xml:"LeaseDuration"`
+	LeaseState      *LeaseState    `xml:"LeaseState"`
+	LeaseStatus     *LeaseStatus   `xml:"LeaseStatus"`
 
 	// If an object is in rehydrate pending state then this header is returned with priority of rehydrate. Valid values are High and Standard.
 	RehydratePriority      *RehydratePriority `xml:"RehydratePriority"`
@@ -1203,7 +1203,7 @@ type BlobQueryResponse struct {
 	CopySource *string
 
 	// CopyStatus contains the information returned from the x-ms-copy-status header response.
-	CopyStatus *CopyStatusType
+	CopyStatus *CopyStatus
 
 	// CopyStatusDescription contains the information returned from the x-ms-copy-status-description header response.
 	CopyStatusDescription *string
@@ -1227,13 +1227,13 @@ type BlobQueryResponse struct {
 	LastModified *time.Time
 
 	// LeaseDuration contains the information returned from the x-ms-lease-duration header response.
-	LeaseDuration *LeaseDurationType
+	LeaseDuration *LeaseDuration
 
 	// LeaseState contains the information returned from the x-ms-lease-state header response.
-	LeaseState *LeaseStateType
+	LeaseState *LeaseState
 
 	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
-	LeaseStatus *LeaseStatusType
+	LeaseStatus *LeaseStatus
 
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]string
@@ -1629,7 +1629,7 @@ type BlobStartCopyFromURLResponse struct {
 	CopyID *string
 
 	// CopyStatus contains the information returned from the x-ms-copy-status header response.
-	CopyStatus *CopyStatusType
+	CopyStatus *CopyStatus
 
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
@@ -2151,7 +2151,7 @@ type ContainerCpkScopeInfo struct {
 // ContainerCreateOptions contains the optional parameters for the Container.Create method.
 type ContainerCreateOptions struct {
 	// Specifies whether data in the container may be accessed publicly and the level of access
-	Access *PublicAccessType
+	Access *PublicAccess
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the operation will copy the metadata
 	// from the source blob or file to the destination blob. If one or more name-value pairs are specified, the destination blob is created with the specified
 	// metadata, and metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names must adhere to the naming
@@ -2265,7 +2265,7 @@ type ContainerGetPropertiesOptions struct {
 // ContainerGetPropertiesResponse contains the response from method Container.GetProperties.
 type ContainerGetPropertiesResponse struct {
 	// BlobPublicAccess contains the information returned from the x-ms-blob-public-access header response.
-	BlobPublicAccess *PublicAccessType
+	BlobPublicAccess *PublicAccess
 
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
@@ -2292,13 +2292,13 @@ type ContainerGetPropertiesResponse struct {
 	LastModified *time.Time
 
 	// LeaseDuration contains the information returned from the x-ms-lease-duration header response.
-	LeaseDuration *LeaseDurationType
+	LeaseDuration *LeaseDuration
 
 	// LeaseState contains the information returned from the x-ms-lease-state header response.
-	LeaseState *LeaseStateType
+	LeaseState *LeaseState
 
 	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
-	LeaseStatus *LeaseStatusType
+	LeaseStatus *LeaseStatus
 
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]string
@@ -2388,18 +2388,18 @@ type ContainerListBlobHierarchySegmentOptions struct {
 
 // Properties of a container
 type ContainerProperties struct {
-	DefaultEncryptionScope         *string            `xml:"DefaultEncryptionScope"`
-	DeletedTime                    *time.Time         `xml:"DeletedTime"`
-	Etag                           *string            `xml:"Etag"`
-	HasImmutabilityPolicy          *bool              `xml:"HasImmutabilityPolicy"`
-	HasLegalHold                   *bool              `xml:"HasLegalHold"`
-	LastModified                   *time.Time         `xml:"Last-Modified"`
-	LeaseDuration                  *LeaseDurationType `xml:"LeaseDuration"`
-	LeaseState                     *LeaseStateType    `xml:"LeaseState"`
-	LeaseStatus                    *LeaseStatusType   `xml:"LeaseStatus"`
-	PreventEncryptionScopeOverride *bool              `xml:"DenyEncryptionScopeOverride"`
-	PublicAccess                   *PublicAccessType  `xml:"PublicAccess"`
-	RemainingRetentionDays         *int32             `xml:"RemainingRetentionDays"`
+	DefaultEncryptionScope         *string        `xml:"DefaultEncryptionScope"`
+	DeletedTime                    *time.Time     `xml:"DeletedTime"`
+	Etag                           *string        `xml:"Etag"`
+	HasImmutabilityPolicy          *bool          `xml:"HasImmutabilityPolicy"`
+	HasLegalHold                   *bool          `xml:"HasLegalHold"`
+	LastModified                   *time.Time     `xml:"Last-Modified"`
+	LeaseDuration                  *LeaseDuration `xml:"LeaseDuration"`
+	LeaseState                     *LeaseState    `xml:"LeaseState"`
+	LeaseStatus                    *LeaseStatus   `xml:"LeaseStatus"`
+	PreventEncryptionScopeOverride *bool          `xml:"DenyEncryptionScopeOverride"`
+	PublicAccess                   *PublicAccess  `xml:"PublicAccess"`
+	RemainingRetentionDays         *int32         `xml:"RemainingRetentionDays"`
 }
 
 // MarshalXML implements the xml.Marshaller interface for type ContainerProperties.
@@ -2538,7 +2538,7 @@ type ContainerRestoreResponse struct {
 // ContainerSetAccessPolicyOptions contains the optional parameters for the Container.SetAccessPolicy method.
 type ContainerSetAccessPolicyOptions struct {
 	// Specifies whether data in the container may be accessed publicly and the level of access
-	Access *PublicAccessType
+	Access *PublicAccess
 	// the acls for the container
 	ContainerACL *[]*SignedIdentifier
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
@@ -2987,7 +2987,7 @@ type GeoReplication struct {
 	LastSyncTime *time.Time `xml:"LastSyncTime"`
 
 	// The status of the secondary location
-	Status *GeoReplicationStatusType `xml:"Status"`
+	Status *GeoReplicationStatus `xml:"Status"`
 }
 
 // MarshalXML implements the xml.Marshaller interface for type GeoReplication.
@@ -3248,7 +3248,7 @@ type PageBlobCopyIncrementalResponse struct {
 	CopyID *string
 
 	// CopyStatus contains the information returned from the x-ms-copy-status header response.
-	CopyStatus *CopyStatusType
+	CopyStatus *CopyStatus
 
 	// Date contains the information returned from the Date header response.
 	Date *time.Time
@@ -3731,7 +3731,7 @@ type ServiceGetUserDelegationKeyOptions struct {
 // ServiceListContainersSegmentOptions contains the optional parameters for the Service.ListContainersSegment method.
 type ServiceListContainersSegmentOptions struct {
 	// Include this parameter to specify that the container's metadata be returned as part of the response body.
-	Include *[]ListContainersIncludeType
+	Include *[]ListContainersInclude
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The operation returns the NextMarker
 	// value within the response body if the listing operation did not return all containers remaining to be listed with the current page. The NextMarker value
 	// can be used as the value for the marker parameter in a subsequent call to request the next page of list items. The marker value is opaque to the client.
@@ -3810,7 +3810,7 @@ type SignedIdentifier struct {
 // SignedIdentifierArrayResponse is the response envelope for operations that return a []*SignedIdentifier type.
 type SignedIdentifierArrayResponse struct {
 	// BlobPublicAccess contains the information returned from the x-ms-blob-public-access header response.
-	BlobPublicAccess *PublicAccessType `xml:"BlobPublicAccess"`
+	BlobPublicAccess *PublicAccess `xml:"BlobPublicAccess"`
 
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string `xml:"ClientRequestID"`

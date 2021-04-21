@@ -955,16 +955,16 @@ func (client *blobClient) downloadHandleResponse(resp *azcore.Response) (BlobDow
 		result.CopySource = &val
 	}
 	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
-		result.CopyStatus = (*CopyStatusType)(&val)
+		result.CopyStatus = (*CopyStatus)(&val)
 	}
 	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
-		result.LeaseDuration = (*LeaseDurationType)(&val)
+		result.LeaseDuration = (*LeaseDuration)(&val)
 	}
 	if val := resp.Header.Get("x-ms-lease-state"); val != "" {
-		result.LeaseState = (*LeaseStateType)(&val)
+		result.LeaseState = (*LeaseState)(&val)
 	}
 	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
-		result.LeaseStatus = (*LeaseStatusType)(&val)
+		result.LeaseStatus = (*LeaseStatus)(&val)
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -1361,7 +1361,7 @@ func (client *blobClient) getPropertiesHandleResponse(resp *azcore.Response) (Bl
 		result.CopySource = &val
 	}
 	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
-		result.CopyStatus = (*CopyStatusType)(&val)
+		result.CopyStatus = (*CopyStatus)(&val)
 	}
 	if val := resp.Header.Get("x-ms-incremental-copy"); val != "" {
 		isIncrementalCopy, err := strconv.ParseBool(val)
@@ -1374,13 +1374,13 @@ func (client *blobClient) getPropertiesHandleResponse(resp *azcore.Response) (Bl
 		result.DestinationSnapshot = &val
 	}
 	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
-		result.LeaseDuration = (*LeaseDurationType)(&val)
+		result.LeaseDuration = (*LeaseDuration)(&val)
 	}
 	if val := resp.Header.Get("x-ms-lease-state"); val != "" {
-		result.LeaseState = (*LeaseStateType)(&val)
+		result.LeaseState = (*LeaseState)(&val)
 	}
 	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
-		result.LeaseStatus = (*LeaseStatusType)(&val)
+		result.LeaseStatus = (*LeaseStatus)(&val)
 	}
 	if val := resp.Header.Get("Content-Length"); val != "" {
 		contentLength, err := strconv.ParseInt(val, 10, 64)
@@ -1763,16 +1763,16 @@ func (client *blobClient) queryHandleResponse(resp *azcore.Response) (BlobQueryR
 		result.CopySource = &val
 	}
 	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
-		result.CopyStatus = (*CopyStatusType)(&val)
+		result.CopyStatus = (*CopyStatus)(&val)
 	}
 	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
-		result.LeaseDuration = (*LeaseDurationType)(&val)
+		result.LeaseDuration = (*LeaseDuration)(&val)
 	}
 	if val := resp.Header.Get("x-ms-lease-state"); val != "" {
-		result.LeaseState = (*LeaseStateType)(&val)
+		result.LeaseState = (*LeaseState)(&val)
 	}
 	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
-		result.LeaseStatus = (*LeaseStatusType)(&val)
+		result.LeaseStatus = (*LeaseStatus)(&val)
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -2899,7 +2899,7 @@ func (client *blobClient) startCopyFromURLHandleResponse(resp *azcore.Response) 
 		result.CopyID = &val
 	}
 	if val := resp.Header.Get("x-ms-copy-status"); val != "" {
-		result.CopyStatus = (*CopyStatusType)(&val)
+		result.CopyStatus = (*CopyStatus)(&val)
 	}
 	return result, nil
 }

@@ -522,7 +522,7 @@ func (client *containerClient) getAccessPolicyHandleResponse(resp *azcore.Respon
 		return SignedIdentifierArrayResponse{}, err
 	}
 	if val := resp.Header.Get("x-ms-blob-public-access"); val != "" {
-		result.BlobPublicAccess = (*PublicAccessType)(&val)
+		result.BlobPublicAccess = (*PublicAccess)(&val)
 	}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
@@ -695,13 +695,13 @@ func (client *containerClient) getPropertiesHandleResponse(resp *azcore.Response
 		result.LastModified = &lastModified
 	}
 	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
-		result.LeaseDuration = (*LeaseDurationType)(&val)
+		result.LeaseDuration = (*LeaseDuration)(&val)
 	}
 	if val := resp.Header.Get("x-ms-lease-state"); val != "" {
-		result.LeaseState = (*LeaseStateType)(&val)
+		result.LeaseState = (*LeaseState)(&val)
 	}
 	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
-		result.LeaseStatus = (*LeaseStatusType)(&val)
+		result.LeaseStatus = (*LeaseStatus)(&val)
 	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -720,7 +720,7 @@ func (client *containerClient) getPropertiesHandleResponse(resp *azcore.Response
 		result.Date = &date
 	}
 	if val := resp.Header.Get("x-ms-blob-public-access"); val != "" {
-		result.BlobPublicAccess = (*PublicAccessType)(&val)
+		result.BlobPublicAccess = (*PublicAccess)(&val)
 	}
 	if val := resp.Header.Get("x-ms-has-immutability-policy"); val != "" {
 		hasImmutabilityPolicy, err := strconv.ParseBool(val)

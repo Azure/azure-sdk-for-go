@@ -266,7 +266,7 @@ func (s *aztestsSuite) TestStageBlockFromURLWithTags(c *chk.C) {
 	c.Assert(stageResp2.Date, chk.NotNil)
 	c.Assert((*stageResp2.Date).IsZero(), chk.Equals, false)
 
-	blockList, err := destBlob.GetBlockList(ctx, BlockListTypeAll, nil)
+	blockList, err := destBlob.GetBlockList(ctx, BlockListAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(blockList.BlockList.CommittedBlocks, chk.IsNil)

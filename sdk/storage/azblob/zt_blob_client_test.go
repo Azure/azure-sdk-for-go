@@ -83,7 +83,7 @@ func waitForCopy(c *chk.C, copyBlobClient BlockBlobClient, blobCopyResponse Blob
 	status := *blobCopyResponse.CopyStatus
 	// Wait for the copy to finish. If the copy takes longer than a minute, we will fail
 	start := time.Now()
-	for status != CopyStatusTypeSuccess {
+	for status != CopyStatusSuccess {
 		props, _ := copyBlobClient.GetProperties(ctx, nil)
 		status = *props.CopyStatus
 		currentTime := time.Now()
@@ -716,7 +716,7 @@ func (s *aztestsSuite) TestBlobAbortCopyInProgress(c *chk.C) {
 	_, err := blobClient.Upload(ctx, azcore.NopCloser(blobReader), nil)
 	c.Assert(err, chk.IsNil)
 
-	access := PublicAccessTypeBlob
+	access := PublicAccessBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
 			Access: &access,
@@ -739,7 +739,7 @@ func (s *aztestsSuite) TestBlobAbortCopyInProgress(c *chk.C) {
 
 	resp, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(resp.CopyStatus, chk.Equals, CopyStatusTypePending)
+	c.Assert(resp.CopyStatus, chk.Equals, CopyStatusPending)
 	c.Assert(resp.CopyID, chk.NotNil)
 
 	_, err = copyBlobClient.AbortCopyFromURL(ctx, *resp.CopyID, nil)
@@ -751,7 +751,7 @@ func (s *aztestsSuite) TestBlobAbortCopyInProgress(c *chk.C) {
 	}
 
 	resp2, _ := copyBlobClient.GetProperties(ctx, nil)
-	c.Assert(resp2.CopyStatus, chk.Equals, CopyStatusTypeAborted)
+	c.Assert(resp2.CopyStatus, chk.Equals, CopyStatusAborted)
 }
 
 func (s *aztestsSuite) TestBlobAbortCopyNoCopyStarted(c *chk.C) {
@@ -1343,7 +1343,7 @@ func (s *aztestsSuite) TestBlobDeleteSnapshot(c *chk.C) {
 //	_, err := blobClient.CreateSnapshot(ctx, nil)
 //	c.Assert(err, chk.IsNil)
 //
-//	deleteSnapshots := DeleteSnapshotsOptionTypeInclude
+//	deleteSnapshots := DeleteSnapshotsOptionInclude
 //	_, err = blobClient.Delete(ctx, &DeleteBlobOptions{
 //		DeleteSnapshots: &deleteSnapshots,
 //	})
@@ -1366,7 +1366,7 @@ func (s *aztestsSuite) TestBlobDeleteSnapshot(c *chk.C) {
 //
 //	_, err := blobClient.CreateSnapshot(ctx, nil)
 //	c.Assert(err, chk.IsNil)
-//	deleteSnapshot := DeleteSnapshotsOptionTypeOnly
+//	deleteSnapshot := DeleteSnapshotsOptionOnly
 //	deleteBlobOptions := DeleteBlobOptions{
 //		DeleteSnapshots: &deleteSnapshot,
 //	}

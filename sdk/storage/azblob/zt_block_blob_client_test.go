@@ -51,7 +51,7 @@ func (s *aztestsSuite) TestStageGetBlocks(c *chk.C) {
 		c.Assert((*putResp.Date).IsZero(), chk.Equals, false)
 	}
 
-	blockList, err := bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
+	blockList, err := bbClient.GetBlockList(context.Background(), BlockListAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(blockList.LastModified, chk.IsNil)
@@ -78,7 +78,7 @@ func (s *aztestsSuite) TestStageGetBlocks(c *chk.C) {
 	c.Assert(listResp.Date, chk.NotNil)
 	c.Assert((*listResp.Date).IsZero(), chk.Equals, false)
 
-	blockList, err = bbClient.GetBlockList(context.Background(), BlockListTypeAll, nil)
+	blockList, err = bbClient.GetBlockList(context.Background(), BlockListAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(blockList.LastModified, chk.NotNil)
@@ -167,7 +167,7 @@ func (s *aztestsSuite) TestStageBlockFromURL(c *chk.C) {
 	c.Assert(stageResp2.Date.IsZero(), chk.Equals, false)
 
 	// Check block list.
-	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
+	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(blockList.BlockList, chk.NotNil)
@@ -694,7 +694,7 @@ func (s *aztestsSuite) TestBlobPutBlockListHTTPHeadersEmpty(c *chk.C) {
 }
 
 func validateBlobCommitted(c *chk.C, bbClient BlockBlobClient) {
-	resp, err := bbClient.GetBlockList(ctx, BlockListTypeAll, nil)
+	resp, err := bbClient.GetBlockList(ctx, BlockListAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(*(resp.BlockList.CommittedBlocks), chk.HasLen, 1)
 }
@@ -856,7 +856,7 @@ func (s *aztestsSuite) TestBlobPutBlockListModifyBlob(c *chk.C) {
 	_, err = bbClient.CommitBlockList(ctx, []string{"0001", "0011"}, nil)
 	c.Assert(err, chk.IsNil)
 
-	resp, err := bbClient.GetBlockList(ctx, BlockListTypeAll, nil)
+	resp, err := bbClient.GetBlockList(ctx, BlockListAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(*(resp.BlockList.CommittedBlocks), chk.HasLen, 2)
 	committed := *(resp.BlockList.CommittedBlocks)
@@ -902,7 +902,7 @@ func (s *aztestsSuite) TestBlobSetTierOnCommit(c *chk.C) {
 		_, err = bbClient.CommitBlockList(ctx, []string{blockID}, &commitBlockListOptions)
 		c.Assert(err, chk.IsNil)
 
-		resp, err := bbClient.GetBlockList(ctx, BlockListTypeCommitted, nil)
+		resp, err := bbClient.GetBlockList(ctx, BlockListCommitted, nil)
 		c.Assert(err, chk.IsNil)
 		c.Assert(resp.BlockList, chk.NotNil)
 		c.Assert(resp.BlockList.CommittedBlocks, chk.NotNil)
@@ -1030,7 +1030,7 @@ func (s *aztestsSuite) TestSetTierOnStageBlockFromURL(c *chk.C) {
 	c.Assert(stageResp2.Date.IsZero(), chk.Equals, false)
 
 	// Check block list.
-	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
+	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(blockList.BlockList, chk.NotNil)

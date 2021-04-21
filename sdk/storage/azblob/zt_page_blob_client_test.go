@@ -243,7 +243,7 @@ func waitForIncrementalCopy(c *chk.C, copyBlobClient PageBlobClient, blobCopyRes
 	var getPropertiesAndMetadataResult BlobGetPropertiesResponse
 	// Wait for the copy to finish
 	start := time.Now()
-	for status != CopyStatusTypeSuccess {
+	for status != CopyStatusSuccess {
 		getPropertiesAndMetadataResult, _ = copyBlobClient.GetProperties(ctx, nil)
 		status = *getPropertiesAndMetadataResult.CopyStatus
 		currentTime := time.Now()
@@ -259,7 +259,7 @@ func (s *aztestsSuite) TestIncrementalCopy(c *chk.C) {
 
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
-	accessType := PublicAccessTypeBlob
+	accessType := PublicAccessBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
 	}
@@ -290,7 +290,7 @@ func (s *aztestsSuite) TestIncrementalCopy(c *chk.C) {
 	c.Assert(resp.Date, chk.NotNil)
 	c.Assert((*resp.Date).IsZero(), chk.Equals, false)
 	c.Assert(*resp.CopyID, chk.Not(chk.Equals), "")
-	c.Assert(*resp.CopyStatus, chk.Equals, CopyStatusTypePending)
+	c.Assert(*resp.CopyStatus, chk.Equals, CopyStatusPending)
 
 	waitForIncrementalCopy(c, dstBlob, &resp)
 }
@@ -322,7 +322,7 @@ func (s *aztestsSuite) TestPageSequenceNumbers(c *chk.C) {
 	defer deleteContainer(c, containerClient)
 
 	sequenceNumber := int64(0)
-	actionType := SequenceNumberActionTypeIncrement
+	actionType := SequenceNumberActionIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
@@ -332,7 +332,7 @@ func (s *aztestsSuite) TestPageSequenceNumbers(c *chk.C) {
 	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
 
 	sequenceNumber = int64(7)
-	actionType = SequenceNumberActionTypeMax
+	actionType = SequenceNumberActionMax
 	updateSequenceNumberPageBlob = UpdateSequenceNumberPageBlob{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
@@ -342,7 +342,7 @@ func (s *aztestsSuite) TestPageSequenceNumbers(c *chk.C) {
 	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
 
 	sequenceNumber = int64(11)
-	actionType = SequenceNumberActionTypeUpdate
+	actionType = SequenceNumberActionUpdate
 	updateSequenceNumberPageBlob = UpdateSequenceNumberPageBlob{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
@@ -991,7 +991,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse(c *chk.C) {
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	sequenceNumber := int64(10)
-	actionType := SequenceNumberActionTypeUpdate
+	actionType := SequenceNumberActionUpdate
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
@@ -1042,7 +1042,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTETrue(c *chk.C) {
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	sequenceNumber := int64(1)
-	actionType := SequenceNumberActionTypeUpdate
+	actionType := SequenceNumberActionUpdate
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
@@ -1072,7 +1072,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse(c *chk.C) {
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	sequenceNumber := int64(10)
-	actionType := SequenceNumberActionTypeUpdate
+	actionType := SequenceNumberActionUpdate
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
@@ -1123,7 +1123,7 @@ func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualTrue(c *chk.C) {
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	sequenceNumber := int64(1)
-	actionType := SequenceNumberActionTypeUpdate
+	actionType := SequenceNumberActionUpdate
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
@@ -1390,7 +1390,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse(c *chk.C)
 	defer deleteContainer(c, containerClient)
 
 	sequenceNumber := int64(10)
-	actionType := SequenceNumberActionTypeUpdate
+	actionType := SequenceNumberActionUpdate
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
@@ -1447,7 +1447,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberLTEFalse(c *chk.C) {
 	defer deleteContainer(c, containerClient)
 
 	sequenceNumber := int64(10)
-	actionType := SequenceNumberActionTypeUpdate
+	actionType := SequenceNumberActionUpdate
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
@@ -1488,7 +1488,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualTrue(c *chk.C) {
 	defer deleteContainer(c, containerClient)
 
 	sequenceNumber := int64(10)
-	actionType := SequenceNumberActionTypeUpdate
+	actionType := SequenceNumberActionUpdate
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
@@ -1513,7 +1513,7 @@ func (s *aztestsSuite) TestBlobClearPagesIfSequenceNumberEqualFalse(c *chk.C) {
 	defer deleteContainer(c, containerClient)
 
 	sequenceNumber := int64(10)
-	actionType := SequenceNumberActionTypeUpdate
+	actionType := SequenceNumberActionUpdate
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
@@ -2221,7 +2221,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberActionTypeInvalid(c *chk.C) {
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	sequenceNumber := int64(1)
-	actionType := SequenceNumberActionType("garbage")
+	actionType := SequenceNumberAction("garbage")
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
@@ -2243,7 +2243,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberSequenceNumberInvalid(c *chk.C) 
 	}()
 
 	sequenceNumber := int64(-1)
-	actionType := SequenceNumberActionTypeUpdate
+	actionType := SequenceNumberActionUpdate
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		BlobSequenceNumber: &sequenceNumber,
 		ActionType:         &actionType,
@@ -2269,7 +2269,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue(c *chk.C) {
 
 	currentTime := getRelativeTimeGMT(-10)
 
-	actionType := SequenceNumberActionTypeIncrement
+	actionType := SequenceNumberActionIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
 		BlobAccessConditions: BlobAccessConditions{
@@ -2292,7 +2292,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse(c *chk.C) {
 
 	currentTime := getRelativeTimeGMT(10)
 
-	actionType := SequenceNumberActionTypeIncrement
+	actionType := SequenceNumberActionIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
 		BlobAccessConditions: BlobAccessConditions{
@@ -2315,7 +2315,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue(c *chk.C) 
 
 	currentTime := getRelativeTimeGMT(10)
 
-	actionType := SequenceNumberActionTypeIncrement
+	actionType := SequenceNumberActionIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
 		BlobAccessConditions: BlobAccessConditions{
@@ -2338,7 +2338,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse(c *chk.C)
 
 	currentTime := getRelativeTimeGMT(-10)
 
-	actionType := SequenceNumberActionTypeIncrement
+	actionType := SequenceNumberActionIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
 		BlobAccessConditions: BlobAccessConditions{
@@ -2361,7 +2361,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfMatchTrue(c *chk.C) {
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
-	actionType := SequenceNumberActionTypeIncrement
+	actionType := SequenceNumberActionIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
 		BlobAccessConditions: BlobAccessConditions{
@@ -2383,7 +2383,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfMatchFalse(c *chk.C) {
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	eTag := "garbage"
-	actionType := SequenceNumberActionTypeIncrement
+	actionType := SequenceNumberActionIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
 		BlobAccessConditions: BlobAccessConditions{
@@ -2405,7 +2405,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfNoneMatchTrue(c *chk.C) {
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	eTag := "garbage"
-	actionType := SequenceNumberActionTypeIncrement
+	actionType := SequenceNumberActionIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
 		BlobAccessConditions: BlobAccessConditions{
@@ -2428,7 +2428,7 @@ func (s *aztestsSuite) TestBlobSetSequenceNumberIfNoneMatchFalse(c *chk.C) {
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
-	actionType := SequenceNumberActionTypeIncrement
+	actionType := SequenceNumberActionIncrement
 	updateSequenceNumberPageBlob := UpdateSequenceNumberPageBlob{
 		ActionType: &actionType,
 		BlobAccessConditions: BlobAccessConditions{
@@ -2447,7 +2447,7 @@ func setupStartIncrementalCopyTest(c *chk.C) (containerClient ContainerClient, p
 	bsu := getBSU()
 	containerClient, _ = createNewContainer(c, bsu)
 
-	accessType := PublicAccessTypeBlob
+	accessType := PublicAccessBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
 		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
 	}

@@ -353,7 +353,7 @@ func ExampleContainerClient_SetAccessPolicy() {
 		log.Fatal(err)
 	}
 	if get.StatusCode == http.StatusNotFound {
-		_, err := container.SetAccessPolicy(ctx, &SetAccessPolicyOptions{ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: PublicAccessTypeBlob.ToPtr()}})
+		_, err := container.SetAccessPolicy(ctx, &SetAccessPolicyOptions{ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: PublicAccessBlob.ToPtr()}})
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -657,7 +657,7 @@ func ExampleBlockBlobClient() {
 	}
 
 	// For the blob, show each block (ID and size) that is a committed part of it.
-	getBlock, err := BlobClient.GetBlockList(ctx, BlockListTypeAll, nil)
+	getBlock, err := BlobClient.GetBlockList(ctx, BlockListAll, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -877,7 +877,7 @@ func Example_blobSnapshots() {
 	// DeleteSnapshotsOptionOnly deletes all the base blob's snapshots but not the base blob itself
 	// DeleteSnapshotsOptionInclude deletes the base blob & all its snapshots.
 	// DeleteSnapshotOptionNone produces an error if the base blob has any snapshots.
-	_, err = baseBlobClient.Delete(ctx, &DeleteBlobOptions{DeleteSnapshots: DeleteSnapshotsOptionTypeInclude.ToPtr()})
+	_, err = baseBlobClient.Delete(ctx, &DeleteBlobOptions{DeleteSnapshots: DeleteSnapshotsOptionInclude.ToPtr()})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -960,7 +960,7 @@ func ExampleBlobClient_startCopy() {
 
 	copyID := *startCopy.CopyID
 	copyStatus := *startCopy.CopyStatus
-	for copyStatus == CopyStatusTypePending {
+	for copyStatus == CopyStatusPending {
 		time.Sleep(time.Second * 2)
 		getMetadata, err := blobClient.GetProperties(ctx, nil)
 		if err != nil {

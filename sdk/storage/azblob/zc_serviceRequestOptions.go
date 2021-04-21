@@ -53,18 +53,18 @@ type ListContainersDetail struct {
 }
 
 // string produces the Include query parameter's value.
-func (d *ListContainersDetail) pointers() *[]ListContainersIncludeType {
+func (d *ListContainersDetail) pointers() *[]ListContainersInclude {
 	if d.Metadata == false && d.Deleted == false {
 		return nil
 	}
 
-	items := make([]ListContainersIncludeType, 0, 2)
+	items := make([]ListContainersInclude, 0, 2)
 	// NOTE: Multiple strings MUST be appended in alphabetic order or signing the string for authentication fails!
 	if d.Deleted {
-		items = append(items, ListContainersIncludeTypeDeleted)
+		items = append(items, ListContainersIncludeDeleted)
 	}
 	if d.Metadata {
-		items = append(items, ListContainersIncludeTypeMetadata)
+		items = append(items, ListContainersIncludeMetadata)
 	}
 	return &items
 }

@@ -233,7 +233,7 @@ func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPK(c *chk.C) {
 	c.Assert(stageResp2.Date.IsZero(), chk.Equals, false)
 
 	// Check block list.
-	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
+	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(blockList.BlockList, chk.NotNil)
@@ -257,7 +257,7 @@ func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPK(c *chk.C) {
 	c.Assert((*listResp.Date).IsZero(), chk.Equals, false)
 
 	// Check block list.
-	blockList, err = destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
+	blockList, err = destBlob.GetBlockList(context.Background(), BlockListAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(blockList.BlockList, chk.NotNil)
@@ -344,7 +344,7 @@ func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPKWithScope(c *chk.C) {
 	c.Assert(stageResp2.Date.IsZero(), chk.Equals, false)
 
 	// Check block list.
-	blockList, err := destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
+	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(blockList.BlockList, chk.NotNil)
@@ -368,7 +368,7 @@ func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPKWithScope(c *chk.C) {
 	c.Assert((*listResp.Date).IsZero(), chk.Equals, false)
 
 	// Check block list.
-	blockList, err = destBlob.GetBlockList(context.Background(), BlockListTypeAll, nil)
+	blockList, err = destBlob.GetBlockList(context.Background(), BlockListAll, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 	c.Assert(blockList.BlockList, chk.NotNil)

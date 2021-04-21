@@ -11,7 +11,7 @@ import (
 type DeleteBlobOptions struct {
 	// Required if the blob has associated snapshots. Specify one of the following two options: include: Delete the base blob
 	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
-	DeleteSnapshots *DeleteSnapshotsOptionType
+	DeleteSnapshots *DeleteSnapshotsOption
 
 	LeaseAccessConditions    *LeaseAccessConditions
 	ModifiedAccessConditions *ModifiedAccessConditions

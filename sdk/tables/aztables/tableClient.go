@@ -5,70 +5,35 @@ package aztables
 
 import (
 	"context"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 )
 
 // A TableClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
 type TableClient struct {
-	client  *tableClient
-	service *TableServiceClient
-	cred    SharedKeyCredential
-	name    string
+	client *tableClient
+	cred   SharedKeyCredential
 }
 
 // NewTableClient creates a TableClient object using the specified URL and request policy pipeline.
-func NewTableClient(tableName string, serviceURL string, cred azcore.Credential, options *TableClientOptions) (*TableClient, error) {
-	s, err := NewTableServiceClient(serviceURL, cred, options)
-	return s.GetTableClient(tableName), err
+func NewTableClient(serviceURL string, cred azcore.Credential, options *TableClientOptions) (*TableClient, error) {
+	con := newConnection(serviceURL, cred, options.getConnectionOptions())
+
+	c, _ := cred.(*SharedKeyCredential)
+
+	return &TableClient{client: &tableClient{con}, cred: *c}, nil
 }
 
-func (t *TableClient) Name() string {
-	return t.name
-}
-
-// Create creates the table with the name specified in NewTableClient
-func (t *TableClient) Create(ctx context.Context) (*TableResponseResponse, *runtime.ResponseError) {
-	return t.service.Create(ctx, t.name)
-}
-
-// Delete deletes the current table
-func (t *TableClient) Delete(ctx context.Context) (*TableDeleteResponse, *runtime.ResponseError) {
-	return t.service.Delete(ctx, t.name)
-}
-
-// Query queries the tables using the specified QueryOptions
-func (t *TableClient) Query(queryOptions QueryOptions) TableEntityQueryResponsePager {
-	return &tableEntityQueryResponsePager{tableClient: t, queryOptions: &queryOptions, tableQueryOptions: &TableQueryEntitiesOptions{}}
-}
-
-func (t *TableClient) QueryAsStruct(opt QueryOptions, s FromMapper) StructEntityQueryResponsePager {
-	return &structQueryResponsePager{mapper: s, tableClient: t, queryOptions: &opt, tableQueryOptions: &TableQueryEntitiesOptions{}}
-}
-
-// AddMapEntity Creates an entity from a map value.
-func (t *TableClient) AddMapEntity(ctx context.Context, entity *map[string]interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
-	resp, err := t.client.InsertEntity(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
-	if err == nil {
-		insertResp := resp.(TableInsertEntityResponse)
-		return &insertResp, nil
+// Create
+func (t TableClient) Create(ctx context.Context, name string) (TableResponseResponse, error) {
+	resp, err := t.client.Create(ctx, TableProperties{&name}, nil, nil)
+	if resp == nil {
+		return TableResponseResponse{}, err
 	} else {
-		return nil, convertErr(err)
+		return resp.(TableResponseResponse), err
 	}
 }
 
-// AddEntity creates an entity from an arbitrary struct value.
-func (t *TableClient) AddEntity(ctx context.Context, entity interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
-	entmap, err := toMap(entity)
-	if err != nil {
-		return nil, azcore.NewResponseError(err, nil).(*runtime.ResponseError)
-	}
-	resp, err := t.client.InsertEntity(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: entmap, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
-	if err == nil {
-		insertResp := resp.(TableInsertEntityResponse)
-		return &insertResp, nil
-	} else {
-		return nil, convertErr(err)
-	}
+// Delete
+func (t TableClient) Delete(ctx context.Context, name string) (TableDeleteResponse, error) {
+	return t.client.Delete(ctx, name, nil)
 }

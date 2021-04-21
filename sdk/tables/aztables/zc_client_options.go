@@ -23,7 +23,7 @@ func (o *TableClientOptions) getConnectionOptions() *connectionOptions {
 
 	return &connectionOptions{
 		HTTPClient: o.HTTPClient,
-		Retry:      o.Retry,
-		Telemetry:  o.Telemetry,
+		Retry: o.Retry,
+		Telemetry: o.Telemetry,
 	}
 }

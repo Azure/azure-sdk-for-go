@@ -9,11 +9,28 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
+// UsernamePasswordCredentialOptions can be used to provide additional information to configure the UsernamePasswordCredential.
+// Use these options to modify the default pipeline behavior through the TokenCredentialOptions.
+// All zero-value fields will be initialized with their default values.
+type UsernamePasswordCredentialOptions struct {
+	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
+	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
+	AuthorityHost string
+	// HTTPClient sets the transport for making HTTP requests
+	// Leave this as nil to use the default HTTP transport
+	HTTPClient azcore.Transport
+	// Retry configures the built-in retry policy behavior
+	Retry azcore.RetryOptions
+	// Telemetry configures the built-in telemetry policy behavior
+	Telemetry azcore.TelemetryOptions
+	// Logging configures the built-in logging policy behavior.
+	Logging azcore.LogOptions
+}
+
 // UsernamePasswordCredential enables authentication to Azure Active Directory using a user's  username and password. If the user has MFA enabled this
 // credential will fail to get a token returning an AuthenticationFailureError. Also, this credential requires a high degree of trust and is not
 // recommended outside of prototyping when more secure credentials can be used.
 type UsernamePasswordCredential struct {
-	azcore.TokenCredential
 	client   *aadIdentityClient
 	tenantID string // Gets the Azure Active Directory tenant (directory) ID of the service principal
 	clientID string // Gets the client (application) ID of the service principal
@@ -27,9 +44,19 @@ type UsernamePasswordCredential struct {
 // clientID: The client (application) ID of the service principal.
 // username: A user's account username
 // password: A user's account password
-// options: TokenCredentialOptions used to configure the pipeline for the requests sent to Azure Active Directory.
-func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *TokenCredentialOptions) (*UsernamePasswordCredential, error) {
-	c, err := newAADIdentityClient(options)
+// options: UsernamePasswordCredentialOptions used to configure the pipeline for the requests sent to Azure Active Directory.
+func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *UsernamePasswordCredentialOptions) (*UsernamePasswordCredential, error) {
+	if !validTenantID(tenantID) {
+		return nil, &CredentialUnavailableError{credentialType: "Username Password Credential", message: tenantIDValidationErr}
+	}
+	if options == nil {
+		options = &UsernamePasswordCredentialOptions{}
+	}
+	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	if err != nil {
+		return nil, err
+	}
+	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
 	if err != nil {
 		return nil, err
 	}
@@ -43,10 +70,10 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	tk, err := c.client.authenticateUsernamePassword(ctx, c.tenantID, c.clientID, c.username, c.password, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Username Password Credential", err)
+		addGetTokenFailureLogs("Username Password Credential", err, true)
 		return nil, err
 	}
-	azcore.Log().Write(LogCredential, logGetTokenSuccess(c, opts))
+	logGetTokenSuccess(c, opts)
 	return tk, err
 }
 

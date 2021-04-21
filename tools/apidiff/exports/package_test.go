@@ -1,16 +1,5 @@
-// Copyright 2018 Microsoft Corporation
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package exports_test
 
@@ -73,8 +62,8 @@ func Test_Funcs(t *testing.T) {
 		{"DoNothing", exports.Func{}},
 		{"DoNothingWithParam", exports.Func{Params: strPtr("int"), Returns: nil}},
 		{"UserAgent", exports.Func{Params: nil, Returns: strPtr("string")}},
-		{"Client.Delete", exports.Func{Params: strPtr("context.Context,string,string"), Returns: strPtr("DeleteFuture,error")}},
-		{"Client.ListSender", exports.Func{Params: strPtr("*http.Request"), Returns: strPtr("*http.Response,error")}},
+		{"Client.Delete", exports.Func{Params: strPtr("context.Context, string, string"), Returns: strPtr("DeleteFuture, error")}},
+		{"Client.ListSender", exports.Func{Params: strPtr("*http.Request"), Returns: strPtr("*http.Response, error")}},
 	}
 
 	for _, test := range tests {
@@ -121,8 +110,8 @@ func Test_Interfaces(t *testing.T) {
 					Returns: strPtr("error"),
 				},
 				"Five": {
-					Params:  strPtr("int,bool"),
-					Returns: strPtr("int,error"),
+					Params:  strPtr("int, bool"),
+					Returns: strPtr("int, error"),
 				},
 			},
 		}},

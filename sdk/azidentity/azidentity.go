@@ -4,9 +4,12 @@
 package azidentity
 
 import (
+	"errors"
 	"net/http"
 	"net/url"
 	"os"
+	"path"
+	"regexp"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -24,6 +27,8 @@ const (
 	// defaultSuffix is a suffix the signals that a string is in scope format
 	defaultSuffix = "/.default"
 )
+
+const tenantIDValidationErr = "Invalid tenantID provided. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names."
 
 var (
 	successStatusCodes = [2]int{
@@ -44,7 +49,7 @@ type AADAuthenticationFailedError struct {
 	Timestamp     string `json:"timestamp"`
 	TraceID       string `json:"trace_id"`
 	CorrelationID string `json:"correlation_id"`
-	URI           string `json:"error_uri"`
+	URL           string `json:"error_uri"`
 	Response      *azcore.Response
 }
 
@@ -67,17 +72,21 @@ func (e *AuthenticationFailedError) Unwrap() error {
 	return e.inner
 }
 
-// IsNotRetriable returns true indicating that this is a terminal error.
-func (e *AuthenticationFailedError) IsNotRetriable() bool {
-	return true
+// NonRetriable indicates that this error should not be retried.
+func (e *AuthenticationFailedError) NonRetriable() {
+	// marker method
 }
 
 func (e *AuthenticationFailedError) Error() string {
-	if len(e.msg) == 0 {
-		e.msg = e.inner.Error()
+	if e.inner == nil {
+		return e.msg
+	} else if e.msg == "" {
+		return e.inner.Error()
 	}
-	return e.msg
+	return e.msg + " details: " + e.inner.Error()
 }
+
+var _ azcore.NonRetriableError = (*AuthenticationFailedError)(nil)
 
 func newAADAuthenticationFailedError(resp *azcore.Response) error {
 	authFailed := &AADAuthenticationFailedError{Response: resp}
@@ -93,95 +102,76 @@ func newAADAuthenticationFailedError(resp *azcore.Response) error {
 // create a credential do not exist or are unavailable.
 type CredentialUnavailableError struct {
 	// CredentialType holds the name of the credential that is unavailable
-	CredentialType string
+	credentialType string
 	// Message contains the reason why the credential is unavailable
-	Message string
+	message string
 }
 
 func (e *CredentialUnavailableError) Error() string {
-	return e.CredentialType + ": " + e.Message
+	return e.credentialType + ": " + e.message
 }
 
-// IsNotRetriable returns true indicating that this is a terminal error.
-func (e *CredentialUnavailableError) IsNotRetriable() bool {
-	return true
+// NonRetriable indicates that this error should not be retried.
+func (e *CredentialUnavailableError) NonRetriable() {
+	// marker method
 }
 
-// TokenCredentialOptions are used to configure how requests are made to Azure Active Directory.
-type TokenCredentialOptions struct {
-	// The host of the Azure Active Directory authority. The default is https://login.microsoft.com
-	AuthorityHost *url.URL
+var _ azcore.NonRetriableError = (*CredentialUnavailableError)(nil)
 
+// pipelineOptions are used to configure how requests are made to Azure Active Directory.
+type pipelineOptions struct {
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
 	HTTPClient azcore.Transport
 
-	// LogOptions configures the built-in request logging policy behavior
-	LogOptions azcore.RequestLogOptions
-
 	// Retry configures the built-in retry policy behavior
-	Retry *azcore.RetryOptions
+	Retry azcore.RetryOptions
 
 	// Telemetry configures the built-in telemetry policy behavior
 	Telemetry azcore.TelemetryOptions
+
+	// Logging configures the built-in logging policy behavior.
+	Logging azcore.LogOptions
 }
 
-// setDefaultValues initializes an instance of TokenCredentialOptions with default settings.
-func (c *TokenCredentialOptions) setDefaultValues() (*TokenCredentialOptions, error) {
-	authorityHost := AzurePublicCloud
-	if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {
-		authorityHost = envAuthorityHost
-	}
-
-	if c == nil {
-		defaultAuthorityHostURL, err := url.Parse(authorityHost)
-		if err != nil {
-			return nil, err
+// setAuthorityHost initializes the authority host for credentials.
+func setAuthorityHost(authorityHost string) (string, error) {
+	if authorityHost == "" {
+		authorityHost = AzurePublicCloud
+		// NOTE: we only allow overriding the authority host if no host was specified
+		if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {
+			authorityHost = envAuthorityHost
 		}
-		c = &TokenCredentialOptions{AuthorityHost: defaultAuthorityHostURL}
 	}
-
-	if c.AuthorityHost == nil {
-		defaultAuthorityHostURL, err := url.Parse(authorityHost)
-		if err != nil {
-			return nil, err
-		}
-		c.AuthorityHost = defaultAuthorityHostURL
+	u, err := url.Parse(authorityHost)
+	if err != nil {
+		return "", err
 	}
-
-	if len(c.AuthorityHost.Path) == 0 || c.AuthorityHost.Path[len(c.AuthorityHost.Path)-1:] != "/" {
-		c.AuthorityHost.Path = c.AuthorityHost.Path + "/"
+	if u.Scheme != "https" {
+		return "", errors.New("cannot use an authority host without https")
 	}
-
-	return c, nil
+	return authorityHost, nil
 }
 
 // newDefaultPipeline creates a pipeline using the specified pipeline options.
-func newDefaultPipeline(o TokenCredentialOptions) azcore.Pipeline {
-	if o.HTTPClient == nil {
-		o.HTTPClient = azcore.DefaultHTTPClientTransport()
-	}
-
+func newDefaultPipeline(o pipelineOptions) azcore.Pipeline {
 	return azcore.NewPipeline(
 		o.HTTPClient,
-		azcore.NewTelemetryPolicy(o.Telemetry),
-		azcore.NewUniqueRequestIDPolicy(),
-		azcore.NewRetryPolicy(o.Retry),
-		azcore.NewRequestLogPolicy(o.LogOptions))
+		azcore.NewTelemetryPolicy(&o.Telemetry),
+		azcore.NewRetryPolicy(&o.Retry),
+		azcore.NewLogPolicy(&o.Logging))
 }
 
 // newDefaultMSIPipeline creates a pipeline using the specified pipeline options needed
 // for a Managed Identity, such as a MSI specific retry policy.
 func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
-	if o.HTTPClient == nil {
-		o.HTTPClient = azcore.DefaultHTTPClientTransport()
-	}
 	var statusCodes []int
 	// retry policy for MSI is not end-user configurable
 	retryOpts := azcore.RetryOptions{
-		MaxRetries: 4,
-		RetryDelay: 2 * time.Second,
-		TryTimeout: 1 * time.Minute,
+		MaxRetries:    5,
+		MaxRetryDelay: 1 * time.Minute,
+		RetryDelay:    2 * time.Second,
+		TryTimeout:    1 * time.Minute,
 		StatusCodes: append(statusCodes,
 			// The following status codes are a subset of those found in azcore.StatusCodesForRetry, these are the only ones specifically needed for MSI scenarios
 			http.StatusRequestTimeout,      // 408
@@ -189,22 +179,47 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 			http.StatusInternalServerError, // 500
 			http.StatusBadGateway,          // 502
 			http.StatusGatewayTimeout,      // 504
-			http.StatusNotFound,
-			http.StatusGone,
+			http.StatusNotFound,            //404
+			http.StatusGone,                //410
 			// all remaining 5xx
-			http.StatusNotImplemented,
-			http.StatusHTTPVersionNotSupported,
-			http.StatusVariantAlsoNegotiates,
-			http.StatusInsufficientStorage,
-			http.StatusLoopDetected,
-			http.StatusNotExtended,
-			http.StatusNetworkAuthenticationRequired),
+			http.StatusNotImplemented,                 // 501
+			http.StatusHTTPVersionNotSupported,        // 505
+			http.StatusVariantAlsoNegotiates,          // 506
+			http.StatusInsufficientStorage,            // 507
+			http.StatusLoopDetected,                   // 508
+			http.StatusNotExtended,                    // 510
+			http.StatusNetworkAuthenticationRequired), // 511
 	}
-
+	if o.Telemetry.Value == "" {
+		o.Telemetry.Value = UserAgent
+	} else {
+		o.Telemetry.Value += " " + UserAgent
+	}
 	return azcore.NewPipeline(
 		o.HTTPClient,
-		azcore.NewTelemetryPolicy(o.Telemetry),
-		azcore.NewUniqueRequestIDPolicy(),
+		azcore.NewTelemetryPolicy(&o.Telemetry),
 		azcore.NewRetryPolicy(&retryOpts),
-		azcore.NewRequestLogPolicy(o.LogOptions))
+		azcore.NewLogPolicy(&o.Logging))
+}
+
+// validTenantID return true is it receives a valid tenantID, returns false otherwise
+func validTenantID(tenantID string) bool {
+	match, err := regexp.MatchString("^[0-9a-zA-Z-.]+$", tenantID)
+	if err != nil {
+		return false
+	}
+	return match
+}
+
+// tokenEndpoint takes a given path and appends "/token" to the end of the path
+func tokenEndpoint(p string) string {
+	return path.Join(p, "/token")
+}
+
+// oauthPath returns the oauth path for AAD or ADFS
+func oauthPath(tenantID string) string {
+	if tenantID == "adfs" {
+		return "/oauth2"
+	}
+	return "/oauth2/v2.0"
 }

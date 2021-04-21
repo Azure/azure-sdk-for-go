@@ -1,16 +1,5 @@
-// Copyright 2018 Microsoft Corporation
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package cmd
 
@@ -23,9 +12,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/ioext"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/ioext"
 )
 
 func printf(format string, a ...interface{}) {
@@ -64,64 +53,8 @@ func vprintln(a ...interface{}) {
 	}
 }
 
-// represents a collection of per-package reports, one for each commit hash
-type commitPkgReport struct {
-	BreakingChanges []string                  `json:"breakingChanges,omitempty"`
-	CommitsReports  map[string]report.Package `json:"deltas"`
-}
-
-// returns true if the report contains no data
-func (c commitPkgReport) IsEmpty() bool {
-	for _, rpt := range c.CommitsReports {
-		if !rpt.IsEmpty() {
-			return false
-		}
-	}
-	return true
-}
-
-// returns true if the report contains breaking changes
-func (c commitPkgReport) hasBreakingChanges() bool {
-	for _, r := range c.CommitsReports {
-		if r.HasBreakingChanges() {
-			return true
-		}
-	}
-	return false
-}
-
-// returns true if the report contains additive changes
-func (c commitPkgReport) hasAdditiveChanges() bool {
-	for _, r := range c.CommitsReports {
-		if r.HasAdditiveChanges() {
-			return true
-		}
-	}
-	return false
-}
-
-type reportInfo interface {
-	IsEmpty() bool
-}
-
-func printReport(r reportInfo) error {
-	if r.IsEmpty() {
-		println("no changes were found")
-		return nil
-	}
-
-	if !suppressReport {
-		b, err := json.MarshalIndent(r, "", "  ")
-		if err != nil {
-			return fmt.Errorf("failed to marshal report: %v", err)
-		}
-		println(string(b))
-	}
-	return nil
-}
-
 func processArgsAndClone(args []string) (cln repo.WorkingTree, err error) {
-	if onlyAdditionsFlag && onlyBreakingChangesFlag {
+	if onlyAdditiveChangesFlag && onlyBreakingChangesFlag {
 		err = errors.New("flags 'additions' and 'breakingchanges' are mutually exclusive")
 		return
 	}
@@ -224,18 +157,30 @@ func generateReports(args []string, cln repo.WorkingTree, fn reportGenFunc) erro
 	return nil
 }
 
-type reportStatus interface {
-	HasBreakingChanges() bool
-	HasAdditiveChanges() bool
-}
-
 // compares report status with the desired report options (breaking/additions)
 // to determine if the program should terminate with a non-zero exit code.
-func evalReportStatus(r reportStatus) {
+func evalReportStatus(r report.Status) {
 	if onlyBreakingChangesFlag && r.HasBreakingChanges() {
 		os.Exit(1)
 	}
-	if onlyAdditionsFlag && !r.HasAdditiveChanges() {
+	if onlyAdditiveChangesFlag && !r.HasAdditiveChanges() {
 		os.Exit(1)
 	}
+}
+
+// PrintReport prints the report to stdout
+func PrintReport(r report.Status) error {
+	if r.IsEmpty() {
+		println("no changes were found")
+		return nil
+	}
+
+	if !suppressReport {
+		b, err := json.MarshalIndent(r, "", "  ")
+		if err != nil {
+			return fmt.Errorf("failed to marshal report: %v", err)
+		}
+		println(string(b))
+	}
+	return nil
 }

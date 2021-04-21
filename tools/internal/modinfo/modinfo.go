@@ -1,16 +1,5 @@
-// Copyright 2018 Microsoft Corporation
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package modinfo
 
@@ -127,7 +116,7 @@ func GetModuleInfo(baseline, staged string) (Provider, error) {
 	lhs, err := exports.Get(baseline)
 	if err != nil {
 		// if baseline has no content then this is a v1 package
-		if ei, ok := err.(exports.LoadPackageErrorInfo); !ok || ei.PkgCount() != 0 {
+		if ei, ok := err.(exports.LoadPackageErrorInfo); !ok || len(ei.Packages()) != 0 {
 			return nil, fmt.Errorf("failed to get exports for package '%s': %s", baseline, err)
 		}
 	}
@@ -204,7 +193,7 @@ func (m module) NewModule() bool {
 
 // GenerateReport generates a package report for the module.
 func (m module) GenerateReport() report.Package {
-	return report.Generate(m.lhs, m.rhs, false, false)
+	return report.Generate(m.lhs, m.rhs, nil)
 }
 
 // IsValidModuleVersion returns true if the provided string is a valid module version (e.g. v1.2.3).

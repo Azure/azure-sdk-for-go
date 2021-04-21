@@ -4,7 +4,6 @@
 package azidentity
 
 import (
-	"context"
 	"net/http"
 	"sync"
 	"time"
@@ -43,7 +42,7 @@ func newBearerTokenPolicy(creds azcore.TokenCredential, opts azcore.Authenticati
 	}
 }
 
-func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcore.Response, error) {
+func (b *bearerTokenPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
 	if req.URL.Scheme != "https" {
 		// HTTPS must be used, otherwise the tokens are at the risk of being exposed
 		return nil, &AuthenticationFailedError{msg: "token credentials require a URL using the HTTPS protocol scheme"}
@@ -87,21 +86,27 @@ func (b *bearerTokenPolicy) Do(ctx context.Context, req *azcore.Request) (*azcor
 	b.cond.L.Unlock()
 	if getToken {
 		// this go routine has been elected to refresh the token
-		tk, err := b.creds.GetToken(ctx, b.options)
+		tk, err := b.creds.GetToken(req.Context(), b.options)
+		// update shared state
+		b.cond.L.Lock()
+		// to avoid a deadlock if GetToken() fails we MUST reset b.renewing to false before returning
+		b.renewing = false
 		if err != nil {
+			b.unlock()
 			return nil, err
 		}
 		header = bearerTokenPrefix + tk.Token
-		// update shared state
-		b.cond.L.Lock()
-		b.renewing = false
 		b.header = header
 		b.expiresOn = tk.ExpiresOn
-		// signal any waiters that the token has been refreshed
-		b.cond.Broadcast()
-		b.cond.L.Unlock()
+		b.unlock()
 	}
 	req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
 	req.Request.Header.Set(azcore.HeaderAuthorization, header)
-	return req.Next(ctx)
+	return req.Next()
+}
+
+// signal any waiters that the token has been refreshed
+func (b *bearerTokenPolicy) unlock() {
+	b.cond.Broadcast()
+	b.cond.L.Unlock()
 }

@@ -22,8 +22,16 @@ import (
 type AzureCLITokenProvider func(ctx context.Context, resource string) ([]byte, error)
 
 // AzureCLICredentialOptions contains options used to configure the AzureCLICredential
+// All zero-value fields will be initialized with their default values.
 type AzureCLICredentialOptions struct {
 	TokenProvider AzureCLITokenProvider
+}
+
+// init returns an instance of AzureCLICredentialOptions initialized with default values.
+func (o *AzureCLICredentialOptions) init() {
+	if o.TokenProvider == nil {
+		o.TokenProvider = defaultTokenProvider()
+	}
 }
 
 // AzureCLICredential enables authentication to Azure Active Directory using the Azure CLI command "az account get-access-token".
@@ -34,11 +42,13 @@ type AzureCLICredential struct {
 // NewAzureCLICredential constructs a new AzureCLICredential with the details needed to authenticate against Azure Active Directory
 // options: configure the management of the requests sent to Azure Active Directory.
 func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredential, error) {
-	if options == nil {
-		options = &AzureCLICredentialOptions{TokenProvider: defaultTokenProvider()}
+	cp := AzureCLICredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
+	cp.init()
 	return &AzureCLICredential{
-		tokenProvider: options.TokenProvider,
+		tokenProvider: cp.TokenProvider,
 	}, nil
 }
 
@@ -51,15 +61,14 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequ
 	opts.Scopes[0] = strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
 	at, err := c.authenticate(ctx, opts.Scopes[0])
 	if err != nil {
-		addGetTokenFailureLogs("Azure CLI Credential", err)
+		addGetTokenFailureLogs("Azure CLI Credential", err, true)
 		return nil, err
 	}
-	azcore.Log().Write(LogCredential, logGetTokenSuccess(c, opts))
+	logGetTokenSuccess(c, opts)
 	return at, nil
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential and calls the Bearer Token policy
-// to get the bearer token.
+// AuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.
 func (c *AzureCLICredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
 	return newBearerTokenPolicy(c, options)
 }
@@ -122,7 +131,12 @@ func defaultTokenProvider() func(ctx context.Context, resource string) ([]byte, 
 
 		output, err := cliCmd.Output()
 		if err != nil {
-			return nil, &CredentialUnavailableError{CredentialType: "Azure CLI Credential", Message: stderr.String()}
+			msg := stderr.String()
+			if msg == "" {
+				// if there's no output in stderr report the error message instead
+				msg = err.Error()
+			}
+			return nil, &CredentialUnavailableError{credentialType: "Azure CLI Credential", message: msg}
 		}
 
 		return output, nil

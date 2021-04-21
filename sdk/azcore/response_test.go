@@ -19,8 +19,12 @@ func TestResponseUnmarshalXML(t *testing.T) {
 	defer close()
 	// include UTF8 BOM
 	srv.SetResponse(mock.WithBody([]byte("\xef\xbb\xbf<testXML><SomeInt>1</SomeInt><SomeString>s</SomeString></testXML>")))
-	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
-	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
+	pl := NewPipeline(srv)
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -40,8 +44,12 @@ func TestResponseFailureStatusCode(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusForbidden))
-	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
-	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
+	pl := NewPipeline(srv)
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -54,8 +62,38 @@ func TestResponseUnmarshalJSON(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(`{ "someInt": 1, "someString": "s" }`)))
-	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
-	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
+	pl := NewPipeline(srv)
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	var tx testJSON
+	if err := resp.UnmarshalAsJSON(&tx); err != nil {
+		t.Fatalf("unexpected error unmarshalling: %v", err)
+	}
+	if tx.SomeInt != 1 || tx.SomeString != "s" {
+		t.Fatal("unexpected value")
+	}
+}
+
+func TestResponseUnmarshalJSONskipDownload(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithBody([]byte(`{ "someInt": 1, "someString": "s" }`)))
+	pl := NewPipeline(srv)
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	req.SkipBodyDownload()
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -75,8 +113,12 @@ func TestResponseUnmarshalJSONNoBody(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte{}))
-	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
-	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
+	pl := NewPipeline(srv)
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -92,8 +134,12 @@ func TestResponseUnmarshalXMLNoBody(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte{}))
-	pl := NewPipeline(srv, NewTelemetryPolicy(TelemetryOptions{}))
-	resp, err := pl.Do(context.Background(), NewRequest(http.MethodGet, srv.URL()))
+	pl := NewPipeline(srv)
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -128,8 +174,58 @@ func TestRetryAfter(t *testing.T) {
 		t.Fatal("expected retry-after value from date")
 	}
 	// d will not be exactly 600 seconds but it will be close
-	if d/time.Second != 599 {
-		t.Fatalf("expected ~600 seconds, got %d", d/time.Second)
+	if s := d / time.Second; s < 598 || s > 602 {
+		t.Fatalf("expected ~600 seconds, got %d", s)
+	}
+}
+
+func TestResponseUnmarshalAsByteArrayURLFormat(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithBody([]byte(`"YSBzdHJpbmcgdGhhdCBnZXRzIGVuY29kZWQgd2l0aCBiYXNlNjR1cmw"`)))
+	pl := NewPipeline(srv)
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	var ba *[]byte
+	if err := resp.UnmarshalAsByteArray(&ba, Base64URLFormat); err != nil {
+		t.Fatalf("unexpected error unmarshalling: %v", err)
+	}
+	if string(*ba) != "a string that gets encoded with base64url" {
+		t.Fatalf("bad payload, got %s", string(*ba))
+	}
+}
+
+func TestResponseUnmarshalAsByteArrayStdFormat(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithBody([]byte(`"YSBzdHJpbmcgdGhhdCBnZXRzIGVuY29kZWQgd2l0aCBiYXNlNjR1cmw="`)))
+	pl := NewPipeline(srv)
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	resp, err := pl.Do(req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	var ba *[]byte
+	if err := resp.UnmarshalAsByteArray(&ba, Base64StdFormat); err != nil {
+		t.Fatalf("unexpected error unmarshalling: %v", err)
+	}
+	if string(*ba) != "a string that gets encoded with base64url" {
+		t.Fatalf("bad payload, got %s", string(*ba))
 	}
 }
 

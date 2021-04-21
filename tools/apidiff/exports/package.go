@@ -1,16 +1,5 @@
-// Copyright 2018 Microsoft Corporation
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package exports
 
@@ -20,6 +9,8 @@ import (
 	"go/parser"
 	"go/token"
 	"io/ioutil"
+	"os"
+	"strings"
 )
 
 // Package represents a Go package.
@@ -31,42 +22,50 @@ type Package struct {
 
 // LoadPackageErrorInfo provides extended information about certain LoadPackage() failures.
 type LoadPackageErrorInfo interface {
-	PkgCount() int
+	Packages() []string
 }
 
 type errorInfo struct {
 	m string
-	c int
+	p []string
 }
 
 func (ei errorInfo) Error() string {
 	return ei.m
 }
 
-func (ei errorInfo) PkgCount() int {
-	return ei.c
+func (ei errorInfo) Packages() []string {
+	return ei.p
 }
+
+var _ LoadPackageErrorInfo = (*errorInfo)(nil)
 
 // LoadPackage loads the package in the specified directory.
 // It's required there is only one package in the directory.
 func LoadPackage(dir string) (pkg Package, err error) {
 	pkg.files = map[string][]byte{}
 	pkg.f = token.NewFileSet()
-	packages, err := parser.ParseDir(pkg.f, dir, nil, 0)
+	packages, err := parser.ParseDir(pkg.f, dir, func(f os.FileInfo) bool {
+		// exclude test files
+		return !strings.HasSuffix(f.Name(), "_test.go")
+	}, 0)
 	if err != nil {
 		return
 	}
 	if len(packages) < 1 {
 		err = errorInfo{
 			m: fmt.Sprintf("didn't find any packages in '%s'", dir),
-			c: len(packages),
 		}
 		return
 	}
 	if len(packages) > 1 {
+		pkgs := []string{}
+		for p := range packages {
+			pkgs = append(pkgs, p)
+		}
 		err = errorInfo{
-			m: fmt.Sprintf("found more than one package in '%s'", dir),
-			c: len(packages),
+			m: fmt.Sprintf("found multiple packages in '%s': %s", dir, strings.Join(pkgs, ", ")),
+			p: pkgs,
 		}
 		return
 	}
@@ -145,7 +144,7 @@ func (pkg Package) getText(start token.Pos, end token.Pos) string {
 // iterates over the specified field list, for each field the specified
 // callback is invoked with the name of the field and the type name.  the field
 // name can be nil, e.g. anonymous fields in structs, unnamed return types etc.
-func (pkg Package) translateFieldList(fl []*ast.Field, cb func(*string, string)) {
+func (pkg Package) translateFieldList(fl []*ast.Field, cb func(*string, string, *ast.Field)) {
 	for _, f := range fl {
 		var name *string
 		if f.Names != nil {
@@ -153,7 +152,7 @@ func (pkg Package) translateFieldList(fl []*ast.Field, cb func(*string, string))
 			name = &n
 		}
 		t := pkg.getText(f.Type.Pos(), f.Type.End())
-		cb(name, t)
+		cb(name, t, f)
 	}
 }
 
@@ -162,7 +161,7 @@ func (pkg Package) buildFunc(ft *ast.FuncType) (f Func) {
 	// appends a to s, comma-delimited style, and returns s
 	appendString := func(s, a string) string {
 		if s != "" {
-			s += ","
+			s += ", "
 		}
 		s += a
 		return s
@@ -171,7 +170,7 @@ func (pkg Package) buildFunc(ft *ast.FuncType) (f Func) {
 	// build the params type list
 	if ft.Params.List != nil {
 		p := ""
-		pkg.translateFieldList(ft.Params.List, func(n *string, t string) {
+		pkg.translateFieldList(ft.Params.List, func(n *string, t string, f *ast.Field) {
 			p = appendString(p, t)
 		})
 		f.Params = &p
@@ -180,7 +179,7 @@ func (pkg Package) buildFunc(ft *ast.FuncType) (f Func) {
 	// build the return types list
 	if ft.Results != nil {
 		r := ""
-		pkg.translateFieldList(ft.Results.List, func(n *string, t string) {
+		pkg.translateFieldList(ft.Results.List, func(n *string, t string, f *ast.Field) {
 			r = appendString(r, t)
 		})
 		f.Returns = &r

@@ -1,16 +1,5 @@
-// Copyright 2018 Microsoft Corporation
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package delta
 
@@ -26,6 +15,11 @@ type Content struct {
 
 	// contains the names of structs that are modified in whole (i.e. new/removed)
 	CompleteStructs []string `json:"newStructs,omitempty"`
+}
+
+// Count returns the count of items
+func (c Content) Count() int {
+	return c.Content.Count() + len(c.CompleteStructs)
 }
 
 // NewContent returns an initialized Content object.
@@ -172,7 +166,7 @@ func GetInterfaceMethods(lhs, rhs exports.Content) map[string]exports.Interface 
 
 // Signature contains the details of how a type signature changed (e.g. From:"int" To:"string").
 type Signature struct {
-	// From contains the originial signature.
+	// From contains the original signature.
 	From string `json:"from"`
 
 	// To contains the new signature.

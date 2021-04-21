@@ -11,4 +11,4 @@ else {
 
 $path = Resolve-Path -Path $targetDir
 
-return "$path/..."
+return "$path"

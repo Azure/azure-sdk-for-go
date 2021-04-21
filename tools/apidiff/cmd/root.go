@@ -1,16 +1,5 @@
-// Copyright 2018 Microsoft Corporation
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 package cmd
 
@@ -22,7 +11,7 @@ import (
 
 var copyRepoFlag bool
 var debugFlag bool
-var onlyAdditionsFlag bool
+var onlyAdditiveChangesFlag bool
 var onlyBreakingChangesFlag bool
 var quietFlag bool
 var suppressReport bool
@@ -39,7 +28,7 @@ individual packages or a set of packages under a specified directory.`,
 func init() {
 	rootCmd.PersistentFlags().BoolVarP(&copyRepoFlag, "copyrepo", "c", false, "copy the repo instead of cloning it")
 	rootCmd.PersistentFlags().BoolVarP(&debugFlag, "debug", "d", false, "debug output")
-	rootCmd.PersistentFlags().BoolVarP(&onlyAdditionsFlag, "additions", "a", false, "only include additive changes in the report")
+	rootCmd.PersistentFlags().BoolVarP(&onlyAdditiveChangesFlag, "additions", "a", false, "only include additive changes in the report")
 	rootCmd.PersistentFlags().BoolVarP(&onlyBreakingChangesFlag, "breakingchanges", "b", false, "only include breaking changes in the report")
 	rootCmd.PersistentFlags().BoolVarP(&quietFlag, "quiet", "q", false, "suppress console output")
 	rootCmd.PersistentFlags().BoolVarP(&verboseFlag, "verbose", "v", false, "verbose output")
@@ -67,7 +56,7 @@ type CommandFlags struct {
 func (cf CommandFlags) apply() {
 	copyRepoFlag = cf.CopyRepo
 	debugFlag = cf.Debug
-	onlyAdditionsFlag = cf.OnlyAdditions
+	onlyAdditiveChangesFlag = cf.OnlyAdditions
 	onlyBreakingChangesFlag = cf.OnlyBreakingChanges
 	quietFlag = cf.Quiet
 	suppressReport = cf.SuppressReport

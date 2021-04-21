@@ -94,7 +94,6 @@ func Example() {
 	// The AutoPagerTimeout defines how long it will wait to place into the items channel before it exits & cleans itself up. A zero time will result in no timeout.
 	pager := container.ListBlobsFlatSegment(nil)
 
-	// TODO: fix me for the pager (why wasn't I fixed?)
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
 

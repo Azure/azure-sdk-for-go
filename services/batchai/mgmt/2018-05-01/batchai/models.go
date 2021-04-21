@@ -1633,43 +1633,6 @@ func (future *FileServersCreateFuture) result(client FileServersClient) (fs File
 	return
 }
 
-// FileServersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
-// operation.
-type FileServersDeleteFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(FileServersClient) (autorest.Response, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *FileServersDeleteFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for FileServersDeleteFuture.Result.
-func (future *FileServersDeleteFuture) result(client FileServersClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.FileServersDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		ar.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("batchai.FileServersDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // HorovodSettings specifies the settings for Horovod job.
 type HorovodSettings struct {
 	// PythonScriptFilePath - The python script to execute.

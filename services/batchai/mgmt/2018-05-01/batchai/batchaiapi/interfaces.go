@@ -71,8 +71,6 @@ var _ JobsClientAPI = (*batchai.JobsClient)(nil)
 // FileServersClientAPI contains the set of methods on the FileServersClient type.
 type FileServersClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, workspaceName string, fileServerName string, parameters batchai.FileServerCreateParameters) (result batchai.FileServersCreateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, workspaceName string, fileServerName string) (result batchai.FileServersDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, workspaceName string, fileServerName string) (result batchai.FileServer, err error)
 	ListByWorkspace(ctx context.Context, resourceGroupName string, workspaceName string, maxResults *int32) (result batchai.FileServerListResultPage, err error)
 	ListByWorkspaceComplete(ctx context.Context, resourceGroupName string, workspaceName string, maxResults *int32) (result batchai.FileServerListResultIterator, err error)
 }

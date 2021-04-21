@@ -19,16 +19,16 @@ func unmarshalFirewallPolicyRuleClassification(rawMsg *json.RawMessage) (Firewal
 	}
 	var b FirewallPolicyRuleClassification
 	switch m["ruleType"] {
-	case FirewallPolicyRuleTypeApplicationRule:
+	case string(FirewallPolicyRuleTypeApplicationRule):
 		b = &ApplicationRule{}
-	case FirewallPolicyRuleTypeNatRule:
+	case string(FirewallPolicyRuleTypeNatRule):
 		b = &NatRule{}
-	case FirewallPolicyRuleTypeNetworkRule:
+	case string(FirewallPolicyRuleTypeNetworkRule):
 		b = &NetworkRule{}
 	default:
 		b = &FirewallPolicyRule{}
 	}
-	return b, json.Unmarshal(*rawMsg, &b)
+	return b, json.Unmarshal(*rawMsg, b)
 }
 
 func unmarshalFirewallPolicyRuleClassificationArray(rawMsg *json.RawMessage) (*[]FirewallPolicyRuleClassification, error) {
@@ -60,14 +60,14 @@ func unmarshalFirewallPolicyRuleCollectionClassification(rawMsg *json.RawMessage
 	}
 	var b FirewallPolicyRuleCollectionClassification
 	switch m["ruleCollectionType"] {
-	case FirewallPolicyRuleCollectionTypeFirewallPolicyFilterRuleCollection:
+	case string(FirewallPolicyRuleCollectionTypeFirewallPolicyFilterRuleCollection):
 		b = &FirewallPolicyFilterRuleCollection{}
-	case FirewallPolicyRuleCollectionTypeFirewallPolicyNatRuleCollection:
+	case string(FirewallPolicyRuleCollectionTypeFirewallPolicyNatRuleCollection):
 		b = &FirewallPolicyNatRuleCollection{}
 	default:
 		b = &FirewallPolicyRuleCollection{}
 	}
-	return b, json.Unmarshal(*rawMsg, &b)
+	return b, json.Unmarshal(*rawMsg, b)
 }
 
 func unmarshalFirewallPolicyRuleCollectionClassificationArray(rawMsg *json.RawMessage) (*[]FirewallPolicyRuleCollectionClassification, error) {

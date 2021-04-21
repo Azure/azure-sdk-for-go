@@ -5,6 +5,7 @@ package azblob
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -43,13 +44,13 @@ func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
 	}
 }
 
-func (b BlobClient) NewBlobLeaseClient(leaseId string) BlobLeaseClient {
-	if leaseId == "" {
-		leaseId = newUUID().String()
+func (b BlobClient) NewBlobLeaseClient(leaseID *string) BlobLeaseClient {
+	if leaseID == nil {
+		leaseID = to.StringPtr(newUUID().String())
 	}
 	return BlobLeaseClient{
 		BlobClient: b,
-		LeaseId:    leaseId,
+		LeaseID:    leaseID,
 	}
 }
 

@@ -3,6 +3,11 @@
 
 package azblob
 
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
+	guuid "github.com/google/uuid"
+)
+
 type AcquireLeaseBlobOptions struct {
 	// Specifies the Duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease
 	// can be between 15 and 60 seconds. A lease Duration cannot be changed using renew or change.
@@ -46,16 +51,21 @@ func (o *BreakLeaseBlobOptions) pointers() (*BlobBreakLeaseOptions, *ModifiedAcc
 }
 
 type ChangeLeaseBlobOptions struct {
-	ProposedLeaseId          string
+	ProposedLeaseID          *string
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ChangeLeaseBlobOptions) pointers() (proposedLeaseId string, modifiedAccessConditions *ModifiedAccessConditions) {
+func (o *ChangeLeaseBlobOptions) pointers() (proposedLeaseI *string, modifiedAccessConditions *ModifiedAccessConditions) {
+	leaseID := to.StringPtr(guuid.New().String())
 	if o == nil {
-		return "", nil
+		return leaseID, nil
 	}
 
-	return o.ProposedLeaseId, o.ModifiedAccessConditions
+	if o.ProposedLeaseID == nil {
+		o.ProposedLeaseID = leaseID
+	}
+
+	return o.ProposedLeaseID, o.ModifiedAccessConditions
 }
 
 type ReleaseLeaseBlobOptions struct {

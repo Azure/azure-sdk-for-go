@@ -560,7 +560,7 @@ func (s *aztestsSuite) TestAppendBlockWithCPKScope(c *chk.C) {
 	data, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
 	c.Assert(err, chk.IsNil)
 	c.Assert(string(data), chk.DeepEquals, "AAA BBB CCC ")
-	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
+	c.Assert(downloadResp.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
 }
 
 func (s *aztestsSuite) TestAppendBlockFromURLWithCPK(c *chk.C) {

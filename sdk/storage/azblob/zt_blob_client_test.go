@@ -1874,7 +1874,7 @@ func (s *aztestsSuite) TestBlobSetMetadataNil(c *chk.C) {
 
 	resp, err := blobClient.GetProperties(ctx, nil)
 	c.Assert(err, chk.IsNil)
-	c.Assert(*resp.Metadata, chk.HasLen, 0)
+	c.Assert(resp.Metadata, chk.IsNil)
 }
 
 func (s *aztestsSuite) TestBlobSetMetadataEmpty(c *chk.C) {

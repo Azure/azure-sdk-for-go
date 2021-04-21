@@ -9,13 +9,13 @@ import (
 )
 
 type listContainersSegmentAutoPager struct {
-	pager ListContainersSegmentResponsePager
+	pager   ListContainersSegmentResponsePager
 	channel chan ContainerItem
 	errChan chan error
 	ctx     context.Context
 
 	timeout time.Duration
-	timer *time.Timer
+	timer   *time.Timer
 }
 
 func (p listContainersSegmentAutoPager) Go() {

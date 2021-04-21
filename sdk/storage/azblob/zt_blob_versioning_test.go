@@ -75,7 +75,7 @@ func (s *aztestsSuite) TestSetBlobMetadataReturnsVID(c *chk.C) {
 
 	if !pager.NextPage(ctx) {
 		c.Assert(pager.Err(), chk.IsNil) // check for an error first
-		c.Fail() // no page was gotten
+		c.Fail()                         // no page was gotten
 	}
 
 	pageResp := pager.PageResponse()

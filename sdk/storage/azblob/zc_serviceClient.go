@@ -63,6 +63,24 @@ func (s ServiceClient) NewContainerClient(containerName string) ContainerClient 
 	}
 }
 
+func (s ServiceClient) NewContainerLeaseClient(containerName, leaseId string) ContainerLeaseClient {
+	containerURL := appendToURLPath(s.client.con.u, containerName)
+	containerConnection := newConnectionWithPipeline(containerURL, s.client.con.p)
+
+	if leaseId == "" {
+		leaseId = newUUID().String()
+	}
+
+	return ContainerLeaseClient{
+		ContainerClient: ContainerClient{
+			client: &containerClient{
+				con: containerConnection,
+			},
+		},
+		LeaseId: leaseId,
+	}
+}
+
 // appendToURLPath appends a string to the end of a URL's path (prefixing the string with a '/' if required)
 func appendToURLPath(u string, name string) string {
 	// e.g. "https://ms.com/a/b/?k1=v1&k2=v2#f"
@@ -162,11 +180,11 @@ func (s ServiceClient) GetAccountSASToken(services AccountSASServices, resources
 	return AccountSASSignatureValues{
 		Version: SASVersion,
 
-		Permissions: permissions.String(),
-		Services: services.String(),
+		Permissions:   permissions.String(),
+		Services:      services.String(),
 		ResourceTypes: resources.String(),
 
-		StartTime: time.Now(),
+		StartTime:  time.Now(),
 		ExpiryTime: time.Now().Add(validityTime),
 	}.NewSASQueryParameters(s.cred.(*SharedKeyCredential))
 }

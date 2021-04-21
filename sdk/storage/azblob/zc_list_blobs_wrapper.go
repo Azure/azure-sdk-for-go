@@ -12,7 +12,7 @@ type listBlobsFlatSegmentAutoPager struct {
 	pager   ListBlobsFlatSegmentResponsePager
 	channel chan BlobItemInternal
 	errChan chan error
-	ctx context.Context
+	ctx     context.Context
 
 	// Set to 0 for no time-out
 	timeout time.Duration

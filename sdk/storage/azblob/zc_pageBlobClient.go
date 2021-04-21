@@ -123,8 +123,8 @@ func (pb PageBlobClient) GetPageRanges(ctx context.Context, pageRange HttpRange,
 	snapshot, lac, mac := options.pointers()
 
 	getRangesOptions := &PageBlobGetPageRangesOptions{
-		Range: pageRange.pointers(),
-		Snapshot:       snapshot,
+		Range:    pageRange.pointers(),
+		Snapshot: snapshot,
 	}
 
 	resp, err := pb.client.GetPageRanges(ctx, getRangesOptions, lac, mac)
@@ -152,9 +152,9 @@ func (pb PageBlobClient) GetPageRangesDiff(ctx context.Context, pageRange HttpRa
 	snapshot, lac, mac := options.pointers()
 
 	diffOptions := &PageBlobGetPageRangesDiffOptions{
-		Prevsnapshot:   &prevSnapshot,
-		Range: pageRange.pointers(),
-		Snapshot:       snapshot,
+		Prevsnapshot: &prevSnapshot,
+		Range:        pageRange.pointers(),
+		Snapshot:     snapshot,
 	}
 
 	resp, err := pb.client.GetPageRangesDiff(ctx, diffOptions, lac, mac)
@@ -197,7 +197,6 @@ func (pb PageBlobClient) StartCopyIncremental(ctx context.Context, source string
 
 	return resp, handleError(err)
 }
-
 
 // GetBlobSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
 // It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.

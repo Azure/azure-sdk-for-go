@@ -18,7 +18,7 @@ import (
 )
 
 type blobClient struct {
-	con *connection
+	con            *connection
 	pathRenameMode *PathRenameMode
 }
 
@@ -89,7 +89,7 @@ func (client *blobClient) abortCopyFromURLHandleResponse(resp *azcore.Response) 
 
 // abortCopyFromURLHandleError handles the AbortCopyFromURL error response.
 func (client *blobClient) abortCopyFromURLHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -192,7 +192,7 @@ func (client *blobClient) acquireLeaseHandleResponse(resp *azcore.Response) (Blo
 
 // acquireLeaseHandleError handles the AcquireLease error response.
 func (client *blobClient) acquireLeaseHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -297,7 +297,7 @@ func (client *blobClient) breakLeaseHandleResponse(resp *azcore.Response) (BlobB
 
 // breakLeaseHandleError handles the BreakLease error response.
 func (client *blobClient) breakLeaseHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -396,7 +396,7 @@ func (client *blobClient) changeLeaseHandleResponse(resp *azcore.Response) (Blob
 
 // changeLeaseHandleError handles the ChangeLease error response.
 func (client *blobClient) changeLeaseHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -542,7 +542,7 @@ func (client *blobClient) copyFromURLHandleResponse(resp *azcore.Response) (Blob
 
 // copyFromURLHandleError handles the CopyFromURL error response.
 func (client *blobClient) copyFromURLHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -668,7 +668,7 @@ func (client *blobClient) createSnapshotHandleResponse(resp *azcore.Response) (B
 
 // createSnapshotHandleError handles the CreateSnapshot error response.
 func (client *blobClient) createSnapshotHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -772,7 +772,7 @@ func (client *blobClient) deleteHandleResponse(resp *azcore.Response) (BlobDelet
 
 // deleteHandleError handles the Delete error response.
 func (client *blobClient) deleteHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -1049,7 +1049,7 @@ func (client *blobClient) downloadHandleResponse(resp *azcore.Response) (BlobDow
 
 // downloadHandleError handles the Download error response.
 func (client *blobClient) downloadHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -1154,7 +1154,7 @@ func (client *blobClient) getAccessControlHandleResponse(resp *azcore.Response) 
 
 // getAccessControlHandleError handles the GetAccessControl error response.
 func (client *blobClient) getAccessControlHandleError(resp *azcore.Response) error {
-var err DataLakeStorageError
+	var err DataLakeStorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -1223,7 +1223,7 @@ func (client *blobClient) getAccountInfoHandleResponse(resp *azcore.Response) (B
 
 // getAccountInfoHandleError handles the GetAccountInfo error response.
 func (client *blobClient) getAccountInfoHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -1520,7 +1520,7 @@ func (client *blobClient) getPropertiesHandleResponse(resp *azcore.Response) (Bl
 
 // getPropertiesHandleError handles the GetProperties error response.
 func (client *blobClient) getPropertiesHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -1601,7 +1601,7 @@ func (client *blobClient) getTagsHandleResponse(resp *azcore.Response) (BlobTags
 
 // getTagsHandleError handles the GetTags error response.
 func (client *blobClient) getTagsHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -1833,7 +1833,7 @@ func (client *blobClient) queryHandleResponse(resp *azcore.Response) (BlobQueryR
 
 // queryHandleError handles the Query error response.
 func (client *blobClient) queryHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -1928,7 +1928,7 @@ func (client *blobClient) releaseLeaseHandleResponse(resp *azcore.Response) (Blo
 
 // releaseLeaseHandleError handles the ReleaseLease error response.
 func (client *blobClient) releaseLeaseHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -2074,7 +2074,7 @@ func (client *blobClient) renameHandleResponse(resp *azcore.Response) (BlobRenam
 
 // renameHandleError handles the Rename error response.
 func (client *blobClient) renameHandleError(resp *azcore.Response) error {
-var err DataLakeStorageError
+	var err DataLakeStorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -2172,7 +2172,7 @@ func (client *blobClient) renewLeaseHandleResponse(resp *azcore.Response) (BlobR
 
 // renewLeaseHandleError handles the RenewLease error response.
 func (client *blobClient) renewLeaseHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -2274,7 +2274,7 @@ func (client *blobClient) setAccessControlHandleResponse(resp *azcore.Response) 
 
 // setAccessControlHandleError handles the SetAccessControl error response.
 func (client *blobClient) setAccessControlHandleError(resp *azcore.Response) error {
-var err DataLakeStorageError
+	var err DataLakeStorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -2356,7 +2356,7 @@ func (client *blobClient) setExpiryHandleResponse(resp *azcore.Response) (BlobSe
 
 // setExpiryHandleError handles the SetExpiry error response.
 func (client *blobClient) setExpiryHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -2477,7 +2477,7 @@ func (client *blobClient) setHTTPHeadersHandleResponse(resp *azcore.Response) (B
 
 // setHTTPHeadersHandleError handles the SetHTTPHeaders error response.
 func (client *blobClient) setHTTPHeadersHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -2606,7 +2606,7 @@ func (client *blobClient) setMetadataHandleResponse(resp *azcore.Response) (Blob
 
 // setMetadataHandleError handles the SetMetadata error response.
 func (client *blobClient) setMetadataHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -2689,7 +2689,7 @@ func (client *blobClient) setTagsHandleResponse(resp *azcore.Response) (BlobSetT
 
 // setTagsHandleError handles the SetTags error response.
 func (client *blobClient) setTagsHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -2769,7 +2769,7 @@ func (client *blobClient) setTierHandleResponse(resp *azcore.Response) (BlobSetT
 
 // setTierHandleError handles the SetTier error response.
 func (client *blobClient) setTierHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -2906,7 +2906,7 @@ func (client *blobClient) startCopyFromURLHandleResponse(resp *azcore.Response) 
 
 // startCopyFromURLHandleError handles the StartCopyFromURL error response.
 func (client *blobClient) startCopyFromURLHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -2974,10 +2974,9 @@ func (client *blobClient) undeleteHandleResponse(resp *azcore.Response) (BlobUnd
 
 // undeleteHandleError handles the Undelete error response.
 func (client *blobClient) undeleteHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

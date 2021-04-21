@@ -462,7 +462,7 @@ func (s *aztestsSuite) TestContainerListBlobsWithSnapshots(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	listBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
-		Include: &[]ListBlobsIncludeItem{ ListBlobsIncludeItemSnapshots },
+		Include: &[]ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots},
 	}
 	pager := containerClient.ListBlobsFlatSegment(&listBlobFlatSegmentOptions)
 
@@ -831,7 +831,8 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessNone(c *chk.C) {
 
 	// If we cannot access a blob's data, we will also not be able to enumerate blobs
 	p := containerClient2.ListBlobsFlatSegment(nil)
-	p.NextPage(ctx); err = p.Err() // grab the next page
+	p.NextPage(ctx)
+	err = p.Err() // grab the next page
 	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
 
 	_, err = blobURL2.Download(ctx, nil)

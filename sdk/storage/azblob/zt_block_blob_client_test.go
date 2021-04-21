@@ -917,7 +917,7 @@ func (s *aztestsSuite) TestSetTierOnCopyBlockBlobFromURL(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	const contentSize = 1 * 1024 // 1 KB
+	const contentSize = 4 * 1024 * 1024 // 4 MB
 	content := make([]byte, contentSize)
 	body := bytes.NewReader(content)
 	rsc := azcore.NopCloser(body)

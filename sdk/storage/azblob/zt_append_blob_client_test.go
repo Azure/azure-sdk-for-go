@@ -99,7 +99,7 @@ func (s *aztestsSuite) TestAppendBlockFromURL(c *chk.C) {
 	defer deleteContainer(c, containerClient)
 
 	//ctx := context.Background()
-	contentSize := 8 * 1024 // 8KB
+	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	contentMD5 := md5.Sum(sourceData)
 	srcBlob := containerClient.NewAppendBlobURL(generateName("appendsrc"))
@@ -186,7 +186,7 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	contentSize := 8 * 1024 // 8KB
+	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	md5Value := md5.Sum(sourceData)
 	ctx := context.Background() // Use default Background context

@@ -64,7 +64,7 @@ func (s *aztestsSuite) TestUploadPagesFromURL(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	contentSize := 4 * 1024 * 1024 // 8KB
+	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	ctx := context.Background() // Use default Background context
 	srcBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(contentSize))
@@ -130,7 +130,7 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	contentSize := 8 * 1024 // 8KB
+	contentSize := 4 * 1024 * 1024 // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	md5Value := md5.Sum(sourceData)
 	contentMD5 := md5Value[:]
@@ -366,7 +366,7 @@ func (s *aztestsSuite) TestPutPagesWithMD5(c *chk.C) {
 	md5Value := md5.Sum(body)
 	contentMD5 := md5Value[:]
 	uploadPagesOptions := UploadPagesOptions{
-		PageRange: &HttpRange{offset, count},
+		PageRange:               &HttpRange{offset, count},
 		TransactionalContentMD5: &contentMD5,
 	}
 
@@ -389,7 +389,7 @@ func (s *aztestsSuite) TestPutPagesWithMD5(c *chk.C) {
 	_, badMD5 := getRandomDataAndReader(16)
 	basContentMD5 := badMD5[:]
 	uploadPagesOptions = UploadPagesOptions{
-		PageRange: &HttpRange{offset, count},
+		PageRange:               &HttpRange{offset, count},
 		TransactionalContentMD5: &basContentMD5,
 	}
 	putResp, err = pbClient.UploadPages(context.Background(), readerToBody, &uploadPagesOptions)
@@ -1215,7 +1215,7 @@ func (s *aztestsSuite) TestBlobClearPagesInvalidRange(c *chk.C) {
 	containerClient, pbClient := setupClearPagesTest(c)
 	defer deleteContainer(c, containerClient)
 
-	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes+1}, nil)
+	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes + 1}, nil)
 	c.Assert(err, chk.Not(chk.IsNil))
 }
 

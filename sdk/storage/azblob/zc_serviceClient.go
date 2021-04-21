@@ -113,14 +113,14 @@ func (s ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountInf
 // GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceClient object.
 // OAuth is required for this call, as well as any role that can delegate access to the storage account.
 // Strings in KeyInfo should be formatted with SASTimeFormat.
-func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, expiry time.Time, startTime *time.Time) (UserDelegationCredential, error) {
+func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, startTime, expiryTime *time.Time) (UserDelegationCredential, error) {
 	if startTime == nil {
 		startTime = to.TimePtr(time.Now().UTC())
 	}
 
 	udk, err := s.client.GetUserDelegationKey(ctx, KeyInfo{
-		Start: to.StringPtr(startTime.UTC().Format(SASTimeFormat)),
-		Expiry: to.StringPtr(expiry.UTC().Format(SASTimeFormat)),
+		Start:  to.StringPtr(startTime.UTC().Format(SASTimeFormat)),
+		Expiry: to.StringPtr(expiryTime.UTC().Format(SASTimeFormat)),
 	}, nil)
 	if err != nil {
 		return UserDelegationCredential{}, handleError(err)

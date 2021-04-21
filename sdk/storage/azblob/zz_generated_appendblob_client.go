@@ -174,7 +174,7 @@ func (client *appendBlobClient) appendBlockHandleResponse(resp *azcore.Response)
 
 // appendBlockHandleError handles the AppendBlock error response.
 func (client *appendBlobClient) appendBlockHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -351,7 +351,7 @@ func (client *appendBlobClient) appendBlockFromURLHandleResponse(resp *azcore.Re
 
 // appendBlockFromURLHandleError handles the AppendBlockFromURL error response.
 func (client *appendBlobClient) appendBlockFromURLHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -509,7 +509,7 @@ func (client *appendBlobClient) createHandleResponse(resp *azcore.Response) (App
 
 // createHandleError handles the Create error response.
 func (client *appendBlobClient) createHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
@@ -612,10 +612,9 @@ func (client *appendBlobClient) sealHandleResponse(resp *azcore.Response) (Appen
 
 // sealHandleError handles the Seal error response.
 func (client *appendBlobClient) sealHandleError(resp *azcore.Response) error {
-var err StorageError
+	var err StorageError
 	if err := resp.UnmarshalAsXML(&err); err != nil {
 		return err
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
-

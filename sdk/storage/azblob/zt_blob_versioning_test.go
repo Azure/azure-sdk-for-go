@@ -401,7 +401,7 @@ func (s *aztestsSuite) TestCreatePageBlobReturnsVID(c *chk.C) {
 	r := getReaderToRandomBytes(contentSize)
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{
-		PageRange: &HttpRange{offset, count },
+		PageRange: &HttpRange{offset, count},
 	}
 	putResp, err := blob.UploadPages(context.Background(), r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)

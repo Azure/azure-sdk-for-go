@@ -18,17 +18,14 @@ func (s *aztestsSuite) TestUserDelegationSASContainer(c *chk.C) {
 	bsu := getBSU()
 	containerClient, containerName := getContainerClient(c, bsu)
 	currentTime := time.Now().UTC()
-	// Ensuring currTime <= time of sending delegating request request
-	keyInfo := KeyInfo{
-		Start:  to.StringPtr(currentTime.Format(SASTimeFormat)),
-		Expiry: to.StringPtr(currentTime.Add(48 * time.Hour).Format(SASTimeFormat)),
-	}
 	time.Sleep(2 * time.Second)
 
 	serviceClient, err := getGenericServiceClientWithOAuth(c, "")
 	c.Assert(err, chk.IsNil)
 
-	userDelegationCred, err := serviceClient.GetUserDelegationCredential(ctx, keyInfo)
+	// Ensuring currTime <= time of sending delegating request request
+	startTime, expiryTime := to.TimePtr(currentTime), to.TimePtr(currentTime.Add(48*time.Hour))
+	userDelegationCred, err := serviceClient.GetUserDelegationCredential(ctx, startTime, expiryTime)
 	if err != nil {
 		c.Fatal(err)
 	}
@@ -102,9 +99,9 @@ func (s *aztestsSuite) TestUserDelegationSASBlob(c *chk.C) {
 		c.Fatal(err)
 	}
 
-	// Prepare user delegation key
-	keyInfo := KeyInfo{Start: to.StringPtr(currentTime.String()), Expiry: to.StringPtr(currentTime.Add(48 * time.Hour).String())}
-	cudk, err := serviceClient.GetUserDelegationCredential(ctx, keyInfo)
+	// Ensuring currTime <= time of sending delegating request request
+	startTime, expiryTime := to.TimePtr(currentTime), to.TimePtr(currentTime.Add(48*time.Hour))
+	cudk, err := serviceClient.GetUserDelegationCredential(ctx, startTime, expiryTime)
 	c.Assert(err, chk.IsNil)
 	c.Assert(cudk, chk.NotNil)
 

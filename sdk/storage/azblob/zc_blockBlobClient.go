@@ -127,7 +127,7 @@ func (bb BlockBlobClient) CommitBlockList(ctx context.Context, base64BlockIDs []
 
 	// this is a code smell in the generated code
 	blockIds := make([]*string, len(base64BlockIDs))
-	for k,v := range base64BlockIDs {
+	for k, v := range base64BlockIDs {
 		blockIds[k] = to.StringPtr(v)
 	}
 
@@ -186,4 +186,3 @@ func (bb BlockBlobClient) GetBlobSASToken(permissions BlobSASPermissions, validi
 		ExpiryTime: time.Now().UTC().Add(validityTime),
 	}.NewSASQueryParameters(bb.cred)
 }
-

@@ -5,7 +5,7 @@ go 1.13
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.14.3
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.8.0
-	github.com/Azure/azure-sdk-for-go/sdk/internal v0.5.0
+	github.com/Azure/azure-sdk-for-go/sdk/internal v0.5.1
 	github.com/Azure/azure-sdk-for-go/sdk/to v0.1.3
 	github.com/google/uuid v1.1.1
 	github.com/pkg/browser v0.0.0-20210115035449-ce105d075bb4 // indirect

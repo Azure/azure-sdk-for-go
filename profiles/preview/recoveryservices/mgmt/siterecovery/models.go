@@ -652,15 +652,6 @@ const (
 	ProtectionHealthWarning  ProtectionHealth = original.ProtectionHealthWarning
 )
 
-type ProtectionHealth = original.ProtectionHealth
-
-const (
-	ProtectionHealthCritical ProtectionHealth = original.ProtectionHealthCritical
-	ProtectionHealthNone     ProtectionHealth = original.ProtectionHealthNone
-	ProtectionHealthNormal   ProtectionHealth = original.ProtectionHealthNormal
-	ProtectionHealthWarning  ProtectionHealth = original.ProtectionHealthWarning
-)
-
 type RecoveryPlanActionLocation = original.RecoveryPlanActionLocation
 
 const (

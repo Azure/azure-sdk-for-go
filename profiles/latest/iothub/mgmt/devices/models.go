@@ -319,12 +319,6 @@ func NewIotHubClient(subscriptionID string) IotHubClient {
 func NewIotHubClientWithBaseURI(baseURI string, subscriptionID string) IotHubClient {
 	return original.NewIotHubClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewIotHubClient(subscriptionID string) IotHubClient {
-	return original.NewIotHubClient(subscriptionID)
-}
-func NewIotHubClientWithBaseURI(baseURI string, subscriptionID string) IotHubClient {
-	return original.NewIotHubClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewIotHubDescriptionListResultIterator(page IotHubDescriptionListResultPage) IotHubDescriptionListResultIterator {
 	return original.NewIotHubDescriptionListResultIterator(page)
 }

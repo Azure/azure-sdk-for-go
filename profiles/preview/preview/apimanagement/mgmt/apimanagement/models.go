@@ -1036,36 +1036,6 @@ func NewGatewayHostnameConfigurationCollectionIterator(page GatewayHostnameConfi
 func NewGatewayHostnameConfigurationCollectionPage(cur GatewayHostnameConfigurationCollection, getNextPage func(context.Context, GatewayHostnameConfigurationCollection) (GatewayHostnameConfigurationCollection, error)) GatewayHostnameConfigurationCollectionPage {
 	return original.NewGatewayHostnameConfigurationCollectionPage(cur, getNextPage)
 }
-func NewGatewayAPIClient(subscriptionID string) GatewayAPIClient {
-	return original.NewGatewayAPIClient(subscriptionID)
-}
-func NewGatewayAPIClientWithBaseURI(baseURI string, subscriptionID string) GatewayAPIClient {
-	return original.NewGatewayAPIClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewGatewayClient(subscriptionID string) GatewayClient {
-	return original.NewGatewayClient(subscriptionID)
-}
-func NewGatewayClientWithBaseURI(baseURI string, subscriptionID string) GatewayClient {
-	return original.NewGatewayClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewGatewayCollectionIterator(page GatewayCollectionPage) GatewayCollectionIterator {
-	return original.NewGatewayCollectionIterator(page)
-}
-func NewGatewayCollectionPage(getNextPage func(context.Context, GatewayCollection) (GatewayCollection, error)) GatewayCollectionPage {
-	return original.NewGatewayCollectionPage(getNextPage)
-}
-func NewGatewayHostnameConfigurationClient(subscriptionID string) GatewayHostnameConfigurationClient {
-	return original.NewGatewayHostnameConfigurationClient(subscriptionID)
-}
-func NewGatewayHostnameConfigurationClientWithBaseURI(baseURI string, subscriptionID string) GatewayHostnameConfigurationClient {
-	return original.NewGatewayHostnameConfigurationClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewGatewayHostnameConfigurationCollectionIterator(page GatewayHostnameConfigurationCollectionPage) GatewayHostnameConfigurationCollectionIterator {
-	return original.NewGatewayHostnameConfigurationCollectionIterator(page)
-}
-func NewGatewayHostnameConfigurationCollectionPage(getNextPage func(context.Context, GatewayHostnameConfigurationCollection) (GatewayHostnameConfigurationCollection, error)) GatewayHostnameConfigurationCollectionPage {
-	return original.NewGatewayHostnameConfigurationCollectionPage(getNextPage)
-}
 func NewGroupClient(subscriptionID string) GroupClient {
 	return original.NewGroupClient(subscriptionID)
 }

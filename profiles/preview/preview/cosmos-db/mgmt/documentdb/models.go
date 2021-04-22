@@ -737,12 +737,6 @@ func NewNotebookWorkspacesClient(subscriptionID string) NotebookWorkspacesClient
 func NewNotebookWorkspacesClientWithBaseURI(baseURI string, subscriptionID string) NotebookWorkspacesClient {
 	return original.NewNotebookWorkspacesClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewNotebookWorkspacesClient(subscriptionID string, subscriptionID1 string) NotebookWorkspacesClient {
-	return original.NewNotebookWorkspacesClient(subscriptionID, subscriptionID1)
-}
-func NewNotebookWorkspacesClientWithBaseURI(baseURI string, subscriptionID string, subscriptionID1 string) NotebookWorkspacesClient {
-	return original.NewNotebookWorkspacesClientWithBaseURI(baseURI, subscriptionID, subscriptionID1)
-}
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }

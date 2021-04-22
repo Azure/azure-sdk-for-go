@@ -371,18 +371,6 @@ func NewListClient() ListClient {
 func NewListClientWithBaseURI(baseURI string) ListClient {
 	return original.NewListClientWithBaseURI(baseURI)
 }
-func NewIPAddressAggregatesIterator(page IPAddressAggregatesPage) IPAddressAggregatesIterator {
-	return original.NewIPAddressAggregatesIterator(page)
-}
-func NewIPAddressAggregatesPage(getNextPage func(context.Context, IPAddressAggregates) (IPAddressAggregates, error)) IPAddressAggregatesPage {
-	return original.NewIPAddressAggregatesPage(getNextPage)
-}
-func NewListClient() ListClient {
-	return original.NewListClient()
-}
-func NewListClientWithBaseURI(baseURI string) ListClient {
-	return original.NewListClientWithBaseURI(baseURI)
-}
 func NewMetricMetadataListIterator(page MetricMetadataListPage) MetricMetadataListIterator {
 	return original.NewMetricMetadataListIterator(page)
 }
@@ -442,12 +430,6 @@ func NewServicesIterator(page ServicesPage) ServicesIterator {
 }
 func NewServicesPage(cur Services, getNextPage func(context.Context, Services) (Services, error)) ServicesPage {
 	return original.NewServicesPage(cur, getNextPage)
-}
-func NewUpdateClient() UpdateClient {
-	return original.NewUpdateClient()
-}
-func NewUpdateClientWithBaseURI(baseURI string) UpdateClient {
-	return original.NewUpdateClientWithBaseURI(baseURI)
 }
 func NewUpdateClient() UpdateClient {
 	return original.NewUpdateClient()

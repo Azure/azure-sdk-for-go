@@ -97,6 +97,7 @@ func (p *logPolicy) Do(req *Request) (*Response, error) {
 // returns true if the request/response body should be logged.
 // this is determined by looking at the content-type header value.
 func shouldLogBody(b *bytes.Buffer, contentType string) bool {
+	contentType = strings.ToLower(contentType)
 	if strings.HasPrefix(contentType, "text") ||
 		strings.Contains(contentType, "json") ||
 		strings.Contains(contentType, "xml") {

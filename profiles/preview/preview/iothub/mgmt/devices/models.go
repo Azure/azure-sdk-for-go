@@ -11,7 +11,7 @@ package devices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/iothub/mgmt/2019-07-01-preview/devices"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/iothub/mgmt/2021-03-03-preview/devices"
 )
 
 const (
@@ -38,11 +38,25 @@ const (
 	ServiceConnectDeviceConnect                          AccessRights = original.ServiceConnectDeviceConnect
 )
 
+type AuthenticationType = original.AuthenticationType
+
+const (
+	IdentityBased AuthenticationType = original.IdentityBased
+	KeyBased      AuthenticationType = original.KeyBased
+)
+
 type Capabilities = original.Capabilities
 
 const (
 	DeviceManagement Capabilities = original.DeviceManagement
 	None             Capabilities = original.None
+)
+
+type DefaultAction = original.DefaultAction
+
+const (
+	Allow DefaultAction = original.Allow
+	Deny  DefaultAction = original.Deny
 )
 
 type Encoding = original.Encoding
@@ -57,6 +71,7 @@ type EndpointHealthStatus = original.EndpointHealthStatus
 
 const (
 	Dead      EndpointHealthStatus = original.Dead
+	Degraded  EndpointHealthStatus = original.Degraded
 	Healthy   EndpointHealthStatus = original.Healthy
 	Unhealthy EndpointHealthStatus = original.Unhealthy
 	Unknown   EndpointHealthStatus = original.Unknown
@@ -137,6 +152,37 @@ const (
 	JobTypeWriteDeviceProperties     JobType = original.JobTypeWriteDeviceProperties
 )
 
+type NetworkRuleIPAction = original.NetworkRuleIPAction
+
+const (
+	NetworkRuleIPActionAllow NetworkRuleIPAction = original.NetworkRuleIPActionAllow
+)
+
+type PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatus
+
+const (
+	Approved     PrivateLinkServiceConnectionStatus = original.Approved
+	Disconnected PrivateLinkServiceConnectionStatus = original.Disconnected
+	Pending      PrivateLinkServiceConnectionStatus = original.Pending
+	Rejected     PrivateLinkServiceConnectionStatus = original.Rejected
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	Disabled PublicNetworkAccess = original.Disabled
+	Enabled  PublicNetworkAccess = original.Enabled
+)
+
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	ResourceIdentityTypeNone                       ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
+)
+
 type RouteErrorSeverity = original.RouteErrorSeverity
 
 const (
@@ -147,12 +193,13 @@ const (
 type RoutingSource = original.RoutingSource
 
 const (
-	RoutingSourceDeviceJobLifecycleEvents RoutingSource = original.RoutingSourceDeviceJobLifecycleEvents
-	RoutingSourceDeviceLifecycleEvents    RoutingSource = original.RoutingSourceDeviceLifecycleEvents
-	RoutingSourceDeviceMessages           RoutingSource = original.RoutingSourceDeviceMessages
-	RoutingSourceDigitalTwinChangeEvents  RoutingSource = original.RoutingSourceDigitalTwinChangeEvents
-	RoutingSourceInvalid                  RoutingSource = original.RoutingSourceInvalid
-	RoutingSourceTwinChangeEvents         RoutingSource = original.RoutingSourceTwinChangeEvents
+	RoutingSourceDeviceConnectionStateEvents RoutingSource = original.RoutingSourceDeviceConnectionStateEvents
+	RoutingSourceDeviceJobLifecycleEvents    RoutingSource = original.RoutingSourceDeviceJobLifecycleEvents
+	RoutingSourceDeviceLifecycleEvents       RoutingSource = original.RoutingSourceDeviceLifecycleEvents
+	RoutingSourceDeviceMessages              RoutingSource = original.RoutingSourceDeviceMessages
+	RoutingSourceDigitalTwinChangeEvents     RoutingSource = original.RoutingSourceDigitalTwinChangeEvents
+	RoutingSourceInvalid                     RoutingSource = original.RoutingSourceInvalid
+	RoutingSourceTwinChangeEvents            RoutingSource = original.RoutingSourceTwinChangeEvents
 )
 
 type TestResultStatus = original.TestResultStatus
@@ -163,6 +210,8 @@ const (
 	Undefined TestResultStatus = original.Undefined
 )
 
+type ArmIdentity = original.ArmIdentity
+type ArmUserIdentity = original.ArmUserIdentity
 type BaseClient = original.BaseClient
 type CertificateBodyDescription = original.CertificateBodyDescription
 type CertificateDescription = original.CertificateDescription
@@ -173,13 +222,16 @@ type CertificateVerificationDescription = original.CertificateVerificationDescri
 type CertificateWithNonceDescription = original.CertificateWithNonceDescription
 type CertificatesClient = original.CertificatesClient
 type CloudToDeviceProperties = original.CloudToDeviceProperties
+type EncryptionPropertiesDescription = original.EncryptionPropertiesDescription
 type EndpointHealthData = original.EndpointHealthData
 type EndpointHealthDataListResult = original.EndpointHealthDataListResult
 type EndpointHealthDataListResultIterator = original.EndpointHealthDataListResultIterator
 type EndpointHealthDataListResultPage = original.EndpointHealthDataListResultPage
 type EnrichmentProperties = original.EnrichmentProperties
 type ErrorDetails = original.ErrorDetails
+type EventHubConsumerGroupBodyDescription = original.EventHubConsumerGroupBodyDescription
 type EventHubConsumerGroupInfo = original.EventHubConsumerGroupInfo
+type EventHubConsumerGroupName = original.EventHubConsumerGroupName
 type EventHubConsumerGroupsListResult = original.EventHubConsumerGroupsListResult
 type EventHubConsumerGroupsListResultIterator = original.EventHubConsumerGroupsListResultIterator
 type EventHubConsumerGroupsListResultPage = original.EventHubConsumerGroupsListResultPage
@@ -188,6 +240,8 @@ type ExportDevicesRequest = original.ExportDevicesRequest
 type FailoverInput = original.FailoverInput
 type FallbackRouteProperties = original.FallbackRouteProperties
 type FeedbackProperties = original.FeedbackProperties
+type GroupIDInformation = original.GroupIDInformation
+type GroupIDInformationProperties = original.GroupIDInformationProperties
 type IPFilterRule = original.IPFilterRule
 type ImportDevicesRequest = original.ImportDevicesRequest
 type IotHubCapacity = original.IotHubCapacity
@@ -218,9 +272,14 @@ type JobResponse = original.JobResponse
 type JobResponseListResult = original.JobResponseListResult
 type JobResponseListResultIterator = original.JobResponseListResultIterator
 type JobResponseListResultPage = original.JobResponseListResultPage
+type KeyVaultKeyProperties = original.KeyVaultKeyProperties
+type ListPrivateEndpointConnection = original.ListPrivateEndpointConnection
+type ManagedIdentity = original.ManagedIdentity
 type MatchedRoute = original.MatchedRoute
 type MessagingEndpointProperties = original.MessagingEndpointProperties
 type Name = original.Name
+type NetworkRuleSetIPRule = original.NetworkRuleSetIPRule
+type NetworkRuleSetProperties = original.NetworkRuleSetProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationInputs = original.OperationInputs
@@ -228,6 +287,15 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateEndpointConnectionsUpdateFuture = original.PrivateEndpointConnectionsUpdateFuture
+type PrivateLinkResources = original.PrivateLinkResources
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type RegistryStatistics = original.RegistryStatistics
 type Resource = original.Resource
 type ResourceProviderCommonClient = original.ResourceProviderCommonClient
@@ -328,6 +396,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewResourceProviderCommonClient(subscriptionID string) ResourceProviderCommonClient {
 	return original.NewResourceProviderCommonClient(subscriptionID)
 }
@@ -346,8 +426,14 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleAccessRightsValues() []AccessRights {
 	return original.PossibleAccessRightsValues()
 }
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return original.PossibleAuthenticationTypeValues()
+}
 func PossibleCapabilitiesValues() []Capabilities {
 	return original.PossibleCapabilitiesValues()
+}
+func PossibleDefaultActionValues() []DefaultAction {
+	return original.PossibleDefaultActionValues()
 }
 func PossibleEncodingValues() []Encoding {
 	return original.PossibleEncodingValues()
@@ -378,6 +464,18 @@ func PossibleJobStatusValues() []JobStatus {
 }
 func PossibleJobTypeValues() []JobType {
 	return original.PossibleJobTypeValues()
+}
+func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
+	return original.PossibleNetworkRuleIPActionValues()
+}
+func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConnectionStatus {
+	return original.PossiblePrivateLinkServiceConnectionStatusValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
 }
 func PossibleRouteErrorSeverityValues() []RouteErrorSeverity {
 	return original.PossibleRouteErrorSeverityValues()

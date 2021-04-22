@@ -11,7 +11,7 @@ package kusto
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2020-09-18/kusto"
+	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2021-01-01/kusto"
 )
 
 const (
@@ -39,18 +39,21 @@ const (
 	StandardDS13V22TBPS   AzureSkuName = original.StandardDS13V22TBPS
 	StandardDS14V23TBPS   AzureSkuName = original.StandardDS14V23TBPS
 	StandardDS14V24TBPS   AzureSkuName = original.StandardDS14V24TBPS
+	StandardE16aV4        AzureSkuName = original.StandardE16aV4
 	StandardE16asV43TBPS  AzureSkuName = original.StandardE16asV43TBPS
 	StandardE16asV44TBPS  AzureSkuName = original.StandardE16asV44TBPS
-	StandardE16aV4        AzureSkuName = original.StandardE16aV4
 	StandardE2aV4         AzureSkuName = original.StandardE2aV4
 	StandardE4aV4         AzureSkuName = original.StandardE4aV4
 	StandardE64iV3        AzureSkuName = original.StandardE64iV3
+	StandardE80idsV4      AzureSkuName = original.StandardE80idsV4
+	StandardE8aV4         AzureSkuName = original.StandardE8aV4
 	StandardE8asV41TBPS   AzureSkuName = original.StandardE8asV41TBPS
 	StandardE8asV42TBPS   AzureSkuName = original.StandardE8asV42TBPS
-	StandardE8aV4         AzureSkuName = original.StandardE8aV4
 	StandardL16s          AzureSkuName = original.StandardL16s
+	StandardL16sV2        AzureSkuName = original.StandardL16sV2
 	StandardL4s           AzureSkuName = original.StandardL4s
 	StandardL8s           AzureSkuName = original.StandardL8s
+	StandardL8sV2         AzureSkuName = original.StandardL8sV2
 )
 
 type AzureSkuTier = original.AzureSkuTier
@@ -81,15 +84,24 @@ const (
 	CompressionNone Compression = original.CompressionNone
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
+)
+
 type DatabasePrincipalRole = original.DatabasePrincipalRole
 
 const (
-	Admin               DatabasePrincipalRole = original.Admin
-	Ingestor            DatabasePrincipalRole = original.Ingestor
-	Monitor             DatabasePrincipalRole = original.Monitor
-	UnrestrictedViewers DatabasePrincipalRole = original.UnrestrictedViewers
-	User                DatabasePrincipalRole = original.User
-	Viewer              DatabasePrincipalRole = original.Viewer
+	DatabasePrincipalRoleAdmin              DatabasePrincipalRole = original.DatabasePrincipalRoleAdmin
+	DatabasePrincipalRoleIngestor           DatabasePrincipalRole = original.DatabasePrincipalRoleIngestor
+	DatabasePrincipalRoleMonitor            DatabasePrincipalRole = original.DatabasePrincipalRoleMonitor
+	DatabasePrincipalRoleUnrestrictedViewer DatabasePrincipalRole = original.DatabasePrincipalRoleUnrestrictedViewer
+	DatabasePrincipalRoleUser               DatabasePrincipalRole = original.DatabasePrincipalRoleUser
+	DatabasePrincipalRoleViewer             DatabasePrincipalRole = original.DatabasePrincipalRoleViewer
 )
 
 type DatabasePrincipalType = original.DatabasePrincipalType
@@ -259,6 +271,15 @@ const (
 	StateUpdating    State = original.StateUpdating
 )
 
+type Status = original.Status
+
+const (
+	StatusCanceled  Status = original.StatusCanceled
+	StatusFailed    Status = original.StatusFailed
+	StatusRunning   Status = original.StatusRunning
+	StatusSucceeded Status = original.StatusSucceeded
+)
+
 type Type = original.Type
 
 const (
@@ -355,7 +376,11 @@ type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationResult = original.OperationResult
+type OperationResultErrorProperties = original.OperationResultErrorProperties
+type OperationResultProperties = original.OperationResultProperties
 type OperationsClient = original.OperationsClient
+type OperationsResultsClient = original.OperationsResultsClient
 type OptimizedAutoscale = original.OptimizedAutoscale
 type ProxyResource = original.ProxyResource
 type ReadOnlyFollowingDatabase = original.ReadOnlyFollowingDatabase
@@ -363,9 +388,19 @@ type ReadOnlyFollowingDatabaseProperties = original.ReadOnlyFollowingDatabasePro
 type ReadWriteDatabase = original.ReadWriteDatabase
 type ReadWriteDatabaseProperties = original.ReadWriteDatabaseProperties
 type Resource = original.Resource
+type Script = original.Script
+type ScriptCheckNameRequest = original.ScriptCheckNameRequest
+type ScriptListResult = original.ScriptListResult
+type ScriptProperties = original.ScriptProperties
+type ScriptsClient = original.ScriptsClient
+type ScriptsCreateOrUpdateFuture = original.ScriptsCreateOrUpdateFuture
+type ScriptsDeleteFuture = original.ScriptsDeleteFuture
+type ScriptsUpdateFuture = original.ScriptsUpdateFuture
 type SkuDescription = original.SkuDescription
 type SkuDescriptionList = original.SkuDescriptionList
 type SkuLocationInfoItem = original.SkuLocationInfoItem
+type SystemData = original.SystemData
+type TableLevelSharingProperties = original.TableLevelSharingProperties
 type TrackedResource = original.TrackedResource
 type TrustedExternalTenant = original.TrustedExternalTenant
 type VirtualNetworkConfiguration = original.VirtualNetworkConfiguration
@@ -421,6 +456,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewOperationsResultsClient(subscriptionID string) OperationsResultsClient {
+	return original.NewOperationsResultsClient(subscriptionID)
+}
+func NewOperationsResultsClientWithBaseURI(baseURI string, subscriptionID string) OperationsResultsClient {
+	return original.NewOperationsResultsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewScriptsClient(subscriptionID string) ScriptsClient {
+	return original.NewScriptsClient(subscriptionID)
+}
+func NewScriptsClientWithBaseURI(baseURI string, subscriptionID string) ScriptsClient {
+	return original.NewScriptsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -441,6 +488,9 @@ func PossibleClusterPrincipalRoleValues() []ClusterPrincipalRole {
 }
 func PossibleCompressionValues() []Compression {
 	return original.PossibleCompressionValues()
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleDatabasePrincipalRoleValues() []DatabasePrincipalRole {
 	return original.PossibleDatabasePrincipalRoleValues()
@@ -489,6 +539,9 @@ func PossibleReasonValues() []Reason {
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()
+}
+func PossibleStatusValues() []Status {
+	return original.PossibleStatusValues()
 }
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()

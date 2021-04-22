@@ -129,6 +129,16 @@ func (r *Response) UnmarshalAsXML(v interface{}) error {
 	return err
 }
 
+// UnmarshalError will unmarshal the received service error payload along with the corresponding unmarshal error.
+// NOTE: this method is only meant to be called when handling a service error.
+func (r *Response) UnmarshalError(unmarshalErr error) error {
+	payload, err := r.payload()
+	if err != nil {
+		return err
+	}
+	return fmt.Errorf("raw service error: %s\n%w", payload, unmarshalErr)
+}
+
 // Drain reads the response body to completion then closes it.  The bytes read are discarded.
 func (r *Response) Drain() {
 	if r != nil && r.Body != nil {

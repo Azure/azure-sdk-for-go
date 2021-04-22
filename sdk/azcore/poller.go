@@ -224,7 +224,7 @@ func (l *LROPoller) PollUntilDone(ctx context.Context, freq time.Duration, respT
 			return nil, err
 		}
 		if l.Done() {
-			logPollUntilDoneExit(l.lro.State())
+			logPollUntilDoneExit(l.lro.Status())
 			if !l.lro.Succeeded() {
 				return nil, l.eu(&Response{resp})
 			}
@@ -252,7 +252,7 @@ type lroPoller interface {
 	Update(resp *Response) error
 	FinalGetURL(resp *Response) (string, error)
 	URL() string
-	State() string
+	Status() string
 	Succeeded() bool
 }
 
@@ -265,7 +265,7 @@ type opPoller struct {
 	ReqURL    string `json:"reqURL"`
 	PollURL   string `json:"pollURL"`
 	LocURL    string `json:"locURL"`
-	Status    string `json:"status"`
+	status    string
 }
 
 func newOpPoller(pollerType, pollingURL, locationURL string, initialResponse *Response) *opPoller {
@@ -275,7 +275,6 @@ func newOpPoller(pollerType, pollingURL, locationURL string, initialResponse *Re
 		ReqURL:    initialResponse.Request.URL.String(),
 		PollURL:   pollingURL,
 		LocURL:    locationURL,
-		Status:    "InProgress",
 	}
 }
 
@@ -284,13 +283,13 @@ func (p *opPoller) URL() string {
 }
 
 func (p *opPoller) Done() bool {
-	return strings.EqualFold(p.Status, "succeeded") ||
-		strings.EqualFold(p.Status, "failed") ||
-		strings.EqualFold(p.Status, "cancelled")
+	return strings.EqualFold(p.status, "succeeded") ||
+		strings.EqualFold(p.status, "failed") ||
+		strings.EqualFold(p.status, "cancelled")
 }
 
 func (p *opPoller) Succeeded() bool {
-	return strings.EqualFold(p.Status, "succeeded")
+	return strings.EqualFold(p.status, "succeeded")
 }
 
 func (p *opPoller) Update(resp *Response) error {
@@ -301,7 +300,7 @@ func (p *opPoller) Update(resp *Response) error {
 	if status == "" {
 		return errors.New("no status found in body")
 	}
-	p.Status = status
+	p.status = status
 	// if the endpoint returned an operation-location header, update cached value
 	if opLoc := resp.Header.Get(headerOperationLocation); opLoc != "" {
 		p.PollURL = opLoc
@@ -329,8 +328,8 @@ func (p *opPoller) FinalGetURL(resp *Response) (string, error) {
 	return "", nil
 }
 
-func (p *opPoller) State() string {
-	return p.Status
+func (p *opPoller) Status() string {
+	return p.status
 }
 
 // ====================================================================================================
@@ -339,14 +338,14 @@ func (p *opPoller) State() string {
 type locPoller struct {
 	Type    string `json:"type"`
 	PollURL string `json:"pollURL"`
-	Status  int    `json:"status"`
+	status  int
 }
 
 func newLocPoller(pollerType, pollingURL string, initialStatus int) *locPoller {
 	return &locPoller{
 		Type:    fmt.Sprintf("%s;locPoller", pollerType),
 		PollURL: pollingURL,
-		Status:  initialStatus,
+		status:  initialStatus,
 	}
 }
 
@@ -356,12 +355,13 @@ func (p *locPoller) URL() string {
 
 func (p *locPoller) Done() bool {
 	// a 202 means the operation is still in progress
-	return p.Status != http.StatusAccepted
+	// zero-value indicates the poller was rehydrated from a token
+	return p.status > 0 && p.status != http.StatusAccepted
 }
 
 func (p *locPoller) Succeeded() bool {
 	// any 2xx status code indicates success
-	return p.Status >= 200 && p.Status < 300
+	return p.status >= 200 && p.status < 300
 }
 
 func (p *locPoller) Update(resp *Response) error {
@@ -369,7 +369,7 @@ func (p *locPoller) Update(resp *Response) error {
 	if loc := resp.Header.Get(headerLocation); loc != "" {
 		p.PollURL = loc
 	}
-	p.Status = resp.StatusCode
+	p.status = resp.StatusCode
 	return nil
 }
 
@@ -377,8 +377,8 @@ func (*locPoller) FinalGetURL(*Response) (string, error) {
 	return "", nil
 }
 
-func (p *locPoller) State() string {
-	return strconv.Itoa(p.Status)
+func (p *locPoller) Status() string {
+	return strconv.Itoa(p.status)
 }
 
 // ====================================================================================================
@@ -406,7 +406,7 @@ func (*nopPoller) FinalGetURL(*Response) (string, error) {
 	return "", nil
 }
 
-func (*nopPoller) State() string {
+func (*nopPoller) Status() string {
 	return "succeeded"
 }
 

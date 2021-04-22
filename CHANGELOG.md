@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## `v53.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2021-01-01/kusto`
+- `github.com/Azure/azure-sdk-for-go/services/preview/confidentialledger/mgmt/2020-12-01-preview/confidentialledger`
+- `github.com/Azure/azure-sdk-for-go/services/preview/iothub/mgmt/2021-03-03-preview/devices`
+- `github.com/Azure/azure-sdk-for-go/services/preview/webpubsub/mgmt/2021-04-01-preview/webpubsub`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight` | [details](services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight/CHANGELOG.md) |
+
 ## `v53.3.0`
 
 Fixes https://github.com/Azure/azure-sdk-for-go/issues/14540

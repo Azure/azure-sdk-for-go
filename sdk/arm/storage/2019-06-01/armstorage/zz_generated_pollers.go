@@ -15,10 +15,9 @@ import (
 	"time"
 )
 
-// BlobRestoreStatusPoller provides polling facilities until the operation completes
+// BlobRestoreStatusPoller provides polling facilities until the operation reaches a terminal state.
 type BlobRestoreStatusPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final BlobRestoreStatusResponse will be returned.
@@ -26,17 +25,14 @@ type BlobRestoreStatusPoller interface {
 }
 
 type blobRestoreStatusPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *blobRestoreStatusPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *blobRestoreStatusPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -51,8 +47,6 @@ func (p *blobRestoreStatusPoller) FinalResponse(ctx context.Context) (BlobRestor
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeBlobRestoreStatusPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *blobRestoreStatusPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -67,28 +61,24 @@ func (p *blobRestoreStatusPoller) pollUntilDone(ctx context.Context, frequency t
 	return respType, nil
 }
 
-// HTTPPoller provides polling facilities until the operation completes
+// HTTPPoller provides polling facilities until the operation reaches a terminal state.
 type HTTPPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final HTTPResponse will be returned.
+	// If the final GET succeeded then the final *http.Response will be returned.
 	FinalResponse(ctx context.Context) (*http.Response, error)
 }
 
 type httpPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *httpPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *httpPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -97,8 +87,6 @@ func (p *httpPoller) FinalResponse(ctx context.Context) (*http.Response, error) 
 	return p.pt.FinalResponse(ctx, p.pipeline, nil)
 }
 
-// ResumeToken generates the string token that can be used with the ResumeHTTPPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *httpPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -107,10 +95,9 @@ func (p *httpPoller) pollUntilDone(ctx context.Context, frequency time.Duration)
 	return p.pt.PollUntilDone(ctx, frequency, p.pipeline, nil)
 }
 
-// StorageAccountPoller provides polling facilities until the operation completes
+// StorageAccountPoller provides polling facilities until the operation reaches a terminal state.
 type StorageAccountPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final StorageAccountResponse will be returned.
@@ -118,17 +105,14 @@ type StorageAccountPoller interface {
 }
 
 type storageAccountPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *storageAccountPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *storageAccountPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -143,8 +127,6 @@ func (p *storageAccountPoller) FinalResponse(ctx context.Context) (StorageAccoun
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeStorageAccountPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *storageAccountPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

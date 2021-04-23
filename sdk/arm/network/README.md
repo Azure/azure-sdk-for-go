@@ -1,10 +1,10 @@
 # Azure Network Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/arm/network)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/arm/network)
+<!--[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/arm/network)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/arm/network)-->
 
 The `armnetwork` module provides operations for working with Azure Network resources.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/arm/network)
+[Source code]<!--(https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/arm/network)-->
 
 # Getting started
 

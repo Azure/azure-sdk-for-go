@@ -136,7 +136,10 @@ func (r *Response) UnmarshalError(unmarshalErr error) error {
 	if err != nil {
 		return err
 	}
-	return fmt.Errorf("raw service error: %s\n%w", payload, unmarshalErr)
+	if len(payload) == 0 {
+		return fmt.Errorf("empty error body\n%s", unmarshalErr)
+	}
+	return fmt.Errorf("raw service error: %s\n%s", payload, unmarshalErr)
 }
 
 // Drain reads the response body to completion then closes it.  The bytes read are discarded.

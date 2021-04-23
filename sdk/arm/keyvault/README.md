@@ -1,10 +1,10 @@
 # Azure Keyvault Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/arm/keyvault/2019-09-01/armkeyvault)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/arm/keyvault/2019-09-01/armkeyvault)
+<!--[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/arm/keyvault)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/arm/keyvault)-->
 
 The `armkeyvault` module provides operations for working with Azure keyvault.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/arm/keyvault/2019-09-01/armkeyvault)
+[Source code]<!--(https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/arm/keyvault)-->
 
 # Getting started
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Keyvault module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/arm/keyvault/2019-09-01/armkeyvault
+go get github.com/Azure/azure-sdk-for-go/sdk/arm/keyvault
 ```
 
 ## Authorization

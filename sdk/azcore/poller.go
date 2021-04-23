@@ -18,11 +18,6 @@ import (
 	"time"
 )
 
-const (
-	headerOperationLocation = "Operation-Location"
-	headerLocation          = "Location"
-)
-
 // ErrorUnmarshaller is the func to invoke when the endpoint returns an error response that requires unmarshalling.
 type ErrorUnmarshaller func(*Response) error
 

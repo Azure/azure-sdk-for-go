@@ -17,7 +17,7 @@ import (
 	"time"
 )
 
-// The parameters to list SAS credentials of a storage account.
+// AccountSasParameters - The parameters to list SAS credentials of a storage account.
 type AccountSasParameters struct {
 	// An IP address or a range of IP addresses from which to accept requests.
 	IPAddressOrRange *string `json:"signedIp,omitempty"`
@@ -106,7 +106,7 @@ func (a *AccountSasParameters) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// Settings properties for Active Directory (AD).
+// ActiveDirectoryProperties - Settings properties for Active Directory (AD).
 type ActiveDirectoryProperties struct {
 	// Specifies the security identifier (SID) for Azure Storage.
 	AzureStorageSid *string `json:"azureStorageSid,omitempty"`
@@ -127,7 +127,7 @@ type ActiveDirectoryProperties struct {
 	NetBiosDomainName *string `json:"netBiosDomainName,omitempty"`
 }
 
-// The resource model definition for an Azure Resource Manager resource with an etag.
+// AzureEntityResource - The resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	Resource
 	// READ-ONLY; Resource Etag.
@@ -146,7 +146,7 @@ func (a AzureEntityResource) marshalInternal() map[string]interface{} {
 	return objectMap
 }
 
-// Settings for Azure Files identity based authentication.
+// AzureFilesIdentityBasedAuthentication - Settings for Azure Files identity based authentication.
 type AzureFilesIdentityBasedAuthentication struct {
 	// Required if choose AD.
 	ActiveDirectoryProperties *ActiveDirectoryProperties `json:"activeDirectoryProperties,omitempty"`
@@ -155,7 +155,7 @@ type AzureFilesIdentityBasedAuthentication struct {
 	DirectoryServiceOptions *DirectoryServiceOptions `json:"directoryServiceOptions,omitempty"`
 }
 
-// Properties of the blob container, including Id, resource name, resource type, Etag.
+// BlobContainer - Properties of the blob container, including Id, resource name, resource type, Etag.
 type BlobContainer struct {
 	AzureEntityResource
 	// Properties of the blob container.
@@ -276,7 +276,7 @@ type BlobInventoryPoliciesListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// The storage account blob inventory policy.
+// BlobInventoryPolicy - The storage account blob inventory policy.
 type BlobInventoryPolicy struct {
 	Resource
 	// Returns the storage account blob inventory policy rules.
@@ -286,13 +286,13 @@ type BlobInventoryPolicy struct {
 	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
 }
 
-// An object that defines the blob inventory rule. Each definition consists of a set of filters.
+// BlobInventoryPolicyDefinition - An object that defines the blob inventory rule. Each definition consists of a set of filters.
 type BlobInventoryPolicyDefinition struct {
 	// An object that defines the filter set.
 	Filters *BlobInventoryPolicyFilter `json:"filters,omitempty"`
 }
 
-// An object that defines the blob inventory rule filter conditions.
+// BlobInventoryPolicyFilter - An object that defines the blob inventory rule filter conditions.
 type BlobInventoryPolicyFilter struct {
 	// An array of predefined enum values. Valid values include blockBlob, appendBlob, pageBlob. Hns accounts does not support pageBlobs.
 	BlobTypes *[]*string `json:"blobTypes,omitempty"`
@@ -307,7 +307,7 @@ type BlobInventoryPolicyFilter struct {
 	PrefixMatch *[]*string `json:"prefixMatch,omitempty"`
 }
 
-// The storage account blob inventory policy properties.
+// BlobInventoryPolicyProperties - The storage account blob inventory policy properties.
 type BlobInventoryPolicyProperties struct {
 	// READ-ONLY; Returns the last modified date and time of the blob inventory policy.
 	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
@@ -358,7 +358,7 @@ type BlobInventoryPolicyResponse struct {
 	RawResponse *http.Response
 }
 
-// An object that wraps the blob inventory rule. Each rule is uniquely defined by name.
+// BlobInventoryPolicyRule - An object that wraps the blob inventory rule. Each rule is uniquely defined by name.
 type BlobInventoryPolicyRule struct {
 	// An object that defines the blob inventory policy rule.
 	Definition *BlobInventoryPolicyDefinition `json:"definition,omitempty"`
@@ -370,7 +370,7 @@ type BlobInventoryPolicyRule struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// The storage account blob inventory policy rules.
+// BlobInventoryPolicySchema - The storage account blob inventory policy rules.
 type BlobInventoryPolicySchema struct {
 	// Container name where blob inventory files are stored. Must be pre-created.
 	Destination *string `json:"destination,omitempty"`
@@ -385,7 +385,7 @@ type BlobInventoryPolicySchema struct {
 	Type *InventoryRuleType `json:"type,omitempty"`
 }
 
-// Blob restore parameters
+// BlobRestoreParameters - Blob restore parameters
 type BlobRestoreParameters struct {
 	// Blob ranges to restore.
 	BlobRanges *[]*BlobRestoreRange `json:"blobRanges,omitempty"`
@@ -427,7 +427,7 @@ func (b *BlobRestoreParameters) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// Blob range
+// BlobRestoreRange - Blob range
 type BlobRestoreRange struct {
 	// Blob end range. This is exclusive. Empty means account end.
 	EndRange *string `json:"endRange,omitempty"`
@@ -436,7 +436,7 @@ type BlobRestoreRange struct {
 	StartRange *string `json:"startRange,omitempty"`
 }
 
-// Blob restore status.
+// BlobRestoreStatus - Blob restore status.
 type BlobRestoreStatus struct {
 	// READ-ONLY; Failure reason when blob restore is failed.
 	FailureReason *string `json:"failureReason,omitempty" azure:"ro"`
@@ -487,7 +487,7 @@ type BlobServiceItemsResponse struct {
 	RawResponse *http.Response
 }
 
-// The properties of a storage account’s Blob service.
+// BlobServiceProperties - The properties of a storage account’s Blob service.
 type BlobServiceProperties struct {
 	Resource
 	// The properties of a storage account’s Blob service.
@@ -497,7 +497,7 @@ type BlobServiceProperties struct {
 	SKU *SKU `json:"sku,omitempty" azure:"ro"`
 }
 
-// The properties of a storage account’s Blob service.
+// BlobServicePropertiesAutoGenerated - The properties of a storage account’s Blob service.
 type BlobServicePropertiesAutoGenerated struct {
 	// Deprecated in favor of isVersioningEnabled property.
 	AutomaticSnapshotPolicyEnabled *bool `json:"automaticSnapshotPolicyEnabled,omitempty"`
@@ -555,7 +555,7 @@ type BlobServicesSetServicePropertiesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// The blob service properties for change feed events.
+// ChangeFeed - The blob service properties for change feed events.
 type ChangeFeed struct {
 	// Indicates whether change feed event logging is enabled for the Blob service.
 	Enabled *bool `json:"enabled,omitempty"`
@@ -565,7 +565,7 @@ type ChangeFeed struct {
 	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
 }
 
-// The CheckNameAvailability operation response.
+// CheckNameAvailabilityResult - The CheckNameAvailability operation response.
 type CheckNameAvailabilityResult struct {
 	// READ-ONLY; Gets an error message explaining the Reason value in more detail.
 	Message *string `json:"message,omitempty" azure:"ro"`
@@ -587,7 +587,7 @@ type CheckNameAvailabilityResultResponse struct {
 	RawResponse *http.Response
 }
 
-// An error response from the Storage service.
+// CloudError - An error response from the Storage service.
 type CloudError struct {
 	// An error response from the Storage service.
 	InnerError *CloudErrorBody `json:"error,omitempty"`
@@ -617,7 +617,7 @@ func (e CloudError) Error() string {
 	return msg
 }
 
-// An error response from the Storage service.
+// CloudErrorBody - An error response from the Storage service.
 type CloudErrorBody struct {
 	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
 	Code *string `json:"code,omitempty"`
@@ -632,7 +632,7 @@ type CloudErrorBody struct {
 	Target *string `json:"target,omitempty"`
 }
 
-// The properties of a container.
+// ContainerProperties - The properties of a container.
 type ContainerProperties struct {
 	// Default the container to use specified encryption scope for all writes.
 	DefaultEncryptionScope *string `json:"defaultEncryptionScope,omitempty"`
@@ -778,7 +778,7 @@ func (c *ContainerProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// Specifies a CORS rule for the Blob service.
+// CorsRule - Specifies a CORS rule for the Blob service.
 type CorsRule struct {
 	// Required if CorsRule element is present. A list of headers allowed to be part of the cross-origin request.
 	AllowedHeaders *[]*string `json:"allowedHeaders,omitempty"`
@@ -796,13 +796,13 @@ type CorsRule struct {
 	MaxAgeInSeconds *int32 `json:"maxAgeInSeconds,omitempty"`
 }
 
-// Sets the CORS rules. You can include up to five CorsRule elements in the request.
+// CorsRules - Sets the CORS rules. You can include up to five CorsRule elements in the request.
 type CorsRules struct {
 	// The List of CORS rules. You can include up to five CorsRule elements in the request.
 	CorsRules *[]*CorsRule `json:"corsRules,omitempty"`
 }
 
-// The custom domain assigned to this storage account. This can be set via Update.
+// CustomDomain - The custom domain assigned to this storage account. This can be set via Update.
 type CustomDomain struct {
 	// Gets or sets the custom domain name assigned to the storage account. Name is the CNAME source.
 	Name *string `json:"name,omitempty"`
@@ -811,14 +811,14 @@ type CustomDomain struct {
 	UseSubDomainName *bool `json:"useSubDomainName,omitempty"`
 }
 
-// Object to define the number of days after creation.
+// DateAfterCreation - Object to define the number of days after creation.
 type DateAfterCreation struct {
 	// Value indicating the age in days after creation
 	DaysAfterCreationGreaterThan *float32 `json:"daysAfterCreationGreaterThan,omitempty"`
 }
 
-// Object to define the number of days after object last modification Or last access. Properties daysAfterModificationGreaterThan and daysAfterLastAccessTimeGreaterThan
-// are mutually exclusive.
+// DateAfterModification - Object to define the number of days after object last modification Or last access. Properties daysAfterModificationGreaterThan
+// and daysAfterLastAccessTimeGreaterThan are mutually exclusive.
 type DateAfterModification struct {
 	// Value indicating the age in days after last blob access. This property can only be used in conjunction with last access time tracking policy
 	DaysAfterLastAccessTimeGreaterThan *float32 `json:"daysAfterLastAccessTimeGreaterThan,omitempty"`
@@ -827,7 +827,7 @@ type DateAfterModification struct {
 	DaysAfterModificationGreaterThan *float32 `json:"daysAfterModificationGreaterThan,omitempty"`
 }
 
-// The service properties for soft delete.
+// DeleteRetentionPolicy - The service properties for soft delete.
 type DeleteRetentionPolicy struct {
 	// Indicates the number of days that the deleted item should be retained. The minimum specified value can be 1 and the maximum value can be 365.
 	Days *int32 `json:"days,omitempty"`
@@ -836,14 +836,14 @@ type DeleteRetentionPolicy struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// Deleted storage account
+// DeletedAccount - Deleted storage account
 type DeletedAccount struct {
 	ProxyResource
 	// Properties of the deleted account.
 	Properties *DeletedAccountProperties `json:"properties,omitempty"`
 }
 
-// The response from the List Deleted Accounts operation.
+// DeletedAccountListResult - The response from the List Deleted Accounts operation.
 type DeletedAccountListResult struct {
 	// READ-ONLY; Request URL that can be used to query next page of deleted accounts. Returned when total number of requested deleted accounts exceed maximum
 	// page size.
@@ -862,7 +862,7 @@ type DeletedAccountListResultResponse struct {
 	RawResponse *http.Response
 }
 
-// Attributes of a deleted storage account.
+// DeletedAccountProperties - Attributes of a deleted storage account.
 type DeletedAccountProperties struct {
 	// READ-ONLY; Creation time of the deleted account.
 	CreationTime *string `json:"creationTime,omitempty" azure:"ro"`
@@ -899,7 +899,7 @@ type DeletedAccountsListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// The deleted share to be restored.
+// DeletedShare - The deleted share to be restored.
 type DeletedShare struct {
 	// Required. Identify the name of the deleted share that will be restored.
 	DeletedShareName *string `json:"deletedShareName,omitempty"`
@@ -917,7 +917,7 @@ type Dimension struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// The encryption settings on the storage account.
+// Encryption - The encryption settings on the storage account.
 type Encryption struct {
 	// The identity to be used with service-side encryption at rest.
 	EncryptionIdentity *EncryptionIdentity `json:"identity,omitempty"`
@@ -935,13 +935,13 @@ type Encryption struct {
 	Services *EncryptionServices `json:"services,omitempty"`
 }
 
-// Encryption identity for the storage account.
+// EncryptionIdentity - Encryption identity for the storage account.
 type EncryptionIdentity struct {
 	// Resource identifier of the UserAssigned identity to be associated with server-side encryption on the storage account.
 	EncryptionUserAssignedIdentity *string `json:"userAssignedIdentity,omitempty"`
 }
 
-// The Encryption Scope resource.
+// EncryptionScope - The Encryption Scope resource.
 type EncryptionScope struct {
 	Resource
 	// Properties of the encryption scope.
@@ -955,7 +955,8 @@ func (e EncryptionScope) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// The key vault properties for the encryption scope. This is a required field if encryption scope 'source' attribute is set to 'Microsoft.KeyVault'.
+// EncryptionScopeKeyVaultProperties - The key vault properties for the encryption scope. This is a required field if encryption scope 'source' attribute
+// is set to 'Microsoft.KeyVault'.
 type EncryptionScopeKeyVaultProperties struct {
 	// READ-ONLY; The object identifier of the current versioned Key Vault Key in use.
 	CurrentVersionedKeyIdentifier *string `json:"currentVersionedKeyIdentifier,omitempty" azure:"ro"`
@@ -1005,7 +1006,7 @@ func (e *EncryptionScopeKeyVaultProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// List of encryption scopes requested, and if paging is required, a URL to the next page of encryption scopes.
+// EncryptionScopeListResult - List of encryption scopes requested, and if paging is required, a URL to the next page of encryption scopes.
 type EncryptionScopeListResult struct {
 	// READ-ONLY; Request URL that can be used to query next page of encryption scopes. Returned when total number of requested encryption scopes exceeds the
 	// maximum page size.
@@ -1024,7 +1025,7 @@ type EncryptionScopeListResultResponse struct {
 	RawResponse *http.Response
 }
 
-// Properties of the encryption scope.
+// EncryptionScopeProperties - Properties of the encryption scope.
 type EncryptionScopeProperties struct {
 	// READ-ONLY; Gets the creation date and time of the encryption scope in UTC.
 	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
@@ -1125,7 +1126,7 @@ type EncryptionScopesPutOptions struct {
 	// placeholder for future optional parameters
 }
 
-// A service that allows server-side encryption to be used.
+// EncryptionService - A service that allows server-side encryption to be used.
 type EncryptionService struct {
 	// A boolean indicating whether or not the service encrypts the data as it is stored.
 	Enabled *bool `json:"enabled,omitempty"`
@@ -1177,7 +1178,7 @@ func (e *EncryptionService) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// A list of services that support encryption.
+// EncryptionServices - A list of services that support encryption.
 type EncryptionServices struct {
 	// The encryption function of the blob storage service.
 	Blob *EncryptionService `json:"blob,omitempty"`
@@ -1192,7 +1193,7 @@ type EncryptionServices struct {
 	Table *EncryptionService `json:"table,omitempty"`
 }
 
-// The URIs that are used to perform a retrieval of a public blob, queue, table, web or dfs object.
+// Endpoints - The URIs that are used to perform a retrieval of a public blob, queue, table, web or dfs object.
 type Endpoints struct {
 	// READ-ONLY; Gets the blob endpoint.
 	Blob *string `json:"blob,omitempty" azure:"ro"`
@@ -1219,7 +1220,7 @@ type Endpoints struct {
 	Web *string `json:"web,omitempty" azure:"ro"`
 }
 
-// An error response from the storage resource provider.
+// ErrorResponse - An error response from the storage resource provider.
 type ErrorResponse struct {
 	// Azure Storage Resource Provider error response body.
 	InnerError *ErrorResponseBody `json:"error,omitempty"`
@@ -1243,7 +1244,7 @@ func (e ErrorResponse) Error() string {
 	return msg
 }
 
-// Error response body contract.
+// ErrorResponseBody - Error response body contract.
 type ErrorResponseBody struct {
 	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
 	Code *string `json:"code,omitempty"`
@@ -1252,7 +1253,7 @@ type ErrorResponseBody struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// The complex type of the extended location.
+// ExtendedLocation - The complex type of the extended location.
 type ExtendedLocation struct {
 	// The name of the extended location.
 	Name *string `json:"name,omitempty"`
@@ -1274,7 +1275,7 @@ type FileServiceItemsResponse struct {
 	RawResponse *http.Response
 }
 
-// The properties of File services in storage account.
+// FileServiceProperties - The properties of File services in storage account.
 type FileServiceProperties struct {
 	Resource
 	// The properties of File services in storage account.
@@ -1284,7 +1285,7 @@ type FileServiceProperties struct {
 	SKU *SKU `json:"sku,omitempty" azure:"ro"`
 }
 
-// The properties of File services in storage account.
+// FileServicePropertiesAutoGenerated - The properties of File services in storage account.
 type FileServicePropertiesAutoGenerated struct {
 	// Specifies CORS rules for the File service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the request
 	// body, all CORS rules will be deleted, and
@@ -1322,7 +1323,7 @@ type FileServicesSetServicePropertiesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Properties of the file share, including Id, resource name, resource type, Etag.
+// FileShare - Properties of the file share, including Id, resource name, resource type, Etag.
 type FileShare struct {
 	AzureEntityResource
 	// Properties of the file share.
@@ -1336,14 +1337,14 @@ func (f FileShare) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// The file share properties be listed out.
+// FileShareItem - The file share properties be listed out.
 type FileShareItem struct {
 	AzureEntityResource
 	// The file share properties be listed out.
 	Properties *FileShareProperties `json:"properties,omitempty"`
 }
 
-// Response schema. Contains list of shares returned, and if paging is requested or required, a URL to next page of shares.
+// FileShareItems - Response schema. Contains list of shares returned, and if paging is requested or required, a URL to next page of shares.
 type FileShareItems struct {
 	// READ-ONLY; Request URL that can be used to query next page of shares. Returned when total number of requested shares exceed maximum page size.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -1361,7 +1362,7 @@ type FileShareItemsResponse struct {
 	RawResponse *http.Response
 }
 
-// The properties of the file share.
+// FileShareProperties - The properties of the file share.
 type FileShareProperties struct {
 	// Access tier for specific share. GpV2 account can choose between TransactionOptimized (default), Hot, and Cool. FileStorage account can choose Premium.
 	AccessTier *ShareAccessTier `json:"accessTier,omitempty"`
@@ -1543,8 +1544,8 @@ type FileSharesUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Statistics related to replication for storage account's Blob, Table, Queue and File services. It is only available when geo-redundant replication is
-// enabled for the storage account.
+// GeoReplicationStats - Statistics related to replication for storage account's Blob, Table, Queue and File services. It is only available when geo-redundant
+// replication is enabled for the storage account.
 type GeoReplicationStats struct {
 	// READ-ONLY; A boolean flag which indicates whether or not account failover is supported for the account.
 	CanFailover *bool `json:"canFailover,omitempty" azure:"ro"`
@@ -1610,7 +1611,7 @@ type HTTPPollerResponse struct {
 	RawResponse *http.Response
 }
 
-// IP rule with specific IP or IP range in CIDR format.
+// IPRule - IP rule with specific IP or IP range in CIDR format.
 type IPRule struct {
 	// The action of IP ACL rule.
 	Action *string `json:"action,omitempty"`
@@ -1636,14 +1637,14 @@ type Identity struct {
 	UserAssignedIdentities *map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
 }
 
-// The ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
+// ImmutabilityPolicy - The ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
 type ImmutabilityPolicy struct {
 	AzureEntityResource
 	// The properties of an ImmutabilityPolicy of a blob container.
 	Properties *ImmutabilityPolicyProperty `json:"properties,omitempty"`
 }
 
-// The properties of an ImmutabilityPolicy of a blob container.
+// ImmutabilityPolicyProperties - The properties of an ImmutabilityPolicy of a blob container.
 type ImmutabilityPolicyProperties struct {
 	// READ-ONLY; ImmutabilityPolicy Etag.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
@@ -1655,7 +1656,7 @@ type ImmutabilityPolicyProperties struct {
 	UpdateHistory *[]*UpdateHistoryProperty `json:"updateHistory,omitempty" azure:"ro"`
 }
 
-// The properties of an ImmutabilityPolicy of a blob container.
+// ImmutabilityPolicyProperty - The properties of an ImmutabilityPolicy of a blob container.
 type ImmutabilityPolicyProperty struct {
 	// This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining
 	// immutability protection and compliance. Only
@@ -1681,7 +1682,7 @@ type ImmutabilityPolicyResponse struct {
 	RawResponse *http.Response
 }
 
-// Properties of key vault.
+// KeyVaultProperties - Properties of key vault.
 type KeyVaultProperties struct {
 	// READ-ONLY; The object identifier of the current versioned Key Vault Key in use.
 	CurrentVersionedKeyIdentifier *string `json:"currentVersionedKeyIdentifier,omitempty" azure:"ro"`
@@ -1744,7 +1745,7 @@ func (k *KeyVaultProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// The blob service properties for Last access time based tracking policy.
+// LastAccessTimeTrackingPolicy - The blob service properties for Last access time based tracking policy.
 type LastAccessTimeTrackingPolicy struct {
 	// An array of predefined supported blob types. Only blockBlob is the supported value. This field is currently read only
 	BlobType *[]*string `json:"blobType,omitempty"`
@@ -1760,7 +1761,7 @@ type LastAccessTimeTrackingPolicy struct {
 	TrackingGranularityInDays *int32 `json:"trackingGranularityInDays,omitempty"`
 }
 
-// Lease Container request schema.
+// LeaseContainerRequest - Lease Container request schema.
 type LeaseContainerRequest struct {
 	// Specifies the lease action. Can be one of the available actions.
 	Action *LeaseContainerRequestAction `json:"action,omitempty"`
@@ -1778,7 +1779,7 @@ type LeaseContainerRequest struct {
 	ProposedLeaseID *string `json:"proposedLeaseId,omitempty"`
 }
 
-// Lease Container response schema.
+// LeaseContainerResponse - Lease Container response schema.
 type LeaseContainerResponse struct {
 	// Returned unique lease ID that must be included with any request to delete the container, or to renew, change, or release the lease.
 	LeaseID *string `json:"leaseId,omitempty"`
@@ -1796,7 +1797,7 @@ type LeaseContainerResponseResponse struct {
 	RawResponse *http.Response
 }
 
-// The LegalHold property of a blob container.
+// LegalHold - The LegalHold property of a blob container.
 type LegalHold struct {
 	// READ-ONLY; The hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold public property is set to
 	// false by SRP if all existing legal hold tags are cleared out.
@@ -1807,7 +1808,7 @@ type LegalHold struct {
 	Tags *[]*string `json:"tags,omitempty"`
 }
 
-// The LegalHold property of a blob container.
+// LegalHoldProperties - The LegalHold property of a blob container.
 type LegalHoldProperties struct {
 	// READ-ONLY; The hasLegalHold public property is set to true by SRP if there are at least one existing tag. The hasLegalHold public property is set to
 	// false by SRP if all existing legal hold tags are cleared out.
@@ -1827,7 +1828,7 @@ type LegalHoldResponse struct {
 	RawResponse *http.Response
 }
 
-// The List SAS credentials operation response.
+// ListAccountSasResponse - The List SAS credentials operation response.
 type ListAccountSasResponse struct {
 	// READ-ONLY; List SAS credentials of storage account.
 	AccountSasToken *string `json:"accountSasToken,omitempty" azure:"ro"`
@@ -1842,7 +1843,7 @@ type ListAccountSasResponseResponse struct {
 	RawResponse *http.Response
 }
 
-// List of blob inventory policies returned.
+// ListBlobInventoryPolicy - List of blob inventory policies returned.
 type ListBlobInventoryPolicy struct {
 	// READ-ONLY; List of blob inventory policies.
 	Value *[]*BlobInventoryPolicy `json:"value,omitempty" azure:"ro"`
@@ -1857,14 +1858,14 @@ type ListBlobInventoryPolicyResponse struct {
 	RawResponse *http.Response
 }
 
-// The blob container properties be listed out.
+// ListContainerItem - The blob container properties be listed out.
 type ListContainerItem struct {
 	AzureEntityResource
 	// The blob container properties be listed out.
 	Properties *ContainerProperties `json:"properties,omitempty"`
 }
 
-// Response schema. Contains list of blobs returned, and if paging is requested or required, a URL to next page of containers.
+// ListContainerItems - Response schema. Contains list of blobs returned, and if paging is requested or required, a URL to next page of containers.
 type ListContainerItems struct {
 	// READ-ONLY; Request URL that can be used to query next page of containers. Returned when total number of requested containers exceed maximum page size.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -1893,7 +1894,7 @@ type ListQueueProperties struct {
 	Metadata *map[string]*string `json:"metadata,omitempty"`
 }
 
-// Response schema. Contains list of queues returned
+// ListQueueResource - Response schema. Contains list of queues returned
 type ListQueueResource struct {
 	// READ-ONLY; Request URL that can be used to list next page of queues
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -1924,7 +1925,7 @@ type ListQueueServicesResponse struct {
 	RawResponse *http.Response
 }
 
-// The List service SAS credentials operation response.
+// ListServiceSasResponse - The List service SAS credentials operation response.
 type ListServiceSasResponse struct {
 	// READ-ONLY; List service SAS credentials of specific resource.
 	ServiceSasToken *string `json:"serviceSasToken,omitempty" azure:"ro"`
@@ -1939,7 +1940,7 @@ type ListServiceSasResponseResponse struct {
 	RawResponse *http.Response
 }
 
-// Response schema. Contains list of tables returned
+// ListTableResource - Response schema. Contains list of tables returned
 type ListTableResource struct {
 	// READ-ONLY; Request URL that can be used to query next page of tables
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -1985,14 +1986,14 @@ type ManagementPoliciesGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// The Get Storage Account ManagementPolicies operation response.
+// ManagementPolicy - The Get Storage Account ManagementPolicies operation response.
 type ManagementPolicy struct {
 	Resource
 	// Returns the Storage Account Data Policies Rules.
 	Properties *ManagementPolicyProperties `json:"properties,omitempty"`
 }
 
-// Actions are applied to the filtered blobs when the execution condition is met.
+// ManagementPolicyAction - Actions are applied to the filtered blobs when the execution condition is met.
 type ManagementPolicyAction struct {
 	// The management policy action for base blob
 	BaseBlob *ManagementPolicyBaseBlob `json:"baseBlob,omitempty"`
@@ -2004,7 +2005,7 @@ type ManagementPolicyAction struct {
 	Version *ManagementPolicyVersion `json:"version,omitempty"`
 }
 
-// Management policy action for base blob.
+// ManagementPolicyBaseBlob - Management policy action for base blob.
 type ManagementPolicyBaseBlob struct {
 	// The function to delete the blob
 	Delete *DateAfterModification `json:"delete,omitempty"`
@@ -2019,7 +2020,7 @@ type ManagementPolicyBaseBlob struct {
 	TierToCool *DateAfterModification `json:"tierToCool,omitempty"`
 }
 
-// An object that defines the Lifecycle rule. Each definition is made up with a filters set and an actions set.
+// ManagementPolicyDefinition - An object that defines the Lifecycle rule. Each definition is made up with a filters set and an actions set.
 type ManagementPolicyDefinition struct {
 	// An object that defines the action set.
 	Actions *ManagementPolicyAction `json:"actions,omitempty"`
@@ -2028,7 +2029,8 @@ type ManagementPolicyDefinition struct {
 	Filters *ManagementPolicyFilter `json:"filters,omitempty"`
 }
 
-// Filters limit rule actions to a subset of blobs within the storage account. If multiple filters are defined, a logical AND is performed on all filters.
+// ManagementPolicyFilter - Filters limit rule actions to a subset of blobs within the storage account. If multiple filters are defined, a logical AND is
+// performed on all filters.
 type ManagementPolicyFilter struct {
 	// An array of blob index tag based filters, there can be at most 10 tag filters
 	BlobIndexMatch *[]*TagFilter `json:"blobIndexMatch,omitempty"`
@@ -2040,7 +2042,7 @@ type ManagementPolicyFilter struct {
 	PrefixMatch *[]*string `json:"prefixMatch,omitempty"`
 }
 
-// The Storage Account ManagementPolicy properties.
+// ManagementPolicyProperties - The Storage Account ManagementPolicy properties.
 type ManagementPolicyProperties struct {
 	// READ-ONLY; Returns the date and time the ManagementPolicies was last modified.
 	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
@@ -2091,7 +2093,7 @@ type ManagementPolicyResponse struct {
 	RawResponse *http.Response
 }
 
-// An object that wraps the Lifecycle rule. Each rule is uniquely defined by name.
+// ManagementPolicyRule - An object that wraps the Lifecycle rule. Each rule is uniquely defined by name.
 type ManagementPolicyRule struct {
 	// An object that defines the Lifecycle rule.
 	Definition *ManagementPolicyDefinition `json:"definition,omitempty"`
@@ -2106,13 +2108,13 @@ type ManagementPolicyRule struct {
 	Type *RuleType `json:"type,omitempty"`
 }
 
-// The Storage Account ManagementPolicies Rules. See more details in: https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+// ManagementPolicySchema - The Storage Account ManagementPolicies Rules. See more details in: https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
 type ManagementPolicySchema struct {
 	// The Storage Account ManagementPolicies Rules. See more details in: https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
 	Rules *[]*ManagementPolicyRule `json:"rules,omitempty"`
 }
 
-// Management policy action for snapshot.
+// ManagementPolicySnapShot - Management policy action for snapshot.
 type ManagementPolicySnapShot struct {
 	// The function to delete the blob snapshot
 	Delete *DateAfterCreation `json:"delete,omitempty"`
@@ -2124,7 +2126,7 @@ type ManagementPolicySnapShot struct {
 	TierToCool *DateAfterCreation `json:"tierToCool,omitempty"`
 }
 
-// Management policy action for blob version.
+// ManagementPolicyVersion - Management policy action for blob version.
 type ManagementPolicyVersion struct {
 	// The function to delete the blob version
 	Delete *DateAfterCreation `json:"delete,omitempty"`
@@ -2136,7 +2138,7 @@ type ManagementPolicyVersion struct {
 	TierToCool *DateAfterCreation `json:"tierToCool,omitempty"`
 }
 
-// Metric specification of operation.
+// MetricSpecification - Metric specification of operation.
 type MetricSpecification struct {
 	// Aggregation type could be Average.
 	AggregationType *string `json:"aggregationType,omitempty"`
@@ -2172,7 +2174,7 @@ type Multichannel struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// Network rule set
+// NetworkRuleSet - Network rule set
 type NetworkRuleSet struct {
 	// Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Possible values are any combination of Logging|Metrics|AzureServices (For example,
 	// "Logging, Metrics"), or None to bypass none
@@ -2192,7 +2194,7 @@ type NetworkRuleSet struct {
 	VirtualNetworkRules *[]*VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
 }
 
-// List storage account object replication policies.
+// ObjectReplicationPolicies - List storage account object replication policies.
 type ObjectReplicationPolicies struct {
 	// The replication policy between two storage accounts.
 	Value *[]*ObjectReplicationPolicy `json:"value,omitempty"`
@@ -2227,15 +2229,15 @@ type ObjectReplicationPoliciesResponse struct {
 	RawResponse *http.Response
 }
 
-// The replication policy between two storage accounts. Multiple rules can be defined in one policy.
+// ObjectReplicationPolicy - The replication policy between two storage accounts. Multiple rules can be defined in one policy.
 type ObjectReplicationPolicy struct {
 	Resource
 	// Returns the Storage Account Object Replication Policy.
 	Properties *ObjectReplicationPolicyProperties `json:"properties,omitempty"`
 }
 
-// Filters limit replication to a subset of blobs within the storage account. A logical OR is performed on values in the filter. If multiple filters are
-// defined, a logical AND is performed on all
+// ObjectReplicationPolicyFilter - Filters limit replication to a subset of blobs within the storage account. A logical OR is performed on values in the
+// filter. If multiple filters are defined, a logical AND is performed on all
 // filters.
 type ObjectReplicationPolicyFilter struct {
 	// Blobs created after the time will be replicated to the destination. It must be in datetime format 'yyyy-MM-ddTHH:mm:ssZ'. Example: 2020-02-19T16:05:00Z
@@ -2245,7 +2247,7 @@ type ObjectReplicationPolicyFilter struct {
 	PrefixMatch *[]*string `json:"prefixMatch,omitempty"`
 }
 
-// The Storage Account ObjectReplicationPolicy properties.
+// ObjectReplicationPolicyProperties - The Storage Account ObjectReplicationPolicy properties.
 type ObjectReplicationPolicyProperties struct {
 	// Required. Destination account name.
 	DestinationAccount *string `json:"destinationAccount,omitempty"`
@@ -2317,7 +2319,7 @@ type ObjectReplicationPolicyResponse struct {
 	RawResponse *http.Response
 }
 
-// The replication policy rule between two containers.
+// ObjectReplicationPolicyRule - The replication policy rule between two containers.
 type ObjectReplicationPolicyRule struct {
 	// Required. Destination container name.
 	DestinationContainer *string `json:"destinationContainer,omitempty"`
@@ -2332,7 +2334,7 @@ type ObjectReplicationPolicyRule struct {
 	SourceContainer *string `json:"sourceContainer,omitempty"`
 }
 
-// Storage REST API operation definition.
+// Operation - Storage REST API operation definition.
 type Operation struct {
 	// Display metadata associated with the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -2347,7 +2349,7 @@ type Operation struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
-// Display metadata associated with the operation.
+// OperationDisplay - Display metadata associated with the operation.
 type OperationDisplay struct {
 	// Description of the operation.
 	Description *string `json:"description,omitempty"`
@@ -2362,7 +2364,7 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// Result of the request to list Storage operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - Result of the request to list Storage operations. It contains a list of operations and a URL link to get the next set of results.
 type OperationListResult struct {
 	// List of Storage operations supported by the Storage resource provider.
 	Value *[]*Operation `json:"value,omitempty"`
@@ -2377,7 +2379,7 @@ type OperationListResultResponse struct {
 	RawResponse *http.Response
 }
 
-// Properties of operation, include metric specifications.
+// OperationProperties - Properties of operation, include metric specifications.
 type OperationProperties struct {
 	// One property of operation, include metric specifications.
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
@@ -2388,20 +2390,20 @@ type OperationsListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// The Private Endpoint resource.
+// PrivateEndpoint - The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM identifier for Private Endpoint
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
-// The Private Endpoint Connection resource.
+// PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
 	Resource
 	// Resource properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 }
 
-// List of private endpoint connection associated with the specified storage account
+// PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
 type PrivateEndpointConnectionListResult struct {
 	// Array of private endpoint connections
 	Value *[]*PrivateEndpointConnection `json:"value,omitempty"`
@@ -2416,7 +2418,7 @@ type PrivateEndpointConnectionListResultResponse struct {
 	RawResponse *http.Response
 }
 
-// Properties of the PrivateEndpointConnectProperties.
+// PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// The resource of private end point.
 	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
@@ -2457,14 +2459,14 @@ type PrivateEndpointConnectionsPutOptions struct {
 	// placeholder for future optional parameters
 }
 
-// A private link resource
+// PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	Resource
 	// Resource properties.
 	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
 }
 
-// A list of private link resources
+// PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
 	Value *[]*PrivateLinkResource `json:"value,omitempty"`
@@ -2479,7 +2481,7 @@ type PrivateLinkResourceListResultResponse struct {
 	RawResponse *http.Response
 }
 
-// Properties of a private link resource.
+// PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// READ-ONLY; The private link resource group id.
 	GroupID *string `json:"groupId,omitempty" azure:"ro"`
@@ -2496,7 +2498,7 @@ type PrivateLinkResourcesListByStorageAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
-// A collection of information about the state of the connection between service consumer and provider.
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
 	ActionRequired *string `json:"actionRequired,omitempty"`
@@ -2508,13 +2510,13 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
 }
 
-// Protocol settings for file service
+// ProtocolSettings - Protocol settings for file service
 type ProtocolSettings struct {
 	// Setting for SMB protocol
 	Smb *SmbSetting `json:"smb,omitempty"`
 }
 
-// The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
 type ProxyResource struct {
 	Resource
 }
@@ -2551,14 +2553,14 @@ type QueueProperties struct {
 	Metadata *map[string]*string `json:"metadata,omitempty"`
 }
 
-// The properties of a storage account’s Queue service.
+// QueueServiceProperties - The properties of a storage account’s Queue service.
 type QueueServiceProperties struct {
 	Resource
 	// The properties of a storage account’s Queue service.
 	QueueServiceProperties *QueueServicePropertiesAutoGenerated `json:"properties,omitempty"`
 }
 
-// The properties of a storage account’s Queue service.
+// QueueServicePropertiesAutoGenerated - The properties of a storage account’s Queue service.
 type QueueServicePropertiesAutoGenerated struct {
 	// Specifies CORS rules for the Queue service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the
 	// request body, all CORS rules will be deleted, and
@@ -2595,7 +2597,7 @@ type QueueUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Common fields that are returned in the response for all Azure Resource Manager resources
+// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -2615,7 +2617,7 @@ func (r Resource) marshalInternal() map[string]interface{} {
 	return objectMap
 }
 
-// Resource Access Rule.
+// ResourceAccessRule - Resource Access Rule.
 type ResourceAccessRule struct {
 	// Resource Id
 	ResourceID *string `json:"resourceId,omitempty"`
@@ -2624,7 +2626,7 @@ type ResourceAccessRule struct {
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
-// The blob service properties for blob restore policy
+// RestorePolicyProperties - The blob service properties for blob restore policy
 type RestorePolicyProperties struct {
 	// how long this blob can be restored. It should be great than zero and less than DeleteRetentionPolicy.days.
 	Days *int32 `json:"days,omitempty"`
@@ -2682,7 +2684,7 @@ func (r *RestorePolicyProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// The restriction because of which SKU cannot be used.
+// Restriction - The restriction because of which SKU cannot be used.
 type Restriction struct {
 	// The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". Quota Id is set when the SKU has requiredQuotas parameter
 	// as the subscription does not belong to that
@@ -2696,8 +2698,8 @@ type Restriction struct {
 	Values *[]*string `json:"values,omitempty" azure:"ro"`
 }
 
-// Routing preference defines the type of network, either microsoft or internet routing to be used to deliver the user data, the default option is microsoft
-// routing
+// RoutingPreference - Routing preference defines the type of network, either microsoft or internet routing to be used to deliver the user data, the default
+// option is microsoft routing
 type RoutingPreference struct {
 	// A boolean flag which indicates whether internet routing storage endpoints are to be published
 	PublishInternetEndpoints *bool `json:"publishInternetEndpoints,omitempty"`
@@ -2709,7 +2711,7 @@ type RoutingPreference struct {
 	RoutingChoice *RoutingChoice `json:"routingChoice,omitempty"`
 }
 
-// The SKU of the storage account.
+// SKU - The SKU of the storage account.
 type SKU struct {
 	// The SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was called accountType.
 	Name *SKUName `json:"name,omitempty"`
@@ -2718,7 +2720,7 @@ type SKU struct {
 	Tier *SKUTier `json:"tier,omitempty" azure:"ro"`
 }
 
-// The capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
+// SKUCapability - The capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
 type SKUCapability struct {
 	// READ-ONLY; The name of capability, The capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
 	Name *string `json:"name,omitempty" azure:"ro"`
@@ -2727,7 +2729,7 @@ type SKUCapability struct {
 	Value *string `json:"value,omitempty" azure:"ro"`
 }
 
-// Storage SKU and its properties
+// SKUInformation - Storage SKU and its properties
 type SKUInformation struct {
 	// READ-ONLY; The capability information in the specified SKU, including file encryption, network ACLs, change notification, etc.
 	Capabilities *[]*SKUCapability `json:"capabilities,omitempty" azure:"ro"`
@@ -2757,7 +2759,7 @@ type SKUsListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// The parameters to list service SAS credentials of a specific resource.
+// ServiceSasParameters - The parameters to list service SAS credentials of a specific resource.
 type ServiceSasParameters struct {
 	// The response header override for cache control.
 	CacheControl *string `json:"rscc,omitempty"`
@@ -2914,13 +2916,13 @@ func (s *ServiceSasParameters) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// One property of operation, include metric specifications.
+// ServiceSpecification - One property of operation, include metric specifications.
 type ServiceSpecification struct {
 	// Metric specifications of operation.
 	MetricSpecifications *[]*MetricSpecification `json:"metricSpecifications,omitempty"`
 }
 
-// Setting for SMB protocol
+// SmbSetting - Setting for SMB protocol
 type SmbSetting struct {
 	// SMB authentication methods supported by server. Valid values are NTLMv2, Kerberos. Should be passed as a string with delimiter ';'.
 	AuthenticationMethods *string `json:"authenticationMethods,omitempty"`
@@ -2938,7 +2940,7 @@ type SmbSetting struct {
 	Versions *string `json:"versions,omitempty"`
 }
 
-// The storage account.
+// StorageAccount - The storage account.
 type StorageAccount struct {
 	TrackedResource
 	// The extendedLocation of the resource.
@@ -2957,7 +2959,7 @@ type StorageAccount struct {
 	SKU *SKU `json:"sku,omitempty" azure:"ro"`
 }
 
-// The parameters used to check the availability of the storage account name.
+// StorageAccountCheckNameAvailabilityParameters - The parameters used to check the availability of the storage account name.
 type StorageAccountCheckNameAvailabilityParameters struct {
 	// The storage account name.
 	Name *string `json:"name,omitempty"`
@@ -2966,7 +2968,7 @@ type StorageAccountCheckNameAvailabilityParameters struct {
 	Type *string `json:"type,omitempty"`
 }
 
-// The parameters used when creating a storage account.
+// StorageAccountCreateParameters - The parameters used when creating a storage account.
 type StorageAccountCreateParameters struct {
 	// Optional. Set the extended location of the resource. If not set, the storage account will be created in Azure main region. Otherwise it will be created
 	// in the specified extended location
@@ -2995,7 +2997,7 @@ type StorageAccountCreateParameters struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
-// The URIs that are used to perform a retrieval of a public blob, file, web or dfs object via a internet routing endpoint.
+// StorageAccountInternetEndpoints - The URIs that are used to perform a retrieval of a public blob, file, web or dfs object via a internet routing endpoint.
 type StorageAccountInternetEndpoints struct {
 	// READ-ONLY; Gets the blob endpoint.
 	Blob *string `json:"blob,omitempty" azure:"ro"`
@@ -3010,7 +3012,7 @@ type StorageAccountInternetEndpoints struct {
 	Web *string `json:"web,omitempty" azure:"ro"`
 }
 
-// An access key for the storage account.
+// StorageAccountKey - An access key for the storage account.
 type StorageAccountKey struct {
 	// READ-ONLY; Name of the key.
 	KeyName *string `json:"keyName,omitempty" azure:"ro"`
@@ -3022,7 +3024,7 @@ type StorageAccountKey struct {
 	Value *string `json:"value,omitempty" azure:"ro"`
 }
 
-// The response from the ListKeys operation.
+// StorageAccountListKeysResult - The response from the ListKeys operation.
 type StorageAccountListKeysResult struct {
 	// READ-ONLY; Gets the list of storage account keys and their properties for the specified storage account.
 	Keys *[]*StorageAccountKey `json:"keys,omitempty" azure:"ro"`
@@ -3037,7 +3039,7 @@ type StorageAccountListKeysResultResponse struct {
 	StorageAccountListKeysResult *StorageAccountListKeysResult
 }
 
-// The response from the List Storage Accounts operation.
+// StorageAccountListResult - The response from the List Storage Accounts operation.
 type StorageAccountListResult struct {
 	// READ-ONLY; Request URL that can be used to query next page of storage accounts. Returned when total number of requested storage accounts exceed maximum
 	// page size.
@@ -3056,7 +3058,8 @@ type StorageAccountListResultResponse struct {
 	StorageAccountListResult *StorageAccountListResult
 }
 
-// The URIs that are used to perform a retrieval of a public blob, queue, table, web or dfs object via a microsoft routing endpoint.
+// StorageAccountMicrosoftEndpoints - The URIs that are used to perform a retrieval of a public blob, queue, table, web or dfs object via a microsoft routing
+// endpoint.
 type StorageAccountMicrosoftEndpoints struct {
 	// READ-ONLY; Gets the blob endpoint.
 	Blob *string `json:"blob,omitempty" azure:"ro"`
@@ -3089,7 +3092,7 @@ type StorageAccountPollerResponse struct {
 	RawResponse *http.Response
 }
 
-// Properties of the storage account.
+// StorageAccountProperties - Properties of the storage account.
 type StorageAccountProperties struct {
 	// READ-ONLY; Required for storage accounts where kind = BlobStorage. The access tier used for billing.
 	AccessTier *AccessTier `json:"accessTier,omitempty" azure:"ro"`
@@ -3308,7 +3311,7 @@ func (s *StorageAccountProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// The parameters used to create the storage account.
+// StorageAccountPropertiesCreateParameters - The parameters used to create the storage account.
 type StorageAccountPropertiesCreateParameters struct {
 	// Required for storage accounts where kind = BlobStorage. The access tier used for billing.
 	AccessTier *AccessTier `json:"accessTier,omitempty"`
@@ -3354,7 +3357,7 @@ type StorageAccountPropertiesCreateParameters struct {
 	RoutingPreference *RoutingPreference `json:"routingPreference,omitempty"`
 }
 
-// The parameters used when updating a storage account.
+// StorageAccountPropertiesUpdateParameters - The parameters used when updating a storage account.
 type StorageAccountPropertiesUpdateParameters struct {
 	// Required for storage accounts where kind = BlobStorage. The access tier used for billing.
 	AccessTier *AccessTier `json:"accessTier,omitempty"`
@@ -3394,7 +3397,7 @@ type StorageAccountPropertiesUpdateParameters struct {
 	RoutingPreference *RoutingPreference `json:"routingPreference,omitempty"`
 }
 
-// The parameters used to regenerate the storage account key.
+// StorageAccountRegenerateKeyParameters - The parameters used to regenerate the storage account key.
 type StorageAccountRegenerateKeyParameters struct {
 	// The name of storage keys that want to be regenerated, possible values are key1, key2, kerb1, kerb2.
 	KeyName *string `json:"keyName,omitempty"`
@@ -3409,7 +3412,7 @@ type StorageAccountResponse struct {
 	StorageAccount *StorageAccount
 }
 
-// The parameters that can be provided when updating the storage account properties.
+// StorageAccountUpdateParameters - The parameters that can be provided when updating the storage account properties.
 type StorageAccountUpdateParameters struct {
 	// The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
@@ -3534,7 +3537,7 @@ type StorageQueueResponse struct {
 	StorageQueue *StorageQueue
 }
 
-// The response from the List Storage SKUs operation.
+// StorageSKUListResult - The response from the List Storage SKUs operation.
 type StorageSKUListResult struct {
 	// READ-ONLY; Get the list result of storage SKUs and their properties.
 	Value *[]*SKUInformation `json:"value,omitempty" azure:"ro"`
@@ -3549,7 +3552,7 @@ type StorageSKUListResultResponse struct {
 	StorageSKUListResult *StorageSKUListResult
 }
 
-// Metadata pertaining to creation and last modification of the resource.
+// SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
@@ -3621,7 +3624,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// Properties of the table, including Id, resource name, resource type.
+// Table - Properties of the table, including Id, resource name, resource type.
 type Table struct {
 	Resource
 	// Table resource properties.
@@ -3662,14 +3665,14 @@ type TableResponse struct {
 	Table *Table
 }
 
-// The properties of a storage account’s Table service.
+// TableServiceProperties - The properties of a storage account’s Table service.
 type TableServiceProperties struct {
 	Resource
 	// The properties of a storage account’s Table service.
 	TableServiceProperties *TableServicePropertiesAutoGenerated `json:"properties,omitempty"`
 }
 
-// The properties of a storage account’s Table service.
+// TableServicePropertiesAutoGenerated - The properties of a storage account’s Table service.
 type TableServicePropertiesAutoGenerated struct {
 	// Specifies CORS rules for the Table service. You can include up to five CorsRule elements in the request. If no CorsRule elements are included in the
 	// request body, all CORS rules will be deleted, and
@@ -3706,7 +3709,7 @@ type TableUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Blob index tag based filtering for blob objects
+// TagFilter - Blob index tag based filtering for blob objects
 type TagFilter struct {
 	// This is the filter tag name, it can have 1 - 128 characters
 	Name *string `json:"name,omitempty"`
@@ -3718,7 +3721,7 @@ type TagFilter struct {
 	Value *string `json:"value,omitempty"`
 }
 
-// A tag of the LegalHold of a blob container.
+// TagProperty - A tag of the LegalHold of a blob container.
 type TagProperty struct {
 	// READ-ONLY; Returns the Object ID of the user who added the tag.
 	ObjectIdentifier *string `json:"objectIdentifier,omitempty" azure:"ro"`
@@ -3781,7 +3784,7 @@ func (t *TagProperty) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
+// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
 type TrackedResource struct {
 	Resource
 	// The geo-location where the resource lives
@@ -3791,7 +3794,7 @@ type TrackedResource struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
-// An update history of the ImmutabilityPolicy of a blob container.
+// UpdateHistoryProperty - An update history of the ImmutabilityPolicy of a blob container.
 type UpdateHistoryProperty struct {
 	// READ-ONLY; The immutability period for the blobs in the container since the policy creation, in days.
 	ImmutabilityPeriodSinceCreationInDays *int32 `json:"immutabilityPeriodSinceCreationInDays,omitempty" azure:"ro"`
@@ -3861,7 +3864,7 @@ func (u *UpdateHistoryProperty) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// Describes Storage Resource Usage.
+// Usage - Describes Storage Resource Usage.
 type Usage struct {
 	// READ-ONLY; Gets the current count of the allocated resources in the subscription.
 	CurrentValue *int32 `json:"currentValue,omitempty" azure:"ro"`
@@ -3876,7 +3879,7 @@ type Usage struct {
 	Unit *UsageUnit `json:"unit,omitempty" azure:"ro"`
 }
 
-// The response from the List Usages operation.
+// UsageListResult - The response from the List Usages operation.
 type UsageListResult struct {
 	// Gets or sets the list of Storage Resource Usages.
 	Value *[]*Usage `json:"value,omitempty"`
@@ -3891,7 +3894,7 @@ type UsageListResultResponse struct {
 	UsageListResult *UsageListResult
 }
 
-// The usage names that can be used; currently limited to StorageAccount.
+// UsageName - The usage names that can be used; currently limited to StorageAccount.
 type UsageName struct {
 	// READ-ONLY; Gets a localized string describing the resource name.
 	LocalizedValue *string `json:"localizedValue,omitempty" azure:"ro"`
@@ -3914,7 +3917,7 @@ type UserAssignedIdentity struct {
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }
 
-// Virtual Network rule.
+// VirtualNetworkRule - Virtual Network rule.
 type VirtualNetworkRule struct {
 	// The action of virtual network rule.
 	Action *string `json:"action,omitempty"`

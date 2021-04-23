@@ -7,4 +7,6 @@
 
 package armnetwork
 
-const telemetryInfo = "azsdk-go-armnetwork/<version>"
+import "github.com/Azure/azure-sdk-for-go/sdk/arm/network"
+
+const telemetryInfo = "azsdk-go-armnetwork/2020-07-01/" + network.Version

@@ -22,8 +22,9 @@ import (
 type ErrorUnmarshaller func(*Response) error
 
 // NewLROPoller creates an LROPoller based on the provided initial response.
+// pollerID - a unique identifier for an LRO.  it's usually the client.Method string.
 // NOTE: this is only meant for internal use in generated code.
-func NewLROPoller(pollerType string, resp *Response, pl Pipeline, eu ErrorUnmarshaller) (*LROPoller, error) {
+func NewLROPoller(pollerID string, resp *Response, pl Pipeline, eu ErrorUnmarshaller) (*LROPoller, error) {
 	// this is a back-stop in case the swagger is incorrect (i.e. missing one or more status codes for success).
 	// ideally the codegen should return an error if the initial response failed and not even create a poller.
 	if !lroStatusCodeValid(resp) {
@@ -34,7 +35,7 @@ func NewLROPoller(pollerType string, resp *Response, pl Pipeline, eu ErrorUnmars
 	// in the case of both headers, always prefer the operation-location header
 	if opLoc != "" {
 		return &LROPoller{
-			lro:  newOpPoller(pollerType, opLoc, loc, resp),
+			lro:  newOpPoller(pollerID, opLoc, loc, resp),
 			pl:   pl,
 			eu:   eu,
 			resp: resp,
@@ -42,7 +43,7 @@ func NewLROPoller(pollerType string, resp *Response, pl Pipeline, eu ErrorUnmars
 	}
 	if loc != "" {
 		return &LROPoller{
-			lro:  newLocPoller(pollerType, loc, resp.StatusCode),
+			lro:  newLocPoller(pollerID, loc, resp.StatusCode),
 			pl:   pl,
 			eu:   eu,
 			resp: resp,
@@ -52,8 +53,9 @@ func NewLROPoller(pollerType string, resp *Response, pl Pipeline, eu ErrorUnmars
 }
 
 // NewLROPollerFromResumeToken creates an LROPoller from a resume token string.
+// pollerID - a unique identifier for an LRO.  it's usually the client.Method string.
 // NOTE: this is only meant for internal use in generated code.
-func NewLROPollerFromResumeToken(pollerType string, token string, pl Pipeline, eu ErrorUnmarshaller) (*LROPoller, error) {
+func NewLROPollerFromResumeToken(pollerID string, token string, pl Pipeline, eu ErrorUnmarshaller) (*LROPoller, error) {
 	// unmarshal into JSON object to determine the poller type
 	obj := map[string]interface{}{}
 	err := json.Unmarshal([]byte(token), &obj)
@@ -74,8 +76,8 @@ func NewLROPollerFromResumeToken(pollerType string, token string, pl Pipeline, e
 		return nil, fmt.Errorf("invalid poller type %s", tt)
 	}
 	// ensure poller types match
-	if received := tt[:sem]; received != pollerType {
-		return nil, fmt.Errorf("cannot resume from this poller token.  expected %s, received %s", pollerType, received)
+	if received := tt[:sem]; received != pollerID {
+		return nil, fmt.Errorf("cannot resume from this poller token.  expected %s, received %s", pollerID, received)
 	}
 	// now rehydrate the poller based on the encoded poller type
 	var lro lroPoller

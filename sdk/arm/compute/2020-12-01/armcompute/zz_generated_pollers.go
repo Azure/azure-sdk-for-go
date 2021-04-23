@@ -15,10 +15,9 @@ import (
 	"time"
 )
 
-// AccessURIPoller provides polling facilities until the operation completes
+// AccessURIPoller provides polling facilities until the operation reaches a terminal state.
 type AccessURIPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final AccessURIResponse will be returned.
@@ -26,17 +25,14 @@ type AccessURIPoller interface {
 }
 
 type accessURIPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *accessURIPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *accessURIPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -51,8 +47,6 @@ func (p *accessURIPoller) FinalResponse(ctx context.Context) (AccessURIResponse,
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeAccessURIPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *accessURIPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -67,10 +61,9 @@ func (p *accessURIPoller) pollUntilDone(ctx context.Context, frequency time.Dura
 	return respType, nil
 }
 
-// DedicatedHostPoller provides polling facilities until the operation completes
+// DedicatedHostPoller provides polling facilities until the operation reaches a terminal state.
 type DedicatedHostPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final DedicatedHostResponse will be returned.
@@ -78,17 +71,14 @@ type DedicatedHostPoller interface {
 }
 
 type dedicatedHostPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *dedicatedHostPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *dedicatedHostPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -103,8 +93,6 @@ func (p *dedicatedHostPoller) FinalResponse(ctx context.Context) (DedicatedHostR
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeDedicatedHostPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *dedicatedHostPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -119,10 +107,9 @@ func (p *dedicatedHostPoller) pollUntilDone(ctx context.Context, frequency time.
 	return respType, nil
 }
 
-// DiskAccessPoller provides polling facilities until the operation completes
+// DiskAccessPoller provides polling facilities until the operation reaches a terminal state.
 type DiskAccessPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final DiskAccessResponse will be returned.
@@ -130,17 +117,14 @@ type DiskAccessPoller interface {
 }
 
 type diskAccessPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *diskAccessPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *diskAccessPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -155,8 +139,6 @@ func (p *diskAccessPoller) FinalResponse(ctx context.Context) (DiskAccessRespons
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeDiskAccessPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *diskAccessPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -171,10 +153,9 @@ func (p *diskAccessPoller) pollUntilDone(ctx context.Context, frequency time.Dur
 	return respType, nil
 }
 
-// DiskEncryptionSetPoller provides polling facilities until the operation completes
+// DiskEncryptionSetPoller provides polling facilities until the operation reaches a terminal state.
 type DiskEncryptionSetPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final DiskEncryptionSetResponse will be returned.
@@ -182,17 +163,14 @@ type DiskEncryptionSetPoller interface {
 }
 
 type diskEncryptionSetPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *diskEncryptionSetPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *diskEncryptionSetPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -207,8 +185,6 @@ func (p *diskEncryptionSetPoller) FinalResponse(ctx context.Context) (DiskEncryp
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeDiskEncryptionSetPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *diskEncryptionSetPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -223,10 +199,9 @@ func (p *diskEncryptionSetPoller) pollUntilDone(ctx context.Context, frequency t
 	return respType, nil
 }
 
-// DiskPoller provides polling facilities until the operation completes
+// DiskPoller provides polling facilities until the operation reaches a terminal state.
 type DiskPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final DiskResponse will be returned.
@@ -234,17 +209,14 @@ type DiskPoller interface {
 }
 
 type diskPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *diskPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *diskPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -259,8 +231,6 @@ func (p *diskPoller) FinalResponse(ctx context.Context) (DiskResponse, error) {
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeDiskPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *diskPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -275,10 +245,9 @@ func (p *diskPoller) pollUntilDone(ctx context.Context, frequency time.Duration)
 	return respType, nil
 }
 
-// GalleryApplicationPoller provides polling facilities until the operation completes
+// GalleryApplicationPoller provides polling facilities until the operation reaches a terminal state.
 type GalleryApplicationPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final GalleryApplicationResponse will be returned.
@@ -286,17 +255,14 @@ type GalleryApplicationPoller interface {
 }
 
 type galleryApplicationPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *galleryApplicationPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *galleryApplicationPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -311,8 +277,6 @@ func (p *galleryApplicationPoller) FinalResponse(ctx context.Context) (GalleryAp
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeGalleryApplicationPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *galleryApplicationPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -327,10 +291,9 @@ func (p *galleryApplicationPoller) pollUntilDone(ctx context.Context, frequency 
 	return respType, nil
 }
 
-// GalleryApplicationVersionPoller provides polling facilities until the operation completes
+// GalleryApplicationVersionPoller provides polling facilities until the operation reaches a terminal state.
 type GalleryApplicationVersionPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final GalleryApplicationVersionResponse will be returned.
@@ -338,17 +301,14 @@ type GalleryApplicationVersionPoller interface {
 }
 
 type galleryApplicationVersionPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *galleryApplicationVersionPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *galleryApplicationVersionPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -363,8 +323,6 @@ func (p *galleryApplicationVersionPoller) FinalResponse(ctx context.Context) (Ga
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeGalleryApplicationVersionPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *galleryApplicationVersionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -379,10 +337,9 @@ func (p *galleryApplicationVersionPoller) pollUntilDone(ctx context.Context, fre
 	return respType, nil
 }
 
-// GalleryImagePoller provides polling facilities until the operation completes
+// GalleryImagePoller provides polling facilities until the operation reaches a terminal state.
 type GalleryImagePoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final GalleryImageResponse will be returned.
@@ -390,17 +347,14 @@ type GalleryImagePoller interface {
 }
 
 type galleryImagePoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *galleryImagePoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *galleryImagePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -415,8 +369,6 @@ func (p *galleryImagePoller) FinalResponse(ctx context.Context) (GalleryImageRes
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeGalleryImagePoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *galleryImagePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -431,10 +383,9 @@ func (p *galleryImagePoller) pollUntilDone(ctx context.Context, frequency time.D
 	return respType, nil
 }
 
-// GalleryImageVersionPoller provides polling facilities until the operation completes
+// GalleryImageVersionPoller provides polling facilities until the operation reaches a terminal state.
 type GalleryImageVersionPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final GalleryImageVersionResponse will be returned.
@@ -442,17 +393,14 @@ type GalleryImageVersionPoller interface {
 }
 
 type galleryImageVersionPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *galleryImageVersionPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *galleryImageVersionPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -467,8 +415,6 @@ func (p *galleryImageVersionPoller) FinalResponse(ctx context.Context) (GalleryI
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeGalleryImageVersionPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *galleryImageVersionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -483,10 +429,9 @@ func (p *galleryImageVersionPoller) pollUntilDone(ctx context.Context, frequency
 	return respType, nil
 }
 
-// GalleryPoller provides polling facilities until the operation completes
+// GalleryPoller provides polling facilities until the operation reaches a terminal state.
 type GalleryPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final GalleryResponse will be returned.
@@ -494,17 +439,14 @@ type GalleryPoller interface {
 }
 
 type galleryPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *galleryPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *galleryPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -519,8 +461,6 @@ func (p *galleryPoller) FinalResponse(ctx context.Context) (GalleryResponse, err
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeGalleryPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *galleryPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -535,28 +475,24 @@ func (p *galleryPoller) pollUntilDone(ctx context.Context, frequency time.Durati
 	return respType, nil
 }
 
-// HTTPPoller provides polling facilities until the operation completes
+// HTTPPoller provides polling facilities until the operation reaches a terminal state.
 type HTTPPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final HTTPResponse will be returned.
+	// If the final GET succeeded then the final *http.Response will be returned.
 	FinalResponse(ctx context.Context) (*http.Response, error)
 }
 
 type httpPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *httpPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *httpPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -565,8 +501,6 @@ func (p *httpPoller) FinalResponse(ctx context.Context) (*http.Response, error) 
 	return p.pt.FinalResponse(ctx, p.pipeline, nil)
 }
 
-// ResumeToken generates the string token that can be used with the ResumeHTTPPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *httpPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -575,10 +509,9 @@ func (p *httpPoller) pollUntilDone(ctx context.Context, frequency time.Duration)
 	return p.pt.PollUntilDone(ctx, frequency, p.pipeline, nil)
 }
 
-// ImagePoller provides polling facilities until the operation completes
+// ImagePoller provides polling facilities until the operation reaches a terminal state.
 type ImagePoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final ImageResponse will be returned.
@@ -586,17 +519,14 @@ type ImagePoller interface {
 }
 
 type imagePoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *imagePoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *imagePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -611,8 +541,6 @@ func (p *imagePoller) FinalResponse(ctx context.Context) (ImageResponse, error) 
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeImagePoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *imagePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -627,10 +555,9 @@ func (p *imagePoller) pollUntilDone(ctx context.Context, frequency time.Duration
 	return respType, nil
 }
 
-// LogAnalyticsOperationResultPoller provides polling facilities until the operation completes
+// LogAnalyticsOperationResultPoller provides polling facilities until the operation reaches a terminal state.
 type LogAnalyticsOperationResultPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final LogAnalyticsOperationResultResponse will be returned.
@@ -638,17 +565,14 @@ type LogAnalyticsOperationResultPoller interface {
 }
 
 type logAnalyticsOperationResultPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *logAnalyticsOperationResultPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *logAnalyticsOperationResultPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -663,8 +587,6 @@ func (p *logAnalyticsOperationResultPoller) FinalResponse(ctx context.Context) (
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeLogAnalyticsOperationResultPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *logAnalyticsOperationResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -679,10 +601,9 @@ func (p *logAnalyticsOperationResultPoller) pollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// PrivateEndpointConnectionPoller provides polling facilities until the operation completes
+// PrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
 type PrivateEndpointConnectionPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final PrivateEndpointConnectionResponse will be returned.
@@ -690,17 +611,14 @@ type PrivateEndpointConnectionPoller interface {
 }
 
 type privateEndpointConnectionPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *privateEndpointConnectionPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *privateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -715,8 +633,6 @@ func (p *privateEndpointConnectionPoller) FinalResponse(ctx context.Context) (Pr
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumePrivateEndpointConnectionPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *privateEndpointConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -731,10 +647,9 @@ func (p *privateEndpointConnectionPoller) pollUntilDone(ctx context.Context, fre
 	return respType, nil
 }
 
-// RunCommandResultPoller provides polling facilities until the operation completes
+// RunCommandResultPoller provides polling facilities until the operation reaches a terminal state.
 type RunCommandResultPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final RunCommandResultResponse will be returned.
@@ -742,17 +657,14 @@ type RunCommandResultPoller interface {
 }
 
 type runCommandResultPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *runCommandResultPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *runCommandResultPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -767,8 +679,6 @@ func (p *runCommandResultPoller) FinalResponse(ctx context.Context) (RunCommandR
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeRunCommandResultPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *runCommandResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -783,10 +693,9 @@ func (p *runCommandResultPoller) pollUntilDone(ctx context.Context, frequency ti
 	return respType, nil
 }
 
-// SnapshotPoller provides polling facilities until the operation completes
+// SnapshotPoller provides polling facilities until the operation reaches a terminal state.
 type SnapshotPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final SnapshotResponse will be returned.
@@ -794,17 +703,14 @@ type SnapshotPoller interface {
 }
 
 type snapshotPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *snapshotPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *snapshotPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -819,8 +725,6 @@ func (p *snapshotPoller) FinalResponse(ctx context.Context) (SnapshotResponse, e
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeSnapshotPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *snapshotPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -835,10 +739,9 @@ func (p *snapshotPoller) pollUntilDone(ctx context.Context, frequency time.Durat
 	return respType, nil
 }
 
-// VirtualMachineAssessPatchesResultPoller provides polling facilities until the operation completes
+// VirtualMachineAssessPatchesResultPoller provides polling facilities until the operation reaches a terminal state.
 type VirtualMachineAssessPatchesResultPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final VirtualMachineAssessPatchesResultResponse will be returned.
@@ -846,17 +749,14 @@ type VirtualMachineAssessPatchesResultPoller interface {
 }
 
 type virtualMachineAssessPatchesResultPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *virtualMachineAssessPatchesResultPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *virtualMachineAssessPatchesResultPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -871,8 +771,6 @@ func (p *virtualMachineAssessPatchesResultPoller) FinalResponse(ctx context.Cont
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeVirtualMachineAssessPatchesResultPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *virtualMachineAssessPatchesResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -887,10 +785,9 @@ func (p *virtualMachineAssessPatchesResultPoller) pollUntilDone(ctx context.Cont
 	return respType, nil
 }
 
-// VirtualMachineCaptureResultPoller provides polling facilities until the operation completes
+// VirtualMachineCaptureResultPoller provides polling facilities until the operation reaches a terminal state.
 type VirtualMachineCaptureResultPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final VirtualMachineCaptureResultResponse will be returned.
@@ -898,17 +795,14 @@ type VirtualMachineCaptureResultPoller interface {
 }
 
 type virtualMachineCaptureResultPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *virtualMachineCaptureResultPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *virtualMachineCaptureResultPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -923,8 +817,6 @@ func (p *virtualMachineCaptureResultPoller) FinalResponse(ctx context.Context) (
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeVirtualMachineCaptureResultPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *virtualMachineCaptureResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -939,10 +831,9 @@ func (p *virtualMachineCaptureResultPoller) pollUntilDone(ctx context.Context, f
 	return respType, nil
 }
 
-// VirtualMachineExtensionPoller provides polling facilities until the operation completes
+// VirtualMachineExtensionPoller provides polling facilities until the operation reaches a terminal state.
 type VirtualMachineExtensionPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final VirtualMachineExtensionResponse will be returned.
@@ -950,17 +841,14 @@ type VirtualMachineExtensionPoller interface {
 }
 
 type virtualMachineExtensionPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *virtualMachineExtensionPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *virtualMachineExtensionPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -975,8 +863,6 @@ func (p *virtualMachineExtensionPoller) FinalResponse(ctx context.Context) (Virt
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeVirtualMachineExtensionPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *virtualMachineExtensionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -991,10 +877,9 @@ func (p *virtualMachineExtensionPoller) pollUntilDone(ctx context.Context, frequ
 	return respType, nil
 }
 
-// VirtualMachineInstallPatchesResultPoller provides polling facilities until the operation completes
+// VirtualMachineInstallPatchesResultPoller provides polling facilities until the operation reaches a terminal state.
 type VirtualMachineInstallPatchesResultPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final VirtualMachineInstallPatchesResultResponse will be returned.
@@ -1002,17 +887,14 @@ type VirtualMachineInstallPatchesResultPoller interface {
 }
 
 type virtualMachineInstallPatchesResultPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *virtualMachineInstallPatchesResultPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *virtualMachineInstallPatchesResultPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -1027,8 +909,6 @@ func (p *virtualMachineInstallPatchesResultPoller) FinalResponse(ctx context.Con
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeVirtualMachineInstallPatchesResultPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *virtualMachineInstallPatchesResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -1043,10 +923,9 @@ func (p *virtualMachineInstallPatchesResultPoller) pollUntilDone(ctx context.Con
 	return respType, nil
 }
 
-// VirtualMachinePoller provides polling facilities until the operation completes
+// VirtualMachinePoller provides polling facilities until the operation reaches a terminal state.
 type VirtualMachinePoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final VirtualMachineResponse will be returned.
@@ -1054,17 +933,14 @@ type VirtualMachinePoller interface {
 }
 
 type virtualMachinePoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *virtualMachinePoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *virtualMachinePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -1079,8 +955,6 @@ func (p *virtualMachinePoller) FinalResponse(ctx context.Context) (VirtualMachin
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeVirtualMachinePoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *virtualMachinePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -1095,10 +969,9 @@ func (p *virtualMachinePoller) pollUntilDone(ctx context.Context, frequency time
 	return respType, nil
 }
 
-// VirtualMachineRunCommandPoller provides polling facilities until the operation completes
+// VirtualMachineRunCommandPoller provides polling facilities until the operation reaches a terminal state.
 type VirtualMachineRunCommandPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final VirtualMachineRunCommandResponse will be returned.
@@ -1106,17 +979,14 @@ type VirtualMachineRunCommandPoller interface {
 }
 
 type virtualMachineRunCommandPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *virtualMachineRunCommandPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *virtualMachineRunCommandPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -1131,8 +1001,6 @@ func (p *virtualMachineRunCommandPoller) FinalResponse(ctx context.Context) (Vir
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeVirtualMachineRunCommandPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *virtualMachineRunCommandPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -1147,10 +1015,9 @@ func (p *virtualMachineRunCommandPoller) pollUntilDone(ctx context.Context, freq
 	return respType, nil
 }
 
-// VirtualMachineScaleSetExtensionPoller provides polling facilities until the operation completes
+// VirtualMachineScaleSetExtensionPoller provides polling facilities until the operation reaches a terminal state.
 type VirtualMachineScaleSetExtensionPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final VirtualMachineScaleSetExtensionResponse will be returned.
@@ -1158,17 +1025,14 @@ type VirtualMachineScaleSetExtensionPoller interface {
 }
 
 type virtualMachineScaleSetExtensionPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *virtualMachineScaleSetExtensionPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *virtualMachineScaleSetExtensionPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -1183,8 +1047,6 @@ func (p *virtualMachineScaleSetExtensionPoller) FinalResponse(ctx context.Contex
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeVirtualMachineScaleSetExtensionPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *virtualMachineScaleSetExtensionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -1199,10 +1061,9 @@ func (p *virtualMachineScaleSetExtensionPoller) pollUntilDone(ctx context.Contex
 	return respType, nil
 }
 
-// VirtualMachineScaleSetPoller provides polling facilities until the operation completes
+// VirtualMachineScaleSetPoller provides polling facilities until the operation reaches a terminal state.
 type VirtualMachineScaleSetPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final VirtualMachineScaleSetResponse will be returned.
@@ -1210,17 +1071,14 @@ type VirtualMachineScaleSetPoller interface {
 }
 
 type virtualMachineScaleSetPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *virtualMachineScaleSetPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *virtualMachineScaleSetPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -1235,8 +1093,6 @@ func (p *virtualMachineScaleSetPoller) FinalResponse(ctx context.Context) (Virtu
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeVirtualMachineScaleSetPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *virtualMachineScaleSetPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -1251,10 +1107,9 @@ func (p *virtualMachineScaleSetPoller) pollUntilDone(ctx context.Context, freque
 	return respType, nil
 }
 
-// VirtualMachineScaleSetVMExtensionPoller provides polling facilities until the operation completes
+// VirtualMachineScaleSetVMExtensionPoller provides polling facilities until the operation reaches a terminal state.
 type VirtualMachineScaleSetVMExtensionPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final VirtualMachineScaleSetVMExtensionResponse will be returned.
@@ -1262,17 +1117,14 @@ type VirtualMachineScaleSetVMExtensionPoller interface {
 }
 
 type virtualMachineScaleSetVMExtensionPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *virtualMachineScaleSetVMExtensionPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *virtualMachineScaleSetVMExtensionPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -1287,8 +1139,6 @@ func (p *virtualMachineScaleSetVMExtensionPoller) FinalResponse(ctx context.Cont
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeVirtualMachineScaleSetVMExtensionPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *virtualMachineScaleSetVMExtensionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
@@ -1303,10 +1153,9 @@ func (p *virtualMachineScaleSetVMExtensionPoller) pollUntilDone(ctx context.Cont
 	return respType, nil
 }
 
-// VirtualMachineScaleSetVMPoller provides polling facilities until the operation completes
+// VirtualMachineScaleSetVMPoller provides polling facilities until the operation reaches a terminal state.
 type VirtualMachineScaleSetVMPoller interface {
 	azcore.Poller
-
 	// FinalResponse performs a final GET to the service and returns the final response
 	// for the polling operation. If there is an error performing the final GET then an error is returned.
 	// If the final GET succeeded then the final VirtualMachineScaleSetVMResponse will be returned.
@@ -1314,17 +1163,14 @@ type VirtualMachineScaleSetVMPoller interface {
 }
 
 type virtualMachineScaleSetVMPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *virtualMachineScaleSetVMPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *virtualMachineScaleSetVMPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -1339,8 +1185,6 @@ func (p *virtualMachineScaleSetVMPoller) FinalResponse(ctx context.Context) (Vir
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeVirtualMachineScaleSetVMPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *virtualMachineScaleSetVMPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }

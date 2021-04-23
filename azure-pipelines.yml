@@ -61,7 +61,8 @@ jobs:
       displayName: 'Run Tests'
     - template: /eng/common/pipelines/templates/steps/verify-links.yml
       parameters:
-        Directory: '$(sdkPath)'
+        Directory: '.'
+        workingDirectory: '$(sdkPath)'
         Urls: $(Get-ChildItem -Path '$(sdkPath)/*.md' -Recurse | Where {$_.FullName -notlike "*/vendor/*" -and $_.FullName -notlike "*/sdk/*"})
     - script: go run ./tools/apidiff/main.go packages ./services FETCH_HEAD~1 FETCH_HEAD --copyrepo --breakingchanges || $IGNORE_BREAKING_CHANGES
       workingDirectory: '$(sdkPath)'

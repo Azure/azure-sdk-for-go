@@ -129,8 +129,7 @@ func (r *Response) UnmarshalAsXML(v interface{}) error {
 	return err
 }
 
-// UnmarshalError will combine the service error payload along with the corresponding unmarshal error into a new error
-// that includes information from both errors.
+// UnmarshalError will combine information from the service error payload along with the corresponding unmarshal error into a new error.
 // NOTE: this method is only meant to be called when handling a service error.
 func (r *Response) UnmarshalError(unmarshalErr error) error {
 	payload, err := r.payload()

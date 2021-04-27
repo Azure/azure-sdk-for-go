@@ -44,8 +44,8 @@ func (client *DscpConfigurationClient) BeginCreateOrUpdate(ctx context.Context, 
 		return DscpConfigurationPollerResponse{}, err
 	}
 	poller := &dscpConfigurationPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DscpConfigurationResponse, error) {
@@ -56,15 +56,27 @@ func (client *DscpConfigurationClient) BeginCreateOrUpdate(ctx context.Context, 
 
 // ResumeCreateOrUpdate creates a new DscpConfigurationPoller from the specified resume token.
 // token - The value must come from a previous call to DscpConfigurationPoller.ResumeToken().
-func (client *DscpConfigurationClient) ResumeCreateOrUpdate(token string) (DscpConfigurationPoller, error) {
+func (client *DscpConfigurationClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DscpConfigurationPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DscpConfigurationClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return DscpConfigurationPollerResponse{}, err
 	}
-	return &dscpConfigurationPoller{
+	poller := &dscpConfigurationPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return DscpConfigurationPollerResponse{}, err
+	}
+	result := DscpConfigurationPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DscpConfigurationResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a DSCP Configuration.
@@ -123,7 +135,7 @@ func (client *DscpConfigurationClient) createOrUpdateHandleResponse(resp *azcore
 func (client *DscpConfigurationClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -142,8 +154,8 @@ func (client *DscpConfigurationClient) BeginDelete(ctx context.Context, resource
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -154,15 +166,27 @@ func (client *DscpConfigurationClient) BeginDelete(ctx context.Context, resource
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *DscpConfigurationClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *DscpConfigurationClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DscpConfigurationClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes a DSCP Configuration.
@@ -212,7 +236,7 @@ func (client *DscpConfigurationClient) deleteCreateRequest(ctx context.Context, 
 func (client *DscpConfigurationClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -273,7 +297,7 @@ func (client *DscpConfigurationClient) getHandleResponse(resp *azcore.Response) 
 func (client *DscpConfigurationClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -330,7 +354,7 @@ func (client *DscpConfigurationClient) listHandleResponse(resp *azcore.Response)
 func (client *DscpConfigurationClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -383,7 +407,7 @@ func (client *DscpConfigurationClient) listAllHandleResponse(resp *azcore.Respon
 func (client *DscpConfigurationClient) listAllHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

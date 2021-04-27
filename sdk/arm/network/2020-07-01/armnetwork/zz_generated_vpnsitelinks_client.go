@@ -89,7 +89,7 @@ func (client *VPNSiteLinksClient) getHandleResponse(resp *azcore.Response) (VPNS
 func (client *VPNSiteLinksClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -150,7 +150,7 @@ func (client *VPNSiteLinksClient) listByVPNSiteHandleResponse(resp *azcore.Respo
 func (client *VPNSiteLinksClient) listByVPNSiteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

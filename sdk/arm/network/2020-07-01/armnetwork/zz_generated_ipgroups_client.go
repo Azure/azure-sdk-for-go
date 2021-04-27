@@ -44,8 +44,8 @@ func (client *IPGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 		return IPGroupPollerResponse{}, err
 	}
 	poller := &ipGroupPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (IPGroupResponse, error) {
@@ -56,15 +56,27 @@ func (client *IPGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // ResumeCreateOrUpdate creates a new IPGroupPoller from the specified resume token.
 // token - The value must come from a previous call to IPGroupPoller.ResumeToken().
-func (client *IPGroupsClient) ResumeCreateOrUpdate(token string) (IPGroupPoller, error) {
+func (client *IPGroupsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (IPGroupPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("IPGroupsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return IPGroupPollerResponse{}, err
 	}
-	return &ipGroupPoller{
+	poller := &ipGroupPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return IPGroupPollerResponse{}, err
+	}
+	result := IPGroupPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (IPGroupResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an ipGroups in a specified resource group.
@@ -123,7 +135,7 @@ func (client *IPGroupsClient) createOrUpdateHandleResponse(resp *azcore.Response
 func (client *IPGroupsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -142,8 +154,8 @@ func (client *IPGroupsClient) BeginDelete(ctx context.Context, resourceGroupName
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -154,15 +166,27 @@ func (client *IPGroupsClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *IPGroupsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *IPGroupsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("IPGroupsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes the specified ipGroups.
@@ -212,7 +236,7 @@ func (client *IPGroupsClient) deleteCreateRequest(ctx context.Context, resourceG
 func (client *IPGroupsClient) deleteHandleError(resp *azcore.Response) error {
 	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -276,7 +300,7 @@ func (client *IPGroupsClient) getHandleResponse(resp *azcore.Response) (IPGroupR
 func (client *IPGroupsClient) getHandleError(resp *azcore.Response) error {
 	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -329,7 +353,7 @@ func (client *IPGroupsClient) listHandleResponse(resp *azcore.Response) (IPGroup
 func (client *IPGroupsClient) listHandleError(resp *azcore.Response) error {
 	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -386,7 +410,7 @@ func (client *IPGroupsClient) listByResourceGroupHandleResponse(resp *azcore.Res
 func (client *IPGroupsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
 	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -447,7 +471,7 @@ func (client *IPGroupsClient) updateGroupsHandleResponse(resp *azcore.Response) 
 func (client *IPGroupsClient) updateGroupsHandleError(resp *azcore.Response) error {
 	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

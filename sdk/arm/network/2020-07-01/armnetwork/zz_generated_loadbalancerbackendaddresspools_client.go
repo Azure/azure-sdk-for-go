@@ -44,8 +44,8 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginCreateOrUpdate(ctx con
 		return BackendAddressPoolPollerResponse{}, err
 	}
 	poller := &backendAddressPoolPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (BackendAddressPoolResponse, error) {
@@ -56,15 +56,27 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginCreateOrUpdate(ctx con
 
 // ResumeCreateOrUpdate creates a new BackendAddressPoolPoller from the specified resume token.
 // token - The value must come from a previous call to BackendAddressPoolPoller.ResumeToken().
-func (client *LoadBalancerBackendAddressPoolsClient) ResumeCreateOrUpdate(token string) (BackendAddressPoolPoller, error) {
+func (client *LoadBalancerBackendAddressPoolsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (BackendAddressPoolPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("LoadBalancerBackendAddressPoolsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return BackendAddressPoolPollerResponse{}, err
 	}
-	return &backendAddressPoolPoller{
+	poller := &backendAddressPoolPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return BackendAddressPoolPollerResponse{}, err
+	}
+	result := BackendAddressPoolPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (BackendAddressPoolResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a load balancer backend address pool.
@@ -127,7 +139,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) createOrUpdateHandleRespons
 func (client *LoadBalancerBackendAddressPoolsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -146,8 +158,8 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginDelete(ctx context.Con
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -158,15 +170,27 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginDelete(ctx context.Con
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *LoadBalancerBackendAddressPoolsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *LoadBalancerBackendAddressPoolsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("LoadBalancerBackendAddressPoolsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes the specified load balancer backend address pool.
@@ -220,7 +244,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) deleteCreateRequest(ctx con
 func (client *LoadBalancerBackendAddressPoolsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -285,7 +309,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) getHandleResponse(resp *azc
 func (client *LoadBalancerBackendAddressPoolsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -346,7 +370,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) listHandleResponse(resp *az
 func (client *LoadBalancerBackendAddressPoolsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -44,8 +44,8 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginCreateOrUpdate(ctx co
 		return VirtualNetworkGatewayConnectionPollerResponse{}, err
 	}
 	poller := &virtualNetworkGatewayConnectionPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualNetworkGatewayConnectionResponse, error) {
@@ -56,15 +56,27 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginCreateOrUpdate(ctx co
 
 // ResumeCreateOrUpdate creates a new VirtualNetworkGatewayConnectionPoller from the specified resume token.
 // token - The value must come from a previous call to VirtualNetworkGatewayConnectionPoller.ResumeToken().
-func (client *VirtualNetworkGatewayConnectionsClient) ResumeCreateOrUpdate(token string) (VirtualNetworkGatewayConnectionPoller, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VirtualNetworkGatewayConnectionPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualNetworkGatewayConnectionsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return VirtualNetworkGatewayConnectionPollerResponse{}, err
 	}
-	return &virtualNetworkGatewayConnectionPoller{
+	poller := &virtualNetworkGatewayConnectionPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return VirtualNetworkGatewayConnectionPollerResponse{}, err
+	}
+	result := VirtualNetworkGatewayConnectionPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualNetworkGatewayConnectionResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a virtual network gateway connection in the specified resource group.
@@ -123,7 +135,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) createOrUpdateHandleRespon
 func (client *VirtualNetworkGatewayConnectionsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -142,8 +154,8 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginDelete(ctx context.Co
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -154,15 +166,27 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginDelete(ctx context.Co
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualNetworkGatewayConnectionsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualNetworkGatewayConnectionsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes the specified virtual network Gateway connection.
@@ -212,7 +236,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) deleteCreateRequest(ctx co
 func (client *VirtualNetworkGatewayConnectionsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -273,7 +297,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) getHandleResponse(resp *az
 func (client *VirtualNetworkGatewayConnectionsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -335,7 +359,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyHandleResponse
 func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -392,7 +416,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) listHandleResponse(resp *a
 func (client *VirtualNetworkGatewayConnectionsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -413,8 +437,8 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginResetSharedKey(ctx co
 		return ConnectionResetSharedKeyPollerResponse{}, err
 	}
 	poller := &connectionResetSharedKeyPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectionResetSharedKeyResponse, error) {
@@ -425,15 +449,27 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginResetSharedKey(ctx co
 
 // ResumeResetSharedKey creates a new ConnectionResetSharedKeyPoller from the specified resume token.
 // token - The value must come from a previous call to ConnectionResetSharedKeyPoller.ResumeToken().
-func (client *VirtualNetworkGatewayConnectionsClient) ResumeResetSharedKey(token string) (ConnectionResetSharedKeyPoller, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) ResumeResetSharedKey(ctx context.Context, token string) (ConnectionResetSharedKeyPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualNetworkGatewayConnectionsClient.ResetSharedKey", token, client.resetSharedKeyHandleError)
 	if err != nil {
-		return nil, err
+		return ConnectionResetSharedKeyPollerResponse{}, err
 	}
-	return &connectionResetSharedKeyPoller{
+	poller := &connectionResetSharedKeyPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return ConnectionResetSharedKeyPollerResponse{}, err
+	}
+	result := ConnectionResetSharedKeyPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectionResetSharedKeyResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // ResetSharedKey - The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed virtual
@@ -494,7 +530,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) resetSharedKeyHandleRespon
 func (client *VirtualNetworkGatewayConnectionsClient) resetSharedKeyHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -515,8 +551,8 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginSetSharedKey(ctx cont
 		return ConnectionSharedKeyPollerResponse{}, err
 	}
 	poller := &connectionSharedKeyPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectionSharedKeyResponse, error) {
@@ -527,15 +563,27 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginSetSharedKey(ctx cont
 
 // ResumeSetSharedKey creates a new ConnectionSharedKeyPoller from the specified resume token.
 // token - The value must come from a previous call to ConnectionSharedKeyPoller.ResumeToken().
-func (client *VirtualNetworkGatewayConnectionsClient) ResumeSetSharedKey(token string) (ConnectionSharedKeyPoller, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) ResumeSetSharedKey(ctx context.Context, token string) (ConnectionSharedKeyPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualNetworkGatewayConnectionsClient.SetSharedKey", token, client.setSharedKeyHandleError)
 	if err != nil {
-		return nil, err
+		return ConnectionSharedKeyPollerResponse{}, err
 	}
-	return &connectionSharedKeyPoller{
+	poller := &connectionSharedKeyPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return ConnectionSharedKeyPollerResponse{}, err
+	}
+	result := ConnectionSharedKeyPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectionSharedKeyResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // SetSharedKey - The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual network
@@ -596,7 +644,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) setSharedKeyHandleResponse
 func (client *VirtualNetworkGatewayConnectionsClient) setSharedKeyHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -615,8 +663,8 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginStartPacketCapture(ct
 		return StringPollerResponse{}, err
 	}
 	poller := &stringPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
@@ -627,15 +675,27 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginStartPacketCapture(ct
 
 // ResumeStartPacketCapture creates a new StringPoller from the specified resume token.
 // token - The value must come from a previous call to StringPoller.ResumeToken().
-func (client *VirtualNetworkGatewayConnectionsClient) ResumeStartPacketCapture(token string) (StringPoller, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) ResumeStartPacketCapture(ctx context.Context, token string) (StringPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualNetworkGatewayConnectionsClient.StartPacketCapture", token, client.startPacketCaptureHandleError)
 	if err != nil {
-		return nil, err
+		return StringPollerResponse{}, err
 	}
-	return &stringPoller{
+	poller := &stringPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return StringPollerResponse{}, err
+	}
+	result := StringPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // StartPacketCapture - Starts packet capture on virtual network gateway connection in the specified resource group.
@@ -697,7 +757,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) startPacketCaptureHandleRe
 func (client *VirtualNetworkGatewayConnectionsClient) startPacketCaptureHandleError(resp *azcore.Response) error {
 	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -716,8 +776,8 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginStopPacketCapture(ctx
 		return StringPollerResponse{}, err
 	}
 	poller := &stringPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
@@ -728,15 +788,27 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginStopPacketCapture(ctx
 
 // ResumeStopPacketCapture creates a new StringPoller from the specified resume token.
 // token - The value must come from a previous call to StringPoller.ResumeToken().
-func (client *VirtualNetworkGatewayConnectionsClient) ResumeStopPacketCapture(token string) (StringPoller, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) ResumeStopPacketCapture(ctx context.Context, token string) (StringPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualNetworkGatewayConnectionsClient.StopPacketCapture", token, client.stopPacketCaptureHandleError)
 	if err != nil {
-		return nil, err
+		return StringPollerResponse{}, err
 	}
-	return &stringPoller{
+	poller := &stringPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return StringPollerResponse{}, err
+	}
+	result := StringPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // StopPacketCapture - Stops packet capture on virtual network gateway connection in the specified resource group.
@@ -795,7 +867,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) stopPacketCaptureHandleRes
 func (client *VirtualNetworkGatewayConnectionsClient) stopPacketCaptureHandleError(resp *azcore.Response) error {
 	var err Error
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -814,8 +886,8 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginUpdateTags(ctx contex
 		return VirtualNetworkGatewayConnectionPollerResponse{}, err
 	}
 	poller := &virtualNetworkGatewayConnectionPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualNetworkGatewayConnectionResponse, error) {
@@ -826,15 +898,27 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginUpdateTags(ctx contex
 
 // ResumeUpdateTags creates a new VirtualNetworkGatewayConnectionPoller from the specified resume token.
 // token - The value must come from a previous call to VirtualNetworkGatewayConnectionPoller.ResumeToken().
-func (client *VirtualNetworkGatewayConnectionsClient) ResumeUpdateTags(token string) (VirtualNetworkGatewayConnectionPoller, error) {
+func (client *VirtualNetworkGatewayConnectionsClient) ResumeUpdateTags(ctx context.Context, token string) (VirtualNetworkGatewayConnectionPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualNetworkGatewayConnectionsClient.UpdateTags", token, client.updateTagsHandleError)
 	if err != nil {
-		return nil, err
+		return VirtualNetworkGatewayConnectionPollerResponse{}, err
 	}
-	return &virtualNetworkGatewayConnectionPoller{
+	poller := &virtualNetworkGatewayConnectionPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return VirtualNetworkGatewayConnectionPollerResponse{}, err
+	}
+	result := VirtualNetworkGatewayConnectionPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualNetworkGatewayConnectionResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // UpdateTags - Updates a virtual network gateway connection tags.
@@ -893,7 +977,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) updateTagsHandleResponse(r
 func (client *VirtualNetworkGatewayConnectionsClient) updateTagsHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

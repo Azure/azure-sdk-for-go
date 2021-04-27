@@ -44,8 +44,8 @@ func (client *VPNSitesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 		return VPNSitePollerResponse{}, err
 	}
 	poller := &vpnSitePoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNSiteResponse, error) {
@@ -56,15 +56,27 @@ func (client *VPNSitesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // ResumeCreateOrUpdate creates a new VPNSitePoller from the specified resume token.
 // token - The value must come from a previous call to VPNSitePoller.ResumeToken().
-func (client *VPNSitesClient) ResumeCreateOrUpdate(token string) (VPNSitePoller, error) {
+func (client *VPNSitesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VPNSitePollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VPNSitesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return VPNSitePollerResponse{}, err
 	}
-	return &vpnSitePoller{
+	poller := &vpnSitePoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return VPNSitePollerResponse{}, err
+	}
+	result := VPNSitePollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNSiteResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
@@ -123,7 +135,7 @@ func (client *VPNSitesClient) createOrUpdateHandleResponse(resp *azcore.Response
 func (client *VPNSitesClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -142,8 +154,8 @@ func (client *VPNSitesClient) BeginDelete(ctx context.Context, resourceGroupName
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -154,15 +166,27 @@ func (client *VPNSitesClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VPNSitesClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *VPNSitesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VPNSitesClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes a VpnSite.
@@ -212,7 +236,7 @@ func (client *VPNSitesClient) deleteCreateRequest(ctx context.Context, resourceG
 func (client *VPNSitesClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -273,7 +297,7 @@ func (client *VPNSitesClient) getHandleResponse(resp *azcore.Response) (VPNSiteR
 func (client *VPNSitesClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -326,7 +350,7 @@ func (client *VPNSitesClient) listHandleResponse(resp *azcore.Response) (ListVPN
 func (client *VPNSitesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -383,7 +407,7 @@ func (client *VPNSitesClient) listByResourceGroupHandleResponse(resp *azcore.Res
 func (client *VPNSitesClient) listByResourceGroupHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -444,7 +468,7 @@ func (client *VPNSitesClient) updateTagsHandleResponse(resp *azcore.Response) (V
 func (client *VPNSitesClient) updateTagsHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

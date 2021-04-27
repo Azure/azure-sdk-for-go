@@ -44,8 +44,8 @@ func (client *FlowLogsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 		return FlowLogPollerResponse{}, err
 	}
 	poller := &flowLogPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FlowLogResponse, error) {
@@ -56,15 +56,27 @@ func (client *FlowLogsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // ResumeCreateOrUpdate creates a new FlowLogPoller from the specified resume token.
 // token - The value must come from a previous call to FlowLogPoller.ResumeToken().
-func (client *FlowLogsClient) ResumeCreateOrUpdate(token string) (FlowLogPoller, error) {
+func (client *FlowLogsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (FlowLogPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("FlowLogsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return FlowLogPollerResponse{}, err
 	}
-	return &flowLogPoller{
+	poller := &flowLogPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return FlowLogPollerResponse{}, err
+	}
+	result := FlowLogPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FlowLogResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Create or update a flow log for the specified network security group.
@@ -127,7 +139,7 @@ func (client *FlowLogsClient) createOrUpdateHandleResponse(resp *azcore.Response
 func (client *FlowLogsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -146,8 +158,8 @@ func (client *FlowLogsClient) BeginDelete(ctx context.Context, resourceGroupName
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -158,15 +170,27 @@ func (client *FlowLogsClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *FlowLogsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *FlowLogsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("FlowLogsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes the specified flow log resource.
@@ -220,7 +244,7 @@ func (client *FlowLogsClient) deleteCreateRequest(ctx context.Context, resourceG
 func (client *FlowLogsClient) deleteHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -285,7 +309,7 @@ func (client *FlowLogsClient) getHandleResponse(resp *azcore.Response) (FlowLogR
 func (client *FlowLogsClient) getHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -346,7 +370,7 @@ func (client *FlowLogsClient) listHandleResponse(resp *azcore.Response) (FlowLog
 func (client *FlowLogsClient) listHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -411,7 +435,7 @@ func (client *FlowLogsClient) updateTagsHandleResponse(resp *azcore.Response) (F
 func (client *FlowLogsClient) updateTagsHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

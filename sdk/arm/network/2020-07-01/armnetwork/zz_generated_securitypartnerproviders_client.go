@@ -44,8 +44,8 @@ func (client *SecurityPartnerProvidersClient) BeginCreateOrUpdate(ctx context.Co
 		return SecurityPartnerProviderPollerResponse{}, err
 	}
 	poller := &securityPartnerProviderPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SecurityPartnerProviderResponse, error) {
@@ -56,15 +56,27 @@ func (client *SecurityPartnerProvidersClient) BeginCreateOrUpdate(ctx context.Co
 
 // ResumeCreateOrUpdate creates a new SecurityPartnerProviderPoller from the specified resume token.
 // token - The value must come from a previous call to SecurityPartnerProviderPoller.ResumeToken().
-func (client *SecurityPartnerProvidersClient) ResumeCreateOrUpdate(token string) (SecurityPartnerProviderPoller, error) {
+func (client *SecurityPartnerProvidersClient) ResumeCreateOrUpdate(ctx context.Context, token string) (SecurityPartnerProviderPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("SecurityPartnerProvidersClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return SecurityPartnerProviderPollerResponse{}, err
 	}
-	return &securityPartnerProviderPoller{
+	poller := &securityPartnerProviderPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return SecurityPartnerProviderPollerResponse{}, err
+	}
+	result := SecurityPartnerProviderPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SecurityPartnerProviderResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates the specified Security Partner Provider.
@@ -123,7 +135,7 @@ func (client *SecurityPartnerProvidersClient) createOrUpdateHandleResponse(resp 
 func (client *SecurityPartnerProvidersClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -142,8 +154,8 @@ func (client *SecurityPartnerProvidersClient) BeginDelete(ctx context.Context, r
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -154,15 +166,27 @@ func (client *SecurityPartnerProvidersClient) BeginDelete(ctx context.Context, r
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *SecurityPartnerProvidersClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *SecurityPartnerProvidersClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("SecurityPartnerProvidersClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes the specified Security Partner Provider.
@@ -212,7 +236,7 @@ func (client *SecurityPartnerProvidersClient) deleteCreateRequest(ctx context.Co
 func (client *SecurityPartnerProvidersClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -273,7 +297,7 @@ func (client *SecurityPartnerProvidersClient) getHandleResponse(resp *azcore.Res
 func (client *SecurityPartnerProvidersClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -326,7 +350,7 @@ func (client *SecurityPartnerProvidersClient) listHandleResponse(resp *azcore.Re
 func (client *SecurityPartnerProvidersClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -383,7 +407,7 @@ func (client *SecurityPartnerProvidersClient) listByResourceGroupHandleResponse(
 func (client *SecurityPartnerProvidersClient) listByResourceGroupHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -444,7 +468,7 @@ func (client *SecurityPartnerProvidersClient) updateTagsHandleResponse(resp *azc
 func (client *SecurityPartnerProvidersClient) updateTagsHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

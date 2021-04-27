@@ -44,8 +44,8 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) BeginCreateOrUpdate(ctx 
 		return FirewallPolicyRuleCollectionGroupPollerResponse{}, err
 	}
 	poller := &firewallPolicyRuleCollectionGroupPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FirewallPolicyRuleCollectionGroupResponse, error) {
@@ -56,15 +56,27 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) BeginCreateOrUpdate(ctx 
 
 // ResumeCreateOrUpdate creates a new FirewallPolicyRuleCollectionGroupPoller from the specified resume token.
 // token - The value must come from a previous call to FirewallPolicyRuleCollectionGroupPoller.ResumeToken().
-func (client *FirewallPolicyRuleCollectionGroupsClient) ResumeCreateOrUpdate(token string) (FirewallPolicyRuleCollectionGroupPoller, error) {
+func (client *FirewallPolicyRuleCollectionGroupsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (FirewallPolicyRuleCollectionGroupPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("FirewallPolicyRuleCollectionGroupsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return FirewallPolicyRuleCollectionGroupPollerResponse{}, err
 	}
-	return &firewallPolicyRuleCollectionGroupPoller{
+	poller := &firewallPolicyRuleCollectionGroupPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return FirewallPolicyRuleCollectionGroupPollerResponse{}, err
+	}
+	result := FirewallPolicyRuleCollectionGroupPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FirewallPolicyRuleCollectionGroupResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates the specified FirewallPolicyRuleCollectionGroup.
@@ -127,7 +139,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdateHandleResp
 func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -146,8 +158,8 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) BeginDelete(ctx context.
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -158,15 +170,27 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) BeginDelete(ctx context.
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *FirewallPolicyRuleCollectionGroupsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *FirewallPolicyRuleCollectionGroupsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("FirewallPolicyRuleCollectionGroupsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes the specified FirewallPolicyRuleCollectionGroup.
@@ -220,7 +244,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) deleteCreateRequest(ctx 
 func (client *FirewallPolicyRuleCollectionGroupsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -285,7 +309,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) getHandleResponse(resp *
 func (client *FirewallPolicyRuleCollectionGroupsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -346,7 +370,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) listHandleResponse(resp 
 func (client *FirewallPolicyRuleCollectionGroupsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -44,8 +44,8 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) BeginDelete(ct
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -56,15 +56,27 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) BeginDelete(ct
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ApplicationGatewayPrivateEndpointConnectionsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ApplicationGatewayPrivateEndpointConnectionsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes the specified private endpoint connection on application gateway.
@@ -118,7 +130,7 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) deleteCreateRe
 func (client *ApplicationGatewayPrivateEndpointConnectionsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -183,7 +195,7 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) getHandleRespo
 func (client *ApplicationGatewayPrivateEndpointConnectionsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -244,7 +256,7 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) listHandleResp
 func (client *ApplicationGatewayPrivateEndpointConnectionsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -263,8 +275,8 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) BeginUpdate(ct
 		return ApplicationGatewayPrivateEndpointConnectionPollerResponse{}, err
 	}
 	poller := &applicationGatewayPrivateEndpointConnectionPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
@@ -275,15 +287,27 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) BeginUpdate(ct
 
 // ResumeUpdate creates a new ApplicationGatewayPrivateEndpointConnectionPoller from the specified resume token.
 // token - The value must come from a previous call to ApplicationGatewayPrivateEndpointConnectionPoller.ResumeToken().
-func (client *ApplicationGatewayPrivateEndpointConnectionsClient) ResumeUpdate(token string) (ApplicationGatewayPrivateEndpointConnectionPoller, error) {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) ResumeUpdate(ctx context.Context, token string) (ApplicationGatewayPrivateEndpointConnectionPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ApplicationGatewayPrivateEndpointConnectionsClient.Update", token, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return ApplicationGatewayPrivateEndpointConnectionPollerResponse{}, err
 	}
-	return &applicationGatewayPrivateEndpointConnectionPoller{
+	poller := &applicationGatewayPrivateEndpointConnectionPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return ApplicationGatewayPrivateEndpointConnectionPollerResponse{}, err
+	}
+	result := ApplicationGatewayPrivateEndpointConnectionPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Update - Updates the specified private endpoint connection on application gateway.
@@ -346,7 +370,7 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) updateHandleRe
 func (client *ApplicationGatewayPrivateEndpointConnectionsClient) updateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

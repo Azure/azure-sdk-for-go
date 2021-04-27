@@ -93,7 +93,7 @@ func (client *VPNSiteLinkConnectionsClient) getHandleResponse(resp *azcore.Respo
 func (client *VPNSiteLinkConnectionsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

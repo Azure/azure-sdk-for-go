@@ -44,8 +44,8 @@ func (client *NetworkInterfaceTapConfigurationsClient) BeginCreateOrUpdate(ctx c
 		return NetworkInterfaceTapConfigurationPollerResponse{}, err
 	}
 	poller := &networkInterfaceTapConfigurationPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkInterfaceTapConfigurationResponse, error) {
@@ -56,15 +56,27 @@ func (client *NetworkInterfaceTapConfigurationsClient) BeginCreateOrUpdate(ctx c
 
 // ResumeCreateOrUpdate creates a new NetworkInterfaceTapConfigurationPoller from the specified resume token.
 // token - The value must come from a previous call to NetworkInterfaceTapConfigurationPoller.ResumeToken().
-func (client *NetworkInterfaceTapConfigurationsClient) ResumeCreateOrUpdate(token string) (NetworkInterfaceTapConfigurationPoller, error) {
+func (client *NetworkInterfaceTapConfigurationsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (NetworkInterfaceTapConfigurationPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("NetworkInterfaceTapConfigurationsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return NetworkInterfaceTapConfigurationPollerResponse{}, err
 	}
-	return &networkInterfaceTapConfigurationPoller{
+	poller := &networkInterfaceTapConfigurationPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return NetworkInterfaceTapConfigurationPollerResponse{}, err
+	}
+	result := NetworkInterfaceTapConfigurationPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkInterfaceTapConfigurationResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a Tap configuration in the specified NetworkInterface.
@@ -127,7 +139,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) createOrUpdateHandleRespo
 func (client *NetworkInterfaceTapConfigurationsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -146,8 +158,8 @@ func (client *NetworkInterfaceTapConfigurationsClient) BeginDelete(ctx context.C
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -158,15 +170,27 @@ func (client *NetworkInterfaceTapConfigurationsClient) BeginDelete(ctx context.C
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *NetworkInterfaceTapConfigurationsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *NetworkInterfaceTapConfigurationsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("NetworkInterfaceTapConfigurationsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes the specified tap configuration from the NetworkInterface.
@@ -220,7 +244,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) deleteCreateRequest(ctx c
 func (client *NetworkInterfaceTapConfigurationsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -285,7 +309,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) getHandleResponse(resp *a
 func (client *NetworkInterfaceTapConfigurationsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -346,7 +370,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) listHandleResponse(resp *
 func (client *NetworkInterfaceTapConfigurationsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

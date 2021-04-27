@@ -84,7 +84,7 @@ func (client *WebCategoriesClient) getHandleResponse(resp *azcore.Response) (Azu
 func (client *WebCategoriesClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -137,7 +137,7 @@ func (client *WebCategoriesClient) listBySubscriptionHandleResponse(resp *azcore
 func (client *WebCategoriesClient) listBySubscriptionHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

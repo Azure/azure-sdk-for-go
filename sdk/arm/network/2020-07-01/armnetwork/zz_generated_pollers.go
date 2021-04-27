@@ -51,9 +51,9 @@ func (p *applicationGatewayBackendHealthOnDemandPoller) ResumeToken() (string, e
 	return p.pt.ResumeToken()
 }
 
-func (p *applicationGatewayBackendHealthOnDemandPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ApplicationGatewayBackendHealthOnDemandResponse, error) {
+func (p *applicationGatewayBackendHealthOnDemandPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ApplicationGatewayBackendHealthOnDemandResponse, error) {
 	respType := ApplicationGatewayBackendHealthOnDemandResponse{ApplicationGatewayBackendHealthOnDemand: &ApplicationGatewayBackendHealthOnDemand{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ApplicationGatewayBackendHealthOnDemand)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ApplicationGatewayBackendHealthOnDemand)
 	if err != nil {
 		return ApplicationGatewayBackendHealthOnDemandResponse{}, err
 	}
@@ -97,9 +97,9 @@ func (p *applicationGatewayBackendHealthPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *applicationGatewayBackendHealthPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ApplicationGatewayBackendHealthResponse, error) {
+func (p *applicationGatewayBackendHealthPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ApplicationGatewayBackendHealthResponse, error) {
 	respType := ApplicationGatewayBackendHealthResponse{ApplicationGatewayBackendHealth: &ApplicationGatewayBackendHealth{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ApplicationGatewayBackendHealth)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ApplicationGatewayBackendHealth)
 	if err != nil {
 		return ApplicationGatewayBackendHealthResponse{}, err
 	}
@@ -143,9 +143,9 @@ func (p *applicationGatewayPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *applicationGatewayPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ApplicationGatewayResponse, error) {
+func (p *applicationGatewayPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ApplicationGatewayResponse, error) {
 	respType := ApplicationGatewayResponse{ApplicationGateway: &ApplicationGateway{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ApplicationGateway)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ApplicationGateway)
 	if err != nil {
 		return ApplicationGatewayResponse{}, err
 	}
@@ -189,9 +189,9 @@ func (p *applicationGatewayPrivateEndpointConnectionPoller) ResumeToken() (strin
 	return p.pt.ResumeToken()
 }
 
-func (p *applicationGatewayPrivateEndpointConnectionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
+func (p *applicationGatewayPrivateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
 	respType := ApplicationGatewayPrivateEndpointConnectionResponse{ApplicationGatewayPrivateEndpointConnection: &ApplicationGatewayPrivateEndpointConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ApplicationGatewayPrivateEndpointConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ApplicationGatewayPrivateEndpointConnection)
 	if err != nil {
 		return ApplicationGatewayPrivateEndpointConnectionResponse{}, err
 	}
@@ -235,9 +235,9 @@ func (p *applicationSecurityGroupPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *applicationSecurityGroupPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ApplicationSecurityGroupResponse, error) {
+func (p *applicationSecurityGroupPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ApplicationSecurityGroupResponse, error) {
 	respType := ApplicationSecurityGroupResponse{ApplicationSecurityGroup: &ApplicationSecurityGroup{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ApplicationSecurityGroup)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ApplicationSecurityGroup)
 	if err != nil {
 		return ApplicationSecurityGroupResponse{}, err
 	}
@@ -281,9 +281,9 @@ func (p *availableProvidersListPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *availableProvidersListPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (AvailableProvidersListResponse, error) {
+func (p *availableProvidersListPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AvailableProvidersListResponse, error) {
 	respType := AvailableProvidersListResponse{AvailableProvidersList: &AvailableProvidersList{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.AvailableProvidersList)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.AvailableProvidersList)
 	if err != nil {
 		return AvailableProvidersListResponse{}, err
 	}
@@ -327,9 +327,9 @@ func (p *azureFirewallPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *azureFirewallPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (AzureFirewallResponse, error) {
+func (p *azureFirewallPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AzureFirewallResponse, error) {
 	respType := AzureFirewallResponse{AzureFirewall: &AzureFirewall{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.AzureFirewall)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.AzureFirewall)
 	if err != nil {
 		return AzureFirewallResponse{}, err
 	}
@@ -373,9 +373,9 @@ func (p *azureReachabilityReportPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *azureReachabilityReportPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (AzureReachabilityReportResponse, error) {
+func (p *azureReachabilityReportPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AzureReachabilityReportResponse, error) {
 	respType := AzureReachabilityReportResponse{AzureReachabilityReport: &AzureReachabilityReport{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.AzureReachabilityReport)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.AzureReachabilityReport)
 	if err != nil {
 		return AzureReachabilityReportResponse{}, err
 	}
@@ -419,9 +419,9 @@ func (p *backendAddressPoolPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *backendAddressPoolPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (BackendAddressPoolResponse, error) {
+func (p *backendAddressPoolPoller) pollUntilDone(ctx context.Context, freq time.Duration) (BackendAddressPoolResponse, error) {
 	respType := BackendAddressPoolResponse{BackendAddressPool: &BackendAddressPool{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.BackendAddressPool)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.BackendAddressPool)
 	if err != nil {
 		return BackendAddressPoolResponse{}, err
 	}
@@ -440,10 +440,10 @@ type BastionActiveSessionListResultPagerPoller interface {
 
 type bastionActiveSessionListResultPagerPoller struct {
 	pipeline    azcore.Pipeline
+	pt          armcore.Poller
 	errHandler  bastionActiveSessionListResultHandleError
 	respHandler bastionActiveSessionListResultHandleResponse
 	statusCodes []int
-	pt          armcore.Poller
 }
 
 func (p *bastionActiveSessionListResultPagerPoller) Done() bool {
@@ -467,9 +467,9 @@ func (p *bastionActiveSessionListResultPagerPoller) ResumeToken() (string, error
 	return p.pt.ResumeToken()
 }
 
-func (p *bastionActiveSessionListResultPagerPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (BastionActiveSessionListResultPager, error) {
+func (p *bastionActiveSessionListResultPagerPoller) pollUntilDone(ctx context.Context, freq time.Duration) (BastionActiveSessionListResultPager, error) {
 	respType := &bastionActiveSessionListResultPager{}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType)
 	if err != nil {
 		return nil, err
 	}
@@ -525,9 +525,9 @@ func (p *bastionHostPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *bastionHostPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (BastionHostResponse, error) {
+func (p *bastionHostPoller) pollUntilDone(ctx context.Context, freq time.Duration) (BastionHostResponse, error) {
 	respType := BastionHostResponse{BastionHost: &BastionHost{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.BastionHost)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.BastionHost)
 	if err != nil {
 		return BastionHostResponse{}, err
 	}
@@ -546,10 +546,10 @@ type BastionShareableLinkListResultPagerPoller interface {
 
 type bastionShareableLinkListResultPagerPoller struct {
 	pipeline    azcore.Pipeline
+	pt          armcore.Poller
 	errHandler  bastionShareableLinkListResultHandleError
 	respHandler bastionShareableLinkListResultHandleResponse
 	statusCodes []int
-	pt          armcore.Poller
 }
 
 func (p *bastionShareableLinkListResultPagerPoller) Done() bool {
@@ -573,9 +573,9 @@ func (p *bastionShareableLinkListResultPagerPoller) ResumeToken() (string, error
 	return p.pt.ResumeToken()
 }
 
-func (p *bastionShareableLinkListResultPagerPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (BastionShareableLinkListResultPager, error) {
+func (p *bastionShareableLinkListResultPagerPoller) pollUntilDone(ctx context.Context, freq time.Duration) (BastionShareableLinkListResultPager, error) {
 	respType := &bastionShareableLinkListResultPager{}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType)
 	if err != nil {
 		return nil, err
 	}
@@ -631,9 +631,9 @@ func (p *bgpConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *bgpConnectionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (BgpConnectionResponse, error) {
+func (p *bgpConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (BgpConnectionResponse, error) {
 	respType := BgpConnectionResponse{BgpConnection: &BgpConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.BgpConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.BgpConnection)
 	if err != nil {
 		return BgpConnectionResponse{}, err
 	}
@@ -677,9 +677,9 @@ func (p *bgpPeerStatusListResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *bgpPeerStatusListResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (BgpPeerStatusListResultResponse, error) {
+func (p *bgpPeerStatusListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (BgpPeerStatusListResultResponse, error) {
 	respType := BgpPeerStatusListResultResponse{BgpPeerStatusListResult: &BgpPeerStatusListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.BgpPeerStatusListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.BgpPeerStatusListResult)
 	if err != nil {
 		return BgpPeerStatusListResultResponse{}, err
 	}
@@ -723,9 +723,9 @@ func (p *connectionMonitorQueryResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *connectionMonitorQueryResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ConnectionMonitorQueryResultResponse, error) {
+func (p *connectionMonitorQueryResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ConnectionMonitorQueryResultResponse, error) {
 	respType := ConnectionMonitorQueryResultResponse{ConnectionMonitorQueryResult: &ConnectionMonitorQueryResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ConnectionMonitorQueryResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ConnectionMonitorQueryResult)
 	if err != nil {
 		return ConnectionMonitorQueryResultResponse{}, err
 	}
@@ -769,9 +769,9 @@ func (p *connectionMonitorResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *connectionMonitorResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ConnectionMonitorResultResponse, error) {
+func (p *connectionMonitorResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ConnectionMonitorResultResponse, error) {
 	respType := ConnectionMonitorResultResponse{ConnectionMonitorResult: &ConnectionMonitorResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ConnectionMonitorResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ConnectionMonitorResult)
 	if err != nil {
 		return ConnectionMonitorResultResponse{}, err
 	}
@@ -815,9 +815,9 @@ func (p *connectionResetSharedKeyPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *connectionResetSharedKeyPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ConnectionResetSharedKeyResponse, error) {
+func (p *connectionResetSharedKeyPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ConnectionResetSharedKeyResponse, error) {
 	respType := ConnectionResetSharedKeyResponse{ConnectionResetSharedKey: &ConnectionResetSharedKey{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ConnectionResetSharedKey)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ConnectionResetSharedKey)
 	if err != nil {
 		return ConnectionResetSharedKeyResponse{}, err
 	}
@@ -861,9 +861,9 @@ func (p *connectionSharedKeyPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *connectionSharedKeyPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ConnectionSharedKeyResponse, error) {
+func (p *connectionSharedKeyPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ConnectionSharedKeyResponse, error) {
 	respType := ConnectionSharedKeyResponse{ConnectionSharedKey: &ConnectionSharedKey{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ConnectionSharedKey)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ConnectionSharedKey)
 	if err != nil {
 		return ConnectionSharedKeyResponse{}, err
 	}
@@ -907,9 +907,9 @@ func (p *connectivityInformationPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *connectivityInformationPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ConnectivityInformationResponse, error) {
+func (p *connectivityInformationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ConnectivityInformationResponse, error) {
 	respType := ConnectivityInformationResponse{ConnectivityInformation: &ConnectivityInformation{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ConnectivityInformation)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ConnectivityInformation)
 	if err != nil {
 		return ConnectivityInformationResponse{}, err
 	}
@@ -953,9 +953,9 @@ func (p *customIPPrefixPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *customIPPrefixPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (CustomIPPrefixResponse, error) {
+func (p *customIPPrefixPoller) pollUntilDone(ctx context.Context, freq time.Duration) (CustomIPPrefixResponse, error) {
 	respType := CustomIPPrefixResponse{CustomIPPrefix: &CustomIPPrefix{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.CustomIPPrefix)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.CustomIPPrefix)
 	if err != nil {
 		return CustomIPPrefixResponse{}, err
 	}
@@ -999,9 +999,9 @@ func (p *ddosCustomPolicyPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *ddosCustomPolicyPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (DdosCustomPolicyResponse, error) {
+func (p *ddosCustomPolicyPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DdosCustomPolicyResponse, error) {
 	respType := DdosCustomPolicyResponse{DdosCustomPolicy: &DdosCustomPolicy{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.DdosCustomPolicy)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.DdosCustomPolicy)
 	if err != nil {
 		return DdosCustomPolicyResponse{}, err
 	}
@@ -1045,9 +1045,9 @@ func (p *ddosProtectionPlanPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *ddosProtectionPlanPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (DdosProtectionPlanResponse, error) {
+func (p *ddosProtectionPlanPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DdosProtectionPlanResponse, error) {
 	respType := DdosProtectionPlanResponse{DdosProtectionPlan: &DdosProtectionPlan{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.DdosProtectionPlan)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.DdosProtectionPlan)
 	if err != nil {
 		return DdosProtectionPlanResponse{}, err
 	}
@@ -1091,9 +1091,9 @@ func (p *dscpConfigurationPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *dscpConfigurationPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (DscpConfigurationResponse, error) {
+func (p *dscpConfigurationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DscpConfigurationResponse, error) {
 	respType := DscpConfigurationResponse{DscpConfiguration: &DscpConfiguration{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.DscpConfiguration)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.DscpConfiguration)
 	if err != nil {
 		return DscpConfigurationResponse{}, err
 	}
@@ -1137,9 +1137,9 @@ func (p *effectiveNetworkSecurityGroupListResultPoller) ResumeToken() (string, e
 	return p.pt.ResumeToken()
 }
 
-func (p *effectiveNetworkSecurityGroupListResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (EffectiveNetworkSecurityGroupListResultResponse, error) {
+func (p *effectiveNetworkSecurityGroupListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (EffectiveNetworkSecurityGroupListResultResponse, error) {
 	respType := EffectiveNetworkSecurityGroupListResultResponse{EffectiveNetworkSecurityGroupListResult: &EffectiveNetworkSecurityGroupListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.EffectiveNetworkSecurityGroupListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.EffectiveNetworkSecurityGroupListResult)
 	if err != nil {
 		return EffectiveNetworkSecurityGroupListResultResponse{}, err
 	}
@@ -1183,9 +1183,9 @@ func (p *effectiveRouteListResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *effectiveRouteListResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (EffectiveRouteListResultResponse, error) {
+func (p *effectiveRouteListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (EffectiveRouteListResultResponse, error) {
 	respType := EffectiveRouteListResultResponse{EffectiveRouteListResult: &EffectiveRouteListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.EffectiveRouteListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.EffectiveRouteListResult)
 	if err != nil {
 		return EffectiveRouteListResultResponse{}, err
 	}
@@ -1229,9 +1229,9 @@ func (p *expressRouteCircuitAuthorizationPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *expressRouteCircuitAuthorizationPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitAuthorizationResponse, error) {
+func (p *expressRouteCircuitAuthorizationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCircuitAuthorizationResponse, error) {
 	respType := ExpressRouteCircuitAuthorizationResponse{ExpressRouteCircuitAuthorization: &ExpressRouteCircuitAuthorization{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ExpressRouteCircuitAuthorization)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCircuitAuthorization)
 	if err != nil {
 		return ExpressRouteCircuitAuthorizationResponse{}, err
 	}
@@ -1275,9 +1275,9 @@ func (p *expressRouteCircuitConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *expressRouteCircuitConnectionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitConnectionResponse, error) {
+func (p *expressRouteCircuitConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCircuitConnectionResponse, error) {
 	respType := ExpressRouteCircuitConnectionResponse{ExpressRouteCircuitConnection: &ExpressRouteCircuitConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ExpressRouteCircuitConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCircuitConnection)
 	if err != nil {
 		return ExpressRouteCircuitConnectionResponse{}, err
 	}
@@ -1321,9 +1321,9 @@ func (p *expressRouteCircuitPeeringPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *expressRouteCircuitPeeringPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitPeeringResponse, error) {
+func (p *expressRouteCircuitPeeringPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCircuitPeeringResponse, error) {
 	respType := ExpressRouteCircuitPeeringResponse{ExpressRouteCircuitPeering: &ExpressRouteCircuitPeering{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ExpressRouteCircuitPeering)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCircuitPeering)
 	if err != nil {
 		return ExpressRouteCircuitPeeringResponse{}, err
 	}
@@ -1367,9 +1367,9 @@ func (p *expressRouteCircuitPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *expressRouteCircuitPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitResponse, error) {
+func (p *expressRouteCircuitPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCircuitResponse, error) {
 	respType := ExpressRouteCircuitResponse{ExpressRouteCircuit: &ExpressRouteCircuit{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ExpressRouteCircuit)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCircuit)
 	if err != nil {
 		return ExpressRouteCircuitResponse{}, err
 	}
@@ -1413,9 +1413,9 @@ func (p *expressRouteCircuitsArpTableListResultPoller) ResumeToken() (string, er
 	return p.pt.ResumeToken()
 }
 
-func (p *expressRouteCircuitsArpTableListResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitsArpTableListResultResponse, error) {
+func (p *expressRouteCircuitsArpTableListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCircuitsArpTableListResultResponse, error) {
 	respType := ExpressRouteCircuitsArpTableListResultResponse{ExpressRouteCircuitsArpTableListResult: &ExpressRouteCircuitsArpTableListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ExpressRouteCircuitsArpTableListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCircuitsArpTableListResult)
 	if err != nil {
 		return ExpressRouteCircuitsArpTableListResultResponse{}, err
 	}
@@ -1459,9 +1459,9 @@ func (p *expressRouteCircuitsRoutesTableListResultPoller) ResumeToken() (string,
 	return p.pt.ResumeToken()
 }
 
-func (p *expressRouteCircuitsRoutesTableListResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitsRoutesTableListResultResponse, error) {
+func (p *expressRouteCircuitsRoutesTableListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCircuitsRoutesTableListResultResponse, error) {
 	respType := ExpressRouteCircuitsRoutesTableListResultResponse{ExpressRouteCircuitsRoutesTableListResult: &ExpressRouteCircuitsRoutesTableListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ExpressRouteCircuitsRoutesTableListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCircuitsRoutesTableListResult)
 	if err != nil {
 		return ExpressRouteCircuitsRoutesTableListResultResponse{}, err
 	}
@@ -1505,9 +1505,9 @@ func (p *expressRouteCircuitsRoutesTableSummaryListResultPoller) ResumeToken() (
 	return p.pt.ResumeToken()
 }
 
-func (p *expressRouteCircuitsRoutesTableSummaryListResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ExpressRouteCircuitsRoutesTableSummaryListResultResponse, error) {
+func (p *expressRouteCircuitsRoutesTableSummaryListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCircuitsRoutesTableSummaryListResultResponse, error) {
 	respType := ExpressRouteCircuitsRoutesTableSummaryListResultResponse{ExpressRouteCircuitsRoutesTableSummaryListResult: &ExpressRouteCircuitsRoutesTableSummaryListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ExpressRouteCircuitsRoutesTableSummaryListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCircuitsRoutesTableSummaryListResult)
 	if err != nil {
 		return ExpressRouteCircuitsRoutesTableSummaryListResultResponse{}, err
 	}
@@ -1551,9 +1551,9 @@ func (p *expressRouteConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *expressRouteConnectionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ExpressRouteConnectionResponse, error) {
+func (p *expressRouteConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteConnectionResponse, error) {
 	respType := ExpressRouteConnectionResponse{ExpressRouteConnection: &ExpressRouteConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ExpressRouteConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteConnection)
 	if err != nil {
 		return ExpressRouteConnectionResponse{}, err
 	}
@@ -1597,9 +1597,9 @@ func (p *expressRouteCrossConnectionPeeringPoller) ResumeToken() (string, error)
 	return p.pt.ResumeToken()
 }
 
-func (p *expressRouteCrossConnectionPeeringPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ExpressRouteCrossConnectionPeeringResponse, error) {
+func (p *expressRouteCrossConnectionPeeringPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCrossConnectionPeeringResponse, error) {
 	respType := ExpressRouteCrossConnectionPeeringResponse{ExpressRouteCrossConnectionPeering: &ExpressRouteCrossConnectionPeering{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ExpressRouteCrossConnectionPeering)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCrossConnectionPeering)
 	if err != nil {
 		return ExpressRouteCrossConnectionPeeringResponse{}, err
 	}
@@ -1643,9 +1643,9 @@ func (p *expressRouteCrossConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *expressRouteCrossConnectionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ExpressRouteCrossConnectionResponse, error) {
+func (p *expressRouteCrossConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCrossConnectionResponse, error) {
 	respType := ExpressRouteCrossConnectionResponse{ExpressRouteCrossConnection: &ExpressRouteCrossConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ExpressRouteCrossConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCrossConnection)
 	if err != nil {
 		return ExpressRouteCrossConnectionResponse{}, err
 	}
@@ -1689,9 +1689,9 @@ func (p *expressRouteCrossConnectionsRoutesTableSummaryListResultPoller) ResumeT
 	return p.pt.ResumeToken()
 }
 
-func (p *expressRouteCrossConnectionsRoutesTableSummaryListResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse, error) {
+func (p *expressRouteCrossConnectionsRoutesTableSummaryListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse, error) {
 	respType := ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse{ExpressRouteCrossConnectionsRoutesTableSummaryListResult: &ExpressRouteCrossConnectionsRoutesTableSummaryListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ExpressRouteCrossConnectionsRoutesTableSummaryListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCrossConnectionsRoutesTableSummaryListResult)
 	if err != nil {
 		return ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse{}, err
 	}
@@ -1735,9 +1735,9 @@ func (p *expressRouteGatewayPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *expressRouteGatewayPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ExpressRouteGatewayResponse, error) {
+func (p *expressRouteGatewayPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteGatewayResponse, error) {
 	respType := ExpressRouteGatewayResponse{ExpressRouteGateway: &ExpressRouteGateway{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ExpressRouteGateway)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteGateway)
 	if err != nil {
 		return ExpressRouteGatewayResponse{}, err
 	}
@@ -1781,9 +1781,9 @@ func (p *expressRoutePortPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *expressRoutePortPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ExpressRoutePortResponse, error) {
+func (p *expressRoutePortPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRoutePortResponse, error) {
 	respType := ExpressRoutePortResponse{ExpressRoutePort: &ExpressRoutePort{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ExpressRoutePort)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRoutePort)
 	if err != nil {
 		return ExpressRoutePortResponse{}, err
 	}
@@ -1827,9 +1827,9 @@ func (p *firewallPolicyPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *firewallPolicyPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (FirewallPolicyResponse, error) {
+func (p *firewallPolicyPoller) pollUntilDone(ctx context.Context, freq time.Duration) (FirewallPolicyResponse, error) {
 	respType := FirewallPolicyResponse{FirewallPolicy: &FirewallPolicy{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.FirewallPolicy)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.FirewallPolicy)
 	if err != nil {
 		return FirewallPolicyResponse{}, err
 	}
@@ -1873,9 +1873,9 @@ func (p *firewallPolicyRuleCollectionGroupPoller) ResumeToken() (string, error) 
 	return p.pt.ResumeToken()
 }
 
-func (p *firewallPolicyRuleCollectionGroupPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (FirewallPolicyRuleCollectionGroupResponse, error) {
+func (p *firewallPolicyRuleCollectionGroupPoller) pollUntilDone(ctx context.Context, freq time.Duration) (FirewallPolicyRuleCollectionGroupResponse, error) {
 	respType := FirewallPolicyRuleCollectionGroupResponse{FirewallPolicyRuleCollectionGroup: &FirewallPolicyRuleCollectionGroup{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.FirewallPolicyRuleCollectionGroup)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.FirewallPolicyRuleCollectionGroup)
 	if err != nil {
 		return FirewallPolicyRuleCollectionGroupResponse{}, err
 	}
@@ -1919,9 +1919,9 @@ func (p *flowLogInformationPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *flowLogInformationPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (FlowLogInformationResponse, error) {
+func (p *flowLogInformationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (FlowLogInformationResponse, error) {
 	respType := FlowLogInformationResponse{FlowLogInformation: &FlowLogInformation{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.FlowLogInformation)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.FlowLogInformation)
 	if err != nil {
 		return FlowLogInformationResponse{}, err
 	}
@@ -1965,9 +1965,9 @@ func (p *flowLogPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *flowLogPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (FlowLogResponse, error) {
+func (p *flowLogPoller) pollUntilDone(ctx context.Context, freq time.Duration) (FlowLogResponse, error) {
 	respType := FlowLogResponse{FlowLog: &FlowLog{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.FlowLog)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.FlowLog)
 	if err != nil {
 		return FlowLogResponse{}, err
 	}
@@ -2011,9 +2011,9 @@ func (p *gatewayRouteListResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *gatewayRouteListResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (GatewayRouteListResultResponse, error) {
+func (p *gatewayRouteListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (GatewayRouteListResultResponse, error) {
 	respType := GatewayRouteListResultResponse{GatewayRouteListResult: &GatewayRouteListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.GatewayRouteListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.GatewayRouteListResult)
 	if err != nil {
 		return GatewayRouteListResultResponse{}, err
 	}
@@ -2051,8 +2051,8 @@ func (p *httpPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *httpPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-	return p.pt.PollUntilDone(ctx, frequency, p.pipeline, nil)
+func (p *httpPoller) pollUntilDone(ctx context.Context, freq time.Duration) (*http.Response, error) {
+	return p.pt.PollUntilDone(ctx, freq, p.pipeline, nil)
 }
 
 // HubIPConfigurationPoller provides polling facilities until the operation reaches a terminal state.
@@ -2091,9 +2091,9 @@ func (p *hubIPConfigurationPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *hubIPConfigurationPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (HubIPConfigurationResponse, error) {
+func (p *hubIPConfigurationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (HubIPConfigurationResponse, error) {
 	respType := HubIPConfigurationResponse{HubIPConfiguration: &HubIPConfiguration{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.HubIPConfiguration)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.HubIPConfiguration)
 	if err != nil {
 		return HubIPConfigurationResponse{}, err
 	}
@@ -2137,9 +2137,9 @@ func (p *hubRouteTablePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *hubRouteTablePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (HubRouteTableResponse, error) {
+func (p *hubRouteTablePoller) pollUntilDone(ctx context.Context, freq time.Duration) (HubRouteTableResponse, error) {
 	respType := HubRouteTableResponse{HubRouteTable: &HubRouteTable{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.HubRouteTable)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.HubRouteTable)
 	if err != nil {
 		return HubRouteTableResponse{}, err
 	}
@@ -2183,9 +2183,9 @@ func (p *hubVirtualNetworkConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *hubVirtualNetworkConnectionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (HubVirtualNetworkConnectionResponse, error) {
+func (p *hubVirtualNetworkConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (HubVirtualNetworkConnectionResponse, error) {
 	respType := HubVirtualNetworkConnectionResponse{HubVirtualNetworkConnection: &HubVirtualNetworkConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.HubVirtualNetworkConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.HubVirtualNetworkConnection)
 	if err != nil {
 		return HubVirtualNetworkConnectionResponse{}, err
 	}
@@ -2229,9 +2229,9 @@ func (p *ipAllocationPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *ipAllocationPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (IPAllocationResponse, error) {
+func (p *ipAllocationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (IPAllocationResponse, error) {
 	respType := IPAllocationResponse{IPAllocation: &IPAllocation{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.IPAllocation)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.IPAllocation)
 	if err != nil {
 		return IPAllocationResponse{}, err
 	}
@@ -2275,9 +2275,9 @@ func (p *ipGroupPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *ipGroupPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (IPGroupResponse, error) {
+func (p *ipGroupPoller) pollUntilDone(ctx context.Context, freq time.Duration) (IPGroupResponse, error) {
 	respType := IPGroupResponse{IPGroup: &IPGroup{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.IPGroup)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.IPGroup)
 	if err != nil {
 		return IPGroupResponse{}, err
 	}
@@ -2321,9 +2321,9 @@ func (p *inboundNatRulePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *inboundNatRulePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (InboundNatRuleResponse, error) {
+func (p *inboundNatRulePoller) pollUntilDone(ctx context.Context, freq time.Duration) (InboundNatRuleResponse, error) {
 	respType := InboundNatRuleResponse{InboundNatRule: &InboundNatRule{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.InboundNatRule)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.InboundNatRule)
 	if err != nil {
 		return InboundNatRuleResponse{}, err
 	}
@@ -2367,9 +2367,9 @@ func (p *inboundSecurityRulePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *inboundSecurityRulePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (InboundSecurityRuleResponse, error) {
+func (p *inboundSecurityRulePoller) pollUntilDone(ctx context.Context, freq time.Duration) (InboundSecurityRuleResponse, error) {
 	respType := InboundSecurityRuleResponse{InboundSecurityRule: &InboundSecurityRule{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.InboundSecurityRule)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.InboundSecurityRule)
 	if err != nil {
 		return InboundSecurityRuleResponse{}, err
 	}
@@ -2413,9 +2413,9 @@ func (p *loadBalancerPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *loadBalancerPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (LoadBalancerResponse, error) {
+func (p *loadBalancerPoller) pollUntilDone(ctx context.Context, freq time.Duration) (LoadBalancerResponse, error) {
 	respType := LoadBalancerResponse{LoadBalancer: &LoadBalancer{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.LoadBalancer)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.LoadBalancer)
 	if err != nil {
 		return LoadBalancerResponse{}, err
 	}
@@ -2459,9 +2459,9 @@ func (p *localNetworkGatewayPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *localNetworkGatewayPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (LocalNetworkGatewayResponse, error) {
+func (p *localNetworkGatewayPoller) pollUntilDone(ctx context.Context, freq time.Duration) (LocalNetworkGatewayResponse, error) {
 	respType := LocalNetworkGatewayResponse{LocalNetworkGateway: &LocalNetworkGateway{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.LocalNetworkGateway)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.LocalNetworkGateway)
 	if err != nil {
 		return LocalNetworkGatewayResponse{}, err
 	}
@@ -2505,9 +2505,9 @@ func (p *natGatewayPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *natGatewayPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (NatGatewayResponse, error) {
+func (p *natGatewayPoller) pollUntilDone(ctx context.Context, freq time.Duration) (NatGatewayResponse, error) {
 	respType := NatGatewayResponse{NatGateway: &NatGateway{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.NatGateway)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.NatGateway)
 	if err != nil {
 		return NatGatewayResponse{}, err
 	}
@@ -2551,9 +2551,9 @@ func (p *networkConfigurationDiagnosticResponsePoller) ResumeToken() (string, er
 	return p.pt.ResumeToken()
 }
 
-func (p *networkConfigurationDiagnosticResponsePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (NetworkConfigurationDiagnosticResponseResponse, error) {
+func (p *networkConfigurationDiagnosticResponsePoller) pollUntilDone(ctx context.Context, freq time.Duration) (NetworkConfigurationDiagnosticResponseResponse, error) {
 	respType := NetworkConfigurationDiagnosticResponseResponse{NetworkConfigurationDiagnosticResponse: &NetworkConfigurationDiagnosticResponse{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.NetworkConfigurationDiagnosticResponse)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.NetworkConfigurationDiagnosticResponse)
 	if err != nil {
 		return NetworkConfigurationDiagnosticResponseResponse{}, err
 	}
@@ -2597,9 +2597,9 @@ func (p *networkInterfacePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *networkInterfacePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (NetworkInterfaceResponse, error) {
+func (p *networkInterfacePoller) pollUntilDone(ctx context.Context, freq time.Duration) (NetworkInterfaceResponse, error) {
 	respType := NetworkInterfaceResponse{NetworkInterface: &NetworkInterface{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.NetworkInterface)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.NetworkInterface)
 	if err != nil {
 		return NetworkInterfaceResponse{}, err
 	}
@@ -2643,9 +2643,9 @@ func (p *networkInterfaceTapConfigurationPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *networkInterfaceTapConfigurationPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (NetworkInterfaceTapConfigurationResponse, error) {
+func (p *networkInterfaceTapConfigurationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (NetworkInterfaceTapConfigurationResponse, error) {
 	respType := NetworkInterfaceTapConfigurationResponse{NetworkInterfaceTapConfiguration: &NetworkInterfaceTapConfiguration{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.NetworkInterfaceTapConfiguration)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.NetworkInterfaceTapConfiguration)
 	if err != nil {
 		return NetworkInterfaceTapConfigurationResponse{}, err
 	}
@@ -2689,9 +2689,9 @@ func (p *networkSecurityGroupPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *networkSecurityGroupPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (NetworkSecurityGroupResponse, error) {
+func (p *networkSecurityGroupPoller) pollUntilDone(ctx context.Context, freq time.Duration) (NetworkSecurityGroupResponse, error) {
 	respType := NetworkSecurityGroupResponse{NetworkSecurityGroup: &NetworkSecurityGroup{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.NetworkSecurityGroup)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.NetworkSecurityGroup)
 	if err != nil {
 		return NetworkSecurityGroupResponse{}, err
 	}
@@ -2735,9 +2735,9 @@ func (p *networkVirtualAppliancePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *networkVirtualAppliancePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (NetworkVirtualApplianceResponse, error) {
+func (p *networkVirtualAppliancePoller) pollUntilDone(ctx context.Context, freq time.Duration) (NetworkVirtualApplianceResponse, error) {
 	respType := NetworkVirtualApplianceResponse{NetworkVirtualAppliance: &NetworkVirtualAppliance{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.NetworkVirtualAppliance)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.NetworkVirtualAppliance)
 	if err != nil {
 		return NetworkVirtualApplianceResponse{}, err
 	}
@@ -2781,9 +2781,9 @@ func (p *nextHopResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *nextHopResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (NextHopResultResponse, error) {
+func (p *nextHopResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (NextHopResultResponse, error) {
 	respType := NextHopResultResponse{NextHopResult: &NextHopResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.NextHopResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.NextHopResult)
 	if err != nil {
 		return NextHopResultResponse{}, err
 	}
@@ -2827,9 +2827,9 @@ func (p *p2SVPNConnectionHealthPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *p2SVPNConnectionHealthPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (P2SVPNConnectionHealthResponse, error) {
+func (p *p2SVPNConnectionHealthPoller) pollUntilDone(ctx context.Context, freq time.Duration) (P2SVPNConnectionHealthResponse, error) {
 	respType := P2SVPNConnectionHealthResponse{P2SVPNConnectionHealth: &P2SVPNConnectionHealth{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.P2SVPNConnectionHealth)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.P2SVPNConnectionHealth)
 	if err != nil {
 		return P2SVPNConnectionHealthResponse{}, err
 	}
@@ -2873,9 +2873,9 @@ func (p *p2SVPNGatewayPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *p2SVPNGatewayPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (P2SVPNGatewayResponse, error) {
+func (p *p2SVPNGatewayPoller) pollUntilDone(ctx context.Context, freq time.Duration) (P2SVPNGatewayResponse, error) {
 	respType := P2SVPNGatewayResponse{P2SVPNGateway: &P2SVPNGateway{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.P2SVPNGateway)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.P2SVPNGateway)
 	if err != nil {
 		return P2SVPNGatewayResponse{}, err
 	}
@@ -2919,9 +2919,9 @@ func (p *packetCaptureQueryStatusResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *packetCaptureQueryStatusResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (PacketCaptureQueryStatusResultResponse, error) {
+func (p *packetCaptureQueryStatusResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PacketCaptureQueryStatusResultResponse, error) {
 	respType := PacketCaptureQueryStatusResultResponse{PacketCaptureQueryStatusResult: &PacketCaptureQueryStatusResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.PacketCaptureQueryStatusResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PacketCaptureQueryStatusResult)
 	if err != nil {
 		return PacketCaptureQueryStatusResultResponse{}, err
 	}
@@ -2965,9 +2965,9 @@ func (p *packetCaptureResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *packetCaptureResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (PacketCaptureResultResponse, error) {
+func (p *packetCaptureResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PacketCaptureResultResponse, error) {
 	respType := PacketCaptureResultResponse{PacketCaptureResult: &PacketCaptureResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.PacketCaptureResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PacketCaptureResult)
 	if err != nil {
 		return PacketCaptureResultResponse{}, err
 	}
@@ -3011,9 +3011,9 @@ func (p *peerRouteListPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *peerRouteListPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (PeerRouteListResponse, error) {
+func (p *peerRouteListPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PeerRouteListResponse, error) {
 	respType := PeerRouteListResponse{PeerRouteList: &PeerRouteList{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.PeerRouteList)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PeerRouteList)
 	if err != nil {
 		return PeerRouteListResponse{}, err
 	}
@@ -3057,9 +3057,9 @@ func (p *privateDNSZoneGroupPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *privateDNSZoneGroupPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (PrivateDNSZoneGroupResponse, error) {
+func (p *privateDNSZoneGroupPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PrivateDNSZoneGroupResponse, error) {
 	respType := PrivateDNSZoneGroupResponse{PrivateDNSZoneGroup: &PrivateDNSZoneGroup{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.PrivateDNSZoneGroup)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PrivateDNSZoneGroup)
 	if err != nil {
 		return PrivateDNSZoneGroupResponse{}, err
 	}
@@ -3103,9 +3103,9 @@ func (p *privateEndpointPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *privateEndpointPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (PrivateEndpointResponse, error) {
+func (p *privateEndpointPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointResponse, error) {
 	respType := PrivateEndpointResponse{PrivateEndpoint: &PrivateEndpoint{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.PrivateEndpoint)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PrivateEndpoint)
 	if err != nil {
 		return PrivateEndpointResponse{}, err
 	}
@@ -3149,9 +3149,9 @@ func (p *privateLinkServicePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *privateLinkServicePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (PrivateLinkServiceResponse, error) {
+func (p *privateLinkServicePoller) pollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServiceResponse, error) {
 	respType := PrivateLinkServiceResponse{PrivateLinkService: &PrivateLinkService{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.PrivateLinkService)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PrivateLinkService)
 	if err != nil {
 		return PrivateLinkServiceResponse{}, err
 	}
@@ -3195,9 +3195,9 @@ func (p *privateLinkServiceVisibilityPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *privateLinkServiceVisibilityPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (PrivateLinkServiceVisibilityResponse, error) {
+func (p *privateLinkServiceVisibilityPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServiceVisibilityResponse, error) {
 	respType := PrivateLinkServiceVisibilityResponse{PrivateLinkServiceVisibility: &PrivateLinkServiceVisibility{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.PrivateLinkServiceVisibility)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PrivateLinkServiceVisibility)
 	if err != nil {
 		return PrivateLinkServiceVisibilityResponse{}, err
 	}
@@ -3241,9 +3241,9 @@ func (p *publicIPAddressPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *publicIPAddressPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (PublicIPAddressResponse, error) {
+func (p *publicIPAddressPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PublicIPAddressResponse, error) {
 	respType := PublicIPAddressResponse{PublicIPAddress: &PublicIPAddress{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.PublicIPAddress)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PublicIPAddress)
 	if err != nil {
 		return PublicIPAddressResponse{}, err
 	}
@@ -3287,9 +3287,9 @@ func (p *publicIPPrefixPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *publicIPPrefixPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (PublicIPPrefixResponse, error) {
+func (p *publicIPPrefixPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PublicIPPrefixResponse, error) {
 	respType := PublicIPPrefixResponse{PublicIPPrefix: &PublicIPPrefix{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.PublicIPPrefix)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PublicIPPrefix)
 	if err != nil {
 		return PublicIPPrefixResponse{}, err
 	}
@@ -3333,9 +3333,9 @@ func (p *routeFilterPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *routeFilterPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (RouteFilterResponse, error) {
+func (p *routeFilterPoller) pollUntilDone(ctx context.Context, freq time.Duration) (RouteFilterResponse, error) {
 	respType := RouteFilterResponse{RouteFilter: &RouteFilter{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.RouteFilter)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.RouteFilter)
 	if err != nil {
 		return RouteFilterResponse{}, err
 	}
@@ -3379,9 +3379,9 @@ func (p *routeFilterRulePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *routeFilterRulePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (RouteFilterRuleResponse, error) {
+func (p *routeFilterRulePoller) pollUntilDone(ctx context.Context, freq time.Duration) (RouteFilterRuleResponse, error) {
 	respType := RouteFilterRuleResponse{RouteFilterRule: &RouteFilterRule{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.RouteFilterRule)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.RouteFilterRule)
 	if err != nil {
 		return RouteFilterRuleResponse{}, err
 	}
@@ -3425,9 +3425,9 @@ func (p *routePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *routePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (RouteResponse, error) {
+func (p *routePoller) pollUntilDone(ctx context.Context, freq time.Duration) (RouteResponse, error) {
 	respType := RouteResponse{Route: &Route{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.Route)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.Route)
 	if err != nil {
 		return RouteResponse{}, err
 	}
@@ -3471,9 +3471,9 @@ func (p *routeTablePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *routeTablePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (RouteTableResponse, error) {
+func (p *routeTablePoller) pollUntilDone(ctx context.Context, freq time.Duration) (RouteTableResponse, error) {
 	respType := RouteTableResponse{RouteTable: &RouteTable{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.RouteTable)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.RouteTable)
 	if err != nil {
 		return RouteTableResponse{}, err
 	}
@@ -3517,9 +3517,9 @@ func (p *securityGroupViewResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *securityGroupViewResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (SecurityGroupViewResultResponse, error) {
+func (p *securityGroupViewResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (SecurityGroupViewResultResponse, error) {
 	respType := SecurityGroupViewResultResponse{SecurityGroupViewResult: &SecurityGroupViewResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.SecurityGroupViewResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.SecurityGroupViewResult)
 	if err != nil {
 		return SecurityGroupViewResultResponse{}, err
 	}
@@ -3563,9 +3563,9 @@ func (p *securityPartnerProviderPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *securityPartnerProviderPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (SecurityPartnerProviderResponse, error) {
+func (p *securityPartnerProviderPoller) pollUntilDone(ctx context.Context, freq time.Duration) (SecurityPartnerProviderResponse, error) {
 	respType := SecurityPartnerProviderResponse{SecurityPartnerProvider: &SecurityPartnerProvider{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.SecurityPartnerProvider)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.SecurityPartnerProvider)
 	if err != nil {
 		return SecurityPartnerProviderResponse{}, err
 	}
@@ -3609,9 +3609,9 @@ func (p *securityRulePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *securityRulePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (SecurityRuleResponse, error) {
+func (p *securityRulePoller) pollUntilDone(ctx context.Context, freq time.Duration) (SecurityRuleResponse, error) {
 	respType := SecurityRuleResponse{SecurityRule: &SecurityRule{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.SecurityRule)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.SecurityRule)
 	if err != nil {
 		return SecurityRuleResponse{}, err
 	}
@@ -3655,9 +3655,9 @@ func (p *serviceEndpointPolicyDefinitionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *serviceEndpointPolicyDefinitionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ServiceEndpointPolicyDefinitionResponse, error) {
+func (p *serviceEndpointPolicyDefinitionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ServiceEndpointPolicyDefinitionResponse, error) {
 	respType := ServiceEndpointPolicyDefinitionResponse{ServiceEndpointPolicyDefinition: &ServiceEndpointPolicyDefinition{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ServiceEndpointPolicyDefinition)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ServiceEndpointPolicyDefinition)
 	if err != nil {
 		return ServiceEndpointPolicyDefinitionResponse{}, err
 	}
@@ -3701,9 +3701,9 @@ func (p *serviceEndpointPolicyPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *serviceEndpointPolicyPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ServiceEndpointPolicyResponse, error) {
+func (p *serviceEndpointPolicyPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ServiceEndpointPolicyResponse, error) {
 	respType := ServiceEndpointPolicyResponse{ServiceEndpointPolicy: &ServiceEndpointPolicy{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.ServiceEndpointPolicy)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ServiceEndpointPolicy)
 	if err != nil {
 		return ServiceEndpointPolicyResponse{}, err
 	}
@@ -3747,9 +3747,9 @@ func (p *stringPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *stringPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (StringResponse, error) {
+func (p *stringPoller) pollUntilDone(ctx context.Context, freq time.Duration) (StringResponse, error) {
 	respType := StringResponse{}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, &respType.Value)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, &respType.Value)
 	if err != nil {
 		return StringResponse{}, err
 	}
@@ -3793,9 +3793,9 @@ func (p *subnetPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *subnetPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (SubnetResponse, error) {
+func (p *subnetPoller) pollUntilDone(ctx context.Context, freq time.Duration) (SubnetResponse, error) {
 	respType := SubnetResponse{Subnet: &Subnet{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.Subnet)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.Subnet)
 	if err != nil {
 		return SubnetResponse{}, err
 	}
@@ -3839,9 +3839,9 @@ func (p *troubleshootingResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *troubleshootingResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (TroubleshootingResultResponse, error) {
+func (p *troubleshootingResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (TroubleshootingResultResponse, error) {
 	respType := TroubleshootingResultResponse{TroubleshootingResult: &TroubleshootingResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.TroubleshootingResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.TroubleshootingResult)
 	if err != nil {
 		return TroubleshootingResultResponse{}, err
 	}
@@ -3885,9 +3885,9 @@ func (p *vpnClientConnectionHealthDetailListResultPoller) ResumeToken() (string,
 	return p.pt.ResumeToken()
 }
 
-func (p *vpnClientConnectionHealthDetailListResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VPNClientConnectionHealthDetailListResultResponse, error) {
+func (p *vpnClientConnectionHealthDetailListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNClientConnectionHealthDetailListResultResponse, error) {
 	respType := VPNClientConnectionHealthDetailListResultResponse{VPNClientConnectionHealthDetailListResult: &VPNClientConnectionHealthDetailListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VPNClientConnectionHealthDetailListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNClientConnectionHealthDetailListResult)
 	if err != nil {
 		return VPNClientConnectionHealthDetailListResultResponse{}, err
 	}
@@ -3931,9 +3931,9 @@ func (p *vpnClientIPSecParametersPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *vpnClientIPSecParametersPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VPNClientIPsecParametersResponse, error) {
+func (p *vpnClientIPSecParametersPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNClientIPsecParametersResponse, error) {
 	respType := VPNClientIPsecParametersResponse{VPNClientIPsecParameters: &VPNClientIPsecParameters{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VPNClientIPsecParameters)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNClientIPsecParameters)
 	if err != nil {
 		return VPNClientIPsecParametersResponse{}, err
 	}
@@ -3977,9 +3977,9 @@ func (p *vpnConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *vpnConnectionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VPNConnectionResponse, error) {
+func (p *vpnConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNConnectionResponse, error) {
 	respType := VPNConnectionResponse{VPNConnection: &VPNConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VPNConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNConnection)
 	if err != nil {
 		return VPNConnectionResponse{}, err
 	}
@@ -4023,9 +4023,9 @@ func (p *vpnGatewayPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *vpnGatewayPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VPNGatewayResponse, error) {
+func (p *vpnGatewayPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNGatewayResponse, error) {
 	respType := VPNGatewayResponse{VPNGateway: &VPNGateway{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VPNGateway)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNGateway)
 	if err != nil {
 		return VPNGatewayResponse{}, err
 	}
@@ -4069,9 +4069,9 @@ func (p *vpnProfileResponsePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *vpnProfileResponsePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VPNProfileResponseResponse, error) {
+func (p *vpnProfileResponsePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNProfileResponseResponse, error) {
 	respType := VPNProfileResponseResponse{VPNProfileResponse: &VPNProfileResponse{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VPNProfileResponse)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNProfileResponse)
 	if err != nil {
 		return VPNProfileResponseResponse{}, err
 	}
@@ -4115,9 +4115,9 @@ func (p *vpnServerConfigurationPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *vpnServerConfigurationPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VPNServerConfigurationResponse, error) {
+func (p *vpnServerConfigurationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNServerConfigurationResponse, error) {
 	respType := VPNServerConfigurationResponse{VPNServerConfiguration: &VPNServerConfiguration{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VPNServerConfiguration)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNServerConfiguration)
 	if err != nil {
 		return VPNServerConfigurationResponse{}, err
 	}
@@ -4161,9 +4161,9 @@ func (p *vpnServerConfigurationsResponsePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *vpnServerConfigurationsResponsePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VPNServerConfigurationsResponseResponse, error) {
+func (p *vpnServerConfigurationsResponsePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNServerConfigurationsResponseResponse, error) {
 	respType := VPNServerConfigurationsResponseResponse{VPNServerConfigurationsResponse: &VPNServerConfigurationsResponse{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VPNServerConfigurationsResponse)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNServerConfigurationsResponse)
 	if err != nil {
 		return VPNServerConfigurationsResponseResponse{}, err
 	}
@@ -4207,9 +4207,9 @@ func (p *vpnSitePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *vpnSitePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VPNSiteResponse, error) {
+func (p *vpnSitePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNSiteResponse, error) {
 	respType := VPNSiteResponse{VPNSite: &VPNSite{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VPNSite)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNSite)
 	if err != nil {
 		return VPNSiteResponse{}, err
 	}
@@ -4253,9 +4253,9 @@ func (p *verificationIPFlowResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *verificationIPFlowResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VerificationIPFlowResultResponse, error) {
+func (p *verificationIPFlowResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VerificationIPFlowResultResponse, error) {
 	respType := VerificationIPFlowResultResponse{VerificationIPFlowResult: &VerificationIPFlowResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VerificationIPFlowResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VerificationIPFlowResult)
 	if err != nil {
 		return VerificationIPFlowResultResponse{}, err
 	}
@@ -4299,9 +4299,9 @@ func (p *virtualApplianceSitePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualApplianceSitePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualApplianceSiteResponse, error) {
+func (p *virtualApplianceSitePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualApplianceSiteResponse, error) {
 	respType := VirtualApplianceSiteResponse{VirtualApplianceSite: &VirtualApplianceSite{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualApplianceSite)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualApplianceSite)
 	if err != nil {
 		return VirtualApplianceSiteResponse{}, err
 	}
@@ -4345,9 +4345,9 @@ func (p *virtualHubPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualHubPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualHubResponse, error) {
+func (p *virtualHubPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualHubResponse, error) {
 	respType := VirtualHubResponse{VirtualHub: &VirtualHub{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualHub)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualHub)
 	if err != nil {
 		return VirtualHubResponse{}, err
 	}
@@ -4391,9 +4391,9 @@ func (p *virtualHubRouteTableV2Poller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualHubRouteTableV2Poller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualHubRouteTableV2Response, error) {
+func (p *virtualHubRouteTableV2Poller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualHubRouteTableV2Response, error) {
 	respType := VirtualHubRouteTableV2Response{VirtualHubRouteTableV2: &VirtualHubRouteTableV2{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualHubRouteTableV2)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualHubRouteTableV2)
 	if err != nil {
 		return VirtualHubRouteTableV2Response{}, err
 	}
@@ -4437,9 +4437,9 @@ func (p *virtualNetworkGatewayConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualNetworkGatewayConnectionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualNetworkGatewayConnectionResponse, error) {
+func (p *virtualNetworkGatewayConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkGatewayConnectionResponse, error) {
 	respType := VirtualNetworkGatewayConnectionResponse{VirtualNetworkGatewayConnection: &VirtualNetworkGatewayConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualNetworkGatewayConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualNetworkGatewayConnection)
 	if err != nil {
 		return VirtualNetworkGatewayConnectionResponse{}, err
 	}
@@ -4483,9 +4483,9 @@ func (p *virtualNetworkGatewayPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualNetworkGatewayPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualNetworkGatewayResponse, error) {
+func (p *virtualNetworkGatewayPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkGatewayResponse, error) {
 	respType := VirtualNetworkGatewayResponse{VirtualNetworkGateway: &VirtualNetworkGateway{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualNetworkGateway)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualNetworkGateway)
 	if err != nil {
 		return VirtualNetworkGatewayResponse{}, err
 	}
@@ -4529,9 +4529,9 @@ func (p *virtualNetworkPeeringPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualNetworkPeeringPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualNetworkPeeringResponse, error) {
+func (p *virtualNetworkPeeringPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkPeeringResponse, error) {
 	respType := VirtualNetworkPeeringResponse{VirtualNetworkPeering: &VirtualNetworkPeering{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualNetworkPeering)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualNetworkPeering)
 	if err != nil {
 		return VirtualNetworkPeeringResponse{}, err
 	}
@@ -4575,9 +4575,9 @@ func (p *virtualNetworkPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualNetworkPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualNetworkResponse, error) {
+func (p *virtualNetworkPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkResponse, error) {
 	respType := VirtualNetworkResponse{VirtualNetwork: &VirtualNetwork{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualNetwork)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualNetwork)
 	if err != nil {
 		return VirtualNetworkResponse{}, err
 	}
@@ -4621,9 +4621,9 @@ func (p *virtualNetworkTapPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualNetworkTapPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualNetworkTapResponse, error) {
+func (p *virtualNetworkTapPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkTapResponse, error) {
 	respType := VirtualNetworkTapResponse{VirtualNetworkTap: &VirtualNetworkTap{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualNetworkTap)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualNetworkTap)
 	if err != nil {
 		return VirtualNetworkTapResponse{}, err
 	}
@@ -4667,9 +4667,9 @@ func (p *virtualRouterPeeringPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualRouterPeeringPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualRouterPeeringResponse, error) {
+func (p *virtualRouterPeeringPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualRouterPeeringResponse, error) {
 	respType := VirtualRouterPeeringResponse{VirtualRouterPeering: &VirtualRouterPeering{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualRouterPeering)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualRouterPeering)
 	if err != nil {
 		return VirtualRouterPeeringResponse{}, err
 	}
@@ -4713,9 +4713,9 @@ func (p *virtualRouterPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualRouterPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualRouterResponse, error) {
+func (p *virtualRouterPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualRouterResponse, error) {
 	respType := VirtualRouterResponse{VirtualRouter: &VirtualRouter{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualRouter)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualRouter)
 	if err != nil {
 		return VirtualRouterResponse{}, err
 	}
@@ -4759,9 +4759,9 @@ func (p *virtualWANPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualWANPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualWANResponse, error) {
+func (p *virtualWANPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualWANResponse, error) {
 	respType := VirtualWANResponse{VirtualWAN: &VirtualWAN{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualWAN)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualWAN)
 	if err != nil {
 		return VirtualWANResponse{}, err
 	}

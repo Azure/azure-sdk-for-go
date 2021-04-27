@@ -44,8 +44,8 @@ func (client *ConnectionMonitorsClient) BeginCreateOrUpdate(ctx context.Context,
 		return ConnectionMonitorResultPollerResponse{}, err
 	}
 	poller := &connectionMonitorResultPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectionMonitorResultResponse, error) {
@@ -56,15 +56,27 @@ func (client *ConnectionMonitorsClient) BeginCreateOrUpdate(ctx context.Context,
 
 // ResumeCreateOrUpdate creates a new ConnectionMonitorResultPoller from the specified resume token.
 // token - The value must come from a previous call to ConnectionMonitorResultPoller.ResumeToken().
-func (client *ConnectionMonitorsClient) ResumeCreateOrUpdate(token string) (ConnectionMonitorResultPoller, error) {
+func (client *ConnectionMonitorsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ConnectionMonitorResultPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ConnectionMonitorsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return ConnectionMonitorResultPollerResponse{}, err
 	}
-	return &connectionMonitorResultPoller{
+	poller := &connectionMonitorResultPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return ConnectionMonitorResultPollerResponse{}, err
+	}
+	result := ConnectionMonitorResultPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectionMonitorResultResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Create or update a connection monitor.
@@ -130,7 +142,7 @@ func (client *ConnectionMonitorsClient) createOrUpdateHandleResponse(resp *azcor
 func (client *ConnectionMonitorsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -149,8 +161,8 @@ func (client *ConnectionMonitorsClient) BeginDelete(ctx context.Context, resourc
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -161,15 +173,27 @@ func (client *ConnectionMonitorsClient) BeginDelete(ctx context.Context, resourc
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ConnectionMonitorsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *ConnectionMonitorsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ConnectionMonitorsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes the specified connection monitor.
@@ -223,7 +247,7 @@ func (client *ConnectionMonitorsClient) deleteCreateRequest(ctx context.Context,
 func (client *ConnectionMonitorsClient) deleteHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -288,7 +312,7 @@ func (client *ConnectionMonitorsClient) getHandleResponse(resp *azcore.Response)
 func (client *ConnectionMonitorsClient) getHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -349,7 +373,7 @@ func (client *ConnectionMonitorsClient) listHandleResponse(resp *azcore.Response
 func (client *ConnectionMonitorsClient) listHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -368,8 +392,8 @@ func (client *ConnectionMonitorsClient) BeginQuery(ctx context.Context, resource
 		return ConnectionMonitorQueryResultPollerResponse{}, err
 	}
 	poller := &connectionMonitorQueryResultPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectionMonitorQueryResultResponse, error) {
@@ -380,15 +404,27 @@ func (client *ConnectionMonitorsClient) BeginQuery(ctx context.Context, resource
 
 // ResumeQuery creates a new ConnectionMonitorQueryResultPoller from the specified resume token.
 // token - The value must come from a previous call to ConnectionMonitorQueryResultPoller.ResumeToken().
-func (client *ConnectionMonitorsClient) ResumeQuery(token string) (ConnectionMonitorQueryResultPoller, error) {
+func (client *ConnectionMonitorsClient) ResumeQuery(ctx context.Context, token string) (ConnectionMonitorQueryResultPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ConnectionMonitorsClient.Query", token, client.queryHandleError)
 	if err != nil {
-		return nil, err
+		return ConnectionMonitorQueryResultPollerResponse{}, err
 	}
-	return &connectionMonitorQueryResultPoller{
+	poller := &connectionMonitorQueryResultPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return ConnectionMonitorQueryResultPollerResponse{}, err
+	}
+	result := ConnectionMonitorQueryResultPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectionMonitorQueryResultResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Query - Query a snapshot of the most recent connection states.
@@ -451,7 +487,7 @@ func (client *ConnectionMonitorsClient) queryHandleResponse(resp *azcore.Respons
 func (client *ConnectionMonitorsClient) queryHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -470,8 +506,8 @@ func (client *ConnectionMonitorsClient) BeginStart(ctx context.Context, resource
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -482,15 +518,27 @@ func (client *ConnectionMonitorsClient) BeginStart(ctx context.Context, resource
 
 // ResumeStart creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ConnectionMonitorsClient) ResumeStart(token string) (HTTPPoller, error) {
+func (client *ConnectionMonitorsClient) ResumeStart(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ConnectionMonitorsClient.Start", token, client.startHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Start - Starts the specified connection monitor.
@@ -544,7 +592,7 @@ func (client *ConnectionMonitorsClient) startCreateRequest(ctx context.Context, 
 func (client *ConnectionMonitorsClient) startHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -563,8 +611,8 @@ func (client *ConnectionMonitorsClient) BeginStop(ctx context.Context, resourceG
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -575,15 +623,27 @@ func (client *ConnectionMonitorsClient) BeginStop(ctx context.Context, resourceG
 
 // ResumeStop creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ConnectionMonitorsClient) ResumeStop(token string) (HTTPPoller, error) {
+func (client *ConnectionMonitorsClient) ResumeStop(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ConnectionMonitorsClient.Stop", token, client.stopHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Stop - Stops the specified connection monitor.
@@ -637,7 +697,7 @@ func (client *ConnectionMonitorsClient) stopCreateRequest(ctx context.Context, r
 func (client *ConnectionMonitorsClient) stopHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -702,7 +762,7 @@ func (client *ConnectionMonitorsClient) updateTagsHandleResponse(resp *azcore.Re
 func (client *ConnectionMonitorsClient) updateTagsHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

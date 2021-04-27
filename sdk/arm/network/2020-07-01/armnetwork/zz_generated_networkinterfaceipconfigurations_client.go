@@ -89,7 +89,7 @@ func (client *NetworkInterfaceIPConfigurationsClient) getHandleResponse(resp *az
 func (client *NetworkInterfaceIPConfigurationsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -150,7 +150,7 @@ func (client *NetworkInterfaceIPConfigurationsClient) listHandleResponse(resp *a
 func (client *NetworkInterfaceIPConfigurationsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

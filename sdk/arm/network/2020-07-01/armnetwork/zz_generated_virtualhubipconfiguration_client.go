@@ -44,8 +44,8 @@ func (client *VirtualHubIPConfigurationClient) BeginCreateOrUpdate(ctx context.C
 		return HubIPConfigurationPollerResponse{}, err
 	}
 	poller := &hubIPConfigurationPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (HubIPConfigurationResponse, error) {
@@ -56,15 +56,27 @@ func (client *VirtualHubIPConfigurationClient) BeginCreateOrUpdate(ctx context.C
 
 // ResumeCreateOrUpdate creates a new HubIPConfigurationPoller from the specified resume token.
 // token - The value must come from a previous call to HubIPConfigurationPoller.ResumeToken().
-func (client *VirtualHubIPConfigurationClient) ResumeCreateOrUpdate(token string) (HubIPConfigurationPoller, error) {
+func (client *VirtualHubIPConfigurationClient) ResumeCreateOrUpdate(ctx context.Context, token string) (HubIPConfigurationPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualHubIPConfigurationClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return HubIPConfigurationPollerResponse{}, err
 	}
-	return &hubIPConfigurationPoller{
+	poller := &hubIPConfigurationPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HubIPConfigurationPollerResponse{}, err
+	}
+	result := HubIPConfigurationPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (HubIPConfigurationResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing VirtualHubIpConfiguration.
@@ -127,7 +139,7 @@ func (client *VirtualHubIPConfigurationClient) createOrUpdateHandleResponse(resp
 func (client *VirtualHubIPConfigurationClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -146,8 +158,8 @@ func (client *VirtualHubIPConfigurationClient) BeginDelete(ctx context.Context, 
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -158,15 +170,27 @@ func (client *VirtualHubIPConfigurationClient) BeginDelete(ctx context.Context, 
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualHubIPConfigurationClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *VirtualHubIPConfigurationClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualHubIPConfigurationClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes a VirtualHubIpConfiguration.
@@ -220,7 +244,7 @@ func (client *VirtualHubIPConfigurationClient) deleteCreateRequest(ctx context.C
 func (client *VirtualHubIPConfigurationClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -285,7 +309,7 @@ func (client *VirtualHubIPConfigurationClient) getHandleResponse(resp *azcore.Re
 func (client *VirtualHubIPConfigurationClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -346,7 +370,7 @@ func (client *VirtualHubIPConfigurationClient) listHandleResponse(resp *azcore.R
 func (client *VirtualHubIPConfigurationClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

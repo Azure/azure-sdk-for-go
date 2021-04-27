@@ -81,7 +81,7 @@ func (client *VirtualApplianceSKUsClient) getHandleResponse(resp *azcore.Respons
 func (client *VirtualApplianceSKUsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -134,7 +134,7 @@ func (client *VirtualApplianceSKUsClient) listHandleResponse(resp *azcore.Respon
 func (client *VirtualApplianceSKUsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

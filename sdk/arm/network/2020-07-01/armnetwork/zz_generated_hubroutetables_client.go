@@ -44,8 +44,8 @@ func (client *HubRouteTablesClient) BeginCreateOrUpdate(ctx context.Context, res
 		return HubRouteTablePollerResponse{}, err
 	}
 	poller := &hubRouteTablePoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (HubRouteTableResponse, error) {
@@ -56,15 +56,27 @@ func (client *HubRouteTablesClient) BeginCreateOrUpdate(ctx context.Context, res
 
 // ResumeCreateOrUpdate creates a new HubRouteTablePoller from the specified resume token.
 // token - The value must come from a previous call to HubRouteTablePoller.ResumeToken().
-func (client *HubRouteTablesClient) ResumeCreateOrUpdate(token string) (HubRouteTablePoller, error) {
+func (client *HubRouteTablesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (HubRouteTablePollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("HubRouteTablesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return HubRouteTablePollerResponse{}, err
 	}
-	return &hubRouteTablePoller{
+	poller := &hubRouteTablePoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HubRouteTablePollerResponse{}, err
+	}
+	result := HubRouteTablePollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (HubRouteTableResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
@@ -127,7 +139,7 @@ func (client *HubRouteTablesClient) createOrUpdateHandleResponse(resp *azcore.Re
 func (client *HubRouteTablesClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -146,8 +158,8 @@ func (client *HubRouteTablesClient) BeginDelete(ctx context.Context, resourceGro
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -158,15 +170,27 @@ func (client *HubRouteTablesClient) BeginDelete(ctx context.Context, resourceGro
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *HubRouteTablesClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *HubRouteTablesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("HubRouteTablesClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes a RouteTable.
@@ -220,7 +244,7 @@ func (client *HubRouteTablesClient) deleteCreateRequest(ctx context.Context, res
 func (client *HubRouteTablesClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -285,7 +309,7 @@ func (client *HubRouteTablesClient) getHandleResponse(resp *azcore.Response) (Hu
 func (client *HubRouteTablesClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -346,7 +370,7 @@ func (client *HubRouteTablesClient) listHandleResponse(resp *azcore.Response) (L
 func (client *HubRouteTablesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

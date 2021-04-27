@@ -86,7 +86,7 @@ func (client *VirtualHubBgpConnectionsClient) listHandleResponse(resp *azcore.Re
 func (client *VirtualHubBgpConnectionsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -105,8 +105,8 @@ func (client *VirtualHubBgpConnectionsClient) BeginListAdvertisedRoutes(ctx cont
 		return PeerRouteListPollerResponse{}, err
 	}
 	poller := &peerRouteListPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PeerRouteListResponse, error) {
@@ -117,15 +117,27 @@ func (client *VirtualHubBgpConnectionsClient) BeginListAdvertisedRoutes(ctx cont
 
 // ResumeListAdvertisedRoutes creates a new PeerRouteListPoller from the specified resume token.
 // token - The value must come from a previous call to PeerRouteListPoller.ResumeToken().
-func (client *VirtualHubBgpConnectionsClient) ResumeListAdvertisedRoutes(token string) (PeerRouteListPoller, error) {
+func (client *VirtualHubBgpConnectionsClient) ResumeListAdvertisedRoutes(ctx context.Context, token string) (PeerRouteListPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualHubBgpConnectionsClient.ListAdvertisedRoutes", token, client.listAdvertisedRoutesHandleError)
 	if err != nil {
-		return nil, err
+		return PeerRouteListPollerResponse{}, err
 	}
-	return &peerRouteListPoller{
+	poller := &peerRouteListPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return PeerRouteListPollerResponse{}, err
+	}
+	result := PeerRouteListPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PeerRouteListResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // ListAdvertisedRoutes - Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
@@ -188,7 +200,7 @@ func (client *VirtualHubBgpConnectionsClient) listAdvertisedRoutesHandleResponse
 func (client *VirtualHubBgpConnectionsClient) listAdvertisedRoutesHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -207,8 +219,8 @@ func (client *VirtualHubBgpConnectionsClient) BeginListLearnedRoutes(ctx context
 		return PeerRouteListPollerResponse{}, err
 	}
 	poller := &peerRouteListPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PeerRouteListResponse, error) {
@@ -219,15 +231,27 @@ func (client *VirtualHubBgpConnectionsClient) BeginListLearnedRoutes(ctx context
 
 // ResumeListLearnedRoutes creates a new PeerRouteListPoller from the specified resume token.
 // token - The value must come from a previous call to PeerRouteListPoller.ResumeToken().
-func (client *VirtualHubBgpConnectionsClient) ResumeListLearnedRoutes(token string) (PeerRouteListPoller, error) {
+func (client *VirtualHubBgpConnectionsClient) ResumeListLearnedRoutes(ctx context.Context, token string) (PeerRouteListPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualHubBgpConnectionsClient.ListLearnedRoutes", token, client.listLearnedRoutesHandleError)
 	if err != nil {
-		return nil, err
+		return PeerRouteListPollerResponse{}, err
 	}
-	return &peerRouteListPoller{
+	poller := &peerRouteListPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return PeerRouteListPollerResponse{}, err
+	}
+	result := PeerRouteListPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PeerRouteListResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // ListLearnedRoutes - Retrieves a list of routes the virtual hub bgp connection has learned.
@@ -290,7 +314,7 @@ func (client *VirtualHubBgpConnectionsClient) listLearnedRoutesHandleResponse(re
 func (client *VirtualHubBgpConnectionsClient) listLearnedRoutesHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

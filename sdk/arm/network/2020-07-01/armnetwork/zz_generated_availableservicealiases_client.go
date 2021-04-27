@@ -81,7 +81,7 @@ func (client *AvailableServiceAliasesClient) listHandleResponse(resp *azcore.Res
 func (client *AvailableServiceAliasesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -142,7 +142,7 @@ func (client *AvailableServiceAliasesClient) listByResourceGroupHandleResponse(r
 func (client *AvailableServiceAliasesClient) listByResourceGroupHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

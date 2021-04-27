@@ -44,8 +44,8 @@ func (client *HubVirtualNetworkConnectionsClient) BeginCreateOrUpdate(ctx contex
 		return HubVirtualNetworkConnectionPollerResponse{}, err
 	}
 	poller := &hubVirtualNetworkConnectionPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (HubVirtualNetworkConnectionResponse, error) {
@@ -56,15 +56,27 @@ func (client *HubVirtualNetworkConnectionsClient) BeginCreateOrUpdate(ctx contex
 
 // ResumeCreateOrUpdate creates a new HubVirtualNetworkConnectionPoller from the specified resume token.
 // token - The value must come from a previous call to HubVirtualNetworkConnectionPoller.ResumeToken().
-func (client *HubVirtualNetworkConnectionsClient) ResumeCreateOrUpdate(token string) (HubVirtualNetworkConnectionPoller, error) {
+func (client *HubVirtualNetworkConnectionsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (HubVirtualNetworkConnectionPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("HubVirtualNetworkConnectionsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return HubVirtualNetworkConnectionPollerResponse{}, err
 	}
-	return &hubVirtualNetworkConnectionPoller{
+	poller := &hubVirtualNetworkConnectionPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HubVirtualNetworkConnectionPollerResponse{}, err
+	}
+	result := HubVirtualNetworkConnectionPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (HubVirtualNetworkConnectionResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates a hub virtual network connection if it doesn't exist else updates the existing one.
@@ -127,7 +139,7 @@ func (client *HubVirtualNetworkConnectionsClient) createOrUpdateHandleResponse(r
 func (client *HubVirtualNetworkConnectionsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -146,8 +158,8 @@ func (client *HubVirtualNetworkConnectionsClient) BeginDelete(ctx context.Contex
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -158,15 +170,27 @@ func (client *HubVirtualNetworkConnectionsClient) BeginDelete(ctx context.Contex
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *HubVirtualNetworkConnectionsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *HubVirtualNetworkConnectionsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("HubVirtualNetworkConnectionsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes a HubVirtualNetworkConnection.
@@ -220,7 +244,7 @@ func (client *HubVirtualNetworkConnectionsClient) deleteCreateRequest(ctx contex
 func (client *HubVirtualNetworkConnectionsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -285,7 +309,7 @@ func (client *HubVirtualNetworkConnectionsClient) getHandleResponse(resp *azcore
 func (client *HubVirtualNetworkConnectionsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -346,7 +370,7 @@ func (client *HubVirtualNetworkConnectionsClient) listHandleResponse(resp *azcor
 func (client *HubVirtualNetworkConnectionsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -44,8 +44,8 @@ func (client *InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context
 		return InboundSecurityRulePollerResponse{}, err
 	}
 	poller := &inboundSecurityRulePoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (InboundSecurityRuleResponse, error) {
@@ -56,15 +56,27 @@ func (client *InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context
 
 // ResumeCreateOrUpdate creates a new InboundSecurityRulePoller from the specified resume token.
 // token - The value must come from a previous call to InboundSecurityRulePoller.ResumeToken().
-func (client *InboundSecurityRuleClient) ResumeCreateOrUpdate(token string) (InboundSecurityRulePoller, error) {
+func (client *InboundSecurityRuleClient) ResumeCreateOrUpdate(ctx context.Context, token string) (InboundSecurityRulePollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("InboundSecurityRuleClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return InboundSecurityRulePollerResponse{}, err
 	}
-	return &inboundSecurityRulePoller{
+	poller := &inboundSecurityRulePoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return InboundSecurityRulePollerResponse{}, err
+	}
+	result := InboundSecurityRulePollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (InboundSecurityRuleResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates the specified Network Virtual Appliance Inbound Security Rules.
@@ -127,7 +139,7 @@ func (client *InboundSecurityRuleClient) createOrUpdateHandleResponse(resp *azco
 func (client *InboundSecurityRuleClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

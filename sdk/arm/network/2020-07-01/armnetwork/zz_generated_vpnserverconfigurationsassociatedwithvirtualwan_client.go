@@ -44,8 +44,8 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) BeginList(c
 		return VPNServerConfigurationsResponsePollerResponse{}, err
 	}
 	poller := &vpnServerConfigurationsResponsePoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNServerConfigurationsResponseResponse, error) {
@@ -56,15 +56,27 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) BeginList(c
 
 // ResumeList creates a new VPNServerConfigurationsResponsePoller from the specified resume token.
 // token - The value must come from a previous call to VPNServerConfigurationsResponsePoller.ResumeToken().
-func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) ResumeList(token string) (VPNServerConfigurationsResponsePoller, error) {
+func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) ResumeList(ctx context.Context, token string) (VPNServerConfigurationsResponsePollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VPNServerConfigurationsAssociatedWithVirtualWanClient.List", token, client.listHandleError)
 	if err != nil {
-		return nil, err
+		return VPNServerConfigurationsResponsePollerResponse{}, err
 	}
-	return &vpnServerConfigurationsResponsePoller{
+	poller := &vpnServerConfigurationsResponsePoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return VPNServerConfigurationsResponsePollerResponse{}, err
+	}
+	result := VPNServerConfigurationsResponsePollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNServerConfigurationsResponseResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // List - Gives the list of VpnServerConfigurations associated with Virtual Wan in a resource group.
@@ -123,7 +135,7 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listHandleR
 func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

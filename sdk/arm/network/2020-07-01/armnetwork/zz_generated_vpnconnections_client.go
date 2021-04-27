@@ -44,8 +44,8 @@ func (client *VPNConnectionsClient) BeginCreateOrUpdate(ctx context.Context, res
 		return VPNConnectionPollerResponse{}, err
 	}
 	poller := &vpnConnectionPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNConnectionResponse, error) {
@@ -56,15 +56,27 @@ func (client *VPNConnectionsClient) BeginCreateOrUpdate(ctx context.Context, res
 
 // ResumeCreateOrUpdate creates a new VPNConnectionPoller from the specified resume token.
 // token - The value must come from a previous call to VPNConnectionPoller.ResumeToken().
-func (client *VPNConnectionsClient) ResumeCreateOrUpdate(token string) (VPNConnectionPoller, error) {
+func (client *VPNConnectionsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VPNConnectionPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VPNConnectionsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return VPNConnectionPollerResponse{}, err
 	}
-	return &vpnConnectionPoller{
+	poller := &vpnConnectionPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return VPNConnectionPollerResponse{}, err
+	}
+	result := VPNConnectionPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNConnectionResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates a vpn connection to a scalable vpn gateway if it doesn't exist else updates the existing connection.
@@ -127,7 +139,7 @@ func (client *VPNConnectionsClient) createOrUpdateHandleResponse(resp *azcore.Re
 func (client *VPNConnectionsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -146,8 +158,8 @@ func (client *VPNConnectionsClient) BeginDelete(ctx context.Context, resourceGro
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -158,15 +170,27 @@ func (client *VPNConnectionsClient) BeginDelete(ctx context.Context, resourceGro
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VPNConnectionsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *VPNConnectionsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VPNConnectionsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes a vpn connection.
@@ -220,7 +244,7 @@ func (client *VPNConnectionsClient) deleteCreateRequest(ctx context.Context, res
 func (client *VPNConnectionsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -285,7 +309,7 @@ func (client *VPNConnectionsClient) getHandleResponse(resp *azcore.Response) (VP
 func (client *VPNConnectionsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -346,7 +370,7 @@ func (client *VPNConnectionsClient) listByVPNGatewayHandleResponse(resp *azcore.
 func (client *VPNConnectionsClient) listByVPNGatewayHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -365,8 +389,8 @@ func (client *VPNConnectionsClient) BeginStartPacketCapture(ctx context.Context,
 		return StringPollerResponse{}, err
 	}
 	poller := &stringPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
@@ -377,15 +401,27 @@ func (client *VPNConnectionsClient) BeginStartPacketCapture(ctx context.Context,
 
 // ResumeStartPacketCapture creates a new StringPoller from the specified resume token.
 // token - The value must come from a previous call to StringPoller.ResumeToken().
-func (client *VPNConnectionsClient) ResumeStartPacketCapture(token string) (StringPoller, error) {
+func (client *VPNConnectionsClient) ResumeStartPacketCapture(ctx context.Context, token string) (StringPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VPNConnectionsClient.StartPacketCapture", token, client.startPacketCaptureHandleError)
 	if err != nil {
-		return nil, err
+		return StringPollerResponse{}, err
 	}
-	return &stringPoller{
+	poller := &stringPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return StringPollerResponse{}, err
+	}
+	result := StringPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // StartPacketCapture - Starts packet capture on Vpn connection in the specified resource group.
@@ -451,7 +487,7 @@ func (client *VPNConnectionsClient) startPacketCaptureHandleResponse(resp *azcor
 func (client *VPNConnectionsClient) startPacketCaptureHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -470,8 +506,8 @@ func (client *VPNConnectionsClient) BeginStopPacketCapture(ctx context.Context, 
 		return StringPollerResponse{}, err
 	}
 	poller := &stringPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
@@ -482,15 +518,27 @@ func (client *VPNConnectionsClient) BeginStopPacketCapture(ctx context.Context, 
 
 // ResumeStopPacketCapture creates a new StringPoller from the specified resume token.
 // token - The value must come from a previous call to StringPoller.ResumeToken().
-func (client *VPNConnectionsClient) ResumeStopPacketCapture(token string) (StringPoller, error) {
+func (client *VPNConnectionsClient) ResumeStopPacketCapture(ctx context.Context, token string) (StringPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VPNConnectionsClient.StopPacketCapture", token, client.stopPacketCaptureHandleError)
 	if err != nil {
-		return nil, err
+		return StringPollerResponse{}, err
 	}
-	return &stringPoller{
+	poller := &stringPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return StringPollerResponse{}, err
+	}
+	result := StringPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // StopPacketCapture - Stops packet capture on Vpn connection in the specified resource group.
@@ -556,7 +604,7 @@ func (client *VPNConnectionsClient) stopPacketCaptureHandleResponse(resp *azcore
 func (client *VPNConnectionsClient) stopPacketCaptureHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

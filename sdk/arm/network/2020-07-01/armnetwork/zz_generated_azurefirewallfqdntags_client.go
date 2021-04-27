@@ -77,7 +77,7 @@ func (client *AzureFirewallFqdnTagsClient) listAllHandleResponse(resp *azcore.Re
 func (client *AzureFirewallFqdnTagsClient) listAllHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

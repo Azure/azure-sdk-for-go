@@ -44,8 +44,8 @@ func (client *AzureFirewallsClient) BeginCreateOrUpdate(ctx context.Context, res
 		return AzureFirewallPollerResponse{}, err
 	}
 	poller := &azureFirewallPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AzureFirewallResponse, error) {
@@ -56,15 +56,27 @@ func (client *AzureFirewallsClient) BeginCreateOrUpdate(ctx context.Context, res
 
 // ResumeCreateOrUpdate creates a new AzureFirewallPoller from the specified resume token.
 // token - The value must come from a previous call to AzureFirewallPoller.ResumeToken().
-func (client *AzureFirewallsClient) ResumeCreateOrUpdate(token string) (AzureFirewallPoller, error) {
+func (client *AzureFirewallsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (AzureFirewallPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("AzureFirewallsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return AzureFirewallPollerResponse{}, err
 	}
-	return &azureFirewallPoller{
+	poller := &azureFirewallPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return AzureFirewallPollerResponse{}, err
+	}
+	result := AzureFirewallPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AzureFirewallResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates the specified Azure Firewall.
@@ -123,7 +135,7 @@ func (client *AzureFirewallsClient) createOrUpdateHandleResponse(resp *azcore.Re
 func (client *AzureFirewallsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -142,8 +154,8 @@ func (client *AzureFirewallsClient) BeginDelete(ctx context.Context, resourceGro
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -154,15 +166,27 @@ func (client *AzureFirewallsClient) BeginDelete(ctx context.Context, resourceGro
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *AzureFirewallsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *AzureFirewallsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("AzureFirewallsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes the specified Azure Firewall.
@@ -212,7 +236,7 @@ func (client *AzureFirewallsClient) deleteCreateRequest(ctx context.Context, res
 func (client *AzureFirewallsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -273,7 +297,7 @@ func (client *AzureFirewallsClient) getHandleResponse(resp *azcore.Response) (Az
 func (client *AzureFirewallsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -330,7 +354,7 @@ func (client *AzureFirewallsClient) listHandleResponse(resp *azcore.Response) (A
 func (client *AzureFirewallsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -383,7 +407,7 @@ func (client *AzureFirewallsClient) listAllHandleResponse(resp *azcore.Response)
 func (client *AzureFirewallsClient) listAllHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -402,8 +426,8 @@ func (client *AzureFirewallsClient) BeginUpdateTags(ctx context.Context, resourc
 		return AzureFirewallPollerResponse{}, err
 	}
 	poller := &azureFirewallPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AzureFirewallResponse, error) {
@@ -414,15 +438,27 @@ func (client *AzureFirewallsClient) BeginUpdateTags(ctx context.Context, resourc
 
 // ResumeUpdateTags creates a new AzureFirewallPoller from the specified resume token.
 // token - The value must come from a previous call to AzureFirewallPoller.ResumeToken().
-func (client *AzureFirewallsClient) ResumeUpdateTags(token string) (AzureFirewallPoller, error) {
+func (client *AzureFirewallsClient) ResumeUpdateTags(ctx context.Context, token string) (AzureFirewallPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("AzureFirewallsClient.UpdateTags", token, client.updateTagsHandleError)
 	if err != nil {
-		return nil, err
+		return AzureFirewallPollerResponse{}, err
 	}
-	return &azureFirewallPoller{
+	poller := &azureFirewallPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return AzureFirewallPollerResponse{}, err
+	}
+	result := AzureFirewallPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AzureFirewallResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // UpdateTags - Updates tags of an Azure Firewall resource.
@@ -481,7 +517,7 @@ func (client *AzureFirewallsClient) updateTagsHandleResponse(resp *azcore.Respon
 func (client *AzureFirewallsClient) updateTagsHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

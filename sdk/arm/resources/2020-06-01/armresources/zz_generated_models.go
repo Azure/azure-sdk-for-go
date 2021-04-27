@@ -25,7 +25,7 @@ type APIProfile struct {
 	ProfileVersion *string `json:"profileVersion,omitempty" azure:"ro"`
 }
 
-// The alias type.
+// Alias - The alias type.
 type Alias struct {
 	// READ-ONLY; The default alias path metadata. Applies to the default path and to any alias path that doesn't have metadata
 	DefaultMetadata *AliasPathMetadata `json:"defaultMetadata,omitempty" azure:"ro"`
@@ -46,7 +46,7 @@ type Alias struct {
 	Type *AliasType `json:"type,omitempty"`
 }
 
-// The type of the paths for alias.
+// AliasPath - The type of the paths for alias.
 type AliasPath struct {
 	// The API versions.
 	APIVersions *[]*string `json:"apiVersions,omitempty"`
@@ -69,7 +69,7 @@ type AliasPathMetadata struct {
 	Type *AliasPathTokenType `json:"type,omitempty" azure:"ro"`
 }
 
-// The type of the pattern for an alias path.
+// AliasPattern - The type of the pattern for an alias path.
 type AliasPattern struct {
 	// The alias pattern phrase.
 	Phrase *string `json:"phrase,omitempty"`
@@ -81,7 +81,7 @@ type AliasPattern struct {
 	Variable *string `json:"variable,omitempty"`
 }
 
-// Deployment dependency information.
+// BasicDependency - Deployment dependency information.
 type BasicDependency struct {
 	// The ID of the dependency.
 	ID *string `json:"id,omitempty"`
@@ -102,7 +102,7 @@ type BooleanResponse struct {
 	Success bool
 }
 
-// An error response for a resource management request.
+// CloudError - An error response for a resource management request.
 type CloudError struct {
 	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData error response
 	// format.)
@@ -136,7 +136,7 @@ func (e CloudError) Error() string {
 	return msg
 }
 
-// The debug setting.
+// DebugSetting - The debug setting.
 type DebugSetting struct {
 	// Specifies the type of information to log for debugging. The permitted values are none, requestContent, responseContent, or both requestContent and responseContent
 	// separated by a comma. The default is
@@ -146,7 +146,7 @@ type DebugSetting struct {
 	DetailLevel *string `json:"detailLevel,omitempty"`
 }
 
-// Deployment dependency information.
+// Dependency - Deployment dependency information.
 type Dependency struct {
 	// The list of dependencies.
 	DependsOn *[]*BasicDependency `json:"dependsOn,omitempty"`
@@ -173,7 +173,7 @@ type Deployment struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
-// The deployment export result.
+// DeploymentExportResult - The deployment export result.
 type DeploymentExportResult struct {
 	// The template content.
 	Template interface{} `json:"template,omitempty"`
@@ -188,7 +188,7 @@ type DeploymentExportResultResponse struct {
 	RawResponse *http.Response
 }
 
-// Deployment information.
+// DeploymentExtended - Deployment information.
 type DeploymentExtended struct {
 	// READ-ONLY; The ID of the deployment.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -209,7 +209,7 @@ type DeploymentExtended struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// Deployment filter.
+// DeploymentExtendedFilter - Deployment filter.
 type DeploymentExtendedFilter struct {
 	// The provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
@@ -236,7 +236,7 @@ type DeploymentExtendedResponse struct {
 	RawResponse *http.Response
 }
 
-// List of deployments.
+// DeploymentListResult - List of deployments.
 type DeploymentListResult struct {
 	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -254,7 +254,7 @@ type DeploymentListResultResponse struct {
 	RawResponse *http.Response
 }
 
-// Deployment operation information.
+// DeploymentOperation - Deployment operation information.
 type DeploymentOperation struct {
 	// READ-ONLY; Full deployment operation ID.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -266,7 +266,7 @@ type DeploymentOperation struct {
 	Properties *DeploymentOperationProperties `json:"properties,omitempty"`
 }
 
-// Deployment operation properties.
+// DeploymentOperationProperties - Deployment operation properties.
 type DeploymentOperationProperties struct {
 	// READ-ONLY; The duration of the operation.
 	Duration *string `json:"duration,omitempty" azure:"ro"`
@@ -429,7 +429,7 @@ type DeploymentOperationsListOptions struct {
 	Top *int32
 }
 
-// List of deployment operations.
+// DeploymentOperationsListResult - List of deployment operations.
 type DeploymentOperationsListResult struct {
 	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -447,7 +447,7 @@ type DeploymentOperationsListResultResponse struct {
 	RawResponse *http.Response
 }
 
-// Deployment properties.
+// DeploymentProperties - Deployment properties.
 type DeploymentProperties struct {
 	// The debug setting of the deployment.
 	DebugSetting *DebugSetting `json:"debugSetting,omitempty"`
@@ -484,7 +484,7 @@ type DeploymentProperties struct {
 	TemplateLink *TemplateLink `json:"templateLink,omitempty"`
 }
 
-// Deployment properties with additional details.
+// DeploymentPropertiesExtended - Deployment properties with additional details.
 type DeploymentPropertiesExtended struct {
 	// READ-ONLY; The correlation ID of the deployment.
 	CorrelationID *string `json:"correlationId,omitempty" azure:"ro"`
@@ -631,7 +631,7 @@ func (d *DeploymentPropertiesExtended) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// Information from validate template deployment response.
+// DeploymentValidateResult - Information from validate template deployment response.
 type DeploymentValidateResult struct {
 	// READ-ONLY; The deployment validation error.
 	Error *ErrorResponse `json:"error,omitempty" azure:"ro"`
@@ -661,7 +661,7 @@ type DeploymentValidateResultResponse struct {
 	RawResponse *http.Response
 }
 
-// Deployment What-if operation parameters.
+// DeploymentWhatIf - Deployment What-if operation parameters.
 type DeploymentWhatIf struct {
 	// The location to store the deployment data.
 	Location *string `json:"location,omitempty"`
@@ -670,14 +670,14 @@ type DeploymentWhatIf struct {
 	Properties *DeploymentWhatIfProperties `json:"properties,omitempty"`
 }
 
-// Deployment What-if properties.
+// DeploymentWhatIfProperties - Deployment What-if properties.
 type DeploymentWhatIfProperties struct {
 	DeploymentProperties
 	// Optional What-If operation settings.
 	WhatIfSettings *DeploymentWhatIfSettings `json:"whatIfSettings,omitempty"`
 }
 
-// Deployment What-If operation settings.
+// DeploymentWhatIfSettings - Deployment What-If operation settings.
 type DeploymentWhatIfSettings struct {
 	// The format of the What-If results
 	ResultFormat *WhatIfResultFormat `json:"resultFormat,omitempty"`
@@ -925,7 +925,7 @@ type DeploymentsListByResourceGroupOptions struct {
 	Top *int32
 }
 
-// The resource management error additional info.
+// ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
 	Info interface{} `json:"info,omitempty" azure:"ro"`
@@ -934,8 +934,8 @@ type ErrorAdditionalInfo struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData error response
-// format.)
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData
+// error response format.)
 type ErrorResponse struct {
 	// READ-ONLY; The error additional info.
 	AdditionalInfo *[]*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
@@ -953,7 +953,7 @@ type ErrorResponse struct {
 	Target *string `json:"target,omitempty" azure:"ro"`
 }
 
-// Export resource group template request parameters.
+// ExportTemplateRequest - Export resource group template request parameters.
 type ExportTemplateRequest struct {
 	// The export template options. A CSV-formatted list containing zero or more of the following: 'IncludeParameterDefaultValue', 'IncludeComments', 'SkipResourceNameParameterization',
 	// 'SkipAllParameterization'
@@ -963,13 +963,13 @@ type ExportTemplateRequest struct {
 	Resources *[]*string `json:"resources,omitempty"`
 }
 
-// Specifies whether template expressions are evaluated within the scope of the parent template or nested template.
+// ExpressionEvaluationOptions - Specifies whether template expressions are evaluated within the scope of the parent template or nested template.
 type ExpressionEvaluationOptions struct {
 	// The scope to be used for evaluation of parameters, variables and functions in a nested template.
 	Scope *ExpressionEvaluationOptionsScopeType `json:"scope,omitempty"`
 }
 
-// Resource information.
+// GenericResource - Resource information.
 type GenericResource struct {
 	Resource
 	// The identity of the resource.
@@ -1047,7 +1047,7 @@ func (g *GenericResource) unmarshalInternal(rawMsg map[string]*json.RawMessage) 
 	return g.Resource.unmarshalInternal(rawMsg)
 }
 
-// Resource information.
+// GenericResourceExpanded - Resource information.
 type GenericResourceExpanded struct {
 	GenericResource
 	// READ-ONLY; The changed time of the resource. This is only present if requested via the $expand query parameter.
@@ -1099,7 +1099,7 @@ func (g *GenericResourceExpanded) UnmarshalJSON(data []byte) error {
 	return g.GenericResource.unmarshalInternal(rawMsg)
 }
 
-// Resource filter.
+// GenericResourceFilter - Resource filter.
 type GenericResourceFilter struct {
 	// The resource type.
 	ResourceType *string `json:"resourceType,omitempty"`
@@ -1132,7 +1132,7 @@ type GenericResourceResponse struct {
 	RawResponse *http.Response
 }
 
-// HTTP message.
+// HTTPMessage - HTTP message.
 type HTTPMessage struct {
 	// HTTP message content.
 	Content interface{} `json:"content,omitempty"`
@@ -1174,7 +1174,7 @@ type IdentityUserAssignedIdentitiesValue struct {
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }
 
-// Deployment on error behavior.
+// OnErrorDeployment - Deployment on error behavior.
 type OnErrorDeployment struct {
 	// The deployment to be used on error case.
 	DeploymentName *string `json:"deploymentName,omitempty"`
@@ -1183,7 +1183,7 @@ type OnErrorDeployment struct {
 	Type *OnErrorDeploymentType `json:"type,omitempty"`
 }
 
-// Deployment on error behavior with additional details.
+// OnErrorDeploymentExtended - Deployment on error behavior with additional details.
 type OnErrorDeploymentExtended struct {
 	// The deployment to be used on error case.
 	DeploymentName *string `json:"deploymentName,omitempty"`
@@ -1195,7 +1195,7 @@ type OnErrorDeploymentExtended struct {
 	Type *OnErrorDeploymentType `json:"type,omitempty"`
 }
 
-// Microsoft.Resources operation
+// Operation - Microsoft.Resources operation
 type Operation struct {
 	// The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
@@ -1204,7 +1204,7 @@ type Operation struct {
 	Name *string `json:"name,omitempty"`
 }
 
-// The object that represents the operation.
+// OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// Description of the operation.
 	Description *string `json:"description,omitempty"`
@@ -1219,7 +1219,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// Result of the request to list Microsoft.Resources operations. It contains a list of operations and a URL link to get the next set of results.
+// OperationListResult - Result of the request to list Microsoft.Resources operations. It contains a list of operations and a URL link to get the next set
+// of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
@@ -1242,7 +1243,7 @@ type OperationsListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Entity representing the reference to the deployment parameters.
+// ParametersLink - Entity representing the reference to the deployment parameters.
 type ParametersLink struct {
 	// If included, must match the ContentVersion in the template.
 	ContentVersion *string `json:"contentVersion,omitempty"`
@@ -1269,7 +1270,7 @@ type Plan struct {
 	Version *string `json:"version,omitempty"`
 }
 
-// Resource provider information.
+// Provider - Resource provider information.
 type Provider struct {
 	// READ-ONLY; The provider ID.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -1287,7 +1288,7 @@ type Provider struct {
 	ResourceTypes *[]*ProviderResourceType `json:"resourceTypes,omitempty" azure:"ro"`
 }
 
-// List of resource providers.
+// ProviderListResult - List of resource providers.
 type ProviderListResult struct {
 	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -1305,7 +1306,7 @@ type ProviderListResultResponse struct {
 	RawResponse *http.Response
 }
 
-// Resource type managed by the resource provider.
+// ProviderResourceType - Resource type managed by the resource provider.
 type ProviderResourceType struct {
 	// READ-ONLY; The API profiles for the resource provider.
 	APIProfiles *[]*APIProfile `json:"apiProfiles,omitempty" azure:"ro"`
@@ -1386,7 +1387,7 @@ type ProvidersUnregisterOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Specified resource.
+// Resource - Specified resource.
 type Resource struct {
 	// READ-ONLY; Resource ID
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -1414,7 +1415,34 @@ func (r Resource) marshalInternal() map[string]interface{} {
 	return objectMap
 }
 
-// Resource group information.
+func (r *Resource) unmarshalInternal(rawMsg map[string]*json.RawMessage) error {
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, &r.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, &r.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, &r.Name)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, &r.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &r.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// ResourceGroup - Resource group information.
 type ResourceGroup struct {
 	// READ-ONLY; The ID of the resource group.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -1438,7 +1466,7 @@ type ResourceGroup struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// Resource group export result.
+// ResourceGroupExportResult - Resource group export result.
 type ResourceGroupExportResult struct {
 	// The template export error.
 	Error *ErrorResponse `json:"error,omitempty"`
@@ -1468,7 +1496,7 @@ type ResourceGroupExportResultResponse struct {
 	ResourceGroupExportResult *ResourceGroupExportResult
 }
 
-// Resource group filter.
+// ResourceGroupFilter - Resource group filter.
 type ResourceGroupFilter struct {
 	// The tag name.
 	TagName *string `json:"tagName,omitempty"`
@@ -1477,7 +1505,7 @@ type ResourceGroupFilter struct {
 	TagValue *string `json:"tagValue,omitempty"`
 }
 
-// List of resource groups.
+// ResourceGroupListResult - List of resource groups.
 type ResourceGroupListResult struct {
 	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -1495,7 +1523,7 @@ type ResourceGroupListResultResponse struct {
 	ResourceGroupListResult *ResourceGroupListResult
 }
 
-// Resource group information.
+// ResourceGroupPatchable - Resource group information.
 type ResourceGroupPatchable struct {
 	// The ID of the resource that manages this resource group.
 	ManagedBy *string `json:"managedBy,omitempty"`
@@ -1520,7 +1548,7 @@ func (r ResourceGroupPatchable) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// The resource group properties.
+// ResourceGroupProperties - The resource group properties.
 type ResourceGroupProperties struct {
 	// READ-ONLY; The provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
@@ -1574,7 +1602,7 @@ type ResourceGroupsUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// List of resource groups.
+// ResourceListResult - List of resource groups.
 type ResourceListResult struct {
 	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -1592,7 +1620,7 @@ type ResourceListResultResponse struct {
 	ResourceListResult *ResourceListResult
 }
 
-// Resource provider operation's display properties.
+// ResourceProviderOperationDisplayProperties - Resource provider operation's display properties.
 type ResourceProviderOperationDisplayProperties struct {
 	// Operation description.
 	Description *string `json:"description,omitempty"`
@@ -1610,7 +1638,7 @@ type ResourceProviderOperationDisplayProperties struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// The resource Id model.
+// ResourceReference - The resource Id model.
 type ResourceReference struct {
 	// READ-ONLY; The fully qualified resource Id.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -1712,7 +1740,7 @@ type ResourcesListOptions struct {
 	Top *int32
 }
 
-// Parameters of move resources.
+// ResourcesMoveInfo - Parameters of move resources.
 type ResourcesMoveInfo struct {
 	// The IDs of the resources.
 	Resources *[]*string `json:"resources,omitempty"`
@@ -1742,7 +1770,7 @@ type SKU struct {
 	Tier *string `json:"tier,omitempty"`
 }
 
-// Deployment operation parameters.
+// ScopedDeployment - Deployment operation parameters.
 type ScopedDeployment struct {
 	// The location to store the deployment data.
 	Location *string `json:"location,omitempty"`
@@ -1754,7 +1782,7 @@ type ScopedDeployment struct {
 	Tags *map[string]*string `json:"tags,omitempty"`
 }
 
-// Deployment What-if operation parameters.
+// ScopedDeploymentWhatIf - Deployment What-if operation parameters.
 type ScopedDeploymentWhatIf struct {
 	// The location to store the deployment data.
 	Location *string `json:"location,omitempty"`
@@ -1763,7 +1791,7 @@ type ScopedDeploymentWhatIf struct {
 	Properties *DeploymentWhatIfProperties `json:"properties,omitempty"`
 }
 
-// Operation status message object.
+// StatusMessage - Operation status message object.
 type StatusMessage struct {
 	// The error reported by the operation.
 	Error *ErrorResponse `json:"error,omitempty"`
@@ -1772,13 +1800,13 @@ type StatusMessage struct {
 	Status *string `json:"status,omitempty"`
 }
 
-// Sub-resource.
+// SubResource - Sub-resource.
 type SubResource struct {
 	// Resource ID
 	ID *string `json:"id,omitempty"`
 }
 
-// Tag count.
+// TagCount - Tag count.
 type TagCount struct {
 	// Type of count.
 	Type *string `json:"type,omitempty"`
@@ -1787,7 +1815,7 @@ type TagCount struct {
 	Value *int32 `json:"value,omitempty"`
 }
 
-// Tag details.
+// TagDetails - Tag details.
 type TagDetails struct {
 	// The total number of resources that use the resource tag. When a tag is initially created and has no associated resources, the value is 0.
 	Count *TagCount `json:"count,omitempty"`
@@ -1811,7 +1839,7 @@ type TagDetailsResponse struct {
 	TagDetails *TagDetails
 }
 
-// Tag information.
+// TagValue - Tag information.
 type TagValue struct {
 	// The tag value count.
 	Count *TagCount `json:"count,omitempty"`
@@ -1832,7 +1860,7 @@ type TagValueResponse struct {
 	TagValue *TagValue
 }
 
-// A dictionary of name and value pairs.
+// Tags - A dictionary of name and value pairs.
 type Tags struct {
 	// Dictionary of
 	Tags *map[string]*string `json:"tags,omitempty"`
@@ -1878,7 +1906,7 @@ type TagsListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// List of subscription tags.
+// TagsListResult - List of subscription tags.
 type TagsListResult struct {
 	// READ-ONLY; The URL to use for getting the next set of results.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -1896,7 +1924,7 @@ type TagsListResultResponse struct {
 	TagsListResult *TagsListResult
 }
 
-// Wrapper resource for tags patch API request only.
+// TagsPatchResource - Wrapper resource for tags patch API request only.
 type TagsPatchResource struct {
 	// The operation type for the patch API.
 	Operation *TagsPatchOperation `json:"operation,omitempty"`
@@ -1913,7 +1941,7 @@ func (t TagsPatchResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Wrapper resource for tags API requests and responses.
+// TagsResource - Wrapper resource for tags API requests and responses.
 type TagsResource struct {
 	// READ-ONLY; The ID of the tags wrapper resource.
 	ID *string `json:"id,omitempty" azure:"ro"`
@@ -1942,7 +1970,7 @@ type TagsUpdateAtScopeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Target resource.
+// TargetResource - Target resource.
 type TargetResource struct {
 	// The ID of the resource.
 	ID *string `json:"id,omitempty"`
@@ -1954,7 +1982,7 @@ type TargetResource struct {
 	ResourceType *string `json:"resourceType,omitempty"`
 }
 
-// Result of the request to calculate template hash. It contains a string of minified template and its hash.
+// TemplateHashResult - Result of the request to calculate template hash. It contains a string of minified template and its hash.
 type TemplateHashResult struct {
 	// The minified template string.
 	MinifiedTemplate *string `json:"minifiedTemplate,omitempty"`
@@ -1972,7 +2000,7 @@ type TemplateHashResultResponse struct {
 	TemplateHashResult *TemplateHashResult
 }
 
-// Entity representing the reference to the template.
+// TemplateLink - Entity representing the reference to the template.
 type TemplateLink struct {
 	// If included, must match the ContentVersion in the template.
 	ContentVersion *string `json:"contentVersion,omitempty"`
@@ -1988,7 +2016,7 @@ type TemplateLink struct {
 	URI *string `json:"uri,omitempty"`
 }
 
-// Information about a single resource change predicted by What-If operation.
+// WhatIfChange - Information about a single resource change predicted by What-If operation.
 type WhatIfChange struct {
 	// The predicted snapshot of the resource after the deployment is executed.
 	After interface{} `json:"after,omitempty"`
@@ -2006,13 +2034,13 @@ type WhatIfChange struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 }
 
-// Deployment operation properties.
+// WhatIfOperationProperties - Deployment operation properties.
 type WhatIfOperationProperties struct {
 	// List of resource changes predicted by What-If operation.
 	Changes *[]*WhatIfChange `json:"changes,omitempty"`
 }
 
-// Result of the What-If operation. Contains a list of predicted changes and a URL link to get to the next set of results.
+// WhatIfOperationResult - Result of the What-If operation. Contains a list of predicted changes and a URL link to get to the next set of results.
 type WhatIfOperationResult struct {
 	// Error when What-If operation fails.
 	Error *ErrorResponse `json:"error,omitempty"`
@@ -2045,7 +2073,7 @@ type WhatIfOperationResultResponse struct {
 	WhatIfOperationResult *WhatIfOperationResult
 }
 
-// The predicted change to the resource property.
+// WhatIfPropertyChange - The predicted change to the resource property.
 type WhatIfPropertyChange struct {
 	// The value of the property after the deployment is executed.
 	After interface{} `json:"after,omitempty"`
@@ -2064,7 +2092,9 @@ type WhatIfPropertyChange struct {
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {
-	if azcore.IsNullValue(v) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
 		m[k] = v

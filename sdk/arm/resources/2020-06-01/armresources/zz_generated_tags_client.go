@@ -83,7 +83,7 @@ func (client *TagsClient) createOrUpdateHandleResponse(resp *azcore.Response) (T
 func (client *TagsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -137,7 +137,7 @@ func (client *TagsClient) createOrUpdateAtScopeHandleResponse(resp *azcore.Respo
 func (client *TagsClient) createOrUpdateAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -199,7 +199,7 @@ func (client *TagsClient) createOrUpdateValueHandleResponse(resp *azcore.Respons
 func (client *TagsClient) createOrUpdateValueHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -249,7 +249,7 @@ func (client *TagsClient) deleteCreateRequest(ctx context.Context, tagName strin
 func (client *TagsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -293,7 +293,7 @@ func (client *TagsClient) deleteAtScopeCreateRequest(ctx context.Context, scope 
 func (client *TagsClient) deleteAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -347,7 +347,7 @@ func (client *TagsClient) deleteValueCreateRequest(ctx context.Context, tagName 
 func (client *TagsClient) deleteValueHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -400,7 +400,7 @@ func (client *TagsClient) getAtScopeHandleResponse(resp *azcore.Response) (TagsR
 func (client *TagsClient) getAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -455,7 +455,7 @@ func (client *TagsClient) listHandleResponse(resp *azcore.Response) (TagsListRes
 func (client *TagsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -512,7 +512,7 @@ func (client *TagsClient) updateAtScopeHandleResponse(resp *azcore.Response) (Ta
 func (client *TagsClient) updateAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

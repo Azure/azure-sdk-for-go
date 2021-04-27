@@ -93,7 +93,7 @@ func (client *ResourcesClient) checkExistenceCreateRequest(ctx context.Context, 
 func (client *ResourcesClient) checkExistenceHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -140,7 +140,7 @@ func (client *ResourcesClient) checkExistenceByIDCreateRequest(ctx context.Conte
 func (client *ResourcesClient) checkExistenceByIDHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -159,8 +159,8 @@ func (client *ResourcesClient) BeginCreateOrUpdate(ctx context.Context, resource
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
@@ -171,15 +171,27 @@ func (client *ResourcesClient) BeginCreateOrUpdate(ctx context.Context, resource
 
 // ResumeCreateOrUpdate creates a new GenericResourcePoller from the specified resume token.
 // token - The value must come from a previous call to GenericResourcePoller.ResumeToken().
-func (client *ResourcesClient) ResumeCreateOrUpdate(token string) (GenericResourcePoller, error) {
+func (client *ResourcesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (GenericResourcePollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
-	return &genericResourcePoller{
+	poller := &genericResourcePoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return GenericResourcePollerResponse{}, err
+	}
+	result := GenericResourcePollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates a resource.
@@ -250,7 +262,7 @@ func (client *ResourcesClient) createOrUpdateHandleResponse(resp *azcore.Respons
 func (client *ResourcesClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -269,8 +281,8 @@ func (client *ResourcesClient) BeginCreateOrUpdateByID(ctx context.Context, reso
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
@@ -281,15 +293,27 @@ func (client *ResourcesClient) BeginCreateOrUpdateByID(ctx context.Context, reso
 
 // ResumeCreateOrUpdateByID creates a new GenericResourcePoller from the specified resume token.
 // token - The value must come from a previous call to GenericResourcePoller.ResumeToken().
-func (client *ResourcesClient) ResumeCreateOrUpdateByID(token string) (GenericResourcePoller, error) {
+func (client *ResourcesClient) ResumeCreateOrUpdateByID(ctx context.Context, token string) (GenericResourcePollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.CreateOrUpdateByID", token, client.createOrUpdateByIDHandleError)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
-	return &genericResourcePoller{
+	poller := &genericResourcePoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return GenericResourcePollerResponse{}, err
+	}
+	result := GenericResourcePollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdateByID - Create a resource by ID.
@@ -340,7 +364,7 @@ func (client *ResourcesClient) createOrUpdateByIDHandleResponse(resp *azcore.Res
 func (client *ResourcesClient) createOrUpdateByIDHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -359,8 +383,8 @@ func (client *ResourcesClient) BeginDelete(ctx context.Context, resourceGroupNam
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -371,15 +395,27 @@ func (client *ResourcesClient) BeginDelete(ctx context.Context, resourceGroupNam
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ResourcesClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *ResourcesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes a resource.
@@ -441,7 +477,7 @@ func (client *ResourcesClient) deleteCreateRequest(ctx context.Context, resource
 func (client *ResourcesClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -460,8 +496,8 @@ func (client *ResourcesClient) BeginDeleteByID(ctx context.Context, resourceID s
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -472,15 +508,27 @@ func (client *ResourcesClient) BeginDeleteByID(ctx context.Context, resourceID s
 
 // ResumeDeleteByID creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ResourcesClient) ResumeDeleteByID(token string) (HTTPPoller, error) {
+func (client *ResourcesClient) ResumeDeleteByID(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.DeleteByID", token, client.deleteByIDHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // DeleteByID - Deletes a resource by ID.
@@ -522,7 +570,7 @@ func (client *ResourcesClient) deleteByIDCreateRequest(ctx context.Context, reso
 func (client *ResourcesClient) deleteByIDHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -595,7 +643,7 @@ func (client *ResourcesClient) getHandleResponse(resp *azcore.Response) (Generic
 func (client *ResourcesClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -648,7 +696,7 @@ func (client *ResourcesClient) getByIDHandleResponse(resp *azcore.Response) (Gen
 func (client *ResourcesClient) getByIDHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -710,7 +758,7 @@ func (client *ResourcesClient) listHandleResponse(resp *azcore.Response) (Resour
 func (client *ResourcesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -776,7 +824,7 @@ func (client *ResourcesClient) listByResourceGroupHandleResponse(resp *azcore.Re
 func (client *ResourcesClient) listByResourceGroupHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -797,8 +845,8 @@ func (client *ResourcesClient) BeginMoveResources(ctx context.Context, sourceRes
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -809,15 +857,27 @@ func (client *ResourcesClient) BeginMoveResources(ctx context.Context, sourceRes
 
 // ResumeMoveResources creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ResourcesClient) ResumeMoveResources(token string) (HTTPPoller, error) {
+func (client *ResourcesClient) ResumeMoveResources(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.MoveResources", token, client.moveResourcesHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // MoveResources - The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving
@@ -865,7 +925,7 @@ func (client *ResourcesClient) moveResourcesCreateRequest(ctx context.Context, s
 func (client *ResourcesClient) moveResourcesHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -884,8 +944,8 @@ func (client *ResourcesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
@@ -896,15 +956,27 @@ func (client *ResourcesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 
 // ResumeUpdate creates a new GenericResourcePoller from the specified resume token.
 // token - The value must come from a previous call to GenericResourcePoller.ResumeToken().
-func (client *ResourcesClient) ResumeUpdate(token string) (GenericResourcePoller, error) {
+func (client *ResourcesClient) ResumeUpdate(ctx context.Context, token string) (GenericResourcePollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.Update", token, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
-	return &genericResourcePoller{
+	poller := &genericResourcePoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return GenericResourcePollerResponse{}, err
+	}
+	result := GenericResourcePollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Update - Updates a resource.
@@ -975,7 +1047,7 @@ func (client *ResourcesClient) updateHandleResponse(resp *azcore.Response) (Gene
 func (client *ResourcesClient) updateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -994,8 +1066,8 @@ func (client *ResourcesClient) BeginUpdateByID(ctx context.Context, resourceID s
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
@@ -1006,15 +1078,27 @@ func (client *ResourcesClient) BeginUpdateByID(ctx context.Context, resourceID s
 
 // ResumeUpdateByID creates a new GenericResourcePoller from the specified resume token.
 // token - The value must come from a previous call to GenericResourcePoller.ResumeToken().
-func (client *ResourcesClient) ResumeUpdateByID(token string) (GenericResourcePoller, error) {
+func (client *ResourcesClient) ResumeUpdateByID(ctx context.Context, token string) (GenericResourcePollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.UpdateByID", token, client.updateByIDHandleError)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
-	return &genericResourcePoller{
+	poller := &genericResourcePoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return GenericResourcePollerResponse{}, err
+	}
+	result := GenericResourcePollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // UpdateByID - Updates a resource by ID.
@@ -1065,7 +1149,7 @@ func (client *ResourcesClient) updateByIDHandleResponse(resp *azcore.Response) (
 func (client *ResourcesClient) updateByIDHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -1088,8 +1172,8 @@ func (client *ResourcesClient) BeginValidateMoveResources(ctx context.Context, s
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1100,15 +1184,27 @@ func (client *ResourcesClient) BeginValidateMoveResources(ctx context.Context, s
 
 // ResumeValidateMoveResources creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ResourcesClient) ResumeValidateMoveResources(token string) (HTTPPoller, error) {
+func (client *ResourcesClient) ResumeValidateMoveResources(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.ValidateMoveResources", token, client.validateMoveResourcesHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // ValidateMoveResources - This operation checks whether the specified resources can be moved to the target. The resources to move must be in the same source
@@ -1158,7 +1254,7 @@ func (client *ResourcesClient) validateMoveResourcesCreateRequest(ctx context.Co
 func (client *ResourcesClient) validateMoveResourcesHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

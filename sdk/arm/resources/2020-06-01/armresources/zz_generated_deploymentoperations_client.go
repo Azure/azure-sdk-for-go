@@ -90,7 +90,7 @@ func (client *DeploymentOperationsClient) getHandleResponse(resp *azcore.Respons
 func (client *DeploymentOperationsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -151,7 +151,7 @@ func (client *DeploymentOperationsClient) getAtManagementGroupScopeHandleRespons
 func (client *DeploymentOperationsClient) getAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -212,7 +212,7 @@ func (client *DeploymentOperationsClient) getAtScopeHandleResponse(resp *azcore.
 func (client *DeploymentOperationsClient) getAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -273,7 +273,7 @@ func (client *DeploymentOperationsClient) getAtSubscriptionScopeHandleResponse(r
 func (client *DeploymentOperationsClient) getAtSubscriptionScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -330,7 +330,7 @@ func (client *DeploymentOperationsClient) getAtTenantScopeHandleResponse(resp *a
 func (client *DeploymentOperationsClient) getAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -394,7 +394,7 @@ func (client *DeploymentOperationsClient) listHandleResponse(resp *azcore.Respon
 func (client *DeploymentOperationsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -454,7 +454,7 @@ func (client *DeploymentOperationsClient) listAtManagementGroupScopeHandleRespon
 func (client *DeploymentOperationsClient) listAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -514,7 +514,7 @@ func (client *DeploymentOperationsClient) listAtScopeHandleResponse(resp *azcore
 func (client *DeploymentOperationsClient) listAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -574,7 +574,7 @@ func (client *DeploymentOperationsClient) listAtSubscriptionScopeHandleResponse(
 func (client *DeploymentOperationsClient) listAtSubscriptionScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -630,7 +630,7 @@ func (client *DeploymentOperationsClient) listAtTenantScopeHandleResponse(resp *
 func (client *DeploymentOperationsClient) listAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

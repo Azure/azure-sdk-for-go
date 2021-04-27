@@ -85,7 +85,7 @@ func (client *ProvidersClient) getHandleResponse(resp *azcore.Response) (Provide
 func (client *ProvidersClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -141,7 +141,7 @@ func (client *ProvidersClient) getAtTenantScopeHandleResponse(resp *azcore.Respo
 func (client *ProvidersClient) getAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -200,7 +200,7 @@ func (client *ProvidersClient) listHandleResponse(resp *azcore.Response) (Provid
 func (client *ProvidersClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -255,7 +255,7 @@ func (client *ProvidersClient) listAtTenantScopeHandleResponse(resp *azcore.Resp
 func (client *ProvidersClient) listAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -312,7 +312,7 @@ func (client *ProvidersClient) registerHandleResponse(resp *azcore.Response) (Pr
 func (client *ProvidersClient) registerHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -360,7 +360,7 @@ func (client *ProvidersClient) registerAtManagementGroupScopeCreateRequest(ctx c
 func (client *ProvidersClient) registerAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -417,7 +417,7 @@ func (client *ProvidersClient) unregisterHandleResponse(resp *azcore.Response) (
 func (client *ProvidersClient) unregisterHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

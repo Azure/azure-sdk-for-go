@@ -75,7 +75,7 @@ func (client *DeploymentsClient) calculateTemplateHashHandleResponse(resp *azcor
 func (client *DeploymentsClient) calculateTemplateHashHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -129,7 +129,7 @@ func (client *DeploymentsClient) cancelCreateRequest(ctx context.Context, resour
 func (client *DeploymentsClient) cancelHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -179,7 +179,7 @@ func (client *DeploymentsClient) cancelAtManagementGroupScopeCreateRequest(ctx c
 func (client *DeploymentsClient) cancelAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -229,7 +229,7 @@ func (client *DeploymentsClient) cancelAtScopeCreateRequest(ctx context.Context,
 func (client *DeploymentsClient) cancelAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -279,7 +279,7 @@ func (client *DeploymentsClient) cancelAtSubscriptionScopeCreateRequest(ctx cont
 func (client *DeploymentsClient) cancelAtSubscriptionScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -325,7 +325,7 @@ func (client *DeploymentsClient) cancelAtTenantScopeCreateRequest(ctx context.Co
 func (client *DeploymentsClient) cancelAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -380,7 +380,7 @@ func (client *DeploymentsClient) checkExistenceCreateRequest(ctx context.Context
 func (client *DeploymentsClient) checkExistenceHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -431,7 +431,7 @@ func (client *DeploymentsClient) checkExistenceAtManagementGroupScopeCreateReque
 func (client *DeploymentsClient) checkExistenceAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -482,7 +482,7 @@ func (client *DeploymentsClient) checkExistenceAtScopeCreateRequest(ctx context.
 func (client *DeploymentsClient) checkExistenceAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -533,7 +533,7 @@ func (client *DeploymentsClient) checkExistenceAtSubscriptionScopeCreateRequest(
 func (client *DeploymentsClient) checkExistenceAtSubscriptionScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -580,7 +580,7 @@ func (client *DeploymentsClient) checkExistenceAtTenantScopeCreateRequest(ctx co
 func (client *DeploymentsClient) checkExistenceAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -599,8 +599,8 @@ func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 		return DeploymentExtendedPollerResponse{}, err
 	}
 	poller := &deploymentExtendedPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
@@ -611,15 +611,27 @@ func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 
 // ResumeCreateOrUpdate creates a new DeploymentExtendedPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentExtendedPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeCreateOrUpdate(token string) (DeploymentExtendedPoller, error) {
+func (client *DeploymentsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DeploymentExtendedPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return DeploymentExtendedPollerResponse{}, err
 	}
-	return &deploymentExtendedPoller{
+	poller := &deploymentExtendedPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return DeploymentExtendedPollerResponse{}, err
+	}
+	result := DeploymentExtendedPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - You can provide the template and parameters directly in the request or link to JSON files.
@@ -678,7 +690,7 @@ func (client *DeploymentsClient) createOrUpdateHandleResponse(resp *azcore.Respo
 func (client *DeploymentsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -697,8 +709,8 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtManagementGroupScope(ctx c
 		return DeploymentExtendedPollerResponse{}, err
 	}
 	poller := &deploymentExtendedPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
@@ -709,15 +721,27 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtManagementGroupScope(ctx c
 
 // ResumeCreateOrUpdateAtManagementGroupScope creates a new DeploymentExtendedPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentExtendedPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeCreateOrUpdateAtManagementGroupScope(token string) (DeploymentExtendedPoller, error) {
+func (client *DeploymentsClient) ResumeCreateOrUpdateAtManagementGroupScope(ctx context.Context, token string) (DeploymentExtendedPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.CreateOrUpdateAtManagementGroupScope", token, client.createOrUpdateAtManagementGroupScopeHandleError)
 	if err != nil {
-		return nil, err
+		return DeploymentExtendedPollerResponse{}, err
 	}
-	return &deploymentExtendedPoller{
+	poller := &deploymentExtendedPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return DeploymentExtendedPollerResponse{}, err
+	}
+	result := DeploymentExtendedPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdateAtManagementGroupScope - You can provide the template and parameters directly in the request or link to JSON files.
@@ -772,7 +796,7 @@ func (client *DeploymentsClient) createOrUpdateAtManagementGroupScopeHandleRespo
 func (client *DeploymentsClient) createOrUpdateAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -791,8 +815,8 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtScope(ctx context.Context,
 		return DeploymentExtendedPollerResponse{}, err
 	}
 	poller := &deploymentExtendedPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
@@ -803,15 +827,27 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtScope(ctx context.Context,
 
 // ResumeCreateOrUpdateAtScope creates a new DeploymentExtendedPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentExtendedPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeCreateOrUpdateAtScope(token string) (DeploymentExtendedPoller, error) {
+func (client *DeploymentsClient) ResumeCreateOrUpdateAtScope(ctx context.Context, token string) (DeploymentExtendedPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.CreateOrUpdateAtScope", token, client.createOrUpdateAtScopeHandleError)
 	if err != nil {
-		return nil, err
+		return DeploymentExtendedPollerResponse{}, err
 	}
-	return &deploymentExtendedPoller{
+	poller := &deploymentExtendedPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return DeploymentExtendedPollerResponse{}, err
+	}
+	result := DeploymentExtendedPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdateAtScope - You can provide the template and parameters directly in the request or link to JSON files.
@@ -866,7 +902,7 @@ func (client *DeploymentsClient) createOrUpdateAtScopeHandleResponse(resp *azcor
 func (client *DeploymentsClient) createOrUpdateAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -885,8 +921,8 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtSubscriptionScope(ctx cont
 		return DeploymentExtendedPollerResponse{}, err
 	}
 	poller := &deploymentExtendedPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
@@ -897,15 +933,27 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtSubscriptionScope(ctx cont
 
 // ResumeCreateOrUpdateAtSubscriptionScope creates a new DeploymentExtendedPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentExtendedPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeCreateOrUpdateAtSubscriptionScope(token string) (DeploymentExtendedPoller, error) {
+func (client *DeploymentsClient) ResumeCreateOrUpdateAtSubscriptionScope(ctx context.Context, token string) (DeploymentExtendedPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.CreateOrUpdateAtSubscriptionScope", token, client.createOrUpdateAtSubscriptionScopeHandleError)
 	if err != nil {
-		return nil, err
+		return DeploymentExtendedPollerResponse{}, err
 	}
-	return &deploymentExtendedPoller{
+	poller := &deploymentExtendedPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return DeploymentExtendedPollerResponse{}, err
+	}
+	result := DeploymentExtendedPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdateAtSubscriptionScope - You can provide the template and parameters directly in the request or link to JSON files.
@@ -960,7 +1008,7 @@ func (client *DeploymentsClient) createOrUpdateAtSubscriptionScopeHandleResponse
 func (client *DeploymentsClient) createOrUpdateAtSubscriptionScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -979,8 +1027,8 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtTenantScope(ctx context.Co
 		return DeploymentExtendedPollerResponse{}, err
 	}
 	poller := &deploymentExtendedPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
@@ -991,15 +1039,27 @@ func (client *DeploymentsClient) BeginCreateOrUpdateAtTenantScope(ctx context.Co
 
 // ResumeCreateOrUpdateAtTenantScope creates a new DeploymentExtendedPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentExtendedPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeCreateOrUpdateAtTenantScope(token string) (DeploymentExtendedPoller, error) {
+func (client *DeploymentsClient) ResumeCreateOrUpdateAtTenantScope(ctx context.Context, token string) (DeploymentExtendedPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.CreateOrUpdateAtTenantScope", token, client.createOrUpdateAtTenantScopeHandleError)
 	if err != nil {
-		return nil, err
+		return DeploymentExtendedPollerResponse{}, err
 	}
-	return &deploymentExtendedPoller{
+	poller := &deploymentExtendedPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return DeploymentExtendedPollerResponse{}, err
+	}
+	result := DeploymentExtendedPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentExtendedResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdateAtTenantScope - You can provide the template and parameters directly in the request or link to JSON files.
@@ -1050,7 +1110,7 @@ func (client *DeploymentsClient) createOrUpdateAtTenantScopeHandleResponse(resp 
 func (client *DeploymentsClient) createOrUpdateAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -1075,8 +1135,8 @@ func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupN
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1087,15 +1147,27 @@ func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *DeploymentsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations.
@@ -1151,7 +1223,7 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 func (client *DeploymentsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -1176,8 +1248,8 @@ func (client *DeploymentsClient) BeginDeleteAtManagementGroupScope(ctx context.C
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1188,15 +1260,27 @@ func (client *DeploymentsClient) BeginDeleteAtManagementGroupScope(ctx context.C
 
 // ResumeDeleteAtManagementGroupScope creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeDeleteAtManagementGroupScope(token string) (HTTPPoller, error) {
+func (client *DeploymentsClient) ResumeDeleteAtManagementGroupScope(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.DeleteAtManagementGroupScope", token, client.deleteAtManagementGroupScopeHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // DeleteAtManagementGroupScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated
@@ -1248,7 +1332,7 @@ func (client *DeploymentsClient) deleteAtManagementGroupScopeCreateRequest(ctx c
 func (client *DeploymentsClient) deleteAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -1273,8 +1357,8 @@ func (client *DeploymentsClient) BeginDeleteAtScope(ctx context.Context, scope s
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1285,15 +1369,27 @@ func (client *DeploymentsClient) BeginDeleteAtScope(ctx context.Context, scope s
 
 // ResumeDeleteAtScope creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeDeleteAtScope(token string) (HTTPPoller, error) {
+func (client *DeploymentsClient) ResumeDeleteAtScope(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.DeleteAtScope", token, client.deleteAtScopeHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // DeleteAtScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations.
@@ -1345,7 +1441,7 @@ func (client *DeploymentsClient) deleteAtScopeCreateRequest(ctx context.Context,
 func (client *DeploymentsClient) deleteAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -1370,8 +1466,8 @@ func (client *DeploymentsClient) BeginDeleteAtSubscriptionScope(ctx context.Cont
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1382,15 +1478,27 @@ func (client *DeploymentsClient) BeginDeleteAtSubscriptionScope(ctx context.Cont
 
 // ResumeDeleteAtSubscriptionScope creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeDeleteAtSubscriptionScope(token string) (HTTPPoller, error) {
+func (client *DeploymentsClient) ResumeDeleteAtSubscriptionScope(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.DeleteAtSubscriptionScope", token, client.deleteAtSubscriptionScopeHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // DeleteAtSubscriptionScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated
@@ -1442,7 +1550,7 @@ func (client *DeploymentsClient) deleteAtSubscriptionScopeCreateRequest(ctx cont
 func (client *DeploymentsClient) deleteAtSubscriptionScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -1467,8 +1575,8 @@ func (client *DeploymentsClient) BeginDeleteAtTenantScope(ctx context.Context, d
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1479,15 +1587,27 @@ func (client *DeploymentsClient) BeginDeleteAtTenantScope(ctx context.Context, d
 
 // ResumeDeleteAtTenantScope creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeDeleteAtTenantScope(token string) (HTTPPoller, error) {
+func (client *DeploymentsClient) ResumeDeleteAtTenantScope(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.DeleteAtTenantScope", token, client.deleteAtTenantScopeHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // DeleteAtTenantScope - A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment
@@ -1535,7 +1655,7 @@ func (client *DeploymentsClient) deleteAtTenantScopeCreateRequest(ctx context.Co
 func (client *DeploymentsClient) deleteAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -1596,7 +1716,7 @@ func (client *DeploymentsClient) exportTemplateHandleResponse(resp *azcore.Respo
 func (client *DeploymentsClient) exportTemplateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -1653,7 +1773,7 @@ func (client *DeploymentsClient) exportTemplateAtManagementGroupScopeHandleRespo
 func (client *DeploymentsClient) exportTemplateAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -1710,7 +1830,7 @@ func (client *DeploymentsClient) exportTemplateAtScopeHandleResponse(resp *azcor
 func (client *DeploymentsClient) exportTemplateAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -1767,7 +1887,7 @@ func (client *DeploymentsClient) exportTemplateAtSubscriptionScopeHandleResponse
 func (client *DeploymentsClient) exportTemplateAtSubscriptionScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -1820,7 +1940,7 @@ func (client *DeploymentsClient) exportTemplateAtTenantScopeHandleResponse(resp 
 func (client *DeploymentsClient) exportTemplateAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -1881,7 +2001,7 @@ func (client *DeploymentsClient) getHandleResponse(resp *azcore.Response) (Deplo
 func (client *DeploymentsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -1938,7 +2058,7 @@ func (client *DeploymentsClient) getAtManagementGroupScopeHandleResponse(resp *a
 func (client *DeploymentsClient) getAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -1995,7 +2115,7 @@ func (client *DeploymentsClient) getAtScopeHandleResponse(resp *azcore.Response)
 func (client *DeploymentsClient) getAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -2052,7 +2172,7 @@ func (client *DeploymentsClient) getAtSubscriptionScopeHandleResponse(resp *azco
 func (client *DeploymentsClient) getAtSubscriptionScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -2105,7 +2225,7 @@ func (client *DeploymentsClient) getAtTenantScopeHandleResponse(resp *azcore.Res
 func (client *DeploymentsClient) getAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -2164,7 +2284,7 @@ func (client *DeploymentsClient) listAtManagementGroupScopeHandleResponse(resp *
 func (client *DeploymentsClient) listAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -2223,7 +2343,7 @@ func (client *DeploymentsClient) listAtScopeHandleResponse(resp *azcore.Response
 func (client *DeploymentsClient) listAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -2282,7 +2402,7 @@ func (client *DeploymentsClient) listAtSubscriptionScopeHandleResponse(resp *azc
 func (client *DeploymentsClient) listAtSubscriptionScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -2337,7 +2457,7 @@ func (client *DeploymentsClient) listAtTenantScopeHandleResponse(resp *azcore.Re
 func (client *DeploymentsClient) listAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -2400,7 +2520,7 @@ func (client *DeploymentsClient) listByResourceGroupHandleResponse(resp *azcore.
 func (client *DeploymentsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -2419,8 +2539,8 @@ func (client *DeploymentsClient) BeginValidate(ctx context.Context, resourceGrou
 		return DeploymentValidateResultPollerResponse{}, err
 	}
 	poller := &deploymentValidateResultPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
@@ -2431,15 +2551,27 @@ func (client *DeploymentsClient) BeginValidate(ctx context.Context, resourceGrou
 
 // ResumeValidate creates a new DeploymentValidateResultPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentValidateResultPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeValidate(token string) (DeploymentValidateResultPoller, error) {
+func (client *DeploymentsClient) ResumeValidate(ctx context.Context, token string) (DeploymentValidateResultPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.Validate", token, client.validateHandleError)
 	if err != nil {
-		return nil, err
+		return DeploymentValidateResultPollerResponse{}, err
 	}
-	return &deploymentValidateResultPoller{
+	poller := &deploymentValidateResultPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return DeploymentValidateResultPollerResponse{}, err
+	}
+	result := DeploymentValidateResultPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Validate - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
@@ -2498,7 +2630,7 @@ func (client *DeploymentsClient) validateHandleResponse(resp *azcore.Response) (
 func (client *DeploymentsClient) validateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -2517,8 +2649,8 @@ func (client *DeploymentsClient) BeginValidateAtManagementGroupScope(ctx context
 		return DeploymentValidateResultPollerResponse{}, err
 	}
 	poller := &deploymentValidateResultPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
@@ -2529,15 +2661,27 @@ func (client *DeploymentsClient) BeginValidateAtManagementGroupScope(ctx context
 
 // ResumeValidateAtManagementGroupScope creates a new DeploymentValidateResultPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentValidateResultPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeValidateAtManagementGroupScope(token string) (DeploymentValidateResultPoller, error) {
+func (client *DeploymentsClient) ResumeValidateAtManagementGroupScope(ctx context.Context, token string) (DeploymentValidateResultPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.ValidateAtManagementGroupScope", token, client.validateAtManagementGroupScopeHandleError)
 	if err != nil {
-		return nil, err
+		return DeploymentValidateResultPollerResponse{}, err
 	}
-	return &deploymentValidateResultPoller{
+	poller := &deploymentValidateResultPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return DeploymentValidateResultPollerResponse{}, err
+	}
+	result := DeploymentValidateResultPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // ValidateAtManagementGroupScope - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
@@ -2592,7 +2736,7 @@ func (client *DeploymentsClient) validateAtManagementGroupScopeHandleResponse(re
 func (client *DeploymentsClient) validateAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -2611,8 +2755,8 @@ func (client *DeploymentsClient) BeginValidateAtScope(ctx context.Context, scope
 		return DeploymentValidateResultPollerResponse{}, err
 	}
 	poller := &deploymentValidateResultPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
@@ -2623,15 +2767,27 @@ func (client *DeploymentsClient) BeginValidateAtScope(ctx context.Context, scope
 
 // ResumeValidateAtScope creates a new DeploymentValidateResultPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentValidateResultPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeValidateAtScope(token string) (DeploymentValidateResultPoller, error) {
+func (client *DeploymentsClient) ResumeValidateAtScope(ctx context.Context, token string) (DeploymentValidateResultPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.ValidateAtScope", token, client.validateAtScopeHandleError)
 	if err != nil {
-		return nil, err
+		return DeploymentValidateResultPollerResponse{}, err
 	}
-	return &deploymentValidateResultPoller{
+	poller := &deploymentValidateResultPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return DeploymentValidateResultPollerResponse{}, err
+	}
+	result := DeploymentValidateResultPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // ValidateAtScope - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
@@ -2686,7 +2842,7 @@ func (client *DeploymentsClient) validateAtScopeHandleResponse(resp *azcore.Resp
 func (client *DeploymentsClient) validateAtScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -2705,8 +2861,8 @@ func (client *DeploymentsClient) BeginValidateAtSubscriptionScope(ctx context.Co
 		return DeploymentValidateResultPollerResponse{}, err
 	}
 	poller := &deploymentValidateResultPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
@@ -2717,15 +2873,27 @@ func (client *DeploymentsClient) BeginValidateAtSubscriptionScope(ctx context.Co
 
 // ResumeValidateAtSubscriptionScope creates a new DeploymentValidateResultPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentValidateResultPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeValidateAtSubscriptionScope(token string) (DeploymentValidateResultPoller, error) {
+func (client *DeploymentsClient) ResumeValidateAtSubscriptionScope(ctx context.Context, token string) (DeploymentValidateResultPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.ValidateAtSubscriptionScope", token, client.validateAtSubscriptionScopeHandleError)
 	if err != nil {
-		return nil, err
+		return DeploymentValidateResultPollerResponse{}, err
 	}
-	return &deploymentValidateResultPoller{
+	poller := &deploymentValidateResultPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return DeploymentValidateResultPollerResponse{}, err
+	}
+	result := DeploymentValidateResultPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // ValidateAtSubscriptionScope - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
@@ -2780,7 +2948,7 @@ func (client *DeploymentsClient) validateAtSubscriptionScopeHandleResponse(resp 
 func (client *DeploymentsClient) validateAtSubscriptionScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -2799,8 +2967,8 @@ func (client *DeploymentsClient) BeginValidateAtTenantScope(ctx context.Context,
 		return DeploymentValidateResultPollerResponse{}, err
 	}
 	poller := &deploymentValidateResultPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
@@ -2811,15 +2979,27 @@ func (client *DeploymentsClient) BeginValidateAtTenantScope(ctx context.Context,
 
 // ResumeValidateAtTenantScope creates a new DeploymentValidateResultPoller from the specified resume token.
 // token - The value must come from a previous call to DeploymentValidateResultPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeValidateAtTenantScope(token string) (DeploymentValidateResultPoller, error) {
+func (client *DeploymentsClient) ResumeValidateAtTenantScope(ctx context.Context, token string) (DeploymentValidateResultPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.ValidateAtTenantScope", token, client.validateAtTenantScopeHandleError)
 	if err != nil {
-		return nil, err
+		return DeploymentValidateResultPollerResponse{}, err
 	}
-	return &deploymentValidateResultPoller{
+	poller := &deploymentValidateResultPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return DeploymentValidateResultPollerResponse{}, err
+	}
+	result := DeploymentValidateResultPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DeploymentValidateResultResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // ValidateAtTenantScope - Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
@@ -2870,7 +3050,7 @@ func (client *DeploymentsClient) validateAtTenantScopeHandleResponse(resp *azcor
 func (client *DeploymentsClient) validateAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -2889,8 +3069,8 @@ func (client *DeploymentsClient) BeginWhatIf(ctx context.Context, resourceGroupN
 		return WhatIfOperationResultPollerResponse{}, err
 	}
 	poller := &whatIfOperationResultPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WhatIfOperationResultResponse, error) {
@@ -2901,15 +3081,27 @@ func (client *DeploymentsClient) BeginWhatIf(ctx context.Context, resourceGroupN
 
 // ResumeWhatIf creates a new WhatIfOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to WhatIfOperationResultPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeWhatIf(token string) (WhatIfOperationResultPoller, error) {
+func (client *DeploymentsClient) ResumeWhatIf(ctx context.Context, token string) (WhatIfOperationResultPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.WhatIf", token, client.whatIfHandleError)
 	if err != nil {
-		return nil, err
+		return WhatIfOperationResultPollerResponse{}, err
 	}
-	return &whatIfOperationResultPoller{
+	poller := &whatIfOperationResultPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return WhatIfOperationResultPollerResponse{}, err
+	}
+	result := WhatIfOperationResultPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WhatIfOperationResultResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // WhatIf - Returns changes that will be made by the deployment if executed at the scope of the resource group.
@@ -2968,7 +3160,7 @@ func (client *DeploymentsClient) whatIfHandleResponse(resp *azcore.Response) (Wh
 func (client *DeploymentsClient) whatIfHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -2987,8 +3179,8 @@ func (client *DeploymentsClient) BeginWhatIfAtManagementGroupScope(ctx context.C
 		return WhatIfOperationResultPollerResponse{}, err
 	}
 	poller := &whatIfOperationResultPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WhatIfOperationResultResponse, error) {
@@ -2999,15 +3191,27 @@ func (client *DeploymentsClient) BeginWhatIfAtManagementGroupScope(ctx context.C
 
 // ResumeWhatIfAtManagementGroupScope creates a new WhatIfOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to WhatIfOperationResultPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeWhatIfAtManagementGroupScope(token string) (WhatIfOperationResultPoller, error) {
+func (client *DeploymentsClient) ResumeWhatIfAtManagementGroupScope(ctx context.Context, token string) (WhatIfOperationResultPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.WhatIfAtManagementGroupScope", token, client.whatIfAtManagementGroupScopeHandleError)
 	if err != nil {
-		return nil, err
+		return WhatIfOperationResultPollerResponse{}, err
 	}
-	return &whatIfOperationResultPoller{
+	poller := &whatIfOperationResultPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return WhatIfOperationResultPollerResponse{}, err
+	}
+	result := WhatIfOperationResultPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WhatIfOperationResultResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // WhatIfAtManagementGroupScope - Returns changes that will be made by the deployment if executed at the scope of the management group.
@@ -3062,7 +3266,7 @@ func (client *DeploymentsClient) whatIfAtManagementGroupScopeHandleResponse(resp
 func (client *DeploymentsClient) whatIfAtManagementGroupScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -3081,8 +3285,8 @@ func (client *DeploymentsClient) BeginWhatIfAtSubscriptionScope(ctx context.Cont
 		return WhatIfOperationResultPollerResponse{}, err
 	}
 	poller := &whatIfOperationResultPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WhatIfOperationResultResponse, error) {
@@ -3093,15 +3297,27 @@ func (client *DeploymentsClient) BeginWhatIfAtSubscriptionScope(ctx context.Cont
 
 // ResumeWhatIfAtSubscriptionScope creates a new WhatIfOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to WhatIfOperationResultPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeWhatIfAtSubscriptionScope(token string) (WhatIfOperationResultPoller, error) {
+func (client *DeploymentsClient) ResumeWhatIfAtSubscriptionScope(ctx context.Context, token string) (WhatIfOperationResultPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.WhatIfAtSubscriptionScope", token, client.whatIfAtSubscriptionScopeHandleError)
 	if err != nil {
-		return nil, err
+		return WhatIfOperationResultPollerResponse{}, err
 	}
-	return &whatIfOperationResultPoller{
+	poller := &whatIfOperationResultPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return WhatIfOperationResultPollerResponse{}, err
+	}
+	result := WhatIfOperationResultPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WhatIfOperationResultResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // WhatIfAtSubscriptionScope - Returns changes that will be made by the deployment if executed at the scope of the subscription.
@@ -3156,7 +3372,7 @@ func (client *DeploymentsClient) whatIfAtSubscriptionScopeHandleResponse(resp *a
 func (client *DeploymentsClient) whatIfAtSubscriptionScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -3175,8 +3391,8 @@ func (client *DeploymentsClient) BeginWhatIfAtTenantScope(ctx context.Context, d
 		return WhatIfOperationResultPollerResponse{}, err
 	}
 	poller := &whatIfOperationResultPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WhatIfOperationResultResponse, error) {
@@ -3187,15 +3403,27 @@ func (client *DeploymentsClient) BeginWhatIfAtTenantScope(ctx context.Context, d
 
 // ResumeWhatIfAtTenantScope creates a new WhatIfOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to WhatIfOperationResultPoller.ResumeToken().
-func (client *DeploymentsClient) ResumeWhatIfAtTenantScope(token string) (WhatIfOperationResultPoller, error) {
+func (client *DeploymentsClient) ResumeWhatIfAtTenantScope(ctx context.Context, token string) (WhatIfOperationResultPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DeploymentsClient.WhatIfAtTenantScope", token, client.whatIfAtTenantScopeHandleError)
 	if err != nil {
-		return nil, err
+		return WhatIfOperationResultPollerResponse{}, err
 	}
-	return &whatIfOperationResultPoller{
+	poller := &whatIfOperationResultPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return WhatIfOperationResultPollerResponse{}, err
+	}
+	result := WhatIfOperationResultPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (WhatIfOperationResultResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // WhatIfAtTenantScope - Returns changes that will be made by the deployment if executed at the scope of the tenant group.
@@ -3246,7 +3474,7 @@ func (client *DeploymentsClient) whatIfAtTenantScopeHandleResponse(resp *azcore.
 func (client *DeploymentsClient) whatIfAtTenantScopeHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

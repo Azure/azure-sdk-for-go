@@ -77,7 +77,7 @@ func (client *ResourceGroupsClient) checkExistenceCreateRequest(ctx context.Cont
 func (client *ResourceGroupsClient) checkExistenceHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -134,7 +134,7 @@ func (client *ResourceGroupsClient) createOrUpdateHandleResponse(resp *azcore.Re
 func (client *ResourceGroupsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -154,8 +154,8 @@ func (client *ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGro
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -166,15 +166,27 @@ func (client *ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGro
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ResourceGroupsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *ResourceGroupsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ResourceGroupsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of its template deployments and
@@ -221,7 +233,7 @@ func (client *ResourceGroupsClient) deleteCreateRequest(ctx context.Context, res
 func (client *ResourceGroupsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -240,8 +252,8 @@ func (client *ResourceGroupsClient) BeginExportTemplate(ctx context.Context, res
 		return ResourceGroupExportResultPollerResponse{}, err
 	}
 	poller := &resourceGroupExportResultPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ResourceGroupExportResultResponse, error) {
@@ -252,15 +264,27 @@ func (client *ResourceGroupsClient) BeginExportTemplate(ctx context.Context, res
 
 // ResumeExportTemplate creates a new ResourceGroupExportResultPoller from the specified resume token.
 // token - The value must come from a previous call to ResourceGroupExportResultPoller.ResumeToken().
-func (client *ResourceGroupsClient) ResumeExportTemplate(token string) (ResourceGroupExportResultPoller, error) {
+func (client *ResourceGroupsClient) ResumeExportTemplate(ctx context.Context, token string) (ResourceGroupExportResultPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ResourceGroupsClient.ExportTemplate", token, client.exportTemplateHandleError)
 	if err != nil {
-		return nil, err
+		return ResourceGroupExportResultPollerResponse{}, err
 	}
-	return &resourceGroupExportResultPoller{
+	poller := &resourceGroupExportResultPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return ResourceGroupExportResultPollerResponse{}, err
+	}
+	result := ResourceGroupExportResultPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ResourceGroupExportResultResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // ExportTemplate - Captures the specified resource group as a template.
@@ -315,7 +339,7 @@ func (client *ResourceGroupsClient) exportTemplateHandleResponse(resp *azcore.Re
 func (client *ResourceGroupsClient) exportTemplateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -372,7 +396,7 @@ func (client *ResourceGroupsClient) getHandleResponse(resp *azcore.Response) (Re
 func (client *ResourceGroupsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -431,7 +455,7 @@ func (client *ResourceGroupsClient) listHandleResponse(resp *azcore.Response) (R
 func (client *ResourceGroupsClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -490,7 +514,7 @@ func (client *ResourceGroupsClient) updateHandleResponse(resp *azcore.Response) 
 func (client *ResourceGroupsClient) updateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

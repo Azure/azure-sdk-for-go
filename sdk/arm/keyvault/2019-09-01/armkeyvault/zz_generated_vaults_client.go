@@ -103,8 +103,8 @@ func (client *VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 		return VaultPollerResponse{}, err
 	}
 	poller := &vaultPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VaultResponse, error) {
@@ -115,15 +115,27 @@ func (client *VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 
 // ResumeCreateOrUpdate creates a new VaultPoller from the specified resume token.
 // token - The value must come from a previous call to VaultPoller.ResumeToken().
-func (client *VaultsClient) ResumeCreateOrUpdate(token string) (VaultPoller, error) {
+func (client *VaultsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VaultPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VaultsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return VaultPollerResponse{}, err
 	}
-	return &vaultPoller{
+	poller := &vaultPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return VaultPollerResponse{}, err
+	}
+	result := VaultPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VaultResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Create or update a key vault in the specified subscription.
@@ -624,8 +636,8 @@ func (client *VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName str
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -636,15 +648,27 @@ func (client *VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName str
 
 // ResumePurgeDeleted creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VaultsClient) ResumePurgeDeleted(token string) (HTTPPoller, error) {
+func (client *VaultsClient) ResumePurgeDeleted(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VaultsClient.PurgeDeleted", token, client.purgeDeletedHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // PurgeDeleted - Permanently deletes the specified vault. aka Purges the deleted Azure key vault.

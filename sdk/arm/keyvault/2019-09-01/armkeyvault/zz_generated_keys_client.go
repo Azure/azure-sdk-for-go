@@ -91,7 +91,7 @@ func (client *KeysClient) createIfNotExistHandleResponse(resp *azcore.Response) 
 func (client *KeysClient) createIfNotExistHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -156,7 +156,7 @@ func (client *KeysClient) getHandleResponse(resp *azcore.Response) (KeyResponse,
 func (client *KeysClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -225,7 +225,7 @@ func (client *KeysClient) getVersionHandleResponse(resp *azcore.Response) (KeyRe
 func (client *KeysClient) getVersionHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -286,7 +286,7 @@ func (client *KeysClient) listHandleResponse(resp *azcore.Response) (KeyListResu
 func (client *KeysClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -351,7 +351,7 @@ func (client *KeysClient) listVersionsHandleResponse(resp *azcore.Response) (Key
 func (client *KeysClient) listVersionsHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

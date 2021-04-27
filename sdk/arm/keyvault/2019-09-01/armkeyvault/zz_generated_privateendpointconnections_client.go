@@ -45,8 +45,8 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 		return PrivateEndpointConnectionPollerResponse{}, err
 	}
 	poller := &privateEndpointConnectionPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error) {
@@ -57,15 +57,27 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 
 // ResumeDelete creates a new PrivateEndpointConnectionPoller from the specified resume token.
 // token - The value must come from a previous call to PrivateEndpointConnectionPoller.ResumeToken().
-func (client *PrivateEndpointConnectionsClient) ResumeDelete(token string) (PrivateEndpointConnectionPoller, error) {
+func (client *PrivateEndpointConnectionsClient) ResumeDelete(ctx context.Context, token string) (PrivateEndpointConnectionPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return PrivateEndpointConnectionPollerResponse{}, err
 	}
-	return &privateEndpointConnectionPoller{
+	poller := &privateEndpointConnectionPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return PrivateEndpointConnectionPollerResponse{}, err
+	}
+	result := PrivateEndpointConnectionPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes the specified private endpoint connection associated with the key vault.
@@ -140,7 +152,7 @@ func (client *PrivateEndpointConnectionsClient) deleteHandleResponse(resp *azcor
 func (client *PrivateEndpointConnectionsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -217,7 +229,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *azcore.R
 func (client *PrivateEndpointConnectionsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -294,7 +306,7 @@ func (client *PrivateEndpointConnectionsClient) putHandleResponse(resp *azcore.R
 func (client *PrivateEndpointConnectionsClient) putHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

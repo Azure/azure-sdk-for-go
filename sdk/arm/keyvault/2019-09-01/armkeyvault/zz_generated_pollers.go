@@ -45,8 +45,8 @@ func (p *httpPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *httpPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-	return p.pt.PollUntilDone(ctx, frequency, p.pipeline, nil)
+func (p *httpPoller) pollUntilDone(ctx context.Context, freq time.Duration) (*http.Response, error) {
+	return p.pt.PollUntilDone(ctx, freq, p.pipeline, nil)
 }
 
 // PrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
@@ -85,9 +85,9 @@ func (p *privateEndpointConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *privateEndpointConnectionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error) {
+func (p *privateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionResponse, error) {
 	respType := PrivateEndpointConnectionResponse{PrivateEndpointConnection: &PrivateEndpointConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.PrivateEndpointConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PrivateEndpointConnection)
 	if err != nil {
 		return PrivateEndpointConnectionResponse{}, err
 	}
@@ -131,9 +131,9 @@ func (p *vaultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *vaultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VaultResponse, error) {
+func (p *vaultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VaultResponse, error) {
 	respType := VaultResponse{Vault: &Vault{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.Vault)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.Vault)
 	if err != nil {
 		return VaultResponse{}, err
 	}

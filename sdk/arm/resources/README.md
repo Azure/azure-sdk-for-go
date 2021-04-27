@@ -1,8 +1,8 @@
 # Azure Resources Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/arm/resources)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/arm/resources)
+<!--[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/arm/resources)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/arm/resources)-->
 
-The `armresources` module provides operations for working with Azure resources and resource groups.
+The `resources` module provides operations for working with Azure resources and resource groups.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/arm/resources)
 

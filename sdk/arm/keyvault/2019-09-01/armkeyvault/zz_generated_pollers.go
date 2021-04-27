@@ -15,26 +15,24 @@ import (
 	"time"
 )
 
-// HTTPPoller provides polling facilities until the operation completes
+// HTTPPoller provides polling facilities until the operation reaches a terminal state.
 type HTTPPoller interface {
-	Done() bool
-	Poll(ctx context.Context) (*http.Response, error)
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final *http.Response will be returned.
 	FinalResponse(ctx context.Context) (*http.Response, error)
-	ResumeToken() (string, error)
 }
 
 type httpPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *httpPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *httpPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -43,36 +41,32 @@ func (p *httpPoller) FinalResponse(ctx context.Context) (*http.Response, error) 
 	return p.pt.FinalResponse(ctx, p.pipeline, nil)
 }
 
-// ResumeToken generates the string token that can be used with the ResumeHTTPPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *httpPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *httpPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-	return p.pt.PollUntilDone(ctx, frequency, p.pipeline, nil)
+func (p *httpPoller) pollUntilDone(ctx context.Context, freq time.Duration) (*http.Response, error) {
+	return p.pt.PollUntilDone(ctx, freq, p.pipeline, nil)
 }
 
-// PrivateEndpointConnectionPoller provides polling facilities until the operation completes
+// PrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
 type PrivateEndpointConnectionPoller interface {
-	Done() bool
-	Poll(ctx context.Context) (*http.Response, error)
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final PrivateEndpointConnectionResponse will be returned.
 	FinalResponse(ctx context.Context) (PrivateEndpointConnectionResponse, error)
-	ResumeToken() (string, error)
 }
 
 type privateEndpointConnectionPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *privateEndpointConnectionPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *privateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -87,15 +81,13 @@ func (p *privateEndpointConnectionPoller) FinalResponse(ctx context.Context) (Pr
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumePrivateEndpointConnectionPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *privateEndpointConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *privateEndpointConnectionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error) {
+func (p *privateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionResponse, error) {
 	respType := PrivateEndpointConnectionResponse{PrivateEndpointConnection: &PrivateEndpointConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.PrivateEndpointConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PrivateEndpointConnection)
 	if err != nil {
 		return PrivateEndpointConnectionResponse{}, err
 	}
@@ -103,26 +95,24 @@ func (p *privateEndpointConnectionPoller) pollUntilDone(ctx context.Context, fre
 	return respType, nil
 }
 
-// VaultPoller provides polling facilities until the operation completes
+// VaultPoller provides polling facilities until the operation reaches a terminal state.
 type VaultPoller interface {
-	Done() bool
-	Poll(ctx context.Context) (*http.Response, error)
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VaultResponse will be returned.
 	FinalResponse(ctx context.Context) (VaultResponse, error)
-	ResumeToken() (string, error)
 }
 
 type vaultPoller struct {
-	// the client for making the request
 	pipeline azcore.Pipeline
 	pt       armcore.Poller
 }
 
-// Done returns true if there was an error or polling has reached a terminal state
 func (p *vaultPoller) Done() bool {
 	return p.pt.Done()
 }
 
-// Poll will send poll the service endpoint and return an http.Response or error received from the service
 func (p *vaultPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return p.pt.Poll(ctx, p.pipeline)
 }
@@ -137,15 +127,13 @@ func (p *vaultPoller) FinalResponse(ctx context.Context) (VaultResponse, error) 
 	return respType, nil
 }
 
-// ResumeToken generates the string token that can be used with the ResumeVaultPoller method
-// on the client to create a new poller from the data held in the current poller type
 func (p *vaultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *vaultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VaultResponse, error) {
+func (p *vaultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VaultResponse, error) {
 	respType := VaultResponse{Vault: &Vault{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.Vault)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.Vault)
 	if err != nil {
 		return VaultResponse{}, err
 	}

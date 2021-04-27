@@ -24,6 +24,7 @@ func PossibleAccessPolicyUpdateKindValues() []AccessPolicyUpdateKind {
 	}
 }
 
+// ToPtr returns a *AccessPolicyUpdateKind pointing to the current value.
 func (c AccessPolicyUpdateKind) ToPtr() *AccessPolicyUpdateKind {
 	return &c
 }
@@ -73,6 +74,7 @@ func PossibleCertificatePermissionsValues() []CertificatePermissions {
 	}
 }
 
+// ToPtr returns a *CertificatePermissions pointing to the current value.
 func (c CertificatePermissions) ToPtr() *CertificatePermissions {
 	return &c
 }
@@ -93,6 +95,7 @@ func PossibleCreateModeValues() []CreateMode {
 	}
 }
 
+// ToPtr returns a *CreateMode pointing to the current value.
 func (c CreateMode) ToPtr() *CreateMode {
 	return &c
 }
@@ -119,6 +122,7 @@ func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
 	}
 }
 
+// ToPtr returns a *DeletionRecoveryLevel pointing to the current value.
 func (c DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
 	return &c
 }
@@ -143,6 +147,7 @@ func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
 	}
 }
 
+// ToPtr returns a *JSONWebKeyCurveName pointing to the current value.
 func (c JSONWebKeyCurveName) ToPtr() *JSONWebKeyCurveName {
 	return &c
 }
@@ -173,6 +178,7 @@ func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
 	}
 }
 
+// ToPtr returns a *JSONWebKeyOperation pointing to the current value.
 func (c JSONWebKeyOperation) ToPtr() *JSONWebKeyOperation {
 	return &c
 }
@@ -181,22 +187,23 @@ func (c JSONWebKeyOperation) ToPtr() *JSONWebKeyOperation {
 type JSONWebKeyType string
 
 const (
-	JSONWebKeyTypeEc     JSONWebKeyType = "EC"
-	JSONWebKeyTypeEchsm  JSONWebKeyType = "EC-HSM"
-	JSONWebKeyTypeRsa    JSONWebKeyType = "RSA"
-	JSONWebKeyTypeRsahsm JSONWebKeyType = "RSA-HSM"
+	JSONWebKeyTypeEC     JSONWebKeyType = "EC"
+	JSONWebKeyTypeECHSM  JSONWebKeyType = "EC-HSM"
+	JSONWebKeyTypeRSA    JSONWebKeyType = "RSA"
+	JSONWebKeyTypeRSAHSM JSONWebKeyType = "RSA-HSM"
 )
 
 // PossibleJSONWebKeyTypeValues returns the possible values for the JSONWebKeyType const type.
 func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 	return []JSONWebKeyType{
-		JSONWebKeyTypeEc,
-		JSONWebKeyTypeEchsm,
-		JSONWebKeyTypeRsa,
-		JSONWebKeyTypeRsahsm,
+		JSONWebKeyTypeEC,
+		JSONWebKeyTypeECHSM,
+		JSONWebKeyTypeRSA,
+		JSONWebKeyTypeRSAHSM,
 	}
 }
 
+// ToPtr returns a *JSONWebKeyType pointing to the current value.
 func (c JSONWebKeyType) ToPtr() *JSONWebKeyType {
 	return &c
 }
@@ -246,6 +253,7 @@ func PossibleKeyPermissionsValues() []KeyPermissions {
 	}
 }
 
+// ToPtr returns a *KeyPermissions pointing to the current value.
 func (c KeyPermissions) ToPtr() *KeyPermissions {
 	return &c
 }
@@ -267,6 +275,7 @@ func PossibleNetworkRuleActionValues() []NetworkRuleAction {
 	}
 }
 
+// ToPtr returns a *NetworkRuleAction pointing to the current value.
 func (c NetworkRuleAction) ToPtr() *NetworkRuleAction {
 	return &c
 }
@@ -287,6 +296,7 @@ func PossibleNetworkRuleBypassOptionsValues() []NetworkRuleBypassOptions {
 	}
 }
 
+// ToPtr returns a *NetworkRuleBypassOptions pointing to the current value.
 func (c NetworkRuleBypassOptions) ToPtr() *NetworkRuleBypassOptions {
 	return &c
 }
@@ -315,6 +325,7 @@ func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpoin
 	}
 }
 
+// ToPtr returns a *PrivateEndpointConnectionProvisioningState pointing to the current value.
 func (c PrivateEndpointConnectionProvisioningState) ToPtr() *PrivateEndpointConnectionProvisioningState {
 	return &c
 }
@@ -339,6 +350,7 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 	}
 }
 
+// ToPtr returns a *PrivateEndpointServiceConnectionStatus pointing to the current value.
 func (c PrivateEndpointServiceConnectionStatus) ToPtr() *PrivateEndpointServiceConnectionStatus {
 	return &c
 }
@@ -359,6 +371,7 @@ func PossibleReasonValues() []Reason {
 	}
 }
 
+// ToPtr returns a *Reason pointing to the current value.
 func (c Reason) ToPtr() *Reason {
 	return &c
 }
@@ -377,6 +390,7 @@ func PossibleSKUFamilyValues() []SKUFamily {
 	}
 }
 
+// ToPtr returns a *SKUFamily pointing to the current value.
 func (c SKUFamily) ToPtr() *SKUFamily {
 	return &c
 }
@@ -397,6 +411,7 @@ func PossibleSKUNameValues() []SKUName {
 	}
 }
 
+// ToPtr returns a *SKUName pointing to the current value.
 func (c SKUName) ToPtr() *SKUName {
 	return &c
 }
@@ -430,6 +445,7 @@ func PossibleSecretPermissionsValues() []SecretPermissions {
 	}
 }
 
+// ToPtr returns a *SecretPermissions pointing to the current value.
 func (c SecretPermissions) ToPtr() *SecretPermissions {
 	return &c
 }
@@ -475,26 +491,7 @@ func PossibleStoragePermissionsValues() []StoragePermissions {
 	}
 }
 
+// ToPtr returns a *StoragePermissions pointing to the current value.
 func (c StoragePermissions) ToPtr() *StoragePermissions {
-	return &c
-}
-
-// VaultProvisioningState - Provisioning state of the vault.
-type VaultProvisioningState string
-
-const (
-	VaultProvisioningStateRegisteringDNS VaultProvisioningState = "RegisteringDns"
-	VaultProvisioningStateSucceeded      VaultProvisioningState = "Succeeded"
-)
-
-// PossibleVaultProvisioningStateValues returns the possible values for the VaultProvisioningState const type.
-func PossibleVaultProvisioningStateValues() []VaultProvisioningState {
-	return []VaultProvisioningState{
-		VaultProvisioningStateRegisteringDNS,
-		VaultProvisioningStateSucceeded,
-	}
-}
-
-func (c VaultProvisioningState) ToPtr() *VaultProvisioningState {
 	return &c
 }

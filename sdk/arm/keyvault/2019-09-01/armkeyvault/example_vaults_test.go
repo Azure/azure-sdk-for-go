@@ -34,7 +34,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate() {
 					Family: armkeyvault.SKUFamilyA.ToPtr(),
 					Name:   armkeyvault.SKUNameStandard.ToPtr(),
 				},
-				AccessPolicies: &[]armkeyvault.AccessPolicyEntry{},
+				AccessPolicies: &[]*armkeyvault.AccessPolicyEntry{},
 			},
 		}, nil)
 	if err != nil {
@@ -65,19 +65,19 @@ func ExampleVaultsClient_BeginCreateOrUpdate_withAccessPolicies() {
 					Family: armkeyvault.SKUFamilyA.ToPtr(),
 					Name:   armkeyvault.SKUNameStandard.ToPtr(),
 				},
-				AccessPolicies: &[]armkeyvault.AccessPolicyEntry{
+				AccessPolicies: &[]*armkeyvault.AccessPolicyEntry{
 					{
 						ObjectID: to.StringPtr("<user, service principal or security group object ID>"),
 						TenantID: to.StringPtr("<tenant ID>"),
 						Permissions: &armkeyvault.Permissions{
-							Keys: &[]armkeyvault.KeyPermissions{
-								armkeyvault.KeyPermissionsGet,
-								armkeyvault.KeyPermissionsList,
-								armkeyvault.KeyPermissionsCreate,
+							Keys: &[]*armkeyvault.KeyPermissions{
+								armkeyvault.KeyPermissionsGet.ToPtr(),
+								armkeyvault.KeyPermissionsList.ToPtr(),
+								armkeyvault.KeyPermissionsCreate.ToPtr(),
 							},
-							Secrets: &[]armkeyvault.SecretPermissions{
-								armkeyvault.SecretPermissionsGet,
-								armkeyvault.SecretPermissionsList,
+							Secrets: &[]*armkeyvault.SecretPermissions{
+								armkeyvault.SecretPermissionsGet.ToPtr(),
+								armkeyvault.SecretPermissionsList.ToPtr(),
 							},
 						},
 					},
@@ -114,19 +114,19 @@ func ExampleVaultsClient_BeginCreateOrUpdate_forDeployment() {
 					Family: armkeyvault.SKUFamilyA.ToPtr(),
 					Name:   armkeyvault.SKUNameStandard.ToPtr(),
 				},
-				AccessPolicies: &[]armkeyvault.AccessPolicyEntry{
+				AccessPolicies: &[]*armkeyvault.AccessPolicyEntry{
 					{
 						ObjectID: to.StringPtr("<user, service principal or security group object ID>"),
 						TenantID: to.StringPtr("<tenant ID>"),
 						Permissions: &armkeyvault.Permissions{
-							Keys: &[]armkeyvault.KeyPermissions{
-								armkeyvault.KeyPermissionsGet,
-								armkeyvault.KeyPermissionsList,
-								armkeyvault.KeyPermissionsCreate,
+							Keys: &[]*armkeyvault.KeyPermissions{
+								armkeyvault.KeyPermissionsGet.ToPtr(),
+								armkeyvault.KeyPermissionsList.ToPtr(),
+								armkeyvault.KeyPermissionsCreate.ToPtr(),
 							},
-							Secrets: &[]armkeyvault.SecretPermissions{
-								armkeyvault.SecretPermissionsGet,
-								armkeyvault.SecretPermissionsList,
+							Secrets: &[]*armkeyvault.SecretPermissions{
+								armkeyvault.SecretPermissionsGet.ToPtr(),
+								armkeyvault.SecretPermissionsList.ToPtr(),
 							},
 						},
 					},

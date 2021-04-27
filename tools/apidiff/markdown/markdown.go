@@ -65,6 +65,11 @@ func (md *Writer) WriteLine(s string) {
 	md.sb.WriteString("\n")
 }
 
+// WriteListItem writes a line in a list
+func (md *Writer) WriteListItem(item string) {
+	md.WriteLine(fmt.Sprintf("- %s", item))
+}
+
 // WriteTable writes a table to the markdown document
 func (md *Writer) WriteTable(table Table) {
 	md.WriteLine(table.String())

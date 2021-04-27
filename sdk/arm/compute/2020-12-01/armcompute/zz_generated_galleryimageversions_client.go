@@ -44,8 +44,8 @@ func (client *GalleryImageVersionsClient) BeginCreateOrUpdate(ctx context.Contex
 		return GalleryImageVersionPollerResponse{}, err
 	}
 	poller := &galleryImageVersionPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImageVersionResponse, error) {
@@ -56,15 +56,27 @@ func (client *GalleryImageVersionsClient) BeginCreateOrUpdate(ctx context.Contex
 
 // ResumeCreateOrUpdate creates a new GalleryImageVersionPoller from the specified resume token.
 // token - The value must come from a previous call to GalleryImageVersionPoller.ResumeToken().
-func (client *GalleryImageVersionsClient) ResumeCreateOrUpdate(token string) (GalleryImageVersionPoller, error) {
+func (client *GalleryImageVersionsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (GalleryImageVersionPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("GalleryImageVersionsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return GalleryImageVersionPollerResponse{}, err
 	}
-	return &galleryImageVersionPoller{
+	poller := &galleryImageVersionPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return GalleryImageVersionPollerResponse{}, err
+	}
+	result := GalleryImageVersionPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImageVersionResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Create or update a gallery Image Version.
@@ -131,7 +143,7 @@ func (client *GalleryImageVersionsClient) createOrUpdateHandleResponse(resp *azc
 func (client *GalleryImageVersionsClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -150,8 +162,8 @@ func (client *GalleryImageVersionsClient) BeginDelete(ctx context.Context, resou
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -162,15 +174,27 @@ func (client *GalleryImageVersionsClient) BeginDelete(ctx context.Context, resou
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *GalleryImageVersionsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *GalleryImageVersionsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("GalleryImageVersionsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Delete a gallery Image Version.
@@ -228,7 +252,7 @@ func (client *GalleryImageVersionsClient) deleteCreateRequest(ctx context.Contex
 func (client *GalleryImageVersionsClient) deleteHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -300,7 +324,7 @@ func (client *GalleryImageVersionsClient) getHandleResponse(resp *azcore.Respons
 func (client *GalleryImageVersionsClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -365,7 +389,7 @@ func (client *GalleryImageVersionsClient) listByGalleryImageHandleResponse(resp 
 func (client *GalleryImageVersionsClient) listByGalleryImageHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -384,8 +408,8 @@ func (client *GalleryImageVersionsClient) BeginUpdate(ctx context.Context, resou
 		return GalleryImageVersionPollerResponse{}, err
 	}
 	poller := &galleryImageVersionPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImageVersionResponse, error) {
@@ -396,15 +420,27 @@ func (client *GalleryImageVersionsClient) BeginUpdate(ctx context.Context, resou
 
 // ResumeUpdate creates a new GalleryImageVersionPoller from the specified resume token.
 // token - The value must come from a previous call to GalleryImageVersionPoller.ResumeToken().
-func (client *GalleryImageVersionsClient) ResumeUpdate(token string) (GalleryImageVersionPoller, error) {
+func (client *GalleryImageVersionsClient) ResumeUpdate(ctx context.Context, token string) (GalleryImageVersionPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("GalleryImageVersionsClient.Update", token, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return GalleryImageVersionPollerResponse{}, err
 	}
-	return &galleryImageVersionPoller{
+	poller := &galleryImageVersionPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return GalleryImageVersionPollerResponse{}, err
+	}
+	result := GalleryImageVersionPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryImageVersionResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Update - Update a gallery Image Version.
@@ -471,7 +507,7 @@ func (client *GalleryImageVersionsClient) updateHandleResponse(resp *azcore.Resp
 func (client *GalleryImageVersionsClient) updateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

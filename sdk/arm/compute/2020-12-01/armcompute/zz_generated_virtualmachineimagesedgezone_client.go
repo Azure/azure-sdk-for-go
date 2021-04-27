@@ -102,7 +102,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) getHandleResponse(resp *azcore
 func (client *VirtualMachineImagesEdgeZoneClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -184,7 +184,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listHandleResponse(resp *azcor
 func (client *VirtualMachineImagesEdgeZoneClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -249,7 +249,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listOffersHandleResponse(resp 
 func (client *VirtualMachineImagesEdgeZoneClient) listOffersHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -310,7 +310,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listPublishersHandleResponse(r
 func (client *VirtualMachineImagesEdgeZoneClient) listPublishersHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -379,7 +379,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listSKUsHandleResponse(resp *a
 func (client *VirtualMachineImagesEdgeZoneClient) listSKUsHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

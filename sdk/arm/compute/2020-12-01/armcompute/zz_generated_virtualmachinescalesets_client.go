@@ -101,8 +101,8 @@ func (client *VirtualMachineScaleSetsClient) BeginCreateOrUpdate(ctx context.Con
 		return VirtualMachineScaleSetPollerResponse{}, err
 	}
 	poller := &virtualMachineScaleSetPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetResponse, error) {
@@ -113,15 +113,27 @@ func (client *VirtualMachineScaleSetsClient) BeginCreateOrUpdate(ctx context.Con
 
 // ResumeCreateOrUpdate creates a new VirtualMachineScaleSetPoller from the specified resume token.
 // token - The value must come from a previous call to VirtualMachineScaleSetPoller.ResumeToken().
-func (client *VirtualMachineScaleSetsClient) ResumeCreateOrUpdate(token string) (VirtualMachineScaleSetPoller, error) {
+func (client *VirtualMachineScaleSetsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VirtualMachineScaleSetPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return VirtualMachineScaleSetPollerResponse{}, err
 	}
-	return &virtualMachineScaleSetPoller{
+	poller := &virtualMachineScaleSetPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return VirtualMachineScaleSetPollerResponse{}, err
+	}
+	result := VirtualMachineScaleSetPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Create or update a VM scale set.
@@ -204,8 +216,8 @@ func (client *VirtualMachineScaleSetsClient) BeginDeallocate(ctx context.Context
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -216,15 +228,27 @@ func (client *VirtualMachineScaleSetsClient) BeginDeallocate(ctx context.Context
 
 // ResumeDeallocate creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetsClient) ResumeDeallocate(token string) (HTTPPoller, error) {
+func (client *VirtualMachineScaleSetsClient) ResumeDeallocate(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetsClient.Deallocate", token, client.deallocateHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Deallocate - Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute resources. You are not
@@ -300,8 +324,8 @@ func (client *VirtualMachineScaleSetsClient) BeginDelete(ctx context.Context, re
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -312,15 +336,27 @@ func (client *VirtualMachineScaleSetsClient) BeginDelete(ctx context.Context, re
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *VirtualMachineScaleSetsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes a VM scale set.
@@ -394,8 +430,8 @@ func (client *VirtualMachineScaleSetsClient) BeginDeleteInstances(ctx context.Co
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -406,15 +442,27 @@ func (client *VirtualMachineScaleSetsClient) BeginDeleteInstances(ctx context.Co
 
 // ResumeDeleteInstances creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetsClient) ResumeDeleteInstances(token string) (HTTPPoller, error) {
+func (client *VirtualMachineScaleSetsClient) ResumeDeleteInstances(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetsClient.DeleteInstances", token, client.deleteInstancesHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // DeleteInstances - Deletes virtual machines in a VM scale set.
@@ -902,7 +950,7 @@ func (client *VirtualMachineScaleSetsClient) listByLocationHandleResponse(resp *
 func (client *VirtualMachineScaleSetsClient) listByLocationHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -987,8 +1035,8 @@ func (client *VirtualMachineScaleSetsClient) BeginPerformMaintenance(ctx context
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -999,15 +1047,27 @@ func (client *VirtualMachineScaleSetsClient) BeginPerformMaintenance(ctx context
 
 // ResumePerformMaintenance creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetsClient) ResumePerformMaintenance(token string) (HTTPPoller, error) {
+func (client *VirtualMachineScaleSetsClient) ResumePerformMaintenance(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetsClient.PerformMaintenance", token, client.performMaintenanceHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // PerformMaintenance - Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform
@@ -1085,8 +1145,8 @@ func (client *VirtualMachineScaleSetsClient) BeginPowerOff(ctx context.Context, 
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1097,15 +1157,27 @@ func (client *VirtualMachineScaleSetsClient) BeginPowerOff(ctx context.Context, 
 
 // ResumePowerOff creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetsClient) ResumePowerOff(token string) (HTTPPoller, error) {
+func (client *VirtualMachineScaleSetsClient) ResumePowerOff(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetsClient.PowerOff", token, client.powerOffHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // PowerOff - Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you are getting charged for the
@@ -1184,8 +1256,8 @@ func (client *VirtualMachineScaleSetsClient) BeginRedeploy(ctx context.Context, 
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1196,15 +1268,27 @@ func (client *VirtualMachineScaleSetsClient) BeginRedeploy(ctx context.Context, 
 
 // ResumeRedeploy creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetsClient) ResumeRedeploy(token string) (HTTPPoller, error) {
+func (client *VirtualMachineScaleSetsClient) ResumeRedeploy(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetsClient.Redeploy", token, client.redeployHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Redeploy - Shuts down all the virtual machines in the virtual machine scale set, moves them to a new node, and powers them back on.
@@ -1280,8 +1364,8 @@ func (client *VirtualMachineScaleSetsClient) BeginReimage(ctx context.Context, r
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1292,15 +1376,27 @@ func (client *VirtualMachineScaleSetsClient) BeginReimage(ctx context.Context, r
 
 // ResumeReimage creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetsClient) ResumeReimage(token string) (HTTPPoller, error) {
+func (client *VirtualMachineScaleSetsClient) ResumeReimage(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetsClient.Reimage", token, client.reimageHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Reimage - Reimages (upgrade the operating system) one or more virtual machines in a VM scale set which don't have a ephemeral OS disk, for virtual machines
@@ -1377,8 +1473,8 @@ func (client *VirtualMachineScaleSetsClient) BeginReimageAll(ctx context.Context
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1389,15 +1485,27 @@ func (client *VirtualMachineScaleSetsClient) BeginReimageAll(ctx context.Context
 
 // ResumeReimageAll creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetsClient) ResumeReimageAll(token string) (HTTPPoller, error) {
+func (client *VirtualMachineScaleSetsClient) ResumeReimageAll(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetsClient.ReimageAll", token, client.reimageAllHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // ReimageAll - Reimages all the disks ( including data disks ) in the virtual machines in a VM scale set. This operation is only supported for managed
@@ -1472,8 +1580,8 @@ func (client *VirtualMachineScaleSetsClient) BeginRestart(ctx context.Context, r
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1484,15 +1592,27 @@ func (client *VirtualMachineScaleSetsClient) BeginRestart(ctx context.Context, r
 
 // ResumeRestart creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetsClient) ResumeRestart(token string) (HTTPPoller, error) {
+func (client *VirtualMachineScaleSetsClient) ResumeRestart(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetsClient.Restart", token, client.restartHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Restart - Restarts one or more virtual machines in a VM scale set.
@@ -1566,8 +1686,8 @@ func (client *VirtualMachineScaleSetsClient) BeginSetOrchestrationServiceState(c
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1578,15 +1698,27 @@ func (client *VirtualMachineScaleSetsClient) BeginSetOrchestrationServiceState(c
 
 // ResumeSetOrchestrationServiceState creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetsClient) ResumeSetOrchestrationServiceState(token string) (HTTPPoller, error) {
+func (client *VirtualMachineScaleSetsClient) ResumeSetOrchestrationServiceState(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetsClient.SetOrchestrationServiceState", token, client.setOrchestrationServiceStateHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // SetOrchestrationServiceState - Changes ServiceState property for a given service
@@ -1657,8 +1789,8 @@ func (client *VirtualMachineScaleSetsClient) BeginStart(ctx context.Context, res
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1669,15 +1801,27 @@ func (client *VirtualMachineScaleSetsClient) BeginStart(ctx context.Context, res
 
 // ResumeStart creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetsClient) ResumeStart(token string) (HTTPPoller, error) {
+func (client *VirtualMachineScaleSetsClient) ResumeStart(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetsClient.Start", token, client.startHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Start - Starts one or more virtual machines in a VM scale set.
@@ -1751,8 +1895,8 @@ func (client *VirtualMachineScaleSetsClient) BeginUpdate(ctx context.Context, re
 		return VirtualMachineScaleSetPollerResponse{}, err
 	}
 	poller := &virtualMachineScaleSetPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetResponse, error) {
@@ -1763,15 +1907,27 @@ func (client *VirtualMachineScaleSetsClient) BeginUpdate(ctx context.Context, re
 
 // ResumeUpdate creates a new VirtualMachineScaleSetPoller from the specified resume token.
 // token - The value must come from a previous call to VirtualMachineScaleSetPoller.ResumeToken().
-func (client *VirtualMachineScaleSetsClient) ResumeUpdate(token string) (VirtualMachineScaleSetPoller, error) {
+func (client *VirtualMachineScaleSetsClient) ResumeUpdate(ctx context.Context, token string) (VirtualMachineScaleSetPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetsClient.Update", token, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return VirtualMachineScaleSetPollerResponse{}, err
 	}
-	return &virtualMachineScaleSetPoller{
+	poller := &virtualMachineScaleSetPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return VirtualMachineScaleSetPollerResponse{}, err
+	}
+	result := VirtualMachineScaleSetPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Update - Update a VM scale set.
@@ -1852,8 +2008,8 @@ func (client *VirtualMachineScaleSetsClient) BeginUpdateInstances(ctx context.Co
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1864,15 +2020,27 @@ func (client *VirtualMachineScaleSetsClient) BeginUpdateInstances(ctx context.Co
 
 // ResumeUpdateInstances creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineScaleSetsClient) ResumeUpdateInstances(token string) (HTTPPoller, error) {
+func (client *VirtualMachineScaleSetsClient) ResumeUpdateInstances(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineScaleSetsClient.UpdateInstances", token, client.updateInstancesHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // UpdateInstances - Upgrades one or more virtual machines to the latest SKU set in the VM scale set model.

@@ -51,9 +51,9 @@ func (p *accessURIPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *accessURIPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (AccessURIResponse, error) {
+func (p *accessURIPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AccessURIResponse, error) {
 	respType := AccessURIResponse{AccessURI: &AccessURI{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.AccessURI)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.AccessURI)
 	if err != nil {
 		return AccessURIResponse{}, err
 	}
@@ -97,9 +97,9 @@ func (p *dedicatedHostPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *dedicatedHostPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (DedicatedHostResponse, error) {
+func (p *dedicatedHostPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DedicatedHostResponse, error) {
 	respType := DedicatedHostResponse{DedicatedHost: &DedicatedHost{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.DedicatedHost)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.DedicatedHost)
 	if err != nil {
 		return DedicatedHostResponse{}, err
 	}
@@ -143,9 +143,9 @@ func (p *diskAccessPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *diskAccessPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (DiskAccessResponse, error) {
+func (p *diskAccessPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskAccessResponse, error) {
 	respType := DiskAccessResponse{DiskAccess: &DiskAccess{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.DiskAccess)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.DiskAccess)
 	if err != nil {
 		return DiskAccessResponse{}, err
 	}
@@ -189,9 +189,9 @@ func (p *diskEncryptionSetPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *diskEncryptionSetPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (DiskEncryptionSetResponse, error) {
+func (p *diskEncryptionSetPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskEncryptionSetResponse, error) {
 	respType := DiskEncryptionSetResponse{DiskEncryptionSet: &DiskEncryptionSet{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.DiskEncryptionSet)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.DiskEncryptionSet)
 	if err != nil {
 		return DiskEncryptionSetResponse{}, err
 	}
@@ -235,9 +235,9 @@ func (p *diskPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *diskPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (DiskResponse, error) {
+func (p *diskPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DiskResponse, error) {
 	respType := DiskResponse{Disk: &Disk{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.Disk)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.Disk)
 	if err != nil {
 		return DiskResponse{}, err
 	}
@@ -281,9 +281,9 @@ func (p *galleryApplicationPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *galleryApplicationPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (GalleryApplicationResponse, error) {
+func (p *galleryApplicationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryApplicationResponse, error) {
 	respType := GalleryApplicationResponse{GalleryApplication: &GalleryApplication{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.GalleryApplication)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.GalleryApplication)
 	if err != nil {
 		return GalleryApplicationResponse{}, err
 	}
@@ -327,9 +327,9 @@ func (p *galleryApplicationVersionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *galleryApplicationVersionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (GalleryApplicationVersionResponse, error) {
+func (p *galleryApplicationVersionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryApplicationVersionResponse, error) {
 	respType := GalleryApplicationVersionResponse{GalleryApplicationVersion: &GalleryApplicationVersion{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.GalleryApplicationVersion)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.GalleryApplicationVersion)
 	if err != nil {
 		return GalleryApplicationVersionResponse{}, err
 	}
@@ -373,9 +373,9 @@ func (p *galleryImagePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *galleryImagePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (GalleryImageResponse, error) {
+func (p *galleryImagePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryImageResponse, error) {
 	respType := GalleryImageResponse{GalleryImage: &GalleryImage{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.GalleryImage)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.GalleryImage)
 	if err != nil {
 		return GalleryImageResponse{}, err
 	}
@@ -419,9 +419,9 @@ func (p *galleryImageVersionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *galleryImageVersionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (GalleryImageVersionResponse, error) {
+func (p *galleryImageVersionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryImageVersionResponse, error) {
 	respType := GalleryImageVersionResponse{GalleryImageVersion: &GalleryImageVersion{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.GalleryImageVersion)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.GalleryImageVersion)
 	if err != nil {
 		return GalleryImageVersionResponse{}, err
 	}
@@ -465,9 +465,9 @@ func (p *galleryPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *galleryPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (GalleryResponse, error) {
+func (p *galleryPoller) pollUntilDone(ctx context.Context, freq time.Duration) (GalleryResponse, error) {
 	respType := GalleryResponse{Gallery: &Gallery{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.Gallery)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.Gallery)
 	if err != nil {
 		return GalleryResponse{}, err
 	}
@@ -505,8 +505,8 @@ func (p *httpPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *httpPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-	return p.pt.PollUntilDone(ctx, frequency, p.pipeline, nil)
+func (p *httpPoller) pollUntilDone(ctx context.Context, freq time.Duration) (*http.Response, error) {
+	return p.pt.PollUntilDone(ctx, freq, p.pipeline, nil)
 }
 
 // ImagePoller provides polling facilities until the operation reaches a terminal state.
@@ -545,9 +545,9 @@ func (p *imagePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *imagePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (ImageResponse, error) {
+func (p *imagePoller) pollUntilDone(ctx context.Context, freq time.Duration) (ImageResponse, error) {
 	respType := ImageResponse{Image: &Image{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.Image)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.Image)
 	if err != nil {
 		return ImageResponse{}, err
 	}
@@ -591,9 +591,9 @@ func (p *logAnalyticsOperationResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *logAnalyticsOperationResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (LogAnalyticsOperationResultResponse, error) {
+func (p *logAnalyticsOperationResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (LogAnalyticsOperationResultResponse, error) {
 	respType := LogAnalyticsOperationResultResponse{LogAnalyticsOperationResult: &LogAnalyticsOperationResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.LogAnalyticsOperationResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.LogAnalyticsOperationResult)
 	if err != nil {
 		return LogAnalyticsOperationResultResponse{}, err
 	}
@@ -637,9 +637,9 @@ func (p *privateEndpointConnectionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *privateEndpointConnectionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error) {
+func (p *privateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionResponse, error) {
 	respType := PrivateEndpointConnectionResponse{PrivateEndpointConnection: &PrivateEndpointConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.PrivateEndpointConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PrivateEndpointConnection)
 	if err != nil {
 		return PrivateEndpointConnectionResponse{}, err
 	}
@@ -683,9 +683,9 @@ func (p *runCommandResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *runCommandResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (RunCommandResultResponse, error) {
+func (p *runCommandResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (RunCommandResultResponse, error) {
 	respType := RunCommandResultResponse{RunCommandResult: &RunCommandResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.RunCommandResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.RunCommandResult)
 	if err != nil {
 		return RunCommandResultResponse{}, err
 	}
@@ -729,9 +729,9 @@ func (p *snapshotPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *snapshotPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (SnapshotResponse, error) {
+func (p *snapshotPoller) pollUntilDone(ctx context.Context, freq time.Duration) (SnapshotResponse, error) {
 	respType := SnapshotResponse{Snapshot: &Snapshot{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.Snapshot)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.Snapshot)
 	if err != nil {
 		return SnapshotResponse{}, err
 	}
@@ -775,9 +775,9 @@ func (p *virtualMachineAssessPatchesResultPoller) ResumeToken() (string, error) 
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineAssessPatchesResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualMachineAssessPatchesResultResponse, error) {
+func (p *virtualMachineAssessPatchesResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineAssessPatchesResultResponse, error) {
 	respType := VirtualMachineAssessPatchesResultResponse{VirtualMachineAssessPatchesResult: &VirtualMachineAssessPatchesResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualMachineAssessPatchesResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineAssessPatchesResult)
 	if err != nil {
 		return VirtualMachineAssessPatchesResultResponse{}, err
 	}
@@ -821,9 +821,9 @@ func (p *virtualMachineCaptureResultPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineCaptureResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualMachineCaptureResultResponse, error) {
+func (p *virtualMachineCaptureResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineCaptureResultResponse, error) {
 	respType := VirtualMachineCaptureResultResponse{VirtualMachineCaptureResult: &VirtualMachineCaptureResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualMachineCaptureResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineCaptureResult)
 	if err != nil {
 		return VirtualMachineCaptureResultResponse{}, err
 	}
@@ -867,9 +867,9 @@ func (p *virtualMachineExtensionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineExtensionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionResponse, error) {
+func (p *virtualMachineExtensionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineExtensionResponse, error) {
 	respType := VirtualMachineExtensionResponse{VirtualMachineExtension: &VirtualMachineExtension{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualMachineExtension)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineExtension)
 	if err != nil {
 		return VirtualMachineExtensionResponse{}, err
 	}
@@ -913,9 +913,9 @@ func (p *virtualMachineInstallPatchesResultPoller) ResumeToken() (string, error)
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineInstallPatchesResultPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualMachineInstallPatchesResultResponse, error) {
+func (p *virtualMachineInstallPatchesResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineInstallPatchesResultResponse, error) {
 	respType := VirtualMachineInstallPatchesResultResponse{VirtualMachineInstallPatchesResult: &VirtualMachineInstallPatchesResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualMachineInstallPatchesResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineInstallPatchesResult)
 	if err != nil {
 		return VirtualMachineInstallPatchesResultResponse{}, err
 	}
@@ -959,9 +959,9 @@ func (p *virtualMachinePoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachinePoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualMachineResponse, error) {
+func (p *virtualMachinePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineResponse, error) {
 	respType := VirtualMachineResponse{VirtualMachine: &VirtualMachine{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualMachine)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachine)
 	if err != nil {
 		return VirtualMachineResponse{}, err
 	}
@@ -1005,9 +1005,9 @@ func (p *virtualMachineRunCommandPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineRunCommandPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualMachineRunCommandResponse, error) {
+func (p *virtualMachineRunCommandPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineRunCommandResponse, error) {
 	respType := VirtualMachineRunCommandResponse{VirtualMachineRunCommand: &VirtualMachineRunCommand{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualMachineRunCommand)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineRunCommand)
 	if err != nil {
 		return VirtualMachineRunCommandResponse{}, err
 	}
@@ -1051,9 +1051,9 @@ func (p *virtualMachineScaleSetExtensionPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineScaleSetExtensionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetExtensionResponse, error) {
+func (p *virtualMachineScaleSetExtensionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetExtensionResponse, error) {
 	respType := VirtualMachineScaleSetExtensionResponse{VirtualMachineScaleSetExtension: &VirtualMachineScaleSetExtension{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualMachineScaleSetExtension)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineScaleSetExtension)
 	if err != nil {
 		return VirtualMachineScaleSetExtensionResponse{}, err
 	}
@@ -1097,9 +1097,9 @@ func (p *virtualMachineScaleSetPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineScaleSetPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetResponse, error) {
+func (p *virtualMachineScaleSetPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetResponse, error) {
 	respType := VirtualMachineScaleSetResponse{VirtualMachineScaleSet: &VirtualMachineScaleSet{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualMachineScaleSet)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineScaleSet)
 	if err != nil {
 		return VirtualMachineScaleSetResponse{}, err
 	}
@@ -1143,9 +1143,9 @@ func (p *virtualMachineScaleSetVMExtensionPoller) ResumeToken() (string, error) 
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineScaleSetVMExtensionPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMExtensionResponse, error) {
+func (p *virtualMachineScaleSetVMExtensionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMExtensionResponse, error) {
 	respType := VirtualMachineScaleSetVMExtensionResponse{VirtualMachineScaleSetVMExtension: &VirtualMachineScaleSetVMExtension{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualMachineScaleSetVMExtension)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineScaleSetVMExtension)
 	if err != nil {
 		return VirtualMachineScaleSetVMExtensionResponse{}, err
 	}
@@ -1189,9 +1189,9 @@ func (p *virtualMachineScaleSetVMPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *virtualMachineScaleSetVMPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (VirtualMachineScaleSetVMResponse, error) {
+func (p *virtualMachineScaleSetVMPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualMachineScaleSetVMResponse, error) {
 	respType := VirtualMachineScaleSetVMResponse{VirtualMachineScaleSetVM: &VirtualMachineScaleSetVM{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.VirtualMachineScaleSetVM)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualMachineScaleSetVM)
 	if err != nil {
 		return VirtualMachineScaleSetVMResponse{}, err
 	}

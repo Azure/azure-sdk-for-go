@@ -46,8 +46,8 @@ func (client *VirtualMachineExtensionsClient) BeginCreateOrUpdate(ctx context.Co
 		return VirtualMachineExtensionPollerResponse{}, err
 	}
 	poller := &virtualMachineExtensionPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionResponse, error) {
@@ -58,15 +58,27 @@ func (client *VirtualMachineExtensionsClient) BeginCreateOrUpdate(ctx context.Co
 
 // ResumeCreateOrUpdate creates a new VirtualMachineExtensionPoller from the specified resume token.
 // token - The value must come from a previous call to VirtualMachineExtensionPoller.ResumeToken().
-func (client *VirtualMachineExtensionsClient) ResumeCreateOrUpdate(token string) (VirtualMachineExtensionPoller, error) {
+func (client *VirtualMachineExtensionsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VirtualMachineExtensionPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineExtensionsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return VirtualMachineExtensionPollerResponse{}, err
 	}
-	return &virtualMachineExtensionPoller{
+	poller := &virtualMachineExtensionPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return VirtualMachineExtensionPollerResponse{}, err
+	}
+	result := VirtualMachineExtensionPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - The operation to create or update the extension.
@@ -151,8 +163,8 @@ func (client *VirtualMachineExtensionsClient) BeginDelete(ctx context.Context, r
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -163,15 +175,27 @@ func (client *VirtualMachineExtensionsClient) BeginDelete(ctx context.Context, r
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualMachineExtensionsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *VirtualMachineExtensionsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineExtensionsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - The operation to delete the extension.
@@ -384,8 +408,8 @@ func (client *VirtualMachineExtensionsClient) BeginUpdate(ctx context.Context, r
 		return VirtualMachineExtensionPollerResponse{}, err
 	}
 	poller := &virtualMachineExtensionPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionResponse, error) {
@@ -396,15 +420,27 @@ func (client *VirtualMachineExtensionsClient) BeginUpdate(ctx context.Context, r
 
 // ResumeUpdate creates a new VirtualMachineExtensionPoller from the specified resume token.
 // token - The value must come from a previous call to VirtualMachineExtensionPoller.ResumeToken().
-func (client *VirtualMachineExtensionsClient) ResumeUpdate(token string) (VirtualMachineExtensionPoller, error) {
+func (client *VirtualMachineExtensionsClient) ResumeUpdate(ctx context.Context, token string) (VirtualMachineExtensionPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("VirtualMachineExtensionsClient.Update", token, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return VirtualMachineExtensionPollerResponse{}, err
 	}
-	return &virtualMachineExtensionPoller{
+	poller := &virtualMachineExtensionPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return VirtualMachineExtensionPollerResponse{}, err
+	}
+	result := VirtualMachineExtensionPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualMachineExtensionResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Update - The operation to update the extension.

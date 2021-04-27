@@ -93,7 +93,7 @@ func (client *DiskRestorePointClient) getHandleResponse(resp *azcore.Response) (
 func (client *DiskRestorePointClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -158,7 +158,7 @@ func (client *DiskRestorePointClient) listByRestorePointHandleResponse(resp *azc
 func (client *DiskRestorePointClient) listByRestorePointHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

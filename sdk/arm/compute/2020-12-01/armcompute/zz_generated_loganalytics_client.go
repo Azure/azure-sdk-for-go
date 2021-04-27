@@ -46,8 +46,8 @@ func (client *LogAnalyticsClient) BeginExportRequestRateByInterval(ctx context.C
 		return LogAnalyticsOperationResultPollerResponse{}, err
 	}
 	poller := &logAnalyticsOperationResultPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LogAnalyticsOperationResultResponse, error) {
@@ -58,15 +58,27 @@ func (client *LogAnalyticsClient) BeginExportRequestRateByInterval(ctx context.C
 
 // ResumeExportRequestRateByInterval creates a new LogAnalyticsOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to LogAnalyticsOperationResultPoller.ResumeToken().
-func (client *LogAnalyticsClient) ResumeExportRequestRateByInterval(token string) (LogAnalyticsOperationResultPoller, error) {
+func (client *LogAnalyticsClient) ResumeExportRequestRateByInterval(ctx context.Context, token string) (LogAnalyticsOperationResultPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("LogAnalyticsClient.ExportRequestRateByInterval", token, client.exportRequestRateByIntervalHandleError)
 	if err != nil {
-		return nil, err
+		return LogAnalyticsOperationResultPollerResponse{}, err
 	}
-	return &logAnalyticsOperationResultPoller{
+	poller := &logAnalyticsOperationResultPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return LogAnalyticsOperationResultPollerResponse{}, err
+	}
+	result := LogAnalyticsOperationResultPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LogAnalyticsOperationResultResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // ExportRequestRateByInterval - Export logs that show Api requests made by this subscription in the given time window to show throttling activities.
@@ -143,8 +155,8 @@ func (client *LogAnalyticsClient) BeginExportThrottledRequests(ctx context.Conte
 		return LogAnalyticsOperationResultPollerResponse{}, err
 	}
 	poller := &logAnalyticsOperationResultPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LogAnalyticsOperationResultResponse, error) {
@@ -155,15 +167,27 @@ func (client *LogAnalyticsClient) BeginExportThrottledRequests(ctx context.Conte
 
 // ResumeExportThrottledRequests creates a new LogAnalyticsOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to LogAnalyticsOperationResultPoller.ResumeToken().
-func (client *LogAnalyticsClient) ResumeExportThrottledRequests(token string) (LogAnalyticsOperationResultPoller, error) {
+func (client *LogAnalyticsClient) ResumeExportThrottledRequests(ctx context.Context, token string) (LogAnalyticsOperationResultPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("LogAnalyticsClient.ExportThrottledRequests", token, client.exportThrottledRequestsHandleError)
 	if err != nil {
-		return nil, err
+		return LogAnalyticsOperationResultPollerResponse{}, err
 	}
-	return &logAnalyticsOperationResultPoller{
+	poller := &logAnalyticsOperationResultPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return LogAnalyticsOperationResultPollerResponse{}, err
+	}
+	result := LogAnalyticsOperationResultPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LogAnalyticsOperationResultResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // ExportThrottledRequests - Export logs that show total throttled Api requests for this subscription in the given time window.

@@ -89,7 +89,7 @@ func (client *SharedGalleryImagesClient) getHandleResponse(resp *azcore.Response
 func (client *SharedGalleryImagesClient) getHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -153,7 +153,7 @@ func (client *SharedGalleryImagesClient) listHandleResponse(resp *azcore.Respons
 func (client *SharedGalleryImagesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

@@ -7,6 +7,6 @@
 
 package armcompute
 
-import computepreview "github.com/Azure/azure-sdk-for-go/sdk/arm/compute-preview"
+import compute_preview "github.com/Azure/azure-sdk-for-go/sdk/arm/compute-preview"
 
-const telemetryInfo = "azsdk-go-armcompute/2020-09-30-preview/" + computepreview.Version
+const telemetryInfo = "azsdk-go-armcompute/2020-09-30-preview/" + compute_preview.Version

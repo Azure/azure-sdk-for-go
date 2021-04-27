@@ -46,8 +46,8 @@ func (client *ContainerServicesClient) BeginCreateOrUpdate(ctx context.Context, 
 		return ContainerServicePollerResponse{}, err
 	}
 	poller := &containerServicePoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ContainerServiceResponse, error) {
@@ -58,15 +58,27 @@ func (client *ContainerServicesClient) BeginCreateOrUpdate(ctx context.Context, 
 
 // ResumeCreateOrUpdate creates a new ContainerServicePoller from the specified resume token.
 // token - The value must come from a previous call to ContainerServicePoller.ResumeToken().
-func (client *ContainerServicesClient) ResumeCreateOrUpdate(token string) (ContainerServicePoller, error) {
+func (client *ContainerServicesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ContainerServicePollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ContainerServicesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return ContainerServicePollerResponse{}, err
 	}
-	return &containerServicePoller{
+	poller := &containerServicePoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return ContainerServicePollerResponse{}, err
+	}
+	result := ContainerServicePollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ContainerServiceResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
@@ -150,8 +162,8 @@ func (client *ContainerServicesClient) BeginDelete(ctx context.Context, resource
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -162,15 +174,27 @@ func (client *ContainerServicesClient) BeginDelete(ctx context.Context, resource
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ContainerServicesClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *ContainerServicesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ContainerServicesClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created

@@ -44,8 +44,8 @@ func (client *GallerySharingProfileClient) BeginUpdate(ctx context.Context, reso
 		return SharingUpdatePollerResponse{}, err
 	}
 	poller := &sharingUpdatePoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SharingUpdateResponse, error) {
@@ -56,15 +56,27 @@ func (client *GallerySharingProfileClient) BeginUpdate(ctx context.Context, reso
 
 // ResumeUpdate creates a new SharingUpdatePoller from the specified resume token.
 // token - The value must come from a previous call to SharingUpdatePoller.ResumeToken().
-func (client *GallerySharingProfileClient) ResumeUpdate(token string) (SharingUpdatePoller, error) {
+func (client *GallerySharingProfileClient) ResumeUpdate(ctx context.Context, token string) (SharingUpdatePollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("GallerySharingProfileClient.Update", token, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return SharingUpdatePollerResponse{}, err
 	}
-	return &sharingUpdatePoller{
+	poller := &sharingUpdatePoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return SharingUpdatePollerResponse{}, err
+	}
+	result := SharingUpdatePollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SharingUpdateResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Update - Update sharing profile of a gallery.
@@ -123,7 +135,7 @@ func (client *GallerySharingProfileClient) updateHandleResponse(resp *azcore.Res
 func (client *GallerySharingProfileClient) updateHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

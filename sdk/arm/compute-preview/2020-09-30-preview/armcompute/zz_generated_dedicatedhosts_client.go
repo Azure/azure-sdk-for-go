@@ -46,8 +46,8 @@ func (client *DedicatedHostsClient) BeginCreateOrUpdate(ctx context.Context, res
 		return DedicatedHostPollerResponse{}, err
 	}
 	poller := &dedicatedHostPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DedicatedHostResponse, error) {
@@ -58,15 +58,27 @@ func (client *DedicatedHostsClient) BeginCreateOrUpdate(ctx context.Context, res
 
 // ResumeCreateOrUpdate creates a new DedicatedHostPoller from the specified resume token.
 // token - The value must come from a previous call to DedicatedHostPoller.ResumeToken().
-func (client *DedicatedHostsClient) ResumeCreateOrUpdate(token string) (DedicatedHostPoller, error) {
+func (client *DedicatedHostsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DedicatedHostPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DedicatedHostsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return DedicatedHostPollerResponse{}, err
 	}
-	return &dedicatedHostPoller{
+	poller := &dedicatedHostPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return DedicatedHostPollerResponse{}, err
+	}
+	result := DedicatedHostPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DedicatedHostResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Create or update a dedicated host .
@@ -151,8 +163,8 @@ func (client *DedicatedHostsClient) BeginDelete(ctx context.Context, resourceGro
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -163,15 +175,27 @@ func (client *DedicatedHostsClient) BeginDelete(ctx context.Context, resourceGro
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *DedicatedHostsClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *DedicatedHostsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DedicatedHostsClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Delete a dedicated host.
@@ -382,8 +406,8 @@ func (client *DedicatedHostsClient) BeginUpdate(ctx context.Context, resourceGro
 		return DedicatedHostPollerResponse{}, err
 	}
 	poller := &dedicatedHostPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DedicatedHostResponse, error) {
@@ -394,15 +418,27 @@ func (client *DedicatedHostsClient) BeginUpdate(ctx context.Context, resourceGro
 
 // ResumeUpdate creates a new DedicatedHostPoller from the specified resume token.
 // token - The value must come from a previous call to DedicatedHostPoller.ResumeToken().
-func (client *DedicatedHostsClient) ResumeUpdate(token string) (DedicatedHostPoller, error) {
+func (client *DedicatedHostsClient) ResumeUpdate(ctx context.Context, token string) (DedicatedHostPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("DedicatedHostsClient.Update", token, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return DedicatedHostPollerResponse{}, err
 	}
-	return &dedicatedHostPoller{
+	poller := &dedicatedHostPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return DedicatedHostPollerResponse{}, err
+	}
+	result := DedicatedHostPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DedicatedHostResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Update - Update an dedicated host .

@@ -54,8 +54,8 @@ func ExampleResourceGroupsClient_Update() {
 		context.Background(),
 		"<resource group name>",
 		armresources.ResourceGroupPatchable{
-			Tags: &map[string]string{
-				"exampleTag": "exampleTagValue",
+			Tags: &map[string]*string{
+				"exampleTag": to.StringPtr("exampleTagValue"),
 			}},
 		nil)
 	if err != nil {
@@ -124,21 +124,21 @@ func ExampleResourceGroupsClient_ResumeDelete() {
 	if err != nil {
 		log.Fatalf("failed to get resource group poller resume token: %v", err)
 	}
-	rgPoller, err := client.ResumeDelete(tk)
+	rgPoller, err := client.ResumeDelete(context.Background(), tk)
 	if err != nil {
 		log.Fatalf("failed to get resource group: %v", err)
 	}
 	for {
-		_, err := rgPoller.Poll(context.Background())
+		_, err := rgPoller.Poller.Poll(context.Background())
 		if err != nil {
 			log.Fatalf("failed to poll for status: %v", err)
 		}
-		if rgPoller.Done() {
+		if rgPoller.Poller.Done() {
 			break
 		}
 		time.Sleep(5 * time.Second)
 	}
-	_, err = rgPoller.FinalResponse(context.Background())
+	_, err = rgPoller.Poller.FinalResponse(context.Background())
 	if err != nil {
 		log.Fatalf("failed to get final poller response: %v", err)
 	}

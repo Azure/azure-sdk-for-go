@@ -89,7 +89,7 @@ func (client *BlobInventoryPoliciesClient) createOrUpdateHandleResponse(resp *az
 func (client *BlobInventoryPoliciesClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -145,7 +145,7 @@ func (client *BlobInventoryPoliciesClient) deleteCreateRequest(ctx context.Conte
 func (client *BlobInventoryPoliciesClient) deleteHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -210,7 +210,7 @@ func (client *BlobInventoryPoliciesClient) getHandleResponse(resp *azcore.Respon
 func (client *BlobInventoryPoliciesClient) getHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -271,7 +271,7 @@ func (client *BlobInventoryPoliciesClient) listHandleResponse(resp *azcore.Respo
 func (client *BlobInventoryPoliciesClient) listHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

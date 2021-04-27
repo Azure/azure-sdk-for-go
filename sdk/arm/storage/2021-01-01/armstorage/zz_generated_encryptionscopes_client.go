@@ -91,7 +91,7 @@ func (client *EncryptionScopesClient) getHandleResponse(resp *azcore.Response) (
 func (client *EncryptionScopesClient) getHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -220,7 +220,7 @@ func (client *EncryptionScopesClient) patchHandleResponse(resp *azcore.Response)
 func (client *EncryptionScopesClient) patchHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -287,7 +287,7 @@ func (client *EncryptionScopesClient) putHandleResponse(resp *azcore.Response) (
 func (client *EncryptionScopesClient) putHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

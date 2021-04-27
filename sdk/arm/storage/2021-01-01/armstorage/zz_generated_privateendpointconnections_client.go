@@ -82,7 +82,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 func (client *PrivateEndpointConnectionsClient) deleteHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -147,7 +147,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *azcore.R
 func (client *PrivateEndpointConnectionsClient) getHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -276,7 +276,7 @@ func (client *PrivateEndpointConnectionsClient) putHandleResponse(resp *azcore.R
 func (client *PrivateEndpointConnectionsClient) putHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

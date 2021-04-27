@@ -51,9 +51,9 @@ func (p *blobRestoreStatusPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *blobRestoreStatusPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (BlobRestoreStatusResponse, error) {
+func (p *blobRestoreStatusPoller) pollUntilDone(ctx context.Context, freq time.Duration) (BlobRestoreStatusResponse, error) {
 	respType := BlobRestoreStatusResponse{BlobRestoreStatus: &BlobRestoreStatus{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.BlobRestoreStatus)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.BlobRestoreStatus)
 	if err != nil {
 		return BlobRestoreStatusResponse{}, err
 	}
@@ -91,8 +91,8 @@ func (p *httpPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *httpPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-	return p.pt.PollUntilDone(ctx, frequency, p.pipeline, nil)
+func (p *httpPoller) pollUntilDone(ctx context.Context, freq time.Duration) (*http.Response, error) {
+	return p.pt.PollUntilDone(ctx, freq, p.pipeline, nil)
 }
 
 // StorageAccountPoller provides polling facilities until the operation reaches a terminal state.
@@ -131,9 +131,9 @@ func (p *storageAccountPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
 
-func (p *storageAccountPoller) pollUntilDone(ctx context.Context, frequency time.Duration) (StorageAccountResponse, error) {
+func (p *storageAccountPoller) pollUntilDone(ctx context.Context, freq time.Duration) (StorageAccountResponse, error) {
 	respType := StorageAccountResponse{StorageAccount: &StorageAccount{}}
-	resp, err := p.pt.PollUntilDone(ctx, frequency, p.pipeline, respType.StorageAccount)
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.StorageAccount)
 	if err != nil {
 		return StorageAccountResponse{}, err
 	}

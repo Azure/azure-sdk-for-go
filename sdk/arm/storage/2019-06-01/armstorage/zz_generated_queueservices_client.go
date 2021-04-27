@@ -87,7 +87,7 @@ func (client *QueueServicesClient) getServicePropertiesHandleResponse(resp *azco
 func (client *QueueServicesClient) getServicePropertiesHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -148,7 +148,7 @@ func (client *QueueServicesClient) listHandleResponse(resp *azcore.Response) (Li
 func (client *QueueServicesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -211,7 +211,7 @@ func (client *QueueServicesClient) setServicePropertiesHandleResponse(resp *azco
 func (client *QueueServicesClient) setServicePropertiesHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

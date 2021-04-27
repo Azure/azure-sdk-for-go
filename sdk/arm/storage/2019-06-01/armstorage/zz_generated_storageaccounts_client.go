@@ -105,8 +105,8 @@ func (client *StorageAccountsClient) BeginCreate(ctx context.Context, resourceGr
 		return StorageAccountPollerResponse{}, err
 	}
 	poller := &storageAccountPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StorageAccountResponse, error) {
@@ -117,15 +117,27 @@ func (client *StorageAccountsClient) BeginCreate(ctx context.Context, resourceGr
 
 // ResumeCreate creates a new StorageAccountPoller from the specified resume token.
 // token - The value must come from a previous call to StorageAccountPoller.ResumeToken().
-func (client *StorageAccountsClient) ResumeCreate(token string) (StorageAccountPoller, error) {
+func (client *StorageAccountsClient) ResumeCreate(ctx context.Context, token string) (StorageAccountPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("StorageAccountsClient.Create", token, client.createHandleError)
 	if err != nil {
-		return nil, err
+		return StorageAccountPollerResponse{}, err
 	}
-	return &storageAccountPoller{
+	poller := &storageAccountPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return StorageAccountPollerResponse{}, err
+	}
+	result := StorageAccountPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StorageAccountResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Create - Asynchronously creates a new storage account with the specified parameters. If an account is already created and a subsequent create request
@@ -265,8 +277,8 @@ func (client *StorageAccountsClient) BeginFailover(ctx context.Context, resource
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -277,15 +289,27 @@ func (client *StorageAccountsClient) BeginFailover(ctx context.Context, resource
 
 // ResumeFailover creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *StorageAccountsClient) ResumeFailover(token string) (HTTPPoller, error) {
+func (client *StorageAccountsClient) ResumeFailover(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("StorageAccountsClient.Failover", token, client.failoverHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Failover - Failover request can be triggered for a storage account in case of availability issues. The failover occurs from the storage account's primary
@@ -802,8 +826,8 @@ func (client *StorageAccountsClient) BeginRestoreBlobRanges(ctx context.Context,
 		return BlobRestoreStatusPollerResponse{}, err
 	}
 	poller := &blobRestoreStatusPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (BlobRestoreStatusResponse, error) {
@@ -814,15 +838,27 @@ func (client *StorageAccountsClient) BeginRestoreBlobRanges(ctx context.Context,
 
 // ResumeRestoreBlobRanges creates a new BlobRestoreStatusPoller from the specified resume token.
 // token - The value must come from a previous call to BlobRestoreStatusPoller.ResumeToken().
-func (client *StorageAccountsClient) ResumeRestoreBlobRanges(token string) (BlobRestoreStatusPoller, error) {
+func (client *StorageAccountsClient) ResumeRestoreBlobRanges(ctx context.Context, token string) (BlobRestoreStatusPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("StorageAccountsClient.RestoreBlobRanges", token, client.restoreBlobRangesHandleError)
 	if err != nil {
-		return nil, err
+		return BlobRestoreStatusPollerResponse{}, err
 	}
-	return &blobRestoreStatusPoller{
+	poller := &blobRestoreStatusPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return BlobRestoreStatusPollerResponse{}, err
+	}
+	result := BlobRestoreStatusPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (BlobRestoreStatusResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // RestoreBlobRanges - Restore blobs in the specified blob ranges

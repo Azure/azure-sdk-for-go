@@ -85,7 +85,7 @@ func (client *DeletedAccountsClient) getHandleResponse(resp *azcore.Response) (D
 func (client *DeletedAccountsClient) getHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -138,7 +138,7 @@ func (client *DeletedAccountsClient) listHandleResponse(resp *azcore.Response) (
 func (client *DeletedAccountsClient) listHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

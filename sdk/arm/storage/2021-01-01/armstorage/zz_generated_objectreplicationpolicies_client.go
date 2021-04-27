@@ -89,7 +89,7 @@ func (client *ObjectReplicationPoliciesClient) createOrUpdateHandleResponse(resp
 func (client *ObjectReplicationPoliciesClient) createOrUpdateHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -145,7 +145,7 @@ func (client *ObjectReplicationPoliciesClient) deleteCreateRequest(ctx context.C
 func (client *ObjectReplicationPoliciesClient) deleteHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -210,7 +210,7 @@ func (client *ObjectReplicationPoliciesClient) getHandleResponse(resp *azcore.Re
 func (client *ObjectReplicationPoliciesClient) getHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -271,7 +271,7 @@ func (client *ObjectReplicationPoliciesClient) listHandleResponse(resp *azcore.R
 func (client *ObjectReplicationPoliciesClient) listHandleError(resp *azcore.Response) error {
 	var err ErrorResponse
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

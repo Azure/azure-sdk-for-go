@@ -3410,7 +3410,9 @@ type VirtualNetworkRule struct {
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {
-	if azcore.IsNullValue(v) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
 		m[k] = v

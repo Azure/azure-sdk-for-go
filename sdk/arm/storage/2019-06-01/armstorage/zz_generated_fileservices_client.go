@@ -86,7 +86,7 @@ func (client *FileServicesClient) getServicePropertiesHandleResponse(resp *azcor
 func (client *FileServicesClient) getServicePropertiesHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -147,7 +147,7 @@ func (client *FileServicesClient) listHandleResponse(resp *azcore.Response) (Fil
 func (client *FileServicesClient) listHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }
@@ -209,7 +209,7 @@ func (client *FileServicesClient) setServicePropertiesHandleResponse(resp *azcor
 func (client *FileServicesClient) setServicePropertiesHandleError(resp *azcore.Response) error {
 	var err CloudError
 	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
 	}
 	return azcore.NewResponseError(&err, resp.Response)
 }

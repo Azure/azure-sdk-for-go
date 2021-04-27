@@ -21,6 +21,19 @@ const (
 	accessTokenRespShortLived = `{"access_token": "` + tokenValue + `", "expires_in": 0}`
 )
 
+type delayPolicy struct {
+	delay time.Duration
+}
+
+func newDelayPolicy(d time.Duration) delayPolicy {
+	return delayPolicy{delay: d}
+}
+
+func (p delayPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
+	time.Sleep(p.delay)
+	return req.Next()
+}
+
 func defaultTestPipeline(srv azcore.Transport, cred azcore.Credential, scope string) azcore.Pipeline {
 	retryOpts := azcore.RetryOptions{
 		MaxRetryDelay: 500 * time.Millisecond,
@@ -90,8 +103,6 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespShortLived)))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespShortLived)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespShortLived)))
@@ -195,5 +206,55 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 	}
 	if resp != nil {
 		t.Fatal("expected nil response")
+	}
+}
+
+func TestBearerPolicy_ReusedTokenExpire(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespShortLived)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
+	options := ClientSecretCredentialOptions{}
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
+	if err != nil {
+		t.Fatalf("Unable to create credential. Received: %v", err)
+	}
+
+	// Get the bear token for the first time.
+	authPolicy := cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}})
+	p1 := azcore.NewPipeline(srv, authPolicy)
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = p1.Do(req)
+	if err != nil {
+		t.Fatal("unexpected nil error")
+	}
+
+	// Add a delay policy inside the credential's pipeline so that we can create multiple go routines reuse the same cred in the same time.
+	cred.client.pipeline = azcore.NewPipeline(srv, newDelayPolicy(100*time.Millisecond))
+	p2 := azcore.NewPipeline(srv, authPolicy)
+	p2Ch := make(chan error)
+
+	go func() {
+		_, err = p2.Do(req)
+		p2Ch <- err
+	}()
+
+	_, p1Err := p1.Do(req)
+	p2Err := <-p2Ch
+
+	var aade *AADAuthenticationFailedError
+	if !errors.As(p1Err, &aade) || aade.Message != "invalid_client" {
+		t.Fatalf("unexpected error type %v", p1Err)
+	}
+
+	var afe *AuthenticationFailedError
+	if !errors.As(p2Err, &afe) || afe.msg != "token gets expired before getting a refreshed one" {
+		t.Fatalf("unexpected error type %v", p2Err)
 	}
 }

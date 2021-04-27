@@ -15,6 +15,8 @@ const (
 	bearerTokenPrefix = "Bearer "
 )
 
+var expirationWindow = 2 * time.Minute
+
 type bearerTokenPolicy struct {
 	// cond is used to synchronize token refresh.  the locker
 	// must be locked when updating the following shared state.
@@ -50,7 +52,6 @@ func (b *bearerTokenPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
 	// create a "refresh window" before the token's real expiration date.
 	// this allows callers to continue to use the old token while the
 	// refresh is in progress.
-	const window = 2 * time.Minute
 	now, getToken, header := time.Now(), false, ""
 	// acquire exclusive lock
 	b.cond.L.Lock()
@@ -63,8 +64,10 @@ func (b *bearerTokenPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
 				getToken = true
 				break
 			}
+			b.unlock()
+			return nil, &AuthenticationFailedError{msg: "token gets expired before getting a refreshed one"}
 			// getting here means this go routine will wait for the token to refresh
-		} else if b.expiresOn.Add(-window).Before(now) {
+		} else if b.expiresOn.Add(-expirationWindow).Before(now) {
 			// token is within the expiration window
 			if !b.renewing {
 				// another go routine isn't refreshing the token so this one will

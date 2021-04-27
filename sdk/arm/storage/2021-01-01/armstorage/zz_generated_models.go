@@ -256,6 +256,135 @@ type BlobContainersUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// BlobInventoryPoliciesCreateOrUpdateOptions contains the optional parameters for the BlobInventoryPolicies.CreateOrUpdate method.
+type BlobInventoryPoliciesCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BlobInventoryPoliciesDeleteOptions contains the optional parameters for the BlobInventoryPolicies.Delete method.
+type BlobInventoryPoliciesDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BlobInventoryPoliciesGetOptions contains the optional parameters for the BlobInventoryPolicies.Get method.
+type BlobInventoryPoliciesGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BlobInventoryPoliciesListOptions contains the optional parameters for the BlobInventoryPolicies.List method.
+type BlobInventoryPoliciesListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// BlobInventoryPolicy - The storage account blob inventory policy.
+type BlobInventoryPolicy struct {
+	Resource
+	// Returns the storage account blob inventory policy rules.
+	Properties *BlobInventoryPolicyProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+}
+
+// BlobInventoryPolicyDefinition - An object that defines the blob inventory rule. Each definition consists of a set of filters.
+type BlobInventoryPolicyDefinition struct {
+	// An object that defines the filter set.
+	Filters *BlobInventoryPolicyFilter `json:"filters,omitempty"`
+}
+
+// BlobInventoryPolicyFilter - An object that defines the blob inventory rule filter conditions.
+type BlobInventoryPolicyFilter struct {
+	// An array of predefined enum values. Valid values include blockBlob, appendBlob, pageBlob. Hns accounts does not support pageBlobs.
+	BlobTypes *[]*string `json:"blobTypes,omitempty"`
+
+	// Includes blob versions in blob inventory when value set to true.
+	IncludeBlobVersions *bool `json:"includeBlobVersions,omitempty"`
+
+	// Includes blob snapshots in blob inventory when value set to true.
+	IncludeSnapshots *bool `json:"includeSnapshots,omitempty"`
+
+	// An array of strings for blob prefixes to be matched.
+	PrefixMatch *[]*string `json:"prefixMatch,omitempty"`
+}
+
+// BlobInventoryPolicyProperties - The storage account blob inventory policy properties.
+type BlobInventoryPolicyProperties struct {
+	// READ-ONLY; Returns the last modified date and time of the blob inventory policy.
+	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
+
+	// The storage account blob inventory policy object. It is composed of policy rules.
+	Policy *BlobInventoryPolicySchema `json:"policy,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type BlobInventoryPolicyProperties.
+func (b BlobInventoryPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "lastModifiedTime", (*timeRFC3339)(b.LastModifiedTime))
+	populate(objectMap, "policy", b.Policy)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type BlobInventoryPolicyProperties.
+func (b *BlobInventoryPolicyProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]*json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "lastModifiedTime":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			b.LastModifiedTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "policy":
+			err = unpopulate(val, &b.Policy)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// BlobInventoryPolicyResponse is the response envelope for operations that return a BlobInventoryPolicy type.
+type BlobInventoryPolicyResponse struct {
+	// The storage account blob inventory policy.
+	BlobInventoryPolicy *BlobInventoryPolicy
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// BlobInventoryPolicyRule - An object that wraps the blob inventory rule. Each rule is uniquely defined by name.
+type BlobInventoryPolicyRule struct {
+	// An object that defines the blob inventory policy rule.
+	Definition *BlobInventoryPolicyDefinition `json:"definition,omitempty"`
+
+	// Rule is enabled when set to true.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// A rule name can contain any combination of alpha numeric characters. Rule name is case-sensitive. It must be unique within a policy.
+	Name *string `json:"name,omitempty"`
+}
+
+// BlobInventoryPolicySchema - The storage account blob inventory policy rules.
+type BlobInventoryPolicySchema struct {
+	// Container name where blob inventory files are stored. Must be pre-created.
+	Destination *string `json:"destination,omitempty"`
+
+	// Policy is enabled if set to true.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// The storage account blob inventory policy rules. The rule is applied when it is enabled.
+	Rules *[]*BlobInventoryPolicyRule `json:"rules,omitempty"`
+
+	// The valid value is Inventory
+	Type *InventoryRuleType `json:"type,omitempty"`
+}
+
 // BlobRestoreParameters - Blob restore parameters
 type BlobRestoreParameters struct {
 	// Blob ranges to restore.
@@ -395,6 +524,9 @@ type BlobServicePropertiesAutoGenerated struct {
 	// Versioning is enabled if set to true.
 	IsVersioningEnabled *bool `json:"isVersioningEnabled,omitempty"`
 
+	// The blob service property to configure last access time based tracking policy.
+	LastAccessTimeTrackingPolicy *LastAccessTimeTrackingPolicy `json:"lastAccessTimeTrackingPolicy,omitempty"`
+
 	// The blob service properties for blob restore policy.
 	RestorePolicy *RestorePolicyProperties `json:"restorePolicy,omitempty"`
 }
@@ -427,6 +559,10 @@ type BlobServicesSetServicePropertiesOptions struct {
 type ChangeFeed struct {
 	// Indicates whether change feed event logging is enabled for the Blob service.
 	Enabled *bool `json:"enabled,omitempty"`
+
+	// Indicates the duration of changeFeed retention in days. Minimum value is 1 day and maximum value is 146000 days (400 years). A null value indicates an
+	// infinite retention of the change feed.
+	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
 }
 
 // CheckNameAvailabilityResult - The CheckNameAvailability operation response.
@@ -681,8 +817,12 @@ type DateAfterCreation struct {
 	DaysAfterCreationGreaterThan *float32 `json:"daysAfterCreationGreaterThan,omitempty"`
 }
 
-// DateAfterModification - Object to define the number of days after last modification.
+// DateAfterModification - Object to define the number of days after object last modification Or last access. Properties daysAfterModificationGreaterThan
+// and daysAfterLastAccessTimeGreaterThan are mutually exclusive.
 type DateAfterModification struct {
+	// Value indicating the age in days after last blob access. This property can only be used in conjunction with last access time tracking policy
+	DaysAfterLastAccessTimeGreaterThan *float32 `json:"daysAfterLastAccessTimeGreaterThan,omitempty"`
+
 	// Value indicating the age in days after last modification
 	DaysAfterModificationGreaterThan *float32 `json:"daysAfterModificationGreaterThan,omitempty"`
 }
@@ -694,6 +834,69 @@ type DeleteRetentionPolicy struct {
 
 	// Indicates whether DeleteRetentionPolicy is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// DeletedAccount - Deleted storage account
+type DeletedAccount struct {
+	ProxyResource
+	// Properties of the deleted account.
+	Properties *DeletedAccountProperties `json:"properties,omitempty"`
+}
+
+// DeletedAccountListResult - The response from the List Deleted Accounts operation.
+type DeletedAccountListResult struct {
+	// READ-ONLY; Request URL that can be used to query next page of deleted accounts. Returned when total number of requested deleted accounts exceed maximum
+	// page size.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the list of deleted accounts and their properties.
+	Value *[]*DeletedAccount `json:"value,omitempty" azure:"ro"`
+}
+
+// DeletedAccountListResultResponse is the response envelope for operations that return a DeletedAccountListResult type.
+type DeletedAccountListResultResponse struct {
+	// The response from the List Deleted Accounts operation.
+	DeletedAccountListResult *DeletedAccountListResult
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DeletedAccountProperties - Attributes of a deleted storage account.
+type DeletedAccountProperties struct {
+	// READ-ONLY; Creation time of the deleted account.
+	CreationTime *string `json:"creationTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Deletion time of the deleted account.
+	DeletionTime *string `json:"deletionTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Location of the deleted account.
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; Can be used to attempt recovering this deleted account via PutStorageAccount API.
+	RestoreReference *string `json:"restoreReference,omitempty" azure:"ro"`
+
+	// READ-ONLY; Full resource id of the original storage account.
+	StorageAccountResourceID *string `json:"storageAccountResourceId,omitempty" azure:"ro"`
+}
+
+// DeletedAccountResponse is the response envelope for operations that return a DeletedAccount type.
+type DeletedAccountResponse struct {
+	// Deleted storage account
+	DeletedAccount *DeletedAccount
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DeletedAccountsGetOptions contains the optional parameters for the DeletedAccounts.Get method.
+type DeletedAccountsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DeletedAccountsListOptions contains the optional parameters for the DeletedAccounts.List method.
+type DeletedAccountsListOptions struct {
+	// placeholder for future optional parameters
 }
 
 // DeletedShare - The deleted share to be restored.
@@ -716,6 +919,9 @@ type Dimension struct {
 
 // Encryption - The encryption settings on the storage account.
 type Encryption struct {
+	// The identity to be used with service-side encryption at rest.
+	EncryptionIdentity *EncryptionIdentity `json:"identity,omitempty"`
+
 	// The encryption keySource (provider). Possible values (case-insensitive): Microsoft.Storage, Microsoft.Keyvault
 	KeySource *KeySource `json:"keySource,omitempty"`
 
@@ -727,6 +933,12 @@ type Encryption struct {
 
 	// List of services which support encryption.
 	Services *EncryptionServices `json:"services,omitempty"`
+}
+
+// EncryptionIdentity - Encryption identity for the storage account.
+type EncryptionIdentity struct {
+	// Resource identifier of the UserAssigned identity to be associated with server-side encryption on the storage account.
+	EncryptionUserAssignedIdentity *string `json:"userAssignedIdentity,omitempty"`
 }
 
 // EncryptionScope - The Encryption Scope resource.
@@ -746,9 +958,52 @@ func (e EncryptionScope) MarshalJSON() ([]byte, error) {
 // EncryptionScopeKeyVaultProperties - The key vault properties for the encryption scope. This is a required field if encryption scope 'source' attribute
 // is set to 'Microsoft.KeyVault'.
 type EncryptionScopeKeyVaultProperties struct {
+	// READ-ONLY; The object identifier of the current versioned Key Vault Key in use.
+	CurrentVersionedKeyIdentifier *string `json:"currentVersionedKeyIdentifier,omitempty" azure:"ro"`
+
 	// The object identifier for a key vault key object. When applied, the encryption scope will use the key referenced by the identifier to enable customer-managed
 	// key support on this encryption scope.
 	KeyURI *string `json:"keyUri,omitempty"`
+
+	// READ-ONLY; Timestamp of last rotation of the Key Vault Key.
+	LastKeyRotationTimestamp *time.Time `json:"lastKeyRotationTimestamp,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type EncryptionScopeKeyVaultProperties.
+func (e EncryptionScopeKeyVaultProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "currentVersionedKeyIdentifier", e.CurrentVersionedKeyIdentifier)
+	populate(objectMap, "keyUri", e.KeyURI)
+	populate(objectMap, "lastKeyRotationTimestamp", (*timeRFC3339)(e.LastKeyRotationTimestamp))
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EncryptionScopeKeyVaultProperties.
+func (e *EncryptionScopeKeyVaultProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]*json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "currentVersionedKeyIdentifier":
+			err = unpopulate(val, &e.CurrentVersionedKeyIdentifier)
+			delete(rawMsg, key)
+		case "keyUri":
+			err = unpopulate(val, &e.KeyURI)
+			delete(rawMsg, key)
+		case "lastKeyRotationTimestamp":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			e.LastKeyRotationTimestamp = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // EncryptionScopeListResult - List of encryption scopes requested, and if paging is required, a URL to the next page of encryption scopes.
@@ -781,6 +1036,9 @@ type EncryptionScopeProperties struct {
 	// READ-ONLY; Gets the last modification date and time of the encryption scope in UTC.
 	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty" azure:"ro"`
 
+	// A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest.
+	RequireInfrastructureEncryption *bool `json:"requireInfrastructureEncryption,omitempty"`
+
 	// The provider for the encryption scope. Possible values (case-insensitive): Microsoft.Storage, Microsoft.KeyVault.
 	Source *EncryptionScopeSource `json:"source,omitempty"`
 
@@ -794,6 +1052,7 @@ func (e EncryptionScopeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "creationTime", (*timeRFC3339)(e.CreationTime))
 	populate(objectMap, "keyVaultProperties", e.KeyVaultProperties)
 	populate(objectMap, "lastModifiedTime", (*timeRFC3339)(e.LastModifiedTime))
+	populate(objectMap, "requireInfrastructureEncryption", e.RequireInfrastructureEncryption)
 	populate(objectMap, "source", e.Source)
 	populate(objectMap, "state", e.State)
 	return json.Marshal(objectMap)
@@ -820,6 +1079,9 @@ func (e *EncryptionScopeProperties) UnmarshalJSON(data []byte) error {
 			var aux timeRFC3339
 			err = unpopulate(val, &aux)
 			e.LastModifiedTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "requireInfrastructureEncryption":
+			err = unpopulate(val, &e.RequireInfrastructureEncryption)
 			delete(rawMsg, key)
 		case "source":
 			err = unpopulate(val, &e.Source)
@@ -960,6 +1222,30 @@ type Endpoints struct {
 
 // ErrorResponse - An error response from the storage resource provider.
 type ErrorResponse struct {
+	// Azure Storage Resource Provider error response body.
+	InnerError *ErrorResponseBody `json:"error,omitempty"`
+}
+
+// Error implements the error interface for type ErrorResponse.
+func (e ErrorResponse) Error() string {
+	msg := ""
+	if e.InnerError != nil {
+		msg += "InnerError: \n"
+		if e.InnerError.Code != nil {
+			msg += fmt.Sprintf("\tCode: %v\n", *e.InnerError.Code)
+		}
+		if e.InnerError.Message != nil {
+			msg += fmt.Sprintf("\tMessage: %v\n", *e.InnerError.Message)
+		}
+	}
+	if msg == "" {
+		msg = "missing error info"
+	}
+	return msg
+}
+
+// ErrorResponseBody - Error response body contract.
+type ErrorResponseBody struct {
 	// An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
 	Code *string `json:"code,omitempty"`
 
@@ -967,19 +1253,13 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// Error implements the error interface for type ErrorResponse.
-func (e ErrorResponse) Error() string {
-	msg := ""
-	if e.Code != nil {
-		msg += fmt.Sprintf("Code: %v\n", *e.Code)
-	}
-	if e.Message != nil {
-		msg += fmt.Sprintf("Message: %v\n", *e.Message)
-	}
-	if msg == "" {
-		msg = "missing error info"
-	}
-	return msg
+// ExtendedLocation - The complex type of the extended location.
+type ExtendedLocation struct {
+	// The name of the extended location.
+	Name *string `json:"name,omitempty"`
+
+	// The type of the extended location.
+	Type *ExtendedLocationTypes `json:"type,omitempty"`
 }
 
 type FileServiceItems struct {
@@ -1011,6 +1291,9 @@ type FileServicePropertiesAutoGenerated struct {
 	// body, all CORS rules will be deleted, and
 	// CORS will be disabled for the File service.
 	Cors *CorsRules `json:"cors,omitempty"`
+
+	// Protocol settings for file service
+	ProtocolSettings *ProtocolSettings `json:"protocolSettings,omitempty"`
 
 	// The file service properties for share soft delete.
 	ShareDeleteRetentionPolicy *DeleteRetentionPolicy `json:"shareDeleteRetentionPolicy,omitempty"`
@@ -1118,6 +1401,9 @@ type FileShareProperties struct {
 	// READ-ONLY; The approximate size of the data stored on the share. Note that this value may not include all recently created or recently resized files.
 	ShareUsageBytes *int64 `json:"shareUsageBytes,omitempty" azure:"ro"`
 
+	// READ-ONLY; Creation time of share snapshot returned in the response of list shares with expand param "snapshots".
+	SnapshotTime *time.Time `json:"snapshotTime,omitempty" azure:"ro"`
+
 	// READ-ONLY; The version of the share.
 	Version *string `json:"version,omitempty" azure:"ro"`
 }
@@ -1137,6 +1423,7 @@ func (f FileShareProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "rootSquash", f.RootSquash)
 	populate(objectMap, "shareQuota", f.ShareQuota)
 	populate(objectMap, "shareUsageBytes", f.ShareUsageBytes)
+	populate(objectMap, "snapshotTime", (*timeRFC3339)(f.SnapshotTime))
 	populate(objectMap, "version", f.Version)
 	return json.Marshal(objectMap)
 }
@@ -1192,6 +1479,11 @@ func (f *FileShareProperties) UnmarshalJSON(data []byte) error {
 		case "shareUsageBytes":
 			err = unpopulate(val, &f.ShareUsageBytes)
 			delete(rawMsg, key)
+		case "snapshotTime":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			f.SnapshotTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "version":
 			err = unpopulate(val, &f.Version)
 			delete(rawMsg, key)
@@ -1214,24 +1506,28 @@ type FileShareResponse struct {
 
 // FileSharesCreateOptions contains the optional parameters for the FileShares.Create method.
 type FileSharesCreateOptions struct {
-	// placeholder for future optional parameters
+	// Optional, used to create a snapshot.
+	Expand *PutSharesExpand
 }
 
 // FileSharesDeleteOptions contains the optional parameters for the FileShares.Delete method.
 type FileSharesDeleteOptions struct {
-	// placeholder for future optional parameters
+	// Optional, used to delete a snapshot.
+	XMSSnapshot *string
 }
 
 // FileSharesGetOptions contains the optional parameters for the FileShares.Get method.
 type FileSharesGetOptions struct {
 	// Optional, used to expand the properties within share's properties.
 	Expand *string
+	// Optional, used to retrieve properties of a snapshot.
+	XMSSnapshot *string
 }
 
 // FileSharesListOptions contains the optional parameters for the FileShares.List method.
 type FileSharesListOptions struct {
 	// Optional, used to expand the properties within share's properties.
-	Expand *string
+	Expand *ListSharesExpand
 	// Optional. When specified, only share names starting with the filter will be listed.
 	Filter *string
 	// Optional. Specified maximum number of shares that can be included in the list.
@@ -1333,7 +1629,12 @@ type Identity struct {
 	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
 
 	// The identity type.
-	Type *string `json:"type,omitempty"`
+	Type *IdentityType `json:"type,omitempty"`
+
+	// Gets or sets a list of key value pairs that describe the set of User Assigned identities that will be used with this storage account. The key is the
+	// ARM resource identifier of the identity. Only 1
+	// User Assigned identity is permitted here.
+	UserAssignedIdentities *map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
 }
 
 // ImmutabilityPolicy - The ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag.
@@ -1444,6 +1745,22 @@ func (k *KeyVaultProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// LastAccessTimeTrackingPolicy - The blob service properties for Last access time based tracking policy.
+type LastAccessTimeTrackingPolicy struct {
+	// An array of predefined supported blob types. Only blockBlob is the supported value. This field is currently read only
+	BlobType *[]*string `json:"blobType,omitempty"`
+
+	// When set to true last access time based tracking is enabled.
+	Enable *bool `json:"enable,omitempty"`
+
+	// Name of the policy. The valid value is AccessTimeTracking. This field is currently read only
+	Name *Name `json:"name,omitempty"`
+
+	// The field specifies blob object tracking granularity in days, typically how often the blob object should be tracked.This field is currently read only
+	// with value as 1
+	TrackingGranularityInDays *int32 `json:"trackingGranularityInDays,omitempty"`
+}
+
 // LeaseContainerRequest - Lease Container request schema.
 type LeaseContainerRequest struct {
 	// Specifies the lease action. Can be one of the available actions.
@@ -1521,6 +1838,21 @@ type ListAccountSasResponse struct {
 type ListAccountSasResponseResponse struct {
 	// The List SAS credentials operation response.
 	ListAccountSasResponse *ListAccountSasResponse
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ListBlobInventoryPolicy - List of blob inventory policies returned.
+type ListBlobInventoryPolicy struct {
+	// READ-ONLY; List of blob inventory policies.
+	Value *[]*BlobInventoryPolicy `json:"value,omitempty" azure:"ro"`
+}
+
+// ListBlobInventoryPolicyResponse is the response envelope for operations that return a ListBlobInventoryPolicy type.
+type ListBlobInventoryPolicyResponse struct {
+	// List of blob inventory policies returned.
+	ListBlobInventoryPolicy *ListBlobInventoryPolicy
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1668,12 +2000,18 @@ type ManagementPolicyAction struct {
 
 	// The management policy action for snapshot
 	Snapshot *ManagementPolicySnapShot `json:"snapshot,omitempty"`
+
+	// The management policy action for version
+	Version *ManagementPolicyVersion `json:"version,omitempty"`
 }
 
 // ManagementPolicyBaseBlob - Management policy action for base blob.
 type ManagementPolicyBaseBlob struct {
 	// The function to delete the blob
 	Delete *DateAfterModification `json:"delete,omitempty"`
+
+	// This property enables auto tiering of a blob from cool to hot on a blob access. This property requires tierToCool.daysAfterLastAccessTimeGreaterThan.
+	EnableAutoTierToHotFromCool *bool `json:"enableAutoTierToHotFromCool,omitempty"`
 
 	// The function to tier blobs to archive storage. Support blobs currently at Hot or Cool tier
 	TierToArchive *DateAfterModification `json:"tierToArchive,omitempty"`
@@ -1697,7 +2035,7 @@ type ManagementPolicyFilter struct {
 	// An array of blob index tag based filters, there can be at most 10 tag filters
 	BlobIndexMatch *[]*TagFilter `json:"blobIndexMatch,omitempty"`
 
-	// An array of predefined enum values. Only blockBlob is supported.
+	// An array of predefined enum values. Currently blockBlob supports all tiering and delete actions. Only delete actions are supported for appendBlob.
 	BlobTypes *[]*string `json:"blobTypes,omitempty"`
 
 	// An array of strings for prefixes to be match.
@@ -1780,6 +2118,24 @@ type ManagementPolicySchema struct {
 type ManagementPolicySnapShot struct {
 	// The function to delete the blob snapshot
 	Delete *DateAfterCreation `json:"delete,omitempty"`
+
+	// The function to tier blob snapshot to archive storage. Support blob snapshot currently at Hot or Cool tier
+	TierToArchive *DateAfterCreation `json:"tierToArchive,omitempty"`
+
+	// The function to tier blob snapshot to cool storage. Support blob snapshot currently at Hot tier
+	TierToCool *DateAfterCreation `json:"tierToCool,omitempty"`
+}
+
+// ManagementPolicyVersion - Management policy action for blob version.
+type ManagementPolicyVersion struct {
+	// The function to delete the blob version
+	Delete *DateAfterCreation `json:"delete,omitempty"`
+
+	// The function to tier blob version to archive storage. Support blob version currently at Hot or Cool tier
+	TierToArchive *DateAfterCreation `json:"tierToArchive,omitempty"`
+
+	// The function to tier blob version to cool storage. Support blob version currently at Hot tier
+	TierToCool *DateAfterCreation `json:"tierToCool,omitempty"`
 }
 
 // MetricSpecification - Metric specification of operation.
@@ -1812,6 +2168,12 @@ type MetricSpecification struct {
 	Unit *string `json:"unit,omitempty"`
 }
 
+// Multichannel setting. Applies to Premium FileStorage only.
+type Multichannel struct {
+	// Indicates whether multichannel is enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 // NetworkRuleSet - Network rule set
 type NetworkRuleSet struct {
 	// Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Possible values are any combination of Logging|Metrics|AzureServices (For example,
@@ -1824,6 +2186,9 @@ type NetworkRuleSet struct {
 
 	// Sets the IP ACL rules
 	IPRules *[]*IPRule `json:"ipRules,omitempty"`
+
+	// Sets the resource access rules
+	ResourceAccessRules *[]*ResourceAccessRule `json:"resourceAccessRules,omitempty"`
 
 	// Sets the virtual network rules
 	VirtualNetworkRules *[]*VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
@@ -2145,6 +2510,17 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
 }
 
+// ProtocolSettings - Protocol settings for file service
+type ProtocolSettings struct {
+	// Setting for SMB protocol
+	Smb *SmbSetting `json:"smb,omitempty"`
+}
+
+// ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a location
+type ProxyResource struct {
+	Resource
+}
+
 // QueueCreateOptions contains the optional parameters for the Queue.Create method.
 type QueueCreateOptions struct {
 	// placeholder for future optional parameters
@@ -2239,6 +2615,15 @@ func (r Resource) marshalInternal() map[string]interface{} {
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "type", r.Type)
 	return objectMap
+}
+
+// ResourceAccessRule - Resource Access Rule.
+type ResourceAccessRule struct {
+	// Resource Id
+	ResourceID *string `json:"resourceId,omitempty"`
+
+	// Tenant Id
+	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // RestorePolicyProperties - The blob service properties for blob restore policy
@@ -2537,9 +2922,30 @@ type ServiceSpecification struct {
 	MetricSpecifications *[]*MetricSpecification `json:"metricSpecifications,omitempty"`
 }
 
+// SmbSetting - Setting for SMB protocol
+type SmbSetting struct {
+	// SMB authentication methods supported by server. Valid values are NTLMv2, Kerberos. Should be passed as a string with delimiter ';'.
+	AuthenticationMethods *string `json:"authenticationMethods,omitempty"`
+
+	// SMB channel encryption supported by server. Valid values are AES-128-CCM, AES-128-GCM, AES-256-GCM. Should be passed as a string with delimiter ';'.
+	ChannelEncryption *string `json:"channelEncryption,omitempty"`
+
+	// Kerberos ticket encryption supported by server. Valid values are RC4-HMAC, AES-256. Should be passed as a string with delimiter ';'
+	KerberosTicketEncryption *string `json:"kerberosTicketEncryption,omitempty"`
+
+	// Multichannel setting. Applies to Premium FileStorage only.
+	Multichannel *Multichannel `json:"multichannel,omitempty"`
+
+	// SMB protocol versions supported by server. Valid values are SMB2.1, SMB3.0, SMB3.1.1. Should be passed as a string with delimiter ';'.
+	Versions *string `json:"versions,omitempty"`
+}
+
 // StorageAccount - The storage account.
 type StorageAccount struct {
 	TrackedResource
+	// The extendedLocation of the resource.
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
 	// The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 
@@ -2564,6 +2970,10 @@ type StorageAccountCheckNameAvailabilityParameters struct {
 
 // StorageAccountCreateParameters - The parameters used when creating a storage account.
 type StorageAccountCreateParameters struct {
+	// Optional. Set the extended location of the resource. If not set, the storage account will be created in Azure main region. Otherwise it will be created
+	// in the specified extended location
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
 	// The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
 
@@ -2690,6 +3100,11 @@ type StorageAccountProperties struct {
 	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for this property.
 	AllowBlobPublicAccess *bool `json:"allowBlobPublicAccess,omitempty"`
 
+	// Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including
+	// shared access signatures, must be authorized
+	// with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+	AllowSharedKeyAccess *bool `json:"allowSharedKeyAccess,omitempty"`
+
 	// Provides the identity based authentication settings for Azure Files.
 	AzureFilesIdentityBasedAuthentication *AzureFilesIdentityBasedAuthentication `json:"azureFilesIdentityBasedAuthentication,omitempty"`
 
@@ -2704,6 +3119,9 @@ type StorageAccountProperties struct {
 
 	// Allows https traffic only to storage service if sets to true.
 	EnableHTTPSTrafficOnly *bool `json:"supportsHttpsTrafficOnly,omitempty"`
+
+	// NFS 3.0 protocol support enabled if set to true.
+	EnableNfsV3 *bool `json:"isNfsV3Enabled,omitempty"`
 
 	// READ-ONLY; Gets the encryption settings on the account. If unspecified, the account is unencrypted.
 	Encryption *Encryption `json:"encryption,omitempty" azure:"ro"`
@@ -2767,11 +3185,13 @@ func (s StorageAccountProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "accessTier", s.AccessTier)
 	populate(objectMap, "allowBlobPublicAccess", s.AllowBlobPublicAccess)
+	populate(objectMap, "allowSharedKeyAccess", s.AllowSharedKeyAccess)
 	populate(objectMap, "azureFilesIdentityBasedAuthentication", s.AzureFilesIdentityBasedAuthentication)
 	populate(objectMap, "blobRestoreStatus", s.BlobRestoreStatus)
 	populate(objectMap, "creationTime", (*timeRFC3339)(s.CreationTime))
 	populate(objectMap, "customDomain", s.CustomDomain)
 	populate(objectMap, "supportsHttpsTrafficOnly", s.EnableHTTPSTrafficOnly)
+	populate(objectMap, "isNfsV3Enabled", s.EnableNfsV3)
 	populate(objectMap, "encryption", s.Encryption)
 	populate(objectMap, "failoverInProgress", s.FailoverInProgress)
 	populate(objectMap, "geoReplicationStats", s.GeoReplicationStats)
@@ -2807,6 +3227,9 @@ func (s *StorageAccountProperties) UnmarshalJSON(data []byte) error {
 		case "allowBlobPublicAccess":
 			err = unpopulate(val, &s.AllowBlobPublicAccess)
 			delete(rawMsg, key)
+		case "allowSharedKeyAccess":
+			err = unpopulate(val, &s.AllowSharedKeyAccess)
+			delete(rawMsg, key)
 		case "azureFilesIdentityBasedAuthentication":
 			err = unpopulate(val, &s.AzureFilesIdentityBasedAuthentication)
 			delete(rawMsg, key)
@@ -2823,6 +3246,9 @@ func (s *StorageAccountProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "supportsHttpsTrafficOnly":
 			err = unpopulate(val, &s.EnableHTTPSTrafficOnly)
+			delete(rawMsg, key)
+		case "isNfsV3Enabled":
+			err = unpopulate(val, &s.EnableNfsV3)
 			delete(rawMsg, key)
 		case "encryption":
 			err = unpopulate(val, &s.Encryption)
@@ -2893,6 +3319,11 @@ type StorageAccountPropertiesCreateParameters struct {
 	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for this property.
 	AllowBlobPublicAccess *bool `json:"allowBlobPublicAccess,omitempty"`
 
+	// Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including
+	// shared access signatures, must be authorized
+	// with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+	AllowSharedKeyAccess *bool `json:"allowSharedKeyAccess,omitempty"`
+
 	// Provides the identity based authentication settings for Azure Files.
 	AzureFilesIdentityBasedAuthentication *AzureFilesIdentityBasedAuthentication `json:"azureFilesIdentityBasedAuthentication,omitempty"`
 
@@ -2903,6 +3334,9 @@ type StorageAccountPropertiesCreateParameters struct {
 
 	// Allows https traffic only to storage service if sets to true. The default value is true since API version 2019-04-01.
 	EnableHTTPSTrafficOnly *bool `json:"supportsHttpsTrafficOnly,omitempty"`
+
+	// NFS 3.0 protocol support enabled if set to true.
+	EnableNfsV3 *bool `json:"isNfsV3Enabled,omitempty"`
 
 	// Not applicable. Azure Storage encryption is enabled for all storage accounts and cannot be disabled.
 	Encryption *Encryption `json:"encryption,omitempty"`
@@ -2930,6 +3364,11 @@ type StorageAccountPropertiesUpdateParameters struct {
 
 	// Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for this property.
 	AllowBlobPublicAccess *bool `json:"allowBlobPublicAccess,omitempty"`
+
+	// Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including
+	// shared access signatures, must be authorized
+	// with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+	AllowSharedKeyAccess *bool `json:"allowSharedKeyAccess,omitempty"`
 
 	// Provides the identity based authentication settings for Azure Files.
 	AzureFilesIdentityBasedAuthentication *AzureFilesIdentityBasedAuthentication `json:"azureFilesIdentityBasedAuthentication,omitempty"`
@@ -3111,6 +3550,78 @@ type StorageSKUListResultResponse struct {
 
 	// The response from the List Storage SKUs operation.
 	StorageSKUListResult *StorageSKUListResult
+}
+
+// SystemData - Metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// The timestamp of resource creation (UTC).
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+
+	// The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+
+	// The type of identity that created the resource.
+	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+
+	// The timestamp of resource last modification (UTC)
+	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+
+	// The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+
+	// The type of identity that last modified the resource.
+	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type SystemData.
+func (s SystemData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "createdAt", (*timeRFC3339)(s.CreatedAt))
+	populate(objectMap, "createdBy", s.CreatedBy)
+	populate(objectMap, "createdByType", s.CreatedByType)
+	populate(objectMap, "lastModifiedAt", (*timeRFC3339)(s.LastModifiedAt))
+	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
+	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type SystemData.
+func (s *SystemData) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]*json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "createdAt":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			s.CreatedAt = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "createdBy":
+			err = unpopulate(val, &s.CreatedBy)
+			delete(rawMsg, key)
+		case "createdByType":
+			err = unpopulate(val, &s.CreatedByType)
+			delete(rawMsg, key)
+		case "lastModifiedAt":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			s.LastModifiedAt = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "lastModifiedBy":
+			err = unpopulate(val, &s.LastModifiedBy)
+			delete(rawMsg, key)
+		case "lastModifiedByType":
+			err = unpopulate(val, &s.LastModifiedByType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // Table - Properties of the table, including Id, resource name, resource type.
@@ -3395,6 +3906,15 @@ type UsageName struct {
 // UsagesListByLocationOptions contains the optional parameters for the Usages.ListByLocation method.
 type UsagesListByLocationOptions struct {
 	// placeholder for future optional parameters
+}
+
+// UserAssignedIdentity for the resource.
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the identity.
+	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The principal ID of the identity.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }
 
 // VirtualNetworkRule - Virtual Network rule.

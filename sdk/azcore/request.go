@@ -233,7 +233,7 @@ func (req *Request) SkipBodyDownload() {
 
 // RewindBody seeks the request's Body stream back to the beginning so it can be resent when retrying an operation.
 func (req *Request) RewindBody() error {
-	if req.Body != nil {
+	if req.Body != nil && req.Body != http.NoBody {
 		// Reset the stream back to the beginning
 		_, err := req.Body.(io.Seeker).Seek(0, io.SeekStart)
 		return err

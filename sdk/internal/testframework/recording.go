@@ -33,7 +33,7 @@ type Recording struct {
 	recorder                 *recorder.Recorder
 	src                      rand.Source
 	now                      *time.Time
-	sanitizer                *RecordingSanitizer
+	Sanitizer                *RecordingSanitizer
 	c                        TestContext
 }
 
@@ -104,7 +104,7 @@ func NewRecording(c TestContext, mode RecordMode) (*Recording, error) {
 	rec.SetMatcher(recording.matchRequest)
 
 	// wire up the sanitizer
-	DefaultSanitizer(rec)
+	recording.Sanitizer = DefaultSanitizer(rec)
 
 	return recording, err
 }

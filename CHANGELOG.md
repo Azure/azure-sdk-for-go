@@ -13,7 +13,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight` | [details](services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v53.4.0/services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight/CHANGELOG.md) |
 
 ## `v53.3.0`
 

@@ -25,7 +25,7 @@ type Account struct {
 	autorest.Response `json:"-"`
 	// Sku - READ-ONLY; Gets the SKU.
 	Sku *Sku `json:"sku,omitempty"`
-	// Kind - READ-ONLY; Gets the Kind. Possible values include: 'Storage', 'StorageV2', 'BlobStorage', 'FileStorage', 'BlockBlobStorage'
+	// Kind - READ-ONLY; Gets the Kind. Possible values include: 'KindStorage', 'KindStorageV2', 'KindBlobStorage', 'KindFileStorage', 'KindBlockBlobStorage'
 	Kind Kind `json:"kind,omitempty"`
 	// Identity - The identity of the resource.
 	Identity *Identity `json:"identity,omitempty"`
@@ -184,7 +184,7 @@ type AccountCheckNameAvailabilityParameters struct {
 type AccountCreateParameters struct {
 	// Sku - Required. Gets or sets the SKU name.
 	Sku *Sku `json:"sku,omitempty"`
-	// Kind - Required. Indicates the type of storage account. Possible values include: 'Storage', 'StorageV2', 'BlobStorage', 'FileStorage', 'BlockBlobStorage'
+	// Kind - Required. Indicates the type of storage account. Possible values include: 'KindStorage', 'KindStorageV2', 'KindBlobStorage', 'KindFileStorage', 'KindBlockBlobStorage'
 	Kind Kind `json:"kind,omitempty"`
 	// Location - Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
 	Location *string `json:"location,omitempty"`
@@ -322,7 +322,7 @@ type AccountKey struct {
 	KeyName *string `json:"keyName,omitempty"`
 	// Value - READ-ONLY; Base 64-encoded value of the key.
 	Value *string `json:"value,omitempty"`
-	// Permissions - READ-ONLY; Permissions for the key -- read-only or full permissions. Possible values include: 'Read', 'Full'
+	// Permissions - READ-ONLY; Permissions for the key -- read-only or full permissions. Possible values include: 'KeyPermissionRead', 'KeyPermissionFull'
 	Permissions KeyPermission `json:"permissions,omitempty"`
 	// CreationTime - READ-ONLY; Creation time of the key, in round trip date format.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
@@ -513,19 +513,19 @@ type AccountMicrosoftEndpoints struct {
 
 // AccountProperties properties of the storage account.
 type AccountProperties struct {
-	// ProvisioningState - READ-ONLY; Gets the status of the storage account at the time the operation was called. Possible values include: 'Creating', 'ResolvingDNS', 'Succeeded'
+	// ProvisioningState - READ-ONLY; Gets the status of the storage account at the time the operation was called. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateResolvingDNS', 'ProvisioningStateSucceeded'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrimaryEndpoints - READ-ONLY; Gets the URLs that are used to perform a retrieval of a public blob, queue, or table object. Note that Standard_ZRS and Premium_LRS accounts only return the blob endpoint.
 	PrimaryEndpoints *Endpoints `json:"primaryEndpoints,omitempty"`
 	// PrimaryLocation - READ-ONLY; Gets the location of the primary data center for the storage account.
 	PrimaryLocation *string `json:"primaryLocation,omitempty"`
-	// StatusOfPrimary - READ-ONLY; Gets the status indicating whether the primary location of the storage account is available or unavailable. Possible values include: 'Available', 'Unavailable'
+	// StatusOfPrimary - READ-ONLY; Gets the status indicating whether the primary location of the storage account is available or unavailable. Possible values include: 'AccountStatusAvailable', 'AccountStatusUnavailable'
 	StatusOfPrimary AccountStatus `json:"statusOfPrimary,omitempty"`
 	// LastGeoFailoverTime - READ-ONLY; Gets the timestamp of the most recent instance of a failover to the secondary location. Only the most recent timestamp is retained. This element is not returned if there has never been a failover instance. Only available if the accountType is Standard_GRS or Standard_RAGRS.
 	LastGeoFailoverTime *date.Time `json:"lastGeoFailoverTime,omitempty"`
 	// SecondaryLocation - READ-ONLY; Gets the location of the geo-replicated secondary for the storage account. Only available if the accountType is Standard_GRS or Standard_RAGRS.
 	SecondaryLocation *string `json:"secondaryLocation,omitempty"`
-	// StatusOfSecondary - READ-ONLY; Gets the status indicating whether the secondary location of the storage account is available or unavailable. Only available if the SKU name is Standard_GRS or Standard_RAGRS. Possible values include: 'Available', 'Unavailable'
+	// StatusOfSecondary - READ-ONLY; Gets the status indicating whether the secondary location of the storage account is available or unavailable. Only available if the SKU name is Standard_GRS or Standard_RAGRS. Possible values include: 'AccountStatusAvailable', 'AccountStatusUnavailable'
 	StatusOfSecondary AccountStatus `json:"statusOfSecondary,omitempty"`
 	// CreationTime - READ-ONLY; Gets the creation date and time of the storage account in UTC.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
@@ -541,7 +541,7 @@ type AccountProperties struct {
 	SecondaryEndpoints *Endpoints `json:"secondaryEndpoints,omitempty"`
 	// Encryption - READ-ONLY; Gets the encryption settings on the account. If unspecified, the account is unencrypted.
 	Encryption *Encryption `json:"encryption,omitempty"`
-	// AccessTier - READ-ONLY; Required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'
+	// AccessTier - READ-ONLY; Required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'AccessTierHot', 'AccessTierCool'
 	AccessTier AccessTier `json:"accessTier,omitempty"`
 	// AzureFilesIdentityBasedAuthentication - Provides the identity based authentication settings for Azure Files.
 	AzureFilesIdentityBasedAuthentication *AzureFilesIdentityBasedAuthentication `json:"azureFilesIdentityBasedAuthentication,omitempty"`
@@ -565,7 +565,7 @@ type AccountProperties struct {
 	BlobRestoreStatus *BlobRestoreStatus `json:"blobRestoreStatus,omitempty"`
 	// AllowBlobPublicAccess - Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for this property.
 	AllowBlobPublicAccess *bool `json:"allowBlobPublicAccess,omitempty"`
-	// MinimumTLSVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'TLS10', 'TLS11', 'TLS12'
+	// MinimumTLSVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'MinimumTLSVersionTLS10', 'MinimumTLSVersionTLS11', 'MinimumTLSVersionTLS12'
 	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
 	// AllowSharedKeyAccess - Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
 	AllowSharedKeyAccess *bool `json:"allowSharedKeyAccess,omitempty"`
@@ -618,7 +618,7 @@ type AccountPropertiesCreateParameters struct {
 	Encryption *Encryption `json:"encryption,omitempty"`
 	// NetworkRuleSet - Network rule set
 	NetworkRuleSet *NetworkRuleSet `json:"networkAcls,omitempty"`
-	// AccessTier - Required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'
+	// AccessTier - Required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'AccessTierHot', 'AccessTierCool'
 	AccessTier AccessTier `json:"accessTier,omitempty"`
 	// AzureFilesIdentityBasedAuthentication - Provides the identity based authentication settings for Azure Files.
 	AzureFilesIdentityBasedAuthentication *AzureFilesIdentityBasedAuthentication `json:"azureFilesIdentityBasedAuthentication,omitempty"`
@@ -632,7 +632,7 @@ type AccountPropertiesCreateParameters struct {
 	RoutingPreference *RoutingPreference `json:"routingPreference,omitempty"`
 	// AllowBlobPublicAccess - Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for this property.
 	AllowBlobPublicAccess *bool `json:"allowBlobPublicAccess,omitempty"`
-	// MinimumTLSVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'TLS10', 'TLS11', 'TLS12'
+	// MinimumTLSVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'MinimumTLSVersionTLS10', 'MinimumTLSVersionTLS11', 'MinimumTLSVersionTLS12'
 	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
 	// AllowSharedKeyAccess - Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
 	AllowSharedKeyAccess *bool `json:"allowSharedKeyAccess,omitempty"`
@@ -650,7 +650,7 @@ type AccountPropertiesUpdateParameters struct {
 	SasPolicy *SasPolicy `json:"sasPolicy,omitempty"`
 	// KeyPolicy - KeyPolicy assigned to the storage account.
 	KeyPolicy *KeyPolicy `json:"keyPolicy,omitempty"`
-	// AccessTier - Required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'
+	// AccessTier - Required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'AccessTierHot', 'AccessTierCool'
 	AccessTier AccessTier `json:"accessTier,omitempty"`
 	// AzureFilesIdentityBasedAuthentication - Provides the identity based authentication settings for Azure Files.
 	AzureFilesIdentityBasedAuthentication *AzureFilesIdentityBasedAuthentication `json:"azureFilesIdentityBasedAuthentication,omitempty"`
@@ -664,7 +664,7 @@ type AccountPropertiesUpdateParameters struct {
 	RoutingPreference *RoutingPreference `json:"routingPreference,omitempty"`
 	// AllowBlobPublicAccess - Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is true for this property.
 	AllowBlobPublicAccess *bool `json:"allowBlobPublicAccess,omitempty"`
-	// MinimumTLSVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'TLS10', 'TLS11', 'TLS12'
+	// MinimumTLSVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'MinimumTLSVersionTLS10', 'MinimumTLSVersionTLS11', 'MinimumTLSVersionTLS12'
 	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
 	// AllowSharedKeyAccess - Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
 	AllowSharedKeyAccess *bool `json:"allowSharedKeyAccess,omitempty"`
@@ -678,15 +678,15 @@ type AccountRegenerateKeyParameters struct {
 
 // AccountSasParameters the parameters to list SAS credentials of a storage account.
 type AccountSasParameters struct {
-	// Services - The signed services accessible with the account SAS. Possible values include: Blob (b), Queue (q), Table (t), File (f). Possible values include: 'B', 'Q', 'T', 'F'
+	// Services - The signed services accessible with the account SAS. Possible values include: Blob (b), Queue (q), Table (t), File (f). Possible values include: 'ServicesB', 'ServicesQ', 'ServicesT', 'ServicesF'
 	Services Services `json:"signedServices,omitempty"`
 	// ResourceTypes - The signed resource types that are accessible with the account SAS. Service (s): Access to service-level APIs; Container (c): Access to container-level APIs; Object (o): Access to object-level APIs for blobs, queue messages, table entities, and files. Possible values include: 'SignedResourceTypesS', 'SignedResourceTypesC', 'SignedResourceTypesO'
 	ResourceTypes SignedResourceTypes `json:"signedResourceTypes,omitempty"`
-	// Permissions - The signed permissions for the account SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p). Possible values include: 'R', 'D', 'W', 'L', 'A', 'C', 'U', 'P'
+	// Permissions - The signed permissions for the account SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p). Possible values include: 'PermissionsR', 'PermissionsD', 'PermissionsW', 'PermissionsL', 'PermissionsA', 'PermissionsC', 'PermissionsU', 'PermissionsP'
 	Permissions Permissions `json:"signedPermission,omitempty"`
 	// IPAddressOrRange - An IP address or a range of IP addresses from which to accept requests.
 	IPAddressOrRange *string `json:"signedIp,omitempty"`
-	// Protocols - The protocol permitted for a request made with the account SAS. Possible values include: 'Httpshttp', 'HTTPS'
+	// Protocols - The protocol permitted for a request made with the account SAS. Possible values include: 'HTTPProtocolHttpshttp', 'HTTPProtocolHTTPS'
 	Protocols HTTPProtocol `json:"signedProtocol,omitempty"`
 	// SharedAccessStartTime - The time at which the SAS becomes valid.
 	SharedAccessStartTime *date.Time `json:"signedStart,omitempty"`
@@ -830,7 +830,7 @@ type AccountUpdateParameters struct {
 	Identity *Identity `json:"identity,omitempty"`
 	// AccountPropertiesUpdateParameters - The parameters used when updating a storage account.
 	*AccountPropertiesUpdateParameters `json:"properties,omitempty"`
-	// Kind - Optional. Indicates the type of storage account. Currently only StorageV2 value supported by server. Possible values include: 'Storage', 'StorageV2', 'BlobStorage', 'FileStorage', 'BlockBlobStorage'
+	// Kind - Optional. Indicates the type of storage account. Currently only StorageV2 value supported by server. Possible values include: 'KindStorage', 'KindStorageV2', 'KindBlobStorage', 'KindFileStorage', 'KindBlockBlobStorage'
 	Kind Kind `json:"kind,omitempty"`
 }
 
@@ -1199,7 +1199,7 @@ type BlobRestoreRange struct {
 // BlobRestoreStatus blob restore status.
 type BlobRestoreStatus struct {
 	autorest.Response `json:"-"`
-	// Status - READ-ONLY; The status of blob restore progress. Possible values are: - InProgress: Indicates that blob restore is ongoing. - Complete: Indicates that blob restore has been completed successfully. - Failed: Indicates that blob restore is failed. Possible values include: 'InProgress', 'Complete', 'Failed'
+	// Status - READ-ONLY; The status of blob restore progress. Possible values are: - InProgress: Indicates that blob restore is ongoing. - Complete: Indicates that blob restore has been completed successfully. - Failed: Indicates that blob restore is failed. Possible values include: 'BlobRestoreProgressStatusInProgress', 'BlobRestoreProgressStatusComplete', 'BlobRestoreProgressStatusFailed'
 	Status BlobRestoreProgressStatus `json:"status,omitempty"`
 	// FailureReason - READ-ONLY; Failure reason when blob restore is failed.
 	FailureReason *string `json:"failureReason,omitempty"`
@@ -1335,7 +1335,7 @@ type CheckNameAvailabilityResult struct {
 	autorest.Response `json:"-"`
 	// NameAvailable - READ-ONLY; Gets a boolean value that indicates whether the name is available for you to use. If true, the name is available. If false, the name has already been taken or is invalid and cannot be used.
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - READ-ONLY; Gets the reason that a storage account name could not be used. The Reason element is only returned if NameAvailable is false. Possible values include: 'AccountNameInvalid', 'AlreadyExists'
+	// Reason - READ-ONLY; Gets the reason that a storage account name could not be used. The Reason element is only returned if NameAvailable is false. Possible values include: 'ReasonAccountNameInvalid', 'ReasonAlreadyExists'
 	Reason Reason `json:"reason,omitempty"`
 	// Message - READ-ONLY; Gets an error message explaining the Reason value in more detail.
 	Message *string `json:"message,omitempty"`
@@ -1380,7 +1380,7 @@ type ContainerProperties struct {
 	LeaseStatus LeaseStatus `json:"leaseStatus,omitempty"`
 	// LeaseState - READ-ONLY; Lease state of the container. Possible values include: 'LeaseStateAvailable', 'LeaseStateLeased', 'LeaseStateExpired', 'LeaseStateBreaking', 'LeaseStateBroken'
 	LeaseState LeaseState `json:"leaseState,omitempty"`
-	// LeaseDuration - READ-ONLY; Specifies whether the lease on a container is of infinite or fixed duration, only when the container is leased. Possible values include: 'Infinite', 'Fixed'
+	// LeaseDuration - READ-ONLY; Specifies whether the lease on a container is of infinite or fixed duration, only when the container is leased. Possible values include: 'LeaseDurationInfinite', 'LeaseDurationFixed'
 	LeaseDuration LeaseDuration `json:"leaseDuration,omitempty"`
 	// Metadata - A name-value pair to associate with the container as metadata.
 	Metadata map[string]*string `json:"metadata"`
@@ -2001,9 +2001,9 @@ func NewEncryptionScopeListResultPage(cur EncryptionScopeListResult, getNextPage
 
 // EncryptionScopeProperties properties of the encryption scope.
 type EncryptionScopeProperties struct {
-	// Source - The provider for the encryption scope. Possible values (case-insensitive):  Microsoft.Storage, Microsoft.KeyVault. Possible values include: 'MicrosoftStorage', 'MicrosoftKeyVault'
+	// Source - The provider for the encryption scope. Possible values (case-insensitive):  Microsoft.Storage, Microsoft.KeyVault. Possible values include: 'EncryptionScopeSourceMicrosoftStorage', 'EncryptionScopeSourceMicrosoftKeyVault'
 	Source EncryptionScopeSource `json:"source,omitempty"`
-	// State - The state of the encryption scope. Possible values (case-insensitive):  Enabled, Disabled. Possible values include: 'Enabled', 'Disabled'
+	// State - The state of the encryption scope. Possible values (case-insensitive):  Enabled, Disabled. Possible values include: 'EncryptionScopeStateEnabled', 'EncryptionScopeStateDisabled'
 	State EncryptionScopeState `json:"state,omitempty"`
 	// CreationTime - READ-ONLY; Gets the creation date and time of the encryption scope in UTC.
 	CreationTime *date.Time `json:"creationTime,omitempty"`
@@ -2118,7 +2118,7 @@ type ErrorResponseBody struct {
 type ExtendedLocation struct {
 	// Name - The name of the extended location.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the extended location. Possible values include: 'EdgeZone'
+	// Type - The type of the extended location. Possible values include: 'ExtendedLocationTypesEdgeZone'
 	Type ExtendedLocationTypes `json:"type,omitempty"`
 }
 
@@ -2558,9 +2558,9 @@ type FileShareProperties struct {
 	Metadata map[string]*string `json:"metadata"`
 	// ShareQuota - The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
 	ShareQuota *int32 `json:"shareQuota,omitempty"`
-	// EnabledProtocols - The authentication protocol that is used for the file share. Can only be specified when creating a share. Possible values include: 'SMB', 'NFS'
+	// EnabledProtocols - The authentication protocol that is used for the file share. Can only be specified when creating a share. Possible values include: 'EnabledProtocolsSMB', 'EnabledProtocolsNFS'
 	EnabledProtocols EnabledProtocols `json:"enabledProtocols,omitempty"`
-	// RootSquash - The property is for NFS share only. The default is NoRootSquash. Possible values include: 'NoRootSquash', 'RootSquash', 'AllSquash'
+	// RootSquash - The property is for NFS share only. The default is NoRootSquash. Possible values include: 'RootSquashTypeNoRootSquash', 'RootSquashTypeRootSquash', 'RootSquashTypeAllSquash'
 	RootSquash RootSquashType `json:"rootSquash,omitempty"`
 	// Version - READ-ONLY; The version of the share.
 	Version *string `json:"version,omitempty"`
@@ -2788,7 +2788,7 @@ func (ipp *ImmutabilityPolicyProperties) UnmarshalJSON(body []byte) error {
 type ImmutabilityPolicyProperty struct {
 	// ImmutabilityPeriodSinceCreationInDays - The immutability period for the blobs in the container since the policy creation, in days.
 	ImmutabilityPeriodSinceCreationInDays *int32 `json:"immutabilityPeriodSinceCreationInDays,omitempty"`
-	// State - READ-ONLY; The ImmutabilityPolicy state of a blob container, possible values include: Locked and Unlocked. Possible values include: 'Locked', 'Unlocked'
+	// State - READ-ONLY; The ImmutabilityPolicy state of a blob container, possible values include: Locked and Unlocked. Possible values include: 'ImmutabilityPolicyStateLocked', 'ImmutabilityPolicyStateUnlocked'
 	State ImmutabilityPolicyState `json:"state,omitempty"`
 	// AllowProtectedAppendWrites - This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API
 	AllowProtectedAppendWrites *bool `json:"allowProtectedAppendWrites,omitempty"`
@@ -2810,7 +2810,7 @@ func (ipp ImmutabilityPolicyProperty) MarshalJSON() ([]byte, error) {
 type IPRule struct {
 	// IPAddressOrRange - Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
 	IPAddressOrRange *string `json:"value,omitempty"`
-	// Action - The action of IP ACL rule. Possible values include: 'Allow'
+	// Action - The action of IP ACL rule. Possible values include: 'ActionAllow'
 	Action Action `json:"action,omitempty"`
 }
 
@@ -2859,7 +2859,7 @@ func (kvp KeyVaultProperties) MarshalJSON() ([]byte, error) {
 type LastAccessTimeTrackingPolicy struct {
 	// Enable - When set to true last access time based tracking is enabled.
 	Enable *bool `json:"enable,omitempty"`
-	// Name - Name of the policy. The valid value is AccessTimeTracking. This field is currently read only. Possible values include: 'AccessTimeTracking'
+	// Name - Name of the policy. The valid value is AccessTimeTracking. This field is currently read only. Possible values include: 'NameAccessTimeTracking'
 	Name Name `json:"name,omitempty"`
 	// TrackingGranularityInDays - The field specifies blob object tracking granularity in days, typically how often the blob object should be tracked.This field is currently read only with value as 1
 	TrackingGranularityInDays *int32 `json:"trackingGranularityInDays,omitempty"`
@@ -2869,7 +2869,7 @@ type LastAccessTimeTrackingPolicy struct {
 
 // LeaseContainerRequest lease Container request schema.
 type LeaseContainerRequest struct {
-	// Action - Specifies the lease action. Can be one of the available actions. Possible values include: 'Acquire', 'Renew', 'Change', 'Release', 'Break'
+	// Action - Specifies the lease action. Can be one of the available actions. Possible values include: 'Action1Acquire', 'Action1Renew', 'Action1Change', 'Action1Release', 'Action1Break'
 	Action Action1 `json:"action,omitempty"`
 	// LeaseID - Identifies the lease. Can be specified in any valid GUID string format.
 	LeaseID *string `json:"leaseId,omitempty"`
@@ -3809,7 +3809,7 @@ type Multichannel struct {
 
 // NetworkRuleSet network rule set
 type NetworkRuleSet struct {
-	// Bypass - Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Possible values are any combination of Logging|Metrics|AzureServices (For example, "Logging, Metrics"), or None to bypass none of those traffics. Possible values include: 'None', 'Logging', 'Metrics', 'AzureServices'
+	// Bypass - Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Possible values are any combination of Logging|Metrics|AzureServices (For example, "Logging, Metrics"), or None to bypass none of those traffics. Possible values include: 'BypassNone', 'BypassLogging', 'BypassMetrics', 'BypassAzureServices'
 	Bypass Bypass `json:"bypass,omitempty"`
 	// ResourceAccessRules - Sets the resource access rules
 	ResourceAccessRules *[]ResourceAccessRule `json:"resourceAccessRules,omitempty"`
@@ -4258,7 +4258,7 @@ func (plrp PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
 // PrivateLinkServiceConnectionState a collection of information about the state of the connection between
 // service consumer and provider.
 type PrivateLinkServiceConnectionState struct {
-	// Status - Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service. Possible values include: 'Pending', 'Approved', 'Rejected'
+	// Status - Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service. Possible values include: 'PrivateEndpointServiceConnectionStatusPending', 'PrivateEndpointServiceConnectionStatusApproved', 'PrivateEndpointServiceConnectionStatusRejected'
 	Status PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
 	// Description - The reason for approval/rejection of the connection.
 	Description *string `json:"description,omitempty"`
@@ -4500,7 +4500,7 @@ type Restriction struct {
 	Type *string `json:"type,omitempty"`
 	// Values - READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where the SKU is restricted.
 	Values *[]string `json:"values,omitempty"`
-	// ReasonCode - The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". Quota Id is set when the SKU has requiredQuotas parameter as the subscription does not belong to that quota. The "NotAvailableForSubscription" is related to capacity at DC. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
+	// ReasonCode - The reason for the restriction. As of now this can be "QuotaId" or "NotAvailableForSubscription". Quota Id is set when the SKU has requiredQuotas parameter as the subscription does not belong to that quota. The "NotAvailableForSubscription" is related to capacity at DC. Possible values include: 'ReasonCodeQuotaID', 'ReasonCodeNotAvailableForSubscription'
 	ReasonCode ReasonCode `json:"reasonCode,omitempty"`
 }
 
@@ -4516,7 +4516,7 @@ func (r Restriction) MarshalJSON() ([]byte, error) {
 // RoutingPreference routing preference defines the type of network, either microsoft or internet routing
 // to be used to deliver the user data, the default option is microsoft routing
 type RoutingPreference struct {
-	// RoutingChoice - Routing Choice defines the kind of network routing opted by the user. Possible values include: 'MicrosoftRouting', 'InternetRouting'
+	// RoutingChoice - Routing Choice defines the kind of network routing opted by the user. Possible values include: 'RoutingChoiceMicrosoftRouting', 'RoutingChoiceInternetRouting'
 	RoutingChoice RoutingChoice `json:"routingChoice,omitempty"`
 	// PublishMicrosoftEndpoints - A boolean flag which indicates whether microsoft routing storage endpoints are to be published
 	PublishMicrosoftEndpoints *bool `json:"publishMicrosoftEndpoints,omitempty"`
@@ -4538,11 +4538,11 @@ type ServiceSasParameters struct {
 	CanonicalizedResource *string `json:"canonicalizedResource,omitempty"`
 	// Resource - The signed services accessible with the service SAS. Possible values include: Blob (b), Container (c), File (f), Share (s). Possible values include: 'SignedResourceB', 'SignedResourceC', 'SignedResourceF', 'SignedResourceS'
 	Resource SignedResource `json:"signedResource,omitempty"`
-	// Permissions - The signed permissions for the service SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p). Possible values include: 'R', 'D', 'W', 'L', 'A', 'C', 'U', 'P'
+	// Permissions - The signed permissions for the service SAS. Possible values include: Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update (u) and Process (p). Possible values include: 'PermissionsR', 'PermissionsD', 'PermissionsW', 'PermissionsL', 'PermissionsA', 'PermissionsC', 'PermissionsU', 'PermissionsP'
 	Permissions Permissions `json:"signedPermission,omitempty"`
 	// IPAddressOrRange - An IP address or a range of IP addresses from which to accept requests.
 	IPAddressOrRange *string `json:"signedIp,omitempty"`
-	// Protocols - The protocol permitted for a request made with the account SAS. Possible values include: 'Httpshttp', 'HTTPS'
+	// Protocols - The protocol permitted for a request made with the account SAS. Possible values include: 'HTTPProtocolHttpshttp', 'HTTPProtocolHTTPS'
 	Protocols HTTPProtocol `json:"signedProtocol,omitempty"`
 	// SharedAccessStartTime - The time at which the SAS becomes valid.
 	SharedAccessStartTime *date.Time `json:"signedStart,omitempty"`
@@ -4580,9 +4580,9 @@ type ServiceSpecification struct {
 
 // Sku the SKU of the storage account.
 type Sku struct {
-	// Name - Possible values include: 'StandardLRS', 'StandardGRS', 'StandardRAGRS', 'StandardZRS', 'PremiumLRS', 'PremiumZRS', 'StandardGZRS', 'StandardRAGZRS'
+	// Name - Possible values include: 'SkuNameStandardLRS', 'SkuNameStandardGRS', 'SkuNameStandardRAGRS', 'SkuNameStandardZRS', 'SkuNamePremiumLRS', 'SkuNamePremiumZRS', 'SkuNameStandardGZRS', 'SkuNameStandardRAGZRS'
 	Name SkuName `json:"name,omitempty"`
-	// Tier - Possible values include: 'Standard', 'Premium'
+	// Tier - Possible values include: 'SkuTierStandard', 'SkuTierPremium'
 	Tier SkuTier `json:"tier,omitempty"`
 }
 
@@ -4597,13 +4597,13 @@ type SKUCapability struct {
 
 // SkuInformation storage SKU and its properties
 type SkuInformation struct {
-	// Name - Possible values include: 'StandardLRS', 'StandardGRS', 'StandardRAGRS', 'StandardZRS', 'PremiumLRS', 'PremiumZRS', 'StandardGZRS', 'StandardRAGZRS'
+	// Name - Possible values include: 'SkuNameStandardLRS', 'SkuNameStandardGRS', 'SkuNameStandardRAGRS', 'SkuNameStandardZRS', 'SkuNamePremiumLRS', 'SkuNamePremiumZRS', 'SkuNameStandardGZRS', 'SkuNameStandardRAGZRS'
 	Name SkuName `json:"name,omitempty"`
-	// Tier - Possible values include: 'Standard', 'Premium'
+	// Tier - Possible values include: 'SkuTierStandard', 'SkuTierPremium'
 	Tier SkuTier `json:"tier,omitempty"`
 	// ResourceType - READ-ONLY; The type of the resource, usually it is 'storageAccounts'.
 	ResourceType *string `json:"resourceType,omitempty"`
-	// Kind - READ-ONLY; Indicates the type of storage account. Possible values include: 'Storage', 'StorageV2', 'BlobStorage', 'FileStorage', 'BlockBlobStorage'
+	// Kind - READ-ONLY; Indicates the type of storage account. Possible values include: 'KindStorage', 'KindStorageV2', 'KindBlobStorage', 'KindFileStorage', 'KindBlockBlobStorage'
 	Kind Kind `json:"kind,omitempty"`
 	// Locations - READ-ONLY; The set of locations that the SKU is available. This will be supported and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.).
 	Locations *[]string `json:"locations,omitempty"`
@@ -4653,13 +4653,13 @@ type SmbSetting struct {
 type SystemData struct {
 	// CreatedBy - The identity that created the resource.
 	CreatedBy *string `json:"createdBy,omitempty"`
-	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'CreatedByTypeUser', 'CreatedByTypeApplication', 'CreatedByTypeManagedIdentity', 'CreatedByTypeKey'
 	CreatedByType CreatedByType `json:"createdByType,omitempty"`
 	// CreatedAt - The timestamp of resource creation (UTC).
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
 	// LastModifiedBy - The identity that last modified the resource.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'CreatedByTypeUser', 'CreatedByTypeApplication', 'CreatedByTypeManagedIdentity', 'CreatedByTypeKey'
 	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
 	// LastModifiedAt - The timestamp of resource last modification (UTC)
 	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
@@ -4876,7 +4876,7 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 
 // UpdateHistoryProperty an update history of the ImmutabilityPolicy of a blob container.
 type UpdateHistoryProperty struct {
-	// Update - READ-ONLY; The ImmutabilityPolicy update type of a blob container, possible values include: put, lock and extend. Possible values include: 'Put', 'Lock', 'Extend'
+	// Update - READ-ONLY; The ImmutabilityPolicy update type of a blob container, possible values include: put, lock and extend. Possible values include: 'ImmutabilityPolicyUpdateTypePut', 'ImmutabilityPolicyUpdateTypeLock', 'ImmutabilityPolicyUpdateTypeExtend'
 	Update ImmutabilityPolicyUpdateType `json:"update,omitempty"`
 	// ImmutabilityPeriodSinceCreationInDays - READ-ONLY; The immutability period for the blobs in the container since the policy creation, in days.
 	ImmutabilityPeriodSinceCreationInDays *int32 `json:"immutabilityPeriodSinceCreationInDays,omitempty"`
@@ -4892,7 +4892,7 @@ type UpdateHistoryProperty struct {
 
 // Usage describes Storage Resource Usage.
 type Usage struct {
-	// Unit - READ-ONLY; Gets the unit of measurement. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountsPerSecond', 'BytesPerSecond'
+	// Unit - READ-ONLY; Gets the unit of measurement. Possible values include: 'UsageUnitCount', 'UsageUnitBytes', 'UsageUnitSeconds', 'UsageUnitPercent', 'UsageUnitCountsPerSecond', 'UsageUnitBytesPerSecond'
 	Unit UsageUnit `json:"unit,omitempty"`
 	// CurrentValue - READ-ONLY; Gets the current count of the allocated resources in the subscription.
 	CurrentValue *int32 `json:"currentValue,omitempty"`
@@ -4929,7 +4929,7 @@ type UserAssignedIdentity struct {
 type VirtualNetworkRule struct {
 	// VirtualNetworkResourceID - Resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
 	VirtualNetworkResourceID *string `json:"id,omitempty"`
-	// Action - The action of virtual network rule. Possible values include: 'Allow'
+	// Action - The action of virtual network rule. Possible values include: 'ActionAllow'
 	Action Action `json:"action,omitempty"`
 	// State - Gets the state of virtual network rule. Possible values include: 'StateProvisioning', 'StateDeprovisioning', 'StateSucceeded', 'StateFailed', 'StateNetworkSourceDeleted'
 	State State `json:"state,omitempty"`

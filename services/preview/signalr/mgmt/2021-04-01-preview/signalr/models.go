@@ -152,7 +152,7 @@ type Feature struct {
 	// - ServiceMode: Flag for backend server for SignalR service. Values allowed: "Default": have your own backend server; "Serverless": your application doesn't have a backend server; "Classic": for backward compatibility. Support both Default and Serverless mode but not recommended; "PredefinedOnly": for future use.
 	// - EnableConnectivityLogs: "true"/"false", to enable/disable the connectivity log category respectively.
 	// - EnableMessagingLogs: "true"/"false", to enable/disable the connectivity log category respectively.
-	// - EnableLiveTrace: Live Trace allows you to know what's happening inside Azure SignalR service, it will give you live traces in real time, it will be helpful when you developing your own Azure SignalR based web application or self-troubleshooting some issues. Please note that live traces are counted as outbound messages that will be charged. Values allowed: "true"/"false", to enable/disable live trace feature. Possible values include: 'ServiceMode', 'EnableConnectivityLogs', 'EnableMessagingLogs', 'EnableLiveTrace'
+	// - EnableLiveTrace: Live Trace allows you to know what's happening inside Azure SignalR service, it will give you live traces in real time, it will be helpful when you developing your own Azure SignalR based web application or self-troubleshooting some issues. Please note that live traces are counted as outbound messages that will be charged. Values allowed: "true"/"false", to enable/disable live trace feature. Possible values include: 'FeatureFlagsServiceMode', 'FeatureFlagsEnableConnectivityLogs', 'FeatureFlagsEnableMessagingLogs', 'FeatureFlagsEnableLiveTrace'
 	Flag FeatureFlags `json:"flag,omitempty"`
 	// Value - Value of the feature flag. See Azure SignalR service document https://docs.microsoft.com/azure/azure-signalr/ for allowed values.
 	Value *string `json:"value,omitempty"`
@@ -198,7 +198,7 @@ type LogSpecification struct {
 
 // ManagedIdentity a class represent managed identities used for request and response
 type ManagedIdentity struct {
-	// Type - Represent the identity type: systemAssigned, userAssigned, None. Possible values include: 'None', 'SystemAssigned', 'UserAssigned'
+	// Type - Represent the identity type: systemAssigned, userAssigned, None. Possible values include: 'ManagedIdentityTypeNone', 'ManagedIdentityTypeSystemAssigned', 'ManagedIdentityTypeUserAssigned'
 	Type ManagedIdentityType `json:"type,omitempty"`
 	// UserAssignedIdentities - Get or set the user assigned identities
 	UserAssignedIdentities map[string]*UserAssignedIdentityProperty `json:"userAssignedIdentities"`
@@ -281,7 +281,7 @@ type NetworkACL struct {
 
 // NetworkACLs network ACLs for the resource
 type NetworkACLs struct {
-	// DefaultAction - Default action when no other rule matches. Possible values include: 'Allow', 'Deny'
+	// DefaultAction - Default action when no other rule matches. Possible values include: 'ACLActionAllow', 'ACLActionDeny'
 	DefaultAction ACLAction `json:"defaultAction,omitempty"`
 	// PublicNetwork - ACL for requests from public network
 	PublicNetwork *NetworkACL `json:"publicNetwork,omitempty"`
@@ -743,7 +743,7 @@ func NewPrivateEndpointConnectionListPage(cur PrivateEndpointConnectionList, get
 
 // PrivateEndpointConnectionProperties private endpoint connection properties
 type PrivateEndpointConnectionProperties struct {
-	// ProvisioningState - READ-ONLY; Provisioning state of the private endpoint connection. Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
+	// ProvisioningState - READ-ONLY; Provisioning state of the private endpoint connection. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateMoving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateEndpoint - Private endpoint associated with the private endpoint connection
 	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
@@ -1046,7 +1046,7 @@ type PrivateLinkResourceProperties struct {
 
 // PrivateLinkServiceConnectionState connection state of the private endpoint connection
 type PrivateLinkServiceConnectionState struct {
-	// Status - Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service. Possible values include: 'Pending', 'Approved', 'Rejected', 'Disconnected'
+	// Status - Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service. Possible values include: 'PrivateLinkServiceConnectionStatusPending', 'PrivateLinkServiceConnectionStatusApproved', 'PrivateLinkServiceConnectionStatusRejected', 'PrivateLinkServiceConnectionStatusDisconnected'
 	Status PrivateLinkServiceConnectionStatus `json:"status,omitempty"`
 	// Description - The reason for approval/rejection of the connection.
 	Description *string `json:"description,omitempty"`
@@ -1056,7 +1056,7 @@ type PrivateLinkServiceConnectionState struct {
 
 // Properties a class that describes the properties of the resource
 type Properties struct {
-	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
+	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateMoving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ExternalIP - READ-ONLY; The publicly accessible IP of the resource.
 	ExternalIP *string `json:"externalIP,omitempty"`
@@ -1166,7 +1166,7 @@ func (future *RegenerateKeyFuture) result(client Client) (kVar Keys, err error) 
 
 // RegenerateKeyParameters parameters describes the request to regenerate access keys
 type RegenerateKeyParameters struct {
-	// KeyType - The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive). Possible values include: 'Primary', 'Secondary'
+	// KeyType - The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive). Possible values include: 'KeyTypePrimary', 'KeyTypeSecondary'
 	KeyType KeyType `json:"keyType,omitempty"`
 }
 
@@ -1348,7 +1348,7 @@ type ResourceSku struct {
 	Name *string `json:"name,omitempty"`
 	// Tier - Optional tier of this particular SKU. 'Standard' or 'Free'.
 	//
-	// `Basic` is deprecated, use `Standard` instead. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'
+	// `Basic` is deprecated, use `Standard` instead. Possible values include: 'SkuTierFree', 'SkuTierBasic', 'SkuTierStandard', 'SkuTierPremium'
 	Tier SkuTier `json:"tier,omitempty"`
 	// Size - READ-ONLY; Not used. Retained for future use.
 	Size *string `json:"size,omitempty"`
@@ -1384,7 +1384,7 @@ type ResourceType struct {
 	Sku *ResourceSku `json:"sku,omitempty"`
 	// Properties - Settings used to provision or configure the resource
 	*Properties `json:"properties,omitempty"`
-	// Kind - The kind of the service - e.g. "SignalR" for "Microsoft.SignalRService/SignalR". Possible values include: 'SignalR', 'RawWebSockets'
+	// Kind - The kind of the service - e.g. "SignalR" for "Microsoft.SignalRService/SignalR". Possible values include: 'ServiceKindSignalR', 'ServiceKindRawWebSockets'
 	Kind ServiceKind `json:"kind,omitempty"`
 	// Identity - The managed identity response
 	Identity *ManagedIdentity `json:"identity,omitempty"`
@@ -1851,7 +1851,7 @@ type SharedPrivateLinkResourceProperties struct {
 	GroupID *string `json:"groupId,omitempty"`
 	// PrivateLinkResourceID - The resource id of the resource the shared private link resource is for
 	PrivateLinkResourceID *string `json:"privateLinkResourceId,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the shared private link resource. Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
+	// ProvisioningState - READ-ONLY; Provisioning state of the shared private link resource. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateRunning', 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateMoving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// RequestMessage - The request message for requesting approval of the shared private link resource
 	RequestMessage *string `json:"requestMessage,omitempty"`

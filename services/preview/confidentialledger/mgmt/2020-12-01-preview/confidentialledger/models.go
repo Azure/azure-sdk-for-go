@@ -26,7 +26,7 @@ type AADBasedSecurityPrincipal struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// TenantID - UUID/GUID based Tenant Id of the Security Principal
 	TenantID *string `json:"tenantId,omitempty"`
-	// LedgerRoleName - Possible values include: 'Reader', 'Contributor', 'Administrator'
+	// LedgerRoleName - Possible values include: 'LedgerRoleNameReader', 'LedgerRoleNameContributor', 'LedgerRoleNameAdministrator'
 	LedgerRoleName LedgerRoleName `json:"ledgerRoleName,omitempty"`
 }
 
@@ -34,7 +34,7 @@ type AADBasedSecurityPrincipal struct {
 type CertBasedSecurityPrincipal struct {
 	// Cert - Base64 encoded public key of the user cert (.pem or .cer)
 	Cert *string `json:"cert,omitempty"`
-	// LedgerRoleName - Possible values include: 'Reader', 'Contributor', 'Administrator'
+	// LedgerRoleName - Possible values include: 'LedgerRoleNameReader', 'LedgerRoleNameContributor', 'LedgerRoleNameAdministrator'
 	LedgerRoleName LedgerRoleName `json:"ledgerRoleName,omitempty"`
 }
 
@@ -157,7 +157,7 @@ type LedgerProperties struct {
 	LedgerInternalNamespace *string `json:"ledgerInternalNamespace,omitempty"`
 	// LedgerStorageAccount - Name of the Blob Storage Account for saving ledger files
 	LedgerStorageAccount *string `json:"ledgerStorageAccount,omitempty"`
-	// LedgerType - Type of Confidential Ledger. Possible values include: 'Unknown', 'Public', 'Private'
+	// LedgerType - Type of Confidential Ledger. Possible values include: 'LedgerTypeUnknown', 'LedgerTypePublic', 'LedgerTypePrivate'
 	LedgerType LedgerType `json:"ledgerType,omitempty"`
 	// ProvisioningState - READ-ONLY; Provisioning state of Ledger Resource. Possible values include: 'ProvisioningStateUnknown', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateCreating', 'ProvisioningStateDeleting', 'ProvisioningStateUpdating'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
@@ -624,13 +624,13 @@ func NewResourceProviderOperationListPage(cur ResourceProviderOperationList, get
 type SystemData struct {
 	// CreatedBy - The identity that created the resource.
 	CreatedBy *string `json:"createdBy,omitempty"`
-	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'CreatedByTypeUser', 'CreatedByTypeApplication', 'CreatedByTypeManagedIdentity', 'CreatedByTypeKey'
 	CreatedByType CreatedByType `json:"createdByType,omitempty"`
 	// CreatedAt - The timestamp of resource creation (UTC).
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
 	// LastModifiedBy - The identity that last modified the resource.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'CreatedByTypeUser', 'CreatedByTypeApplication', 'CreatedByTypeManagedIdentity', 'CreatedByTypeKey'
 	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
 	// LastModifiedAt - The timestamp of resource last modification (UTC)
 	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`

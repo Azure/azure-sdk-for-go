@@ -10,169 +10,154 @@ package devices
 type AccessRights string
 
 const (
-	// DeviceConnect ...
-	DeviceConnect AccessRights = "DeviceConnect"
-	// RegistryRead ...
-	RegistryRead AccessRights = "RegistryRead"
-	// RegistryReadDeviceConnect ...
-	RegistryReadDeviceConnect AccessRights = "RegistryRead, DeviceConnect"
-	// RegistryReadRegistryWrite ...
-	RegistryReadRegistryWrite AccessRights = "RegistryRead, RegistryWrite"
-	// RegistryReadRegistryWriteDeviceConnect ...
-	RegistryReadRegistryWriteDeviceConnect AccessRights = "RegistryRead, RegistryWrite, DeviceConnect"
-	// RegistryReadRegistryWriteServiceConnect ...
-	RegistryReadRegistryWriteServiceConnect AccessRights = "RegistryRead, RegistryWrite, ServiceConnect"
-	// RegistryReadRegistryWriteServiceConnectDeviceConnect ...
-	RegistryReadRegistryWriteServiceConnectDeviceConnect AccessRights = "RegistryRead, RegistryWrite, ServiceConnect, DeviceConnect"
-	// RegistryReadServiceConnect ...
-	RegistryReadServiceConnect AccessRights = "RegistryRead, ServiceConnect"
-	// RegistryReadServiceConnectDeviceConnect ...
-	RegistryReadServiceConnectDeviceConnect AccessRights = "RegistryRead, ServiceConnect, DeviceConnect"
-	// RegistryWrite ...
-	RegistryWrite AccessRights = "RegistryWrite"
-	// RegistryWriteDeviceConnect ...
-	RegistryWriteDeviceConnect AccessRights = "RegistryWrite, DeviceConnect"
-	// RegistryWriteServiceConnect ...
-	RegistryWriteServiceConnect AccessRights = "RegistryWrite, ServiceConnect"
-	// RegistryWriteServiceConnectDeviceConnect ...
-	RegistryWriteServiceConnectDeviceConnect AccessRights = "RegistryWrite, ServiceConnect, DeviceConnect"
-	// ServiceConnect ...
-	ServiceConnect AccessRights = "ServiceConnect"
-	// ServiceConnectDeviceConnect ...
-	ServiceConnectDeviceConnect AccessRights = "ServiceConnect, DeviceConnect"
+	// AccessRightsDeviceConnect ...
+	AccessRightsDeviceConnect AccessRights = "DeviceConnect"
+	// AccessRightsRegistryRead ...
+	AccessRightsRegistryRead AccessRights = "RegistryRead"
+	// AccessRightsRegistryReadDeviceConnect ...
+	AccessRightsRegistryReadDeviceConnect AccessRights = "RegistryRead, DeviceConnect"
+	// AccessRightsRegistryReadRegistryWrite ...
+	AccessRightsRegistryReadRegistryWrite AccessRights = "RegistryRead, RegistryWrite"
+	// AccessRightsRegistryReadRegistryWriteDeviceConnect ...
+	AccessRightsRegistryReadRegistryWriteDeviceConnect AccessRights = "RegistryRead, RegistryWrite, DeviceConnect"
+	// AccessRightsRegistryReadRegistryWriteServiceConnect ...
+	AccessRightsRegistryReadRegistryWriteServiceConnect AccessRights = "RegistryRead, RegistryWrite, ServiceConnect"
+	// AccessRightsRegistryReadRegistryWriteServiceConnectDeviceConnect ...
+	AccessRightsRegistryReadRegistryWriteServiceConnectDeviceConnect AccessRights = "RegistryRead, RegistryWrite, ServiceConnect, DeviceConnect"
+	// AccessRightsRegistryReadServiceConnect ...
+	AccessRightsRegistryReadServiceConnect AccessRights = "RegistryRead, ServiceConnect"
+	// AccessRightsRegistryReadServiceConnectDeviceConnect ...
+	AccessRightsRegistryReadServiceConnectDeviceConnect AccessRights = "RegistryRead, ServiceConnect, DeviceConnect"
+	// AccessRightsRegistryWrite ...
+	AccessRightsRegistryWrite AccessRights = "RegistryWrite"
+	// AccessRightsRegistryWriteDeviceConnect ...
+	AccessRightsRegistryWriteDeviceConnect AccessRights = "RegistryWrite, DeviceConnect"
+	// AccessRightsRegistryWriteServiceConnect ...
+	AccessRightsRegistryWriteServiceConnect AccessRights = "RegistryWrite, ServiceConnect"
+	// AccessRightsRegistryWriteServiceConnectDeviceConnect ...
+	AccessRightsRegistryWriteServiceConnectDeviceConnect AccessRights = "RegistryWrite, ServiceConnect, DeviceConnect"
+	// AccessRightsServiceConnect ...
+	AccessRightsServiceConnect AccessRights = "ServiceConnect"
+	// AccessRightsServiceConnectDeviceConnect ...
+	AccessRightsServiceConnectDeviceConnect AccessRights = "ServiceConnect, DeviceConnect"
 )
 
 // PossibleAccessRightsValues returns an array of possible values for the AccessRights const type.
 func PossibleAccessRightsValues() []AccessRights {
-	return []AccessRights{DeviceConnect, RegistryRead, RegistryReadDeviceConnect, RegistryReadRegistryWrite, RegistryReadRegistryWriteDeviceConnect, RegistryReadRegistryWriteServiceConnect, RegistryReadRegistryWriteServiceConnectDeviceConnect, RegistryReadServiceConnect, RegistryReadServiceConnectDeviceConnect, RegistryWrite, RegistryWriteDeviceConnect, RegistryWriteServiceConnect, RegistryWriteServiceConnectDeviceConnect, ServiceConnect, ServiceConnectDeviceConnect}
+	return []AccessRights{AccessRightsDeviceConnect, AccessRightsRegistryRead, AccessRightsRegistryReadDeviceConnect, AccessRightsRegistryReadRegistryWrite, AccessRightsRegistryReadRegistryWriteDeviceConnect, AccessRightsRegistryReadRegistryWriteServiceConnect, AccessRightsRegistryReadRegistryWriteServiceConnectDeviceConnect, AccessRightsRegistryReadServiceConnect, AccessRightsRegistryReadServiceConnectDeviceConnect, AccessRightsRegistryWrite, AccessRightsRegistryWriteDeviceConnect, AccessRightsRegistryWriteServiceConnect, AccessRightsRegistryWriteServiceConnectDeviceConnect, AccessRightsServiceConnect, AccessRightsServiceConnectDeviceConnect}
 }
 
 // AuthenticationType enumerates the values for authentication type.
 type AuthenticationType string
 
 const (
-	// IdentityBased ...
-	IdentityBased AuthenticationType = "identityBased"
-	// KeyBased ...
-	KeyBased AuthenticationType = "keyBased"
+	// AuthenticationTypeIdentityBased ...
+	AuthenticationTypeIdentityBased AuthenticationType = "identityBased"
+	// AuthenticationTypeKeyBased ...
+	AuthenticationTypeKeyBased AuthenticationType = "keyBased"
 )
 
 // PossibleAuthenticationTypeValues returns an array of possible values for the AuthenticationType const type.
 func PossibleAuthenticationTypeValues() []AuthenticationType {
-	return []AuthenticationType{IdentityBased, KeyBased}
+	return []AuthenticationType{AuthenticationTypeIdentityBased, AuthenticationTypeKeyBased}
 }
 
 // Capabilities enumerates the values for capabilities.
 type Capabilities string
 
 const (
-	// DeviceManagement ...
-	DeviceManagement Capabilities = "DeviceManagement"
-	// None ...
-	None Capabilities = "None"
+	// CapabilitiesDeviceManagement ...
+	CapabilitiesDeviceManagement Capabilities = "DeviceManagement"
+	// CapabilitiesNone ...
+	CapabilitiesNone Capabilities = "None"
 )
 
 // PossibleCapabilitiesValues returns an array of possible values for the Capabilities const type.
 func PossibleCapabilitiesValues() []Capabilities {
-	return []Capabilities{DeviceManagement, None}
+	return []Capabilities{CapabilitiesDeviceManagement, CapabilitiesNone}
 }
 
 // DefaultAction enumerates the values for default action.
 type DefaultAction string
 
 const (
-	// Allow ...
-	Allow DefaultAction = "Allow"
-	// Deny ...
-	Deny DefaultAction = "Deny"
+	// DefaultActionAllow ...
+	DefaultActionAllow DefaultAction = "Allow"
+	// DefaultActionDeny ...
+	DefaultActionDeny DefaultAction = "Deny"
 )
 
 // PossibleDefaultActionValues returns an array of possible values for the DefaultAction const type.
 func PossibleDefaultActionValues() []DefaultAction {
-	return []DefaultAction{Allow, Deny}
+	return []DefaultAction{DefaultActionAllow, DefaultActionDeny}
 }
 
 // Encoding enumerates the values for encoding.
 type Encoding string
 
 const (
-	// Avro ...
-	Avro Encoding = "Avro"
-	// AvroDeflate ...
-	AvroDeflate Encoding = "AvroDeflate"
-	// JSON ...
-	JSON Encoding = "JSON"
+	// EncodingAvro ...
+	EncodingAvro Encoding = "Avro"
+	// EncodingAvroDeflate ...
+	EncodingAvroDeflate Encoding = "AvroDeflate"
+	// EncodingJSON ...
+	EncodingJSON Encoding = "JSON"
 )
 
 // PossibleEncodingValues returns an array of possible values for the Encoding const type.
 func PossibleEncodingValues() []Encoding {
-	return []Encoding{Avro, AvroDeflate, JSON}
+	return []Encoding{EncodingAvro, EncodingAvroDeflate, EncodingJSON}
 }
 
 // EndpointHealthStatus enumerates the values for endpoint health status.
 type EndpointHealthStatus string
 
 const (
-	// Dead ...
-	Dead EndpointHealthStatus = "dead"
-	// Degraded ...
-	Degraded EndpointHealthStatus = "degraded"
-	// Healthy ...
-	Healthy EndpointHealthStatus = "healthy"
-	// Unhealthy ...
-	Unhealthy EndpointHealthStatus = "unhealthy"
-	// Unknown ...
-	Unknown EndpointHealthStatus = "unknown"
+	// EndpointHealthStatusDead ...
+	EndpointHealthStatusDead EndpointHealthStatus = "dead"
+	// EndpointHealthStatusDegraded ...
+	EndpointHealthStatusDegraded EndpointHealthStatus = "degraded"
+	// EndpointHealthStatusHealthy ...
+	EndpointHealthStatusHealthy EndpointHealthStatus = "healthy"
+	// EndpointHealthStatusUnhealthy ...
+	EndpointHealthStatusUnhealthy EndpointHealthStatus = "unhealthy"
+	// EndpointHealthStatusUnknown ...
+	EndpointHealthStatusUnknown EndpointHealthStatus = "unknown"
 )
 
 // PossibleEndpointHealthStatusValues returns an array of possible values for the EndpointHealthStatus const type.
 func PossibleEndpointHealthStatusValues() []EndpointHealthStatus {
-	return []EndpointHealthStatus{Dead, Degraded, Healthy, Unhealthy, Unknown}
-}
-
-// IPFilterActionType enumerates the values for ip filter action type.
-type IPFilterActionType string
-
-const (
-	// Accept ...
-	Accept IPFilterActionType = "Accept"
-	// Reject ...
-	Reject IPFilterActionType = "Reject"
-)
-
-// PossibleIPFilterActionTypeValues returns an array of possible values for the IPFilterActionType const type.
-func PossibleIPFilterActionTypeValues() []IPFilterActionType {
-	return []IPFilterActionType{Accept, Reject}
+	return []EndpointHealthStatus{EndpointHealthStatusDead, EndpointHealthStatusDegraded, EndpointHealthStatusHealthy, EndpointHealthStatusUnhealthy, EndpointHealthStatusUnknown}
 }
 
 // IotHubNameUnavailabilityReason enumerates the values for iot hub name unavailability reason.
 type IotHubNameUnavailabilityReason string
 
 const (
-	// AlreadyExists ...
-	AlreadyExists IotHubNameUnavailabilityReason = "AlreadyExists"
-	// Invalid ...
-	Invalid IotHubNameUnavailabilityReason = "Invalid"
+	// IotHubNameUnavailabilityReasonAlreadyExists ...
+	IotHubNameUnavailabilityReasonAlreadyExists IotHubNameUnavailabilityReason = "AlreadyExists"
+	// IotHubNameUnavailabilityReasonInvalid ...
+	IotHubNameUnavailabilityReasonInvalid IotHubNameUnavailabilityReason = "Invalid"
 )
 
 // PossibleIotHubNameUnavailabilityReasonValues returns an array of possible values for the IotHubNameUnavailabilityReason const type.
 func PossibleIotHubNameUnavailabilityReasonValues() []IotHubNameUnavailabilityReason {
-	return []IotHubNameUnavailabilityReason{AlreadyExists, Invalid}
+	return []IotHubNameUnavailabilityReason{IotHubNameUnavailabilityReasonAlreadyExists, IotHubNameUnavailabilityReasonInvalid}
 }
 
 // IotHubReplicaRoleType enumerates the values for iot hub replica role type.
 type IotHubReplicaRoleType string
 
 const (
-	// Primary ...
-	Primary IotHubReplicaRoleType = "primary"
-	// Secondary ...
-	Secondary IotHubReplicaRoleType = "secondary"
+	// IotHubReplicaRoleTypePrimary ...
+	IotHubReplicaRoleTypePrimary IotHubReplicaRoleType = "primary"
+	// IotHubReplicaRoleTypeSecondary ...
+	IotHubReplicaRoleTypeSecondary IotHubReplicaRoleType = "secondary"
 )
 
 // PossibleIotHubReplicaRoleTypeValues returns an array of possible values for the IotHubReplicaRoleType const type.
 func PossibleIotHubReplicaRoleTypeValues() []IotHubReplicaRoleType {
-	return []IotHubReplicaRoleType{Primary, Secondary}
+	return []IotHubReplicaRoleType{IotHubReplicaRoleTypePrimary, IotHubReplicaRoleTypeSecondary}
 }
 
 // IotHubScaleType enumerates the values for iot hub scale type.
@@ -196,42 +181,57 @@ func PossibleIotHubScaleTypeValues() []IotHubScaleType {
 type IotHubSku string
 
 const (
-	// B1 ...
-	B1 IotHubSku = "B1"
-	// B2 ...
-	B2 IotHubSku = "B2"
-	// B3 ...
-	B3 IotHubSku = "B3"
-	// F1 ...
-	F1 IotHubSku = "F1"
-	// S1 ...
-	S1 IotHubSku = "S1"
-	// S2 ...
-	S2 IotHubSku = "S2"
-	// S3 ...
-	S3 IotHubSku = "S3"
+	// IotHubSkuB1 ...
+	IotHubSkuB1 IotHubSku = "B1"
+	// IotHubSkuB2 ...
+	IotHubSkuB2 IotHubSku = "B2"
+	// IotHubSkuB3 ...
+	IotHubSkuB3 IotHubSku = "B3"
+	// IotHubSkuF1 ...
+	IotHubSkuF1 IotHubSku = "F1"
+	// IotHubSkuS1 ...
+	IotHubSkuS1 IotHubSku = "S1"
+	// IotHubSkuS2 ...
+	IotHubSkuS2 IotHubSku = "S2"
+	// IotHubSkuS3 ...
+	IotHubSkuS3 IotHubSku = "S3"
 )
 
 // PossibleIotHubSkuValues returns an array of possible values for the IotHubSku const type.
 func PossibleIotHubSkuValues() []IotHubSku {
-	return []IotHubSku{B1, B2, B3, F1, S1, S2, S3}
+	return []IotHubSku{IotHubSkuB1, IotHubSkuB2, IotHubSkuB3, IotHubSkuF1, IotHubSkuS1, IotHubSkuS2, IotHubSkuS3}
 }
 
 // IotHubSkuTier enumerates the values for iot hub sku tier.
 type IotHubSkuTier string
 
 const (
-	// Basic ...
-	Basic IotHubSkuTier = "Basic"
-	// Free ...
-	Free IotHubSkuTier = "Free"
-	// Standard ...
-	Standard IotHubSkuTier = "Standard"
+	// IotHubSkuTierBasic ...
+	IotHubSkuTierBasic IotHubSkuTier = "Basic"
+	// IotHubSkuTierFree ...
+	IotHubSkuTierFree IotHubSkuTier = "Free"
+	// IotHubSkuTierStandard ...
+	IotHubSkuTierStandard IotHubSkuTier = "Standard"
 )
 
 // PossibleIotHubSkuTierValues returns an array of possible values for the IotHubSkuTier const type.
 func PossibleIotHubSkuTierValues() []IotHubSkuTier {
-	return []IotHubSkuTier{Basic, Free, Standard}
+	return []IotHubSkuTier{IotHubSkuTierBasic, IotHubSkuTierFree, IotHubSkuTierStandard}
+}
+
+// IPFilterActionType enumerates the values for ip filter action type.
+type IPFilterActionType string
+
+const (
+	// IPFilterActionTypeAccept ...
+	IPFilterActionTypeAccept IPFilterActionType = "Accept"
+	// IPFilterActionTypeReject ...
+	IPFilterActionTypeReject IPFilterActionType = "Reject"
+)
+
+// PossibleIPFilterActionTypeValues returns an array of possible values for the IPFilterActionType const type.
+func PossibleIPFilterActionTypeValues() []IPFilterActionType {
+	return []IPFilterActionType{IPFilterActionTypeAccept, IPFilterActionTypeReject}
 }
 
 // JobStatus enumerates the values for job status.
@@ -305,34 +305,34 @@ func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
 type PrivateLinkServiceConnectionStatus string
 
 const (
-	// Approved ...
-	Approved PrivateLinkServiceConnectionStatus = "Approved"
-	// Disconnected ...
-	Disconnected PrivateLinkServiceConnectionStatus = "Disconnected"
-	// Pending ...
-	Pending PrivateLinkServiceConnectionStatus = "Pending"
-	// Rejected ...
-	Rejected PrivateLinkServiceConnectionStatus = "Rejected"
+	// PrivateLinkServiceConnectionStatusApproved ...
+	PrivateLinkServiceConnectionStatusApproved PrivateLinkServiceConnectionStatus = "Approved"
+	// PrivateLinkServiceConnectionStatusDisconnected ...
+	PrivateLinkServiceConnectionStatusDisconnected PrivateLinkServiceConnectionStatus = "Disconnected"
+	// PrivateLinkServiceConnectionStatusPending ...
+	PrivateLinkServiceConnectionStatusPending PrivateLinkServiceConnectionStatus = "Pending"
+	// PrivateLinkServiceConnectionStatusRejected ...
+	PrivateLinkServiceConnectionStatusRejected PrivateLinkServiceConnectionStatus = "Rejected"
 )
 
 // PossiblePrivateLinkServiceConnectionStatusValues returns an array of possible values for the PrivateLinkServiceConnectionStatus const type.
 func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConnectionStatus {
-	return []PrivateLinkServiceConnectionStatus{Approved, Disconnected, Pending, Rejected}
+	return []PrivateLinkServiceConnectionStatus{PrivateLinkServiceConnectionStatusApproved, PrivateLinkServiceConnectionStatusDisconnected, PrivateLinkServiceConnectionStatusPending, PrivateLinkServiceConnectionStatusRejected}
 }
 
 // PublicNetworkAccess enumerates the values for public network access.
 type PublicNetworkAccess string
 
 const (
-	// Disabled ...
-	Disabled PublicNetworkAccess = "Disabled"
-	// Enabled ...
-	Enabled PublicNetworkAccess = "Enabled"
+	// PublicNetworkAccessDisabled ...
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	// PublicNetworkAccessEnabled ...
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
 )
 
 // PossiblePublicNetworkAccessValues returns an array of possible values for the PublicNetworkAccess const type.
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
-	return []PublicNetworkAccess{Disabled, Enabled}
+	return []PublicNetworkAccess{PublicNetworkAccessDisabled, PublicNetworkAccessEnabled}
 }
 
 // ResourceIdentityType enumerates the values for resource identity type.
@@ -358,15 +358,15 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 type RouteErrorSeverity string
 
 const (
-	// Error ...
-	Error RouteErrorSeverity = "error"
-	// Warning ...
-	Warning RouteErrorSeverity = "warning"
+	// RouteErrorSeverityError ...
+	RouteErrorSeverityError RouteErrorSeverity = "error"
+	// RouteErrorSeverityWarning ...
+	RouteErrorSeverityWarning RouteErrorSeverity = "warning"
 )
 
 // PossibleRouteErrorSeverityValues returns an array of possible values for the RouteErrorSeverity const type.
 func PossibleRouteErrorSeverityValues() []RouteErrorSeverity {
-	return []RouteErrorSeverity{Error, Warning}
+	return []RouteErrorSeverity{RouteErrorSeverityError, RouteErrorSeverityWarning}
 }
 
 // RoutingSource enumerates the values for routing source.
@@ -398,15 +398,15 @@ func PossibleRoutingSourceValues() []RoutingSource {
 type TestResultStatus string
 
 const (
-	// False ...
-	False TestResultStatus = "false"
-	// True ...
-	True TestResultStatus = "true"
-	// Undefined ...
-	Undefined TestResultStatus = "undefined"
+	// TestResultStatusFalse ...
+	TestResultStatusFalse TestResultStatus = "false"
+	// TestResultStatusTrue ...
+	TestResultStatusTrue TestResultStatus = "true"
+	// TestResultStatusUndefined ...
+	TestResultStatusUndefined TestResultStatus = "undefined"
 )
 
 // PossibleTestResultStatusValues returns an array of possible values for the TestResultStatus const type.
 func PossibleTestResultStatusValues() []TestResultStatus {
-	return []TestResultStatus{False, True, Undefined}
+	return []TestResultStatus{TestResultStatusFalse, TestResultStatusTrue, TestResultStatusUndefined}
 }

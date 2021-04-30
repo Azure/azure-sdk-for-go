@@ -185,7 +185,7 @@ type EncryptionPropertiesDescription struct {
 type EndpointHealthData struct {
 	// EndpointID - Id of the endpoint
 	EndpointID *string `json:"endpointId,omitempty"`
-	// HealthStatus - Health statuses have following meanings. The 'healthy' status shows that the endpoint is accepting messages as expected. The 'unhealthy' status shows that the endpoint is not accepting messages as expected and IoT Hub is retrying to send data to this endpoint. The status of an unhealthy endpoint will be updated to healthy when IoT Hub has established an eventually consistent state of health. The 'dead' status shows that the endpoint is not accepting messages, after IoT Hub retried sending messages for the retrial period. See IoT Hub metrics to identify errors and monitor issues with endpoints. The 'unknown' status shows that the IoT Hub has not established a connection with the endpoint. No messages have been delivered to or rejected from this endpoint. Possible values include: 'Unknown', 'Healthy', 'Degraded', 'Unhealthy', 'Dead'
+	// HealthStatus - Health statuses have following meanings. The 'healthy' status shows that the endpoint is accepting messages as expected. The 'unhealthy' status shows that the endpoint is not accepting messages as expected and IoT Hub is retrying to send data to this endpoint. The status of an unhealthy endpoint will be updated to healthy when IoT Hub has established an eventually consistent state of health. The 'dead' status shows that the endpoint is not accepting messages, after IoT Hub retried sending messages for the retrial period. See IoT Hub metrics to identify errors and monitor issues with endpoints. The 'unknown' status shows that the IoT Hub has not established a connection with the endpoint. No messages have been delivered to or rejected from this endpoint. Possible values include: 'EndpointHealthStatusUnknown', 'EndpointHealthStatusHealthy', 'EndpointHealthStatusDegraded', 'EndpointHealthStatusUnhealthy', 'EndpointHealthStatusDead'
 	HealthStatus EndpointHealthStatus `json:"healthStatus,omitempty"`
 	// LastKnownError - Last error obtained when a message failed to be delivered to iot hub
 	LastKnownError *string `json:"lastKnownError,omitempty"`
@@ -627,7 +627,7 @@ type ExportDevicesRequest struct {
 	ExcludeKeys *bool `json:"excludeKeys,omitempty"`
 	// ExportBlobName - The name of the blob that will be created in the provided output blob container. This blob will contain the exported device registry information for the IoT Hub.
 	ExportBlobName *string `json:"exportBlobName,omitempty"`
-	// AuthenticationType - Specifies authentication type being used for connecting to the storage account. Possible values include: 'KeyBased', 'IdentityBased'
+	// AuthenticationType - Specifies authentication type being used for connecting to the storage account. Possible values include: 'AuthenticationTypeKeyBased', 'AuthenticationTypeIdentityBased'
 	AuthenticationType AuthenticationType `json:"authenticationType,omitempty"`
 	// Identity - Managed identity properties of storage endpoint for export devices.
 	Identity *ManagedIdentity `json:"identity,omitempty"`
@@ -695,16 +695,6 @@ type GroupIDInformationProperties struct {
 	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
 }
 
-// IPFilterRule the IP filter rules for the IoT hub.
-type IPFilterRule struct {
-	// FilterName - The name of the IP filter rule.
-	FilterName *string `json:"filterName,omitempty"`
-	// Action - The desired action for requests captured by this rule. Possible values include: 'Accept', 'Reject'
-	Action IPFilterActionType `json:"action,omitempty"`
-	// IPMask - A string that contains the IP address range in CIDR notation for the rule.
-	IPMask *string `json:"ipMask,omitempty"`
-}
-
 // ImportDevicesRequest use to provide parameters when requesting an import of all devices in the hub.
 type ImportDevicesRequest struct {
 	// InputBlobContainerURI - The input blob container URI.
@@ -715,7 +705,7 @@ type ImportDevicesRequest struct {
 	InputBlobName *string `json:"inputBlobName,omitempty"`
 	// OutputBlobName - The blob name to use for storing the status of the import job.
 	OutputBlobName *string `json:"outputBlobName,omitempty"`
-	// AuthenticationType - Specifies authentication type being used for connecting to the storage account. Possible values include: 'KeyBased', 'IdentityBased'
+	// AuthenticationType - Specifies authentication type being used for connecting to the storage account. Possible values include: 'AuthenticationTypeKeyBased', 'AuthenticationTypeIdentityBased'
 	AuthenticationType AuthenticationType `json:"authenticationType,omitempty"`
 	// Identity - Managed identity properties of storage endpoint for import devices.
 	Identity *ManagedIdentity `json:"identity,omitempty"`
@@ -952,7 +942,7 @@ func NewIotHubDescriptionListResultPage(cur IotHubDescriptionListResult, getNext
 type IotHubLocationDescription struct {
 	// Location - The name of the Azure region
 	Location *string `json:"location,omitempty"`
-	// Role - The role of the region, can be either primary or secondary. The primary region is where the IoT hub is currently provisioned. The secondary region is the Azure disaster recovery (DR) paired region and also the region where the IoT hub can failover to. Possible values include: 'Primary', 'Secondary'
+	// Role - The role of the region, can be either primary or secondary. The primary region is where the IoT hub is currently provisioned. The secondary region is the Azure disaster recovery (DR) paired region and also the region where the IoT hub can failover to. Possible values include: 'IotHubReplicaRoleTypePrimary', 'IotHubReplicaRoleTypeSecondary'
 	Role IotHubReplicaRoleType `json:"role,omitempty"`
 }
 
@@ -998,7 +988,7 @@ type IotHubNameAvailabilityInfo struct {
 	autorest.Response `json:"-"`
 	// NameAvailable - READ-ONLY; The value which indicates whether the provided name is available.
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - READ-ONLY; The reason for unavailability. Possible values include: 'Invalid', 'AlreadyExists'
+	// Reason - READ-ONLY; The reason for unavailability. Possible values include: 'IotHubNameUnavailabilityReasonInvalid', 'IotHubNameUnavailabilityReasonAlreadyExists'
 	Reason IotHubNameUnavailabilityReason `json:"reason,omitempty"`
 	// Message - The detailed reason message.
 	Message *string `json:"message,omitempty"`
@@ -1017,7 +1007,7 @@ func (ihnai IotHubNameAvailabilityInfo) MarshalJSON() ([]byte, error) {
 type IotHubProperties struct {
 	// AuthorizationPolicies - The shared access policies you can use to secure a connection to the IoT hub.
 	AuthorizationPolicies *[]SharedAccessSignatureAuthorizationRule `json:"authorizationPolicies,omitempty"`
-	// PublicNetworkAccess - Whether requests from Public Network are allowed. Possible values include: 'Enabled', 'Disabled'
+	// PublicNetworkAccess - Whether requests from Public Network are allowed. Possible values include: 'PublicNetworkAccessEnabled', 'PublicNetworkAccessDisabled'
 	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 	// IPFilterRules - The IP filter rules.
 	IPFilterRules   *[]IPFilterRule           `json:"ipFilterRules,omitempty"`
@@ -1046,7 +1036,7 @@ type IotHubProperties struct {
 	Comments *string `json:"comments,omitempty"`
 	// DeviceStreams - The device streams properties of iothub.
 	DeviceStreams *IotHubPropertiesDeviceStreams `json:"deviceStreams,omitempty"`
-	// Features - The capabilities and features enabled for the IoT hub. Possible values include: 'None', 'DeviceManagement'
+	// Features - The capabilities and features enabled for the IoT hub. Possible values include: 'CapabilitiesNone', 'CapabilitiesDeviceManagement'
 	Features Capabilities `json:"features,omitempty"`
 	// Encryption - The encryption properties for the IoT hub.
 	Encryption *EncryptionPropertiesDescription `json:"encryption,omitempty"`
@@ -1617,9 +1607,9 @@ func NewIotHubSkuDescriptionListResultPage(cur IotHubSkuDescriptionListResult, g
 
 // IotHubSkuInfo information about the SKU of the IoT hub.
 type IotHubSkuInfo struct {
-	// Name - The name of the SKU. Possible values include: 'F1', 'S1', 'S2', 'S3', 'B1', 'B2', 'B3'
+	// Name - The name of the SKU. Possible values include: 'IotHubSkuF1', 'IotHubSkuS1', 'IotHubSkuS2', 'IotHubSkuS3', 'IotHubSkuB1', 'IotHubSkuB2', 'IotHubSkuB3'
 	Name IotHubSku `json:"name,omitempty"`
-	// Tier - READ-ONLY; The billing tier for the IoT hub. Possible values include: 'Free', 'Standard', 'Basic'
+	// Tier - READ-ONLY; The billing tier for the IoT hub. Possible values include: 'IotHubSkuTierFree', 'IotHubSkuTierStandard', 'IotHubSkuTierBasic'
 	Tier IotHubSkuTier `json:"tier,omitempty"`
 	// Capacity - The number of provisioned IoT Hub units. See: https://docs.microsoft.com/azure/azure-subscription-service-limits#iot-hub-limits.
 	Capacity *int64 `json:"capacity,omitempty"`
@@ -1635,6 +1625,16 @@ func (ihsi IotHubSkuInfo) MarshalJSON() ([]byte, error) {
 		objectMap["capacity"] = ihsi.Capacity
 	}
 	return json.Marshal(objectMap)
+}
+
+// IPFilterRule the IP filter rules for the IoT hub.
+type IPFilterRule struct {
+	// FilterName - The name of the IP filter rule.
+	FilterName *string `json:"filterName,omitempty"`
+	// Action - The desired action for requests captured by this rule. Possible values include: 'IPFilterActionTypeAccept', 'IPFilterActionTypeReject'
+	Action IPFilterActionType `json:"action,omitempty"`
+	// IPMask - A string that contains the IP address range in CIDR notation for the rule.
+	IPMask *string `json:"ipMask,omitempty"`
 }
 
 // JobResponse the properties of the Job Response object.
@@ -1882,7 +1882,7 @@ type NetworkRuleSetIPRule struct {
 
 // NetworkRuleSetProperties network Rule Set Properties of IotHub
 type NetworkRuleSetProperties struct {
-	// DefaultAction - Default Action for Network Rule Set. Possible values include: 'Deny', 'Allow'
+	// DefaultAction - Default Action for Network Rule Set. Possible values include: 'DefaultActionDeny', 'DefaultActionAllow'
 	DefaultAction DefaultAction `json:"defaultAction,omitempty"`
 	// ApplyToBuiltInEventHubEndpoint - If True, then Network Rule Set is also applied to BuiltIn EventHub EndPoint of IotHub
 	ApplyToBuiltInEventHubEndpoint *bool `json:"applyToBuiltInEventHubEndpoint,omitempty"`
@@ -2213,7 +2213,7 @@ type PrivateLinkResources struct {
 
 // PrivateLinkServiceConnectionState the current state of a private endpoint connection
 type PrivateLinkServiceConnectionState struct {
-	// Status - The status of a private endpoint connection. Possible values include: 'Pending', 'Approved', 'Rejected', 'Disconnected'
+	// Status - The status of a private endpoint connection. Possible values include: 'PrivateLinkServiceConnectionStatusPending', 'PrivateLinkServiceConnectionStatusApproved', 'PrivateLinkServiceConnectionStatusRejected', 'PrivateLinkServiceConnectionStatusDisconnected'
 	Status PrivateLinkServiceConnectionStatus `json:"status,omitempty"`
 	// Description - The description for the current state of a private endpoint connection
 	Description *string `json:"description,omitempty"`
@@ -2262,7 +2262,7 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 type RouteCompilationError struct {
 	// Message - Route error message
 	Message *string `json:"message,omitempty"`
-	// Severity - Severity of the route error. Possible values include: 'Error', 'Warning'
+	// Severity - Severity of the route error. Possible values include: 'RouteErrorSeverityError', 'RouteErrorSeverityWarning'
 	Severity RouteErrorSeverity `json:"severity,omitempty"`
 	// Location - Location where the route error happened
 	Location *RouteErrorRange `json:"location,omitempty"`
@@ -2322,7 +2322,7 @@ type RoutingEventHubProperties struct {
 	EndpointURI *string `json:"endpointUri,omitempty"`
 	// EntityPath - Event hub name on the event hub namespace
 	EntityPath *string `json:"entityPath,omitempty"`
-	// AuthenticationType - Method used to authenticate against the event hub endpoint. Possible values include: 'KeyBased', 'IdentityBased'
+	// AuthenticationType - Method used to authenticate against the event hub endpoint. Possible values include: 'AuthenticationTypeKeyBased', 'AuthenticationTypeIdentityBased'
 	AuthenticationType AuthenticationType `json:"authenticationType,omitempty"`
 	// Identity - Managed identity properties of routing event hub endpoint.
 	Identity *ManagedIdentity `json:"identity,omitempty"`
@@ -2381,7 +2381,7 @@ type RoutingServiceBusQueueEndpointProperties struct {
 	EndpointURI *string `json:"endpointUri,omitempty"`
 	// EntityPath - Queue name on the service bus namespace
 	EntityPath *string `json:"entityPath,omitempty"`
-	// AuthenticationType - Method used to authenticate against the service bus queue endpoint. Possible values include: 'KeyBased', 'IdentityBased'
+	// AuthenticationType - Method used to authenticate against the service bus queue endpoint. Possible values include: 'AuthenticationTypeKeyBased', 'AuthenticationTypeIdentityBased'
 	AuthenticationType AuthenticationType `json:"authenticationType,omitempty"`
 	// Identity - Managed identity properties of routing service bus queue endpoint.
 	Identity *ManagedIdentity `json:"identity,omitempty"`
@@ -2403,7 +2403,7 @@ type RoutingServiceBusTopicEndpointProperties struct {
 	EndpointURI *string `json:"endpointUri,omitempty"`
 	// EntityPath - Queue name on the service bus topic
 	EntityPath *string `json:"entityPath,omitempty"`
-	// AuthenticationType - Method used to authenticate against the service bus topic endpoint. Possible values include: 'KeyBased', 'IdentityBased'
+	// AuthenticationType - Method used to authenticate against the service bus topic endpoint. Possible values include: 'AuthenticationTypeKeyBased', 'AuthenticationTypeIdentityBased'
 	AuthenticationType AuthenticationType `json:"authenticationType,omitempty"`
 	// Identity - Managed identity properties of routing service bus topic endpoint.
 	Identity *ManagedIdentity `json:"identity,omitempty"`
@@ -2423,7 +2423,7 @@ type RoutingStorageContainerProperties struct {
 	ConnectionString *string `json:"connectionString,omitempty"`
 	// EndpointURI - The url of the storage endpoint. It must include the protocol https://
 	EndpointURI *string `json:"endpointUri,omitempty"`
-	// AuthenticationType - Method used to authenticate against the storage endpoint. Possible values include: 'KeyBased', 'IdentityBased'
+	// AuthenticationType - Method used to authenticate against the storage endpoint. Possible values include: 'AuthenticationTypeKeyBased', 'AuthenticationTypeIdentityBased'
 	AuthenticationType AuthenticationType `json:"authenticationType,omitempty"`
 	// Identity - Managed identity properties of routing storage endpoint.
 	Identity *ManagedIdentity `json:"identity,omitempty"`
@@ -2441,7 +2441,7 @@ type RoutingStorageContainerProperties struct {
 	BatchFrequencyInSeconds *int32 `json:"batchFrequencyInSeconds,omitempty"`
 	// MaxChunkSizeInBytes - Maximum number of bytes for each blob written to storage. Value should be between 10485760(10MB) and 524288000(500MB). Default value is 314572800(300MB).
 	MaxChunkSizeInBytes *int32 `json:"maxChunkSizeInBytes,omitempty"`
-	// Encoding - Encoding that is used to serialize messages to blobs. Supported values are 'avro', 'avrodeflate', and 'JSON'. Default value is 'avro'. Possible values include: 'Avro', 'AvroDeflate', 'JSON'
+	// Encoding - Encoding that is used to serialize messages to blobs. Supported values are 'avro', 'avrodeflate', and 'JSON'. Default value is 'avro'. Possible values include: 'EncodingAvro', 'EncodingAvroDeflate', 'EncodingJSON'
 	Encoding Encoding `json:"encoding,omitempty"`
 }
 
@@ -2475,7 +2475,7 @@ type SharedAccessSignatureAuthorizationRule struct {
 	PrimaryKey *string `json:"primaryKey,omitempty"`
 	// SecondaryKey - The secondary key.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
-	// Rights - The permissions assigned to the shared access policy. Possible values include: 'RegistryRead', 'RegistryWrite', 'ServiceConnect', 'DeviceConnect', 'RegistryReadRegistryWrite', 'RegistryReadServiceConnect', 'RegistryReadDeviceConnect', 'RegistryWriteServiceConnect', 'RegistryWriteDeviceConnect', 'ServiceConnectDeviceConnect', 'RegistryReadRegistryWriteServiceConnect', 'RegistryReadRegistryWriteDeviceConnect', 'RegistryReadServiceConnectDeviceConnect', 'RegistryWriteServiceConnectDeviceConnect', 'RegistryReadRegistryWriteServiceConnectDeviceConnect'
+	// Rights - The permissions assigned to the shared access policy. Possible values include: 'AccessRightsRegistryRead', 'AccessRightsRegistryWrite', 'AccessRightsServiceConnect', 'AccessRightsDeviceConnect', 'AccessRightsRegistryReadRegistryWrite', 'AccessRightsRegistryReadServiceConnect', 'AccessRightsRegistryReadDeviceConnect', 'AccessRightsRegistryWriteServiceConnect', 'AccessRightsRegistryWriteDeviceConnect', 'AccessRightsServiceConnectDeviceConnect', 'AccessRightsRegistryReadRegistryWriteServiceConnect', 'AccessRightsRegistryReadRegistryWriteDeviceConnect', 'AccessRightsRegistryReadServiceConnectDeviceConnect', 'AccessRightsRegistryWriteServiceConnectDeviceConnect', 'AccessRightsRegistryReadRegistryWriteServiceConnectDeviceConnect'
 	Rights AccessRights `json:"rights,omitempty"`
 }
 
@@ -2657,7 +2657,7 @@ type StorageEndpointProperties struct {
 	ConnectionString *string `json:"connectionString,omitempty"`
 	// ContainerName - The name of the root container where you upload files. The container need not exist but should be creatable using the connectionString specified.
 	ContainerName *string `json:"containerName,omitempty"`
-	// AuthenticationType - Specifies authentication type being used for connecting to the storage account. Possible values include: 'KeyBased', 'IdentityBased'
+	// AuthenticationType - Specifies authentication type being used for connecting to the storage account. Possible values include: 'AuthenticationTypeKeyBased', 'AuthenticationTypeIdentityBased'
 	AuthenticationType AuthenticationType `json:"authenticationType,omitempty"`
 	// Identity - Managed identity properties of storage endpoint for file upload.
 	Identity *ManagedIdentity `json:"identity,omitempty"`
@@ -2709,7 +2709,7 @@ type TestRouteInput struct {
 // TestRouteResult result of testing one route
 type TestRouteResult struct {
 	autorest.Response `json:"-"`
-	// Result - Result of testing route. Possible values include: 'Undefined', 'False', 'True'
+	// Result - Result of testing route. Possible values include: 'TestResultStatusUndefined', 'TestResultStatusFalse', 'TestResultStatusTrue'
 	Result TestResultStatus `json:"result,omitempty"`
 	// Details - Detailed result of testing route
 	Details *TestRouteResultDetails `json:"details,omitempty"`

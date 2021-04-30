@@ -158,8 +158,8 @@ func (client DataConnectionsClient) CreateOrUpdate(ctx context.Context, resource
 func (client DataConnectionsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters BasicDataConnection) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":        autorest.Encode("path", clusterName),
-		"dataConnectionName": autorest.Encode("path", dataConnectionName),
 		"databaseName":       autorest.Encode("path", databaseName),
+		"dataConnectionName": autorest.Encode("path", dataConnectionName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
@@ -325,8 +325,8 @@ func (client DataConnectionsClient) Delete(ctx context.Context, resourceGroupNam
 func (client DataConnectionsClient) DeletePreparer(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":        autorest.Encode("path", clusterName),
-		"dataConnectionName": autorest.Encode("path", dataConnectionName),
 		"databaseName":       autorest.Encode("path", databaseName),
+		"dataConnectionName": autorest.Encode("path", dataConnectionName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
@@ -413,8 +413,8 @@ func (client DataConnectionsClient) Get(ctx context.Context, resourceGroupName s
 func (client DataConnectionsClient) GetPreparer(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":        autorest.Encode("path", clusterName),
-		"dataConnectionName": autorest.Encode("path", dataConnectionName),
 		"databaseName":       autorest.Encode("path", databaseName),
+		"dataConnectionName": autorest.Encode("path", dataConnectionName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}
@@ -565,8 +565,8 @@ func (client DataConnectionsClient) Update(ctx context.Context, resourceGroupNam
 func (client DataConnectionsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters BasicDataConnection) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":        autorest.Encode("path", clusterName),
-		"dataConnectionName": autorest.Encode("path", dataConnectionName),
 		"databaseName":       autorest.Encode("path", databaseName),
+		"dataConnectionName": autorest.Encode("path", dataConnectionName),
 		"resourceGroupName":  autorest.Encode("path", resourceGroupName),
 		"subscriptionId":     autorest.Encode("path", client.SubscriptionID),
 	}

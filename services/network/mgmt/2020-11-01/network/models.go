@@ -274,7 +274,7 @@ func (agac *ApplicationGatewayAuthenticationCertificate) UnmarshalJSON(body []by
 type ApplicationGatewayAuthenticationCertificatePropertiesFormat struct {
 	// Data - Certificate public data.
 	Data *string `json:"data,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the authentication certificate resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the authentication certificate resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -405,7 +405,7 @@ func (agaso *ApplicationGatewayAvailableSslOptions) UnmarshalJSON(body []byte) e
 type ApplicationGatewayAvailableSslOptionsPropertiesFormat struct {
 	// PredefinedPolicies - List of available Ssl predefined policy.
 	PredefinedPolicies *[]SubResource `json:"predefinedPolicies,omitempty"`
-	// DefaultPolicy - Name of the Ssl predefined policy applied by default to application gateway. Possible values include: 'AppGwSslPolicy20150501', 'AppGwSslPolicy20170401', 'AppGwSslPolicy20170401S'
+	// DefaultPolicy - Name of the Ssl predefined policy applied by default to application gateway. Possible values include: 'ApplicationGatewaySslPolicyNameAppGwSslPolicy20150501', 'ApplicationGatewaySslPolicyNameAppGwSslPolicy20170401', 'ApplicationGatewaySslPolicyNameAppGwSslPolicy20170401S'
 	DefaultPolicy ApplicationGatewaySslPolicyName `json:"defaultPolicy,omitempty"`
 	// AvailableCipherSuites - List of available Ssl cipher suites.
 	AvailableCipherSuites *[]ApplicationGatewaySslCipherSuite `json:"availableCipherSuites,omitempty"`
@@ -687,7 +687,7 @@ type ApplicationGatewayBackendAddressPoolPropertiesFormat struct {
 	BackendIPConfigurations *[]InterfaceIPConfiguration `json:"backendIPConfigurations,omitempty"`
 	// BackendAddresses - Backend addresses.
 	BackendAddresses *[]ApplicationGatewayBackendAddress `json:"backendAddresses,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the backend address pool resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the backend address pool resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -738,7 +738,7 @@ type ApplicationGatewayBackendHealthServer struct {
 	Address *string `json:"address,omitempty"`
 	// IPConfiguration - Reference to IP configuration of backend server.
 	IPConfiguration *InterfaceIPConfiguration `json:"ipConfiguration,omitempty"`
-	// Health - Health of backend server. Possible values include: 'Unknown', 'Up', 'Down', 'Partial', 'Draining'
+	// Health - Health of backend server. Possible values include: 'ApplicationGatewayBackendHealthServerHealthUnknown', 'ApplicationGatewayBackendHealthServerHealthUp', 'ApplicationGatewayBackendHealthServerHealthDown', 'ApplicationGatewayBackendHealthServerHealthPartial', 'ApplicationGatewayBackendHealthServerHealthDraining'
 	Health ApplicationGatewayBackendHealthServerHealth `json:"health,omitempty"`
 	// HealthProbeLog - Health Probe Log.
 	HealthProbeLog *string `json:"healthProbeLog,omitempty"`
@@ -838,9 +838,9 @@ func (agbhs *ApplicationGatewayBackendHTTPSettings) UnmarshalJSON(body []byte) e
 type ApplicationGatewayBackendHTTPSettingsPropertiesFormat struct {
 	// Port - The destination port on the backend.
 	Port *int32 `json:"port,omitempty"`
-	// Protocol - The protocol used to communicate with the backend. Possible values include: 'HTTP', 'HTTPS'
+	// Protocol - The protocol used to communicate with the backend. Possible values include: 'ApplicationGatewayProtocolHTTP', 'ApplicationGatewayProtocolHTTPS'
 	Protocol ApplicationGatewayProtocol `json:"protocol,omitempty"`
-	// CookieBasedAffinity - Cookie based affinity. Possible values include: 'Enabled', 'Disabled'
+	// CookieBasedAffinity - Cookie based affinity. Possible values include: 'ApplicationGatewayCookieBasedAffinityEnabled', 'ApplicationGatewayCookieBasedAffinityDisabled'
 	CookieBasedAffinity ApplicationGatewayCookieBasedAffinity `json:"cookieBasedAffinity,omitempty"`
 	// RequestTimeout - Request timeout in seconds. Application Gateway will fail the request if response is not received within RequestTimeout. Acceptable values are from 1 second to 86400 seconds.
 	RequestTimeout *int32 `json:"requestTimeout,omitempty"`
@@ -862,7 +862,7 @@ type ApplicationGatewayBackendHTTPSettingsPropertiesFormat struct {
 	ProbeEnabled *bool `json:"probeEnabled,omitempty"`
 	// Path - Path which should be used as a prefix for all HTTP requests. Null means no path will be prefixed. Default value is null.
 	Path *string `json:"path,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the backend HTTP settings resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the backend HTTP settings resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -928,7 +928,7 @@ type ApplicationGatewayConnectionDraining struct {
 
 // ApplicationGatewayCustomError customer error of an application gateway.
 type ApplicationGatewayCustomError struct {
-	// StatusCode - Status code of the application gateway customer error. Possible values include: 'HTTPStatus403', 'HTTPStatus502'
+	// StatusCode - Status code of the application gateway customer error. Possible values include: 'ApplicationGatewayCustomErrorStatusCodeHTTPStatus403', 'ApplicationGatewayCustomErrorStatusCodeHTTPStatus502'
 	StatusCode ApplicationGatewayCustomErrorStatusCode `json:"statusCode,omitempty"`
 	// CustomErrorPageURL - Error page URL of the application gateway customer error.
 	CustomErrorPageURL *string `json:"customErrorPageUrl,omitempty"`
@@ -1077,7 +1077,7 @@ func (agfrs *ApplicationGatewayFirewallRuleSet) UnmarshalJSON(body []byte) error
 
 // ApplicationGatewayFirewallRuleSetPropertiesFormat properties of the web application firewall rule set.
 type ApplicationGatewayFirewallRuleSetPropertiesFormat struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the web application firewall rule set. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the web application firewall rule set. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// RuleSetType - The type of the web application firewall rule set.
 	RuleSetType *string `json:"ruleSetType,omitempty"`
@@ -1196,7 +1196,7 @@ func (agfic *ApplicationGatewayFrontendIPConfiguration) UnmarshalJSON(body []byt
 type ApplicationGatewayFrontendIPConfigurationPropertiesFormat struct {
 	// PrivateIPAddress - PrivateIPAddress of the network interface IP Configuration.
 	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
-	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'Static', 'Dynamic'
+	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'IPAllocationMethodStatic', 'IPAllocationMethodDynamic'
 	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
 	// Subnet - Reference to the subnet resource.
 	Subnet *SubResource `json:"subnet,omitempty"`
@@ -1204,7 +1204,7 @@ type ApplicationGatewayFrontendIPConfigurationPropertiesFormat struct {
 	PublicIPAddress *SubResource `json:"publicIPAddress,omitempty"`
 	// PrivateLinkConfiguration - Reference to the application gateway private link configuration.
 	PrivateLinkConfiguration *SubResource `json:"privateLinkConfiguration,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the frontend IP configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the frontend IP configuration resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -1322,7 +1322,7 @@ func (agfp *ApplicationGatewayFrontendPort) UnmarshalJSON(body []byte) error {
 type ApplicationGatewayFrontendPortPropertiesFormat struct {
 	// Port - Frontend port.
 	Port *int32 `json:"port,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the frontend port resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the frontend port resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -1438,7 +1438,7 @@ type ApplicationGatewayHTTPListenerPropertiesFormat struct {
 	FrontendIPConfiguration *SubResource `json:"frontendIPConfiguration,omitempty"`
 	// FrontendPort - Frontend port resource of an application gateway.
 	FrontendPort *SubResource `json:"frontendPort,omitempty"`
-	// Protocol - Protocol of the HTTP listener. Possible values include: 'HTTP', 'HTTPS'
+	// Protocol - Protocol of the HTTP listener. Possible values include: 'ApplicationGatewayProtocolHTTP', 'ApplicationGatewayProtocolHTTPS'
 	Protocol ApplicationGatewayProtocol `json:"protocol,omitempty"`
 	// HostName - Host name of HTTP listener.
 	HostName *string `json:"hostName,omitempty"`
@@ -1448,7 +1448,7 @@ type ApplicationGatewayHTTPListenerPropertiesFormat struct {
 	SslProfile *SubResource `json:"sslProfile,omitempty"`
 	// RequireServerNameIndication - Applicable only if protocol is https. Enables SNI for multi-hosting.
 	RequireServerNameIndication *bool `json:"requireServerNameIndication,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the HTTP listener resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the HTTP listener resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// CustomErrorConfigurations - Custom error configurations of the HTTP listener.
 	CustomErrorConfigurations *[]ApplicationGatewayCustomError `json:"customErrorConfigurations,omitempty"`
@@ -1589,7 +1589,7 @@ func (agic *ApplicationGatewayIPConfiguration) UnmarshalJSON(body []byte) error 
 type ApplicationGatewayIPConfigurationPropertiesFormat struct {
 	// Subnet - Reference to the subnet resource. A subnet from where application gateway gets its private address.
 	Subnet *SubResource `json:"subnet,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the application gateway IP configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the application gateway IP configuration resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -1763,7 +1763,7 @@ func NewApplicationGatewayListResultPage(cur ApplicationGatewayListResult, getNe
 
 // ApplicationGatewayOnDemandProbe details of on demand test probe request.
 type ApplicationGatewayOnDemandProbe struct {
-	// Protocol - The protocol used for the probe. Possible values include: 'HTTP', 'HTTPS'
+	// Protocol - The protocol used for the probe. Possible values include: 'ApplicationGatewayProtocolHTTP', 'ApplicationGatewayProtocolHTTPS'
 	Protocol ApplicationGatewayProtocol `json:"protocol,omitempty"`
 	// Host - Host name to send the probe to.
 	Host *string `json:"host,omitempty"`
@@ -1882,7 +1882,7 @@ type ApplicationGatewayPathRulePropertiesFormat struct {
 	RedirectConfiguration *SubResource `json:"redirectConfiguration,omitempty"`
 	// RewriteRuleSet - Rewrite rule set resource of URL path map path rule.
 	RewriteRuleSet *SubResource `json:"rewriteRuleSet,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the path rule resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the path rule resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// FirewallPolicy - Reference to the FirewallPolicy resource.
 	FirewallPolicy *SubResource `json:"firewallPolicy,omitempty"`
@@ -2172,7 +2172,7 @@ type ApplicationGatewayPrivateEndpointConnectionProperties struct {
 	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
 	// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the application gateway private endpoint connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the application gateway private endpoint connection resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// LinkIdentifier - READ-ONLY; The consumer link id.
 	LinkIdentifier *string `json:"linkIdentifier,omitempty"`
@@ -2361,7 +2361,7 @@ func (agplc *ApplicationGatewayPrivateLinkConfiguration) UnmarshalJSON(body []by
 type ApplicationGatewayPrivateLinkConfigurationProperties struct {
 	// IPConfigurations - An array of application gateway private link ip configurations.
 	IPConfigurations *[]ApplicationGatewayPrivateLinkIPConfiguration `json:"ipConfigurations,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the application gateway private link configuration. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the application gateway private link configuration. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -2468,13 +2468,13 @@ func (agplic *ApplicationGatewayPrivateLinkIPConfiguration) UnmarshalJSON(body [
 type ApplicationGatewayPrivateLinkIPConfigurationProperties struct {
 	// PrivateIPAddress - The private IP address of the IP configuration.
 	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
-	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'Static', 'Dynamic'
+	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'IPAllocationMethodStatic', 'IPAllocationMethodDynamic'
 	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
 	// Subnet - Reference to the subnet resource.
 	Subnet *SubResource `json:"subnet,omitempty"`
 	// Primary - Whether the ip configuration is primary or not.
 	Primary *bool `json:"primary,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the application gateway private link IP configuration. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the application gateway private link IP configuration. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -2865,7 +2865,7 @@ type ApplicationGatewayProbeHealthResponseMatch struct {
 
 // ApplicationGatewayProbePropertiesFormat properties of probe of an application gateway.
 type ApplicationGatewayProbePropertiesFormat struct {
-	// Protocol - The protocol used for the probe. Possible values include: 'HTTP', 'HTTPS'
+	// Protocol - The protocol used for the probe. Possible values include: 'ApplicationGatewayProtocolHTTP', 'ApplicationGatewayProtocolHTTPS'
 	Protocol ApplicationGatewayProtocol `json:"protocol,omitempty"`
 	// Host - Host name to send the probe to.
 	Host *string `json:"host,omitempty"`
@@ -2883,7 +2883,7 @@ type ApplicationGatewayProbePropertiesFormat struct {
 	MinServers *int32 `json:"minServers,omitempty"`
 	// Match - Criterion for classifying a healthy probe response.
 	Match *ApplicationGatewayProbeHealthResponseMatch `json:"match,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the probe resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the probe resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Port - Custom port which will be used for probing the backend servers. The valid value ranges from 1 to 65535. In case not set, port from http settings will be used. This property is valid for Standard_v2 and WAF_v2 only.
 	Port *int32 `json:"port,omitempty"`
@@ -2931,7 +2931,7 @@ type ApplicationGatewayPropertiesFormat struct {
 	Sku *ApplicationGatewaySku `json:"sku,omitempty"`
 	// SslPolicy - SSL policy of the application gateway resource.
 	SslPolicy *ApplicationGatewaySslPolicy `json:"sslPolicy,omitempty"`
-	// OperationalState - READ-ONLY; Operational state of the application gateway resource. Possible values include: 'Stopped', 'Starting', 'Running', 'Stopping'
+	// OperationalState - READ-ONLY; Operational state of the application gateway resource. Possible values include: 'ApplicationGatewayOperationalStateStopped', 'ApplicationGatewayOperationalStateStarting', 'ApplicationGatewayOperationalStateRunning', 'ApplicationGatewayOperationalStateStopping'
 	OperationalState ApplicationGatewayOperationalState `json:"operationalState,omitempty"`
 	// GatewayIPConfigurations - Subnets of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
 	GatewayIPConfigurations *[]ApplicationGatewayIPConfiguration `json:"gatewayIPConfigurations,omitempty"`
@@ -2981,7 +2981,7 @@ type ApplicationGatewayPropertiesFormat struct {
 	PrivateEndpointConnections *[]ApplicationGatewayPrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the application gateway resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the application gateway resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the application gateway resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// CustomErrorConfigurations - Custom error configurations of the application gateway resource.
 	CustomErrorConfigurations *[]ApplicationGatewayCustomError `json:"customErrorConfigurations,omitempty"`
@@ -3165,7 +3165,7 @@ func (agrc *ApplicationGatewayRedirectConfiguration) UnmarshalJSON(body []byte) 
 // ApplicationGatewayRedirectConfigurationPropertiesFormat properties of redirect configuration of the
 // application gateway.
 type ApplicationGatewayRedirectConfigurationPropertiesFormat struct {
-	// RedirectType - HTTP redirection type. Possible values include: 'Permanent', 'Found', 'SeeOther', 'Temporary'
+	// RedirectType - HTTP redirection type. Possible values include: 'ApplicationGatewayRedirectTypePermanent', 'ApplicationGatewayRedirectTypeFound', 'ApplicationGatewayRedirectTypeSeeOther', 'ApplicationGatewayRedirectTypeTemporary'
 	RedirectType ApplicationGatewayRedirectType `json:"redirectType,omitempty"`
 	// TargetListener - Reference to a listener to redirect the request to.
 	TargetListener *SubResource `json:"targetListener,omitempty"`
@@ -3275,7 +3275,7 @@ func (agrrr *ApplicationGatewayRequestRoutingRule) UnmarshalJSON(body []byte) er
 // ApplicationGatewayRequestRoutingRulePropertiesFormat properties of request routing rule of the
 // application gateway.
 type ApplicationGatewayRequestRoutingRulePropertiesFormat struct {
-	// RuleType - Rule type. Possible values include: 'Basic', 'PathBasedRouting'
+	// RuleType - Rule type. Possible values include: 'ApplicationGatewayRequestRoutingRuleTypeBasic', 'ApplicationGatewayRequestRoutingRuleTypePathBasedRouting'
 	RuleType ApplicationGatewayRequestRoutingRuleType `json:"ruleType,omitempty"`
 	// Priority - Priority of the request routing rule.
 	Priority *int32 `json:"priority,omitempty"`
@@ -3291,7 +3291,7 @@ type ApplicationGatewayRequestRoutingRulePropertiesFormat struct {
 	RewriteRuleSet *SubResource `json:"rewriteRuleSet,omitempty"`
 	// RedirectConfiguration - Redirect configuration resource of the application gateway.
 	RedirectConfiguration *SubResource `json:"redirectConfiguration,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the request routing rule resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the request routing rule resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -3442,7 +3442,7 @@ func (agrrs *ApplicationGatewayRewriteRuleSet) UnmarshalJSON(body []byte) error 
 type ApplicationGatewayRewriteRuleSetPropertiesFormat struct {
 	// RewriteRules - Rewrite rules in the rewrite rule set.
 	RewriteRules *[]ApplicationGatewayRewriteRule `json:"rewriteRules,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the rewrite rule set resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the rewrite rule set resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -3623,7 +3623,7 @@ func (future *ApplicationGatewaysDeleteFuture) result(client ApplicationGateways
 
 // ApplicationGatewaySku SKU of an application gateway.
 type ApplicationGatewaySku struct {
-	// Name - Name of an application gateway SKU. Possible values include: 'StandardSmall', 'StandardMedium', 'StandardLarge', 'WAFMedium', 'WAFLarge', 'StandardV2', 'WAFV2'
+	// Name - Name of an application gateway SKU. Possible values include: 'ApplicationGatewaySkuNameStandardSmall', 'ApplicationGatewaySkuNameStandardMedium', 'ApplicationGatewaySkuNameStandardLarge', 'ApplicationGatewaySkuNameWAFMedium', 'ApplicationGatewaySkuNameWAFLarge', 'ApplicationGatewaySkuNameStandardV2', 'ApplicationGatewaySkuNameWAFV2'
 	Name ApplicationGatewaySkuName `json:"name,omitempty"`
 	// Tier - Tier of an application gateway. Possible values include: 'ApplicationGatewayTierStandard', 'ApplicationGatewayTierWAF', 'ApplicationGatewayTierStandardV2', 'ApplicationGatewayTierWAFV2'
 	Tier ApplicationGatewayTier `json:"tier,omitempty"`
@@ -3731,7 +3731,7 @@ type ApplicationGatewaySslCertificatePropertiesFormat struct {
 	PublicCertData *string `json:"publicCertData,omitempty"`
 	// KeyVaultSecretID - Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
 	KeyVaultSecretID *string `json:"keyVaultSecretId,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the SSL certificate resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the SSL certificate resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -3754,13 +3754,13 @@ func (agscpf ApplicationGatewaySslCertificatePropertiesFormat) MarshalJSON() ([]
 type ApplicationGatewaySslPolicy struct {
 	// DisabledSslProtocols - Ssl protocols to be disabled on application gateway.
 	DisabledSslProtocols *[]ApplicationGatewaySslProtocol `json:"disabledSslProtocols,omitempty"`
-	// PolicyType - Type of Ssl Policy. Possible values include: 'Predefined', 'Custom'
+	// PolicyType - Type of Ssl Policy. Possible values include: 'ApplicationGatewaySslPolicyTypePredefined', 'ApplicationGatewaySslPolicyTypeCustom'
 	PolicyType ApplicationGatewaySslPolicyType `json:"policyType,omitempty"`
-	// PolicyName - Name of Ssl predefined policy. Possible values include: 'AppGwSslPolicy20150501', 'AppGwSslPolicy20170401', 'AppGwSslPolicy20170401S'
+	// PolicyName - Name of Ssl predefined policy. Possible values include: 'ApplicationGatewaySslPolicyNameAppGwSslPolicy20150501', 'ApplicationGatewaySslPolicyNameAppGwSslPolicy20170401', 'ApplicationGatewaySslPolicyNameAppGwSslPolicy20170401S'
 	PolicyName ApplicationGatewaySslPolicyName `json:"policyName,omitempty"`
 	// CipherSuites - Ssl cipher suites to be enabled in the specified order to application gateway.
 	CipherSuites *[]ApplicationGatewaySslCipherSuite `json:"cipherSuites,omitempty"`
-	// MinProtocolVersion - Minimum version of Ssl protocol to be supported on application gateway. Possible values include: 'TLSv10', 'TLSv11', 'TLSv12'
+	// MinProtocolVersion - Minimum version of Ssl protocol to be supported on application gateway. Possible values include: 'ApplicationGatewaySslProtocolTLSv10', 'ApplicationGatewaySslProtocolTLSv11', 'ApplicationGatewaySslProtocolTLSv12'
 	MinProtocolVersion ApplicationGatewaySslProtocol `json:"minProtocolVersion,omitempty"`
 }
 
@@ -3837,7 +3837,7 @@ func (agspp *ApplicationGatewaySslPredefinedPolicy) UnmarshalJSON(body []byte) e
 type ApplicationGatewaySslPredefinedPolicyPropertiesFormat struct {
 	// CipherSuites - Ssl cipher suites to be enabled in the specified order for application gateway.
 	CipherSuites *[]ApplicationGatewaySslCipherSuite `json:"cipherSuites,omitempty"`
-	// MinProtocolVersion - Minimum version of Ssl protocol to be supported on application gateway. Possible values include: 'TLSv10', 'TLSv11', 'TLSv12'
+	// MinProtocolVersion - Minimum version of Ssl protocol to be supported on application gateway. Possible values include: 'ApplicationGatewaySslProtocolTLSv10', 'ApplicationGatewaySslProtocolTLSv11', 'ApplicationGatewaySslProtocolTLSv12'
 	MinProtocolVersion ApplicationGatewaySslProtocol `json:"minProtocolVersion,omitempty"`
 }
 
@@ -3938,7 +3938,7 @@ type ApplicationGatewaySslProfilePropertiesFormat struct {
 	SslPolicy *ApplicationGatewaySslPolicy `json:"sslPolicy,omitempty"`
 	// ClientAuthConfiguration - Client authentication configuration of the application gateway resource.
 	ClientAuthConfiguration *ApplicationGatewayClientAuthConfiguration `json:"clientAuthConfiguration,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the HTTP listener resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the HTTP listener resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -4125,7 +4125,7 @@ func (agtcc *ApplicationGatewayTrustedClientCertificate) UnmarshalJSON(body []by
 type ApplicationGatewayTrustedClientCertificatePropertiesFormat struct {
 	// Data - Certificate public data.
 	Data *string `json:"data,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the trusted client certificate resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the trusted client certificate resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -4234,7 +4234,7 @@ type ApplicationGatewayTrustedRootCertificatePropertiesFormat struct {
 	Data *string `json:"data,omitempty"`
 	// KeyVaultSecretID - Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
 	KeyVaultSecretID *string `json:"keyVaultSecretId,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the trusted root certificate resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the trusted root certificate resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -4362,7 +4362,7 @@ type ApplicationGatewayURLPathMapPropertiesFormat struct {
 	DefaultRedirectConfiguration *SubResource `json:"defaultRedirectConfiguration,omitempty"`
 	// PathRules - Path rule of URL path map resource.
 	PathRules *[]ApplicationGatewayPathRule `json:"pathRules,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the URL path map resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the URL path map resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -4392,7 +4392,7 @@ func (agupmpf ApplicationGatewayURLPathMapPropertiesFormat) MarshalJSON() ([]byt
 type ApplicationGatewayWebApplicationFirewallConfiguration struct {
 	// Enabled - Whether the web application firewall is enabled or not.
 	Enabled *bool `json:"enabled,omitempty"`
-	// FirewallMode - Web application firewall mode. Possible values include: 'Detection', 'Prevention'
+	// FirewallMode - Web application firewall mode. Possible values include: 'ApplicationGatewayFirewallModeDetection', 'ApplicationGatewayFirewallModePrevention'
 	FirewallMode ApplicationGatewayFirewallMode `json:"firewallMode,omitempty"`
 	// RuleSetType - The type of the web application firewall rule set. Possible values are: 'OWASP'.
 	RuleSetType *string `json:"ruleSetType,omitempty"`
@@ -4436,13 +4436,13 @@ type ApplicationRule struct {
 	Name *string `json:"name,omitempty"`
 	// Description - Description of the rule.
 	Description *string `json:"description,omitempty"`
-	// RuleType - Possible values include: 'RuleTypeFirewallPolicyRule', 'RuleTypeApplicationRule', 'RuleTypeNatRule', 'RuleTypeNetworkRule'
+	// RuleType - Possible values include: 'RuleTypeRuleTypeFirewallPolicyRule', 'RuleTypeRuleTypeApplicationRule', 'RuleTypeRuleTypeNatRule', 'RuleTypeRuleTypeNetworkRule'
 	RuleType RuleType `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ApplicationRule.
 func (ar ApplicationRule) MarshalJSON() ([]byte, error) {
-	ar.RuleType = RuleTypeApplicationRule
+	ar.RuleType = RuleTypeRuleTypeApplicationRule
 	objectMap := make(map[string]interface{})
 	if ar.SourceAddresses != nil {
 		objectMap["sourceAddresses"] = ar.SourceAddresses
@@ -4796,7 +4796,7 @@ func NewApplicationSecurityGroupListResultPage(cur ApplicationSecurityGroupListR
 type ApplicationSecurityGroupPropertiesFormat struct {
 	// ResourceGUID - READ-ONLY; The resource GUID property of the application security group resource. It uniquely identifies a resource, even if the user changes its name or migrate the resource across subscriptions or resource groups.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the application security group resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the application security group resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -5045,9 +5045,9 @@ func NewAuthorizationListResultPage(cur AuthorizationListResult, getNextPage fun
 type AuthorizationPropertiesFormat struct {
 	// AuthorizationKey - The authorization key.
 	AuthorizationKey *string `json:"authorizationKey,omitempty"`
-	// AuthorizationUseStatus - The authorization use status. Possible values include: 'Available', 'InUse'
+	// AuthorizationUseStatus - The authorization use status. Possible values include: 'AuthorizationUseStatusAvailable', 'AuthorizationUseStatusInUse'
 	AuthorizationUseStatus AuthorizationUseStatus `json:"authorizationUseStatus,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the authorization resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the authorization resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -6088,7 +6088,7 @@ type AzureFirewallApplicationRuleCollectionPropertiesFormat struct {
 	Action *AzureFirewallRCAction `json:"action,omitempty"`
 	// Rules - Collection of rules used by a application rule collection.
 	Rules *[]AzureFirewallApplicationRule `json:"rules,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the application rule collection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the application rule collection resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -6391,7 +6391,7 @@ func NewAzureFirewallFqdnTagListResultPage(cur AzureFirewallFqdnTagListResult, g
 
 // AzureFirewallFqdnTagPropertiesFormat azure Firewall FQDN Tag Properties.
 type AzureFirewallFqdnTagPropertiesFormat struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the Azure firewall FQDN tag resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the Azure firewall FQDN tag resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// FqdnTagName - READ-ONLY; The name of this FQDN Tag.
 	FqdnTagName *string `json:"fqdnTagName,omitempty"`
@@ -6494,7 +6494,7 @@ type AzureFirewallIPConfigurationPropertiesFormat struct {
 	Subnet *SubResource `json:"subnet,omitempty"`
 	// PublicIPAddress - Reference to the PublicIP resource. This field is a mandatory input if subnet is not null.
 	PublicIPAddress *SubResource `json:"publicIPAddress,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the Azure firewall IP configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the Azure firewall IP configuration resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -6679,7 +6679,7 @@ func NewAzureFirewallListResultPage(cur AzureFirewallListResult, getNextPage fun
 
 // AzureFirewallNatRCAction azureFirewall NAT Rule Collection Action.
 type AzureFirewallNatRCAction struct {
-	// Type - The type of action. Possible values include: 'Snat', 'Dnat'
+	// Type - The type of action. Possible values include: 'AzureFirewallNatRCActionTypeSnat', 'AzureFirewallNatRCActionTypeDnat'
 	Type AzureFirewallNatRCActionType `json:"type,omitempty"`
 }
 
@@ -6793,7 +6793,7 @@ type AzureFirewallNatRuleCollectionProperties struct {
 	Action *AzureFirewallNatRCAction `json:"action,omitempty"`
 	// Rules - Collection of rules used by a NAT rule collection.
 	Rules *[]AzureFirewallNatRule `json:"rules,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the NAT rule collection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the NAT rule collection resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -6920,7 +6920,7 @@ type AzureFirewallNetworkRuleCollectionPropertiesFormat struct {
 	Action *AzureFirewallRCAction `json:"action,omitempty"`
 	// Rules - Collection of rules used by a network rule collection.
 	Rules *[]AzureFirewallNetworkRule `json:"rules,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the network rule collection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the network rule collection resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -6951,7 +6951,7 @@ type AzureFirewallPropertiesFormat struct {
 	IPConfigurations *[]AzureFirewallIPConfiguration `json:"ipConfigurations,omitempty"`
 	// ManagementIPConfiguration - IP configuration of the Azure Firewall used for management traffic.
 	ManagementIPConfiguration *AzureFirewallIPConfiguration `json:"managementIpConfiguration,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the Azure firewall resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the Azure firewall resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ThreatIntelMode - The operation mode for Threat Intelligence. Possible values include: 'AzureFirewallThreatIntelModeAlert', 'AzureFirewallThreatIntelModeDeny', 'AzureFirewallThreatIntelModeOff'
 	ThreatIntelMode AzureFirewallThreatIntelMode `json:"threatIntelMode,omitempty"`
@@ -7102,9 +7102,9 @@ func (future *AzureFirewallsDeleteFuture) result(client AzureFirewallsClient) (a
 
 // AzureFirewallSku SKU of an Azure Firewall.
 type AzureFirewallSku struct {
-	// Name - Name of an Azure Firewall SKU. Possible values include: 'AZFWVNet', 'AZFWHub'
+	// Name - Name of an Azure Firewall SKU. Possible values include: 'AzureFirewallSkuNameAZFWVNet', 'AzureFirewallSkuNameAZFWHub'
 	Name AzureFirewallSkuName `json:"name,omitempty"`
-	// Tier - Tier of an Azure Firewall. Possible values include: 'Standard', 'Premium'
+	// Tier - Tier of an Azure Firewall. Possible values include: 'AzureFirewallSkuTierStandard', 'AzureFirewallSkuTierPremium'
 	Tier AzureFirewallSkuTier `json:"tier,omitempty"`
 }
 
@@ -7560,7 +7560,7 @@ type BackendAddressPoolPropertiesFormat struct {
 	OutboundRule *SubResource `json:"outboundRule,omitempty"`
 	// OutboundRules - READ-ONLY; An array of references to outbound rules that use this backend address pool.
 	OutboundRules *[]SubResource `json:"outboundRules,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the backend address pool resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the backend address pool resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -7594,7 +7594,7 @@ type BastionActiveSession struct {
 	UserName *string `json:"userName,omitempty"`
 	// TargetIPAddress - READ-ONLY; The IP Address of the target.
 	TargetIPAddress *string `json:"targetIpAddress,omitempty"`
-	// Protocol - READ-ONLY; The protocol used to connect to the target. Possible values include: 'SSH', 'RDP'
+	// Protocol - READ-ONLY; The protocol used to connect to the target. Possible values include: 'BastionConnectProtocolSSH', 'BastionConnectProtocolRDP'
 	Protocol BastionConnectProtocol `json:"protocol,omitempty"`
 	// TargetResourceID - READ-ONLY; The resource id of the target.
 	TargetResourceID *string `json:"targetResourceId,omitempty"`
@@ -7972,9 +7972,9 @@ type BastionHostIPConfigurationPropertiesFormat struct {
 	Subnet *SubResource `json:"subnet,omitempty"`
 	// PublicIPAddress - Reference of the PublicIP resource.
 	PublicIPAddress *SubResource `json:"publicIPAddress,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the bastion host IP configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the bastion host IP configuration resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// PrivateIPAllocationMethod - Private IP allocation method. Possible values include: 'Static', 'Dynamic'
+	// PrivateIPAllocationMethod - Private IP allocation method. Possible values include: 'IPAllocationMethodStatic', 'IPAllocationMethodDynamic'
 	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
 }
 
@@ -8158,7 +8158,7 @@ type BastionHostPropertiesFormat struct {
 	IPConfigurations *[]BastionHostIPConfiguration `json:"ipConfigurations,omitempty"`
 	// DNSName - FQDN for the endpoint on which bastion host is accessible.
 	DNSName *string `json:"dnsName,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the bastion host resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the bastion host resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -8722,7 +8722,7 @@ type BgpConnectionProperties struct {
 	PeerAsn *int64 `json:"peerAsn,omitempty"`
 	// PeerIP - Peer IP.
 	PeerIP *string `json:"peerIp,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ConnectionState - READ-ONLY; The current state of the VirtualHub to Peer. Possible values include: 'HubBgpConnectionStatusUnknown', 'HubBgpConnectionStatusConnecting', 'HubBgpConnectionStatusConnected', 'HubBgpConnectionStatusNotConnected'
 	ConnectionState HubBgpConnectionStatus `json:"connectionState,omitempty"`
@@ -9097,7 +9097,7 @@ type ConfigurationDiagnosticParameters struct {
 
 // ConfigurationDiagnosticProfile parameters to compare with network configuration.
 type ConfigurationDiagnosticProfile struct {
-	// Direction - The direction of the traffic. Possible values include: 'Inbound', 'Outbound'
+	// Direction - The direction of the traffic. Possible values include: 'DirectionInbound', 'DirectionOutbound'
 	Direction Direction `json:"direction,omitempty"`
 	// Protocol - Protocol to be verified on. Accepted values are '*', TCP, UDP.
 	Protocol *string `json:"protocol,omitempty"`
@@ -9206,7 +9206,7 @@ type ConnectionMonitorDestination struct {
 type ConnectionMonitorEndpoint struct {
 	// Name - The name of the connection monitor endpoint.
 	Name *string `json:"name,omitempty"`
-	// Type - The endpoint type. Possible values include: 'AzureVM', 'AzureVNet', 'AzureSubnet', 'ExternalAddress', 'MMAWorkspaceMachine', 'MMAWorkspaceNetwork'
+	// Type - The endpoint type. Possible values include: 'EndpointTypeAzureVM', 'EndpointTypeAzureVNet', 'EndpointTypeAzureSubnet', 'EndpointTypeExternalAddress', 'EndpointTypeMMAWorkspaceMachine', 'EndpointTypeMMAWorkspaceNetwork'
 	Type EndpointType `json:"type,omitempty"`
 	// ResourceID - Resource ID of the connection monitor endpoint.
 	ResourceID *string `json:"resourceId,omitempty"`
@@ -9216,13 +9216,13 @@ type ConnectionMonitorEndpoint struct {
 	Filter *ConnectionMonitorEndpointFilter `json:"filter,omitempty"`
 	// Scope - Endpoint scope.
 	Scope *ConnectionMonitorEndpointScope `json:"scope,omitempty"`
-	// CoverageLevel - Test coverage for the endpoint. Possible values include: 'Default', 'Low', 'BelowAverage', 'Average', 'AboveAverage', 'Full'
+	// CoverageLevel - Test coverage for the endpoint. Possible values include: 'CoverageLevelDefault', 'CoverageLevelLow', 'CoverageLevelBelowAverage', 'CoverageLevelAverage', 'CoverageLevelAboveAverage', 'CoverageLevelFull'
 	CoverageLevel CoverageLevel `json:"coverageLevel,omitempty"`
 }
 
 // ConnectionMonitorEndpointFilter describes the connection monitor endpoint filter.
 type ConnectionMonitorEndpointFilter struct {
-	// Type - The behavior of the endpoint filter. Currently only 'Include' is supported. Possible values include: 'Include'
+	// Type - The behavior of the endpoint filter. Currently only 'Include' is supported. Possible values include: 'ConnectionMonitorEndpointFilterTypeInclude'
 	Type ConnectionMonitorEndpointFilterType `json:"type,omitempty"`
 	// Items - List of items in the filter.
 	Items *[]ConnectionMonitorEndpointFilterItem `json:"items,omitempty"`
@@ -9230,7 +9230,7 @@ type ConnectionMonitorEndpointFilter struct {
 
 // ConnectionMonitorEndpointFilterItem describes the connection monitor endpoint filter item.
 type ConnectionMonitorEndpointFilterItem struct {
-	// Type - The type of item included in the filter. Currently only 'AgentAddress' is supported. Possible values include: 'AgentAddress'
+	// Type - The type of item included in the filter. Currently only 'AgentAddress' is supported. Possible values include: 'ConnectionMonitorEndpointFilterItemTypeAgentAddress'
 	Type ConnectionMonitorEndpointFilterItemType `json:"type,omitempty"`
 	// Address - The address of the filter item.
 	Address *string `json:"address,omitempty"`
@@ -9254,7 +9254,7 @@ type ConnectionMonitorEndpointScopeItem struct {
 type ConnectionMonitorHTTPConfiguration struct {
 	// Port - The port to connect to.
 	Port *int32 `json:"port,omitempty"`
-	// Method - The HTTP method to use. Possible values include: 'Get', 'Post'
+	// Method - The HTTP method to use. Possible values include: 'HTTPConfigurationMethodGet', 'HTTPConfigurationMethodPost'
 	Method HTTPConfigurationMethod `json:"method,omitempty"`
 	// Path - The path component of the URI. For instance, "/dir1/dir2".
 	Path *string `json:"path,omitempty"`
@@ -9281,7 +9281,7 @@ type ConnectionMonitorListResult struct {
 
 // ConnectionMonitorOutput describes a connection monitor output destination.
 type ConnectionMonitorOutput struct {
-	// Type - Connection monitor output destination type. Currently, only "Workspace" is supported. Possible values include: 'Workspace'
+	// Type - Connection monitor output destination type. Currently, only "Workspace" is supported. Possible values include: 'OutputTypeWorkspace'
 	Type OutputType `json:"type,omitempty"`
 	// WorkspaceSettings - Describes the settings for producing output into a log analytics workspace.
 	WorkspaceSettings *ConnectionMonitorWorkspaceSettings `json:"workspaceSettings,omitempty"`
@@ -9432,13 +9432,13 @@ func (cmr *ConnectionMonitorResult) UnmarshalJSON(body []byte) error {
 
 // ConnectionMonitorResultProperties describes the properties of a connection monitor.
 type ConnectionMonitorResultProperties struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the connection monitor. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the connection monitor. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// StartTime - READ-ONLY; The date and time when the connection monitor was started.
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// MonitoringStatus - READ-ONLY; The monitoring status of the connection monitor.
 	MonitoringStatus *string `json:"monitoringStatus,omitempty"`
-	// ConnectionMonitorType - READ-ONLY; Type of connection monitor. Possible values include: 'MultiEndpoint', 'SingleSourceDestination'
+	// ConnectionMonitorType - READ-ONLY; Type of connection monitor. Possible values include: 'ConnectionMonitorTypeMultiEndpoint', 'ConnectionMonitorTypeSingleSourceDestination'
 	ConnectionMonitorType ConnectionMonitorType `json:"connectionMonitorType,omitempty"`
 	// Source - Describes the source of connection monitor.
 	Source *ConnectionMonitorSource `json:"source,omitempty"`
@@ -9712,7 +9712,7 @@ type ConnectionMonitorTCPConfiguration struct {
 	Port *int32 `json:"port,omitempty"`
 	// DisableTraceRoute - Value indicating whether path evaluation with trace route should be disabled.
 	DisableTraceRoute *bool `json:"disableTraceRoute,omitempty"`
-	// DestinationPortBehavior - Destination port behavior. Possible values include: 'None', 'ListenIfAvailable'
+	// DestinationPortBehavior - Destination port behavior. Possible values include: 'DestinationPortBehaviorNone', 'DestinationPortBehaviorListenIfAvailable'
 	DestinationPortBehavior DestinationPortBehavior `json:"destinationPortBehavior,omitempty"`
 }
 
@@ -9781,7 +9781,7 @@ type ConnectionStateSnapshot struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - The end time of the connection snapshot.
 	EndTime *date.Time `json:"endTime,omitempty"`
-	// EvaluationState - Connectivity analysis evaluation state. Possible values include: 'NotStarted', 'InProgress', 'Completed'
+	// EvaluationState - Connectivity analysis evaluation state. Possible values include: 'EvaluationStateNotStarted', 'EvaluationStateInProgress', 'EvaluationStateCompleted'
 	EvaluationState EvaluationState `json:"evaluationState,omitempty"`
 	// AvgLatencyInMs - Average latency in ms.
 	AvgLatencyInMs *int64 `json:"avgLatencyInMs,omitempty"`
@@ -9903,7 +9903,7 @@ type ConnectivityParameters struct {
 	Protocol Protocol `json:"protocol,omitempty"`
 	// ProtocolConfiguration - Configuration of the protocol.
 	ProtocolConfiguration *ProtocolConfiguration `json:"protocolConfiguration,omitempty"`
-	// PreferredIPVersion - Preferred IP version of the connection. Possible values include: 'IPv4', 'IPv6'
+	// PreferredIPVersion - Preferred IP version of the connection. Possible values include: 'IPVersionIPv4', 'IPVersionIPv6'
 	PreferredIPVersion IPVersion `json:"preferredIPVersion,omitempty"`
 }
 
@@ -10106,7 +10106,7 @@ type ContainerNetworkInterfaceConfigurationPropertiesFormat struct {
 	IPConfigurations *[]IPConfigurationProfile `json:"ipConfigurations,omitempty"`
 	// ContainerNetworkInterfaces - A list of container network interfaces created from this container network interface configuration.
 	ContainerNetworkInterfaces *[]SubResource `json:"containerNetworkInterfaces,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the container network interface configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the container network interface configuration resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -10200,7 +10200,7 @@ func (cniic *ContainerNetworkInterfaceIPConfiguration) UnmarshalJSON(body []byte
 // ContainerNetworkInterfaceIPConfigurationPropertiesFormat properties of the container network interface
 // IP configuration.
 type ContainerNetworkInterfaceIPConfigurationPropertiesFormat struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the container network interface IP configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the container network interface IP configuration resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -10212,7 +10212,7 @@ type ContainerNetworkInterfacePropertiesFormat struct {
 	Container *Container `json:"container,omitempty"`
 	// IPConfigurations - READ-ONLY; Reference to the ip configuration on this container nic.
 	IPConfigurations *[]ContainerNetworkInterfaceIPConfiguration `json:"ipConfigurations,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the container network interface resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the container network interface resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -10619,13 +10619,13 @@ func NewCustomIPPrefixListResultPage(cur CustomIPPrefixListResult, getNextPage f
 type CustomIPPrefixPropertiesFormat struct {
 	// Cidr - The prefix range in CIDR notation. Should include the start address and the prefix length.
 	Cidr *string `json:"cidr,omitempty"`
-	// CommissionedState - The commissioned state of the Custom IP Prefix. Possible values include: 'Provisioning', 'Provisioned', 'Commissioning', 'Commissioned', 'Decommissioning', 'Deprovisioning'
+	// CommissionedState - The commissioned state of the Custom IP Prefix. Possible values include: 'CommissionedStateProvisioning', 'CommissionedStateProvisioned', 'CommissionedStateCommissioning', 'CommissionedStateCommissioned', 'CommissionedStateDecommissioning', 'CommissionedStateDeprovisioning'
 	CommissionedState CommissionedState `json:"commissionedState,omitempty"`
 	// PublicIPPrefixes - READ-ONLY; The list of all referenced PublicIpPrefixes.
 	PublicIPPrefixes *[]SubResource `json:"publicIpPrefixes,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the custom IP prefix resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the custom IP prefix resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the custom IP prefix resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -10840,7 +10840,7 @@ func (dcp *DdosCustomPolicy) UnmarshalJSON(body []byte) error {
 type DdosCustomPolicyPropertiesFormat struct {
 	// ResourceGUID - READ-ONLY; The resource GUID property of the DDoS custom policy resource. It uniquely identifies the resource, even if the user changes its name or migrate the resource across subscriptions or resource groups.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the DDoS custom policy resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the DDoS custom policy resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PublicIPAddresses - READ-ONLY; The list of public IPs associated with the DDoS custom policy resource. This list is read-only.
 	PublicIPAddresses *[]SubResource `json:"publicIPAddresses,omitempty"`
@@ -11141,7 +11141,7 @@ func NewDdosProtectionPlanListResultPage(cur DdosProtectionPlanListResult, getNe
 type DdosProtectionPlanPropertiesFormat struct {
 	// ResourceGUID - READ-ONLY; The resource GUID property of the DDoS protection plan resource. It uniquely identifies the resource, even if the user changes its name or migrate the resource across subscriptions or resource groups.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the DDoS protection plan resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the DDoS protection plan resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// VirtualNetworks - READ-ONLY; The list of virtual networks associated with the DDoS protection plan resource. This list is read-only.
 	VirtualNetworks *[]SubResource `json:"virtualNetworks,omitempty"`
@@ -11779,7 +11779,7 @@ type DscpConfigurationPropertiesFormat struct {
 	AssociatedNetworkInterfaces *[]Interface `json:"associatedNetworkInterfaces,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the DSCP Configuration resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the DSCP Configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the DSCP Configuration resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -11906,7 +11906,7 @@ type EffectiveRoute struct {
 	DisableBgpRoutePropagation *bool `json:"disableBgpRoutePropagation,omitempty"`
 	// Source - Who created the route. Possible values include: 'EffectiveRouteSourceUnknown', 'EffectiveRouteSourceUser', 'EffectiveRouteSourceVirtualNetworkGateway', 'EffectiveRouteSourceDefault'
 	Source EffectiveRouteSource `json:"source,omitempty"`
-	// State - The value of effective route. Possible values include: 'Active', 'Invalid'
+	// State - The value of effective route. Possible values include: 'EffectiveRouteStateActive', 'EffectiveRouteStateInvalid'
 	State EffectiveRouteState `json:"state,omitempty"`
 	// AddressPrefix - The address prefixes of the effective routes in CIDR notation.
 	AddressPrefix *[]string `json:"addressPrefix,omitempty"`
@@ -12754,9 +12754,9 @@ type ExpressRouteCircuitConnectionPropertiesFormat struct {
 	AuthorizationKey *string `json:"authorizationKey,omitempty"`
 	// Ipv6CircuitConnectionConfig - IPv6 Address PrefixProperties of the express route circuit connection.
 	Ipv6CircuitConnectionConfig *Ipv6CircuitConnectionConfig `json:"ipv6CircuitConnectionConfig,omitempty"`
-	// CircuitConnectionStatus - Express Route Circuit connection state. Possible values include: 'Connected', 'Connecting', 'Disconnected'
+	// CircuitConnectionStatus - Express Route Circuit connection state. Possible values include: 'CircuitConnectionStatusConnected', 'CircuitConnectionStatusConnecting', 'CircuitConnectionStatusDisconnected'
 	CircuitConnectionStatus CircuitConnectionStatus `json:"circuitConnectionStatus,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the express route circuit connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the express route circuit connection resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -13120,7 +13120,7 @@ type ExpressRouteCircuitPeeringConfig struct {
 	AdvertisedPublicPrefixes *[]string `json:"advertisedPublicPrefixes,omitempty"`
 	// AdvertisedCommunities - The communities of bgp peering. Specified for microsoft peering.
 	AdvertisedCommunities *[]string `json:"advertisedCommunities,omitempty"`
-	// AdvertisedPublicPrefixesState - READ-ONLY; The advertised public prefix state of the Peering resource. Possible values include: 'NotConfigured', 'Configuring', 'Configured', 'ValidationNeeded'
+	// AdvertisedPublicPrefixesState - READ-ONLY; The advertised public prefix state of the Peering resource. Possible values include: 'ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateNotConfigured', 'ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateConfiguring', 'ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateConfigured', 'ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValidationNeeded'
 	AdvertisedPublicPrefixesState ExpressRouteCircuitPeeringAdvertisedPublicPrefixState `json:"advertisedPublicPrefixesState,omitempty"`
 	// LegacyMode - The legacy mode of the peering.
 	LegacyMode *int32 `json:"legacyMode,omitempty"`
@@ -13320,7 +13320,7 @@ func NewExpressRouteCircuitPeeringListResultPage(cur ExpressRouteCircuitPeeringL
 
 // ExpressRouteCircuitPeeringPropertiesFormat properties of the express route circuit peering.
 type ExpressRouteCircuitPeeringPropertiesFormat struct {
-	// PeeringType - The peering type. Possible values include: 'AzurePublicPeering', 'AzurePrivatePeering', 'MicrosoftPeering'
+	// PeeringType - The peering type. Possible values include: 'ExpressRoutePeeringTypeAzurePublicPeering', 'ExpressRoutePeeringTypeAzurePrivatePeering', 'ExpressRoutePeeringTypeMicrosoftPeering'
 	PeeringType ExpressRoutePeeringType `json:"peeringType,omitempty"`
 	// State - The peering state. Possible values include: 'ExpressRoutePeeringStateDisabled', 'ExpressRoutePeeringStateEnabled'
 	State ExpressRoutePeeringState `json:"state,omitempty"`
@@ -13344,7 +13344,7 @@ type ExpressRouteCircuitPeeringPropertiesFormat struct {
 	MicrosoftPeeringConfig *ExpressRouteCircuitPeeringConfig `json:"microsoftPeeringConfig,omitempty"`
 	// Stats - The peering stats of express route circuit.
 	Stats *ExpressRouteCircuitStats `json:"stats,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the express route circuit peering resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the express route circuit peering resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// GatewayManagerEtag - The GatewayManager Etag.
 	GatewayManagerEtag *string `json:"gatewayManagerEtag,omitempty"`
@@ -13523,7 +13523,7 @@ type ExpressRouteCircuitPropertiesFormat struct {
 	BandwidthInGbps *float64 `json:"bandwidthInGbps,omitempty"`
 	// Stag - READ-ONLY; The identifier of the circuit traffic. Outer tag for QinQ encapsulation.
 	Stag *int32 `json:"stag,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the express route circuit resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the express route circuit resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// GatewayManagerEtag - The GatewayManager Etag.
 	GatewayManagerEtag *string `json:"gatewayManagerEtag,omitempty"`
@@ -13714,7 +13714,7 @@ type ExpressRouteCircuitSku struct {
 	Name *string `json:"name,omitempty"`
 	// Tier - The tier of the SKU. Possible values include: 'ExpressRouteCircuitSkuTierStandard', 'ExpressRouteCircuitSkuTierPremium', 'ExpressRouteCircuitSkuTierBasic', 'ExpressRouteCircuitSkuTierLocal'
 	Tier ExpressRouteCircuitSkuTier `json:"tier,omitempty"`
-	// Family - The family of the SKU. Possible values include: 'UnlimitedData', 'MeteredData'
+	// Family - The family of the SKU. Possible values include: 'ExpressRouteCircuitSkuFamilyUnlimitedData', 'ExpressRouteCircuitSkuFamilyMeteredData'
 	Family ExpressRouteCircuitSkuFamily `json:"family,omitempty"`
 }
 
@@ -13963,7 +13963,7 @@ type ExpressRouteConnectionList struct {
 
 // ExpressRouteConnectionProperties properties of the ExpressRouteConnection subresource.
 type ExpressRouteConnectionProperties struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the express route connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the express route connection resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ExpressRouteCircuitPeering - The ExpressRoute circuit peering.
 	ExpressRouteCircuitPeering *ExpressRouteCircuitPeeringID `json:"expressRouteCircuitPeering,omitempty"`
@@ -14618,7 +14618,7 @@ func NewExpressRouteCrossConnectionPeeringListPage(cur ExpressRouteCrossConnecti
 
 // ExpressRouteCrossConnectionPeeringProperties properties of express route cross connection peering.
 type ExpressRouteCrossConnectionPeeringProperties struct {
-	// PeeringType - The peering type. Possible values include: 'AzurePublicPeering', 'AzurePrivatePeering', 'MicrosoftPeering'
+	// PeeringType - The peering type. Possible values include: 'ExpressRoutePeeringTypeAzurePublicPeering', 'ExpressRoutePeeringTypeAzurePrivatePeering', 'ExpressRoutePeeringTypeMicrosoftPeering'
 	PeeringType ExpressRoutePeeringType `json:"peeringType,omitempty"`
 	// State - The peering state. Possible values include: 'ExpressRoutePeeringStateDisabled', 'ExpressRoutePeeringStateEnabled'
 	State ExpressRoutePeeringState `json:"state,omitempty"`
@@ -14640,7 +14640,7 @@ type ExpressRouteCrossConnectionPeeringProperties struct {
 	VlanID *int32 `json:"vlanId,omitempty"`
 	// MicrosoftPeeringConfig - The Microsoft peering configuration.
 	MicrosoftPeeringConfig *ExpressRouteCircuitPeeringConfig `json:"microsoftPeeringConfig,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the express route cross connection peering resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the express route cross connection peering resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// GatewayManagerEtag - The GatewayManager Etag.
 	GatewayManagerEtag *string `json:"gatewayManagerEtag,omitempty"`
@@ -14784,7 +14784,7 @@ type ExpressRouteCrossConnectionProperties struct {
 	ServiceProviderProvisioningState ServiceProviderProvisioningState `json:"serviceProviderProvisioningState,omitempty"`
 	// ServiceProviderNotes - Additional read only notes set by the connectivity provider.
 	ServiceProviderNotes *string `json:"serviceProviderNotes,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the express route cross connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the express route cross connection resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Peerings - The list of peerings.
 	Peerings *[]ExpressRouteCrossConnectionPeering `json:"peerings,omitempty"`
@@ -15139,7 +15139,7 @@ type ExpressRouteGatewayProperties struct {
 	AutoScaleConfiguration *ExpressRouteGatewayPropertiesAutoScaleConfiguration `json:"autoScaleConfiguration,omitempty"`
 	// ExpressRouteConnections - READ-ONLY; List of ExpressRoute connections to the ExpressRoute gateway.
 	ExpressRouteConnections *[]ExpressRouteConnection `json:"expressRouteConnections,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the express route gateway resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the express route gateway resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// VirtualHub - The Virtual Hub where the ExpressRoute gateway is or will be deployed.
 	VirtualHub *VirtualHubID `json:"virtualHub,omitempty"`
@@ -15539,7 +15539,7 @@ type ExpressRouteLinkMacSecConfig struct {
 	CknSecretIdentifier *string `json:"cknSecretIdentifier,omitempty"`
 	// CakSecretIdentifier - Keyvault Secret Identifier URL containing Mac security CAK key.
 	CakSecretIdentifier *string `json:"cakSecretIdentifier,omitempty"`
-	// Cipher - Mac security cipher. Possible values include: 'GcmAes256', 'GcmAes128', 'GcmAesXpn128', 'GcmAesXpn256'
+	// Cipher - Mac security cipher. Possible values include: 'ExpressRouteLinkMacSecCipherGcmAes256', 'ExpressRouteLinkMacSecCipherGcmAes128', 'ExpressRouteLinkMacSecCipherGcmAesXpn128', 'ExpressRouteLinkMacSecCipherGcmAesXpn256'
 	Cipher ExpressRouteLinkMacSecCipher `json:"cipher,omitempty"`
 	// SciState - Sci mode enabled/disabled. Possible values include: 'ExpressRouteLinkMacSecSciStateDisabled', 'ExpressRouteLinkMacSecSciStateEnabled'
 	SciState ExpressRouteLinkMacSecSciState `json:"sciState,omitempty"`
@@ -15555,11 +15555,11 @@ type ExpressRouteLinkPropertiesFormat struct {
 	PatchPanelID *string `json:"patchPanelId,omitempty"`
 	// RackID - READ-ONLY; Mapping of physical patch panel to rack.
 	RackID *string `json:"rackId,omitempty"`
-	// ConnectorType - READ-ONLY; Physical fiber port type. Possible values include: 'LC', 'SC'
+	// ConnectorType - READ-ONLY; Physical fiber port type. Possible values include: 'ExpressRouteLinkConnectorTypeLC', 'ExpressRouteLinkConnectorTypeSC'
 	ConnectorType ExpressRouteLinkConnectorType `json:"connectorType,omitempty"`
 	// AdminState - Administrative state of the physical port. Possible values include: 'ExpressRouteLinkAdminStateEnabled', 'ExpressRouteLinkAdminStateDisabled'
 	AdminState ExpressRouteLinkAdminState `json:"adminState,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the express route link resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the express route link resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// MacSecConfig - MacSec configuration.
 	MacSecConfig *ExpressRouteLinkMacSecConfig `json:"macSecConfig,omitempty"`
@@ -15875,7 +15875,7 @@ type ExpressRoutePortPropertiesFormat struct {
 	ProvisionedBandwidthInGbps *float64 `json:"provisionedBandwidthInGbps,omitempty"`
 	// Mtu - READ-ONLY; Maximum transmission unit of the physical port pair(s).
 	Mtu *string `json:"mtu,omitempty"`
-	// Encapsulation - Encapsulation method on physical ports. Possible values include: 'Dot1Q', 'QinQ'
+	// Encapsulation - Encapsulation method on physical ports. Possible values include: 'ExpressRoutePortsEncapsulationDot1Q', 'ExpressRoutePortsEncapsulationQinQ'
 	Encapsulation ExpressRoutePortsEncapsulation `json:"encapsulation,omitempty"`
 	// EtherType - READ-ONLY; Ether type of the physical port.
 	EtherType *string `json:"etherType,omitempty"`
@@ -15885,7 +15885,7 @@ type ExpressRoutePortPropertiesFormat struct {
 	Links *[]ExpressRouteLink `json:"links,omitempty"`
 	// Circuits - READ-ONLY; Reference the ExpressRoute circuit(s) that are provisioned on this ExpressRoutePort resource.
 	Circuits *[]SubResource `json:"circuits,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the express route port resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the express route port resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the express route port resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
@@ -16270,7 +16270,7 @@ type ExpressRoutePortsLocationPropertiesFormat struct {
 	Contact *string `json:"contact,omitempty"`
 	// AvailableBandwidths - The inventory of available ExpressRoutePort bandwidths.
 	AvailableBandwidths *[]ExpressRoutePortsLocationBandwidths `json:"availableBandwidths,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the express route port location resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the express route port location resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -16561,7 +16561,7 @@ type ExpressRouteServiceProviderPropertiesFormat struct {
 	PeeringLocations *[]string `json:"peeringLocations,omitempty"`
 	// BandwidthsOffered - A list of bandwidths offered.
 	BandwidthsOffered *[]ExpressRouteServiceProviderBandwidthsOffered `json:"bandwidthsOffered,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the express route service provider resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the express route service provider resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -16812,13 +16812,13 @@ type FirewallPolicyFilterRuleCollection struct {
 	Name *string `json:"name,omitempty"`
 	// Priority - Priority of the Firewall Policy Rule Collection resource.
 	Priority *int32 `json:"priority,omitempty"`
-	// RuleCollectionType - Possible values include: 'RuleCollectionTypeFirewallPolicyRuleCollection', 'RuleCollectionTypeFirewallPolicyNatRuleCollection', 'RuleCollectionTypeFirewallPolicyFilterRuleCollection'
+	// RuleCollectionType - Possible values include: 'RuleCollectionTypeRuleCollectionTypeFirewallPolicyRuleCollection', 'RuleCollectionTypeRuleCollectionTypeFirewallPolicyNatRuleCollection', 'RuleCollectionTypeRuleCollectionTypeFirewallPolicyFilterRuleCollection'
 	RuleCollectionType RuleCollectionType `json:"ruleCollectionType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FirewallPolicyFilterRuleCollection.
 func (fpfrc FirewallPolicyFilterRuleCollection) MarshalJSON() ([]byte, error) {
-	fpfrc.RuleCollectionType = RuleCollectionTypeFirewallPolicyFilterRuleCollection
+	fpfrc.RuleCollectionType = RuleCollectionTypeRuleCollectionTypeFirewallPolicyFilterRuleCollection
 	objectMap := make(map[string]interface{})
 	if fpfrc.Action != nil {
 		objectMap["action"] = fpfrc.Action
@@ -17164,13 +17164,13 @@ type FirewallPolicyNatRuleCollection struct {
 	Name *string `json:"name,omitempty"`
 	// Priority - Priority of the Firewall Policy Rule Collection resource.
 	Priority *int32 `json:"priority,omitempty"`
-	// RuleCollectionType - Possible values include: 'RuleCollectionTypeFirewallPolicyRuleCollection', 'RuleCollectionTypeFirewallPolicyNatRuleCollection', 'RuleCollectionTypeFirewallPolicyFilterRuleCollection'
+	// RuleCollectionType - Possible values include: 'RuleCollectionTypeRuleCollectionTypeFirewallPolicyRuleCollection', 'RuleCollectionTypeRuleCollectionTypeFirewallPolicyNatRuleCollection', 'RuleCollectionTypeRuleCollectionTypeFirewallPolicyFilterRuleCollection'
 	RuleCollectionType RuleCollectionType `json:"ruleCollectionType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FirewallPolicyNatRuleCollection.
 func (fpnrc FirewallPolicyNatRuleCollection) MarshalJSON() ([]byte, error) {
-	fpnrc.RuleCollectionType = RuleCollectionTypeFirewallPolicyNatRuleCollection
+	fpnrc.RuleCollectionType = RuleCollectionTypeRuleCollectionTypeFirewallPolicyNatRuleCollection
 	objectMap := make(map[string]interface{})
 	if fpnrc.Action != nil {
 		objectMap["action"] = fpnrc.Action
@@ -17271,7 +17271,7 @@ func (fpnrc *FirewallPolicyNatRuleCollection) UnmarshalJSON(body []byte) error {
 
 // FirewallPolicyNatRuleCollectionAction properties of the FirewallPolicyNatRuleCollectionAction.
 type FirewallPolicyNatRuleCollectionAction struct {
-	// Type - The type of action. Possible values include: 'DNAT'
+	// Type - The type of action. Possible values include: 'FirewallPolicyNatRuleCollectionActionTypeDNAT'
 	Type FirewallPolicyNatRuleCollectionActionType `json:"type,omitempty"`
 }
 
@@ -17279,7 +17279,7 @@ type FirewallPolicyNatRuleCollectionAction struct {
 type FirewallPolicyPropertiesFormat struct {
 	// RuleCollectionGroups - READ-ONLY; List of references to FirewallPolicyRuleCollectionGroups.
 	RuleCollectionGroups *[]SubResource `json:"ruleCollectionGroups,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the firewall policy resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the firewall policy resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// BasePolicy - The parent firewall policy from which rules are inherited.
 	BasePolicy *SubResource `json:"basePolicy,omitempty"`
@@ -17352,7 +17352,7 @@ type FirewallPolicyRule struct {
 	Name *string `json:"name,omitempty"`
 	// Description - Description of the rule.
 	Description *string `json:"description,omitempty"`
-	// RuleType - Possible values include: 'RuleTypeFirewallPolicyRule', 'RuleTypeApplicationRule', 'RuleTypeNatRule', 'RuleTypeNetworkRule'
+	// RuleType - Possible values include: 'RuleTypeRuleTypeFirewallPolicyRule', 'RuleTypeRuleTypeApplicationRule', 'RuleTypeRuleTypeNatRule', 'RuleTypeRuleTypeNetworkRule'
 	RuleType RuleType `json:"ruleType,omitempty"`
 }
 
@@ -17364,15 +17364,15 @@ func unmarshalBasicFirewallPolicyRule(body []byte) (BasicFirewallPolicyRule, err
 	}
 
 	switch m["ruleType"] {
-	case string(RuleTypeApplicationRule):
+	case string(RuleTypeRuleTypeApplicationRule):
 		var ar ApplicationRule
 		err := json.Unmarshal(body, &ar)
 		return ar, err
-	case string(RuleTypeNatRule):
+	case string(RuleTypeRuleTypeNatRule):
 		var nr NatRule
 		err := json.Unmarshal(body, &nr)
 		return nr, err
-	case string(RuleTypeNetworkRule):
+	case string(RuleTypeRuleTypeNetworkRule):
 		var r Rule
 		err := json.Unmarshal(body, &r)
 		return r, err
@@ -17403,7 +17403,7 @@ func unmarshalBasicFirewallPolicyRuleArray(body []byte) ([]BasicFirewallPolicyRu
 
 // MarshalJSON is the custom marshaler for FirewallPolicyRule.
 func (fpr FirewallPolicyRule) MarshalJSON() ([]byte, error) {
-	fpr.RuleType = RuleTypeFirewallPolicyRule
+	fpr.RuleType = RuleTypeRuleTypeFirewallPolicyRule
 	objectMap := make(map[string]interface{})
 	if fpr.Name != nil {
 		objectMap["name"] = fpr.Name
@@ -17463,7 +17463,7 @@ type FirewallPolicyRuleCollection struct {
 	Name *string `json:"name,omitempty"`
 	// Priority - Priority of the Firewall Policy Rule Collection resource.
 	Priority *int32 `json:"priority,omitempty"`
-	// RuleCollectionType - Possible values include: 'RuleCollectionTypeFirewallPolicyRuleCollection', 'RuleCollectionTypeFirewallPolicyNatRuleCollection', 'RuleCollectionTypeFirewallPolicyFilterRuleCollection'
+	// RuleCollectionType - Possible values include: 'RuleCollectionTypeRuleCollectionTypeFirewallPolicyRuleCollection', 'RuleCollectionTypeRuleCollectionTypeFirewallPolicyNatRuleCollection', 'RuleCollectionTypeRuleCollectionTypeFirewallPolicyFilterRuleCollection'
 	RuleCollectionType RuleCollectionType `json:"ruleCollectionType,omitempty"`
 }
 
@@ -17475,11 +17475,11 @@ func unmarshalBasicFirewallPolicyRuleCollection(body []byte) (BasicFirewallPolic
 	}
 
 	switch m["ruleCollectionType"] {
-	case string(RuleCollectionTypeFirewallPolicyNatRuleCollection):
+	case string(RuleCollectionTypeRuleCollectionTypeFirewallPolicyNatRuleCollection):
 		var fpnrc FirewallPolicyNatRuleCollection
 		err := json.Unmarshal(body, &fpnrc)
 		return fpnrc, err
-	case string(RuleCollectionTypeFirewallPolicyFilterRuleCollection):
+	case string(RuleCollectionTypeRuleCollectionTypeFirewallPolicyFilterRuleCollection):
 		var fpfrc FirewallPolicyFilterRuleCollection
 		err := json.Unmarshal(body, &fpfrc)
 		return fpfrc, err
@@ -17510,7 +17510,7 @@ func unmarshalBasicFirewallPolicyRuleCollectionArray(body []byte) ([]BasicFirewa
 
 // MarshalJSON is the custom marshaler for FirewallPolicyRuleCollection.
 func (fprc FirewallPolicyRuleCollection) MarshalJSON() ([]byte, error) {
-	fprc.RuleCollectionType = RuleCollectionTypeFirewallPolicyRuleCollection
+	fprc.RuleCollectionType = RuleCollectionTypeRuleCollectionTypeFirewallPolicyRuleCollection
 	objectMap := make(map[string]interface{})
 	if fprc.Name != nil {
 		objectMap["name"] = fprc.Name
@@ -17802,7 +17802,7 @@ type FirewallPolicyRuleCollectionGroupProperties struct {
 	Priority *int32 `json:"priority,omitempty"`
 	// RuleCollections - Group of Firewall Policy rule collections.
 	RuleCollections *[]BasicFirewallPolicyRuleCollection `json:"ruleCollections,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the firewall policy rule collection group resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the firewall policy rule collection group resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -18082,7 +18082,7 @@ func (fl *FlowLog) UnmarshalJSON(body []byte) error {
 
 // FlowLogFormatParameters parameters that define the flow log format.
 type FlowLogFormatParameters struct {
-	// Type - The file type of flow log. Possible values include: 'JSON'
+	// Type - The file type of flow log. Possible values include: 'FlowLogFormatTypeJSON'
 	Type FlowLogFormatType `json:"type,omitempty"`
 	// Version - The version (revision) of the flow log.
 	Version *int32 `json:"version,omitempty"`
@@ -18352,7 +18352,7 @@ type FlowLogPropertiesFormat struct {
 	Format *FlowLogFormatParameters `json:"format,omitempty"`
 	// FlowAnalyticsConfiguration - Parameters that define the configuration of traffic analytics.
 	FlowAnalyticsConfiguration *TrafficAnalyticsProperties `json:"flowAnalyticsConfiguration,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the flow log. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the flow log. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -18583,9 +18583,9 @@ type FrontendIPConfigurationPropertiesFormat struct {
 	LoadBalancingRules *[]SubResource `json:"loadBalancingRules,omitempty"`
 	// PrivateIPAddress - The private IP address of the IP configuration.
 	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
-	// PrivateIPAllocationMethod - The Private IP allocation method. Possible values include: 'Static', 'Dynamic'
+	// PrivateIPAllocationMethod - The Private IP allocation method. Possible values include: 'IPAllocationMethodStatic', 'IPAllocationMethodDynamic'
 	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
-	// PrivateIPAddressVersion - Whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values include: 'IPv4', 'IPv6'
+	// PrivateIPAddressVersion - Whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values include: 'IPVersionIPv4', 'IPVersionIPv6'
 	PrivateIPAddressVersion IPVersion `json:"privateIPAddressVersion,omitempty"`
 	// Subnet - The reference to the subnet resource.
 	Subnet *Subnet `json:"subnet,omitempty"`
@@ -18593,7 +18593,7 @@ type FrontendIPConfigurationPropertiesFormat struct {
 	PublicIPAddress *PublicIPAddress `json:"publicIPAddress,omitempty"`
 	// PublicIPPrefix - The reference to the Public IP Prefix resource.
 	PublicIPPrefix *SubResource `json:"publicIPPrefix,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the frontend IP configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the frontend IP configuration resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -19020,13 +19020,13 @@ func (hic *HubIPConfiguration) UnmarshalJSON(body []byte) error {
 type HubIPConfigurationPropertiesFormat struct {
 	// PrivateIPAddress - The private IP address of the IP configuration.
 	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
-	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'Static', 'Dynamic'
+	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'IPAllocationMethodStatic', 'IPAllocationMethodDynamic'
 	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
 	// Subnet - The reference to the subnet resource.
 	Subnet *Subnet `json:"subnet,omitempty"`
 	// PublicIPAddress - The reference to the public IP resource.
 	PublicIPAddress *PublicIPAddress `json:"publicIPAddress,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the IP configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the IP configuration resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -19170,7 +19170,7 @@ type HubRouteTableProperties struct {
 	AssociatedConnections *[]string `json:"associatedConnections,omitempty"`
 	// PropagatingConnections - READ-ONLY; List of all connections that advertise to this route table.
 	PropagatingConnections *[]string `json:"propagatingConnections,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the RouteTable resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the RouteTable resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -19357,7 +19357,7 @@ type HubVirtualNetworkConnectionProperties struct {
 	EnableInternetSecurity *bool `json:"enableInternetSecurity,omitempty"`
 	// RoutingConfiguration - The Routing Configuration indicating the associated and propagated route tables on this connection.
 	RoutingConfiguration *RoutingConfiguration `json:"routingConfiguration,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the hub virtual network connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the hub virtual network connection resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -19569,7 +19569,7 @@ type InboundNatPoolPropertiesFormat struct {
 	EnableFloatingIP *bool `json:"enableFloatingIP,omitempty"`
 	// EnableTCPReset - Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used when the protocol is set to TCP.
 	EnableTCPReset *bool `json:"enableTcpReset,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the inbound NAT pool resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the inbound NAT pool resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -19879,7 +19879,7 @@ type InboundNatRulePropertiesFormat struct {
 	EnableFloatingIP *bool `json:"enableFloatingIP,omitempty"`
 	// EnableTCPReset - Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used when the protocol is set to TCP.
 	EnableTCPReset *bool `json:"enableTcpReset,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the inbound NAT rule resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the inbound NAT rule resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -20127,7 +20127,7 @@ func (future *InboundSecurityRuleCreateOrUpdateFuture) result(client InboundSecu
 type InboundSecurityRuleProperties struct {
 	// Rules - List of allowed rules.
 	Rules *[]InboundSecurityRules `json:"rules,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -20632,9 +20632,9 @@ type InterfaceIPConfigurationPropertiesFormat struct {
 	LoadBalancerInboundNatRules *[]InboundNatRule `json:"loadBalancerInboundNatRules,omitempty"`
 	// PrivateIPAddress - Private IP address of the IP configuration.
 	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
-	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'Static', 'Dynamic'
+	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'IPAllocationMethodStatic', 'IPAllocationMethodDynamic'
 	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
-	// PrivateIPAddressVersion - Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4. Possible values include: 'IPv4', 'IPv6'
+	// PrivateIPAddressVersion - Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4. Possible values include: 'IPVersionIPv4', 'IPVersionIPv6'
 	PrivateIPAddressVersion IPVersion `json:"privateIPAddressVersion,omitempty"`
 	// Subnet - Subnet bound to the IP configuration.
 	Subnet *Subnet `json:"subnet,omitempty"`
@@ -20644,7 +20644,7 @@ type InterfaceIPConfigurationPropertiesFormat struct {
 	PublicIPAddress *PublicIPAddress `json:"publicIPAddress,omitempty"`
 	// ApplicationSecurityGroups - Application security groups in which the IP configuration is included.
 	ApplicationSecurityGroups *[]ApplicationSecurityGroup `json:"applicationSecurityGroups,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the network interface IP configuration. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the network interface IP configuration. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateLinkConnectionProperties - READ-ONLY; PrivateLinkConnection properties for the network interface.
 	PrivateLinkConnectionProperties *InterfaceIPConfigurationPrivateLinkConnectionProperties `json:"privateLinkConnectionProperties,omitempty"`
@@ -21053,7 +21053,7 @@ type InterfacePropertiesFormat struct {
 	DscpConfiguration *SubResource `json:"dscpConfiguration,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the network interface resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the network interface resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the network interface resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -21507,7 +21507,7 @@ func NewInterfaceTapConfigurationListResultPage(cur InterfaceTapConfigurationLis
 type InterfaceTapConfigurationPropertiesFormat struct {
 	// VirtualNetworkTap - The reference to the Virtual Network Tap resource.
 	VirtualNetworkTap *VirtualNetworkTap `json:"virtualNetworkTap,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the network interface tap configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the network interface tap configuration resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -21889,13 +21889,13 @@ type IPAllocationPropertiesFormat struct {
 	Subnet *SubResource `json:"subnet,omitempty"`
 	// VirtualNetwork - READ-ONLY; The VirtualNetwork that using the prefix of this IpAllocation resource.
 	VirtualNetwork *SubResource `json:"virtualNetwork,omitempty"`
-	// Type - The type for the IpAllocation. Possible values include: 'Undefined', 'Hypernet'
+	// Type - The type for the IpAllocation. Possible values include: 'IPAllocationTypeUndefined', 'IPAllocationTypeHypernet'
 	Type IPAllocationType `json:"type,omitempty"`
 	// Prefix - The address prefix for the IpAllocation.
 	Prefix *string `json:"prefix,omitempty"`
 	// PrefixLength - The address prefix length for the IpAllocation.
 	PrefixLength *int32 `json:"prefixLength,omitempty"`
-	// PrefixType - The address prefix Type for the IpAllocation. Possible values include: 'IPv4', 'IPv6'
+	// PrefixType - The address prefix Type for the IpAllocation. Possible values include: 'IPVersionIPv4', 'IPVersionIPv6'
 	PrefixType IPVersion `json:"prefixType,omitempty"`
 	// IpamAllocationID - The IPAM allocation ID.
 	IpamAllocationID *string `json:"ipamAllocationId,omitempty"`
@@ -22202,7 +22202,7 @@ func (icp *IPConfigurationProfile) UnmarshalJSON(body []byte) error {
 type IPConfigurationProfilePropertiesFormat struct {
 	// Subnet - The reference to the subnet resource to create a container network interface ip configuration.
 	Subnet *Subnet `json:"subnet,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the IP configuration profile resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the IP configuration profile resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -22219,13 +22219,13 @@ func (icppf IPConfigurationProfilePropertiesFormat) MarshalJSON() ([]byte, error
 type IPConfigurationPropertiesFormat struct {
 	// PrivateIPAddress - The private IP address of the IP configuration.
 	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
-	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'Static', 'Dynamic'
+	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'IPAllocationMethodStatic', 'IPAllocationMethodDynamic'
 	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
 	// Subnet - The reference to the subnet resource.
 	Subnet *Subnet `json:"subnet,omitempty"`
 	// PublicIPAddress - The reference to the public IP resource.
 	PublicIPAddress *PublicIPAddress `json:"publicIPAddress,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the IP configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the IP configuration resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -22523,7 +22523,7 @@ func NewIPGroupListResultPage(cur IPGroupListResult, getNextPage func(context.Co
 
 // IPGroupPropertiesFormat the IpGroups property information.
 type IPGroupPropertiesFormat struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the IpGroups resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the IpGroups resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// IPAddresses - IpAddresses/IpAddressPrefixes in the IpGroups resource.
 	IPAddresses *[]string `json:"ipAddresses,omitempty"`
@@ -22632,7 +22632,7 @@ type IpsecPolicy struct {
 	IpsecEncryption IpsecEncryption `json:"ipsecEncryption,omitempty"`
 	// IpsecIntegrity - The IPSec integrity algorithm (IKE phase 1). Possible values include: 'IpsecIntegrityMD5', 'IpsecIntegritySHA1', 'IpsecIntegritySHA256', 'IpsecIntegrityGCMAES128', 'IpsecIntegrityGCMAES192', 'IpsecIntegrityGCMAES256'
 	IpsecIntegrity IpsecIntegrity `json:"ipsecIntegrity,omitempty"`
-	// IkeEncryption - The IKE encryption algorithm (IKE phase 2). Possible values include: 'DES', 'DES3', 'AES128', 'AES192', 'AES256', 'GCMAES256', 'GCMAES128'
+	// IkeEncryption - The IKE encryption algorithm (IKE phase 2). Possible values include: 'IkeEncryptionDES', 'IkeEncryptionDES3', 'IkeEncryptionAES128', 'IkeEncryptionAES192', 'IkeEncryptionAES256', 'IkeEncryptionGCMAES256', 'IkeEncryptionGCMAES128'
 	IkeEncryption IkeEncryption `json:"ikeEncryption,omitempty"`
 	// IkeIntegrity - The IKE integrity algorithm (IKE phase 2). Possible values include: 'IkeIntegrityMD5', 'IkeIntegritySHA1', 'IkeIntegritySHA256', 'IkeIntegritySHA384', 'IkeIntegrityGCMAES256', 'IkeIntegrityGCMAES128'
 	IkeIntegrity IkeIntegrity `json:"ikeIntegrity,omitempty"`
@@ -22654,7 +22654,7 @@ type IPTag struct {
 type Ipv6CircuitConnectionConfig struct {
 	// AddressPrefix - /125 IP address space to carve out customer addresses for global reach.
 	AddressPrefix *string `json:"addressPrefix,omitempty"`
-	// CircuitConnectionStatus - READ-ONLY; Express Route Circuit connection state. Possible values include: 'Connected', 'Connecting', 'Disconnected'
+	// CircuitConnectionStatus - READ-ONLY; Express Route Circuit connection state. Possible values include: 'CircuitConnectionStatusConnected', 'CircuitConnectionStatusConnecting', 'CircuitConnectionStatusDisconnected'
 	CircuitConnectionStatus CircuitConnectionStatus `json:"circuitConnectionStatus,omitempty"`
 }
 
@@ -26427,7 +26427,7 @@ type LoadBalancerPropertiesFormat struct {
 	OutboundRules *[]OutboundRule `json:"outboundRules,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the load balancer resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the load balancer resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the load balancer resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -26542,7 +26542,7 @@ func (future *LoadBalancersDeleteFuture) result(client LoadBalancersClient) (ar 
 type LoadBalancerSku struct {
 	// Name - Name of a load balancer SKU. Possible values include: 'LoadBalancerSkuNameBasic', 'LoadBalancerSkuNameStandard'
 	Name LoadBalancerSkuName `json:"name,omitempty"`
-	// Tier - Tier of a load balancer SKU. Possible values include: 'Regional', 'Global'
+	// Tier - Tier of a load balancer SKU. Possible values include: 'LoadBalancerSkuTierRegional', 'LoadBalancerSkuTierGlobal'
 	Tier LoadBalancerSkuTier `json:"tier,omitempty"`
 }
 
@@ -26660,7 +26660,7 @@ type LoadBalancingRulePropertiesFormat struct {
 	EnableTCPReset *bool `json:"enableTcpReset,omitempty"`
 	// DisableOutboundSnat - Configures SNAT for the VMs in the backend pool to use the publicIP address specified in the frontend of the load balancing rule.
 	DisableOutboundSnat *bool `json:"disableOutboundSnat,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the load balancing rule resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the load balancing rule resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -26999,7 +26999,7 @@ type LocalNetworkGatewayPropertiesFormat struct {
 	BgpSettings *BgpSettings `json:"bgpSettings,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the local network gateway resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the local network gateway resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the local network gateway resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -27201,7 +27201,7 @@ type MatchedRule struct {
 
 // MatchVariable define match variables.
 type MatchVariable struct {
-	// VariableName - Match Variable. Possible values include: 'RemoteAddr', 'RequestMethod', 'QueryString', 'PostArgs', 'RequestURI', 'RequestHeaders', 'RequestBody', 'RequestCookies'
+	// VariableName - Match Variable. Possible values include: 'WebApplicationFirewallMatchVariableRemoteAddr', 'WebApplicationFirewallMatchVariableRequestMethod', 'WebApplicationFirewallMatchVariableQueryString', 'WebApplicationFirewallMatchVariablePostArgs', 'WebApplicationFirewallMatchVariableRequestURI', 'WebApplicationFirewallMatchVariableRequestHeaders', 'WebApplicationFirewallMatchVariableRequestBody', 'WebApplicationFirewallMatchVariableRequestCookies'
 	VariableName WebApplicationFirewallMatchVariable `json:"variableName,omitempty"`
 	// Selector - The selector of match variable.
 	Selector *string `json:"selector,omitempty"`
@@ -27553,7 +27553,7 @@ type NatGatewayPropertiesFormat struct {
 	Subnets *[]SubResource `json:"subnets,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the NAT gateway resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the NAT gateway resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the NAT gateway resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -27680,13 +27680,13 @@ type NatRule struct {
 	Name *string `json:"name,omitempty"`
 	// Description - Description of the rule.
 	Description *string `json:"description,omitempty"`
-	// RuleType - Possible values include: 'RuleTypeFirewallPolicyRule', 'RuleTypeApplicationRule', 'RuleTypeNatRule', 'RuleTypeNetworkRule'
+	// RuleType - Possible values include: 'RuleTypeRuleTypeFirewallPolicyRule', 'RuleTypeRuleTypeApplicationRule', 'RuleTypeRuleTypeNatRule', 'RuleTypeRuleTypeNetworkRule'
 	RuleType RuleType `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for NatRule.
 func (nr NatRule) MarshalJSON() ([]byte, error) {
-	nr.RuleType = RuleTypeNatRule
+	nr.RuleType = RuleTypeRuleTypeNatRule
 	objectMap := make(map[string]interface{})
 	if nr.IPProtocols != nil {
 		objectMap["ipProtocols"] = nr.IPProtocols
@@ -28239,7 +28239,7 @@ type OutboundRulePropertiesFormat struct {
 	FrontendIPConfigurations *[]SubResource `json:"frontendIPConfigurations,omitempty"`
 	// BackendAddressPool - A reference to a pool of DIPs. Outbound traffic is randomly load balanced across IPs in the backend IPs.
 	BackendAddressPool *SubResource `json:"backendAddressPool,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the outbound rule resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the outbound rule resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Protocol - The protocol for the outbound rule in load balancer. Possible values include: 'LoadBalancerOutboundRuleProtocolTCP', 'LoadBalancerOutboundRuleProtocolUDP', 'LoadBalancerOutboundRuleProtocolAll'
 	Protocol LoadBalancerOutboundRuleProtocol `json:"protocol,omitempty"`
@@ -28275,7 +28275,7 @@ func (orpf OutboundRulePropertiesFormat) MarshalJSON() ([]byte, error) {
 
 // OwaspCrsExclusionEntry allow to exclude some variable satisfy the condition for the WAF check.
 type OwaspCrsExclusionEntry struct {
-	// MatchVariable - The variable to be excluded. Possible values include: 'RequestHeaderNames', 'RequestCookieNames', 'RequestArgNames'
+	// MatchVariable - The variable to be excluded. Possible values include: 'OwaspCrsExclusionEntryMatchVariableRequestHeaderNames', 'OwaspCrsExclusionEntryMatchVariableRequestCookieNames', 'OwaspCrsExclusionEntryMatchVariableRequestArgNames'
 	MatchVariable OwaspCrsExclusionEntryMatchVariable `json:"matchVariable,omitempty"`
 	// SelectorMatchOperator - When matchVariable is a collection, operate on the selector to specify which elements in the collection this exclusion applies to. Possible values include: 'OwaspCrsExclusionEntrySelectorMatchOperatorEquals', 'OwaspCrsExclusionEntrySelectorMatchOperatorContains', 'OwaspCrsExclusionEntrySelectorMatchOperatorStartsWith', 'OwaspCrsExclusionEntrySelectorMatchOperatorEndsWith', 'OwaspCrsExclusionEntrySelectorMatchOperatorEqualsAny'
 	SelectorMatchOperator OwaspCrsExclusionEntrySelectorMatchOperator `json:"selectorMatchOperator,omitempty"`
@@ -28369,7 +28369,7 @@ type P2SConnectionConfigurationProperties struct {
 	RoutingConfiguration *RoutingConfiguration `json:"routingConfiguration,omitempty"`
 	// EnableInternetSecurity - Flag indicating whether the enable internet security flag is turned on for the P2S Connections or not.
 	EnableInternetSecurity *bool `json:"enableInternetSecurity,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the P2SConnectionConfiguration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the P2SConnectionConfiguration resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -28530,7 +28530,7 @@ type P2SVpnGatewayProperties struct {
 	VirtualHub *SubResource `json:"virtualHub,omitempty"`
 	// P2SConnectionConfigurations - List of all p2s connection configurations of the gateway.
 	P2SConnectionConfigurations *[]P2SConnectionConfiguration `json:"p2SConnectionConfigurations,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the P2S VPN gateway resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the P2S VPN gateway resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// VpnGatewayScaleUnit - The scale unit for this p2s vpn gateway.
 	VpnGatewayScaleUnit *int32 `json:"vpnGatewayScaleUnit,omitempty"`
@@ -28902,7 +28902,7 @@ func (future *P2sVpnGatewaysUpdateTagsFuture) result(client P2sVpnGatewaysClient
 
 // P2SVpnProfileParameters vpn Client Parameters for package generation.
 type P2SVpnProfileParameters struct {
-	// AuthenticationMethod - VPN client authentication method. Possible values include: 'EAPTLS', 'EAPMSCHAPv2'
+	// AuthenticationMethod - VPN client authentication method. Possible values include: 'AuthenticationMethodEAPTLS', 'AuthenticationMethodEAPMSCHAPv2'
 	AuthenticationMethod AuthenticationMethod `json:"authenticationMethod,omitempty"`
 }
 
@@ -29074,7 +29074,7 @@ func (pcr *PacketCaptureResult) UnmarshalJSON(body []byte) error {
 
 // PacketCaptureResultProperties the properties of a packet capture session.
 type PacketCaptureResultProperties struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the packet capture session. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the packet capture session. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Target - The ID of the targeted resource, only VM is currently supported.
 	Target *string `json:"target,omitempty"`
@@ -29722,13 +29722,13 @@ type PeerExpressRouteCircuitConnectionPropertiesFormat struct {
 	PeerExpressRouteCircuitPeering *SubResource `json:"peerExpressRouteCircuitPeering,omitempty"`
 	// AddressPrefix - /29 IP address space to carve out Customer addresses for tunnels.
 	AddressPrefix *string `json:"addressPrefix,omitempty"`
-	// CircuitConnectionStatus - Express Route Circuit connection state. Possible values include: 'Connected', 'Connecting', 'Disconnected'
+	// CircuitConnectionStatus - Express Route Circuit connection state. Possible values include: 'CircuitConnectionStatusConnected', 'CircuitConnectionStatusConnecting', 'CircuitConnectionStatusDisconnected'
 	CircuitConnectionStatus CircuitConnectionStatus `json:"circuitConnectionStatus,omitempty"`
 	// ConnectionName - The name of the express route circuit connection resource.
 	ConnectionName *string `json:"connectionName,omitempty"`
 	// AuthResourceGUID - The resource guid of the authorization used for the express route circuit connection.
 	AuthResourceGUID *string `json:"authResourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the peer express route circuit connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the peer express route circuit connection resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -30106,7 +30106,7 @@ func NewPrivateDNSZoneGroupListResultPage(cur PrivateDNSZoneGroupListResult, get
 
 // PrivateDNSZoneGroupPropertiesFormat properties of the private dns zone group.
 type PrivateDNSZoneGroupPropertiesFormat struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the private dns zone group resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the private dns zone group resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateDNSZoneConfigs - A collection of private dns zone configurations of the private dns zone group.
 	PrivateDNSZoneConfigs *[]PrivateDNSZoneConfig `json:"privateDnsZoneConfigs,omitempty"`
@@ -30612,7 +30612,7 @@ type PrivateEndpointConnectionProperties struct {
 	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
 	// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
 	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the private endpoint connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the private endpoint connection resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// LinkIdentifier - READ-ONLY; The consumer link id.
 	LinkIdentifier *string `json:"linkIdentifier,omitempty"`
@@ -30801,7 +30801,7 @@ type PrivateEndpointProperties struct {
 	Subnet *Subnet `json:"subnet,omitempty"`
 	// NetworkInterfaces - READ-ONLY; An array of references to the network interfaces created for this private endpoint.
 	NetworkInterfaces *[]Interface `json:"networkInterfaces,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the private endpoint resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the private endpoint resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateLinkServiceConnections - A grouping of information about the connection to the remote resource.
 	PrivateLinkServiceConnections *[]PrivateLinkServiceConnection `json:"privateLinkServiceConnections,omitempty"`
@@ -31129,7 +31129,7 @@ func (plsc *PrivateLinkServiceConnection) UnmarshalJSON(body []byte) error {
 
 // PrivateLinkServiceConnectionProperties properties of the PrivateLinkServiceConnection.
 type PrivateLinkServiceConnectionProperties struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the private link service connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the private link service connection resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateLinkServiceID - The resource id of private link service.
 	PrivateLinkServiceID *string `json:"privateLinkServiceId,omitempty"`
@@ -31263,15 +31263,15 @@ func (plsic *PrivateLinkServiceIPConfiguration) UnmarshalJSON(body []byte) error
 type PrivateLinkServiceIPConfigurationProperties struct {
 	// PrivateIPAddress - The private IP address of the IP configuration.
 	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
-	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'Static', 'Dynamic'
+	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'IPAllocationMethodStatic', 'IPAllocationMethodDynamic'
 	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
 	// Subnet - The reference to the subnet resource.
 	Subnet *Subnet `json:"subnet,omitempty"`
 	// Primary - Whether the ip configuration is primary or not.
 	Primary *bool `json:"primary,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the private link service IP configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the private link service IP configuration resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// PrivateIPAddressVersion - Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4. Possible values include: 'IPv4', 'IPv6'
+	// PrivateIPAddressVersion - Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4. Possible values include: 'IPVersionIPv4', 'IPVersionIPv6'
 	PrivateIPAddressVersion IPVersion `json:"privateIPAddressVersion,omitempty"`
 }
 
@@ -31472,7 +31472,7 @@ type PrivateLinkServiceProperties struct {
 	IPConfigurations *[]PrivateLinkServiceIPConfiguration `json:"ipConfigurations,omitempty"`
 	// NetworkInterfaces - READ-ONLY; An array of references to the network interfaces created for this private link service.
 	NetworkInterfaces *[]Interface `json:"networkInterfaces,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the private link service resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the private link service resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// PrivateEndpointConnections - READ-ONLY; An array of list about connections to the private endpoint.
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
@@ -31838,7 +31838,7 @@ type ProbePropertiesFormat struct {
 	NumberOfProbes *int32 `json:"numberOfProbes,omitempty"`
 	// RequestPath - The URI used for requesting health status from the VM. Path is required if a protocol is set to http. Otherwise, it is not allowed. There is no default value.
 	RequestPath *string `json:"requestPath,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the probe resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the probe resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -32145,7 +32145,7 @@ type ProfilePropertiesFormat struct {
 	ContainerNetworkInterfaceConfigurations *[]ContainerNetworkInterfaceConfiguration `json:"containerNetworkInterfaceConfigurations,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the network profile resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the network profile resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the network profile resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -32629,9 +32629,9 @@ func NewPublicIPAddressListResultPage(cur PublicIPAddressListResult, getNextPage
 
 // PublicIPAddressPropertiesFormat public IP address properties.
 type PublicIPAddressPropertiesFormat struct {
-	// PublicIPAllocationMethod - The public IP address allocation method. Possible values include: 'Static', 'Dynamic'
+	// PublicIPAllocationMethod - The public IP address allocation method. Possible values include: 'IPAllocationMethodStatic', 'IPAllocationMethodDynamic'
 	PublicIPAllocationMethod IPAllocationMethod `json:"publicIPAllocationMethod,omitempty"`
-	// PublicIPAddressVersion - The public IP address version. Possible values include: 'IPv4', 'IPv6'
+	// PublicIPAddressVersion - The public IP address version. Possible values include: 'IPVersionIPv4', 'IPVersionIPv6'
 	PublicIPAddressVersion IPVersion `json:"publicIPAddressVersion,omitempty"`
 	// IPConfiguration - READ-ONLY; The IP configuration associated with the public IP address.
 	IPConfiguration *IPConfiguration `json:"ipConfiguration,omitempty"`
@@ -32649,7 +32649,7 @@ type PublicIPAddressPropertiesFormat struct {
 	IdleTimeoutInMinutes *int32 `json:"idleTimeoutInMinutes,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the public IP address resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the public IP address resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the public IP address resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -33089,7 +33089,7 @@ func NewPublicIPPrefixListResultPage(cur PublicIPPrefixListResult, getNextPage f
 
 // PublicIPPrefixPropertiesFormat public IP prefix properties.
 type PublicIPPrefixPropertiesFormat struct {
-	// PublicIPAddressVersion - The public IP address version. Possible values include: 'IPv4', 'IPv6'
+	// PublicIPAddressVersion - The public IP address version. Possible values include: 'IPVersionIPv4', 'IPVersionIPv6'
 	PublicIPAddressVersion IPVersion `json:"publicIPAddressVersion,omitempty"`
 	// IPTags - The list of tags associated with the public IP prefix.
 	IPTags *[]IPTag `json:"ipTags,omitempty"`
@@ -33105,7 +33105,7 @@ type PublicIPPrefixPropertiesFormat struct {
 	CustomIPPrefix *SubResource `json:"customIPPrefix,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the public IP prefix resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the public IP prefix resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the public IP prefix resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -33261,7 +33261,7 @@ type RecordSet struct {
 	RecordSetName *string `json:"recordSetName,omitempty"`
 	// Fqdn - Fqdn that resolves to private endpoint ip address.
 	Fqdn *string `json:"fqdn,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the recordset. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the recordset. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// TTL - Recordset time to live.
 	TTL *int32 `json:"ttl,omitempty"`
@@ -33420,7 +33420,7 @@ type ResourceNavigationLinkFormat struct {
 	LinkedResourceType *string `json:"linkedResourceType,omitempty"`
 	// Link - Link to the external resource.
 	Link *string `json:"link,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the resource navigation link resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the resource navigation link resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -33843,7 +33843,7 @@ type RouteFilterPropertiesFormat struct {
 	Peerings *[]ExpressRouteCircuitPeering `json:"peerings,omitempty"`
 	// Ipv6Peerings - READ-ONLY; A collection of references to express route circuit ipv6 peerings.
 	Ipv6Peerings *[]ExpressRouteCircuitPeering `json:"ipv6Peerings,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the route filter resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the route filter resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -34110,13 +34110,13 @@ func NewRouteFilterRuleListResultPage(cur RouteFilterRuleListResult, getNextPage
 
 // RouteFilterRulePropertiesFormat route Filter Rule Resource.
 type RouteFilterRulePropertiesFormat struct {
-	// Access - The access type of the rule. Possible values include: 'Allow', 'Deny'
+	// Access - The access type of the rule. Possible values include: 'AccessAllow', 'AccessDeny'
 	Access Access `json:"access,omitempty"`
 	// RouteFilterRuleType - The rule type of the rule.
 	RouteFilterRuleType *string `json:"routeFilterRuleType,omitempty"`
 	// Communities - The collection for bgp community values to filter on. e.g. ['12076:5010','12076:5020'].
 	Communities *[]string `json:"communities,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the route filter rule resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the route filter rule resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -34462,7 +34462,7 @@ type RoutePropertiesFormat struct {
 	NextHopType RouteNextHopType `json:"nextHopType,omitempty"`
 	// NextHopIPAddress - The IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type is VirtualAppliance.
 	NextHopIPAddress *string `json:"nextHopIpAddress,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the route resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the route resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// HasBgpOverride - A value indicating whether this route overrides overlapping BGP routes regardless of LPM.
 	HasBgpOverride *bool `json:"hasBgpOverride,omitempty"`
@@ -34847,7 +34847,7 @@ type RouteTablePropertiesFormat struct {
 	Subnets *[]Subnet `json:"subnets,omitempty"`
 	// DisableBgpRoutePropagation - Whether to disable the routes learned by BGP on that route table. True means disable.
 	DisableBgpRoutePropagation *bool `json:"disableBgpRoutePropagation,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the route table resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the route table resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the route table.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
@@ -34976,13 +34976,13 @@ type Rule struct {
 	Name *string `json:"name,omitempty"`
 	// Description - Description of the rule.
 	Description *string `json:"description,omitempty"`
-	// RuleType - Possible values include: 'RuleTypeFirewallPolicyRule', 'RuleTypeApplicationRule', 'RuleTypeNatRule', 'RuleTypeNetworkRule'
+	// RuleType - Possible values include: 'RuleTypeRuleTypeFirewallPolicyRule', 'RuleTypeRuleTypeApplicationRule', 'RuleTypeRuleTypeNatRule', 'RuleTypeRuleTypeNetworkRule'
 	RuleType RuleType `json:"ruleType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Rule.
 func (r Rule) MarshalJSON() ([]byte, error) {
-	r.RuleType = RuleTypeNetworkRule
+	r.RuleType = RuleTypeRuleTypeNetworkRule
 	objectMap := make(map[string]interface{})
 	if r.IPProtocols != nil {
 		objectMap["ipProtocols"] = r.IPProtocols
@@ -35338,7 +35338,7 @@ type SecurityGroupPropertiesFormat struct {
 	FlowLogs *[]FlowLog `json:"flowLogs,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the network security group resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the network security group resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the network security group resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -35738,9 +35738,9 @@ func NewSecurityPartnerProviderListResultPage(cur SecurityPartnerProviderListRes
 
 // SecurityPartnerProviderPropertiesFormat properties of the Security Partner Provider.
 type SecurityPartnerProviderPropertiesFormat struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the Security Partner Provider resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the Security Partner Provider resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// SecurityProviderName - The security provider name. Possible values include: 'ZScaler', 'IBoss', 'Checkpoint'
+	// SecurityProviderName - The security provider name. Possible values include: 'SecurityProviderNameZScaler', 'SecurityProviderNameIBoss', 'SecurityProviderNameCheckpoint'
 	SecurityProviderName SecurityProviderName `json:"securityProviderName,omitempty"`
 	// ConnectionStatus - READ-ONLY; The connection status with the Security Partner Provider. Possible values include: 'SecurityPartnerProviderConnectionStatusUnknown', 'SecurityPartnerProviderConnectionStatusPartiallyConnected', 'SecurityPartnerProviderConnectionStatusConnected', 'SecurityPartnerProviderConnectionStatusNotConnected'
 	ConnectionStatus SecurityPartnerProviderConnectionStatus `json:"connectionStatus,omitempty"`
@@ -36137,7 +36137,7 @@ type SecurityRulePropertiesFormat struct {
 	Priority *int32 `json:"priority,omitempty"`
 	// Direction - The direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic. Possible values include: 'SecurityRuleDirectionInbound', 'SecurityRuleDirectionOutbound'
 	Direction SecurityRuleDirection `json:"direction,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the security rule resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the security rule resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -36383,7 +36383,7 @@ type ServiceAssociationLinkPropertiesFormat struct {
 	LinkedResourceType *string `json:"linkedResourceType,omitempty"`
 	// Link - Link to the external resource.
 	Link *string `json:"link,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the service association link resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the service association link resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// AllowDelete - If true, the resource can be deleted.
 	AllowDelete *bool `json:"allowDelete,omitempty"`
@@ -36433,7 +36433,7 @@ type ServiceDelegationPropertiesFormat struct {
 	ServiceName *string `json:"serviceName,omitempty"`
 	// Actions - READ-ONLY; The actions permitted to the service upon delegation.
 	Actions *[]string `json:"actions,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the service delegation resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the service delegation resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -36900,7 +36900,7 @@ type ServiceEndpointPolicyDefinitionPropertiesFormat struct {
 	Service *string `json:"service,omitempty"`
 	// ServiceResources - A list of service resources.
 	ServiceResources *[]string `json:"serviceResources,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the service endpoint policy definition resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the service endpoint policy definition resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -37176,7 +37176,7 @@ type ServiceEndpointPolicyPropertiesFormat struct {
 	Subnets *[]Subnet `json:"subnets,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the service endpoint policy resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the service endpoint policy resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the service endpoint policy resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -37195,7 +37195,7 @@ type ServiceEndpointPropertiesFormat struct {
 	Service *string `json:"service,omitempty"`
 	// Locations - A list of locations.
 	Locations *[]string `json:"locations,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the service endpoint resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the service endpoint resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -37562,12 +37562,12 @@ type SubnetPropertiesFormat struct {
 	Delegations *[]Delegation `json:"delegations,omitempty"`
 	// Purpose - READ-ONLY; A read-only string identifying the intention of use for this subnet based on delegations and other user-defined properties.
 	Purpose *string `json:"purpose,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the subnet resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the subnet resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// PrivateEndpointNetworkPolicies - Enable or Disable apply network policies on private end point in the subnet.
-	PrivateEndpointNetworkPolicies *string `json:"privateEndpointNetworkPolicies,omitempty"`
-	// PrivateLinkServiceNetworkPolicies - Enable or Disable apply network policies on private link service in the subnet.
-	PrivateLinkServiceNetworkPolicies *string `json:"privateLinkServiceNetworkPolicies,omitempty"`
+	// PrivateEndpointNetworkPolicies - Enable or Disable apply network policies on private end point in the subnet. Possible values include: 'VirtualNetworkPrivateEndpointNetworkPoliciesEnabled', 'VirtualNetworkPrivateEndpointNetworkPoliciesDisabled'
+	PrivateEndpointNetworkPolicies VirtualNetworkPrivateEndpointNetworkPolicies `json:"privateEndpointNetworkPolicies,omitempty"`
+	// PrivateLinkServiceNetworkPolicies - Enable or Disable apply network policies on private link service in the subnet. Possible values include: 'VirtualNetworkPrivateLinkServiceNetworkPoliciesEnabled', 'VirtualNetworkPrivateLinkServiceNetworkPoliciesDisabled'
+	PrivateLinkServiceNetworkPolicies VirtualNetworkPrivateLinkServiceNetworkPolicies `json:"privateLinkServiceNetworkPolicies,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SubnetPropertiesFormat.
@@ -37600,10 +37600,10 @@ func (spf SubnetPropertiesFormat) MarshalJSON() ([]byte, error) {
 	if spf.Delegations != nil {
 		objectMap["delegations"] = spf.Delegations
 	}
-	if spf.PrivateEndpointNetworkPolicies != nil {
+	if spf.PrivateEndpointNetworkPolicies != "" {
 		objectMap["privateEndpointNetworkPolicies"] = spf.PrivateEndpointNetworkPolicies
 	}
-	if spf.PrivateLinkServiceNetworkPolicies != nil {
+	if spf.PrivateLinkServiceNetworkPolicies != "" {
 		objectMap["privateLinkServiceNetworkPolicies"] = spf.PrivateLinkServiceNetworkPolicies
 	}
 	return json.Marshal(objectMap)
@@ -37812,7 +37812,7 @@ type TopologyAssociation struct {
 	Name *string `json:"name,omitempty"`
 	// ResourceID - The ID of the resource that is associated with the parent resource.
 	ResourceID *string `json:"resourceId,omitempty"`
-	// AssociationType - The association type of the child resource to the parent resource. Possible values include: 'Associated', 'Contains'
+	// AssociationType - The association type of the child resource to the parent resource. Possible values include: 'AssociationTypeAssociated', 'AssociationTypeContains'
 	AssociationType AssociationType `json:"associationType,omitempty"`
 }
 
@@ -38189,7 +38189,7 @@ func NewUsagesListResultPage(cur UsagesListResult, getNextPage func(context.Cont
 type VerificationIPFlowParameters struct {
 	// TargetResourceID - The ID of the target resource to perform next-hop on.
 	TargetResourceID *string `json:"targetResourceId,omitempty"`
-	// Direction - The direction of the packet represented as a 5-tuple. Possible values include: 'Inbound', 'Outbound'
+	// Direction - The direction of the packet represented as a 5-tuple. Possible values include: 'DirectionInbound', 'DirectionOutbound'
 	Direction Direction `json:"direction,omitempty"`
 	// Protocol - Protocol to be verified on. Possible values include: 'IPFlowProtocolTCP', 'IPFlowProtocolUDP'
 	Protocol IPFlowProtocol `json:"protocol,omitempty"`
@@ -38208,7 +38208,7 @@ type VerificationIPFlowParameters struct {
 // VerificationIPFlowResult results of IP flow verification on the target resource.
 type VerificationIPFlowResult struct {
 	autorest.Response `json:"-"`
-	// Access - Indicates whether the traffic is allowed or denied. Possible values include: 'Allow', 'Deny'
+	// Access - Indicates whether the traffic is allowed or denied. Possible values include: 'AccessAllow', 'AccessDeny'
 	Access Access `json:"access,omitempty"`
 	// RuleName - Name of the rule. If input is not matched against any security rule, it is not displayed.
 	RuleName *string `json:"ruleName,omitempty"`
@@ -38534,7 +38534,7 @@ type VirtualAppliancePropertiesFormat struct {
 	VirtualApplianceSites *[]SubResource `json:"virtualApplianceSites,omitempty"`
 	// InboundSecurityRules - READ-ONLY; List of references to InboundSecurityRules.
 	InboundSecurityRules *[]SubResource `json:"inboundSecurityRules,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -38898,7 +38898,7 @@ type VirtualApplianceSiteProperties struct {
 	AddressPrefix *string `json:"addressPrefix,omitempty"`
 	// O365Policy - Office 365 Policy.
 	O365Policy *Office365PolicyProperties `json:"o365Policy,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -39711,7 +39711,7 @@ type VirtualHubProperties struct {
 	AddressPrefix *string `json:"addressPrefix,omitempty"`
 	// RouteTable - The routeTable associated with this virtual hub.
 	RouteTable *VirtualHubRouteTable `json:"routeTable,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the virtual hub resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the virtual hub resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// SecurityProviderName - The Security Provider name.
 	SecurityProviderName *string `json:"securityProviderName,omitempty"`
@@ -39883,7 +39883,7 @@ type VirtualHubRouteTableV2Properties struct {
 	Routes *[]VirtualHubRouteV2 `json:"routes,omitempty"`
 	// AttachedConnections - List of all connections attached to this route table v2.
 	AttachedConnections *[]string `json:"attachedConnections,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the virtual hub route table v2 resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the virtual hub route table v2 resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -40265,6 +40265,8 @@ type VirtualNetworkConnectionGatewayReference struct {
 // VirtualNetworkGateway a common class for general resource information.
 type VirtualNetworkGateway struct {
 	autorest.Response `json:"-"`
+	// ExtendedLocation - The extended location of type local virtual network gateway.
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
 	// VirtualNetworkGatewayPropertiesFormat - Properties of the virtual network gateway.
 	*VirtualNetworkGatewayPropertiesFormat `json:"properties,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
@@ -40284,6 +40286,9 @@ type VirtualNetworkGateway struct {
 // MarshalJSON is the custom marshaler for VirtualNetworkGateway.
 func (vng VirtualNetworkGateway) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if vng.ExtendedLocation != nil {
+		objectMap["extendedLocation"] = vng.ExtendedLocation
+	}
 	if vng.VirtualNetworkGatewayPropertiesFormat != nil {
 		objectMap["properties"] = vng.VirtualNetworkGatewayPropertiesFormat
 	}
@@ -40308,6 +40313,15 @@ func (vng *VirtualNetworkGateway) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "extendedLocation":
+			if v != nil {
+				var extendedLocation ExtendedLocation
+				err = json.Unmarshal(*v, &extendedLocation)
+				if err != nil {
+					return err
+				}
+				vng.ExtendedLocation = &extendedLocation
+			}
 		case "properties":
 			if v != nil {
 				var virtualNetworkGatewayPropertiesFormat VirtualNetworkGatewayPropertiesFormat
@@ -40616,9 +40630,9 @@ type VirtualNetworkGatewayConnectionListEntityPropertiesFormat struct {
 	VirtualNetworkGateway2 *VirtualNetworkConnectionGatewayReference `json:"virtualNetworkGateway2,omitempty"`
 	// LocalNetworkGateway2 - The reference to local network gateway resource.
 	LocalNetworkGateway2 *VirtualNetworkConnectionGatewayReference `json:"localNetworkGateway2,omitempty"`
-	// ConnectionType - Gateway connection type. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'
+	// ConnectionType - Gateway connection type. Possible values include: 'VirtualNetworkGatewayConnectionTypeIPsec', 'VirtualNetworkGatewayConnectionTypeVnet2Vnet', 'VirtualNetworkGatewayConnectionTypeExpressRoute', 'VirtualNetworkGatewayConnectionTypeVPNClient'
 	ConnectionType VirtualNetworkGatewayConnectionType `json:"connectionType,omitempty"`
-	// ConnectionProtocol - Connection protocol used for this connection. Possible values include: 'IKEv2', 'IKEv1'
+	// ConnectionProtocol - Connection protocol used for this connection. Possible values include: 'VirtualNetworkGatewayConnectionProtocolIKEv2', 'VirtualNetworkGatewayConnectionProtocolIKEv1'
 	ConnectionProtocol VirtualNetworkGatewayConnectionProtocol `json:"connectionProtocol,omitempty"`
 	// RoutingWeight - The routing weight.
 	RoutingWeight *int32 `json:"routingWeight,omitempty"`
@@ -40646,7 +40660,7 @@ type VirtualNetworkGatewayConnectionListEntityPropertiesFormat struct {
 	TrafficSelectorPolicies *[]TrafficSelectorPolicy `json:"trafficSelectorPolicies,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the virtual network gateway connection resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network gateway connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network gateway connection resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ExpressRouteGatewayBypass - Bypass ExpressRoute Gateway for data forwarding.
 	ExpressRouteGatewayBypass *bool `json:"expressRouteGatewayBypass,omitempty"`
@@ -40883,9 +40897,9 @@ type VirtualNetworkGatewayConnectionPropertiesFormat struct {
 	VirtualNetworkGateway2 *VirtualNetworkGateway `json:"virtualNetworkGateway2,omitempty"`
 	// LocalNetworkGateway2 - The reference to local network gateway resource.
 	LocalNetworkGateway2 *LocalNetworkGateway `json:"localNetworkGateway2,omitempty"`
-	// ConnectionType - Gateway connection type. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'
+	// ConnectionType - Gateway connection type. Possible values include: 'VirtualNetworkGatewayConnectionTypeIPsec', 'VirtualNetworkGatewayConnectionTypeVnet2Vnet', 'VirtualNetworkGatewayConnectionTypeExpressRoute', 'VirtualNetworkGatewayConnectionTypeVPNClient'
 	ConnectionType VirtualNetworkGatewayConnectionType `json:"connectionType,omitempty"`
-	// ConnectionProtocol - Connection protocol used for this connection. Possible values include: 'IKEv2', 'IKEv1'
+	// ConnectionProtocol - Connection protocol used for this connection. Possible values include: 'VirtualNetworkGatewayConnectionProtocolIKEv2', 'VirtualNetworkGatewayConnectionProtocolIKEv1'
 	ConnectionProtocol VirtualNetworkGatewayConnectionProtocol `json:"connectionProtocol,omitempty"`
 	// RoutingWeight - The routing weight.
 	RoutingWeight *int32 `json:"routingWeight,omitempty"`
@@ -40917,7 +40931,7 @@ type VirtualNetworkGatewayConnectionPropertiesFormat struct {
 	TrafficSelectorPolicies *[]TrafficSelectorPolicy `json:"trafficSelectorPolicies,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the virtual network gateway connection resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network gateway connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network gateway connection resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ExpressRouteGatewayBypass - Bypass ExpressRoute Gateway for data forwarding.
 	ExpressRouteGatewayBypass *bool `json:"expressRouteGatewayBypass,omitempty"`
@@ -41435,7 +41449,7 @@ func (vngic *VirtualNetworkGatewayIPConfiguration) UnmarshalJSON(body []byte) er
 
 // VirtualNetworkGatewayIPConfigurationPropertiesFormat properties of VirtualNetworkGatewayIPConfiguration.
 type VirtualNetworkGatewayIPConfigurationPropertiesFormat struct {
-	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'Static', 'Dynamic'
+	// PrivateIPAllocationMethod - The private IP address allocation method. Possible values include: 'IPAllocationMethodStatic', 'IPAllocationMethodDynamic'
 	PrivateIPAllocationMethod IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
 	// Subnet - The reference to the subnet resource.
 	Subnet *SubResource `json:"subnet,omitempty"`
@@ -41443,7 +41457,7 @@ type VirtualNetworkGatewayIPConfigurationPropertiesFormat struct {
 	PublicIPAddress *SubResource `json:"publicIPAddress,omitempty"`
 	// PrivateIPAddress - READ-ONLY; Private IP Address for this gateway.
 	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network gateway IP configuration resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network gateway IP configuration resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -41808,7 +41822,7 @@ type VirtualNetworkGatewayPropertiesFormat struct {
 	IPConfigurations *[]VirtualNetworkGatewayIPConfiguration `json:"ipConfigurations,omitempty"`
 	// GatewayType - The type of this virtual network gateway. Possible values include: 'VirtualNetworkGatewayTypeVpn', 'VirtualNetworkGatewayTypeExpressRoute', 'VirtualNetworkGatewayTypeLocalGateway'
 	GatewayType VirtualNetworkGatewayType `json:"gatewayType,omitempty"`
-	// VpnType - The type of this virtual network gateway. Possible values include: 'PolicyBased', 'RouteBased'
+	// VpnType - The type of this virtual network gateway. Possible values include: 'VpnTypePolicyBased', 'VpnTypeRouteBased'
 	VpnType VpnType `json:"vpnType,omitempty"`
 	// VpnGatewayGeneration - The generation for this VirtualNetworkGateway. Must be None if gatewayType is not VPN. Possible values include: 'VpnGatewayGenerationNone', 'VpnGatewayGenerationGeneration1', 'VpnGatewayGenerationGeneration2'
 	VpnGatewayGeneration VpnGatewayGeneration `json:"vpnGatewayGeneration,omitempty"`
@@ -41830,16 +41844,14 @@ type VirtualNetworkGatewayPropertiesFormat struct {
 	CustomRoutes *AddressSpace `json:"customRoutes,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the virtual network gateway resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network gateway resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network gateway resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// EnableDNSForwarding - Whether dns forwarding is enabled or not.
 	EnableDNSForwarding *bool `json:"enableDnsForwarding,omitempty"`
 	// InboundDNSForwardingEndpoint - READ-ONLY; The IP address allocated by the gateway to which dns requests can be sent.
 	InboundDNSForwardingEndpoint *string `json:"inboundDnsForwardingEndpoint,omitempty"`
-	// VNetExtendedLocationResourceID - MAS FIJI customer vnet resource id. VirtualNetworkGateway of type local gateway is associated with the customer vnet.
+	// VNetExtendedLocationResourceID - Customer vnet resource id. VirtualNetworkGateway of type local gateway is associated with the customer vnet.
 	VNetExtendedLocationResourceID *string `json:"vNetExtendedLocationResourceId,omitempty"`
-	// VirtualNetworkExtendedLocation - The extended location of type local virtual network gateway.
-	VirtualNetworkExtendedLocation *ExtendedLocation `json:"virtualNetworkExtendedLocation,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for VirtualNetworkGatewayPropertiesFormat.
@@ -41886,9 +41898,6 @@ func (vngpf VirtualNetworkGatewayPropertiesFormat) MarshalJSON() ([]byte, error)
 	}
 	if vngpf.VNetExtendedLocationResourceID != nil {
 		objectMap["vNetExtendedLocationResourceId"] = vngpf.VNetExtendedLocationResourceID
-	}
-	if vngpf.VirtualNetworkExtendedLocation != nil {
-		objectMap["virtualNetworkExtendedLocation"] = vngpf.VirtualNetworkExtendedLocation
 	}
 	return json.Marshal(objectMap)
 }
@@ -43214,7 +43223,7 @@ type VirtualNetworkPeeringPropertiesFormat struct {
 	RemoteBgpCommunities *VirtualNetworkBgpCommunities `json:"remoteBgpCommunities,omitempty"`
 	// PeeringState - The status of the virtual network peering. Possible values include: 'VirtualNetworkPeeringStateInitiated', 'VirtualNetworkPeeringStateConnected', 'VirtualNetworkPeeringStateDisconnected'
 	PeeringState VirtualNetworkPeeringState `json:"peeringState,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network peering resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network peering resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -43340,7 +43349,7 @@ type VirtualNetworkPropertiesFormat struct {
 	VirtualNetworkPeerings *[]VirtualNetworkPeering `json:"virtualNetworkPeerings,omitempty"`
 	// ResourceGUID - READ-ONLY; The resourceGuid property of the Virtual Network resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// EnableDdosProtection - Indicates if DDoS protection is enabled for all the protected resources in the virtual network. It requires a DDoS protection plan associated with the resource.
 	EnableDdosProtection *bool `json:"enableDdosProtection,omitempty"`
@@ -43747,7 +43756,7 @@ type VirtualNetworkTapPropertiesFormat struct {
 	NetworkInterfaceTapConfigurations *[]InterfaceTapConfiguration `json:"networkInterfaceTapConfigurations,omitempty"`
 	// ResourceGUID - READ-ONLY; The resource GUID property of the virtual network tap resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network tap resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network tap resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// DestinationNetworkInterfaceIPConfiguration - The reference to the private IP Address of the collector nic that will receive the tap.
 	DestinationNetworkInterfaceIPConfiguration *InterfaceIPConfiguration `json:"destinationNetworkInterfaceIPConfiguration,omitempty"`
@@ -44404,7 +44413,7 @@ type VirtualRouterPeeringProperties struct {
 	PeerAsn *int64 `json:"peerAsn,omitempty"`
 	// PeerIP - Peer IP.
 	PeerIP *string `json:"peerIp,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -44512,7 +44521,7 @@ type VirtualRouterPropertiesFormat struct {
 	HostedGateway *SubResource `json:"hostedGateway,omitempty"`
 	// Peerings - READ-ONLY; List of references to VirtualRouterPeerings.
 	Peerings *[]SubResource `json:"peerings,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -44743,7 +44752,7 @@ type VirtualWanProperties struct {
 	AllowVnetToVnetTraffic *bool `json:"allowVnetToVnetTraffic,omitempty"`
 	// Office365LocalBreakoutCategory - The office local breakout category. Possible values include: 'OfficeTrafficCategoryOptimize', 'OfficeTrafficCategoryOptimizeAndAllow', 'OfficeTrafficCategoryAll', 'OfficeTrafficCategoryNone'
 	Office365LocalBreakoutCategory OfficeTrafficCategory `json:"office365LocalBreakoutCategory,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the virtual WAN resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the virtual WAN resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Type - The type of the VirtualWAN.
 	Type *string `json:"type,omitempty"`
@@ -44856,7 +44865,7 @@ type VirtualWanSecurityProvider struct {
 	Name *string `json:"name,omitempty"`
 	// URL - Url of the security provider.
 	URL *string `json:"url,omitempty"`
-	// Type - Name of the security provider. Possible values include: 'External', 'Native'
+	// Type - Name of the security provider. Possible values include: 'VirtualWanSecurityProviderTypeExternal', 'VirtualWanSecurityProviderTypeNative'
 	Type VirtualWanSecurityProviderType `json:"type,omitempty"`
 }
 
@@ -44871,7 +44880,7 @@ type VirtualWanSecurityProviders struct {
 type VirtualWanVpnProfileParameters struct {
 	// VpnServerConfigurationResourceID - VpnServerConfiguration partial resource uri with which VirtualWan is associated to.
 	VpnServerConfigurationResourceID *string `json:"vpnServerConfigurationResourceId,omitempty"`
-	// AuthenticationMethod - VPN client authentication method. Possible values include: 'EAPTLS', 'EAPMSCHAPv2'
+	// AuthenticationMethod - VPN client authentication method. Possible values include: 'AuthenticationMethodEAPTLS', 'AuthenticationMethodEAPMSCHAPv2'
 	AuthenticationMethod AuthenticationMethod `json:"authenticationMethod,omitempty"`
 }
 
@@ -45008,7 +45017,7 @@ type VpnClientIPsecParameters struct {
 	IpsecEncryption IpsecEncryption `json:"ipsecEncryption,omitempty"`
 	// IpsecIntegrity - The IPSec integrity algorithm (IKE phase 1). Possible values include: 'IpsecIntegrityMD5', 'IpsecIntegritySHA1', 'IpsecIntegritySHA256', 'IpsecIntegrityGCMAES128', 'IpsecIntegrityGCMAES192', 'IpsecIntegrityGCMAES256'
 	IpsecIntegrity IpsecIntegrity `json:"ipsecIntegrity,omitempty"`
-	// IkeEncryption - The IKE encryption algorithm (IKE phase 2). Possible values include: 'DES', 'DES3', 'AES128', 'AES192', 'AES256', 'GCMAES256', 'GCMAES128'
+	// IkeEncryption - The IKE encryption algorithm (IKE phase 2). Possible values include: 'IkeEncryptionDES', 'IkeEncryptionDES3', 'IkeEncryptionAES128', 'IkeEncryptionAES192', 'IkeEncryptionAES256', 'IkeEncryptionGCMAES256', 'IkeEncryptionGCMAES128'
 	IkeEncryption IkeEncryption `json:"ikeEncryption,omitempty"`
 	// IkeIntegrity - The IKE integrity algorithm (IKE phase 2). Possible values include: 'IkeIntegrityMD5', 'IkeIntegritySHA1', 'IkeIntegritySHA256', 'IkeIntegritySHA384', 'IkeIntegrityGCMAES256', 'IkeIntegrityGCMAES128'
 	IkeIntegrity IkeIntegrity `json:"ikeIntegrity,omitempty"`
@@ -45020,9 +45029,9 @@ type VpnClientIPsecParameters struct {
 
 // VpnClientParameters vpn Client Parameters for package generation.
 type VpnClientParameters struct {
-	// ProcessorArchitecture - VPN client Processor Architecture. Possible values include: 'Amd64', 'X86'
+	// ProcessorArchitecture - VPN client Processor Architecture. Possible values include: 'ProcessorArchitectureAmd64', 'ProcessorArchitectureX86'
 	ProcessorArchitecture ProcessorArchitecture `json:"processorArchitecture,omitempty"`
-	// AuthenticationMethod - VPN client authentication method. Possible values include: 'EAPTLS', 'EAPMSCHAPv2'
+	// AuthenticationMethod - VPN client authentication method. Possible values include: 'AuthenticationMethodEAPTLS', 'AuthenticationMethodEAPMSCHAPv2'
 	AuthenticationMethod AuthenticationMethod `json:"authenticationMethod,omitempty"`
 	// RadiusServerAuthCertificate - The public certificate data for the radius server authentication certificate as a Base-64 encoded string. Required only if external radius authentication has been configured with EAPTLS authentication.
 	RadiusServerAuthCertificate *string `json:"radiusServerAuthCertificate,omitempty"`
@@ -45113,7 +45122,7 @@ func (vcrc *VpnClientRevokedCertificate) UnmarshalJSON(body []byte) error {
 type VpnClientRevokedCertificatePropertiesFormat struct {
 	// Thumbprint - The revoked VPN client certificate thumbprint.
 	Thumbprint *string `json:"thumbprint,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the VPN client revoked certificate resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the VPN client revoked certificate resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -45208,7 +45217,7 @@ func (vcrc *VpnClientRootCertificate) UnmarshalJSON(body []byte) error {
 type VpnClientRootCertificatePropertiesFormat struct {
 	// PublicCertData - The certificate public data.
 	PublicCertData *string `json:"publicCertData,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the VPN client root certificate resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the VPN client root certificate resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -45328,7 +45337,7 @@ type VpnConnectionProperties struct {
 	DpdTimeoutSeconds *int32 `json:"dpdTimeoutSeconds,omitempty"`
 	// ConnectionStatus - The connection status. Possible values include: 'VpnConnectionStatusUnknown', 'VpnConnectionStatusConnecting', 'VpnConnectionStatusConnected', 'VpnConnectionStatusNotConnected'
 	ConnectionStatus VpnConnectionStatus `json:"connectionStatus,omitempty"`
-	// VpnConnectionProtocolType - Connection protocol used for this connection. Possible values include: 'IKEv2', 'IKEv1'
+	// VpnConnectionProtocolType - Connection protocol used for this connection. Possible values include: 'VirtualNetworkGatewayConnectionProtocolIKEv2', 'VirtualNetworkGatewayConnectionProtocolIKEv1'
 	VpnConnectionProtocolType VirtualNetworkGatewayConnectionProtocol `json:"vpnConnectionProtocolType,omitempty"`
 	// IngressBytesTransferred - READ-ONLY; Ingress bytes transferred.
 	IngressBytesTransferred *int64 `json:"ingressBytesTransferred,omitempty"`
@@ -45352,7 +45361,7 @@ type VpnConnectionProperties struct {
 	EnableInternetSecurity *bool `json:"enableInternetSecurity,omitempty"`
 	// UseLocalAzureIPAddress - Use local azure ip to initiate connection.
 	UseLocalAzureIPAddress *bool `json:"useLocalAzureIpAddress,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the VPN connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the VPN connection resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// VpnLinkConnections - List of all vpn site link connections to the gateway.
 	VpnLinkConnections *[]VpnSiteLinkConnection `json:"vpnLinkConnections,omitempty"`
@@ -45807,11 +45816,11 @@ func (vgnr *VpnGatewayNatRule) UnmarshalJSON(body []byte) error {
 
 // VpnGatewayNatRuleProperties parameters for VpnGatewayNatRule.
 type VpnGatewayNatRuleProperties struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the NAT Rule resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the NAT Rule resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Type - The type of NAT rule for VPN NAT. Possible values include: 'VpnNatRuleTypeStatic', 'VpnNatRuleTypeDynamic'
 	Type VpnNatRuleType `json:"type,omitempty"`
-	// Mode - The Source NAT direction of a VPN NAT. Possible values include: 'EgressSnat', 'IngressSnat'
+	// Mode - The Source NAT direction of a VPN NAT. Possible values include: 'VpnNatRuleModeEgressSnat', 'VpnNatRuleModeIngressSnat'
 	Mode VpnNatRuleMode `json:"mode,omitempty"`
 	// InternalMappings - The private IP address internal mapping for NAT.
 	InternalMappings *[]VpnNatRuleMapping `json:"internalMappings,omitempty"`
@@ -45866,7 +45875,7 @@ type VpnGatewayProperties struct {
 	Connections *[]VpnConnection `json:"connections,omitempty"`
 	// BgpSettings - Local network gateway's BGP speaker settings.
 	BgpSettings *BgpSettings `json:"bgpSettings,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the VPN gateway resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the VPN gateway resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// VpnGatewayScaleUnit - The scale unit for this vpn gateway.
 	VpnGatewayScaleUnit *int32 `json:"vpnGatewayScaleUnit,omitempty"`
@@ -46943,7 +46952,7 @@ type VpnSiteLinkConnectionProperties struct {
 	VpnLinkConnectionMode VpnLinkConnectionMode `json:"vpnLinkConnectionMode,omitempty"`
 	// ConnectionStatus - The connection status. Possible values include: 'VpnConnectionStatusUnknown', 'VpnConnectionStatusConnecting', 'VpnConnectionStatusConnected', 'VpnConnectionStatusNotConnected'
 	ConnectionStatus VpnConnectionStatus `json:"connectionStatus,omitempty"`
-	// VpnConnectionProtocolType - Connection protocol used for this connection. Possible values include: 'IKEv2', 'IKEv1'
+	// VpnConnectionProtocolType - Connection protocol used for this connection. Possible values include: 'VirtualNetworkGatewayConnectionProtocolIKEv2', 'VirtualNetworkGatewayConnectionProtocolIKEv1'
 	VpnConnectionProtocolType VirtualNetworkGatewayConnectionProtocol `json:"vpnConnectionProtocolType,omitempty"`
 	// IngressBytesTransferred - READ-ONLY; Ingress bytes transferred.
 	IngressBytesTransferred *int64 `json:"ingressBytesTransferred,omitempty"`
@@ -46963,7 +46972,7 @@ type VpnSiteLinkConnectionProperties struct {
 	EnableRateLimiting *bool `json:"enableRateLimiting,omitempty"`
 	// UseLocalAzureIPAddress - Use local azure ip to initiate connection.
 	UseLocalAzureIPAddress *bool `json:"useLocalAzureIpAddress,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the VPN site link connection resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the VPN site link connection resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// IngressNatRules - List of ingress NatRules.
 	IngressNatRules *[]SubResource `json:"ingressNatRules,omitempty"`
@@ -47029,7 +47038,7 @@ type VpnSiteLinkProperties struct {
 	Fqdn *string `json:"fqdn,omitempty"`
 	// BgpProperties - The set of bgp properties.
 	BgpProperties *VpnLinkBgpSettings `json:"bgpProperties,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the VPN site link resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the VPN site link resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -47065,7 +47074,7 @@ type VpnSiteProperties struct {
 	AddressSpace *AddressSpace `json:"addressSpace,omitempty"`
 	// BgpProperties - The set of bgp properties.
 	BgpProperties *BgpSettings `json:"bgpProperties,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the VPN site resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the VPN site resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// IsSecuritySite - IsSecuritySite flag.
 	IsSecuritySite *bool `json:"isSecuritySite,omitempty"`
@@ -47349,7 +47358,7 @@ type WatcherListResult struct {
 
 // WatcherPropertiesFormat the network watcher properties.
 type WatcherPropertiesFormat struct {
-	// ProvisioningState - READ-ONLY; The provisioning state of the network watcher resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the network watcher resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 
@@ -48221,7 +48230,7 @@ type WebApplicationFirewallPolicyPropertiesFormat struct {
 	CustomRules *[]WebApplicationFirewallCustomRule `json:"customRules,omitempty"`
 	// ApplicationGateways - READ-ONLY; A collection of references to application gateways.
 	ApplicationGateways *[]ApplicationGateway `json:"applicationGateways,omitempty"`
-	// ProvisioningState - READ-ONLY; The provisioning state of the web application firewall policy resource. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The provisioning state of the web application firewall policy resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ResourceState - READ-ONLY; Resource status of the policy. Possible values include: 'WebApplicationFirewallPolicyResourceStateCreating', 'WebApplicationFirewallPolicyResourceStateEnabling', 'WebApplicationFirewallPolicyResourceStateEnabled', 'WebApplicationFirewallPolicyResourceStateDisabling', 'WebApplicationFirewallPolicyResourceStateDisabled', 'WebApplicationFirewallPolicyResourceStateDeleting'
 	ResourceState WebApplicationFirewallPolicyResourceState `json:"resourceState,omitempty"`

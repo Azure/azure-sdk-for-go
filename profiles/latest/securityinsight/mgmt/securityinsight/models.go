@@ -11,7 +11,7 @@ package securityinsight
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/securityinsight/mgmt/v1.0/securityinsight"
+	original "github.com/Azure/azure-sdk-for-go/services/securityinsight/mgmt/2020-01-01/securityinsight"
 )
 
 const (
@@ -306,6 +306,7 @@ type OfficeDataConnector = original.OfficeDataConnector
 type OfficeDataConnectorDataTypes = original.OfficeDataConnectorDataTypes
 type OfficeDataConnectorDataTypesExchange = original.OfficeDataConnectorDataTypesExchange
 type OfficeDataConnectorDataTypesSharePoint = original.OfficeDataConnectorDataTypesSharePoint
+type OfficeDataConnectorDataTypesTeams = original.OfficeDataConnectorDataTypesTeams
 type OfficeDataConnectorProperties = original.OfficeDataConnectorProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay

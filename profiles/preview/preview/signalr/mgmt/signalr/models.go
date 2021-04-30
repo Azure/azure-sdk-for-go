@@ -21,8 +21,8 @@ const (
 type ACLAction = original.ACLAction
 
 const (
-	Allow ACLAction = original.Allow
-	Deny  ACLAction = original.Deny
+	ACLActionAllow ACLAction = original.ACLActionAllow
+	ACLActionDeny  ACLAction = original.ACLActionDeny
 )
 
 type CreatedByType = original.CreatedByType
@@ -37,64 +37,64 @@ const (
 type FeatureFlags = original.FeatureFlags
 
 const (
-	EnableConnectivityLogs FeatureFlags = original.EnableConnectivityLogs
-	EnableLiveTrace        FeatureFlags = original.EnableLiveTrace
-	EnableMessagingLogs    FeatureFlags = original.EnableMessagingLogs
-	ServiceMode            FeatureFlags = original.ServiceMode
+	FeatureFlagsEnableConnectivityLogs FeatureFlags = original.FeatureFlagsEnableConnectivityLogs
+	FeatureFlagsEnableLiveTrace        FeatureFlags = original.FeatureFlagsEnableLiveTrace
+	FeatureFlagsEnableMessagingLogs    FeatureFlags = original.FeatureFlagsEnableMessagingLogs
+	FeatureFlagsServiceMode            FeatureFlags = original.FeatureFlagsServiceMode
 )
 
 type KeyType = original.KeyType
 
 const (
-	Primary   KeyType = original.Primary
-	Secondary KeyType = original.Secondary
+	KeyTypePrimary   KeyType = original.KeyTypePrimary
+	KeyTypeSecondary KeyType = original.KeyTypeSecondary
 )
 
 type ManagedIdentityType = original.ManagedIdentityType
 
 const (
-	None           ManagedIdentityType = original.None
-	SystemAssigned ManagedIdentityType = original.SystemAssigned
-	UserAssigned   ManagedIdentityType = original.UserAssigned
+	ManagedIdentityTypeNone           ManagedIdentityType = original.ManagedIdentityTypeNone
+	ManagedIdentityTypeSystemAssigned ManagedIdentityType = original.ManagedIdentityTypeSystemAssigned
+	ManagedIdentityTypeUserAssigned   ManagedIdentityType = original.ManagedIdentityTypeUserAssigned
 )
 
 type PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatus
 
 const (
-	Approved     PrivateLinkServiceConnectionStatus = original.Approved
-	Disconnected PrivateLinkServiceConnectionStatus = original.Disconnected
-	Pending      PrivateLinkServiceConnectionStatus = original.Pending
-	Rejected     PrivateLinkServiceConnectionStatus = original.Rejected
+	PrivateLinkServiceConnectionStatusApproved     PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusApproved
+	PrivateLinkServiceConnectionStatusDisconnected PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusDisconnected
+	PrivateLinkServiceConnectionStatusPending      PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusPending
+	PrivateLinkServiceConnectionStatusRejected     PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusRejected
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Canceled  ProvisioningState = original.Canceled
-	Creating  ProvisioningState = original.Creating
-	Deleting  ProvisioningState = original.Deleting
-	Failed    ProvisioningState = original.Failed
-	Moving    ProvisioningState = original.Moving
-	Running   ProvisioningState = original.Running
-	Succeeded ProvisioningState = original.Succeeded
-	Unknown   ProvisioningState = original.Unknown
-	Updating  ProvisioningState = original.Updating
+	ProvisioningStateCanceled  ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateMoving    ProvisioningState = original.ProvisioningStateMoving
+	ProvisioningStateRunning   ProvisioningState = original.ProvisioningStateRunning
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUnknown   ProvisioningState = original.ProvisioningStateUnknown
+	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
 )
 
 type RequestType = original.RequestType
 
 const (
-	ClientConnection RequestType = original.ClientConnection
-	RESTAPI          RequestType = original.RESTAPI
-	ServerConnection RequestType = original.ServerConnection
-	Trace            RequestType = original.Trace
+	RequestTypeClientConnection RequestType = original.RequestTypeClientConnection
+	RequestTypeRESTAPI          RequestType = original.RequestTypeRESTAPI
+	RequestTypeServerConnection RequestType = original.RequestTypeServerConnection
+	RequestTypeTrace            RequestType = original.RequestTypeTrace
 )
 
 type ServiceKind = original.ServiceKind
 
 const (
-	RawWebSockets ServiceKind = original.RawWebSockets
-	SignalR       ServiceKind = original.SignalR
+	ServiceKindRawWebSockets ServiceKind = original.ServiceKindRawWebSockets
+	ServiceKindSignalR       ServiceKind = original.ServiceKindSignalR
 )
 
 type SharedPrivateLinkResourceStatus = original.SharedPrivateLinkResourceStatus
@@ -110,10 +110,10 @@ const (
 type SkuTier = original.SkuTier
 
 const (
-	Basic    SkuTier = original.Basic
-	Free     SkuTier = original.Free
-	Premium  SkuTier = original.Premium
-	Standard SkuTier = original.Standard
+	SkuTierBasic    SkuTier = original.SkuTierBasic
+	SkuTierFree     SkuTier = original.SkuTierFree
+	SkuTierPremium  SkuTier = original.SkuTierPremium
+	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
 type UpstreamAuthType = original.UpstreamAuthType

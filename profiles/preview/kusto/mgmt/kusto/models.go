@@ -21,60 +21,60 @@ const (
 type AzureScaleType = original.AzureScaleType
 
 const (
-	Automatic AzureScaleType = original.Automatic
-	Manual    AzureScaleType = original.Manual
-	None      AzureScaleType = original.None
+	AzureScaleTypeAutomatic AzureScaleType = original.AzureScaleTypeAutomatic
+	AzureScaleTypeManual    AzureScaleType = original.AzureScaleTypeManual
+	AzureScaleTypeNone      AzureScaleType = original.AzureScaleTypeNone
 )
 
 type AzureSkuName = original.AzureSkuName
 
 const (
-	DevNoSLAStandardD11V2 AzureSkuName = original.DevNoSLAStandardD11V2
-	DevNoSLAStandardE2aV4 AzureSkuName = original.DevNoSLAStandardE2aV4
-	StandardD11V2         AzureSkuName = original.StandardD11V2
-	StandardD12V2         AzureSkuName = original.StandardD12V2
-	StandardD13V2         AzureSkuName = original.StandardD13V2
-	StandardD14V2         AzureSkuName = original.StandardD14V2
-	StandardDS13V21TBPS   AzureSkuName = original.StandardDS13V21TBPS
-	StandardDS13V22TBPS   AzureSkuName = original.StandardDS13V22TBPS
-	StandardDS14V23TBPS   AzureSkuName = original.StandardDS14V23TBPS
-	StandardDS14V24TBPS   AzureSkuName = original.StandardDS14V24TBPS
-	StandardE16aV4        AzureSkuName = original.StandardE16aV4
-	StandardE16asV43TBPS  AzureSkuName = original.StandardE16asV43TBPS
-	StandardE16asV44TBPS  AzureSkuName = original.StandardE16asV44TBPS
-	StandardE2aV4         AzureSkuName = original.StandardE2aV4
-	StandardE4aV4         AzureSkuName = original.StandardE4aV4
-	StandardE64iV3        AzureSkuName = original.StandardE64iV3
-	StandardE80idsV4      AzureSkuName = original.StandardE80idsV4
-	StandardE8aV4         AzureSkuName = original.StandardE8aV4
-	StandardE8asV41TBPS   AzureSkuName = original.StandardE8asV41TBPS
-	StandardE8asV42TBPS   AzureSkuName = original.StandardE8asV42TBPS
-	StandardL16s          AzureSkuName = original.StandardL16s
-	StandardL16sV2        AzureSkuName = original.StandardL16sV2
-	StandardL4s           AzureSkuName = original.StandardL4s
-	StandardL8s           AzureSkuName = original.StandardL8s
-	StandardL8sV2         AzureSkuName = original.StandardL8sV2
+	AzureSkuNameDevNoSLAStandardD11V2 AzureSkuName = original.AzureSkuNameDevNoSLAStandardD11V2
+	AzureSkuNameDevNoSLAStandardE2aV4 AzureSkuName = original.AzureSkuNameDevNoSLAStandardE2aV4
+	AzureSkuNameStandardD11V2         AzureSkuName = original.AzureSkuNameStandardD11V2
+	AzureSkuNameStandardD12V2         AzureSkuName = original.AzureSkuNameStandardD12V2
+	AzureSkuNameStandardD13V2         AzureSkuName = original.AzureSkuNameStandardD13V2
+	AzureSkuNameStandardD14V2         AzureSkuName = original.AzureSkuNameStandardD14V2
+	AzureSkuNameStandardDS13V21TBPS   AzureSkuName = original.AzureSkuNameStandardDS13V21TBPS
+	AzureSkuNameStandardDS13V22TBPS   AzureSkuName = original.AzureSkuNameStandardDS13V22TBPS
+	AzureSkuNameStandardDS14V23TBPS   AzureSkuName = original.AzureSkuNameStandardDS14V23TBPS
+	AzureSkuNameStandardDS14V24TBPS   AzureSkuName = original.AzureSkuNameStandardDS14V24TBPS
+	AzureSkuNameStandardE16asV43TBPS  AzureSkuName = original.AzureSkuNameStandardE16asV43TBPS
+	AzureSkuNameStandardE16asV44TBPS  AzureSkuName = original.AzureSkuNameStandardE16asV44TBPS
+	AzureSkuNameStandardE16aV4        AzureSkuName = original.AzureSkuNameStandardE16aV4
+	AzureSkuNameStandardE2aV4         AzureSkuName = original.AzureSkuNameStandardE2aV4
+	AzureSkuNameStandardE4aV4         AzureSkuName = original.AzureSkuNameStandardE4aV4
+	AzureSkuNameStandardE64iV3        AzureSkuName = original.AzureSkuNameStandardE64iV3
+	AzureSkuNameStandardE80idsV4      AzureSkuName = original.AzureSkuNameStandardE80idsV4
+	AzureSkuNameStandardE8asV41TBPS   AzureSkuName = original.AzureSkuNameStandardE8asV41TBPS
+	AzureSkuNameStandardE8asV42TBPS   AzureSkuName = original.AzureSkuNameStandardE8asV42TBPS
+	AzureSkuNameStandardE8aV4         AzureSkuName = original.AzureSkuNameStandardE8aV4
+	AzureSkuNameStandardL16s          AzureSkuName = original.AzureSkuNameStandardL16s
+	AzureSkuNameStandardL16sV2        AzureSkuName = original.AzureSkuNameStandardL16sV2
+	AzureSkuNameStandardL4s           AzureSkuName = original.AzureSkuNameStandardL4s
+	AzureSkuNameStandardL8s           AzureSkuName = original.AzureSkuNameStandardL8s
+	AzureSkuNameStandardL8sV2         AzureSkuName = original.AzureSkuNameStandardL8sV2
 )
 
 type AzureSkuTier = original.AzureSkuTier
 
 const (
-	Basic    AzureSkuTier = original.Basic
-	Standard AzureSkuTier = original.Standard
+	AzureSkuTierBasic    AzureSkuTier = original.AzureSkuTierBasic
+	AzureSkuTierStandard AzureSkuTier = original.AzureSkuTierStandard
 )
 
 type BlobStorageEventType = original.BlobStorageEventType
 
 const (
-	MicrosoftStorageBlobCreated BlobStorageEventType = original.MicrosoftStorageBlobCreated
-	MicrosoftStorageBlobRenamed BlobStorageEventType = original.MicrosoftStorageBlobRenamed
+	BlobStorageEventTypeMicrosoftStorageBlobCreated BlobStorageEventType = original.BlobStorageEventTypeMicrosoftStorageBlobCreated
+	BlobStorageEventTypeMicrosoftStorageBlobRenamed BlobStorageEventType = original.BlobStorageEventTypeMicrosoftStorageBlobRenamed
 )
 
 type ClusterPrincipalRole = original.ClusterPrincipalRole
 
 const (
-	AllDatabasesAdmin  ClusterPrincipalRole = original.AllDatabasesAdmin
-	AllDatabasesViewer ClusterPrincipalRole = original.AllDatabasesViewer
+	ClusterPrincipalRoleAllDatabasesAdmin  ClusterPrincipalRole = original.ClusterPrincipalRoleAllDatabasesAdmin
+	ClusterPrincipalRoleAllDatabasesViewer ClusterPrincipalRole = original.ClusterPrincipalRoleAllDatabasesViewer
 )
 
 type Compression = original.Compression
@@ -87,10 +87,10 @@ const (
 type CreatedByType = original.CreatedByType
 
 const (
-	Application     CreatedByType = original.Application
-	Key             CreatedByType = original.Key
-	ManagedIdentity CreatedByType = original.ManagedIdentity
-	User            CreatedByType = original.User
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type DatabasePrincipalRole = original.DatabasePrincipalRole
@@ -123,29 +123,29 @@ const (
 type EngineType = original.EngineType
 
 const (
-	V2 EngineType = original.V2
-	V3 EngineType = original.V3
+	EngineTypeV2 EngineType = original.EngineTypeV2
+	EngineTypeV3 EngineType = original.EngineTypeV3
 )
 
 type EventGridDataFormat = original.EventGridDataFormat
 
 const (
-	APACHEAVRO EventGridDataFormat = original.APACHEAVRO
-	AVRO       EventGridDataFormat = original.AVRO
-	CSV        EventGridDataFormat = original.CSV
-	JSON       EventGridDataFormat = original.JSON
-	MULTIJSON  EventGridDataFormat = original.MULTIJSON
-	ORC        EventGridDataFormat = original.ORC
-	PARQUET    EventGridDataFormat = original.PARQUET
-	PSV        EventGridDataFormat = original.PSV
-	RAW        EventGridDataFormat = original.RAW
-	SCSV       EventGridDataFormat = original.SCSV
-	SINGLEJSON EventGridDataFormat = original.SINGLEJSON
-	SOHSV      EventGridDataFormat = original.SOHSV
-	TSV        EventGridDataFormat = original.TSV
-	TSVE       EventGridDataFormat = original.TSVE
-	TXT        EventGridDataFormat = original.TXT
-	W3CLOGFILE EventGridDataFormat = original.W3CLOGFILE
+	EventGridDataFormatAPACHEAVRO EventGridDataFormat = original.EventGridDataFormatAPACHEAVRO
+	EventGridDataFormatAVRO       EventGridDataFormat = original.EventGridDataFormatAVRO
+	EventGridDataFormatCSV        EventGridDataFormat = original.EventGridDataFormatCSV
+	EventGridDataFormatJSON       EventGridDataFormat = original.EventGridDataFormatJSON
+	EventGridDataFormatMULTIJSON  EventGridDataFormat = original.EventGridDataFormatMULTIJSON
+	EventGridDataFormatORC        EventGridDataFormat = original.EventGridDataFormatORC
+	EventGridDataFormatPARQUET    EventGridDataFormat = original.EventGridDataFormatPARQUET
+	EventGridDataFormatPSV        EventGridDataFormat = original.EventGridDataFormatPSV
+	EventGridDataFormatRAW        EventGridDataFormat = original.EventGridDataFormatRAW
+	EventGridDataFormatSCSV       EventGridDataFormat = original.EventGridDataFormatSCSV
+	EventGridDataFormatSINGLEJSON EventGridDataFormat = original.EventGridDataFormatSINGLEJSON
+	EventGridDataFormatSOHSV      EventGridDataFormat = original.EventGridDataFormatSOHSV
+	EventGridDataFormatTSV        EventGridDataFormat = original.EventGridDataFormatTSV
+	EventGridDataFormatTSVE       EventGridDataFormat = original.EventGridDataFormatTSVE
+	EventGridDataFormatTXT        EventGridDataFormat = original.EventGridDataFormatTXT
+	EventGridDataFormatW3CLOGFILE EventGridDataFormat = original.EventGridDataFormatW3CLOGFILE
 )
 
 type EventHubDataFormat = original.EventHubDataFormat
@@ -202,25 +202,25 @@ const (
 type Kind = original.Kind
 
 const (
-	KindDatabase          Kind = original.KindDatabase
-	KindReadOnlyFollowing Kind = original.KindReadOnlyFollowing
-	KindReadWrite         Kind = original.KindReadWrite
+	KindKindDatabase          Kind = original.KindKindDatabase
+	KindKindReadOnlyFollowing Kind = original.KindKindReadOnlyFollowing
+	KindKindReadWrite         Kind = original.KindKindReadWrite
 )
 
 type KindBasicDataConnection = original.KindBasicDataConnection
 
 const (
-	KindDataConnection KindBasicDataConnection = original.KindDataConnection
-	KindEventGrid      KindBasicDataConnection = original.KindEventGrid
-	KindEventHub       KindBasicDataConnection = original.KindEventHub
-	KindIotHub         KindBasicDataConnection = original.KindIotHub
+	KindBasicDataConnectionKindDataConnection KindBasicDataConnection = original.KindBasicDataConnectionKindDataConnection
+	KindBasicDataConnectionKindEventGrid      KindBasicDataConnection = original.KindBasicDataConnectionKindEventGrid
+	KindBasicDataConnectionKindEventHub       KindBasicDataConnection = original.KindBasicDataConnectionKindEventHub
+	KindBasicDataConnectionKindIotHub         KindBasicDataConnection = original.KindBasicDataConnectionKindIotHub
 )
 
 type LanguageExtensionName = original.LanguageExtensionName
 
 const (
-	PYTHON LanguageExtensionName = original.PYTHON
-	R      LanguageExtensionName = original.R
+	LanguageExtensionNamePYTHON LanguageExtensionName = original.LanguageExtensionNamePYTHON
+	LanguageExtensionNameR      LanguageExtensionName = original.LanguageExtensionNameR
 )
 
 type PrincipalType = original.PrincipalType
@@ -242,19 +242,19 @@ const (
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Creating  ProvisioningState = original.Creating
-	Deleting  ProvisioningState = original.Deleting
-	Failed    ProvisioningState = original.Failed
-	Moving    ProvisioningState = original.Moving
-	Running   ProvisioningState = original.Running
-	Succeeded ProvisioningState = original.Succeeded
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateMoving    ProvisioningState = original.ProvisioningStateMoving
+	ProvisioningStateRunning   ProvisioningState = original.ProvisioningStateRunning
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
 )
 
 type Reason = original.Reason
 
 const (
-	AlreadyExists Reason = original.AlreadyExists
-	Invalid       Reason = original.Invalid
+	ReasonAlreadyExists Reason = original.ReasonAlreadyExists
+	ReasonInvalid       Reason = original.ReasonInvalid
 )
 
 type State = original.State
@@ -283,8 +283,8 @@ const (
 type Type = original.Type
 
 const (
-	MicrosoftKustoclustersattachedDatabaseConfigurations Type = original.MicrosoftKustoclustersattachedDatabaseConfigurations
-	MicrosoftKustoclustersdatabases                      Type = original.MicrosoftKustoclustersdatabases
+	TypeMicrosoftKustoclustersattachedDatabaseConfigurations Type = original.TypeMicrosoftKustoclustersattachedDatabaseConfigurations
+	TypeMicrosoftKustoclustersdatabases                      Type = original.TypeMicrosoftKustoclustersdatabases
 )
 
 type AttachedDatabaseConfiguration = original.AttachedDatabaseConfiguration

@@ -11,7 +11,7 @@ package documentdb
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2021-03-01-preview/documentdb"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2021-04-01-preview/documentdb"
 )
 
 const (
@@ -255,6 +255,40 @@ const (
 	ThreeFullStopTwo ServerVersion = original.ThreeFullStopTwo
 )
 
+type ServiceSize = original.ServiceSize
+
+const (
+	CosmosD16s ServiceSize = original.CosmosD16s
+	CosmosD4s  ServiceSize = original.CosmosD4s
+	CosmosD8s  ServiceSize = original.CosmosD8s
+)
+
+type ServiceStatus = original.ServiceStatus
+
+const (
+	ServiceStatusCreating ServiceStatus = original.ServiceStatusCreating
+	ServiceStatusDeleting ServiceStatus = original.ServiceStatusDeleting
+	ServiceStatusError    ServiceStatus = original.ServiceStatusError
+	ServiceStatusRunning  ServiceStatus = original.ServiceStatusRunning
+	ServiceStatusStopped  ServiceStatus = original.ServiceStatusStopped
+	ServiceStatusUpdating ServiceStatus = original.ServiceStatusUpdating
+)
+
+type ServiceType = original.ServiceType
+
+const (
+	DataTransfer        ServiceType = original.DataTransfer
+	SQLDedicatedGateway ServiceType = original.SQLDedicatedGateway
+)
+
+type ServiceTypeBasicServiceResourceProperties = original.ServiceTypeBasicServiceResourceProperties
+
+const (
+	ServiceTypeDataTransferServiceResourceProperties        ServiceTypeBasicServiceResourceProperties = original.ServiceTypeDataTransferServiceResourceProperties
+	ServiceTypeSQLDedicatedGatewayServiceResourceProperties ServiceTypeBasicServiceResourceProperties = original.ServiceTypeSQLDedicatedGatewayServiceResourceProperties
+	ServiceTypeServiceResourceProperties                    ServiceTypeBasicServiceResourceProperties = original.ServiceTypeServiceResourceProperties
+)
+
 type SpatialType = original.SpatialType
 
 const (
@@ -308,12 +342,14 @@ type AutoUpgradePolicyResource = original.AutoUpgradePolicyResource
 type AutoscaleSettings = original.AutoscaleSettings
 type AutoscaleSettingsResource = original.AutoscaleSettingsResource
 type AzureEntityResource = original.AzureEntityResource
+type BackupInformation = original.BackupInformation
 type BackupPolicy = original.BackupPolicy
 type BackupResource = original.BackupResource
 type BackupResourceProperties = original.BackupResourceProperties
 type BaseClient = original.BaseClient
 type BasicBackupPolicy = original.BasicBackupPolicy
 type BasicDatabaseAccountCreateUpdateProperties = original.BasicDatabaseAccountCreateUpdateProperties
+type BasicServiceResourceProperties = original.BasicServiceResourceProperties
 type Capability = original.Capability
 type CassandraClustersClient = original.CassandraClustersClient
 type CassandraClustersCreateUpdateFuture = original.CassandraClustersCreateUpdateFuture
@@ -370,11 +406,16 @@ type CompositePath = original.CompositePath
 type ConflictResolutionPolicy = original.ConflictResolutionPolicy
 type ConsistencyPolicy = original.ConsistencyPolicy
 type ContainerPartitionKey = original.ContainerPartitionKey
+type ContinuousBackupInformation = original.ContinuousBackupInformation
+type ContinuousBackupRestoreLocation = original.ContinuousBackupRestoreLocation
 type ContinuousModeBackupPolicy = original.ContinuousModeBackupPolicy
 type CorsPolicy = original.CorsPolicy
 type CreateUpdateOptions = original.CreateUpdateOptions
 type DataCenterResource = original.DataCenterResource
 type DataCenterResourceProperties = original.DataCenterResourceProperties
+type DataTransferRegionalServiceResource = original.DataTransferRegionalServiceResource
+type DataTransferServiceResource = original.DataTransferServiceResource
+type DataTransferServiceResourceProperties = original.DataTransferServiceResourceProperties
 type DatabaseAccountConnectionString = original.DatabaseAccountConnectionString
 type DatabaseAccountCreateUpdateParameters = original.DatabaseAccountCreateUpdateParameters
 type DatabaseAccountCreateUpdateProperties = original.DatabaseAccountCreateUpdateProperties
@@ -439,6 +480,9 @@ type ListBackups = original.ListBackups
 type ListClusters = original.ListClusters
 type ListDataCenters = original.ListDataCenters
 type Location = original.Location
+type LocationGetResult = original.LocationGetResult
+type LocationListResult = original.LocationListResult
+type LocationProperties = original.LocationProperties
 type ManagedServiceIdentity = original.ManagedServiceIdentity
 type ManagedServiceIdentityUserAssignedIdentitiesValue = original.ManagedServiceIdentityUserAssignedIdentitiesValue
 type Metric = original.Metric
@@ -524,6 +568,7 @@ type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
 type ProxyResource = original.ProxyResource
 type RegionForOnlineOffline = original.RegionForOnlineOffline
+type RegionalServiceResource = original.RegionalServiceResource
 type RepairPostBody = original.RepairPostBody
 type Resource = original.Resource
 type RestorableDatabaseAccountGetResult = original.RestorableDatabaseAccountGetResult
@@ -575,6 +620,9 @@ type SQLDatabaseGetPropertiesResource = original.SQLDatabaseGetPropertiesResourc
 type SQLDatabaseGetResults = original.SQLDatabaseGetResults
 type SQLDatabaseListResult = original.SQLDatabaseListResult
 type SQLDatabaseResource = original.SQLDatabaseResource
+type SQLDedicatedGatewayRegionalServiceResource = original.SQLDedicatedGatewayRegionalServiceResource
+type SQLDedicatedGatewayServiceResource = original.SQLDedicatedGatewayServiceResource
+type SQLDedicatedGatewayServiceResourceProperties = original.SQLDedicatedGatewayServiceResourceProperties
 type SQLResourcesClient = original.SQLResourcesClient
 type SQLResourcesCreateUpdateSQLContainerFuture = original.SQLResourcesCreateUpdateSQLContainerFuture
 type SQLResourcesCreateUpdateSQLDatabaseFuture = original.SQLResourcesCreateUpdateSQLDatabaseFuture
@@ -594,6 +642,7 @@ type SQLResourcesMigrateSQLContainerToAutoscaleFuture = original.SQLResourcesMig
 type SQLResourcesMigrateSQLContainerToManualThroughputFuture = original.SQLResourcesMigrateSQLContainerToManualThroughputFuture
 type SQLResourcesMigrateSQLDatabaseToAutoscaleFuture = original.SQLResourcesMigrateSQLDatabaseToAutoscaleFuture
 type SQLResourcesMigrateSQLDatabaseToManualThroughputFuture = original.SQLResourcesMigrateSQLDatabaseToManualThroughputFuture
+type SQLResourcesRetrieveContinuousBackupInformationFuture = original.SQLResourcesRetrieveContinuousBackupInformationFuture
 type SQLResourcesUpdateSQLContainerThroughputFuture = original.SQLResourcesUpdateSQLContainerThroughputFuture
 type SQLResourcesUpdateSQLDatabaseThroughputFuture = original.SQLResourcesUpdateSQLDatabaseThroughputFuture
 type SQLRoleAssignmentCreateUpdateParameters = original.SQLRoleAssignmentCreateUpdateParameters
@@ -626,6 +675,12 @@ type SQLUserDefinedFunctionGetResults = original.SQLUserDefinedFunctionGetResult
 type SQLUserDefinedFunctionListResult = original.SQLUserDefinedFunctionListResult
 type SQLUserDefinedFunctionResource = original.SQLUserDefinedFunctionResource
 type SeedNode = original.SeedNode
+type ServiceClient = original.ServiceClient
+type ServiceCreateFuture = original.ServiceCreateFuture
+type ServiceDeleteFuture = original.ServiceDeleteFuture
+type ServiceResource = original.ServiceResource
+type ServiceResourceListResult = original.ServiceResourceListResult
+type ServiceResourceProperties = original.ServiceResourceProperties
 type SpatialSpec = original.SpatialSpec
 type SystemData = original.SystemData
 type TableCreateUpdateParameters = original.TableCreateUpdateParameters
@@ -839,6 +894,12 @@ func NewSQLResourcesClient(subscriptionID string) SQLResourcesClient {
 func NewSQLResourcesClientWithBaseURI(baseURI string, subscriptionID string) SQLResourcesClient {
 	return original.NewSQLResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewServiceClient(subscriptionID string) ServiceClient {
+	return original.NewServiceClient(subscriptionID)
+}
+func NewServiceClientWithBaseURI(baseURI string, subscriptionID string) ServiceClient {
+	return original.NewServiceClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewTableResourcesClient(subscriptionID string) TableResourcesClient {
 	return original.NewTableResourcesClient(subscriptionID)
 }
@@ -934,6 +995,18 @@ func PossibleRoleDefinitionTypeValues() []RoleDefinitionType {
 }
 func PossibleServerVersionValues() []ServerVersion {
 	return original.PossibleServerVersionValues()
+}
+func PossibleServiceSizeValues() []ServiceSize {
+	return original.PossibleServiceSizeValues()
+}
+func PossibleServiceStatusValues() []ServiceStatus {
+	return original.PossibleServiceStatusValues()
+}
+func PossibleServiceTypeBasicServiceResourcePropertiesValues() []ServiceTypeBasicServiceResourceProperties {
+	return original.PossibleServiceTypeBasicServiceResourcePropertiesValues()
+}
+func PossibleServiceTypeValues() []ServiceType {
+	return original.PossibleServiceTypeValues()
 }
 func PossibleSpatialTypeValues() []SpatialType {
 	return original.PossibleSpatialTypeValues()

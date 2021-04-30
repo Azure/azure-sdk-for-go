@@ -278,6 +278,7 @@ type WhatIfChange = original.WhatIfChange
 type WhatIfOperationProperties = original.WhatIfOperationProperties
 type WhatIfOperationResult = original.WhatIfOperationResult
 type WhatIfPropertyChange = original.WhatIfPropertyChange
+type ZoneMapping = original.ZoneMapping
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

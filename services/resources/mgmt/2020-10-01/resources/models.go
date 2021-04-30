@@ -20,6 +20,14 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources"
 
+// APIProfile ...
+type APIProfile struct {
+	// ProfileVersion - READ-ONLY; The profile version.
+	ProfileVersion *string `json:"profileVersion,omitempty"`
+	// APIVersion - READ-ONLY; The API version.
+	APIVersion *string `json:"apiVersion,omitempty"`
+}
+
 // Alias the alias type.
 type Alias struct {
 	// Name - The alias name.
@@ -100,14 +108,6 @@ type AliasPattern struct {
 	Variable *string `json:"variable,omitempty"`
 	// Type - The type of alias pattern. Possible values include: 'AliasPatternTypeNotSpecified', 'AliasPatternTypeExtract'
 	Type AliasPatternType `json:"type,omitempty"`
-}
-
-// APIProfile ...
-type APIProfile struct {
-	// ProfileVersion - READ-ONLY; The profile version.
-	ProfileVersion *string `json:"profileVersion,omitempty"`
-	// APIVersion - READ-ONLY; The API version.
-	APIVersion *string `json:"apiVersion,omitempty"`
 }
 
 // BasicDependency deployment dependency information.
@@ -808,6 +808,60 @@ type DeploymentPropertiesExtended struct {
 	ValidatedResources *[]Reference `json:"validatedResources,omitempty"`
 	// Error - READ-ONLY; The deployment error.
 	Error *ErrorResponse `json:"error,omitempty"`
+}
+
+// DeploymentValidateResult information from validate template deployment response.
+type DeploymentValidateResult struct {
+	autorest.Response `json:"-"`
+	// Error - READ-ONLY; The deployment validation error.
+	Error *ErrorResponse `json:"error,omitempty"`
+	// Properties - The template deployment properties.
+	Properties *DeploymentPropertiesExtended `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeploymentValidateResult.
+func (dvr DeploymentValidateResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dvr.Properties != nil {
+		objectMap["properties"] = dvr.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// DeploymentWhatIf deployment What-if operation parameters.
+type DeploymentWhatIf struct {
+	// Location - The location to store the deployment data.
+	Location *string `json:"location,omitempty"`
+	// Properties - The deployment properties.
+	Properties *DeploymentWhatIfProperties `json:"properties,omitempty"`
+}
+
+// DeploymentWhatIfProperties deployment What-if properties.
+type DeploymentWhatIfProperties struct {
+	// WhatIfSettings - Optional What-If operation settings.
+	WhatIfSettings *DeploymentWhatIfSettings `json:"whatIfSettings,omitempty"`
+	// Template - The template content. You use this element when you want to pass the template syntax directly in the request rather than link to an existing template. It can be a JObject or well-formed JSON string. Use either the templateLink property or the template property, but not both.
+	Template interface{} `json:"template,omitempty"`
+	// TemplateLink - The URI of the template. Use either the templateLink property or the template property, but not both.
+	TemplateLink *TemplateLink `json:"templateLink,omitempty"`
+	// Parameters - Name and value pairs that define the deployment parameters for the template. You use this element when you want to provide the parameter values directly in the request rather than link to an existing parameter file. Use either the parametersLink property or the parameters property, but not both. It can be a JObject or a well formed JSON string.
+	Parameters interface{} `json:"parameters,omitempty"`
+	// ParametersLink - The URI of parameters file. You use this element to link to an existing parameters file. Use either the parametersLink property or the parameters property, but not both.
+	ParametersLink *ParametersLink `json:"parametersLink,omitempty"`
+	// Mode - The mode that is used to deploy resources. This value can be either Incremental or Complete. In Incremental mode, resources are deployed without deleting existing resources that are not included in the template. In Complete mode, resources are deployed and existing resources in the resource group that are not included in the template are deleted. Be careful when using Complete mode as you may unintentionally delete resources. Possible values include: 'Incremental', 'Complete'
+	Mode DeploymentMode `json:"mode,omitempty"`
+	// DebugSetting - The debug setting of the deployment.
+	DebugSetting *DebugSetting `json:"debugSetting,omitempty"`
+	// OnErrorDeployment - The deployment on error behavior.
+	OnErrorDeployment *OnErrorDeployment `json:"onErrorDeployment,omitempty"`
+	// ExpressionEvaluationOptions - Specifies whether template expressions are evaluated within the scope of the parent template or nested template. Only applicable to nested templates. If not specified, default value is outer.
+	ExpressionEvaluationOptions *ExpressionEvaluationOptions `json:"expressionEvaluationOptions,omitempty"`
+}
+
+// DeploymentWhatIfSettings deployment What-If operation settings.
+type DeploymentWhatIfSettings struct {
+	// ResultFormat - The format of the What-If results. Possible values include: 'ResourceIDOnly', 'FullResourcePayloads'
+	ResultFormat WhatIfResultFormat `json:"resultFormat,omitempty"`
 }
 
 // DeploymentsCreateOrUpdateAtManagementGroupScopeFuture an abstraction for monitoring and retrieving the
@@ -1595,60 +1649,6 @@ func (future *DeploymentsWhatIfFuture) result(client DeploymentsClient) (wior Wh
 		}
 	}
 	return
-}
-
-// DeploymentValidateResult information from validate template deployment response.
-type DeploymentValidateResult struct {
-	autorest.Response `json:"-"`
-	// Error - READ-ONLY; The deployment validation error.
-	Error *ErrorResponse `json:"error,omitempty"`
-	// Properties - The template deployment properties.
-	Properties *DeploymentPropertiesExtended `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for DeploymentValidateResult.
-func (dvr DeploymentValidateResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if dvr.Properties != nil {
-		objectMap["properties"] = dvr.Properties
-	}
-	return json.Marshal(objectMap)
-}
-
-// DeploymentWhatIf deployment What-if operation parameters.
-type DeploymentWhatIf struct {
-	// Location - The location to store the deployment data.
-	Location *string `json:"location,omitempty"`
-	// Properties - The deployment properties.
-	Properties *DeploymentWhatIfProperties `json:"properties,omitempty"`
-}
-
-// DeploymentWhatIfProperties deployment What-if properties.
-type DeploymentWhatIfProperties struct {
-	// WhatIfSettings - Optional What-If operation settings.
-	WhatIfSettings *DeploymentWhatIfSettings `json:"whatIfSettings,omitempty"`
-	// Template - The template content. You use this element when you want to pass the template syntax directly in the request rather than link to an existing template. It can be a JObject or well-formed JSON string. Use either the templateLink property or the template property, but not both.
-	Template interface{} `json:"template,omitempty"`
-	// TemplateLink - The URI of the template. Use either the templateLink property or the template property, but not both.
-	TemplateLink *TemplateLink `json:"templateLink,omitempty"`
-	// Parameters - Name and value pairs that define the deployment parameters for the template. You use this element when you want to provide the parameter values directly in the request rather than link to an existing parameter file. Use either the parametersLink property or the parameters property, but not both. It can be a JObject or a well formed JSON string.
-	Parameters interface{} `json:"parameters,omitempty"`
-	// ParametersLink - The URI of parameters file. You use this element to link to an existing parameters file. Use either the parametersLink property or the parameters property, but not both.
-	ParametersLink *ParametersLink `json:"parametersLink,omitempty"`
-	// Mode - The mode that is used to deploy resources. This value can be either Incremental or Complete. In Incremental mode, resources are deployed without deleting existing resources that are not included in the template. In Complete mode, resources are deployed and existing resources in the resource group that are not included in the template are deleted. Be careful when using Complete mode as you may unintentionally delete resources. Possible values include: 'Incremental', 'Complete'
-	Mode DeploymentMode `json:"mode,omitempty"`
-	// DebugSetting - The debug setting of the deployment.
-	DebugSetting *DebugSetting `json:"debugSetting,omitempty"`
-	// OnErrorDeployment - The deployment on error behavior.
-	OnErrorDeployment *OnErrorDeployment `json:"onErrorDeployment,omitempty"`
-	// ExpressionEvaluationOptions - Specifies whether template expressions are evaluated within the scope of the parent template or nested template. Only applicable to nested templates. If not specified, default value is outer.
-	ExpressionEvaluationOptions *ExpressionEvaluationOptions `json:"expressionEvaluationOptions,omitempty"`
-}
-
-// DeploymentWhatIfSettings deployment What-If operation settings.
-type DeploymentWhatIfSettings struct {
-	// ResultFormat - The format of the What-If results. Possible values include: 'ResourceIDOnly', 'FullResourcePayloads'
-	ResultFormat WhatIfResultFormat `json:"resultFormat,omitempty"`
 }
 
 // ErrorAdditionalInfo the resource management error additional info.
@@ -2867,7 +2867,8 @@ type ProviderResourceType struct {
 	// APIVersions - The API version.
 	APIVersions *[]string `json:"apiVersions,omitempty"`
 	// DefaultAPIVersion - READ-ONLY; The default API version.
-	DefaultAPIVersion *string `json:"defaultApiVersion,omitempty"`
+	DefaultAPIVersion *string        `json:"defaultApiVersion,omitempty"`
+	ZoneMappings      *[]ZoneMapping `json:"zoneMappings,omitempty"`
 	// APIProfiles - READ-ONLY; The API profiles for the resource provider.
 	APIProfiles *[]APIProfile `json:"apiProfiles,omitempty"`
 	// Capabilities - The additional capabilities offered by this resource type.
@@ -2893,6 +2894,9 @@ func (prt ProviderResourceType) MarshalJSON() ([]byte, error) {
 	}
 	if prt.APIVersions != nil {
 		objectMap["apiVersions"] = prt.APIVersions
+	}
+	if prt.ZoneMappings != nil {
+		objectMap["zoneMappings"] = prt.ZoneMappings
 	}
 	if prt.Capabilities != nil {
 		objectMap["capabilities"] = prt.Capabilities
@@ -3048,6 +3052,29 @@ func (td TagDetails) MarshalJSON() ([]byte, error) {
 	}
 	if td.Values != nil {
 		objectMap["values"] = td.Values
+	}
+	return json.Marshal(objectMap)
+}
+
+// TagValue tag information.
+type TagValue struct {
+	autorest.Response `json:"-"`
+	// ID - READ-ONLY; The tag value ID.
+	ID *string `json:"id,omitempty"`
+	// TagValue - The tag value.
+	TagValue *string `json:"tagValue,omitempty"`
+	// Count - The tag value count.
+	Count *TagCount `json:"count,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TagValue.
+func (tv TagValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tv.TagValue != nil {
+		objectMap["tagValue"] = tv.TagValue
+	}
+	if tv.Count != nil {
+		objectMap["count"] = tv.Count
 	}
 	return json.Marshal(objectMap)
 }
@@ -3260,29 +3287,6 @@ func (tr TagsResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if tr.Properties != nil {
 		objectMap["properties"] = tr.Properties
-	}
-	return json.Marshal(objectMap)
-}
-
-// TagValue tag information.
-type TagValue struct {
-	autorest.Response `json:"-"`
-	// ID - READ-ONLY; The tag value ID.
-	ID *string `json:"id,omitempty"`
-	// TagValue - The tag value.
-	TagValue *string `json:"tagValue,omitempty"`
-	// Count - The tag value count.
-	Count *TagCount `json:"count,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for TagValue.
-func (tv TagValue) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if tv.TagValue != nil {
-		objectMap["tagValue"] = tv.TagValue
-	}
-	if tv.Count != nil {
-		objectMap["count"] = tv.Count
 	}
 	return json.Marshal(objectMap)
 }
@@ -3543,4 +3547,11 @@ type WhatIfPropertyChange struct {
 	After interface{} `json:"after,omitempty"`
 	// Children - Nested property changes.
 	Children *[]WhatIfPropertyChange `json:"children,omitempty"`
+}
+
+// ZoneMapping ...
+type ZoneMapping struct {
+	// Location - The location of the zone mapping.
+	Location *string   `json:"location,omitempty"`
+	Zones    *[]string `json:"zones,omitempty"`
 }

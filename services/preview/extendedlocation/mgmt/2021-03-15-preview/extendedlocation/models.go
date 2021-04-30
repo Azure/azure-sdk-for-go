@@ -375,6 +375,19 @@ func (clo *CustomLocationOperation) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// CustomLocationOperationValueDisplay describes the properties of a Custom Locations Operation Value
+// Display.
+type CustomLocationOperationValueDisplay struct {
+	// Description - READ-ONLY; The description of the operation.
+	Description *string `json:"description,omitempty"`
+	// Operation - READ-ONLY; The display name of the compute operation.
+	Operation *string `json:"operation,omitempty"`
+	// Provider - READ-ONLY; The resource provider for the operation.
+	Provider *string `json:"provider,omitempty"`
+	// Resource - READ-ONLY; The display name of the resource the operation applies to.
+	Resource *string `json:"resource,omitempty"`
+}
+
 // CustomLocationOperationsList lists of Custom Locations operations.
 type CustomLocationOperationsList struct {
 	autorest.Response `json:"-"`
@@ -533,19 +546,6 @@ func NewCustomLocationOperationsListPage(cur CustomLocationOperationsList, getNe
 		fn:   getNextPage,
 		clol: cur,
 	}
-}
-
-// CustomLocationOperationValueDisplay describes the properties of a Custom Locations Operation Value
-// Display.
-type CustomLocationOperationValueDisplay struct {
-	// Description - READ-ONLY; The description of the operation.
-	Description *string `json:"description,omitempty"`
-	// Operation - READ-ONLY; The display name of the compute operation.
-	Operation *string `json:"operation,omitempty"`
-	// Provider - READ-ONLY; The resource provider for the operation.
-	Provider *string `json:"provider,omitempty"`
-	// Resource - READ-ONLY; The display name of the resource the operation applies to.
-	Resource *string `json:"resource,omitempty"`
 }
 
 // CustomLocationProperties properties for a custom location.

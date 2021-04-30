@@ -558,7 +558,7 @@ type CustomLocationProperties struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// HostResourceID - Connected Cluster or AKS Cluster. The Custom Locations RP will perform a checkAccess API for listAdminCredentials permissions.
 	HostResourceID *string `json:"hostResourceId,omitempty"`
-	// HostType - Type of host the Custom Locations is referencing (Kubernetes, etc...). Possible values include: 'Kubernetes'
+	// HostType - Type of host the Custom Locations is referencing (Kubernetes, etc...). Possible values include: 'HostTypeKubernetes'
 	HostType HostType `json:"hostType,omitempty"`
 	// Namespace - Kubernetes namespace that will be created on the specified cluster.
 	Namespace *string `json:"namespace,omitempty"`
@@ -1025,13 +1025,13 @@ type Resource struct {
 type SystemData struct {
 	// CreatedBy - The identity that created the resource.
 	CreatedBy *string `json:"createdBy,omitempty"`
-	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'CreatedByTypeUser', 'CreatedByTypeApplication', 'CreatedByTypeManagedIdentity', 'CreatedByTypeKey'
 	CreatedByType CreatedByType `json:"createdByType,omitempty"`
 	// CreatedAt - The timestamp of resource creation (UTC).
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
 	// LastModifiedBy - The identity that last modified the resource.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'CreatedByTypeUser', 'CreatedByTypeApplication', 'CreatedByTypeManagedIdentity', 'CreatedByTypeKey'
 	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
 	// LastModifiedAt - The timestamp of resource last modification (UTC)
 	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`

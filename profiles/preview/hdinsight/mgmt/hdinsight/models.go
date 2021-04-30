@@ -21,9 +21,9 @@ const (
 type AsyncOperationState = original.AsyncOperationState
 
 const (
-	Failed     AsyncOperationState = original.Failed
-	InProgress AsyncOperationState = original.InProgress
-	Succeeded  AsyncOperationState = original.Succeeded
+	AsyncOperationStateFailed     AsyncOperationState = original.AsyncOperationStateFailed
+	AsyncOperationStateInProgress AsyncOperationState = original.AsyncOperationStateInProgress
+	AsyncOperationStateSucceeded  AsyncOperationState = original.AsyncOperationStateSucceeded
 )
 
 type ClusterProvisioningState = original.ClusterProvisioningState
@@ -39,75 +39,76 @@ const (
 type DaysOfWeek = original.DaysOfWeek
 
 const (
-	Friday    DaysOfWeek = original.Friday
-	Monday    DaysOfWeek = original.Monday
-	Saturday  DaysOfWeek = original.Saturday
-	Sunday    DaysOfWeek = original.Sunday
-	Thursday  DaysOfWeek = original.Thursday
-	Tuesday   DaysOfWeek = original.Tuesday
-	Wednesday DaysOfWeek = original.Wednesday
+	DaysOfWeekFriday    DaysOfWeek = original.DaysOfWeekFriday
+	DaysOfWeekMonday    DaysOfWeek = original.DaysOfWeekMonday
+	DaysOfWeekSaturday  DaysOfWeek = original.DaysOfWeekSaturday
+	DaysOfWeekSunday    DaysOfWeek = original.DaysOfWeekSunday
+	DaysOfWeekThursday  DaysOfWeek = original.DaysOfWeekThursday
+	DaysOfWeekTuesday   DaysOfWeek = original.DaysOfWeekTuesday
+	DaysOfWeekWednesday DaysOfWeek = original.DaysOfWeekWednesday
 )
 
 type DirectoryType = original.DirectoryType
 
 const (
-	ActiveDirectory DirectoryType = original.ActiveDirectory
+	DirectoryTypeActiveDirectory DirectoryType = original.DirectoryTypeActiveDirectory
 )
 
 type FilterMode = original.FilterMode
 
 const (
-	Default   FilterMode = original.Default
-	Exclude   FilterMode = original.Exclude
-	Include   FilterMode = original.Include
-	Recommend FilterMode = original.Recommend
+	FilterModeDefault   FilterMode = original.FilterModeDefault
+	FilterModeExclude   FilterMode = original.FilterModeExclude
+	FilterModeInclude   FilterMode = original.FilterModeInclude
+	FilterModeRecommend FilterMode = original.FilterModeRecommend
 )
 
 type JSONWebKeyEncryptionAlgorithm = original.JSONWebKeyEncryptionAlgorithm
 
 const (
-	RSA15      JSONWebKeyEncryptionAlgorithm = original.RSA15
-	RSAOAEP    JSONWebKeyEncryptionAlgorithm = original.RSAOAEP
-	RSAOAEP256 JSONWebKeyEncryptionAlgorithm = original.RSAOAEP256
+	JSONWebKeyEncryptionAlgorithmRSA15      JSONWebKeyEncryptionAlgorithm = original.JSONWebKeyEncryptionAlgorithmRSA15
+	JSONWebKeyEncryptionAlgorithmRSAOAEP    JSONWebKeyEncryptionAlgorithm = original.JSONWebKeyEncryptionAlgorithmRSAOAEP
+	JSONWebKeyEncryptionAlgorithmRSAOAEP256 JSONWebKeyEncryptionAlgorithm = original.JSONWebKeyEncryptionAlgorithmRSAOAEP256
 )
 
 type OSType = original.OSType
 
 const (
-	Linux   OSType = original.Linux
-	Windows OSType = original.Windows
+	OSTypeLinux   OSType = original.OSTypeLinux
+	OSTypeWindows OSType = original.OSTypeWindows
 )
 
 type PrivateLink = original.PrivateLink
 
 const (
-	Disabled PrivateLink = original.Disabled
-	Enabled  PrivateLink = original.Enabled
+	PrivateLinkDisabled PrivateLink = original.PrivateLinkDisabled
+	PrivateLinkEnabled  PrivateLink = original.PrivateLinkEnabled
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	None                       ResourceIdentityType = original.None
-	SystemAssigned             ResourceIdentityType = original.SystemAssigned
-	SystemAssignedUserAssigned ResourceIdentityType = original.SystemAssignedUserAssigned
-	UserAssigned               ResourceIdentityType = original.UserAssigned
+	ResourceIdentityTypeNone                       ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
 type ResourceProviderConnection = original.ResourceProviderConnection
 
 const (
-	Inbound  ResourceProviderConnection = original.Inbound
-	Outbound ResourceProviderConnection = original.Outbound
+	ResourceProviderConnectionInbound  ResourceProviderConnection = original.ResourceProviderConnectionInbound
+	ResourceProviderConnectionOutbound ResourceProviderConnection = original.ResourceProviderConnectionOutbound
 )
 
 type Tier = original.Tier
 
 const (
-	Premium  Tier = original.Premium
-	Standard Tier = original.Standard
+	TierPremium  Tier = original.TierPremium
+	TierStandard Tier = original.TierStandard
 )
 
+type AaddsResourceDetails = original.AaddsResourceDetails
 type Application = original.Application
 type ApplicationGetEndpoint = original.ApplicationGetEndpoint
 type ApplicationGetHTTPSEndpoint = original.ApplicationGetHTTPSEndpoint
@@ -118,6 +119,7 @@ type ApplicationProperties = original.ApplicationProperties
 type ApplicationsClient = original.ApplicationsClient
 type ApplicationsCreateFuture = original.ApplicationsCreateFuture
 type ApplicationsDeleteFuture = original.ApplicationsDeleteFuture
+type AsyncOperationResult = original.AsyncOperationResult
 type Autoscale = original.Autoscale
 type AutoscaleCapacity = original.AutoscaleCapacity
 type AutoscaleConfigurationUpdateParameter = original.AutoscaleConfigurationUpdateParameter
@@ -134,6 +136,8 @@ type Cluster = original.Cluster
 type ClusterConfigurations = original.ClusterConfigurations
 type ClusterCreateParametersExtended = original.ClusterCreateParametersExtended
 type ClusterCreateProperties = original.ClusterCreateProperties
+type ClusterCreateRequestValidationParameters = original.ClusterCreateRequestValidationParameters
+type ClusterCreateValidationResult = original.ClusterCreateValidationResult
 type ClusterDefinition = original.ClusterDefinition
 type ClusterDiskEncryptionParameters = original.ClusterDiskEncryptionParameters
 type ClusterGetProperties = original.ClusterGetProperties
@@ -156,6 +160,7 @@ type ClustersResizeFuture = original.ClustersResizeFuture
 type ClustersRotateDiskEncryptionKeyFuture = original.ClustersRotateDiskEncryptionKeyFuture
 type ClustersUpdateAutoScaleConfigurationFuture = original.ClustersUpdateAutoScaleConfigurationFuture
 type ClustersUpdateGatewaySettingsFuture = original.ClustersUpdateGatewaySettingsFuture
+type ClustersUpdateIdentityCertificateFuture = original.ClustersUpdateIdentityCertificateFuture
 type ComputeIsolationProperties = original.ComputeIsolationProperties
 type ComputeProfile = original.ComputeProfile
 type ConfigurationsClient = original.ConfigurationsClient
@@ -185,6 +190,8 @@ type ListHostInfo = original.ListHostInfo
 type LocalizedName = original.LocalizedName
 type LocationsClient = original.LocationsClient
 type MetricSpecifications = original.MetricSpecifications
+type NameAvailabilityCheckRequestParameters = original.NameAvailabilityCheckRequestParameters
+type NameAvailabilityCheckResult = original.NameAvailabilityCheckResult
 type NetworkProperties = original.NetworkProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
@@ -192,7 +199,6 @@ type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationProperties = original.OperationProperties
-type OperationResource = original.OperationResource
 type OperationsClient = original.OperationsClient
 type OsProfile = original.OsProfile
 type ProxyResource = original.ProxyResource
@@ -223,6 +229,7 @@ type SetString = original.SetString
 type StorageAccount = original.StorageAccount
 type StorageProfile = original.StorageProfile
 type TrackedResource = original.TrackedResource
+type UpdateClusterIdentityCertificateParameters = original.UpdateClusterIdentityCertificateParameters
 type UpdateGatewaySettingsParameters = original.UpdateGatewaySettingsParameters
 type Usage = original.Usage
 type UsagesListResult = original.UsagesListResult
@@ -230,6 +237,7 @@ type VMSizeCompatibilityFilter = original.VMSizeCompatibilityFilter
 type VMSizeCompatibilityFilterV2 = original.VMSizeCompatibilityFilterV2
 type VMSizeProperty = original.VMSizeProperty
 type VMSizesCapability = original.VMSizesCapability
+type ValidationErrorInfo = original.ValidationErrorInfo
 type VersionSpec = original.VersionSpec
 type VersionsCapability = original.VersionsCapability
 type VirtualMachinesClient = original.VirtualMachinesClient

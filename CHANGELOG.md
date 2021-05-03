@@ -4,6 +4,7 @@
 
 ### New Packages
 
+- `github.com/Azure/azure-sdk-for-go/services/dataprotection/mgmt/2021-01-01/dataprotection`
 - `github.com/Azure/azure-sdk-for-go/services/maps/mgmt/2021-02-01/maps`
 - `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2021-04-01-preview/documentdb`
 - `github.com/Azure/azure-sdk-for-go/services/preview/elastic/mgmt/2020-07-01-preview/elastic`

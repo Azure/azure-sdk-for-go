@@ -21,26 +21,26 @@ const (
 type CreatedByType = original.CreatedByType
 
 const (
-	Application     CreatedByType = original.Application
-	Key             CreatedByType = original.Key
-	ManagedIdentity CreatedByType = original.ManagedIdentity
-	User            CreatedByType = original.User
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type LedgerRoleName = original.LedgerRoleName
 
 const (
-	Administrator LedgerRoleName = original.Administrator
-	Contributor   LedgerRoleName = original.Contributor
-	Reader        LedgerRoleName = original.Reader
+	LedgerRoleNameAdministrator LedgerRoleName = original.LedgerRoleNameAdministrator
+	LedgerRoleNameContributor   LedgerRoleName = original.LedgerRoleNameContributor
+	LedgerRoleNameReader        LedgerRoleName = original.LedgerRoleNameReader
 )
 
 type LedgerType = original.LedgerType
 
 const (
-	Private LedgerType = original.Private
-	Public  LedgerType = original.Public
-	Unknown LedgerType = original.Unknown
+	LedgerTypePrivate LedgerType = original.LedgerTypePrivate
+	LedgerTypePublic  LedgerType = original.LedgerTypePublic
+	LedgerTypeUnknown LedgerType = original.LedgerTypeUnknown
 )
 
 type ProvisioningState = original.ProvisioningState

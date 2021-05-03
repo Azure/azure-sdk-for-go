@@ -21,21 +21,21 @@ const (
 type AliasPathAttributes = original.AliasPathAttributes
 
 const (
-	Modifiable AliasPathAttributes = original.Modifiable
-	None       AliasPathAttributes = original.None
+	AliasPathAttributesModifiable AliasPathAttributes = original.AliasPathAttributesModifiable
+	AliasPathAttributesNone       AliasPathAttributes = original.AliasPathAttributesNone
 )
 
 type AliasPathTokenType = original.AliasPathTokenType
 
 const (
-	Any          AliasPathTokenType = original.Any
-	Array        AliasPathTokenType = original.Array
-	Boolean      AliasPathTokenType = original.Boolean
-	Integer      AliasPathTokenType = original.Integer
-	NotSpecified AliasPathTokenType = original.NotSpecified
-	Number       AliasPathTokenType = original.Number
-	Object       AliasPathTokenType = original.Object
-	String       AliasPathTokenType = original.String
+	AliasPathTokenTypeAny          AliasPathTokenType = original.AliasPathTokenTypeAny
+	AliasPathTokenTypeArray        AliasPathTokenType = original.AliasPathTokenTypeArray
+	AliasPathTokenTypeBoolean      AliasPathTokenType = original.AliasPathTokenTypeBoolean
+	AliasPathTokenTypeInteger      AliasPathTokenType = original.AliasPathTokenTypeInteger
+	AliasPathTokenTypeNotSpecified AliasPathTokenType = original.AliasPathTokenTypeNotSpecified
+	AliasPathTokenTypeNumber       AliasPathTokenType = original.AliasPathTokenTypeNumber
+	AliasPathTokenTypeObject       AliasPathTokenType = original.AliasPathTokenTypeObject
+	AliasPathTokenTypeString       AliasPathTokenType = original.AliasPathTokenTypeString
 )
 
 type AliasPatternType = original.AliasPatternType
@@ -56,19 +56,19 @@ const (
 type ChangeType = original.ChangeType
 
 const (
-	Create   ChangeType = original.Create
-	Delete   ChangeType = original.Delete
-	Deploy   ChangeType = original.Deploy
-	Ignore   ChangeType = original.Ignore
-	Modify   ChangeType = original.Modify
-	NoChange ChangeType = original.NoChange
+	ChangeTypeCreate   ChangeType = original.ChangeTypeCreate
+	ChangeTypeDelete   ChangeType = original.ChangeTypeDelete
+	ChangeTypeDeploy   ChangeType = original.ChangeTypeDeploy
+	ChangeTypeIgnore   ChangeType = original.ChangeTypeIgnore
+	ChangeTypeModify   ChangeType = original.ChangeTypeModify
+	ChangeTypeNoChange ChangeType = original.ChangeTypeNoChange
 )
 
 type DeploymentMode = original.DeploymentMode
 
 const (
-	Complete    DeploymentMode = original.Complete
-	Incremental DeploymentMode = original.Incremental
+	DeploymentModeComplete    DeploymentMode = original.DeploymentModeComplete
+	DeploymentModeIncremental DeploymentMode = original.DeploymentModeIncremental
 )
 
 type ExpressionEvaluationOptionsScopeType = original.ExpressionEvaluationOptionsScopeType
@@ -82,8 +82,8 @@ const (
 type OnErrorDeploymentType = original.OnErrorDeploymentType
 
 const (
-	LastSuccessful     OnErrorDeploymentType = original.LastSuccessful
-	SpecificDeployment OnErrorDeploymentType = original.SpecificDeployment
+	OnErrorDeploymentTypeLastSuccessful     OnErrorDeploymentType = original.OnErrorDeploymentTypeLastSuccessful
+	OnErrorDeploymentTypeSpecificDeployment OnErrorDeploymentType = original.OnErrorDeploymentTypeSpecificDeployment
 )
 
 type PropertyChangeType = original.PropertyChangeType
@@ -147,8 +147,8 @@ const (
 type WhatIfResultFormat = original.WhatIfResultFormat
 
 const (
-	FullResourcePayloads WhatIfResultFormat = original.FullResourcePayloads
-	ResourceIDOnly       WhatIfResultFormat = original.ResourceIDOnly
+	WhatIfResultFormatFullResourcePayloads WhatIfResultFormat = original.WhatIfResultFormatFullResourcePayloads
+	WhatIfResultFormatResourceIDOnly       WhatIfResultFormat = original.WhatIfResultFormatResourceIDOnly
 )
 
 type APIProfile = original.APIProfile
@@ -278,6 +278,7 @@ type WhatIfChange = original.WhatIfChange
 type WhatIfOperationProperties = original.WhatIfOperationProperties
 type WhatIfOperationResult = original.WhatIfOperationResult
 type WhatIfPropertyChange = original.WhatIfPropertyChange
+type ZoneMapping = original.ZoneMapping
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

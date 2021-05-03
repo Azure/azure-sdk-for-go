@@ -1,5 +1,36 @@
 # CHANGELOG
 
+## `v54.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/dataprotection/mgmt/2021-01-01/dataprotection`
+- `github.com/Azure/azure-sdk-for-go/services/maps/mgmt/2021-02-01/maps`
+- `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2021-04-01-preview/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/preview/elastic/mgmt/2020-07-01-preview/elastic`
+- `github.com/Azure/azure-sdk-for-go/services/preview/resourcegraph/mgmt/2021-03-01-preview/resourcegraph`
+- `github.com/Azure/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-05-01-preview/videoanalyzer`
+- `github.com/Azure/azure-sdk-for-go/services/securityinsight/mgmt/2020-01-01/securityinsight`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-03-01/containerservice` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/containerservice/mgmt/2021-03-01/containerservice/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2018-06-01/hdinsight` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/hdinsight/mgmt/2018-06-01/hdinsight/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2021-01-01/kusto` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/kusto/mgmt/2021-01-01/kusto/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/network/mgmt/2020-11-01/network/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/confidentialledger/mgmt/2020-12-01-preview/confidentialledger` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/confidentialledger/mgmt/2020-12-01-preview/confidentialledger/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/extendedlocation/mgmt/2021-03-15-preview/extendedlocation` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/extendedlocation/mgmt/2021-03-15-preview/extendedlocation/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/iothub/mgmt/2021-03-03-preview/devices` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/iothub/mgmt/2021-03-03-preview/devices/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/signalr/mgmt/2021-04-01-preview/signalr` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/signalr/mgmt/2021-04-01-preview/signalr/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/webpubsub/mgmt/2021-04-01-preview/webpubsub` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/webpubsub/mgmt/2021-04-01-preview/webpubsub/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-06-01/resources` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/resources/mgmt/2020-06-01/resources/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2020-10-01/resources` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/resources/mgmt/2020-10-01/resources/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-02-01/storage` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/storage/mgmt/2021-02-01/storage/CHANGELOG.md) |
+
 ## `v53.4.0`
 
 ### New Packages

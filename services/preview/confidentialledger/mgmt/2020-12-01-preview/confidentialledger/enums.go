@@ -10,53 +10,53 @@ package confidentialledger
 type CreatedByType string
 
 const (
-	// Application ...
-	Application CreatedByType = "Application"
-	// Key ...
-	Key CreatedByType = "Key"
-	// ManagedIdentity ...
-	ManagedIdentity CreatedByType = "ManagedIdentity"
-	// User ...
-	User CreatedByType = "User"
+	// CreatedByTypeApplication ...
+	CreatedByTypeApplication CreatedByType = "Application"
+	// CreatedByTypeKey ...
+	CreatedByTypeKey CreatedByType = "Key"
+	// CreatedByTypeManagedIdentity ...
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	// CreatedByTypeUser ...
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns an array of possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{Application, Key, ManagedIdentity, User}
+	return []CreatedByType{CreatedByTypeApplication, CreatedByTypeKey, CreatedByTypeManagedIdentity, CreatedByTypeUser}
 }
 
 // LedgerRoleName enumerates the values for ledger role name.
 type LedgerRoleName string
 
 const (
-	// Administrator ...
-	Administrator LedgerRoleName = "Administrator"
-	// Contributor ...
-	Contributor LedgerRoleName = "Contributor"
-	// Reader ...
-	Reader LedgerRoleName = "Reader"
+	// LedgerRoleNameAdministrator ...
+	LedgerRoleNameAdministrator LedgerRoleName = "Administrator"
+	// LedgerRoleNameContributor ...
+	LedgerRoleNameContributor LedgerRoleName = "Contributor"
+	// LedgerRoleNameReader ...
+	LedgerRoleNameReader LedgerRoleName = "Reader"
 )
 
 // PossibleLedgerRoleNameValues returns an array of possible values for the LedgerRoleName const type.
 func PossibleLedgerRoleNameValues() []LedgerRoleName {
-	return []LedgerRoleName{Administrator, Contributor, Reader}
+	return []LedgerRoleName{LedgerRoleNameAdministrator, LedgerRoleNameContributor, LedgerRoleNameReader}
 }
 
 // LedgerType enumerates the values for ledger type.
 type LedgerType string
 
 const (
-	// Private ...
-	Private LedgerType = "Private"
-	// Public ...
-	Public LedgerType = "Public"
-	// Unknown ...
-	Unknown LedgerType = "Unknown"
+	// LedgerTypePrivate ...
+	LedgerTypePrivate LedgerType = "Private"
+	// LedgerTypePublic ...
+	LedgerTypePublic LedgerType = "Public"
+	// LedgerTypeUnknown ...
+	LedgerTypeUnknown LedgerType = "Unknown"
 )
 
 // PossibleLedgerTypeValues returns an array of possible values for the LedgerType const type.
 func PossibleLedgerTypeValues() []LedgerType {
-	return []LedgerType{Private, Public, Unknown}
+	return []LedgerType{LedgerTypePrivate, LedgerTypePublic, LedgerTypeUnknown}
 }
 
 // ProvisioningState enumerates the values for provisioning state.

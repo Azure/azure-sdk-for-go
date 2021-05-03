@@ -556,7 +556,7 @@ func (apup *AgentPoolUpgradeProfile) UnmarshalJSON(body []byte) error {
 type AgentPoolUpgradeProfileProperties struct {
 	// KubernetesVersion - Kubernetes version (major, minor, patch).
 	KubernetesVersion *string `json:"kubernetesVersion,omitempty"`
-	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'Linux', 'Windows'
+	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'OSTypeLinux', 'OSTypeWindows'
 	OsType OSType `json:"osType,omitempty"`
 	// Upgrades - List of orchestrator types and versions available for upgrade.
 	Upgrades *[]AgentPoolUpgradeProfilePropertiesUpgradesItem `json:"upgrades,omitempty"`
@@ -637,7 +637,7 @@ type DiagnosticsProfile struct {
 type ExtendedLocation struct {
 	// Name - The name of the extended location.
 	Name *string `json:"name,omitempty"`
-	// Type - The type of the extended location. Possible values include: 'EdgeZone'
+	// Type - The type of the extended location. Possible values include: 'ExtendedLocationTypesEdgeZone'
 	Type ExtendedLocationTypes `json:"type,omitempty"`
 }
 
@@ -1252,9 +1252,9 @@ type ManagedClusterAgentPoolProfile struct {
 	VMSize *string `json:"vmSize,omitempty"`
 	// OsDiskSizeGB - OS Disk Size in GB to be used to specify the disk size for every machine in this master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
 	OsDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
-	// OsDiskType - OS disk type to be used for machines in a given agent pool. Allowed values are 'Ephemeral' and 'Managed'. If unspecified, defaults to 'Ephemeral' when the VM supports ephemeral OS and has a cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to 'Managed'. May not be changed after creation. Possible values include: 'Managed', 'Ephemeral'
+	// OsDiskType - OS disk type to be used for machines in a given agent pool. Allowed values are 'Ephemeral' and 'Managed'. If unspecified, defaults to 'Ephemeral' when the VM supports ephemeral OS and has a cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to 'Managed'. May not be changed after creation. Possible values include: 'OSDiskTypeManaged', 'OSDiskTypeEphemeral'
 	OsDiskType OSDiskType `json:"osDiskType,omitempty"`
-	// KubeletDiskType - KubeletDiskType determines the placement of emptyDir volumes, container runtime data root, and Kubelet ephemeral storage. Currently allows one value, OS, resulting in Kubelet using the OS disk for data. Possible values include: 'OS', 'Temporary'
+	// KubeletDiskType - KubeletDiskType determines the placement of emptyDir volumes, container runtime data root, and Kubelet ephemeral storage. Currently allows one value, OS, resulting in Kubelet using the OS disk for data. Possible values include: 'KubeletDiskTypeOS', 'KubeletDiskTypeTemporary'
 	KubeletDiskType KubeletDiskType `json:"kubeletDiskType,omitempty"`
 	// VnetSubnetID - VNet SubnetID specifies the VNet's subnet identifier for nodes and maybe pods
 	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
@@ -1262,9 +1262,9 @@ type ManagedClusterAgentPoolProfile struct {
 	PodSubnetID *string `json:"podSubnetID,omitempty"`
 	// MaxPods - Maximum number of pods that can run on a node.
 	MaxPods *int32 `json:"maxPods,omitempty"`
-	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'Linux', 'Windows'
+	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'OSTypeLinux', 'OSTypeWindows'
 	OsType OSType `json:"osType,omitempty"`
-	// OsSKU - OsSKU to be used to specify os sku. Choose from Ubuntu(default) and CBLMariner for Linux OSType. Not applicable to Windows OSType. Possible values include: 'Ubuntu', 'CBLMariner'
+	// OsSKU - OsSKU to be used to specify os sku. Choose from Ubuntu(default) and CBLMariner for Linux OSType. Not applicable to Windows OSType. Possible values include: 'OSSKUUbuntu', 'OSSKUCBLMariner'
 	OsSKU OSSKU `json:"osSKU,omitempty"`
 	// MaxCount - Maximum number of nodes for auto-scaling
 	MaxCount *int32 `json:"maxCount,omitempty"`
@@ -1272,9 +1272,9 @@ type ManagedClusterAgentPoolProfile struct {
 	MinCount *int32 `json:"minCount,omitempty"`
 	// EnableAutoScaling - Whether to enable auto-scaler
 	EnableAutoScaling *bool `json:"enableAutoScaling,omitempty"`
-	// Type - AgentPoolType represents types of an agent pool. Possible values include: 'VirtualMachineScaleSets', 'AvailabilitySet'
+	// Type - AgentPoolType represents types of an agent pool. Possible values include: 'AgentPoolTypeVirtualMachineScaleSets', 'AgentPoolTypeAvailabilitySet'
 	Type AgentPoolType `json:"type,omitempty"`
-	// Mode - AgentPoolMode represents mode of an agent pool. Possible values include: 'System', 'User'
+	// Mode - AgentPoolMode represents mode of an agent pool. Possible values include: 'AgentPoolModeSystem', 'AgentPoolModeUser'
 	Mode AgentPoolMode `json:"mode,omitempty"`
 	// OrchestratorVersion - Version of orchestrator specified when creating the managed cluster.
 	OrchestratorVersion *string `json:"orchestratorVersion,omitempty"`
@@ -1292,9 +1292,9 @@ type ManagedClusterAgentPoolProfile struct {
 	EnableNodePublicIP *bool `json:"enableNodePublicIP,omitempty"`
 	// NodePublicIPPrefixID - Public IP Prefix ID. VM nodes use IPs assigned from this Public IP Prefix.
 	NodePublicIPPrefixID *string `json:"nodePublicIPPrefixID,omitempty"`
-	// ScaleSetPriority - ScaleSetPriority to be used to specify virtual machine scale set priority. Default to regular. Possible values include: 'Spot', 'Regular'
+	// ScaleSetPriority - ScaleSetPriority to be used to specify virtual machine scale set priority. Default to regular. Possible values include: 'ScaleSetPrioritySpot', 'ScaleSetPriorityRegular'
 	ScaleSetPriority ScaleSetPriority `json:"scaleSetPriority,omitempty"`
-	// ScaleSetEvictionPolicy - ScaleSetEvictionPolicy to be used to specify eviction policy for Spot virtual machine scale set. Default to Delete. Possible values include: 'Delete', 'Deallocate'
+	// ScaleSetEvictionPolicy - ScaleSetEvictionPolicy to be used to specify eviction policy for Spot virtual machine scale set. Default to Delete. Possible values include: 'ScaleSetEvictionPolicyDelete', 'ScaleSetEvictionPolicyDeallocate'
 	ScaleSetEvictionPolicy ScaleSetEvictionPolicy `json:"scaleSetEvictionPolicy,omitempty"`
 	// SpotMaxPrice - SpotMaxPrice to be used to specify the maximum price you are willing to pay in US Dollars. Possible values are any decimal value greater than zero or -1 which indicates default price to be up-to on-demand.
 	SpotMaxPrice *float64 `json:"spotMaxPrice,omitempty"`
@@ -1314,7 +1314,7 @@ type ManagedClusterAgentPoolProfile struct {
 	EnableEncryptionAtHost *bool `json:"enableEncryptionAtHost,omitempty"`
 	// EnableFIPS - Whether to use FIPS enabled OS
 	EnableFIPS *bool `json:"enableFIPS,omitempty"`
-	// GpuInstanceProfile - GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU. Supported values are MIG1g, MIG2g, MIG3g, MIG4g and MIG7g. Possible values include: 'MIG1g', 'MIG2g', 'MIG3g', 'MIG4g', 'MIG7g'
+	// GpuInstanceProfile - GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU. Supported values are MIG1g, MIG2g, MIG3g, MIG4g and MIG7g. Possible values include: 'GPUInstanceProfileMIG1g', 'GPUInstanceProfileMIG2g', 'GPUInstanceProfileMIG3g', 'GPUInstanceProfileMIG4g', 'GPUInstanceProfileMIG7g'
 	GpuInstanceProfile GPUInstanceProfile `json:"gpuInstanceProfile,omitempty"`
 }
 
@@ -1431,9 +1431,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	VMSize *string `json:"vmSize,omitempty"`
 	// OsDiskSizeGB - OS Disk Size in GB to be used to specify the disk size for every machine in this master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
 	OsDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
-	// OsDiskType - OS disk type to be used for machines in a given agent pool. Allowed values are 'Ephemeral' and 'Managed'. If unspecified, defaults to 'Ephemeral' when the VM supports ephemeral OS and has a cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to 'Managed'. May not be changed after creation. Possible values include: 'Managed', 'Ephemeral'
+	// OsDiskType - OS disk type to be used for machines in a given agent pool. Allowed values are 'Ephemeral' and 'Managed'. If unspecified, defaults to 'Ephemeral' when the VM supports ephemeral OS and has a cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to 'Managed'. May not be changed after creation. Possible values include: 'OSDiskTypeManaged', 'OSDiskTypeEphemeral'
 	OsDiskType OSDiskType `json:"osDiskType,omitempty"`
-	// KubeletDiskType - KubeletDiskType determines the placement of emptyDir volumes, container runtime data root, and Kubelet ephemeral storage. Currently allows one value, OS, resulting in Kubelet using the OS disk for data. Possible values include: 'OS', 'Temporary'
+	// KubeletDiskType - KubeletDiskType determines the placement of emptyDir volumes, container runtime data root, and Kubelet ephemeral storage. Currently allows one value, OS, resulting in Kubelet using the OS disk for data. Possible values include: 'KubeletDiskTypeOS', 'KubeletDiskTypeTemporary'
 	KubeletDiskType KubeletDiskType `json:"kubeletDiskType,omitempty"`
 	// VnetSubnetID - VNet SubnetID specifies the VNet's subnet identifier for nodes and maybe pods
 	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
@@ -1441,9 +1441,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	PodSubnetID *string `json:"podSubnetID,omitempty"`
 	// MaxPods - Maximum number of pods that can run on a node.
 	MaxPods *int32 `json:"maxPods,omitempty"`
-	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'Linux', 'Windows'
+	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'OSTypeLinux', 'OSTypeWindows'
 	OsType OSType `json:"osType,omitempty"`
-	// OsSKU - OsSKU to be used to specify os sku. Choose from Ubuntu(default) and CBLMariner for Linux OSType. Not applicable to Windows OSType. Possible values include: 'Ubuntu', 'CBLMariner'
+	// OsSKU - OsSKU to be used to specify os sku. Choose from Ubuntu(default) and CBLMariner for Linux OSType. Not applicable to Windows OSType. Possible values include: 'OSSKUUbuntu', 'OSSKUCBLMariner'
 	OsSKU OSSKU `json:"osSKU,omitempty"`
 	// MaxCount - Maximum number of nodes for auto-scaling
 	MaxCount *int32 `json:"maxCount,omitempty"`
@@ -1451,9 +1451,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	MinCount *int32 `json:"minCount,omitempty"`
 	// EnableAutoScaling - Whether to enable auto-scaler
 	EnableAutoScaling *bool `json:"enableAutoScaling,omitempty"`
-	// Type - AgentPoolType represents types of an agent pool. Possible values include: 'VirtualMachineScaleSets', 'AvailabilitySet'
+	// Type - AgentPoolType represents types of an agent pool. Possible values include: 'AgentPoolTypeVirtualMachineScaleSets', 'AgentPoolTypeAvailabilitySet'
 	Type AgentPoolType `json:"type,omitempty"`
-	// Mode - AgentPoolMode represents mode of an agent pool. Possible values include: 'System', 'User'
+	// Mode - AgentPoolMode represents mode of an agent pool. Possible values include: 'AgentPoolModeSystem', 'AgentPoolModeUser'
 	Mode AgentPoolMode `json:"mode,omitempty"`
 	// OrchestratorVersion - Version of orchestrator specified when creating the managed cluster.
 	OrchestratorVersion *string `json:"orchestratorVersion,omitempty"`
@@ -1471,9 +1471,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	EnableNodePublicIP *bool `json:"enableNodePublicIP,omitempty"`
 	// NodePublicIPPrefixID - Public IP Prefix ID. VM nodes use IPs assigned from this Public IP Prefix.
 	NodePublicIPPrefixID *string `json:"nodePublicIPPrefixID,omitempty"`
-	// ScaleSetPriority - ScaleSetPriority to be used to specify virtual machine scale set priority. Default to regular. Possible values include: 'Spot', 'Regular'
+	// ScaleSetPriority - ScaleSetPriority to be used to specify virtual machine scale set priority. Default to regular. Possible values include: 'ScaleSetPrioritySpot', 'ScaleSetPriorityRegular'
 	ScaleSetPriority ScaleSetPriority `json:"scaleSetPriority,omitempty"`
-	// ScaleSetEvictionPolicy - ScaleSetEvictionPolicy to be used to specify eviction policy for Spot virtual machine scale set. Default to Delete. Possible values include: 'Delete', 'Deallocate'
+	// ScaleSetEvictionPolicy - ScaleSetEvictionPolicy to be used to specify eviction policy for Spot virtual machine scale set. Default to Delete. Possible values include: 'ScaleSetEvictionPolicyDelete', 'ScaleSetEvictionPolicyDeallocate'
 	ScaleSetEvictionPolicy ScaleSetEvictionPolicy `json:"scaleSetEvictionPolicy,omitempty"`
 	// SpotMaxPrice - SpotMaxPrice to be used to specify the maximum price you are willing to pay in US Dollars. Possible values are any decimal value greater than zero or -1 which indicates default price to be up-to on-demand.
 	SpotMaxPrice *float64 `json:"spotMaxPrice,omitempty"`
@@ -1493,7 +1493,7 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	EnableEncryptionAtHost *bool `json:"enableEncryptionAtHost,omitempty"`
 	// EnableFIPS - Whether to use FIPS enabled OS
 	EnableFIPS *bool `json:"enableFIPS,omitempty"`
-	// GpuInstanceProfile - GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU. Supported values are MIG1g, MIG2g, MIG3g, MIG4g and MIG7g. Possible values include: 'MIG1g', 'MIG2g', 'MIG3g', 'MIG4g', 'MIG7g'
+	// GpuInstanceProfile - GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU. Supported values are MIG1g, MIG2g, MIG3g, MIG4g and MIG7g. Possible values include: 'GPUInstanceProfileMIG1g', 'GPUInstanceProfileMIG2g', 'GPUInstanceProfileMIG3g', 'GPUInstanceProfileMIG4g', 'GPUInstanceProfileMIG7g'
 	GpuInstanceProfile GPUInstanceProfile `json:"gpuInstanceProfile,omitempty"`
 }
 
@@ -1874,7 +1874,7 @@ type ManagedClusterPodIdentity struct {
 	BindingSelector *string `json:"bindingSelector,omitempty"`
 	// Identity - Information of the user assigned identity.
 	Identity *UserAssignedIdentity `json:"identity,omitempty"`
-	// ProvisioningState - READ-ONLY; The current provisioning state of the pod identity. Possible values include: 'Assigned', 'Updating', 'Deleting', 'Failed'
+	// ProvisioningState - READ-ONLY; The current provisioning state of the pod identity. Possible values include: 'ManagedClusterPodIdentityProvisioningStateAssigned', 'ManagedClusterPodIdentityProvisioningStateUpdating', 'ManagedClusterPodIdentityProvisioningStateDeleting', 'ManagedClusterPodIdentityProvisioningStateFailed'
 	ProvisioningState ManagedClusterPodIdentityProvisioningState `json:"provisioningState,omitempty"`
 	// ProvisioningInfo - READ-ONLY
 	ProvisioningInfo *ManagedClusterPodIdentityProvisioningInfo `json:"provisioningInfo,omitempty"`
@@ -1947,7 +1947,7 @@ type ManagedClusterPoolUpgradeProfile struct {
 	KubernetesVersion *string `json:"kubernetesVersion,omitempty"`
 	// Name - Pool name.
 	Name *string `json:"name,omitempty"`
-	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'Linux', 'Windows'
+	// OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values include: 'OSTypeLinux', 'OSTypeWindows'
 	OsType OSType `json:"osType,omitempty"`
 	// Upgrades - List of orchestrator types and versions available for upgrade.
 	Upgrades *[]ManagedClusterPoolUpgradeProfileUpgradesItem `json:"upgrades,omitempty"`
@@ -2097,7 +2097,7 @@ func (mcp ManagedClusterProperties) MarshalJSON() ([]byte, error) {
 // enabled
 type ManagedClusterPropertiesAutoScalerProfile struct {
 	BalanceSimilarNodeGroups *string `json:"balance-similar-node-groups,omitempty"`
-	// Expander - Possible values include: 'LeastWaste', 'MostPods', 'Priority', 'Random'
+	// Expander - Possible values include: 'ExpanderLeastWaste', 'ExpanderMostPods', 'ExpanderPriority', 'ExpanderRandom'
 	Expander                      Expander `json:"expander,omitempty"`
 	MaxEmptyBulkDelete            *string  `json:"max-empty-bulk-delete,omitempty"`
 	MaxGracefulTerminationSec     *string  `json:"max-graceful-termination-sec,omitempty"`
@@ -2219,7 +2219,7 @@ type ManagedClusterServicePrincipalProfile struct {
 type ManagedClusterSKU struct {
 	// Name - Name of a managed cluster SKU. Possible values include: 'ManagedClusterSKUNameBasic'
 	Name ManagedClusterSKUName `json:"name,omitempty"`
-	// Tier - Tier of a managed cluster SKU. Possible values include: 'Paid', 'Free'
+	// Tier - Tier of a managed cluster SKU. Possible values include: 'ManagedClusterSKUTierPaid', 'ManagedClusterSKUTierFree'
 	Tier ManagedClusterSKUTier `json:"tier,omitempty"`
 }
 
@@ -2581,7 +2581,7 @@ type ManagedClusterWindowsProfile struct {
 	AdminUsername *string `json:"adminUsername,omitempty"`
 	// AdminPassword - Specifies the password of the administrator account. <br><br> **Minimum-length:** 8 characters <br><br> **Max-length:** 123 characters <br><br> **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled <br> Has lower characters <br>Has upper characters <br> Has a digit <br> Has a special character (Regex match [\W_]) <br><br> **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!"
 	AdminPassword *string `json:"adminPassword,omitempty"`
-	// LicenseType - The licenseType to use for Windows VMs. Windows_Server is used to enable Azure Hybrid User Benefits for Windows VMs. Possible values include: 'None', 'WindowsServer'
+	// LicenseType - The licenseType to use for Windows VMs. Windows_Server is used to enable Azure Hybrid User Benefits for Windows VMs. Possible values include: 'LicenseTypeNone', 'LicenseTypeWindowsServer'
 	LicenseType LicenseType `json:"licenseType,omitempty"`
 	// EnableCSIProxy - Whether to enable CSI proxy.
 	EnableCSIProxy *bool `json:"enableCSIProxy,omitempty"`
@@ -2593,7 +2593,7 @@ type MasterProfile struct {
 	Count *int32 `json:"count,omitempty"`
 	// DNSPrefix - DNS prefix to be used to create the FQDN for the master pool.
 	DNSPrefix *string `json:"dnsPrefix,omitempty"`
-	// VMSize - Size of agent VMs. Possible values include: 'StandardA1', 'StandardA10', 'StandardA11', 'StandardA1V2', 'StandardA2', 'StandardA2V2', 'StandardA2mV2', 'StandardA3', 'StandardA4', 'StandardA4V2', 'StandardA4mV2', 'StandardA5', 'StandardA6', 'StandardA7', 'StandardA8', 'StandardA8V2', 'StandardA8mV2', 'StandardA9', 'StandardB2ms', 'StandardB2s', 'StandardB4ms', 'StandardB8ms', 'StandardD1', 'StandardD11', 'StandardD11V2', 'StandardD11V2Promo', 'StandardD12', 'StandardD12V2', 'StandardD12V2Promo', 'StandardD13', 'StandardD13V2', 'StandardD13V2Promo', 'StandardD14', 'StandardD14V2', 'StandardD14V2Promo', 'StandardD15V2', 'StandardD16V3', 'StandardD16sV3', 'StandardD1V2', 'StandardD2', 'StandardD2V2', 'StandardD2V2Promo', 'StandardD2V3', 'StandardD2sV3', 'StandardD3', 'StandardD32V3', 'StandardD32sV3', 'StandardD3V2', 'StandardD3V2Promo', 'StandardD4', 'StandardD4V2', 'StandardD4V2Promo', 'StandardD4V3', 'StandardD4sV3', 'StandardD5V2', 'StandardD5V2Promo', 'StandardD64V3', 'StandardD64sV3', 'StandardD8V3', 'StandardD8sV3', 'StandardDS1', 'StandardDS11', 'StandardDS11V2', 'StandardDS11V2Promo', 'StandardDS12', 'StandardDS12V2', 'StandardDS12V2Promo', 'StandardDS13', 'StandardDS132V2', 'StandardDS134V2', 'StandardDS13V2', 'StandardDS13V2Promo', 'StandardDS14', 'StandardDS144V2', 'StandardDS148V2', 'StandardDS14V2', 'StandardDS14V2Promo', 'StandardDS15V2', 'StandardDS1V2', 'StandardDS2', 'StandardDS2V2', 'StandardDS2V2Promo', 'StandardDS3', 'StandardDS3V2', 'StandardDS3V2Promo', 'StandardDS4', 'StandardDS4V2', 'StandardDS4V2Promo', 'StandardDS5V2', 'StandardDS5V2Promo', 'StandardE16V3', 'StandardE16sV3', 'StandardE2V3', 'StandardE2sV3', 'StandardE3216sV3', 'StandardE328sV3', 'StandardE32V3', 'StandardE32sV3', 'StandardE4V3', 'StandardE4sV3', 'StandardE6416sV3', 'StandardE6432sV3', 'StandardE64V3', 'StandardE64sV3', 'StandardE8V3', 'StandardE8sV3', 'StandardF1', 'StandardF16', 'StandardF16s', 'StandardF16sV2', 'StandardF1s', 'StandardF2', 'StandardF2s', 'StandardF2sV2', 'StandardF32sV2', 'StandardF4', 'StandardF4s', 'StandardF4sV2', 'StandardF64sV2', 'StandardF72sV2', 'StandardF8', 'StandardF8s', 'StandardF8sV2', 'StandardG1', 'StandardG2', 'StandardG3', 'StandardG4', 'StandardG5', 'StandardGS1', 'StandardGS2', 'StandardGS3', 'StandardGS4', 'StandardGS44', 'StandardGS48', 'StandardGS5', 'StandardGS516', 'StandardGS58', 'StandardH16', 'StandardH16m', 'StandardH16mr', 'StandardH16r', 'StandardH8', 'StandardH8m', 'StandardL16s', 'StandardL32s', 'StandardL4s', 'StandardL8s', 'StandardM12832ms', 'StandardM12864ms', 'StandardM128ms', 'StandardM128s', 'StandardM6416ms', 'StandardM6432ms', 'StandardM64ms', 'StandardM64s', 'StandardNC12', 'StandardNC12sV2', 'StandardNC12sV3', 'StandardNC24', 'StandardNC24r', 'StandardNC24rsV2', 'StandardNC24rsV3', 'StandardNC24sV2', 'StandardNC24sV3', 'StandardNC6', 'StandardNC6sV2', 'StandardNC6sV3', 'StandardND12s', 'StandardND24rs', 'StandardND24s', 'StandardND6s', 'StandardNV12', 'StandardNV24', 'StandardNV6'
+	// VMSize - Size of agent VMs. Possible values include: 'VMSizeTypesStandardA1', 'VMSizeTypesStandardA10', 'VMSizeTypesStandardA11', 'VMSizeTypesStandardA1V2', 'VMSizeTypesStandardA2', 'VMSizeTypesStandardA2V2', 'VMSizeTypesStandardA2mV2', 'VMSizeTypesStandardA3', 'VMSizeTypesStandardA4', 'VMSizeTypesStandardA4V2', 'VMSizeTypesStandardA4mV2', 'VMSizeTypesStandardA5', 'VMSizeTypesStandardA6', 'VMSizeTypesStandardA7', 'VMSizeTypesStandardA8', 'VMSizeTypesStandardA8V2', 'VMSizeTypesStandardA8mV2', 'VMSizeTypesStandardA9', 'VMSizeTypesStandardB2ms', 'VMSizeTypesStandardB2s', 'VMSizeTypesStandardB4ms', 'VMSizeTypesStandardB8ms', 'VMSizeTypesStandardD1', 'VMSizeTypesStandardD11', 'VMSizeTypesStandardD11V2', 'VMSizeTypesStandardD11V2Promo', 'VMSizeTypesStandardD12', 'VMSizeTypesStandardD12V2', 'VMSizeTypesStandardD12V2Promo', 'VMSizeTypesStandardD13', 'VMSizeTypesStandardD13V2', 'VMSizeTypesStandardD13V2Promo', 'VMSizeTypesStandardD14', 'VMSizeTypesStandardD14V2', 'VMSizeTypesStandardD14V2Promo', 'VMSizeTypesStandardD15V2', 'VMSizeTypesStandardD16V3', 'VMSizeTypesStandardD16sV3', 'VMSizeTypesStandardD1V2', 'VMSizeTypesStandardD2', 'VMSizeTypesStandardD2V2', 'VMSizeTypesStandardD2V2Promo', 'VMSizeTypesStandardD2V3', 'VMSizeTypesStandardD2sV3', 'VMSizeTypesStandardD3', 'VMSizeTypesStandardD32V3', 'VMSizeTypesStandardD32sV3', 'VMSizeTypesStandardD3V2', 'VMSizeTypesStandardD3V2Promo', 'VMSizeTypesStandardD4', 'VMSizeTypesStandardD4V2', 'VMSizeTypesStandardD4V2Promo', 'VMSizeTypesStandardD4V3', 'VMSizeTypesStandardD4sV3', 'VMSizeTypesStandardD5V2', 'VMSizeTypesStandardD5V2Promo', 'VMSizeTypesStandardD64V3', 'VMSizeTypesStandardD64sV3', 'VMSizeTypesStandardD8V3', 'VMSizeTypesStandardD8sV3', 'VMSizeTypesStandardDS1', 'VMSizeTypesStandardDS11', 'VMSizeTypesStandardDS11V2', 'VMSizeTypesStandardDS11V2Promo', 'VMSizeTypesStandardDS12', 'VMSizeTypesStandardDS12V2', 'VMSizeTypesStandardDS12V2Promo', 'VMSizeTypesStandardDS13', 'VMSizeTypesStandardDS132V2', 'VMSizeTypesStandardDS134V2', 'VMSizeTypesStandardDS13V2', 'VMSizeTypesStandardDS13V2Promo', 'VMSizeTypesStandardDS14', 'VMSizeTypesStandardDS144V2', 'VMSizeTypesStandardDS148V2', 'VMSizeTypesStandardDS14V2', 'VMSizeTypesStandardDS14V2Promo', 'VMSizeTypesStandardDS15V2', 'VMSizeTypesStandardDS1V2', 'VMSizeTypesStandardDS2', 'VMSizeTypesStandardDS2V2', 'VMSizeTypesStandardDS2V2Promo', 'VMSizeTypesStandardDS3', 'VMSizeTypesStandardDS3V2', 'VMSizeTypesStandardDS3V2Promo', 'VMSizeTypesStandardDS4', 'VMSizeTypesStandardDS4V2', 'VMSizeTypesStandardDS4V2Promo', 'VMSizeTypesStandardDS5V2', 'VMSizeTypesStandardDS5V2Promo', 'VMSizeTypesStandardE16V3', 'VMSizeTypesStandardE16sV3', 'VMSizeTypesStandardE2V3', 'VMSizeTypesStandardE2sV3', 'VMSizeTypesStandardE3216sV3', 'VMSizeTypesStandardE328sV3', 'VMSizeTypesStandardE32V3', 'VMSizeTypesStandardE32sV3', 'VMSizeTypesStandardE4V3', 'VMSizeTypesStandardE4sV3', 'VMSizeTypesStandardE6416sV3', 'VMSizeTypesStandardE6432sV3', 'VMSizeTypesStandardE64V3', 'VMSizeTypesStandardE64sV3', 'VMSizeTypesStandardE8V3', 'VMSizeTypesStandardE8sV3', 'VMSizeTypesStandardF1', 'VMSizeTypesStandardF16', 'VMSizeTypesStandardF16s', 'VMSizeTypesStandardF16sV2', 'VMSizeTypesStandardF1s', 'VMSizeTypesStandardF2', 'VMSizeTypesStandardF2s', 'VMSizeTypesStandardF2sV2', 'VMSizeTypesStandardF32sV2', 'VMSizeTypesStandardF4', 'VMSizeTypesStandardF4s', 'VMSizeTypesStandardF4sV2', 'VMSizeTypesStandardF64sV2', 'VMSizeTypesStandardF72sV2', 'VMSizeTypesStandardF8', 'VMSizeTypesStandardF8s', 'VMSizeTypesStandardF8sV2', 'VMSizeTypesStandardG1', 'VMSizeTypesStandardG2', 'VMSizeTypesStandardG3', 'VMSizeTypesStandardG4', 'VMSizeTypesStandardG5', 'VMSizeTypesStandardGS1', 'VMSizeTypesStandardGS2', 'VMSizeTypesStandardGS3', 'VMSizeTypesStandardGS4', 'VMSizeTypesStandardGS44', 'VMSizeTypesStandardGS48', 'VMSizeTypesStandardGS5', 'VMSizeTypesStandardGS516', 'VMSizeTypesStandardGS58', 'VMSizeTypesStandardH16', 'VMSizeTypesStandardH16m', 'VMSizeTypesStandardH16mr', 'VMSizeTypesStandardH16r', 'VMSizeTypesStandardH8', 'VMSizeTypesStandardH8m', 'VMSizeTypesStandardL16s', 'VMSizeTypesStandardL32s', 'VMSizeTypesStandardL4s', 'VMSizeTypesStandardL8s', 'VMSizeTypesStandardM12832ms', 'VMSizeTypesStandardM12864ms', 'VMSizeTypesStandardM128ms', 'VMSizeTypesStandardM128s', 'VMSizeTypesStandardM6416ms', 'VMSizeTypesStandardM6432ms', 'VMSizeTypesStandardM64ms', 'VMSizeTypesStandardM64s', 'VMSizeTypesStandardNC12', 'VMSizeTypesStandardNC12sV2', 'VMSizeTypesStandardNC12sV3', 'VMSizeTypesStandardNC24', 'VMSizeTypesStandardNC24r', 'VMSizeTypesStandardNC24rsV2', 'VMSizeTypesStandardNC24rsV3', 'VMSizeTypesStandardNC24sV2', 'VMSizeTypesStandardNC24sV3', 'VMSizeTypesStandardNC6', 'VMSizeTypesStandardNC6sV2', 'VMSizeTypesStandardNC6sV3', 'VMSizeTypesStandardND12s', 'VMSizeTypesStandardND24rs', 'VMSizeTypesStandardND24s', 'VMSizeTypesStandardND6s', 'VMSizeTypesStandardNV12', 'VMSizeTypesStandardNV24', 'VMSizeTypesStandardNV6'
 	VMSize VMSizeTypes `json:"vmSize,omitempty"`
 	// OsDiskSizeGB - OS Disk Size in GB to be used to specify the disk size for every machine in this master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
 	OsDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
@@ -2601,7 +2601,7 @@ type MasterProfile struct {
 	VnetSubnetID *string `json:"vnetSubnetID,omitempty"`
 	// FirstConsecutiveStaticIP - FirstConsecutiveStaticIP used to specify the first static ip of masters.
 	FirstConsecutiveStaticIP *string `json:"firstConsecutiveStaticIP,omitempty"`
-	// StorageProfile - Storage profile specifies what kind of storage used. Choose from StorageAccount and ManagedDisks. Leave it empty, we will choose for you based on the orchestrator choice. Possible values include: 'StorageAccount', 'ManagedDisks'
+	// StorageProfile - Storage profile specifies what kind of storage used. Choose from StorageAccount and ManagedDisks. Leave it empty, we will choose for you based on the orchestrator choice. Possible values include: 'StorageProfileTypesStorageAccount', 'StorageProfileTypesManagedDisks'
 	StorageProfile StorageProfileTypes `json:"storageProfile,omitempty"`
 	// Fqdn - READ-ONLY; FQDN for the master pool.
 	Fqdn *string `json:"fqdn,omitempty"`
@@ -2636,11 +2636,11 @@ func (mp MasterProfile) MarshalJSON() ([]byte, error) {
 
 // NetworkProfile profile of network configuration.
 type NetworkProfile struct {
-	// NetworkPlugin - Network plugin used for building Kubernetes network. Possible values include: 'Azure', 'Kubenet'
+	// NetworkPlugin - Network plugin used for building Kubernetes network. Possible values include: 'NetworkPluginAzure', 'NetworkPluginKubenet'
 	NetworkPlugin NetworkPlugin `json:"networkPlugin,omitempty"`
 	// NetworkPolicy - Network policy used for building Kubernetes network. Possible values include: 'NetworkPolicyCalico', 'NetworkPolicyAzure'
 	NetworkPolicy NetworkPolicy `json:"networkPolicy,omitempty"`
-	// NetworkMode - Network mode used for building Kubernetes network. Possible values include: 'Transparent', 'Bridge'
+	// NetworkMode - Network mode used for building Kubernetes network. Possible values include: 'NetworkModeTransparent', 'NetworkModeBridge'
 	NetworkMode NetworkMode `json:"networkMode,omitempty"`
 	// PodCidr - A CIDR notation IP range from which to assign pod IPs when kubenet is used.
 	PodCidr *string `json:"podCidr,omitempty"`
@@ -2650,9 +2650,9 @@ type NetworkProfile struct {
 	DNSServiceIP *string `json:"dnsServiceIP,omitempty"`
 	// DockerBridgeCidr - A CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the Kubernetes service address range.
 	DockerBridgeCidr *string `json:"dockerBridgeCidr,omitempty"`
-	// OutboundType - The outbound (egress) routing method. Possible values include: 'LoadBalancer', 'UserDefinedRouting'
+	// OutboundType - The outbound (egress) routing method. Possible values include: 'OutboundTypeLoadBalancer', 'OutboundTypeUserDefinedRouting'
 	OutboundType OutboundType `json:"outboundType,omitempty"`
-	// LoadBalancerSku - The load balancer sku for the managed cluster. Possible values include: 'Standard', 'Basic'
+	// LoadBalancerSku - The load balancer sku for the managed cluster. Possible values include: 'LoadBalancerSkuStandard', 'LoadBalancerSkuBasic'
 	LoadBalancerSku LoadBalancerSku `json:"loadBalancerSku,omitempty"`
 	// LoadBalancerProfile - Profile of the cluster load balancer.
 	LoadBalancerProfile *ManagedClusterLoadBalancerProfile `json:"loadBalancerProfile,omitempty"`
@@ -2827,7 +2827,7 @@ type OSOptionPropertyList struct {
 
 // PowerState describes the Power State of the cluster
 type PowerState struct {
-	// Code - Tells whether the cluster is Running or Stopped. Possible values include: 'Running', 'Stopped'
+	// Code - Tells whether the cluster is Running or Stopped. Possible values include: 'CodeRunning', 'CodeStopped'
 	Code Code `json:"code,omitempty"`
 }
 
@@ -3023,7 +3023,7 @@ type PrivateLinkResourcesListResult struct {
 
 // PrivateLinkServiceConnectionState the state of a private link service connection.
 type PrivateLinkServiceConnectionState struct {
-	// Status - The private link service connection status. Possible values include: 'Pending', 'Approved', 'Rejected', 'Disconnected'
+	// Status - The private link service connection status. Possible values include: 'ConnectionStatusPending', 'ConnectionStatusApproved', 'ConnectionStatusRejected', 'ConnectionStatusDisconnected'
 	Status ConnectionStatus `json:"status,omitempty"`
 	// Description - The private link service connection description.
 	Description *string `json:"description,omitempty"`
@@ -3237,7 +3237,7 @@ func (toVar TagsObject) MarshalJSON() ([]byte, error) {
 
 // TimeInWeek time in a week.
 type TimeInWeek struct {
-	// Day - A day in a week. Possible values include: 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+	// Day - A day in a week. Possible values include: 'WeekDaySunday', 'WeekDayMonday', 'WeekDayTuesday', 'WeekDayWednesday', 'WeekDayThursday', 'WeekDayFriday', 'WeekDaySaturday'
 	Day WeekDay `json:"day,omitempty"`
 	// HourSlots - hour slots in a day.
 	HourSlots *[]int32 `json:"hourSlots,omitempty"`

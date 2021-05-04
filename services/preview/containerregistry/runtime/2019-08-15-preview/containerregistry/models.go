@@ -260,18 +260,6 @@ func (a *Annotations) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// ChangeableAttributes ...
-type ChangeableAttributes struct {
-	// DeleteEnabled - Delete enabled
-	DeleteEnabled *bool `json:"deleteEnabled,omitempty"`
-	// WriteEnabled - Write enabled
-	WriteEnabled *bool `json:"writeEnabled,omitempty"`
-	// ListEnabled - List enabled
-	ListEnabled *bool `json:"listEnabled,omitempty"`
-	// ReadEnabled - Read enabled
-	ReadEnabled *bool `json:"readEnabled,omitempty"`
-}
-
 // DeletedRepository deleted repository
 type DeletedRepository struct {
 	autorest.Response `json:"-"`
@@ -375,7 +363,7 @@ type ManifestAttributesBase struct {
 	// Tags - List of tags
 	Tags *[]string `json:"tags,omitempty"`
 	// ChangeableAttributes - Changeable attributes
-	ChangeableAttributes *ChangeableAttributes `json:"changeableAttributes,omitempty"`
+	ChangeableAttributes *ManifestChangeableAttributes `json:"changeableAttributes,omitempty"`
 }
 
 // ManifestAttributesManifest list of manifest attributes
@@ -536,7 +524,21 @@ type RepositoryAttributes struct {
 	// TagCount - Number of the tags
 	TagCount *int32 `json:"tagCount,omitempty"`
 	// ChangeableAttributes - Changeable attributes
-	ChangeableAttributes *ChangeableAttributes `json:"changeableAttributes,omitempty"`
+	ChangeableAttributes *RepositoryChangeableAttributes `json:"changeableAttributes,omitempty"`
+}
+
+// RepositoryChangeableAttributes changeable attributes for Repository
+type RepositoryChangeableAttributes struct {
+	// DeleteEnabled - Delete enabled
+	DeleteEnabled *bool `json:"deleteEnabled,omitempty"`
+	// WriteEnabled - Write enabled
+	WriteEnabled *bool `json:"writeEnabled,omitempty"`
+	// ListEnabled - List enabled
+	ListEnabled *bool `json:"listEnabled,omitempty"`
+	// ReadEnabled - Read enabled
+	ReadEnabled *bool `json:"readEnabled,omitempty"`
+	// TeleportEnabled - Enables Teleport functionality on new images in the repository improving Container startup performance
+	TeleportEnabled *bool `json:"teleportEnabled,omitempty"`
 }
 
 // RepositoryTags result of the request to list tags of the image
@@ -576,14 +578,26 @@ type TagAttributesBase struct {
 	LastUpdateTime *string `json:"lastUpdateTime,omitempty"`
 	// Signed - Is signed
 	Signed *bool `json:"signed,omitempty"`
-	// ChangeableAttributes - Changeable attributes
-	ChangeableAttributes *ChangeableAttributes `json:"changeableAttributes,omitempty"`
+	// ChangeableAttributes - Tag Changeable attributes
+	ChangeableAttributes *TagChangeableAttributes `json:"changeableAttributes,omitempty"`
 }
 
 // TagAttributesTag tag
 type TagAttributesTag struct {
 	// SignatureRecord - SignatureRecord value
 	SignatureRecord *string `json:"signatureRecord,omitempty"`
+}
+
+// TagChangeableAttributes ...
+type TagChangeableAttributes struct {
+	// DeleteEnabled - Delete enabled
+	DeleteEnabled *bool `json:"deleteEnabled,omitempty"`
+	// WriteEnabled - Write enabled
+	WriteEnabled *bool `json:"writeEnabled,omitempty"`
+	// ListEnabled - List enabled
+	ListEnabled *bool `json:"listEnabled,omitempty"`
+	// ReadEnabled - Read enabled
+	ReadEnabled *bool `json:"readEnabled,omitempty"`
 }
 
 // TagList list of tag details

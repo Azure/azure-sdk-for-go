@@ -416,8 +416,8 @@ func (client ManifestsClient) GetListResponder(resp *http.Response) (result AcrM
 // Parameters:
 // name - name of the image (including the namespace)
 // reference - a tag or a digest, pointing to a specific image
-// value - repository attribute value
-func (client ManifestsClient) UpdateAttributes(ctx context.Context, name string, reference string, value *ChangeableAttributes) (result autorest.Response, err error) {
+// value - manifest attribute value
+func (client ManifestsClient) UpdateAttributes(ctx context.Context, name string, reference string, value *ManifestChangeableAttributes) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManifestsClient.UpdateAttributes")
 		defer func() {
@@ -451,7 +451,7 @@ func (client ManifestsClient) UpdateAttributes(ctx context.Context, name string,
 }
 
 // UpdateAttributesPreparer prepares the UpdateAttributes request.
-func (client ManifestsClient) UpdateAttributesPreparer(ctx context.Context, name string, reference string, value *ChangeableAttributes) (*http.Request, error) {
+func (client ManifestsClient) UpdateAttributesPreparer(ctx context.Context, name string, reference string, value *ManifestChangeableAttributes) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"url": client.LoginURI,
 	}

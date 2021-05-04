@@ -27,7 +27,7 @@ type ManifestsClientAPI interface {
 	Get(ctx context.Context, name string, reference string, accept string) (result containerregistry.ManifestWrapper, err error)
 	GetAttributes(ctx context.Context, name string, reference string) (result containerregistry.ManifestAttributes, err error)
 	GetList(ctx context.Context, name string, last string, n *int32, orderby string) (result containerregistry.AcrManifests, err error)
-	UpdateAttributes(ctx context.Context, name string, reference string, value *containerregistry.ChangeableAttributes) (result autorest.Response, err error)
+	UpdateAttributes(ctx context.Context, name string, reference string, value *containerregistry.ManifestChangeableAttributes) (result autorest.Response, err error)
 }
 
 var _ ManifestsClientAPI = (*containerregistry.ManifestsClient)(nil)
@@ -54,7 +54,7 @@ type RepositoryClientAPI interface {
 	Delete(ctx context.Context, name string) (result containerregistry.DeletedRepository, err error)
 	GetAttributes(ctx context.Context, name string) (result containerregistry.RepositoryAttributes, err error)
 	GetList(ctx context.Context, last string, n *int32) (result containerregistry.Repositories, err error)
-	UpdateAttributes(ctx context.Context, name string, value *containerregistry.ChangeableAttributes) (result autorest.Response, err error)
+	UpdateAttributes(ctx context.Context, name string, value *containerregistry.RepositoryChangeableAttributes) (result autorest.Response, err error)
 }
 
 var _ RepositoryClientAPI = (*containerregistry.RepositoryClient)(nil)
@@ -64,7 +64,7 @@ type TagClientAPI interface {
 	Delete(ctx context.Context, name string, reference string) (result autorest.Response, err error)
 	GetAttributes(ctx context.Context, name string, reference string) (result containerregistry.TagAttributes, err error)
 	GetList(ctx context.Context, name string, last string, n *int32, orderby string, digest string) (result containerregistry.TagList, err error)
-	UpdateAttributes(ctx context.Context, name string, reference string, value *containerregistry.ChangeableAttributes) (result autorest.Response, err error)
+	UpdateAttributes(ctx context.Context, name string, reference string, value *containerregistry.TagChangeableAttributes) (result autorest.Response, err error)
 }
 
 var _ TagClientAPI = (*containerregistry.TagClient)(nil)

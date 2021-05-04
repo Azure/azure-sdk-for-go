@@ -248,7 +248,7 @@ func (client RepositoryClient) GetListResponder(resp *http.Response) (result Rep
 // Parameters:
 // name - name of the image (including the namespace)
 // value - repository attribute value
-func (client RepositoryClient) UpdateAttributes(ctx context.Context, name string, value *ChangeableAttributes) (result autorest.Response, err error) {
+func (client RepositoryClient) UpdateAttributes(ctx context.Context, name string, value *RepositoryChangeableAttributes) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RepositoryClient.UpdateAttributes")
 		defer func() {
@@ -282,7 +282,7 @@ func (client RepositoryClient) UpdateAttributes(ctx context.Context, name string
 }
 
 // UpdateAttributesPreparer prepares the UpdateAttributes request.
-func (client RepositoryClient) UpdateAttributesPreparer(ctx context.Context, name string, value *ChangeableAttributes) (*http.Request, error) {
+func (client RepositoryClient) UpdateAttributesPreparer(ctx context.Context, name string, value *RepositoryChangeableAttributes) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"url": client.LoginURI,
 	}

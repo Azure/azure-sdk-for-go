@@ -264,8 +264,8 @@ func (client TagClient) GetListResponder(resp *http.Response) (result TagList, e
 // Parameters:
 // name - name of the image (including the namespace)
 // reference - tag name
-// value - repository attribute value
-func (client TagClient) UpdateAttributes(ctx context.Context, name string, reference string, value *ChangeableAttributes) (result autorest.Response, err error) {
+// value - tag attribute value
+func (client TagClient) UpdateAttributes(ctx context.Context, name string, reference string, value *TagChangeableAttributes) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/TagClient.UpdateAttributes")
 		defer func() {
@@ -299,7 +299,7 @@ func (client TagClient) UpdateAttributes(ctx context.Context, name string, refer
 }
 
 // UpdateAttributesPreparer prepares the UpdateAttributes request.
-func (client TagClient) UpdateAttributesPreparer(ctx context.Context, name string, reference string, value *ChangeableAttributes) (*http.Request, error) {
+func (client TagClient) UpdateAttributesPreparer(ctx context.Context, name string, reference string, value *TagChangeableAttributes) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
 		"url": client.LoginURI,
 	}

@@ -186,7 +186,9 @@ func IsNullValue(v interface{}) bool {
 	if o, found := nullables[t]; found {
 		o1 := reflect.ValueOf(o)
 		v1 := reflect.ValueOf(v)
-		// we found it; return true if v points to the sentinel object
+		// we found it; return true if v points to the sentinel object.
+		// NOTE: maps and slices can only be compared to nil, else you get
+		// a runtime panic.  so we compare addresses instead.
 		return o1.Pointer() == v1.Pointer()
 	}
 	// no sentinel object for this *t

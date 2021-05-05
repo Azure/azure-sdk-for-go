@@ -7,7 +7,6 @@ package azcore
 
 import (
 	"context"
-	"errors"
 	"net/http"
 	"testing"
 	"time"
@@ -227,59 +226,5 @@ func TestResponseUnmarshalAsByteArrayStdFormat(t *testing.T) {
 	}
 	if string(*ba) != "a string that gets encoded with base64url" {
 		t.Fatalf("bad payload, got %s", string(*ba))
-	}
-}
-
-func TestResponseUnmarshalError(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.SetResponse(mock.WithBody([]byte(`{ "someInt": 1, "someString": "s" }`)))
-	pl := NewPipeline(srv)
-	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	resp, err := pl.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		t.Fatalf("unexpected status code: %d", resp.StatusCode)
-	}
-	testErr := errors.New("test error")
-	expected := `raw service error: { "someInt": 1, "someString": "s" }
-test error`
-	if err = resp.UnmarshalError(testErr); err == nil {
-		t.Fatalf("unexpected nil error when unmarshalling")
-	}
-	if expected != err.Error() {
-		t.Fatal("unexpected value")
-	}
-}
-
-func TestResponseUnmarshalErrorEmptyResponseBody(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.SetResponse(mock.WithStatusCode(400))
-	pl := NewPipeline(srv)
-	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	resp, err := pl.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if !resp.HasStatusCode(http.StatusBadRequest) {
-		t.Fatalf("unexpected status code: %d", resp.StatusCode)
-	}
-	testErr := errors.New("test error")
-	expected := `empty error body
-test error`
-	if err = resp.UnmarshalError(testErr); err == nil {
-		t.Fatalf("unexpected nil error when unmarshalling")
-	}
-	if expected != err.Error() {
-		t.Fatal("unexpected value")
 	}
 }

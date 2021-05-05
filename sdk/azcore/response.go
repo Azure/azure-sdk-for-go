@@ -25,7 +25,9 @@ type Response struct {
 	*http.Response
 }
 
-func (r *Response) payload() ([]byte, error) {
+// Payload reads and returns the response body or an error.
+// On a successful read, the response body is cached.
+func (r *Response) Payload() ([]byte, error) {
 	// r.Body won't be a nopClosingBytesReader if downloading was skipped
 	if buf, ok := r.Body.(*nopClosingBytesReader); ok {
 		return buf.Bytes(), nil
@@ -54,7 +56,7 @@ func (r *Response) HasStatusCode(statusCodes ...int) bool {
 
 // UnmarshalAsByteArray will base-64 decode the received payload and place the result into the value pointed to by v.
 func (r *Response) UnmarshalAsByteArray(v **[]byte, format Base64Encoding) error {
-	p, err := r.payload()
+	p, err := r.Payload()
 	if err != nil {
 		return err
 	}
@@ -89,7 +91,7 @@ func (r *Response) UnmarshalAsByteArray(v **[]byte, format Base64Encoding) error
 
 // UnmarshalAsJSON calls json.Unmarshal() to unmarshal the received payload into the value pointed to by v.
 func (r *Response) UnmarshalAsJSON(v interface{}) error {
-	payload, err := r.payload()
+	payload, err := r.Payload()
 	if err != nil {
 		return err
 	}
@@ -110,7 +112,7 @@ func (r *Response) UnmarshalAsJSON(v interface{}) error {
 
 // UnmarshalAsXML calls xml.Unmarshal() to unmarshal the received payload into the value pointed to by v.
 func (r *Response) UnmarshalAsXML(v interface{}) error {
-	payload, err := r.payload()
+	payload, err := r.Payload()
 	if err != nil {
 		return err
 	}
@@ -129,19 +131,6 @@ func (r *Response) UnmarshalAsXML(v interface{}) error {
 	return err
 }
 
-// UnmarshalError will combine information from the service error payload along with the corresponding unmarshal error into a new error.
-// NOTE: this method is only meant to be called when handling a service error.
-func (r *Response) UnmarshalError(unmarshalErr error) error {
-	payload, err := r.payload()
-	if err != nil {
-		return err
-	}
-	if len(payload) == 0 {
-		return fmt.Errorf("empty error body\n%s", unmarshalErr)
-	}
-	return fmt.Errorf("raw service error: %s\n%s", payload, unmarshalErr)
-}
-
 // Drain reads the response body to completion then closes it.  The bytes read are discarded.
 func (r *Response) Drain() {
 	if r != nil && r.Body != nil {
@@ -152,7 +141,7 @@ func (r *Response) Drain() {
 
 // removeBOM removes any byte-order mark prefix from the payload if present.
 func (r *Response) removeBOM() error {
-	payload, err := r.payload()
+	payload, err := r.Payload()
 	if err != nil {
 		return err
 	}
@@ -177,7 +166,7 @@ func (r *Response) writeBody(b *bytes.Buffer) error {
 	if ct := r.Header.Get(HeaderContentType); !shouldLogBody(b, ct) {
 		return nil
 	}
-	body, err := r.payload()
+	body, err := r.Payload()
 	if err != nil {
 		fmt.Fprintf(b, "   Failed to read response body: %s\n", err.Error())
 		return err

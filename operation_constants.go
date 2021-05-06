@@ -15,4 +15,5 @@ const (
 	operationFieldName     = "operation"
 	lockTokensFieldName    = "lock-tokens"
 	serverTimeoutFieldName = vendorPrefix + "server-timeout"
+	associatedLinkName     = "associated-link-name"
 )

@@ -44,6 +44,7 @@ const (
 // Request is an abstraction over the creation of an HTTP request as it passes through the pipeline.
 type Request struct {
 	*http.Request
+	body     ReadSeekCloser
 	policies []Policy
 	values   opValues
 }
@@ -181,6 +182,9 @@ func (req *Request) SetBody(body ReadSeekCloser, contentType string) error {
 	if err != nil {
 		return err
 	}
+	// keep a copy of the original body.  this is to handle cases
+	// where req.Body is replaced, e.g. httputil.DumpRequest and friends.
+	req.body = body
 	req.Request.Body = body
 	req.Request.ContentLength = size
 	req.Header.Set(HeaderContentType, contentType)
@@ -219,7 +223,8 @@ func (req *Request) SetMultipartFormData(formData map[string]interface{}) error 
 	if err := writer.Close(); err != nil {
 		return err
 	}
-	req.Body = NopCloser(bytes.NewReader(body.Bytes()))
+	req.body = NopCloser(bytes.NewReader(body.Bytes()))
+	req.Body = req.body
 	req.ContentLength = int64(body.Len())
 	req.Header.Set(HeaderContentType, writer.FormDataContentType())
 	req.Header.Set(HeaderContentLength, strconv.FormatInt(req.ContentLength, 10))
@@ -233,9 +238,10 @@ func (req *Request) SkipBodyDownload() {
 
 // RewindBody seeks the request's Body stream back to the beginning so it can be resent when retrying an operation.
 func (req *Request) RewindBody() error {
-	if req.Body != nil {
-		// Reset the stream back to the beginning
-		_, err := req.Body.(io.Seeker).Seek(0, io.SeekStart)
+	if req.body != nil {
+		// Reset the stream back to the beginning and restore the body
+		_, err := req.body.Seek(0, io.SeekStart)
+		req.Body = req.body
 		return err
 	}
 	return nil

@@ -136,9 +136,9 @@ func (p *retryPolicy) Do(req *Request) (resp *Response, err error) {
 	}
 	// Exponential retry algorithm: ((2 ^ attempt) - 1) * delay * random(0.8, 1.2)
 	// When to retry: connection failure or temporary/timeout.
-	if req.Body != nil {
+	if req.body != nil {
 		// wrap the body so we control when it's actually closed
-		rwbody := &retryableRequestBody{body: req.Body.(ReadSeekCloser)}
+		rwbody := &retryableRequestBody{body: req.body}
 		req.Body = rwbody
 		req.Request.GetBody = func() (io.ReadCloser, error) {
 			_, err := rwbody.Seek(0, io.SeekStart) // Seek back to the beginning of the stream

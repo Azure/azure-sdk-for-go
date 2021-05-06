@@ -6,6 +6,7 @@
 package azcore
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"io"
@@ -88,7 +89,16 @@ func TestRetryPolicyFailOnStatusCodeRespBodyPreserved(t *testing.T) {
 	defer close()
 	const respBody = "response body"
 	srv.SetResponse(mock.WithStatusCode(http.StatusInternalServerError), mock.WithBody([]byte(respBody)))
-	pl := NewPipeline(srv, NewRetryPolicy(testRetryOptions()))
+	// add a per-request policy that reads and restores the request body.
+	// this is to simulate how something like httputil.DumpRequest works.
+	pl := NewPipeline(srv, PolicyFunc(func(r *Request) (*Response, error) {
+		b, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			t.Fatal(err)
+		}
+		r.Body = ioutil.NopCloser(bytes.NewReader(b))
+		return r.Next()
+	}), NewRetryPolicy(testRetryOptions()))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

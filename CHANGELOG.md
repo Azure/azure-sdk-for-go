@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v54.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2021-05-01/media`
+- `github.com/Azure/azure-sdk-for-go/services/preview/confluent/mgmt/2021-03-01-preview/confluent`
+- `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-09-01-preview/policy`
+
 ## `v54.0.0`
 
 ### New Packages

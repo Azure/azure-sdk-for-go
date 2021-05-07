@@ -3575,42 +3575,6 @@ func (cco CustomCopyOption) AsBasicCopyOption() (BasicCopyOption, bool) {
 	return &cco, true
 }
 
-// Datasource datasource to be backed up
-type Datasource struct {
-	// DatasourceType - DatasourceType of the resource.
-	DatasourceType *string `json:"datasourceType,omitempty"`
-	// ObjectType - Type of Datasource object, used to initialize the right inherited type
-	ObjectType *string `json:"objectType,omitempty"`
-	// ResourceID - Full ARM ID of the resource. For azure resources, this is ARM ID. For non azure resources, this will be the ID created by backup service via Fabric/Vault.
-	ResourceID *string `json:"resourceID,omitempty"`
-	// ResourceLocation - Location of datasource.
-	ResourceLocation *string `json:"resourceLocation,omitempty"`
-	// ResourceName - Unique identifier of the resource in the context of parent.
-	ResourceName *string `json:"resourceName,omitempty"`
-	// ResourceType - Resource Type of Datasource.
-	ResourceType *string `json:"resourceType,omitempty"`
-	// ResourceURI - Uri of the resource.
-	ResourceURI *string `json:"resourceUri,omitempty"`
-}
-
-// DatasourceSet datasourceSet details of datasource to be backed up
-type DatasourceSet struct {
-	// DatasourceType - DatasourceType of the resource.
-	DatasourceType *string `json:"datasourceType,omitempty"`
-	// ObjectType - Type of Datasource object, used to initialize the right inherited type
-	ObjectType *string `json:"objectType,omitempty"`
-	// ResourceID - Full ARM ID of the resource. For azure resources, this is ARM ID. For non azure resources, this will be the ID created by backup service via Fabric/Vault.
-	ResourceID *string `json:"resourceID,omitempty"`
-	// ResourceLocation - Location of datasource.
-	ResourceLocation *string `json:"resourceLocation,omitempty"`
-	// ResourceName - Unique identifier of the resource in the context of parent.
-	ResourceName *string `json:"resourceName,omitempty"`
-	// ResourceType - Resource Type of Datasource.
-	ResourceType *string `json:"resourceType,omitempty"`
-	// ResourceURI - Uri of the resource.
-	ResourceURI *string `json:"resourceUri,omitempty"`
-}
-
 // DataStoreInfoBase dataStoreInfo base
 type DataStoreInfoBase struct {
 	// DataStoreType - type of datastore; Operational/Vault/Archive. Possible values include: 'OperationalStore', 'VaultStore', 'ArchiveStore'
@@ -3696,6 +3660,42 @@ func (dsp DataStoreParameters) AsDataStoreParameters() (*DataStoreParameters, bo
 // AsBasicDataStoreParameters is the BasicDataStoreParameters implementation for DataStoreParameters.
 func (dsp DataStoreParameters) AsBasicDataStoreParameters() (BasicDataStoreParameters, bool) {
 	return &dsp, true
+}
+
+// Datasource datasource to be backed up
+type Datasource struct {
+	// DatasourceType - DatasourceType of the resource.
+	DatasourceType *string `json:"datasourceType,omitempty"`
+	// ObjectType - Type of Datasource object, used to initialize the right inherited type
+	ObjectType *string `json:"objectType,omitempty"`
+	// ResourceID - Full ARM ID of the resource. For azure resources, this is ARM ID. For non azure resources, this will be the ID created by backup service via Fabric/Vault.
+	ResourceID *string `json:"resourceID,omitempty"`
+	// ResourceLocation - Location of datasource.
+	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	// ResourceName - Unique identifier of the resource in the context of parent.
+	ResourceName *string `json:"resourceName,omitempty"`
+	// ResourceType - Resource Type of Datasource.
+	ResourceType *string `json:"resourceType,omitempty"`
+	// ResourceURI - Uri of the resource.
+	ResourceURI *string `json:"resourceUri,omitempty"`
+}
+
+// DatasourceSet datasourceSet details of datasource to be backed up
+type DatasourceSet struct {
+	// DatasourceType - DatasourceType of the resource.
+	DatasourceType *string `json:"datasourceType,omitempty"`
+	// ObjectType - Type of Datasource object, used to initialize the right inherited type
+	ObjectType *string `json:"objectType,omitempty"`
+	// ResourceID - Full ARM ID of the resource. For azure resources, this is ARM ID. For non azure resources, this will be the ID created by backup service via Fabric/Vault.
+	ResourceID *string `json:"resourceID,omitempty"`
+	// ResourceLocation - Location of datasource.
+	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	// ResourceName - Unique identifier of the resource in the context of parent.
+	ResourceName *string `json:"resourceName,omitempty"`
+	// ResourceType - Resource Type of Datasource.
+	ResourceType *string `json:"resourceType,omitempty"`
+	// ResourceURI - Uri of the resource.
+	ResourceURI *string `json:"resourceUri,omitempty"`
 }
 
 // Day day of the week

@@ -8,8 +8,9 @@
 
 package confluentapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/confluent/mgmt/2020-03-01-preview/confluent/confluentapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/confluent/mgmt/2021-03-01-preview/confluent/confluentapi"
 
 type MarketplaceAgreementsClientAPI = original.MarketplaceAgreementsClientAPI
 type OrganizationClientAPI = original.OrganizationClientAPI
 type OrganizationOperationsClientAPI = original.OrganizationOperationsClientAPI
+type ValidationsClientAPI = original.ValidationsClientAPI

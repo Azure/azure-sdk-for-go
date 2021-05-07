@@ -55,7 +55,7 @@ func (r *Response) HasStatusCode(statusCodes ...int) bool {
 }
 
 // UnmarshalAsByteArray will base-64 decode the received payload and place the result into the value pointed to by v.
-func (r *Response) UnmarshalAsByteArray(v **[]byte, format Base64Encoding) error {
+func (r *Response) UnmarshalAsByteArray(v *[]byte, format Base64Encoding) error {
 	p, err := r.Payload()
 	if err != nil {
 		return err
@@ -72,7 +72,7 @@ func (r *Response) UnmarshalAsByteArray(v **[]byte, format Base64Encoding) error
 	case Base64StdFormat:
 		decoded, err := base64.StdEncoding.DecodeString(payload)
 		if err == nil {
-			*v = &decoded
+			*v = decoded
 			return nil
 		}
 		return err
@@ -80,7 +80,7 @@ func (r *Response) UnmarshalAsByteArray(v **[]byte, format Base64Encoding) error
 		// use raw encoding as URL format should not contain any '=' characters
 		decoded, err := base64.RawURLEncoding.DecodeString(payload)
 		if err == nil {
-			*v = &decoded
+			*v = decoded
 			return nil
 		}
 		return err

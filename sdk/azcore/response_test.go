@@ -195,12 +195,12 @@ func TestResponseUnmarshalAsByteArrayURLFormat(t *testing.T) {
 	if !resp.HasStatusCode(http.StatusOK) {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	var ba *[]byte
+	var ba []byte
 	if err := resp.UnmarshalAsByteArray(&ba, Base64URLFormat); err != nil {
 		t.Fatalf("unexpected error unmarshalling: %v", err)
 	}
-	if string(*ba) != "a string that gets encoded with base64url" {
-		t.Fatalf("bad payload, got %s", string(*ba))
+	if string(ba) != "a string that gets encoded with base64url" {
+		t.Fatalf("bad payload, got %s", string(ba))
 	}
 }
 
@@ -220,11 +220,11 @@ func TestResponseUnmarshalAsByteArrayStdFormat(t *testing.T) {
 	if !resp.HasStatusCode(http.StatusOK) {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	var ba *[]byte
+	var ba []byte
 	if err := resp.UnmarshalAsByteArray(&ba, Base64StdFormat); err != nil {
 		t.Fatalf("unexpected error unmarshalling: %v", err)
 	}
-	if string(*ba) != "a string that gets encoded with base64url" {
-		t.Fatalf("bad payload, got %s", string(*ba))
+	if string(ba) != "a string that gets encoded with base64url" {
+		t.Fatalf("bad payload, got %s", string(ba))
 	}
 }

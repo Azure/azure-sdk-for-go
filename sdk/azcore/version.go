@@ -10,5 +10,5 @@ const (
 	UserAgent = "azcore/" + Version
 
 	// Version is the semantic version (see http://semver.org) of this module.
-	Version = "v0.13.4"
+	Version = "v0.16.0"
 )

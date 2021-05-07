@@ -11,7 +11,7 @@ package media
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2020-05-01/media"
+	original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2021-05-01/media"
 )
 
 const (
@@ -31,6 +31,12 @@ type AccountEncryptionKeyType = original.AccountEncryptionKeyType
 const (
 	CustomerKey AccountEncryptionKeyType = original.CustomerKey
 	SystemKey   AccountEncryptionKeyType = original.SystemKey
+)
+
+type ActionType = original.ActionType
+
+const (
+	Internal ActionType = original.Internal
 )
 
 type AnalysisResolution = original.AnalysisResolution
@@ -145,6 +151,13 @@ const (
 	Key             CreatedByType = original.Key
 	ManagedIdentity CreatedByType = original.ManagedIdentity
 	User            CreatedByType = original.User
+)
+
+type DefaultAction = original.DefaultAction
+
+const (
+	Allow DefaultAction = original.Allow
+	Deny  DefaultAction = original.Deny
 )
 
 type DeinterlaceMode = original.DeinterlaceMode
@@ -457,8 +470,8 @@ const (
 	OdataTypeMicrosoftMediaJobInputAsset    OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputAsset
 	OdataTypeMicrosoftMediaJobInputClip     OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputClip
 	OdataTypeMicrosoftMediaJobInputHTTP     OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputHTTP
-	OdataTypeMicrosoftMediaJobInputs        OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputs
 	OdataTypeMicrosoftMediaJobInputSequence OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputSequence
+	OdataTypeMicrosoftMediaJobInputs        OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputs
 )
 
 type OdataTypeBasicJobOutput = original.OdataTypeBasicJobOutput
@@ -644,6 +657,7 @@ const (
 type APIError = original.APIError
 type AacAudio = original.AacAudio
 type AbsoluteClipTime = original.AbsoluteClipTime
+type AccessControl = original.AccessControl
 type AccountEncryption = original.AccountEncryption
 type AccountFilter = original.AccountFilter
 type AccountFilterCollection = original.AccountFilterCollection
@@ -785,6 +799,7 @@ type JobsClient = original.JobsClient
 type JpgFormat = original.JpgFormat
 type JpgImage = original.JpgImage
 type JpgLayer = original.JpgLayer
+type KeyDelivery = original.KeyDelivery
 type KeyVaultProperties = original.KeyVaultProperties
 type Layer = original.Layer
 type ListContainerSasInput = original.ListContainerSasInput
@@ -872,6 +887,7 @@ type ServiceCollectionPage = original.ServiceCollectionPage
 type ServiceIdentity = original.ServiceIdentity
 type ServiceProperties = original.ServiceProperties
 type ServiceSpecification = original.ServiceSpecification
+type ServiceUpdate = original.ServiceUpdate
 type StandardEncoderPreset = original.StandardEncoderPreset
 type StorageAccount = original.StorageAccount
 type StorageEncryptedAssetDecryptionData = original.StorageEncryptedAssetDecryptionData
@@ -1115,6 +1131,9 @@ func PossibleAacAudioProfileValues() []AacAudioProfile {
 func PossibleAccountEncryptionKeyTypeValues() []AccountEncryptionKeyType {
 	return original.PossibleAccountEncryptionKeyTypeValues()
 }
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
+}
 func PossibleAnalysisResolutionValues() []AnalysisResolution {
 	return original.PossibleAnalysisResolutionValues()
 }
@@ -1153,6 +1172,9 @@ func PossibleContentKeyPolicyRestrictionTokenTypeValues() []ContentKeyPolicyRest
 }
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
+}
+func PossibleDefaultActionValues() []DefaultAction {
+	return original.PossibleDefaultActionValues()
 }
 func PossibleDeinterlaceModeValues() []DeinterlaceMode {
 	return original.PossibleDeinterlaceModeValues()

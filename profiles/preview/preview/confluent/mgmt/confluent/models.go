@@ -11,11 +11,20 @@ package confluent
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/confluent/mgmt/2020-03-01-preview/confluent"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/confluent/mgmt/2021-03-01-preview/confluent"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
 )
 
 type ProvisionState = original.ProvisionState
@@ -70,12 +79,11 @@ type OrganizationResourceListResult = original.OrganizationResourceListResult
 type OrganizationResourceListResultIterator = original.OrganizationResourceListResultIterator
 type OrganizationResourceListResultPage = original.OrganizationResourceListResultPage
 type OrganizationResourceProperties = original.OrganizationResourceProperties
-type OrganizationResourcePropertiesModel = original.OrganizationResourcePropertiesModel
-type OrganizationResourcePropertiesOfferDetail = original.OrganizationResourcePropertiesOfferDetail
-type OrganizationResourcePropertiesUserDetail = original.OrganizationResourcePropertiesUserDetail
 type OrganizationResourceUpdate = original.OrganizationResourceUpdate
 type ResourceProviderDefaultErrorResponse = original.ResourceProviderDefaultErrorResponse
+type SystemData = original.SystemData
 type UserDetail = original.UserDetail
+type ValidationsClient = original.ValidationsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -116,8 +124,17 @@ func NewOrganizationResourceListResultIterator(page OrganizationResourceListResu
 func NewOrganizationResourceListResultPage(cur OrganizationResourceListResult, getNextPage func(context.Context, OrganizationResourceListResult) (OrganizationResourceListResult, error)) OrganizationResourceListResultPage {
 	return original.NewOrganizationResourceListResultPage(cur, getNextPage)
 }
+func NewValidationsClient(subscriptionID string) ValidationsClient {
+	return original.NewValidationsClient(subscriptionID)
+}
+func NewValidationsClientWithBaseURI(baseURI string, subscriptionID string) ValidationsClient {
+	return original.NewValidationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleProvisionStateValues() []ProvisionState {
 	return original.PossibleProvisionStateValues()

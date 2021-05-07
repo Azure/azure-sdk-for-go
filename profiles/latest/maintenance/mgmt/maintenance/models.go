@@ -8,41 +8,60 @@
 
 package maintenance
 
-import original "github.com/Azure/azure-sdk-for-go/services/maintenance/mgmt/2020-04-01/maintenance"
+import original "github.com/Azure/azure-sdk-for-go/services/maintenance/mgmt/2021-05-01/maintenance"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
 type ImpactType = original.ImpactType
 
 const (
-	Freeze   ImpactType = original.Freeze
-	None     ImpactType = original.None
-	Redeploy ImpactType = original.Redeploy
-	Restart  ImpactType = original.Restart
+	ImpactTypeFreeze   ImpactType = original.ImpactTypeFreeze
+	ImpactTypeNone     ImpactType = original.ImpactTypeNone
+	ImpactTypeRedeploy ImpactType = original.ImpactTypeRedeploy
+	ImpactTypeRestart  ImpactType = original.ImpactTypeRestart
 )
 
 type Scope = original.Scope
 
 const (
-	ScopeAll        Scope = original.ScopeAll
-	ScopeHost       Scope = original.ScopeHost
-	ScopeInResource Scope = original.ScopeInResource
-	ScopeResource   Scope = original.ScopeResource
+	ScopeExtension          Scope = original.ScopeExtension
+	ScopeHost               Scope = original.ScopeHost
+	ScopeInGuestPatch       Scope = original.ScopeInGuestPatch
+	ScopeOSImage            Scope = original.ScopeOSImage
+	ScopeSQLDB              Scope = original.ScopeSQLDB
+	ScopeSQLManagedInstance Scope = original.ScopeSQLManagedInstance
 )
 
 type UpdateStatus = original.UpdateStatus
 
 const (
-	Completed  UpdateStatus = original.Completed
-	InProgress UpdateStatus = original.InProgress
-	Pending    UpdateStatus = original.Pending
-	RetryLater UpdateStatus = original.RetryLater
-	RetryNow   UpdateStatus = original.RetryNow
+	UpdateStatusCompleted  UpdateStatus = original.UpdateStatusCompleted
+	UpdateStatusInProgress UpdateStatus = original.UpdateStatusInProgress
+	UpdateStatusPending    UpdateStatus = original.UpdateStatusPending
+	UpdateStatusRetryLater UpdateStatus = original.UpdateStatusRetryLater
+	UpdateStatusRetryNow   UpdateStatus = original.UpdateStatusRetryNow
+)
+
+type Visibility = original.Visibility
+
+const (
+	VisibilityCustom Visibility = original.VisibilityCustom
+	VisibilityPublic Visibility = original.VisibilityPublic
 )
 
 type ApplyUpdate = original.ApplyUpdate
+type ApplyUpdateForResourceGroupClient = original.ApplyUpdateForResourceGroupClient
 type ApplyUpdateProperties = original.ApplyUpdateProperties
 type ApplyUpdatesClient = original.ApplyUpdatesClient
 type BaseClient = original.BaseClient
@@ -52,8 +71,10 @@ type ConfigurationAssignmentProperties = original.ConfigurationAssignmentPropert
 type ConfigurationAssignmentsClient = original.ConfigurationAssignmentsClient
 type ConfigurationProperties = original.ConfigurationProperties
 type ConfigurationsClient = original.ConfigurationsClient
+type ConfigurationsForResourceGroupClient = original.ConfigurationsForResourceGroupClient
 type Error = original.Error
 type ErrorDetails = original.ErrorDetails
+type ListApplyUpdate = original.ListApplyUpdate
 type ListConfigurationAssignmentsResult = original.ListConfigurationAssignmentsResult
 type ListMaintenanceConfigurationsResult = original.ListMaintenanceConfigurationsResult
 type ListUpdatesResult = original.ListUpdatesResult
@@ -61,13 +82,22 @@ type Operation = original.Operation
 type OperationInfo = original.OperationInfo
 type OperationsClient = original.OperationsClient
 type OperationsListResult = original.OperationsListResult
+type PublicMaintenanceConfigurationsClient = original.PublicMaintenanceConfigurationsClient
 type Resource = original.Resource
+type SystemData = original.SystemData
 type Update = original.Update
 type UpdateProperties = original.UpdateProperties
 type UpdatesClient = original.UpdatesClient
+type Window = original.Window
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewApplyUpdateForResourceGroupClient(subscriptionID string) ApplyUpdateForResourceGroupClient {
+	return original.NewApplyUpdateForResourceGroupClient(subscriptionID)
+}
+func NewApplyUpdateForResourceGroupClientWithBaseURI(baseURI string, subscriptionID string) ApplyUpdateForResourceGroupClient {
+	return original.NewApplyUpdateForResourceGroupClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewApplyUpdatesClient(subscriptionID string) ApplyUpdatesClient {
 	return original.NewApplyUpdatesClient(subscriptionID)
@@ -87,11 +117,23 @@ func NewConfigurationsClient(subscriptionID string) ConfigurationsClient {
 func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsClient {
 	return original.NewConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewConfigurationsForResourceGroupClient(subscriptionID string) ConfigurationsForResourceGroupClient {
+	return original.NewConfigurationsForResourceGroupClient(subscriptionID)
+}
+func NewConfigurationsForResourceGroupClientWithBaseURI(baseURI string, subscriptionID string) ConfigurationsForResourceGroupClient {
+	return original.NewConfigurationsForResourceGroupClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPublicMaintenanceConfigurationsClient(subscriptionID string) PublicMaintenanceConfigurationsClient {
+	return original.NewPublicMaintenanceConfigurationsClient(subscriptionID)
+}
+func NewPublicMaintenanceConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) PublicMaintenanceConfigurationsClient {
+	return original.NewPublicMaintenanceConfigurationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewUpdatesClient(subscriptionID string) UpdatesClient {
 	return original.NewUpdatesClient(subscriptionID)
@@ -102,6 +144,9 @@ func NewUpdatesClientWithBaseURI(baseURI string, subscriptionID string) UpdatesC
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleImpactTypeValues() []ImpactType {
 	return original.PossibleImpactTypeValues()
 }
@@ -110,6 +155,9 @@ func PossibleScopeValues() []Scope {
 }
 func PossibleUpdateStatusValues() []UpdateStatus {
 	return original.PossibleUpdateStatusValues()
+}
+func PossibleVisibilityValues() []Visibility {
+	return original.PossibleVisibilityValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

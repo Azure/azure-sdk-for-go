@@ -11,14 +11,12 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/ioext"
 	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/track1"
 	"github.com/Azure/azure-sdk-for-go/version"
 	"github.com/spf13/cobra"
@@ -73,15 +71,6 @@ func execute(inputPath, outputPath string, flags Flags) error {
 		return err
 	}
 
-	// we no longer need to back up the repo
-	//log.Printf("Backuping azure-sdk-for-go to temp directory...")
-	//backupRoot, err := backupSDKRepository(cwd)
-	//if err != nil {
-	//	return err
-	//}
-	//defer eraseBackup(backupRoot)
-	//log.Printf("Finished backuping to '%s'", backupRoot)
-
 	ctx := generateContext{
 		sdkRoot:    utils.NormalizePath(cwd),
 		specRoot:   input.SpecFolder,
@@ -98,18 +87,6 @@ func execute(inputPath, outputPath string, flags Flags) error {
 		return fmt.Errorf("cannot write generate output: %+v", err)
 	}
 	return nil
-}
-
-func backupSDKRepository(sdk string) (string, error) {
-	tempRepoDir := filepath.Join(tempDir(), fmt.Sprintf("generator-%v", time.Now().Unix()))
-	if err := ioext.CopyDir(sdk, tempRepoDir); err != nil {
-		return "", fmt.Errorf("failed to backup azure-sdk-for-go to '%s': %+v", tempRepoDir, err)
-	}
-	return tempRepoDir, nil
-}
-
-func eraseBackup(tempDir string) error {
-	return os.RemoveAll(tempDir)
 }
 
 func tempDir() string {
@@ -129,7 +106,6 @@ type generateContext struct {
 	repoContent map[string]exports.Content
 }
 
-// TODO -- support dry run
 func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.GenerateOutput, error) {
 	if input.DryRun {
 		return nil, fmt.Errorf("dry run not supported yet")
@@ -284,21 +260,21 @@ func (b *generateErrorBuilder) build() error {
 
 type packageResultSet map[string]pipeline.PackageResult
 
-func (s *packageResultSet) contains(r pipeline.PackageResult) bool {
-	_, ok := (*s)[r.PackageName]
+func (s packageResultSet) contains(r pipeline.PackageResult) bool {
+	_, ok := s[r.PackageName]
 	return ok
 }
 
-func (s *packageResultSet) add(r pipeline.PackageResult) {
+func (s packageResultSet) add(r pipeline.PackageResult) {
 	if s.contains(r) {
-		log.Printf("[WARNING] The result set already contains key %s with value %+v, but we are still trying to insert a new value %+v on the same key", r.PackageName, (*s)[r.PackageName], r)
+		log.Printf("[WARNING] The result set already contains key %s with value %+v, but we are still trying to insert a new value %+v on the same key", r.PackageName, s[r.PackageName], r)
 	}
-	(*s)[r.PackageName] = r
+	s[r.PackageName] = r
 }
 
-func (s *packageResultSet) toSlice() []pipeline.PackageResult {
+func (s packageResultSet) toSlice() []pipeline.PackageResult {
 	results := make([]pipeline.PackageResult, 0)
-	for _, r := range *s {
+	for _, r := range s {
 		results = append(results, r)
 	}
 	// sort the results

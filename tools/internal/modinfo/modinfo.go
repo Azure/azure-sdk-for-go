@@ -11,9 +11,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/delta"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
+	"github.com/Azure/azure-sdk-for-go/tools/common/delta"
+	"github.com/Azure/azure-sdk-for-go/tools/common/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/dirs"
 	"github.com/Masterminds/semver"
 )

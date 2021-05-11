@@ -12,9 +12,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/tools/common/ioext"
 	"github.com/Azure/azure-sdk-for-go/tools/common/repo"
 	"github.com/Azure/azure-sdk-for-go/tools/common/report"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/ioext"
 )
 
 func printf(format string, a ...interface{}) {

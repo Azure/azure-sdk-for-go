@@ -14,20 +14,20 @@ import (
 
 // Generator collects all the related context of an autorest generation
 type Generator struct {
-	arguments []model.Option
-	cmd       *exec.Cmd
+	options model.Options
+	cmd     *exec.Cmd
 }
 
 // NewGeneratorFromOptions returns a new Generator with the given model.Options
 func NewGeneratorFromOptions(o model.Options) *Generator {
 	return &Generator{
-		arguments: o.Arguments(),
+		options: o,
 	}
 }
 
 // WithOption appends an model.Option to the argument list of the autorest generation
 func (g *Generator) WithOption(option model.Option) *Generator {
-	g.arguments = append(g.arguments, option)
+	g.options = g.options.MergeOptions(option)
 	return g
 }
 
@@ -57,8 +57,8 @@ func (g *Generator) Generate() error {
 	o, err := g.cmd.CombinedOutput()
 	if err != nil {
 		return &GenerateError{
-			Arguments: g.arguments,
-			Message:   string(o),
+			Options: g.options,
+			Message: string(o),
 		}
 	}
 	return nil
@@ -68,8 +68,8 @@ func (g *Generator) buildCommand() {
 	if g.cmd != nil {
 		return
 	}
-	arguments := make([]string, len(g.arguments))
-	for i, o := range g.arguments {
+	arguments := make([]string, len(g.options.Arguments()))
+	for i, o := range g.options.Arguments() {
 		arguments[i] = o.Format()
 	}
 	g.cmd = exec.Command("autorest", arguments...)
@@ -77,7 +77,7 @@ func (g *Generator) buildCommand() {
 
 // Arguments returns the arguments which are using in the autorest command ('autorest' itself excluded)
 func (g *Generator) Arguments() []model.Option {
-	return g.arguments
+	return g.options.Arguments()
 }
 
 // Start starts the generation
@@ -85,8 +85,8 @@ func (g *Generator) Start() error {
 	g.buildCommand()
 	if err := g.cmd.Start(); err != nil {
 		return &GenerateError{
-			Arguments: g.arguments,
-			Message:   err.Error(),
+			Options: g.options,
+			Message: err.Error(),
 		}
 	}
 	return nil
@@ -97,8 +97,8 @@ func (g *Generator) Wait() error {
 	g.buildCommand()
 	if err := g.cmd.Wait(); err != nil {
 		return &GenerateError{
-			Arguments: g.arguments,
-			Message:   err.Error(),
+			Options: g.options,
+			Message: err.Error(),
 		}
 	}
 	return nil
@@ -109,8 +109,8 @@ func (g *Generator) Run() error {
 	g.buildCommand()
 	if err := g.cmd.Run(); err != nil {
 		return &GenerateError{
-			Arguments: g.arguments,
-			Message:   err.Error(),
+			Options: g.options,
+			Message: err.Error(),
 		}
 	}
 	return nil
@@ -130,14 +130,14 @@ func (g *Generator) StderrPipe() (io.ReadCloser, error) {
 
 // GenerateError ...
 type GenerateError struct {
-	Arguments []model.Option
-	Message   string
+	Options model.Options
+	Message string
 }
 
 // Error ...
 func (e *GenerateError) Error() string {
-	arguments := make([]string, len(e.Arguments))
-	for i, o := range e.Arguments {
+	arguments := make([]string, len(e.Options.Arguments()))
+	for i, o := range e.Options.Arguments() {
 		arguments[i] = o.Format()
 	}
 	return fmt.Sprintf("autorest error with arguments '%s': \n%s", strings.Join(arguments, ", "), e.Message)

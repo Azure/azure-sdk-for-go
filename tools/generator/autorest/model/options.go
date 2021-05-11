@@ -33,18 +33,14 @@ func MergeOptions(options Options, other ...Option) Options {
 		}
 	}
 
-	return &localOptions{
-		arguments: arguments,
-	}
+	return localOptions(arguments)
 }
 
 type generateOptions struct {
 	AutorestArguments []string `json:"autorestArguments"`
 }
 
-type localOptions struct {
-	arguments      []Option
-}
+type localOptions []Option
 
 // ParseOptions returns an Options instance by parsing the given raw option strings
 func ParseOptions(raw []string) (Options, error) {
@@ -62,9 +58,7 @@ func ParseOptions(raw []string) (Options, error) {
 
 // NewOptions returns a new instance of Options with the give slice of Option
 func NewOptions(options ...Option) Options {
-	return &localOptions{
-		arguments: options,
-	}
+	return localOptions(options)
 }
 
 // NewOptionsFrom returns a new instance of Options from the given io.Reader
@@ -85,14 +79,12 @@ func NewOptionsFrom(reader io.Reader) (Options, error) {
 		}
 		options = append(options, o)
 	}
-	return &localOptions{
-		arguments:      options,
-	}, nil
+	return localOptions(options), nil
 }
 
 // Arguments ...
 func (o localOptions) Arguments() []Option {
-	return o.arguments
+	return o
 }
 
 // CodeGeneratorVersion ...

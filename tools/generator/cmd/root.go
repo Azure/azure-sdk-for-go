@@ -98,7 +98,6 @@ func tempDir() string {
 
 type generateContext struct {
 	sdkRoot    string
-	clnRoot    string
 	specRoot   string
 	commitHash string
 	optionPath string

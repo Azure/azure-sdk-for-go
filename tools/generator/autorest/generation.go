@@ -7,17 +7,19 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 	"io"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 )
 
+// GenerateContext describes the context that would be used in an autorest generation task
 type GenerateContext interface {
 	SDKRoot() string
 	SpecRoot() string

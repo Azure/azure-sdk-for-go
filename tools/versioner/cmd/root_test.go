@@ -14,7 +14,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
+	"github.com/Azure/azure-sdk-for-go/tools/common/report"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 )
 

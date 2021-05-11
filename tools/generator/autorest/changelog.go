@@ -9,8 +9,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"github.com/Azure/azure-sdk-for-go/tools/common/exports"
+	"github.com/Azure/azure-sdk-for-go/tools/common/report"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 )

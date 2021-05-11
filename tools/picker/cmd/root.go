@@ -6,7 +6,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
+	"github.com/Azure/azure-sdk-for-go/tools/common/report"
 	"os"
 	"path/filepath"
 	"strings"

@@ -14,8 +14,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/tools/common/modinfo"
 	"github.com/Azure/azure-sdk-for-go/tools/common/report"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 )
 
 var newline = "\n"

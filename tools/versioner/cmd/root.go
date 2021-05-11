@@ -14,8 +14,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/tools/common/modinfo"
 	"github.com/Azure/azure-sdk-for-go/tools/common/repo"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 	"github.com/Masterminds/semver"
 	"github.com/spf13/cobra"
 )

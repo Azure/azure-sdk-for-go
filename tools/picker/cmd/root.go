@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	apidiff "github.com/Azure/azure-sdk-for-go/tools/apidiff/cmd"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
+	"github.com/Azure/azure-sdk-for-go/tools/common/repo"
 	"github.com/spf13/cobra"
 )
 

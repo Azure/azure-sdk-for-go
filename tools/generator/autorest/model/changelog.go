@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/markdown"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"github.com/Azure/azure-sdk-for-go/tools/common/delta"
+	"github.com/Azure/azure-sdk-for-go/tools/common/markdown"
 )
 
 // Changelog describes the changelog generated for a package.

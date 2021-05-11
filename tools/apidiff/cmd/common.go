@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
+	"github.com/Azure/azure-sdk-for-go/tools/common/repo"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/ioext"
 )
 

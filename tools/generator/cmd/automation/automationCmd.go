@@ -72,7 +72,7 @@ func execute(inputPath, outputPath string, flags Flags) error {
 		return err
 	}
 
-	ctx := generateContext{
+	ctx := automationContext{
 		sdkRoot:    utils.NormalizePath(cwd),
 		specRoot:   input.SpecFolder,
 		commitHash: input.HeadSha,
@@ -97,7 +97,7 @@ func tempDir() string {
 	return os.TempDir()
 }
 
-type generateContext struct {
+type automationContext struct {
 	sdkRoot    string
 	specRoot   string
 	commitHash string
@@ -110,19 +110,19 @@ type generateContext struct {
 	defaultOptions model.Options
 }
 
-func (ctx generateContext) SDKRoot() string {
+func (ctx automationContext) SDKRoot() string {
 	return ctx.sdkRoot
 }
 
-func (ctx generateContext) SpecRoot() string {
+func (ctx automationContext) SpecRoot() string {
 	return ctx.specRoot
 }
 
-func (ctx generateContext) RepoContent() map[string]exports.Content {
+func (ctx automationContext) RepoContent() map[string]exports.Content {
 	return ctx.repoContent
 }
 
-func (ctx *generateContext) categorizePackages() error {
+func (ctx *automationContext) categorizePackages() error {
 	ctx.existingPackages = existingPackageMap{}
 
 	serviceRoot := filepath.Join(ctx.sdkRoot, "services")
@@ -139,7 +139,7 @@ func (ctx *generateContext) categorizePackages() error {
 	return nil
 }
 
-func (ctx *generateContext) readDefaultOptions() error {
+func (ctx *automationContext) readDefaultOptions() error {
 	log.Printf("Reading defaultOptions from file '%s'...", ctx.optionPath)
 	optionFile, err := os.Open(ctx.optionPath)
 	if err != nil {
@@ -150,7 +150,6 @@ func (ctx *generateContext) readDefaultOptions() error {
 	if err != nil {
 		return err
 	}
-	log.Printf("Autorest defaultOptions: \n%+v", defaultOptions.Arguments())
 
 	// remove the `--multiapi` in default options
 	var options []model.Option
@@ -162,11 +161,12 @@ func (ctx *generateContext) readDefaultOptions() error {
 	}
 
 	ctx.defaultOptions = model.NewOptions(options...)
+	log.Printf("Autorest defaultOptions: \n%+v", ctx.defaultOptions.Arguments())
 
 	return nil
 }
 
-func (ctx *generateContext) generate(input *pipeline.GenerateInput) (*pipeline.GenerateOutput, error) {
+func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline.GenerateOutput, error) {
 	if input.DryRun {
 		return nil, fmt.Errorf("dry run not supported yet")
 	}
@@ -313,7 +313,7 @@ func (ctx *generateContext) generate(input *pipeline.GenerateInput) (*pipeline.G
 	}, errorBuilder.build()
 }
 
-func (ctx *generateContext) readRepoContent() error {
+func (ctx *automationContext) readRepoContent() error {
 	ctx.repoContent = make(map[string]exports.Content)
 	pkgs, err := track1.List(filepath.Join(ctx.sdkRoot, "services"))
 	if err != nil {

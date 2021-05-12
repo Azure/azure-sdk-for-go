@@ -51,8 +51,8 @@ func TestNewOptionsFrom(t *testing.T) {
 }
 
 func TestParseOptions(t *testing.T) {
-	testdata := []struct{
-		input []string
+	testdata := []struct {
+		input    []string
 		expected []model.Option
 	}{
 		{

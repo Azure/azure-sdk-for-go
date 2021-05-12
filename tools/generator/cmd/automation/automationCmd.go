@@ -6,6 +6,7 @@ package automation
 import (
 	"bufio"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/automation/validate"
 	"log"
 	"os"
 	"path/filepath"
@@ -237,11 +238,20 @@ func (ctx *generateContext) generate(input *pipeline.GenerateInput) (*pipeline.G
 				CommitHash: ctx.commitHash,
 				Options:    options,
 			}
+			validateCtx := validate.MetadataValidateContext{
+				Readme:  readme,
+				SDKRoot: ctx.sdkRoot,
+			}
 			result, err := autorest.GeneratePackage(ctx, input, autorest.GenerateOptions{
-				Stderr:             os.Stderr,
-				Stdout:             os.Stderr,
-				AutoRestLogPrefix:  "[AUTOREST] ",
-				ChangelogTitle:     "Unreleased",
+				Stderr:            os.Stderr,
+				Stdout:            os.Stderr,
+				AutoRestLogPrefix: "[AUTOREST] ",
+				ChangelogTitle:    "Unreleased",
+				Validators: []autorest.MetadataValidateFunc{
+					validateCtx.PreviewCheck,
+					validateCtx.MgmtCheck,
+					validateCtx.NamespaceCheck,
+				},
 			})
 			if err != nil {
 				errorBuilder.add(err)
@@ -255,10 +265,10 @@ func (ctx *generateContext) generate(input *pipeline.GenerateInput) (*pipeline.G
 			if !contains(packageResults, removedPackage.packageFullPath) {
 				// this package is not regenerated, therefore it is removed
 				packageResults = append(packageResults, autorest.GenerateResult{
-					Package:            autorest.ChangelogResult{
+					Package: autorest.ChangelogResult{
 						Tag:             removedPackage.Tag,
 						PackageFullPath: removedPackage.packageFullPath,
-						Changelog:       model.Changelog{
+						Changelog: model.Changelog{
 							RemovedPackage: true,
 						},
 					},

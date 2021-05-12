@@ -52,6 +52,8 @@ type GenerateOptions struct {
 	AutoRestLogPrefix string
 	// ChangelogTitle
 	ChangelogTitle string
+	// Validators ...
+	Validators []MetadataValidateFunc
 }
 
 type GenerateResult struct {
@@ -76,8 +78,20 @@ func GeneratePackage(ctx GenerateContext, input GenerateInput, options GenerateO
 	if err := generate(g, options.Stdout, options.Stderr, options.AutoRestLogPrefix); err != nil {
 		return nil, fmt.Errorf("failed to execute autorest: %+v", err)
 	}
+
+	// parse the metadata from autorest
+	metadataMap, err := NewMetadataProcessorFromLocation(metadataOutput).Process()
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse metadata in '%s': %+v", metadataOutput, err)
+	}
+
+	// validate
+	if err := validate(input.Readme, metadataMap, options.Validators); err != nil {
+		return nil, fmt.Errorf("failed in validation: %+v", err)
+	}
+
 	// write the changelog and metadata file
-	result, metadata, err := changelogAndMetadata(ctx, input, metadataOutput, options.ChangelogTitle, g.Arguments())
+	result, metadata, err := changelogAndMetadata(ctx, input, metadataMap, options.ChangelogTitle, g.Arguments())
 	if err != nil {
 		return nil, err
 	}
@@ -106,8 +120,47 @@ func generate(generator *Generator, stdout, stderr io.Writer, prefix string) err
 	return generator.Wait()
 }
 
-func changelogAndMetadata(ctx GenerateContext, input GenerateInput, metadataOutput, changelogTitle string, argument []model.Option) (*ChangelogResult, *GenerationMetadata, error) {
-	result, err := changelog(ctx, metadataOutput, changelogTitle)
+func validate(readme string, metadataMap map[string]model.Metadata, validators []MetadataValidateFunc) error {
+	builder := validationErrorBuilder{
+		readme: readme,
+	}
+
+	for tag, metadata := range metadataMap {
+		errors := ValidateMetadata(validators, tag, metadata)
+		if len(errors) != 0 {
+			builder.addMultiple(errors)
+		}
+	}
+
+	return builder.build()
+}
+
+type validationErrorBuilder struct {
+	readme string
+	errors []error
+}
+
+func (b *validationErrorBuilder) addMultiple(errors []error) {
+	b.errors = append(b.errors, errors...)
+}
+
+func (b *validationErrorBuilder) add(err error) {
+	b.errors = append(b.errors, err)
+}
+
+func (b *validationErrorBuilder) build() error {
+	if len(b.errors) == 0 {
+		return nil
+	}
+	var messages []string
+	for _, e := range b.errors {
+		messages = append(messages, e.Error())
+	}
+	return fmt.Errorf("validation failed in readme '%s' with %d error(s): \n%s", b.readme, len(b.errors), strings.Join(messages, "\n"))
+}
+
+func changelogAndMetadata(ctx GenerateContext, input GenerateInput, metadataMap map[string]model.Metadata, changelogTitle string, argument []model.Option) (*ChangelogResult, *GenerationMetadata, error) {
+	result, err := changelog(ctx, metadataMap, changelogTitle)
 	if err != nil {
 		return nil, nil, fmt.Errorf("failed to write changelog file: %+v", err)
 	}
@@ -121,12 +174,7 @@ func changelogAndMetadata(ctx GenerateContext, input GenerateInput, metadataOutp
 	return result, metadata, nil
 }
 
-func changelog(ctx GenerateContext, metadataOutput, changelogTitle string) (*ChangelogResult, error) {
-	// parse the metadata from autorest
-	metadataMap, err := NewMetadataProcessorFromLocation(metadataOutput).Process()
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse metadata in '%s': %+v", metadataOutput, err)
-	}
+func changelog(ctx GenerateContext, metadataMap map[string]model.Metadata, changelogTitle string) (*ChangelogResult, error) {
 	// process the changelog
 	changelogResults, err := NewChangelogProcessorFromContext(ctx).Process(metadataMap)
 	if err != nil {

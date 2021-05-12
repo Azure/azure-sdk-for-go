@@ -13,25 +13,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
 )
 
-// MetadataValidateFunc is a function that validates a metadata is legal or not
-type MetadataValidateFunc func(ctx *MetadataValidateContext, tag string, metadata model.Metadata) error
-
 // MetadataValidateContext describes the context needed in validation of the metadata
 type MetadataValidateContext struct {
-	Readme     string
-	SDKRoot    string
-	Validators []MetadataValidateFunc
-}
-
-// Validate validates the metadata
-func (ctx *MetadataValidateContext) Validate(tag string, metadata model.Metadata) []error {
-	var errors []error
-	for _, validator := range ctx.Validators {
-		if err := validator(ctx, tag, metadata); err != nil {
-			errors = append(errors, err)
-		}
-	}
-	return errors
+	Readme  string
+	SDKRoot string
 }
 
 func (ctx *MetadataValidateContext) getRelPackagePath(pkgPath string) (string, error) {
@@ -52,7 +37,7 @@ func rootCheck(ctx *MetadataValidateContext, metadata model.Metadata) error {
 }
 
 // PreviewCheck ensures the output-folder of a preview package is under the preview sub-directory
-func PreviewCheck(ctx *MetadataValidateContext, tag string, metadata model.Metadata) error {
+func (ctx *MetadataValidateContext) PreviewCheck(tag string, metadata model.Metadata) error {
 	if err := rootCheck(ctx, metadata); err != nil {
 		return err
 	}
@@ -73,7 +58,7 @@ func PreviewCheck(ctx *MetadataValidateContext, tag string, metadata model.Metad
 }
 
 // MgmtCheck ensures that the management plane package has the correct output-folder
-func MgmtCheck(ctx *MetadataValidateContext, tag string, metadata model.Metadata) error {
+func (ctx *MetadataValidateContext) MgmtCheck(tag string, metadata model.Metadata) error {
 	if isMgmtPackage(ctx.Readme) {
 		rel, err := ctx.getRelPackagePath(metadata.PackagePath())
 		if err != nil {
@@ -87,7 +72,7 @@ func MgmtCheck(ctx *MetadataValidateContext, tag string, metadata model.Metadata
 }
 
 // NamespaceCheck ensures that the namespace only contains lower case letters, numbers and underscores
-func NamespaceCheck(ctx *MetadataValidateContext, tag string, metadata model.Metadata) error {
+func (ctx *MetadataValidateContext) NamespaceCheck(tag string, metadata model.Metadata) error {
 	if len(metadata.Namespace()) == 0 {
 		return fmt.Errorf("the namespace in readme.go.md cannot be empty")
 	}

@@ -6,7 +6,7 @@ package delta
 import (
 	"sort"
 
-	"github.com/Azure/azure-sdk-for-go/tools/common/exports"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 )
 
 // Content defines the set of exported constants, funcs, and structs.

@@ -9,7 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Azure/azure-sdk-for-go/tools/common/markdown"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/markdown"
 )
 
 const apiDirSuffix = "api"

@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/common/packages/track1"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/packages/track1"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 )
 

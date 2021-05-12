@@ -9,7 +9,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/Azure/azure-sdk-for-go/tools/common/packages"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/packages"
 )
 
 type verifiers []packages.VerifyFunc

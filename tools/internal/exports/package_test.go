@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/tools/common/exports"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 )
 
 var pkg exports.Package

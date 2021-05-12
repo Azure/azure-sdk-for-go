@@ -25,7 +25,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Azure/azure-sdk-for-go/tools/common/modinfo"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 
 	"golang.org/x/tools/imports"
 )

@@ -9,8 +9,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/common/markdown"
-	"github.com/Azure/azure-sdk-for-go/tools/common/report"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/markdown"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/report"
 	"github.com/spf13/cobra"
 )
 

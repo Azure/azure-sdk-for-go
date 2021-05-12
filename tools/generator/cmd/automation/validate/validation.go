@@ -5,6 +5,7 @@ package validate
 
 import (
 	"fmt"
+	"log"
 	"path/filepath"
 	"regexp"
 	"strings"
@@ -19,15 +20,18 @@ type MetadataValidateContext struct {
 	SDKRoot string
 }
 
-func (ctx *MetadataValidateContext) getRelPackagePath(pkgPath string) (string, error) {
-	rel, err := filepath.Rel(ctx.SDKRoot, pkgPath)
+func (ctx *MetadataValidateContext) getRelPackagePath(metadata model.Metadata) (string, error) {
+	if err := ctx.rootCheck(metadata); err != nil {
+		return "", err
+	}
+	rel, err := filepath.Rel(ctx.SDKRoot, metadata.PackagePath())
 	if err != nil {
-		return "", fmt.Errorf("cannot get relative path from output-folder '%s' to the root directory '%s': %+v", pkgPath, ctx.SDKRoot, err)
+		return "", fmt.Errorf("cannot get relative path from output-folder '%s' to the root directory '%s': %+v", metadata.PackagePath(), ctx.SDKRoot, err)
 	}
 	return utils.NormalizePath(rel), nil
 }
 
-func rootCheck(ctx *MetadataValidateContext, metadata model.Metadata) error {
+func (ctx *MetadataValidateContext) rootCheck(metadata model.Metadata) error {
 	r := filepath.Clean(ctx.SDKRoot)
 	o := filepath.Clean(metadata.PackagePath())
 	if !strings.HasPrefix(o, r) {
@@ -38,10 +42,8 @@ func rootCheck(ctx *MetadataValidateContext, metadata model.Metadata) error {
 
 // PreviewCheck ensures the output-folder of a preview package is under the preview sub-directory
 func (ctx *MetadataValidateContext) PreviewCheck(tag string, metadata model.Metadata) error {
-	if err := rootCheck(ctx, metadata); err != nil {
-		return err
-	}
-	rel, err := ctx.getRelPackagePath(metadata.PackagePath())
+	log.Printf("Executing PreviewCheck...")
+	rel, err := ctx.getRelPackagePath(metadata)
 	if err != nil {
 		return err
 	}
@@ -59,8 +61,9 @@ func (ctx *MetadataValidateContext) PreviewCheck(tag string, metadata model.Meta
 
 // MgmtCheck ensures that the management plane package has the correct output-folder
 func (ctx *MetadataValidateContext) MgmtCheck(tag string, metadata model.Metadata) error {
+	log.Printf("Executing MgmtCheck...")
 	if isMgmtPackage(ctx.Readme) {
-		rel, err := ctx.getRelPackagePath(metadata.PackagePath())
+		rel, err := ctx.getRelPackagePath(metadata)
 		if err != nil {
 			return err
 		}
@@ -73,6 +76,7 @@ func (ctx *MetadataValidateContext) MgmtCheck(tag string, metadata model.Metadat
 
 // NamespaceCheck ensures that the namespace only contains lower case letters, numbers and underscores
 func (ctx *MetadataValidateContext) NamespaceCheck(tag string, metadata model.Metadata) error {
+	log.Printf("Executing NamespaceCheck...")
 	if len(metadata.Namespace()) == 0 {
 		return fmt.Errorf("the namespace in readme.go.md cannot be empty")
 	}

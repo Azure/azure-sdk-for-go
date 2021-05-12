@@ -6,7 +6,6 @@ package automation
 import (
 	"bufio"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/automation/validate"
 	"log"
 	"os"
 	"path/filepath"
@@ -110,18 +109,6 @@ type automationContext struct {
 	defaultOptions model.Options
 }
 
-func (ctx automationContext) SDKRoot() string {
-	return ctx.sdkRoot
-}
-
-func (ctx automationContext) SpecRoot() string {
-	return ctx.specRoot
-}
-
-func (ctx automationContext) RepoContent() map[string]exports.Content {
-	return ctx.repoContent
-}
-
 func (ctx *automationContext) categorizePackages() error {
 	ctx.existingPackages = existingPackageMap{}
 
@@ -190,90 +177,19 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	results := make([]pipeline.PackageResult, 0)
 	errorBuilder := generateErrorBuilder{}
 	for _, readme := range input.RelatedReadmeMdFiles {
-		absReadme := filepath.Join(input.SpecFolder, readme)
-		absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
-		log.Printf("Reading tags from readme.go.md '%s'...", absReadmeGo)
-		reader, err := os.Open(absReadmeGo)
-		if err != nil {
-			errorBuilder.add(fmt.Errorf("cannot read from readme.go.md: %+v", err))
+		generateCtx := generateContext{
+			sdkRoot:          ctx.sdkRoot,
+			specRoot:         ctx.specRoot,
+			commitHash:       ctx.commitHash,
+			repoContent:      ctx.repoContent,
+			existingPackages: ctx.existingPackages[readme],
+			defaultOptions:   ctx.defaultOptions,
+		}
+
+		packageResults, errors := generateCtx.generate(readme)
+		if len(errors) != 0 {
+			errorBuilder.add(errors...)
 			continue
-		}
-		log.Printf("Parsing tags from readme.go.md '%s'...", absReadmeGo)
-		tags, err := autorest.ReadBatchTags(reader)
-		if err != nil {
-			errorBuilder.add(fmt.Errorf("cannot read batch tags in readme.go.md '%s': %+v", absReadmeGo, err))
-			continue
-		}
-
-		log.Printf("Cleaning all the packages from readme '%s'...", readme)
-		packages := ctx.existingPackages[readme]
-
-		removedPackages, err := clean(packages)
-		if err != nil {
-			errorBuilder.add(fmt.Errorf("cannot clean packages from readme '%s': %+v", readme, err))
-			continue
-		}
-
-		log.Printf("Generating the following tags: \n[%s]", strings.Join(tags, ", "))
-		var options model.Options
-		var packageResults []autorest.GenerateResult
-		for _, tag := range tags {
-			// Get the proper options to use depending on whether this tag has been already generated in the SDK or not
-			if metadata, ok := packages[tag]; ok {
-				// this tag has been generated, use the existing parameters in its metadata
-				additionalOptions, err := model.ParseOptions(strings.Split(metadata.AdditionalProperties.AdditionalOptions, " "))
-				if err != nil {
-					errorBuilder.add(fmt.Errorf("cannot parse existing defaultOptions for readme '%s'/tag '%s': %+v", readme, tag, err))
-					continue
-				}
-				options = ctx.defaultOptions.MergeOptions(additionalOptions.Arguments()...)
-			} else {
-				// this is a new tag
-				options = ctx.defaultOptions
-			}
-
-			input := autorest.GenerateInput{
-				Readme:     readme,
-				Tag:        tag,
-				CommitHash: ctx.commitHash,
-				Options:    options,
-			}
-			validateCtx := validate.MetadataValidateContext{
-				Readme:  readme,
-				SDKRoot: ctx.sdkRoot,
-			}
-			result, err := autorest.GeneratePackage(ctx, input, autorest.GenerateOptions{
-				Stderr:            os.Stderr,
-				Stdout:            os.Stderr,
-				AutoRestLogPrefix: "[AUTOREST] ",
-				ChangelogTitle:    "Unreleased",
-				Validators: []autorest.MetadataValidateFunc{
-					validateCtx.PreviewCheck,
-					validateCtx.MgmtCheck,
-					validateCtx.NamespaceCheck,
-				},
-			})
-			if err != nil {
-				errorBuilder.add(err)
-				continue
-			}
-			packageResults = append(packageResults, *result)
-		}
-
-		// also add the removed packages in the results if it is not regenerated
-		for _, removedPackage := range removedPackages {
-			if !contains(packageResults, removedPackage.packageFullPath) {
-				// this package is not regenerated, therefore it is removed
-				packageResults = append(packageResults, autorest.GenerateResult{
-					Package: autorest.ChangelogResult{
-						Tag:             removedPackage.Tag,
-						PackageFullPath: removedPackage.packageFullPath,
-						Changelog: model.Changelog{
-							RemovedPackage: true,
-						},
-					},
-				})
-			}
 		}
 
 		// iterate over the changed packages
@@ -352,8 +268,8 @@ type generateErrorBuilder struct {
 	errors []error
 }
 
-func (b *generateErrorBuilder) add(err error) {
-	b.errors = append(b.errors, err)
+func (b *generateErrorBuilder) add(err ...error) {
+	b.errors = append(b.errors, err...)
 }
 
 func (b *generateErrorBuilder) build() error {

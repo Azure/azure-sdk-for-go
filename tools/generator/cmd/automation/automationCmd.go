@@ -103,9 +103,69 @@ type generateContext struct {
 	optionPath string
 
 	repoContent map[string]exports.Content
+
+	existingPackages existingPackageMap
+
+	defaultOptions model.Options
 }
 
-func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.GenerateOutput, error) {
+func (ctx generateContext) SDKRoot() string {
+	return ctx.sdkRoot
+}
+
+func (ctx generateContext) SpecRoot() string {
+	return ctx.specRoot
+}
+
+func (ctx generateContext) RepoContent() map[string]exports.Content {
+	return ctx.repoContent
+}
+
+func (ctx *generateContext) categorizePackages() error {
+	ctx.existingPackages = existingPackageMap{}
+
+	serviceRoot := filepath.Join(ctx.sdkRoot, "services")
+	m, err := autorest.CollectGenerationMetadata(serviceRoot)
+	if err != nil {
+		return err
+	}
+
+	for path, metadata := range m {
+		// the path in the metadata map is the absolute path
+		ctx.existingPackages.add(path, metadata)
+	}
+
+	return nil
+}
+
+func (ctx *generateContext) readDefaultOptions() error {
+	log.Printf("Reading defaultOptions from file '%s'...", ctx.optionPath)
+	optionFile, err := os.Open(ctx.optionPath)
+	if err != nil {
+		return err
+	}
+
+	defaultOptions, err := model.NewOptionsFrom(optionFile)
+	if err != nil {
+		return err
+	}
+	log.Printf("Autorest defaultOptions: \n%+v", defaultOptions.Arguments())
+
+	// remove the `--multiapi` in default options
+	var options []model.Option
+	for _, o := range defaultOptions.Arguments() {
+		if v, ok := o.(model.FlagOption); ok && v.Flag() == "multiapi" {
+			continue
+		}
+		options = append(options, o)
+	}
+
+	ctx.defaultOptions = model.NewOptions(options...)
+
+	return nil
+}
+
+func (ctx *generateContext) generate(input *pipeline.GenerateInput) (*pipeline.GenerateOutput, error) {
 	if input.DryRun {
 		return nil, fmt.Errorf("dry run not supported yet")
 	}
@@ -115,80 +175,108 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		return nil, err
 	}
 
-	// now we summary all the metadata in sdk
-	log.Printf("Cleaning up all the packages related with the following readme files: [%s]", strings.Join(input.RelatedReadmeMdFiles, ", "))
-	cleanUpCtx := cleanUpContext{
-		root:        filepath.Join(ctx.sdkRoot, "services"),
-		readmeFiles: input.RelatedReadmeMdFiles,
-	}
-	removedPackages, err := cleanUpCtx.clean()
-	if err != nil {
-		return nil, err
-	}
-	var removedPackagePaths []string
-	for _, p := range removedPackages.packages() {
-		removedPackagePaths = append(removedPackagePaths, p.outputFolder)
-	}
-	log.Printf("The following %d package(s) have been cleaned up: [%s]", len(removedPackagePaths), strings.Join(removedPackagePaths, ", "))
-
-	log.Printf("Reading options from file '%s'...", ctx.optionPath)
-	optionFile, err := os.Open(ctx.optionPath)
-	if err != nil {
+	log.Printf("Reading metadata information in azure-sdk-for-go...")
+	if err := ctx.categorizePackages(); err != nil {
 		return nil, err
 	}
 
-	options, err := model.NewOptionsFrom(optionFile)
-	if err != nil {
+	log.Printf("Reading default options...")
+	if err := ctx.readDefaultOptions(); err != nil {
 		return nil, err
 	}
-	log.Printf("Autorest options: \n%+v", options.Arguments())
 
 	// iterate over all the readme
 	results := make([]pipeline.PackageResult, 0)
 	errorBuilder := generateErrorBuilder{}
 	for _, readme := range input.RelatedReadmeMdFiles {
-		log.Printf("Processing readme '%s'...", readme)
 		absReadme := filepath.Join(input.SpecFolder, readme)
-		metadataOutput := filepath.Dir(absReadme)
-		// generate code
-		g := autorestContext{
-			generator: autorest.NewGeneratorFromOptions(options).WithReadme(absReadme).WithMetadataOutput(metadataOutput),
-		}
-		if err := g.generate(); err != nil {
-			errorBuilder.add(fmt.Errorf("cannot generate readme '%s': %+v", readme, err))
-			continue
-		}
-		m := changelogContext{
-			sdkRoot:         ctx.sdkRoot,
-			readme:          readme,
-			removedPackages: removedPackages[readme],
-			commonMetadata: autorest.GenerationMetadata{
-				CommitHash:     ctx.commitHash,
-				Readme:         autorest.NormalizedSpecRoot + utils.NormalizePath(readme),
-				CodeGenVersion: options.CodeGeneratorVersion(),
-				RepositoryURL:  "https://github.com/Azure/azure-rest-api-specs.git",
-			},
-			repoContent:       ctx.repoContent,
-			autorestArguments: g.autorestArguments(),
-		}
-		log.Printf("Processing metadata generated in readme '%s'...", readme)
-		packages, err := m.process(metadataOutput)
+		absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
+		log.Printf("Reading tags from readme.go.md '%s'...", absReadmeGo)
+		reader, err := os.Open(absReadmeGo)
 		if err != nil {
-			errorBuilder.add(fmt.Errorf("cannot process metadata for readme '%s': %+v", readme, err))
+			errorBuilder.add(fmt.Errorf("cannot read from readme.go.md: %+v", err))
 			continue
+		}
+		log.Printf("Parsing tags from readme.go.md '%s'...", absReadmeGo)
+		tags, err := autorest.ReadBatchTags(reader)
+		if err != nil {
+			errorBuilder.add(fmt.Errorf("cannot read batch tags in readme.go.md '%s': %+v", absReadmeGo, err))
+			continue
+		}
+
+		log.Printf("Cleaning all the packages from readme '%s'...", readme)
+		packages := ctx.existingPackages[readme]
+
+		removedPackages, err := clean(packages)
+		if err != nil {
+			errorBuilder.add(fmt.Errorf("cannot clean packages from readme '%s': %+v", readme, err))
+			continue
+		}
+
+		log.Printf("Generating the following tags: \n[%s]", strings.Join(tags, ", "))
+		var options model.Options
+		var packageResults []autorest.GenerateResult
+		for _, tag := range tags {
+			// Get the proper options to use depending on whether this tag has been already generated in the SDK or not
+			if metadata, ok := packages[tag]; ok {
+				// this tag has been generated, use the existing parameters in its metadata
+				additionalOptions, err := model.ParseOptions(strings.Split(metadata.AdditionalProperties.AdditionalOptions, " "))
+				if err != nil {
+					errorBuilder.add(fmt.Errorf("cannot parse existing defaultOptions for readme '%s'/tag '%s': %+v", readme, tag, err))
+					continue
+				}
+				options = ctx.defaultOptions.MergeOptions(additionalOptions.Arguments()...)
+			} else {
+				// this is a new tag
+				options = ctx.defaultOptions
+			}
+
+			input := autorest.GenerateInput{
+				Readme:     readme,
+				Tag:        tag,
+				CommitHash: ctx.commitHash,
+				Options:    options,
+			}
+			result, err := autorest.GeneratePackage(ctx, input, autorest.GenerateOptions{
+				Stderr:             os.Stderr,
+				Stdout:             os.Stderr,
+				AutoRestLogPrefix:  "[AUTOREST] ",
+				ChangelogTitle:     "Unreleased",
+			})
+			if err != nil {
+				errorBuilder.add(err)
+				continue
+			}
+			packageResults = append(packageResults, *result)
+		}
+
+		// also add the removed packages in the results if it is not regenerated
+		for _, removedPackage := range removedPackages {
+			if !contains(packageResults, removedPackage.packageFullPath) {
+				// this package is not regenerated, therefore it is removed
+				packageResults = append(packageResults, autorest.GenerateResult{
+					Package:            autorest.ChangelogResult{
+						Tag:             removedPackage.Tag,
+						PackageFullPath: removedPackage.packageFullPath,
+						Changelog:       model.Changelog{
+							RemovedPackage: true,
+						},
+					},
+				})
+			}
 		}
 
 		// iterate over the changed packages
 		set := packageResultSet{}
-		for _, p := range packages {
-			log.Printf("Getting package result for package '%s'", p.PackageName)
-			content := p.Changelog.ToCompactMarkdown()
-			breaking := p.Changelog.HasBreakingChanges()
-			breakingChangeItems := p.Changelog.GetBreakingChangeItems()
+		for _, p := range packageResults {
+			log.Printf("Getting package result for package '%s'", p.Package.PackageName)
+			content := p.Package.Changelog.ToCompactMarkdown()
+			breaking := p.Package.Changelog.HasBreakingChanges()
+			breakingChangeItems := p.Package.Changelog.GetBreakingChangeItems()
 			set.add(pipeline.PackageResult{
-				Version:     version.Number,
-				PackageName: getPackageIdentifier(p.PackageName),
-				Path:        []string{p.PackageName},
+				Version:     version.Number, // TODO -- after migrate this to a module, we cannot get the version number in this way anymore
+				PackageName: getPackageIdentifier(p.Package.PackageName),
+				Path:        []string{p.Package.PackageName},
 				ReadmeMd:    []string{readme},
 				Changelog: &pipeline.Changelog{
 					Content:             &content,
@@ -203,6 +291,9 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	// validate the sdk structure
 	log.Printf("Validating services directory structure...")
 	exceptions, err := loadExceptions(filepath.Join(ctx.sdkRoot, "tools/pkgchk/exceptions.txt"))
+	if err != nil {
+		return nil, err
+	}
 	if err := track1.VerifyWithDefaultVerifiers(filepath.Join(ctx.sdkRoot, "services"), exceptions); err != nil {
 		return nil, err
 	}
@@ -236,6 +327,15 @@ func (ctx *generateContext) readRepoContent() error {
 	}
 
 	return nil
+}
+
+func contains(array []autorest.GenerateResult, item string) bool {
+	for _, r := range array {
+		if utils.NormalizePath(r.Package.PackageFullPath) == utils.NormalizePath(item) {
+			return true
+		}
+	}
+	return false
 }
 
 type generateErrorBuilder struct {

@@ -77,7 +77,7 @@ func (ctx changelogContext) process(metadataLocation string) ([]autorest.Changel
 	// iterate over the removed packages, generate changelogs for them as well
 	var removedResults []autorest.ChangelogResult
 	for _, rp := range ctx.removedPackages {
-		if contains(changelogResults, rp.outputFolder) {
+		if containsOld(changelogResults, rp.outputFolder) {
 			// this package has been regenerated
 			continue
 		}
@@ -100,7 +100,7 @@ func (ctx changelogContext) process(metadataLocation string) ([]autorest.Changel
 	return results, nil
 }
 
-func contains(array []autorest.ChangelogResult, item string) bool {
+func containsOld(array []autorest.ChangelogResult, item string) bool {
 	for _, r := range array {
 		if utils.NormalizePath(r.PackageFullPath) == utils.NormalizePath(item) {
 			return true

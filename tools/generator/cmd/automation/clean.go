@@ -13,6 +13,26 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 )
 
+func clean(packages packagesForReadme) ([]existingGenerationMetadata, error) {
+	var removedPackages []existingGenerationMetadata
+
+	for _, metadata := range packages {
+		log.Printf("Cleaning up pakcage '%s'...", metadata.packageFullPath)
+		if err := os.RemoveAll(metadata.packageFullPath); err != nil {
+			return nil, fmt.Errorf("cannot remove package '%s': %+v", metadata.packageFullPath, err)
+		}
+
+		removedPackages = append(removedPackages, metadata)
+
+		// recursively remove all its parent if this directory is empty after the deletion
+		if err := removeEmptyParents(filepath.Dir(metadata.packageFullPath)); err != nil {
+			return nil, err
+		}
+	}
+
+	return removedPackages, nil
+}
+
 type cleanUpContext struct {
 	root        string
 	readmeFiles []string

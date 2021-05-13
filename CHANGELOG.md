@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## `v54.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/botservice/mgmt/2021-03-01/botservice`
+- `github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2021-05-01/media`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-02-01/netapp`
+
 ## `v54.1.0`
 
 ### New Packages

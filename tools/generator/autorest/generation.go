@@ -61,9 +61,9 @@ type GenerateResult struct {
 	// MetadataOutputRoot stores the metadata output root which is the same as in options, or randomly generated if not specified in options
 	MetadataOutputRoot string
 	// Metadata is the GenerationMetadata of the generated package
-	Metadata           GenerationMetadata
+	Metadata GenerationMetadata
 	// Package is the changelog information of the generated package
-	Package            ChangelogResult
+	Package ChangelogResult
 }
 
 // GeneratePackage is a wrapper function of the autorest execution task

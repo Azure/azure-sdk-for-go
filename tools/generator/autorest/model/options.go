@@ -99,6 +99,7 @@ func (o localOptions) CodeGeneratorVersion() string {
 	return ""
 }
 
+// MergeOptions ...
 func (o localOptions) MergeOptions(other ...Option) Options {
 	return MergeOptions(o, other...)
 }

@@ -9,6 +9,7 @@ import (
 	"io"
 )
 
+// ScannerPrint prints the scanner to writer with a specified prefix
 func ScannerPrint(scanner *bufio.Scanner, writer io.Writer, prefix string) error {
 	if writer == nil {
 		return nil

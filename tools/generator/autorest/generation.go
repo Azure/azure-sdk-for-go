@@ -56,12 +56,17 @@ type GenerateOptions struct {
 	Validators []MetadataValidateFunc
 }
 
+// GenerateResult describes the result of a generation task
 type GenerateResult struct {
+	// MetadataOutputRoot stores the metadata output root which is the same as in options, or randomly generated if not specified in options
 	MetadataOutputRoot string
+	// Metadata is the GenerationMetadata of the generated package
 	Metadata           GenerationMetadata
+	// Package is the changelog information of the generated package
 	Package            ChangelogResult
 }
 
+// GeneratePackage is a wrapper function of the autorest execution task
 func GeneratePackage(ctx GenerateContext, input GenerateInput, options GenerateOptions) (*GenerateResult, error) {
 	if err := input.validate(); err != nil {
 		return nil, err

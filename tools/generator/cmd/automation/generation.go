@@ -39,6 +39,8 @@ func (ctx generateContext) RepoContent() map[string]exports.Content {
 	return ctx.repoContent
 }
 
+var _ autorest.GenerateContext = (*generateContext)(nil)
+
 func (ctx generateContext) generate(readme string) ([]autorest.GenerateResult, []error) {
 	absReadme := filepath.Join(ctx.specRoot, readme)
 	absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")

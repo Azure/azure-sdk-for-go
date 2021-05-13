@@ -138,7 +138,7 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID string, scopes []string) (*azcore.Request, error) {
 	switch c.msiType {
 	case msiTypeIMDS:
-		return c.createIMDSAuthRequest(ctx, scopes)
+		return c.createIMDSAuthRequest(ctx, clientID, scopes)
 	case msiTypeAppServiceV20170901, msiTypeAppServiceV20190801:
 		return c.createAppServiceAuthRequest(ctx, clientID, scopes)
 	case msiTypeAzureArc:
@@ -162,7 +162,7 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID 
 	}
 }
 
-func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, scopes []string) (*azcore.Request, error) {
+func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, clientID string, scopes []string) (*azcore.Request, error) {
 	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return nil, err
@@ -171,6 +171,9 @@ func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, scope
 	q := request.URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
+	if clientID != "" {
+		q.Add(qpClientID, clientID)
+	}
 	request.URL.RawQuery = q.Encode()
 	return request, nil
 }
@@ -262,7 +265,7 @@ func (c *managedIdentityClient) createCloudShellAuthRequest(ctx context.Context,
 	data := url.Values{}
 	data.Set("resource", strings.Join(scopes, " "))
 	if clientID != "" {
-		data.Set("client_id", clientID)
+		data.Set(qpClientID, clientID)
 	}
 	dataEncoded := data.Encode()
 	body := azcore.NopCloser(strings.NewReader(dataEncoded))

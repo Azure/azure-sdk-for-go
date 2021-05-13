@@ -15,8 +15,8 @@ const (
 
 var (
 	expected = map[string]string{
-		"scenrioa/foo":                    "foo",
-		"scenriob/mgmt/2019-10-11/foo":    "foo",
+		"scenrioa/foo":                 "foo",
+		"scenriob/mgmt/2019-10-11/foo": "foo",
 	}
 )
 

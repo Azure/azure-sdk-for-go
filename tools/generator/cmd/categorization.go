@@ -1,4 +1,4 @@
-package automation
+package cmd
 
 import "github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 

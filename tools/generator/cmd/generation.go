@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package automation
+package cmd
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/automation/validate"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/validate"
 )
 
 type generateContext struct {

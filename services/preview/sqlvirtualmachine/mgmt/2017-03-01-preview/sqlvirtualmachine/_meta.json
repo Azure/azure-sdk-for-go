@@ -1,5 +1,5 @@
 {
-  "commit": "3c764635e7d442b3e74caf593029fcd440b3ef82",
+  "commit": "a9d6d159bb762f82f9988320e3d2c59ee9a4ad0b",
   "readme": "/_/azure-rest-api-specs/specification/sqlvirtualmachine/resource-manager/readme.md",
   "tag": "package-2017-03-01-preview",
   "use": "@microsoft.azure/autorest.go@2.1.180",

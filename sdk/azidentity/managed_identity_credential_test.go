@@ -435,7 +435,7 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	cred.client.endpoint = imdsEndpoint
-	req, err := cred.client.createIMDSAuthRequest(context.Background(), []string{msiScope})
+	req, err := cred.client.createIMDSAuthRequest(context.Background(), clientID, []string{msiScope})
 	if err != nil {
 		t.Fatal(err)
 	}

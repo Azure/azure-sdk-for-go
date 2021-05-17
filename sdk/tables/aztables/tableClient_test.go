@@ -80,6 +80,23 @@ func (s *tableClientLiveTests) TestAddComplexEntity() {
 	}
 }
 
+func (s *tableClientLiveTests) TestBatchAdd() {
+	assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	client, delete := s.init(true)
+	defer delete()
+
+	entitiesToCreate := createComplexMapEntities(context, 10, "partition")
+	batch := make([]TableTransactionAction, 10)
+
+	for i, e := range *entitiesToCreate {
+		batch[i] = TableTransactionAction{ActionType: Add, Entity: e}
+	}
+
+	err := client.submitTransactionInternal(&batch, context.recording.UUID(), context.recording.UUID(), nil, ctx)
+	assert.Nil(err)
+}
+
 func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	assert := assert.New(s.T())
 	client, delete := s.init(true)

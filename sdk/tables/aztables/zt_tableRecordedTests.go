@@ -138,6 +138,30 @@ func createSimpleEntities(count int, pk string) *[]map[string]interface{} {
 	return &result
 }
 
+func createComplexMapEntities(context *testContext, count int, pk string) *[]map[string]interface{}  {
+	result := make([]map[string]interface{}, count)
+
+	for i := 1; i <= count; i++ {
+		var e = map[string]interface{}{
+			PartitionKey: pk,
+			RowKey:       fmt.Sprint(i),
+			"StringProp": fmt.Sprintf("some string %d", i),
+			"IntProp":    i,
+			"BoolProp":   true,
+			"SomeBinaryProperty":    []byte("some bytes"),
+			"SomeDateProperty":      context.recording.Now(),
+			"SomeDoubleProperty0":   float64(1),
+			"SomeDoubleProperty1":   float64(1.2345),
+			"SomeGuidProperty":      context.recording.UUID(),
+			"SomeInt64Property":     math.MaxInt64,
+			"SomeIntProperty":       42,
+			"SomeStringProperty":    "some string",
+		}
+		result[i-1] = e
+	}
+	return &result
+}
+
 func createComplexEntities(context *testContext, count int, pk string) *[]complexEntity {
 	result := make([]complexEntity, count)
 

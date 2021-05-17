@@ -1,0 +1,164 @@
+---
+version: 1
+interactions:
+- request:
+    body: '{"TableName":"gotablesvrif0hcr02xy"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "36"
+      Content-Type:
+      - application/json
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+        Windows_NT)
+      X-Ms-Date:
+      - Mon, 17 May 2021 23:03:23 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://chrisstablesprim.table.cosmos.azure.com/Tables
+    method: POST
+  response:
+    body: '{"TableName":"gotablesvrif0hcr02xy","odata.metadata":"https://chrisstablesprim.table.cosmos.azure.com/$metadata#Tables/@Element"}'
+    headers:
+      Content-Type:
+      - application/json;odata=minimalmetadata
+      Date:
+      - Mon, 17 May 2021 23:03:24 GMT
+      Etag:
+      - W/"datetime'2021-05-17T23%3A03%3A24.6616584Z'"
+      Location:
+      - https://chrisstablesprim.table.cosmos.azure.com/Tables('gotablesvrif0hcr02xy')
+      Server:
+      - Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - cad26596-eda5-4a4f-950b-8f04ae20667a
+    status: 201 Ok
+    code: 201
+    duration: ""
+- request:
+    body: "--changeset_f54dcc1a-b74e-4088-6b89-e26c2ad1470a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotablesvrif0hcr02xy
+      HTTP/1.1\r\nAccept: [application/json;odata=minimalmetadata]\r\nContent-Length:
+      [415]\r\nContent-Type: [application/json]\r\nDataserviceversion: [3.0]\r\nPrefer:
+      [return-no-content]\r\nX-Ms-Version: [2019-02-02]\r\n\r\n{\"BoolProp\":true,\"IntProp\":1,\"PartitionKey\":\"partition\",\"RowKey\":\"1\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeDateProperty\":\"2021-05-17T18:03:25.162469-05:00\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty1\":1.2345,\"SomeGuidProperty\":[255,158,15,229,158,21,66,91,99,234,19,1,17,128,65,23],\"SomeInt64Property\":9223372036854775807,\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
+      string\",\"StringProp\":\"some string 1\"}\r\n--changeset_f54dcc1a-b74e-4088-6b89-e26c2ad1470a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotablesvrif0hcr02xy
+      HTTP/1.1\r\nAccept: [application/json;odata=minimalmetadata]\r\nContent-Length:
+      [418]\r\nContent-Type: [application/json]\r\nDataserviceversion: [3.0]\r\nPrefer:
+      [return-no-content]\r\nX-Ms-Version: [2019-02-02]\r\n\r\n{\"BoolProp\":true,\"IntProp\":2,\"PartitionKey\":\"partition\",\"RowKey\":\"2\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeDateProperty\":\"2021-05-17T18:03:25.162469-05:00\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty1\":1.2345,\"SomeGuidProperty\":[77,201,45,125,144,16,76,139,94,219,234,57,225,58,191,29],\"SomeInt64Property\":9223372036854775807,\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
+      string\",\"StringProp\":\"some string 2\"}\r\n--changeset_f54dcc1a-b74e-4088-6b89-e26c2ad1470a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotablesvrif0hcr02xy
+      HTTP/1.1\r\nAccept: [application/json;odata=minimalmetadata]\r\nContent-Length:
+      [422]\r\nContent-Type: [application/json]\r\nDataserviceversion: [3.0]\r\nPrefer:
+      [return-no-content]\r\nX-Ms-Version: [2019-02-02]\r\n\r\n{\"BoolProp\":true,\"IntProp\":3,\"PartitionKey\":\"partition\",\"RowKey\":\"3\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeDateProperty\":\"2021-05-17T18:03:25.162469-05:00\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty1\":1.2345,\"SomeGuidProperty\":[239,159,77,128,222,125,70,155,71,154,98,157,114,255,235,242],\"SomeInt64Property\":9223372036854775807,\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
+      string\",\"StringProp\":\"some string 3\"}\r\n--changeset_f54dcc1a-b74e-4088-6b89-e26c2ad1470a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotablesvrif0hcr02xy
+      HTTP/1.1\r\nAccept: [application/json;odata=minimalmetadata]\r\nContent-Length:
+      [419]\r\nContent-Type: [application/json]\r\nDataserviceversion: [3.0]\r\nPrefer:
+      [return-no-content]\r\nX-Ms-Version: [2019-02-02]\r\n\r\n{\"BoolProp\":true,\"IntProp\":4,\"PartitionKey\":\"partition\",\"RowKey\":\"4\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeDateProperty\":\"2021-05-17T18:03:25.162469-05:00\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty1\":1.2345,\"SomeGuidProperty\":[119,114,81,73,74,98,77,102,117,118,34,142,24,123,245,162],\"SomeInt64Property\":9223372036854775807,\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
+      string\",\"StringProp\":\"some string 4\"}\r\n--changeset_f54dcc1a-b74e-4088-6b89-e26c2ad1470a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotablesvrif0hcr02xy
+      HTTP/1.1\r\nAccept: [application/json;odata=minimalmetadata]\r\nContent-Length:
+      [419]\r\nContent-Type: [application/json]\r\nDataserviceversion: [3.0]\r\nPrefer:
+      [return-no-content]\r\nX-Ms-Version: [2019-02-02]\r\n\r\n{\"BoolProp\":true,\"IntProp\":5,\"PartitionKey\":\"partition\",\"RowKey\":\"5\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeDateProperty\":\"2021-05-17T18:03:25.162469-05:00\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty1\":1.2345,\"SomeGuidProperty\":[111,170,104,152,251,233,70,0,118,97,42,51,122,49,172,113],\"SomeInt64Property\":9223372036854775807,\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
+      string\",\"StringProp\":\"some string 5\"}\r\n--changeset_f54dcc1a-b74e-4088-6b89-e26c2ad1470a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotablesvrif0hcr02xy
+      HTTP/1.1\r\nAccept: [application/json;odata=minimalmetadata]\r\nContent-Length:
+      [415]\r\nContent-Type: [application/json]\r\nDataserviceversion: [3.0]\r\nPrefer:
+      [return-no-content]\r\nX-Ms-Version: [2019-02-02]\r\n\r\n{\"BoolProp\":true,\"IntProp\":6,\"PartitionKey\":\"partition\",\"RowKey\":\"6\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeDateProperty\":\"2021-05-17T18:03:25.162469-05:00\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty1\":1.2345,\"SomeGuidProperty\":[194,54,1,100,16,39,76,104,64,221,155,230,34,4,17,205],\"SomeInt64Property\":9223372036854775807,\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
+      string\",\"StringProp\":\"some string 6\"}\r\n--changeset_f54dcc1a-b74e-4088-6b89-e26c2ad1470a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotablesvrif0hcr02xy
+      HTTP/1.1\r\nAccept: [application/json;odata=minimalmetadata]\r\nContent-Length:
+      [419]\r\nContent-Type: [application/json]\r\nDataserviceversion: [3.0]\r\nPrefer:
+      [return-no-content]\r\nX-Ms-Version: [2019-02-02]\r\n\r\n{\"BoolProp\":true,\"IntProp\":7,\"PartitionKey\":\"partition\",\"RowKey\":\"7\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeDateProperty\":\"2021-05-17T18:03:25.162469-05:00\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty1\":1.2345,\"SomeGuidProperty\":[20,123,16,191,38,43,67,143,84,150,103,187,139,48,123,206],\"SomeInt64Property\":9223372036854775807,\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
+      string\",\"StringProp\":\"some string 7\"}\r\n--changeset_f54dcc1a-b74e-4088-6b89-e26c2ad1470a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotablesvrif0hcr02xy
+      HTTP/1.1\r\nAccept: [application/json;odata=minimalmetadata]\r\nContent-Length:
+      [416]\r\nContent-Type: [application/json]\r\nDataserviceversion: [3.0]\r\nPrefer:
+      [return-no-content]\r\nX-Ms-Version: [2019-02-02]\r\n\r\n{\"BoolProp\":true,\"IntProp\":8,\"PartitionKey\":\"partition\",\"RowKey\":\"8\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeDateProperty\":\"2021-05-17T18:03:25.162469-05:00\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty1\":1.2345,\"SomeGuidProperty\":[13,59,240,153,221,85,72,221,113,54,54,114,243,0,90,46],\"SomeInt64Property\":9223372036854775807,\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
+      string\",\"StringProp\":\"some string 8\"}\r\n--changeset_f54dcc1a-b74e-4088-6b89-e26c2ad1470a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotablesvrif0hcr02xy
+      HTTP/1.1\r\nAccept: [application/json;odata=minimalmetadata]\r\nContent-Length:
+      [415]\r\nContent-Type: [application/json]\r\nDataserviceversion: [3.0]\r\nPrefer:
+      [return-no-content]\r\nX-Ms-Version: [2019-02-02]\r\n\r\n{\"BoolProp\":true,\"IntProp\":9,\"PartitionKey\":\"partition\",\"RowKey\":\"9\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeDateProperty\":\"2021-05-17T18:03:25.162469-05:00\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty1\":1.2345,\"SomeGuidProperty\":[57,224,36,216,102,7,76,69,110,81,8,246,88,140,101,36],\"SomeInt64Property\":9223372036854775807,\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
+      string\",\"StringProp\":\"some string 9\"}\r\n--changeset_f54dcc1a-b74e-4088-6b89-e26c2ad1470a\r\nContent-Transfer-Encoding:
+      binary\r\nContent-Type: application/http\r\n\r\nPOST https://chrisstablesprim.table.cosmos.azure.com/gotablesvrif0hcr02xy
+      HTTP/1.1\r\nAccept: [application/json;odata=minimalmetadata]\r\nContent-Length:
+      [422]\r\nContent-Type: [application/json]\r\nDataserviceversion: [3.0]\r\nPrefer:
+      [return-no-content]\r\nX-Ms-Version: [2019-02-02]\r\n\r\n{\"BoolProp\":true,\"IntProp\":10,\"PartitionKey\":\"partition\",\"RowKey\":\"10\",\"SomeBinaryProperty\":\"c29tZSBieXRlcw==\",\"SomeDateProperty\":\"2021-05-17T18:03:25.162469-05:00\",\"SomeDoubleProperty0\":1,\"SomeDoubleProperty1\":1.2345,\"SomeGuidProperty\":[169,160,167,81,83,164,64,57,127,18,35,174,102,17,126,130],\"SomeInt64Property\":9223372036854775807,\"SomeIntProperty\":42,\"SomeStringProperty\":\"some
+      string\",\"StringProp\":\"some string 10\"}\r\n--changeset_f54dcc1a-b74e-4088-6b89-e26c2ad1470a--\r\n"
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "8212"
+      Content-Type:
+      - multipart/mixed; boundary=ce190fcd-97c3-4d6d-7342-4aa37e4116a6
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2; Windows_NT)
+      X-Ms-Date:
+      - Mon, 17 May 2021 23:03:25 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://chrisstablesprim.table.cosmos.azure.com/$batch
+    method: POST
+  response:
+    body: "{\"odata.error\":{\"code\":\"InvalidInput\",\"message\":{\"lang\":\"en-us\",\"value\":\"The
+      batch request body is malformed. Please see https://docs.microsoft.com/en-us/rest/api/storageservices/performing-entity-group-transactions\\r\\nActivityId:
+      d1caba07-eb29-45c8-9806-d9aa7fd1df26, documentdb-dotnet-sdk/2.11.0 Host/64-bit
+      MicrosoftWindowsNT/6.2.9200.0\\nRequestID:d1caba07-eb29-45c8-9806-d9aa7fd1df26\\n\"}}}\r\n"
+    headers:
+      Content-Type:
+      - application/json;odata=fullmetadata
+      Date:
+      - Mon, 17 May 2021 23:03:24 GMT
+      Server:
+      - Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - d1caba07-eb29-45c8-9806-d9aa7fd1df26
+    status: 400 Bad Request
+    code: 400
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+        Windows_NT)
+      X-Ms-Date:
+      - Mon, 17 May 2021 23:03:25 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://chrisstablesprim.table.cosmos.azure.com/Tables('gotablesvrif0hcr02xy')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Mon, 17 May 2021 23:03:24 GMT
+      Server:
+      - Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 61ccaa35-5f91-4ace-8721-4a8095e6968d
+    status: 204 No Content
+    code: 204
+    duration: ""

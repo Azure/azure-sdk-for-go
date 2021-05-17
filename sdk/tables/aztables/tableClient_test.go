@@ -4,24 +4,8 @@
 package aztables
 
 import (
-<<<<<<< HEAD
-<<<<<<< HEAD
-	"testing"
-)
-
-func TestContainerCreateAccessContainer(t *testing.T) {
-	// TODO
-	cred, err := NewSharedKeyCredential("foo", "Kg==")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	NewTableClient("https://foo", cred, &TableClientOptions{})
-=======
-=======
 	"bytes"
 	"io/ioutil"
->>>>>>> f5fd86f59 (wip)
 	"net/http"
 	"testing"
 
@@ -161,7 +145,6 @@ func (s *tableClientLiveTests) init(doCreate bool) (*TableClient, func()) {
 	return client, func() {
 		client.Delete(ctx)
 	}
->>>>>>> a90f565e4 (testFramework initial implementation with aztables tests)
 }
 
 func getStringFromBody(e *runtime.ResponseError) string {

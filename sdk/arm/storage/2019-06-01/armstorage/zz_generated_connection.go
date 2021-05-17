@@ -7,4 +7,6 @@
 
 package armstorage
 
-const telemetryInfo = "azsdk-go-armstorage/v0.2.0"
+import "github.com/Azure/azure-sdk-for-go/sdk/arm/storage"
+
+const telemetryInfo = "azsdk-go-armstorage/2019-06-01/" + storage.Version

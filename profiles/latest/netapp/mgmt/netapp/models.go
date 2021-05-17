@@ -11,7 +11,7 @@ package netapp
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2020-12-01/netapp"
+	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-02-01/netapp"
 )
 
 const (
@@ -21,20 +21,27 @@ const (
 type ActiveDirectoryStatus = original.ActiveDirectoryStatus
 
 const (
-	Created  ActiveDirectoryStatus = original.Created
-	Deleted  ActiveDirectoryStatus = original.Deleted
-	Error    ActiveDirectoryStatus = original.Error
-	InUse    ActiveDirectoryStatus = original.InUse
-	Updating ActiveDirectoryStatus = original.Updating
+	ActiveDirectoryStatusCreated  ActiveDirectoryStatus = original.ActiveDirectoryStatusCreated
+	ActiveDirectoryStatusDeleted  ActiveDirectoryStatus = original.ActiveDirectoryStatusDeleted
+	ActiveDirectoryStatusError    ActiveDirectoryStatus = original.ActiveDirectoryStatusError
+	ActiveDirectoryStatusInUse    ActiveDirectoryStatus = original.ActiveDirectoryStatusInUse
+	ActiveDirectoryStatusUpdating ActiveDirectoryStatus = original.ActiveDirectoryStatusUpdating
+)
+
+type BackupType = original.BackupType
+
+const (
+	BackupTypeManual    BackupType = original.BackupTypeManual
+	BackupTypeScheduled BackupType = original.BackupTypeScheduled
 )
 
 type CheckNameResourceTypes = original.CheckNameResourceTypes
 
 const (
-	MicrosoftNetAppnetAppAccounts                              CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccounts
-	MicrosoftNetAppnetAppAccountscapacityPools                 CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccountscapacityPools
-	MicrosoftNetAppnetAppAccountscapacityPoolsvolumes          CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccountscapacityPoolsvolumes
-	MicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots CheckNameResourceTypes = original.MicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots
+	CheckNameResourceTypesMicrosoftNetAppnetAppAccounts                              CheckNameResourceTypes = original.CheckNameResourceTypesMicrosoftNetAppnetAppAccounts
+	CheckNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPools                 CheckNameResourceTypes = original.CheckNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPools
+	CheckNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPoolsvolumes          CheckNameResourceTypes = original.CheckNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPoolsvolumes
+	CheckNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots CheckNameResourceTypes = original.CheckNameResourceTypesMicrosoftNetAppnetAppAccountscapacityPoolsvolumessnapshots
 )
 
 type CheckQuotaNameResourceTypes = original.CheckQuotaNameResourceTypes
@@ -49,69 +56,69 @@ const (
 type CreatedByType = original.CreatedByType
 
 const (
-	Application     CreatedByType = original.Application
-	Key             CreatedByType = original.Key
-	ManagedIdentity CreatedByType = original.ManagedIdentity
-	User            CreatedByType = original.User
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type EndpointType = original.EndpointType
 
 const (
-	Dst EndpointType = original.Dst
-	Src EndpointType = original.Src
+	EndpointTypeDst EndpointType = original.EndpointTypeDst
+	EndpointTypeSrc EndpointType = original.EndpointTypeSrc
 )
 
 type InAvailabilityReasonType = original.InAvailabilityReasonType
 
 const (
-	AlreadyExists InAvailabilityReasonType = original.AlreadyExists
-	Invalid       InAvailabilityReasonType = original.Invalid
+	InAvailabilityReasonTypeAlreadyExists InAvailabilityReasonType = original.InAvailabilityReasonTypeAlreadyExists
+	InAvailabilityReasonTypeInvalid       InAvailabilityReasonType = original.InAvailabilityReasonTypeInvalid
 )
 
 type MirrorState = original.MirrorState
 
 const (
-	Broken        MirrorState = original.Broken
-	Mirrored      MirrorState = original.Mirrored
-	Uninitialized MirrorState = original.Uninitialized
+	MirrorStateBroken        MirrorState = original.MirrorStateBroken
+	MirrorStateMirrored      MirrorState = original.MirrorStateMirrored
+	MirrorStateUninitialized MirrorState = original.MirrorStateUninitialized
 )
 
 type QosType = original.QosType
 
 const (
-	Auto   QosType = original.Auto
-	Manual QosType = original.Manual
+	QosTypeAuto   QosType = original.QosTypeAuto
+	QosTypeManual QosType = original.QosTypeManual
 )
 
 type RelationshipStatus = original.RelationshipStatus
 
 const (
-	Idle         RelationshipStatus = original.Idle
-	Transferring RelationshipStatus = original.Transferring
+	RelationshipStatusIdle         RelationshipStatus = original.RelationshipStatusIdle
+	RelationshipStatusTransferring RelationshipStatus = original.RelationshipStatusTransferring
 )
 
 type ReplicationSchedule = original.ReplicationSchedule
 
 const (
-	OneZerominutely ReplicationSchedule = original.OneZerominutely
-	Daily           ReplicationSchedule = original.Daily
-	Hourly          ReplicationSchedule = original.Hourly
+	ReplicationSchedule10minutely ReplicationSchedule = original.ReplicationSchedule10minutely
+	ReplicationScheduleDaily      ReplicationSchedule = original.ReplicationScheduleDaily
+	ReplicationScheduleHourly     ReplicationSchedule = original.ReplicationScheduleHourly
 )
 
 type SecurityStyle = original.SecurityStyle
 
 const (
-	Ntfs SecurityStyle = original.Ntfs
-	Unix SecurityStyle = original.Unix
+	SecurityStyleNtfs SecurityStyle = original.SecurityStyleNtfs
+	SecurityStyleUnix SecurityStyle = original.SecurityStyleUnix
 )
 
 type ServiceLevel = original.ServiceLevel
 
 const (
-	Premium  ServiceLevel = original.Premium
-	Standard ServiceLevel = original.Standard
-	Ultra    ServiceLevel = original.Ultra
+	ServiceLevelPremium  ServiceLevel = original.ServiceLevelPremium
+	ServiceLevelStandard ServiceLevel = original.ServiceLevelStandard
+	ServiceLevelUltra    ServiceLevel = original.ServiceLevelUltra
 )
 
 type Account = original.Account
@@ -135,6 +142,7 @@ type BackupPoliciesClient = original.BackupPoliciesClient
 type BackupPoliciesCreateFuture = original.BackupPoliciesCreateFuture
 type BackupPoliciesDeleteFuture = original.BackupPoliciesDeleteFuture
 type BackupPoliciesList = original.BackupPoliciesList
+type BackupPoliciesUpdateFuture = original.BackupPoliciesUpdateFuture
 type BackupPolicy = original.BackupPolicy
 type BackupPolicyDetails = original.BackupPolicyDetails
 type BackupPolicyPatch = original.BackupPolicyPatch
@@ -206,7 +214,6 @@ type VaultProperties = original.VaultProperties
 type VaultsClient = original.VaultsClient
 type Volume = original.Volume
 type VolumeBackupProperties = original.VolumeBackupProperties
-type VolumeBackupStatusClient = original.VolumeBackupStatusClient
 type VolumeBackups = original.VolumeBackups
 type VolumeList = original.VolumeList
 type VolumeListIterator = original.VolumeListIterator
@@ -308,12 +315,6 @@ func NewVaultsClient(subscriptionID string) VaultsClient {
 func NewVaultsClientWithBaseURI(baseURI string, subscriptionID string) VaultsClient {
 	return original.NewVaultsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewVolumeBackupStatusClient(subscriptionID string) VolumeBackupStatusClient {
-	return original.NewVolumeBackupStatusClient(subscriptionID)
-}
-func NewVolumeBackupStatusClientWithBaseURI(baseURI string, subscriptionID string) VolumeBackupStatusClient {
-	return original.NewVolumeBackupStatusClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewVolumeListIterator(page VolumeListPage) VolumeListIterator {
 	return original.NewVolumeListIterator(page)
 }
@@ -331,6 +332,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleActiveDirectoryStatusValues() []ActiveDirectoryStatus {
 	return original.PossibleActiveDirectoryStatusValues()
+}
+func PossibleBackupTypeValues() []BackupType {
+	return original.PossibleBackupTypeValues()
 }
 func PossibleCheckNameResourceTypesValues() []CheckNameResourceTypes {
 	return original.PossibleCheckNameResourceTypesValues()

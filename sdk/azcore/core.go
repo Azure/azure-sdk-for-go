@@ -154,13 +154,19 @@ var nullables map[reflect.Type]interface{} = map[reflect.Type]interface{}{}
 // This is typically used in JSON-MERGE-PATCH operations to delete a value.
 func NullValue(v interface{}) interface{} {
 	t := reflect.TypeOf(v)
-	if t.Kind() != reflect.Ptr {
+	if k := t.Kind(); k != reflect.Ptr && k != reflect.Slice && k != reflect.Map {
 		// t is not of pointer type, make it be of pointer type
 		t = reflect.PtrTo(t)
 	}
 	v, found := nullables[t]
 	if !found {
-		o := reflect.New(t.Elem())
+		var o reflect.Value
+		if k := t.Kind(); k == reflect.Slice || k == reflect.Map {
+			o = reflect.New(t) // *[]type
+			o = o.Elem()       // []type
+		} else {
+			o = reflect.New(t.Elem())
+		}
 		v = o.Interface()
 		nullables[t] = v
 	}
@@ -173,13 +179,17 @@ func NullValue(v interface{}) interface{} {
 func IsNullValue(v interface{}) bool {
 	// see if our map has a sentinel object for this *T
 	t := reflect.TypeOf(v)
-	if t.Kind() != reflect.Ptr {
+	if k := t.Kind(); k != reflect.Ptr && k != reflect.Slice && k != reflect.Map {
 		// v isn't a pointer type so it can never be a null
 		return false
 	}
 	if o, found := nullables[t]; found {
-		// we found it; return true if v points to the sentinel object
-		return o == v
+		o1 := reflect.ValueOf(o)
+		v1 := reflect.ValueOf(v)
+		// we found it; return true if v points to the sentinel object.
+		// NOTE: maps and slices can only be compared to nil, else you get
+		// a runtime panic.  so we compare addresses instead.
+		return o1.Pointer() == v1.Pointer()
 	}
 	// no sentinel object for this *t
 	return false

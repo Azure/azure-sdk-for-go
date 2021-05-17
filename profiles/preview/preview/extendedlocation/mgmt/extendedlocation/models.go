@@ -21,16 +21,16 @@ const (
 type CreatedByType = original.CreatedByType
 
 const (
-	Application     CreatedByType = original.Application
-	Key             CreatedByType = original.Key
-	ManagedIdentity CreatedByType = original.ManagedIdentity
-	User            CreatedByType = original.User
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type HostType = original.HostType
 
 const (
-	Kubernetes HostType = original.Kubernetes
+	HostTypeKubernetes HostType = original.HostTypeKubernetes
 )
 
 type AzureEntityResource = original.AzureEntityResource

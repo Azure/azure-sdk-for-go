@@ -435,7 +435,7 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	cred.client.endpoint = imdsEndpoint
-	req, err := cred.client.createIMDSAuthRequest(context.Background(), []string{msiScope})
+	req, err := cred.client.createIMDSAuthRequest(context.Background(), clientID, []string{msiScope})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -451,6 +451,9 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 	}
 	if reqQueryParams["resource"][0] != msiScope {
 		t.Fatalf("Unexpected resource in resource query param")
+	}
+	if reqQueryParams["client_id"][0] != clientID {
+		t.Fatalf("Unexpected client ID. Expected: %s, Received: %s", clientID, reqQueryParams["client_id"][0])
 	}
 	if u := req.Request.URL.String(); !strings.HasPrefix(u, imdsEndpoint) {
 		t.Fatalf("Unexpected default authority host %s", u)

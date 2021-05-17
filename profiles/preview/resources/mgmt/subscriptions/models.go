@@ -11,64 +11,73 @@ package subscriptions
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2019-11-01/subscriptions"
+	original "github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2021-01-01/subscriptions"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type LocationType = original.LocationType
+
+const (
+	LocationTypeEdgeZone LocationType = original.LocationTypeEdgeZone
+	LocationTypeRegion   LocationType = original.LocationTypeRegion
+)
+
 type RegionCategory = original.RegionCategory
 
 const (
-	Other       RegionCategory = original.Other
-	Recommended RegionCategory = original.Recommended
+	RegionCategoryExtended    RegionCategory = original.RegionCategoryExtended
+	RegionCategoryOther       RegionCategory = original.RegionCategoryOther
+	RegionCategoryRecommended RegionCategory = original.RegionCategoryRecommended
 )
 
 type RegionType = original.RegionType
 
 const (
-	Logical  RegionType = original.Logical
-	Physical RegionType = original.Physical
+	RegionTypeLogical  RegionType = original.RegionTypeLogical
+	RegionTypePhysical RegionType = original.RegionTypePhysical
 )
 
 type ResourceNameStatus = original.ResourceNameStatus
 
 const (
-	Allowed  ResourceNameStatus = original.Allowed
-	Reserved ResourceNameStatus = original.Reserved
+	ResourceNameStatusAllowed  ResourceNameStatus = original.ResourceNameStatusAllowed
+	ResourceNameStatusReserved ResourceNameStatus = original.ResourceNameStatusReserved
 )
 
 type SpendingLimit = original.SpendingLimit
 
 const (
-	CurrentPeriodOff SpendingLimit = original.CurrentPeriodOff
-	Off              SpendingLimit = original.Off
-	On               SpendingLimit = original.On
+	SpendingLimitCurrentPeriodOff SpendingLimit = original.SpendingLimitCurrentPeriodOff
+	SpendingLimitOff              SpendingLimit = original.SpendingLimitOff
+	SpendingLimitOn               SpendingLimit = original.SpendingLimitOn
 )
 
 type State = original.State
 
 const (
-	Deleted  State = original.Deleted
-	Disabled State = original.Disabled
-	Enabled  State = original.Enabled
-	PastDue  State = original.PastDue
-	Warned   State = original.Warned
+	StateDeleted  State = original.StateDeleted
+	StateDisabled State = original.StateDisabled
+	StateEnabled  State = original.StateEnabled
+	StatePastDue  State = original.StatePastDue
+	StateWarned   State = original.StateWarned
 )
 
 type TenantCategory = original.TenantCategory
 
 const (
-	Home        TenantCategory = original.Home
-	ManagedBy   TenantCategory = original.ManagedBy
-	ProjectedBy TenantCategory = original.ProjectedBy
+	TenantCategoryHome        TenantCategory = original.TenantCategoryHome
+	TenantCategoryManagedBy   TenantCategory = original.TenantCategoryManagedBy
+	TenantCategoryProjectedBy TenantCategory = original.TenantCategoryProjectedBy
 )
 
 type BaseClient = original.BaseClient
 type CheckResourceNameResult = original.CheckResourceNameResult
 type Client = original.Client
-type ErrorDefinition = original.ErrorDefinition
+type CloudError = original.CloudError
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorResponse = original.ErrorResponse
 type ListResult = original.ListResult
 type ListResultIterator = original.ListResultIterator
@@ -134,6 +143,9 @@ func NewTenantsClientWithBaseURI(baseURI string) TenantsClient {
 }
 func NewWithBaseURI(baseURI string) BaseClient {
 	return original.NewWithBaseURI(baseURI)
+}
+func PossibleLocationTypeValues() []LocationType {
+	return original.PossibleLocationTypeValues()
 }
 func PossibleRegionCategoryValues() []RegionCategory {
 	return original.PossibleRegionCategoryValues()

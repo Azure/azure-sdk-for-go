@@ -8,10 +8,12 @@
 
 package devicesapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/iothub/mgmt/2019-07-01-preview/devices/devicesapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/iothub/mgmt/2021-03-03-preview/devices/devicesapi"
 
 type CertificatesClientAPI = original.CertificatesClientAPI
 type IotHubClientAPI = original.IotHubClientAPI
 type IotHubResourceClientAPI = original.IotHubResourceClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type ResourceProviderCommonClientAPI = original.ResourceProviderCommonClientAPI

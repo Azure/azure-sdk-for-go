@@ -28,15 +28,17 @@ func ExampleKeysClient_CreateIfNotExist() {
 		"<key name>",
 		armkeyvault.KeyCreateParameters{
 			Properties: &armkeyvault.KeyProperties{
-				Attributes: &armkeyvault.Attributes{
-					Enabled: to.BoolPtr(true),
+				Attributes: &armkeyvault.KeyAttributes{
+					Attributes: armkeyvault.Attributes{
+						Enabled: to.BoolPtr(true),
+					},
 				},
 				KeySize: to.Int32Ptr(2048),
-				KeyOps: &[]armkeyvault.JSONWebKeyOperation{
-					armkeyvault.JSONWebKeyOperationEncrypt,
-					armkeyvault.JSONWebKeyOperationDecrypt,
+				KeyOps: &[]*armkeyvault.JSONWebKeyOperation{
+					armkeyvault.JSONWebKeyOperationEncrypt.ToPtr(),
+					armkeyvault.JSONWebKeyOperationDecrypt.ToPtr(),
 				},
-				Kty: armkeyvault.JSONWebKeyTypeRsa.ToPtr(),
+				Kty: armkeyvault.JSONWebKeyTypeRSA.ToPtr(),
 			}}, nil)
 	if err != nil {
 		log.Fatalf("failed to create the key: %v", err)

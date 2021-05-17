@@ -11,7 +11,7 @@ package securityinsight
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/securityinsight/mgmt/v1.0/securityinsight"
+	original "github.com/Azure/azure-sdk-for-go/services/securityinsight/mgmt/2020-01-01/securityinsight"
 )
 
 const (
@@ -21,35 +21,35 @@ const (
 type AlertRuleKind = original.AlertRuleKind
 
 const (
-	Fusion                            AlertRuleKind = original.Fusion
-	MicrosoftSecurityIncidentCreation AlertRuleKind = original.MicrosoftSecurityIncidentCreation
-	Scheduled                         AlertRuleKind = original.Scheduled
+	AlertRuleKindFusion                            AlertRuleKind = original.AlertRuleKindFusion
+	AlertRuleKindMicrosoftSecurityIncidentCreation AlertRuleKind = original.AlertRuleKindMicrosoftSecurityIncidentCreation
+	AlertRuleKindScheduled                         AlertRuleKind = original.AlertRuleKindScheduled
 )
 
 type AlertSeverity = original.AlertSeverity
 
 const (
-	High          AlertSeverity = original.High
-	Informational AlertSeverity = original.Informational
-	Low           AlertSeverity = original.Low
-	Medium        AlertSeverity = original.Medium
+	AlertSeverityHigh          AlertSeverity = original.AlertSeverityHigh
+	AlertSeverityInformational AlertSeverity = original.AlertSeverityInformational
+	AlertSeverityLow           AlertSeverity = original.AlertSeverityLow
+	AlertSeverityMedium        AlertSeverity = original.AlertSeverityMedium
 )
 
 type AttackTactic = original.AttackTactic
 
 const (
-	Collection          AttackTactic = original.Collection
-	CommandAndControl   AttackTactic = original.CommandAndControl
-	CredentialAccess    AttackTactic = original.CredentialAccess
-	DefenseEvasion      AttackTactic = original.DefenseEvasion
-	Discovery           AttackTactic = original.Discovery
-	Execution           AttackTactic = original.Execution
-	Exfiltration        AttackTactic = original.Exfiltration
-	Impact              AttackTactic = original.Impact
-	InitialAccess       AttackTactic = original.InitialAccess
-	LateralMovement     AttackTactic = original.LateralMovement
-	Persistence         AttackTactic = original.Persistence
-	PrivilegeEscalation AttackTactic = original.PrivilegeEscalation
+	AttackTacticCollection          AttackTactic = original.AttackTacticCollection
+	AttackTacticCommandAndControl   AttackTactic = original.AttackTacticCommandAndControl
+	AttackTacticCredentialAccess    AttackTactic = original.AttackTacticCredentialAccess
+	AttackTacticDefenseEvasion      AttackTactic = original.AttackTacticDefenseEvasion
+	AttackTacticDiscovery           AttackTactic = original.AttackTacticDiscovery
+	AttackTacticExecution           AttackTactic = original.AttackTacticExecution
+	AttackTacticExfiltration        AttackTactic = original.AttackTacticExfiltration
+	AttackTacticImpact              AttackTactic = original.AttackTacticImpact
+	AttackTacticInitialAccess       AttackTactic = original.AttackTacticInitialAccess
+	AttackTacticLateralMovement     AttackTactic = original.AttackTacticLateralMovement
+	AttackTacticPersistence         AttackTactic = original.AttackTacticPersistence
+	AttackTacticPrivilegeEscalation AttackTactic = original.AttackTacticPrivilegeEscalation
 )
 
 type CaseSeverity = original.CaseSeverity
@@ -78,33 +78,33 @@ const (
 type DataTypeState = original.DataTypeState
 
 const (
-	Disabled DataTypeState = original.Disabled
-	Enabled  DataTypeState = original.Enabled
+	DataTypeStateDisabled DataTypeState = original.DataTypeStateDisabled
+	DataTypeStateEnabled  DataTypeState = original.DataTypeStateEnabled
 )
 
 type IncidentClassification = original.IncidentClassification
 
 const (
-	BenignPositive IncidentClassification = original.BenignPositive
-	FalsePositive  IncidentClassification = original.FalsePositive
-	TruePositive   IncidentClassification = original.TruePositive
-	Undetermined   IncidentClassification = original.Undetermined
+	IncidentClassificationBenignPositive IncidentClassification = original.IncidentClassificationBenignPositive
+	IncidentClassificationFalsePositive  IncidentClassification = original.IncidentClassificationFalsePositive
+	IncidentClassificationTruePositive   IncidentClassification = original.IncidentClassificationTruePositive
+	IncidentClassificationUndetermined   IncidentClassification = original.IncidentClassificationUndetermined
 )
 
 type IncidentClassificationReason = original.IncidentClassificationReason
 
 const (
-	InaccurateData        IncidentClassificationReason = original.InaccurateData
-	IncorrectAlertLogic   IncidentClassificationReason = original.IncorrectAlertLogic
-	SuspiciousActivity    IncidentClassificationReason = original.SuspiciousActivity
-	SuspiciousButExpected IncidentClassificationReason = original.SuspiciousButExpected
+	IncidentClassificationReasonInaccurateData        IncidentClassificationReason = original.IncidentClassificationReasonInaccurateData
+	IncidentClassificationReasonIncorrectAlertLogic   IncidentClassificationReason = original.IncidentClassificationReasonIncorrectAlertLogic
+	IncidentClassificationReasonSuspiciousActivity    IncidentClassificationReason = original.IncidentClassificationReasonSuspiciousActivity
+	IncidentClassificationReasonSuspiciousButExpected IncidentClassificationReason = original.IncidentClassificationReasonSuspiciousButExpected
 )
 
 type IncidentLabelType = original.IncidentLabelType
 
 const (
-	System IncidentLabelType = original.System
-	User   IncidentLabelType = original.User
+	IncidentLabelTypeSystem IncidentLabelType = original.IncidentLabelTypeSystem
+	IncidentLabelTypeUser   IncidentLabelType = original.IncidentLabelTypeUser
 )
 
 type IncidentSeverity = original.IncidentSeverity
@@ -127,10 +127,10 @@ const (
 type Kind = original.Kind
 
 const (
-	KindAlertRule                         Kind = original.KindAlertRule
-	KindFusion                            Kind = original.KindFusion
-	KindMicrosoftSecurityIncidentCreation Kind = original.KindMicrosoftSecurityIncidentCreation
-	KindScheduled                         Kind = original.KindScheduled
+	KindKindAlertRule                         Kind = original.KindKindAlertRule
+	KindKindFusion                            Kind = original.KindKindFusion
+	KindKindMicrosoftSecurityIncidentCreation Kind = original.KindKindMicrosoftSecurityIncidentCreation
+	KindKindScheduled                         Kind = original.KindKindScheduled
 )
 
 type KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplate
@@ -145,23 +145,23 @@ const (
 type KindBasicDataConnector = original.KindBasicDataConnector
 
 const (
-	KindAmazonWebServicesCloudTrail               KindBasicDataConnector = original.KindAmazonWebServicesCloudTrail
-	KindAzureActiveDirectory                      KindBasicDataConnector = original.KindAzureActiveDirectory
-	KindAzureAdvancedThreatProtection             KindBasicDataConnector = original.KindAzureAdvancedThreatProtection
-	KindAzureSecurityCenter                       KindBasicDataConnector = original.KindAzureSecurityCenter
-	KindDataConnector                             KindBasicDataConnector = original.KindDataConnector
-	KindMicrosoftCloudAppSecurity                 KindBasicDataConnector = original.KindMicrosoftCloudAppSecurity
-	KindMicrosoftDefenderAdvancedThreatProtection KindBasicDataConnector = original.KindMicrosoftDefenderAdvancedThreatProtection
-	KindOffice365                                 KindBasicDataConnector = original.KindOffice365
-	KindThreatIntelligence                        KindBasicDataConnector = original.KindThreatIntelligence
+	KindBasicDataConnectorKindAmazonWebServicesCloudTrail               KindBasicDataConnector = original.KindBasicDataConnectorKindAmazonWebServicesCloudTrail
+	KindBasicDataConnectorKindAzureActiveDirectory                      KindBasicDataConnector = original.KindBasicDataConnectorKindAzureActiveDirectory
+	KindBasicDataConnectorKindAzureAdvancedThreatProtection             KindBasicDataConnector = original.KindBasicDataConnectorKindAzureAdvancedThreatProtection
+	KindBasicDataConnectorKindAzureSecurityCenter                       KindBasicDataConnector = original.KindBasicDataConnectorKindAzureSecurityCenter
+	KindBasicDataConnectorKindDataConnector                             KindBasicDataConnector = original.KindBasicDataConnectorKindDataConnector
+	KindBasicDataConnectorKindMicrosoftCloudAppSecurity                 KindBasicDataConnector = original.KindBasicDataConnectorKindMicrosoftCloudAppSecurity
+	KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection KindBasicDataConnector = original.KindBasicDataConnectorKindMicrosoftDefenderAdvancedThreatProtection
+	KindBasicDataConnectorKindOffice365                                 KindBasicDataConnector = original.KindBasicDataConnectorKindOffice365
+	KindBasicDataConnectorKindThreatIntelligence                        KindBasicDataConnector = original.KindBasicDataConnectorKindThreatIntelligence
 )
 
 type KindBasicSettings = original.KindBasicSettings
 
 const (
-	KindSettings       KindBasicSettings = original.KindSettings
-	KindToggleSettings KindBasicSettings = original.KindToggleSettings
-	KindUebaSettings   KindBasicSettings = original.KindUebaSettings
+	KindBasicSettingsKindSettings       KindBasicSettings = original.KindBasicSettingsKindSettings
+	KindBasicSettingsKindToggleSettings KindBasicSettings = original.KindBasicSettingsKindToggleSettings
+	KindBasicSettingsKindUebaSettings   KindBasicSettings = original.KindBasicSettingsKindUebaSettings
 )
 
 type LicenseStatus = original.LicenseStatus
@@ -174,11 +174,11 @@ const (
 type MicrosoftSecurityProductName = original.MicrosoftSecurityProductName
 
 const (
-	AzureActiveDirectoryIdentityProtection MicrosoftSecurityProductName = original.AzureActiveDirectoryIdentityProtection
-	AzureAdvancedThreatProtection          MicrosoftSecurityProductName = original.AzureAdvancedThreatProtection
-	AzureSecurityCenter                    MicrosoftSecurityProductName = original.AzureSecurityCenter
-	AzureSecurityCenterforIoT              MicrosoftSecurityProductName = original.AzureSecurityCenterforIoT
-	MicrosoftCloudAppSecurity              MicrosoftSecurityProductName = original.MicrosoftCloudAppSecurity
+	MicrosoftSecurityProductNameAzureActiveDirectoryIdentityProtection MicrosoftSecurityProductName = original.MicrosoftSecurityProductNameAzureActiveDirectoryIdentityProtection
+	MicrosoftSecurityProductNameAzureAdvancedThreatProtection          MicrosoftSecurityProductName = original.MicrosoftSecurityProductNameAzureAdvancedThreatProtection
+	MicrosoftSecurityProductNameAzureSecurityCenter                    MicrosoftSecurityProductName = original.MicrosoftSecurityProductNameAzureSecurityCenter
+	MicrosoftSecurityProductNameAzureSecurityCenterforIoT              MicrosoftSecurityProductName = original.MicrosoftSecurityProductNameAzureSecurityCenterforIoT
+	MicrosoftSecurityProductNameMicrosoftCloudAppSecurity              MicrosoftSecurityProductName = original.MicrosoftSecurityProductNameMicrosoftCloudAppSecurity
 )
 
 type SettingKind = original.SettingKind
@@ -198,18 +198,18 @@ const (
 type TemplateStatus = original.TemplateStatus
 
 const (
-	Available    TemplateStatus = original.Available
-	Installed    TemplateStatus = original.Installed
-	NotAvailable TemplateStatus = original.NotAvailable
+	TemplateStatusAvailable    TemplateStatus = original.TemplateStatusAvailable
+	TemplateStatusInstalled    TemplateStatus = original.TemplateStatusInstalled
+	TemplateStatusNotAvailable TemplateStatus = original.TemplateStatusNotAvailable
 )
 
 type TriggerOperator = original.TriggerOperator
 
 const (
-	Equal       TriggerOperator = original.Equal
-	GreaterThan TriggerOperator = original.GreaterThan
-	LessThan    TriggerOperator = original.LessThan
-	NotEqual    TriggerOperator = original.NotEqual
+	TriggerOperatorEqual       TriggerOperator = original.TriggerOperatorEqual
+	TriggerOperatorGreaterThan TriggerOperator = original.TriggerOperatorGreaterThan
+	TriggerOperatorLessThan    TriggerOperator = original.TriggerOperatorLessThan
+	TriggerOperatorNotEqual    TriggerOperator = original.TriggerOperatorNotEqual
 )
 
 type AADDataConnector = original.AADDataConnector
@@ -306,6 +306,7 @@ type OfficeDataConnector = original.OfficeDataConnector
 type OfficeDataConnectorDataTypes = original.OfficeDataConnectorDataTypes
 type OfficeDataConnectorDataTypesExchange = original.OfficeDataConnectorDataTypesExchange
 type OfficeDataConnectorDataTypesSharePoint = original.OfficeDataConnectorDataTypesSharePoint
+type OfficeDataConnectorDataTypesTeams = original.OfficeDataConnectorDataTypesTeams
 type OfficeDataConnectorProperties = original.OfficeDataConnectorProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay

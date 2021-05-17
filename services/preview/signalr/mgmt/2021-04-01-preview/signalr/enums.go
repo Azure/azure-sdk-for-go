@@ -10,15 +10,15 @@ package signalr
 type ACLAction string
 
 const (
-	// Allow ...
-	Allow ACLAction = "Allow"
-	// Deny ...
-	Deny ACLAction = "Deny"
+	// ACLActionAllow ...
+	ACLActionAllow ACLAction = "Allow"
+	// ACLActionDeny ...
+	ACLActionDeny ACLAction = "Deny"
 )
 
 // PossibleACLActionValues returns an array of possible values for the ACLAction const type.
 func PossibleACLActionValues() []ACLAction {
-	return []ACLAction{Allow, Deny}
+	return []ACLAction{ACLActionAllow, ACLActionDeny}
 }
 
 // CreatedByType enumerates the values for created by type.
@@ -44,133 +44,133 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 type FeatureFlags string
 
 const (
-	// EnableConnectivityLogs ...
-	EnableConnectivityLogs FeatureFlags = "EnableConnectivityLogs"
-	// EnableLiveTrace ...
-	EnableLiveTrace FeatureFlags = "EnableLiveTrace"
-	// EnableMessagingLogs ...
-	EnableMessagingLogs FeatureFlags = "EnableMessagingLogs"
-	// ServiceMode ...
-	ServiceMode FeatureFlags = "ServiceMode"
+	// FeatureFlagsEnableConnectivityLogs ...
+	FeatureFlagsEnableConnectivityLogs FeatureFlags = "EnableConnectivityLogs"
+	// FeatureFlagsEnableLiveTrace ...
+	FeatureFlagsEnableLiveTrace FeatureFlags = "EnableLiveTrace"
+	// FeatureFlagsEnableMessagingLogs ...
+	FeatureFlagsEnableMessagingLogs FeatureFlags = "EnableMessagingLogs"
+	// FeatureFlagsServiceMode ...
+	FeatureFlagsServiceMode FeatureFlags = "ServiceMode"
 )
 
 // PossibleFeatureFlagsValues returns an array of possible values for the FeatureFlags const type.
 func PossibleFeatureFlagsValues() []FeatureFlags {
-	return []FeatureFlags{EnableConnectivityLogs, EnableLiveTrace, EnableMessagingLogs, ServiceMode}
+	return []FeatureFlags{FeatureFlagsEnableConnectivityLogs, FeatureFlagsEnableLiveTrace, FeatureFlagsEnableMessagingLogs, FeatureFlagsServiceMode}
 }
 
 // KeyType enumerates the values for key type.
 type KeyType string
 
 const (
-	// Primary ...
-	Primary KeyType = "Primary"
-	// Secondary ...
-	Secondary KeyType = "Secondary"
+	// KeyTypePrimary ...
+	KeyTypePrimary KeyType = "Primary"
+	// KeyTypeSecondary ...
+	KeyTypeSecondary KeyType = "Secondary"
 )
 
 // PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
 func PossibleKeyTypeValues() []KeyType {
-	return []KeyType{Primary, Secondary}
+	return []KeyType{KeyTypePrimary, KeyTypeSecondary}
 }
 
 // ManagedIdentityType enumerates the values for managed identity type.
 type ManagedIdentityType string
 
 const (
-	// None ...
-	None ManagedIdentityType = "None"
-	// SystemAssigned ...
-	SystemAssigned ManagedIdentityType = "SystemAssigned"
-	// UserAssigned ...
-	UserAssigned ManagedIdentityType = "UserAssigned"
+	// ManagedIdentityTypeNone ...
+	ManagedIdentityTypeNone ManagedIdentityType = "None"
+	// ManagedIdentityTypeSystemAssigned ...
+	ManagedIdentityTypeSystemAssigned ManagedIdentityType = "SystemAssigned"
+	// ManagedIdentityTypeUserAssigned ...
+	ManagedIdentityTypeUserAssigned ManagedIdentityType = "UserAssigned"
 )
 
 // PossibleManagedIdentityTypeValues returns an array of possible values for the ManagedIdentityType const type.
 func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
-	return []ManagedIdentityType{None, SystemAssigned, UserAssigned}
+	return []ManagedIdentityType{ManagedIdentityTypeNone, ManagedIdentityTypeSystemAssigned, ManagedIdentityTypeUserAssigned}
 }
 
 // PrivateLinkServiceConnectionStatus enumerates the values for private link service connection status.
 type PrivateLinkServiceConnectionStatus string
 
 const (
-	// Approved ...
-	Approved PrivateLinkServiceConnectionStatus = "Approved"
-	// Disconnected ...
-	Disconnected PrivateLinkServiceConnectionStatus = "Disconnected"
-	// Pending ...
-	Pending PrivateLinkServiceConnectionStatus = "Pending"
-	// Rejected ...
-	Rejected PrivateLinkServiceConnectionStatus = "Rejected"
+	// PrivateLinkServiceConnectionStatusApproved ...
+	PrivateLinkServiceConnectionStatusApproved PrivateLinkServiceConnectionStatus = "Approved"
+	// PrivateLinkServiceConnectionStatusDisconnected ...
+	PrivateLinkServiceConnectionStatusDisconnected PrivateLinkServiceConnectionStatus = "Disconnected"
+	// PrivateLinkServiceConnectionStatusPending ...
+	PrivateLinkServiceConnectionStatusPending PrivateLinkServiceConnectionStatus = "Pending"
+	// PrivateLinkServiceConnectionStatusRejected ...
+	PrivateLinkServiceConnectionStatusRejected PrivateLinkServiceConnectionStatus = "Rejected"
 )
 
 // PossiblePrivateLinkServiceConnectionStatusValues returns an array of possible values for the PrivateLinkServiceConnectionStatus const type.
 func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConnectionStatus {
-	return []PrivateLinkServiceConnectionStatus{Approved, Disconnected, Pending, Rejected}
+	return []PrivateLinkServiceConnectionStatus{PrivateLinkServiceConnectionStatusApproved, PrivateLinkServiceConnectionStatusDisconnected, PrivateLinkServiceConnectionStatusPending, PrivateLinkServiceConnectionStatusRejected}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
 const (
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Moving ...
-	Moving ProvisioningState = "Moving"
-	// Running ...
-	Running ProvisioningState = "Running"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Unknown ...
-	Unknown ProvisioningState = "Unknown"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
+	// ProvisioningStateCanceled ...
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	// ProvisioningStateCreating ...
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	// ProvisioningStateDeleting ...
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	// ProvisioningStateFailed ...
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateMoving ...
+	ProvisioningStateMoving ProvisioningState = "Moving"
+	// ProvisioningStateRunning ...
+	ProvisioningStateRunning ProvisioningState = "Running"
+	// ProvisioningStateSucceeded ...
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	// ProvisioningStateUnknown ...
+	ProvisioningStateUnknown ProvisioningState = "Unknown"
+	// ProvisioningStateUpdating ...
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Canceled, Creating, Deleting, Failed, Moving, Running, Succeeded, Unknown, Updating}
+	return []ProvisioningState{ProvisioningStateCanceled, ProvisioningStateCreating, ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateMoving, ProvisioningStateRunning, ProvisioningStateSucceeded, ProvisioningStateUnknown, ProvisioningStateUpdating}
 }
 
 // RequestType enumerates the values for request type.
 type RequestType string
 
 const (
-	// ClientConnection ...
-	ClientConnection RequestType = "ClientConnection"
-	// RESTAPI ...
-	RESTAPI RequestType = "RESTAPI"
-	// ServerConnection ...
-	ServerConnection RequestType = "ServerConnection"
-	// Trace ...
-	Trace RequestType = "Trace"
+	// RequestTypeClientConnection ...
+	RequestTypeClientConnection RequestType = "ClientConnection"
+	// RequestTypeRESTAPI ...
+	RequestTypeRESTAPI RequestType = "RESTAPI"
+	// RequestTypeServerConnection ...
+	RequestTypeServerConnection RequestType = "ServerConnection"
+	// RequestTypeTrace ...
+	RequestTypeTrace RequestType = "Trace"
 )
 
 // PossibleRequestTypeValues returns an array of possible values for the RequestType const type.
 func PossibleRequestTypeValues() []RequestType {
-	return []RequestType{ClientConnection, RESTAPI, ServerConnection, Trace}
+	return []RequestType{RequestTypeClientConnection, RequestTypeRESTAPI, RequestTypeServerConnection, RequestTypeTrace}
 }
 
 // ServiceKind enumerates the values for service kind.
 type ServiceKind string
 
 const (
-	// RawWebSockets ...
-	RawWebSockets ServiceKind = "RawWebSockets"
-	// SignalR ...
-	SignalR ServiceKind = "SignalR"
+	// ServiceKindRawWebSockets ...
+	ServiceKindRawWebSockets ServiceKind = "RawWebSockets"
+	// ServiceKindSignalR ...
+	ServiceKindSignalR ServiceKind = "SignalR"
 )
 
 // PossibleServiceKindValues returns an array of possible values for the ServiceKind const type.
 func PossibleServiceKindValues() []ServiceKind {
-	return []ServiceKind{RawWebSockets, SignalR}
+	return []ServiceKind{ServiceKindRawWebSockets, ServiceKindSignalR}
 }
 
 // SharedPrivateLinkResourceStatus enumerates the values for shared private link resource status.
@@ -198,19 +198,19 @@ func PossibleSharedPrivateLinkResourceStatusValues() []SharedPrivateLinkResource
 type SkuTier string
 
 const (
-	// Basic ...
-	Basic SkuTier = "Basic"
-	// Free ...
-	Free SkuTier = "Free"
-	// Premium ...
-	Premium SkuTier = "Premium"
-	// Standard ...
-	Standard SkuTier = "Standard"
+	// SkuTierBasic ...
+	SkuTierBasic SkuTier = "Basic"
+	// SkuTierFree ...
+	SkuTierFree SkuTier = "Free"
+	// SkuTierPremium ...
+	SkuTierPremium SkuTier = "Premium"
+	// SkuTierStandard ...
+	SkuTierStandard SkuTier = "Standard"
 )
 
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
 func PossibleSkuTierValues() []SkuTier {
-	return []SkuTier{Basic, Free, Premium, Standard}
+	return []SkuTier{SkuTierBasic, SkuTierFree, SkuTierPremium, SkuTierStandard}
 }
 
 // UpstreamAuthType enumerates the values for upstream auth type.

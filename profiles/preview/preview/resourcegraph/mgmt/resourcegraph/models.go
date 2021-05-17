@@ -8,52 +8,79 @@
 
 package resourcegraph
 
-import (
-	"context"
-
-	original "github.com/Azure/azure-sdk-for-go/services/preview/resourcegraph/mgmt/2018-09-01/resourcegraph"
-)
+import original "github.com/Azure/azure-sdk-for-go/services/preview/resourcegraph/mgmt/2021-03-01-preview/resourcegraph"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type ChangeCategory = original.ChangeCategory
+
+const (
+	ChangeCategorySystem ChangeCategory = original.ChangeCategorySystem
+	ChangeCategoryUser   ChangeCategory = original.ChangeCategoryUser
+)
+
+type ChangeType = original.ChangeType
+
+const (
+	ChangeTypeCreate ChangeType = original.ChangeTypeCreate
+	ChangeTypeDelete ChangeType = original.ChangeTypeDelete
+	ChangeTypeUpdate ChangeType = original.ChangeTypeUpdate
+)
+
 type ColumnDataType = original.ColumnDataType
 
 const (
-	Boolean ColumnDataType = original.Boolean
-	Integer ColumnDataType = original.Integer
-	Number  ColumnDataType = original.Number
-	Object  ColumnDataType = original.Object
-	String  ColumnDataType = original.String
+	ColumnDataTypeBoolean ColumnDataType = original.ColumnDataTypeBoolean
+	ColumnDataTypeInteger ColumnDataType = original.ColumnDataTypeInteger
+	ColumnDataTypeNumber  ColumnDataType = original.ColumnDataTypeNumber
+	ColumnDataTypeObject  ColumnDataType = original.ColumnDataTypeObject
+	ColumnDataTypeString  ColumnDataType = original.ColumnDataTypeString
 )
 
 type FacetSortOrder = original.FacetSortOrder
 
 const (
-	Asc  FacetSortOrder = original.Asc
-	Desc FacetSortOrder = original.Desc
+	FacetSortOrderAsc  FacetSortOrder = original.FacetSortOrderAsc
+	FacetSortOrderDesc FacetSortOrder = original.FacetSortOrderDesc
 )
 
-type ResultKind = original.ResultKind
+type PropertyChangeType = original.PropertyChangeType
 
 const (
-	Basic ResultKind = original.Basic
+	PropertyChangeTypeInsert PropertyChangeType = original.PropertyChangeTypeInsert
+	PropertyChangeTypeRemove PropertyChangeType = original.PropertyChangeTypeRemove
+	PropertyChangeTypeUpdate PropertyChangeType = original.PropertyChangeTypeUpdate
+)
+
+type ResultFormat = original.ResultFormat
+
+const (
+	ResultFormatObjectArray ResultFormat = original.ResultFormatObjectArray
+	ResultFormatTable       ResultFormat = original.ResultFormatTable
+)
+
+type ResultFormat1 = original.ResultFormat1
+
+const (
+	ResultFormat1ObjectArray ResultFormat1 = original.ResultFormat1ObjectArray
+	ResultFormat1Table       ResultFormat1 = original.ResultFormat1Table
 )
 
 type ResultTruncated = original.ResultTruncated
 
 const (
-	False ResultTruncated = original.False
-	True  ResultTruncated = original.True
+	ResultTruncatedFalse ResultTruncated = original.ResultTruncatedFalse
+	ResultTruncatedTrue  ResultTruncated = original.ResultTruncatedTrue
 )
 
 type ResultType = original.ResultType
 
 const (
-	ResultTypeFacet       ResultType = original.ResultTypeFacet
-	ResultTypeFacetError  ResultType = original.ResultTypeFacetError
-	ResultTypeFacetResult ResultType = original.ResultTypeFacetResult
+	ResultTypeResultTypeFacet       ResultType = original.ResultTypeResultTypeFacet
+	ResultTypeResultTypeFacetError  ResultType = original.ResultTypeResultTypeFacetError
+	ResultTypeResultTypeFacetResult ResultType = original.ResultTypeResultTypeFacetResult
 )
 
 type BaseClient = original.BaseClient
@@ -62,32 +89,20 @@ type Column = original.Column
 type DateTimeInterval = original.DateTimeInterval
 type Error = original.Error
 type ErrorDetails = original.ErrorDetails
-type ErrorFieldContract = original.ErrorFieldContract
 type ErrorResponse = original.ErrorResponse
 type Facet = original.Facet
 type FacetError = original.FacetError
 type FacetRequest = original.FacetRequest
 type FacetRequestOptions = original.FacetRequestOptions
 type FacetResult = original.FacetResult
-type GraphQueryClient = original.GraphQueryClient
-type GraphQueryError = original.GraphQueryError
-type GraphQueryListResult = original.GraphQueryListResult
-type GraphQueryListResultIterator = original.GraphQueryListResultIterator
-type GraphQueryListResultPage = original.GraphQueryListResultPage
-type GraphQueryProperties = original.GraphQueryProperties
-type GraphQueryPropertiesUpdateParameters = original.GraphQueryPropertiesUpdateParameters
-type GraphQueryResource = original.GraphQueryResource
-type GraphQueryUpdateParameters = original.GraphQueryUpdateParameters
+type ListResourceChangeData = original.ListResourceChangeData
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
-type OperationListResultIterator = original.OperationListResultIterator
-type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type QueryRequest = original.QueryRequest
 type QueryRequestOptions = original.QueryRequestOptions
 type QueryResponse = original.QueryResponse
-type Resource = original.Resource
 type ResourceChangeData = original.ResourceChangeData
 type ResourceChangeDataAfterSnapshot = original.ResourceChangeDataAfterSnapshot
 type ResourceChangeDataBeforeSnapshot = original.ResourceChangeDataBeforeSnapshot
@@ -95,38 +110,30 @@ type ResourceChangeDetailsRequestParameters = original.ResourceChangeDetailsRequ
 type ResourceChangeList = original.ResourceChangeList
 type ResourceChangesRequestParameters = original.ResourceChangesRequestParameters
 type ResourceChangesRequestParametersInterval = original.ResourceChangesRequestParametersInterval
+type ResourcePropertyChange = original.ResourcePropertyChange
 type ResourceSnapshotData = original.ResourceSnapshotData
+type ResourcesHistoryRequest = original.ResourcesHistoryRequest
+type ResourcesHistoryRequestOptions = original.ResourcesHistoryRequestOptions
+type SetObject = original.SetObject
 type Table = original.Table
 
-func New(subscriptionID string) BaseClient {
-	return original.New(subscriptionID)
+func New() BaseClient {
+	return original.New()
 }
-func NewGraphQueryClient(subscriptionID string) GraphQueryClient {
-	return original.NewGraphQueryClient(subscriptionID)
+func NewOperationsClient() OperationsClient {
+	return original.NewOperationsClient()
 }
-func NewGraphQueryClientWithBaseURI(baseURI string, subscriptionID string) GraphQueryClient {
-	return original.NewGraphQueryClientWithBaseURI(baseURI, subscriptionID)
+func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
+	return original.NewOperationsClientWithBaseURI(baseURI)
 }
-func NewGraphQueryListResultIterator(page GraphQueryListResultPage) GraphQueryListResultIterator {
-	return original.NewGraphQueryListResultIterator(page)
+func NewWithBaseURI(baseURI string) BaseClient {
+	return original.NewWithBaseURI(baseURI)
 }
-func NewGraphQueryListResultPage(cur GraphQueryListResult, getNextPage func(context.Context, GraphQueryListResult) (GraphQueryListResult, error)) GraphQueryListResultPage {
-	return original.NewGraphQueryListResultPage(cur, getNextPage)
+func PossibleChangeCategoryValues() []ChangeCategory {
+	return original.PossibleChangeCategoryValues()
 }
-func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
-	return original.NewOperationListResultIterator(page)
-}
-func NewOperationListResultPage(cur OperationListResult, getNextPage func(context.Context, OperationListResult) (OperationListResult, error)) OperationListResultPage {
-	return original.NewOperationListResultPage(cur, getNextPage)
-}
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return original.NewOperationsClient(subscriptionID)
-}
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
-	return original.NewWithBaseURI(baseURI, subscriptionID)
+func PossibleChangeTypeValues() []ChangeType {
+	return original.PossibleChangeTypeValues()
 }
 func PossibleColumnDataTypeValues() []ColumnDataType {
 	return original.PossibleColumnDataTypeValues()
@@ -134,8 +141,14 @@ func PossibleColumnDataTypeValues() []ColumnDataType {
 func PossibleFacetSortOrderValues() []FacetSortOrder {
 	return original.PossibleFacetSortOrderValues()
 }
-func PossibleResultKindValues() []ResultKind {
-	return original.PossibleResultKindValues()
+func PossiblePropertyChangeTypeValues() []PropertyChangeType {
+	return original.PossiblePropertyChangeTypeValues()
+}
+func PossibleResultFormat1Values() []ResultFormat1 {
+	return original.PossibleResultFormat1Values()
+}
+func PossibleResultFormatValues() []ResultFormat {
+	return original.PossibleResultFormatValues()
 }
 func PossibleResultTruncatedValues() []ResultTruncated {
 	return original.PossibleResultTruncatedValues()

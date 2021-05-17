@@ -21,31 +21,31 @@ const (
 type AgentPoolMode = original.AgentPoolMode
 
 const (
-	System AgentPoolMode = original.System
-	User   AgentPoolMode = original.User
+	AgentPoolModeSystem AgentPoolMode = original.AgentPoolModeSystem
+	AgentPoolModeUser   AgentPoolMode = original.AgentPoolModeUser
 )
 
 type AgentPoolType = original.AgentPoolType
 
 const (
-	AvailabilitySet         AgentPoolType = original.AvailabilitySet
-	VirtualMachineScaleSets AgentPoolType = original.VirtualMachineScaleSets
+	AgentPoolTypeAvailabilitySet         AgentPoolType = original.AgentPoolTypeAvailabilitySet
+	AgentPoolTypeVirtualMachineScaleSets AgentPoolType = original.AgentPoolTypeVirtualMachineScaleSets
 )
 
 type Code = original.Code
 
 const (
-	Running Code = original.Running
-	Stopped Code = original.Stopped
+	CodeRunning Code = original.CodeRunning
+	CodeStopped Code = original.CodeStopped
 )
 
 type ConnectionStatus = original.ConnectionStatus
 
 const (
-	Approved     ConnectionStatus = original.Approved
-	Disconnected ConnectionStatus = original.Disconnected
-	Pending      ConnectionStatus = original.Pending
-	Rejected     ConnectionStatus = original.Rejected
+	ConnectionStatusApproved     ConnectionStatus = original.ConnectionStatusApproved
+	ConnectionStatusDisconnected ConnectionStatus = original.ConnectionStatusDisconnected
+	ConnectionStatusPending      ConnectionStatus = original.ConnectionStatusPending
+	ConnectionStatusRejected     ConnectionStatus = original.ConnectionStatusRejected
 )
 
 type CreatedByType = original.CreatedByType
@@ -60,56 +60,56 @@ const (
 type Expander = original.Expander
 
 const (
-	LeastWaste Expander = original.LeastWaste
-	MostPods   Expander = original.MostPods
-	Priority   Expander = original.Priority
-	Random     Expander = original.Random
+	ExpanderLeastWaste Expander = original.ExpanderLeastWaste
+	ExpanderMostPods   Expander = original.ExpanderMostPods
+	ExpanderPriority   Expander = original.ExpanderPriority
+	ExpanderRandom     Expander = original.ExpanderRandom
 )
 
 type ExtendedLocationTypes = original.ExtendedLocationTypes
 
 const (
-	EdgeZone ExtendedLocationTypes = original.EdgeZone
+	ExtendedLocationTypesEdgeZone ExtendedLocationTypes = original.ExtendedLocationTypesEdgeZone
 )
 
 type GPUInstanceProfile = original.GPUInstanceProfile
 
 const (
-	MIG1g GPUInstanceProfile = original.MIG1g
-	MIG2g GPUInstanceProfile = original.MIG2g
-	MIG3g GPUInstanceProfile = original.MIG3g
-	MIG4g GPUInstanceProfile = original.MIG4g
-	MIG7g GPUInstanceProfile = original.MIG7g
+	GPUInstanceProfileMIG1g GPUInstanceProfile = original.GPUInstanceProfileMIG1g
+	GPUInstanceProfileMIG2g GPUInstanceProfile = original.GPUInstanceProfileMIG2g
+	GPUInstanceProfileMIG3g GPUInstanceProfile = original.GPUInstanceProfileMIG3g
+	GPUInstanceProfileMIG4g GPUInstanceProfile = original.GPUInstanceProfileMIG4g
+	GPUInstanceProfileMIG7g GPUInstanceProfile = original.GPUInstanceProfileMIG7g
 )
 
 type KubeletDiskType = original.KubeletDiskType
 
 const (
-	OS        KubeletDiskType = original.OS
-	Temporary KubeletDiskType = original.Temporary
+	KubeletDiskTypeOS        KubeletDiskType = original.KubeletDiskTypeOS
+	KubeletDiskTypeTemporary KubeletDiskType = original.KubeletDiskTypeTemporary
 )
 
 type LicenseType = original.LicenseType
 
 const (
-	None          LicenseType = original.None
-	WindowsServer LicenseType = original.WindowsServer
+	LicenseTypeNone          LicenseType = original.LicenseTypeNone
+	LicenseTypeWindowsServer LicenseType = original.LicenseTypeWindowsServer
 )
 
 type LoadBalancerSku = original.LoadBalancerSku
 
 const (
-	Basic    LoadBalancerSku = original.Basic
-	Standard LoadBalancerSku = original.Standard
+	LoadBalancerSkuBasic    LoadBalancerSku = original.LoadBalancerSkuBasic
+	LoadBalancerSkuStandard LoadBalancerSku = original.LoadBalancerSkuStandard
 )
 
 type ManagedClusterPodIdentityProvisioningState = original.ManagedClusterPodIdentityProvisioningState
 
 const (
-	Assigned ManagedClusterPodIdentityProvisioningState = original.Assigned
-	Deleting ManagedClusterPodIdentityProvisioningState = original.Deleting
-	Failed   ManagedClusterPodIdentityProvisioningState = original.Failed
-	Updating ManagedClusterPodIdentityProvisioningState = original.Updating
+	ManagedClusterPodIdentityProvisioningStateAssigned ManagedClusterPodIdentityProvisioningState = original.ManagedClusterPodIdentityProvisioningStateAssigned
+	ManagedClusterPodIdentityProvisioningStateDeleting ManagedClusterPodIdentityProvisioningState = original.ManagedClusterPodIdentityProvisioningStateDeleting
+	ManagedClusterPodIdentityProvisioningStateFailed   ManagedClusterPodIdentityProvisioningState = original.ManagedClusterPodIdentityProvisioningStateFailed
+	ManagedClusterPodIdentityProvisioningStateUpdating ManagedClusterPodIdentityProvisioningState = original.ManagedClusterPodIdentityProvisioningStateUpdating
 )
 
 type ManagedClusterSKUName = original.ManagedClusterSKUName
@@ -121,22 +121,22 @@ const (
 type ManagedClusterSKUTier = original.ManagedClusterSKUTier
 
 const (
-	Free ManagedClusterSKUTier = original.Free
-	Paid ManagedClusterSKUTier = original.Paid
+	ManagedClusterSKUTierFree ManagedClusterSKUTier = original.ManagedClusterSKUTierFree
+	ManagedClusterSKUTierPaid ManagedClusterSKUTier = original.ManagedClusterSKUTierPaid
 )
 
 type NetworkMode = original.NetworkMode
 
 const (
-	Bridge      NetworkMode = original.Bridge
-	Transparent NetworkMode = original.Transparent
+	NetworkModeBridge      NetworkMode = original.NetworkModeBridge
+	NetworkModeTransparent NetworkMode = original.NetworkModeTransparent
 )
 
 type NetworkPlugin = original.NetworkPlugin
 
 const (
-	Azure   NetworkPlugin = original.Azure
-	Kubenet NetworkPlugin = original.Kubenet
+	NetworkPluginAzure   NetworkPlugin = original.NetworkPluginAzure
+	NetworkPluginKubenet NetworkPlugin = original.NetworkPluginKubenet
 )
 
 type NetworkPolicy = original.NetworkPolicy
@@ -149,29 +149,29 @@ const (
 type OSDiskType = original.OSDiskType
 
 const (
-	Ephemeral OSDiskType = original.Ephemeral
-	Managed   OSDiskType = original.Managed
+	OSDiskTypeEphemeral OSDiskType = original.OSDiskTypeEphemeral
+	OSDiskTypeManaged   OSDiskType = original.OSDiskTypeManaged
 )
 
 type OSSKU = original.OSSKU
 
 const (
-	CBLMariner OSSKU = original.CBLMariner
-	Ubuntu     OSSKU = original.Ubuntu
+	OSSKUCBLMariner OSSKU = original.OSSKUCBLMariner
+	OSSKUUbuntu     OSSKU = original.OSSKUUbuntu
 )
 
 type OSType = original.OSType
 
 const (
-	Linux   OSType = original.Linux
-	Windows OSType = original.Windows
+	OSTypeLinux   OSType = original.OSTypeLinux
+	OSTypeWindows OSType = original.OSTypeWindows
 )
 
 type OutboundType = original.OutboundType
 
 const (
-	LoadBalancer       OutboundType = original.LoadBalancer
-	UserDefinedRouting OutboundType = original.UserDefinedRouting
+	OutboundTypeLoadBalancer       OutboundType = original.OutboundTypeLoadBalancer
+	OutboundTypeUserDefinedRouting OutboundType = original.OutboundTypeUserDefinedRouting
 )
 
 type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
@@ -194,22 +194,22 @@ const (
 type ScaleSetEvictionPolicy = original.ScaleSetEvictionPolicy
 
 const (
-	Deallocate ScaleSetEvictionPolicy = original.Deallocate
-	Delete     ScaleSetEvictionPolicy = original.Delete
+	ScaleSetEvictionPolicyDeallocate ScaleSetEvictionPolicy = original.ScaleSetEvictionPolicyDeallocate
+	ScaleSetEvictionPolicyDelete     ScaleSetEvictionPolicy = original.ScaleSetEvictionPolicyDelete
 )
 
 type ScaleSetPriority = original.ScaleSetPriority
 
 const (
-	Regular ScaleSetPriority = original.Regular
-	Spot    ScaleSetPriority = original.Spot
+	ScaleSetPriorityRegular ScaleSetPriority = original.ScaleSetPriorityRegular
+	ScaleSetPrioritySpot    ScaleSetPriority = original.ScaleSetPrioritySpot
 )
 
 type StorageProfileTypes = original.StorageProfileTypes
 
 const (
-	ManagedDisks   StorageProfileTypes = original.ManagedDisks
-	StorageAccount StorageProfileTypes = original.StorageAccount
+	StorageProfileTypesManagedDisks   StorageProfileTypes = original.StorageProfileTypesManagedDisks
+	StorageProfileTypesStorageAccount StorageProfileTypes = original.StorageProfileTypesStorageAccount
 )
 
 type UpgradeChannel = original.UpgradeChannel
@@ -225,192 +225,192 @@ const (
 type VMSizeTypes = original.VMSizeTypes
 
 const (
-	StandardA1          VMSizeTypes = original.StandardA1
-	StandardA10         VMSizeTypes = original.StandardA10
-	StandardA11         VMSizeTypes = original.StandardA11
-	StandardA1V2        VMSizeTypes = original.StandardA1V2
-	StandardA2          VMSizeTypes = original.StandardA2
-	StandardA2mV2       VMSizeTypes = original.StandardA2mV2
-	StandardA2V2        VMSizeTypes = original.StandardA2V2
-	StandardA3          VMSizeTypes = original.StandardA3
-	StandardA4          VMSizeTypes = original.StandardA4
-	StandardA4mV2       VMSizeTypes = original.StandardA4mV2
-	StandardA4V2        VMSizeTypes = original.StandardA4V2
-	StandardA5          VMSizeTypes = original.StandardA5
-	StandardA6          VMSizeTypes = original.StandardA6
-	StandardA7          VMSizeTypes = original.StandardA7
-	StandardA8          VMSizeTypes = original.StandardA8
-	StandardA8mV2       VMSizeTypes = original.StandardA8mV2
-	StandardA8V2        VMSizeTypes = original.StandardA8V2
-	StandardA9          VMSizeTypes = original.StandardA9
-	StandardB2ms        VMSizeTypes = original.StandardB2ms
-	StandardB2s         VMSizeTypes = original.StandardB2s
-	StandardB4ms        VMSizeTypes = original.StandardB4ms
-	StandardB8ms        VMSizeTypes = original.StandardB8ms
-	StandardD1          VMSizeTypes = original.StandardD1
-	StandardD11         VMSizeTypes = original.StandardD11
-	StandardD11V2       VMSizeTypes = original.StandardD11V2
-	StandardD11V2Promo  VMSizeTypes = original.StandardD11V2Promo
-	StandardD12         VMSizeTypes = original.StandardD12
-	StandardD12V2       VMSizeTypes = original.StandardD12V2
-	StandardD12V2Promo  VMSizeTypes = original.StandardD12V2Promo
-	StandardD13         VMSizeTypes = original.StandardD13
-	StandardD13V2       VMSizeTypes = original.StandardD13V2
-	StandardD13V2Promo  VMSizeTypes = original.StandardD13V2Promo
-	StandardD14         VMSizeTypes = original.StandardD14
-	StandardD14V2       VMSizeTypes = original.StandardD14V2
-	StandardD14V2Promo  VMSizeTypes = original.StandardD14V2Promo
-	StandardD15V2       VMSizeTypes = original.StandardD15V2
-	StandardD16sV3      VMSizeTypes = original.StandardD16sV3
-	StandardD16V3       VMSizeTypes = original.StandardD16V3
-	StandardD1V2        VMSizeTypes = original.StandardD1V2
-	StandardD2          VMSizeTypes = original.StandardD2
-	StandardD2sV3       VMSizeTypes = original.StandardD2sV3
-	StandardD2V2        VMSizeTypes = original.StandardD2V2
-	StandardD2V2Promo   VMSizeTypes = original.StandardD2V2Promo
-	StandardD2V3        VMSizeTypes = original.StandardD2V3
-	StandardD3          VMSizeTypes = original.StandardD3
-	StandardD32sV3      VMSizeTypes = original.StandardD32sV3
-	StandardD32V3       VMSizeTypes = original.StandardD32V3
-	StandardD3V2        VMSizeTypes = original.StandardD3V2
-	StandardD3V2Promo   VMSizeTypes = original.StandardD3V2Promo
-	StandardD4          VMSizeTypes = original.StandardD4
-	StandardD4sV3       VMSizeTypes = original.StandardD4sV3
-	StandardD4V2        VMSizeTypes = original.StandardD4V2
-	StandardD4V2Promo   VMSizeTypes = original.StandardD4V2Promo
-	StandardD4V3        VMSizeTypes = original.StandardD4V3
-	StandardD5V2        VMSizeTypes = original.StandardD5V2
-	StandardD5V2Promo   VMSizeTypes = original.StandardD5V2Promo
-	StandardD64sV3      VMSizeTypes = original.StandardD64sV3
-	StandardD64V3       VMSizeTypes = original.StandardD64V3
-	StandardD8sV3       VMSizeTypes = original.StandardD8sV3
-	StandardD8V3        VMSizeTypes = original.StandardD8V3
-	StandardDS1         VMSizeTypes = original.StandardDS1
-	StandardDS11        VMSizeTypes = original.StandardDS11
-	StandardDS11V2      VMSizeTypes = original.StandardDS11V2
-	StandardDS11V2Promo VMSizeTypes = original.StandardDS11V2Promo
-	StandardDS12        VMSizeTypes = original.StandardDS12
-	StandardDS12V2      VMSizeTypes = original.StandardDS12V2
-	StandardDS12V2Promo VMSizeTypes = original.StandardDS12V2Promo
-	StandardDS13        VMSizeTypes = original.StandardDS13
-	StandardDS132V2     VMSizeTypes = original.StandardDS132V2
-	StandardDS134V2     VMSizeTypes = original.StandardDS134V2
-	StandardDS13V2      VMSizeTypes = original.StandardDS13V2
-	StandardDS13V2Promo VMSizeTypes = original.StandardDS13V2Promo
-	StandardDS14        VMSizeTypes = original.StandardDS14
-	StandardDS144V2     VMSizeTypes = original.StandardDS144V2
-	StandardDS148V2     VMSizeTypes = original.StandardDS148V2
-	StandardDS14V2      VMSizeTypes = original.StandardDS14V2
-	StandardDS14V2Promo VMSizeTypes = original.StandardDS14V2Promo
-	StandardDS15V2      VMSizeTypes = original.StandardDS15V2
-	StandardDS1V2       VMSizeTypes = original.StandardDS1V2
-	StandardDS2         VMSizeTypes = original.StandardDS2
-	StandardDS2V2       VMSizeTypes = original.StandardDS2V2
-	StandardDS2V2Promo  VMSizeTypes = original.StandardDS2V2Promo
-	StandardDS3         VMSizeTypes = original.StandardDS3
-	StandardDS3V2       VMSizeTypes = original.StandardDS3V2
-	StandardDS3V2Promo  VMSizeTypes = original.StandardDS3V2Promo
-	StandardDS4         VMSizeTypes = original.StandardDS4
-	StandardDS4V2       VMSizeTypes = original.StandardDS4V2
-	StandardDS4V2Promo  VMSizeTypes = original.StandardDS4V2Promo
-	StandardDS5V2       VMSizeTypes = original.StandardDS5V2
-	StandardDS5V2Promo  VMSizeTypes = original.StandardDS5V2Promo
-	StandardE16sV3      VMSizeTypes = original.StandardE16sV3
-	StandardE16V3       VMSizeTypes = original.StandardE16V3
-	StandardE2sV3       VMSizeTypes = original.StandardE2sV3
-	StandardE2V3        VMSizeTypes = original.StandardE2V3
-	StandardE3216sV3    VMSizeTypes = original.StandardE3216sV3
-	StandardE328sV3     VMSizeTypes = original.StandardE328sV3
-	StandardE32sV3      VMSizeTypes = original.StandardE32sV3
-	StandardE32V3       VMSizeTypes = original.StandardE32V3
-	StandardE4sV3       VMSizeTypes = original.StandardE4sV3
-	StandardE4V3        VMSizeTypes = original.StandardE4V3
-	StandardE6416sV3    VMSizeTypes = original.StandardE6416sV3
-	StandardE6432sV3    VMSizeTypes = original.StandardE6432sV3
-	StandardE64sV3      VMSizeTypes = original.StandardE64sV3
-	StandardE64V3       VMSizeTypes = original.StandardE64V3
-	StandardE8sV3       VMSizeTypes = original.StandardE8sV3
-	StandardE8V3        VMSizeTypes = original.StandardE8V3
-	StandardF1          VMSizeTypes = original.StandardF1
-	StandardF16         VMSizeTypes = original.StandardF16
-	StandardF16s        VMSizeTypes = original.StandardF16s
-	StandardF16sV2      VMSizeTypes = original.StandardF16sV2
-	StandardF1s         VMSizeTypes = original.StandardF1s
-	StandardF2          VMSizeTypes = original.StandardF2
-	StandardF2s         VMSizeTypes = original.StandardF2s
-	StandardF2sV2       VMSizeTypes = original.StandardF2sV2
-	StandardF32sV2      VMSizeTypes = original.StandardF32sV2
-	StandardF4          VMSizeTypes = original.StandardF4
-	StandardF4s         VMSizeTypes = original.StandardF4s
-	StandardF4sV2       VMSizeTypes = original.StandardF4sV2
-	StandardF64sV2      VMSizeTypes = original.StandardF64sV2
-	StandardF72sV2      VMSizeTypes = original.StandardF72sV2
-	StandardF8          VMSizeTypes = original.StandardF8
-	StandardF8s         VMSizeTypes = original.StandardF8s
-	StandardF8sV2       VMSizeTypes = original.StandardF8sV2
-	StandardG1          VMSizeTypes = original.StandardG1
-	StandardG2          VMSizeTypes = original.StandardG2
-	StandardG3          VMSizeTypes = original.StandardG3
-	StandardG4          VMSizeTypes = original.StandardG4
-	StandardG5          VMSizeTypes = original.StandardG5
-	StandardGS1         VMSizeTypes = original.StandardGS1
-	StandardGS2         VMSizeTypes = original.StandardGS2
-	StandardGS3         VMSizeTypes = original.StandardGS3
-	StandardGS4         VMSizeTypes = original.StandardGS4
-	StandardGS44        VMSizeTypes = original.StandardGS44
-	StandardGS48        VMSizeTypes = original.StandardGS48
-	StandardGS5         VMSizeTypes = original.StandardGS5
-	StandardGS516       VMSizeTypes = original.StandardGS516
-	StandardGS58        VMSizeTypes = original.StandardGS58
-	StandardH16         VMSizeTypes = original.StandardH16
-	StandardH16m        VMSizeTypes = original.StandardH16m
-	StandardH16mr       VMSizeTypes = original.StandardH16mr
-	StandardH16r        VMSizeTypes = original.StandardH16r
-	StandardH8          VMSizeTypes = original.StandardH8
-	StandardH8m         VMSizeTypes = original.StandardH8m
-	StandardL16s        VMSizeTypes = original.StandardL16s
-	StandardL32s        VMSizeTypes = original.StandardL32s
-	StandardL4s         VMSizeTypes = original.StandardL4s
-	StandardL8s         VMSizeTypes = original.StandardL8s
-	StandardM12832ms    VMSizeTypes = original.StandardM12832ms
-	StandardM12864ms    VMSizeTypes = original.StandardM12864ms
-	StandardM128ms      VMSizeTypes = original.StandardM128ms
-	StandardM128s       VMSizeTypes = original.StandardM128s
-	StandardM6416ms     VMSizeTypes = original.StandardM6416ms
-	StandardM6432ms     VMSizeTypes = original.StandardM6432ms
-	StandardM64ms       VMSizeTypes = original.StandardM64ms
-	StandardM64s        VMSizeTypes = original.StandardM64s
-	StandardNC12        VMSizeTypes = original.StandardNC12
-	StandardNC12sV2     VMSizeTypes = original.StandardNC12sV2
-	StandardNC12sV3     VMSizeTypes = original.StandardNC12sV3
-	StandardNC24        VMSizeTypes = original.StandardNC24
-	StandardNC24r       VMSizeTypes = original.StandardNC24r
-	StandardNC24rsV2    VMSizeTypes = original.StandardNC24rsV2
-	StandardNC24rsV3    VMSizeTypes = original.StandardNC24rsV3
-	StandardNC24sV2     VMSizeTypes = original.StandardNC24sV2
-	StandardNC24sV3     VMSizeTypes = original.StandardNC24sV3
-	StandardNC6         VMSizeTypes = original.StandardNC6
-	StandardNC6sV2      VMSizeTypes = original.StandardNC6sV2
-	StandardNC6sV3      VMSizeTypes = original.StandardNC6sV3
-	StandardND12s       VMSizeTypes = original.StandardND12s
-	StandardND24rs      VMSizeTypes = original.StandardND24rs
-	StandardND24s       VMSizeTypes = original.StandardND24s
-	StandardND6s        VMSizeTypes = original.StandardND6s
-	StandardNV12        VMSizeTypes = original.StandardNV12
-	StandardNV24        VMSizeTypes = original.StandardNV24
-	StandardNV6         VMSizeTypes = original.StandardNV6
+	VMSizeTypesStandardA1          VMSizeTypes = original.VMSizeTypesStandardA1
+	VMSizeTypesStandardA10         VMSizeTypes = original.VMSizeTypesStandardA10
+	VMSizeTypesStandardA11         VMSizeTypes = original.VMSizeTypesStandardA11
+	VMSizeTypesStandardA1V2        VMSizeTypes = original.VMSizeTypesStandardA1V2
+	VMSizeTypesStandardA2          VMSizeTypes = original.VMSizeTypesStandardA2
+	VMSizeTypesStandardA2mV2       VMSizeTypes = original.VMSizeTypesStandardA2mV2
+	VMSizeTypesStandardA2V2        VMSizeTypes = original.VMSizeTypesStandardA2V2
+	VMSizeTypesStandardA3          VMSizeTypes = original.VMSizeTypesStandardA3
+	VMSizeTypesStandardA4          VMSizeTypes = original.VMSizeTypesStandardA4
+	VMSizeTypesStandardA4mV2       VMSizeTypes = original.VMSizeTypesStandardA4mV2
+	VMSizeTypesStandardA4V2        VMSizeTypes = original.VMSizeTypesStandardA4V2
+	VMSizeTypesStandardA5          VMSizeTypes = original.VMSizeTypesStandardA5
+	VMSizeTypesStandardA6          VMSizeTypes = original.VMSizeTypesStandardA6
+	VMSizeTypesStandardA7          VMSizeTypes = original.VMSizeTypesStandardA7
+	VMSizeTypesStandardA8          VMSizeTypes = original.VMSizeTypesStandardA8
+	VMSizeTypesStandardA8mV2       VMSizeTypes = original.VMSizeTypesStandardA8mV2
+	VMSizeTypesStandardA8V2        VMSizeTypes = original.VMSizeTypesStandardA8V2
+	VMSizeTypesStandardA9          VMSizeTypes = original.VMSizeTypesStandardA9
+	VMSizeTypesStandardB2ms        VMSizeTypes = original.VMSizeTypesStandardB2ms
+	VMSizeTypesStandardB2s         VMSizeTypes = original.VMSizeTypesStandardB2s
+	VMSizeTypesStandardB4ms        VMSizeTypes = original.VMSizeTypesStandardB4ms
+	VMSizeTypesStandardB8ms        VMSizeTypes = original.VMSizeTypesStandardB8ms
+	VMSizeTypesStandardD1          VMSizeTypes = original.VMSizeTypesStandardD1
+	VMSizeTypesStandardD11         VMSizeTypes = original.VMSizeTypesStandardD11
+	VMSizeTypesStandardD11V2       VMSizeTypes = original.VMSizeTypesStandardD11V2
+	VMSizeTypesStandardD11V2Promo  VMSizeTypes = original.VMSizeTypesStandardD11V2Promo
+	VMSizeTypesStandardD12         VMSizeTypes = original.VMSizeTypesStandardD12
+	VMSizeTypesStandardD12V2       VMSizeTypes = original.VMSizeTypesStandardD12V2
+	VMSizeTypesStandardD12V2Promo  VMSizeTypes = original.VMSizeTypesStandardD12V2Promo
+	VMSizeTypesStandardD13         VMSizeTypes = original.VMSizeTypesStandardD13
+	VMSizeTypesStandardD13V2       VMSizeTypes = original.VMSizeTypesStandardD13V2
+	VMSizeTypesStandardD13V2Promo  VMSizeTypes = original.VMSizeTypesStandardD13V2Promo
+	VMSizeTypesStandardD14         VMSizeTypes = original.VMSizeTypesStandardD14
+	VMSizeTypesStandardD14V2       VMSizeTypes = original.VMSizeTypesStandardD14V2
+	VMSizeTypesStandardD14V2Promo  VMSizeTypes = original.VMSizeTypesStandardD14V2Promo
+	VMSizeTypesStandardD15V2       VMSizeTypes = original.VMSizeTypesStandardD15V2
+	VMSizeTypesStandardD16sV3      VMSizeTypes = original.VMSizeTypesStandardD16sV3
+	VMSizeTypesStandardD16V3       VMSizeTypes = original.VMSizeTypesStandardD16V3
+	VMSizeTypesStandardD1V2        VMSizeTypes = original.VMSizeTypesStandardD1V2
+	VMSizeTypesStandardD2          VMSizeTypes = original.VMSizeTypesStandardD2
+	VMSizeTypesStandardD2sV3       VMSizeTypes = original.VMSizeTypesStandardD2sV3
+	VMSizeTypesStandardD2V2        VMSizeTypes = original.VMSizeTypesStandardD2V2
+	VMSizeTypesStandardD2V2Promo   VMSizeTypes = original.VMSizeTypesStandardD2V2Promo
+	VMSizeTypesStandardD2V3        VMSizeTypes = original.VMSizeTypesStandardD2V3
+	VMSizeTypesStandardD3          VMSizeTypes = original.VMSizeTypesStandardD3
+	VMSizeTypesStandardD32sV3      VMSizeTypes = original.VMSizeTypesStandardD32sV3
+	VMSizeTypesStandardD32V3       VMSizeTypes = original.VMSizeTypesStandardD32V3
+	VMSizeTypesStandardD3V2        VMSizeTypes = original.VMSizeTypesStandardD3V2
+	VMSizeTypesStandardD3V2Promo   VMSizeTypes = original.VMSizeTypesStandardD3V2Promo
+	VMSizeTypesStandardD4          VMSizeTypes = original.VMSizeTypesStandardD4
+	VMSizeTypesStandardD4sV3       VMSizeTypes = original.VMSizeTypesStandardD4sV3
+	VMSizeTypesStandardD4V2        VMSizeTypes = original.VMSizeTypesStandardD4V2
+	VMSizeTypesStandardD4V2Promo   VMSizeTypes = original.VMSizeTypesStandardD4V2Promo
+	VMSizeTypesStandardD4V3        VMSizeTypes = original.VMSizeTypesStandardD4V3
+	VMSizeTypesStandardD5V2        VMSizeTypes = original.VMSizeTypesStandardD5V2
+	VMSizeTypesStandardD5V2Promo   VMSizeTypes = original.VMSizeTypesStandardD5V2Promo
+	VMSizeTypesStandardD64sV3      VMSizeTypes = original.VMSizeTypesStandardD64sV3
+	VMSizeTypesStandardD64V3       VMSizeTypes = original.VMSizeTypesStandardD64V3
+	VMSizeTypesStandardD8sV3       VMSizeTypes = original.VMSizeTypesStandardD8sV3
+	VMSizeTypesStandardD8V3        VMSizeTypes = original.VMSizeTypesStandardD8V3
+	VMSizeTypesStandardDS1         VMSizeTypes = original.VMSizeTypesStandardDS1
+	VMSizeTypesStandardDS11        VMSizeTypes = original.VMSizeTypesStandardDS11
+	VMSizeTypesStandardDS11V2      VMSizeTypes = original.VMSizeTypesStandardDS11V2
+	VMSizeTypesStandardDS11V2Promo VMSizeTypes = original.VMSizeTypesStandardDS11V2Promo
+	VMSizeTypesStandardDS12        VMSizeTypes = original.VMSizeTypesStandardDS12
+	VMSizeTypesStandardDS12V2      VMSizeTypes = original.VMSizeTypesStandardDS12V2
+	VMSizeTypesStandardDS12V2Promo VMSizeTypes = original.VMSizeTypesStandardDS12V2Promo
+	VMSizeTypesStandardDS13        VMSizeTypes = original.VMSizeTypesStandardDS13
+	VMSizeTypesStandardDS132V2     VMSizeTypes = original.VMSizeTypesStandardDS132V2
+	VMSizeTypesStandardDS134V2     VMSizeTypes = original.VMSizeTypesStandardDS134V2
+	VMSizeTypesStandardDS13V2      VMSizeTypes = original.VMSizeTypesStandardDS13V2
+	VMSizeTypesStandardDS13V2Promo VMSizeTypes = original.VMSizeTypesStandardDS13V2Promo
+	VMSizeTypesStandardDS14        VMSizeTypes = original.VMSizeTypesStandardDS14
+	VMSizeTypesStandardDS144V2     VMSizeTypes = original.VMSizeTypesStandardDS144V2
+	VMSizeTypesStandardDS148V2     VMSizeTypes = original.VMSizeTypesStandardDS148V2
+	VMSizeTypesStandardDS14V2      VMSizeTypes = original.VMSizeTypesStandardDS14V2
+	VMSizeTypesStandardDS14V2Promo VMSizeTypes = original.VMSizeTypesStandardDS14V2Promo
+	VMSizeTypesStandardDS15V2      VMSizeTypes = original.VMSizeTypesStandardDS15V2
+	VMSizeTypesStandardDS1V2       VMSizeTypes = original.VMSizeTypesStandardDS1V2
+	VMSizeTypesStandardDS2         VMSizeTypes = original.VMSizeTypesStandardDS2
+	VMSizeTypesStandardDS2V2       VMSizeTypes = original.VMSizeTypesStandardDS2V2
+	VMSizeTypesStandardDS2V2Promo  VMSizeTypes = original.VMSizeTypesStandardDS2V2Promo
+	VMSizeTypesStandardDS3         VMSizeTypes = original.VMSizeTypesStandardDS3
+	VMSizeTypesStandardDS3V2       VMSizeTypes = original.VMSizeTypesStandardDS3V2
+	VMSizeTypesStandardDS3V2Promo  VMSizeTypes = original.VMSizeTypesStandardDS3V2Promo
+	VMSizeTypesStandardDS4         VMSizeTypes = original.VMSizeTypesStandardDS4
+	VMSizeTypesStandardDS4V2       VMSizeTypes = original.VMSizeTypesStandardDS4V2
+	VMSizeTypesStandardDS4V2Promo  VMSizeTypes = original.VMSizeTypesStandardDS4V2Promo
+	VMSizeTypesStandardDS5V2       VMSizeTypes = original.VMSizeTypesStandardDS5V2
+	VMSizeTypesStandardDS5V2Promo  VMSizeTypes = original.VMSizeTypesStandardDS5V2Promo
+	VMSizeTypesStandardE16sV3      VMSizeTypes = original.VMSizeTypesStandardE16sV3
+	VMSizeTypesStandardE16V3       VMSizeTypes = original.VMSizeTypesStandardE16V3
+	VMSizeTypesStandardE2sV3       VMSizeTypes = original.VMSizeTypesStandardE2sV3
+	VMSizeTypesStandardE2V3        VMSizeTypes = original.VMSizeTypesStandardE2V3
+	VMSizeTypesStandardE3216sV3    VMSizeTypes = original.VMSizeTypesStandardE3216sV3
+	VMSizeTypesStandardE328sV3     VMSizeTypes = original.VMSizeTypesStandardE328sV3
+	VMSizeTypesStandardE32sV3      VMSizeTypes = original.VMSizeTypesStandardE32sV3
+	VMSizeTypesStandardE32V3       VMSizeTypes = original.VMSizeTypesStandardE32V3
+	VMSizeTypesStandardE4sV3       VMSizeTypes = original.VMSizeTypesStandardE4sV3
+	VMSizeTypesStandardE4V3        VMSizeTypes = original.VMSizeTypesStandardE4V3
+	VMSizeTypesStandardE6416sV3    VMSizeTypes = original.VMSizeTypesStandardE6416sV3
+	VMSizeTypesStandardE6432sV3    VMSizeTypes = original.VMSizeTypesStandardE6432sV3
+	VMSizeTypesStandardE64sV3      VMSizeTypes = original.VMSizeTypesStandardE64sV3
+	VMSizeTypesStandardE64V3       VMSizeTypes = original.VMSizeTypesStandardE64V3
+	VMSizeTypesStandardE8sV3       VMSizeTypes = original.VMSizeTypesStandardE8sV3
+	VMSizeTypesStandardE8V3        VMSizeTypes = original.VMSizeTypesStandardE8V3
+	VMSizeTypesStandardF1          VMSizeTypes = original.VMSizeTypesStandardF1
+	VMSizeTypesStandardF16         VMSizeTypes = original.VMSizeTypesStandardF16
+	VMSizeTypesStandardF16s        VMSizeTypes = original.VMSizeTypesStandardF16s
+	VMSizeTypesStandardF16sV2      VMSizeTypes = original.VMSizeTypesStandardF16sV2
+	VMSizeTypesStandardF1s         VMSizeTypes = original.VMSizeTypesStandardF1s
+	VMSizeTypesStandardF2          VMSizeTypes = original.VMSizeTypesStandardF2
+	VMSizeTypesStandardF2s         VMSizeTypes = original.VMSizeTypesStandardF2s
+	VMSizeTypesStandardF2sV2       VMSizeTypes = original.VMSizeTypesStandardF2sV2
+	VMSizeTypesStandardF32sV2      VMSizeTypes = original.VMSizeTypesStandardF32sV2
+	VMSizeTypesStandardF4          VMSizeTypes = original.VMSizeTypesStandardF4
+	VMSizeTypesStandardF4s         VMSizeTypes = original.VMSizeTypesStandardF4s
+	VMSizeTypesStandardF4sV2       VMSizeTypes = original.VMSizeTypesStandardF4sV2
+	VMSizeTypesStandardF64sV2      VMSizeTypes = original.VMSizeTypesStandardF64sV2
+	VMSizeTypesStandardF72sV2      VMSizeTypes = original.VMSizeTypesStandardF72sV2
+	VMSizeTypesStandardF8          VMSizeTypes = original.VMSizeTypesStandardF8
+	VMSizeTypesStandardF8s         VMSizeTypes = original.VMSizeTypesStandardF8s
+	VMSizeTypesStandardF8sV2       VMSizeTypes = original.VMSizeTypesStandardF8sV2
+	VMSizeTypesStandardG1          VMSizeTypes = original.VMSizeTypesStandardG1
+	VMSizeTypesStandardG2          VMSizeTypes = original.VMSizeTypesStandardG2
+	VMSizeTypesStandardG3          VMSizeTypes = original.VMSizeTypesStandardG3
+	VMSizeTypesStandardG4          VMSizeTypes = original.VMSizeTypesStandardG4
+	VMSizeTypesStandardG5          VMSizeTypes = original.VMSizeTypesStandardG5
+	VMSizeTypesStandardGS1         VMSizeTypes = original.VMSizeTypesStandardGS1
+	VMSizeTypesStandardGS2         VMSizeTypes = original.VMSizeTypesStandardGS2
+	VMSizeTypesStandardGS3         VMSizeTypes = original.VMSizeTypesStandardGS3
+	VMSizeTypesStandardGS4         VMSizeTypes = original.VMSizeTypesStandardGS4
+	VMSizeTypesStandardGS44        VMSizeTypes = original.VMSizeTypesStandardGS44
+	VMSizeTypesStandardGS48        VMSizeTypes = original.VMSizeTypesStandardGS48
+	VMSizeTypesStandardGS5         VMSizeTypes = original.VMSizeTypesStandardGS5
+	VMSizeTypesStandardGS516       VMSizeTypes = original.VMSizeTypesStandardGS516
+	VMSizeTypesStandardGS58        VMSizeTypes = original.VMSizeTypesStandardGS58
+	VMSizeTypesStandardH16         VMSizeTypes = original.VMSizeTypesStandardH16
+	VMSizeTypesStandardH16m        VMSizeTypes = original.VMSizeTypesStandardH16m
+	VMSizeTypesStandardH16mr       VMSizeTypes = original.VMSizeTypesStandardH16mr
+	VMSizeTypesStandardH16r        VMSizeTypes = original.VMSizeTypesStandardH16r
+	VMSizeTypesStandardH8          VMSizeTypes = original.VMSizeTypesStandardH8
+	VMSizeTypesStandardH8m         VMSizeTypes = original.VMSizeTypesStandardH8m
+	VMSizeTypesStandardL16s        VMSizeTypes = original.VMSizeTypesStandardL16s
+	VMSizeTypesStandardL32s        VMSizeTypes = original.VMSizeTypesStandardL32s
+	VMSizeTypesStandardL4s         VMSizeTypes = original.VMSizeTypesStandardL4s
+	VMSizeTypesStandardL8s         VMSizeTypes = original.VMSizeTypesStandardL8s
+	VMSizeTypesStandardM12832ms    VMSizeTypes = original.VMSizeTypesStandardM12832ms
+	VMSizeTypesStandardM12864ms    VMSizeTypes = original.VMSizeTypesStandardM12864ms
+	VMSizeTypesStandardM128ms      VMSizeTypes = original.VMSizeTypesStandardM128ms
+	VMSizeTypesStandardM128s       VMSizeTypes = original.VMSizeTypesStandardM128s
+	VMSizeTypesStandardM6416ms     VMSizeTypes = original.VMSizeTypesStandardM6416ms
+	VMSizeTypesStandardM6432ms     VMSizeTypes = original.VMSizeTypesStandardM6432ms
+	VMSizeTypesStandardM64ms       VMSizeTypes = original.VMSizeTypesStandardM64ms
+	VMSizeTypesStandardM64s        VMSizeTypes = original.VMSizeTypesStandardM64s
+	VMSizeTypesStandardNC12        VMSizeTypes = original.VMSizeTypesStandardNC12
+	VMSizeTypesStandardNC12sV2     VMSizeTypes = original.VMSizeTypesStandardNC12sV2
+	VMSizeTypesStandardNC12sV3     VMSizeTypes = original.VMSizeTypesStandardNC12sV3
+	VMSizeTypesStandardNC24        VMSizeTypes = original.VMSizeTypesStandardNC24
+	VMSizeTypesStandardNC24r       VMSizeTypes = original.VMSizeTypesStandardNC24r
+	VMSizeTypesStandardNC24rsV2    VMSizeTypes = original.VMSizeTypesStandardNC24rsV2
+	VMSizeTypesStandardNC24rsV3    VMSizeTypes = original.VMSizeTypesStandardNC24rsV3
+	VMSizeTypesStandardNC24sV2     VMSizeTypes = original.VMSizeTypesStandardNC24sV2
+	VMSizeTypesStandardNC24sV3     VMSizeTypes = original.VMSizeTypesStandardNC24sV3
+	VMSizeTypesStandardNC6         VMSizeTypes = original.VMSizeTypesStandardNC6
+	VMSizeTypesStandardNC6sV2      VMSizeTypes = original.VMSizeTypesStandardNC6sV2
+	VMSizeTypesStandardNC6sV3      VMSizeTypes = original.VMSizeTypesStandardNC6sV3
+	VMSizeTypesStandardND12s       VMSizeTypes = original.VMSizeTypesStandardND12s
+	VMSizeTypesStandardND24rs      VMSizeTypes = original.VMSizeTypesStandardND24rs
+	VMSizeTypesStandardND24s       VMSizeTypes = original.VMSizeTypesStandardND24s
+	VMSizeTypesStandardND6s        VMSizeTypes = original.VMSizeTypesStandardND6s
+	VMSizeTypesStandardNV12        VMSizeTypes = original.VMSizeTypesStandardNV12
+	VMSizeTypesStandardNV24        VMSizeTypes = original.VMSizeTypesStandardNV24
+	VMSizeTypesStandardNV6         VMSizeTypes = original.VMSizeTypesStandardNV6
 )
 
 type WeekDay = original.WeekDay
 
 const (
-	Friday    WeekDay = original.Friday
-	Monday    WeekDay = original.Monday
-	Saturday  WeekDay = original.Saturday
-	Sunday    WeekDay = original.Sunday
-	Thursday  WeekDay = original.Thursday
-	Tuesday   WeekDay = original.Tuesday
-	Wednesday WeekDay = original.Wednesday
+	WeekDayFriday    WeekDay = original.WeekDayFriday
+	WeekDayMonday    WeekDay = original.WeekDayMonday
+	WeekDaySaturday  WeekDay = original.WeekDaySaturday
+	WeekDaySunday    WeekDay = original.WeekDaySunday
+	WeekDayThursday  WeekDay = original.WeekDayThursday
+	WeekDayTuesday   WeekDay = original.WeekDayTuesday
+	WeekDayWednesday WeekDay = original.WeekDayWednesday
 )
 
 type AccessProfile = original.AccessProfile

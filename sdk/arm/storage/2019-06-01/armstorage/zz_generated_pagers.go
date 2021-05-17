@@ -15,15 +15,10 @@ import (
 
 // EncryptionScopeListResultPager provides iteration over EncryptionScopeListResult pages.
 type EncryptionScopeListResultPager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current EncryptionScopeListResultResponse.
 	PageResponse() EncryptionScopeListResultResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type encryptionScopeListResultCreateRequest func(context.Context) (*azcore.Request, error)
@@ -96,15 +91,10 @@ func (p *encryptionScopeListResultPager) PageResponse() EncryptionScopeListResul
 
 // FileShareItemsPager provides iteration over FileShareItems pages.
 type FileShareItemsPager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current FileShareItemsResponse.
 	PageResponse() FileShareItemsResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type fileShareItemsCreateRequest func(context.Context) (*azcore.Request, error)
@@ -177,15 +167,10 @@ func (p *fileShareItemsPager) PageResponse() FileShareItemsResponse {
 
 // ListContainerItemsPager provides iteration over ListContainerItems pages.
 type ListContainerItemsPager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current ListContainerItemsResponse.
 	PageResponse() ListContainerItemsResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type listContainerItemsCreateRequest func(context.Context) (*azcore.Request, error)
@@ -258,15 +243,10 @@ func (p *listContainerItemsPager) PageResponse() ListContainerItemsResponse {
 
 // ListQueueResourcePager provides iteration over ListQueueResource pages.
 type ListQueueResourcePager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current ListQueueResourceResponse.
 	PageResponse() ListQueueResourceResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type listQueueResourceCreateRequest func(context.Context) (*azcore.Request, error)
@@ -339,15 +319,10 @@ func (p *listQueueResourcePager) PageResponse() ListQueueResourceResponse {
 
 // ListTableResourcePager provides iteration over ListTableResource pages.
 type ListTableResourcePager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current ListTableResourceResponse.
 	PageResponse() ListTableResourceResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type listTableResourceCreateRequest func(context.Context) (*azcore.Request, error)
@@ -420,15 +395,10 @@ func (p *listTableResourcePager) PageResponse() ListTableResourceResponse {
 
 // StorageAccountListResultPager provides iteration over StorageAccountListResult pages.
 type StorageAccountListResultPager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current StorageAccountListResultResponse.
 	PageResponse() StorageAccountListResultResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type storageAccountListResultCreateRequest func(context.Context) (*azcore.Request, error)

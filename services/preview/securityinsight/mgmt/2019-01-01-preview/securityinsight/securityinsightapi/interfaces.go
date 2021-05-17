@@ -51,6 +51,17 @@ type AlertRuleTemplatesClientAPI interface {
 
 var _ AlertRuleTemplatesClientAPI = (*securityinsight.AlertRuleTemplatesClient)(nil)
 
+// AutomationRulesClientAPI contains the set of methods on the AutomationRulesClient type.
+type AutomationRulesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, automationRuleID string, automationRule securityinsight.AutomationRule) (result securityinsight.AutomationRule, err error)
+	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, automationRuleID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, automationRuleID string) (result securityinsight.AutomationRule, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.AutomationRulesListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string) (result securityinsight.AutomationRulesListIterator, err error)
+}
+
+var _ AutomationRulesClientAPI = (*securityinsight.AutomationRulesClient)(nil)
+
 // CasesClientAPI contains the set of methods on the CasesClient type.
 type CasesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, caseID string, caseParameter securityinsight.Case) (result securityinsight.Case, err error)
@@ -253,13 +264,16 @@ type WatchlistsClientAPI interface {
 
 var _ WatchlistsClientAPI = (*securityinsight.WatchlistsClient)(nil)
 
-// WatchlistItemClientAPI contains the set of methods on the WatchlistItemClient type.
-type WatchlistItemClientAPI interface {
+// WatchlistItemsClientAPI contains the set of methods on the WatchlistItemsClient type.
+type WatchlistItemsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, watchlistAlias string, watchlistItemID string, watchlistItem securityinsight.WatchlistItem) (result securityinsight.WatchlistItem, err error)
 	Delete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, watchlistAlias string, watchlistItemID string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, watchlistAlias string, watchlistItemID string) (result securityinsight.WatchlistItem, err error)
+	List(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, watchlistAlias string) (result securityinsight.WatchlistItemListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, watchlistAlias string) (result securityinsight.WatchlistItemListIterator, err error)
 }
 
-var _ WatchlistItemClientAPI = (*securityinsight.WatchlistItemClient)(nil)
+var _ WatchlistItemsClientAPI = (*securityinsight.WatchlistItemsClient)(nil)
 
 // ThreatIntelligenceIndicatorClientAPI contains the set of methods on the ThreatIntelligenceIndicatorClient type.
 type ThreatIntelligenceIndicatorClientAPI interface {

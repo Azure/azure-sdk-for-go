@@ -7,4 +7,6 @@
 
 package armkeyvault
 
-const telemetryInfo = "azsdk-go-armkeyvault/v0.2.0"
+import "github.com/Azure/azure-sdk-for-go/sdk/arm/keyvault"
+
+const telemetryInfo = "azsdk-go-armkeyvault/2019-09-01/" + keyvault.Version

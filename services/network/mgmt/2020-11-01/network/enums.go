@@ -10,15 +10,15 @@ package network
 type Access string
 
 const (
-	// Allow ...
-	Allow Access = "Allow"
-	// Deny ...
-	Deny Access = "Deny"
+	// AccessAllow ...
+	AccessAllow Access = "Allow"
+	// AccessDeny ...
+	AccessDeny Access = "Deny"
 )
 
 // PossibleAccessValues returns an array of possible values for the Access const type.
 func PossibleAccessValues() []Access {
-	return []Access{Allow, Deny}
+	return []Access{AccessAllow, AccessDeny}
 }
 
 // ApplicationGatewayBackendHealthServerHealth enumerates the values for application gateway backend health
@@ -26,36 +26,36 @@ func PossibleAccessValues() []Access {
 type ApplicationGatewayBackendHealthServerHealth string
 
 const (
-	// Down ...
-	Down ApplicationGatewayBackendHealthServerHealth = "Down"
-	// Draining ...
-	Draining ApplicationGatewayBackendHealthServerHealth = "Draining"
-	// Partial ...
-	Partial ApplicationGatewayBackendHealthServerHealth = "Partial"
-	// Unknown ...
-	Unknown ApplicationGatewayBackendHealthServerHealth = "Unknown"
-	// Up ...
-	Up ApplicationGatewayBackendHealthServerHealth = "Up"
+	// ApplicationGatewayBackendHealthServerHealthDown ...
+	ApplicationGatewayBackendHealthServerHealthDown ApplicationGatewayBackendHealthServerHealth = "Down"
+	// ApplicationGatewayBackendHealthServerHealthDraining ...
+	ApplicationGatewayBackendHealthServerHealthDraining ApplicationGatewayBackendHealthServerHealth = "Draining"
+	// ApplicationGatewayBackendHealthServerHealthPartial ...
+	ApplicationGatewayBackendHealthServerHealthPartial ApplicationGatewayBackendHealthServerHealth = "Partial"
+	// ApplicationGatewayBackendHealthServerHealthUnknown ...
+	ApplicationGatewayBackendHealthServerHealthUnknown ApplicationGatewayBackendHealthServerHealth = "Unknown"
+	// ApplicationGatewayBackendHealthServerHealthUp ...
+	ApplicationGatewayBackendHealthServerHealthUp ApplicationGatewayBackendHealthServerHealth = "Up"
 )
 
 // PossibleApplicationGatewayBackendHealthServerHealthValues returns an array of possible values for the ApplicationGatewayBackendHealthServerHealth const type.
 func PossibleApplicationGatewayBackendHealthServerHealthValues() []ApplicationGatewayBackendHealthServerHealth {
-	return []ApplicationGatewayBackendHealthServerHealth{Down, Draining, Partial, Unknown, Up}
+	return []ApplicationGatewayBackendHealthServerHealth{ApplicationGatewayBackendHealthServerHealthDown, ApplicationGatewayBackendHealthServerHealthDraining, ApplicationGatewayBackendHealthServerHealthPartial, ApplicationGatewayBackendHealthServerHealthUnknown, ApplicationGatewayBackendHealthServerHealthUp}
 }
 
 // ApplicationGatewayCookieBasedAffinity enumerates the values for application gateway cookie based affinity.
 type ApplicationGatewayCookieBasedAffinity string
 
 const (
-	// Disabled ...
-	Disabled ApplicationGatewayCookieBasedAffinity = "Disabled"
-	// Enabled ...
-	Enabled ApplicationGatewayCookieBasedAffinity = "Enabled"
+	// ApplicationGatewayCookieBasedAffinityDisabled ...
+	ApplicationGatewayCookieBasedAffinityDisabled ApplicationGatewayCookieBasedAffinity = "Disabled"
+	// ApplicationGatewayCookieBasedAffinityEnabled ...
+	ApplicationGatewayCookieBasedAffinityEnabled ApplicationGatewayCookieBasedAffinity = "Enabled"
 )
 
 // PossibleApplicationGatewayCookieBasedAffinityValues returns an array of possible values for the ApplicationGatewayCookieBasedAffinity const type.
 func PossibleApplicationGatewayCookieBasedAffinityValues() []ApplicationGatewayCookieBasedAffinity {
-	return []ApplicationGatewayCookieBasedAffinity{Disabled, Enabled}
+	return []ApplicationGatewayCookieBasedAffinity{ApplicationGatewayCookieBasedAffinityDisabled, ApplicationGatewayCookieBasedAffinityEnabled}
 }
 
 // ApplicationGatewayCustomErrorStatusCode enumerates the values for application gateway custom error status
@@ -63,83 +63,83 @@ func PossibleApplicationGatewayCookieBasedAffinityValues() []ApplicationGatewayC
 type ApplicationGatewayCustomErrorStatusCode string
 
 const (
-	// HTTPStatus403 ...
-	HTTPStatus403 ApplicationGatewayCustomErrorStatusCode = "HttpStatus403"
-	// HTTPStatus502 ...
-	HTTPStatus502 ApplicationGatewayCustomErrorStatusCode = "HttpStatus502"
+	// ApplicationGatewayCustomErrorStatusCodeHTTPStatus403 ...
+	ApplicationGatewayCustomErrorStatusCodeHTTPStatus403 ApplicationGatewayCustomErrorStatusCode = "HttpStatus403"
+	// ApplicationGatewayCustomErrorStatusCodeHTTPStatus502 ...
+	ApplicationGatewayCustomErrorStatusCodeHTTPStatus502 ApplicationGatewayCustomErrorStatusCode = "HttpStatus502"
 )
 
 // PossibleApplicationGatewayCustomErrorStatusCodeValues returns an array of possible values for the ApplicationGatewayCustomErrorStatusCode const type.
 func PossibleApplicationGatewayCustomErrorStatusCodeValues() []ApplicationGatewayCustomErrorStatusCode {
-	return []ApplicationGatewayCustomErrorStatusCode{HTTPStatus403, HTTPStatus502}
+	return []ApplicationGatewayCustomErrorStatusCode{ApplicationGatewayCustomErrorStatusCodeHTTPStatus403, ApplicationGatewayCustomErrorStatusCodeHTTPStatus502}
 }
 
 // ApplicationGatewayFirewallMode enumerates the values for application gateway firewall mode.
 type ApplicationGatewayFirewallMode string
 
 const (
-	// Detection ...
-	Detection ApplicationGatewayFirewallMode = "Detection"
-	// Prevention ...
-	Prevention ApplicationGatewayFirewallMode = "Prevention"
+	// ApplicationGatewayFirewallModeDetection ...
+	ApplicationGatewayFirewallModeDetection ApplicationGatewayFirewallMode = "Detection"
+	// ApplicationGatewayFirewallModePrevention ...
+	ApplicationGatewayFirewallModePrevention ApplicationGatewayFirewallMode = "Prevention"
 )
 
 // PossibleApplicationGatewayFirewallModeValues returns an array of possible values for the ApplicationGatewayFirewallMode const type.
 func PossibleApplicationGatewayFirewallModeValues() []ApplicationGatewayFirewallMode {
-	return []ApplicationGatewayFirewallMode{Detection, Prevention}
+	return []ApplicationGatewayFirewallMode{ApplicationGatewayFirewallModeDetection, ApplicationGatewayFirewallModePrevention}
 }
 
 // ApplicationGatewayOperationalState enumerates the values for application gateway operational state.
 type ApplicationGatewayOperationalState string
 
 const (
-	// Running ...
-	Running ApplicationGatewayOperationalState = "Running"
-	// Starting ...
-	Starting ApplicationGatewayOperationalState = "Starting"
-	// Stopped ...
-	Stopped ApplicationGatewayOperationalState = "Stopped"
-	// Stopping ...
-	Stopping ApplicationGatewayOperationalState = "Stopping"
+	// ApplicationGatewayOperationalStateRunning ...
+	ApplicationGatewayOperationalStateRunning ApplicationGatewayOperationalState = "Running"
+	// ApplicationGatewayOperationalStateStarting ...
+	ApplicationGatewayOperationalStateStarting ApplicationGatewayOperationalState = "Starting"
+	// ApplicationGatewayOperationalStateStopped ...
+	ApplicationGatewayOperationalStateStopped ApplicationGatewayOperationalState = "Stopped"
+	// ApplicationGatewayOperationalStateStopping ...
+	ApplicationGatewayOperationalStateStopping ApplicationGatewayOperationalState = "Stopping"
 )
 
 // PossibleApplicationGatewayOperationalStateValues returns an array of possible values for the ApplicationGatewayOperationalState const type.
 func PossibleApplicationGatewayOperationalStateValues() []ApplicationGatewayOperationalState {
-	return []ApplicationGatewayOperationalState{Running, Starting, Stopped, Stopping}
+	return []ApplicationGatewayOperationalState{ApplicationGatewayOperationalStateRunning, ApplicationGatewayOperationalStateStarting, ApplicationGatewayOperationalStateStopped, ApplicationGatewayOperationalStateStopping}
 }
 
 // ApplicationGatewayProtocol enumerates the values for application gateway protocol.
 type ApplicationGatewayProtocol string
 
 const (
-	// HTTP ...
-	HTTP ApplicationGatewayProtocol = "Http"
-	// HTTPS ...
-	HTTPS ApplicationGatewayProtocol = "Https"
+	// ApplicationGatewayProtocolHTTP ...
+	ApplicationGatewayProtocolHTTP ApplicationGatewayProtocol = "Http"
+	// ApplicationGatewayProtocolHTTPS ...
+	ApplicationGatewayProtocolHTTPS ApplicationGatewayProtocol = "Https"
 )
 
 // PossibleApplicationGatewayProtocolValues returns an array of possible values for the ApplicationGatewayProtocol const type.
 func PossibleApplicationGatewayProtocolValues() []ApplicationGatewayProtocol {
-	return []ApplicationGatewayProtocol{HTTP, HTTPS}
+	return []ApplicationGatewayProtocol{ApplicationGatewayProtocolHTTP, ApplicationGatewayProtocolHTTPS}
 }
 
 // ApplicationGatewayRedirectType enumerates the values for application gateway redirect type.
 type ApplicationGatewayRedirectType string
 
 const (
-	// Found ...
-	Found ApplicationGatewayRedirectType = "Found"
-	// Permanent ...
-	Permanent ApplicationGatewayRedirectType = "Permanent"
-	// SeeOther ...
-	SeeOther ApplicationGatewayRedirectType = "SeeOther"
-	// Temporary ...
-	Temporary ApplicationGatewayRedirectType = "Temporary"
+	// ApplicationGatewayRedirectTypeFound ...
+	ApplicationGatewayRedirectTypeFound ApplicationGatewayRedirectType = "Found"
+	// ApplicationGatewayRedirectTypePermanent ...
+	ApplicationGatewayRedirectTypePermanent ApplicationGatewayRedirectType = "Permanent"
+	// ApplicationGatewayRedirectTypeSeeOther ...
+	ApplicationGatewayRedirectTypeSeeOther ApplicationGatewayRedirectType = "SeeOther"
+	// ApplicationGatewayRedirectTypeTemporary ...
+	ApplicationGatewayRedirectTypeTemporary ApplicationGatewayRedirectType = "Temporary"
 )
 
 // PossibleApplicationGatewayRedirectTypeValues returns an array of possible values for the ApplicationGatewayRedirectType const type.
 func PossibleApplicationGatewayRedirectTypeValues() []ApplicationGatewayRedirectType {
-	return []ApplicationGatewayRedirectType{Found, Permanent, SeeOther, Temporary}
+	return []ApplicationGatewayRedirectType{ApplicationGatewayRedirectTypeFound, ApplicationGatewayRedirectTypePermanent, ApplicationGatewayRedirectTypeSeeOther, ApplicationGatewayRedirectTypeTemporary}
 }
 
 // ApplicationGatewayRequestRoutingRuleType enumerates the values for application gateway request routing rule
@@ -147,156 +147,156 @@ func PossibleApplicationGatewayRedirectTypeValues() []ApplicationGatewayRedirect
 type ApplicationGatewayRequestRoutingRuleType string
 
 const (
-	// Basic ...
-	Basic ApplicationGatewayRequestRoutingRuleType = "Basic"
-	// PathBasedRouting ...
-	PathBasedRouting ApplicationGatewayRequestRoutingRuleType = "PathBasedRouting"
+	// ApplicationGatewayRequestRoutingRuleTypeBasic ...
+	ApplicationGatewayRequestRoutingRuleTypeBasic ApplicationGatewayRequestRoutingRuleType = "Basic"
+	// ApplicationGatewayRequestRoutingRuleTypePathBasedRouting ...
+	ApplicationGatewayRequestRoutingRuleTypePathBasedRouting ApplicationGatewayRequestRoutingRuleType = "PathBasedRouting"
 )
 
 // PossibleApplicationGatewayRequestRoutingRuleTypeValues returns an array of possible values for the ApplicationGatewayRequestRoutingRuleType const type.
 func PossibleApplicationGatewayRequestRoutingRuleTypeValues() []ApplicationGatewayRequestRoutingRuleType {
-	return []ApplicationGatewayRequestRoutingRuleType{Basic, PathBasedRouting}
+	return []ApplicationGatewayRequestRoutingRuleType{ApplicationGatewayRequestRoutingRuleTypeBasic, ApplicationGatewayRequestRoutingRuleTypePathBasedRouting}
 }
 
 // ApplicationGatewaySkuName enumerates the values for application gateway sku name.
 type ApplicationGatewaySkuName string
 
 const (
-	// StandardLarge ...
-	StandardLarge ApplicationGatewaySkuName = "Standard_Large"
-	// StandardMedium ...
-	StandardMedium ApplicationGatewaySkuName = "Standard_Medium"
-	// StandardSmall ...
-	StandardSmall ApplicationGatewaySkuName = "Standard_Small"
-	// StandardV2 ...
-	StandardV2 ApplicationGatewaySkuName = "Standard_v2"
-	// WAFLarge ...
-	WAFLarge ApplicationGatewaySkuName = "WAF_Large"
-	// WAFMedium ...
-	WAFMedium ApplicationGatewaySkuName = "WAF_Medium"
-	// WAFV2 ...
-	WAFV2 ApplicationGatewaySkuName = "WAF_v2"
+	// ApplicationGatewaySkuNameStandardLarge ...
+	ApplicationGatewaySkuNameStandardLarge ApplicationGatewaySkuName = "Standard_Large"
+	// ApplicationGatewaySkuNameStandardMedium ...
+	ApplicationGatewaySkuNameStandardMedium ApplicationGatewaySkuName = "Standard_Medium"
+	// ApplicationGatewaySkuNameStandardSmall ...
+	ApplicationGatewaySkuNameStandardSmall ApplicationGatewaySkuName = "Standard_Small"
+	// ApplicationGatewaySkuNameStandardV2 ...
+	ApplicationGatewaySkuNameStandardV2 ApplicationGatewaySkuName = "Standard_v2"
+	// ApplicationGatewaySkuNameWAFLarge ...
+	ApplicationGatewaySkuNameWAFLarge ApplicationGatewaySkuName = "WAF_Large"
+	// ApplicationGatewaySkuNameWAFMedium ...
+	ApplicationGatewaySkuNameWAFMedium ApplicationGatewaySkuName = "WAF_Medium"
+	// ApplicationGatewaySkuNameWAFV2 ...
+	ApplicationGatewaySkuNameWAFV2 ApplicationGatewaySkuName = "WAF_v2"
 )
 
 // PossibleApplicationGatewaySkuNameValues returns an array of possible values for the ApplicationGatewaySkuName const type.
 func PossibleApplicationGatewaySkuNameValues() []ApplicationGatewaySkuName {
-	return []ApplicationGatewaySkuName{StandardLarge, StandardMedium, StandardSmall, StandardV2, WAFLarge, WAFMedium, WAFV2}
+	return []ApplicationGatewaySkuName{ApplicationGatewaySkuNameStandardLarge, ApplicationGatewaySkuNameStandardMedium, ApplicationGatewaySkuNameStandardSmall, ApplicationGatewaySkuNameStandardV2, ApplicationGatewaySkuNameWAFLarge, ApplicationGatewaySkuNameWAFMedium, ApplicationGatewaySkuNameWAFV2}
 }
 
 // ApplicationGatewaySslCipherSuite enumerates the values for application gateway ssl cipher suite.
 type ApplicationGatewaySslCipherSuite string
 
 const (
-	// TLSDHEDSSWITH3DESEDECBCSHA ...
-	TLSDHEDSSWITH3DESEDECBCSHA ApplicationGatewaySslCipherSuite = "TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA"
-	// TLSDHEDSSWITHAES128CBCSHA ...
-	TLSDHEDSSWITHAES128CBCSHA ApplicationGatewaySslCipherSuite = "TLS_DHE_DSS_WITH_AES_128_CBC_SHA"
-	// TLSDHEDSSWITHAES128CBCSHA256 ...
-	TLSDHEDSSWITHAES128CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256"
-	// TLSDHEDSSWITHAES256CBCSHA ...
-	TLSDHEDSSWITHAES256CBCSHA ApplicationGatewaySslCipherSuite = "TLS_DHE_DSS_WITH_AES_256_CBC_SHA"
-	// TLSDHEDSSWITHAES256CBCSHA256 ...
-	TLSDHEDSSWITHAES256CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_DHE_DSS_WITH_AES_256_CBC_SHA256"
-	// TLSDHERSAWITHAES128CBCSHA ...
-	TLSDHERSAWITHAES128CBCSHA ApplicationGatewaySslCipherSuite = "TLS_DHE_RSA_WITH_AES_128_CBC_SHA"
-	// TLSDHERSAWITHAES128GCMSHA256 ...
-	TLSDHERSAWITHAES128GCMSHA256 ApplicationGatewaySslCipherSuite = "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256"
-	// TLSDHERSAWITHAES256CBCSHA ...
-	TLSDHERSAWITHAES256CBCSHA ApplicationGatewaySslCipherSuite = "TLS_DHE_RSA_WITH_AES_256_CBC_SHA"
-	// TLSDHERSAWITHAES256GCMSHA384 ...
-	TLSDHERSAWITHAES256GCMSHA384 ApplicationGatewaySslCipherSuite = "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384"
-	// TLSECDHEECDSAWITHAES128CBCSHA ...
-	TLSECDHEECDSAWITHAES128CBCSHA ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA"
-	// TLSECDHEECDSAWITHAES128CBCSHA256 ...
-	TLSECDHEECDSAWITHAES128CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256"
-	// TLSECDHEECDSAWITHAES128GCMSHA256 ...
-	TLSECDHEECDSAWITHAES128GCMSHA256 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
-	// TLSECDHEECDSAWITHAES256CBCSHA ...
-	TLSECDHEECDSAWITHAES256CBCSHA ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA"
-	// TLSECDHEECDSAWITHAES256CBCSHA384 ...
-	TLSECDHEECDSAWITHAES256CBCSHA384 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384"
-	// TLSECDHEECDSAWITHAES256GCMSHA384 ...
-	TLSECDHEECDSAWITHAES256GCMSHA384 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"
-	// TLSECDHERSAWITHAES128CBCSHA ...
-	TLSECDHERSAWITHAES128CBCSHA ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA"
-	// TLSECDHERSAWITHAES128CBCSHA256 ...
-	TLSECDHERSAWITHAES128CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
-	// TLSECDHERSAWITHAES128GCMSHA256 ...
-	TLSECDHERSAWITHAES128GCMSHA256 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
-	// TLSECDHERSAWITHAES256CBCSHA ...
-	TLSECDHERSAWITHAES256CBCSHA ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA"
-	// TLSECDHERSAWITHAES256CBCSHA384 ...
-	TLSECDHERSAWITHAES256CBCSHA384 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384"
-	// TLSECDHERSAWITHAES256GCMSHA384 ...
-	TLSECDHERSAWITHAES256GCMSHA384 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
-	// TLSRSAWITH3DESEDECBCSHA ...
-	TLSRSAWITH3DESEDECBCSHA ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_3DES_EDE_CBC_SHA"
-	// TLSRSAWITHAES128CBCSHA ...
-	TLSRSAWITHAES128CBCSHA ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_128_CBC_SHA"
-	// TLSRSAWITHAES128CBCSHA256 ...
-	TLSRSAWITHAES128CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_128_CBC_SHA256"
-	// TLSRSAWITHAES128GCMSHA256 ...
-	TLSRSAWITHAES128GCMSHA256 ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_128_GCM_SHA256"
-	// TLSRSAWITHAES256CBCSHA ...
-	TLSRSAWITHAES256CBCSHA ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_256_CBC_SHA"
-	// TLSRSAWITHAES256CBCSHA256 ...
-	TLSRSAWITHAES256CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_256_CBC_SHA256"
-	// TLSRSAWITHAES256GCMSHA384 ...
-	TLSRSAWITHAES256GCMSHA384 ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_256_GCM_SHA384"
+	// ApplicationGatewaySslCipherSuiteTLSDHEDSSWITH3DESEDECBCSHA ...
+	ApplicationGatewaySslCipherSuiteTLSDHEDSSWITH3DESEDECBCSHA ApplicationGatewaySslCipherSuite = "TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA"
+	// ApplicationGatewaySslCipherSuiteTLSDHEDSSWITHAES128CBCSHA ...
+	ApplicationGatewaySslCipherSuiteTLSDHEDSSWITHAES128CBCSHA ApplicationGatewaySslCipherSuite = "TLS_DHE_DSS_WITH_AES_128_CBC_SHA"
+	// ApplicationGatewaySslCipherSuiteTLSDHEDSSWITHAES128CBCSHA256 ...
+	ApplicationGatewaySslCipherSuiteTLSDHEDSSWITHAES128CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256"
+	// ApplicationGatewaySslCipherSuiteTLSDHEDSSWITHAES256CBCSHA ...
+	ApplicationGatewaySslCipherSuiteTLSDHEDSSWITHAES256CBCSHA ApplicationGatewaySslCipherSuite = "TLS_DHE_DSS_WITH_AES_256_CBC_SHA"
+	// ApplicationGatewaySslCipherSuiteTLSDHEDSSWITHAES256CBCSHA256 ...
+	ApplicationGatewaySslCipherSuiteTLSDHEDSSWITHAES256CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_DHE_DSS_WITH_AES_256_CBC_SHA256"
+	// ApplicationGatewaySslCipherSuiteTLSDHERSAWITHAES128CBCSHA ...
+	ApplicationGatewaySslCipherSuiteTLSDHERSAWITHAES128CBCSHA ApplicationGatewaySslCipherSuite = "TLS_DHE_RSA_WITH_AES_128_CBC_SHA"
+	// ApplicationGatewaySslCipherSuiteTLSDHERSAWITHAES128GCMSHA256 ...
+	ApplicationGatewaySslCipherSuiteTLSDHERSAWITHAES128GCMSHA256 ApplicationGatewaySslCipherSuite = "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256"
+	// ApplicationGatewaySslCipherSuiteTLSDHERSAWITHAES256CBCSHA ...
+	ApplicationGatewaySslCipherSuiteTLSDHERSAWITHAES256CBCSHA ApplicationGatewaySslCipherSuite = "TLS_DHE_RSA_WITH_AES_256_CBC_SHA"
+	// ApplicationGatewaySslCipherSuiteTLSDHERSAWITHAES256GCMSHA384 ...
+	ApplicationGatewaySslCipherSuiteTLSDHERSAWITHAES256GCMSHA384 ApplicationGatewaySslCipherSuite = "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384"
+	// ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES128CBCSHA ...
+	ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES128CBCSHA ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA"
+	// ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES128CBCSHA256 ...
+	ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES128CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256"
+	// ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES128GCMSHA256 ...
+	ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES128GCMSHA256 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
+	// ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES256CBCSHA ...
+	ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES256CBCSHA ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA"
+	// ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES256CBCSHA384 ...
+	ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES256CBCSHA384 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384"
+	// ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES256GCMSHA384 ...
+	ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES256GCMSHA384 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384"
+	// ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES128CBCSHA ...
+	ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES128CBCSHA ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA"
+	// ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES128CBCSHA256 ...
+	ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES128CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
+	// ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES128GCMSHA256 ...
+	ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES128GCMSHA256 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+	// ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES256CBCSHA ...
+	ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES256CBCSHA ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA"
+	// ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES256CBCSHA384 ...
+	ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES256CBCSHA384 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384"
+	// ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES256GCMSHA384 ...
+	ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES256GCMSHA384 ApplicationGatewaySslCipherSuite = "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+	// ApplicationGatewaySslCipherSuiteTLSRSAWITH3DESEDECBCSHA ...
+	ApplicationGatewaySslCipherSuiteTLSRSAWITH3DESEDECBCSHA ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_3DES_EDE_CBC_SHA"
+	// ApplicationGatewaySslCipherSuiteTLSRSAWITHAES128CBCSHA ...
+	ApplicationGatewaySslCipherSuiteTLSRSAWITHAES128CBCSHA ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_128_CBC_SHA"
+	// ApplicationGatewaySslCipherSuiteTLSRSAWITHAES128CBCSHA256 ...
+	ApplicationGatewaySslCipherSuiteTLSRSAWITHAES128CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_128_CBC_SHA256"
+	// ApplicationGatewaySslCipherSuiteTLSRSAWITHAES128GCMSHA256 ...
+	ApplicationGatewaySslCipherSuiteTLSRSAWITHAES128GCMSHA256 ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_128_GCM_SHA256"
+	// ApplicationGatewaySslCipherSuiteTLSRSAWITHAES256CBCSHA ...
+	ApplicationGatewaySslCipherSuiteTLSRSAWITHAES256CBCSHA ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_256_CBC_SHA"
+	// ApplicationGatewaySslCipherSuiteTLSRSAWITHAES256CBCSHA256 ...
+	ApplicationGatewaySslCipherSuiteTLSRSAWITHAES256CBCSHA256 ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_256_CBC_SHA256"
+	// ApplicationGatewaySslCipherSuiteTLSRSAWITHAES256GCMSHA384 ...
+	ApplicationGatewaySslCipherSuiteTLSRSAWITHAES256GCMSHA384 ApplicationGatewaySslCipherSuite = "TLS_RSA_WITH_AES_256_GCM_SHA384"
 )
 
 // PossibleApplicationGatewaySslCipherSuiteValues returns an array of possible values for the ApplicationGatewaySslCipherSuite const type.
 func PossibleApplicationGatewaySslCipherSuiteValues() []ApplicationGatewaySslCipherSuite {
-	return []ApplicationGatewaySslCipherSuite{TLSDHEDSSWITH3DESEDECBCSHA, TLSDHEDSSWITHAES128CBCSHA, TLSDHEDSSWITHAES128CBCSHA256, TLSDHEDSSWITHAES256CBCSHA, TLSDHEDSSWITHAES256CBCSHA256, TLSDHERSAWITHAES128CBCSHA, TLSDHERSAWITHAES128GCMSHA256, TLSDHERSAWITHAES256CBCSHA, TLSDHERSAWITHAES256GCMSHA384, TLSECDHEECDSAWITHAES128CBCSHA, TLSECDHEECDSAWITHAES128CBCSHA256, TLSECDHEECDSAWITHAES128GCMSHA256, TLSECDHEECDSAWITHAES256CBCSHA, TLSECDHEECDSAWITHAES256CBCSHA384, TLSECDHEECDSAWITHAES256GCMSHA384, TLSECDHERSAWITHAES128CBCSHA, TLSECDHERSAWITHAES128CBCSHA256, TLSECDHERSAWITHAES128GCMSHA256, TLSECDHERSAWITHAES256CBCSHA, TLSECDHERSAWITHAES256CBCSHA384, TLSECDHERSAWITHAES256GCMSHA384, TLSRSAWITH3DESEDECBCSHA, TLSRSAWITHAES128CBCSHA, TLSRSAWITHAES128CBCSHA256, TLSRSAWITHAES128GCMSHA256, TLSRSAWITHAES256CBCSHA, TLSRSAWITHAES256CBCSHA256, TLSRSAWITHAES256GCMSHA384}
+	return []ApplicationGatewaySslCipherSuite{ApplicationGatewaySslCipherSuiteTLSDHEDSSWITH3DESEDECBCSHA, ApplicationGatewaySslCipherSuiteTLSDHEDSSWITHAES128CBCSHA, ApplicationGatewaySslCipherSuiteTLSDHEDSSWITHAES128CBCSHA256, ApplicationGatewaySslCipherSuiteTLSDHEDSSWITHAES256CBCSHA, ApplicationGatewaySslCipherSuiteTLSDHEDSSWITHAES256CBCSHA256, ApplicationGatewaySslCipherSuiteTLSDHERSAWITHAES128CBCSHA, ApplicationGatewaySslCipherSuiteTLSDHERSAWITHAES128GCMSHA256, ApplicationGatewaySslCipherSuiteTLSDHERSAWITHAES256CBCSHA, ApplicationGatewaySslCipherSuiteTLSDHERSAWITHAES256GCMSHA384, ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES128CBCSHA, ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES128CBCSHA256, ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES128GCMSHA256, ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES256CBCSHA, ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES256CBCSHA384, ApplicationGatewaySslCipherSuiteTLSECDHEECDSAWITHAES256GCMSHA384, ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES128CBCSHA, ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES128CBCSHA256, ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES128GCMSHA256, ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES256CBCSHA, ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES256CBCSHA384, ApplicationGatewaySslCipherSuiteTLSECDHERSAWITHAES256GCMSHA384, ApplicationGatewaySslCipherSuiteTLSRSAWITH3DESEDECBCSHA, ApplicationGatewaySslCipherSuiteTLSRSAWITHAES128CBCSHA, ApplicationGatewaySslCipherSuiteTLSRSAWITHAES128CBCSHA256, ApplicationGatewaySslCipherSuiteTLSRSAWITHAES128GCMSHA256, ApplicationGatewaySslCipherSuiteTLSRSAWITHAES256CBCSHA, ApplicationGatewaySslCipherSuiteTLSRSAWITHAES256CBCSHA256, ApplicationGatewaySslCipherSuiteTLSRSAWITHAES256GCMSHA384}
 }
 
 // ApplicationGatewaySslPolicyName enumerates the values for application gateway ssl policy name.
 type ApplicationGatewaySslPolicyName string
 
 const (
-	// AppGwSslPolicy20150501 ...
-	AppGwSslPolicy20150501 ApplicationGatewaySslPolicyName = "AppGwSslPolicy20150501"
-	// AppGwSslPolicy20170401 ...
-	AppGwSslPolicy20170401 ApplicationGatewaySslPolicyName = "AppGwSslPolicy20170401"
-	// AppGwSslPolicy20170401S ...
-	AppGwSslPolicy20170401S ApplicationGatewaySslPolicyName = "AppGwSslPolicy20170401S"
+	// ApplicationGatewaySslPolicyNameAppGwSslPolicy20150501 ...
+	ApplicationGatewaySslPolicyNameAppGwSslPolicy20150501 ApplicationGatewaySslPolicyName = "AppGwSslPolicy20150501"
+	// ApplicationGatewaySslPolicyNameAppGwSslPolicy20170401 ...
+	ApplicationGatewaySslPolicyNameAppGwSslPolicy20170401 ApplicationGatewaySslPolicyName = "AppGwSslPolicy20170401"
+	// ApplicationGatewaySslPolicyNameAppGwSslPolicy20170401S ...
+	ApplicationGatewaySslPolicyNameAppGwSslPolicy20170401S ApplicationGatewaySslPolicyName = "AppGwSslPolicy20170401S"
 )
 
 // PossibleApplicationGatewaySslPolicyNameValues returns an array of possible values for the ApplicationGatewaySslPolicyName const type.
 func PossibleApplicationGatewaySslPolicyNameValues() []ApplicationGatewaySslPolicyName {
-	return []ApplicationGatewaySslPolicyName{AppGwSslPolicy20150501, AppGwSslPolicy20170401, AppGwSslPolicy20170401S}
+	return []ApplicationGatewaySslPolicyName{ApplicationGatewaySslPolicyNameAppGwSslPolicy20150501, ApplicationGatewaySslPolicyNameAppGwSslPolicy20170401, ApplicationGatewaySslPolicyNameAppGwSslPolicy20170401S}
 }
 
 // ApplicationGatewaySslPolicyType enumerates the values for application gateway ssl policy type.
 type ApplicationGatewaySslPolicyType string
 
 const (
-	// Custom ...
-	Custom ApplicationGatewaySslPolicyType = "Custom"
-	// Predefined ...
-	Predefined ApplicationGatewaySslPolicyType = "Predefined"
+	// ApplicationGatewaySslPolicyTypeCustom ...
+	ApplicationGatewaySslPolicyTypeCustom ApplicationGatewaySslPolicyType = "Custom"
+	// ApplicationGatewaySslPolicyTypePredefined ...
+	ApplicationGatewaySslPolicyTypePredefined ApplicationGatewaySslPolicyType = "Predefined"
 )
 
 // PossibleApplicationGatewaySslPolicyTypeValues returns an array of possible values for the ApplicationGatewaySslPolicyType const type.
 func PossibleApplicationGatewaySslPolicyTypeValues() []ApplicationGatewaySslPolicyType {
-	return []ApplicationGatewaySslPolicyType{Custom, Predefined}
+	return []ApplicationGatewaySslPolicyType{ApplicationGatewaySslPolicyTypeCustom, ApplicationGatewaySslPolicyTypePredefined}
 }
 
 // ApplicationGatewaySslProtocol enumerates the values for application gateway ssl protocol.
 type ApplicationGatewaySslProtocol string
 
 const (
-	// TLSv10 ...
-	TLSv10 ApplicationGatewaySslProtocol = "TLSv1_0"
-	// TLSv11 ...
-	TLSv11 ApplicationGatewaySslProtocol = "TLSv1_1"
-	// TLSv12 ...
-	TLSv12 ApplicationGatewaySslProtocol = "TLSv1_2"
+	// ApplicationGatewaySslProtocolTLSv10 ...
+	ApplicationGatewaySslProtocolTLSv10 ApplicationGatewaySslProtocol = "TLSv1_0"
+	// ApplicationGatewaySslProtocolTLSv11 ...
+	ApplicationGatewaySslProtocolTLSv11 ApplicationGatewaySslProtocol = "TLSv1_1"
+	// ApplicationGatewaySslProtocolTLSv12 ...
+	ApplicationGatewaySslProtocolTLSv12 ApplicationGatewaySslProtocol = "TLSv1_2"
 )
 
 // PossibleApplicationGatewaySslProtocolValues returns an array of possible values for the ApplicationGatewaySslProtocol const type.
 func PossibleApplicationGatewaySslProtocolValues() []ApplicationGatewaySslProtocol {
-	return []ApplicationGatewaySslProtocol{TLSv10, TLSv11, TLSv12}
+	return []ApplicationGatewaySslProtocol{ApplicationGatewaySslProtocolTLSv10, ApplicationGatewaySslProtocolTLSv11, ApplicationGatewaySslProtocolTLSv12}
 }
 
 // ApplicationGatewayTier enumerates the values for application gateway tier.
@@ -322,45 +322,45 @@ func PossibleApplicationGatewayTierValues() []ApplicationGatewayTier {
 type AssociationType string
 
 const (
-	// Associated ...
-	Associated AssociationType = "Associated"
-	// Contains ...
-	Contains AssociationType = "Contains"
+	// AssociationTypeAssociated ...
+	AssociationTypeAssociated AssociationType = "Associated"
+	// AssociationTypeContains ...
+	AssociationTypeContains AssociationType = "Contains"
 )
 
 // PossibleAssociationTypeValues returns an array of possible values for the AssociationType const type.
 func PossibleAssociationTypeValues() []AssociationType {
-	return []AssociationType{Associated, Contains}
+	return []AssociationType{AssociationTypeAssociated, AssociationTypeContains}
 }
 
 // AuthenticationMethod enumerates the values for authentication method.
 type AuthenticationMethod string
 
 const (
-	// EAPMSCHAPv2 ...
-	EAPMSCHAPv2 AuthenticationMethod = "EAPMSCHAPv2"
-	// EAPTLS ...
-	EAPTLS AuthenticationMethod = "EAPTLS"
+	// AuthenticationMethodEAPMSCHAPv2 ...
+	AuthenticationMethodEAPMSCHAPv2 AuthenticationMethod = "EAPMSCHAPv2"
+	// AuthenticationMethodEAPTLS ...
+	AuthenticationMethodEAPTLS AuthenticationMethod = "EAPTLS"
 )
 
 // PossibleAuthenticationMethodValues returns an array of possible values for the AuthenticationMethod const type.
 func PossibleAuthenticationMethodValues() []AuthenticationMethod {
-	return []AuthenticationMethod{EAPMSCHAPv2, EAPTLS}
+	return []AuthenticationMethod{AuthenticationMethodEAPMSCHAPv2, AuthenticationMethodEAPTLS}
 }
 
 // AuthorizationUseStatus enumerates the values for authorization use status.
 type AuthorizationUseStatus string
 
 const (
-	// Available ...
-	Available AuthorizationUseStatus = "Available"
-	// InUse ...
-	InUse AuthorizationUseStatus = "InUse"
+	// AuthorizationUseStatusAvailable ...
+	AuthorizationUseStatusAvailable AuthorizationUseStatus = "Available"
+	// AuthorizationUseStatusInUse ...
+	AuthorizationUseStatusInUse AuthorizationUseStatus = "InUse"
 )
 
 // PossibleAuthorizationUseStatusValues returns an array of possible values for the AuthorizationUseStatus const type.
 func PossibleAuthorizationUseStatusValues() []AuthorizationUseStatus {
-	return []AuthorizationUseStatus{Available, InUse}
+	return []AuthorizationUseStatus{AuthorizationUseStatusAvailable, AuthorizationUseStatusInUse}
 }
 
 // AzureFirewallApplicationRuleProtocolType enumerates the values for azure firewall application rule protocol
@@ -385,34 +385,34 @@ func PossibleAzureFirewallApplicationRuleProtocolTypeValues() []AzureFirewallApp
 type AzureFirewallNatRCActionType string
 
 const (
-	// Dnat ...
-	Dnat AzureFirewallNatRCActionType = "Dnat"
-	// Snat ...
-	Snat AzureFirewallNatRCActionType = "Snat"
+	// AzureFirewallNatRCActionTypeDnat ...
+	AzureFirewallNatRCActionTypeDnat AzureFirewallNatRCActionType = "Dnat"
+	// AzureFirewallNatRCActionTypeSnat ...
+	AzureFirewallNatRCActionTypeSnat AzureFirewallNatRCActionType = "Snat"
 )
 
 // PossibleAzureFirewallNatRCActionTypeValues returns an array of possible values for the AzureFirewallNatRCActionType const type.
 func PossibleAzureFirewallNatRCActionTypeValues() []AzureFirewallNatRCActionType {
-	return []AzureFirewallNatRCActionType{Dnat, Snat}
+	return []AzureFirewallNatRCActionType{AzureFirewallNatRCActionTypeDnat, AzureFirewallNatRCActionTypeSnat}
 }
 
 // AzureFirewallNetworkRuleProtocol enumerates the values for azure firewall network rule protocol.
 type AzureFirewallNetworkRuleProtocol string
 
 const (
-	// Any ...
-	Any AzureFirewallNetworkRuleProtocol = "Any"
-	// ICMP ...
-	ICMP AzureFirewallNetworkRuleProtocol = "ICMP"
-	// TCP ...
-	TCP AzureFirewallNetworkRuleProtocol = "TCP"
-	// UDP ...
-	UDP AzureFirewallNetworkRuleProtocol = "UDP"
+	// AzureFirewallNetworkRuleProtocolAny ...
+	AzureFirewallNetworkRuleProtocolAny AzureFirewallNetworkRuleProtocol = "Any"
+	// AzureFirewallNetworkRuleProtocolICMP ...
+	AzureFirewallNetworkRuleProtocolICMP AzureFirewallNetworkRuleProtocol = "ICMP"
+	// AzureFirewallNetworkRuleProtocolTCP ...
+	AzureFirewallNetworkRuleProtocolTCP AzureFirewallNetworkRuleProtocol = "TCP"
+	// AzureFirewallNetworkRuleProtocolUDP ...
+	AzureFirewallNetworkRuleProtocolUDP AzureFirewallNetworkRuleProtocol = "UDP"
 )
 
 // PossibleAzureFirewallNetworkRuleProtocolValues returns an array of possible values for the AzureFirewallNetworkRuleProtocol const type.
 func PossibleAzureFirewallNetworkRuleProtocolValues() []AzureFirewallNetworkRuleProtocol {
-	return []AzureFirewallNetworkRuleProtocol{Any, ICMP, TCP, UDP}
+	return []AzureFirewallNetworkRuleProtocol{AzureFirewallNetworkRuleProtocolAny, AzureFirewallNetworkRuleProtocolICMP, AzureFirewallNetworkRuleProtocolTCP, AzureFirewallNetworkRuleProtocolUDP}
 }
 
 // AzureFirewallRCActionType enumerates the values for azure firewall rc action type.
@@ -434,30 +434,30 @@ func PossibleAzureFirewallRCActionTypeValues() []AzureFirewallRCActionType {
 type AzureFirewallSkuName string
 
 const (
-	// AZFWHub ...
-	AZFWHub AzureFirewallSkuName = "AZFW_Hub"
-	// AZFWVNet ...
-	AZFWVNet AzureFirewallSkuName = "AZFW_VNet"
+	// AzureFirewallSkuNameAZFWHub ...
+	AzureFirewallSkuNameAZFWHub AzureFirewallSkuName = "AZFW_Hub"
+	// AzureFirewallSkuNameAZFWVNet ...
+	AzureFirewallSkuNameAZFWVNet AzureFirewallSkuName = "AZFW_VNet"
 )
 
 // PossibleAzureFirewallSkuNameValues returns an array of possible values for the AzureFirewallSkuName const type.
 func PossibleAzureFirewallSkuNameValues() []AzureFirewallSkuName {
-	return []AzureFirewallSkuName{AZFWHub, AZFWVNet}
+	return []AzureFirewallSkuName{AzureFirewallSkuNameAZFWHub, AzureFirewallSkuNameAZFWVNet}
 }
 
 // AzureFirewallSkuTier enumerates the values for azure firewall sku tier.
 type AzureFirewallSkuTier string
 
 const (
-	// Premium ...
-	Premium AzureFirewallSkuTier = "Premium"
-	// Standard ...
-	Standard AzureFirewallSkuTier = "Standard"
+	// AzureFirewallSkuTierPremium ...
+	AzureFirewallSkuTierPremium AzureFirewallSkuTier = "Premium"
+	// AzureFirewallSkuTierStandard ...
+	AzureFirewallSkuTierStandard AzureFirewallSkuTier = "Standard"
 )
 
 // PossibleAzureFirewallSkuTierValues returns an array of possible values for the AzureFirewallSkuTier const type.
 func PossibleAzureFirewallSkuTierValues() []AzureFirewallSkuTier {
-	return []AzureFirewallSkuTier{Premium, Standard}
+	return []AzureFirewallSkuTier{AzureFirewallSkuTierPremium, AzureFirewallSkuTierStandard}
 }
 
 // AzureFirewallThreatIntelMode enumerates the values for azure firewall threat intel mode.
@@ -481,15 +481,15 @@ func PossibleAzureFirewallThreatIntelModeValues() []AzureFirewallThreatIntelMode
 type BastionConnectProtocol string
 
 const (
-	// RDP ...
-	RDP BastionConnectProtocol = "RDP"
-	// SSH ...
-	SSH BastionConnectProtocol = "SSH"
+	// BastionConnectProtocolRDP ...
+	BastionConnectProtocolRDP BastionConnectProtocol = "RDP"
+	// BastionConnectProtocolSSH ...
+	BastionConnectProtocolSSH BastionConnectProtocol = "SSH"
 )
 
 // PossibleBastionConnectProtocolValues returns an array of possible values for the BastionConnectProtocol const type.
 func PossibleBastionConnectProtocolValues() []BastionConnectProtocol {
-	return []BastionConnectProtocol{RDP, SSH}
+	return []BastionConnectProtocol{BastionConnectProtocolRDP, BastionConnectProtocolSSH}
 }
 
 // BgpPeerState enumerates the values for bgp peer state.
@@ -517,40 +517,40 @@ func PossibleBgpPeerStateValues() []BgpPeerState {
 type CircuitConnectionStatus string
 
 const (
-	// Connected ...
-	Connected CircuitConnectionStatus = "Connected"
-	// Connecting ...
-	Connecting CircuitConnectionStatus = "Connecting"
-	// Disconnected ...
-	Disconnected CircuitConnectionStatus = "Disconnected"
+	// CircuitConnectionStatusConnected ...
+	CircuitConnectionStatusConnected CircuitConnectionStatus = "Connected"
+	// CircuitConnectionStatusConnecting ...
+	CircuitConnectionStatusConnecting CircuitConnectionStatus = "Connecting"
+	// CircuitConnectionStatusDisconnected ...
+	CircuitConnectionStatusDisconnected CircuitConnectionStatus = "Disconnected"
 )
 
 // PossibleCircuitConnectionStatusValues returns an array of possible values for the CircuitConnectionStatus const type.
 func PossibleCircuitConnectionStatusValues() []CircuitConnectionStatus {
-	return []CircuitConnectionStatus{Connected, Connecting, Disconnected}
+	return []CircuitConnectionStatus{CircuitConnectionStatusConnected, CircuitConnectionStatusConnecting, CircuitConnectionStatusDisconnected}
 }
 
 // CommissionedState enumerates the values for commissioned state.
 type CommissionedState string
 
 const (
-	// Commissioned ...
-	Commissioned CommissionedState = "Commissioned"
-	// Commissioning ...
-	Commissioning CommissionedState = "Commissioning"
-	// Decommissioning ...
-	Decommissioning CommissionedState = "Decommissioning"
-	// Deprovisioning ...
-	Deprovisioning CommissionedState = "Deprovisioning"
-	// Provisioned ...
-	Provisioned CommissionedState = "Provisioned"
-	// Provisioning ...
-	Provisioning CommissionedState = "Provisioning"
+	// CommissionedStateCommissioned ...
+	CommissionedStateCommissioned CommissionedState = "Commissioned"
+	// CommissionedStateCommissioning ...
+	CommissionedStateCommissioning CommissionedState = "Commissioning"
+	// CommissionedStateDecommissioning ...
+	CommissionedStateDecommissioning CommissionedState = "Decommissioning"
+	// CommissionedStateDeprovisioning ...
+	CommissionedStateDeprovisioning CommissionedState = "Deprovisioning"
+	// CommissionedStateProvisioned ...
+	CommissionedStateProvisioned CommissionedState = "Provisioned"
+	// CommissionedStateProvisioning ...
+	CommissionedStateProvisioning CommissionedState = "Provisioning"
 )
 
 // PossibleCommissionedStateValues returns an array of possible values for the CommissionedState const type.
 func PossibleCommissionedStateValues() []CommissionedState {
-	return []CommissionedState{Commissioned, Commissioning, Decommissioning, Deprovisioning, Provisioned, Provisioning}
+	return []CommissionedState{CommissionedStateCommissioned, CommissionedStateCommissioning, CommissionedStateDecommissioning, CommissionedStateDeprovisioning, CommissionedStateProvisioned, CommissionedStateProvisioning}
 }
 
 // ConnectionMonitorEndpointFilterItemType enumerates the values for connection monitor endpoint filter item
@@ -558,26 +558,26 @@ func PossibleCommissionedStateValues() []CommissionedState {
 type ConnectionMonitorEndpointFilterItemType string
 
 const (
-	// AgentAddress ...
-	AgentAddress ConnectionMonitorEndpointFilterItemType = "AgentAddress"
+	// ConnectionMonitorEndpointFilterItemTypeAgentAddress ...
+	ConnectionMonitorEndpointFilterItemTypeAgentAddress ConnectionMonitorEndpointFilterItemType = "AgentAddress"
 )
 
 // PossibleConnectionMonitorEndpointFilterItemTypeValues returns an array of possible values for the ConnectionMonitorEndpointFilterItemType const type.
 func PossibleConnectionMonitorEndpointFilterItemTypeValues() []ConnectionMonitorEndpointFilterItemType {
-	return []ConnectionMonitorEndpointFilterItemType{AgentAddress}
+	return []ConnectionMonitorEndpointFilterItemType{ConnectionMonitorEndpointFilterItemTypeAgentAddress}
 }
 
 // ConnectionMonitorEndpointFilterType enumerates the values for connection monitor endpoint filter type.
 type ConnectionMonitorEndpointFilterType string
 
 const (
-	// Include ...
-	Include ConnectionMonitorEndpointFilterType = "Include"
+	// ConnectionMonitorEndpointFilterTypeInclude ...
+	ConnectionMonitorEndpointFilterTypeInclude ConnectionMonitorEndpointFilterType = "Include"
 )
 
 // PossibleConnectionMonitorEndpointFilterTypeValues returns an array of possible values for the ConnectionMonitorEndpointFilterType const type.
 func PossibleConnectionMonitorEndpointFilterTypeValues() []ConnectionMonitorEndpointFilterType {
-	return []ConnectionMonitorEndpointFilterType{Include}
+	return []ConnectionMonitorEndpointFilterType{ConnectionMonitorEndpointFilterTypeInclude}
 }
 
 // ConnectionMonitorSourceStatus enumerates the values for connection monitor source status.
@@ -619,15 +619,15 @@ func PossibleConnectionMonitorTestConfigurationProtocolValues() []ConnectionMoni
 type ConnectionMonitorType string
 
 const (
-	// MultiEndpoint ...
-	MultiEndpoint ConnectionMonitorType = "MultiEndpoint"
-	// SingleSourceDestination ...
-	SingleSourceDestination ConnectionMonitorType = "SingleSourceDestination"
+	// ConnectionMonitorTypeMultiEndpoint ...
+	ConnectionMonitorTypeMultiEndpoint ConnectionMonitorType = "MultiEndpoint"
+	// ConnectionMonitorTypeSingleSourceDestination ...
+	ConnectionMonitorTypeSingleSourceDestination ConnectionMonitorType = "SingleSourceDestination"
 )
 
 // PossibleConnectionMonitorTypeValues returns an array of possible values for the ConnectionMonitorType const type.
 func PossibleConnectionMonitorTypeValues() []ConnectionMonitorType {
-	return []ConnectionMonitorType{MultiEndpoint, SingleSourceDestination}
+	return []ConnectionMonitorType{ConnectionMonitorTypeMultiEndpoint, ConnectionMonitorTypeSingleSourceDestination}
 }
 
 // ConnectionState enumerates the values for connection state.
@@ -670,23 +670,23 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 type CoverageLevel string
 
 const (
-	// AboveAverage ...
-	AboveAverage CoverageLevel = "AboveAverage"
-	// Average ...
-	Average CoverageLevel = "Average"
-	// BelowAverage ...
-	BelowAverage CoverageLevel = "BelowAverage"
-	// Default ...
-	Default CoverageLevel = "Default"
-	// Full ...
-	Full CoverageLevel = "Full"
-	// Low ...
-	Low CoverageLevel = "Low"
+	// CoverageLevelAboveAverage ...
+	CoverageLevelAboveAverage CoverageLevel = "AboveAverage"
+	// CoverageLevelAverage ...
+	CoverageLevelAverage CoverageLevel = "Average"
+	// CoverageLevelBelowAverage ...
+	CoverageLevelBelowAverage CoverageLevel = "BelowAverage"
+	// CoverageLevelDefault ...
+	CoverageLevelDefault CoverageLevel = "Default"
+	// CoverageLevelFull ...
+	CoverageLevelFull CoverageLevel = "Full"
+	// CoverageLevelLow ...
+	CoverageLevelLow CoverageLevel = "Low"
 )
 
 // PossibleCoverageLevelValues returns an array of possible values for the CoverageLevel const type.
 func PossibleCoverageLevelValues() []CoverageLevel {
-	return []CoverageLevel{AboveAverage, Average, BelowAverage, Default, Full, Low}
+	return []CoverageLevel{CoverageLevelAboveAverage, CoverageLevelAverage, CoverageLevelBelowAverage, CoverageLevelDefault, CoverageLevelFull, CoverageLevelLow}
 }
 
 // DdosCustomPolicyProtocol enumerates the values for ddos custom policy protocol.
@@ -745,15 +745,15 @@ func PossibleDdosSettingsProtectionCoverageValues() []DdosSettingsProtectionCove
 type DestinationPortBehavior string
 
 const (
-	// ListenIfAvailable ...
-	ListenIfAvailable DestinationPortBehavior = "ListenIfAvailable"
-	// None ...
-	None DestinationPortBehavior = "None"
+	// DestinationPortBehaviorListenIfAvailable ...
+	DestinationPortBehaviorListenIfAvailable DestinationPortBehavior = "ListenIfAvailable"
+	// DestinationPortBehaviorNone ...
+	DestinationPortBehaviorNone DestinationPortBehavior = "None"
 )
 
 // PossibleDestinationPortBehaviorValues returns an array of possible values for the DestinationPortBehavior const type.
 func PossibleDestinationPortBehaviorValues() []DestinationPortBehavior {
-	return []DestinationPortBehavior{ListenIfAvailable, None}
+	return []DestinationPortBehavior{DestinationPortBehaviorListenIfAvailable, DestinationPortBehaviorNone}
 }
 
 // DhGroup enumerates the values for dh group.
@@ -787,15 +787,15 @@ func PossibleDhGroupValues() []DhGroup {
 type Direction string
 
 const (
-	// Inbound ...
-	Inbound Direction = "Inbound"
-	// Outbound ...
-	Outbound Direction = "Outbound"
+	// DirectionInbound ...
+	DirectionInbound Direction = "Inbound"
+	// DirectionOutbound ...
+	DirectionOutbound Direction = "Outbound"
 )
 
 // PossibleDirectionValues returns an array of possible values for the Direction const type.
 func PossibleDirectionValues() []Direction {
-	return []Direction{Inbound, Outbound}
+	return []Direction{DirectionInbound, DirectionOutbound}
 }
 
 // EffectiveRouteSource enumerates the values for effective route source.
@@ -821,15 +821,15 @@ func PossibleEffectiveRouteSourceValues() []EffectiveRouteSource {
 type EffectiveRouteState string
 
 const (
-	// Active ...
-	Active EffectiveRouteState = "Active"
-	// Invalid ...
-	Invalid EffectiveRouteState = "Invalid"
+	// EffectiveRouteStateActive ...
+	EffectiveRouteStateActive EffectiveRouteState = "Active"
+	// EffectiveRouteStateInvalid ...
+	EffectiveRouteStateInvalid EffectiveRouteState = "Invalid"
 )
 
 // PossibleEffectiveRouteStateValues returns an array of possible values for the EffectiveRouteState const type.
 func PossibleEffectiveRouteStateValues() []EffectiveRouteState {
-	return []EffectiveRouteState{Active, Invalid}
+	return []EffectiveRouteState{EffectiveRouteStateActive, EffectiveRouteStateInvalid}
 }
 
 // EffectiveSecurityRuleProtocol enumerates the values for effective security rule protocol.
@@ -853,40 +853,40 @@ func PossibleEffectiveSecurityRuleProtocolValues() []EffectiveSecurityRuleProtoc
 type EndpointType string
 
 const (
-	// AzureSubnet ...
-	AzureSubnet EndpointType = "AzureSubnet"
-	// AzureVM ...
-	AzureVM EndpointType = "AzureVM"
-	// AzureVNet ...
-	AzureVNet EndpointType = "AzureVNet"
-	// ExternalAddress ...
-	ExternalAddress EndpointType = "ExternalAddress"
-	// MMAWorkspaceMachine ...
-	MMAWorkspaceMachine EndpointType = "MMAWorkspaceMachine"
-	// MMAWorkspaceNetwork ...
-	MMAWorkspaceNetwork EndpointType = "MMAWorkspaceNetwork"
+	// EndpointTypeAzureSubnet ...
+	EndpointTypeAzureSubnet EndpointType = "AzureSubnet"
+	// EndpointTypeAzureVM ...
+	EndpointTypeAzureVM EndpointType = "AzureVM"
+	// EndpointTypeAzureVNet ...
+	EndpointTypeAzureVNet EndpointType = "AzureVNet"
+	// EndpointTypeExternalAddress ...
+	EndpointTypeExternalAddress EndpointType = "ExternalAddress"
+	// EndpointTypeMMAWorkspaceMachine ...
+	EndpointTypeMMAWorkspaceMachine EndpointType = "MMAWorkspaceMachine"
+	// EndpointTypeMMAWorkspaceNetwork ...
+	EndpointTypeMMAWorkspaceNetwork EndpointType = "MMAWorkspaceNetwork"
 )
 
 // PossibleEndpointTypeValues returns an array of possible values for the EndpointType const type.
 func PossibleEndpointTypeValues() []EndpointType {
-	return []EndpointType{AzureSubnet, AzureVM, AzureVNet, ExternalAddress, MMAWorkspaceMachine, MMAWorkspaceNetwork}
+	return []EndpointType{EndpointTypeAzureSubnet, EndpointTypeAzureVM, EndpointTypeAzureVNet, EndpointTypeExternalAddress, EndpointTypeMMAWorkspaceMachine, EndpointTypeMMAWorkspaceNetwork}
 }
 
 // EvaluationState enumerates the values for evaluation state.
 type EvaluationState string
 
 const (
-	// Completed ...
-	Completed EvaluationState = "Completed"
-	// InProgress ...
-	InProgress EvaluationState = "InProgress"
-	// NotStarted ...
-	NotStarted EvaluationState = "NotStarted"
+	// EvaluationStateCompleted ...
+	EvaluationStateCompleted EvaluationState = "Completed"
+	// EvaluationStateInProgress ...
+	EvaluationStateInProgress EvaluationState = "InProgress"
+	// EvaluationStateNotStarted ...
+	EvaluationStateNotStarted EvaluationState = "NotStarted"
 )
 
 // PossibleEvaluationStateValues returns an array of possible values for the EvaluationState const type.
 func PossibleEvaluationStateValues() []EvaluationState {
-	return []EvaluationState{Completed, InProgress, NotStarted}
+	return []EvaluationState{EvaluationStateCompleted, EvaluationStateInProgress, EvaluationStateNotStarted}
 }
 
 // ExpressRouteCircuitPeeringAdvertisedPublicPrefixState enumerates the values for express route circuit
@@ -894,19 +894,19 @@ func PossibleEvaluationStateValues() []EvaluationState {
 type ExpressRouteCircuitPeeringAdvertisedPublicPrefixState string
 
 const (
-	// Configured ...
-	Configured ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = "Configured"
-	// Configuring ...
-	Configuring ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = "Configuring"
-	// NotConfigured ...
-	NotConfigured ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = "NotConfigured"
-	// ValidationNeeded ...
-	ValidationNeeded ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = "ValidationNeeded"
+	// ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateConfigured ...
+	ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateConfigured ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = "Configured"
+	// ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateConfiguring ...
+	ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateConfiguring ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = "Configuring"
+	// ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateNotConfigured ...
+	ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateNotConfigured ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = "NotConfigured"
+	// ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValidationNeeded ...
+	ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValidationNeeded ExpressRouteCircuitPeeringAdvertisedPublicPrefixState = "ValidationNeeded"
 )
 
 // PossibleExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValues returns an array of possible values for the ExpressRouteCircuitPeeringAdvertisedPublicPrefixState const type.
 func PossibleExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValues() []ExpressRouteCircuitPeeringAdvertisedPublicPrefixState {
-	return []ExpressRouteCircuitPeeringAdvertisedPublicPrefixState{Configured, Configuring, NotConfigured, ValidationNeeded}
+	return []ExpressRouteCircuitPeeringAdvertisedPublicPrefixState{ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateConfigured, ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateConfiguring, ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateNotConfigured, ExpressRouteCircuitPeeringAdvertisedPublicPrefixStateValidationNeeded}
 }
 
 // ExpressRouteCircuitPeeringState enumerates the values for express route circuit peering state.
@@ -928,15 +928,15 @@ func PossibleExpressRouteCircuitPeeringStateValues() []ExpressRouteCircuitPeerin
 type ExpressRouteCircuitSkuFamily string
 
 const (
-	// MeteredData ...
-	MeteredData ExpressRouteCircuitSkuFamily = "MeteredData"
-	// UnlimitedData ...
-	UnlimitedData ExpressRouteCircuitSkuFamily = "UnlimitedData"
+	// ExpressRouteCircuitSkuFamilyMeteredData ...
+	ExpressRouteCircuitSkuFamilyMeteredData ExpressRouteCircuitSkuFamily = "MeteredData"
+	// ExpressRouteCircuitSkuFamilyUnlimitedData ...
+	ExpressRouteCircuitSkuFamilyUnlimitedData ExpressRouteCircuitSkuFamily = "UnlimitedData"
 )
 
 // PossibleExpressRouteCircuitSkuFamilyValues returns an array of possible values for the ExpressRouteCircuitSkuFamily const type.
 func PossibleExpressRouteCircuitSkuFamilyValues() []ExpressRouteCircuitSkuFamily {
-	return []ExpressRouteCircuitSkuFamily{MeteredData, UnlimitedData}
+	return []ExpressRouteCircuitSkuFamily{ExpressRouteCircuitSkuFamilyMeteredData, ExpressRouteCircuitSkuFamilyUnlimitedData}
 }
 
 // ExpressRouteCircuitSkuTier enumerates the values for express route circuit sku tier.
@@ -977,34 +977,34 @@ func PossibleExpressRouteLinkAdminStateValues() []ExpressRouteLinkAdminState {
 type ExpressRouteLinkConnectorType string
 
 const (
-	// LC ...
-	LC ExpressRouteLinkConnectorType = "LC"
-	// SC ...
-	SC ExpressRouteLinkConnectorType = "SC"
+	// ExpressRouteLinkConnectorTypeLC ...
+	ExpressRouteLinkConnectorTypeLC ExpressRouteLinkConnectorType = "LC"
+	// ExpressRouteLinkConnectorTypeSC ...
+	ExpressRouteLinkConnectorTypeSC ExpressRouteLinkConnectorType = "SC"
 )
 
 // PossibleExpressRouteLinkConnectorTypeValues returns an array of possible values for the ExpressRouteLinkConnectorType const type.
 func PossibleExpressRouteLinkConnectorTypeValues() []ExpressRouteLinkConnectorType {
-	return []ExpressRouteLinkConnectorType{LC, SC}
+	return []ExpressRouteLinkConnectorType{ExpressRouteLinkConnectorTypeLC, ExpressRouteLinkConnectorTypeSC}
 }
 
 // ExpressRouteLinkMacSecCipher enumerates the values for express route link mac sec cipher.
 type ExpressRouteLinkMacSecCipher string
 
 const (
-	// GcmAes128 ...
-	GcmAes128 ExpressRouteLinkMacSecCipher = "GcmAes128"
-	// GcmAes256 ...
-	GcmAes256 ExpressRouteLinkMacSecCipher = "GcmAes256"
-	// GcmAesXpn128 ...
-	GcmAesXpn128 ExpressRouteLinkMacSecCipher = "GcmAesXpn128"
-	// GcmAesXpn256 ...
-	GcmAesXpn256 ExpressRouteLinkMacSecCipher = "GcmAesXpn256"
+	// ExpressRouteLinkMacSecCipherGcmAes128 ...
+	ExpressRouteLinkMacSecCipherGcmAes128 ExpressRouteLinkMacSecCipher = "GcmAes128"
+	// ExpressRouteLinkMacSecCipherGcmAes256 ...
+	ExpressRouteLinkMacSecCipherGcmAes256 ExpressRouteLinkMacSecCipher = "GcmAes256"
+	// ExpressRouteLinkMacSecCipherGcmAesXpn128 ...
+	ExpressRouteLinkMacSecCipherGcmAesXpn128 ExpressRouteLinkMacSecCipher = "GcmAesXpn128"
+	// ExpressRouteLinkMacSecCipherGcmAesXpn256 ...
+	ExpressRouteLinkMacSecCipherGcmAesXpn256 ExpressRouteLinkMacSecCipher = "GcmAesXpn256"
 )
 
 // PossibleExpressRouteLinkMacSecCipherValues returns an array of possible values for the ExpressRouteLinkMacSecCipher const type.
 func PossibleExpressRouteLinkMacSecCipherValues() []ExpressRouteLinkMacSecCipher {
-	return []ExpressRouteLinkMacSecCipher{GcmAes128, GcmAes256, GcmAesXpn128, GcmAesXpn256}
+	return []ExpressRouteLinkMacSecCipher{ExpressRouteLinkMacSecCipherGcmAes128, ExpressRouteLinkMacSecCipherGcmAes256, ExpressRouteLinkMacSecCipherGcmAesXpn128, ExpressRouteLinkMacSecCipherGcmAesXpn256}
 }
 
 // ExpressRouteLinkMacSecSciState enumerates the values for express route link mac sec sci state.
@@ -1041,45 +1041,45 @@ func PossibleExpressRoutePeeringStateValues() []ExpressRoutePeeringState {
 type ExpressRoutePeeringType string
 
 const (
-	// AzurePrivatePeering ...
-	AzurePrivatePeering ExpressRoutePeeringType = "AzurePrivatePeering"
-	// AzurePublicPeering ...
-	AzurePublicPeering ExpressRoutePeeringType = "AzurePublicPeering"
-	// MicrosoftPeering ...
-	MicrosoftPeering ExpressRoutePeeringType = "MicrosoftPeering"
+	// ExpressRoutePeeringTypeAzurePrivatePeering ...
+	ExpressRoutePeeringTypeAzurePrivatePeering ExpressRoutePeeringType = "AzurePrivatePeering"
+	// ExpressRoutePeeringTypeAzurePublicPeering ...
+	ExpressRoutePeeringTypeAzurePublicPeering ExpressRoutePeeringType = "AzurePublicPeering"
+	// ExpressRoutePeeringTypeMicrosoftPeering ...
+	ExpressRoutePeeringTypeMicrosoftPeering ExpressRoutePeeringType = "MicrosoftPeering"
 )
 
 // PossibleExpressRoutePeeringTypeValues returns an array of possible values for the ExpressRoutePeeringType const type.
 func PossibleExpressRoutePeeringTypeValues() []ExpressRoutePeeringType {
-	return []ExpressRoutePeeringType{AzurePrivatePeering, AzurePublicPeering, MicrosoftPeering}
+	return []ExpressRoutePeeringType{ExpressRoutePeeringTypeAzurePrivatePeering, ExpressRoutePeeringTypeAzurePublicPeering, ExpressRoutePeeringTypeMicrosoftPeering}
 }
 
 // ExpressRoutePortsEncapsulation enumerates the values for express route ports encapsulation.
 type ExpressRoutePortsEncapsulation string
 
 const (
-	// Dot1Q ...
-	Dot1Q ExpressRoutePortsEncapsulation = "Dot1Q"
-	// QinQ ...
-	QinQ ExpressRoutePortsEncapsulation = "QinQ"
+	// ExpressRoutePortsEncapsulationDot1Q ...
+	ExpressRoutePortsEncapsulationDot1Q ExpressRoutePortsEncapsulation = "Dot1Q"
+	// ExpressRoutePortsEncapsulationQinQ ...
+	ExpressRoutePortsEncapsulationQinQ ExpressRoutePortsEncapsulation = "QinQ"
 )
 
 // PossibleExpressRoutePortsEncapsulationValues returns an array of possible values for the ExpressRoutePortsEncapsulation const type.
 func PossibleExpressRoutePortsEncapsulationValues() []ExpressRoutePortsEncapsulation {
-	return []ExpressRoutePortsEncapsulation{Dot1Q, QinQ}
+	return []ExpressRoutePortsEncapsulation{ExpressRoutePortsEncapsulationDot1Q, ExpressRoutePortsEncapsulationQinQ}
 }
 
 // ExtendedLocationTypes enumerates the values for extended location types.
 type ExtendedLocationTypes string
 
 const (
-	// EdgeZone ...
-	EdgeZone ExtendedLocationTypes = "EdgeZone"
+	// ExtendedLocationTypesEdgeZone ...
+	ExtendedLocationTypesEdgeZone ExtendedLocationTypes = "EdgeZone"
 )
 
 // PossibleExtendedLocationTypesValues returns an array of possible values for the ExtendedLocationTypes const type.
 func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
-	return []ExtendedLocationTypes{EdgeZone}
+	return []ExtendedLocationTypes{ExtendedLocationTypesEdgeZone}
 }
 
 // FirewallPolicyFilterRuleCollectionActionType enumerates the values for firewall policy filter rule
@@ -1141,13 +1141,13 @@ func PossibleFirewallPolicyIntrusionDetectionStateTypeValues() []FirewallPolicyI
 type FirewallPolicyNatRuleCollectionActionType string
 
 const (
-	// DNAT ...
-	DNAT FirewallPolicyNatRuleCollectionActionType = "DNAT"
+	// FirewallPolicyNatRuleCollectionActionTypeDNAT ...
+	FirewallPolicyNatRuleCollectionActionTypeDNAT FirewallPolicyNatRuleCollectionActionType = "DNAT"
 )
 
 // PossibleFirewallPolicyNatRuleCollectionActionTypeValues returns an array of possible values for the FirewallPolicyNatRuleCollectionActionType const type.
 func PossibleFirewallPolicyNatRuleCollectionActionTypeValues() []FirewallPolicyNatRuleCollectionActionType {
-	return []FirewallPolicyNatRuleCollectionActionType{DNAT}
+	return []FirewallPolicyNatRuleCollectionActionType{FirewallPolicyNatRuleCollectionActionTypeDNAT}
 }
 
 // FirewallPolicyRuleApplicationProtocolType enumerates the values for firewall policy rule application
@@ -1204,28 +1204,28 @@ func PossibleFirewallPolicySkuTierValues() []FirewallPolicySkuTier {
 type FlowLogFormatType string
 
 const (
-	// JSON ...
-	JSON FlowLogFormatType = "JSON"
+	// FlowLogFormatTypeJSON ...
+	FlowLogFormatTypeJSON FlowLogFormatType = "JSON"
 )
 
 // PossibleFlowLogFormatTypeValues returns an array of possible values for the FlowLogFormatType const type.
 func PossibleFlowLogFormatTypeValues() []FlowLogFormatType {
-	return []FlowLogFormatType{JSON}
+	return []FlowLogFormatType{FlowLogFormatTypeJSON}
 }
 
 // HTTPConfigurationMethod enumerates the values for http configuration method.
 type HTTPConfigurationMethod string
 
 const (
-	// Get ...
-	Get HTTPConfigurationMethod = "Get"
-	// Post ...
-	Post HTTPConfigurationMethod = "Post"
+	// HTTPConfigurationMethodGet ...
+	HTTPConfigurationMethodGet HTTPConfigurationMethod = "Get"
+	// HTTPConfigurationMethodPost ...
+	HTTPConfigurationMethodPost HTTPConfigurationMethod = "Post"
 )
 
 // PossibleHTTPConfigurationMethodValues returns an array of possible values for the HTTPConfigurationMethod const type.
 func PossibleHTTPConfigurationMethodValues() []HTTPConfigurationMethod {
-	return []HTTPConfigurationMethod{Get, Post}
+	return []HTTPConfigurationMethod{HTTPConfigurationMethodGet, HTTPConfigurationMethodPost}
 }
 
 // HTTPMethod enumerates the values for http method.
@@ -1283,25 +1283,25 @@ func PossibleHubVirtualNetworkConnectionStatusValues() []HubVirtualNetworkConnec
 type IkeEncryption string
 
 const (
-	// AES128 ...
-	AES128 IkeEncryption = "AES128"
-	// AES192 ...
-	AES192 IkeEncryption = "AES192"
-	// AES256 ...
-	AES256 IkeEncryption = "AES256"
-	// DES ...
-	DES IkeEncryption = "DES"
-	// DES3 ...
-	DES3 IkeEncryption = "DES3"
-	// GCMAES128 ...
-	GCMAES128 IkeEncryption = "GCMAES128"
-	// GCMAES256 ...
-	GCMAES256 IkeEncryption = "GCMAES256"
+	// IkeEncryptionAES128 ...
+	IkeEncryptionAES128 IkeEncryption = "AES128"
+	// IkeEncryptionAES192 ...
+	IkeEncryptionAES192 IkeEncryption = "AES192"
+	// IkeEncryptionAES256 ...
+	IkeEncryptionAES256 IkeEncryption = "AES256"
+	// IkeEncryptionDES ...
+	IkeEncryptionDES IkeEncryption = "DES"
+	// IkeEncryptionDES3 ...
+	IkeEncryptionDES3 IkeEncryption = "DES3"
+	// IkeEncryptionGCMAES128 ...
+	IkeEncryptionGCMAES128 IkeEncryption = "GCMAES128"
+	// IkeEncryptionGCMAES256 ...
+	IkeEncryptionGCMAES256 IkeEncryption = "GCMAES256"
 )
 
 // PossibleIkeEncryptionValues returns an array of possible values for the IkeEncryption const type.
 func PossibleIkeEncryptionValues() []IkeEncryption {
-	return []IkeEncryption{AES128, AES192, AES256, DES, DES3, GCMAES128, GCMAES256}
+	return []IkeEncryption{IkeEncryptionAES128, IkeEncryptionAES192, IkeEncryptionAES256, IkeEncryptionDES, IkeEncryptionDES3, IkeEncryptionGCMAES128, IkeEncryptionGCMAES256}
 }
 
 // IkeIntegrity enumerates the values for ike integrity.
@@ -1346,30 +1346,30 @@ func PossibleInboundSecurityRulesProtocolValues() []InboundSecurityRulesProtocol
 type IPAllocationMethod string
 
 const (
-	// Dynamic ...
-	Dynamic IPAllocationMethod = "Dynamic"
-	// Static ...
-	Static IPAllocationMethod = "Static"
+	// IPAllocationMethodDynamic ...
+	IPAllocationMethodDynamic IPAllocationMethod = "Dynamic"
+	// IPAllocationMethodStatic ...
+	IPAllocationMethodStatic IPAllocationMethod = "Static"
 )
 
 // PossibleIPAllocationMethodValues returns an array of possible values for the IPAllocationMethod const type.
 func PossibleIPAllocationMethodValues() []IPAllocationMethod {
-	return []IPAllocationMethod{Dynamic, Static}
+	return []IPAllocationMethod{IPAllocationMethodDynamic, IPAllocationMethodStatic}
 }
 
 // IPAllocationType enumerates the values for ip allocation type.
 type IPAllocationType string
 
 const (
-	// Hypernet ...
-	Hypernet IPAllocationType = "Hypernet"
-	// Undefined ...
-	Undefined IPAllocationType = "Undefined"
+	// IPAllocationTypeHypernet ...
+	IPAllocationTypeHypernet IPAllocationType = "Hypernet"
+	// IPAllocationTypeUndefined ...
+	IPAllocationTypeUndefined IPAllocationType = "Undefined"
 )
 
 // PossibleIPAllocationTypeValues returns an array of possible values for the IPAllocationType const type.
 func PossibleIPAllocationTypeValues() []IPAllocationType {
-	return []IPAllocationType{Hypernet, Undefined}
+	return []IPAllocationType{IPAllocationTypeHypernet, IPAllocationTypeUndefined}
 }
 
 // IPFlowProtocol enumerates the values for ip flow protocol.
@@ -1443,15 +1443,15 @@ func PossibleIpsecIntegrityValues() []IpsecIntegrity {
 type IPVersion string
 
 const (
-	// IPv4 ...
-	IPv4 IPVersion = "IPv4"
-	// IPv6 ...
-	IPv6 IPVersion = "IPv6"
+	// IPVersionIPv4 ...
+	IPVersionIPv4 IPVersion = "IPv4"
+	// IPVersionIPv6 ...
+	IPVersionIPv6 IPVersion = "IPv6"
 )
 
 // PossibleIPVersionValues returns an array of possible values for the IPVersion const type.
 func PossibleIPVersionValues() []IPVersion {
-	return []IPVersion{IPv4, IPv6}
+	return []IPVersion{IPVersionIPv4, IPVersionIPv6}
 }
 
 // IssueType enumerates the values for issue type.
@@ -1519,15 +1519,15 @@ func PossibleLoadBalancerSkuNameValues() []LoadBalancerSkuName {
 type LoadBalancerSkuTier string
 
 const (
-	// Global ...
-	Global LoadBalancerSkuTier = "Global"
-	// Regional ...
-	Regional LoadBalancerSkuTier = "Regional"
+	// LoadBalancerSkuTierGlobal ...
+	LoadBalancerSkuTierGlobal LoadBalancerSkuTier = "Global"
+	// LoadBalancerSkuTierRegional ...
+	LoadBalancerSkuTierRegional LoadBalancerSkuTier = "Regional"
 )
 
 // PossibleLoadBalancerSkuTierValues returns an array of possible values for the LoadBalancerSkuTier const type.
 func PossibleLoadBalancerSkuTierValues() []LoadBalancerSkuTier {
-	return []LoadBalancerSkuTier{Global, Regional}
+	return []LoadBalancerSkuTier{LoadBalancerSkuTierGlobal, LoadBalancerSkuTierRegional}
 }
 
 // LoadDistribution enumerates the values for load distribution.
@@ -1653,30 +1653,30 @@ func PossibleOriginValues() []Origin {
 type OutputType string
 
 const (
-	// Workspace ...
-	Workspace OutputType = "Workspace"
+	// OutputTypeWorkspace ...
+	OutputTypeWorkspace OutputType = "Workspace"
 )
 
 // PossibleOutputTypeValues returns an array of possible values for the OutputType const type.
 func PossibleOutputTypeValues() []OutputType {
-	return []OutputType{Workspace}
+	return []OutputType{OutputTypeWorkspace}
 }
 
 // OwaspCrsExclusionEntryMatchVariable enumerates the values for owasp crs exclusion entry match variable.
 type OwaspCrsExclusionEntryMatchVariable string
 
 const (
-	// RequestArgNames ...
-	RequestArgNames OwaspCrsExclusionEntryMatchVariable = "RequestArgNames"
-	// RequestCookieNames ...
-	RequestCookieNames OwaspCrsExclusionEntryMatchVariable = "RequestCookieNames"
-	// RequestHeaderNames ...
-	RequestHeaderNames OwaspCrsExclusionEntryMatchVariable = "RequestHeaderNames"
+	// OwaspCrsExclusionEntryMatchVariableRequestArgNames ...
+	OwaspCrsExclusionEntryMatchVariableRequestArgNames OwaspCrsExclusionEntryMatchVariable = "RequestArgNames"
+	// OwaspCrsExclusionEntryMatchVariableRequestCookieNames ...
+	OwaspCrsExclusionEntryMatchVariableRequestCookieNames OwaspCrsExclusionEntryMatchVariable = "RequestCookieNames"
+	// OwaspCrsExclusionEntryMatchVariableRequestHeaderNames ...
+	OwaspCrsExclusionEntryMatchVariableRequestHeaderNames OwaspCrsExclusionEntryMatchVariable = "RequestHeaderNames"
 )
 
 // PossibleOwaspCrsExclusionEntryMatchVariableValues returns an array of possible values for the OwaspCrsExclusionEntryMatchVariable const type.
 func PossibleOwaspCrsExclusionEntryMatchVariableValues() []OwaspCrsExclusionEntryMatchVariable {
-	return []OwaspCrsExclusionEntryMatchVariable{RequestArgNames, RequestCookieNames, RequestHeaderNames}
+	return []OwaspCrsExclusionEntryMatchVariable{OwaspCrsExclusionEntryMatchVariableRequestArgNames, OwaspCrsExclusionEntryMatchVariableRequestCookieNames, OwaspCrsExclusionEntryMatchVariableRequestHeaderNames}
 }
 
 // OwaspCrsExclusionEntrySelectorMatchOperator enumerates the values for owasp crs exclusion entry selector
@@ -1705,21 +1705,21 @@ func PossibleOwaspCrsExclusionEntrySelectorMatchOperatorValues() []OwaspCrsExclu
 type PcError string
 
 const (
-	// AgentStopped ...
-	AgentStopped PcError = "AgentStopped"
-	// CaptureFailed ...
-	CaptureFailed PcError = "CaptureFailed"
-	// InternalError ...
-	InternalError PcError = "InternalError"
-	// LocalFileFailed ...
-	LocalFileFailed PcError = "LocalFileFailed"
-	// StorageFailed ...
-	StorageFailed PcError = "StorageFailed"
+	// PcErrorAgentStopped ...
+	PcErrorAgentStopped PcError = "AgentStopped"
+	// PcErrorCaptureFailed ...
+	PcErrorCaptureFailed PcError = "CaptureFailed"
+	// PcErrorInternalError ...
+	PcErrorInternalError PcError = "InternalError"
+	// PcErrorLocalFileFailed ...
+	PcErrorLocalFileFailed PcError = "LocalFileFailed"
+	// PcErrorStorageFailed ...
+	PcErrorStorageFailed PcError = "StorageFailed"
 )
 
 // PossiblePcErrorValues returns an array of possible values for the PcError const type.
 func PossiblePcErrorValues() []PcError {
-	return []PcError{AgentStopped, CaptureFailed, InternalError, LocalFileFailed, StorageFailed}
+	return []PcError{PcErrorAgentStopped, PcErrorCaptureFailed, PcErrorInternalError, PcErrorLocalFileFailed, PcErrorStorageFailed}
 }
 
 // PcProtocol enumerates the values for pc protocol.
@@ -1825,15 +1825,15 @@ func PossibleProbeProtocolValues() []ProbeProtocol {
 type ProcessorArchitecture string
 
 const (
-	// Amd64 ...
-	Amd64 ProcessorArchitecture = "Amd64"
-	// X86 ...
-	X86 ProcessorArchitecture = "X86"
+	// ProcessorArchitectureAmd64 ...
+	ProcessorArchitectureAmd64 ProcessorArchitecture = "Amd64"
+	// ProcessorArchitectureX86 ...
+	ProcessorArchitectureX86 ProcessorArchitecture = "X86"
 )
 
 // PossibleProcessorArchitectureValues returns an array of possible values for the ProcessorArchitecture const type.
 func PossibleProcessorArchitectureValues() []ProcessorArchitecture {
-	return []ProcessorArchitecture{Amd64, X86}
+	return []ProcessorArchitecture{ProcessorArchitectureAmd64, ProcessorArchitectureX86}
 }
 
 // Protocol enumerates the values for protocol.
@@ -1888,19 +1888,19 @@ func PossibleProtocolTypeValues() []ProtocolType {
 type ProvisioningState string
 
 const (
-	// Deleting ...
-	Deleting ProvisioningState = "Deleting"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
-	// Updating ...
-	Updating ProvisioningState = "Updating"
+	// ProvisioningStateDeleting ...
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	// ProvisioningStateFailed ...
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateSucceeded ...
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	// ProvisioningStateUpdating ...
+	ProvisioningStateUpdating ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Deleting, Failed, Succeeded, Updating}
+	return []ProvisioningState{ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateSucceeded, ProvisioningStateUpdating}
 }
 
 // PublicIPAddressSkuName enumerates the values for public ip address sku name.
@@ -2024,36 +2024,36 @@ func PossibleRoutingStateValues() []RoutingState {
 type RuleCollectionType string
 
 const (
-	// RuleCollectionTypeFirewallPolicyFilterRuleCollection ...
-	RuleCollectionTypeFirewallPolicyFilterRuleCollection RuleCollectionType = "FirewallPolicyFilterRuleCollection"
-	// RuleCollectionTypeFirewallPolicyNatRuleCollection ...
-	RuleCollectionTypeFirewallPolicyNatRuleCollection RuleCollectionType = "FirewallPolicyNatRuleCollection"
-	// RuleCollectionTypeFirewallPolicyRuleCollection ...
-	RuleCollectionTypeFirewallPolicyRuleCollection RuleCollectionType = "FirewallPolicyRuleCollection"
+	// RuleCollectionTypeRuleCollectionTypeFirewallPolicyFilterRuleCollection ...
+	RuleCollectionTypeRuleCollectionTypeFirewallPolicyFilterRuleCollection RuleCollectionType = "FirewallPolicyFilterRuleCollection"
+	// RuleCollectionTypeRuleCollectionTypeFirewallPolicyNatRuleCollection ...
+	RuleCollectionTypeRuleCollectionTypeFirewallPolicyNatRuleCollection RuleCollectionType = "FirewallPolicyNatRuleCollection"
+	// RuleCollectionTypeRuleCollectionTypeFirewallPolicyRuleCollection ...
+	RuleCollectionTypeRuleCollectionTypeFirewallPolicyRuleCollection RuleCollectionType = "FirewallPolicyRuleCollection"
 )
 
 // PossibleRuleCollectionTypeValues returns an array of possible values for the RuleCollectionType const type.
 func PossibleRuleCollectionTypeValues() []RuleCollectionType {
-	return []RuleCollectionType{RuleCollectionTypeFirewallPolicyFilterRuleCollection, RuleCollectionTypeFirewallPolicyNatRuleCollection, RuleCollectionTypeFirewallPolicyRuleCollection}
+	return []RuleCollectionType{RuleCollectionTypeRuleCollectionTypeFirewallPolicyFilterRuleCollection, RuleCollectionTypeRuleCollectionTypeFirewallPolicyNatRuleCollection, RuleCollectionTypeRuleCollectionTypeFirewallPolicyRuleCollection}
 }
 
 // RuleType enumerates the values for rule type.
 type RuleType string
 
 const (
-	// RuleTypeApplicationRule ...
-	RuleTypeApplicationRule RuleType = "ApplicationRule"
-	// RuleTypeFirewallPolicyRule ...
-	RuleTypeFirewallPolicyRule RuleType = "FirewallPolicyRule"
-	// RuleTypeNatRule ...
-	RuleTypeNatRule RuleType = "NatRule"
-	// RuleTypeNetworkRule ...
-	RuleTypeNetworkRule RuleType = "NetworkRule"
+	// RuleTypeRuleTypeApplicationRule ...
+	RuleTypeRuleTypeApplicationRule RuleType = "ApplicationRule"
+	// RuleTypeRuleTypeFirewallPolicyRule ...
+	RuleTypeRuleTypeFirewallPolicyRule RuleType = "FirewallPolicyRule"
+	// RuleTypeRuleTypeNatRule ...
+	RuleTypeRuleTypeNatRule RuleType = "NatRule"
+	// RuleTypeRuleTypeNetworkRule ...
+	RuleTypeRuleTypeNetworkRule RuleType = "NetworkRule"
 )
 
 // PossibleRuleTypeValues returns an array of possible values for the RuleType const type.
 func PossibleRuleTypeValues() []RuleType {
-	return []RuleType{RuleTypeApplicationRule, RuleTypeFirewallPolicyRule, RuleTypeNatRule, RuleTypeNetworkRule}
+	return []RuleType{RuleTypeRuleTypeApplicationRule, RuleTypeRuleTypeFirewallPolicyRule, RuleTypeRuleTypeNatRule, RuleTypeRuleTypeNetworkRule}
 }
 
 // SecurityPartnerProviderConnectionStatus enumerates the values for security partner provider connection
@@ -2080,17 +2080,17 @@ func PossibleSecurityPartnerProviderConnectionStatusValues() []SecurityPartnerPr
 type SecurityProviderName string
 
 const (
-	// Checkpoint ...
-	Checkpoint SecurityProviderName = "Checkpoint"
-	// IBoss ...
-	IBoss SecurityProviderName = "IBoss"
-	// ZScaler ...
-	ZScaler SecurityProviderName = "ZScaler"
+	// SecurityProviderNameCheckpoint ...
+	SecurityProviderNameCheckpoint SecurityProviderName = "Checkpoint"
+	// SecurityProviderNameIBoss ...
+	SecurityProviderNameIBoss SecurityProviderName = "IBoss"
+	// SecurityProviderNameZScaler ...
+	SecurityProviderNameZScaler SecurityProviderName = "ZScaler"
 )
 
 // PossibleSecurityProviderNameValues returns an array of possible values for the SecurityProviderName const type.
 func PossibleSecurityProviderNameValues() []SecurityProviderName {
-	return []SecurityProviderName{Checkpoint, IBoss, ZScaler}
+	return []SecurityProviderName{SecurityProviderNameCheckpoint, SecurityProviderNameIBoss, SecurityProviderNameZScaler}
 }
 
 // SecurityRuleAccess enumerates the values for security rule access.
@@ -2255,15 +2255,15 @@ func PossibleVirtualNetworkGatewayConnectionModeValues() []VirtualNetworkGateway
 type VirtualNetworkGatewayConnectionProtocol string
 
 const (
-	// IKEv1 ...
-	IKEv1 VirtualNetworkGatewayConnectionProtocol = "IKEv1"
-	// IKEv2 ...
-	IKEv2 VirtualNetworkGatewayConnectionProtocol = "IKEv2"
+	// VirtualNetworkGatewayConnectionProtocolIKEv1 ...
+	VirtualNetworkGatewayConnectionProtocolIKEv1 VirtualNetworkGatewayConnectionProtocol = "IKEv1"
+	// VirtualNetworkGatewayConnectionProtocolIKEv2 ...
+	VirtualNetworkGatewayConnectionProtocolIKEv2 VirtualNetworkGatewayConnectionProtocol = "IKEv2"
 )
 
 // PossibleVirtualNetworkGatewayConnectionProtocolValues returns an array of possible values for the VirtualNetworkGatewayConnectionProtocol const type.
 func PossibleVirtualNetworkGatewayConnectionProtocolValues() []VirtualNetworkGatewayConnectionProtocol {
-	return []VirtualNetworkGatewayConnectionProtocol{IKEv1, IKEv2}
+	return []VirtualNetworkGatewayConnectionProtocol{VirtualNetworkGatewayConnectionProtocolIKEv1, VirtualNetworkGatewayConnectionProtocolIKEv2}
 }
 
 // VirtualNetworkGatewayConnectionStatus enumerates the values for virtual network gateway connection status.
@@ -2289,19 +2289,19 @@ func PossibleVirtualNetworkGatewayConnectionStatusValues() []VirtualNetworkGatew
 type VirtualNetworkGatewayConnectionType string
 
 const (
-	// ExpressRoute ...
-	ExpressRoute VirtualNetworkGatewayConnectionType = "ExpressRoute"
-	// IPsec ...
-	IPsec VirtualNetworkGatewayConnectionType = "IPsec"
-	// Vnet2Vnet ...
-	Vnet2Vnet VirtualNetworkGatewayConnectionType = "Vnet2Vnet"
-	// VPNClient ...
-	VPNClient VirtualNetworkGatewayConnectionType = "VPNClient"
+	// VirtualNetworkGatewayConnectionTypeExpressRoute ...
+	VirtualNetworkGatewayConnectionTypeExpressRoute VirtualNetworkGatewayConnectionType = "ExpressRoute"
+	// VirtualNetworkGatewayConnectionTypeIPsec ...
+	VirtualNetworkGatewayConnectionTypeIPsec VirtualNetworkGatewayConnectionType = "IPsec"
+	// VirtualNetworkGatewayConnectionTypeVnet2Vnet ...
+	VirtualNetworkGatewayConnectionTypeVnet2Vnet VirtualNetworkGatewayConnectionType = "Vnet2Vnet"
+	// VirtualNetworkGatewayConnectionTypeVPNClient ...
+	VirtualNetworkGatewayConnectionTypeVPNClient VirtualNetworkGatewayConnectionType = "VPNClient"
 )
 
 // PossibleVirtualNetworkGatewayConnectionTypeValues returns an array of possible values for the VirtualNetworkGatewayConnectionType const type.
 func PossibleVirtualNetworkGatewayConnectionTypeValues() []VirtualNetworkGatewayConnectionType {
-	return []VirtualNetworkGatewayConnectionType{ExpressRoute, IPsec, Vnet2Vnet, VPNClient}
+	return []VirtualNetworkGatewayConnectionType{VirtualNetworkGatewayConnectionTypeExpressRoute, VirtualNetworkGatewayConnectionTypeIPsec, VirtualNetworkGatewayConnectionTypeVnet2Vnet, VirtualNetworkGatewayConnectionTypeVPNClient}
 }
 
 // VirtualNetworkGatewaySkuName enumerates the values for virtual network gateway sku name.
@@ -2428,53 +2428,85 @@ func PossibleVirtualNetworkPeeringStateValues() []VirtualNetworkPeeringState {
 	return []VirtualNetworkPeeringState{VirtualNetworkPeeringStateConnected, VirtualNetworkPeeringStateDisconnected, VirtualNetworkPeeringStateInitiated}
 }
 
+// VirtualNetworkPrivateEndpointNetworkPolicies enumerates the values for virtual network private endpoint
+// network policies.
+type VirtualNetworkPrivateEndpointNetworkPolicies string
+
+const (
+	// VirtualNetworkPrivateEndpointNetworkPoliciesDisabled ...
+	VirtualNetworkPrivateEndpointNetworkPoliciesDisabled VirtualNetworkPrivateEndpointNetworkPolicies = "Disabled"
+	// VirtualNetworkPrivateEndpointNetworkPoliciesEnabled ...
+	VirtualNetworkPrivateEndpointNetworkPoliciesEnabled VirtualNetworkPrivateEndpointNetworkPolicies = "Enabled"
+)
+
+// PossibleVirtualNetworkPrivateEndpointNetworkPoliciesValues returns an array of possible values for the VirtualNetworkPrivateEndpointNetworkPolicies const type.
+func PossibleVirtualNetworkPrivateEndpointNetworkPoliciesValues() []VirtualNetworkPrivateEndpointNetworkPolicies {
+	return []VirtualNetworkPrivateEndpointNetworkPolicies{VirtualNetworkPrivateEndpointNetworkPoliciesDisabled, VirtualNetworkPrivateEndpointNetworkPoliciesEnabled}
+}
+
+// VirtualNetworkPrivateLinkServiceNetworkPolicies enumerates the values for virtual network private link
+// service network policies.
+type VirtualNetworkPrivateLinkServiceNetworkPolicies string
+
+const (
+	// VirtualNetworkPrivateLinkServiceNetworkPoliciesDisabled ...
+	VirtualNetworkPrivateLinkServiceNetworkPoliciesDisabled VirtualNetworkPrivateLinkServiceNetworkPolicies = "Disabled"
+	// VirtualNetworkPrivateLinkServiceNetworkPoliciesEnabled ...
+	VirtualNetworkPrivateLinkServiceNetworkPoliciesEnabled VirtualNetworkPrivateLinkServiceNetworkPolicies = "Enabled"
+)
+
+// PossibleVirtualNetworkPrivateLinkServiceNetworkPoliciesValues returns an array of possible values for the VirtualNetworkPrivateLinkServiceNetworkPolicies const type.
+func PossibleVirtualNetworkPrivateLinkServiceNetworkPoliciesValues() []VirtualNetworkPrivateLinkServiceNetworkPolicies {
+	return []VirtualNetworkPrivateLinkServiceNetworkPolicies{VirtualNetworkPrivateLinkServiceNetworkPoliciesDisabled, VirtualNetworkPrivateLinkServiceNetworkPoliciesEnabled}
+}
+
 // VirtualWanSecurityProviderType enumerates the values for virtual wan security provider type.
 type VirtualWanSecurityProviderType string
 
 const (
-	// External ...
-	External VirtualWanSecurityProviderType = "External"
-	// Native ...
-	Native VirtualWanSecurityProviderType = "Native"
+	// VirtualWanSecurityProviderTypeExternal ...
+	VirtualWanSecurityProviderTypeExternal VirtualWanSecurityProviderType = "External"
+	// VirtualWanSecurityProviderTypeNative ...
+	VirtualWanSecurityProviderTypeNative VirtualWanSecurityProviderType = "Native"
 )
 
 // PossibleVirtualWanSecurityProviderTypeValues returns an array of possible values for the VirtualWanSecurityProviderType const type.
 func PossibleVirtualWanSecurityProviderTypeValues() []VirtualWanSecurityProviderType {
-	return []VirtualWanSecurityProviderType{External, Native}
+	return []VirtualWanSecurityProviderType{VirtualWanSecurityProviderTypeExternal, VirtualWanSecurityProviderTypeNative}
 }
 
 // VpnAuthenticationType enumerates the values for vpn authentication type.
 type VpnAuthenticationType string
 
 const (
-	// AAD ...
-	AAD VpnAuthenticationType = "AAD"
-	// Certificate ...
-	Certificate VpnAuthenticationType = "Certificate"
-	// Radius ...
-	Radius VpnAuthenticationType = "Radius"
+	// VpnAuthenticationTypeAAD ...
+	VpnAuthenticationTypeAAD VpnAuthenticationType = "AAD"
+	// VpnAuthenticationTypeCertificate ...
+	VpnAuthenticationTypeCertificate VpnAuthenticationType = "Certificate"
+	// VpnAuthenticationTypeRadius ...
+	VpnAuthenticationTypeRadius VpnAuthenticationType = "Radius"
 )
 
 // PossibleVpnAuthenticationTypeValues returns an array of possible values for the VpnAuthenticationType const type.
 func PossibleVpnAuthenticationTypeValues() []VpnAuthenticationType {
-	return []VpnAuthenticationType{AAD, Certificate, Radius}
+	return []VpnAuthenticationType{VpnAuthenticationTypeAAD, VpnAuthenticationTypeCertificate, VpnAuthenticationTypeRadius}
 }
 
 // VpnClientProtocol enumerates the values for vpn client protocol.
 type VpnClientProtocol string
 
 const (
-	// IkeV2 ...
-	IkeV2 VpnClientProtocol = "IkeV2"
-	// OpenVPN ...
-	OpenVPN VpnClientProtocol = "OpenVPN"
-	// SSTP ...
-	SSTP VpnClientProtocol = "SSTP"
+	// VpnClientProtocolIkeV2 ...
+	VpnClientProtocolIkeV2 VpnClientProtocol = "IkeV2"
+	// VpnClientProtocolOpenVPN ...
+	VpnClientProtocolOpenVPN VpnClientProtocol = "OpenVPN"
+	// VpnClientProtocolSSTP ...
+	VpnClientProtocolSSTP VpnClientProtocol = "SSTP"
 )
 
 // PossibleVpnClientProtocolValues returns an array of possible values for the VpnClientProtocol const type.
 func PossibleVpnClientProtocolValues() []VpnClientProtocol {
-	return []VpnClientProtocol{IkeV2, OpenVPN, SSTP}
+	return []VpnClientProtocol{VpnClientProtocolIkeV2, VpnClientProtocolOpenVPN, VpnClientProtocolSSTP}
 }
 
 // VpnConnectionStatus enumerates the values for vpn connection status.
@@ -2549,15 +2581,15 @@ func PossibleVpnLinkConnectionModeValues() []VpnLinkConnectionMode {
 type VpnNatRuleMode string
 
 const (
-	// EgressSnat ...
-	EgressSnat VpnNatRuleMode = "EgressSnat"
-	// IngressSnat ...
-	IngressSnat VpnNatRuleMode = "IngressSnat"
+	// VpnNatRuleModeEgressSnat ...
+	VpnNatRuleModeEgressSnat VpnNatRuleMode = "EgressSnat"
+	// VpnNatRuleModeIngressSnat ...
+	VpnNatRuleModeIngressSnat VpnNatRuleMode = "IngressSnat"
 )
 
 // PossibleVpnNatRuleModeValues returns an array of possible values for the VpnNatRuleMode const type.
 func PossibleVpnNatRuleModeValues() []VpnNatRuleMode {
-	return []VpnNatRuleMode{EgressSnat, IngressSnat}
+	return []VpnNatRuleMode{VpnNatRuleModeEgressSnat, VpnNatRuleModeIngressSnat}
 }
 
 // VpnNatRuleType enumerates the values for vpn nat rule type.
@@ -2579,15 +2611,15 @@ func PossibleVpnNatRuleTypeValues() []VpnNatRuleType {
 type VpnType string
 
 const (
-	// PolicyBased ...
-	PolicyBased VpnType = "PolicyBased"
-	// RouteBased ...
-	RouteBased VpnType = "RouteBased"
+	// VpnTypePolicyBased ...
+	VpnTypePolicyBased VpnType = "PolicyBased"
+	// VpnTypeRouteBased ...
+	VpnTypeRouteBased VpnType = "RouteBased"
 )
 
 // PossibleVpnTypeValues returns an array of possible values for the VpnType const type.
 func PossibleVpnTypeValues() []VpnType {
-	return []VpnType{PolicyBased, RouteBased}
+	return []VpnType{VpnTypePolicyBased, VpnTypeRouteBased}
 }
 
 // WebApplicationFirewallAction enumerates the values for web application firewall action.
@@ -2626,27 +2658,27 @@ func PossibleWebApplicationFirewallEnabledStateValues() []WebApplicationFirewall
 type WebApplicationFirewallMatchVariable string
 
 const (
-	// PostArgs ...
-	PostArgs WebApplicationFirewallMatchVariable = "PostArgs"
-	// QueryString ...
-	QueryString WebApplicationFirewallMatchVariable = "QueryString"
-	// RemoteAddr ...
-	RemoteAddr WebApplicationFirewallMatchVariable = "RemoteAddr"
-	// RequestBody ...
-	RequestBody WebApplicationFirewallMatchVariable = "RequestBody"
-	// RequestCookies ...
-	RequestCookies WebApplicationFirewallMatchVariable = "RequestCookies"
-	// RequestHeaders ...
-	RequestHeaders WebApplicationFirewallMatchVariable = "RequestHeaders"
-	// RequestMethod ...
-	RequestMethod WebApplicationFirewallMatchVariable = "RequestMethod"
-	// RequestURI ...
-	RequestURI WebApplicationFirewallMatchVariable = "RequestUri"
+	// WebApplicationFirewallMatchVariablePostArgs ...
+	WebApplicationFirewallMatchVariablePostArgs WebApplicationFirewallMatchVariable = "PostArgs"
+	// WebApplicationFirewallMatchVariableQueryString ...
+	WebApplicationFirewallMatchVariableQueryString WebApplicationFirewallMatchVariable = "QueryString"
+	// WebApplicationFirewallMatchVariableRemoteAddr ...
+	WebApplicationFirewallMatchVariableRemoteAddr WebApplicationFirewallMatchVariable = "RemoteAddr"
+	// WebApplicationFirewallMatchVariableRequestBody ...
+	WebApplicationFirewallMatchVariableRequestBody WebApplicationFirewallMatchVariable = "RequestBody"
+	// WebApplicationFirewallMatchVariableRequestCookies ...
+	WebApplicationFirewallMatchVariableRequestCookies WebApplicationFirewallMatchVariable = "RequestCookies"
+	// WebApplicationFirewallMatchVariableRequestHeaders ...
+	WebApplicationFirewallMatchVariableRequestHeaders WebApplicationFirewallMatchVariable = "RequestHeaders"
+	// WebApplicationFirewallMatchVariableRequestMethod ...
+	WebApplicationFirewallMatchVariableRequestMethod WebApplicationFirewallMatchVariable = "RequestMethod"
+	// WebApplicationFirewallMatchVariableRequestURI ...
+	WebApplicationFirewallMatchVariableRequestURI WebApplicationFirewallMatchVariable = "RequestUri"
 )
 
 // PossibleWebApplicationFirewallMatchVariableValues returns an array of possible values for the WebApplicationFirewallMatchVariable const type.
 func PossibleWebApplicationFirewallMatchVariableValues() []WebApplicationFirewallMatchVariable {
-	return []WebApplicationFirewallMatchVariable{PostArgs, QueryString, RemoteAddr, RequestBody, RequestCookies, RequestHeaders, RequestMethod, RequestURI}
+	return []WebApplicationFirewallMatchVariable{WebApplicationFirewallMatchVariablePostArgs, WebApplicationFirewallMatchVariableQueryString, WebApplicationFirewallMatchVariableRemoteAddr, WebApplicationFirewallMatchVariableRequestBody, WebApplicationFirewallMatchVariableRequestCookies, WebApplicationFirewallMatchVariableRequestHeaders, WebApplicationFirewallMatchVariableRequestMethod, WebApplicationFirewallMatchVariableRequestURI}
 }
 
 // WebApplicationFirewallMode enumerates the values for web application firewall mode.
@@ -2740,21 +2772,21 @@ func PossibleWebApplicationFirewallRuleTypeValues() []WebApplicationFirewallRule
 type WebApplicationFirewallTransform string
 
 const (
-	// HTMLEntityDecode ...
-	HTMLEntityDecode WebApplicationFirewallTransform = "HtmlEntityDecode"
-	// Lowercase ...
-	Lowercase WebApplicationFirewallTransform = "Lowercase"
-	// RemoveNulls ...
-	RemoveNulls WebApplicationFirewallTransform = "RemoveNulls"
-	// Trim ...
-	Trim WebApplicationFirewallTransform = "Trim"
-	// URLDecode ...
-	URLDecode WebApplicationFirewallTransform = "UrlDecode"
-	// URLEncode ...
-	URLEncode WebApplicationFirewallTransform = "UrlEncode"
+	// WebApplicationFirewallTransformHTMLEntityDecode ...
+	WebApplicationFirewallTransformHTMLEntityDecode WebApplicationFirewallTransform = "HtmlEntityDecode"
+	// WebApplicationFirewallTransformLowercase ...
+	WebApplicationFirewallTransformLowercase WebApplicationFirewallTransform = "Lowercase"
+	// WebApplicationFirewallTransformRemoveNulls ...
+	WebApplicationFirewallTransformRemoveNulls WebApplicationFirewallTransform = "RemoveNulls"
+	// WebApplicationFirewallTransformTrim ...
+	WebApplicationFirewallTransformTrim WebApplicationFirewallTransform = "Trim"
+	// WebApplicationFirewallTransformURLDecode ...
+	WebApplicationFirewallTransformURLDecode WebApplicationFirewallTransform = "UrlDecode"
+	// WebApplicationFirewallTransformURLEncode ...
+	WebApplicationFirewallTransformURLEncode WebApplicationFirewallTransform = "UrlEncode"
 )
 
 // PossibleWebApplicationFirewallTransformValues returns an array of possible values for the WebApplicationFirewallTransform const type.
 func PossibleWebApplicationFirewallTransformValues() []WebApplicationFirewallTransform {
-	return []WebApplicationFirewallTransform{HTMLEntityDecode, Lowercase, RemoveNulls, Trim, URLDecode, URLEncode}
+	return []WebApplicationFirewallTransform{WebApplicationFirewallTransformHTMLEntityDecode, WebApplicationFirewallTransformLowercase, WebApplicationFirewallTransformRemoveNulls, WebApplicationFirewallTransformTrim, WebApplicationFirewallTransformURLDecode, WebApplicationFirewallTransformURLEncode}
 }

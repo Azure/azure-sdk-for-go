@@ -11,7 +11,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
-	"sort"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -82,7 +81,7 @@ func (t *TableClient) SubmitTransaction(transactionActions []TableTransactionAct
 func (t *TableClient) submitTransactionInternal(transactionActions *[]TableTransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, tableSubmitTransactionOptions *TableSubmitTransactionOptions, ctx context.Context) error {
 
 	changesetBoundary := fmt.Sprintf("changeset_%s", changesetUuid.String())
-	changesetBody, err := t.generateChangesetBody(changesetBoundary, transactionActions)
+	changeSetBody, err := t.generateChangesetBody(changesetBoundary, transactionActions)
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(t.client.con.Endpoint(), "$batch"))
 	if err != nil {
 		return err
@@ -92,9 +91,22 @@ func (t *TableClient) submitTransactionInternal(transactionActions *[]TableTrans
 		req.Header.Set("x-ms-client-request-id", *tableSubmitTransactionOptions.RequestID)
 	}
 	req.Header.Set("DataServiceVersion", "3.0")
-	req.Header.Set("Accept", "application/json;odata=minimalmetadata")
+	req.Header.Set("Accept", string(OdataMetadataFormatApplicationJSONOdataMinimalmetadata))
 
-	req.SetBody(azcore.NopCloser(bytes.NewReader(changesetBody.Bytes())), fmt.Sprintf("multipart/mixed; boundary=%s", batchUuid))
+	boundary := fmt.Sprintf("batch_%s", batchUuid.String())
+	body := new(bytes.Buffer)
+	writer := multipart.NewWriter(body)
+	writer.SetBoundary(boundary)
+	h := make(textproto.MIMEHeader)
+	h.Set(headerContentType, fmt.Sprintf("multipart/mixed; boundary=%s", changesetBoundary))
+	batchWriter, err := writer.CreatePart(h)
+	if err != nil {
+		return err
+	}
+	batchWriter.Write(changeSetBody.Bytes())
+	writer.Close()
+
+	req.SetBody(azcore.NopCloser(bytes.NewReader(body.Bytes())), fmt.Sprintf("multipart/mixed; boundary=%s", boundary))
 
 	resp, err := t.client.con.Pipeline().Do(req)
 	if err != nil {
@@ -135,8 +147,9 @@ func (t *TableClient) generateChangesetBody(changesetBoundary string, transactio
 func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAction, writer *multipart.Writer) error {
 
 	h := make(textproto.MIMEHeader)
-	h.Set(headerContentType, "application/http")
 	h.Set(headerContentTransferEncoding, "binary")
+	h.Set(headerContentType, "application/http")
+	qo := &QueryOptions{Format: OdataMetadataFormatApplicationJSONOdataMinimalmetadata.ToPtr()}
 
 	operationWriter, err := writer.CreatePart(h)
 	if err != nil {
@@ -147,19 +160,22 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 
 	switch transactionAction.ActionType {
 	case Delete:
-		req, err = t.client.deleteEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), transactionAction.ETag, &TableDeleteEntityOptions{}, &QueryOptions{})
+		req, err = t.client.deleteEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), transactionAction.ETag, &TableDeleteEntityOptions{}, qo)
 	case Add:
-		req, err = t.client.insertEntityCreateRequest(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: &entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
+		toOdataAnnotatedDictionary(&entity)
+		req, err = t.client.insertEntityCreateRequest(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: &entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, qo)
 	case UpdateMerge:
 	case UpsertReplace:
+		toOdataAnnotatedDictionary(&entity)
 		opts := &TableMergeEntityOptions{TableEntityProperties: &entity}
 		if len(transactionAction.ETag) > 0 {
 			opts.IfMatch = &transactionAction.ETag
 		}
-		req, err = t.client.mergeEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), opts, &QueryOptions{})
+		req, err = t.client.mergeEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), opts, qo)
 	case UpdateReplace:
 	case UpsertMerge:
-		req, err = t.client.updateEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), &TableUpdateEntityOptions{TableEntityProperties: &entity, IfMatch: &transactionAction.ETag}, &QueryOptions{})
+		toOdataAnnotatedDictionary(&entity)
+		req, err = t.client.updateEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), &TableUpdateEntityOptions{TableEntityProperties: &entity, IfMatch: &transactionAction.ETag}, qo)
 	}
 
 	urlAndVerb := fmt.Sprintf("%s %s HTTP/1.1\r\n", req.Method, req.URL)
@@ -177,8 +193,7 @@ func writeHeaders(h http.Header, writer *io.Writer) {
 	for k := range h {
 		keys = append(keys, k)
 	}
-	sort.Strings(keys)
 	for _, k := range keys {
-		(*writer).Write([]byte(fmt.Sprintf("%s: %s\r\n", k, h[k])))
+		(*writer).Write([]byte(fmt.Sprintf("%s: %s\r\n", k, h.Get(k))))
 	}
 }

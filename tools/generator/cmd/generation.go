@@ -10,6 +10,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
+
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
@@ -60,7 +62,7 @@ func (ctx generateContext) generate(readme string) ([]autorest.GenerateResult, [
 	}
 
 	log.Printf("Cleaning all the packages from readme '%s'...", readme)
-	removedPackages, err := clean(ctx.existingPackages)
+	removedPackages, err := clean(ctx.sdkRoot, ctx.existingPackages)
 	if err != nil {
 		return nil, []error{
 			fmt.Errorf("cannot clean packages from readme '%s': %+v", readme, err),
@@ -81,12 +83,13 @@ func (ctx generateContext) generate(readme string) ([]autorest.GenerateResult, [
 
 	// also add the removed packages in the results if it is not regenerated
 	for _, removedPackage := range removedPackages {
-		if !contains(packageResults, removedPackage.packageFullPath) {
+		if !contains(packageResults, removedPackage.packageName) {
 			// this package is not regenerated, therefore it is removed
 			packageResults = append(packageResults, autorest.GenerateResult{
 				Package: autorest.ChangelogResult{
 					Tag:             removedPackage.Tag,
-					PackageFullPath: removedPackage.packageFullPath,
+					PackageName:     removedPackage.packageName,
+					PackageFullPath: utils.NormalizePath(filepath.Join(ctx.sdkRoot, removedPackage.packageName)),
 					Changelog: model.Changelog{
 						RemovedPackage: true,
 					},

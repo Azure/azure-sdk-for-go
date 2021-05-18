@@ -10,20 +10,21 @@ type packagesForReadme map[string]existingGenerationMetadata
 
 type existingGenerationMetadata struct {
 	autorest.GenerationMetadata
-	packageFullPath string
+	// packageName is the relative path of a package to the root of the SDK
+	packageName string
 }
 
-func (m existingPackageMap) add(path string, metadata autorest.GenerationMetadata) {
+func (m existingPackageMap) add(relPath string, metadata autorest.GenerationMetadata) {
 	if _, ok := m[metadata.RelativeReadme()]; !ok {
 		m[metadata.RelativeReadme()] = packagesForReadme{}
 	}
 
-	m[metadata.RelativeReadme()].add(path, metadata)
+	m[metadata.RelativeReadme()].add(relPath, metadata)
 }
 
-func (m packagesForReadme) add(path string, metadata autorest.GenerationMetadata) {
+func (m packagesForReadme) add(relPath string, metadata autorest.GenerationMetadata) {
 	m[metadata.Tag] = existingGenerationMetadata{
 		GenerationMetadata: metadata,
-		packageFullPath:    path,
+		packageName:        relPath,
 	}
 }

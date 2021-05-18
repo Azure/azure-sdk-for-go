@@ -11,19 +11,20 @@ import (
 	"path/filepath"
 )
 
-func clean(packages packagesForReadme) ([]existingGenerationMetadata, error) {
+func clean(sdkRoot string, packages packagesForReadme) ([]existingGenerationMetadata, error) {
 	var removedPackages []existingGenerationMetadata
 
 	for _, metadata := range packages {
-		log.Printf("Cleaning up pakcage '%s'...", metadata.packageFullPath)
-		if err := os.RemoveAll(metadata.packageFullPath); err != nil {
-			return nil, fmt.Errorf("cannot remove package '%s': %+v", metadata.packageFullPath, err)
+		log.Printf("Cleaning up pakcage '%s'...", metadata.packageName)
+		packageFullPath := filepath.Join(sdkRoot, metadata.packageName)
+		if err := os.RemoveAll(packageFullPath); err != nil {
+			return nil, fmt.Errorf("cannot remove package '%s': %+v", metadata.packageName, err)
 		}
 
 		removedPackages = append(removedPackages, metadata)
 
 		// recursively remove all its parent if this directory is empty after the deletion
-		if err := removeEmptyParents(filepath.Dir(metadata.packageFullPath)); err != nil {
+		if err := removeEmptyParents(filepath.Dir(packageFullPath)); err != nil {
 			return nil, err
 		}
 	}

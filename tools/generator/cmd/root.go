@@ -120,7 +120,11 @@ func (ctx *automationContext) categorizePackages() error {
 
 	for path, metadata := range m {
 		// the path in the metadata map is the absolute path
-		ctx.existingPackages.add(path, metadata)
+		relPath, err := filepath.Rel(ctx.sdkRoot, path)
+		if err != nil {
+			return err
+		}
+		ctx.existingPackages.add(utils.NormalizePath(relPath), metadata)
 	}
 
 	return nil
@@ -258,7 +262,7 @@ func (ctx *automationContext) readRepoContent() error {
 
 func contains(array []autorest.GenerateResult, item string) bool {
 	for _, r := range array {
-		if utils.NormalizePath(r.Package.PackageFullPath) == utils.NormalizePath(item) {
+		if utils.NormalizePath(r.Package.PackageName) == utils.NormalizePath(item) {
 			return true
 		}
 	}

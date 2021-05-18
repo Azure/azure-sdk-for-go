@@ -11,6 +11,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
+	"sort"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -193,6 +194,7 @@ func writeHeaders(h http.Header, writer *io.Writer) {
 	for k := range h {
 		keys = append(keys, k)
 	}
+	sort.Strings(keys)
 	for _, k := range keys {
 		(*writer).Write([]byte(fmt.Sprintf("%s: %s\r\n", k, h.Get(k))))
 	}

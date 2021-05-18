@@ -49,6 +49,7 @@ func (t *TableClient) QueryAsStruct(opt QueryOptions, s FromMapper) StructEntity
 
 // AddMapEntity Creates an entity from a map value.
 func (t *TableClient) AddMapEntity(ctx context.Context, entity *map[string]interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
+	toOdataAnnotatedDictionary(entity)
 	resp, err := t.client.InsertEntity(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
 	if err == nil {
 		insertResp := resp.(TableInsertEntityResponse)

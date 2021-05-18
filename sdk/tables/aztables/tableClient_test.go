@@ -93,8 +93,12 @@ func (s *tableClientLiveTests) TestBatchAdd() {
 		batch[i] = TableTransactionAction{ActionType: Add, Entity: e}
 	}
 
-	err := client.submitTransactionInternal(&batch, context.recording.UUID(), context.recording.UUID(), nil, ctx)
+	resp, err := client.submitTransactionInternal(&batch, context.recording.UUID(), context.recording.UUID(), nil, ctx)
 	assert.Nil(err)
+	for i := 0; i < len(*resp.TransactionResponses); i++ {
+		r := (*resp.TransactionResponses)[i]
+		assert.Equal(r.StatusCode, http.StatusNoContent)
+	}
 }
 
 func (s *tableClientLiveTests) TestQuerySimpleEntity() {

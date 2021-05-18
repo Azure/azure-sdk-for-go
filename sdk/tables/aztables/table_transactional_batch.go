@@ -4,10 +4,12 @@
 package aztables
 
 import (
+	"bufio"
 	"bytes"
 	"context"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
@@ -57,10 +59,13 @@ type TableTransactionResponse struct {
 	RequestID *string
 
 	// The response for a single table.
-	TransactionResponses *[]TableResponse
+	TransactionResponses *[]azcore.Response
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string
+
+	// ContentType contains the information returned from the Content-Type header response.
+	ContentType *string
 }
 
 type TableSubmitTransactionOptions struct {
@@ -74,18 +79,18 @@ var defaultChangesetHeaders = map[string]string{
 }
 
 // SubmitTransaction submits the table transactional batch according to the slice of TableTransactionActions provided.
-func (t *TableClient) SubmitTransaction(transactionActions []TableTransactionAction, tableSubmitTransactionOptions *TableSubmitTransactionOptions, ctx context.Context) error {
+func (t *TableClient) SubmitTransaction(transactionActions []TableTransactionAction, tableSubmitTransactionOptions *TableSubmitTransactionOptions, ctx context.Context) (TableTransactionResponse, error) {
 	return t.submitTransactionInternal(&transactionActions, uuid.New(), uuid.New(), tableSubmitTransactionOptions, ctx)
 }
 
 // submitTransactionInternal is the internal implementation for SubmitTransaction. It allows for explicit configuration of the batch and changeset UUID values for testing.
-func (t *TableClient) submitTransactionInternal(transactionActions *[]TableTransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, tableSubmitTransactionOptions *TableSubmitTransactionOptions, ctx context.Context) error {
+func (t *TableClient) submitTransactionInternal(transactionActions *[]TableTransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, tableSubmitTransactionOptions *TableSubmitTransactionOptions, ctx context.Context) (TableTransactionResponse, error) {
 
 	changesetBoundary := fmt.Sprintf("changeset_%s", changesetUuid.String())
 	changeSetBody, err := t.generateChangesetBody(changesetBoundary, transactionActions)
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(t.client.con.Endpoint(), "$batch"))
 	if err != nil {
-		return err
+		return TableTransactionResponse{}, err
 	}
 	req.Header.Set("x-ms-version", "2019-02-02")
 	if tableSubmitTransactionOptions != nil && tableSubmitTransactionOptions.RequestID != nil {
@@ -102,7 +107,7 @@ func (t *TableClient) submitTransactionInternal(transactionActions *[]TableTrans
 	h.Set(headerContentType, fmt.Sprintf("multipart/mixed; boundary=%s", changesetBoundary))
 	batchWriter, err := writer.CreatePart(h)
 	if err != nil {
-		return err
+		return TableTransactionResponse{}, err
 	}
 	batchWriter.Write(changeSetBody.Bytes())
 	writer.Close()
@@ -111,12 +116,78 @@ func (t *TableClient) submitTransactionInternal(transactionActions *[]TableTrans
 
 	resp, err := t.client.con.Pipeline().Do(req)
 	if err != nil {
-		return err
+		return TableTransactionResponse{}, err
 	}
+
+	transactionResponse, err := buildTransactionResponse(req, resp, len(*transactionActions))
+
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
-		return t.client.transactionHandleError(resp)
+		return TableTransactionResponse{}, t.client.transactionHandleError(resp)
 	}
-	return nil
+	return transactionResponse, nil
+}
+
+func buildTransactionResponse(req *azcore.Request, resp *azcore.Response, itemCount int) (TableTransactionResponse, error) {
+	innerResponses := make([]azcore.Response, itemCount)
+	result := TableTransactionResponse{RawResponse: resp.Response, TransactionResponses: &innerResponses}
+
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return TableTransactionResponse{}, err
+		}
+		result.Date = &date
+	}
+
+	if val := resp.Header.Get("Preference-Applied"); val != "" {
+		result.PreferenceApplied = &val
+	}
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
+	}
+
+	bytesBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
+	reader := bytes.NewReader(bytesBody)
+	outerBoundary := getBoundaryName(bytesBody)
+	mpReader := multipart.NewReader(reader, outerBoundary)
+	outerPart, err := mpReader.NextPart()
+	innerBytes, err := io.ReadAll(outerPart)
+	innerBoundary := getBoundaryName(innerBytes)
+	reader = bytes.NewReader(innerBytes)
+	mpReader = multipart.NewReader(reader, innerBoundary)
+	i := 0
+	innerPart, err := mpReader.NextPart()
+	for ; err == nil; innerPart, err = mpReader.NextPart() {
+		part, err := io.ReadAll(innerPart)
+		if err != nil {
+			break
+		}
+		r, err := http.ReadResponse(bufio.NewReader(bytes.NewBuffer(part)), req.Request)
+		innerResponses[i] = azcore.Response{Response: r}
+		i++
+	}
+
+	return result, nil
+}
+
+func getBoundaryName(bytesBody []byte) string {
+	end := bytes.Index(bytesBody, []byte("\n"))
+	if end > 0 && bytesBody[end-1] == '\r' {
+		end -= 1
+	}
+	return string(bytesBody[2:end])
 }
 
 // transactionHandleError handles the InsertEntity error response.

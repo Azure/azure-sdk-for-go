@@ -20,6 +20,7 @@ package marketplacefulfillmentapi
 import (
     "context"
     "github.com/Azure/azure-sdk-for-go/services/marketplacefulfillment/mgmt/2018-08-31/marketplacefulfillment"
+    "github.com/Azure/go-autorest/autorest"
 )
 
         // ClientAPI contains the set of methods on the Client type.
@@ -32,3 +33,9 @@ import (
         }
 
         var _ ClientAPI = (*marketplacefulfillment.Client)(nil)
+        // FulfillmentOperationsClientAPI contains the set of methods on the FulfillmentOperationsClient type.
+        type FulfillmentOperationsClientAPI interface {
+            DeleteSubscription(ctx context.Context, subscriptionID string, authorization string, xMsRequestid string, xMsCorrelationid string) (result autorest.Response, err error)
+        }
+
+        var _ FulfillmentOperationsClientAPI = (*marketplacefulfillment.FulfillmentOperationsClient)(nil)

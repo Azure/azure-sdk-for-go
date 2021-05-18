@@ -26,6 +26,7 @@ import (
         // ClientAPI contains the set of methods on the Client type.
         type ClientAPI interface {
             ActivateSubscription(ctx context.Context, activatePayload marketplacefulfillment.Subscription, subscriptionID string, authorization string, xMsRequestid string, xMsCorrelationid string) (result marketplacefulfillment.Subscription, err error)
+            DeleteSubscription(ctx context.Context, subscriptionID string, authorization string, xMsRequestid string, xMsCorrelationid string) (result autorest.Response, err error)
             GetOperation(ctx context.Context, subscriptionID string, operationID string, authorization string, xMsRequestid string, xMsCorrelationid string) (result marketplacefulfillment.Operation, err error)
             GetSubscription(ctx context.Context, subscriptionID string, authorization string, xMsRequestid string, xMsCorrelationid string) (result marketplacefulfillment.Subscription, err error)
             PatchOperation(ctx context.Context, patchPayload marketplacefulfillment.Operation, subscriptionID string, operationID string, authorization string, xMsRequestid string, xMsCorrelationid string) (result marketplacefulfillment.Operation, err error)
@@ -33,9 +34,3 @@ import (
         }
 
         var _ ClientAPI = (*marketplacefulfillment.Client)(nil)
-        // FulfillmentOperationsClientAPI contains the set of methods on the FulfillmentOperationsClient type.
-        type FulfillmentOperationsClientAPI interface {
-            DeleteSubscription(ctx context.Context, subscriptionID string, authorization string, xMsRequestid string, xMsCorrelationid string) (result autorest.Response, err error)
-        }
-
-        var _ FulfillmentOperationsClientAPI = (*marketplacefulfillment.FulfillmentOperationsClient)(nil)

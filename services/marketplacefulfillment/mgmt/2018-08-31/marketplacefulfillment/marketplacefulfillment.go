@@ -134,6 +134,97 @@ func (client Client) ActivateSubscriptionResponder(resp *http.Response) (result 
         return
     }
 
+// DeleteSubscription unsubscribe and delete the specified subscription.
+    // Parameters:
+        // subscriptionID - the subscription id to use for the request.
+        // authorization - JWT bearer token
+        // xMsRequestid - a unique string value for tracking the request from the client, preferably a GUID. If this
+        // value isn't provided, one will be generated and provided in the response headers.
+        // xMsCorrelationid - a unique string value for operation on the client. This parameter correlates all events
+        // from client operation with events on the server side. If this value isn't provided, one will be generated
+        // and provided in the response headers.
+func (client Client) DeleteSubscription(ctx context.Context, subscriptionID string, authorization string, xMsRequestid string, xMsCorrelationid string) (result autorest.Response, err error) {
+    if tracing.IsEnabled() {
+        ctx = tracing.StartSpan(ctx, fqdn + "/Client.DeleteSubscription")
+        defer func() {
+            sc := -1
+            if result.Response != nil {
+                sc = result.Response.StatusCode
+            }
+            tracing.EndSpan(ctx, sc, err)
+        }()
+    }
+        req, err := client.DeleteSubscriptionPreparer(ctx, subscriptionID, authorization, xMsRequestid, xMsCorrelationid)
+    if err != nil {
+    err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "DeleteSubscription", nil , "Failure preparing request")
+    return
+    }
+
+            resp, err := client.DeleteSubscriptionSender(req)
+            if err != nil {
+            result.Response = resp
+            err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "DeleteSubscription", resp, "Failure sending request")
+            return
+            }
+
+            result, err = client.DeleteSubscriptionResponder(resp)
+            if err != nil {
+            err = autorest.NewErrorWithError(err, "marketplacefulfillment.Client", "DeleteSubscription", resp, "Failure responding to request")
+            }
+
+    return
+    }
+
+    // DeleteSubscriptionPreparer prepares the DeleteSubscription request.
+    func (client Client) DeleteSubscriptionPreparer(ctx context.Context, subscriptionID string, authorization string, xMsRequestid string, xMsCorrelationid string) (*http.Request, error) {
+            pathParameters := map[string]interface{} {
+            "subscriptionId": autorest.Encode("path",subscriptionID),
+            }
+
+                        const APIVersion = "2018-08-31"
+        queryParameters := map[string]interface{} {
+        "api-version": APIVersion,
+        }
+
+        preparer := autorest.CreatePreparer(
+    autorest.AsDelete(),
+    autorest.WithBaseURL(client.BaseURI),
+    autorest.WithPathParameters("/{subscriptionId}",pathParameters),
+    autorest.WithQueryParameters(queryParameters))
+            if len(authorization) > 0 {
+            preparer = autorest.DecoratePreparer(preparer,
+            autorest.WithHeader("authorization",autorest.String(authorization)))
+            }
+            if len(xMsRequestid) > 0 {
+            preparer = autorest.DecoratePreparer(preparer,
+            autorest.WithHeader("x-ms-requestid",autorest.String(xMsRequestid)))
+            }
+            if len(xMsCorrelationid) > 0 {
+            preparer = autorest.DecoratePreparer(preparer,
+            autorest.WithHeader("x-ms-correlationid",autorest.String(xMsCorrelationid)))
+            }
+    return preparer.Prepare((&http.Request{}).WithContext(ctx))
+    }
+
+    // DeleteSubscriptionSender sends the DeleteSubscription request. The method will close the
+    // http.Response Body if it receives an error.
+    func (client Client) DeleteSubscriptionSender(req *http.Request) (*http.Response, error) {
+        sd := autorest.GetSendDecorators(req.Context(), autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+            return autorest.SendWithSender(client, req, sd...)
+            }
+
+// DeleteSubscriptionResponder handles the response to the DeleteSubscription request. The method always
+// closes the http.Response Body.
+func (client Client) DeleteSubscriptionResponder(resp *http.Response) (result autorest.Response, err error) {
+    err = autorest.Respond(
+    resp,
+    client.ByInspecting(),
+    azure.WithErrorUnlessStatusCode(http.StatusOK,http.StatusAccepted),
+    autorest.ByClosing())
+    result.Response = resp
+        return
+    }
+
 // GetOperation enables the publisher to track the status of the specified triggered async operation (such as
 // subscribe, unsubscribe, changePlan, or changeQuantity).
     // Parameters:

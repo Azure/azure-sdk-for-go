@@ -128,7 +128,7 @@ func (ctx generateContext) generateForTag(readme, tag string) (*autorest.Generat
 	}
 	return autorest.GeneratePackage(ctx, input, autorest.GenerateOptions{
 		Stderr:            os.Stderr,
-		Stdout:            os.Stderr,
+		Stdout:            os.Stdout,
 		AutoRestLogPrefix: "[AUTOREST] ",
 		ChangelogTitle:    "Unreleased",
 		Validators: []autorest.MetadataValidateFunc{

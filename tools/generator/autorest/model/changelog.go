@@ -56,6 +56,11 @@ func (c Changelog) ToCompactMarkdown() string {
 
 // GetBreakingChangeItems returns an array of the breaking change items
 func (c Changelog) GetBreakingChangeItems() []string {
+	if c.RemovedPackage {
+		return []string{
+			fmt.Sprintf("Package was removed"),
+		}
+	}
 	if c.Modified == nil {
 		return []string{}
 	}

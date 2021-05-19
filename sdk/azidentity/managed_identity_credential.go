@@ -11,9 +11,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
+type AlternateUserAssignedIdentifier string
+
+const (
+	ResourceID AlternateUserAssignedIdentifier = "mi_res_id"
+)
+
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure the pipeline used with Managed Identity Credential.
 // All zero-value fields will be initialized with their default values.
 type ManagedIdentityCredentialOptions struct {
+	// AlternateID enables using an alternate user-assigned identity identifier instead of the default client ID.
+	// Select the identifier to be used and pass the value in the string param on the ManagedIdentityCredential constructor.
+	// Hint: Choose from the exported list of allowed AlternateUserAssignedIdentifier values.
+	AlternateID AlternateUserAssignedIdentifier
+
 	// HTTPClient sets the transport for making HTTP requests.
 	// Leave this as nil to use the default HTTP transport.
 	HTTPClient azcore.Transport

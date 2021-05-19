@@ -53,6 +53,7 @@ type managedIdentityClient struct {
 	imdsAvailableTimeoutMS time.Duration
 	msiType                msiType
 	endpoint               string
+	alternateID            AlternateUserAssignedIdentifier
 }
 
 type wrappedNumber json.Number
@@ -72,6 +73,7 @@ func (n *wrappedNumber) UnmarshalJSON(b []byte) error {
 func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *managedIdentityClient {
 	logEnvVars()
 	return &managedIdentityClient{
+		alternateID:            options.AlternateID,
 		pipeline:               newDefaultMSIPipeline(*options), // a pipeline that includes the specific requirements for MSI authentication, such as custom retry policy options
 		imdsAPIVersion:         imdsAPIVersion,                  // this field will be set to whatever value exists in the constant and is used when creating requests to IMDS
 		imdsAvailableTimeoutMS: 500,                             // we allow a timeout of 500 ms since the endpoint might be slow to respond
@@ -171,7 +173,9 @@ func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, clien
 	q := request.URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
-	if clientID != "" {
+	if c.alternateID == ResourceID {
+		q.Add(string(ResourceID), clientID)
+	} else if clientID != "" {
 		q.Add(qpClientID, clientID)
 	}
 	request.URL.RawQuery = q.Encode()
@@ -188,7 +192,9 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 		request.Header.Set("secret", os.Getenv(msiSecret))
 		q.Add("api-version", "2017-09-01")
 		q.Add("resource", strings.Join(scopes, " "))
-		if clientID != "" {
+		if c.alternateID == ResourceID {
+			q.Add(string(ResourceID), clientID)
+		} else if clientID != "" {
 			// the legacy 2017 API version specifically specifies "clientid" and not "client_id" as a query param
 			q.Add("clientid", clientID)
 		}
@@ -196,7 +202,9 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 		request.Header.Set("X-IDENTITY-HEADER", os.Getenv(identityHeader))
 		q.Add("api-version", "2019-08-01")
 		q.Add("resource", scopes[0])
-		if clientID != "" {
+		if c.alternateID == ResourceID {
+			q.Add(string(ResourceID), clientID)
+		} else if clientID != "" {
 			q.Add(qpClientID, clientID)
 		}
 	}

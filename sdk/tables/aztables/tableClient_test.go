@@ -8,9 +8,11 @@ import (
 	"io/ioutil"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -142,16 +144,16 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	}
 }
 
-func (s *tableClientLiveTests) QueryComplexEntity() {
+func (s *tableClientLiveTests) TestQueryComplexEntity() {
 	assert := assert.New(s.T())
 	context := getTestContext(s.T().Name())
 	client, delete := s.init(true)
 	defer delete()
 
 	// Add 5 entities
-	entitiesToCreate := createComplexEntities(context, 5, "partition")
+	entitiesToCreate := createComplexMapEntities(context, 5, "partition")
 	for _, e := range *entitiesToCreate {
-		_, err := client.AddEntity(ctx, &e)
+		_, err := client.AddMapEntity(ctx, &e)
 		assert.Nil(err)
 	}
 
@@ -180,6 +182,23 @@ func (s *tableClientLiveTests) QueryComplexEntity() {
 		_, ok = e["IntProp"].(float64)
 		assert.True(ok)
 		_, ok = e["BoolProp"].(bool)
+		assert.True(ok)
+		_, ok = e["SomeBinaryProperty"].([]byte)
+		assert.True(ok)
+		_, ok = e["SomeDateProperty"].(time.Time)
+		assert.True(ok)
+		_, ok = e["SomeDoubleProperty0"].(float64)
+		assert.True(ok)
+		_, ok = e["SomeDoubleProperty1"].(float64)
+		assert.True(ok)
+		_, ok = e["SomeGuidProperty"].(uuid.UUID)
+		assert.True(ok)
+		_, ok = e["SomeInt64Property"].(int64)
+		assert.True(ok)
+		//TODO: fix when serialization is implemented
+		_, ok = e["SomeIntProperty"].(float64)
+		assert.True(ok)
+		_, ok = e["SomeStringProperty"].(string)
 		assert.True(ok)
 	}
 }

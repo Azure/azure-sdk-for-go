@@ -163,14 +163,14 @@ func buildTransactionResponse(req *azcore.Request, resp *azcore.Response, itemCo
 	outerBoundary := getBoundaryName(bytesBody)
 	mpReader := multipart.NewReader(reader, outerBoundary)
 	outerPart, err := mpReader.NextPart()
-	innerBytes, err := io.ReadAll(outerPart)
+	innerBytes, err := ioutil.ReadAll(outerPart)
 	innerBoundary := getBoundaryName(innerBytes)
 	reader = bytes.NewReader(innerBytes)
 	mpReader = multipart.NewReader(reader, innerBoundary)
 	i := 0
 	innerPart, err := mpReader.NextPart()
 	for ; err == nil; innerPart, err = mpReader.NextPart() {
-		part, err := io.ReadAll(innerPart)
+		part, err := ioutil.ReadAll(innerPart)
 		if err != nil {
 			break
 		}

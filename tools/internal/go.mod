@@ -7,5 +7,3 @@ require (
 	github.com/Azure/go-autorest/autorest v0.11.18
 	github.com/Masterminds/semver v1.5.0
 )
-
-replace github.com/Azure/azure-sdk-for-go => github.com/ArcturusZhang/azure-sdk-for-go v54.2.1+incompatible

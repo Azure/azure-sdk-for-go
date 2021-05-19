@@ -13,7 +13,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/track1"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/packages/track1"
 )
 
 // GenerationMetadata contains all the metadata that has been used when generating a track 1 package

@@ -104,6 +104,8 @@ type automationContext struct {
 
 	repoContent map[string]exports.Content
 
+	sdkVersion string
+
 	existingPackages existingPackageMap
 
 	defaultOptions model.Options
@@ -175,6 +177,11 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 
 	log.Printf("Reading default options...")
 	if err := ctx.readDefaultOptions(); err != nil {
+		return nil, err
+	}
+
+	log.Printf("Reading version number...")
+	if err := ctx.readVersion(); err != nil {
 		return nil, err
 	}
 
@@ -257,6 +264,15 @@ func (ctx *automationContext) readRepoContent() error {
 		ctx.repoContent[relativePath] = exp
 	}
 
+	return nil
+}
+
+func (ctx *automationContext) readVersion() error {
+	v, err := ReadVersion(filepath.Join(ctx.sdkRoot, "version"))
+	if err != nil {
+		return err
+	}
+	ctx.sdkVersion = v
 	return nil
 }
 

@@ -142,6 +142,48 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	}
 }
 
+func (s *tableClientLiveTests) QueryComplexEntity() {
+	assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	client, delete := s.init(true)
+	defer delete()
+
+	// Add 5 entities
+	entitiesToCreate := createComplexEntities(context, 5, "partition")
+	for _, e := range *entitiesToCreate {
+		_, err := client.AddEntity(ctx, &e)
+		assert.Nil(err)
+	}
+
+	filter := "RowKey lt '5'"
+	expectedCount := 4
+	var resp TableEntityQueryResponseResponse
+	pager := client.Query(QueryOptions{Filter: &filter})
+	for pager.NextPage(ctx) {
+		resp = pager.PageResponse()
+		assert.Equal(len(*resp.TableEntityQueryResponse.Value), expectedCount)
+	}
+	resp = pager.PageResponse()
+	assert.Nil(pager.Err())
+	for _, e := range *resp.TableEntityQueryResponse.Value {
+		_, ok := e[PartitionKey].(string)
+		assert.True(ok)
+		_, ok = e[RowKey].(string)
+		assert.True(ok)
+		_, ok = e[Timestamp].(string)
+		assert.True(ok)
+		_, ok = e[EtagOdata].(string)
+		assert.True(ok)
+		_, ok = e["StringProp"].(string)
+		assert.True(ok)
+		//TODO: fix when serialization is implemented
+		_, ok = e["IntProp"].(float64)
+		assert.True(ok)
+		_, ok = e["BoolProp"].(bool)
+		assert.True(ok)
+	}
+}
+
 // setup the test environment
 func (s *tableClientLiveTests) BeforeTest(suite string, test string) {
 	recordedTestSetup(s.T(), s.T().Name(), s.endpointType, s.mode)

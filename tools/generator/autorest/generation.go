@@ -14,9 +14,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
 )
 
 // GenerateContext describes the context that would be used in an autorest generation task
@@ -120,8 +120,8 @@ func generate(generator *Generator, stdout, stderr io.Writer, prefix string) err
 	log.Printf("Generation parameters: %s", strings.Join(arguments, ", "))
 	_ = generator.Start()
 	// we put all the output from autorest to stderr since those are logs in order not to interrupt the proper output of the release command
-	go utils.ScannerPrint(bufio.NewScanner(stdoutPipe), stdout, prefix)
-	go utils.ScannerPrint(bufio.NewScanner(stderrPipe), stderr, prefix)
+	go scannerPrint(bufio.NewScanner(stdoutPipe), stdout, prefix)
+	go scannerPrint(bufio.NewScanner(stderrPipe), stderr, prefix)
 	return generator.Wait()
 }
 
@@ -287,4 +287,18 @@ func WriteMetadataFile(packagePath string, metadata GenerationMetadata) (string,
 		return "", err
 	}
 	return metadataFilepath, nil
+}
+
+// scannerPrint prints the scanner to writer with a specified prefix
+func scannerPrint(scanner *bufio.Scanner, writer io.Writer, prefix string) error {
+	if writer == nil {
+		return nil
+	}
+	for scanner.Scan() {
+		line := scanner.Text()
+		if _, err := fmt.Fprintln(writer, fmt.Sprintf("%s%s", prefix, line)); err != nil {
+			return err
+		}
+	}
+	return nil
 }

@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
 )
 
 // MetadataValidateContext describes the context needed in validation of the metadata

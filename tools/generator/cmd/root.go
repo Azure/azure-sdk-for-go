@@ -12,12 +12,12 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/utils"
-	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/track1"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/packages/track1"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
 	"github.com/Azure/azure-sdk-for-go/version"
 	"github.com/spf13/cobra"
 )
@@ -29,8 +29,8 @@ const (
 // Command returns the command for the generator. Note that this command is designed to run in the root directory of
 // azure-sdk-for-go. It does not work if you are running this tool in somewhere else
 func Command() *cobra.Command {
-	automationCmd := &cobra.Command{
-		Use:  "automation <generate input filepath> <generate output filepath>",
+	rootCmd := &cobra.Command{
+		Use:  "generator <generate input filepath> <generate output filepath>",
 		Args: cobra.ExactArgs(2),
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			log.SetFlags(0) // remove the time stamp prefix
@@ -48,10 +48,10 @@ func Command() *cobra.Command {
 		SilenceUsage: true, // this command is used for a pipeline, the usage should never show
 	}
 
-	flags := automationCmd.Flags()
+	flags := rootCmd.Flags()
 	flags.String("options", defaultOptionPath, "Specify a file with the autorest options")
 
-	return automationCmd
+	return rootCmd
 }
 
 // Flags ...

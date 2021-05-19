@@ -9,7 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/track1"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/packages/track1"
 	"github.com/spf13/cobra"
 )
 

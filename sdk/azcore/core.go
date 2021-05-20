@@ -162,8 +162,8 @@ func NullValue(v interface{}) interface{} {
 	if !found {
 		var o reflect.Value
 		if k := t.Kind(); k == reflect.Slice || k == reflect.Map {
-			o = reflect.New(t) // *[]type
-			o = o.Elem()       // []type
+			o = reflect.New(t) // *[]type / *map[]
+			o = o.Elem()       // []type / map[]
 		} else {
 			o = reflect.New(t.Elem())
 		}

@@ -42,6 +42,7 @@ const (
 )
 
 // Request is an abstraction over the creation of an HTTP request as it passes through the pipeline.
+// Don't use this type directly, use NewRequest() instead.
 type Request struct {
 	*http.Request
 	body     ReadSeekCloser

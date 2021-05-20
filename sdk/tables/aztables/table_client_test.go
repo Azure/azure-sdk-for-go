@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -79,27 +80,6 @@ func (s *tableClientLiveTests) TestAddComplexEntity() {
 	for _, e := range *entitiesToCreate {
 		_, err := client.AddEntity(ctx, &e)
 		assert.Nilf(err, getStringFromBody(err))
-	}
-}
-
-func (s *tableClientLiveTests) TestBatchAdd() {
-	assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	client, delete := s.init(true)
-	defer delete()
-
-	entitiesToCreate := createComplexMapEntities(context, 10, "partition")
-	batch := make([]TableTransactionAction, 10)
-
-	for i, e := range *entitiesToCreate {
-		batch[i] = TableTransactionAction{ActionType: Add, Entity: e}
-	}
-
-	resp, err := client.submitTransactionInternal(&batch, context.recording.UUID(), context.recording.UUID(), nil, ctx)
-	assert.Nil(err)
-	for i := 0; i < len(*resp.TransactionResponses); i++ {
-		r := (*resp.TransactionResponses)[i]
-		assert.Equal(r.StatusCode, http.StatusNoContent)
 	}
 }
 
@@ -201,6 +181,88 @@ func (s *tableClientLiveTests) TestQueryComplexEntity() {
 		_, ok = e["SomeStringProperty"].(string)
 		assert.True(ok)
 	}
+}
+
+func (s *tableClientLiveTests) TestBatchAdd() {
+	assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	client, delete := s.init(true)
+	defer delete()
+
+	entitiesToCreate := createComplexMapEntities(context, 10, "partition")
+	batch := make([]TableTransactionAction, 10)
+
+	for i, e := range *entitiesToCreate {
+		batch[i] = TableTransactionAction{ActionType: Add, Entity: e}
+	}
+
+	resp, err := client.submitTransactionInternal(&batch, context.recording.UUID(), context.recording.UUID(), nil, ctx)
+	assert.Nil(err)
+	for i := 0; i < len(*resp.TransactionResponses); i++ {
+		r := (*resp.TransactionResponses)[i]
+		assert.Equal(r.StatusCode, http.StatusNoContent)
+	}
+}
+
+func (s *tableClientLiveTests) TestMixedBatch() {
+	assert := assert.New(s.T())
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	client, delete := s.init(true)
+	defer delete()
+
+	entitiesToCreate := createComplexMapEntities(context, 5, "partition")
+	batch := make([]TableTransactionAction, 3)
+
+	// Add the first 3 entities.
+	for i, _ := range batch {
+		batch[i] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[i]}
+	}
+
+	resp, err := client.submitTransactionInternal(&batch, context.recording.UUID(), context.recording.UUID(), nil, ctx)
+	require.Nil(err)
+	for i := 0; i < len(*resp.TransactionResponses); i++ {
+		r := (*resp.TransactionResponses)[i]
+		assert.Equal(http.StatusNoContent, r.StatusCode)
+	}
+
+	// create a new batch slice.
+	batch = make([]TableTransactionAction, 5)
+
+	// create a merge action for the first added entity
+	mergeProp := "MergeProperty"
+	val := "foo"
+	var mergeProperty = map[string]interface{}{
+		PartitionKey: (*entitiesToCreate)[0][PartitionKey],
+		RowKey:       (*entitiesToCreate)[0][RowKey],
+		mergeProp:    val,
+	}
+	batch[0] = TableTransactionAction{ActionType: UpdateMerge, Entity: mergeProperty, ETag: (*resp.TransactionResponses)[0].Header.Get(ETag)}
+
+	// create a delete action for the second added entity
+	batch[1] = TableTransactionAction{ActionType: Delete, Entity: (*entitiesToCreate)[1]}
+
+	// create an upsert action to replace the third added entity with a new value
+	replaceProp := "ReplaceProperty"
+	var replaceProperties = map[string]interface{}{
+		PartitionKey: (*entitiesToCreate)[2][PartitionKey],
+		RowKey:       (*entitiesToCreate)[2][RowKey],
+		replaceProp:  val,
+	}
+	batch[2] = TableTransactionAction{ActionType: UpsertReplace, Entity: replaceProperties}
+
+	// Add the remaining 2 entities.
+	batch[3] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[3]}
+	batch[4] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[4]}
+
+	resp, err = client.submitTransactionInternal(&batch, context.recording.UUID(), context.recording.UUID(), nil, ctx)
+	require.Nil(err)
+
+	for i := 0; i < len(*resp.TransactionResponses); i++ {
+		r := (*resp.TransactionResponses)[i]
+		assert.Equal(http.StatusNoContent, r.StatusCode)
+	}
+
 }
 
 // setup the test environment

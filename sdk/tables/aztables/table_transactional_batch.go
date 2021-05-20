@@ -7,6 +7,8 @@ import (
 	"bufio"
 	"bytes"
 	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -35,6 +37,24 @@ const (
 	headerContentType             = "Content-Type"
 	headerContentTransferEncoding = "Content-Transfer-Encoding"
 )
+
+type OdataErrorMessage struct {
+	Lang  string `json:"lang"`
+	Value string `json:"value"`
+}
+
+type OdataError struct {
+	Code    string            `json:"code"`
+	Message OdataErrorMessage `json:"message"`
+}
+
+type TableError struct {
+	OdataError OdataError `json:"odata.error"`
+}
+
+func (e *TableError) Error() string {
+	return fmt.Sprintf("Code: %s, Message: %s", e.OdataError.Code, e.OdataError.Message.Value)
+}
 
 type TableTransactionAction struct {
 	ActionType TableTransactionActionType
@@ -88,6 +108,9 @@ func (t *TableClient) submitTransactionInternal(transactionActions *[]TableTrans
 
 	changesetBoundary := fmt.Sprintf("changeset_%s", changesetUuid.String())
 	changeSetBody, err := t.generateChangesetBody(changesetBoundary, transactionActions)
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(t.client.con.Endpoint(), "$batch"))
 	if err != nil {
 		return TableTransactionResponse{}, err
@@ -120,9 +143,12 @@ func (t *TableClient) submitTransactionInternal(transactionActions *[]TableTrans
 	}
 
 	transactionResponse, err := buildTransactionResponse(req, resp, len(*transactionActions))
+	if err != nil {
+		return TableTransactionResponse{}, err
+	}
 
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
-		return TableTransactionResponse{}, t.client.transactionHandleError(resp)
+		return TableTransactionResponse{}, azcore.NewResponseError(err, resp.Response)
 	}
 	return transactionResponse, nil
 }
@@ -160,6 +186,10 @@ func buildTransactionResponse(req *azcore.Request, resp *azcore.Response, itemCo
 		return TableTransactionResponse{}, err
 	}
 	reader := bytes.NewReader(bytesBody)
+	if bytes.IndexByte(bytesBody, '{') == 0 {
+		// This is a failure and the body is json
+		return TableTransactionResponse{}, errors.New(string(bytesBody))
+	}
 	outerBoundary := getBoundaryName(bytesBody)
 	mpReader := multipart.NewReader(reader, outerBoundary)
 	outerPart, err := mpReader.NextPart()
@@ -175,6 +205,17 @@ func buildTransactionResponse(req *azcore.Request, resp *azcore.Response, itemCo
 			break
 		}
 		r, err := http.ReadResponse(bufio.NewReader(bytes.NewBuffer(part)), req.Request)
+		if err != nil {
+			return TableTransactionResponse{}, err
+		}
+		if r.StatusCode >= 400 {
+			errorBody, err := ioutil.ReadAll(r.Body)
+			if err != nil {
+				return TableTransactionResponse{}, err
+			} else {
+				return TableTransactionResponse{}, errors.New(string(errorBody))
+			}
+		}
 		innerResponses[i] = azcore.Response{Response: r}
 		i++
 	}
@@ -190,13 +231,14 @@ func getBoundaryName(bytesBody []byte) string {
 	return string(bytesBody[2:end])
 }
 
-// transactionHandleError handles the InsertEntity error response.
-func (client *tableClient) transactionHandleError(resp *azcore.Response) error {
-	var err TableServiceError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+// transactionHandleError handles the SubmitTransaction error response.
+func (client *tableClient) transactionHandleError(errorBody error) error {
+	oe := TableError{}
+	b := []byte(errorBody.Error())
+	if err := json.Unmarshal(b, &oe); err == nil {
+		return &oe
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	return errors.New("Unknown error.")
 }
 
 // generateChangesetBody generates the individual changesets for the various operations within the batch request.
@@ -208,7 +250,10 @@ func (t *TableClient) generateChangesetBody(changesetBoundary string, transactio
 	writer.SetBoundary(changesetBoundary)
 
 	for _, be := range *transactionActions {
-		t.generateEntitySubset(&be, writer)
+		err := t.generateEntitySubset(&be, writer)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	writer.Close()
@@ -230,13 +275,21 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	var req *azcore.Request
 	var entity map[string]interface{} = transactionAction.Entity
 
+	if _, ok := entity[PartitionKey]; !ok {
+		return fmt.Errorf("entity properties must contain a %s property", PartitionKey)
+	}
+	if _, ok := entity[RowKey]; !ok {
+		return fmt.Errorf("entity properties must contain a %s property", RowKey)
+	}
+
 	switch transactionAction.ActionType {
 	case Delete:
 		req, err = t.client.deleteEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), transactionAction.ETag, &TableDeleteEntityOptions{}, qo)
 	case Add:
 		toOdataAnnotatedDictionary(&entity)
 		req, err = t.client.insertEntityCreateRequest(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: &entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, qo)
-	case UpdateMerge:
+	case UpdateReplace:
+		fallthrough
 	case UpsertReplace:
 		toOdataAnnotatedDictionary(&entity)
 		opts := &TableMergeEntityOptions{TableEntityProperties: &entity}
@@ -244,8 +297,10 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 			opts.IfMatch = &transactionAction.ETag
 		}
 		req, err = t.client.mergeEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), opts, qo)
-	case UpdateReplace:
+	case UpdateMerge:
+		fallthrough
 	case UpsertMerge:
+
 		toOdataAnnotatedDictionary(&entity)
 		req, err = t.client.updateEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), &TableUpdateEntityOptions{TableEntityProperties: &entity, IfMatch: &transactionAction.ETag}, qo)
 	}
@@ -254,7 +309,9 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	operationWriter.Write([]byte(urlAndVerb))
 	writeHeaders(req.Header, &operationWriter)
 	operationWriter.Write([]byte("\r\n")) // additional \r\n is needed per changeset separating the "headers" and the body.
-	io.Copy(operationWriter, req.Body)
+	if req.Body != nil {
+		io.Copy(operationWriter, req.Body)
+	}
 
 	return nil
 }

@@ -11,7 +11,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-02-01/network"
 )
 
 const (
@@ -246,6 +246,13 @@ const (
 	BastionConnectProtocolSSH BastionConnectProtocol = original.BastionConnectProtocolSSH
 )
 
+type BastionHostSkuName = original.BastionHostSkuName
+
+const (
+	BastionHostSkuNameBasic    BastionHostSkuName = original.BastionHostSkuNameBasic
+	BastionHostSkuNameStandard BastionHostSkuName = original.BastionHostSkuNameStandard
+)
+
 type BgpPeerState = original.BgpPeerState
 
 const (
@@ -360,6 +367,13 @@ type DdosSettingsProtectionCoverage = original.DdosSettingsProtectionCoverage
 const (
 	DdosSettingsProtectionCoverageBasic    DdosSettingsProtectionCoverage = original.DdosSettingsProtectionCoverageBasic
 	DdosSettingsProtectionCoverageStandard DdosSettingsProtectionCoverage = original.DdosSettingsProtectionCoverageStandard
+)
+
+type DeleteOptions = original.DeleteOptions
+
+const (
+	DeleteOptionsDelete DeleteOptions = original.DeleteOptionsDelete
+	DeleteOptionsDetach DeleteOptions = original.DeleteOptionsDetach
 )
 
 type DestinationPortBehavior = original.DestinationPortBehavior
@@ -581,6 +595,22 @@ const (
 	FlowLogFormatTypeJSON FlowLogFormatType = original.FlowLogFormatTypeJSON
 )
 
+type GatewayLoadBalancerTunnelInterfaceType = original.GatewayLoadBalancerTunnelInterfaceType
+
+const (
+	GatewayLoadBalancerTunnelInterfaceTypeExternal GatewayLoadBalancerTunnelInterfaceType = original.GatewayLoadBalancerTunnelInterfaceTypeExternal
+	GatewayLoadBalancerTunnelInterfaceTypeInternal GatewayLoadBalancerTunnelInterfaceType = original.GatewayLoadBalancerTunnelInterfaceTypeInternal
+	GatewayLoadBalancerTunnelInterfaceTypeNone     GatewayLoadBalancerTunnelInterfaceType = original.GatewayLoadBalancerTunnelInterfaceTypeNone
+)
+
+type GatewayLoadBalancerTunnelProtocol = original.GatewayLoadBalancerTunnelProtocol
+
+const (
+	GatewayLoadBalancerTunnelProtocolNative GatewayLoadBalancerTunnelProtocol = original.GatewayLoadBalancerTunnelProtocolNative
+	GatewayLoadBalancerTunnelProtocolNone   GatewayLoadBalancerTunnelProtocol = original.GatewayLoadBalancerTunnelProtocolNone
+	GatewayLoadBalancerTunnelProtocolVXLAN  GatewayLoadBalancerTunnelProtocol = original.GatewayLoadBalancerTunnelProtocolVXLAN
+)
+
 type HTTPConfigurationMethod = original.HTTPConfigurationMethod
 
 const (
@@ -670,6 +700,23 @@ const (
 	InboundSecurityRulesProtocolUDP InboundSecurityRulesProtocol = original.InboundSecurityRulesProtocolUDP
 )
 
+type InterfaceMigrationPhase = original.InterfaceMigrationPhase
+
+const (
+	InterfaceMigrationPhaseAbort     InterfaceMigrationPhase = original.InterfaceMigrationPhaseAbort
+	InterfaceMigrationPhaseCommit    InterfaceMigrationPhase = original.InterfaceMigrationPhaseCommit
+	InterfaceMigrationPhaseCommitted InterfaceMigrationPhase = original.InterfaceMigrationPhaseCommitted
+	InterfaceMigrationPhaseNone      InterfaceMigrationPhase = original.InterfaceMigrationPhaseNone
+	InterfaceMigrationPhasePrepare   InterfaceMigrationPhase = original.InterfaceMigrationPhasePrepare
+)
+
+type InterfaceNicType = original.InterfaceNicType
+
+const (
+	InterfaceNicTypeElastic  InterfaceNicType = original.InterfaceNicTypeElastic
+	InterfaceNicTypeStandard InterfaceNicType = original.InterfaceNicTypeStandard
+)
+
 type IpsecEncryption = original.IpsecEncryption
 
 const (
@@ -721,6 +768,7 @@ type LoadBalancerSkuName = original.LoadBalancerSkuName
 
 const (
 	LoadBalancerSkuNameBasic    LoadBalancerSkuName = original.LoadBalancerSkuNameBasic
+	LoadBalancerSkuNameGateway  LoadBalancerSkuName = original.LoadBalancerSkuNameGateway
 	LoadBalancerSkuNameStandard LoadBalancerSkuName = original.LoadBalancerSkuNameStandard
 )
 
@@ -860,6 +908,14 @@ const (
 	PreferredIPVersionIPv6 PreferredIPVersion = original.PreferredIPVersionIPv6
 )
 
+type PreferredRoutingGateway = original.PreferredRoutingGateway
+
+const (
+	PreferredRoutingGatewayExpressRoute PreferredRoutingGateway = original.PreferredRoutingGatewayExpressRoute
+	PreferredRoutingGatewayNone         PreferredRoutingGateway = original.PreferredRoutingGatewayNone
+	PreferredRoutingGatewayVpnGateway   PreferredRoutingGateway = original.PreferredRoutingGatewayVpnGateway
+)
+
 type ProbeProtocol = original.ProbeProtocol
 
 const (
@@ -905,6 +961,16 @@ const (
 	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
 	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
 	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
+)
+
+type PublicIPAddressMigrationPhase = original.PublicIPAddressMigrationPhase
+
+const (
+	PublicIPAddressMigrationPhaseAbort     PublicIPAddressMigrationPhase = original.PublicIPAddressMigrationPhaseAbort
+	PublicIPAddressMigrationPhaseCommit    PublicIPAddressMigrationPhase = original.PublicIPAddressMigrationPhaseCommit
+	PublicIPAddressMigrationPhaseCommitted PublicIPAddressMigrationPhase = original.PublicIPAddressMigrationPhaseCommitted
+	PublicIPAddressMigrationPhaseNone      PublicIPAddressMigrationPhase = original.PublicIPAddressMigrationPhaseNone
+	PublicIPAddressMigrationPhasePrepare   PublicIPAddressMigrationPhase = original.PublicIPAddressMigrationPhasePrepare
 )
 
 type PublicIPAddressSkuName = original.PublicIPAddressSkuName
@@ -965,18 +1031,18 @@ const (
 type RuleCollectionType = original.RuleCollectionType
 
 const (
-	RuleCollectionTypeRuleCollectionTypeFirewallPolicyFilterRuleCollection RuleCollectionType = original.RuleCollectionTypeRuleCollectionTypeFirewallPolicyFilterRuleCollection
-	RuleCollectionTypeRuleCollectionTypeFirewallPolicyNatRuleCollection    RuleCollectionType = original.RuleCollectionTypeRuleCollectionTypeFirewallPolicyNatRuleCollection
-	RuleCollectionTypeRuleCollectionTypeFirewallPolicyRuleCollection       RuleCollectionType = original.RuleCollectionTypeRuleCollectionTypeFirewallPolicyRuleCollection
+	RuleCollectionTypeFirewallPolicyFilterRuleCollection RuleCollectionType = original.RuleCollectionTypeFirewallPolicyFilterRuleCollection
+	RuleCollectionTypeFirewallPolicyNatRuleCollection    RuleCollectionType = original.RuleCollectionTypeFirewallPolicyNatRuleCollection
+	RuleCollectionTypeFirewallPolicyRuleCollection       RuleCollectionType = original.RuleCollectionTypeFirewallPolicyRuleCollection
 )
 
 type RuleType = original.RuleType
 
 const (
-	RuleTypeRuleTypeApplicationRule    RuleType = original.RuleTypeRuleTypeApplicationRule
-	RuleTypeRuleTypeFirewallPolicyRule RuleType = original.RuleTypeRuleTypeFirewallPolicyRule
-	RuleTypeRuleTypeNatRule            RuleType = original.RuleTypeRuleTypeNatRule
-	RuleTypeRuleTypeNetworkRule        RuleType = original.RuleTypeRuleTypeNetworkRule
+	RuleTypeApplicationRule    RuleType = original.RuleTypeApplicationRule
+	RuleTypeFirewallPolicyRule RuleType = original.RuleTypeFirewallPolicyRule
+	RuleTypeNatRule            RuleType = original.RuleTypeNatRule
+	RuleTypeNetworkRule        RuleType = original.RuleTypeNetworkRule
 )
 
 type SecurityPartnerProviderConnectionStatus = original.SecurityPartnerProviderConnectionStatus
@@ -1035,6 +1101,12 @@ type Severity = original.Severity
 const (
 	SeverityError   Severity = original.SeverityError
 	SeverityWarning Severity = original.SeverityWarning
+)
+
+type SyncRemoteAddressSpace = original.SyncRemoteAddressSpace
+
+const (
+	SyncRemoteAddressSpaceTrue SyncRemoteAddressSpace = original.SyncRemoteAddressSpaceTrue
 )
 
 type TransportProtocol = original.TransportProtocol
@@ -1145,6 +1217,15 @@ const (
 	VirtualNetworkGatewayTypeExpressRoute VirtualNetworkGatewayType = original.VirtualNetworkGatewayTypeExpressRoute
 	VirtualNetworkGatewayTypeLocalGateway VirtualNetworkGatewayType = original.VirtualNetworkGatewayTypeLocalGateway
 	VirtualNetworkGatewayTypeVpn          VirtualNetworkGatewayType = original.VirtualNetworkGatewayTypeVpn
+)
+
+type VirtualNetworkPeeringLevel = original.VirtualNetworkPeeringLevel
+
+const (
+	VirtualNetworkPeeringLevelFullyInSync             VirtualNetworkPeeringLevel = original.VirtualNetworkPeeringLevelFullyInSync
+	VirtualNetworkPeeringLevelLocalAndRemoteNotInSync VirtualNetworkPeeringLevel = original.VirtualNetworkPeeringLevelLocalAndRemoteNotInSync
+	VirtualNetworkPeeringLevelLocalNotInSync          VirtualNetworkPeeringLevel = original.VirtualNetworkPeeringLevelLocalNotInSync
+	VirtualNetworkPeeringLevelRemoteNotInSync         VirtualNetworkPeeringLevel = original.VirtualNetworkPeeringLevelRemoteNotInSync
 )
 
 type VirtualNetworkPeeringState = original.VirtualNetworkPeeringState
@@ -1811,6 +1892,7 @@ type FlowLogsCreateOrUpdateFuture = original.FlowLogsCreateOrUpdateFuture
 type FlowLogsDeleteFuture = original.FlowLogsDeleteFuture
 type FrontendIPConfiguration = original.FrontendIPConfiguration
 type FrontendIPConfigurationPropertiesFormat = original.FrontendIPConfigurationPropertiesFormat
+type GatewayLoadBalancerTunnelInterface = original.GatewayLoadBalancerTunnelInterface
 type GatewayRoute = original.GatewayRoute
 type GatewayRouteListResult = original.GatewayRouteListResult
 type GenerateExpressRoutePortsLOARequest = original.GenerateExpressRoutePortsLOARequest
@@ -1934,6 +2016,9 @@ type ListVirtualHubRouteTableV2sResultPage = original.ListVirtualHubRouteTableV2
 type ListVirtualHubsResult = original.ListVirtualHubsResult
 type ListVirtualHubsResultIterator = original.ListVirtualHubsResultIterator
 type ListVirtualHubsResultPage = original.ListVirtualHubsResultPage
+type ListVirtualNetworkGatewayNatRulesResult = original.ListVirtualNetworkGatewayNatRulesResult
+type ListVirtualNetworkGatewayNatRulesResultIterator = original.ListVirtualNetworkGatewayNatRulesResultIterator
+type ListVirtualNetworkGatewayNatRulesResultPage = original.ListVirtualNetworkGatewayNatRulesResultPage
 type ListVirtualWANsResult = original.ListVirtualWANsResult
 type ListVirtualWANsResultIterator = original.ListVirtualWANsResultIterator
 type ListVirtualWANsResultPage = original.ListVirtualWANsResultPage
@@ -1989,9 +2074,13 @@ type LoadBalancerProbeListResultPage = original.LoadBalancerProbeListResultPage
 type LoadBalancerProbesClient = original.LoadBalancerProbesClient
 type LoadBalancerPropertiesFormat = original.LoadBalancerPropertiesFormat
 type LoadBalancerSku = original.LoadBalancerSku
+type LoadBalancerVipSwapRequest = original.LoadBalancerVipSwapRequest
+type LoadBalancerVipSwapRequestFrontendIPConfiguration = original.LoadBalancerVipSwapRequestFrontendIPConfiguration
+type LoadBalancerVipSwapRequestFrontendIPConfigurationProperties = original.LoadBalancerVipSwapRequestFrontendIPConfigurationProperties
 type LoadBalancersClient = original.LoadBalancersClient
 type LoadBalancersCreateOrUpdateFuture = original.LoadBalancersCreateOrUpdateFuture
 type LoadBalancersDeleteFuture = original.LoadBalancersDeleteFuture
+type LoadBalancersSwapPublicIPAddressesFuture = original.LoadBalancersSwapPublicIPAddressesFuture
 type LoadBalancingRule = original.LoadBalancingRule
 type LoadBalancingRulePropertiesFormat = original.LoadBalancingRulePropertiesFormat
 type LocalNetworkGateway = original.LocalNetworkGateway
@@ -2263,6 +2352,7 @@ type ServiceTagInformationPropertiesFormat = original.ServiceTagInformationPrope
 type ServiceTagsClient = original.ServiceTagsClient
 type ServiceTagsListResult = original.ServiceTagsListResult
 type SessionIds = original.SessionIds
+type Sku = original.Sku
 type StaticRoute = original.StaticRoute
 type String = original.String
 type SubResource = original.SubResource
@@ -2381,6 +2471,11 @@ type VirtualNetworkGatewayListConnectionsResultPage = original.VirtualNetworkGat
 type VirtualNetworkGatewayListResult = original.VirtualNetworkGatewayListResult
 type VirtualNetworkGatewayListResultIterator = original.VirtualNetworkGatewayListResultIterator
 type VirtualNetworkGatewayListResultPage = original.VirtualNetworkGatewayListResultPage
+type VirtualNetworkGatewayNatRule = original.VirtualNetworkGatewayNatRule
+type VirtualNetworkGatewayNatRuleProperties = original.VirtualNetworkGatewayNatRuleProperties
+type VirtualNetworkGatewayNatRulesClient = original.VirtualNetworkGatewayNatRulesClient
+type VirtualNetworkGatewayNatRulesCreateOrUpdateFuture = original.VirtualNetworkGatewayNatRulesCreateOrUpdateFuture
+type VirtualNetworkGatewayNatRulesDeleteFuture = original.VirtualNetworkGatewayNatRulesDeleteFuture
 type VirtualNetworkGatewayPropertiesFormat = original.VirtualNetworkGatewayPropertiesFormat
 type VirtualNetworkGatewaySku = original.VirtualNetworkGatewaySku
 type VirtualNetworkGatewaysClient = original.VirtualNetworkGatewaysClient
@@ -3104,6 +3199,12 @@ func NewListVirtualHubsResultIterator(page ListVirtualHubsResultPage) ListVirtua
 func NewListVirtualHubsResultPage(cur ListVirtualHubsResult, getNextPage func(context.Context, ListVirtualHubsResult) (ListVirtualHubsResult, error)) ListVirtualHubsResultPage {
 	return original.NewListVirtualHubsResultPage(cur, getNextPage)
 }
+func NewListVirtualNetworkGatewayNatRulesResultIterator(page ListVirtualNetworkGatewayNatRulesResultPage) ListVirtualNetworkGatewayNatRulesResultIterator {
+	return original.NewListVirtualNetworkGatewayNatRulesResultIterator(page)
+}
+func NewListVirtualNetworkGatewayNatRulesResultPage(cur ListVirtualNetworkGatewayNatRulesResult, getNextPage func(context.Context, ListVirtualNetworkGatewayNatRulesResult) (ListVirtualNetworkGatewayNatRulesResult, error)) ListVirtualNetworkGatewayNatRulesResultPage {
+	return original.NewListVirtualNetworkGatewayNatRulesResultPage(cur, getNextPage)
+}
 func NewListVirtualWANsResultIterator(page ListVirtualWANsResultPage) ListVirtualWANsResultIterator {
 	return original.NewListVirtualWANsResultIterator(page)
 }
@@ -3614,6 +3715,12 @@ func NewVirtualNetworkGatewayListResultIterator(page VirtualNetworkGatewayListRe
 func NewVirtualNetworkGatewayListResultPage(cur VirtualNetworkGatewayListResult, getNextPage func(context.Context, VirtualNetworkGatewayListResult) (VirtualNetworkGatewayListResult, error)) VirtualNetworkGatewayListResultPage {
 	return original.NewVirtualNetworkGatewayListResultPage(cur, getNextPage)
 }
+func NewVirtualNetworkGatewayNatRulesClient(subscriptionID string) VirtualNetworkGatewayNatRulesClient {
+	return original.NewVirtualNetworkGatewayNatRulesClient(subscriptionID)
+}
+func NewVirtualNetworkGatewayNatRulesClientWithBaseURI(baseURI string, subscriptionID string) VirtualNetworkGatewayNatRulesClient {
+	return original.NewVirtualNetworkGatewayNatRulesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewVirtualNetworkGatewaysClient(subscriptionID string) VirtualNetworkGatewaysClient {
 	return original.NewVirtualNetworkGatewaysClient(subscriptionID)
 }
@@ -3851,6 +3958,9 @@ func PossibleAzureFirewallThreatIntelModeValues() []AzureFirewallThreatIntelMode
 func PossibleBastionConnectProtocolValues() []BastionConnectProtocol {
 	return original.PossibleBastionConnectProtocolValues()
 }
+func PossibleBastionHostSkuNameValues() []BastionHostSkuName {
+	return original.PossibleBastionHostSkuNameValues()
+}
 func PossibleBgpPeerStateValues() []BgpPeerState {
 	return original.PossibleBgpPeerStateValues()
 }
@@ -3892,6 +4002,9 @@ func PossibleDdosCustomPolicyTriggerSensitivityOverrideValues() []DdosCustomPoli
 }
 func PossibleDdosSettingsProtectionCoverageValues() []DdosSettingsProtectionCoverage {
 	return original.PossibleDdosSettingsProtectionCoverageValues()
+}
+func PossibleDeleteOptionsValues() []DeleteOptions {
+	return original.PossibleDeleteOptionsValues()
 }
 func PossibleDestinationPortBehaviorValues() []DestinationPortBehavior {
 	return original.PossibleDestinationPortBehaviorValues()
@@ -3977,6 +4090,12 @@ func PossibleFirewallPolicySkuTierValues() []FirewallPolicySkuTier {
 func PossibleFlowLogFormatTypeValues() []FlowLogFormatType {
 	return original.PossibleFlowLogFormatTypeValues()
 }
+func PossibleGatewayLoadBalancerTunnelInterfaceTypeValues() []GatewayLoadBalancerTunnelInterfaceType {
+	return original.PossibleGatewayLoadBalancerTunnelInterfaceTypeValues()
+}
+func PossibleGatewayLoadBalancerTunnelProtocolValues() []GatewayLoadBalancerTunnelProtocol {
+	return original.PossibleGatewayLoadBalancerTunnelProtocolValues()
+}
 func PossibleHTTPConfigurationMethodValues() []HTTPConfigurationMethod {
 	return original.PossibleHTTPConfigurationMethodValues()
 }
@@ -4009,6 +4128,12 @@ func PossibleIkeIntegrityValues() []IkeIntegrity {
 }
 func PossibleInboundSecurityRulesProtocolValues() []InboundSecurityRulesProtocol {
 	return original.PossibleInboundSecurityRulesProtocolValues()
+}
+func PossibleInterfaceMigrationPhaseValues() []InterfaceMigrationPhase {
+	return original.PossibleInterfaceMigrationPhaseValues()
+}
+func PossibleInterfaceNicTypeValues() []InterfaceNicType {
+	return original.PossibleInterfaceNicTypeValues()
 }
 func PossibleIpsecEncryptionValues() []IpsecEncryption {
 	return original.PossibleIpsecEncryptionValues()
@@ -4073,6 +4198,9 @@ func PossiblePfsGroupValues() []PfsGroup {
 func PossiblePreferredIPVersionValues() []PreferredIPVersion {
 	return original.PossiblePreferredIPVersionValues()
 }
+func PossiblePreferredRoutingGatewayValues() []PreferredRoutingGateway {
+	return original.PossiblePreferredRoutingGatewayValues()
+}
 func PossibleProbeProtocolValues() []ProbeProtocol {
 	return original.PossibleProbeProtocolValues()
 }
@@ -4087,6 +4215,9 @@ func PossibleProtocolValues() []Protocol {
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossiblePublicIPAddressMigrationPhaseValues() []PublicIPAddressMigrationPhase {
+	return original.PossiblePublicIPAddressMigrationPhaseValues()
 }
 func PossiblePublicIPAddressSkuNameValues() []PublicIPAddressSkuName {
 	return original.PossiblePublicIPAddressSkuNameValues()
@@ -4136,6 +4267,9 @@ func PossibleServiceProviderProvisioningStateValues() []ServiceProviderProvision
 func PossibleSeverityValues() []Severity {
 	return original.PossibleSeverityValues()
 }
+func PossibleSyncRemoteAddressSpaceValues() []SyncRemoteAddressSpace {
+	return original.PossibleSyncRemoteAddressSpaceValues()
+}
 func PossibleTransportProtocolValues() []TransportProtocol {
 	return original.PossibleTransportProtocolValues()
 }
@@ -4165,6 +4299,9 @@ func PossibleVirtualNetworkGatewaySkuTierValues() []VirtualNetworkGatewaySkuTier
 }
 func PossibleVirtualNetworkGatewayTypeValues() []VirtualNetworkGatewayType {
 	return original.PossibleVirtualNetworkGatewayTypeValues()
+}
+func PossibleVirtualNetworkPeeringLevelValues() []VirtualNetworkPeeringLevel {
+	return original.PossibleVirtualNetworkPeeringLevelValues()
 }
 func PossibleVirtualNetworkPeeringStateValues() []VirtualNetworkPeeringState {
 	return original.PossibleVirtualNetworkPeeringStateValues()

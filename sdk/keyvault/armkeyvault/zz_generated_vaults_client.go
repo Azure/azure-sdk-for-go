@@ -10,10 +10,8 @@ package armkeyvault
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -34,6 +32,7 @@ func NewVaultsClient(con *armcore.Connection, subscriptionID string) *VaultsClie
 }
 
 // CheckNameAvailability - Checks that the vault name is valid and is not already in use.
+// If the operation fails it returns a generic error.
 func (client *VaultsClient) CheckNameAvailability(ctx context.Context, vaultName VaultCheckNameAvailabilityParameters, options *VaultsCheckNameAvailabilityOptions) (CheckNameAvailabilityResultResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, vaultName, options)
 	if err != nil {
@@ -79,9 +78,9 @@ func (client *VaultsClient) checkNameAvailabilityHandleResponse(resp *azcore.Res
 
 // checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
 func (client *VaultsClient) checkNameAvailabilityHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := resp.Payload()
 	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+		return azcore.NewResponseError(err, resp.Response)
 	}
 	if len(body) == 0 {
 		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
@@ -90,6 +89,7 @@ func (client *VaultsClient) checkNameAvailabilityHandleError(resp *azcore.Respon
 }
 
 // BeginCreateOrUpdate - Create or update a key vault in the specified subscription.
+// If the operation fails it returns a generic error.
 func (client *VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters, options *VaultsBeginCreateOrUpdateOptions) (VaultPollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, vaultName, parameters, options)
 	if err != nil {
@@ -139,6 +139,7 @@ func (client *VaultsClient) ResumeCreateOrUpdate(ctx context.Context, token stri
 }
 
 // CreateOrUpdate - Create or update a key vault in the specified subscription.
+// If the operation fails it returns a generic error.
 func (client *VaultsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultCreateOrUpdateParameters, options *VaultsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vaultName, parameters, options)
 	if err != nil {
@@ -181,20 +182,11 @@ func (client *VaultsClient) createOrUpdateCreateRequest(ctx context.Context, res
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *VaultsClient) createOrUpdateHandleResponse(resp *azcore.Response) (VaultResponse, error) {
-	var val *Vault
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VaultResponse{}, err
-	}
-	return VaultResponse{RawResponse: resp.Response, Vault: val}, nil
-}
-
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *VaultsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := resp.Payload()
 	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+		return azcore.NewResponseError(err, resp.Response)
 	}
 	if len(body) == 0 {
 		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
@@ -203,6 +195,7 @@ func (client *VaultsClient) createOrUpdateHandleError(resp *azcore.Response) err
 }
 
 // Delete - Deletes the specified Azure key vault.
+// If the operation fails it returns a generic error.
 func (client *VaultsClient) Delete(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
@@ -246,9 +239,9 @@ func (client *VaultsClient) deleteCreateRequest(ctx context.Context, resourceGro
 
 // deleteHandleError handles the Delete error response.
 func (client *VaultsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := resp.Payload()
 	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+		return azcore.NewResponseError(err, resp.Response)
 	}
 	if len(body) == 0 {
 		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
@@ -257,6 +250,7 @@ func (client *VaultsClient) deleteHandleError(resp *azcore.Response) error {
 }
 
 // Get - Gets the specified Azure key vault.
+// If the operation fails it returns a generic error.
 func (client *VaultsClient) Get(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsGetOptions) (VaultResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
@@ -310,9 +304,9 @@ func (client *VaultsClient) getHandleResponse(resp *azcore.Response) (VaultRespo
 
 // getHandleError handles the Get error response.
 func (client *VaultsClient) getHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := resp.Payload()
 	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+		return azcore.NewResponseError(err, resp.Response)
 	}
 	if len(body) == 0 {
 		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
@@ -321,6 +315,7 @@ func (client *VaultsClient) getHandleError(resp *azcore.Response) error {
 }
 
 // GetDeleted - Gets the deleted Azure key vault.
+// If the operation fails it returns a generic error.
 func (client *VaultsClient) GetDeleted(ctx context.Context, vaultName string, location string, options *VaultsGetDeletedOptions) (DeletedVaultResponse, error) {
 	req, err := client.getDeletedCreateRequest(ctx, vaultName, location, options)
 	if err != nil {
@@ -374,9 +369,9 @@ func (client *VaultsClient) getDeletedHandleResponse(resp *azcore.Response) (Del
 
 // getDeletedHandleError handles the GetDeleted error response.
 func (client *VaultsClient) getDeletedHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := resp.Payload()
 	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+		return azcore.NewResponseError(err, resp.Response)
 	}
 	if len(body) == 0 {
 		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
@@ -385,6 +380,7 @@ func (client *VaultsClient) getDeletedHandleError(resp *azcore.Response) error {
 }
 
 // List - The List operation gets information about the vaults associated with the subscription.
+// If the operation fails it returns a generic error.
 func (client *VaultsClient) List(options *VaultsListOptions) ResourceListResultPager {
 	return &resourceListResultPager{
 		pipeline: client.con.Pipeline(),
@@ -434,9 +430,9 @@ func (client *VaultsClient) listHandleResponse(resp *azcore.Response) (ResourceL
 
 // listHandleError handles the List error response.
 func (client *VaultsClient) listHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := resp.Payload()
 	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+		return azcore.NewResponseError(err, resp.Response)
 	}
 	if len(body) == 0 {
 		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
@@ -445,6 +441,7 @@ func (client *VaultsClient) listHandleError(resp *azcore.Response) error {
 }
 
 // ListByResourceGroup - The List operation gets information about the vaults associated with the subscription and within the specified resource group.
+// If the operation fails it returns a generic error.
 func (client *VaultsClient) ListByResourceGroup(resourceGroupName string, options *VaultsListByResourceGroupOptions) VaultListResultPager {
 	return &vaultListResultPager{
 		pipeline: client.con.Pipeline(),
@@ -497,9 +494,9 @@ func (client *VaultsClient) listByResourceGroupHandleResponse(resp *azcore.Respo
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *VaultsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := resp.Payload()
 	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+		return azcore.NewResponseError(err, resp.Response)
 	}
 	if len(body) == 0 {
 		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
@@ -508,6 +505,7 @@ func (client *VaultsClient) listByResourceGroupHandleError(resp *azcore.Response
 }
 
 // ListBySubscription - The List operation gets information about the vaults associated with the subscription.
+// If the operation fails it returns a generic error.
 func (client *VaultsClient) ListBySubscription(options *VaultsListBySubscriptionOptions) VaultListResultPager {
 	return &vaultListResultPager{
 		pipeline: client.con.Pipeline(),
@@ -556,9 +554,9 @@ func (client *VaultsClient) listBySubscriptionHandleResponse(resp *azcore.Respon
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
 func (client *VaultsClient) listBySubscriptionHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := resp.Payload()
 	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+		return azcore.NewResponseError(err, resp.Response)
 	}
 	if len(body) == 0 {
 		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
@@ -567,6 +565,7 @@ func (client *VaultsClient) listBySubscriptionHandleError(resp *azcore.Response)
 }
 
 // ListDeleted - Gets information about the deleted vaults in a subscription.
+// If the operation fails it returns a generic error.
 func (client *VaultsClient) ListDeleted(options *VaultsListDeletedOptions) DeletedVaultListResultPager {
 	return &deletedVaultListResultPager{
 		pipeline: client.con.Pipeline(),
@@ -612,9 +611,9 @@ func (client *VaultsClient) listDeletedHandleResponse(resp *azcore.Response) (De
 
 // listDeletedHandleError handles the ListDeleted error response.
 func (client *VaultsClient) listDeletedHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := resp.Payload()
 	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+		return azcore.NewResponseError(err, resp.Response)
 	}
 	if len(body) == 0 {
 		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
@@ -623,6 +622,7 @@ func (client *VaultsClient) listDeletedHandleError(resp *azcore.Response) error 
 }
 
 // BeginPurgeDeleted - Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
+// If the operation fails it returns a generic error.
 func (client *VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName string, location string, options *VaultsBeginPurgeDeletedOptions) (HTTPPollerResponse, error) {
 	resp, err := client.purgeDeleted(ctx, vaultName, location, options)
 	if err != nil {
@@ -672,6 +672,7 @@ func (client *VaultsClient) ResumePurgeDeleted(ctx context.Context, token string
 }
 
 // PurgeDeleted - Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
+// If the operation fails it returns a generic error.
 func (client *VaultsClient) purgeDeleted(ctx context.Context, vaultName string, location string, options *VaultsBeginPurgeDeletedOptions) (*azcore.Response, error) {
 	req, err := client.purgeDeletedCreateRequest(ctx, vaultName, location, options)
 	if err != nil {
@@ -715,9 +716,9 @@ func (client *VaultsClient) purgeDeletedCreateRequest(ctx context.Context, vault
 
 // purgeDeletedHandleError handles the PurgeDeleted error response.
 func (client *VaultsClient) purgeDeletedHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := resp.Payload()
 	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+		return azcore.NewResponseError(err, resp.Response)
 	}
 	if len(body) == 0 {
 		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
@@ -726,6 +727,7 @@ func (client *VaultsClient) purgeDeletedHandleError(resp *azcore.Response) error
 }
 
 // Update - Update a key vault in the specified subscription.
+// If the operation fails it returns a generic error.
 func (client *VaultsClient) Update(ctx context.Context, resourceGroupName string, vaultName string, parameters VaultPatchParameters, options *VaultsUpdateOptions) (VaultResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, vaultName, parameters, options)
 	if err != nil {
@@ -779,9 +781,9 @@ func (client *VaultsClient) updateHandleResponse(resp *azcore.Response) (VaultRe
 
 // updateHandleError handles the Update error response.
 func (client *VaultsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := resp.Payload()
 	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+		return azcore.NewResponseError(err, resp.Response)
 	}
 	if len(body) == 0 {
 		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
@@ -790,6 +792,7 @@ func (client *VaultsClient) updateHandleError(resp *azcore.Response) error {
 }
 
 // UpdateAccessPolicy - Update access policies in a key vault in the specified subscription.
+// If the operation fails it returns a generic error.
 func (client *VaultsClient) UpdateAccessPolicy(ctx context.Context, resourceGroupName string, vaultName string, operationKind AccessPolicyUpdateKind, parameters VaultAccessPolicyParameters, options *VaultsUpdateAccessPolicyOptions) (VaultAccessPolicyParametersResponse, error) {
 	req, err := client.updateAccessPolicyCreateRequest(ctx, resourceGroupName, vaultName, operationKind, parameters, options)
 	if err != nil {
@@ -847,9 +850,9 @@ func (client *VaultsClient) updateAccessPolicyHandleResponse(resp *azcore.Respon
 
 // updateAccessPolicyHandleError handles the UpdateAccessPolicy error response.
 func (client *VaultsClient) updateAccessPolicyHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := resp.Payload()
 	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+		return azcore.NewResponseError(err, resp.Response)
 	}
 	if len(body) == 0 {
 		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)

@@ -8,11 +8,8 @@
 package armkeyvault
 
 import (
-	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"net/http"
 	"reflect"
 	"time"
 )
@@ -23,22 +20,19 @@ type AccessPolicyEntry struct {
 	// Application ID of the client making request on behalf of a principal
 	ApplicationID *string `json:"applicationId,omitempty"`
 
-	// The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the
-	// list of access policies.
+	// REQUIRED; The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique
+	// for the list of access policies.
 	ObjectID *string `json:"objectId,omitempty"`
 
-	// Permissions the identity has for keys, secrets and certificates.
+	// REQUIRED; Permissions the identity has for keys, secrets and certificates.
 	Permissions *Permissions `json:"permissions,omitempty"`
 
-	// The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+	// REQUIRED; The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // Attributes - The object attributes managed by the Azure Key Vault service.
 type Attributes struct {
-	// READ-ONLY; Creation time in seconds since 1970-01-01T00:00:00Z.
-	Created *int64 `json:"created,omitempty" azure:"ro"`
-
 	// Determines whether or not the object is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -47,6 +41,9 @@ type Attributes struct {
 
 	// Not before date in seconds since 1970-01-01T00:00:00Z.
 	NotBefore *int64 `json:"nbf,omitempty"`
+
+	// READ-ONLY; Creation time in seconds since 1970-01-01T00:00:00Z.
+	Created *int64 `json:"created,omitempty" azure:"ro"`
 
 	// READ-ONLY; The deletion recovery level currently in effect for the object. If it contains 'Purgeable', then the object can be permanently deleted by
 	// a privileged user; otherwise, only the system can purge the
@@ -70,37 +67,18 @@ type CheckNameAvailabilityResult struct {
 	Reason *Reason `json:"reason,omitempty" azure:"ro"`
 }
 
-// CheckNameAvailabilityResultResponse is the response envelope for operations that return a CheckNameAvailabilityResult type.
-type CheckNameAvailabilityResultResponse struct {
-	// The CheckNameAvailability operation response.
-	CheckNameAvailabilityResult *CheckNameAvailabilityResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
 // CloudError - An error response from Key Vault resource provider
+// Implements the error and azcore.HTTPResponse interfaces.
 type CloudError struct {
+	raw string
 	// An error response from Key Vault resource provider
 	InnerError *CloudErrorBody `json:"error,omitempty"`
 }
 
 // Error implements the error interface for type CloudError.
+// The contents of the error text are not contractual and subject to change.
 func (e CloudError) Error() string {
-	msg := ""
-	if e.InnerError != nil {
-		msg += "InnerError: \n"
-		if e.InnerError.Code != nil {
-			msg += fmt.Sprintf("\tCode: %v\n", *e.InnerError.Code)
-		}
-		if e.InnerError.Message != nil {
-			msg += fmt.Sprintf("\tMessage: %v\n", *e.InnerError.Message)
-		}
-	}
-	if msg == "" {
-		msg = "missing error info"
-	}
-	return msg
+	return e.raw
 }
 
 // CloudErrorBody - An error response from Key Vault resource provider
@@ -114,14 +92,14 @@ type CloudErrorBody struct {
 
 // DeletedVault - Deleted vault information with extended details.
 type DeletedVault struct {
+	// Properties of the vault
+	Properties *DeletedVaultProperties `json:"properties,omitempty"`
+
 	// READ-ONLY; The resource ID for the deleted key vault.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; The name of the key vault.
 	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// Properties of the vault
-	Properties *DeletedVaultProperties `json:"properties,omitempty"`
 
 	// READ-ONLY; The resource type of the key vault.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -133,16 +111,15 @@ type DeletedVaultListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// The list of deleted vaults.
-	Value *[]*DeletedVault `json:"value,omitempty"`
+	Value []*DeletedVault `json:"value,omitempty"`
 }
 
-// DeletedVaultListResultResponse is the response envelope for operations that return a DeletedVaultListResult type.
-type DeletedVaultListResultResponse struct {
-	// List of vaults
-	DeletedVaultListResult *DeletedVaultListResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// MarshalJSON implements the json.Marshaller interface for type DeletedVaultListResult.
+func (d DeletedVaultListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", d.NextLink)
+	populate(objectMap, "value", d.Value)
+	return json.Marshal(objectMap)
 }
 
 // DeletedVaultProperties - Properties of the deleted vault.
@@ -157,7 +134,7 @@ type DeletedVaultProperties struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 
 	// READ-ONLY; Tags of the original vault.
-	Tags *map[string]*string `json:"tags,omitempty" azure:"ro"`
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
 
 	// READ-ONLY; The resource id of the original vault.
 	VaultID *string `json:"vaultId,omitempty" azure:"ro"`
@@ -176,7 +153,7 @@ func (d DeletedVaultProperties) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type DeletedVaultProperties.
 func (d *DeletedVaultProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]*json.RawMessage
+	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
 	}
@@ -210,38 +187,24 @@ func (d *DeletedVaultProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DeletedVaultResponse is the response envelope for operations that return a DeletedVault type.
-type DeletedVaultResponse struct {
-	// Deleted vault information with extended details.
-	DeletedVault *DeletedVault
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// HTTPPollerResponse contains the asynchronous HTTP response from the call to the service endpoint.
-type HTTPPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (*http.Response, error)
-
-	// Poller contains an initialized poller.
-	Poller HTTPPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
 // IPRule - A rule governing the accessibility of a vault from a specific ip address or ip range.
 type IPRule struct {
-	// An IPv4 address range in CIDR notation, such as '124.56.78.91' (simple IP address) or '124.56.78.0/24' (all addresses that start with 124.56.78).
+	// REQUIRED; An IPv4 address range in CIDR notation, such as '124.56.78.91' (simple IP address) or '124.56.78.0/24' (all addresses that start with 124.56.78).
 	Value *string `json:"value,omitempty"`
 }
 
 // Key - The key resource.
 type Key struct {
 	Resource
-	// The properties of the key.
+	// REQUIRED; The properties of the key.
 	Properties *KeyProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Key.
+func (k Key) MarshalJSON() ([]byte, error) {
+	objectMap := k.Resource.marshalInternal()
+	populate(objectMap, "properties", k.Properties)
+	return json.Marshal(objectMap)
 }
 
 // KeyAttributes - The attributes of the key.
@@ -251,11 +214,19 @@ type KeyAttributes struct {
 
 // KeyCreateParameters - The parameters used to create a key.
 type KeyCreateParameters struct {
-	// The properties of the key to be created.
+	// REQUIRED; The properties of the key to be created.
 	Properties *KeyProperties `json:"properties,omitempty"`
 
 	// The tags that will be assigned to the key.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type KeyCreateParameters.
+func (k KeyCreateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "properties", k.Properties)
+	populate(objectMap, "tags", k.Tags)
+	return json.Marshal(objectMap)
 }
 
 // KeyListResult - The page of keys.
@@ -264,16 +235,15 @@ type KeyListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// The key resources.
-	Value *[]*Key `json:"value,omitempty"`
+	Value []*Key `json:"value,omitempty"`
 }
 
-// KeyListResultResponse is the response envelope for operations that return a KeyListResult type.
-type KeyListResultResponse struct {
-	// The page of keys.
-	KeyListResult *KeyListResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// MarshalJSON implements the json.Marshaller interface for type KeyListResult.
+func (k KeyListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", k.NextLink)
+	populate(objectMap, "value", k.Value)
+	return json.Marshal(objectMap)
 }
 
 // KeyProperties - The properties of the key.
@@ -282,29 +252,33 @@ type KeyProperties struct {
 	Attributes *KeyAttributes `json:"attributes,omitempty"`
 
 	// The elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	CurveName *JSONWebKeyCurveName    `json:"curveName,omitempty"`
-	KeyOps    *[]*JSONWebKeyOperation `json:"keyOps,omitempty"`
+	CurveName *JSONWebKeyCurveName   `json:"curveName,omitempty"`
+	KeyOps    []*JSONWebKeyOperation `json:"keyOps,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"keySize,omitempty"`
+
+	// The type of the key. For valid values, see JsonWebKeyType.
+	Kty *JSONWebKeyType `json:"kty,omitempty"`
 
 	// READ-ONLY; The URI to retrieve the current version of the key.
 	KeyURI *string `json:"keyUri,omitempty" azure:"ro"`
 
 	// READ-ONLY; The URI to retrieve the specific version of the key.
 	KeyURIWithVersion *string `json:"keyUriWithVersion,omitempty" azure:"ro"`
-
-	// The type of the key. For valid values, see JsonWebKeyType.
-	Kty *JSONWebKeyType `json:"kty,omitempty"`
 }
 
-// KeyResponse is the response envelope for operations that return a Key type.
-type KeyResponse struct {
-	// The key resource.
-	Key *Key
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// MarshalJSON implements the json.Marshaller interface for type KeyProperties.
+func (k KeyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "attributes", k.Attributes)
+	populate(objectMap, "curveName", k.CurveName)
+	populate(objectMap, "keyOps", k.KeyOps)
+	populate(objectMap, "keySize", k.KeySize)
+	populate(objectMap, "keyUri", k.KeyURI)
+	populate(objectMap, "keyUriWithVersion", k.KeyURIWithVersion)
+	populate(objectMap, "kty", k.Kty)
+	return json.Marshal(objectMap)
 }
 
 // KeysCreateIfNotExistOptions contains the optional parameters for the Keys.CreateIfNotExist method.
@@ -353,10 +327,20 @@ type NetworkRuleSet struct {
 	DefaultAction *NetworkRuleAction `json:"defaultAction,omitempty"`
 
 	// The list of IP address rules.
-	IPRules *[]*IPRule `json:"ipRules,omitempty"`
+	IPRules []*IPRule `json:"ipRules,omitempty"`
 
 	// The list of virtual network rules.
-	VirtualNetworkRules *[]*VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
+	VirtualNetworkRules []*VirtualNetworkRule `json:"virtualNetworkRules,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type NetworkRuleSet.
+func (n NetworkRuleSet) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "bypass", n.Bypass)
+	populate(objectMap, "defaultAction", n.DefaultAction)
+	populate(objectMap, "ipRules", n.IPRules)
+	populate(objectMap, "virtualNetworkRules", n.VirtualNetworkRules)
+	return json.Marshal(objectMap)
 }
 
 // Operation - Key Vault REST API operation definition.
@@ -395,16 +379,15 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// List of Storage operations supported by the Storage resource provider.
-	Value *[]*Operation `json:"value,omitempty"`
+	Value []*Operation `json:"value,omitempty"`
 }
 
-// OperationListResultResponse is the response envelope for operations that return a OperationListResult type.
-type OperationListResultResponse struct {
-	// Result of the request to list Storage operations. It contains a list of operations and a URL link to get the next set of results.
-	OperationListResult *OperationListResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
+func (o OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", o.NextLink)
+	populate(objectMap, "value", o.Value)
+	return json.Marshal(objectMap)
 }
 
 // OperationProperties - Properties of operation, include metric specifications.
@@ -421,16 +404,26 @@ type OperationsListOptions struct {
 // Permissions the identity has for keys, secrets, certificates and storage.
 type Permissions struct {
 	// Permissions to certificates
-	Certificates *[]*CertificatePermissions `json:"certificates,omitempty"`
+	Certificates []*CertificatePermissions `json:"certificates,omitempty"`
 
 	// Permissions to keys
-	Keys *[]*KeyPermissions `json:"keys,omitempty"`
+	Keys []*KeyPermissions `json:"keys,omitempty"`
 
 	// Permissions to secrets
-	Secrets *[]*SecretPermissions `json:"secrets,omitempty"`
+	Secrets []*SecretPermissions `json:"secrets,omitempty"`
 
 	// Permissions to storage accounts
-	Storage *[]*StoragePermissions `json:"storage,omitempty"`
+	Storage []*StoragePermissions `json:"storage,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Permissions.
+func (p Permissions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "certificates", p.Certificates)
+	populate(objectMap, "keys", p.Keys)
+	populate(objectMap, "secrets", p.Secrets)
+	populate(objectMap, "storage", p.Storage)
+	return json.Marshal(objectMap)
 }
 
 // PrivateEndpoint - Private endpoint object properties.
@@ -446,22 +439,17 @@ type PrivateEndpointConnection struct {
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnection.
+func (p PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
+	objectMap := p.Resource.marshalInternal()
+	populate(objectMap, "properties", p.Properties)
+	return json.Marshal(objectMap)
+}
+
 // PrivateEndpointConnectionItem - Private endpoint connection item.
 type PrivateEndpointConnectionItem struct {
 	// Private endpoint connection properties.
 	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
-}
-
-// PrivateEndpointConnectionPollerResponse is the response envelope for operations that asynchronously return a PrivateEndpointConnection type.
-type PrivateEndpointConnectionPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error)
-
-	// Poller contains an initialized poller.
-	Poller PrivateEndpointConnectionPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
 }
 
 // PrivateEndpointConnectionProperties - Properties of the private endpoint connection resource.
@@ -474,21 +462,6 @@ type PrivateEndpointConnectionProperties struct {
 
 	// READ-ONLY; Provisioning state of the private endpoint connection.
 	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// PrivateEndpointConnectionResponse is the response envelope for operations that return a PrivateEndpointConnection type.
-type PrivateEndpointConnectionResponse struct {
-	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
-	AzureAsyncOperation *string
-
-	// Private endpoint connection resource.
-	PrivateEndpointConnection *PrivateEndpointConnection
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RetryAfter contains the information returned from the Retry-After header response.
-	RetryAfter *int32
 }
 
 // PrivateEndpointConnectionsBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnections.BeginDelete method.
@@ -513,31 +486,45 @@ type PrivateLinkResource struct {
 	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResource.
+func (p PrivateLinkResource) MarshalJSON() ([]byte, error) {
+	objectMap := p.Resource.marshalInternal()
+	populate(objectMap, "properties", p.Properties)
+	return json.Marshal(objectMap)
+}
+
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
-	Value *[]*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource `json:"value,omitempty"`
 }
 
-// PrivateLinkResourceListResultResponse is the response envelope for operations that return a PrivateLinkResourceListResult type.
-type PrivateLinkResourceListResultResponse struct {
-	// A list of private link resources
-	PrivateLinkResourceListResult *PrivateLinkResourceListResult
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceListResult.
+func (p PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "value", p.Value)
+	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
+	// Required DNS zone names of the the private link resource.
+	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+
 	// READ-ONLY; Group identifier of private link resource.
 	GroupID *string `json:"groupId,omitempty" azure:"ro"`
 
 	// READ-ONLY; Required member names of private link resource.
-	RequiredMembers *[]*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+}
 
-	// Required DNS zone names of the the private link resource.
-	RequiredZoneNames *[]*string `json:"requiredZoneNames,omitempty"`
+// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResourceProperties.
+func (p PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "groupId", p.GroupID)
+	populate(objectMap, "requiredMembers", p.RequiredMembers)
+	populate(objectMap, "requiredZoneNames", p.RequiredZoneNames)
+	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourcesListByVaultOptions contains the optional parameters for the PrivateLinkResources.ListByVault method.
@@ -569,10 +556,26 @@ type Resource struct {
 	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Tags assigned to the key vault resource.
-	Tags *map[string]*string `json:"tags,omitempty" azure:"ro"`
+	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
 
 	// READ-ONLY; Resource type of the key vault resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := r.marshalInternal()
+	return json.Marshal(objectMap)
+}
+
+func (r Resource) marshalInternal() map[string]interface{} {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "location", r.Location)
+	populate(objectMap, "name", r.Name)
+	populate(objectMap, "tags", r.Tags)
+	populate(objectMap, "type", r.Type)
+	return objectMap
 }
 
 // ResourceListResult - List of vault resources.
@@ -581,56 +584,77 @@ type ResourceListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// The list of vault resources.
-	Value *[]*Resource `json:"value,omitempty"`
+	Value []*Resource `json:"value,omitempty"`
 }
 
-// ResourceListResultResponse is the response envelope for operations that return a ResourceListResult type.
-type ResourceListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// List of vault resources.
-	ResourceListResult *ResourceListResult
+// MarshalJSON implements the json.Marshaller interface for type ResourceListResult.
+func (r ResourceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", r.NextLink)
+	populate(objectMap, "value", r.Value)
+	return json.Marshal(objectMap)
 }
 
 // SKU details
 type SKU struct {
-	// SKU family name
+	// REQUIRED; SKU family name
 	Family *SKUFamily `json:"family,omitempty"`
 
-	// SKU name to specify whether the key vault is a standard vault or a premium vault.
+	// REQUIRED; SKU name to specify whether the key vault is a standard vault or a premium vault.
 	Name *SKUName `json:"name,omitempty"`
 }
 
 // ServiceSpecification - One property of operation, include log specifications.
 type ServiceSpecification struct {
 	// Log specifications of operation.
-	LogSpecifications *[]*LogSpecification `json:"logSpecifications,omitempty"`
+	LogSpecifications []*LogSpecification `json:"logSpecifications,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServiceSpecification.
+func (s ServiceSpecification) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "logSpecifications", s.LogSpecifications)
+	return json.Marshal(objectMap)
 }
 
 // Vault - Resource information with extended details.
 type Vault struct {
-	// READ-ONLY; Fully qualified identifier of the key vault resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
-
 	// Azure location of the key vault resource.
 	Location *string `json:"location,omitempty"`
 
-	// READ-ONLY; Name of the key vault resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// Properties of the vault
+	// REQUIRED; Properties of the vault
 	Properties *VaultProperties `json:"properties,omitempty"`
 
 	// Tags assigned to the key vault resource.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; Fully qualified identifier of the key vault resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; Name of the key vault resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; Resource type of the key vault resource.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type Vault.
+func (v Vault) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", v.ID)
+	populate(objectMap, "location", v.Location)
+	populate(objectMap, "name", v.Name)
+	populate(objectMap, "properties", v.Properties)
+	populate(objectMap, "tags", v.Tags)
+	populate(objectMap, "type", v.Type)
+	return json.Marshal(objectMap)
+}
+
 // VaultAccessPolicyParameters - Parameters for updating the access policy in a vault
 type VaultAccessPolicyParameters struct {
+	// REQUIRED; Properties of the access policy
+	Properties *VaultAccessPolicyProperties `json:"properties,omitempty"`
+
 	// READ-ONLY; The resource id of the access policy.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
@@ -640,47 +664,52 @@ type VaultAccessPolicyParameters struct {
 	// READ-ONLY; The resource name of the access policy.
 	Name *string `json:"name,omitempty" azure:"ro"`
 
-	// Properties of the access policy
-	Properties *VaultAccessPolicyProperties `json:"properties,omitempty"`
-
 	// READ-ONLY; The resource name of the access policy.
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// VaultAccessPolicyParametersResponse is the response envelope for operations that return a VaultAccessPolicyParameters type.
-type VaultAccessPolicyParametersResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Parameters for updating the access policy in a vault
-	VaultAccessPolicyParameters *VaultAccessPolicyParameters
-}
-
 // VaultAccessPolicyProperties - Properties of the vault access policy
 type VaultAccessPolicyProperties struct {
-	// An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
-	AccessPolicies *[]*AccessPolicyEntry `json:"accessPolicies,omitempty"`
+	// REQUIRED; An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's
+	// tenant ID.
+	AccessPolicies []*AccessPolicyEntry `json:"accessPolicies,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VaultAccessPolicyProperties.
+func (v VaultAccessPolicyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "accessPolicies", v.AccessPolicies)
+	return json.Marshal(objectMap)
 }
 
 // VaultCheckNameAvailabilityParameters - The parameters used to check the availability of the vault name.
 type VaultCheckNameAvailabilityParameters struct {
-	// The vault name.
+	// REQUIRED; The vault name.
 	Name *string `json:"name,omitempty"`
 
-	// The type of resource, Microsoft.KeyVault/vaults
+	// REQUIRED; The type of resource, Microsoft.KeyVault/vaults
 	Type *string `json:"type,omitempty"`
 }
 
 // VaultCreateOrUpdateParameters - Parameters for creating or updating a vault
 type VaultCreateOrUpdateParameters struct {
-	// The supported Azure location where the key vault should be created.
+	// REQUIRED; The supported Azure location where the key vault should be created.
 	Location *string `json:"location,omitempty"`
 
-	// Properties of the vault
+	// REQUIRED; Properties of the vault
 	Properties *VaultProperties `json:"properties,omitempty"`
 
 	// The tags that will be assigned to the key vault.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VaultCreateOrUpdateParameters.
+func (v VaultCreateOrUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "location", v.Location)
+	populate(objectMap, "properties", v.Properties)
+	populate(objectMap, "tags", v.Tags)
+	return json.Marshal(objectMap)
 }
 
 // VaultListResult - List of vaults
@@ -689,16 +718,15 @@ type VaultListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// The list of vaults.
-	Value *[]*Vault `json:"value,omitempty"`
+	Value []*Vault `json:"value,omitempty"`
 }
 
-// VaultListResultResponse is the response envelope for operations that return a VaultListResult type.
-type VaultListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// List of vaults
-	VaultListResult *VaultListResult
+// MarshalJSON implements the json.Marshaller interface for type VaultListResult.
+func (v VaultListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", v.NextLink)
+	populate(objectMap, "value", v.Value)
+	return json.Marshal(objectMap)
 }
 
 // VaultPatchParameters - Parameters for creating or updating a vault
@@ -707,7 +735,7 @@ type VaultPatchParameters struct {
 	Properties *VaultPatchProperties `json:"properties,omitempty"`
 
 	// The tags that will be assigned to the key vault.
-	Tags *map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string `json:"tags,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VaultPatchParameters.
@@ -720,11 +748,11 @@ func (v VaultPatchParameters) MarshalJSON() ([]byte, error) {
 
 // VaultPatchProperties - Properties of the vault
 type VaultPatchProperties struct {
-	// An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
-	AccessPolicies *[]*AccessPolicyEntry `json:"accessPolicies,omitempty"`
+	// Property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.
+	EnabledForDiskEncryption *bool `json:"enabledForDiskEncryption,omitempty"`
 
-	// The vault's create mode to indicate whether the vault need to be recovered or not.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	// An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
+	AccessPolicies []*AccessPolicyEntry `json:"accessPolicies,omitempty"`
 
 	// Property specifying whether protection against purge is enabled for this vault. Setting this property to true activates protection against purge for
 	// this vault and its content - only the Key Vault
@@ -746,8 +774,8 @@ type VaultPatchProperties struct {
 	// Property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.
 	EnabledForDeployment *bool `json:"enabledForDeployment,omitempty"`
 
-	// Property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.
-	EnabledForDiskEncryption *bool `json:"enabledForDiskEncryption,omitempty"`
+	// The vault's create mode to indicate whether the vault need to be recovered or not.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
 
 	// Property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault.
 	EnabledForTemplateDeployment *bool `json:"enabledForTemplateDeployment,omitempty"`
@@ -765,34 +793,34 @@ type VaultPatchProperties struct {
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
-// VaultPollerResponse is the response envelope for operations that asynchronously return a Vault type.
-type VaultPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (VaultResponse, error)
-
-	// Poller contains an initialized poller.
-	Poller VaultPoller
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
+// MarshalJSON implements the json.Marshaller interface for type VaultPatchProperties.
+func (v VaultPatchProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "accessPolicies", v.AccessPolicies)
+	populate(objectMap, "createMode", v.CreateMode)
+	populate(objectMap, "enablePurgeProtection", v.EnablePurgeProtection)
+	populate(objectMap, "enableRbacAuthorization", v.EnableRbacAuthorization)
+	populate(objectMap, "enableSoftDelete", v.EnableSoftDelete)
+	populate(objectMap, "enabledForDeployment", v.EnabledForDeployment)
+	populate(objectMap, "enabledForDiskEncryption", v.EnabledForDiskEncryption)
+	populate(objectMap, "enabledForTemplateDeployment", v.EnabledForTemplateDeployment)
+	populate(objectMap, "networkAcls", v.NetworkACLs)
+	populate(objectMap, "sku", v.SKU)
+	populate(objectMap, "softDeleteRetentionInDays", v.SoftDeleteRetentionInDays)
+	populate(objectMap, "tenantId", v.TenantID)
+	return json.Marshal(objectMap)
 }
 
 // VaultProperties - Properties of the vault
 type VaultProperties struct {
-	// An array of 0 to 1024 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant
-	// ID. When createMode is set to recover, access
-	// policies are not required. Otherwise, access policies are required.
-	AccessPolicies *[]*AccessPolicyEntry `json:"accessPolicies,omitempty"`
+	// Property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault.
+	EnabledForTemplateDeployment *bool `json:"enabledForTemplateDeployment,omitempty"`
 
-	// The vault's create mode to indicate whether the vault need to be recovered or not.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
+	// REQUIRED; The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
+	TenantID *string `json:"tenantId,omitempty"`
 
-	// Property specifying whether protection against purge is enabled for this vault. Setting this property to true activates protection against purge for
-	// this vault and its content - only the Key Vault
-	// service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this functionality is irreversible
-	// - that is, the property does not accept
-	// false as its value.
-	EnablePurgeProtection *bool `json:"enablePurgeProtection,omitempty"`
+	// REQUIRED; SKU details
+	SKU *SKU `json:"sku,omitempty"`
 
 	// Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data
 	// actions, and the access policies specified in vault
@@ -813,35 +841,52 @@ type VaultProperties struct {
 	// Property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.
 	EnabledForDiskEncryption *bool `json:"enabledForDiskEncryption,omitempty"`
 
-	// Property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault.
-	EnabledForTemplateDeployment *bool `json:"enabledForTemplateDeployment,omitempty"`
+	// The vault's create mode to indicate whether the vault need to be recovered or not.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
 
 	// Rules governing the accessibility of the key vault from specific network locations.
 	NetworkACLs *NetworkRuleSet `json:"networkAcls,omitempty"`
 
-	// READ-ONLY; List of private endpoint connections associated with the key vault.
-	PrivateEndpointConnections *[]*PrivateEndpointConnectionItem `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	// An array of 0 to 1024 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant
+	// ID. When createMode is set to recover, access
+	// policies are not required. Otherwise, access policies are required.
+	AccessPolicies []*AccessPolicyEntry `json:"accessPolicies,omitempty"`
 
-	// SKU details
-	SKU *SKU `json:"sku,omitempty"`
+	// Property specifying whether protection against purge is enabled for this vault. Setting this property to true activates protection against purge for
+	// this vault and its content - only the Key Vault
+	// service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this functionality is irreversible
+	// - that is, the property does not accept
+	// false as its value.
+	EnablePurgeProtection *bool `json:"enablePurgeProtection,omitempty"`
 
 	// softDelete data retention days. It accepts >=7 and <=90.
 	SoftDeleteRetentionInDays *int32 `json:"softDeleteRetentionInDays,omitempty"`
 
-	// The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
-	TenantID *string `json:"tenantId,omitempty"`
-
 	// The URI of the vault for performing operations on keys and secrets.
 	VaultURI *string `json:"vaultUri,omitempty"`
+
+	// READ-ONLY; List of private endpoint connections associated with the key vault.
+	PrivateEndpointConnections []*PrivateEndpointConnectionItem `json:"privateEndpointConnections,omitempty" azure:"ro"`
 }
 
-// VaultResponse is the response envelope for operations that return a Vault type.
-type VaultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Resource information with extended details.
-	Vault *Vault
+// MarshalJSON implements the json.Marshaller interface for type VaultProperties.
+func (v VaultProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "accessPolicies", v.AccessPolicies)
+	populate(objectMap, "createMode", v.CreateMode)
+	populate(objectMap, "enablePurgeProtection", v.EnablePurgeProtection)
+	populate(objectMap, "enableRbacAuthorization", v.EnableRbacAuthorization)
+	populate(objectMap, "enableSoftDelete", v.EnableSoftDelete)
+	populate(objectMap, "enabledForDeployment", v.EnabledForDeployment)
+	populate(objectMap, "enabledForDiskEncryption", v.EnabledForDiskEncryption)
+	populate(objectMap, "enabledForTemplateDeployment", v.EnabledForTemplateDeployment)
+	populate(objectMap, "networkAcls", v.NetworkACLs)
+	populate(objectMap, "privateEndpointConnections", v.PrivateEndpointConnections)
+	populate(objectMap, "sku", v.SKU)
+	populate(objectMap, "softDeleteRetentionInDays", v.SoftDeleteRetentionInDays)
+	populate(objectMap, "tenantId", v.TenantID)
+	populate(objectMap, "vaultUri", v.VaultURI)
+	return json.Marshal(objectMap)
 }
 
 // VaultsBeginCreateOrUpdateOptions contains the optional parameters for the Vaults.BeginCreateOrUpdate method.
@@ -909,7 +954,7 @@ type VaultsUpdateOptions struct {
 
 // VirtualNetworkRule - A rule governing the accessibility of a vault from a specific virtual network.
 type VirtualNetworkRule struct {
-	// Full resource id of a vnet subnet, such as '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
+	// REQUIRED; Full resource id of a vnet subnet, such as '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
 	ID *string `json:"id,omitempty"`
 }
 
@@ -923,9 +968,9 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data *json.RawMessage, v interface{}) error {
+func unpopulate(data json.RawMessage, v interface{}) error {
 	if data == nil {
 		return nil
 	}
-	return json.Unmarshal(*data, v)
+	return json.Unmarshal(data, v)
 }

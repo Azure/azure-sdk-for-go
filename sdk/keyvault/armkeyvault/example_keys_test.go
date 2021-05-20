@@ -9,9 +9,9 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/arm/keyvault/2019-09-01/armkeyvault"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/armkeyvault"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
@@ -34,7 +34,7 @@ func ExampleKeysClient_CreateIfNotExist() {
 					},
 				},
 				KeySize: to.Int32Ptr(2048),
-				KeyOps: &[]*armkeyvault.JSONWebKeyOperation{
+				KeyOps: []*armkeyvault.JSONWebKeyOperation{
 					armkeyvault.JSONWebKeyOperationEncrypt.ToPtr(),
 					armkeyvault.JSONWebKeyOperationDecrypt.ToPtr(),
 				},

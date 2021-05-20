@@ -10,9 +10,9 @@ import (
 	"log"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/arm/keyvault/2019-09-01/armkeyvault"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/armkeyvault"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
@@ -34,7 +34,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate() {
 					Family: armkeyvault.SKUFamilyA.ToPtr(),
 					Name:   armkeyvault.SKUNameStandard.ToPtr(),
 				},
-				AccessPolicies: &[]*armkeyvault.AccessPolicyEntry{},
+				AccessPolicies: []*armkeyvault.AccessPolicyEntry{},
 			},
 		}, nil)
 	if err != nil {
@@ -65,17 +65,17 @@ func ExampleVaultsClient_BeginCreateOrUpdate_withAccessPolicies() {
 					Family: armkeyvault.SKUFamilyA.ToPtr(),
 					Name:   armkeyvault.SKUNameStandard.ToPtr(),
 				},
-				AccessPolicies: &[]*armkeyvault.AccessPolicyEntry{
+				AccessPolicies: []*armkeyvault.AccessPolicyEntry{
 					{
 						ObjectID: to.StringPtr("<user, service principal or security group object ID>"),
 						TenantID: to.StringPtr("<tenant ID>"),
 						Permissions: &armkeyvault.Permissions{
-							Keys: &[]*armkeyvault.KeyPermissions{
+							Keys: []*armkeyvault.KeyPermissions{
 								armkeyvault.KeyPermissionsGet.ToPtr(),
 								armkeyvault.KeyPermissionsList.ToPtr(),
 								armkeyvault.KeyPermissionsCreate.ToPtr(),
 							},
-							Secrets: &[]*armkeyvault.SecretPermissions{
+							Secrets: []*armkeyvault.SecretPermissions{
 								armkeyvault.SecretPermissionsGet.ToPtr(),
 								armkeyvault.SecretPermissionsList.ToPtr(),
 							},
@@ -114,17 +114,17 @@ func ExampleVaultsClient_BeginCreateOrUpdate_forDeployment() {
 					Family: armkeyvault.SKUFamilyA.ToPtr(),
 					Name:   armkeyvault.SKUNameStandard.ToPtr(),
 				},
-				AccessPolicies: &[]*armkeyvault.AccessPolicyEntry{
+				AccessPolicies: []*armkeyvault.AccessPolicyEntry{
 					{
 						ObjectID: to.StringPtr("<user, service principal or security group object ID>"),
 						TenantID: to.StringPtr("<tenant ID>"),
 						Permissions: &armkeyvault.Permissions{
-							Keys: &[]*armkeyvault.KeyPermissions{
+							Keys: []*armkeyvault.KeyPermissions{
 								armkeyvault.KeyPermissionsGet.ToPtr(),
 								armkeyvault.KeyPermissionsList.ToPtr(),
 								armkeyvault.KeyPermissionsCreate.ToPtr(),
 							},
-							Secrets: &[]*armkeyvault.SecretPermissions{
+							Secrets: []*armkeyvault.SecretPermissions{
 								armkeyvault.SecretPermissionsGet.ToPtr(),
 								armkeyvault.SecretPermissionsList.ToPtr(),
 							},
@@ -165,10 +165,10 @@ func ExampleVaultsClient_List() {
 	pager := client.List(nil)
 	for pager.NextPage(context.Background()) {
 		resp := pager.PageResponse()
-		if len(*resp.ResourceListResult.Value) == 0 {
+		if len(resp.ResourceListResult.Value) == 0 {
 			log.Fatal("missing payload")
 		}
-		for _, val := range *resp.ResourceListResult.Value {
+		for _, val := range resp.ResourceListResult.Value {
 			log.Printf("vault: %v", *val.ID)
 		}
 	}

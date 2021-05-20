@@ -2,14 +2,14 @@
 trigger:
   paths:
     include:
-    - sdk/arm/keyvault/
+    - sdk/keyvault/armkeyvault
 
 pr:
   paths:
     include:
-    - sdk/arm/keyvault/
+      - sdk/keyvault/armkeyvault
 
 stages:
 - template: ../../../eng/pipelines/templates/jobs/archetype-sdk-client-samples.yml
   parameters:
-    ServiceDirectory: 'arm/keyvault'
+    ServiceDirectory: 'keyvault/armkeyvault'

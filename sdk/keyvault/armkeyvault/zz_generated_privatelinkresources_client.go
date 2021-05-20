@@ -10,6 +10,7 @@ package armkeyvault
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
@@ -30,6 +31,7 @@ func NewPrivateLinkResourcesClient(con *armcore.Connection, subscriptionID strin
 }
 
 // ListByVault - Gets the private link resources supported for the key vault.
+// If the operation fails it returns the *CloudError error type.
 func (client *PrivateLinkResourcesClient) ListByVault(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (PrivateLinkResourceListResultResponse, error) {
 	req, err := client.listByVaultCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
@@ -83,9 +85,13 @@ func (client *PrivateLinkResourcesClient) listByVaultHandleResponse(resp *azcore
 
 // listByVaultHandleError handles the ListByVault error response.
 func (client *PrivateLinkResourcesClient) listByVaultHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }

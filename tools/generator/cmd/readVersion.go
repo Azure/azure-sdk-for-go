@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package cmd
 
 import (
@@ -6,6 +9,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 )
 
+// ReadVersion reads the version of azure-sdk-for-go
 func ReadVersion(path string) (string, error) {
 	c, err := exports.Get(path)
 	if err != nil {

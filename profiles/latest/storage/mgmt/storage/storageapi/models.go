@@ -8,7 +8,7 @@
 
 package storageapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-02-01/storage/storageapi"
+import original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-04-01/storage/storageapi"
 
 type AccountsClientAPI = original.AccountsClientAPI
 type BlobContainersClientAPI = original.BlobContainersClientAPI

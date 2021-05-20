@@ -11,7 +11,7 @@ package storage
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-02-01/storage"
+	original "github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-04-01/storage"
 )
 
 const (
@@ -88,6 +88,16 @@ const (
 	DefaultActionDeny  DefaultAction = original.DefaultActionDeny
 )
 
+type DefaultSharePermission = original.DefaultSharePermission
+
+const (
+	DefaultSharePermissionNone                                       DefaultSharePermission = original.DefaultSharePermissionNone
+	DefaultSharePermissionStorageFileDataSmbShareContributor         DefaultSharePermission = original.DefaultSharePermissionStorageFileDataSmbShareContributor
+	DefaultSharePermissionStorageFileDataSmbShareElevatedContributor DefaultSharePermission = original.DefaultSharePermissionStorageFileDataSmbShareElevatedContributor
+	DefaultSharePermissionStorageFileDataSmbShareOwner               DefaultSharePermission = original.DefaultSharePermissionStorageFileDataSmbShareOwner
+	DefaultSharePermissionStorageFileDataSmbShareReader              DefaultSharePermission = original.DefaultSharePermissionStorageFileDataSmbShareReader
+)
+
 type DirectoryServiceOptions = original.DirectoryServiceOptions
 
 const (
@@ -123,18 +133,19 @@ const (
 	ExtendedLocationTypesEdgeZone ExtendedLocationTypes = original.ExtendedLocationTypesEdgeZone
 )
 
+type Format = original.Format
+
+const (
+	FormatCsv     Format = original.FormatCsv
+	FormatParquet Format = original.FormatParquet
+)
+
 type GeoReplicationStatus = original.GeoReplicationStatus
 
 const (
 	GeoReplicationStatusBootstrap   GeoReplicationStatus = original.GeoReplicationStatusBootstrap
 	GeoReplicationStatusLive        GeoReplicationStatus = original.GeoReplicationStatusLive
 	GeoReplicationStatusUnavailable GeoReplicationStatus = original.GeoReplicationStatusUnavailable
-)
-
-type GetShareExpand = original.GetShareExpand
-
-const (
-	GetShareExpandStats GetShareExpand = original.GetShareExpandStats
 )
 
 type HTTPProtocol = original.HTTPProtocol
@@ -213,6 +224,16 @@ const (
 	LeaseDurationInfinite LeaseDuration = original.LeaseDurationInfinite
 )
 
+type LeaseShareAction = original.LeaseShareAction
+
+const (
+	LeaseShareActionAcquire LeaseShareAction = original.LeaseShareActionAcquire
+	LeaseShareActionBreak   LeaseShareAction = original.LeaseShareActionBreak
+	LeaseShareActionChange  LeaseShareAction = original.LeaseShareActionChange
+	LeaseShareActionRelease LeaseShareAction = original.LeaseShareActionRelease
+	LeaseShareActionRenew   LeaseShareAction = original.LeaseShareActionRenew
+)
+
 type LeaseState = original.LeaseState
 
 const (
@@ -242,11 +263,11 @@ const (
 	ListKeyExpandKerb ListKeyExpand = original.ListKeyExpandKerb
 )
 
-type ListSharesExpand = original.ListSharesExpand
+type MigrationState = original.MigrationState
 
 const (
-	ListSharesExpandDeleted   ListSharesExpand = original.ListSharesExpandDeleted
-	ListSharesExpandSnapshots ListSharesExpand = original.ListSharesExpandSnapshots
+	MigrationStateCompleted  MigrationState = original.MigrationStateCompleted
+	MigrationStateInProgress MigrationState = original.MigrationStateInProgress
 )
 
 type MinimumTLSVersion = original.MinimumTLSVersion
@@ -261,6 +282,13 @@ type Name = original.Name
 
 const (
 	NameAccessTimeTracking Name = original.NameAccessTimeTracking
+)
+
+type ObjectType = original.ObjectType
+
+const (
+	ObjectTypeBlob      ObjectType = original.ObjectTypeBlob
+	ObjectTypeContainer ObjectType = original.ObjectTypeContainer
 )
 
 type Permissions = original.Permissions
@@ -309,12 +337,6 @@ const (
 	PublicAccessNone      PublicAccess = original.PublicAccessNone
 )
 
-type PutSharesExpand = original.PutSharesExpand
-
-const (
-	PutSharesExpandSnapshots PutSharesExpand = original.PutSharesExpandSnapshots
-)
-
 type Reason = original.Reason
 
 const (
@@ -342,6 +364,13 @@ type RoutingChoice = original.RoutingChoice
 const (
 	RoutingChoiceInternetRouting  RoutingChoice = original.RoutingChoiceInternetRouting
 	RoutingChoiceMicrosoftRouting RoutingChoice = original.RoutingChoiceMicrosoftRouting
+)
+
+type Schedule = original.Schedule
+
+const (
+	ScheduleDaily  Schedule = original.ScheduleDaily
+	ScheduleWeekly Schedule = original.ScheduleWeekly
 )
 
 type Services = original.Services
@@ -420,6 +449,7 @@ const (
 	UsageUnitSeconds         UsageUnit = original.UsageUnitSeconds
 )
 
+type AccessPolicy = original.AccessPolicy
 type Account = original.Account
 type AccountCheckNameAvailabilityParameters = original.AccountCheckNameAvailabilityParameters
 type AccountCreateParameters = original.AccountCreateParameters
@@ -446,6 +476,7 @@ type AzureFilesIdentityBasedAuthentication = original.AzureFilesIdentityBasedAut
 type BaseClient = original.BaseClient
 type BlobContainer = original.BlobContainer
 type BlobContainersClient = original.BlobContainersClient
+type BlobContainersObjectLevelWormFuture = original.BlobContainersObjectLevelWormFuture
 type BlobInventoryPoliciesClient = original.BlobInventoryPoliciesClient
 type BlobInventoryPolicy = original.BlobInventoryPolicy
 type BlobInventoryPolicyDefinition = original.BlobInventoryPolicyDefinition
@@ -511,12 +542,15 @@ type Identity = original.Identity
 type ImmutabilityPolicy = original.ImmutabilityPolicy
 type ImmutabilityPolicyProperties = original.ImmutabilityPolicyProperties
 type ImmutabilityPolicyProperty = original.ImmutabilityPolicyProperty
+type ImmutableStorageWithVersioning = original.ImmutableStorageWithVersioning
 type KeyCreationTime = original.KeyCreationTime
 type KeyPolicy = original.KeyPolicy
 type KeyVaultProperties = original.KeyVaultProperties
 type LastAccessTimeTrackingPolicy = original.LastAccessTimeTrackingPolicy
 type LeaseContainerRequest = original.LeaseContainerRequest
 type LeaseContainerResponse = original.LeaseContainerResponse
+type LeaseShareRequest = original.LeaseShareRequest
+type LeaseShareResponse = original.LeaseShareResponse
 type LegalHold = original.LegalHold
 type LegalHoldProperties = original.LegalHoldProperties
 type ListAccountSasResponse = original.ListAccountSasResponse
@@ -588,6 +622,7 @@ type SKUCapability = original.SKUCapability
 type SasPolicy = original.SasPolicy
 type ServiceSasParameters = original.ServiceSasParameters
 type ServiceSpecification = original.ServiceSpecification
+type SignedIdentifier = original.SignedIdentifier
 type Sku = original.Sku
 type SkuInformation = original.SkuInformation
 type SkuListResult = original.SkuListResult
@@ -800,6 +835,9 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 func PossibleDefaultActionValues() []DefaultAction {
 	return original.PossibleDefaultActionValues()
 }
+func PossibleDefaultSharePermissionValues() []DefaultSharePermission {
+	return original.PossibleDefaultSharePermissionValues()
+}
 func PossibleDirectoryServiceOptionsValues() []DirectoryServiceOptions {
 	return original.PossibleDirectoryServiceOptionsValues()
 }
@@ -815,11 +853,11 @@ func PossibleEncryptionScopeStateValues() []EncryptionScopeState {
 func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	return original.PossibleExtendedLocationTypesValues()
 }
+func PossibleFormatValues() []Format {
+	return original.PossibleFormatValues()
+}
 func PossibleGeoReplicationStatusValues() []GeoReplicationStatus {
 	return original.PossibleGeoReplicationStatusValues()
-}
-func PossibleGetShareExpandValues() []GetShareExpand {
-	return original.PossibleGetShareExpandValues()
 }
 func PossibleHTTPProtocolValues() []HTTPProtocol {
 	return original.PossibleHTTPProtocolValues()
@@ -851,6 +889,9 @@ func PossibleLargeFileSharesStateValues() []LargeFileSharesState {
 func PossibleLeaseDurationValues() []LeaseDuration {
 	return original.PossibleLeaseDurationValues()
 }
+func PossibleLeaseShareActionValues() []LeaseShareAction {
+	return original.PossibleLeaseShareActionValues()
+}
 func PossibleLeaseStateValues() []LeaseState {
 	return original.PossibleLeaseStateValues()
 }
@@ -863,14 +904,17 @@ func PossibleListContainersIncludeValues() []ListContainersInclude {
 func PossibleListKeyExpandValues() []ListKeyExpand {
 	return original.PossibleListKeyExpandValues()
 }
-func PossibleListSharesExpandValues() []ListSharesExpand {
-	return original.PossibleListSharesExpandValues()
+func PossibleMigrationStateValues() []MigrationState {
+	return original.PossibleMigrationStateValues()
 }
 func PossibleMinimumTLSVersionValues() []MinimumTLSVersion {
 	return original.PossibleMinimumTLSVersionValues()
 }
 func PossibleNameValues() []Name {
 	return original.PossibleNameValues()
+}
+func PossibleObjectTypeValues() []ObjectType {
+	return original.PossibleObjectTypeValues()
 }
 func PossiblePermissionsValues() []Permissions {
 	return original.PossiblePermissionsValues()
@@ -887,9 +931,6 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 func PossiblePublicAccessValues() []PublicAccess {
 	return original.PossiblePublicAccessValues()
 }
-func PossiblePutSharesExpandValues() []PutSharesExpand {
-	return original.PossiblePutSharesExpandValues()
-}
 func PossibleReasonCodeValues() []ReasonCode {
 	return original.PossibleReasonCodeValues()
 }
@@ -901,6 +942,9 @@ func PossibleRootSquashTypeValues() []RootSquashType {
 }
 func PossibleRoutingChoiceValues() []RoutingChoice {
 	return original.PossibleRoutingChoiceValues()
+}
+func PossibleScheduleValues() []Schedule {
+	return original.PossibleScheduleValues()
 }
 func PossibleServicesValues() []Services {
 	return original.PossibleServicesValues()

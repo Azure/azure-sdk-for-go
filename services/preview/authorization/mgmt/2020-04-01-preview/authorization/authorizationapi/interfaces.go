@@ -74,29 +74,29 @@ type DenyAssignmentsClientAPI interface {
 
 var _ DenyAssignmentsClientAPI = (*authorization.DenyAssignmentsClient)(nil)
 
-// RoleAssignmentsClientAPI contains the set of methods on the RoleAssignmentsClient type.
-type RoleAssignmentsClientAPI interface {
-	Create(ctx context.Context, scope string, roleAssignmentName string, parameters authorization.RoleAssignmentCreateParameters) (result authorization.RoleAssignment, err error)
-	CreateByID(ctx context.Context, roleID string, parameters authorization.RoleAssignmentCreateParameters) (result authorization.RoleAssignment, err error)
-	Delete(ctx context.Context, scope string, roleAssignmentName string) (result authorization.RoleAssignment, err error)
-	DeleteByID(ctx context.Context, roleID string) (result authorization.RoleAssignment, err error)
-	Get(ctx context.Context, scope string, roleAssignmentName string) (result authorization.RoleAssignment, err error)
-	GetByID(ctx context.Context, roleID string) (result authorization.RoleAssignment, err error)
-	List(ctx context.Context, filter string) (result authorization.RoleAssignmentListResultPage, err error)
-	ListComplete(ctx context.Context, filter string) (result authorization.RoleAssignmentListResultIterator, err error)
-	ListForResource(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result authorization.RoleAssignmentListResultPage, err error)
-	ListForResourceComplete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result authorization.RoleAssignmentListResultIterator, err error)
-	ListForResourceGroup(ctx context.Context, resourceGroupName string, filter string) (result authorization.RoleAssignmentListResultPage, err error)
-	ListForResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string) (result authorization.RoleAssignmentListResultIterator, err error)
-	ListForScope(ctx context.Context, scope string, filter string) (result authorization.RoleAssignmentListResultPage, err error)
-	ListForScopeComplete(ctx context.Context, scope string, filter string) (result authorization.RoleAssignmentListResultIterator, err error)
-}
-
-var _ RoleAssignmentsClientAPI = (*authorization.RoleAssignmentsClient)(nil)
-
 // RoleAssignmentMetricsClientAPI contains the set of methods on the RoleAssignmentMetricsClient type.
 type RoleAssignmentMetricsClientAPI interface {
 	GetMetricsForSubscription(ctx context.Context) (result authorization.RoleAssignmentMetricsResult, err error)
 }
 
 var _ RoleAssignmentMetricsClientAPI = (*authorization.RoleAssignmentMetricsClient)(nil)
+
+// RoleAssignmentsClientAPI contains the set of methods on the RoleAssignmentsClient type.
+type RoleAssignmentsClientAPI interface {
+	Create(ctx context.Context, scope string, roleAssignmentName string, parameters authorization.RoleAssignmentCreateParameters) (result authorization.RoleAssignment, err error)
+	CreateByID(ctx context.Context, roleID string, parameters authorization.RoleAssignmentCreateParameters) (result authorization.RoleAssignment, err error)
+	Delete(ctx context.Context, scope string, roleAssignmentName string, tenantID string) (result authorization.RoleAssignment, err error)
+	DeleteByID(ctx context.Context, roleID string, tenantID string) (result authorization.RoleAssignment, err error)
+	Get(ctx context.Context, scope string, roleAssignmentName string, tenantID string) (result authorization.RoleAssignment, err error)
+	GetByID(ctx context.Context, roleID string, tenantID string) (result authorization.RoleAssignment, err error)
+	List(ctx context.Context, filter string, tenantID string) (result authorization.RoleAssignmentListResultPage, err error)
+	ListComplete(ctx context.Context, filter string, tenantID string) (result authorization.RoleAssignmentListResultIterator, err error)
+	ListForResource(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string, tenantID string) (result authorization.RoleAssignmentListResultPage, err error)
+	ListForResourceComplete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string, tenantID string) (result authorization.RoleAssignmentListResultIterator, err error)
+	ListForResourceGroup(ctx context.Context, resourceGroupName string, filter string, tenantID string) (result authorization.RoleAssignmentListResultPage, err error)
+	ListForResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string, tenantID string) (result authorization.RoleAssignmentListResultIterator, err error)
+	ListForScope(ctx context.Context, scope string, filter string, tenantID string) (result authorization.RoleAssignmentListResultPage, err error)
+	ListForScopeComplete(ctx context.Context, scope string, filter string, tenantID string) (result authorization.RoleAssignmentListResultIterator, err error)
+}
+
+var _ RoleAssignmentsClientAPI = (*authorization.RoleAssignmentsClient)(nil)

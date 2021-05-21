@@ -142,6 +142,8 @@ const (
 	// ChangeTypeModify - The resource exists in the current state and the desired state and will be redeployed when the deployment is executed. The properties
 	// of the resource will change.
 	ChangeTypeModify ChangeType = "Modify"
+	// ChangeTypeUnsupported - The resource is not supported by What-If.
+	ChangeTypeUnsupported ChangeType = "Unsupported"
 )
 
 // PossibleChangeTypeValues returns the possible values for the ChangeType const type.
@@ -153,6 +155,7 @@ func PossibleChangeTypeValues() []ChangeType {
 		ChangeTypeDeploy,
 		ChangeTypeNoChange,
 		ChangeTypeModify,
+		ChangeTypeUnsupported,
 	}
 }
 
@@ -209,6 +212,25 @@ func (c ExpressionEvaluationOptionsScopeType) ToPtr() *ExpressionEvaluationOptio
 	return &c
 }
 
+// ExtendedLocationType - The extended location type.
+type ExtendedLocationType string
+
+const (
+	ExtendedLocationTypeEdgeZone ExtendedLocationType = "EdgeZone"
+)
+
+// PossibleExtendedLocationTypeValues returns the possible values for the ExtendedLocationType const type.
+func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
+	return []ExtendedLocationType{
+		ExtendedLocationTypeEdgeZone,
+	}
+}
+
+// ToPtr returns a *ExtendedLocationType pointing to the current value.
+func (c ExtendedLocationType) ToPtr() *ExtendedLocationType {
+	return &c
+}
+
 // OnErrorDeploymentType - The deployment on error behavior type. Possible values are LastSuccessful and SpecificDeployment.
 type OnErrorDeploymentType string
 
@@ -245,6 +267,8 @@ const (
 	PropertyChangeTypeModify PropertyChangeType = "Modify"
 	// PropertyChangeTypeArray - The property is an array and contains nested changes.
 	PropertyChangeTypeArray PropertyChangeType = "Array"
+	// PropertyChangeTypeNoEffect - The property will not be set or updated.
+	PropertyChangeTypeNoEffect PropertyChangeType = "NoEffect"
 )
 
 // PossiblePropertyChangeTypeValues returns the possible values for the PropertyChangeType const type.
@@ -254,11 +278,37 @@ func PossiblePropertyChangeTypeValues() []PropertyChangeType {
 		PropertyChangeTypeDelete,
 		PropertyChangeTypeModify,
 		PropertyChangeTypeArray,
+		PropertyChangeTypeNoEffect,
 	}
 }
 
 // ToPtr returns a *PropertyChangeType pointing to the current value.
 func (c PropertyChangeType) ToPtr() *PropertyChangeType {
+	return &c
+}
+
+// ProviderAuthorizationConsentState - The provider authorization consent state.
+type ProviderAuthorizationConsentState string
+
+const (
+	ProviderAuthorizationConsentStateConsented    ProviderAuthorizationConsentState = "Consented"
+	ProviderAuthorizationConsentStateNotRequired  ProviderAuthorizationConsentState = "NotRequired"
+	ProviderAuthorizationConsentStateNotSpecified ProviderAuthorizationConsentState = "NotSpecified"
+	ProviderAuthorizationConsentStateRequired     ProviderAuthorizationConsentState = "Required"
+)
+
+// PossibleProviderAuthorizationConsentStateValues returns the possible values for the ProviderAuthorizationConsentState const type.
+func PossibleProviderAuthorizationConsentStateValues() []ProviderAuthorizationConsentState {
+	return []ProviderAuthorizationConsentState{
+		ProviderAuthorizationConsentStateConsented,
+		ProviderAuthorizationConsentStateNotRequired,
+		ProviderAuthorizationConsentStateNotSpecified,
+		ProviderAuthorizationConsentStateRequired,
+	}
+}
+
+// ToPtr returns a *ProviderAuthorizationConsentState pointing to the current value.
+func (c ProviderAuthorizationConsentState) ToPtr() *ProviderAuthorizationConsentState {
 	return &c
 }
 

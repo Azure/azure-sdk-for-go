@@ -68,7 +68,7 @@ func (client *ProvidersClient) getCreateRequest(ctx context.Context, resourcePro
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2021-04-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -129,7 +129,7 @@ func (client *ProvidersClient) getAtTenantScopeCreateRequest(ctx context.Context
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2021-04-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -193,7 +193,7 @@ func (client *ProvidersClient) listCreateRequest(ctx context.Context, options *P
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2021-04-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -253,7 +253,7 @@ func (client *ProvidersClient) listAtTenantScopeCreateRequest(ctx context.Contex
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2021-04-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -270,6 +270,68 @@ func (client *ProvidersClient) listAtTenantScopeHandleResponse(resp *azcore.Resp
 
 // listAtTenantScopeHandleError handles the ListAtTenantScope error response.
 func (client *ProvidersClient) listAtTenantScopeHandleError(resp *azcore.Response) error {
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
+	}
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
+}
+
+// ProviderPermissions - Get the provider permissions.
+// If the operation fails it returns the *CloudError error type.
+func (client *ProvidersClient) ProviderPermissions(ctx context.Context, resourceProviderNamespace string, options *ProvidersProviderPermissionsOptions) (ProviderPermissionListResultResponse, error) {
+	req, err := client.providerPermissionsCreateRequest(ctx, resourceProviderNamespace, options)
+	if err != nil {
+		return ProviderPermissionListResultResponse{}, err
+	}
+	resp, err := client.con.Pipeline().Do(req)
+	if err != nil {
+		return ProviderPermissionListResultResponse{}, err
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		return ProviderPermissionListResultResponse{}, client.providerPermissionsHandleError(resp)
+	}
+	return client.providerPermissionsHandleResponse(resp)
+}
+
+// providerPermissionsCreateRequest creates the ProviderPermissions request.
+func (client *ProvidersClient) providerPermissionsCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersProviderPermissionsOptions) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/providerPermissions"
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Telemetry(telemetryInfo)
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
+	req.Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// providerPermissionsHandleResponse handles the ProviderPermissions response.
+func (client *ProvidersClient) providerPermissionsHandleResponse(resp *azcore.Response) (ProviderPermissionListResultResponse, error) {
+	var val *ProviderPermissionListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ProviderPermissionListResultResponse{}, err
+	}
+	return ProviderPermissionListResultResponse{RawResponse: resp.Response, ProviderPermissionListResult: val}, nil
+}
+
+// providerPermissionsHandleError handles the ProviderPermissions error response.
+func (client *ProvidersClient) providerPermissionsHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -315,9 +377,12 @@ func (client *ProvidersClient) registerCreateRequest(ctx context.Context, resour
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2021-04-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
+	if options != nil && options.Properties != nil {
+		return req, req.MarshalAsJSON(*options.Properties)
+	}
 	return req, nil
 }
 
@@ -377,7 +442,7 @@ func (client *ProvidersClient) registerAtManagementGroupScopeCreateRequest(ctx c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2021-04-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -430,7 +495,7 @@ func (client *ProvidersClient) unregisterCreateRequest(ctx context.Context, reso
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-10-01")
+	reqQP.Set("api-version", "2021-04-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil

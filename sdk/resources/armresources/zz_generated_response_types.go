@@ -151,6 +151,24 @@ type ProviderListResultResponse struct {
 	RawResponse *http.Response
 }
 
+// ProviderPermissionListResultResponse is the response envelope for operations that return a ProviderPermissionListResult type.
+type ProviderPermissionListResultResponse struct {
+	// List of provider permissions.
+	ProviderPermissionListResult *ProviderPermissionListResult
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProviderResourceTypeListResultResponse is the response envelope for operations that return a ProviderResourceTypeListResult type.
+type ProviderResourceTypeListResultResponse struct {
+	// List of resource types of a resource provider.
+	ProviderResourceTypeListResult *ProviderResourceTypeListResult
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // ProviderResponse is the response envelope for operations that return a Provider type.
 type ProviderResponse struct {
 	// Resource provider information.

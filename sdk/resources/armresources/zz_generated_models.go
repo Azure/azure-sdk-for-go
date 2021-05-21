@@ -948,6 +948,15 @@ type ExpressionEvaluationOptions struct {
 	Scope *ExpressionEvaluationOptionsScopeType `json:"scope,omitempty"`
 }
 
+// ExtendedLocation - Resource extended location.
+type ExtendedLocation struct {
+	// The extended location name.
+	Name *string `json:"name,omitempty"`
+
+	// The extended location type.
+	Type *ExtendedLocationType `json:"type,omitempty"`
+}
+
 // GenericResource - Resource information.
 type GenericResource struct {
 	Resource
@@ -1207,6 +1216,31 @@ type ParametersLink struct {
 	URI *string `json:"uri,omitempty"`
 }
 
+// Permission - Role definition permissions.
+type Permission struct {
+	// Allowed actions.
+	Actions []*string `json:"actions,omitempty"`
+
+	// Allowed Data actions.
+	DataActions []*string `json:"dataActions,omitempty"`
+
+	// Denied actions.
+	NotActions []*string `json:"notActions,omitempty"`
+
+	// Denied Data actions.
+	NotDataActions []*string `json:"notDataActions,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Permission.
+func (p Permission) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "actions", p.Actions)
+	populate(objectMap, "dataActions", p.DataActions)
+	populate(objectMap, "notActions", p.NotActions)
+	populate(objectMap, "notDataActions", p.NotDataActions)
+	return json.Marshal(objectMap)
+}
+
 // Plan for the resource.
 type Plan struct {
 	// The plan ID.
@@ -1230,6 +1264,9 @@ type Provider struct {
 	// The namespace of the resource provider.
 	Namespace *string `json:"namespace,omitempty"`
 
+	// The provider authorization consent state.
+	ProviderAuthorizationConsentState *ProviderAuthorizationConsentState `json:"providerAuthorizationConsentState,omitempty"`
+
 	// READ-ONLY; The provider ID.
 	ID *string `json:"id,omitempty" azure:"ro"`
 
@@ -1248,9 +1285,37 @@ func (p Provider) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "id", p.ID)
 	populate(objectMap, "namespace", p.Namespace)
+	populate(objectMap, "providerAuthorizationConsentState", p.ProviderAuthorizationConsentState)
 	populate(objectMap, "registrationPolicy", p.RegistrationPolicy)
 	populate(objectMap, "registrationState", p.RegistrationState)
 	populate(objectMap, "resourceTypes", p.ResourceTypes)
+	return json.Marshal(objectMap)
+}
+
+// ProviderConsentDefinition - The provider consent.
+type ProviderConsentDefinition struct {
+	// A value indicating whether authorization is consented or not.
+	ConsentToAuthorization *bool `json:"consentToAuthorization,omitempty"`
+}
+
+// ProviderExtendedLocation - The provider extended location.
+type ProviderExtendedLocation struct {
+	// The extended locations for the azure location.
+	ExtendedLocations []*string `json:"extendedLocations,omitempty"`
+
+	// The azure location.
+	Location *string `json:"location,omitempty"`
+
+	// The extended location type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ProviderExtendedLocation.
+func (p ProviderExtendedLocation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "extendedLocations", p.ExtendedLocations)
+	populate(objectMap, "location", p.Location)
+	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -1271,6 +1336,44 @@ func (p ProviderListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ProviderPermission - The provider permission
+type ProviderPermission struct {
+	// The application id.
+	ApplicationID *string `json:"applicationId,omitempty"`
+
+	// Role definition properties.
+	ManagedByRoleDefinition *RoleDefinition `json:"managedByRoleDefinition,omitempty"`
+
+	// The provider authorization consent state.
+	ProviderAuthorizationConsentState *ProviderAuthorizationConsentState `json:"providerAuthorizationConsentState,omitempty"`
+
+	// Role definition properties.
+	RoleDefinition *RoleDefinition `json:"roleDefinition,omitempty"`
+}
+
+// ProviderPermissionListResult - List of provider permissions.
+type ProviderPermissionListResult struct {
+	// An array of provider permissions.
+	Value []*ProviderPermission `json:"value,omitempty"`
+
+	// READ-ONLY; The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ProviderPermissionListResult.
+func (p ProviderPermissionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", p.NextLink)
+	populate(objectMap, "value", p.Value)
+	return json.Marshal(objectMap)
+}
+
+// ProviderRegistrationRequest - The provider registration definition.
+type ProviderRegistrationRequest struct {
+	// The provider consent.
+	ThirdPartyProviderConsent *ProviderConsentDefinition `json:"thirdPartyProviderConsent,omitempty"`
+}
+
 // ProviderResourceType - Resource type managed by the resource provider.
 type ProviderResourceType struct {
 	// The API version.
@@ -1281,6 +1384,9 @@ type ProviderResourceType struct {
 
 	// The additional capabilities offered by this resource type.
 	Capabilities *string `json:"capabilities,omitempty"`
+
+	// The location mappings that are supported by this resource type.
+	LocationMappings []*ProviderExtendedLocation `json:"locationMappings,omitempty"`
 
 	// The collection of locations where this resource type can be created.
 	Locations []*string `json:"locations,omitempty"`
@@ -1306,10 +1412,34 @@ func (p ProviderResourceType) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "aliases", p.Aliases)
 	populate(objectMap, "capabilities", p.Capabilities)
 	populate(objectMap, "defaultApiVersion", p.DefaultAPIVersion)
+	populate(objectMap, "locationMappings", p.LocationMappings)
 	populate(objectMap, "locations", p.Locations)
 	populate(objectMap, "properties", p.Properties)
 	populate(objectMap, "resourceType", p.ResourceType)
 	return json.Marshal(objectMap)
+}
+
+// ProviderResourceTypeListResult - List of resource types of a resource provider.
+type ProviderResourceTypeListResult struct {
+	// An array of resource types.
+	Value []*ProviderResourceType `json:"value,omitempty"`
+
+	// READ-ONLY; The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ProviderResourceTypeListResult.
+func (p ProviderResourceTypeListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", p.NextLink)
+	populate(objectMap, "value", p.Value)
+	return json.Marshal(objectMap)
+}
+
+// ProviderResourceTypesListOptions contains the optional parameters for the ProviderResourceTypes.List method.
+type ProviderResourceTypesListOptions struct {
+	// The $expand query parameter. For example, to include property aliases in response, use $expand=resourceTypes/aliases.
+	Expand *string
 }
 
 // ProvidersGetAtTenantScopeOptions contains the optional parameters for the Providers.GetAtTenantScope method.
@@ -1342,6 +1472,11 @@ type ProvidersListOptions struct {
 	Top *int32
 }
 
+// ProvidersProviderPermissionsOptions contains the optional parameters for the Providers.ProviderPermissions method.
+type ProvidersProviderPermissionsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ProvidersRegisterAtManagementGroupScopeOptions contains the optional parameters for the Providers.RegisterAtManagementGroupScope method.
 type ProvidersRegisterAtManagementGroupScopeOptions struct {
 	// placeholder for future optional parameters
@@ -1349,7 +1484,8 @@ type ProvidersRegisterAtManagementGroupScopeOptions struct {
 
 // ProvidersRegisterOptions contains the optional parameters for the Providers.Register method.
 type ProvidersRegisterOptions struct {
-	// placeholder for future optional parameters
+	// The third party consent for S2S.
+	Properties *ProviderRegistrationRequest
 }
 
 // ProvidersUnregisterOptions contains the optional parameters for the Providers.Unregister method.
@@ -1359,6 +1495,9 @@ type ProvidersUnregisterOptions struct {
 
 // Resource - Specified resource.
 type Resource struct {
+	// Resource extended location.
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
 	// Resource location
 	Location *string `json:"location,omitempty"`
 
@@ -1392,6 +1531,7 @@ func (r *Resource) UnmarshalJSON(data []byte) error {
 
 func (r Resource) marshalInternal() map[string]interface{} {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "extendedLocation", r.ExtendedLocation)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
@@ -1404,6 +1544,9 @@ func (r *Resource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "extendedLocation":
+			err = unpopulate(val, &r.ExtendedLocation)
+			delete(rawMsg, key)
 		case "id":
 			err = unpopulate(val, &r.ID)
 			delete(rawMsg, key)
@@ -1532,7 +1675,8 @@ type ResourceGroupProperties struct {
 
 // ResourceGroupsBeginDeleteOptions contains the optional parameters for the ResourceGroups.BeginDelete method.
 type ResourceGroupsBeginDeleteOptions struct {
-	// placeholder for future optional parameters
+	// The resource types you want to force delete. Currently, only the following is supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets
+	ForceDeletionTypes *string
 }
 
 // ResourceGroupsBeginExportTemplateOptions contains the optional parameters for the ResourceGroups.BeginExportTemplate method.
@@ -1720,6 +1864,35 @@ func (r ResourcesMoveInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "resources", r.Resources)
 	populate(objectMap, "targetResourceGroup", r.TargetResourceGroup)
+	return json.Marshal(objectMap)
+}
+
+// RoleDefinition - Role definition properties.
+type RoleDefinition struct {
+	// The role definition ID.
+	ID *string `json:"id,omitempty"`
+
+	// If this is a service role.
+	IsServiceRole *bool `json:"isServiceRole,omitempty"`
+
+	// The role definition name.
+	Name *string `json:"name,omitempty"`
+
+	// Role definition permissions.
+	Permissions []*Permission `json:"permissions,omitempty"`
+
+	// Role definition assignable scopes.
+	Scopes []*string `json:"scopes,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RoleDefinition.
+func (r RoleDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "id", r.ID)
+	populate(objectMap, "isServiceRole", r.IsServiceRole)
+	populate(objectMap, "name", r.Name)
+	populate(objectMap, "permissions", r.Permissions)
+	populate(objectMap, "scopes", r.Scopes)
 	return json.Marshal(objectMap)
 }
 
@@ -1999,6 +2172,9 @@ type WhatIfChange struct {
 
 	// REQUIRED; Resource ID
 	ResourceID *string `json:"resourceId,omitempty"`
+
+	// The explanation about why the resource is unsupported by What-If.
+	UnsupportedReason *string `json:"unsupportedReason,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type WhatIfChange.
@@ -2009,6 +2185,7 @@ func (w WhatIfChange) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "changeType", w.ChangeType)
 	populate(objectMap, "delta", w.Delta)
 	populate(objectMap, "resourceId", w.ResourceID)
+	populate(objectMap, "unsupportedReason", w.UnsupportedReason)
 	return json.Marshal(objectMap)
 }
 

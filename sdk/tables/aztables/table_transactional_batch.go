@@ -16,6 +16,8 @@ import (
 	"net/http"
 	"net/textproto"
 	"sort"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -36,6 +38,7 @@ const (
 const (
 	headerContentType             = "Content-Type"
 	headerContentTransferEncoding = "Content-Transfer-Encoding"
+	error_empty_transaction       = "Transaction cannot be empty."
 )
 
 type OdataErrorMessage struct {
@@ -49,7 +52,8 @@ type OdataError struct {
 }
 
 type TableTransactionError struct {
-	OdataError OdataError `json:"odata.error"`
+	OdataError        OdataError `json:"odata.error"`
+	FailedEntityIndex int
 }
 
 func (e *TableTransactionError) Error() string {
@@ -105,7 +109,9 @@ func (t *TableClient) SubmitTransaction(transactionActions []TableTransactionAct
 
 // submitTransactionInternal is the internal implementation for SubmitTransaction. It allows for explicit configuration of the batch and changeset UUID values for testing.
 func (t *TableClient) submitTransactionInternal(transactionActions *[]TableTransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, tableSubmitTransactionOptions *TableSubmitTransactionOptions, ctx context.Context) (TableTransactionResponse, error) {
-
+	if len(*transactionActions) == 0 {
+		return TableTransactionResponse{}, errors.New(error_empty_transaction)
+	}
 	changesetBoundary := fmt.Sprintf("changeset_%s", changesetUuid.String())
 	changeSetBody, err := t.generateChangesetBody(changesetBoundary, transactionActions)
 	if err != nil {
@@ -144,7 +150,7 @@ func (t *TableClient) submitTransactionInternal(transactionActions *[]TableTrans
 
 	transactionResponse, err := buildTransactionResponse(req, resp, len(*transactionActions))
 	if err != nil {
-		return TableTransactionResponse{}, err
+		return transactionResponse, err
 	}
 
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
@@ -188,7 +194,7 @@ func buildTransactionResponse(req *azcore.Request, resp *azcore.Response, itemCo
 	reader := bytes.NewReader(bytesBody)
 	if bytes.IndexByte(bytesBody, '{') == 0 {
 		// This is a failure and the body is json
-		return TableTransactionResponse{}, errors.New(string(bytesBody))
+		return TableTransactionResponse{}, newTableTransactionError(bytesBody)
 	}
 	outerBoundary := getBoundaryName(bytesBody)
 	mpReader := multipart.NewReader(reader, outerBoundary)
@@ -213,7 +219,8 @@ func buildTransactionResponse(req *azcore.Request, resp *azcore.Response, itemCo
 			if err != nil {
 				return TableTransactionResponse{}, err
 			} else {
-				return TableTransactionResponse{}, errors.New(string(errorBody))
+				innerResponses = []azcore.Response{{Response: r}}
+				return result, newTableTransactionError(errorBody)
 			}
 		}
 		innerResponses[i] = azcore.Response{Response: r}
@@ -231,11 +238,15 @@ func getBoundaryName(bytesBody []byte) string {
 	return string(bytesBody[2:end])
 }
 
-// transactionHandleError handles the SubmitTransaction error response.
-func (client *tableClient) transactionHandleError(errorBody error) error {
+// newTableTransactionError handles the SubmitTransaction error response.
+func newTableTransactionError(errorBody []byte) error {
 	oe := TableTransactionError{}
-	b := []byte(errorBody.Error())
-	if err := json.Unmarshal(b, &oe); err == nil {
+	if err := json.Unmarshal(errorBody, &oe); err == nil {
+		if i := strings.Index(oe.OdataError.Message.Value, ":"); i > 0 {
+			if val, err := strconv.Atoi(oe.OdataError.Message.Value[0:i]); err == nil {
+				oe.FailedEntityIndex = val
+			}
+		}
 		return &oe
 	}
 	return errors.New("Unknown error.")

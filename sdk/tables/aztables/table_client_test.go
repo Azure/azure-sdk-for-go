@@ -64,7 +64,7 @@ func (s *tableClientLiveTests) TestAddEntity() {
 	entitiesToCreate := createSimpleEntities(1, "partition")
 
 	for _, e := range *entitiesToCreate {
-		_, err := client.AddMapEntity(ctx, &e)
+		_, err := client.AddMapEntity(ctx, e)
 		assert.Nil(err)
 	}
 }
@@ -78,7 +78,7 @@ func (s *tableClientLiveTests) TestAddComplexEntity() {
 	entitiesToCreate := createComplexEntities(context, 1, "partition")
 
 	for _, e := range *entitiesToCreate {
-		_, err := client.AddEntity(ctx, &e)
+		_, err := client.AddEntity(ctx, e)
 		assert.Nilf(err, getStringFromBody(err))
 	}
 }
@@ -91,7 +91,7 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	// Add 5 entities
 	entitiesToCreate := createSimpleEntities(5, "partition")
 	for _, e := range *entitiesToCreate {
-		_, err := client.AddMapEntity(ctx, &e)
+		_, err := client.AddMapEntity(ctx, e)
 		assert.Nil(err)
 	}
 
@@ -133,7 +133,7 @@ func (s *tableClientLiveTests) TestQueryComplexEntity() {
 	// Add 5 entities
 	entitiesToCreate := createComplexMapEntities(context, 5, "partition")
 	for _, e := range *entitiesToCreate {
-		_, err := client.AddMapEntity(ctx, &e)
+		_, err := client.AddMapEntity(ctx, e)
 		assert.Nil(err)
 	}
 
@@ -265,6 +265,40 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 		assert.Equal(http.StatusNoContent, r.StatusCode)
 	}
 
+}
+
+func (s *tableClientLiveTests) TestBatchError() {
+	assert := assert.New(s.T())
+	require := require.New(s.T())
+	context := getTestContext(s.T().Name())
+	client, delete := s.init(true)
+	defer delete()
+
+	entitiesToCreate := createComplexMapEntities(context, 3, "partition")
+
+	// Create the batch.
+	batch := make([]TableTransactionAction, 0, 3)
+
+	// Sending an empty batch throws.
+	_, err := client.submitTransactionInternal(&batch, context.recording.UUID(), context.recording.UUID(), nil, ctx)
+	assert.NotNil(err)
+	assert.Equal(error_empty_transaction, err.Error())
+
+	// Add the last entity to the table prior to adding it as part of the batch to cause a batch failure.
+	client.AddMapEntity(ctx, (*entitiesToCreate)[2])
+
+	// Add the entities to the batch
+	for i := 0; i < cap(batch); i++ {
+		batch = append(batch, TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[i]})
+	}
+
+	resp, err := client.submitTransactionInternal(&batch, context.recording.UUID(), context.recording.UUID(), nil, ctx)
+	assert.NotNil(err)
+	te, ok := err.(*TableTransactionError)
+	require.Truef(ok, "err should be of type TableTransactionError")
+	assert.Equal("EntityAlreadyExists", te.OdataError.Code)
+	assert.Equal(2, te.FailedEntityIndex)
+	assert.Equal(http.StatusConflict, (*resp.TransactionResponses)[0].StatusCode)
 }
 
 // setup the test environment

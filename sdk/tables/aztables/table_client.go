@@ -56,6 +56,17 @@ func (t *TableClient) QueryAsModel(opt QueryOptions, s FromMapper) StructEntityQ
 	return &structQueryResponsePager{mapper: s, tableClient: t, queryOptions: &opt, tableQueryOptions: &TableQueryEntitiesOptions{}}
 }
 
+func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string) (TableEntityQueryResponseResponse, error) {
+	resp, err := t.client.QueryEntitiesWithPartitionAndRowKey(ctx, t.name, partitionKey, rowKey, &TableQueryEntitiesWithPartitionAndRowKeyOptions{}, &QueryOptions{})
+	if err != nil {
+		return resp, err
+	}
+	for _, e := range *resp.TableEntityQueryResponse.Value {
+		castAndRemoveAnnotations(&e)
+	}
+	return resp, err
+}
+
 // AddEntity Creates an entity from a map value.
 func (t *TableClient) AddEntity(ctx context.Context, entity map[string]interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
 	toOdataAnnotatedDictionary(&entity)

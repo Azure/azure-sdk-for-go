@@ -1,0 +1,157 @@
+---
+version: 1
+interactions:
+- request:
+    body: '{"TableName":"gotable6durux9k2gsr8"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "36"
+      Content-Type:
+      - application/json
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.16.1 (go1.16.2;
+        Windows_NT)
+      X-Ms-Date:
+      - Fri, 21 May 2021 21:59:39 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://chrisstablesprim.table.cosmos.azure.com/Tables
+    method: POST
+  response:
+    body: '{"TableName":"gotable6durux9k2gsr8","odata.metadata":"https://chrisstablesprim.table.cosmos.azure.com/$metadata#Tables/@Element"}'
+    headers:
+      Content-Type:
+      - application/json;odata=minimalmetadata
+      Date:
+      - Fri, 21 May 2021 21:59:40 GMT
+      Etag:
+      - W/"datetime'2021-05-21T21%3A59%3A40.3318280Z'"
+      Location:
+      - https://chrisstablesprim.table.cosmos.azure.com/Tables('gotable6durux9k2gsr8')
+      Server:
+      - Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - c2e26f70-23d9-4093-a9a4-9540ad534c18
+    status: 201 Ok
+    code: 201
+    duration: ""
+- request:
+    body: '{"BoolProp":true,"IntProp":1,"PartitionKey":"partition","RowKey":"1","StringProp":"some
+      string 1"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "98"
+      Content-Type:
+      - application/json
+      Dataserviceversion:
+      - "3.0"
+      Prefer:
+      - return-no-content
+      User-Agent:
+      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.16.1 (go1.16.2;
+        Windows_NT)
+      X-Ms-Date:
+      - Fri, 21 May 2021 21:59:40 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://chrisstablesprim.table.cosmos.azure.com/gotable6durux9k2gsr8
+    method: POST
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Fri, 21 May 2021 21:59:40 GMT
+      Etag:
+      - W/"datetime'2021-05-21T21%3A59%3A40.8694280Z'"
+      Location:
+      - https://chrisstablesprim.table.cosmos.azure.com/gotable6durux9k2gsr8(PartitionKey='partition',RowKey='1')
+      Preference-Applied:
+      - return-no-content
+      Server:
+      - Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 6c631ecc-f986-46a6-9fbb-7d3c853b0ed1
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.16.1 (go1.16.2;
+        Windows_NT)
+      X-Ms-Date:
+      - Fri, 21 May 2021 21:59:40 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://chrisstablesprim.table.cosmos.azure.com/gotable6durux9k2gsr8(PartitionKey='partition',RowKey='1')
+    method: GET
+  response:
+    body: '{"odata.metadata":"https://chrisstablesprim.table.cosmos.azure.com/gotable6durux9k2gsr8/$metadata#gotable6durux9k2gsr8/@Element","odata.etag":"W/\"datetime''2021-05-21T21%3A59%3A40.8694280Z''\"","BoolProp":true,"IntProp":1,"PartitionKey":"partition","RowKey":"1","StringProp":"some
+      string 1","Timestamp":"2021-05-21T21:59:40.8694280Z"}'
+    headers:
+      Content-Type:
+      - application/json;odata=minimalmetadata
+      Date:
+      - Fri, 21 May 2021 21:59:40 GMT
+      Etag:
+      - W/"datetime'2021-05-21T21%3A59%3A40.8694280Z'"
+      Server:
+      - Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - fdfab123-339c-4d90-947e-caf22d86c87d
+    status: 200 Ok
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.16.1 (go1.16.2;
+        Windows_NT)
+      X-Ms-Date:
+      - Fri, 21 May 2021 21:59:40 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://chrisstablesprim.table.cosmos.azure.com/Tables('gotable6durux9k2gsr8')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Fri, 21 May 2021 21:59:40 GMT
+      Server:
+      - Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 8dd07d23-ae92-459a-bbb4-3f8575021ad5
+    status: 204 No Content
+    code: 204
+    duration: ""

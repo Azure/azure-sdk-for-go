@@ -175,6 +175,39 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
 }
 
+func (s *tableClientLiveTests) _TestGetEntity() {
+	assert := assert.New(s.T())
+	require := require.New(s.T())
+	client, delete := s.init(true)
+	defer delete()
+
+	// Add 5 entities
+	entitiesToCreate := createSimpleEntities(1, "partition")
+	for _, e := range *entitiesToCreate {
+		_, err := client.AddEntity(ctx, e)
+		assert.Nil(err)
+	}
+
+	resp, err := client.GetEntity(ctx, "partition", "1")
+	require.Nil(err)
+	e := (*resp.TableEntityQueryResponse.Value)[0]
+	_, ok := e[PartitionKey].(string)
+	assert.True(ok)
+	_, ok = e[RowKey].(string)
+	assert.True(ok)
+	_, ok = e[Timestamp].(string)
+	assert.True(ok)
+	_, ok = e[EtagOdata].(string)
+	assert.True(ok)
+	_, ok = e["StringProp"].(string)
+	assert.True(ok)
+	//TODO: fix when serialization is implemented
+	_, ok = e["IntProp"].(float64)
+	assert.True(ok)
+	_, ok = e["BoolProp"].(bool)
+	assert.True(ok)
+}
+
 func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	assert := assert.New(s.T())
 	client, delete := s.init(true)

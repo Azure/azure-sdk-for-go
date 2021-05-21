@@ -215,7 +215,7 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 	batch := make([]TableTransactionAction, 3)
 
 	// Add the first 3 entities.
-	for i, _ := range batch {
+	for i := range batch {
 		batch[i] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[i]}
 	}
 

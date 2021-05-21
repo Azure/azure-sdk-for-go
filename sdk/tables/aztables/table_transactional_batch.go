@@ -48,11 +48,11 @@ type OdataError struct {
 	Message OdataErrorMessage `json:"message"`
 }
 
-type TableError struct {
+type TableTransactionError struct {
 	OdataError OdataError `json:"odata.error"`
 }
 
-func (e *TableError) Error() string {
+func (e *TableTransactionError) Error() string {
 	return fmt.Sprintf("Code: %s, Message: %s", e.OdataError.Code, e.OdataError.Message.Value)
 }
 
@@ -233,7 +233,7 @@ func getBoundaryName(bytesBody []byte) string {
 
 // transactionHandleError handles the SubmitTransaction error response.
 func (client *tableClient) transactionHandleError(errorBody error) error {
-	oe := TableError{}
+	oe := TableTransactionError{}
 	b := []byte(errorBody.Error())
 	if err := json.Unmarshal(b, &oe); err == nil {
 		return &oe

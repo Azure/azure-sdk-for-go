@@ -8,21 +8,22 @@
 package aztables
 
 import (
+	"encoding/json"
 	"encoding/xml"
-	"fmt"
-	"net/http"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"reflect"
 	"time"
 )
 
-// An Access policy.
+// AccessPolicy - An Access policy.
 type AccessPolicy struct {
-	// The datetime that the policy expires.
+	// REQUIRED; The datetime that the policy expires.
 	Expiry *time.Time `xml:"Expiry"`
 
-	// The permissions for the acl policy.
+	// REQUIRED; The permissions for the acl policy.
 	Permission *string `xml:"Permission"`
 
-	// The start datetime from which the policy is active.
+	// REQUIRED; The start datetime from which the policy is active.
 	Start *time.Time `xml:"Start"`
 }
 
@@ -59,37 +60,37 @@ func (a *AccessPolicy) UnmarshalXML(d *xml.Decoder, start xml.StartElement) erro
 	return nil
 }
 
-// CORS is an HTTP feature that enables a web application running under one domain to access resources in another domain. Web browsers implement a security
-// restriction known as same-origin policy that
+// CorsRule - CORS is an HTTP feature that enables a web application running under one domain to access resources in another domain. Web browsers implement
+// a security restriction known as same-origin policy that
 // prevents a web page from calling APIs in a different domain; CORS provides a secure way to allow one domain (the origin domain) to call APIs in another
 // domain.
 type CorsRule struct {
-	// The request headers that the origin domain may specify on the CORS request.
+	// REQUIRED; The request headers that the origin domain may specify on the CORS request.
 	AllowedHeaders *string `xml:"AllowedHeaders"`
 
-	// The methods (HTTP request verbs) that the origin domain may use for a CORS request. (comma separated)
+	// REQUIRED; The methods (HTTP request verbs) that the origin domain may use for a CORS request. (comma separated)
 	AllowedMethods *string `xml:"AllowedMethods"`
 
-	// The origin domains that are permitted to make a request against the service via CORS. The origin domain is the domain from which the request originates.
-	// Note that the origin must be an exact
+	// REQUIRED; The origin domains that are permitted to make a request against the service via CORS. The origin domain is the domain from which the request
+	// originates. Note that the origin must be an exact
 	// case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*' to allow all origin domains
 	// to make requests via CORS.
 	AllowedOrigins *string `xml:"AllowedOrigins"`
 
-	// The response headers that may be sent in the response to the CORS request and exposed by the browser to the request issuer.
+	// REQUIRED; The response headers that may be sent in the response to the CORS request and exposed by the browser to the request issuer.
 	ExposedHeaders *string `xml:"ExposedHeaders"`
 
-	// The maximum amount time that a browser should cache the preflight OPTIONS request.
+	// REQUIRED; The maximum amount time that a browser should cache the preflight OPTIONS request.
 	MaxAgeInSeconds *int32 `xml:"MaxAgeInSeconds"`
 }
 
 type GeoReplication struct {
-	// A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available for read operations at the secondary. Primary
-	// writes after this point in time may or may
+	// REQUIRED; A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available for read operations at the secondary.
+	// Primary writes after this point in time may or may
 	// not be available for reads.
 	LastSyncTime *time.Time `xml:"LastSyncTime"`
 
-	// The status of the secondary location.
+	// REQUIRED; The status of the secondary location.
 	Status *GeoReplicationStatusType `xml:"Status"`
 }
 
@@ -122,56 +123,26 @@ func (g *GeoReplication) UnmarshalXML(d *xml.Decoder, start xml.StartElement) er
 	return nil
 }
 
-// Azure Analytics Logging settings.
+// Logging - Azure Analytics Logging settings.
 type Logging struct {
-	// Indicates whether all delete requests should be logged.
+	// REQUIRED; Indicates whether all delete requests should be logged.
 	Delete *bool `xml:"Delete"`
 
-	// Indicates whether all read requests should be logged.
+	// REQUIRED; Indicates whether all read requests should be logged.
 	Read *bool `xml:"Read"`
 
-	// The retention policy.
+	// REQUIRED; The retention policy.
 	RetentionPolicy *RetentionPolicy `xml:"RetentionPolicy"`
 
-	// The version of Analytics to configure.
+	// REQUIRED; The version of Analytics to configure.
 	Version *string `xml:"Version"`
 
-	// Indicates whether all write requests should be logged.
+	// REQUIRED; Indicates whether all write requests should be logged.
 	Write *bool `xml:"Write"`
 }
 
-// MapOfInterfaceResponse is the response envelope for operations that return a map[string]interface{} type.
-type MapOfInterfaceResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// ContentType contains the information returned from the Content-Type header response.
-	ContentType *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// PreferenceApplied contains the information returned from the Preference-Applied header response.
-	PreferenceApplied *string
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// The other properties of the table entity.
-	Value map[string]interface{}
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-}
-
 type Metrics struct {
-	// Indicates whether metrics are enabled for the Table service.
+	// REQUIRED; Indicates whether metrics are enabled for the Table service.
 	Enabled *bool `xml:"Enabled"`
 
 	// Indicates whether metrics should generate summary statistics for called API operations.
@@ -196,13 +167,13 @@ type QueryOptions struct {
 	Top *int32
 }
 
-// The retention policy.
+// RetentionPolicy - The retention policy.
 type RetentionPolicy struct {
+	// REQUIRED; Indicates whether a retention policy is enabled for the service.
+	Enabled *bool `xml:"Enabled"`
+
 	// Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older than this value will be deleted.
 	Days *int32 `xml:"Days"`
-
-	// Indicates whether a retention policy is enabled for the service.
-	Enabled *bool `xml:"Enabled"`
 }
 
 // ServiceGetPropertiesOptions contains the optional parameters for the Service.GetProperties method.
@@ -229,49 +200,13 @@ type ServiceSetPropertiesOptions struct {
 	Timeout *int32
 }
 
-// ServiceSetPropertiesResponse contains the response from method Service.SetProperties.
-type ServiceSetPropertiesResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-}
-
-// A signed identifier.
+// SignedIdentifier - A signed identifier.
 type SignedIdentifier struct {
-	// The access policy.
+	// REQUIRED; The access policy.
 	AccessPolicy *AccessPolicy `xml:"AccessPolicy"`
 
-	// A unique id.
+	// REQUIRED; A unique id.
 	ID *string `xml:"Id"`
-}
-
-// SignedIdentifierArrayResponse is the response envelope for operations that return a []SignedIdentifier type.
-type SignedIdentifierArrayResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string `xml:"ClientRequestID"`
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time `xml:"Date"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string `xml:"RequestID"`
-
-	// A collection of signed identifiers.
-	SignedIdentifiers []SignedIdentifier `xml:"SignedIdentifier"`
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string `xml:"Version"`
 }
 
 // TableCreateOptions contains the optional parameters for the Table.Create method.
@@ -282,27 +217,6 @@ type TableCreateOptions struct {
 	ResponsePreference *ResponseFormat
 }
 
-// TableCreateResponse contains the response from method Table.Create.
-type TableCreateResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// PreferenceApplied contains the information returned from the Preference-Applied header response.
-	PreferenceApplied *string
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-}
-
 // TableDeleteEntityOptions contains the optional parameters for the Table.DeleteEntity method.
 type TableDeleteEntityOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics logging is enabled.
@@ -311,85 +225,27 @@ type TableDeleteEntityOptions struct {
 	Timeout *int32
 }
 
-// TableDeleteEntityResponse contains the response from method Table.DeleteEntity.
-type TableDeleteEntityResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-}
-
 // TableDeleteOptions contains the optional parameters for the Table.Delete method.
 type TableDeleteOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics logging is enabled.
 	RequestID *string
 }
 
-// TableDeleteResponse contains the response from method Table.Delete.
-type TableDeleteResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-}
-
-// The properties for the table entity query response.
+// TableEntityQueryResponse - The properties for the table entity query response.
 type TableEntityQueryResponse struct {
 	// The metadata response of the table.
 	OdataMetadata *string `json:"odata.metadata,omitempty"`
 
 	// List of table entities.
-	Value *[]map[string]interface{} `json:"value,omitempty"`
+	Value []map[string]interface{} `json:"value,omitempty"`
 }
 
-// TableEntityQueryResponseResponse is the response envelope for operations that return a TableEntityQueryResponse type.
-type TableEntityQueryResponseResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// The properties for the table entity query response.
-	TableEntityQueryResponse *TableEntityQueryResponse
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-
-	// XMSContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
-	XMSContinuationNextPartitionKey *string
-
-	// XMSContinuationNextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
-	XMSContinuationNextRowKey *string
+// MarshalJSON implements the json.Marshaller interface for type TableEntityQueryResponse.
+func (t TableEntityQueryResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "odata.metadata", t.OdataMetadata)
+	populate(objectMap, "value", t.Value)
+	return json.Marshal(objectMap)
 }
 
 // TableGetAccessPolicyOptions contains the optional parameters for the Table.GetAccessPolicy method.
@@ -407,36 +263,9 @@ type TableInsertEntityOptions struct {
 	// Specifies whether the response should include the inserted entity in the payload. Possible values are return-no-content and return-content.
 	ResponsePreference *ResponseFormat
 	// The properties for the table entity.
-	TableEntityProperties *map[string]interface{}
+	TableEntityProperties map[string]interface{}
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
-}
-
-// TableInsertEntityResponse contains the response from method Table.InsertEntity.
-type TableInsertEntityResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// ContentType contains the information returned from the Content-Type header response.
-	ContentType *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// PreferenceApplied contains the information returned from the Preference-Applied header response.
-	PreferenceApplied *string
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
 }
 
 // TableMergeEntityOptions contains the optional parameters for the Table.MergeEntity method.
@@ -448,33 +277,12 @@ type TableMergeEntityOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics logging is enabled.
 	RequestID *string
 	// The properties for the table entity.
-	TableEntityProperties *map[string]interface{}
+	TableEntityProperties map[string]interface{}
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
 }
 
-// TableMergeEntityResponse contains the response from method Table.MergeEntity.
-type TableMergeEntityResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-}
-
-// The properties for creating a table.
+// TableProperties - The properties for creating a table.
 type TableProperties struct {
 	// The name of the table to create.
 	TableName *string `json:"TableName,omitempty"`
@@ -492,8 +300,8 @@ type TableQueryEntitiesOptions struct {
 	Timeout *int32
 }
 
-// TableQueryEntitiesWithPartitionAndRowKeyOptions contains the optional parameters for the Table.QueryEntitiesWithPartitionAndRowKey method.
-type TableQueryEntitiesWithPartitionAndRowKeyOptions struct {
+// TableQueryEntityWithPartitionAndRowKeyOptions contains the optional parameters for the Table.QueryEntityWithPartitionAndRowKey method.
+type TableQueryEntityWithPartitionAndRowKeyOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics logging is enabled.
 	RequestID *string
 	// The timeout parameter is expressed in seconds.
@@ -508,47 +316,31 @@ type TableQueryOptions struct {
 	RequestID *string
 }
 
-// The properties for the table query response.
+// TableQueryResponse - The properties for the table query response.
 type TableQueryResponse struct {
 	// The metadata response of the table.
 	OdataMetadata *string `json:"odata.metadata,omitempty"`
 
 	// List of tables.
-	Value *[]TableResponseProperties `json:"value,omitempty"`
+	Value []*TableResponseProperties `json:"value,omitempty"`
 }
 
-// TableQueryResponseResponse is the response envelope for operations that return a TableQueryResponse type.
-type TableQueryResponseResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// The properties for the table query response.
-	TableQueryResponse *TableQueryResponse
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-
-	// XMSContinuationNextTableName contains the information returned from the x-ms-continuation-NextTableName header response.
-	XMSContinuationNextTableName *string
+// MarshalJSON implements the json.Marshaller interface for type TableQueryResponse.
+func (t TableQueryResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "odata.metadata", t.OdataMetadata)
+	populate(objectMap, "value", t.Value)
+	return json.Marshal(objectMap)
 }
 
-// The response for a single table.
+// TableResponse - The response for a single table.
 type TableResponse struct {
 	TableResponseProperties
 	// The metadata response of the table.
 	OdataMetadata *string `json:"odata.metadata,omitempty"`
 }
 
-// The properties for the table response.
+// TableResponseProperties - The properties for the table response.
 type TableResponseProperties struct {
 	// The edit link of the table.
 	OdataEditLink *string `json:"odata.editLink,omitempty"`
@@ -563,52 +355,24 @@ type TableResponseProperties struct {
 	TableName *string `json:"TableName,omitempty"`
 }
 
-// TableResponseResponse is the response envelope for operations that return a TableResponse type.
-type TableResponseResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// PreferenceApplied contains the information returned from the Preference-Applied header response.
-	PreferenceApplied *string
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// The response for a single table.
-	TableResponse *TableResponse
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-}
-
-// Table Service error.
+// TableServiceError - Table Service error.
+// Implements the error and azcore.HTTPResponse interfaces.
 type TableServiceError struct {
+	raw string
 	// The error message.
 	Message *string `json:"Message,omitempty"`
 }
 
 // Error implements the error interface for type TableServiceError.
+// The contents of the error text are not contractual and subject to change.
 func (e TableServiceError) Error() string {
-	msg := ""
-	if e.Message != nil {
-		msg += fmt.Sprintf("Message: %v\n", *e.Message)
-	}
-	if msg == "" {
-		msg = "missing error info"
-	}
-	return msg
+	return e.raw
 }
 
-// Table Service Properties.
+// TableServiceProperties - Table Service Properties.
 type TableServiceProperties struct {
 	// The set of CORS rules.
-	Cors *[]CorsRule `xml:"Cors>CorsRule"`
+	Cors []*CorsRule `xml:"Cors>CorsRule"`
 
 	// A summary of request statistics grouped by API in hourly aggregates for tables.
 	HourMetrics *Metrics `xml:"HourMetrics"`
@@ -626,55 +390,20 @@ func (t TableServiceProperties) MarshalXML(e *xml.Encoder, start xml.StartElemen
 	type alias TableServiceProperties
 	aux := &struct {
 		*alias
+		Cors *[]*CorsRule `xml:"Cors>CorsRule"`
 	}{
 		alias: (*alias)(&t),
+	}
+	if t.Cors != nil {
+		aux.Cors = &t.Cors
 	}
 	return e.EncodeElement(aux, start)
 }
 
-// TableServicePropertiesResponse is the response envelope for operations that return a TableServiceProperties type.
-type TableServicePropertiesResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string `xml:"ClientRequestID"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string `xml:"RequestID"`
-
-	// Table Service Properties.
-	StorageServiceProperties *TableServiceProperties `xml:"StorageServiceProperties"`
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string `xml:"Version"`
-}
-
-// Stats for the service.
+// TableServiceStats - Stats for the service.
 type TableServiceStats struct {
 	// Geo-Replication information for the Secondary Storage Service.
 	GeoReplication *GeoReplication `xml:"GeoReplication"`
-}
-
-// TableServiceStatsResponse is the response envelope for operations that return a TableServiceStats type.
-type TableServiceStatsResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string `xml:"ClientRequestID"`
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time `xml:"Date"`
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string `xml:"RequestID"`
-
-	// Stats for the service.
-	StorageServiceStats *TableServiceStats `xml:"StorageServiceStats"`
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string `xml:"Version"`
 }
 
 // TableSetAccessPolicyOptions contains the optional parameters for the Table.SetAccessPolicy method.
@@ -682,27 +411,9 @@ type TableSetAccessPolicyOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics logging is enabled.
 	RequestID *string
 	// The acls for the table.
-	TableACL *[]SignedIdentifier
+	TableACL []*SignedIdentifier
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
-}
-
-// TableSetAccessPolicyResponse contains the response from method Table.SetAccessPolicy.
-type TableSetAccessPolicyResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
 }
 
 // TableUpdateEntityOptions contains the optional parameters for the Table.UpdateEntity method.
@@ -714,28 +425,17 @@ type TableUpdateEntityOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when analytics logging is enabled.
 	RequestID *string
 	// The properties for the table entity.
-	TableEntityProperties *map[string]interface{}
+	TableEntityProperties map[string]interface{}
 	// The timeout parameter is expressed in seconds.
 	Timeout *int32
 }
 
-// TableUpdateEntityResponse contains the response from method Table.UpdateEntity.
-type TableUpdateEntityResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
+func populate(m map[string]interface{}, k string, v interface{}) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
 }

@@ -1,0 +1,75 @@
+---
+version: 1
+interactions:
+- request:
+    body: '{"TableName":"gotable3atc3ia9qkkbd"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "36"
+      Content-Type:
+      - application/json
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+        Windows_NT)
+      X-Ms-Date:
+      - Sun, 04 Apr 2021 21:54:49 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://chrisstablesprim.table.cosmos.azure.com/Tables
+    method: POST
+  response:
+    body: '{"TableName":"gotable3atc3ia9qkkbd","odata.metadata":"https://chrisstablesprim.table.cosmos.azure.com/$metadata#Tables/@Element"}'
+    headers:
+      Content-Type:
+      - application/json;odata=minimalmetadata
+      Date:
+      - Sun, 04 Apr 2021 21:54:50 GMT
+      Etag:
+      - W/"datetime'2021-04-04T21%3A54%3A49.7968136Z'"
+      Location:
+      - https://chrisstablesprim.table.cosmos.azure.com/Tables('gotable3atc3ia9qkkbd')
+      Server:
+      - Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - b9386c93-2228-4a78-bcab-652c24994580
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-tables/<version> azsdk-go-tables/<version> azcore/v0.13.4 (go1.16.2;
+        Windows_NT)
+      X-Ms-Date:
+      - Sun, 04 Apr 2021 21:54:50 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://chrisstablesprim.table.cosmos.azure.com/Tables('gotable3atc3ia9qkkbd')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 04 Apr 2021 21:54:50 GMT
+      Server:
+      - Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - f8cecc20-febd-48ed-950f-6fb532eb326d
+    status: 204 No Content
+    code: 204
+    duration: ""

@@ -25,7 +25,7 @@ func PossibleGeoReplicationStatusTypeValues() []GeoReplicationStatusType {
 	}
 }
 
-// ToPtr() returns a *GeoReplicationStatusType pointing to the current value.
+// ToPtr returns a *GeoReplicationStatusType pointing to the current value.
 func (c GeoReplicationStatusType) ToPtr() *GeoReplicationStatusType {
 	return &c
 }
@@ -47,7 +47,7 @@ func PossibleOdataMetadataFormatValues() []OdataMetadataFormat {
 	}
 }
 
-// ToPtr() returns a *OdataMetadataFormat pointing to the current value.
+// ToPtr returns a *OdataMetadataFormat pointing to the current value.
 func (c OdataMetadataFormat) ToPtr() *OdataMetadataFormat {
 	return &c
 }
@@ -67,7 +67,7 @@ func PossibleResponseFormatValues() []ResponseFormat {
 	}
 }
 
-// ToPtr() returns a *ResponseFormat pointing to the current value.
+// ToPtr returns a *ResponseFormat pointing to the current value.
 func (c ResponseFormat) ToPtr() *ResponseFormat {
 	return &c
 }

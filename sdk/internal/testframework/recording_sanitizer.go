@@ -28,7 +28,7 @@ var sanitizedValueSlice = []string{SanitizedValue}
 
 func DefaultSanitizer(recorder *recorder.Recorder) *RecordingSanitizer {
 	// The default sanitizer sanitizes the Authorization header
-	s := &RecordingSanitizer{headersToSanitize: map[string]*string{"Authorization": nil}, recorder: recorder, urlSanitizer: DefaultStringSanitizer}
+	s := &RecordingSanitizer{headersToSanitize: map[string]*string{"Authorization": nil}, recorder: recorder, urlSanitizer: DefaultStringSanitizer, bodySanitizer: DefaultStringSanitizer}
 	recorder.AddSaveFilter(s.applySaveFilter)
 
 	return s

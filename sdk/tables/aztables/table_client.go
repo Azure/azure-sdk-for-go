@@ -5,6 +5,7 @@ package aztables
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
@@ -17,6 +18,13 @@ type TableClient struct {
 	cred    SharedKeyCredential
 	name    string
 }
+
+type TableUpdateMode string
+
+const (
+	Replace TableUpdateMode = "replace"
+	Merge   TableUpdateMode = "merge"
+)
 
 // NewTableClient creates a TableClient object using the specified URL and request policy pipeline.
 func NewTableClient(tableName string, serviceURL string, cred azcore.Credential, options *TableClientOptions) (*TableClient, error) {
@@ -43,6 +51,7 @@ func (t *TableClient) Query(queryOptions QueryOptions) TableEntityQueryResponseP
 	return &tableEntityQueryResponsePager{tableClient: t, queryOptions: &queryOptions, tableQueryOptions: &TableQueryEntitiesOptions{}}
 }
 
+// QueryAsModel queries the table using the specified QueryOptions and attempts to serialize the response as the supplied interface type
 func (t *TableClient) QueryAsModel(opt QueryOptions, s FromMapper) StructEntityQueryResponsePager {
 	return &structQueryResponsePager{mapper: s, tableClient: t, queryOptions: &opt, tableQueryOptions: &TableQueryEntitiesOptions{}}
 }
@@ -76,4 +85,41 @@ func (t *TableClient) AddModelEntity(ctx context.Context, entity interface{}) (*
 
 func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, rowKey string, etag string) (TableDeleteEntityResponse, error) {
 	return t.client.DeleteEntity(ctx, t.name, partitionKey, rowKey, etag, nil, &QueryOptions{})
+}
+
+// UpdateEntity updates the specified table entity if it exists.
+// If updateMode is Replace, the entity will be replaced.
+// If updateMode is Merge, the property values present in the specified entity will be merged with the existing entity.
+// The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
+func (t *TableClient) UpdateEntity(ctx context.Context, entity map[string]interface{}, etag *string, updateMode TableUpdateMode) (interface{}, error) {
+	pk := entity[PartitionKey].(string)
+	rk := entity[RowKey].(string)
+	var ifMatch string = "*"
+	if etag != nil {
+		ifMatch = *etag
+	}
+	switch updateMode {
+	case Merge:
+		return t.client.MergeEntity(ctx, t.name, pk, rk, &TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: &entity}, &QueryOptions{})
+	case Replace:
+		return t.client.UpdateEntity(ctx, t.name, pk, rk, &TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: &entity}, &QueryOptions{})
+	}
+	return nil, errors.New("Invalid TableUpdateMode")
+}
+
+// UpsertEntity replaces the specified table entity if it exists or creates the entity if it does not exist.
+// If the entity exists and updateMode is Merge, the property values present in the specified entity will be merged with the existing entity rather than replaced.
+// The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
+func (t *TableClient) UpsertEntity(ctx context.Context, entity map[string]interface{}, updateMode TableUpdateMode) (interface{}, error) {
+	pk := entity[PartitionKey].(string)
+	rk := entity[RowKey].(string)
+	ifMatch := "*"
+
+	switch updateMode {
+	case Merge:
+		return t.client.MergeEntity(ctx, t.name, pk, rk, &TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: &entity}, &QueryOptions{})
+	case Replace:
+		return t.client.UpdateEntity(ctx, t.name, pk, rk, &TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: &entity}, &QueryOptions{})
+	}
+	return nil, errors.New("Invalid TableUpdateMode")
 }

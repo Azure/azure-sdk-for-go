@@ -488,3 +488,47 @@ func TestManagedIdentityCredential_GetTokenEnvVar(t *testing.T) {
 		t.Fatalf("Did not receive the correct access token")
 	}
 }
+
+func TestManagedIdentityCredential_GetTokenNilResource(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
+	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
+	defer clearEnvVars("MSI_ENDPOINT")
+	options := ManagedIdentityCredentialOptions{}
+	options.HTTPClient = srv
+	msiCred, err := NewManagedIdentityCredential("", &options)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: nil})
+	if err == nil {
+		t.Fatalf("Expected an error but did not receive one")
+	}
+	if err.Error() != "must specify a resource in order to authenticate" {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestManagedIdentityCredential_GetTokenMultipleResources(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
+	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
+	defer clearEnvVars("MSI_ENDPOINT")
+	options := ManagedIdentityCredentialOptions{}
+	options.HTTPClient = srv
+	msiCred, err := NewManagedIdentityCredential("", &options)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{"resource1", "resource2"}})
+	if err == nil {
+		t.Fatalf("Expected an error but did not receive one")
+	}
+	if err.Error() != "can only specify one resource to authenticate with ManagedIdentityCredential" {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}

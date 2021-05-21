@@ -113,13 +113,12 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity map[string]interf
 func (t *TableClient) UpsertEntity(ctx context.Context, entity map[string]interface{}, updateMode TableUpdateMode) (interface{}, error) {
 	pk := entity[PartitionKey].(string)
 	rk := entity[RowKey].(string)
-	ifMatch := "*"
 
 	switch updateMode {
 	case Merge:
-		return t.client.MergeEntity(ctx, t.name, pk, rk, &TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: &entity}, &QueryOptions{})
+		return t.client.MergeEntity(ctx, t.name, pk, rk, &TableMergeEntityOptions{TableEntityProperties: &entity}, &QueryOptions{})
 	case Replace:
-		return t.client.UpdateEntity(ctx, t.name, pk, rk, &TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: &entity}, &QueryOptions{})
+		return t.client.UpdateEntity(ctx, t.name, pk, rk, &TableUpdateEntityOptions{TableEntityProperties: &entity}, &QueryOptions{})
 	}
 	return nil, errors.New("Invalid TableUpdateMode")
 }

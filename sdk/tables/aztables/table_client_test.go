@@ -134,6 +134,47 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
 }
 
+func (s *tableClientLiveTests) TestUpsertEntity() {
+	assert := assert.New(s.T())
+	require := require.New(s.T())
+	client, delete := s.init(true)
+	defer delete()
+
+	entitiesToCreate := createSimpleEntities(1, "partition")
+
+	_, err := client.UpsertEntity(ctx, (*entitiesToCreate)[0], Replace)
+	require.Nil(err)
+
+	var qResp TableEntityQueryResponseResponse
+	filter := "RowKey eq '1'"
+	pager := client.Query(QueryOptions{Filter: &filter})
+	for pager.NextPage(ctx) {
+		qResp = pager.PageResponse()
+	}
+	preMerge := (*qResp.TableEntityQueryResponse.Value)[0]
+
+	mergeProp := "MergeProperty"
+	val := "foo"
+	var mergeProperty = map[string]interface{}{
+		PartitionKey: (*entitiesToCreate)[0][PartitionKey],
+		RowKey:       (*entitiesToCreate)[0][RowKey],
+		mergeProp:    val,
+	}
+
+	_, updateErr := client.UpsertEntity(ctx, mergeProperty, Replace)
+	require.Nil(updateErr)
+
+	pager = client.Query(QueryOptions{Filter: &filter})
+	for pager.NextPage(ctx) {
+		qResp = pager.PageResponse()
+	}
+	postMerge := (*qResp.TableEntityQueryResponse.Value)[0]
+
+	// The merged entity has only the standard properties + the merged property
+	assert.Greater(len(preMerge), len(postMerge), "postMerge should have fewer properties than preMerge")
+	assert.Equalf(postMerge[mergeProp], val, "%s property should equal %s", mergeProp, val)
+}
+
 func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	assert := assert.New(s.T())
 	client, delete := s.init(true)

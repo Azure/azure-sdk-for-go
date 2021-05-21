@@ -5,7 +5,6 @@ package azidentity
 
 import (
 	"context"
-	"errors"
 	"os"
 	"strings"
 
@@ -66,10 +65,14 @@ func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCrede
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if opts.Scopes == nil {
-		return nil, errors.New("must specify a resource in order to authenticate")
+		err := &AuthenticationFailedError{msg: "must specify a resource in order to authenticate"}
+		addGetTokenFailureLogs("Managed Identity Credential", err, true)
+		return nil, err
 	}
 	if len(opts.Scopes) != 1 {
-		return nil, errors.New("can only specify one resource to authenticate with ManagedIdentityCredential")
+		err := &AuthenticationFailedError{msg: "can only specify one resource to authenticate with ManagedIdentityCredential"}
+		addGetTokenFailureLogs("Managed Identity Credential", err, true)
+		return nil, err
 	}
 	// The following code will remove the /.default suffix from any scopes passed into the method since ManagedIdentityCredentials expect a resource string instead of a scope string
 	opts.Scopes[0] = strings.TrimSuffix(opts.Scopes[0], defaultSuffix)

@@ -22,7 +22,7 @@ import (
 // PrivateDNSZoneGroupsClient contains the methods for the PrivateDNSZoneGroups group.
 // Don't use this type directly, use NewPrivateDNSZoneGroupsClient() instead.
 type PrivateDNSZoneGroupsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *PrivateDNSZoneGroupsClient) BeginCreateOrUpdate(ctx context.Contex
 	}
 	poller := &privateDNSZoneGroupPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateDNSZoneGroupResponse, error) {
@@ -65,7 +65,7 @@ func (client *PrivateDNSZoneGroupsClient) ResumeCreateOrUpdate(ctx context.Conte
 	}
 	poller := &privateDNSZoneGroupPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *PrivateDNSZoneGroupsClient) createOrUpdate(ctx context.Context, re
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *PrivateDNSZoneGroupsClient) createOrUpdateCreateRequest(ctx contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -135,7 +135,7 @@ func (client *PrivateDNSZoneGroupsClient) createOrUpdateHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *PrivateDNSZoneGroupsClient) BeginDelete(ctx context.Context, resou
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +176,7 @@ func (client *PrivateDNSZoneGroupsClient) ResumeDelete(ctx context.Context, toke
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +206,7 @@ func (client *PrivateDNSZoneGroupsClient) deleteOperation(ctx context.Context, r
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *PrivateDNSZoneGroupsClient) deleteCreateRequest(ctx context.Contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +246,7 @@ func (client *PrivateDNSZoneGroupsClient) deleteHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +295,7 @@ func (client *PrivateDNSZoneGroupsClient) getCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -307,7 +307,7 @@ func (client *PrivateDNSZoneGroupsClient) getHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateDNSZoneGroupResponse{}, err
 	}
-return PrivateDNSZoneGroupResponse{RawResponse: resp.Response, PrivateDNSZoneGroup: val}, nil
+	return PrivateDNSZoneGroupResponse{RawResponse: resp.Response, PrivateDNSZoneGroup: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -316,7 +316,7 @@ func (client *PrivateDNSZoneGroupsClient) getHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -325,7 +325,7 @@ func (client *PrivateDNSZoneGroupsClient) getHandleError(resp *azcore.Response) 
 
 // List - Gets all private dns zone groups in a private endpoint.
 // If the operation fails it returns the *Error error type.
-func (client *PrivateDNSZoneGroupsClient) List(privateEndpointName string, resourceGroupName string, options *PrivateDNSZoneGroupsListOptions) (PrivateDNSZoneGroupListResultPager) {
+func (client *PrivateDNSZoneGroupsClient) List(privateEndpointName string, resourceGroupName string, options *PrivateDNSZoneGroupsListOptions) PrivateDNSZoneGroupListResultPager {
 	return &privateDNSZoneGroupListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -361,7 +361,7 @@ func (client *PrivateDNSZoneGroupsClient) listCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -373,7 +373,7 @@ func (client *PrivateDNSZoneGroupsClient) listHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateDNSZoneGroupListResultResponse{}, err
 	}
-return PrivateDNSZoneGroupListResultResponse{RawResponse: resp.Response, PrivateDNSZoneGroupListResult: val}, nil
+	return PrivateDNSZoneGroupListResultResponse{RawResponse: resp.Response, PrivateDNSZoneGroupListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -382,10 +382,9 @@ func (client *PrivateDNSZoneGroupsClient) listHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

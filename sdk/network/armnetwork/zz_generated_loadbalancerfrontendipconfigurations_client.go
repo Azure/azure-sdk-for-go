@@ -21,7 +21,7 @@ import (
 // LoadBalancerFrontendIPConfigurationsClient contains the methods for the LoadBalancerFrontendIPConfigurations group.
 // Don't use this type directly, use NewLoadBalancerFrontendIPConfigurationsClient() instead.
 type LoadBalancerFrontendIPConfigurationsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -72,7 +72,7 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) getCreateRequest(ctx c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -84,7 +84,7 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) getHandleResponse(resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return FrontendIPConfigurationResponse{}, err
 	}
-return FrontendIPConfigurationResponse{RawResponse: resp.Response, FrontendIPConfiguration: val}, nil
+	return FrontendIPConfigurationResponse{RawResponse: resp.Response, FrontendIPConfiguration: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -93,7 +93,7 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) getHandleError(resp *a
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -102,7 +102,7 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) getHandleError(resp *a
 
 // List - Gets all the load balancer frontend IP configurations.
 // If the operation fails it returns the *CloudError error type.
-func (client *LoadBalancerFrontendIPConfigurationsClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerFrontendIPConfigurationsListOptions) (LoadBalancerFrontendIPConfigurationListResultPager) {
+func (client *LoadBalancerFrontendIPConfigurationsClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerFrontendIPConfigurationsListOptions) LoadBalancerFrontendIPConfigurationListResultPager {
 	return &loadBalancerFrontendIPConfigurationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -138,7 +138,7 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) listCreateRequest(ctx 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -150,7 +150,7 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) listHandleResponse(res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LoadBalancerFrontendIPConfigurationListResultResponse{}, err
 	}
-return LoadBalancerFrontendIPConfigurationListResultResponse{RawResponse: resp.Response, LoadBalancerFrontendIPConfigurationListResult: val}, nil
+	return LoadBalancerFrontendIPConfigurationListResultResponse{RawResponse: resp.Response, LoadBalancerFrontendIPConfigurationListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -159,10 +159,9 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) listHandleError(resp *
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

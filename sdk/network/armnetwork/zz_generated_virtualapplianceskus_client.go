@@ -21,7 +21,7 @@ import (
 // VirtualApplianceSKUsClient contains the methods for the VirtualApplianceSKUs group.
 // Don't use this type directly, use NewVirtualApplianceSKUsClient() instead.
 type VirtualApplianceSKUsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -64,7 +64,7 @@ func (client *VirtualApplianceSKUsClient) getCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -76,7 +76,7 @@ func (client *VirtualApplianceSKUsClient) getHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkVirtualApplianceSKUResponse{}, err
 	}
-return NetworkVirtualApplianceSKUResponse{RawResponse: resp.Response, NetworkVirtualApplianceSKU: val}, nil
+	return NetworkVirtualApplianceSKUResponse{RawResponse: resp.Response, NetworkVirtualApplianceSKU: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -85,7 +85,7 @@ func (client *VirtualApplianceSKUsClient) getHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -94,7 +94,7 @@ func (client *VirtualApplianceSKUsClient) getHandleError(resp *azcore.Response) 
 
 // List - List all SKUs available for a virtual appliance.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualApplianceSKUsClient) List(options *VirtualApplianceSKUsListOptions) (NetworkVirtualApplianceSKUListResultPager) {
+func (client *VirtualApplianceSKUsClient) List(options *VirtualApplianceSKUsListOptions) NetworkVirtualApplianceSKUListResultPager {
 	return &networkVirtualApplianceSKUListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -122,7 +122,7 @@ func (client *VirtualApplianceSKUsClient) listCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -134,7 +134,7 @@ func (client *VirtualApplianceSKUsClient) listHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkVirtualApplianceSKUListResultResponse{}, err
 	}
-return NetworkVirtualApplianceSKUListResultResponse{RawResponse: resp.Response, NetworkVirtualApplianceSKUListResult: val}, nil
+	return NetworkVirtualApplianceSKUListResultResponse{RawResponse: resp.Response, NetworkVirtualApplianceSKUListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -143,10 +143,9 @@ func (client *VirtualApplianceSKUsClient) listHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

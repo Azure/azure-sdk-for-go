@@ -21,7 +21,7 @@ import (
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
 type UsagesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -32,7 +32,7 @@ func NewUsagesClient(con *armcore.Connection, subscriptionID string) *UsagesClie
 
 // List - List network usages for a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *UsagesClient) List(location string, options *UsagesListOptions) (UsagesListResultPager) {
+func (client *UsagesClient) List(location string, options *UsagesListOptions) UsagesListResultPager {
 	return &usagesListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -64,7 +64,7 @@ func (client *UsagesClient) listCreateRequest(ctx context.Context, location stri
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -76,7 +76,7 @@ func (client *UsagesClient) listHandleResponse(resp *azcore.Response) (UsagesLis
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return UsagesListResultResponse{}, err
 	}
-return UsagesListResultResponse{RawResponse: resp.Response, UsagesListResult: val}, nil
+	return UsagesListResultResponse{RawResponse: resp.Response, UsagesListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -85,10 +85,9 @@ func (client *UsagesClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

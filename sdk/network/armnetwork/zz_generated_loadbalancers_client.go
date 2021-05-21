@@ -22,7 +22,7 @@ import (
 // LoadBalancersClient contains the methods for the LoadBalancers group.
 // Don't use this type directly, use NewLoadBalancersClient() instead.
 type LoadBalancersClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 	poller := &loadBalancerPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LoadBalancerResponse, error) {
@@ -65,7 +65,7 @@ func (client *LoadBalancersClient) ResumeCreateOrUpdate(ctx context.Context, tok
 	}
 	poller := &loadBalancerPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *LoadBalancersClient) createOrUpdate(ctx context.Context, resourceG
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *LoadBalancersClient) createOrUpdateHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *LoadBalancersClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *LoadBalancersClient) ResumeDelete(ctx context.Context, token strin
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *LoadBalancersClient) deleteOperation(ctx context.Context, resource
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *LoadBalancersClient) deleteCreateRequest(ctx context.Context, reso
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *LoadBalancersClient) deleteHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *LoadBalancersClient) getCreateRequest(ctx context.Context, resourc
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -298,7 +298,7 @@ func (client *LoadBalancersClient) getHandleResponse(resp *azcore.Response) (Loa
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LoadBalancerResponse{}, err
 	}
-return LoadBalancerResponse{RawResponse: resp.Response, LoadBalancer: val}, nil
+	return LoadBalancerResponse{RawResponse: resp.Response, LoadBalancer: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -307,7 +307,7 @@ func (client *LoadBalancersClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -316,7 +316,7 @@ func (client *LoadBalancersClient) getHandleError(resp *azcore.Response) error {
 
 // List - Gets all the load balancers in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *LoadBalancersClient) List(resourceGroupName string, options *LoadBalancersListOptions) (LoadBalancerListResultPager) {
+func (client *LoadBalancersClient) List(resourceGroupName string, options *LoadBalancersListOptions) LoadBalancerListResultPager {
 	return &loadBalancerListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -348,7 +348,7 @@ func (client *LoadBalancersClient) listCreateRequest(ctx context.Context, resour
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -360,7 +360,7 @@ func (client *LoadBalancersClient) listHandleResponse(resp *azcore.Response) (Lo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LoadBalancerListResultResponse{}, err
 	}
-return LoadBalancerListResultResponse{RawResponse: resp.Response, LoadBalancerListResult: val}, nil
+	return LoadBalancerListResultResponse{RawResponse: resp.Response, LoadBalancerListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -369,7 +369,7 @@ func (client *LoadBalancersClient) listHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -378,7 +378,7 @@ func (client *LoadBalancersClient) listHandleError(resp *azcore.Response) error 
 
 // ListAll - Gets all the load balancers in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *LoadBalancersClient) ListAll(options *LoadBalancersListAllOptions) (LoadBalancerListResultPager) {
+func (client *LoadBalancersClient) ListAll(options *LoadBalancersListAllOptions) LoadBalancerListResultPager {
 	return &loadBalancerListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -406,7 +406,7 @@ func (client *LoadBalancersClient) listAllCreateRequest(ctx context.Context, opt
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -418,7 +418,7 @@ func (client *LoadBalancersClient) listAllHandleResponse(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LoadBalancerListResultResponse{}, err
 	}
-return LoadBalancerListResultResponse{RawResponse: resp.Response, LoadBalancerListResult: val}, nil
+	return LoadBalancerListResultResponse{RawResponse: resp.Response, LoadBalancerListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -427,7 +427,110 @@ func (client *LoadBalancersClient) listAllHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
+}
+
+// BeginSwapPublicIPAddresses - Swaps VIPs between two load balancers.
+// If the operation fails it returns the *CloudError error type.
+func (client *LoadBalancersClient) BeginSwapPublicIPAddresses(ctx context.Context, location string, parameters LoadBalancerVipSwapRequest, options *LoadBalancersBeginSwapPublicIPAddressesOptions) (HTTPPollerResponse, error) {
+	resp, err := client.swapPublicIPAddresses(ctx, location, parameters, options)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp.Response,
+	}
+	pt, err := armcore.NewPoller("LoadBalancersClient.SwapPublicIPAddresses", "location", resp, client.swapPublicIPAddressesHandleError)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	poller := &httpPoller{
+		pipeline: client.con.Pipeline(),
+		pt:       pt,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
+}
+
+// ResumeSwapPublicIPAddresses creates a new HTTPPoller from the specified resume token.
+// token - The value must come from a previous call to HTTPPoller.ResumeToken().
+func (client *LoadBalancersClient) ResumeSwapPublicIPAddresses(ctx context.Context, token string) (HTTPPollerResponse, error) {
+	pt, err := armcore.NewPollerFromResumeToken("LoadBalancersClient.SwapPublicIPAddresses", token, client.swapPublicIPAddressesHandleError)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	poller := &httpPoller{
+		pipeline: client.con.Pipeline(),
+		pt:       pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
+}
+
+// SwapPublicIPAddresses - Swaps VIPs between two load balancers.
+// If the operation fails it returns the *CloudError error type.
+func (client *LoadBalancersClient) swapPublicIPAddresses(ctx context.Context, location string, parameters LoadBalancerVipSwapRequest, options *LoadBalancersBeginSwapPublicIPAddressesOptions) (*azcore.Response, error) {
+	req, err := client.swapPublicIPAddressesCreateRequest(ctx, location, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.con.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+		return nil, client.swapPublicIPAddressesHandleError(resp)
+	}
+	return resp, nil
+}
+
+// swapPublicIPAddressesCreateRequest creates the SwapPublicIPAddresses request.
+func (client *LoadBalancersClient) swapPublicIPAddressesCreateRequest(ctx context.Context, location string, parameters LoadBalancerVipSwapRequest, options *LoadBalancersBeginSwapPublicIPAddressesOptions) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/setLoadBalancerFrontendPublicIpAddresses"
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Telemetry(telemetryInfo)
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.URL.RawQuery = reqQP.Encode()
+	req.Header.Set("Accept", "application/json")
+	return req, req.MarshalAsJSON(parameters)
+}
+
+// swapPublicIPAddressesHandleError handles the SwapPublicIPAddresses error response.
+func (client *LoadBalancersClient) swapPublicIPAddressesHandleError(resp *azcore.Response) error {
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
+	}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -472,7 +575,7 @@ func (client *LoadBalancersClient) updateTagsCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -484,7 +587,7 @@ func (client *LoadBalancersClient) updateTagsHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LoadBalancerResponse{}, err
 	}
-return LoadBalancerResponse{RawResponse: resp.Response, LoadBalancer: val}, nil
+	return LoadBalancerResponse{RawResponse: resp.Response, LoadBalancer: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -493,10 +596,9 @@ func (client *LoadBalancersClient) updateTagsHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

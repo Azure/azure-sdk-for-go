@@ -22,7 +22,7 @@ import (
 // VPNGatewaysClient contains the methods for the VPNGateways group.
 // Don't use this type directly, use NewVPNGatewaysClient() instead.
 type VPNGatewaysClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *VPNGatewaysClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 	poller := &vpnGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNGatewayResponse, error) {
@@ -65,7 +65,7 @@ func (client *VPNGatewaysClient) ResumeCreateOrUpdate(ctx context.Context, token
 	}
 	poller := &vpnGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *VPNGatewaysClient) createOrUpdate(ctx context.Context, resourceGro
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *VPNGatewaysClient) createOrUpdateCreateRequest(ctx context.Context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(vpnGatewayParameters)
@@ -131,7 +131,7 @@ func (client *VPNGatewaysClient) createOrUpdateHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *VPNGatewaysClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *VPNGatewaysClient) ResumeDelete(ctx context.Context, token string)
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *VPNGatewaysClient) deleteOperation(ctx context.Context, resourceGr
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *VPNGatewaysClient) deleteCreateRequest(ctx context.Context, resour
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *VPNGatewaysClient) deleteHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *VPNGatewaysClient) getCreateRequest(ctx context.Context, resourceG
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -295,7 +295,7 @@ func (client *VPNGatewaysClient) getHandleResponse(resp *azcore.Response) (VPNGa
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VPNGatewayResponse{}, err
 	}
-return VPNGatewayResponse{RawResponse: resp.Response, VPNGateway: val}, nil
+	return VPNGatewayResponse{RawResponse: resp.Response, VPNGateway: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -304,7 +304,7 @@ func (client *VPNGatewaysClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -313,7 +313,7 @@ func (client *VPNGatewaysClient) getHandleError(resp *azcore.Response) error {
 
 // List - Lists all the VpnGateways in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *VPNGatewaysClient) List(options *VPNGatewaysListOptions) (ListVPNGatewaysResultPager) {
+func (client *VPNGatewaysClient) List(options *VPNGatewaysListOptions) ListVPNGatewaysResultPager {
 	return &listVPNGatewaysResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -341,7 +341,7 @@ func (client *VPNGatewaysClient) listCreateRequest(ctx context.Context, options 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -353,7 +353,7 @@ func (client *VPNGatewaysClient) listHandleResponse(resp *azcore.Response) (List
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVPNGatewaysResultResponse{}, err
 	}
-return ListVPNGatewaysResultResponse{RawResponse: resp.Response, ListVPNGatewaysResult: val}, nil
+	return ListVPNGatewaysResultResponse{RawResponse: resp.Response, ListVPNGatewaysResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -362,7 +362,7 @@ func (client *VPNGatewaysClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -371,7 +371,7 @@ func (client *VPNGatewaysClient) listHandleError(resp *azcore.Response) error {
 
 // ListByResourceGroup - Lists all the VpnGateways in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *VPNGatewaysClient) ListByResourceGroup(resourceGroupName string, options *VPNGatewaysListByResourceGroupOptions) (ListVPNGatewaysResultPager) {
+func (client *VPNGatewaysClient) ListByResourceGroup(resourceGroupName string, options *VPNGatewaysListByResourceGroupOptions) ListVPNGatewaysResultPager {
 	return &listVPNGatewaysResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -403,7 +403,7 @@ func (client *VPNGatewaysClient) listByResourceGroupCreateRequest(ctx context.Co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -415,7 +415,7 @@ func (client *VPNGatewaysClient) listByResourceGroupHandleResponse(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVPNGatewaysResultResponse{}, err
 	}
-return ListVPNGatewaysResultResponse{RawResponse: resp.Response, ListVPNGatewaysResult: val}, nil
+	return ListVPNGatewaysResultResponse{RawResponse: resp.Response, ListVPNGatewaysResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -424,7 +424,7 @@ func (client *VPNGatewaysClient) listByResourceGroupHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -447,7 +447,7 @@ func (client *VPNGatewaysClient) BeginReset(ctx context.Context, resourceGroupNa
 	}
 	poller := &vpnGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNGatewayResponse, error) {
@@ -465,7 +465,7 @@ func (client *VPNGatewaysClient) ResumeReset(ctx context.Context, token string) 
 	}
 	poller := &vpnGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -495,7 +495,7 @@ func (client *VPNGatewaysClient) reset(ctx context.Context, resourceGroupName st
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.resetHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // resetCreateRequest creates the Reset request.
@@ -519,7 +519,7 @@ func (client *VPNGatewaysClient) resetCreateRequest(ctx context.Context, resourc
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -531,7 +531,7 @@ func (client *VPNGatewaysClient) resetHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -554,7 +554,7 @@ func (client *VPNGatewaysClient) BeginStartPacketCapture(ctx context.Context, re
 	}
 	poller := &stringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
@@ -572,7 +572,7 @@ func (client *VPNGatewaysClient) ResumeStartPacketCapture(ctx context.Context, t
 	}
 	poller := &stringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -602,7 +602,7 @@ func (client *VPNGatewaysClient) startPacketCapture(ctx context.Context, resourc
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.startPacketCaptureHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // startPacketCaptureCreateRequest creates the StartPacketCapture request.
@@ -626,7 +626,7 @@ func (client *VPNGatewaysClient) startPacketCaptureCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
@@ -641,7 +641,7 @@ func (client *VPNGatewaysClient) startPacketCaptureHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -664,7 +664,7 @@ func (client *VPNGatewaysClient) BeginStopPacketCapture(ctx context.Context, res
 	}
 	poller := &stringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
@@ -682,7 +682,7 @@ func (client *VPNGatewaysClient) ResumeStopPacketCapture(ctx context.Context, to
 	}
 	poller := &stringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -712,7 +712,7 @@ func (client *VPNGatewaysClient) stopPacketCapture(ctx context.Context, resource
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.stopPacketCaptureHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // stopPacketCaptureCreateRequest creates the StopPacketCapture request.
@@ -736,7 +736,7 @@ func (client *VPNGatewaysClient) stopPacketCaptureCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
@@ -751,7 +751,7 @@ func (client *VPNGatewaysClient) stopPacketCaptureHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -774,7 +774,7 @@ func (client *VPNGatewaysClient) BeginUpdateTags(ctx context.Context, resourceGr
 	}
 	poller := &vpnGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNGatewayResponse, error) {
@@ -792,7 +792,7 @@ func (client *VPNGatewaysClient) ResumeUpdateTags(ctx context.Context, token str
 	}
 	poller := &vpnGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -822,7 +822,7 @@ func (client *VPNGatewaysClient) updateTags(ctx context.Context, resourceGroupNa
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateTagsHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -846,7 +846,7 @@ func (client *VPNGatewaysClient) updateTagsCreateRequest(ctx context.Context, re
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(vpnGatewayParameters)
@@ -858,10 +858,9 @@ func (client *VPNGatewaysClient) updateTagsHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

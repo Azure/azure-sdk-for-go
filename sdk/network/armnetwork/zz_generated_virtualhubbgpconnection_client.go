@@ -22,7 +22,7 @@ import (
 // VirtualHubBgpConnectionClient contains the methods for the VirtualHubBgpConnection group.
 // Don't use this type directly, use NewVirtualHubBgpConnectionClient() instead.
 type VirtualHubBgpConnectionClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *VirtualHubBgpConnectionClient) BeginCreateOrUpdate(ctx context.Con
 	}
 	poller := &bgpConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (BgpConnectionResponse, error) {
@@ -65,7 +65,7 @@ func (client *VirtualHubBgpConnectionClient) ResumeCreateOrUpdate(ctx context.Co
 	}
 	poller := &bgpConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *VirtualHubBgpConnectionClient) createOrUpdate(ctx context.Context,
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *VirtualHubBgpConnectionClient) createOrUpdateCreateRequest(ctx con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -135,7 +135,7 @@ func (client *VirtualHubBgpConnectionClient) createOrUpdateHandleError(resp *azc
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *VirtualHubBgpConnectionClient) BeginDelete(ctx context.Context, re
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +176,7 @@ func (client *VirtualHubBgpConnectionClient) ResumeDelete(ctx context.Context, t
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +206,7 @@ func (client *VirtualHubBgpConnectionClient) deleteOperation(ctx context.Context
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *VirtualHubBgpConnectionClient) deleteCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +246,7 @@ func (client *VirtualHubBgpConnectionClient) deleteHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +295,7 @@ func (client *VirtualHubBgpConnectionClient) getCreateRequest(ctx context.Contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -307,7 +307,7 @@ func (client *VirtualHubBgpConnectionClient) getHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BgpConnectionResponse{}, err
 	}
-return BgpConnectionResponse{RawResponse: resp.Response, BgpConnection: val}, nil
+	return BgpConnectionResponse{RawResponse: resp.Response, BgpConnection: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -316,10 +316,9 @@ func (client *VirtualHubBgpConnectionClient) getHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

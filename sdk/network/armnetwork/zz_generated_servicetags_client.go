@@ -21,7 +21,7 @@ import (
 // ServiceTagsClient contains the methods for the ServiceTags group.
 // Don't use this type directly, use NewServiceTagsClient() instead.
 type ServiceTagsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -64,7 +64,7 @@ func (client *ServiceTagsClient) listCreateRequest(ctx context.Context, location
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -76,7 +76,7 @@ func (client *ServiceTagsClient) listHandleResponse(resp *azcore.Response) (Serv
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ServiceTagsListResultResponse{}, err
 	}
-return ServiceTagsListResultResponse{RawResponse: resp.Response, ServiceTagsListResult: val}, nil
+	return ServiceTagsListResultResponse{RawResponse: resp.Response, ServiceTagsListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -85,10 +85,9 @@ func (client *ServiceTagsClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

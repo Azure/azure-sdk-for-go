@@ -7,8 +7,6 @@
 
 package armnetwork
 
-
-
 import (
 	"regexp"
 	"strings"

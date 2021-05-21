@@ -22,7 +22,7 @@ import (
 // WebApplicationFirewallPoliciesClient contains the methods for the WebApplicationFirewallPolicies group.
 // Don't use this type directly, use NewWebApplicationFirewallPoliciesClient() instead.
 type WebApplicationFirewallPoliciesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -69,7 +69,7 @@ func (client *WebApplicationFirewallPoliciesClient) createOrUpdateCreateRequest(
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -81,7 +81,7 @@ func (client *WebApplicationFirewallPoliciesClient) createOrUpdateHandleResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return WebApplicationFirewallPolicyResponse{}, err
 	}
-return WebApplicationFirewallPolicyResponse{RawResponse: resp.Response, WebApplicationFirewallPolicy: val}, nil
+	return WebApplicationFirewallPolicyResponse{RawResponse: resp.Response, WebApplicationFirewallPolicy: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -90,7 +90,7 @@ func (client *WebApplicationFirewallPoliciesClient) createOrUpdateHandleError(re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -113,7 +113,7 @@ func (client *WebApplicationFirewallPoliciesClient) BeginDelete(ctx context.Cont
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -131,7 +131,7 @@ func (client *WebApplicationFirewallPoliciesClient) ResumeDelete(ctx context.Con
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -161,7 +161,7 @@ func (client *WebApplicationFirewallPoliciesClient) deleteOperation(ctx context.
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -185,7 +185,7 @@ func (client *WebApplicationFirewallPoliciesClient) deleteCreateRequest(ctx cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -197,7 +197,7 @@ func (client *WebApplicationFirewallPoliciesClient) deleteHandleError(resp *azco
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -242,7 +242,7 @@ func (client *WebApplicationFirewallPoliciesClient) getCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -254,7 +254,7 @@ func (client *WebApplicationFirewallPoliciesClient) getHandleResponse(resp *azco
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return WebApplicationFirewallPolicyResponse{}, err
 	}
-return WebApplicationFirewallPolicyResponse{RawResponse: resp.Response, WebApplicationFirewallPolicy: val}, nil
+	return WebApplicationFirewallPolicyResponse{RawResponse: resp.Response, WebApplicationFirewallPolicy: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -263,7 +263,7 @@ func (client *WebApplicationFirewallPoliciesClient) getHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -272,7 +272,7 @@ func (client *WebApplicationFirewallPoliciesClient) getHandleError(resp *azcore.
 
 // List - Lists all of the protection policies within a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *WebApplicationFirewallPoliciesClient) List(resourceGroupName string, options *WebApplicationFirewallPoliciesListOptions) (WebApplicationFirewallPolicyListResultPager) {
+func (client *WebApplicationFirewallPoliciesClient) List(resourceGroupName string, options *WebApplicationFirewallPoliciesListOptions) WebApplicationFirewallPolicyListResultPager {
 	return &webApplicationFirewallPolicyListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -304,7 +304,7 @@ func (client *WebApplicationFirewallPoliciesClient) listCreateRequest(ctx contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -316,7 +316,7 @@ func (client *WebApplicationFirewallPoliciesClient) listHandleResponse(resp *azc
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return WebApplicationFirewallPolicyListResultResponse{}, err
 	}
-return WebApplicationFirewallPolicyListResultResponse{RawResponse: resp.Response, WebApplicationFirewallPolicyListResult: val}, nil
+	return WebApplicationFirewallPolicyListResultResponse{RawResponse: resp.Response, WebApplicationFirewallPolicyListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -325,7 +325,7 @@ func (client *WebApplicationFirewallPoliciesClient) listHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -334,7 +334,7 @@ func (client *WebApplicationFirewallPoliciesClient) listHandleError(resp *azcore
 
 // ListAll - Gets all the WAF policies in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *WebApplicationFirewallPoliciesClient) ListAll(options *WebApplicationFirewallPoliciesListAllOptions) (WebApplicationFirewallPolicyListResultPager) {
+func (client *WebApplicationFirewallPoliciesClient) ListAll(options *WebApplicationFirewallPoliciesListAllOptions) WebApplicationFirewallPolicyListResultPager {
 	return &webApplicationFirewallPolicyListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -362,7 +362,7 @@ func (client *WebApplicationFirewallPoliciesClient) listAllCreateRequest(ctx con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -374,7 +374,7 @@ func (client *WebApplicationFirewallPoliciesClient) listAllHandleResponse(resp *
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return WebApplicationFirewallPolicyListResultResponse{}, err
 	}
-return WebApplicationFirewallPolicyListResultResponse{RawResponse: resp.Response, WebApplicationFirewallPolicyListResult: val}, nil
+	return WebApplicationFirewallPolicyListResultResponse{RawResponse: resp.Response, WebApplicationFirewallPolicyListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -383,10 +383,9 @@ func (client *WebApplicationFirewallPoliciesClient) listAllHandleError(resp *azc
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

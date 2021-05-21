@@ -21,7 +21,7 @@ import (
 // ResourceNavigationLinksClient contains the methods for the ResourceNavigationLinks group.
 // Don't use this type directly, use NewResourceNavigationLinksClient() instead.
 type ResourceNavigationLinksClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -72,7 +72,7 @@ func (client *ResourceNavigationLinksClient) listCreateRequest(ctx context.Conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -84,7 +84,7 @@ func (client *ResourceNavigationLinksClient) listHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ResourceNavigationLinksListResultResponse{}, err
 	}
-return ResourceNavigationLinksListResultResponse{RawResponse: resp.Response, ResourceNavigationLinksListResult: val}, nil
+	return ResourceNavigationLinksListResultResponse{RawResponse: resp.Response, ResourceNavigationLinksListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -93,10 +93,9 @@ func (client *ResourceNavigationLinksClient) listHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

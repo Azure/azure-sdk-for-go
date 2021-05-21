@@ -22,7 +22,7 @@ import (
 // DscpConfigurationClient contains the methods for the DscpConfiguration group.
 // Don't use this type directly, use NewDscpConfigurationClient() instead.
 type DscpConfigurationClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *DscpConfigurationClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 	poller := &dscpConfigurationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DscpConfigurationResponse, error) {
@@ -65,7 +65,7 @@ func (client *DscpConfigurationClient) ResumeCreateOrUpdate(ctx context.Context,
 	}
 	poller := &dscpConfigurationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *DscpConfigurationClient) createOrUpdate(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *DscpConfigurationClient) createOrUpdateHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *DscpConfigurationClient) BeginDelete(ctx context.Context, resource
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *DscpConfigurationClient) ResumeDelete(ctx context.Context, token s
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *DscpConfigurationClient) deleteOperation(ctx context.Context, reso
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *DscpConfigurationClient) deleteCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *DscpConfigurationClient) deleteHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *DscpConfigurationClient) getCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -295,7 +295,7 @@ func (client *DscpConfigurationClient) getHandleResponse(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DscpConfigurationResponse{}, err
 	}
-return DscpConfigurationResponse{RawResponse: resp.Response, DscpConfiguration: val}, nil
+	return DscpConfigurationResponse{RawResponse: resp.Response, DscpConfiguration: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -304,7 +304,7 @@ func (client *DscpConfigurationClient) getHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -313,7 +313,7 @@ func (client *DscpConfigurationClient) getHandleError(resp *azcore.Response) err
 
 // List - Gets a DSCP Configuration.
 // If the operation fails it returns the *CloudError error type.
-func (client *DscpConfigurationClient) List(resourceGroupName string, options *DscpConfigurationListOptions) (DscpConfigurationListResultPager) {
+func (client *DscpConfigurationClient) List(resourceGroupName string, options *DscpConfigurationListOptions) DscpConfigurationListResultPager {
 	return &dscpConfigurationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -345,7 +345,7 @@ func (client *DscpConfigurationClient) listCreateRequest(ctx context.Context, re
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -357,7 +357,7 @@ func (client *DscpConfigurationClient) listHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DscpConfigurationListResultResponse{}, err
 	}
-return DscpConfigurationListResultResponse{RawResponse: resp.Response, DscpConfigurationListResult: val}, nil
+	return DscpConfigurationListResultResponse{RawResponse: resp.Response, DscpConfigurationListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -366,7 +366,7 @@ func (client *DscpConfigurationClient) listHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -375,7 +375,7 @@ func (client *DscpConfigurationClient) listHandleError(resp *azcore.Response) er
 
 // ListAll - Gets all dscp configurations in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *DscpConfigurationClient) ListAll(options *DscpConfigurationListAllOptions) (DscpConfigurationListResultPager) {
+func (client *DscpConfigurationClient) ListAll(options *DscpConfigurationListAllOptions) DscpConfigurationListResultPager {
 	return &dscpConfigurationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -403,7 +403,7 @@ func (client *DscpConfigurationClient) listAllCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -415,7 +415,7 @@ func (client *DscpConfigurationClient) listAllHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DscpConfigurationListResultResponse{}, err
 	}
-return DscpConfigurationListResultResponse{RawResponse: resp.Response, DscpConfigurationListResult: val}, nil
+	return DscpConfigurationListResultResponse{RawResponse: resp.Response, DscpConfigurationListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -424,10 +424,9 @@ func (client *DscpConfigurationClient) listAllHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

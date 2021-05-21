@@ -21,7 +21,7 @@ import (
 // NetworkInterfaceLoadBalancersClient contains the methods for the NetworkInterfaceLoadBalancers group.
 // Don't use this type directly, use NewNetworkInterfaceLoadBalancersClient() instead.
 type NetworkInterfaceLoadBalancersClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -32,7 +32,7 @@ func NewNetworkInterfaceLoadBalancersClient(con *armcore.Connection, subscriptio
 
 // List - List all load balancers in a network interface.
 // If the operation fails it returns the *CloudError error type.
-func (client *NetworkInterfaceLoadBalancersClient) List(resourceGroupName string, networkInterfaceName string, options *NetworkInterfaceLoadBalancersListOptions) (NetworkInterfaceLoadBalancerListResultPager) {
+func (client *NetworkInterfaceLoadBalancersClient) List(resourceGroupName string, networkInterfaceName string, options *NetworkInterfaceLoadBalancersListOptions) NetworkInterfaceLoadBalancerListResultPager {
 	return &networkInterfaceLoadBalancerListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -68,7 +68,7 @@ func (client *NetworkInterfaceLoadBalancersClient) listCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -80,7 +80,7 @@ func (client *NetworkInterfaceLoadBalancersClient) listHandleResponse(resp *azco
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceLoadBalancerListResultResponse{}, err
 	}
-return NetworkInterfaceLoadBalancerListResultResponse{RawResponse: resp.Response, NetworkInterfaceLoadBalancerListResult: val}, nil
+	return NetworkInterfaceLoadBalancerListResultResponse{RawResponse: resp.Response, NetworkInterfaceLoadBalancerListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -89,10 +89,9 @@ func (client *NetworkInterfaceLoadBalancersClient) listHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

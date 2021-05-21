@@ -22,7 +22,7 @@ import (
 // NetworkVirtualAppliancesClient contains the methods for the NetworkVirtualAppliances group.
 // Don't use this type directly, use NewNetworkVirtualAppliancesClient() instead.
 type NetworkVirtualAppliancesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *NetworkVirtualAppliancesClient) BeginCreateOrUpdate(ctx context.Co
 	}
 	poller := &networkVirtualAppliancePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkVirtualApplianceResponse, error) {
@@ -65,7 +65,7 @@ func (client *NetworkVirtualAppliancesClient) ResumeCreateOrUpdate(ctx context.C
 	}
 	poller := &networkVirtualAppliancePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *NetworkVirtualAppliancesClient) createOrUpdate(ctx context.Context
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *NetworkVirtualAppliancesClient) createOrUpdateCreateRequest(ctx co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *NetworkVirtualAppliancesClient) createOrUpdateHandleError(resp *az
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *NetworkVirtualAppliancesClient) BeginDelete(ctx context.Context, r
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *NetworkVirtualAppliancesClient) ResumeDelete(ctx context.Context, 
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *NetworkVirtualAppliancesClient) deleteOperation(ctx context.Contex
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *NetworkVirtualAppliancesClient) deleteCreateRequest(ctx context.Co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *NetworkVirtualAppliancesClient) deleteHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *NetworkVirtualAppliancesClient) getCreateRequest(ctx context.Conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -298,7 +298,7 @@ func (client *NetworkVirtualAppliancesClient) getHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkVirtualApplianceResponse{}, err
 	}
-return NetworkVirtualApplianceResponse{RawResponse: resp.Response, NetworkVirtualAppliance: val}, nil
+	return NetworkVirtualApplianceResponse{RawResponse: resp.Response, NetworkVirtualAppliance: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -307,7 +307,7 @@ func (client *NetworkVirtualAppliancesClient) getHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -316,7 +316,7 @@ func (client *NetworkVirtualAppliancesClient) getHandleError(resp *azcore.Respon
 
 // List - Gets all Network Virtual Appliances in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *NetworkVirtualAppliancesClient) List(options *NetworkVirtualAppliancesListOptions) (NetworkVirtualApplianceListResultPager) {
+func (client *NetworkVirtualAppliancesClient) List(options *NetworkVirtualAppliancesListOptions) NetworkVirtualApplianceListResultPager {
 	return &networkVirtualApplianceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -344,7 +344,7 @@ func (client *NetworkVirtualAppliancesClient) listCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -356,7 +356,7 @@ func (client *NetworkVirtualAppliancesClient) listHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkVirtualApplianceListResultResponse{}, err
 	}
-return NetworkVirtualApplianceListResultResponse{RawResponse: resp.Response, NetworkVirtualApplianceListResult: val}, nil
+	return NetworkVirtualApplianceListResultResponse{RawResponse: resp.Response, NetworkVirtualApplianceListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -365,7 +365,7 @@ func (client *NetworkVirtualAppliancesClient) listHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -374,7 +374,7 @@ func (client *NetworkVirtualAppliancesClient) listHandleError(resp *azcore.Respo
 
 // ListByResourceGroup - Lists all Network Virtual Appliances in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *NetworkVirtualAppliancesClient) ListByResourceGroup(resourceGroupName string, options *NetworkVirtualAppliancesListByResourceGroupOptions) (NetworkVirtualApplianceListResultPager) {
+func (client *NetworkVirtualAppliancesClient) ListByResourceGroup(resourceGroupName string, options *NetworkVirtualAppliancesListByResourceGroupOptions) NetworkVirtualApplianceListResultPager {
 	return &networkVirtualApplianceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -406,7 +406,7 @@ func (client *NetworkVirtualAppliancesClient) listByResourceGroupCreateRequest(c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -418,7 +418,7 @@ func (client *NetworkVirtualAppliancesClient) listByResourceGroupHandleResponse(
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkVirtualApplianceListResultResponse{}, err
 	}
-return NetworkVirtualApplianceListResultResponse{RawResponse: resp.Response, NetworkVirtualApplianceListResult: val}, nil
+	return NetworkVirtualApplianceListResultResponse{RawResponse: resp.Response, NetworkVirtualApplianceListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -427,7 +427,7 @@ func (client *NetworkVirtualAppliancesClient) listByResourceGroupHandleError(res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -472,7 +472,7 @@ func (client *NetworkVirtualAppliancesClient) updateTagsCreateRequest(ctx contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -484,7 +484,7 @@ func (client *NetworkVirtualAppliancesClient) updateTagsHandleResponse(resp *azc
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkVirtualApplianceResponse{}, err
 	}
-return NetworkVirtualApplianceResponse{RawResponse: resp.Response, NetworkVirtualAppliance: val}, nil
+	return NetworkVirtualApplianceResponse{RawResponse: resp.Response, NetworkVirtualAppliance: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -493,10 +493,9 @@ func (client *NetworkVirtualAppliancesClient) updateTagsHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

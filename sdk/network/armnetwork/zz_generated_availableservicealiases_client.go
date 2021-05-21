@@ -21,7 +21,7 @@ import (
 // AvailableServiceAliasesClient contains the methods for the AvailableServiceAliases group.
 // Don't use this type directly, use NewAvailableServiceAliasesClient() instead.
 type AvailableServiceAliasesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -32,7 +32,7 @@ func NewAvailableServiceAliasesClient(con *armcore.Connection, subscriptionID st
 
 // List - Gets all available service aliases for this subscription in this region.
 // If the operation fails it returns the *CloudError error type.
-func (client *AvailableServiceAliasesClient) List(location string, options *AvailableServiceAliasesListOptions) (AvailableServiceAliasesResultPager) {
+func (client *AvailableServiceAliasesClient) List(location string, options *AvailableServiceAliasesListOptions) AvailableServiceAliasesResultPager {
 	return &availableServiceAliasesResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -64,7 +64,7 @@ func (client *AvailableServiceAliasesClient) listCreateRequest(ctx context.Conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -76,7 +76,7 @@ func (client *AvailableServiceAliasesClient) listHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AvailableServiceAliasesResultResponse{}, err
 	}
-return AvailableServiceAliasesResultResponse{RawResponse: resp.Response, AvailableServiceAliasesResult: val}, nil
+	return AvailableServiceAliasesResultResponse{RawResponse: resp.Response, AvailableServiceAliasesResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -85,7 +85,7 @@ func (client *AvailableServiceAliasesClient) listHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -94,7 +94,7 @@ func (client *AvailableServiceAliasesClient) listHandleError(resp *azcore.Respon
 
 // ListByResourceGroup - Gets all available service aliases for this resource group in this region.
 // If the operation fails it returns the *CloudError error type.
-func (client *AvailableServiceAliasesClient) ListByResourceGroup(resourceGroupName string, location string, options *AvailableServiceAliasesListByResourceGroupOptions) (AvailableServiceAliasesResultPager) {
+func (client *AvailableServiceAliasesClient) ListByResourceGroup(resourceGroupName string, location string, options *AvailableServiceAliasesListByResourceGroupOptions) AvailableServiceAliasesResultPager {
 	return &availableServiceAliasesResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -130,7 +130,7 @@ func (client *AvailableServiceAliasesClient) listByResourceGroupCreateRequest(ct
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -142,7 +142,7 @@ func (client *AvailableServiceAliasesClient) listByResourceGroupHandleResponse(r
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AvailableServiceAliasesResultResponse{}, err
 	}
-return AvailableServiceAliasesResultResponse{RawResponse: resp.Response, AvailableServiceAliasesResult: val}, nil
+	return AvailableServiceAliasesResultResponse{RawResponse: resp.Response, AvailableServiceAliasesResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -151,10 +151,9 @@ func (client *AvailableServiceAliasesClient) listByResourceGroupHandleError(resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

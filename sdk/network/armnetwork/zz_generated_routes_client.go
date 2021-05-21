@@ -22,7 +22,7 @@ import (
 // RoutesClient contains the methods for the Routes group.
 // Don't use this type directly, use NewRoutesClient() instead.
 type RoutesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *RoutesClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 	}
 	poller := &routePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RouteResponse, error) {
@@ -65,7 +65,7 @@ func (client *RoutesClient) ResumeCreateOrUpdate(ctx context.Context, token stri
 	}
 	poller := &routePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *RoutesClient) createOrUpdate(ctx context.Context, resourceGroupNam
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *RoutesClient) createOrUpdateCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(routeParameters)
@@ -135,7 +135,7 @@ func (client *RoutesClient) createOrUpdateHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *RoutesClient) BeginDelete(ctx context.Context, resourceGroupName s
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +176,7 @@ func (client *RoutesClient) ResumeDelete(ctx context.Context, token string) (HTT
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +206,7 @@ func (client *RoutesClient) deleteOperation(ctx context.Context, resourceGroupNa
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *RoutesClient) deleteCreateRequest(ctx context.Context, resourceGro
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +246,7 @@ func (client *RoutesClient) deleteHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +295,7 @@ func (client *RoutesClient) getCreateRequest(ctx context.Context, resourceGroupN
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -307,7 +307,7 @@ func (client *RoutesClient) getHandleResponse(resp *azcore.Response) (RouteRespo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteResponse{}, err
 	}
-return RouteResponse{RawResponse: resp.Response, Route: val}, nil
+	return RouteResponse{RawResponse: resp.Response, Route: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -316,7 +316,7 @@ func (client *RoutesClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -325,7 +325,7 @@ func (client *RoutesClient) getHandleError(resp *azcore.Response) error {
 
 // List - Gets all routes in a route table.
 // If the operation fails it returns the *CloudError error type.
-func (client *RoutesClient) List(resourceGroupName string, routeTableName string, options *RoutesListOptions) (RouteListResultPager) {
+func (client *RoutesClient) List(resourceGroupName string, routeTableName string, options *RoutesListOptions) RouteListResultPager {
 	return &routeListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -361,7 +361,7 @@ func (client *RoutesClient) listCreateRequest(ctx context.Context, resourceGroup
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -373,7 +373,7 @@ func (client *RoutesClient) listHandleResponse(resp *azcore.Response) (RouteList
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteListResultResponse{}, err
 	}
-return RouteListResultResponse{RawResponse: resp.Response, RouteListResult: val}, nil
+	return RouteListResultResponse{RawResponse: resp.Response, RouteListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -382,10 +382,9 @@ func (client *RoutesClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

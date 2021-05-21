@@ -21,7 +21,7 @@ import (
 // WebCategoriesClient contains the methods for the WebCategories group.
 // Don't use this type directly, use NewWebCategoriesClient() instead.
 type WebCategoriesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -64,7 +64,7 @@ func (client *WebCategoriesClient) getCreateRequest(ctx context.Context, name st
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -79,7 +79,7 @@ func (client *WebCategoriesClient) getHandleResponse(resp *azcore.Response) (Azu
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AzureWebCategoryResponse{}, err
 	}
-return AzureWebCategoryResponse{RawResponse: resp.Response, AzureWebCategory: val}, nil
+	return AzureWebCategoryResponse{RawResponse: resp.Response, AzureWebCategory: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -88,7 +88,7 @@ func (client *WebCategoriesClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -97,7 +97,7 @@ func (client *WebCategoriesClient) getHandleError(resp *azcore.Response) error {
 
 // ListBySubscription - Gets all the Azure Web Categories in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *WebCategoriesClient) ListBySubscription(options *WebCategoriesListBySubscriptionOptions) (AzureWebCategoryListResultPager) {
+func (client *WebCategoriesClient) ListBySubscription(options *WebCategoriesListBySubscriptionOptions) AzureWebCategoryListResultPager {
 	return &azureWebCategoryListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -125,7 +125,7 @@ func (client *WebCategoriesClient) listBySubscriptionCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -137,7 +137,7 @@ func (client *WebCategoriesClient) listBySubscriptionHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AzureWebCategoryListResultResponse{}, err
 	}
-return AzureWebCategoryListResultResponse{RawResponse: resp.Response, AzureWebCategoryListResult: val}, nil
+	return AzureWebCategoryListResultResponse{RawResponse: resp.Response, AzureWebCategoryListResult: val}, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
@@ -146,10 +146,9 @@ func (client *WebCategoriesClient) listBySubscriptionHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

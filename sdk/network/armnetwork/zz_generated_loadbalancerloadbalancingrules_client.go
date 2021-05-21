@@ -21,7 +21,7 @@ import (
 // LoadBalancerLoadBalancingRulesClient contains the methods for the LoadBalancerLoadBalancingRules group.
 // Don't use this type directly, use NewLoadBalancerLoadBalancingRulesClient() instead.
 type LoadBalancerLoadBalancingRulesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -72,7 +72,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) getCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -84,7 +84,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) getHandleResponse(resp *azco
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LoadBalancingRuleResponse{}, err
 	}
-return LoadBalancingRuleResponse{RawResponse: resp.Response, LoadBalancingRule: val}, nil
+	return LoadBalancingRuleResponse{RawResponse: resp.Response, LoadBalancingRule: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -93,7 +93,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) getHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -102,7 +102,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) getHandleError(resp *azcore.
 
 // List - Gets all the load balancing rules in a load balancer.
 // If the operation fails it returns the *CloudError error type.
-func (client *LoadBalancerLoadBalancingRulesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerLoadBalancingRulesListOptions) (LoadBalancerLoadBalancingRuleListResultPager) {
+func (client *LoadBalancerLoadBalancingRulesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerLoadBalancingRulesListOptions) LoadBalancerLoadBalancingRuleListResultPager {
 	return &loadBalancerLoadBalancingRuleListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -138,7 +138,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) listCreateRequest(ctx contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -150,7 +150,7 @@ func (client *LoadBalancerLoadBalancingRulesClient) listHandleResponse(resp *azc
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LoadBalancerLoadBalancingRuleListResultResponse{}, err
 	}
-return LoadBalancerLoadBalancingRuleListResultResponse{RawResponse: resp.Response, LoadBalancerLoadBalancingRuleListResult: val}, nil
+	return LoadBalancerLoadBalancingRuleListResultResponse{RawResponse: resp.Response, LoadBalancerLoadBalancingRuleListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -159,10 +159,9 @@ func (client *LoadBalancerLoadBalancingRulesClient) listHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

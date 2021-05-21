@@ -22,7 +22,7 @@ import (
 // VirtualNetworksClient contains the methods for the VirtualNetworks group.
 // Don't use this type directly, use NewVirtualNetworksClient() instead.
 type VirtualNetworksClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -70,7 +70,7 @@ func (client *VirtualNetworksClient) checkIPAddressAvailabilityCreateRequest(ctx
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
 	reqQP.Set("ipAddress", ipAddress)
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -82,7 +82,7 @@ func (client *VirtualNetworksClient) checkIPAddressAvailabilityHandleResponse(re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return IPAddressAvailabilityResultResponse{}, err
 	}
-return IPAddressAvailabilityResultResponse{RawResponse: resp.Response, IPAddressAvailabilityResult: val}, nil
+	return IPAddressAvailabilityResultResponse{RawResponse: resp.Response, IPAddressAvailabilityResult: val}, nil
 }
 
 // checkIPAddressAvailabilityHandleError handles the CheckIPAddressAvailability error response.
@@ -91,7 +91,7 @@ func (client *VirtualNetworksClient) checkIPAddressAvailabilityHandleError(resp 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -114,7 +114,7 @@ func (client *VirtualNetworksClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 	poller := &virtualNetworkPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualNetworkResponse, error) {
@@ -132,7 +132,7 @@ func (client *VirtualNetworksClient) ResumeCreateOrUpdate(ctx context.Context, t
 	}
 	poller := &virtualNetworkPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -162,7 +162,7 @@ func (client *VirtualNetworksClient) createOrUpdate(ctx context.Context, resourc
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -186,7 +186,7 @@ func (client *VirtualNetworksClient) createOrUpdateCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -198,7 +198,7 @@ func (client *VirtualNetworksClient) createOrUpdateHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -221,7 +221,7 @@ func (client *VirtualNetworksClient) BeginDelete(ctx context.Context, resourceGr
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -239,7 +239,7 @@ func (client *VirtualNetworksClient) ResumeDelete(ctx context.Context, token str
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -269,7 +269,7 @@ func (client *VirtualNetworksClient) deleteOperation(ctx context.Context, resour
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -293,7 +293,7 @@ func (client *VirtualNetworksClient) deleteCreateRequest(ctx context.Context, re
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -305,7 +305,7 @@ func (client *VirtualNetworksClient) deleteHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -350,7 +350,7 @@ func (client *VirtualNetworksClient) getCreateRequest(ctx context.Context, resou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -365,7 +365,7 @@ func (client *VirtualNetworksClient) getHandleResponse(resp *azcore.Response) (V
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkResponse{}, err
 	}
-return VirtualNetworkResponse{RawResponse: resp.Response, VirtualNetwork: val}, nil
+	return VirtualNetworkResponse{RawResponse: resp.Response, VirtualNetwork: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -374,7 +374,7 @@ func (client *VirtualNetworksClient) getHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -383,7 +383,7 @@ func (client *VirtualNetworksClient) getHandleError(resp *azcore.Response) error
 
 // List - Gets all virtual networks in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworksClient) List(resourceGroupName string, options *VirtualNetworksListOptions) (VirtualNetworkListResultPager) {
+func (client *VirtualNetworksClient) List(resourceGroupName string, options *VirtualNetworksListOptions) VirtualNetworkListResultPager {
 	return &virtualNetworkListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -415,7 +415,7 @@ func (client *VirtualNetworksClient) listCreateRequest(ctx context.Context, reso
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -427,7 +427,7 @@ func (client *VirtualNetworksClient) listHandleResponse(resp *azcore.Response) (
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkListResultResponse{}, err
 	}
-return VirtualNetworkListResultResponse{RawResponse: resp.Response, VirtualNetworkListResult: val}, nil
+	return VirtualNetworkListResultResponse{RawResponse: resp.Response, VirtualNetworkListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -436,7 +436,7 @@ func (client *VirtualNetworksClient) listHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -445,7 +445,7 @@ func (client *VirtualNetworksClient) listHandleError(resp *azcore.Response) erro
 
 // ListAll - Gets all virtual networks in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworksClient) ListAll(options *VirtualNetworksListAllOptions) (VirtualNetworkListResultPager) {
+func (client *VirtualNetworksClient) ListAll(options *VirtualNetworksListAllOptions) VirtualNetworkListResultPager {
 	return &virtualNetworkListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -473,7 +473,7 @@ func (client *VirtualNetworksClient) listAllCreateRequest(ctx context.Context, o
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -485,7 +485,7 @@ func (client *VirtualNetworksClient) listAllHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkListResultResponse{}, err
 	}
-return VirtualNetworkListResultResponse{RawResponse: resp.Response, VirtualNetworkListResult: val}, nil
+	return VirtualNetworkListResultResponse{RawResponse: resp.Response, VirtualNetworkListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -494,7 +494,7 @@ func (client *VirtualNetworksClient) listAllHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -503,7 +503,7 @@ func (client *VirtualNetworksClient) listAllHandleError(resp *azcore.Response) e
 
 // ListUsage - Lists usage stats.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworksClient) ListUsage(resourceGroupName string, virtualNetworkName string, options *VirtualNetworksListUsageOptions) (VirtualNetworkListUsageResultPager) {
+func (client *VirtualNetworksClient) ListUsage(resourceGroupName string, virtualNetworkName string, options *VirtualNetworksListUsageOptions) VirtualNetworkListUsageResultPager {
 	return &virtualNetworkListUsageResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -539,7 +539,7 @@ func (client *VirtualNetworksClient) listUsageCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -551,7 +551,7 @@ func (client *VirtualNetworksClient) listUsageHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkListUsageResultResponse{}, err
 	}
-return VirtualNetworkListUsageResultResponse{RawResponse: resp.Response, VirtualNetworkListUsageResult: val}, nil
+	return VirtualNetworkListUsageResultResponse{RawResponse: resp.Response, VirtualNetworkListUsageResult: val}, nil
 }
 
 // listUsageHandleError handles the ListUsage error response.
@@ -560,7 +560,7 @@ func (client *VirtualNetworksClient) listUsageHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -605,7 +605,7 @@ func (client *VirtualNetworksClient) updateTagsCreateRequest(ctx context.Context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -617,7 +617,7 @@ func (client *VirtualNetworksClient) updateTagsHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkResponse{}, err
 	}
-return VirtualNetworkResponse{RawResponse: resp.Response, VirtualNetwork: val}, nil
+	return VirtualNetworkResponse{RawResponse: resp.Response, VirtualNetwork: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -626,10 +626,9 @@ func (client *VirtualNetworksClient) updateTagsHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

@@ -22,7 +22,7 @@ import (
 // LoadBalancerBackendAddressPoolsClient contains the methods for the LoadBalancerBackendAddressPools group.
 // Don't use this type directly, use NewLoadBalancerBackendAddressPoolsClient() instead.
 type LoadBalancerBackendAddressPoolsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginCreateOrUpdate(ctx con
 	}
 	poller := &backendAddressPoolPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (BackendAddressPoolResponse, error) {
@@ -65,7 +65,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) ResumeCreateOrUpdate(ctx co
 	}
 	poller := &backendAddressPoolPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) createOrUpdate(ctx context.
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) createOrUpdateCreateRequest
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -135,7 +135,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) createOrUpdateHandleError(r
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginDelete(ctx context.Con
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +176,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) ResumeDelete(ctx context.Co
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +206,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) deleteOperation(ctx context
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) deleteCreateRequest(ctx con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +246,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) deleteHandleError(resp *azc
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +295,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) getCreateRequest(ctx contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -307,7 +307,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) getHandleResponse(resp *azc
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BackendAddressPoolResponse{}, err
 	}
-return BackendAddressPoolResponse{RawResponse: resp.Response, BackendAddressPool: val}, nil
+	return BackendAddressPoolResponse{RawResponse: resp.Response, BackendAddressPool: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -316,7 +316,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) getHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -325,7 +325,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) getHandleError(resp *azcore
 
 // List - Gets all the load balancer backed address pools.
 // If the operation fails it returns the *CloudError error type.
-func (client *LoadBalancerBackendAddressPoolsClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerBackendAddressPoolsListOptions) (LoadBalancerBackendAddressPoolListResultPager) {
+func (client *LoadBalancerBackendAddressPoolsClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerBackendAddressPoolsListOptions) LoadBalancerBackendAddressPoolListResultPager {
 	return &loadBalancerBackendAddressPoolListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -361,7 +361,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) listCreateRequest(ctx conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -373,7 +373,7 @@ func (client *LoadBalancerBackendAddressPoolsClient) listHandleResponse(resp *az
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LoadBalancerBackendAddressPoolListResultResponse{}, err
 	}
-return LoadBalancerBackendAddressPoolListResultResponse{RawResponse: resp.Response, LoadBalancerBackendAddressPoolListResult: val}, nil
+	return LoadBalancerBackendAddressPoolListResultResponse{RawResponse: resp.Response, LoadBalancerBackendAddressPoolListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -382,10 +382,9 @@ func (client *LoadBalancerBackendAddressPoolsClient) listHandleError(resp *azcor
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

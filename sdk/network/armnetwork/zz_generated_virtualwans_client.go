@@ -22,7 +22,7 @@ import (
 // VirtualWansClient contains the methods for the VirtualWans group.
 // Don't use this type directly, use NewVirtualWansClient() instead.
 type VirtualWansClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *VirtualWansClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 	poller := &virtualWANPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualWANResponse, error) {
@@ -65,7 +65,7 @@ func (client *VirtualWansClient) ResumeCreateOrUpdate(ctx context.Context, token
 	}
 	poller := &virtualWANPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *VirtualWansClient) createOrUpdate(ctx context.Context, resourceGro
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *VirtualWansClient) createOrUpdateCreateRequest(ctx context.Context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(wanParameters)
@@ -131,7 +131,7 @@ func (client *VirtualWansClient) createOrUpdateHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *VirtualWansClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *VirtualWansClient) ResumeDelete(ctx context.Context, token string)
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *VirtualWansClient) deleteOperation(ctx context.Context, resourceGr
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *VirtualWansClient) deleteCreateRequest(ctx context.Context, resour
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *VirtualWansClient) deleteHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *VirtualWansClient) getCreateRequest(ctx context.Context, resourceG
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -295,7 +295,7 @@ func (client *VirtualWansClient) getHandleResponse(resp *azcore.Response) (Virtu
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualWANResponse{}, err
 	}
-return VirtualWANResponse{RawResponse: resp.Response, VirtualWAN: val}, nil
+	return VirtualWANResponse{RawResponse: resp.Response, VirtualWAN: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -304,7 +304,7 @@ func (client *VirtualWansClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -313,7 +313,7 @@ func (client *VirtualWansClient) getHandleError(resp *azcore.Response) error {
 
 // List - Lists all the VirtualWANs in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualWansClient) List(options *VirtualWansListOptions) (ListVirtualWANsResultPager) {
+func (client *VirtualWansClient) List(options *VirtualWansListOptions) ListVirtualWANsResultPager {
 	return &listVirtualWANsResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -341,7 +341,7 @@ func (client *VirtualWansClient) listCreateRequest(ctx context.Context, options 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -353,7 +353,7 @@ func (client *VirtualWansClient) listHandleResponse(resp *azcore.Response) (List
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVirtualWANsResultResponse{}, err
 	}
-return ListVirtualWANsResultResponse{RawResponse: resp.Response, ListVirtualWANsResult: val}, nil
+	return ListVirtualWANsResultResponse{RawResponse: resp.Response, ListVirtualWANsResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -362,7 +362,7 @@ func (client *VirtualWansClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -371,7 +371,7 @@ func (client *VirtualWansClient) listHandleError(resp *azcore.Response) error {
 
 // ListByResourceGroup - Lists all the VirtualWANs in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualWansClient) ListByResourceGroup(resourceGroupName string, options *VirtualWansListByResourceGroupOptions) (ListVirtualWANsResultPager) {
+func (client *VirtualWansClient) ListByResourceGroup(resourceGroupName string, options *VirtualWansListByResourceGroupOptions) ListVirtualWANsResultPager {
 	return &listVirtualWANsResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -403,7 +403,7 @@ func (client *VirtualWansClient) listByResourceGroupCreateRequest(ctx context.Co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -415,7 +415,7 @@ func (client *VirtualWansClient) listByResourceGroupHandleResponse(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVirtualWANsResultResponse{}, err
 	}
-return ListVirtualWANsResultResponse{RawResponse: resp.Response, ListVirtualWANsResult: val}, nil
+	return ListVirtualWANsResultResponse{RawResponse: resp.Response, ListVirtualWANsResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -424,7 +424,7 @@ func (client *VirtualWansClient) listByResourceGroupHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -469,7 +469,7 @@ func (client *VirtualWansClient) updateTagsCreateRequest(ctx context.Context, re
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(wanParameters)
@@ -481,7 +481,7 @@ func (client *VirtualWansClient) updateTagsHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualWANResponse{}, err
 	}
-return VirtualWANResponse{RawResponse: resp.Response, VirtualWAN: val}, nil
+	return VirtualWANResponse{RawResponse: resp.Response, VirtualWAN: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -490,10 +490,9 @@ func (client *VirtualWansClient) updateTagsHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

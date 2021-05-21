@@ -16,12 +16,13 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 )
 
 // VPNLinkConnectionsClient contains the methods for the VPNLinkConnections group.
 // Don't use this type directly, use NewVPNLinkConnectionsClient() instead.
 type VPNLinkConnectionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -30,9 +31,124 @@ func NewVPNLinkConnectionsClient(con *armcore.Connection, subscriptionID string)
 	return &VPNLinkConnectionsClient{con: con, subscriptionID: subscriptionID}
 }
 
+// BeginGetIkeSas - Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
+// If the operation fails it returns the *ErrorResponse error type.
+func (client *VPNLinkConnectionsClient) BeginGetIkeSas(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNLinkConnectionsBeginGetIkeSasOptions) (StringPollerResponse, error) {
+	resp, err := client.getIkeSas(ctx, resourceGroupName, gatewayName, connectionName, linkConnectionName, options)
+	if err != nil {
+		return StringPollerResponse{}, err
+	}
+	result := StringPollerResponse{
+		RawResponse: resp.Response,
+	}
+	pt, err := armcore.NewPoller("VPNLinkConnectionsClient.GetIkeSas", "location", resp, client.getIkeSasHandleError)
+	if err != nil {
+		return StringPollerResponse{}, err
+	}
+	poller := &stringPoller{
+		pipeline: client.con.Pipeline(),
+		pt:       pt,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
+}
+
+// ResumeGetIkeSas creates a new StringPoller from the specified resume token.
+// token - The value must come from a previous call to StringPoller.ResumeToken().
+func (client *VPNLinkConnectionsClient) ResumeGetIkeSas(ctx context.Context, token string) (StringPollerResponse, error) {
+	pt, err := armcore.NewPollerFromResumeToken("VPNLinkConnectionsClient.GetIkeSas", token, client.getIkeSasHandleError)
+	if err != nil {
+		return StringPollerResponse{}, err
+	}
+	poller := &stringPoller{
+		pipeline: client.con.Pipeline(),
+		pt:       pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return StringPollerResponse{}, err
+	}
+	result := StringPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
+}
+
+// GetIkeSas - Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
+// If the operation fails it returns the *ErrorResponse error type.
+func (client *VPNLinkConnectionsClient) getIkeSas(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNLinkConnectionsBeginGetIkeSasOptions) (*azcore.Response, error) {
+	req, err := client.getIkeSasCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, linkConnectionName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.con.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+		return nil, client.getIkeSasHandleError(resp)
+	}
+	return resp, nil
+}
+
+// getIkeSasCreateRequest creates the GetIkeSas request.
+func (client *VPNLinkConnectionsClient) getIkeSasCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNLinkConnectionsBeginGetIkeSasOptions) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections/{linkConnectionName}/getikesas"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if gatewayName == "" {
+		return nil, errors.New("parameter gatewayName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{gatewayName}", url.PathEscape(gatewayName))
+	if connectionName == "" {
+		return nil, errors.New("parameter connectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
+	if linkConnectionName == "" {
+		return nil, errors.New("parameter linkConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{linkConnectionName}", url.PathEscape(linkConnectionName))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Telemetry(telemetryInfo)
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.URL.RawQuery = reqQP.Encode()
+	req.Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// getIkeSasHandleError handles the GetIkeSas error response.
+func (client *VPNLinkConnectionsClient) getIkeSasHandleError(resp *azcore.Response) error {
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
+	}
+	errType := ErrorResponse{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
+}
+
 // ListByVPNConnection - Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
 // If the operation fails it returns the *CloudError error type.
-func (client *VPNLinkConnectionsClient) ListByVPNConnection(resourceGroupName string, gatewayName string, connectionName string, options *VPNLinkConnectionsListByVPNConnectionOptions) (ListVPNSiteLinkConnectionsResultPager) {
+func (client *VPNLinkConnectionsClient) ListByVPNConnection(resourceGroupName string, gatewayName string, connectionName string, options *VPNLinkConnectionsListByVPNConnectionOptions) ListVPNSiteLinkConnectionsResultPager {
 	return &listVPNSiteLinkConnectionsResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -72,7 +188,7 @@ func (client *VPNLinkConnectionsClient) listByVPNConnectionCreateRequest(ctx con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -84,7 +200,7 @@ func (client *VPNLinkConnectionsClient) listByVPNConnectionHandleResponse(resp *
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVPNSiteLinkConnectionsResultResponse{}, err
 	}
-return ListVPNSiteLinkConnectionsResultResponse{RawResponse: resp.Response, ListVPNSiteLinkConnectionsResult: val}, nil
+	return ListVPNSiteLinkConnectionsResultResponse{RawResponse: resp.Response, ListVPNSiteLinkConnectionsResult: val}, nil
 }
 
 // listByVPNConnectionHandleError handles the ListByVPNConnection error response.
@@ -93,10 +209,124 @@ func (client *VPNLinkConnectionsClient) listByVPNConnectionHandleError(resp *azc
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
+// BeginResetConnection - Resets the VpnLink connection specified.
+// If the operation fails it returns the *ErrorResponse error type.
+func (client *VPNLinkConnectionsClient) BeginResetConnection(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNLinkConnectionsBeginResetConnectionOptions) (HTTPPollerResponse, error) {
+	resp, err := client.resetConnection(ctx, resourceGroupName, gatewayName, connectionName, linkConnectionName, options)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp.Response,
+	}
+	pt, err := armcore.NewPoller("VPNLinkConnectionsClient.ResetConnection", "location", resp, client.resetConnectionHandleError)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	poller := &httpPoller{
+		pipeline: client.con.Pipeline(),
+		pt:       pt,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
+}
+
+// ResumeResetConnection creates a new HTTPPoller from the specified resume token.
+// token - The value must come from a previous call to HTTPPoller.ResumeToken().
+func (client *VPNLinkConnectionsClient) ResumeResetConnection(ctx context.Context, token string) (HTTPPollerResponse, error) {
+	pt, err := armcore.NewPollerFromResumeToken("VPNLinkConnectionsClient.ResetConnection", token, client.resetConnectionHandleError)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	poller := &httpPoller{
+		pipeline: client.con.Pipeline(),
+		pt:       pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
+}
+
+// ResetConnection - Resets the VpnLink connection specified.
+// If the operation fails it returns the *ErrorResponse error type.
+func (client *VPNLinkConnectionsClient) resetConnection(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNLinkConnectionsBeginResetConnectionOptions) (*azcore.Response, error) {
+	req, err := client.resetConnectionCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, linkConnectionName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.con.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusAccepted) {
+		return nil, client.resetConnectionHandleError(resp)
+	}
+	return resp, nil
+}
+
+// resetConnectionCreateRequest creates the ResetConnection request.
+func (client *VPNLinkConnectionsClient) resetConnectionCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, options *VPNLinkConnectionsBeginResetConnectionOptions) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections/{linkConnectionName}/resetconnection"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if gatewayName == "" {
+		return nil, errors.New("parameter gatewayName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{gatewayName}", url.PathEscape(gatewayName))
+	if connectionName == "" {
+		return nil, errors.New("parameter connectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
+	if linkConnectionName == "" {
+		return nil, errors.New("parameter linkConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{linkConnectionName}", url.PathEscape(linkConnectionName))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Telemetry(telemetryInfo)
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.URL.RawQuery = reqQP.Encode()
+	req.Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// resetConnectionHandleError handles the ResetConnection error response.
+func (client *VPNLinkConnectionsClient) resetConnectionHandleError(resp *azcore.Response) error {
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
+	}
+	errType := ErrorResponse{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
+}

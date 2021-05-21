@@ -22,7 +22,7 @@ import (
 // NetworkSecurityGroupsClient contains the methods for the NetworkSecurityGroups group.
 // Don't use this type directly, use NewNetworkSecurityGroupsClient() instead.
 type NetworkSecurityGroupsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *NetworkSecurityGroupsClient) BeginCreateOrUpdate(ctx context.Conte
 	}
 	poller := &networkSecurityGroupPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkSecurityGroupResponse, error) {
@@ -65,7 +65,7 @@ func (client *NetworkSecurityGroupsClient) ResumeCreateOrUpdate(ctx context.Cont
 	}
 	poller := &networkSecurityGroupPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *NetworkSecurityGroupsClient) createOrUpdate(ctx context.Context, r
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *NetworkSecurityGroupsClient) createOrUpdateCreateRequest(ctx conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *NetworkSecurityGroupsClient) createOrUpdateHandleError(resp *azcor
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *NetworkSecurityGroupsClient) BeginDelete(ctx context.Context, reso
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *NetworkSecurityGroupsClient) ResumeDelete(ctx context.Context, tok
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *NetworkSecurityGroupsClient) deleteOperation(ctx context.Context, 
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *NetworkSecurityGroupsClient) deleteCreateRequest(ctx context.Conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *NetworkSecurityGroupsClient) deleteHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *NetworkSecurityGroupsClient) getCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -298,7 +298,7 @@ func (client *NetworkSecurityGroupsClient) getHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkSecurityGroupResponse{}, err
 	}
-return NetworkSecurityGroupResponse{RawResponse: resp.Response, NetworkSecurityGroup: val}, nil
+	return NetworkSecurityGroupResponse{RawResponse: resp.Response, NetworkSecurityGroup: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -307,7 +307,7 @@ func (client *NetworkSecurityGroupsClient) getHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -316,7 +316,7 @@ func (client *NetworkSecurityGroupsClient) getHandleError(resp *azcore.Response)
 
 // List - Gets all network security groups in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *NetworkSecurityGroupsClient) List(resourceGroupName string, options *NetworkSecurityGroupsListOptions) (NetworkSecurityGroupListResultPager) {
+func (client *NetworkSecurityGroupsClient) List(resourceGroupName string, options *NetworkSecurityGroupsListOptions) NetworkSecurityGroupListResultPager {
 	return &networkSecurityGroupListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -348,7 +348,7 @@ func (client *NetworkSecurityGroupsClient) listCreateRequest(ctx context.Context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -360,7 +360,7 @@ func (client *NetworkSecurityGroupsClient) listHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkSecurityGroupListResultResponse{}, err
 	}
-return NetworkSecurityGroupListResultResponse{RawResponse: resp.Response, NetworkSecurityGroupListResult: val}, nil
+	return NetworkSecurityGroupListResultResponse{RawResponse: resp.Response, NetworkSecurityGroupListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -369,7 +369,7 @@ func (client *NetworkSecurityGroupsClient) listHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -378,7 +378,7 @@ func (client *NetworkSecurityGroupsClient) listHandleError(resp *azcore.Response
 
 // ListAll - Gets all network security groups in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *NetworkSecurityGroupsClient) ListAll(options *NetworkSecurityGroupsListAllOptions) (NetworkSecurityGroupListResultPager) {
+func (client *NetworkSecurityGroupsClient) ListAll(options *NetworkSecurityGroupsListAllOptions) NetworkSecurityGroupListResultPager {
 	return &networkSecurityGroupListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -406,7 +406,7 @@ func (client *NetworkSecurityGroupsClient) listAllCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -418,7 +418,7 @@ func (client *NetworkSecurityGroupsClient) listAllHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkSecurityGroupListResultResponse{}, err
 	}
-return NetworkSecurityGroupListResultResponse{RawResponse: resp.Response, NetworkSecurityGroupListResult: val}, nil
+	return NetworkSecurityGroupListResultResponse{RawResponse: resp.Response, NetworkSecurityGroupListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -427,7 +427,7 @@ func (client *NetworkSecurityGroupsClient) listAllHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -472,7 +472,7 @@ func (client *NetworkSecurityGroupsClient) updateTagsCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -484,7 +484,7 @@ func (client *NetworkSecurityGroupsClient) updateTagsHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkSecurityGroupResponse{}, err
 	}
-return NetworkSecurityGroupResponse{RawResponse: resp.Response, NetworkSecurityGroup: val}, nil
+	return NetworkSecurityGroupResponse{RawResponse: resp.Response, NetworkSecurityGroup: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -493,10 +493,9 @@ func (client *NetworkSecurityGroupsClient) updateTagsHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

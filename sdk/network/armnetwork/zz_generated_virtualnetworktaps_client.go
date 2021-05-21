@@ -22,7 +22,7 @@ import (
 // VirtualNetworkTapsClient contains the methods for the VirtualNetworkTaps group.
 // Don't use this type directly, use NewVirtualNetworkTapsClient() instead.
 type VirtualNetworkTapsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *VirtualNetworkTapsClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 	poller := &virtualNetworkTapPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualNetworkTapResponse, error) {
@@ -65,7 +65,7 @@ func (client *VirtualNetworkTapsClient) ResumeCreateOrUpdate(ctx context.Context
 	}
 	poller := &virtualNetworkTapPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *VirtualNetworkTapsClient) createOrUpdate(ctx context.Context, reso
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *VirtualNetworkTapsClient) createOrUpdateCreateRequest(ctx context.
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *VirtualNetworkTapsClient) createOrUpdateHandleError(resp *azcore.R
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *VirtualNetworkTapsClient) BeginDelete(ctx context.Context, resourc
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *VirtualNetworkTapsClient) ResumeDelete(ctx context.Context, token 
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *VirtualNetworkTapsClient) deleteOperation(ctx context.Context, res
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *VirtualNetworkTapsClient) deleteCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *VirtualNetworkTapsClient) deleteHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *VirtualNetworkTapsClient) getCreateRequest(ctx context.Context, re
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -295,7 +295,7 @@ func (client *VirtualNetworkTapsClient) getHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkTapResponse{}, err
 	}
-return VirtualNetworkTapResponse{RawResponse: resp.Response, VirtualNetworkTap: val}, nil
+	return VirtualNetworkTapResponse{RawResponse: resp.Response, VirtualNetworkTap: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -304,7 +304,7 @@ func (client *VirtualNetworkTapsClient) getHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -313,7 +313,7 @@ func (client *VirtualNetworkTapsClient) getHandleError(resp *azcore.Response) er
 
 // ListAll - Gets all the VirtualNetworkTaps in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkTapsClient) ListAll(options *VirtualNetworkTapsListAllOptions) (VirtualNetworkTapListResultPager) {
+func (client *VirtualNetworkTapsClient) ListAll(options *VirtualNetworkTapsListAllOptions) VirtualNetworkTapListResultPager {
 	return &virtualNetworkTapListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -341,7 +341,7 @@ func (client *VirtualNetworkTapsClient) listAllCreateRequest(ctx context.Context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -353,7 +353,7 @@ func (client *VirtualNetworkTapsClient) listAllHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkTapListResultResponse{}, err
 	}
-return VirtualNetworkTapListResultResponse{RawResponse: resp.Response, VirtualNetworkTapListResult: val}, nil
+	return VirtualNetworkTapListResultResponse{RawResponse: resp.Response, VirtualNetworkTapListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -362,7 +362,7 @@ func (client *VirtualNetworkTapsClient) listAllHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -371,7 +371,7 @@ func (client *VirtualNetworkTapsClient) listAllHandleError(resp *azcore.Response
 
 // ListByResourceGroup - Gets all the VirtualNetworkTaps in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkTapsClient) ListByResourceGroup(resourceGroupName string, options *VirtualNetworkTapsListByResourceGroupOptions) (VirtualNetworkTapListResultPager) {
+func (client *VirtualNetworkTapsClient) ListByResourceGroup(resourceGroupName string, options *VirtualNetworkTapsListByResourceGroupOptions) VirtualNetworkTapListResultPager {
 	return &virtualNetworkTapListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -403,7 +403,7 @@ func (client *VirtualNetworkTapsClient) listByResourceGroupCreateRequest(ctx con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -415,7 +415,7 @@ func (client *VirtualNetworkTapsClient) listByResourceGroupHandleResponse(resp *
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkTapListResultResponse{}, err
 	}
-return VirtualNetworkTapListResultResponse{RawResponse: resp.Response, VirtualNetworkTapListResult: val}, nil
+	return VirtualNetworkTapListResultResponse{RawResponse: resp.Response, VirtualNetworkTapListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -424,7 +424,7 @@ func (client *VirtualNetworkTapsClient) listByResourceGroupHandleError(resp *azc
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -469,7 +469,7 @@ func (client *VirtualNetworkTapsClient) updateTagsCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(tapParameters)
@@ -481,7 +481,7 @@ func (client *VirtualNetworkTapsClient) updateTagsHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkTapResponse{}, err
 	}
-return VirtualNetworkTapResponse{RawResponse: resp.Response, VirtualNetworkTap: val}, nil
+	return VirtualNetworkTapResponse{RawResponse: resp.Response, VirtualNetworkTap: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -490,10 +490,9 @@ func (client *VirtualNetworkTapsClient) updateTagsHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

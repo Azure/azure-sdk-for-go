@@ -22,7 +22,7 @@ import (
 // VirtualNetworkGatewayConnectionsClient contains the methods for the VirtualNetworkGatewayConnections group.
 // Don't use this type directly, use NewVirtualNetworkGatewayConnectionsClient() instead.
 type VirtualNetworkGatewayConnectionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginCreateOrUpdate(ctx co
 	}
 	poller := &virtualNetworkGatewayConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualNetworkGatewayConnectionResponse, error) {
@@ -65,7 +65,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) ResumeCreateOrUpdate(ctx c
 	}
 	poller := &virtualNetworkGatewayConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) createOrUpdate(ctx context
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) createOrUpdateCreateReques
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) createOrUpdateHandleError(
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginDelete(ctx context.Co
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) ResumeDelete(ctx context.C
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) deleteOperation(ctx contex
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) deleteCreateRequest(ctx co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) deleteHandleError(resp *az
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) getCreateRequest(ctx conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -295,7 +295,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) getHandleResponse(resp *az
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkGatewayConnectionResponse{}, err
 	}
-return VirtualNetworkGatewayConnectionResponse{RawResponse: resp.Response, VirtualNetworkGatewayConnection: val}, nil
+	return VirtualNetworkGatewayConnectionResponse{RawResponse: resp.Response, VirtualNetworkGatewayConnection: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -304,7 +304,114 @@ func (client *VirtualNetworkGatewayConnectionsClient) getHandleError(resp *azcor
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
+}
+
+// BeginGetIkeSas - Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
+// If the operation fails it returns the *ErrorResponse error type.
+func (client *VirtualNetworkGatewayConnectionsClient) BeginGetIkeSas(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginGetIkeSasOptions) (StringPollerResponse, error) {
+	resp, err := client.getIkeSas(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
+	if err != nil {
+		return StringPollerResponse{}, err
+	}
+	result := StringPollerResponse{
+		RawResponse: resp.Response,
+	}
+	pt, err := armcore.NewPoller("VirtualNetworkGatewayConnectionsClient.GetIkeSas", "location", resp, client.getIkeSasHandleError)
+	if err != nil {
+		return StringPollerResponse{}, err
+	}
+	poller := &stringPoller{
+		pipeline: client.con.Pipeline(),
+		pt:       pt,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
+}
+
+// ResumeGetIkeSas creates a new StringPoller from the specified resume token.
+// token - The value must come from a previous call to StringPoller.ResumeToken().
+func (client *VirtualNetworkGatewayConnectionsClient) ResumeGetIkeSas(ctx context.Context, token string) (StringPollerResponse, error) {
+	pt, err := armcore.NewPollerFromResumeToken("VirtualNetworkGatewayConnectionsClient.GetIkeSas", token, client.getIkeSasHandleError)
+	if err != nil {
+		return StringPollerResponse{}, err
+	}
+	poller := &stringPoller{
+		pipeline: client.con.Pipeline(),
+		pt:       pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return StringPollerResponse{}, err
+	}
+	result := StringPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
+}
+
+// GetIkeSas - Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
+// If the operation fails it returns the *ErrorResponse error type.
+func (client *VirtualNetworkGatewayConnectionsClient) getIkeSas(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginGetIkeSasOptions) (*azcore.Response, error) {
+	req, err := client.getIkeSasCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.con.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+		return nil, client.getIkeSasHandleError(resp)
+	}
+	return resp, nil
+}
+
+// getIkeSasCreateRequest creates the GetIkeSas request.
+func (client *VirtualNetworkGatewayConnectionsClient) getIkeSasCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginGetIkeSasOptions) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/getikesas"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if virtualNetworkGatewayConnectionName == "" {
+		return nil, errors.New("parameter virtualNetworkGatewayConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayConnectionName}", url.PathEscape(virtualNetworkGatewayConnectionName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Telemetry(telemetryInfo)
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.URL.RawQuery = reqQP.Encode()
+	req.Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// getIkeSasHandleError handles the GetIkeSas error response.
+func (client *VirtualNetworkGatewayConnectionsClient) getIkeSasHandleError(resp *azcore.Response) error {
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
+	}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -350,7 +457,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyCreateRequest(
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -362,7 +469,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyHandleResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ConnectionSharedKeyResponse{}, err
 	}
-return ConnectionSharedKeyResponse{RawResponse: resp.Response, ConnectionSharedKey: val}, nil
+	return ConnectionSharedKeyResponse{RawResponse: resp.Response, ConnectionSharedKey: val}, nil
 }
 
 // getSharedKeyHandleError handles the GetSharedKey error response.
@@ -371,7 +478,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyHandleError(re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -380,7 +487,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) getSharedKeyHandleError(re
 
 // List - The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkGatewayConnectionsClient) List(resourceGroupName string, options *VirtualNetworkGatewayConnectionsListOptions) (VirtualNetworkGatewayConnectionListResultPager) {
+func (client *VirtualNetworkGatewayConnectionsClient) List(resourceGroupName string, options *VirtualNetworkGatewayConnectionsListOptions) VirtualNetworkGatewayConnectionListResultPager {
 	return &virtualNetworkGatewayConnectionListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -412,7 +519,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) listCreateRequest(ctx cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -424,7 +531,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) listHandleResponse(resp *a
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkGatewayConnectionListResultResponse{}, err
 	}
-return VirtualNetworkGatewayConnectionListResultResponse{RawResponse: resp.Response, VirtualNetworkGatewayConnectionListResult: val}, nil
+	return VirtualNetworkGatewayConnectionListResultResponse{RawResponse: resp.Response, VirtualNetworkGatewayConnectionListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -433,7 +540,114 @@ func (client *VirtualNetworkGatewayConnectionsClient) listHandleError(resp *azco
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
+}
+
+// BeginResetConnection - Resets the virtual network gateway connection specified.
+// If the operation fails it returns the *ErrorResponse error type.
+func (client *VirtualNetworkGatewayConnectionsClient) BeginResetConnection(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginResetConnectionOptions) (HTTPPollerResponse, error) {
+	resp, err := client.resetConnection(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp.Response,
+	}
+	pt, err := armcore.NewPoller("VirtualNetworkGatewayConnectionsClient.ResetConnection", "location", resp, client.resetConnectionHandleError)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	poller := &httpPoller{
+		pipeline: client.con.Pipeline(),
+		pt:       pt,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
+}
+
+// ResumeResetConnection creates a new HTTPPoller from the specified resume token.
+// token - The value must come from a previous call to HTTPPoller.ResumeToken().
+func (client *VirtualNetworkGatewayConnectionsClient) ResumeResetConnection(ctx context.Context, token string) (HTTPPollerResponse, error) {
+	pt, err := armcore.NewPollerFromResumeToken("VirtualNetworkGatewayConnectionsClient.ResetConnection", token, client.resetConnectionHandleError)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	poller := &httpPoller{
+		pipeline: client.con.Pipeline(),
+		pt:       pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
+}
+
+// ResetConnection - Resets the virtual network gateway connection specified.
+// If the operation fails it returns the *ErrorResponse error type.
+func (client *VirtualNetworkGatewayConnectionsClient) resetConnection(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginResetConnectionOptions) (*azcore.Response, error) {
+	req, err := client.resetConnectionCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayConnectionName, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.con.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusAccepted) {
+		return nil, client.resetConnectionHandleError(resp)
+	}
+	return resp, nil
+}
+
+// resetConnectionCreateRequest creates the ResetConnection request.
+func (client *VirtualNetworkGatewayConnectionsClient) resetConnectionCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayConnectionName string, options *VirtualNetworkGatewayConnectionsBeginResetConnectionOptions) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections/{virtualNetworkGatewayConnectionName}/resetconnection"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if virtualNetworkGatewayConnectionName == "" {
+		return nil, errors.New("parameter virtualNetworkGatewayConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayConnectionName}", url.PathEscape(virtualNetworkGatewayConnectionName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Telemetry(telemetryInfo)
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.URL.RawQuery = reqQP.Encode()
+	req.Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// resetConnectionHandleError handles the ResetConnection error response.
+func (client *VirtualNetworkGatewayConnectionsClient) resetConnectionHandleError(resp *azcore.Response) error {
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
+	}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -458,7 +672,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginResetSharedKey(ctx co
 	}
 	poller := &connectionResetSharedKeyPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectionResetSharedKeyResponse, error) {
@@ -476,7 +690,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) ResumeResetSharedKey(ctx c
 	}
 	poller := &connectionResetSharedKeyPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -508,7 +722,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) resetSharedKey(ctx context
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.resetSharedKeyHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // resetSharedKeyCreateRequest creates the ResetSharedKey request.
@@ -532,7 +746,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) resetSharedKeyCreateReques
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -544,7 +758,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) resetSharedKeyHandleError(
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -569,7 +783,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginSetSharedKey(ctx cont
 	}
 	poller := &connectionSharedKeyPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectionSharedKeyResponse, error) {
@@ -587,7 +801,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) ResumeSetSharedKey(ctx con
 	}
 	poller := &connectionSharedKeyPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -619,7 +833,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) setSharedKey(ctx context.C
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.setSharedKeyHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // setSharedKeyCreateRequest creates the SetSharedKey request.
@@ -643,7 +857,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) setSharedKeyCreateRequest(
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -655,7 +869,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) setSharedKeyHandleError(re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -678,7 +892,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginStartPacketCapture(ct
 	}
 	poller := &stringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
@@ -696,7 +910,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) ResumeStartPacketCapture(c
 	}
 	poller := &stringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -726,7 +940,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) startPacketCapture(ctx con
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.startPacketCaptureHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // startPacketCaptureCreateRequest creates the StartPacketCapture request.
@@ -750,7 +964,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) startPacketCaptureCreateRe
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
@@ -765,7 +979,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) startPacketCaptureHandleEr
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -788,7 +1002,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginStopPacketCapture(ctx
 	}
 	poller := &stringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
@@ -806,7 +1020,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) ResumeStopPacketCapture(ct
 	}
 	poller := &stringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -836,7 +1050,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) stopPacketCapture(ctx cont
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.stopPacketCaptureHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // stopPacketCaptureCreateRequest creates the StopPacketCapture request.
@@ -860,7 +1074,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) stopPacketCaptureCreateReq
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -872,7 +1086,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) stopPacketCaptureHandleErr
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -895,7 +1109,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) BeginUpdateTags(ctx contex
 	}
 	poller := &virtualNetworkGatewayConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualNetworkGatewayConnectionResponse, error) {
@@ -913,7 +1127,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) ResumeUpdateTags(ctx conte
 	}
 	poller := &virtualNetworkGatewayConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -943,7 +1157,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) updateTags(ctx context.Con
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateTagsHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -967,7 +1181,7 @@ func (client *VirtualNetworkGatewayConnectionsClient) updateTagsCreateRequest(ct
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -979,10 +1193,9 @@ func (client *VirtualNetworkGatewayConnectionsClient) updateTagsHandleError(resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

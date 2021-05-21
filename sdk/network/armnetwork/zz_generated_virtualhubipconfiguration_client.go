@@ -22,7 +22,7 @@ import (
 // VirtualHubIPConfigurationClient contains the methods for the VirtualHubIPConfiguration group.
 // Don't use this type directly, use NewVirtualHubIPConfigurationClient() instead.
 type VirtualHubIPConfigurationClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *VirtualHubIPConfigurationClient) BeginCreateOrUpdate(ctx context.C
 	}
 	poller := &hubIPConfigurationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (HubIPConfigurationResponse, error) {
@@ -65,7 +65,7 @@ func (client *VirtualHubIPConfigurationClient) ResumeCreateOrUpdate(ctx context.
 	}
 	poller := &hubIPConfigurationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *VirtualHubIPConfigurationClient) createOrUpdate(ctx context.Contex
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *VirtualHubIPConfigurationClient) createOrUpdateCreateRequest(ctx c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -135,7 +135,7 @@ func (client *VirtualHubIPConfigurationClient) createOrUpdateHandleError(resp *a
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *VirtualHubIPConfigurationClient) BeginDelete(ctx context.Context, 
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +176,7 @@ func (client *VirtualHubIPConfigurationClient) ResumeDelete(ctx context.Context,
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +206,7 @@ func (client *VirtualHubIPConfigurationClient) deleteOperation(ctx context.Conte
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *VirtualHubIPConfigurationClient) deleteCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +246,7 @@ func (client *VirtualHubIPConfigurationClient) deleteHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +295,7 @@ func (client *VirtualHubIPConfigurationClient) getCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -307,7 +307,7 @@ func (client *VirtualHubIPConfigurationClient) getHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return HubIPConfigurationResponse{}, err
 	}
-return HubIPConfigurationResponse{RawResponse: resp.Response, HubIPConfiguration: val}, nil
+	return HubIPConfigurationResponse{RawResponse: resp.Response, HubIPConfiguration: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -316,7 +316,7 @@ func (client *VirtualHubIPConfigurationClient) getHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -325,7 +325,7 @@ func (client *VirtualHubIPConfigurationClient) getHandleError(resp *azcore.Respo
 
 // List - Retrieves the details of all VirtualHubIpConfigurations.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualHubIPConfigurationClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubIPConfigurationListOptions) (ListVirtualHubIPConfigurationResultsPager) {
+func (client *VirtualHubIPConfigurationClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubIPConfigurationListOptions) ListVirtualHubIPConfigurationResultsPager {
 	return &listVirtualHubIPConfigurationResultsPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -361,7 +361,7 @@ func (client *VirtualHubIPConfigurationClient) listCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -373,7 +373,7 @@ func (client *VirtualHubIPConfigurationClient) listHandleResponse(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVirtualHubIPConfigurationResultsResponse{}, err
 	}
-return ListVirtualHubIPConfigurationResultsResponse{RawResponse: resp.Response, ListVirtualHubIPConfigurationResults: val}, nil
+	return ListVirtualHubIPConfigurationResultsResponse{RawResponse: resp.Response, ListVirtualHubIPConfigurationResults: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -382,10 +382,9 @@ func (client *VirtualHubIPConfigurationClient) listHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

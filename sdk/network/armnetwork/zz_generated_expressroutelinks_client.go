@@ -21,7 +21,7 @@ import (
 // ExpressRouteLinksClient contains the methods for the ExpressRouteLinks group.
 // Don't use this type directly, use NewExpressRouteLinksClient() instead.
 type ExpressRouteLinksClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -72,7 +72,7 @@ func (client *ExpressRouteLinksClient) getCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -84,7 +84,7 @@ func (client *ExpressRouteLinksClient) getHandleResponse(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRouteLinkResponse{}, err
 	}
-return ExpressRouteLinkResponse{RawResponse: resp.Response, ExpressRouteLink: val}, nil
+	return ExpressRouteLinkResponse{RawResponse: resp.Response, ExpressRouteLink: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -93,7 +93,7 @@ func (client *ExpressRouteLinksClient) getHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -102,7 +102,7 @@ func (client *ExpressRouteLinksClient) getHandleError(resp *azcore.Response) err
 
 // List - Retrieve the ExpressRouteLink sub-resources of the specified ExpressRoutePort resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *ExpressRouteLinksClient) List(resourceGroupName string, expressRoutePortName string, options *ExpressRouteLinksListOptions) (ExpressRouteLinkListResultPager) {
+func (client *ExpressRouteLinksClient) List(resourceGroupName string, expressRoutePortName string, options *ExpressRouteLinksListOptions) ExpressRouteLinkListResultPager {
 	return &expressRouteLinkListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -138,7 +138,7 @@ func (client *ExpressRouteLinksClient) listCreateRequest(ctx context.Context, re
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -150,7 +150,7 @@ func (client *ExpressRouteLinksClient) listHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRouteLinkListResultResponse{}, err
 	}
-return ExpressRouteLinkListResultResponse{RawResponse: resp.Response, ExpressRouteLinkListResult: val}, nil
+	return ExpressRouteLinkListResultResponse{RawResponse: resp.Response, ExpressRouteLinkListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -159,10 +159,9 @@ func (client *ExpressRouteLinksClient) listHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

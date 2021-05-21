@@ -22,7 +22,7 @@ import (
 // VPNServerConfigurationsClient contains the methods for the VPNServerConfigurations group.
 // Don't use this type directly, use NewVPNServerConfigurationsClient() instead.
 type VPNServerConfigurationsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *VPNServerConfigurationsClient) BeginCreateOrUpdate(ctx context.Con
 	}
 	poller := &vpnServerConfigurationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNServerConfigurationResponse, error) {
@@ -65,7 +65,7 @@ func (client *VPNServerConfigurationsClient) ResumeCreateOrUpdate(ctx context.Co
 	}
 	poller := &vpnServerConfigurationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *VPNServerConfigurationsClient) createOrUpdate(ctx context.Context,
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *VPNServerConfigurationsClient) createOrUpdateCreateRequest(ctx con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(vpnServerConfigurationParameters)
@@ -131,7 +131,7 @@ func (client *VPNServerConfigurationsClient) createOrUpdateHandleError(resp *azc
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *VPNServerConfigurationsClient) BeginDelete(ctx context.Context, re
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *VPNServerConfigurationsClient) ResumeDelete(ctx context.Context, t
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *VPNServerConfigurationsClient) deleteOperation(ctx context.Context
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *VPNServerConfigurationsClient) deleteCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *VPNServerConfigurationsClient) deleteHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *VPNServerConfigurationsClient) getCreateRequest(ctx context.Contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -295,7 +295,7 @@ func (client *VPNServerConfigurationsClient) getHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VPNServerConfigurationResponse{}, err
 	}
-return VPNServerConfigurationResponse{RawResponse: resp.Response, VPNServerConfiguration: val}, nil
+	return VPNServerConfigurationResponse{RawResponse: resp.Response, VPNServerConfiguration: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -304,7 +304,7 @@ func (client *VPNServerConfigurationsClient) getHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -313,7 +313,7 @@ func (client *VPNServerConfigurationsClient) getHandleError(resp *azcore.Respons
 
 // List - Lists all the VpnServerConfigurations in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *VPNServerConfigurationsClient) List(options *VPNServerConfigurationsListOptions) (ListVPNServerConfigurationsResultPager) {
+func (client *VPNServerConfigurationsClient) List(options *VPNServerConfigurationsListOptions) ListVPNServerConfigurationsResultPager {
 	return &listVPNServerConfigurationsResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -341,7 +341,7 @@ func (client *VPNServerConfigurationsClient) listCreateRequest(ctx context.Conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -353,7 +353,7 @@ func (client *VPNServerConfigurationsClient) listHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVPNServerConfigurationsResultResponse{}, err
 	}
-return ListVPNServerConfigurationsResultResponse{RawResponse: resp.Response, ListVPNServerConfigurationsResult: val}, nil
+	return ListVPNServerConfigurationsResultResponse{RawResponse: resp.Response, ListVPNServerConfigurationsResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -362,7 +362,7 @@ func (client *VPNServerConfigurationsClient) listHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -371,7 +371,7 @@ func (client *VPNServerConfigurationsClient) listHandleError(resp *azcore.Respon
 
 // ListByResourceGroup - Lists all the vpnServerConfigurations in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *VPNServerConfigurationsClient) ListByResourceGroup(resourceGroupName string, options *VPNServerConfigurationsListByResourceGroupOptions) (ListVPNServerConfigurationsResultPager) {
+func (client *VPNServerConfigurationsClient) ListByResourceGroup(resourceGroupName string, options *VPNServerConfigurationsListByResourceGroupOptions) ListVPNServerConfigurationsResultPager {
 	return &listVPNServerConfigurationsResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -403,7 +403,7 @@ func (client *VPNServerConfigurationsClient) listByResourceGroupCreateRequest(ct
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -415,7 +415,7 @@ func (client *VPNServerConfigurationsClient) listByResourceGroupHandleResponse(r
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVPNServerConfigurationsResultResponse{}, err
 	}
-return ListVPNServerConfigurationsResultResponse{RawResponse: resp.Response, ListVPNServerConfigurationsResult: val}, nil
+	return ListVPNServerConfigurationsResultResponse{RawResponse: resp.Response, ListVPNServerConfigurationsResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -424,7 +424,7 @@ func (client *VPNServerConfigurationsClient) listByResourceGroupHandleError(resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -469,7 +469,7 @@ func (client *VPNServerConfigurationsClient) updateTagsCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(vpnServerConfigurationParameters)
@@ -481,7 +481,7 @@ func (client *VPNServerConfigurationsClient) updateTagsHandleResponse(resp *azco
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VPNServerConfigurationResponse{}, err
 	}
-return VPNServerConfigurationResponse{RawResponse: resp.Response, VPNServerConfiguration: val}, nil
+	return VPNServerConfigurationResponse{RawResponse: resp.Response, VPNServerConfiguration: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -490,10 +490,9 @@ func (client *VPNServerConfigurationsClient) updateTagsHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

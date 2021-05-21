@@ -26,7 +26,7 @@ type ApplicationGatewayBackendHealthOnDemandPoller interface {
 
 type applicationGatewayBackendHealthOnDemandPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *applicationGatewayBackendHealthOnDemandPoller) Done() bool {
@@ -72,7 +72,7 @@ type ApplicationGatewayBackendHealthPoller interface {
 
 type applicationGatewayBackendHealthPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *applicationGatewayBackendHealthPoller) Done() bool {
@@ -118,7 +118,7 @@ type ApplicationGatewayPoller interface {
 
 type applicationGatewayPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *applicationGatewayPoller) Done() bool {
@@ -164,7 +164,7 @@ type ApplicationGatewayPrivateEndpointConnectionPoller interface {
 
 type applicationGatewayPrivateEndpointConnectionPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *applicationGatewayPrivateEndpointConnectionPoller) Done() bool {
@@ -210,7 +210,7 @@ type ApplicationSecurityGroupPoller interface {
 
 type applicationSecurityGroupPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *applicationSecurityGroupPoller) Done() bool {
@@ -256,7 +256,7 @@ type AvailableProvidersListPoller interface {
 
 type availableProvidersListPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *availableProvidersListPoller) Done() bool {
@@ -302,7 +302,7 @@ type AzureFirewallPoller interface {
 
 type azureFirewallPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *azureFirewallPoller) Done() bool {
@@ -348,7 +348,7 @@ type AzureReachabilityReportPoller interface {
 
 type azureReachabilityReportPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *azureReachabilityReportPoller) Done() bool {
@@ -394,7 +394,7 @@ type BackendAddressPoolPoller interface {
 
 type backendAddressPoolPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *backendAddressPoolPoller) Done() bool {
@@ -439,9 +439,9 @@ type BastionActiveSessionListResultPagerPoller interface {
 }
 
 type bastionActiveSessionListResultPagerPoller struct {
-	pipeline azcore.Pipeline
-	pt armcore.Poller
-	errHandler bastionActiveSessionListResultHandleError
+	pipeline    azcore.Pipeline
+	pt          armcore.Poller
+	errHandler  bastionActiveSessionListResultHandleError
 	respHandler bastionActiveSessionListResultHandleResponse
 	statusCodes []int
 }
@@ -476,17 +476,18 @@ func (p *bastionActiveSessionListResultPagerPoller) pollUntilDone(ctx context.Co
 	return p.handleResponse(&azcore.Response{Response: resp})
 }
 
-func(p * bastionActiveSessionListResultPagerPoller) handleResponse(resp * azcore.Response)(BastionActiveSessionListResultPager, error) {
+func (p *bastionActiveSessionListResultPagerPoller) handleResponse(resp *azcore.Response) (BastionActiveSessionListResultPager, error) {
 	return &bastionActiveSessionListResultPager{
-		pipeline: p.pipeline,
-		resp: resp,
-		errorer: p.errHandler,
+		pipeline:  p.pipeline,
+		resp:      resp,
+		errorer:   p.errHandler,
 		responder: p.respHandler,
 		advancer: func(ctx context.Context, resp BastionActiveSessionListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.BastionActiveSessionListResult.NextLink)
 		},
 		statusCodes: p.statusCodes,
-	}, nil}
+	}, nil
+}
 
 // BastionHostPoller provides polling facilities until the operation reaches a terminal state.
 type BastionHostPoller interface {
@@ -499,7 +500,7 @@ type BastionHostPoller interface {
 
 type bastionHostPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *bastionHostPoller) Done() bool {
@@ -544,9 +545,9 @@ type BastionShareableLinkListResultPagerPoller interface {
 }
 
 type bastionShareableLinkListResultPagerPoller struct {
-	pipeline azcore.Pipeline
-	pt armcore.Poller
-	errHandler bastionShareableLinkListResultHandleError
+	pipeline    azcore.Pipeline
+	pt          armcore.Poller
+	errHandler  bastionShareableLinkListResultHandleError
 	respHandler bastionShareableLinkListResultHandleResponse
 	statusCodes []int
 }
@@ -581,17 +582,18 @@ func (p *bastionShareableLinkListResultPagerPoller) pollUntilDone(ctx context.Co
 	return p.handleResponse(&azcore.Response{Response: resp})
 }
 
-func(p * bastionShareableLinkListResultPagerPoller) handleResponse(resp * azcore.Response)(BastionShareableLinkListResultPager, error) {
+func (p *bastionShareableLinkListResultPagerPoller) handleResponse(resp *azcore.Response) (BastionShareableLinkListResultPager, error) {
 	return &bastionShareableLinkListResultPager{
-		pipeline: p.pipeline,
-		resp: resp,
-		errorer: p.errHandler,
+		pipeline:  p.pipeline,
+		resp:      resp,
+		errorer:   p.errHandler,
 		responder: p.respHandler,
 		advancer: func(ctx context.Context, resp BastionShareableLinkListResultResponse) (*azcore.Request, error) {
 			return azcore.NewRequest(ctx, http.MethodGet, *resp.BastionShareableLinkListResult.NextLink)
 		},
 		statusCodes: p.statusCodes,
-	}, nil}
+	}, nil
+}
 
 // BgpConnectionPoller provides polling facilities until the operation reaches a terminal state.
 type BgpConnectionPoller interface {
@@ -604,7 +606,7 @@ type BgpConnectionPoller interface {
 
 type bgpConnectionPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *bgpConnectionPoller) Done() bool {
@@ -650,7 +652,7 @@ type BgpPeerStatusListResultPoller interface {
 
 type bgpPeerStatusListResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *bgpPeerStatusListResultPoller) Done() bool {
@@ -696,7 +698,7 @@ type ConnectionMonitorQueryResultPoller interface {
 
 type connectionMonitorQueryResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *connectionMonitorQueryResultPoller) Done() bool {
@@ -742,7 +744,7 @@ type ConnectionMonitorResultPoller interface {
 
 type connectionMonitorResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *connectionMonitorResultPoller) Done() bool {
@@ -788,7 +790,7 @@ type ConnectionResetSharedKeyPoller interface {
 
 type connectionResetSharedKeyPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *connectionResetSharedKeyPoller) Done() bool {
@@ -834,7 +836,7 @@ type ConnectionSharedKeyPoller interface {
 
 type connectionSharedKeyPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *connectionSharedKeyPoller) Done() bool {
@@ -880,7 +882,7 @@ type ConnectivityInformationPoller interface {
 
 type connectivityInformationPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *connectivityInformationPoller) Done() bool {
@@ -926,7 +928,7 @@ type CustomIPPrefixPoller interface {
 
 type customIPPrefixPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *customIPPrefixPoller) Done() bool {
@@ -972,7 +974,7 @@ type DdosCustomPolicyPoller interface {
 
 type ddosCustomPolicyPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *ddosCustomPolicyPoller) Done() bool {
@@ -1018,7 +1020,7 @@ type DdosProtectionPlanPoller interface {
 
 type ddosProtectionPlanPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *ddosProtectionPlanPoller) Done() bool {
@@ -1064,7 +1066,7 @@ type DscpConfigurationPoller interface {
 
 type dscpConfigurationPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *dscpConfigurationPoller) Done() bool {
@@ -1110,7 +1112,7 @@ type EffectiveNetworkSecurityGroupListResultPoller interface {
 
 type effectiveNetworkSecurityGroupListResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *effectiveNetworkSecurityGroupListResultPoller) Done() bool {
@@ -1156,7 +1158,7 @@ type EffectiveRouteListResultPoller interface {
 
 type effectiveRouteListResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *effectiveRouteListResultPoller) Done() bool {
@@ -1202,7 +1204,7 @@ type ExpressRouteCircuitAuthorizationPoller interface {
 
 type expressRouteCircuitAuthorizationPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *expressRouteCircuitAuthorizationPoller) Done() bool {
@@ -1248,7 +1250,7 @@ type ExpressRouteCircuitConnectionPoller interface {
 
 type expressRouteCircuitConnectionPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *expressRouteCircuitConnectionPoller) Done() bool {
@@ -1294,7 +1296,7 @@ type ExpressRouteCircuitPeeringPoller interface {
 
 type expressRouteCircuitPeeringPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *expressRouteCircuitPeeringPoller) Done() bool {
@@ -1340,7 +1342,7 @@ type ExpressRouteCircuitPoller interface {
 
 type expressRouteCircuitPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *expressRouteCircuitPoller) Done() bool {
@@ -1386,7 +1388,7 @@ type ExpressRouteCircuitsArpTableListResultPoller interface {
 
 type expressRouteCircuitsArpTableListResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *expressRouteCircuitsArpTableListResultPoller) Done() bool {
@@ -1432,7 +1434,7 @@ type ExpressRouteCircuitsRoutesTableListResultPoller interface {
 
 type expressRouteCircuitsRoutesTableListResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *expressRouteCircuitsRoutesTableListResultPoller) Done() bool {
@@ -1478,7 +1480,7 @@ type ExpressRouteCircuitsRoutesTableSummaryListResultPoller interface {
 
 type expressRouteCircuitsRoutesTableSummaryListResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *expressRouteCircuitsRoutesTableSummaryListResultPoller) Done() bool {
@@ -1524,7 +1526,7 @@ type ExpressRouteConnectionPoller interface {
 
 type expressRouteConnectionPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *expressRouteConnectionPoller) Done() bool {
@@ -1570,7 +1572,7 @@ type ExpressRouteCrossConnectionPeeringPoller interface {
 
 type expressRouteCrossConnectionPeeringPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *expressRouteCrossConnectionPeeringPoller) Done() bool {
@@ -1616,7 +1618,7 @@ type ExpressRouteCrossConnectionPoller interface {
 
 type expressRouteCrossConnectionPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *expressRouteCrossConnectionPoller) Done() bool {
@@ -1662,7 +1664,7 @@ type ExpressRouteCrossConnectionsRoutesTableSummaryListResultPoller interface {
 
 type expressRouteCrossConnectionsRoutesTableSummaryListResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *expressRouteCrossConnectionsRoutesTableSummaryListResultPoller) Done() bool {
@@ -1708,7 +1710,7 @@ type ExpressRouteGatewayPoller interface {
 
 type expressRouteGatewayPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *expressRouteGatewayPoller) Done() bool {
@@ -1754,7 +1756,7 @@ type ExpressRoutePortPoller interface {
 
 type expressRoutePortPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *expressRoutePortPoller) Done() bool {
@@ -1800,7 +1802,7 @@ type FirewallPolicyPoller interface {
 
 type firewallPolicyPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *firewallPolicyPoller) Done() bool {
@@ -1846,7 +1848,7 @@ type FirewallPolicyRuleCollectionGroupPoller interface {
 
 type firewallPolicyRuleCollectionGroupPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *firewallPolicyRuleCollectionGroupPoller) Done() bool {
@@ -1892,7 +1894,7 @@ type FlowLogInformationPoller interface {
 
 type flowLogInformationPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *flowLogInformationPoller) Done() bool {
@@ -1938,7 +1940,7 @@ type FlowLogPoller interface {
 
 type flowLogPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *flowLogPoller) Done() bool {
@@ -1984,7 +1986,7 @@ type GatewayRouteListResultPoller interface {
 
 type gatewayRouteListResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *gatewayRouteListResultPoller) Done() bool {
@@ -2030,7 +2032,7 @@ type HTTPPoller interface {
 
 type httpPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *httpPoller) Done() bool {
@@ -2064,7 +2066,7 @@ type HubIPConfigurationPoller interface {
 
 type hubIPConfigurationPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *hubIPConfigurationPoller) Done() bool {
@@ -2110,7 +2112,7 @@ type HubRouteTablePoller interface {
 
 type hubRouteTablePoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *hubRouteTablePoller) Done() bool {
@@ -2156,7 +2158,7 @@ type HubVirtualNetworkConnectionPoller interface {
 
 type hubVirtualNetworkConnectionPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *hubVirtualNetworkConnectionPoller) Done() bool {
@@ -2202,7 +2204,7 @@ type IPAllocationPoller interface {
 
 type ipAllocationPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *ipAllocationPoller) Done() bool {
@@ -2248,7 +2250,7 @@ type IPGroupPoller interface {
 
 type ipGroupPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *ipGroupPoller) Done() bool {
@@ -2294,7 +2296,7 @@ type InboundNatRulePoller interface {
 
 type inboundNatRulePoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *inboundNatRulePoller) Done() bool {
@@ -2340,7 +2342,7 @@ type InboundSecurityRulePoller interface {
 
 type inboundSecurityRulePoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *inboundSecurityRulePoller) Done() bool {
@@ -2386,7 +2388,7 @@ type LoadBalancerPoller interface {
 
 type loadBalancerPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *loadBalancerPoller) Done() bool {
@@ -2432,7 +2434,7 @@ type LocalNetworkGatewayPoller interface {
 
 type localNetworkGatewayPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *localNetworkGatewayPoller) Done() bool {
@@ -2478,7 +2480,7 @@ type NatGatewayPoller interface {
 
 type natGatewayPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *natGatewayPoller) Done() bool {
@@ -2524,7 +2526,7 @@ type NetworkConfigurationDiagnosticResponsePoller interface {
 
 type networkConfigurationDiagnosticResponsePoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *networkConfigurationDiagnosticResponsePoller) Done() bool {
@@ -2570,7 +2572,7 @@ type NetworkInterfacePoller interface {
 
 type networkInterfacePoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *networkInterfacePoller) Done() bool {
@@ -2616,7 +2618,7 @@ type NetworkInterfaceTapConfigurationPoller interface {
 
 type networkInterfaceTapConfigurationPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *networkInterfaceTapConfigurationPoller) Done() bool {
@@ -2662,7 +2664,7 @@ type NetworkSecurityGroupPoller interface {
 
 type networkSecurityGroupPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *networkSecurityGroupPoller) Done() bool {
@@ -2708,7 +2710,7 @@ type NetworkVirtualAppliancePoller interface {
 
 type networkVirtualAppliancePoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *networkVirtualAppliancePoller) Done() bool {
@@ -2754,7 +2756,7 @@ type NextHopResultPoller interface {
 
 type nextHopResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *nextHopResultPoller) Done() bool {
@@ -2800,7 +2802,7 @@ type P2SVPNConnectionHealthPoller interface {
 
 type p2SVPNConnectionHealthPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *p2SVPNConnectionHealthPoller) Done() bool {
@@ -2846,7 +2848,7 @@ type P2SVPNGatewayPoller interface {
 
 type p2SVPNGatewayPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *p2SVPNGatewayPoller) Done() bool {
@@ -2892,7 +2894,7 @@ type PacketCaptureQueryStatusResultPoller interface {
 
 type packetCaptureQueryStatusResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *packetCaptureQueryStatusResultPoller) Done() bool {
@@ -2938,7 +2940,7 @@ type PacketCaptureResultPoller interface {
 
 type packetCaptureResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *packetCaptureResultPoller) Done() bool {
@@ -2984,7 +2986,7 @@ type PeerRouteListPoller interface {
 
 type peerRouteListPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *peerRouteListPoller) Done() bool {
@@ -3030,7 +3032,7 @@ type PrivateDNSZoneGroupPoller interface {
 
 type privateDNSZoneGroupPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *privateDNSZoneGroupPoller) Done() bool {
@@ -3076,7 +3078,7 @@ type PrivateEndpointPoller interface {
 
 type privateEndpointPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *privateEndpointPoller) Done() bool {
@@ -3122,7 +3124,7 @@ type PrivateLinkServicePoller interface {
 
 type privateLinkServicePoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *privateLinkServicePoller) Done() bool {
@@ -3168,7 +3170,7 @@ type PrivateLinkServiceVisibilityPoller interface {
 
 type privateLinkServiceVisibilityPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *privateLinkServiceVisibilityPoller) Done() bool {
@@ -3214,7 +3216,7 @@ type PublicIPAddressPoller interface {
 
 type publicIPAddressPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *publicIPAddressPoller) Done() bool {
@@ -3260,7 +3262,7 @@ type PublicIPPrefixPoller interface {
 
 type publicIPPrefixPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *publicIPPrefixPoller) Done() bool {
@@ -3306,7 +3308,7 @@ type RouteFilterPoller interface {
 
 type routeFilterPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *routeFilterPoller) Done() bool {
@@ -3352,7 +3354,7 @@ type RouteFilterRulePoller interface {
 
 type routeFilterRulePoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *routeFilterRulePoller) Done() bool {
@@ -3398,7 +3400,7 @@ type RoutePoller interface {
 
 type routePoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *routePoller) Done() bool {
@@ -3444,7 +3446,7 @@ type RouteTablePoller interface {
 
 type routeTablePoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *routeTablePoller) Done() bool {
@@ -3490,7 +3492,7 @@ type SecurityGroupViewResultPoller interface {
 
 type securityGroupViewResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *securityGroupViewResultPoller) Done() bool {
@@ -3536,7 +3538,7 @@ type SecurityPartnerProviderPoller interface {
 
 type securityPartnerProviderPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *securityPartnerProviderPoller) Done() bool {
@@ -3582,7 +3584,7 @@ type SecurityRulePoller interface {
 
 type securityRulePoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *securityRulePoller) Done() bool {
@@ -3628,7 +3630,7 @@ type ServiceEndpointPolicyDefinitionPoller interface {
 
 type serviceEndpointPolicyDefinitionPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *serviceEndpointPolicyDefinitionPoller) Done() bool {
@@ -3674,7 +3676,7 @@ type ServiceEndpointPolicyPoller interface {
 
 type serviceEndpointPolicyPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *serviceEndpointPolicyPoller) Done() bool {
@@ -3720,7 +3722,7 @@ type StringPoller interface {
 
 type stringPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *stringPoller) Done() bool {
@@ -3766,7 +3768,7 @@ type SubnetPoller interface {
 
 type subnetPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *subnetPoller) Done() bool {
@@ -3812,7 +3814,7 @@ type TroubleshootingResultPoller interface {
 
 type troubleshootingResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *troubleshootingResultPoller) Done() bool {
@@ -3858,7 +3860,7 @@ type VPNClientConnectionHealthDetailListResultPoller interface {
 
 type vpnClientConnectionHealthDetailListResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *vpnClientConnectionHealthDetailListResultPoller) Done() bool {
@@ -3904,7 +3906,7 @@ type VPNClientIPsecParametersPoller interface {
 
 type vpnClientIPSecParametersPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *vpnClientIPSecParametersPoller) Done() bool {
@@ -3950,7 +3952,7 @@ type VPNConnectionPoller interface {
 
 type vpnConnectionPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *vpnConnectionPoller) Done() bool {
@@ -3985,6 +3987,52 @@ func (p *vpnConnectionPoller) pollUntilDone(ctx context.Context, freq time.Durat
 	return respType, nil
 }
 
+// VPNGatewayNatRulePoller provides polling facilities until the operation reaches a terminal state.
+type VPNGatewayNatRulePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VPNGatewayNatRuleResponse will be returned.
+	FinalResponse(ctx context.Context) (VPNGatewayNatRuleResponse, error)
+}
+
+type vpnGatewayNatRulePoller struct {
+	pipeline azcore.Pipeline
+	pt       armcore.Poller
+}
+
+func (p *vpnGatewayNatRulePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *vpnGatewayNatRulePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx, p.pipeline)
+}
+
+func (p *vpnGatewayNatRulePoller) FinalResponse(ctx context.Context) (VPNGatewayNatRuleResponse, error) {
+	respType := VPNGatewayNatRuleResponse{VPNGatewayNatRule: &VPNGatewayNatRule{}}
+	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VPNGatewayNatRule)
+	if err != nil {
+		return VPNGatewayNatRuleResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *vpnGatewayNatRulePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *vpnGatewayNatRulePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNGatewayNatRuleResponse, error) {
+	respType := VPNGatewayNatRuleResponse{VPNGatewayNatRule: &VPNGatewayNatRule{}}
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNGatewayNatRule)
+	if err != nil {
+		return VPNGatewayNatRuleResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
 // VPNGatewayPoller provides polling facilities until the operation reaches a terminal state.
 type VPNGatewayPoller interface {
 	azcore.Poller
@@ -3996,7 +4044,7 @@ type VPNGatewayPoller interface {
 
 type vpnGatewayPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *vpnGatewayPoller) Done() bool {
@@ -4042,7 +4090,7 @@ type VPNProfileResponsePoller interface {
 
 type vpnProfileResponsePoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *vpnProfileResponsePoller) Done() bool {
@@ -4088,7 +4136,7 @@ type VPNServerConfigurationPoller interface {
 
 type vpnServerConfigurationPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *vpnServerConfigurationPoller) Done() bool {
@@ -4134,7 +4182,7 @@ type VPNServerConfigurationsResponsePoller interface {
 
 type vpnServerConfigurationsResponsePoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *vpnServerConfigurationsResponsePoller) Done() bool {
@@ -4180,7 +4228,7 @@ type VPNSitePoller interface {
 
 type vpnSitePoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *vpnSitePoller) Done() bool {
@@ -4226,7 +4274,7 @@ type VerificationIPFlowResultPoller interface {
 
 type verificationIPFlowResultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *verificationIPFlowResultPoller) Done() bool {
@@ -4272,7 +4320,7 @@ type VirtualApplianceSitePoller interface {
 
 type virtualApplianceSitePoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *virtualApplianceSitePoller) Done() bool {
@@ -4318,7 +4366,7 @@ type VirtualHubPoller interface {
 
 type virtualHubPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *virtualHubPoller) Done() bool {
@@ -4364,7 +4412,7 @@ type VirtualHubRouteTableV2Poller interface {
 
 type virtualHubRouteTableV2Poller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *virtualHubRouteTableV2Poller) Done() bool {
@@ -4410,7 +4458,7 @@ type VirtualNetworkGatewayConnectionPoller interface {
 
 type virtualNetworkGatewayConnectionPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *virtualNetworkGatewayConnectionPoller) Done() bool {
@@ -4445,6 +4493,52 @@ func (p *virtualNetworkGatewayConnectionPoller) pollUntilDone(ctx context.Contex
 	return respType, nil
 }
 
+// VirtualNetworkGatewayNatRulePoller provides polling facilities until the operation reaches a terminal state.
+type VirtualNetworkGatewayNatRulePoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final VirtualNetworkGatewayNatRuleResponse will be returned.
+	FinalResponse(ctx context.Context) (VirtualNetworkGatewayNatRuleResponse, error)
+}
+
+type virtualNetworkGatewayNatRulePoller struct {
+	pipeline azcore.Pipeline
+	pt       armcore.Poller
+}
+
+func (p *virtualNetworkGatewayNatRulePoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *virtualNetworkGatewayNatRulePoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx, p.pipeline)
+}
+
+func (p *virtualNetworkGatewayNatRulePoller) FinalResponse(ctx context.Context) (VirtualNetworkGatewayNatRuleResponse, error) {
+	respType := VirtualNetworkGatewayNatRuleResponse{VirtualNetworkGatewayNatRule: &VirtualNetworkGatewayNatRule{}}
+	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualNetworkGatewayNatRule)
+	if err != nil {
+		return VirtualNetworkGatewayNatRuleResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *virtualNetworkGatewayNatRulePoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *virtualNetworkGatewayNatRulePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkGatewayNatRuleResponse, error) {
+	respType := VirtualNetworkGatewayNatRuleResponse{VirtualNetworkGatewayNatRule: &VirtualNetworkGatewayNatRule{}}
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualNetworkGatewayNatRule)
+	if err != nil {
+		return VirtualNetworkGatewayNatRuleResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
 // VirtualNetworkGatewayPoller provides polling facilities until the operation reaches a terminal state.
 type VirtualNetworkGatewayPoller interface {
 	azcore.Poller
@@ -4456,7 +4550,7 @@ type VirtualNetworkGatewayPoller interface {
 
 type virtualNetworkGatewayPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *virtualNetworkGatewayPoller) Done() bool {
@@ -4502,7 +4596,7 @@ type VirtualNetworkPeeringPoller interface {
 
 type virtualNetworkPeeringPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *virtualNetworkPeeringPoller) Done() bool {
@@ -4548,7 +4642,7 @@ type VirtualNetworkPoller interface {
 
 type virtualNetworkPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *virtualNetworkPoller) Done() bool {
@@ -4594,7 +4688,7 @@ type VirtualNetworkTapPoller interface {
 
 type virtualNetworkTapPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *virtualNetworkTapPoller) Done() bool {
@@ -4640,7 +4734,7 @@ type VirtualRouterPeeringPoller interface {
 
 type virtualRouterPeeringPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *virtualRouterPeeringPoller) Done() bool {
@@ -4686,7 +4780,7 @@ type VirtualRouterPoller interface {
 
 type virtualRouterPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *virtualRouterPoller) Done() bool {
@@ -4732,7 +4826,7 @@ type VirtualWANPoller interface {
 
 type virtualWANPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *virtualWANPoller) Done() bool {
@@ -4766,4 +4860,3 @@ func (p *virtualWANPoller) pollUntilDone(ctx context.Context, freq time.Duration
 	respType.RawResponse = resp
 	return respType, nil
 }
-

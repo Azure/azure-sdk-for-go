@@ -21,7 +21,7 @@ import (
 // VPNSiteLinkConnectionsClient contains the methods for the VPNSiteLinkConnections group.
 // Don't use this type directly, use NewVPNSiteLinkConnectionsClient() instead.
 type VPNSiteLinkConnectionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -76,7 +76,7 @@ func (client *VPNSiteLinkConnectionsClient) getCreateRequest(ctx context.Context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -88,7 +88,7 @@ func (client *VPNSiteLinkConnectionsClient) getHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VPNSiteLinkConnectionResponse{}, err
 	}
-return VPNSiteLinkConnectionResponse{RawResponse: resp.Response, VPNSiteLinkConnection: val}, nil
+	return VPNSiteLinkConnectionResponse{RawResponse: resp.Response, VPNSiteLinkConnection: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -97,10 +97,9 @@ func (client *VPNSiteLinkConnectionsClient) getHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

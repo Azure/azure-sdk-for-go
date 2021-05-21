@@ -22,7 +22,7 @@ import (
 // VPNServerConfigurationsAssociatedWithVirtualWanClient contains the methods for the VPNServerConfigurationsAssociatedWithVirtualWan group.
 // Don't use this type directly, use NewVPNServerConfigurationsAssociatedWithVirtualWanClient() instead.
 type VPNServerConfigurationsAssociatedWithVirtualWanClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) BeginList(c
 	}
 	poller := &vpnServerConfigurationsResponsePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNServerConfigurationsResponseResponse, error) {
@@ -65,7 +65,7 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) ResumeList(
 	}
 	poller := &vpnServerConfigurationsResponsePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listOperati
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.listHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // listCreateRequest creates the List request.
@@ -119,7 +119,7 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listCreateR
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -131,10 +131,9 @@ func (client *VPNServerConfigurationsAssociatedWithVirtualWanClient) listHandleE
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

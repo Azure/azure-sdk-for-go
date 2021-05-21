@@ -22,7 +22,7 @@ import (
 // NetworkManagementClient contains the methods for the NetworkManagementClient group.
 // Don't use this type directly, use NewNetworkManagementClient() instead.
 type NetworkManagementClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -66,7 +66,7 @@ func (client *NetworkManagementClient) checkDNSNameAvailabilityCreateRequest(ctx
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
 	reqQP.Set("domainNameLabel", domainNameLabel)
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -78,7 +78,7 @@ func (client *NetworkManagementClient) checkDNSNameAvailabilityHandleResponse(re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DNSNameAvailabilityResultResponse{}, err
 	}
-return DNSNameAvailabilityResultResponse{RawResponse: resp.Response, DNSNameAvailabilityResult: val}, nil
+	return DNSNameAvailabilityResultResponse{RawResponse: resp.Response, DNSNameAvailabilityResult: val}, nil
 }
 
 // checkDNSNameAvailabilityHandleError handles the CheckDNSNameAvailability error response.
@@ -87,7 +87,7 @@ func (client *NetworkManagementClient) checkDNSNameAvailabilityHandleError(resp 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -110,7 +110,7 @@ func (client *NetworkManagementClient) BeginDeleteBastionShareableLink(ctx conte
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -128,7 +128,7 @@ func (client *NetworkManagementClient) ResumeDeleteBastionShareableLink(ctx cont
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -158,7 +158,7 @@ func (client *NetworkManagementClient) deleteBastionShareableLink(ctx context.Co
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.deleteBastionShareableLinkHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteBastionShareableLinkCreateRequest creates the DeleteBastionShareableLink request.
@@ -182,7 +182,7 @@ func (client *NetworkManagementClient) deleteBastionShareableLinkCreateRequest(c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(bslRequest)
@@ -194,7 +194,7 @@ func (client *NetworkManagementClient) deleteBastionShareableLinkHandleError(res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -203,7 +203,7 @@ func (client *NetworkManagementClient) deleteBastionShareableLinkHandleError(res
 
 // DisconnectActiveSessions - Returns the list of currently active sessions on the Bastion.
 // If the operation fails it returns the *CloudError error type.
-func (client *NetworkManagementClient) DisconnectActiveSessions(resourceGroupName string, bastionHostName string, sessionIDs SessionIDs, options *NetworkManagementClientDisconnectActiveSessionsOptions) (BastionSessionDeleteResultPager) {
+func (client *NetworkManagementClient) DisconnectActiveSessions(resourceGroupName string, bastionHostName string, sessionIDs SessionIDs, options *NetworkManagementClientDisconnectActiveSessionsOptions) BastionSessionDeleteResultPager {
 	return &bastionSessionDeleteResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -239,7 +239,7 @@ func (client *NetworkManagementClient) disconnectActiveSessionsCreateRequest(ctx
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(sessionIDs)
@@ -251,7 +251,7 @@ func (client *NetworkManagementClient) disconnectActiveSessionsHandleResponse(re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BastionSessionDeleteResultResponse{}, err
 	}
-return BastionSessionDeleteResultResponse{RawResponse: resp.Response, BastionSessionDeleteResult: val}, nil
+	return BastionSessionDeleteResultResponse{RawResponse: resp.Response, BastionSessionDeleteResult: val}, nil
 }
 
 // disconnectActiveSessionsHandleError handles the DisconnectActiveSessions error response.
@@ -260,7 +260,7 @@ func (client *NetworkManagementClient) disconnectActiveSessionsHandleError(resp 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -284,7 +284,7 @@ func (client *NetworkManagementClient) BeginGeneratevirtualwanvpnserverconfigura
 	}
 	poller := &vpnProfileResponsePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNProfileResponseResponse, error) {
@@ -302,7 +302,7 @@ func (client *NetworkManagementClient) ResumeGeneratevirtualwanvpnserverconfigur
 	}
 	poller := &vpnProfileResponsePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -333,7 +333,7 @@ func (client *NetworkManagementClient) generatevirtualwanvpnserverconfigurationv
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.generatevirtualwanvpnserverconfigurationvpnprofileHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // generatevirtualwanvpnserverconfigurationvpnprofileCreateRequest creates the Generatevirtualwanvpnserverconfigurationvpnprofile request.
@@ -357,7 +357,7 @@ func (client *NetworkManagementClient) generatevirtualwanvpnserverconfigurationv
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(vpnClientParams)
@@ -369,7 +369,7 @@ func (client *NetworkManagementClient) generatevirtualwanvpnserverconfigurationv
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -392,7 +392,7 @@ func (client *NetworkManagementClient) BeginGetActiveSessions(ctx context.Contex
 	}
 	poller := &bastionActiveSessionListResultPagerPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 		errHandler: func(resp *azcore.Response) error {
 			if resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 				return nil
@@ -400,11 +400,11 @@ func (client *NetworkManagementClient) BeginGetActiveSessions(ctx context.Contex
 			return client.getActiveSessionsHandleError(resp)
 		},
 		respHandler: func(resp *azcore.Response) (BastionActiveSessionListResultResponse, error) {
-	var val *BastionActiveSessionListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BastionActiveSessionListResultResponse{}, err
-	}
-return BastionActiveSessionListResultResponse{RawResponse: resp.Response, BastionActiveSessionListResult: val}, nil
+			var val *BastionActiveSessionListResult
+			if err := resp.UnmarshalAsJSON(&val); err != nil {
+				return BastionActiveSessionListResultResponse{}, err
+			}
+			return BastionActiveSessionListResultResponse{RawResponse: resp.Response, BastionActiveSessionListResult: val}, nil
 		},
 		statusCodes: []int{http.StatusOK, http.StatusAccepted, http.StatusNoContent},
 	}
@@ -424,7 +424,7 @@ func (client *NetworkManagementClient) ResumeGetActiveSessions(ctx context.Conte
 	}
 	poller := &bastionActiveSessionListResultPagerPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 		errHandler: func(resp *azcore.Response) error {
 			if resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 				return nil
@@ -432,11 +432,11 @@ func (client *NetworkManagementClient) ResumeGetActiveSessions(ctx context.Conte
 			return client.getActiveSessionsHandleError(resp)
 		},
 		respHandler: func(resp *azcore.Response) (BastionActiveSessionListResultResponse, error) {
-	var val *BastionActiveSessionListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BastionActiveSessionListResultResponse{}, err
-	}
-return BastionActiveSessionListResultResponse{RawResponse: resp.Response, BastionActiveSessionListResult: val}, nil
+			var val *BastionActiveSessionListResult
+			if err := resp.UnmarshalAsJSON(&val); err != nil {
+				return BastionActiveSessionListResultResponse{}, err
+			}
+			return BastionActiveSessionListResultResponse{RawResponse: resp.Response, BastionActiveSessionListResult: val}, nil
 		},
 		statusCodes: []int{http.StatusOK, http.StatusAccepted, http.StatusNoContent},
 	}
@@ -468,7 +468,7 @@ func (client *NetworkManagementClient) getActiveSessions(ctx context.Context, re
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getActiveSessionsHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getActiveSessionsCreateRequest creates the GetActiveSessions request.
@@ -492,7 +492,7 @@ func (client *NetworkManagementClient) getActiveSessionsCreateRequest(ctx contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -504,7 +504,7 @@ func (client *NetworkManagementClient) getActiveSessionsHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -513,7 +513,7 @@ func (client *NetworkManagementClient) getActiveSessionsHandleError(resp *azcore
 
 // GetBastionShareableLink - Return the Bastion Shareable Links for all the VMs specified in the request.
 // If the operation fails it returns the *CloudError error type.
-func (client *NetworkManagementClient) GetBastionShareableLink(resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *NetworkManagementClientGetBastionShareableLinkOptions) (BastionShareableLinkListResultPager) {
+func (client *NetworkManagementClient) GetBastionShareableLink(resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, options *NetworkManagementClientGetBastionShareableLinkOptions) BastionShareableLinkListResultPager {
 	return &bastionShareableLinkListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -549,7 +549,7 @@ func (client *NetworkManagementClient) getBastionShareableLinkCreateRequest(ctx 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(bslRequest)
@@ -561,7 +561,7 @@ func (client *NetworkManagementClient) getBastionShareableLinkHandleResponse(res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BastionShareableLinkListResultResponse{}, err
 	}
-return BastionShareableLinkListResultResponse{RawResponse: resp.Response, BastionShareableLinkListResult: val}, nil
+	return BastionShareableLinkListResultResponse{RawResponse: resp.Response, BastionShareableLinkListResult: val}, nil
 }
 
 // getBastionShareableLinkHandleError handles the GetBastionShareableLink error response.
@@ -570,7 +570,7 @@ func (client *NetworkManagementClient) getBastionShareableLinkHandleError(resp *
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -593,7 +593,7 @@ func (client *NetworkManagementClient) BeginPutBastionShareableLink(ctx context.
 	}
 	poller := &bastionShareableLinkListResultPagerPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 		errHandler: func(resp *azcore.Response) error {
 			if resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 				return nil
@@ -601,11 +601,11 @@ func (client *NetworkManagementClient) BeginPutBastionShareableLink(ctx context.
 			return client.putBastionShareableLinkHandleError(resp)
 		},
 		respHandler: func(resp *azcore.Response) (BastionShareableLinkListResultResponse, error) {
-	var val *BastionShareableLinkListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BastionShareableLinkListResultResponse{}, err
-	}
-return BastionShareableLinkListResultResponse{RawResponse: resp.Response, BastionShareableLinkListResult: val}, nil
+			var val *BastionShareableLinkListResult
+			if err := resp.UnmarshalAsJSON(&val); err != nil {
+				return BastionShareableLinkListResultResponse{}, err
+			}
+			return BastionShareableLinkListResultResponse{RawResponse: resp.Response, BastionShareableLinkListResult: val}, nil
 		},
 		statusCodes: []int{http.StatusOK, http.StatusAccepted, http.StatusNoContent},
 	}
@@ -625,7 +625,7 @@ func (client *NetworkManagementClient) ResumePutBastionShareableLink(ctx context
 	}
 	poller := &bastionShareableLinkListResultPagerPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 		errHandler: func(resp *azcore.Response) error {
 			if resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 				return nil
@@ -633,11 +633,11 @@ func (client *NetworkManagementClient) ResumePutBastionShareableLink(ctx context
 			return client.putBastionShareableLinkHandleError(resp)
 		},
 		respHandler: func(resp *azcore.Response) (BastionShareableLinkListResultResponse, error) {
-	var val *BastionShareableLinkListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return BastionShareableLinkListResultResponse{}, err
-	}
-return BastionShareableLinkListResultResponse{RawResponse: resp.Response, BastionShareableLinkListResult: val}, nil
+			var val *BastionShareableLinkListResult
+			if err := resp.UnmarshalAsJSON(&val); err != nil {
+				return BastionShareableLinkListResultResponse{}, err
+			}
+			return BastionShareableLinkListResultResponse{RawResponse: resp.Response, BastionShareableLinkListResult: val}, nil
 		},
 		statusCodes: []int{http.StatusOK, http.StatusAccepted, http.StatusNoContent},
 	}
@@ -669,7 +669,7 @@ func (client *NetworkManagementClient) putBastionShareableLink(ctx context.Conte
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.putBastionShareableLinkHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // putBastionShareableLinkCreateRequest creates the PutBastionShareableLink request.
@@ -693,7 +693,7 @@ func (client *NetworkManagementClient) putBastionShareableLinkCreateRequest(ctx 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(bslRequest)
@@ -705,7 +705,7 @@ func (client *NetworkManagementClient) putBastionShareableLinkHandleError(resp *
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -750,7 +750,7 @@ func (client *NetworkManagementClient) supportedSecurityProvidersCreateRequest(c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -762,7 +762,7 @@ func (client *NetworkManagementClient) supportedSecurityProvidersHandleResponse(
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualWanSecurityProvidersResponse{}, err
 	}
-return VirtualWanSecurityProvidersResponse{RawResponse: resp.Response, VirtualWanSecurityProviders: val}, nil
+	return VirtualWanSecurityProvidersResponse{RawResponse: resp.Response, VirtualWanSecurityProviders: val}, nil
 }
 
 // supportedSecurityProvidersHandleError handles the SupportedSecurityProviders error response.
@@ -771,10 +771,9 @@ func (client *NetworkManagementClient) supportedSecurityProvidersHandleError(res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

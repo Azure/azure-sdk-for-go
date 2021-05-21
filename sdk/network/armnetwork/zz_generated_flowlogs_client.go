@@ -22,7 +22,7 @@ import (
 // FlowLogsClient contains the methods for the FlowLogs group.
 // Don't use this type directly, use NewFlowLogsClient() instead.
 type FlowLogsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *FlowLogsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 	poller := &flowLogPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FlowLogResponse, error) {
@@ -65,7 +65,7 @@ func (client *FlowLogsClient) ResumeCreateOrUpdate(ctx context.Context, token st
 	}
 	poller := &flowLogPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *FlowLogsClient) createOrUpdate(ctx context.Context, resourceGroupN
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *FlowLogsClient) createOrUpdateCreateRequest(ctx context.Context, r
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -135,7 +135,7 @@ func (client *FlowLogsClient) createOrUpdateHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *FlowLogsClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +176,7 @@ func (client *FlowLogsClient) ResumeDelete(ctx context.Context, token string) (H
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +206,7 @@ func (client *FlowLogsClient) deleteOperation(ctx context.Context, resourceGroup
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *FlowLogsClient) deleteCreateRequest(ctx context.Context, resourceG
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +246,7 @@ func (client *FlowLogsClient) deleteHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +295,7 @@ func (client *FlowLogsClient) getCreateRequest(ctx context.Context, resourceGrou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -307,7 +307,7 @@ func (client *FlowLogsClient) getHandleResponse(resp *azcore.Response) (FlowLogR
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return FlowLogResponse{}, err
 	}
-return FlowLogResponse{RawResponse: resp.Response, FlowLog: val}, nil
+	return FlowLogResponse{RawResponse: resp.Response, FlowLog: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -316,7 +316,7 @@ func (client *FlowLogsClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -325,7 +325,7 @@ func (client *FlowLogsClient) getHandleError(resp *azcore.Response) error {
 
 // List - Lists all flow log resources for the specified Network Watcher.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *FlowLogsClient) List(resourceGroupName string, networkWatcherName string, options *FlowLogsListOptions) (FlowLogListResultPager) {
+func (client *FlowLogsClient) List(resourceGroupName string, networkWatcherName string, options *FlowLogsListOptions) FlowLogListResultPager {
 	return &flowLogListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -361,7 +361,7 @@ func (client *FlowLogsClient) listCreateRequest(ctx context.Context, resourceGro
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -373,7 +373,7 @@ func (client *FlowLogsClient) listHandleResponse(resp *azcore.Response) (FlowLog
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return FlowLogListResultResponse{}, err
 	}
-return FlowLogListResultResponse{RawResponse: resp.Response, FlowLogListResult: val}, nil
+	return FlowLogListResultResponse{RawResponse: resp.Response, FlowLogListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -382,7 +382,7 @@ func (client *FlowLogsClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -431,7 +431,7 @@ func (client *FlowLogsClient) updateTagsCreateRequest(ctx context.Context, resou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -443,7 +443,7 @@ func (client *FlowLogsClient) updateTagsHandleResponse(resp *azcore.Response) (F
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return FlowLogResponse{}, err
 	}
-return FlowLogResponse{RawResponse: resp.Response, FlowLog: val}, nil
+	return FlowLogResponse{RawResponse: resp.Response, FlowLog: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -452,10 +452,9 @@ func (client *FlowLogsClient) updateTagsHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

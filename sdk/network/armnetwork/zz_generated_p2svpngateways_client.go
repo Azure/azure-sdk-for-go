@@ -22,7 +22,7 @@ import (
 // P2SVPNGatewaysClient contains the methods for the P2SVPNGateways group.
 // Don't use this type directly, use NewP2SVPNGatewaysClient() instead.
 type P2SVPNGatewaysClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *P2SVPNGatewaysClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 	poller := &p2SVPNGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (P2SVPNGatewayResponse, error) {
@@ -65,7 +65,7 @@ func (client *P2SVPNGatewaysClient) ResumeCreateOrUpdate(ctx context.Context, to
 	}
 	poller := &p2SVPNGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *P2SVPNGatewaysClient) createOrUpdate(ctx context.Context, resource
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *P2SVPNGatewaysClient) createOrUpdateCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(p2SVPNGatewayParameters)
@@ -131,7 +131,7 @@ func (client *P2SVPNGatewaysClient) createOrUpdateHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *P2SVPNGatewaysClient) BeginDelete(ctx context.Context, resourceGro
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *P2SVPNGatewaysClient) ResumeDelete(ctx context.Context, token stri
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *P2SVPNGatewaysClient) deleteOperation(ctx context.Context, resourc
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *P2SVPNGatewaysClient) deleteCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *P2SVPNGatewaysClient) deleteHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -261,7 +261,7 @@ func (client *P2SVPNGatewaysClient) BeginDisconnectP2SVPNConnections(ctx context
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -279,7 +279,7 @@ func (client *P2SVPNGatewaysClient) ResumeDisconnectP2SVPNConnections(ctx contex
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -309,7 +309,7 @@ func (client *P2SVPNGatewaysClient) disconnectP2SVPNConnections(ctx context.Cont
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.disconnectP2SVPNConnectionsHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // disconnectP2SVPNConnectionsCreateRequest creates the DisconnectP2SVPNConnections request.
@@ -333,7 +333,7 @@ func (client *P2SVPNGatewaysClient) disconnectP2SVPNConnectionsCreateRequest(ctx
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(request)
@@ -345,7 +345,7 @@ func (client *P2SVPNGatewaysClient) disconnectP2SVPNConnectionsHandleError(resp 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -368,7 +368,7 @@ func (client *P2SVPNGatewaysClient) BeginGenerateVPNProfile(ctx context.Context,
 	}
 	poller := &vpnProfileResponsePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNProfileResponseResponse, error) {
@@ -386,7 +386,7 @@ func (client *P2SVPNGatewaysClient) ResumeGenerateVPNProfile(ctx context.Context
 	}
 	poller := &vpnProfileResponsePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -416,7 +416,7 @@ func (client *P2SVPNGatewaysClient) generateVPNProfile(ctx context.Context, reso
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.generateVPNProfileHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // generateVPNProfileCreateRequest creates the GenerateVPNProfile request.
@@ -440,7 +440,7 @@ func (client *P2SVPNGatewaysClient) generateVPNProfileCreateRequest(ctx context.
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -452,7 +452,7 @@ func (client *P2SVPNGatewaysClient) generateVPNProfileHandleError(resp *azcore.R
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -497,7 +497,7 @@ func (client *P2SVPNGatewaysClient) getCreateRequest(ctx context.Context, resour
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -509,7 +509,7 @@ func (client *P2SVPNGatewaysClient) getHandleResponse(resp *azcore.Response) (P2
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return P2SVPNGatewayResponse{}, err
 	}
-return P2SVPNGatewayResponse{RawResponse: resp.Response, P2SVPNGateway: val}, nil
+	return P2SVPNGatewayResponse{RawResponse: resp.Response, P2SVPNGateway: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -518,7 +518,7 @@ func (client *P2SVPNGatewaysClient) getHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -541,7 +541,7 @@ func (client *P2SVPNGatewaysClient) BeginGetP2SVPNConnectionHealth(ctx context.C
 	}
 	poller := &p2SVPNGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (P2SVPNGatewayResponse, error) {
@@ -559,7 +559,7 @@ func (client *P2SVPNGatewaysClient) ResumeGetP2SVPNConnectionHealth(ctx context.
 	}
 	poller := &p2SVPNGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -589,7 +589,7 @@ func (client *P2SVPNGatewaysClient) getP2SVPNConnectionHealth(ctx context.Contex
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getP2SVPNConnectionHealthHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getP2SVPNConnectionHealthCreateRequest creates the GetP2SVPNConnectionHealth request.
@@ -613,7 +613,7 @@ func (client *P2SVPNGatewaysClient) getP2SVPNConnectionHealthCreateRequest(ctx c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -625,7 +625,7 @@ func (client *P2SVPNGatewaysClient) getP2SVPNConnectionHealthHandleError(resp *a
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -649,7 +649,7 @@ func (client *P2SVPNGatewaysClient) BeginGetP2SVPNConnectionHealthDetailed(ctx c
 	}
 	poller := &p2SVPNConnectionHealthPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (P2SVPNConnectionHealthResponse, error) {
@@ -667,7 +667,7 @@ func (client *P2SVPNGatewaysClient) ResumeGetP2SVPNConnectionHealthDetailed(ctx 
 	}
 	poller := &p2SVPNConnectionHealthPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -698,7 +698,7 @@ func (client *P2SVPNGatewaysClient) getP2SVPNConnectionHealthDetailed(ctx contex
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getP2SVPNConnectionHealthDetailedHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getP2SVPNConnectionHealthDetailedCreateRequest creates the GetP2SVPNConnectionHealthDetailed request.
@@ -722,7 +722,7 @@ func (client *P2SVPNGatewaysClient) getP2SVPNConnectionHealthDetailedCreateReque
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(request)
@@ -734,7 +734,7 @@ func (client *P2SVPNGatewaysClient) getP2SVPNConnectionHealthDetailedHandleError
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -743,7 +743,7 @@ func (client *P2SVPNGatewaysClient) getP2SVPNConnectionHealthDetailedHandleError
 
 // List - Lists all the P2SVpnGateways in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *P2SVPNGatewaysClient) List(options *P2SVPNGatewaysListOptions) (ListP2SVPNGatewaysResultPager) {
+func (client *P2SVPNGatewaysClient) List(options *P2SVPNGatewaysListOptions) ListP2SVPNGatewaysResultPager {
 	return &listP2SVPNGatewaysResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -771,7 +771,7 @@ func (client *P2SVPNGatewaysClient) listCreateRequest(ctx context.Context, optio
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -783,7 +783,7 @@ func (client *P2SVPNGatewaysClient) listHandleResponse(resp *azcore.Response) (L
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListP2SVPNGatewaysResultResponse{}, err
 	}
-return ListP2SVPNGatewaysResultResponse{RawResponse: resp.Response, ListP2SVPNGatewaysResult: val}, nil
+	return ListP2SVPNGatewaysResultResponse{RawResponse: resp.Response, ListP2SVPNGatewaysResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -792,7 +792,7 @@ func (client *P2SVPNGatewaysClient) listHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -801,7 +801,7 @@ func (client *P2SVPNGatewaysClient) listHandleError(resp *azcore.Response) error
 
 // ListByResourceGroup - Lists all the P2SVpnGateways in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *P2SVPNGatewaysClient) ListByResourceGroup(resourceGroupName string, options *P2SVPNGatewaysListByResourceGroupOptions) (ListP2SVPNGatewaysResultPager) {
+func (client *P2SVPNGatewaysClient) ListByResourceGroup(resourceGroupName string, options *P2SVPNGatewaysListByResourceGroupOptions) ListP2SVPNGatewaysResultPager {
 	return &listP2SVPNGatewaysResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -833,7 +833,7 @@ func (client *P2SVPNGatewaysClient) listByResourceGroupCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -845,7 +845,7 @@ func (client *P2SVPNGatewaysClient) listByResourceGroupHandleResponse(resp *azco
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListP2SVPNGatewaysResultResponse{}, err
 	}
-return ListP2SVPNGatewaysResultResponse{RawResponse: resp.Response, ListP2SVPNGatewaysResult: val}, nil
+	return ListP2SVPNGatewaysResultResponse{RawResponse: resp.Response, ListP2SVPNGatewaysResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -854,7 +854,7 @@ func (client *P2SVPNGatewaysClient) listByResourceGroupHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -877,7 +877,7 @@ func (client *P2SVPNGatewaysClient) BeginReset(ctx context.Context, resourceGrou
 	}
 	poller := &p2SVPNGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (P2SVPNGatewayResponse, error) {
@@ -895,7 +895,7 @@ func (client *P2SVPNGatewaysClient) ResumeReset(ctx context.Context, token strin
 	}
 	poller := &p2SVPNGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -925,7 +925,7 @@ func (client *P2SVPNGatewaysClient) reset(ctx context.Context, resourceGroupName
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.resetHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // resetCreateRequest creates the Reset request.
@@ -949,7 +949,7 @@ func (client *P2SVPNGatewaysClient) resetCreateRequest(ctx context.Context, reso
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -961,7 +961,7 @@ func (client *P2SVPNGatewaysClient) resetHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -984,7 +984,7 @@ func (client *P2SVPNGatewaysClient) BeginUpdateTags(ctx context.Context, resourc
 	}
 	poller := &p2SVPNGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (P2SVPNGatewayResponse, error) {
@@ -1002,7 +1002,7 @@ func (client *P2SVPNGatewaysClient) ResumeUpdateTags(ctx context.Context, token 
 	}
 	poller := &p2SVPNGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1032,7 +1032,7 @@ func (client *P2SVPNGatewaysClient) updateTags(ctx context.Context, resourceGrou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateTagsHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -1056,7 +1056,7 @@ func (client *P2SVPNGatewaysClient) updateTagsCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(p2SVPNGatewayParameters)
@@ -1068,10 +1068,9 @@ func (client *P2SVPNGatewaysClient) updateTagsHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

@@ -22,7 +22,7 @@ import (
 // DdosProtectionPlansClient contains the methods for the DdosProtectionPlans group.
 // Don't use this type directly, use NewDdosProtectionPlansClient() instead.
 type DdosProtectionPlansClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *DdosProtectionPlansClient) BeginCreateOrUpdate(ctx context.Context
 	}
 	poller := &ddosProtectionPlanPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DdosProtectionPlanResponse, error) {
@@ -65,7 +65,7 @@ func (client *DdosProtectionPlansClient) ResumeCreateOrUpdate(ctx context.Contex
 	}
 	poller := &ddosProtectionPlanPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *DdosProtectionPlansClient) createOrUpdate(ctx context.Context, res
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *DdosProtectionPlansClient) createOrUpdateCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *DdosProtectionPlansClient) createOrUpdateHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *DdosProtectionPlansClient) BeginDelete(ctx context.Context, resour
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *DdosProtectionPlansClient) ResumeDelete(ctx context.Context, token
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *DdosProtectionPlansClient) deleteOperation(ctx context.Context, re
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *DdosProtectionPlansClient) deleteCreateRequest(ctx context.Context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *DdosProtectionPlansClient) deleteHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *DdosProtectionPlansClient) getCreateRequest(ctx context.Context, r
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -295,7 +295,7 @@ func (client *DdosProtectionPlansClient) getHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DdosProtectionPlanResponse{}, err
 	}
-return DdosProtectionPlanResponse{RawResponse: resp.Response, DdosProtectionPlan: val}, nil
+	return DdosProtectionPlanResponse{RawResponse: resp.Response, DdosProtectionPlan: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -304,7 +304,7 @@ func (client *DdosProtectionPlansClient) getHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -313,7 +313,7 @@ func (client *DdosProtectionPlansClient) getHandleError(resp *azcore.Response) e
 
 // List - Gets all DDoS protection plans in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *DdosProtectionPlansClient) List(options *DdosProtectionPlansListOptions) (DdosProtectionPlanListResultPager) {
+func (client *DdosProtectionPlansClient) List(options *DdosProtectionPlansListOptions) DdosProtectionPlanListResultPager {
 	return &ddosProtectionPlanListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -341,7 +341,7 @@ func (client *DdosProtectionPlansClient) listCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -353,7 +353,7 @@ func (client *DdosProtectionPlansClient) listHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DdosProtectionPlanListResultResponse{}, err
 	}
-return DdosProtectionPlanListResultResponse{RawResponse: resp.Response, DdosProtectionPlanListResult: val}, nil
+	return DdosProtectionPlanListResultResponse{RawResponse: resp.Response, DdosProtectionPlanListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -362,7 +362,7 @@ func (client *DdosProtectionPlansClient) listHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -371,7 +371,7 @@ func (client *DdosProtectionPlansClient) listHandleError(resp *azcore.Response) 
 
 // ListByResourceGroup - Gets all the DDoS protection plans in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *DdosProtectionPlansClient) ListByResourceGroup(resourceGroupName string, options *DdosProtectionPlansListByResourceGroupOptions) (DdosProtectionPlanListResultPager) {
+func (client *DdosProtectionPlansClient) ListByResourceGroup(resourceGroupName string, options *DdosProtectionPlansListByResourceGroupOptions) DdosProtectionPlanListResultPager {
 	return &ddosProtectionPlanListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -403,7 +403,7 @@ func (client *DdosProtectionPlansClient) listByResourceGroupCreateRequest(ctx co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -415,7 +415,7 @@ func (client *DdosProtectionPlansClient) listByResourceGroupHandleResponse(resp 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DdosProtectionPlanListResultResponse{}, err
 	}
-return DdosProtectionPlanListResultResponse{RawResponse: resp.Response, DdosProtectionPlanListResult: val}, nil
+	return DdosProtectionPlanListResultResponse{RawResponse: resp.Response, DdosProtectionPlanListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -424,7 +424,7 @@ func (client *DdosProtectionPlansClient) listByResourceGroupHandleError(resp *az
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -469,7 +469,7 @@ func (client *DdosProtectionPlansClient) updateTagsCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -481,7 +481,7 @@ func (client *DdosProtectionPlansClient) updateTagsHandleResponse(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DdosProtectionPlanResponse{}, err
 	}
-return DdosProtectionPlanResponse{RawResponse: resp.Response, DdosProtectionPlan: val}, nil
+	return DdosProtectionPlanResponse{RawResponse: resp.Response, DdosProtectionPlan: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -490,10 +490,9 @@ func (client *DdosProtectionPlansClient) updateTagsHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

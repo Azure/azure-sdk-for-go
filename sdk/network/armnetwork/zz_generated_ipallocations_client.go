@@ -22,7 +22,7 @@ import (
 // IPAllocationsClient contains the methods for the IPAllocations group.
 // Don't use this type directly, use NewIPAllocationsClient() instead.
 type IPAllocationsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *IPAllocationsClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 	poller := &ipAllocationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (IPAllocationResponse, error) {
@@ -65,7 +65,7 @@ func (client *IPAllocationsClient) ResumeCreateOrUpdate(ctx context.Context, tok
 	}
 	poller := &ipAllocationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *IPAllocationsClient) createOrUpdate(ctx context.Context, resourceG
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *IPAllocationsClient) createOrUpdateCreateRequest(ctx context.Conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *IPAllocationsClient) createOrUpdateHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *IPAllocationsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *IPAllocationsClient) ResumeDelete(ctx context.Context, token strin
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *IPAllocationsClient) deleteOperation(ctx context.Context, resource
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *IPAllocationsClient) deleteCreateRequest(ctx context.Context, reso
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *IPAllocationsClient) deleteHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *IPAllocationsClient) getCreateRequest(ctx context.Context, resourc
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -298,7 +298,7 @@ func (client *IPAllocationsClient) getHandleResponse(resp *azcore.Response) (IPA
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return IPAllocationResponse{}, err
 	}
-return IPAllocationResponse{RawResponse: resp.Response, IPAllocation: val}, nil
+	return IPAllocationResponse{RawResponse: resp.Response, IPAllocation: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -307,7 +307,7 @@ func (client *IPAllocationsClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -316,7 +316,7 @@ func (client *IPAllocationsClient) getHandleError(resp *azcore.Response) error {
 
 // List - Gets all IpAllocations in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *IPAllocationsClient) List(options *IPAllocationsListOptions) (IPAllocationListResultPager) {
+func (client *IPAllocationsClient) List(options *IPAllocationsListOptions) IPAllocationListResultPager {
 	return &ipAllocationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -344,7 +344,7 @@ func (client *IPAllocationsClient) listCreateRequest(ctx context.Context, option
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -356,7 +356,7 @@ func (client *IPAllocationsClient) listHandleResponse(resp *azcore.Response) (IP
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return IPAllocationListResultResponse{}, err
 	}
-return IPAllocationListResultResponse{RawResponse: resp.Response, IPAllocationListResult: val}, nil
+	return IPAllocationListResultResponse{RawResponse: resp.Response, IPAllocationListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -365,7 +365,7 @@ func (client *IPAllocationsClient) listHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -374,7 +374,7 @@ func (client *IPAllocationsClient) listHandleError(resp *azcore.Response) error 
 
 // ListByResourceGroup - Gets all IpAllocations in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *IPAllocationsClient) ListByResourceGroup(resourceGroupName string, options *IPAllocationsListByResourceGroupOptions) (IPAllocationListResultPager) {
+func (client *IPAllocationsClient) ListByResourceGroup(resourceGroupName string, options *IPAllocationsListByResourceGroupOptions) IPAllocationListResultPager {
 	return &ipAllocationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -406,7 +406,7 @@ func (client *IPAllocationsClient) listByResourceGroupCreateRequest(ctx context.
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -418,7 +418,7 @@ func (client *IPAllocationsClient) listByResourceGroupHandleResponse(resp *azcor
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return IPAllocationListResultResponse{}, err
 	}
-return IPAllocationListResultResponse{RawResponse: resp.Response, IPAllocationListResult: val}, nil
+	return IPAllocationListResultResponse{RawResponse: resp.Response, IPAllocationListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -427,7 +427,7 @@ func (client *IPAllocationsClient) listByResourceGroupHandleError(resp *azcore.R
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -472,7 +472,7 @@ func (client *IPAllocationsClient) updateTagsCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -484,7 +484,7 @@ func (client *IPAllocationsClient) updateTagsHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return IPAllocationResponse{}, err
 	}
-return IPAllocationResponse{RawResponse: resp.Response, IPAllocation: val}, nil
+	return IPAllocationResponse{RawResponse: resp.Response, IPAllocation: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -493,10 +493,9 @@ func (client *IPAllocationsClient) updateTagsHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

@@ -22,7 +22,7 @@ import (
 // PublicIPPrefixesClient contains the methods for the PublicIPPrefixes group.
 // Don't use this type directly, use NewPublicIPPrefixesClient() instead.
 type PublicIPPrefixesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *PublicIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 	poller := &publicIPPrefixPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PublicIPPrefixResponse, error) {
@@ -65,7 +65,7 @@ func (client *PublicIPPrefixesClient) ResumeCreateOrUpdate(ctx context.Context, 
 	}
 	poller := &publicIPPrefixPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *PublicIPPrefixesClient) createOrUpdate(ctx context.Context, resour
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *PublicIPPrefixesClient) createOrUpdateCreateRequest(ctx context.Co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *PublicIPPrefixesClient) createOrUpdateHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *PublicIPPrefixesClient) BeginDelete(ctx context.Context, resourceG
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *PublicIPPrefixesClient) ResumeDelete(ctx context.Context, token st
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *PublicIPPrefixesClient) deleteOperation(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *PublicIPPrefixesClient) deleteCreateRequest(ctx context.Context, r
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *PublicIPPrefixesClient) deleteHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *PublicIPPrefixesClient) getCreateRequest(ctx context.Context, reso
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -298,7 +298,7 @@ func (client *PublicIPPrefixesClient) getHandleResponse(resp *azcore.Response) (
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPPrefixResponse{}, err
 	}
-return PublicIPPrefixResponse{RawResponse: resp.Response, PublicIPPrefix: val}, nil
+	return PublicIPPrefixResponse{RawResponse: resp.Response, PublicIPPrefix: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -307,7 +307,7 @@ func (client *PublicIPPrefixesClient) getHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -316,7 +316,7 @@ func (client *PublicIPPrefixesClient) getHandleError(resp *azcore.Response) erro
 
 // List - Gets all public IP prefixes in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *PublicIPPrefixesClient) List(resourceGroupName string, options *PublicIPPrefixesListOptions) (PublicIPPrefixListResultPager) {
+func (client *PublicIPPrefixesClient) List(resourceGroupName string, options *PublicIPPrefixesListOptions) PublicIPPrefixListResultPager {
 	return &publicIPPrefixListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -348,7 +348,7 @@ func (client *PublicIPPrefixesClient) listCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -360,7 +360,7 @@ func (client *PublicIPPrefixesClient) listHandleResponse(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPPrefixListResultResponse{}, err
 	}
-return PublicIPPrefixListResultResponse{RawResponse: resp.Response, PublicIPPrefixListResult: val}, nil
+	return PublicIPPrefixListResultResponse{RawResponse: resp.Response, PublicIPPrefixListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -369,7 +369,7 @@ func (client *PublicIPPrefixesClient) listHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -378,7 +378,7 @@ func (client *PublicIPPrefixesClient) listHandleError(resp *azcore.Response) err
 
 // ListAll - Gets all the public IP prefixes in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *PublicIPPrefixesClient) ListAll(options *PublicIPPrefixesListAllOptions) (PublicIPPrefixListResultPager) {
+func (client *PublicIPPrefixesClient) ListAll(options *PublicIPPrefixesListAllOptions) PublicIPPrefixListResultPager {
 	return &publicIPPrefixListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -406,7 +406,7 @@ func (client *PublicIPPrefixesClient) listAllCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -418,7 +418,7 @@ func (client *PublicIPPrefixesClient) listAllHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPPrefixListResultResponse{}, err
 	}
-return PublicIPPrefixListResultResponse{RawResponse: resp.Response, PublicIPPrefixListResult: val}, nil
+	return PublicIPPrefixListResultResponse{RawResponse: resp.Response, PublicIPPrefixListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -427,7 +427,7 @@ func (client *PublicIPPrefixesClient) listAllHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -472,7 +472,7 @@ func (client *PublicIPPrefixesClient) updateTagsCreateRequest(ctx context.Contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -484,7 +484,7 @@ func (client *PublicIPPrefixesClient) updateTagsHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PublicIPPrefixResponse{}, err
 	}
-return PublicIPPrefixResponse{RawResponse: resp.Response, PublicIPPrefix: val}, nil
+	return PublicIPPrefixResponse{RawResponse: resp.Response, PublicIPPrefix: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -493,10 +493,9 @@ func (client *PublicIPPrefixesClient) updateTagsHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

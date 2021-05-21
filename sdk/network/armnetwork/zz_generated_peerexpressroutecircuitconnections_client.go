@@ -21,7 +21,7 @@ import (
 // PeerExpressRouteCircuitConnectionsClient contains the methods for the PeerExpressRouteCircuitConnections group.
 // Don't use this type directly, use NewPeerExpressRouteCircuitConnectionsClient() instead.
 type PeerExpressRouteCircuitConnectionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -76,7 +76,7 @@ func (client *PeerExpressRouteCircuitConnectionsClient) getCreateRequest(ctx con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -88,7 +88,7 @@ func (client *PeerExpressRouteCircuitConnectionsClient) getHandleResponse(resp *
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PeerExpressRouteCircuitConnectionResponse{}, err
 	}
-return PeerExpressRouteCircuitConnectionResponse{RawResponse: resp.Response, PeerExpressRouteCircuitConnection: val}, nil
+	return PeerExpressRouteCircuitConnectionResponse{RawResponse: resp.Response, PeerExpressRouteCircuitConnection: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -97,7 +97,7 @@ func (client *PeerExpressRouteCircuitConnectionsClient) getHandleError(resp *azc
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -106,7 +106,7 @@ func (client *PeerExpressRouteCircuitConnectionsClient) getHandleError(resp *azc
 
 // List - Gets all global reach peer connections associated with a private peering in an express route circuit.
 // If the operation fails it returns the *CloudError error type.
-func (client *PeerExpressRouteCircuitConnectionsClient) List(resourceGroupName string, circuitName string, peeringName string, options *PeerExpressRouteCircuitConnectionsListOptions) (PeerExpressRouteCircuitConnectionListResultPager) {
+func (client *PeerExpressRouteCircuitConnectionsClient) List(resourceGroupName string, circuitName string, peeringName string, options *PeerExpressRouteCircuitConnectionsListOptions) PeerExpressRouteCircuitConnectionListResultPager {
 	return &peerExpressRouteCircuitConnectionListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -146,7 +146,7 @@ func (client *PeerExpressRouteCircuitConnectionsClient) listCreateRequest(ctx co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -158,7 +158,7 @@ func (client *PeerExpressRouteCircuitConnectionsClient) listHandleResponse(resp 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PeerExpressRouteCircuitConnectionListResultResponse{}, err
 	}
-return PeerExpressRouteCircuitConnectionListResultResponse{RawResponse: resp.Response, PeerExpressRouteCircuitConnectionListResult: val}, nil
+	return PeerExpressRouteCircuitConnectionListResultResponse{RawResponse: resp.Response, PeerExpressRouteCircuitConnectionListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -167,10 +167,9 @@ func (client *PeerExpressRouteCircuitConnectionsClient) listHandleError(resp *az
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

@@ -22,7 +22,7 @@ import (
 // NetworkInterfaceTapConfigurationsClient contains the methods for the NetworkInterfaceTapConfigurations group.
 // Don't use this type directly, use NewNetworkInterfaceTapConfigurationsClient() instead.
 type NetworkInterfaceTapConfigurationsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) BeginCreateOrUpdate(ctx c
 	}
 	poller := &networkInterfaceTapConfigurationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkInterfaceTapConfigurationResponse, error) {
@@ -65,7 +65,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) ResumeCreateOrUpdate(ctx 
 	}
 	poller := &networkInterfaceTapConfigurationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) createOrUpdate(ctx contex
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) createOrUpdateCreateReque
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(tapConfigurationParameters)
@@ -135,7 +135,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) createOrUpdateHandleError
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) BeginDelete(ctx context.C
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +176,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) ResumeDelete(ctx context.
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +206,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) deleteOperation(ctx conte
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) deleteCreateRequest(ctx c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +246,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) deleteHandleError(resp *a
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +295,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) getCreateRequest(ctx cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -307,7 +307,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) getHandleResponse(resp *a
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceTapConfigurationResponse{}, err
 	}
-return NetworkInterfaceTapConfigurationResponse{RawResponse: resp.Response, NetworkInterfaceTapConfiguration: val}, nil
+	return NetworkInterfaceTapConfigurationResponse{RawResponse: resp.Response, NetworkInterfaceTapConfiguration: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -316,7 +316,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) getHandleError(resp *azco
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -325,7 +325,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) getHandleError(resp *azco
 
 // List - Get all Tap configurations in a network interface.
 // If the operation fails it returns the *CloudError error type.
-func (client *NetworkInterfaceTapConfigurationsClient) List(resourceGroupName string, networkInterfaceName string, options *NetworkInterfaceTapConfigurationsListOptions) (NetworkInterfaceTapConfigurationListResultPager) {
+func (client *NetworkInterfaceTapConfigurationsClient) List(resourceGroupName string, networkInterfaceName string, options *NetworkInterfaceTapConfigurationsListOptions) NetworkInterfaceTapConfigurationListResultPager {
 	return &networkInterfaceTapConfigurationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -361,7 +361,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) listCreateRequest(ctx con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -373,7 +373,7 @@ func (client *NetworkInterfaceTapConfigurationsClient) listHandleResponse(resp *
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceTapConfigurationListResultResponse{}, err
 	}
-return NetworkInterfaceTapConfigurationListResultResponse{RawResponse: resp.Response, NetworkInterfaceTapConfigurationListResult: val}, nil
+	return NetworkInterfaceTapConfigurationListResultResponse{RawResponse: resp.Response, NetworkInterfaceTapConfigurationListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -382,10 +382,9 @@ func (client *NetworkInterfaceTapConfigurationsClient) listHandleError(resp *azc
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

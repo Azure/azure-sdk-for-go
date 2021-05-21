@@ -22,7 +22,7 @@ import (
 // VirtualRoutersClient contains the methods for the VirtualRouters group.
 // Don't use this type directly, use NewVirtualRoutersClient() instead.
 type VirtualRoutersClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *VirtualRoutersClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 	poller := &virtualRouterPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualRouterResponse, error) {
@@ -65,7 +65,7 @@ func (client *VirtualRoutersClient) ResumeCreateOrUpdate(ctx context.Context, to
 	}
 	poller := &virtualRouterPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *VirtualRoutersClient) createOrUpdate(ctx context.Context, resource
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *VirtualRoutersClient) createOrUpdateCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *VirtualRoutersClient) createOrUpdateHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *VirtualRoutersClient) BeginDelete(ctx context.Context, resourceGro
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *VirtualRoutersClient) ResumeDelete(ctx context.Context, token stri
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *VirtualRoutersClient) deleteOperation(ctx context.Context, resourc
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *VirtualRoutersClient) deleteCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *VirtualRoutersClient) deleteHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *VirtualRoutersClient) getCreateRequest(ctx context.Context, resour
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -298,7 +298,7 @@ func (client *VirtualRoutersClient) getHandleResponse(resp *azcore.Response) (Vi
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualRouterResponse{}, err
 	}
-return VirtualRouterResponse{RawResponse: resp.Response, VirtualRouter: val}, nil
+	return VirtualRouterResponse{RawResponse: resp.Response, VirtualRouter: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -307,7 +307,7 @@ func (client *VirtualRoutersClient) getHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -316,7 +316,7 @@ func (client *VirtualRoutersClient) getHandleError(resp *azcore.Response) error 
 
 // List - Gets all the Virtual Routers in a subscription.
 // If the operation fails it returns the *Error error type.
-func (client *VirtualRoutersClient) List(options *VirtualRoutersListOptions) (VirtualRouterListResultPager) {
+func (client *VirtualRoutersClient) List(options *VirtualRoutersListOptions) VirtualRouterListResultPager {
 	return &virtualRouterListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -344,7 +344,7 @@ func (client *VirtualRoutersClient) listCreateRequest(ctx context.Context, optio
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -356,7 +356,7 @@ func (client *VirtualRoutersClient) listHandleResponse(resp *azcore.Response) (V
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualRouterListResultResponse{}, err
 	}
-return VirtualRouterListResultResponse{RawResponse: resp.Response, VirtualRouterListResult: val}, nil
+	return VirtualRouterListResultResponse{RawResponse: resp.Response, VirtualRouterListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -365,7 +365,7 @@ func (client *VirtualRoutersClient) listHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -374,7 +374,7 @@ func (client *VirtualRoutersClient) listHandleError(resp *azcore.Response) error
 
 // ListByResourceGroup - Lists all Virtual Routers in a resource group.
 // If the operation fails it returns the *Error error type.
-func (client *VirtualRoutersClient) ListByResourceGroup(resourceGroupName string, options *VirtualRoutersListByResourceGroupOptions) (VirtualRouterListResultPager) {
+func (client *VirtualRoutersClient) ListByResourceGroup(resourceGroupName string, options *VirtualRoutersListByResourceGroupOptions) VirtualRouterListResultPager {
 	return &virtualRouterListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -406,7 +406,7 @@ func (client *VirtualRoutersClient) listByResourceGroupCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -418,7 +418,7 @@ func (client *VirtualRoutersClient) listByResourceGroupHandleResponse(resp *azco
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualRouterListResultResponse{}, err
 	}
-return VirtualRouterListResultResponse{RawResponse: resp.Response, VirtualRouterListResult: val}, nil
+	return VirtualRouterListResultResponse{RawResponse: resp.Response, VirtualRouterListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -427,10 +427,9 @@ func (client *VirtualRoutersClient) listByResourceGroupHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

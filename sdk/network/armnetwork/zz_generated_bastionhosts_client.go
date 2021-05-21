@@ -22,7 +22,7 @@ import (
 // BastionHostsClient contains the methods for the BastionHosts group.
 // Don't use this type directly, use NewBastionHostsClient() instead.
 type BastionHostsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *BastionHostsClient) BeginCreateOrUpdate(ctx context.Context, resou
 	}
 	poller := &bastionHostPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (BastionHostResponse, error) {
@@ -65,7 +65,7 @@ func (client *BastionHostsClient) ResumeCreateOrUpdate(ctx context.Context, toke
 	}
 	poller := &bastionHostPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *BastionHostsClient) createOrUpdate(ctx context.Context, resourceGr
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *BastionHostsClient) createOrUpdateCreateRequest(ctx context.Contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *BastionHostsClient) createOrUpdateHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *BastionHostsClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *BastionHostsClient) ResumeDelete(ctx context.Context, token string
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *BastionHostsClient) deleteOperation(ctx context.Context, resourceG
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *BastionHostsClient) deleteCreateRequest(ctx context.Context, resou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *BastionHostsClient) deleteHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *BastionHostsClient) getCreateRequest(ctx context.Context, resource
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -295,7 +295,7 @@ func (client *BastionHostsClient) getHandleResponse(resp *azcore.Response) (Bast
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BastionHostResponse{}, err
 	}
-return BastionHostResponse{RawResponse: resp.Response, BastionHost: val}, nil
+	return BastionHostResponse{RawResponse: resp.Response, BastionHost: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -304,7 +304,7 @@ func (client *BastionHostsClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -313,7 +313,7 @@ func (client *BastionHostsClient) getHandleError(resp *azcore.Response) error {
 
 // List - Lists all Bastion Hosts in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *BastionHostsClient) List(options *BastionHostsListOptions) (BastionHostListResultPager) {
+func (client *BastionHostsClient) List(options *BastionHostsListOptions) BastionHostListResultPager {
 	return &bastionHostListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -341,7 +341,7 @@ func (client *BastionHostsClient) listCreateRequest(ctx context.Context, options
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -353,7 +353,7 @@ func (client *BastionHostsClient) listHandleResponse(resp *azcore.Response) (Bas
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BastionHostListResultResponse{}, err
 	}
-return BastionHostListResultResponse{RawResponse: resp.Response, BastionHostListResult: val}, nil
+	return BastionHostListResultResponse{RawResponse: resp.Response, BastionHostListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -362,7 +362,7 @@ func (client *BastionHostsClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -371,7 +371,7 @@ func (client *BastionHostsClient) listHandleError(resp *azcore.Response) error {
 
 // ListByResourceGroup - Lists all Bastion Hosts in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *BastionHostsClient) ListByResourceGroup(resourceGroupName string, options *BastionHostsListByResourceGroupOptions) (BastionHostListResultPager) {
+func (client *BastionHostsClient) ListByResourceGroup(resourceGroupName string, options *BastionHostsListByResourceGroupOptions) BastionHostListResultPager {
 	return &bastionHostListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -403,7 +403,7 @@ func (client *BastionHostsClient) listByResourceGroupCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -415,7 +415,7 @@ func (client *BastionHostsClient) listByResourceGroupHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BastionHostListResultResponse{}, err
 	}
-return BastionHostListResultResponse{RawResponse: resp.Response, BastionHostListResult: val}, nil
+	return BastionHostListResultResponse{RawResponse: resp.Response, BastionHostListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -424,10 +424,9 @@ func (client *BastionHostsClient) listByResourceGroupHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

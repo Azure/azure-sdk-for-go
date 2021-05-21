@@ -296,7 +296,7 @@ type ApplicationGatewayBackendHTTPSettingsPropertiesFormat struct {
 	Protocol *ApplicationGatewayProtocol `json:"protocol,omitempty"`
 
 	// Request timeout in seconds. Application Gateway will fail the request if response is not received within RequestTimeout. Acceptable values are from 1
-// second to 86400 seconds.
+	// second to 86400 seconds.
 	RequestTimeout *int32 `json:"requestTimeout,omitempty"`
 
 	// Array of references to application gateway trusted root certificates.
@@ -766,7 +766,7 @@ type ApplicationGatewayOnDemandProbe struct {
 	Protocol *ApplicationGatewayProtocol `json:"protocol,omitempty"`
 
 	// The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period. Acceptable values are from 1 second
-// to 86400 seconds.
+	// to 86400 seconds.
 	Timeout *int32 `json:"timeout,omitempty"`
 }
 
@@ -1135,19 +1135,19 @@ type ApplicationGatewayProbePropertiesFormat struct {
 	Interval *int32 `json:"interval,omitempty"`
 
 	// Custom port which will be used for probing the backend servers. The valid value ranges from 1 to 65535. In case not set, port from http settings will
-// be used. This property is valid for Standardv2 and
-// WAFv2 only.
+	// be used. This property is valid for Standardv2 and
+	// WAFv2 only.
 	Port *int32 `json:"port,omitempty"`
 
 	// The protocol used for the probe.
 	Protocol *ApplicationGatewayProtocol `json:"protocol,omitempty"`
 
 	// The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period. Acceptable values are from 1 second
-// to 86400 seconds.
+	// to 86400 seconds.
 	Timeout *int32 `json:"timeout,omitempty"`
 
 	// The probe retry count. Backend server is marked down after consecutive probe failure count reaches UnhealthyThreshold. Acceptable values are from 1 second
-// to 20.
+	// to 20.
 	UnhealthyThreshold *int32 `json:"unhealthyThreshold,omitempty"`
 
 	// READ-ONLY; The provisioning state of the probe resource.
@@ -1160,15 +1160,15 @@ type ApplicationGatewayPropertiesFormat struct {
 	PrivateLinkConfigurations []*ApplicationGatewayPrivateLinkConfiguration `json:"privateLinkConfigurations,omitempty"`
 
 	// Authentication certificates of the application gateway resource. For default limits, see Application Gateway limits
-// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
+	// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
 	AuthenticationCertificates []*ApplicationGatewayAuthenticationCertificate `json:"authenticationCertificates,omitempty"`
 
 	// Backend address pool of the application gateway resource. For default limits, see Application Gateway limits
-// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
+	// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
 	BackendAddressPools []*ApplicationGatewayBackendAddressPool `json:"backendAddressPools,omitempty"`
 
 	// Backend http settings of the application gateway resource. For default limits, see Application Gateway limits
-// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
+	// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
 	BackendHTTPSettingsCollection []*ApplicationGatewayBackendHTTPSettings `json:"backendHttpSettingsCollection,omitempty"`
 
 	// Custom error configurations of the application gateway resource.
@@ -1187,7 +1187,7 @@ type ApplicationGatewayPropertiesFormat struct {
 	ForceFirewallPolicyAssociation *bool `json:"forceFirewallPolicyAssociation,omitempty"`
 
 	// Frontend IP addresses of the application gateway resource. For default limits, see Application Gateway limits
-// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
+	// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
 	FrontendIPConfigurations []*ApplicationGatewayFrontendIPConfiguration `json:"frontendIPConfigurations,omitempty"`
 
 	// Frontend ports of the application gateway resource. For default limits, see Application Gateway limits [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
@@ -1203,7 +1203,7 @@ type ApplicationGatewayPropertiesFormat struct {
 	URLPathMaps []*ApplicationGatewayURLPathMap `json:"urlPathMaps,omitempty"`
 
 	// Trusted Root certificates of the application gateway resource. For default limits, see Application Gateway limits
-// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
+	// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
 	TrustedRootCertificates []*ApplicationGatewayTrustedRootCertificate `json:"trustedRootCertificates,omitempty"`
 
 	// Autoscale Configuration.
@@ -1213,11 +1213,11 @@ type ApplicationGatewayPropertiesFormat struct {
 	Probes []*ApplicationGatewayProbe `json:"probes,omitempty"`
 
 	// Trusted client certificates of the application gateway resource. For default limits, see Application Gateway limits
-// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
+	// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
 	TrustedClientCertificates []*ApplicationGatewayTrustedClientCertificate `json:"trustedClientCertificates,omitempty"`
 
 	// Redirect configurations of the application gateway resource. For default limits, see Application Gateway limits
-// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
+	// [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits].
 	RedirectConfigurations []*ApplicationGatewayRedirectConfiguration `json:"redirectConfigurations,omitempty"`
 
 	// Request routing rules of the application gateway resource.
@@ -1233,7 +1233,7 @@ type ApplicationGatewayPropertiesFormat struct {
 	SKU *ApplicationGatewaySKU `json:"sku,omitempty"`
 
 	// SSL certificates of the application gateway resource. For default limits, see Application Gateway limits [https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits]
-// .
+	// .
 	SSLCertificates []*ApplicationGatewaySSLCertificate `json:"sslCertificates,omitempty"`
 
 	// SSL policy of the application gateway resource.
@@ -1462,7 +1462,7 @@ func (a ApplicationGatewayRewriteRuleActionSet) MarshalJSON() ([]byte, error) {
 
 // ApplicationGatewayRewriteRuleCondition - Set of conditions in the Rewrite Rule in Application Gateway.
 type ApplicationGatewayRewriteRuleCondition struct {
-	// Setting this paramter to truth value with force the pattern to do a case in-sensitive comparison.
+	// Setting this parameter to truth value with force the pattern to do a case in-sensitive comparison.
 	IgnoreCase *bool `json:"ignoreCase,omitempty"`
 
 	// Setting this value as truth will force to check the negation of the condition given by the user.
@@ -1716,8 +1716,14 @@ type ApplicationGatewayTrustedClientCertificatePropertiesFormat struct {
 	// Certificate public data.
 	Data *string `json:"data,omitempty"`
 
+	// READ-ONLY; Distinguished name of client certificate issuer.
+	ClientCertIssuerDN *string `json:"clientCertIssuerDN,omitempty" azure:"ro"`
+
 	// READ-ONLY; The provisioning state of the trusted client certificate resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Validated certificate data.
+	ValidatedCertData *string `json:"validatedCertData,omitempty" azure:"ro"`
 }
 
 // ApplicationGatewayTrustedRootCertificate - Trusted Root certificates of an application gateway.
@@ -2022,32 +2028,32 @@ func (a *ApplicationRule) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "destinationAddresses":
-				err = unpopulate(val, &a.DestinationAddresses)
-				delete(rawMsg, key)
+			err = unpopulate(val, &a.DestinationAddresses)
+			delete(rawMsg, key)
 		case "fqdnTags":
-				err = unpopulate(val, &a.FqdnTags)
-				delete(rawMsg, key)
+			err = unpopulate(val, &a.FqdnTags)
+			delete(rawMsg, key)
 		case "protocols":
-				err = unpopulate(val, &a.Protocols)
-				delete(rawMsg, key)
+			err = unpopulate(val, &a.Protocols)
+			delete(rawMsg, key)
 		case "sourceAddresses":
-				err = unpopulate(val, &a.SourceAddresses)
-				delete(rawMsg, key)
+			err = unpopulate(val, &a.SourceAddresses)
+			delete(rawMsg, key)
 		case "sourceIpGroups":
-				err = unpopulate(val, &a.SourceIPGroups)
-				delete(rawMsg, key)
+			err = unpopulate(val, &a.SourceIPGroups)
+			delete(rawMsg, key)
 		case "targetFqdns":
-				err = unpopulate(val, &a.TargetFqdns)
-				delete(rawMsg, key)
+			err = unpopulate(val, &a.TargetFqdns)
+			delete(rawMsg, key)
 		case "targetUrls":
-				err = unpopulate(val, &a.TargetUrls)
-				delete(rawMsg, key)
+			err = unpopulate(val, &a.TargetUrls)
+			delete(rawMsg, key)
 		case "terminateTLS":
-				err = unpopulate(val, &a.TerminateTLS)
-				delete(rawMsg, key)
+			err = unpopulate(val, &a.TerminateTLS)
+			delete(rawMsg, key)
 		case "webCategories":
-				err = unpopulate(val, &a.WebCategories)
-				delete(rawMsg, key)
+			err = unpopulate(val, &a.WebCategories)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -2097,8 +2103,8 @@ type ApplicationSecurityGroupPropertiesFormat struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The resource GUID property of the application security group resource. It uniquely identifies a resource, even if the user changes its name
-// or migrate the resource across subscriptions or resource
-// groups.
+	// or migrate the resource across subscriptions or resource
+	// groups.
 	ResourceGUID *string `json:"resourceGuid,omitempty" azure:"ro"`
 }
 
@@ -2254,6 +2260,9 @@ type AvailableEndpointServicesListOptions struct {
 
 // AvailablePrivateEndpointType - The information of an AvailablePrivateEndpointType.
 type AvailablePrivateEndpointType struct {
+	// Display name of the resource.
+	DisplayName *string `json:"displayName,omitempty"`
+
 	// A unique identifier of the AvailablePrivateEndpoint Type resource.
 	ID *string `json:"id,omitempty"`
 
@@ -3057,13 +3066,13 @@ func (a *AzureReachabilityReportLatencyInfo) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "score":
-				err = unpopulate(val, &a.Score)
-				delete(rawMsg, key)
+			err = unpopulate(val, &a.Score)
+			delete(rawMsg, key)
 		case "timeStamp":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				a.TimeStamp = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			a.TimeStamp = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -3123,24 +3132,24 @@ func (a *AzureReachabilityReportParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "azureLocations":
-				err = unpopulate(val, &a.AzureLocations)
-				delete(rawMsg, key)
+			err = unpopulate(val, &a.AzureLocations)
+			delete(rawMsg, key)
 		case "endTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				a.EndTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			a.EndTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "providerLocation":
-				err = unpopulate(val, &a.ProviderLocation)
-				delete(rawMsg, key)
+			err = unpopulate(val, &a.ProviderLocation)
+			delete(rawMsg, key)
 		case "providers":
-				err = unpopulate(val, &a.Providers)
-				delete(rawMsg, key)
+			err = unpopulate(val, &a.Providers)
+			delete(rawMsg, key)
 		case "startTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				a.StartTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			a.StartTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -3254,6 +3263,12 @@ type BackendAddressPoolPropertiesFormat struct {
 	// An array of backend addresses.
 	LoadBalancerBackendAddresses []*LoadBalancerBackendAddress `json:"loadBalancerBackendAddresses,omitempty"`
 
+	// The location of the backend address pool.
+	Location *string `json:"location,omitempty"`
+
+	// An array of gateway load balancer tunnel interfaces.
+	TunnelInterfaces []*GatewayLoadBalancerTunnelInterface `json:"tunnelInterfaces,omitempty"`
+
 	// READ-ONLY; An array of references to IP addresses defined in network interfaces.
 	BackendIPConfigurations []*NetworkInterfaceIPConfiguration `json:"backendIPConfigurations,omitempty" azure:"ro"`
 
@@ -3276,9 +3291,11 @@ func (b BackendAddressPoolPropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backendIPConfigurations", b.BackendIPConfigurations)
 	populate(objectMap, "loadBalancerBackendAddresses", b.LoadBalancerBackendAddresses)
 	populate(objectMap, "loadBalancingRules", b.LoadBalancingRules)
+	populate(objectMap, "location", b.Location)
 	populate(objectMap, "outboundRule", b.OutboundRule)
 	populate(objectMap, "outboundRules", b.OutboundRules)
 	populate(objectMap, "provisioningState", b.ProvisioningState)
+	populate(objectMap, "tunnelInterfaces", b.TunnelInterfaces)
 	return json.Marshal(objectMap)
 }
 
@@ -3341,6 +3358,9 @@ type BastionHost struct {
 	// Represents the bastion host resource.
 	Properties *BastionHostPropertiesFormat `json:"properties,omitempty"`
 
+	// The sku of this Bastion Host.
+	SKU *SKU `json:"sku,omitempty"`
+
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
@@ -3350,6 +3370,7 @@ func (b BastionHost) MarshalJSON() ([]byte, error) {
 	objectMap := b.Resource.marshalInternal()
 	populate(objectMap, "etag", b.Etag)
 	populate(objectMap, "properties", b.Properties)
+	populate(objectMap, "sku", b.SKU)
 	return json.Marshal(objectMap)
 }
 
@@ -3986,32 +4007,32 @@ func (c *ConnectionMonitorParameters) unmarshalInternal(rawMsg map[string]json.R
 		var err error
 		switch key {
 		case "autoStart":
-				err = unpopulate(val, &c.AutoStart)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.AutoStart)
+			delete(rawMsg, key)
 		case "destination":
-				err = unpopulate(val, &c.Destination)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Destination)
+			delete(rawMsg, key)
 		case "endpoints":
-				err = unpopulate(val, &c.Endpoints)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Endpoints)
+			delete(rawMsg, key)
 		case "monitoringIntervalInSeconds":
-				err = unpopulate(val, &c.MonitoringIntervalInSeconds)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.MonitoringIntervalInSeconds)
+			delete(rawMsg, key)
 		case "notes":
-				err = unpopulate(val, &c.Notes)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Notes)
+			delete(rawMsg, key)
 		case "outputs":
-				err = unpopulate(val, &c.Outputs)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Outputs)
+			delete(rawMsg, key)
 		case "source":
-				err = unpopulate(val, &c.Source)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Source)
+			delete(rawMsg, key)
 		case "testConfigurations":
-				err = unpopulate(val, &c.TestConfigurations)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.TestConfigurations)
+			delete(rawMsg, key)
 		case "testGroups":
-				err = unpopulate(val, &c.TestGroups)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.TestGroups)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -4110,19 +4131,19 @@ func (c *ConnectionMonitorResultProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "connectionMonitorType":
-				err = unpopulate(val, &c.ConnectionMonitorType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.ConnectionMonitorType)
+			delete(rawMsg, key)
 		case "monitoringStatus":
-				err = unpopulate(val, &c.MonitoringStatus)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.MonitoringStatus)
+			delete(rawMsg, key)
 		case "provisioningState":
-				err = unpopulate(val, &c.ProvisioningState)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.ProvisioningState)
+			delete(rawMsg, key)
 		case "startTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				c.StartTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			c.StartTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -4343,39 +4364,39 @@ func (c *ConnectionStateSnapshot) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "avgLatencyInMs":
-				err = unpopulate(val, &c.AvgLatencyInMs)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.AvgLatencyInMs)
+			delete(rawMsg, key)
 		case "connectionState":
-				err = unpopulate(val, &c.ConnectionState)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.ConnectionState)
+			delete(rawMsg, key)
 		case "endTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				c.EndTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			c.EndTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "evaluationState":
-				err = unpopulate(val, &c.EvaluationState)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.EvaluationState)
+			delete(rawMsg, key)
 		case "hops":
-				err = unpopulate(val, &c.Hops)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Hops)
+			delete(rawMsg, key)
 		case "maxLatencyInMs":
-				err = unpopulate(val, &c.MaxLatencyInMs)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.MaxLatencyInMs)
+			delete(rawMsg, key)
 		case "minLatencyInMs":
-				err = unpopulate(val, &c.MinLatencyInMs)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.MinLatencyInMs)
+			delete(rawMsg, key)
 		case "probesFailed":
-				err = unpopulate(val, &c.ProbesFailed)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.ProbesFailed)
+			delete(rawMsg, key)
 		case "probesSent":
-				err = unpopulate(val, &c.ProbesSent)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.ProbesSent)
+			delete(rawMsg, key)
 		case "startTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				c.StartTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			c.StartTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -4674,6 +4695,9 @@ func (c CustomDNSConfigPropertiesFormat) MarshalJSON() ([]byte, error) {
 // CustomIPPrefix - Custom IP prefix resource.
 type CustomIPPrefix struct {
 	Resource
+	// The extended location of the custom IP prefix.
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
 	// Custom IP prefix properties.
 	Properties *CustomIPPrefixPropertiesFormat `json:"properties,omitempty"`
 
@@ -4688,6 +4712,7 @@ type CustomIPPrefix struct {
 func (c CustomIPPrefix) MarshalJSON() ([]byte, error) {
 	objectMap := c.Resource.marshalInternal()
 	populate(objectMap, "etag", c.Etag)
+	populate(objectMap, "extendedLocation", c.ExtendedLocation)
 	populate(objectMap, "properties", c.Properties)
 	populate(objectMap, "zones", c.Zones)
 	return json.Marshal(objectMap)
@@ -4712,11 +4737,26 @@ func (c CustomIPPrefixListResult) MarshalJSON() ([]byte, error) {
 
 // CustomIPPrefixPropertiesFormat - Custom IP prefix properties.
 type CustomIPPrefixPropertiesFormat struct {
+	// Authorization message for WAN validation.
+	AuthorizationMessage *string `json:"authorizationMessage,omitempty"`
+
 	// The prefix range in CIDR notation. Should include the start address and the prefix length.
 	Cidr *string `json:"cidr,omitempty"`
 
 	// The commissioned state of the Custom IP Prefix.
 	CommissionedState *CommissionedState `json:"commissionedState,omitempty"`
+
+	// The Parent CustomIpPrefix for IPv6 /64 CustomIpPrefix.
+	CustomIPPrefixParent *CustomIPPrefix `json:"customIpPrefixParent,omitempty"`
+
+	// Signed message for WAN validation.
+	SignedMessage *string `json:"signedMessage,omitempty"`
+
+	// READ-ONLY; The list of all Children for IPv6 /48 CustomIpPrefix.
+	ChildCustomIPPrefixes []*CustomIPPrefix `json:"childCustomIpPrefixes,omitempty" azure:"ro"`
+
+	// READ-ONLY; The reason why resource is in failed state.
+	FailedReason *string `json:"failedReason,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the custom IP prefix resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -4731,11 +4771,16 @@ type CustomIPPrefixPropertiesFormat struct {
 // MarshalJSON implements the json.Marshaller interface for type CustomIPPrefixPropertiesFormat.
 func (c CustomIPPrefixPropertiesFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "authorizationMessage", c.AuthorizationMessage)
+	populate(objectMap, "childCustomIpPrefixes", c.ChildCustomIPPrefixes)
 	populate(objectMap, "cidr", c.Cidr)
 	populate(objectMap, "commissionedState", c.CommissionedState)
+	populate(objectMap, "customIpPrefixParent", c.CustomIPPrefixParent)
+	populate(objectMap, "failedReason", c.FailedReason)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
 	populate(objectMap, "publicIpPrefixes", c.PublicIPPrefixes)
 	populate(objectMap, "resourceGuid", c.ResourceGUID)
+	populate(objectMap, "signedMessage", c.SignedMessage)
 	return json.Marshal(objectMap)
 }
 
@@ -4847,7 +4892,7 @@ type DdosCustomPolicyPropertiesFormat struct {
 	PublicIPAddresses []*SubResource `json:"publicIPAddresses,omitempty" azure:"ro"`
 
 	// READ-ONLY; The resource GUID property of the DDoS custom policy resource. It uniquely identifies the resource, even if the user changes its name or migrate
-// the resource across subscriptions or resource groups.
+	// the resource across subscriptions or resource groups.
 	ResourceGUID *string `json:"resourceGuid,omitempty" azure:"ro"`
 }
 
@@ -4921,7 +4966,7 @@ type DdosProtectionPlanPropertiesFormat struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The resource GUID property of the DDoS protection plan resource. It uniquely identifies the resource, even if the user changes its name or
-// migrate the resource across subscriptions or resource groups.
+	// migrate the resource across subscriptions or resource groups.
 	ResourceGUID *string `json:"resourceGuid,omitempty" azure:"ro"`
 
 	// READ-ONLY; The list of virtual networks associated with the DDoS protection plan resource. This list is read-only.
@@ -4998,6 +5043,9 @@ type Delegation struct {
 	// Properties of the subnet.
 	Properties *ServiceDelegationPropertiesFormat `json:"properties,omitempty"`
 
+	// Resource type.
+	Type *string `json:"type,omitempty"`
+
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
@@ -5008,6 +5056,7 @@ func (d Delegation) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "etag", d.Etag)
 	populate(objectMap, "name", d.Name)
 	populate(objectMap, "properties", d.Properties)
+	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -5188,6 +5237,9 @@ type EffectiveNetworkSecurityGroupAssociation struct {
 	// The ID of the network interface if assigned.
 	NetworkInterface *SubResource `json:"networkInterface,omitempty"`
 
+	// The ID of the Azure network manager if assigned.
+	NetworkManager *SubResource `json:"networkManager,omitempty"`
+
 	// The ID of the subnet if assigned.
 	Subnet *SubResource `json:"subnet,omitempty"`
 }
@@ -5218,14 +5270,14 @@ type EffectiveNetworkSecurityRule struct {
 	Access *SecurityRuleAccess `json:"access,omitempty"`
 
 	// The destination address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AzureLoadBalancer, Internet), System Tags, and
-// the asterisk (*).
+	// the asterisk (*).
 	DestinationAddressPrefixes []*string `json:"destinationAddressPrefixes,omitempty"`
 
 	// The destination port or range.
 	DestinationPortRange *string `json:"destinationPortRange,omitempty"`
 
 	// The destination port ranges. Expected values include a single integer between 0 and 65535, a range using '-' as separator (e.g. 100-400), or an asterisk
-// (*).
+	// (*).
 	DestinationPortRanges []*string `json:"destinationPortRanges,omitempty"`
 
 	// The direction of the rule.
@@ -5250,7 +5302,7 @@ type EffectiveNetworkSecurityRule struct {
 	SourceAddressPrefix *string `json:"sourceAddressPrefix,omitempty"`
 
 	// The source address prefixes. Expected values include CIDR IP ranges, Default Tags (VirtualNetwork, AzureLoadBalancer, Internet), System Tags, and the
-// asterisk (*).
+	// asterisk (*).
 	SourceAddressPrefixes []*string `json:"sourceAddressPrefixes,omitempty"`
 
 	// The source port or range.
@@ -6137,6 +6189,9 @@ type ExpressRouteConnectionProperties struct {
 	// REQUIRED; The ExpressRoute circuit peering.
 	ExpressRouteCircuitPeering *ExpressRouteCircuitPeeringID `json:"expressRouteCircuitPeering,omitempty"`
 
+	// Enable FastPath to vWan Firewall hub.
+	ExpressRouteGatewayBypass *bool `json:"expressRouteGatewayBypass,omitempty"`
+
 	// The Routing Configuration indicating the associated and propagated route tables on this connection.
 	RoutingConfiguration *RoutingConfiguration `json:"routingConfiguration,omitempty"`
 
@@ -6510,6 +6565,11 @@ type ExpressRouteGatewaysBeginCreateOrUpdateOptions struct {
 
 // ExpressRouteGatewaysBeginDeleteOptions contains the optional parameters for the ExpressRouteGateways.BeginDelete method.
 type ExpressRouteGatewaysBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ExpressRouteGatewaysBeginUpdateTagsOptions contains the optional parameters for the ExpressRouteGateways.BeginUpdateTags method.
+type ExpressRouteGatewaysBeginUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -6889,10 +6949,10 @@ type ExpressRouteServiceProvidersListOptions struct {
 
 // ExtendedLocation complex type.
 type ExtendedLocation struct {
-	// REQUIRED; The name of the extended location.
+	// The name of the extended location.
 	Name *string `json:"name,omitempty"`
 
-	// REQUIRED; The type of the extended location.
+	// The type of the extended location.
 	Type *ExtendedLocationTypes `json:"type,omitempty"`
 }
 
@@ -6981,11 +7041,11 @@ func (f *FirewallPolicyFilterRuleCollection) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "action":
-				err = unpopulate(val, &f.Action)
-				delete(rawMsg, key)
+			err = unpopulate(val, &f.Action)
+			delete(rawMsg, key)
 		case "rules":
-				f.Rules, err = unmarshalFirewallPolicyRuleClassificationArray(val)
-				delete(rawMsg, key)
+			f.Rules, err = unmarshalFirewallPolicyRuleClassificationArray(val)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -6998,6 +7058,18 @@ func (f *FirewallPolicyFilterRuleCollection) UnmarshalJSON(data []byte) error {
 type FirewallPolicyFilterRuleCollectionAction struct {
 	// The type of action.
 	Type *FirewallPolicyFilterRuleCollectionActionType `json:"type,omitempty"`
+}
+
+// FirewallPolicyInsights - Firewall Policy Insights.
+type FirewallPolicyInsights struct {
+	// A flag to indicate if the insights are enabled on the policy.
+	IsEnabled *bool `json:"isEnabled,omitempty"`
+
+	// Workspaces needed to configure the Firewall Policy Insights.
+	LogAnalyticsResources *FirewallPolicyLogAnalyticsResources `json:"logAnalyticsResources,omitempty"`
+
+	// Number of days the insights should be enabled on the policy.
+	RetentionDays *int32 `json:"retentionDays,omitempty"`
 }
 
 // FirewallPolicyIntrusionDetection - Configuration for intrusion detection mode and rules.
@@ -7093,6 +7165,32 @@ func (f FirewallPolicyListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// FirewallPolicyLogAnalyticsResources - Log Analytics Resources for Firewall Policy Insights.
+type FirewallPolicyLogAnalyticsResources struct {
+	// The default workspace Id for Firewall Policy Insights.
+	DefaultWorkspaceID *SubResource `json:"defaultWorkspaceId,omitempty"`
+
+	// List of workspaces for Firewall Policy Insights.
+	Workspaces []*FirewallPolicyLogAnalyticsWorkspace `json:"workspaces,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type FirewallPolicyLogAnalyticsResources.
+func (f FirewallPolicyLogAnalyticsResources) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "defaultWorkspaceId", f.DefaultWorkspaceID)
+	populate(objectMap, "workspaces", f.Workspaces)
+	return json.Marshal(objectMap)
+}
+
+// FirewallPolicyLogAnalyticsWorkspace - Log Analytics Workspace for Firewall Policy Insights.
+type FirewallPolicyLogAnalyticsWorkspace struct {
+	// Region to configure the Workspace.
+	Region *string `json:"region,omitempty"`
+
+	// The workspace Id for Firewall Policy Insights.
+	WorkspaceID *SubResource `json:"workspaceId,omitempty"`
+}
+
 // FirewallPolicyNatRuleCollection - Firewall Policy NAT Rule Collection.
 type FirewallPolicyNatRuleCollection struct {
 	FirewallPolicyRuleCollection
@@ -7121,11 +7219,11 @@ func (f *FirewallPolicyNatRuleCollection) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "action":
-				err = unpopulate(val, &f.Action)
-				delete(rawMsg, key)
+			err = unpopulate(val, &f.Action)
+			delete(rawMsg, key)
 		case "rules":
-				f.Rules, err = unmarshalFirewallPolicyRuleClassificationArray(val)
-				delete(rawMsg, key)
+			f.Rules, err = unmarshalFirewallPolicyRuleClassificationArray(val)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -7154,11 +7252,17 @@ type FirewallPolicyPropertiesFormat struct {
 	// ThreatIntel Whitelist for Firewall Policy.
 	ThreatIntelWhitelist *FirewallPolicyThreatIntelWhitelist `json:"threatIntelWhitelist,omitempty"`
 
+	// Insights on Firewall Policy.
+	Insights *FirewallPolicyInsights `json:"insights,omitempty"`
+
 	// The configuration for Intrusion detection.
 	IntrusionDetection *FirewallPolicyIntrusionDetection `json:"intrusionDetection,omitempty"`
 
 	// The operation mode for Threat Intelligence.
 	ThreatIntelMode *AzureFirewallThreatIntelMode `json:"threatIntelMode,omitempty"`
+
+	// The private IP addresses/IP ranges to which traffic will not be SNAT.
+	Snat *FirewallPolicySNAT `json:"snat,omitempty"`
 
 	// The Firewall Policy SKU.
 	SKU *FirewallPolicySKU `json:"sku,omitempty"`
@@ -7183,10 +7287,12 @@ func (f FirewallPolicyPropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "childPolicies", f.ChildPolicies)
 	populate(objectMap, "dnsSettings", f.DNSSettings)
 	populate(objectMap, "firewalls", f.Firewalls)
+	populate(objectMap, "insights", f.Insights)
 	populate(objectMap, "intrusionDetection", f.IntrusionDetection)
 	populate(objectMap, "provisioningState", f.ProvisioningState)
 	populate(objectMap, "ruleCollectionGroups", f.RuleCollectionGroups)
 	populate(objectMap, "sku", f.SKU)
+	populate(objectMap, "snat", f.Snat)
 	populate(objectMap, "threatIntelMode", f.ThreatIntelMode)
 	populate(objectMap, "threatIntelWhitelist", f.ThreatIntelWhitelist)
 	populate(objectMap, "transportSecurity", f.TransportSecurity)
@@ -7240,14 +7346,14 @@ func (f *FirewallPolicyRule) unmarshalInternal(rawMsg map[string]json.RawMessage
 		var err error
 		switch key {
 		case "description":
-				err = unpopulate(val, &f.Description)
-				delete(rawMsg, key)
+			err = unpopulate(val, &f.Description)
+			delete(rawMsg, key)
 		case "name":
-				err = unpopulate(val, &f.Name)
-				delete(rawMsg, key)
+			err = unpopulate(val, &f.Name)
+			delete(rawMsg, key)
 		case "ruleType":
-				err = unpopulate(val, &f.RuleType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &f.RuleType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -7287,7 +7393,9 @@ type FirewallPolicyRuleCollection struct {
 }
 
 // GetFirewallPolicyRuleCollection implements the FirewallPolicyRuleCollectionClassification interface for type FirewallPolicyRuleCollection.
-func (f *FirewallPolicyRuleCollection) GetFirewallPolicyRuleCollection() *FirewallPolicyRuleCollection { return f }
+func (f *FirewallPolicyRuleCollection) GetFirewallPolicyRuleCollection() *FirewallPolicyRuleCollection {
+	return f
+}
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type FirewallPolicyRuleCollection.
 func (f *FirewallPolicyRuleCollection) UnmarshalJSON(data []byte) error {
@@ -7312,14 +7420,14 @@ func (f *FirewallPolicyRuleCollection) unmarshalInternal(rawMsg map[string]json.
 		var err error
 		switch key {
 		case "name":
-				err = unpopulate(val, &f.Name)
-				delete(rawMsg, key)
+			err = unpopulate(val, &f.Name)
+			delete(rawMsg, key)
 		case "priority":
-				err = unpopulate(val, &f.Priority)
-				delete(rawMsg, key)
+			err = unpopulate(val, &f.Priority)
+			delete(rawMsg, key)
 		case "ruleCollectionType":
-				err = unpopulate(val, &f.RuleCollectionType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &f.RuleCollectionType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -7402,14 +7510,14 @@ func (f *FirewallPolicyRuleCollectionGroupProperties) UnmarshalJSON(data []byte)
 		var err error
 		switch key {
 		case "priority":
-				err = unpopulate(val, &f.Priority)
-				delete(rawMsg, key)
+			err = unpopulate(val, &f.Priority)
+			delete(rawMsg, key)
 		case "provisioningState":
-				err = unpopulate(val, &f.ProvisioningState)
-				delete(rawMsg, key)
+			err = unpopulate(val, &f.ProvisioningState)
+			delete(rawMsg, key)
 		case "ruleCollections":
-				f.RuleCollections, err = unmarshalFirewallPolicyRuleCollectionClassificationArray(val)
-				delete(rawMsg, key)
+			f.RuleCollections, err = unmarshalFirewallPolicyRuleCollectionClassificationArray(val)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -7443,6 +7551,19 @@ type FirewallPolicyRuleCollectionGroupsListOptions struct {
 type FirewallPolicySKU struct {
 	// Tier of Firewall Policy.
 	Tier *FirewallPolicySKUTier `json:"tier,omitempty"`
+}
+
+// FirewallPolicySNAT - The private IP addresses/IP ranges to which traffic will not be SNAT.
+type FirewallPolicySNAT struct {
+	// List of private IP addresses/IP address ranges to not be SNAT.
+	PrivateRanges []*string `json:"privateRanges,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type FirewallPolicySNAT.
+func (f FirewallPolicySNAT) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "privateRanges", f.PrivateRanges)
+	return json.Marshal(objectMap)
 }
 
 // FirewallPolicyThreatIntelWhitelist - ThreatIntel Whitelist for Firewall Policy.
@@ -7632,8 +7753,8 @@ type FrontendIPConfigurationPropertiesFormat struct {
 	// Whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
 	PrivateIPAddressVersion *IPVersion `json:"privateIPAddressVersion,omitempty"`
 
-	// The reference to the subnet resource.
-	Subnet *Subnet `json:"subnet,omitempty"`
+	// The reference to gateway load balancer frontend IP.
+	GatewayLoadBalancer *SubResource `json:"gatewayLoadBalancer,omitempty"`
 
 	// The reference to the Public IP Prefix resource.
 	PublicIPPrefix *SubResource `json:"publicIPPrefix,omitempty"`
@@ -7641,31 +7762,35 @@ type FrontendIPConfigurationPropertiesFormat struct {
 	// The reference to the Public IP resource.
 	PublicIPAddress *PublicIPAddress `json:"publicIPAddress,omitempty"`
 
-	// The private IP address of the IP configuration.
-	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
-
 	// The Private IP allocation method.
 	PrivateIPAllocationMethod *IPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
 
-	// READ-ONLY; An array of references to inbound rules that use this frontend IP.
-	InboundNatRules []*SubResource `json:"inboundNatRules,omitempty" azure:"ro"`
+	// The private IP address of the IP configuration.
+	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
 
-	// READ-ONLY; The provisioning state of the frontend IP configuration resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	// The reference to the subnet resource.
+	Subnet *Subnet `json:"subnet,omitempty"`
+
+	// READ-ONLY; An array of references to inbound pools that use this frontend IP.
+	InboundNatPools []*SubResource `json:"inboundNatPools,omitempty" azure:"ro"`
 
 	// READ-ONLY; An array of references to outbound rules that use this frontend IP.
 	OutboundRules []*SubResource `json:"outboundRules,omitempty" azure:"ro"`
 
+	// READ-ONLY; The provisioning state of the frontend IP configuration resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
 	// READ-ONLY; An array of references to load balancing rules that use this frontend IP.
 	LoadBalancingRules []*SubResource `json:"loadBalancingRules,omitempty" azure:"ro"`
 
-	// READ-ONLY; An array of references to inbound pools that use this frontend IP.
-	InboundNatPools []*SubResource `json:"inboundNatPools,omitempty" azure:"ro"`
+	// READ-ONLY; An array of references to inbound rules that use this frontend IP.
+	InboundNatRules []*SubResource `json:"inboundNatRules,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type FrontendIPConfigurationPropertiesFormat.
 func (f FrontendIPConfigurationPropertiesFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "gatewayLoadBalancer", f.GatewayLoadBalancer)
 	populate(objectMap, "inboundNatPools", f.InboundNatPools)
 	populate(objectMap, "inboundNatRules", f.InboundNatRules)
 	populate(objectMap, "loadBalancingRules", f.LoadBalancingRules)
@@ -7678,6 +7803,21 @@ func (f FrontendIPConfigurationPropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "publicIPPrefix", f.PublicIPPrefix)
 	populate(objectMap, "subnet", f.Subnet)
 	return json.Marshal(objectMap)
+}
+
+// GatewayLoadBalancerTunnelInterface - Gateway load balancer tunnel interface of a load balancer backend address pool.
+type GatewayLoadBalancerTunnelInterface struct {
+	// Identifier of gateway load balancer tunnel interface.
+	Identifier *int32 `json:"identifier,omitempty"`
+
+	// Port of gateway load balancer tunnel interface.
+	Port *int32 `json:"port,omitempty"`
+
+	// Protocol of gateway load balancer tunnel interface.
+	Protocol *GatewayLoadBalancerTunnelProtocol `json:"protocol,omitempty"`
+
+	// Traffic type of gateway load balancer tunnel interface.
+	Type *GatewayLoadBalancerTunnelInterfaceType `json:"type,omitempty"`
 }
 
 // GatewayRoute - Gateway routing details.
@@ -8065,6 +8205,9 @@ type IPAddressAvailabilityResult struct {
 
 	// Contains other available private IP addresses if the asked for address is taken.
 	AvailableIPAddresses []*string `json:"availableIPAddresses,omitempty"`
+
+	// Private IP address platform reserved.
+	IsPlatformReserved *bool `json:"isPlatformReserved,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type IPAddressAvailabilityResult.
@@ -8072,6 +8215,7 @@ func (i IPAddressAvailabilityResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "available", i.Available)
 	populate(objectMap, "availableIPAddresses", i.AvailableIPAddresses)
+	populate(objectMap, "isPlatformReserved", i.IsPlatformReserved)
 	return json.Marshal(objectMap)
 }
 
@@ -8468,27 +8612,27 @@ type InboundNatPoolPropertiesFormat struct {
 	BackendPort *int32 `json:"backendPort,omitempty"`
 
 	// Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required
-// when using the SQL AlwaysOn Availability Groups
-// in SQL server. This setting can't be changed after you create the endpoint.
+	// when using the SQL AlwaysOn Availability Groups
+	// in SQL server. This setting can't be changed after you create the endpoint.
 	EnableFloatingIP *bool `json:"enableFloatingIP,omitempty"`
 
 	// Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used when the protocol is set to
-// TCP.
+	// TCP.
 	EnableTCPReset *bool `json:"enableTcpReset,omitempty"`
 
 	// A reference to frontend IP addresses.
 	FrontendIPConfiguration *SubResource `json:"frontendIPConfiguration,omitempty"`
 
 	// REQUIRED; The last port number in the range of external ports that will be used to provide Inbound Nat to NICs associated with a load balancer. Acceptable
-// values range between 1 and 65535.
+	// values range between 1 and 65535.
 	FrontendPortRangeEnd *int32 `json:"frontendPortRangeEnd,omitempty"`
 
 	// REQUIRED; The first port number in the range of external ports that will be used to provide Inbound Nat to NICs associated with a load balancer. Acceptable
-// values range between 1 and 65534.
+	// values range between 1 and 65534.
 	FrontendPortRangeStart *int32 `json:"frontendPortRangeStart,omitempty"`
 
 	// The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when
-// the protocol is set to TCP.
+	// the protocol is set to TCP.
 	IdleTimeoutInMinutes *int32 `json:"idleTimeoutInMinutes,omitempty"`
 
 	// REQUIRED; The reference to the transport protocol used by the inbound NAT pool.
@@ -8547,12 +8691,12 @@ type InboundNatRulePropertiesFormat struct {
 	BackendPort *int32 `json:"backendPort,omitempty"`
 
 	// Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required
-// when using the SQL AlwaysOn Availability Groups
-// in SQL server. This setting can't be changed after you create the endpoint.
+	// when using the SQL AlwaysOn Availability Groups
+	// in SQL server. This setting can't be changed after you create the endpoint.
 	EnableFloatingIP *bool `json:"enableFloatingIP,omitempty"`
 
 	// Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used when the protocol is set to
-// TCP.
+	// TCP.
 	EnableTCPReset *bool `json:"enableTcpReset,omitempty"`
 
 	// A reference to frontend IP addresses.
@@ -8562,14 +8706,14 @@ type InboundNatRulePropertiesFormat struct {
 	FrontendPort *int32 `json:"frontendPort,omitempty"`
 
 	// The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when
-// the protocol is set to TCP.
+	// the protocol is set to TCP.
 	IdleTimeoutInMinutes *int32 `json:"idleTimeoutInMinutes,omitempty"`
 
 	// The reference to the transport protocol used by the load balancing rule.
 	Protocol *TransportProtocol `json:"protocol,omitempty"`
 
 	// READ-ONLY; A reference to a private IP address defined on a network interface of a VM. Traffic sent to the frontend port of each of the frontend IP configurations
-// is forwarded to the backend IP.
+	// is forwarded to the backend IP.
 	BackendIPConfiguration *NetworkInterfaceIPConfiguration `json:"backendIPConfiguration,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the inbound NAT rule resource.
@@ -8721,6 +8865,24 @@ type ListVPNConnectionsResult struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ListVPNConnectionsResult.
 func (l ListVPNConnectionsResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", l.NextLink)
+	populate(objectMap, "value", l.Value)
+	return json.Marshal(objectMap)
+}
+
+// ListVPNGatewayNatRulesResult - Result of the request to list all nat rules to a virtual wan vpn gateway. It contains a list of Nat rules and a URL nextLink
+// to get the next set of results.
+type ListVPNGatewayNatRulesResult struct {
+	// URL to get the next set of operation list results if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// List of Nat Rules.
+	Value []*VPNGatewayNatRule `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ListVPNGatewayNatRulesResult.
+func (l ListVPNGatewayNatRulesResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "nextLink", l.NextLink)
 	populate(objectMap, "value", l.Value)
@@ -8882,6 +9044,24 @@ func (l ListVirtualHubsResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ListVirtualNetworkGatewayNatRulesResult - Result of the request to list all nat rules to a virtual network gateway. It contains a list of Nat rules and
+// a URL nextLink to get the next set of results.
+type ListVirtualNetworkGatewayNatRulesResult struct {
+	// URL to get the next set of operation list results if there are any.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// List of Nat Rules.
+	Value []*VirtualNetworkGatewayNatRule `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ListVirtualNetworkGatewayNatRulesResult.
+func (l ListVirtualNetworkGatewayNatRulesResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", l.NextLink)
+	populate(objectMap, "value", l.Value)
+	return json.Marshal(objectMap)
+}
+
 // ListVirtualWANsResult - Result of the request to list VirtualWANs. It contains a list of VirtualWANs and a URL nextLink to get the next set of results.
 type ListVirtualWANsResult struct {
 	// URL to get the next set of operation list results if there are any.
@@ -8979,6 +9159,9 @@ type LoadBalancerBackendAddressPropertiesFormat struct {
 
 	// Reference to the frontend ip address configuration defined in regional loadbalancer.
 	LoadBalancerFrontendIPConfiguration *SubResource `json:"loadBalancerFrontendIPConfiguration,omitempty"`
+
+	// Reference to an existing subnet.
+	Subnet *SubResource `json:"subnet,omitempty"`
 
 	// Reference to an existing virtual network.
 	VirtualNetwork *SubResource `json:"virtualNetwork,omitempty"`
@@ -9126,17 +9309,17 @@ type LoadBalancerPropertiesFormat struct {
 	FrontendIPConfigurations []*FrontendIPConfiguration `json:"frontendIPConfigurations,omitempty"`
 
 	// Defines an external port range for inbound NAT to a single backend port on NICs associated with a load balancer. Inbound NAT rules are created automatically
-// for each NIC associated with the Load
-// Balancer using an external port from this range. Defining an Inbound NAT pool on your Load Balancer is mutually exclusive with defining inbound Nat rules.
-// Inbound NAT pools are referenced from virtual
-// machine scale sets. NICs that are associated with individual virtual machines cannot reference an inbound NAT pool. They have to reference individual
-// inbound NAT rules.
+	// for each NIC associated with the Load
+	// Balancer using an external port from this range. Defining an Inbound NAT pool on your Load Balancer is mutually exclusive with defining inbound Nat rules.
+	// Inbound NAT pools are referenced from virtual
+	// machine scale sets. NICs that are associated with individual virtual machines cannot reference an inbound NAT pool. They have to reference individual
+	// inbound NAT rules.
 	InboundNatPools []*InboundNatPool `json:"inboundNatPools,omitempty"`
 
 	// Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive with defining an inbound
-// NAT pool. Inbound NAT pools are referenced from
-// virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual
-// inbound NAT rules.
+	// NAT pool. Inbound NAT pools are referenced from
+	// virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual
+	// inbound NAT rules.
 	InboundNatRules []*InboundNatRule `json:"inboundNatRules,omitempty"`
 
 	// Object collection representing the load balancing rules Gets the provisioning.
@@ -9179,6 +9362,34 @@ type LoadBalancerSKU struct {
 	Tier *LoadBalancerSKUTier `json:"tier,omitempty"`
 }
 
+// LoadBalancerVipSwapRequest - The request for a VIP swap.
+type LoadBalancerVipSwapRequest struct {
+	// A list of frontend IP configuration resources that should swap VIPs.
+	FrontendIPConfigurations []*LoadBalancerVipSwapRequestFrontendIPConfiguration `json:"frontendIPConfigurations,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type LoadBalancerVipSwapRequest.
+func (l LoadBalancerVipSwapRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "frontendIPConfigurations", l.FrontendIPConfigurations)
+	return json.Marshal(objectMap)
+}
+
+// LoadBalancerVipSwapRequestFrontendIPConfiguration - VIP swap request's frontend IP configuration object.
+type LoadBalancerVipSwapRequestFrontendIPConfiguration struct {
+	// The ID of frontend IP configuration resource.
+	ID *string `json:"id,omitempty"`
+
+	// The properties of VIP swap request's frontend IP configuration object.
+	Properties *LoadBalancerVipSwapRequestFrontendIPConfigurationProperties `json:"properties,omitempty"`
+}
+
+// LoadBalancerVipSwapRequestFrontendIPConfigurationProperties - The properties of VIP swap request's frontend IP configuration object.
+type LoadBalancerVipSwapRequestFrontendIPConfigurationProperties struct {
+	// A reference to public IP address resource.
+	PublicIPAddress *SubResource `json:"publicIPAddress,omitempty"`
+}
+
 // LoadBalancersBeginCreateOrUpdateOptions contains the optional parameters for the LoadBalancers.BeginCreateOrUpdate method.
 type LoadBalancersBeginCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -9186,6 +9397,11 @@ type LoadBalancersBeginCreateOrUpdateOptions struct {
 
 // LoadBalancersBeginDeleteOptions contains the optional parameters for the LoadBalancers.BeginDelete method.
 type LoadBalancersBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LoadBalancersBeginSwapPublicIPAddressesOptions contains the optional parameters for the LoadBalancers.BeginSwapPublicIPAddresses method.
+type LoadBalancersBeginSwapPublicIPAddressesOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -9238,8 +9454,11 @@ func (l LoadBalancingRule) MarshalJSON() ([]byte, error) {
 
 // LoadBalancingRulePropertiesFormat - Properties of the load balancer.
 type LoadBalancingRulePropertiesFormat struct {
+	// A reference to frontend IP addresses.
+	FrontendIPConfiguration *SubResource `json:"frontendIPConfiguration,omitempty"`
+
 	// REQUIRED; The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer. Acceptable values are between 0 and
-// 65534. Note that value 0 enables "Any Port".
+	// 65534. Note that value 0 enables "Any Port".
 	FrontendPort *int32 `json:"frontendPort,omitempty"`
 
 	// REQUIRED; The reference to the transport protocol used by the load balancing rule.
@@ -9249,22 +9468,22 @@ type LoadBalancingRulePropertiesFormat struct {
 	DisableOutboundSnat *bool `json:"disableOutboundSnat,omitempty"`
 
 	// Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required
-// when using the SQL AlwaysOn Availability Groups
-// in SQL server. This setting can't be changed after you create the endpoint.
+	// when using the SQL AlwaysOn Availability Groups
+	// in SQL server. This setting can't be changed after you create the endpoint.
 	EnableFloatingIP *bool `json:"enableFloatingIP,omitempty"`
 
 	// Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used when the protocol is set to
-// TCP.
+	// TCP.
 	EnableTCPReset *bool `json:"enableTcpReset,omitempty"`
 
-	// A reference to frontend IP addresses.
-	FrontendIPConfiguration *SubResource `json:"frontendIPConfiguration,omitempty"`
+	// An array of references to pool of DIPs.
+	BackendAddressPools []*SubResource `json:"backendAddressPools,omitempty"`
 
-	// The port used for internal connections on the endpoint. Acceptable values are between 0 and 65535. Note that value 0 enables "Any Port".
-	BackendPort *int32 `json:"backendPort,omitempty"`
+	// A reference to a pool of DIPs. Inbound traffic is randomly load balanced across IPs in the backend IPs.
+	BackendAddressPool *SubResource `json:"backendAddressPool,omitempty"`
 
 	// The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when
-// the protocol is set to TCP.
+	// the protocol is set to TCP.
 	IdleTimeoutInMinutes *int32 `json:"idleTimeoutInMinutes,omitempty"`
 
 	// The load distribution policy for this rule.
@@ -9273,11 +9492,30 @@ type LoadBalancingRulePropertiesFormat struct {
 	// The reference to the load balancer probe used by the load balancing rule.
 	Probe *SubResource `json:"probe,omitempty"`
 
-	// A reference to a pool of DIPs. Inbound traffic is randomly load balanced across IPs in the backend IPs.
-	BackendAddressPool *SubResource `json:"backendAddressPool,omitempty"`
+	// The port used for internal connections on the endpoint. Acceptable values are between 0 and 65535. Note that value 0 enables "Any Port".
+	BackendPort *int32 `json:"backendPort,omitempty"`
 
 	// READ-ONLY; The provisioning state of the load balancing rule resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type LoadBalancingRulePropertiesFormat.
+func (l LoadBalancingRulePropertiesFormat) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "backendAddressPool", l.BackendAddressPool)
+	populate(objectMap, "backendAddressPools", l.BackendAddressPools)
+	populate(objectMap, "backendPort", l.BackendPort)
+	populate(objectMap, "disableOutboundSnat", l.DisableOutboundSnat)
+	populate(objectMap, "enableFloatingIP", l.EnableFloatingIP)
+	populate(objectMap, "enableTcpReset", l.EnableTCPReset)
+	populate(objectMap, "frontendIPConfiguration", l.FrontendIPConfiguration)
+	populate(objectMap, "frontendPort", l.FrontendPort)
+	populate(objectMap, "idleTimeoutInMinutes", l.IdleTimeoutInMinutes)
+	populate(objectMap, "loadDistribution", l.LoadDistribution)
+	populate(objectMap, "probe", l.Probe)
+	populate(objectMap, "protocol", l.Protocol)
+	populate(objectMap, "provisioningState", l.ProvisioningState)
+	return json.Marshal(objectMap)
 }
 
 // LocalNetworkGateway - A common class for general resource information.
@@ -9440,12 +9678,12 @@ func (m ManagedRulesDefinition) MarshalJSON() ([]byte, error) {
 // ManagedServiceIdentity - Identity for the resource.
 type ManagedServiceIdentity struct {
 	// The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned
-// identities. The type 'None' will remove any
-// identities from the virtual machine.
+	// identities. The type 'None' will remove any
+	// identities from the virtual machine.
 	Type *ResourceIdentityType `json:"type,omitempty"`
 
 	// The list of user identities associated with resource. The user identity dictionary key references will be ARM resource ids in the form:
-// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties `json:"userAssignedIdentities,omitempty"`
 
 	// READ-ONLY; The principal id of the system assigned identity. This property will only be provided for a system assigned identity.
@@ -9742,29 +9980,29 @@ func (n *NatRule) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "destinationAddresses":
-				err = unpopulate(val, &n.DestinationAddresses)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.DestinationAddresses)
+			delete(rawMsg, key)
 		case "destinationPorts":
-				err = unpopulate(val, &n.DestinationPorts)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.DestinationPorts)
+			delete(rawMsg, key)
 		case "ipProtocols":
-				err = unpopulate(val, &n.IPProtocols)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.IPProtocols)
+			delete(rawMsg, key)
 		case "sourceAddresses":
-				err = unpopulate(val, &n.SourceAddresses)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.SourceAddresses)
+			delete(rawMsg, key)
 		case "sourceIpGroups":
-				err = unpopulate(val, &n.SourceIPGroups)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.SourceIPGroups)
+			delete(rawMsg, key)
 		case "translatedAddress":
-				err = unpopulate(val, &n.TranslatedAddress)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.TranslatedAddress)
+			delete(rawMsg, key)
 		case "translatedFqdn":
-				err = unpopulate(val, &n.TranslatedFqdn)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.TranslatedFqdn)
+			delete(rawMsg, key)
 		case "translatedPort":
-				err = unpopulate(val, &n.TranslatedPort)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.TranslatedPort)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -9773,13 +10011,33 @@ func (n *NatRule) UnmarshalJSON(data []byte) error {
 	return n.FirewallPolicyRule.unmarshalInternal(rawMsg)
 }
 
+// NatRulesBeginCreateOrUpdateOptions contains the optional parameters for the NatRules.BeginCreateOrUpdate method.
+type NatRulesBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NatRulesBeginDeleteOptions contains the optional parameters for the NatRules.BeginDelete method.
+type NatRulesBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NatRulesGetOptions contains the optional parameters for the NatRules.Get method.
+type NatRulesGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NatRulesListByVPNGatewayOptions contains the optional parameters for the NatRules.ListByVPNGateway method.
+type NatRulesListByVPNGatewayOptions struct {
+	// placeholder for future optional parameters
+}
+
 // NetworkConfigurationDiagnosticParameters - Parameters to get network configuration diagnostic.
 type NetworkConfigurationDiagnosticParameters struct {
 	// REQUIRED; List of network configuration diagnostic profiles.
 	Profiles []*NetworkConfigurationDiagnosticProfile `json:"profiles,omitempty"`
 
 	// REQUIRED; The ID of the target resource to perform network configuration diagnostic. Valid options are VM, NetworkInterface, VMSS/NetworkInterface and
-// Application Gateway.
+	// Application Gateway.
 	TargetResourceID *string `json:"targetResourceId,omitempty"`
 
 	// Verbosity level.
@@ -9900,21 +10158,21 @@ func (n NetworkInterfaceAssociation) MarshalJSON() ([]byte, error) {
 // NetworkInterfaceDNSSettings - DNS settings of a network interface.
 type NetworkInterfaceDNSSettings struct {
 	// List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided DNS resolution. 'AzureProvidedDNS' value cannot be combined with
-// other IPs, it must be the only value in dnsServers
-// collection.
+	// other IPs, it must be the only value in dnsServers
+	// collection.
 	DNSServers []*string `json:"dnsServers,omitempty"`
 
 	// Relative DNS name for this NIC used for internal communications between VMs in the same virtual network.
 	InternalDNSNameLabel *string `json:"internalDnsNameLabel,omitempty"`
 
 	// READ-ONLY; If the VM that uses this NIC is part of an Availability Set, then this list will have the union of all DNS servers from all NICs that are
-// part of the Availability Set. This property is what is
-// configured on each of those VMs.
+	// part of the Availability Set. This property is what is
+	// configured on each of those VMs.
 	AppliedDNSServers []*string `json:"appliedDnsServers,omitempty" azure:"ro"`
 
 	// READ-ONLY; Even if internalDnsNameLabel is not specified, a DNS entry is created for the primary NIC of the VM. This DNS name can be constructed by concatenating
-// the VM name with the value of
-// internalDomainNameSuffix.
+	// the VM name with the value of
+	// internalDomainNameSuffix.
 	InternalDomainNameSuffix *string `json:"internalDomainNameSuffix,omitempty" azure:"ro"`
 
 	// READ-ONLY; Fully qualified DNS name supporting internal communications between VMs in the same virtual network.
@@ -9941,6 +10199,9 @@ type NetworkInterfaceIPConfiguration struct {
 	// Network interface IP configuration properties.
 	Properties *NetworkInterfaceIPConfigurationPropertiesFormat `json:"properties,omitempty"`
 
+	// Resource type.
+	Type *string `json:"type,omitempty"`
+
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
@@ -9951,6 +10212,7 @@ func (n NetworkInterfaceIPConfiguration) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "etag", n.Etag)
 	populate(objectMap, "name", n.Name)
 	populate(objectMap, "properties", n.Properties)
+	populate(objectMap, "type", n.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -10000,6 +10262,9 @@ type NetworkInterfaceIPConfigurationPropertiesFormat struct {
 	// The reference to ApplicationGatewayBackendAddressPool resource.
 	ApplicationGatewayBackendAddressPools []*ApplicationGatewayBackendAddressPool `json:"applicationGatewayBackendAddressPools,omitempty"`
 
+	// The reference to gateway load balancer frontend IP.
+	GatewayLoadBalancer *SubResource `json:"gatewayLoadBalancer,omitempty"`
+
 	// The reference to LoadBalancerBackendAddressPool resource.
 	LoadBalancerBackendAddressPools []*BackendAddressPool `json:"loadBalancerBackendAddressPools,omitempty"`
 
@@ -10039,6 +10304,7 @@ func (n NetworkInterfaceIPConfigurationPropertiesFormat) MarshalJSON() ([]byte, 
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "applicationGatewayBackendAddressPools", n.ApplicationGatewayBackendAddressPools)
 	populate(objectMap, "applicationSecurityGroups", n.ApplicationSecurityGroups)
+	populate(objectMap, "gatewayLoadBalancer", n.GatewayLoadBalancer)
 	populate(objectMap, "loadBalancerBackendAddressPools", n.LoadBalancerBackendAddressPools)
 	populate(objectMap, "loadBalancerInboundNatRules", n.LoadBalancerInboundNatRules)
 	populate(objectMap, "primary", n.Primary)
@@ -10104,8 +10370,8 @@ type NetworkInterfaceLoadBalancersListOptions struct {
 
 // NetworkInterfacePropertiesFormat - NetworkInterface properties.
 type NetworkInterfacePropertiesFormat struct {
-	// The reference to the NetworkSecurityGroup resource.
-	NetworkSecurityGroup *NetworkSecurityGroup `json:"networkSecurityGroup,omitempty"`
+	// Type of Network Interface resource.
+	NicType *NetworkInterfaceNicType `json:"nicType,omitempty"`
 
 	// The DNS settings in network interface.
 	DNSSettings *NetworkInterfaceDNSSettings `json:"dnsSettings,omitempty"`
@@ -10116,11 +10382,20 @@ type NetworkInterfacePropertiesFormat struct {
 	// Indicates whether IP forwarding is enabled on this network interface.
 	EnableIPForwarding *bool `json:"enableIPForwarding,omitempty"`
 
+	// Privatelinkservice of the network interface resource.
+	PrivateLinkService *PrivateLinkService `json:"privateLinkService,omitempty"`
+
 	// A list of IPConfigurations of the network interface.
 	IPConfigurations []*NetworkInterfaceIPConfiguration `json:"ipConfigurations,omitempty"`
 
-	// READ-ONLY; A list of references to linked BareMetal resources.
-	HostedWorkloads []*string `json:"hostedWorkloads,omitempty" azure:"ro"`
+	// The reference to the NetworkSecurityGroup resource.
+	NetworkSecurityGroup *NetworkSecurityGroup `json:"networkSecurityGroup,omitempty"`
+
+	// Migration phase of Network Interface resource.
+	MigrationPhase *NetworkInterfaceMigrationPhase `json:"migrationPhase,omitempty"`
+
+	// WorkloadType of the NetworkInterface for BareMetal resources
+	WorkloadType *string `json:"workloadType,omitempty"`
 
 	// READ-ONLY; The MAC address of the network interface.
 	MacAddress *string `json:"macAddress,omitempty" azure:"ro"`
@@ -10133,6 +10408,9 @@ type NetworkInterfacePropertiesFormat struct {
 
 	// READ-ONLY; A reference to the private endpoint to which the network interface is linked.
 	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty" azure:"ro"`
+
+	// READ-ONLY; A list of references to linked BareMetal resources.
+	HostedWorkloads []*string `json:"hostedWorkloads,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the network interface resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -10157,13 +10435,17 @@ func (n NetworkInterfacePropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "hostedWorkloads", n.HostedWorkloads)
 	populate(objectMap, "ipConfigurations", n.IPConfigurations)
 	populate(objectMap, "macAddress", n.MacAddress)
+	populate(objectMap, "migrationPhase", n.MigrationPhase)
 	populate(objectMap, "networkSecurityGroup", n.NetworkSecurityGroup)
+	populate(objectMap, "nicType", n.NicType)
 	populate(objectMap, "primary", n.Primary)
 	populate(objectMap, "privateEndpoint", n.PrivateEndpoint)
+	populate(objectMap, "privateLinkService", n.PrivateLinkService)
 	populate(objectMap, "provisioningState", n.ProvisioningState)
 	populate(objectMap, "resourceGuid", n.ResourceGUID)
 	populate(objectMap, "tapConfigurations", n.TapConfigurations)
 	populate(objectMap, "virtualMachine", n.VirtualMachine)
+	populate(objectMap, "workloadType", n.WorkloadType)
 	return json.Marshal(objectMap)
 }
 
@@ -10516,26 +10798,26 @@ func (n *NetworkRule) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "destinationAddresses":
-				err = unpopulate(val, &n.DestinationAddresses)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.DestinationAddresses)
+			delete(rawMsg, key)
 		case "destinationFqdns":
-				err = unpopulate(val, &n.DestinationFqdns)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.DestinationFqdns)
+			delete(rawMsg, key)
 		case "destinationIpGroups":
-				err = unpopulate(val, &n.DestinationIPGroups)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.DestinationIPGroups)
+			delete(rawMsg, key)
 		case "destinationPorts":
-				err = unpopulate(val, &n.DestinationPorts)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.DestinationPorts)
+			delete(rawMsg, key)
 		case "ipProtocols":
-				err = unpopulate(val, &n.IPProtocols)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.IPProtocols)
+			delete(rawMsg, key)
 		case "sourceAddresses":
-				err = unpopulate(val, &n.SourceAddresses)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.SourceAddresses)
+			delete(rawMsg, key)
 		case "sourceIpGroups":
-				err = unpopulate(val, &n.SourceIPGroups)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.SourceIPGroups)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -11042,8 +11324,8 @@ type NextHopResult struct {
 	NextHopType *NextHopType `json:"nextHopType,omitempty"`
 
 	// The resource identifier for the route table associated with the route being returned. If the route being returned does not correspond to any user created
-// routes then this field will be the string
-// 'System Route'.
+	// routes then this field will be the string
+	// 'System Route'.
 	RouteTableID *string `json:"routeTableId,omitempty"`
 }
 
@@ -11181,7 +11463,7 @@ type OutboundRulePropertiesFormat struct {
 	BackendAddressPool *SubResource `json:"backendAddressPool,omitempty"`
 
 	// Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used when the protocol is set to
-// TCP.
+	// TCP.
 	EnableTCPReset *bool `json:"enableTcpReset,omitempty"`
 
 	// REQUIRED; The Frontend IP addresses of the load balancer.
@@ -11425,26 +11707,26 @@ type PacketCapture struct {
 // PacketCaptureFilter - Filter that is applied to packet capture request. Multiple filters can be applied.
 type PacketCaptureFilter struct {
 	// Local IP Address to be filtered on. Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5"? for multiple
-// entries. Multiple ranges not currently
-// supported. Mixing ranges with multiple entries not currently supported. Default = null.
+	// entries. Multiple ranges not currently
+	// supported. Mixing ranges with multiple entries not currently supported. Default = null.
 	LocalIPAddress *string `json:"localIPAddress,omitempty"`
 
 	// Local port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries. Multiple ranges not currently supported.
-// Mixing ranges with multiple entries not
-// currently supported. Default = null.
+	// Mixing ranges with multiple entries not
+	// currently supported. Default = null.
 	LocalPort *string `json:"localPort,omitempty"`
 
 	// Protocol to be filtered on.
 	Protocol *PcProtocol `json:"protocol,omitempty"`
 
 	// Local IP Address to be filtered on. Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5;" for multiple
-// entries. Multiple ranges not currently
-// supported. Mixing ranges with multiple entries not currently supported. Default = null.
+	// entries. Multiple ranges not currently
+	// supported. Mixing ranges with multiple entries not currently supported. Default = null.
 	RemoteIPAddress *string `json:"remoteIPAddress,omitempty"`
 
 	// Remote port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries. Multiple ranges not currently
-// supported. Mixing ranges with multiple entries not
-// currently supported. Default = null.
+	// supported. Mixing ranges with multiple entries not
+	// currently supported. Default = null.
 	RemotePort *string `json:"remotePort,omitempty"`
 }
 
@@ -11542,25 +11824,25 @@ func (p *PacketCaptureQueryStatusResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "captureStartTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				p.CaptureStartTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			p.CaptureStartTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, &p.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &p.ID)
+			delete(rawMsg, key)
 		case "name":
-				err = unpopulate(val, &p.Name)
-				delete(rawMsg, key)
+			err = unpopulate(val, &p.Name)
+			delete(rawMsg, key)
 		case "packetCaptureError":
-				err = unpopulate(val, &p.PacketCaptureError)
-				delete(rawMsg, key)
+			err = unpopulate(val, &p.PacketCaptureError)
+			delete(rawMsg, key)
 		case "packetCaptureStatus":
-				err = unpopulate(val, &p.PacketCaptureStatus)
-				delete(rawMsg, key)
+			err = unpopulate(val, &p.PacketCaptureStatus)
+			delete(rawMsg, key)
 		case "stopReason":
-				err = unpopulate(val, &p.StopReason)
-				delete(rawMsg, key)
+			err = unpopulate(val, &p.StopReason)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -11601,8 +11883,8 @@ func (p PacketCaptureResultProperties) MarshalJSON() ([]byte, error) {
 // PacketCaptureStorageLocation - The storage location for a packet capture session.
 type PacketCaptureStorageLocation struct {
 	// A valid local path on the targeting VM. Must include the name of the capture file (*.cap). For linux virtual machine it must start with /var/captures.
-// Required if no storage ID is provided, otherwise
-// optional.
+	// Required if no storage ID is provided, otherwise
+	// optional.
 	FilePath *string `json:"filePath,omitempty"`
 
 	// The ID of the storage account to save the packet capture session. Required if no local file path is provided.
@@ -11949,6 +12231,9 @@ func (p PrivateDNSZonePropertiesFormat) MarshalJSON() ([]byte, error) {
 // PrivateEndpoint - Private endpoint resource.
 type PrivateEndpoint struct {
 	Resource
+	// The extended location of the load balancer.
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
 	// Properties of the private endpoint.
 	Properties *PrivateEndpointProperties `json:"properties,omitempty"`
 
@@ -11960,6 +12245,7 @@ type PrivateEndpoint struct {
 func (p PrivateEndpoint) MarshalJSON() ([]byte, error) {
 	objectMap := p.Resource.marshalInternal()
 	populate(objectMap, "etag", p.Etag)
+	populate(objectMap, "extendedLocation", p.ExtendedLocation)
 	populate(objectMap, "properties", p.Properties)
 	return json.Marshal(objectMap)
 }
@@ -12045,7 +12331,7 @@ type PrivateEndpointProperties struct {
 	CustomDNSConfigs []*CustomDNSConfigPropertiesFormat `json:"customDnsConfigs,omitempty"`
 
 	// A grouping of information about the connection to the remote resource. Used when the network admin does not have access to approve connections to the
-// remote resource.
+	// remote resource.
 	ManualPrivateLinkServiceConnections []*PrivateLinkServiceConnection `json:"manualPrivateLinkServiceConnections,omitempty"`
 
 	// A grouping of information about the connection to the remote resource.
@@ -12102,6 +12388,9 @@ type PrivateEndpointsListOptions struct {
 // PrivateLinkService - Private link service resource.
 type PrivateLinkService struct {
 	Resource
+	// The extended location of the load balancer.
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
 	// Properties of the private link service.
 	Properties *PrivateLinkServiceProperties `json:"properties,omitempty"`
 
@@ -12113,6 +12402,7 @@ type PrivateLinkService struct {
 func (p PrivateLinkService) MarshalJSON() ([]byte, error) {
 	objectMap := p.Resource.marshalInternal()
 	populate(objectMap, "etag", p.Etag)
+	populate(objectMap, "extendedLocation", p.ExtendedLocation)
 	populate(objectMap, "properties", p.Properties)
 	return json.Marshal(objectMap)
 }
@@ -12416,25 +12706,25 @@ func (p Probe) MarshalJSON() ([]byte, error) {
 // ProbePropertiesFormat - Load balancer probe resource.
 type ProbePropertiesFormat struct {
 	// The interval, in seconds, for how frequently to probe the endpoint for health status. Typically, the interval is slightly less than half the allocated
-// timeout period (in seconds) which allows two full
-// probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
+	// timeout period (in seconds) which allows two full
+	// probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
 	IntervalInSeconds *int32 `json:"intervalInSeconds,omitempty"`
 
 	// The number of probes where if no response, will result in stopping further traffic from being delivered to the endpoint. This values allows endpoints
-// to be taken out of rotation faster or slower than
-// the typical times used in Azure.
+	// to be taken out of rotation faster or slower than
+	// the typical times used in Azure.
 	NumberOfProbes *int32 `json:"numberOfProbes,omitempty"`
 
 	// REQUIRED; The port for communicating the probe. Possible values range from 1 to 65535, inclusive.
 	Port *int32 `json:"port,omitempty"`
 
 	// REQUIRED; The protocol of the end point. If 'Tcp' is specified, a received ACK is required for the probe to be successful. If 'Http' or 'Https' is specified,
-// a 200 OK response from the specifies URI is required
-// for the probe to be successful.
+	// a 200 OK response from the specifies URI is required
+	// for the probe to be successful.
 	Protocol *ProbeProtocol `json:"protocol,omitempty"`
 
 	// The URI used for requesting health status from the VM. Path is required if a protocol is set to http. Otherwise, it is not allowed. There is no default
-// value.
+	// value.
 	RequestPath *string `json:"requestPath,omitempty"`
 
 	// READ-ONLY; The load balancer rules that use this probe.
@@ -12492,8 +12782,8 @@ type ProtocolCustomSettingsFormat struct {
 	TriggerRateOverride *string `json:"triggerRateOverride,omitempty"`
 
 	// The customized DDoS protection trigger rate sensitivity degrees. High: Trigger rate set with most sensitivity w.r.t. normal traffic. Default: Trigger
-// rate set with moderate sensitivity w.r.t. normal
-// traffic. Low: Trigger rate set with less sensitivity w.r.t. normal traffic. Relaxed: Trigger rate set with least sensitivity w.r.t. normal traffic.
+	// rate set with moderate sensitivity w.r.t. normal
+	// traffic. Low: Trigger rate set with less sensitivity w.r.t. normal traffic. Relaxed: Trigger rate set with least sensitivity w.r.t. normal traffic.
 	TriggerSensitivityOverride *DdosCustomPolicyTriggerSensitivityOverride `json:"triggerSensitivityOverride,omitempty"`
 }
 
@@ -12530,17 +12820,17 @@ func (p PublicIPAddress) MarshalJSON() ([]byte, error) {
 // PublicIPAddressDNSSettings - Contains FQDN of the DNS record associated with the public IP address.
 type PublicIPAddressDNSSettings struct {
 	// The domain name label. The concatenation of the domain name label and the regionalized DNS zone make up the fully qualified domain name associated with
-// the public IP address. If a domain name label is
-// specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system.
+	// the public IP address. If a domain name label is
+	// specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system.
 	DomainNameLabel *string `json:"domainNameLabel,omitempty"`
 
 	// The Fully Qualified Domain Name of the A DNS record associated with the public IP. This is the concatenation of the domainNameLabel and the regionalized
-// DNS zone.
+	// DNS zone.
 	Fqdn *string `json:"fqdn,omitempty"`
 
 	// The reverse FQDN. A user-visible, fully qualified domain name that resolves to this public IP address. If the reverseFqdn is specified, then a PTR DNS
-// record is created pointing from the IP address in
-// the in-addr.arpa domain to the reverse FQDN.
+	// record is created pointing from the IP address in
+	// the in-addr.arpa domain to the reverse FQDN.
 	ReverseFqdn *string `json:"reverseFqdn,omitempty"`
 }
 
@@ -12563,11 +12853,14 @@ func (p PublicIPAddressListResult) MarshalJSON() ([]byte, error) {
 
 // PublicIPAddressPropertiesFormat - Public IP address properties.
 type PublicIPAddressPropertiesFormat struct {
-	// The idle timeout of the public IP address.
-	IdleTimeoutInMinutes *int32 `json:"idleTimeoutInMinutes,omitempty"`
+	// Migration phase of Public IP Address.
+	MigrationPhase *PublicIPAddressMigrationPhase `json:"migrationPhase,omitempty"`
 
 	// The FQDN of the DNS record associated with the public IP address.
 	DNSSettings *PublicIPAddressDNSSettings `json:"dnsSettings,omitempty"`
+
+	// Specify what happens to the public IP address when the VM using it is deleted
+	DeleteOption *DeleteOptions `json:"deleteOption,omitempty"`
 
 	// The IP address associated with the public IP address resource.
 	IPAddress *string `json:"ipAddress,omitempty"`
@@ -12578,14 +12871,26 @@ type PublicIPAddressPropertiesFormat struct {
 	// The list of tags associated with the public IP address.
 	IPTags []*IPTag `json:"ipTags,omitempty"`
 
+	// The idle timeout of the public IP address.
+	IdleTimeoutInMinutes *int32 `json:"idleTimeoutInMinutes,omitempty"`
+
+	// The linked public IP address of the public IP address resource.
+	LinkedPublicIPAddress *PublicIPAddress `json:"linkedPublicIPAddress,omitempty"`
+
 	// The DDoS protection custom policy associated with the public IP address.
 	DdosSettings *DdosSettings `json:"ddosSettings,omitempty"`
+
+	// The NatGateway for the Public IP address.
+	NatGateway *NatGateway `json:"natGateway,omitempty"`
 
 	// The public IP address allocation method.
 	PublicIPAllocationMethod *IPAllocationMethod `json:"publicIPAllocationMethod,omitempty"`
 
 	// The public IP address version.
 	PublicIPAddressVersion *IPVersion `json:"publicIPAddressVersion,omitempty"`
+
+	// The service public IP address of the public IP address resource.
+	ServicePublicIPAddress *PublicIPAddress `json:"servicePublicIPAddress,omitempty"`
 
 	// READ-ONLY; The provisioning state of the public IP address resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -12602,15 +12907,20 @@ func (p PublicIPAddressPropertiesFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "dnsSettings", p.DNSSettings)
 	populate(objectMap, "ddosSettings", p.DdosSettings)
+	populate(objectMap, "deleteOption", p.DeleteOption)
 	populate(objectMap, "ipAddress", p.IPAddress)
 	populate(objectMap, "ipConfiguration", p.IPConfiguration)
 	populate(objectMap, "ipTags", p.IPTags)
 	populate(objectMap, "idleTimeoutInMinutes", p.IdleTimeoutInMinutes)
+	populate(objectMap, "linkedPublicIPAddress", p.LinkedPublicIPAddress)
+	populate(objectMap, "migrationPhase", p.MigrationPhase)
+	populate(objectMap, "natGateway", p.NatGateway)
 	populate(objectMap, "provisioningState", p.ProvisioningState)
 	populate(objectMap, "publicIPAddressVersion", p.PublicIPAddressVersion)
 	populate(objectMap, "publicIPAllocationMethod", p.PublicIPAllocationMethod)
 	populate(objectMap, "publicIPPrefix", p.PublicIPPrefix)
 	populate(objectMap, "resourceGuid", p.ResourceGUID)
+	populate(objectMap, "servicePublicIPAddress", p.ServicePublicIPAddress)
 	return json.Marshal(objectMap)
 }
 
@@ -12746,6 +13056,9 @@ type PublicIPPrefixPropertiesFormat struct {
 	// The list of tags associated with the public IP prefix.
 	IPTags []*IPTag `json:"ipTags,omitempty"`
 
+	// NatGateway of Public IP Prefix.
+	NatGateway *NatGateway `json:"natGateway,omitempty"`
+
 	// The Length of the Public IP Prefix.
 	PrefixLength *int32 `json:"prefixLength,omitempty"`
 
@@ -12775,6 +13088,7 @@ func (p PublicIPPrefixPropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "ipPrefix", p.IPPrefix)
 	populate(objectMap, "ipTags", p.IPTags)
 	populate(objectMap, "loadBalancerFrontendIpConfiguration", p.LoadBalancerFrontendIPConfiguration)
+	populate(objectMap, "natGateway", p.NatGateway)
 	populate(objectMap, "prefixLength", p.PrefixLength)
 	populate(objectMap, "provisioningState", p.ProvisioningState)
 	populate(objectMap, "publicIPAddressVersion", p.PublicIPAddressVersion)
@@ -13028,6 +13342,9 @@ type Route struct {
 	// Properties of the route.
 	Properties *RoutePropertiesFormat `json:"properties,omitempty"`
 
+	// The type of the resource.
+	Type *string `json:"type,omitempty"`
+
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
@@ -13038,6 +13355,7 @@ func (r Route) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "etag", r.Etag)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "properties", r.Properties)
+	populate(objectMap, "type", r.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -13242,6 +13560,9 @@ type RoutePropertiesFormat struct {
 	// The destination CIDR to which the route applies.
 	AddressPrefix *string `json:"addressPrefix,omitempty"`
 
+	// A value indicating whether this route overrides overlapping BGP routes regardless of LPM.
+	HasBgpOverride *bool `json:"hasBgpOverride,omitempty"`
+
 	// The IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop type is VirtualAppliance.
 	NextHopIPAddress *string `json:"nextHopIpAddress,omitempty"`
 
@@ -13298,6 +13619,9 @@ type RouteTablePropertiesFormat struct {
 	// READ-ONLY; The provisioning state of the route table resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
+	// READ-ONLY; The resource GUID property of the route table.
+	ResourceGUID *string `json:"resourceGuid,omitempty" azure:"ro"`
+
 	// READ-ONLY; A collection of references to subnets.
 	Subnets []*Subnet `json:"subnets,omitempty" azure:"ro"`
 }
@@ -13307,6 +13631,7 @@ func (r RouteTablePropertiesFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "disableBgpRoutePropagation", r.DisableBgpRoutePropagation)
 	populate(objectMap, "provisioningState", r.ProvisioningState)
+	populate(objectMap, "resourceGuid", r.ResourceGUID)
 	populate(objectMap, "routes", r.Routes)
 	populate(objectMap, "subnets", r.Subnets)
 	return json.Marshal(objectMap)
@@ -13373,6 +13698,12 @@ type RoutingConfiguration struct {
 
 	// List of routes that control routing from VirtualHub into a virtual network connection.
 	VnetRoutes *VnetRoute `json:"vnetRoutes,omitempty"`
+}
+
+// SKU - The sku of this Bastion Host.
+type SKU struct {
+	// The name of this Bastion Host.
+	Name *BastionHostSKUName `json:"name,omitempty"`
 }
 
 // SecurityGroupNetworkInterface - Network interface and all its associated security rules.
@@ -13492,6 +13823,9 @@ type SecurityRule struct {
 	// Properties of the security rule.
 	Properties *SecurityRulePropertiesFormat `json:"properties,omitempty"`
 
+	// The type of the resource.
+	Type *string `json:"type,omitempty"`
+
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
@@ -13502,6 +13836,7 @@ func (s SecurityRule) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "etag", s.Etag)
 	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -13577,16 +13912,16 @@ type SecurityRulePropertiesFormat struct {
 	Description *string `json:"description,omitempty"`
 
 	// The destination address prefix. CIDR or destination IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork',
-// 'AzureLoadBalancer' and 'Internet' can also
-// be used.
+	// 'AzureLoadBalancer' and 'Internet' can also
+	// be used.
 	DestinationAddressPrefix *string `json:"destinationAddressPrefix,omitempty"`
 
 	// The source port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all ports.
 	SourcePortRange *string `json:"sourcePortRange,omitempty"`
 
 	// The CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet'
-// can also be used. If this is an ingress
-// rule, specifies where network traffic originates from.
+	// can also be used. If this is an ingress
+	// rule, specifies where network traffic originates from.
 	SourceAddressPrefix *string `json:"sourceAddressPrefix,omitempty"`
 
 	// The CIDR or source IP ranges.
@@ -13596,7 +13931,7 @@ type SecurityRulePropertiesFormat struct {
 	SourceApplicationSecurityGroups []*ApplicationSecurityGroup `json:"sourceApplicationSecurityGroups,omitempty"`
 
 	// The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority
-// number, the higher the priority of the rule.
+	// number, the higher the priority of the rule.
 	Priority *int32 `json:"priority,omitempty"`
 
 	// READ-ONLY; The provisioning state of the security rule resource.
@@ -13782,12 +14117,16 @@ type ServiceEndpointPolicy struct {
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Kind of service endpoint policy. This is metadata used for the Azure portal experience.
+	Kind *string `json:"kind,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ServiceEndpointPolicy.
 func (s ServiceEndpointPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := s.Resource.marshalInternal()
 	populate(objectMap, "etag", s.Etag)
+	populate(objectMap, "kind", s.Kind)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -13965,6 +14304,9 @@ type ServiceTagInformationPropertiesFormat struct {
 	// READ-ONLY; The region of service tag.
 	Region *string `json:"region,omitempty" azure:"ro"`
 
+	// READ-ONLY; The state of the service tag.
+	State *string `json:"state,omitempty" azure:"ro"`
+
 	// READ-ONLY; The name of system service.
 	SystemService *string `json:"systemService,omitempty" azure:"ro"`
 }
@@ -13975,6 +14317,7 @@ func (s ServiceTagInformationPropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "addressPrefixes", s.AddressPrefixes)
 	populate(objectMap, "changeNumber", s.ChangeNumber)
 	populate(objectMap, "region", s.Region)
+	populate(objectMap, "state", s.State)
 	populate(objectMap, "systemService", s.SystemService)
 	return json.Marshal(objectMap)
 }
@@ -14082,6 +14425,9 @@ type Subnet struct {
 	// Properties of the subnet.
 	Properties *SubnetPropertiesFormat `json:"properties,omitempty"`
 
+	// Resource type.
+	Type *string `json:"type,omitempty"`
+
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
@@ -14092,6 +14438,7 @@ func (s Subnet) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "etag", s.Etag)
 	populate(objectMap, "name", s.Name)
 	populate(objectMap, "properties", s.Properties)
+	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -14131,11 +14478,14 @@ func (s SubnetListResult) MarshalJSON() ([]byte, error) {
 
 // SubnetPropertiesFormat - Properties of the subnet.
 type SubnetPropertiesFormat struct {
+	// Enable or Disable apply network policies on private end point in the subnet.
+	PrivateEndpointNetworkPolicies *VirtualNetworkPrivateEndpointNetworkPolicies `json:"privateEndpointNetworkPolicies,omitempty"`
+
 	// The address prefix for the subnet.
 	AddressPrefix *string `json:"addressPrefix,omitempty"`
 
-	// An array of service endpoints.
-	ServiceEndpoints []*ServiceEndpointPropertiesFormat `json:"serviceEndpoints,omitempty"`
+	// Application gateway IP configurations of virtual network resource.
+	ApplicationGatewayIPConfigurations []*ApplicationGatewayIPConfiguration `json:"applicationGatewayIpConfigurations,omitempty"`
 
 	// An array of references to the delegations on the subnet.
 	Delegations []*Delegation `json:"delegations,omitempty"`
@@ -14155,14 +14505,17 @@ type SubnetPropertiesFormat struct {
 	// The reference to the NetworkSecurityGroup resource.
 	NetworkSecurityGroup *NetworkSecurityGroup `json:"networkSecurityGroup,omitempty"`
 
-	// Enable or Disable apply network policies on private end point in the subnet.
-	PrivateEndpointNetworkPolicies *string `json:"privateEndpointNetworkPolicies,omitempty"`
-
 	// List of address prefixes for the subnet.
 	AddressPrefixes []*string `json:"addressPrefixes,omitempty"`
 
 	// Enable or Disable apply network policies on private link service in the subnet.
-	PrivateLinkServiceNetworkPolicies *string `json:"privateLinkServiceNetworkPolicies,omitempty"`
+	PrivateLinkServiceNetworkPolicies *VirtualNetworkPrivateLinkServiceNetworkPolicies `json:"privateLinkServiceNetworkPolicies,omitempty"`
+
+	// An array of service endpoints.
+	ServiceEndpoints []*ServiceEndpointPropertiesFormat `json:"serviceEndpoints,omitempty"`
+
+	// READ-ONLY; An array of references to private endpoints.
+	PrivateEndpoints []*PrivateEndpoint `json:"privateEndpoints,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the subnet resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -14181,9 +14534,6 @@ type SubnetPropertiesFormat struct {
 
 	// READ-ONLY; Array of IP configuration profiles which reference this subnet.
 	IPConfigurationProfiles []*IPConfigurationProfile `json:"ipConfigurationProfiles,omitempty" azure:"ro"`
-
-	// READ-ONLY; An array of references to private endpoints.
-	PrivateEndpoints []*PrivateEndpoint `json:"privateEndpoints,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type SubnetPropertiesFormat.
@@ -14191,6 +14541,7 @@ func (s SubnetPropertiesFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "addressPrefix", s.AddressPrefix)
 	populate(objectMap, "addressPrefixes", s.AddressPrefixes)
+	populate(objectMap, "applicationGatewayIpConfigurations", s.ApplicationGatewayIPConfigurations)
 	populate(objectMap, "delegations", s.Delegations)
 	populate(objectMap, "ipAllocations", s.IPAllocations)
 	populate(objectMap, "ipConfigurationProfiles", s.IPConfigurationProfiles)
@@ -14289,21 +14640,21 @@ func (t *Topology) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdDateTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				t.CreatedDateTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			t.CreatedDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, &t.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &t.ID)
+			delete(rawMsg, key)
 		case "lastModified":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				t.LastModified = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			t.LastModified = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "resources":
-				err = unpopulate(val, &t.Resources)
-				delete(rawMsg, key)
+			err = unpopulate(val, &t.Resources)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -14499,21 +14850,21 @@ func (t *TroubleshootingResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "code":
-				err = unpopulate(val, &t.Code)
-				delete(rawMsg, key)
+			err = unpopulate(val, &t.Code)
+			delete(rawMsg, key)
 		case "endTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				t.EndTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			t.EndTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "results":
-				err = unpopulate(val, &t.Results)
-				delete(rawMsg, key)
+			err = unpopulate(val, &t.Results)
+			delete(rawMsg, key)
 		case "startTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				t.StartTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			t.StartTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -14602,8 +14953,8 @@ type VM struct {
 
 // VPNClientConfiguration - VpnClientConfiguration for P2S client.
 type VPNClientConfiguration struct {
-	// The radiusServers property for multiple radius server configuration.
-	RadiusServers []*RadiusServer `json:"radiusServers,omitempty"`
+	// VPN authentication types for the virtual network gateway..
+	VPNAuthenticationTypes []*VPNAuthenticationType `json:"vpnAuthenticationTypes,omitempty"`
 
 	// The AADAudience property of the VirtualNetworkGateway resource for vpn client connection used for AAD authentication.
 	AADAudience *string `json:"aadAudience,omitempty"`
@@ -14616,6 +14967,9 @@ type VPNClientConfiguration struct {
 
 	// The radius secret property of the VirtualNetworkGateway resource for vpn client connection.
 	RadiusServerSecret *string `json:"radiusServerSecret,omitempty"`
+
+	// The radiusServers property for multiple radius server configuration.
+	RadiusServers []*RadiusServer `json:"radiusServers,omitempty"`
 
 	// The AADIssuer property of the VirtualNetworkGateway resource for vpn client connection used for AAD authentication.
 	AADIssuer *string `json:"aadIssuer,omitempty"`
@@ -14645,6 +14999,7 @@ func (v VPNClientConfiguration) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "radiusServerAddress", v.RadiusServerAddress)
 	populate(objectMap, "radiusServerSecret", v.RadiusServerSecret)
 	populate(objectMap, "radiusServers", v.RadiusServers)
+	populate(objectMap, "vpnAuthenticationTypes", v.VPNAuthenticationTypes)
 	populate(objectMap, "vpnClientAddressPool", v.VPNClientAddressPool)
 	populate(objectMap, "vpnClientIpsecPolicies", v.VPNClientIPSecPolicies)
 	populate(objectMap, "vpnClientProtocols", v.VPNClientProtocols)
@@ -14763,15 +15118,15 @@ type VPNClientParameters struct {
 	AuthenticationMethod *AuthenticationMethod `json:"authenticationMethod,omitempty"`
 
 	// A list of client root certificates public certificate data encoded as Base-64 strings. Optional parameter for external radius based authentication with
-// EAPTLS.
+	// EAPTLS.
 	ClientRootCertificates []*string `json:"clientRootCertificates,omitempty"`
 
 	// VPN client Processor Architecture.
 	ProcessorArchitecture *ProcessorArchitecture `json:"processorArchitecture,omitempty"`
 
 	// The public certificate data for the radius server authentication certificate as a Base-64 encoded string. Required only if external radius authentication
-// has been configured with EAPTLS
-// authentication.
+	// has been configured with EAPTLS
+	// authentication.
 	RadiusServerAuthCertificate *string `json:"radiusServerAuthCertificate,omitempty"`
 }
 
@@ -14947,6 +15302,9 @@ type VPNConnectionProperties struct {
 	// SharedKey for the vpn connection.
 	SharedKey *string `json:"sharedKey,omitempty"`
 
+	// The Traffic Selector Policies to be considered by this connection.
+	TrafficSelectorPolicies []*TrafficSelectorPolicy `json:"trafficSelectorPolicies,omitempty"`
+
 	// READ-ONLY; The connection status.
 	ConnectionStatus *VPNConnectionStatus `json:"connectionStatus,omitempty" azure:"ro"`
 
@@ -14977,6 +15335,7 @@ func (v VPNConnectionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "routingConfiguration", v.RoutingConfiguration)
 	populate(objectMap, "routingWeight", v.RoutingWeight)
 	populate(objectMap, "sharedKey", v.SharedKey)
+	populate(objectMap, "trafficSelectorPolicies", v.TrafficSelectorPolicies)
 	populate(objectMap, "useLocalAzureIpAddress", v.UseLocalAzureIPAddress)
 	populate(objectMap, "usePolicyBasedTrafficSelectors", v.UsePolicyBasedTrafficSelectors)
 	populate(objectMap, "vpnConnectionProtocolType", v.VPNConnectionProtocolType)
@@ -15058,6 +15417,73 @@ type VPNGatewayIPConfiguration struct {
 	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
 }
 
+// VPNGatewayNatRule - VpnGatewayNatRule Resource.
+type VPNGatewayNatRule struct {
+	SubResource
+	// The name of the resource that is unique within a resource group. This name can be used to access the resource.
+	Name *string `json:"name,omitempty"`
+
+	// Properties of the VpnGateway NAT rule.
+	Properties *VPNGatewayNatRuleProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VPNGatewayNatRule.
+func (v VPNGatewayNatRule) MarshalJSON() ([]byte, error) {
+	objectMap := v.SubResource.marshalInternal()
+	populate(objectMap, "etag", v.Etag)
+	populate(objectMap, "name", v.Name)
+	populate(objectMap, "properties", v.Properties)
+	populate(objectMap, "type", v.Type)
+	return json.Marshal(objectMap)
+}
+
+// VPNGatewayNatRuleProperties - Parameters for VpnGatewayNatRule.
+type VPNGatewayNatRuleProperties struct {
+	// The private IP address external mapping for NAT.
+	ExternalMappings []*VPNNatRuleMapping `json:"externalMappings,omitempty"`
+
+	// The IP Configuration ID this NAT rule applies to.
+	IPConfigurationID *string `json:"ipConfigurationId,omitempty"`
+
+	// The private IP address internal mapping for NAT.
+	InternalMappings []*VPNNatRuleMapping `json:"internalMappings,omitempty"`
+
+	// The Source NAT direction of a VPN NAT.
+	Mode *VPNNatRuleMode `json:"mode,omitempty"`
+
+	// The type of NAT rule for VPN NAT.
+	Type *VPNNatRuleType `json:"type,omitempty"`
+
+	// READ-ONLY; List of egress VpnSiteLinkConnections.
+	EgressVPNSiteLinkConnections []*SubResource `json:"egressVpnSiteLinkConnections,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of ingress VpnSiteLinkConnections.
+	IngressVPNSiteLinkConnections []*SubResource `json:"ingressVpnSiteLinkConnections,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state of the NAT Rule resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VPNGatewayNatRuleProperties.
+func (v VPNGatewayNatRuleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "egressVpnSiteLinkConnections", v.EgressVPNSiteLinkConnections)
+	populate(objectMap, "externalMappings", v.ExternalMappings)
+	populate(objectMap, "ipConfigurationId", v.IPConfigurationID)
+	populate(objectMap, "ingressVpnSiteLinkConnections", v.IngressVPNSiteLinkConnections)
+	populate(objectMap, "internalMappings", v.InternalMappings)
+	populate(objectMap, "mode", v.Mode)
+	populate(objectMap, "provisioningState", v.ProvisioningState)
+	populate(objectMap, "type", v.Type)
+	return json.Marshal(objectMap)
+}
+
 // VPNGatewayPacketCaptureStartParameters - Start packet capture parameters.
 type VPNGatewayPacketCaptureStartParameters struct {
 	// Start Packet capture parameters on vpn gateway.
@@ -15081,6 +15507,9 @@ type VPNGatewayProperties struct {
 	// Enable Routing Preference property for the Public IP Interface of the VpnGateway.
 	IsRoutingPreferenceInternet *bool `json:"isRoutingPreferenceInternet,omitempty"`
 
+	// List of all the nat Rules associated with the gateway.
+	NatRules []*VPNGatewayNatRule `json:"natRules,omitempty"`
+
 	// The scale unit for this vpn gateway.
 	VPNGatewayScaleUnit *int32 `json:"vpnGatewayScaleUnit,omitempty"`
 
@@ -15101,6 +15530,7 @@ func (v VPNGatewayProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "connections", v.Connections)
 	populate(objectMap, "ipConfigurations", v.IPConfigurations)
 	populate(objectMap, "isRoutingPreferenceInternet", v.IsRoutingPreferenceInternet)
+	populate(objectMap, "natRules", v.NatRules)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "vpnGatewayScaleUnit", v.VPNGatewayScaleUnit)
 	populate(objectMap, "virtualHub", v.VirtualHub)
@@ -15163,6 +15593,16 @@ type VPNLinkBgpSettings struct {
 	BgpPeeringAddress *string `json:"bgpPeeringAddress,omitempty"`
 }
 
+// VPNLinkConnectionsBeginGetIkeSasOptions contains the optional parameters for the VPNLinkConnections.BeginGetIkeSas method.
+type VPNLinkConnectionsBeginGetIkeSasOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VPNLinkConnectionsBeginResetConnectionOptions contains the optional parameters for the VPNLinkConnections.BeginResetConnection method.
+type VPNLinkConnectionsBeginResetConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // VPNLinkConnectionsListByVPNConnectionOptions contains the optional parameters for the VPNLinkConnections.ListByVPNConnection method.
 type VPNLinkConnectionsListByVPNConnectionOptions struct {
 	// placeholder for future optional parameters
@@ -15175,6 +15615,12 @@ type VPNLinkProviderProperties struct {
 
 	// Link speed.
 	LinkSpeedInMbps *int32 `json:"linkSpeedInMbps,omitempty"`
+}
+
+// VPNNatRuleMapping - Vpn NatRule mapping.
+type VPNNatRuleMapping struct {
+	// Address space for Vpn NatRule mapping.
+	AddressSpace *string `json:"addressSpace,omitempty"`
 }
 
 // VPNPacketCaptureStartParameters - Start packet capture parameters on virtual network gateway.
@@ -15445,14 +15891,17 @@ func (v VPNSiteLinkConnection) MarshalJSON() ([]byte, error) {
 
 // VPNSiteLinkConnectionProperties - Parameters for VpnConnection.
 type VPNSiteLinkConnectionProperties struct {
+	// List of ingress NatRules.
+	IngressNatRules []*SubResource `json:"ingressNatRules,omitempty"`
+
 	// Expected bandwidth in MBPS.
 	ConnectionBandwidth *int32 `json:"connectionBandwidth,omitempty"`
 
-	// Id of the connected vpn site link.
-	VPNSiteLink *SubResource `json:"vpnSiteLink,omitempty"`
+	// Vpn link connection mode.
+	VPNLinkConnectionMode *VPNLinkConnectionMode `json:"vpnLinkConnectionMode,omitempty"`
 
-	// Connection protocol used for this connection.
-	VPNConnectionProtocolType *VirtualNetworkGatewayConnectionProtocol `json:"vpnConnectionProtocolType,omitempty"`
+	// List of egress NatRules.
+	EgressNatRules []*SubResource `json:"egressNatRules,omitempty"`
 
 	// EnableBgp flag.
 	EnableBgp *bool `json:"enableBgp,omitempty"`
@@ -15462,6 +15911,9 @@ type VPNSiteLinkConnectionProperties struct {
 
 	// The IPSec Policies to be considered by this connection.
 	IPSecPolicies []*IPSecPolicy `json:"ipsecPolicies,omitempty"`
+
+	// Connection protocol used for this connection.
+	VPNConnectionProtocolType *VirtualNetworkGatewayConnectionProtocol `json:"vpnConnectionProtocolType,omitempty"`
 
 	// Enable policy-based traffic selectors.
 	UsePolicyBasedTrafficSelectors *bool `json:"usePolicyBasedTrafficSelectors,omitempty"`
@@ -15475,6 +15927,12 @@ type VPNSiteLinkConnectionProperties struct {
 	// SharedKey for the vpn connection.
 	SharedKey *string `json:"sharedKey,omitempty"`
 
+	// Id of the connected vpn site link.
+	VPNSiteLink *SubResource `json:"vpnSiteLink,omitempty"`
+
+	// READ-ONLY; The provisioning state of the VPN site link connection resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+
 	// READ-ONLY; The connection status.
 	ConnectionStatus *VPNConnectionStatus `json:"connectionStatus,omitempty" azure:"ro"`
 
@@ -15483,9 +15941,6 @@ type VPNSiteLinkConnectionProperties struct {
 
 	// READ-ONLY; Egress bytes transferred.
 	EgressBytesTransferred *int64 `json:"egressBytesTransferred,omitempty" azure:"ro"`
-
-	// READ-ONLY; The provisioning state of the VPN site link connection resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VPNSiteLinkConnectionProperties.
@@ -15494,16 +15949,19 @@ func (v VPNSiteLinkConnectionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "connectionBandwidth", v.ConnectionBandwidth)
 	populate(objectMap, "connectionStatus", v.ConnectionStatus)
 	populate(objectMap, "egressBytesTransferred", v.EgressBytesTransferred)
+	populate(objectMap, "egressNatRules", v.EgressNatRules)
 	populate(objectMap, "enableBgp", v.EnableBgp)
 	populate(objectMap, "enableRateLimiting", v.EnableRateLimiting)
 	populate(objectMap, "ipsecPolicies", v.IPSecPolicies)
 	populate(objectMap, "ingressBytesTransferred", v.IngressBytesTransferred)
+	populate(objectMap, "ingressNatRules", v.IngressNatRules)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "routingWeight", v.RoutingWeight)
 	populate(objectMap, "sharedKey", v.SharedKey)
 	populate(objectMap, "useLocalAzureIpAddress", v.UseLocalAzureIPAddress)
 	populate(objectMap, "usePolicyBasedTrafficSelectors", v.UsePolicyBasedTrafficSelectors)
 	populate(objectMap, "vpnConnectionProtocolType", v.VPNConnectionProtocolType)
+	populate(objectMap, "vpnLinkConnectionMode", v.VPNLinkConnectionMode)
 	populate(objectMap, "vpnSiteLink", v.VPNSiteLink)
 	return json.Marshal(objectMap)
 }
@@ -15847,7 +16305,7 @@ func (v VirtualHubEffectiveRouteList) MarshalJSON() ([]byte, error) {
 // VirtualHubID - Virtual Hub identifier.
 type VirtualHubID struct {
 	// The resource URI for the Virtual Hub where the ExpressRoute gateway is or will be deployed. The Virtual Hub resource and the ExpressRoute gateway resource
-// reside in the same subscription.
+	// reside in the same subscription.
 	ID *string `json:"id,omitempty"`
 }
 
@@ -15873,11 +16331,11 @@ type VirtualHubIPConfigurationListOptions struct {
 
 // VirtualHubProperties - Parameters for VirtualHub.
 type VirtualHubProperties struct {
+	// The routeTable associated with this virtual hub.
+	RouteTable *VirtualHubRouteTable `json:"routeTable,omitempty"`
+
 	// Address-prefix for this VirtualHub.
 	AddressPrefix *string `json:"addressPrefix,omitempty"`
-
-	// The VirtualWAN to which the VirtualHub belongs.
-	VirtualWan *SubResource `json:"virtualWan,omitempty"`
 
 	// The azureFirewall associated with this VirtualHub.
 	AzureFirewall *SubResource `json:"azureFirewall,omitempty"`
@@ -15894,14 +16352,17 @@ type VirtualHubProperties struct {
 	// The P2SVpnGateway associated with this VirtualHub.
 	P2SVPNGateway *SubResource `json:"p2SVpnGateway,omitempty"`
 
+	// The preferred gateway to route on-prem traffic
+	PreferredRoutingGateway *PreferredRoutingGateway `json:"preferredRoutingGateway,omitempty"`
+
 	// List of all virtual hub route table v2s associated with this VirtualHub.
 	VirtualHubRouteTableV2S []*VirtualHubRouteTableV2 `json:"virtualHubRouteTableV2s,omitempty"`
 
-	// The routeTable associated with this virtual hub.
-	RouteTable *VirtualHubRouteTable `json:"routeTable,omitempty"`
-
 	// Flag to control transit for VirtualRouter hub.
 	AllowBranchToBranchTraffic *bool `json:"allowBranchToBranchTraffic,omitempty"`
+
+	// The VpnGateway associated with this VirtualHub.
+	VPNGateway *SubResource `json:"vpnGateway,omitempty"`
 
 	// The sku of this VirtualHub.
 	SKU *string `json:"sku,omitempty"`
@@ -15912,8 +16373,11 @@ type VirtualHubProperties struct {
 	// The Security Provider name.
 	SecurityProviderName *string `json:"securityProviderName,omitempty"`
 
-	// The VpnGateway associated with this VirtualHub.
-	VPNGateway *SubResource `json:"vpnGateway,omitempty"`
+	// The VirtualWAN to which the VirtualHub belongs.
+	VirtualWan *SubResource `json:"virtualWan,omitempty"`
+
+	// READ-ONLY; The routing state.
+	RoutingState *RoutingState `json:"routingState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the virtual hub resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -15923,9 +16387,6 @@ type VirtualHubProperties struct {
 
 	// READ-ONLY; List of references to Bgp Connections.
 	BgpConnections []*SubResource `json:"bgpConnections,omitempty" azure:"ro"`
-
-	// READ-ONLY; The routing state.
-	RoutingState *RoutingState `json:"routingState,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VirtualHubProperties.
@@ -15938,6 +16399,7 @@ func (v VirtualHubProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "expressRouteGateway", v.ExpressRouteGateway)
 	populate(objectMap, "ipConfigurations", v.IPConfigurations)
 	populate(objectMap, "p2SVpnGateway", v.P2SVPNGateway)
+	populate(objectMap, "preferredRoutingGateway", v.PreferredRoutingGateway)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "routeTable", v.RouteTable)
 	populate(objectMap, "routingState", v.RoutingState)
@@ -16146,6 +16608,9 @@ type VirtualNetworkConnectionGatewayReference struct {
 // VirtualNetworkGateway - A common class for general resource information.
 type VirtualNetworkGateway struct {
 	Resource
+	// The extended location of type local virtual network gateway.
+	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+
 	// REQUIRED; Properties of the virtual network gateway.
 	Properties *VirtualNetworkGatewayPropertiesFormat `json:"properties,omitempty"`
 
@@ -16157,6 +16622,7 @@ type VirtualNetworkGateway struct {
 func (v VirtualNetworkGateway) MarshalJSON() ([]byte, error) {
 	objectMap := v.Resource.marshalInternal()
 	populate(objectMap, "etag", v.Etag)
+	populate(objectMap, "extendedLocation", v.ExtendedLocation)
 	populate(objectMap, "properties", v.Properties)
 	return json.Marshal(objectMap)
 }
@@ -16309,8 +16775,8 @@ func (v VirtualNetworkGatewayConnectionListResult) MarshalJSON() ([]byte, error)
 
 // VirtualNetworkGatewayConnectionPropertiesFormat - VirtualNetworkGatewayConnection properties.
 type VirtualNetworkGatewayConnectionPropertiesFormat struct {
-	// The reference to local network gateway resource.
-	LocalNetworkGateway2 *LocalNetworkGateway `json:"localNetworkGateway2,omitempty"`
+	// List of ingress NatRules.
+	IngressNatRules []*SubResource `json:"ingressNatRules,omitempty"`
 
 	// REQUIRED; The reference to virtual network gateway resource.
 	VirtualNetworkGateway1 *VirtualNetworkGateway `json:"virtualNetworkGateway1,omitempty"`
@@ -16330,6 +16796,9 @@ type VirtualNetworkGatewayConnectionPropertiesFormat struct {
 	// Enable policy-based traffic selectors.
 	UsePolicyBasedTrafficSelectors *bool `json:"usePolicyBasedTrafficSelectors,omitempty"`
 
+	// List of egress NatRules.
+	EgressNatRules []*SubResource `json:"egressNatRules,omitempty"`
+
 	// EnableBgp flag.
 	EnableBgp *bool `json:"enableBgp,omitempty"`
 
@@ -16344,6 +16813,9 @@ type VirtualNetworkGatewayConnectionPropertiesFormat struct {
 
 	// The connection mode for this connection.
 	ConnectionMode *VirtualNetworkGatewayConnectionMode `json:"connectionMode,omitempty"`
+
+	// The reference to local network gateway resource.
+	LocalNetworkGateway2 *LocalNetworkGateway `json:"localNetworkGateway2,omitempty"`
 
 	// The reference to peerings resource.
 	Peer *SubResource `json:"peer,omitempty"`
@@ -16389,10 +16861,12 @@ func (v VirtualNetworkGatewayConnectionPropertiesFormat) MarshalJSON() ([]byte, 
 	populate(objectMap, "connectionType", v.ConnectionType)
 	populate(objectMap, "dpdTimeoutSeconds", v.DpdTimeoutSeconds)
 	populate(objectMap, "egressBytesTransferred", v.EgressBytesTransferred)
+	populate(objectMap, "egressNatRules", v.EgressNatRules)
 	populate(objectMap, "enableBgp", v.EnableBgp)
 	populate(objectMap, "expressRouteGatewayBypass", v.ExpressRouteGatewayBypass)
 	populate(objectMap, "ipsecPolicies", v.IPSecPolicies)
 	populate(objectMap, "ingressBytesTransferred", v.IngressBytesTransferred)
+	populate(objectMap, "ingressNatRules", v.IngressNatRules)
 	populate(objectMap, "localNetworkGateway2", v.LocalNetworkGateway2)
 	populate(objectMap, "peer", v.Peer)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
@@ -16416,6 +16890,17 @@ type VirtualNetworkGatewayConnectionsBeginCreateOrUpdateOptions struct {
 
 // VirtualNetworkGatewayConnectionsBeginDeleteOptions contains the optional parameters for the VirtualNetworkGatewayConnections.BeginDelete method.
 type VirtualNetworkGatewayConnectionsBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewayConnectionsBeginGetIkeSasOptions contains the optional parameters for the VirtualNetworkGatewayConnections.BeginGetIkeSas method.
+type VirtualNetworkGatewayConnectionsBeginGetIkeSasOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewayConnectionsBeginResetConnectionOptions contains the optional parameters for the VirtualNetworkGatewayConnections.BeginResetConnection
+// method.
+type VirtualNetworkGatewayConnectionsBeginResetConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -16538,6 +17023,86 @@ func (v VirtualNetworkGatewayListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// VirtualNetworkGatewayNatRule Resource.
+type VirtualNetworkGatewayNatRule struct {
+	SubResource
+	// The name of the resource that is unique within a resource group. This name can be used to access the resource.
+	Name *string `json:"name,omitempty"`
+
+	// Properties of the Virtual Network Gateway NAT rule.
+	Properties *VirtualNetworkGatewayNatRuleProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
+	Etag *string `json:"etag,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkGatewayNatRule.
+func (v VirtualNetworkGatewayNatRule) MarshalJSON() ([]byte, error) {
+	objectMap := v.SubResource.marshalInternal()
+	populate(objectMap, "etag", v.Etag)
+	populate(objectMap, "name", v.Name)
+	populate(objectMap, "properties", v.Properties)
+	populate(objectMap, "type", v.Type)
+	return json.Marshal(objectMap)
+}
+
+// VirtualNetworkGatewayNatRuleProperties - Parameters for VirtualNetworkGatewayNatRule.
+type VirtualNetworkGatewayNatRuleProperties struct {
+	// The private IP address external mapping for NAT.
+	ExternalMappings []*VPNNatRuleMapping `json:"externalMappings,omitempty"`
+
+	// The IP Configuration ID this NAT rule applies to.
+	IPConfigurationID *string `json:"ipConfigurationId,omitempty"`
+
+	// The private IP address internal mapping for NAT.
+	InternalMappings []*VPNNatRuleMapping `json:"internalMappings,omitempty"`
+
+	// The Source NAT direction of a VPN NAT.
+	Mode *VPNNatRuleMode `json:"mode,omitempty"`
+
+	// The type of NAT rule for VPN NAT.
+	Type *VPNNatRuleType `json:"type,omitempty"`
+
+	// READ-ONLY; The provisioning state of the NAT Rule resource.
+	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VirtualNetworkGatewayNatRuleProperties.
+func (v VirtualNetworkGatewayNatRuleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "externalMappings", v.ExternalMappings)
+	populate(objectMap, "ipConfigurationId", v.IPConfigurationID)
+	populate(objectMap, "internalMappings", v.InternalMappings)
+	populate(objectMap, "mode", v.Mode)
+	populate(objectMap, "provisioningState", v.ProvisioningState)
+	populate(objectMap, "type", v.Type)
+	return json.Marshal(objectMap)
+}
+
+// VirtualNetworkGatewayNatRulesBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkGatewayNatRules.BeginCreateOrUpdate method.
+type VirtualNetworkGatewayNatRulesBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewayNatRulesBeginDeleteOptions contains the optional parameters for the VirtualNetworkGatewayNatRules.BeginDelete method.
+type VirtualNetworkGatewayNatRulesBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewayNatRulesGetOptions contains the optional parameters for the VirtualNetworkGatewayNatRules.Get method.
+type VirtualNetworkGatewayNatRulesGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VirtualNetworkGatewayNatRulesListByVirtualNetworkGatewayOptions contains the optional parameters for the VirtualNetworkGatewayNatRules.ListByVirtualNetworkGateway
+// method.
+type VirtualNetworkGatewayNatRulesListByVirtualNetworkGatewayOptions struct {
+	// placeholder for future optional parameters
+}
+
 // VirtualNetworkGatewayPropertiesFormat - VirtualNetworkGateway properties.
 type VirtualNetworkGatewayPropertiesFormat struct {
 	// IP configurations for virtual network gateway.
@@ -16547,11 +17112,14 @@ type VirtualNetworkGatewayPropertiesFormat struct {
 	Active *bool `json:"activeActive,omitempty"`
 
 	// The reference to the address space resource which represents the custom routes address space specified by the customer for virtual network gateway and
-// VpnClient.
+	// VpnClient.
 	CustomRoutes *AddressSpace `json:"customRoutes,omitempty"`
 
 	// Whether BGP is enabled for this virtual network gateway or not.
 	EnableBgp *bool `json:"enableBgp,omitempty"`
+
+	// EnableBgpRouteTranslationForNat flag.
+	EnableBgpRouteTranslationForNat *bool `json:"enableBgpRouteTranslationForNat,omitempty"`
 
 	// Whether dns forwarding is enabled or not.
 	EnableDNSForwarding *bool `json:"enableDnsForwarding,omitempty"`
@@ -16559,11 +17127,8 @@ type VirtualNetworkGatewayPropertiesFormat struct {
 	// Whether private IP needs to be enabled on this gateway for connections or not.
 	EnablePrivateIPAddress *bool `json:"enablePrivateIpAddress,omitempty"`
 
-	// The extended location of type local virtual network gateway.
-	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
-
 	// The reference to the LocalNetworkGateway resource which represents local network site having default routes. Assign Null value in case of removing existing
-// default site setting.
+	// default site setting.
 	GatewayDefaultSite *SubResource `json:"gatewayDefaultSite,omitempty"`
 
 	// The type of this virtual network gateway.
@@ -16572,20 +17137,23 @@ type VirtualNetworkGatewayPropertiesFormat struct {
 	// Virtual network gateway's BGP speaker settings.
 	BgpSettings *BgpSettings `json:"bgpSettings,omitempty"`
 
-	// The type of this virtual network gateway.
-	VPNType *VPNType `json:"vpnType,omitempty"`
-
 	// The generation for this VirtualNetworkGateway. Must be None if gatewayType is not VPN.
 	VPNGatewayGeneration *VPNGatewayGeneration `json:"vpnGatewayGeneration,omitempty"`
+
+	// NatRules for virtual network gateway.
+	NatRules []*VirtualNetworkGatewayNatRule `json:"natRules,omitempty"`
 
 	// The reference to the VpnClientConfiguration resource which represents the P2S VpnClient configurations.
 	VPNClientConfiguration *VPNClientConfiguration `json:"vpnClientConfiguration,omitempty"`
 
+	// Customer vnet resource id. VirtualNetworkGateway of type local gateway is associated with the customer vnet.
+	VNetExtendedLocationResourceID *string `json:"vNetExtendedLocationResourceId,omitempty"`
+
 	// The reference to the VirtualNetworkGatewaySku resource which represents the SKU selected for Virtual network gateway.
 	SKU *VirtualNetworkGatewaySKU `json:"sku,omitempty"`
 
-	// MAS FIJI customer vnet resource id. VirtualNetworkGateway of type local gateway is associated with the customer vnet.
-	VirtualNetworkExtendedLocationResourceID *string `json:"virtualNetworkExtendedLocationResourceId,omitempty"`
+	// The type of this virtual network gateway.
+	VPNType *VPNType `json:"vpnType,omitempty"`
 
 	// READ-ONLY; The resource GUID property of the virtual network gateway resource.
 	ResourceGUID *string `json:"resourceGuid,omitempty" azure:"ro"`
@@ -16604,20 +17172,21 @@ func (v VirtualNetworkGatewayPropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "bgpSettings", v.BgpSettings)
 	populate(objectMap, "customRoutes", v.CustomRoutes)
 	populate(objectMap, "enableBgp", v.EnableBgp)
+	populate(objectMap, "enableBgpRouteTranslationForNat", v.EnableBgpRouteTranslationForNat)
 	populate(objectMap, "enableDnsForwarding", v.EnableDNSForwarding)
 	populate(objectMap, "enablePrivateIpAddress", v.EnablePrivateIPAddress)
-	populate(objectMap, "extendedLocation", v.ExtendedLocation)
 	populate(objectMap, "gatewayDefaultSite", v.GatewayDefaultSite)
 	populate(objectMap, "gatewayType", v.GatewayType)
 	populate(objectMap, "ipConfigurations", v.IPConfigurations)
 	populate(objectMap, "inboundDnsForwardingEndpoint", v.InboundDNSForwardingEndpoint)
+	populate(objectMap, "natRules", v.NatRules)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "resourceGuid", v.ResourceGUID)
 	populate(objectMap, "sku", v.SKU)
+	populate(objectMap, "vNetExtendedLocationResourceId", v.VNetExtendedLocationResourceID)
 	populate(objectMap, "vpnClientConfiguration", v.VPNClientConfiguration)
 	populate(objectMap, "vpnGatewayGeneration", v.VPNGatewayGeneration)
 	populate(objectMap, "vpnType", v.VPNType)
-	populate(objectMap, "virtualNetworkExtendedLocationResourceId", v.VirtualNetworkExtendedLocationResourceID)
 	return json.Marshal(objectMap)
 }
 
@@ -16797,6 +17366,9 @@ type VirtualNetworkPeering struct {
 	// Properties of the virtual network peering.
 	Properties *VirtualNetworkPeeringPropertiesFormat `json:"properties,omitempty"`
 
+	// Resource type.
+	Type *string `json:"type,omitempty"`
+
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
@@ -16807,6 +17379,7 @@ func (v VirtualNetworkPeering) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "etag", v.Etag)
 	populate(objectMap, "name", v.Name)
 	populate(objectMap, "properties", v.Properties)
+	populate(objectMap, "type", v.Type)
 	return json.Marshal(objectMap)
 }
 
@@ -16832,30 +17405,42 @@ type VirtualNetworkPeeringPropertiesFormat struct {
 	// Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote virtual network.
 	AllowForwardedTraffic *bool `json:"allowForwardedTraffic,omitempty"`
 
-	// If gateway links can be used in remote virtual networking to link to this virtual network.
-	AllowGatewayTransit *bool `json:"allowGatewayTransit,omitempty"`
+	// If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering is also true, virtual network
+	// will use gateways of remote virtual network
+	// for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway.
+	UseRemoteGateways *bool `json:"useRemoteGateways,omitempty"`
 
 	// Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network space.
 	AllowVirtualNetworkAccess *bool `json:"allowVirtualNetworkAccess,omitempty"`
 
+	// If we need to verify the provisioning state of the remote gateway.
+	DoNotVerifyRemoteGateways *bool `json:"doNotVerifyRemoteGateways,omitempty"`
+
 	// The status of the virtual network peering.
 	PeeringState *VirtualNetworkPeeringState `json:"peeringState,omitempty"`
 
-	// The reference to the remote virtual network address space.
+	// The peering sync status of the virtual network peering.
+	PeeringSyncLevel *VirtualNetworkPeeringLevel `json:"peeringSyncLevel,omitempty"`
+
+	// If gateway links can be used in remote virtual networking to link to this virtual network.
+	AllowGatewayTransit *bool `json:"allowGatewayTransit,omitempty"`
+
+	// The reference to the address space peered with the remote virtual network.
 	RemoteAddressSpace *AddressSpace `json:"remoteAddressSpace,omitempty"`
 
 	// The reference to the remote virtual network's Bgp Communities.
 	RemoteBgpCommunities *VirtualNetworkBgpCommunities `json:"remoteBgpCommunities,omitempty"`
 
 	// The reference to the remote virtual network. The remote virtual network can be in the same or different region (preview). See here to register for the
-// preview and learn more
-// (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
+	// preview and learn more
+	// (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
 	RemoteVirtualNetwork *SubResource `json:"remoteVirtualNetwork,omitempty"`
 
-	// If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering is also true, virtual network
-// will use gateways of remote virtual network
-// for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway.
-	UseRemoteGateways *bool `json:"useRemoteGateways,omitempty"`
+	// The reference to the current address space of the remote virtual network.
+	RemoteVirtualNetworkAddressSpace *AddressSpace `json:"remoteVirtualNetworkAddressSpace,omitempty"`
+
+	// READ-ONLY; The resourceGuid property of the Virtual Network peering resource.
+	ResourceGUID *string `json:"resourceGuid,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the virtual network peering resource.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -16863,7 +17448,8 @@ type VirtualNetworkPeeringPropertiesFormat struct {
 
 // VirtualNetworkPeeringsBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkPeerings.BeginCreateOrUpdate method.
 type VirtualNetworkPeeringsBeginCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Parameter indicates the intention to sync the peering with the current address space on the remote vNet after it's updated.
+	SyncRemoteAddressSpace *SyncRemoteAddressSpace
 }
 
 // VirtualNetworkPeeringsBeginDeleteOptions contains the optional parameters for the VirtualNetworkPeerings.BeginDelete method.
@@ -16883,8 +17469,8 @@ type VirtualNetworkPeeringsListOptions struct {
 
 // VirtualNetworkPropertiesFormat - Properties of the virtual network.
 type VirtualNetworkPropertiesFormat struct {
-	// Indicates if VM protection is enabled for all the subnets in the virtual network.
-	EnableVMProtection *bool `json:"enableVmProtection,omitempty"`
+	// The FlowTimeout value (in minutes) for the Virtual Network
+	FlowTimeoutInMinutes *int32 `json:"flowTimeoutInMinutes,omitempty"`
 
 	// The AddressSpace that contains an array of IP address ranges that can be used by subnets.
 	AddressSpace *AddressSpace `json:"addressSpace,omitempty"`
@@ -16896,8 +17482,11 @@ type VirtualNetworkPropertiesFormat struct {
 	DhcpOptions *DhcpOptions `json:"dhcpOptions,omitempty"`
 
 	// Indicates if DDoS protection is enabled for all the protected resources in the virtual network. It requires a DDoS protection plan associated with the
-// resource.
+	// resource.
 	EnableDdosProtection *bool `json:"enableDdosProtection,omitempty"`
+
+	// Indicates if VM protection is enabled for all the subnets in the virtual network.
+	EnableVMProtection *bool `json:"enableVmProtection,omitempty"`
 
 	// Bgp Communities sent over ExpressRoute with each route corresponding to a prefix in this VNET.
 	BgpCommunities *VirtualNetworkBgpCommunities `json:"bgpCommunities,omitempty"`
@@ -16927,6 +17516,7 @@ func (v VirtualNetworkPropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dhcpOptions", v.DhcpOptions)
 	populate(objectMap, "enableDdosProtection", v.EnableDdosProtection)
 	populate(objectMap, "enableVmProtection", v.EnableVMProtection)
+	populate(objectMap, "flowTimeoutInMinutes", v.FlowTimeoutInMinutes)
 	populate(objectMap, "ipAllocations", v.IPAllocations)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "resourceGuid", v.ResourceGUID)
@@ -17568,4 +18158,3 @@ func unpopulate(data json.RawMessage, v interface{}) error {
 	}
 	return json.Unmarshal(data, v)
 }
-

@@ -22,7 +22,7 @@ import (
 // VirtualNetworkPeeringsClient contains the methods for the VirtualNetworkPeerings group.
 // Don't use this type directly, use NewVirtualNetworkPeeringsClient() instead.
 type VirtualNetworkPeeringsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *VirtualNetworkPeeringsClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 	poller := &virtualNetworkPeeringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualNetworkPeeringResponse, error) {
@@ -65,7 +65,7 @@ func (client *VirtualNetworkPeeringsClient) ResumeCreateOrUpdate(ctx context.Con
 	}
 	poller := &virtualNetworkPeeringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *VirtualNetworkPeeringsClient) createOrUpdate(ctx context.Context, 
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,10 @@ func (client *VirtualNetworkPeeringsClient) createOrUpdateCreateRequest(ctx cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	if options != nil && options.SyncRemoteAddressSpace != nil {
+		reqQP.Set("syncRemoteAddressSpace", string(*options.SyncRemoteAddressSpace))
+	}
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(virtualNetworkPeeringParameters)
@@ -135,7 +138,7 @@ func (client *VirtualNetworkPeeringsClient) createOrUpdateHandleError(resp *azco
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +161,7 @@ func (client *VirtualNetworkPeeringsClient) BeginDelete(ctx context.Context, res
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +179,7 @@ func (client *VirtualNetworkPeeringsClient) ResumeDelete(ctx context.Context, to
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +209,7 @@ func (client *VirtualNetworkPeeringsClient) deleteOperation(ctx context.Context,
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +237,7 @@ func (client *VirtualNetworkPeeringsClient) deleteCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +249,7 @@ func (client *VirtualNetworkPeeringsClient) deleteHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +298,7 @@ func (client *VirtualNetworkPeeringsClient) getCreateRequest(ctx context.Context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -307,7 +310,7 @@ func (client *VirtualNetworkPeeringsClient) getHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkPeeringResponse{}, err
 	}
-return VirtualNetworkPeeringResponse{RawResponse: resp.Response, VirtualNetworkPeering: val}, nil
+	return VirtualNetworkPeeringResponse{RawResponse: resp.Response, VirtualNetworkPeering: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -316,7 +319,7 @@ func (client *VirtualNetworkPeeringsClient) getHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -325,7 +328,7 @@ func (client *VirtualNetworkPeeringsClient) getHandleError(resp *azcore.Response
 
 // List - Gets all virtual network peerings in a virtual network.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkPeeringsClient) List(resourceGroupName string, virtualNetworkName string, options *VirtualNetworkPeeringsListOptions) (VirtualNetworkPeeringListResultPager) {
+func (client *VirtualNetworkPeeringsClient) List(resourceGroupName string, virtualNetworkName string, options *VirtualNetworkPeeringsListOptions) VirtualNetworkPeeringListResultPager {
 	return &virtualNetworkPeeringListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -361,7 +364,7 @@ func (client *VirtualNetworkPeeringsClient) listCreateRequest(ctx context.Contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -373,7 +376,7 @@ func (client *VirtualNetworkPeeringsClient) listHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkPeeringListResultResponse{}, err
 	}
-return VirtualNetworkPeeringListResultResponse{RawResponse: resp.Response, VirtualNetworkPeeringListResult: val}, nil
+	return VirtualNetworkPeeringListResultResponse{RawResponse: resp.Response, VirtualNetworkPeeringListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -382,10 +385,9 @@ func (client *VirtualNetworkPeeringsClient) listHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

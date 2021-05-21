@@ -22,7 +22,7 @@ import (
 // ExpressRouteCrossConnectionPeeringsClient contains the methods for the ExpressRouteCrossConnectionPeerings group.
 // Don't use this type directly, use NewExpressRouteCrossConnectionPeeringsClient() instead.
 type ExpressRouteCrossConnectionPeeringsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) BeginCreateOrUpdate(ctx
 	}
 	poller := &expressRouteCrossConnectionPeeringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteCrossConnectionPeeringResponse, error) {
@@ -65,7 +65,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) ResumeCreateOrUpdate(ct
 	}
 	poller := &expressRouteCrossConnectionPeeringPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) createOrUpdate(ctx cont
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) createOrUpdateCreateReq
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(peeringParameters)
@@ -135,7 +135,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) createOrUpdateHandleErr
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) BeginDelete(ctx context
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +176,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) ResumeDelete(ctx contex
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +206,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) deleteOperation(ctx con
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) deleteCreateRequest(ctx
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +246,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) deleteHandleError(resp 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +295,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) getCreateRequest(ctx co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -307,7 +307,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) getHandleResponse(resp 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRouteCrossConnectionPeeringResponse{}, err
 	}
-return ExpressRouteCrossConnectionPeeringResponse{RawResponse: resp.Response, ExpressRouteCrossConnectionPeering: val}, nil
+	return ExpressRouteCrossConnectionPeeringResponse{RawResponse: resp.Response, ExpressRouteCrossConnectionPeering: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -316,7 +316,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) getHandleError(resp *az
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -325,7 +325,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) getHandleError(resp *az
 
 // List - Gets all peerings in a specified ExpressRouteCrossConnection.
 // If the operation fails it returns the *CloudError error type.
-func (client *ExpressRouteCrossConnectionPeeringsClient) List(resourceGroupName string, crossConnectionName string, options *ExpressRouteCrossConnectionPeeringsListOptions) (ExpressRouteCrossConnectionPeeringListPager) {
+func (client *ExpressRouteCrossConnectionPeeringsClient) List(resourceGroupName string, crossConnectionName string, options *ExpressRouteCrossConnectionPeeringsListOptions) ExpressRouteCrossConnectionPeeringListPager {
 	return &expressRouteCrossConnectionPeeringListPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -361,7 +361,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) listCreateRequest(ctx c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -373,7 +373,7 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) listHandleResponse(resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRouteCrossConnectionPeeringListResponse{}, err
 	}
-return ExpressRouteCrossConnectionPeeringListResponse{RawResponse: resp.Response, ExpressRouteCrossConnectionPeeringList: val}, nil
+	return ExpressRouteCrossConnectionPeeringListResponse{RawResponse: resp.Response, ExpressRouteCrossConnectionPeeringList: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -382,10 +382,9 @@ func (client *ExpressRouteCrossConnectionPeeringsClient) listHandleError(resp *a
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

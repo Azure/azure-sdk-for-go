@@ -21,7 +21,7 @@ import (
 // LoadBalancerProbesClient contains the methods for the LoadBalancerProbes group.
 // Don't use this type directly, use NewLoadBalancerProbesClient() instead.
 type LoadBalancerProbesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -72,7 +72,7 @@ func (client *LoadBalancerProbesClient) getCreateRequest(ctx context.Context, re
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -84,7 +84,7 @@ func (client *LoadBalancerProbesClient) getHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ProbeResponse{}, err
 	}
-return ProbeResponse{RawResponse: resp.Response, Probe: val}, nil
+	return ProbeResponse{RawResponse: resp.Response, Probe: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -93,7 +93,7 @@ func (client *LoadBalancerProbesClient) getHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -102,7 +102,7 @@ func (client *LoadBalancerProbesClient) getHandleError(resp *azcore.Response) er
 
 // List - Gets all the load balancer probes.
 // If the operation fails it returns the *CloudError error type.
-func (client *LoadBalancerProbesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesListOptions) (LoadBalancerProbeListResultPager) {
+func (client *LoadBalancerProbesClient) List(resourceGroupName string, loadBalancerName string, options *LoadBalancerProbesListOptions) LoadBalancerProbeListResultPager {
 	return &loadBalancerProbeListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -138,7 +138,7 @@ func (client *LoadBalancerProbesClient) listCreateRequest(ctx context.Context, r
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -150,7 +150,7 @@ func (client *LoadBalancerProbesClient) listHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LoadBalancerProbeListResultResponse{}, err
 	}
-return LoadBalancerProbeListResultResponse{RawResponse: resp.Response, LoadBalancerProbeListResult: val}, nil
+	return LoadBalancerProbeListResultResponse{RawResponse: resp.Response, LoadBalancerProbeListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -159,10 +159,9 @@ func (client *LoadBalancerProbesClient) listHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

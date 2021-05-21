@@ -22,7 +22,7 @@ import (
 // NetworkWatchersClient contains the methods for the NetworkWatchers group.
 // Don't use this type directly, use NewNetworkWatchersClient() instead.
 type NetworkWatchersClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -48,7 +48,7 @@ func (client *NetworkWatchersClient) BeginCheckConnectivity(ctx context.Context,
 	}
 	poller := &connectivityInformationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectivityInformationResponse, error) {
@@ -66,7 +66,7 @@ func (client *NetworkWatchersClient) ResumeCheckConnectivity(ctx context.Context
 	}
 	poller := &connectivityInformationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -97,7 +97,7 @@ func (client *NetworkWatchersClient) checkConnectivity(ctx context.Context, reso
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.checkConnectivityHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // checkConnectivityCreateRequest creates the CheckConnectivity request.
@@ -121,7 +121,7 @@ func (client *NetworkWatchersClient) checkConnectivityCreateRequest(ctx context.
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -133,7 +133,7 @@ func (client *NetworkWatchersClient) checkConnectivityHandleError(resp *azcore.R
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -178,7 +178,7 @@ func (client *NetworkWatchersClient) createOrUpdateCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -190,7 +190,7 @@ func (client *NetworkWatchersClient) createOrUpdateHandleResponse(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkWatcherResponse{}, err
 	}
-return NetworkWatcherResponse{RawResponse: resp.Response, NetworkWatcher: val}, nil
+	return NetworkWatcherResponse{RawResponse: resp.Response, NetworkWatcher: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -199,7 +199,7 @@ func (client *NetworkWatchersClient) createOrUpdateHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -222,7 +222,7 @@ func (client *NetworkWatchersClient) BeginDelete(ctx context.Context, resourceGr
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -240,7 +240,7 @@ func (client *NetworkWatchersClient) ResumeDelete(ctx context.Context, token str
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -270,7 +270,7 @@ func (client *NetworkWatchersClient) deleteOperation(ctx context.Context, resour
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -294,7 +294,7 @@ func (client *NetworkWatchersClient) deleteCreateRequest(ctx context.Context, re
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -306,7 +306,7 @@ func (client *NetworkWatchersClient) deleteHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -351,7 +351,7 @@ func (client *NetworkWatchersClient) getCreateRequest(ctx context.Context, resou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -363,7 +363,7 @@ func (client *NetworkWatchersClient) getHandleResponse(resp *azcore.Response) (N
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkWatcherResponse{}, err
 	}
-return NetworkWatcherResponse{RawResponse: resp.Response, NetworkWatcher: val}, nil
+	return NetworkWatcherResponse{RawResponse: resp.Response, NetworkWatcher: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -372,7 +372,7 @@ func (client *NetworkWatchersClient) getHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -396,7 +396,7 @@ func (client *NetworkWatchersClient) BeginGetAzureReachabilityReport(ctx context
 	}
 	poller := &azureReachabilityReportPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AzureReachabilityReportResponse, error) {
@@ -414,7 +414,7 @@ func (client *NetworkWatchersClient) ResumeGetAzureReachabilityReport(ctx contex
 	}
 	poller := &azureReachabilityReportPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -445,7 +445,7 @@ func (client *NetworkWatchersClient) getAzureReachabilityReport(ctx context.Cont
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getAzureReachabilityReportHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getAzureReachabilityReportCreateRequest creates the GetAzureReachabilityReport request.
@@ -469,7 +469,7 @@ func (client *NetworkWatchersClient) getAzureReachabilityReportCreateRequest(ctx
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -481,7 +481,7 @@ func (client *NetworkWatchersClient) getAzureReachabilityReportHandleError(resp 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -504,7 +504,7 @@ func (client *NetworkWatchersClient) BeginGetFlowLogStatus(ctx context.Context, 
 	}
 	poller := &flowLogInformationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FlowLogInformationResponse, error) {
@@ -522,7 +522,7 @@ func (client *NetworkWatchersClient) ResumeGetFlowLogStatus(ctx context.Context,
 	}
 	poller := &flowLogInformationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -552,7 +552,7 @@ func (client *NetworkWatchersClient) getFlowLogStatus(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getFlowLogStatusHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getFlowLogStatusCreateRequest creates the GetFlowLogStatus request.
@@ -576,7 +576,7 @@ func (client *NetworkWatchersClient) getFlowLogStatusCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -588,7 +588,7 @@ func (client *NetworkWatchersClient) getFlowLogStatusHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -615,7 +615,7 @@ func (client *NetworkWatchersClient) BeginGetNetworkConfigurationDiagnostic(ctx 
 	}
 	poller := &networkConfigurationDiagnosticResponsePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkConfigurationDiagnosticResponseResponse, error) {
@@ -633,7 +633,7 @@ func (client *NetworkWatchersClient) ResumeGetNetworkConfigurationDiagnostic(ctx
 	}
 	poller := &networkConfigurationDiagnosticResponsePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -667,7 +667,7 @@ func (client *NetworkWatchersClient) getNetworkConfigurationDiagnostic(ctx conte
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getNetworkConfigurationDiagnosticHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getNetworkConfigurationDiagnosticCreateRequest creates the GetNetworkConfigurationDiagnostic request.
@@ -691,7 +691,7 @@ func (client *NetworkWatchersClient) getNetworkConfigurationDiagnosticCreateRequ
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -703,7 +703,7 @@ func (client *NetworkWatchersClient) getNetworkConfigurationDiagnosticHandleErro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -726,7 +726,7 @@ func (client *NetworkWatchersClient) BeginGetNextHop(ctx context.Context, resour
 	}
 	poller := &nextHopResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NextHopResultResponse, error) {
@@ -744,7 +744,7 @@ func (client *NetworkWatchersClient) ResumeGetNextHop(ctx context.Context, token
 	}
 	poller := &nextHopResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -774,7 +774,7 @@ func (client *NetworkWatchersClient) getNextHop(ctx context.Context, resourceGro
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getNextHopHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getNextHopCreateRequest creates the GetNextHop request.
@@ -798,7 +798,7 @@ func (client *NetworkWatchersClient) getNextHopCreateRequest(ctx context.Context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -810,7 +810,7 @@ func (client *NetworkWatchersClient) getNextHopHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -855,7 +855,7 @@ func (client *NetworkWatchersClient) getTopologyCreateRequest(ctx context.Contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -867,7 +867,7 @@ func (client *NetworkWatchersClient) getTopologyHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TopologyResponse{}, err
 	}
-return TopologyResponse{RawResponse: resp.Response, Topology: val}, nil
+	return TopologyResponse{RawResponse: resp.Response, Topology: val}, nil
 }
 
 // getTopologyHandleError handles the GetTopology error response.
@@ -876,7 +876,7 @@ func (client *NetworkWatchersClient) getTopologyHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -899,7 +899,7 @@ func (client *NetworkWatchersClient) BeginGetTroubleshooting(ctx context.Context
 	}
 	poller := &troubleshootingResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TroubleshootingResultResponse, error) {
@@ -917,7 +917,7 @@ func (client *NetworkWatchersClient) ResumeGetTroubleshooting(ctx context.Contex
 	}
 	poller := &troubleshootingResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -947,7 +947,7 @@ func (client *NetworkWatchersClient) getTroubleshooting(ctx context.Context, res
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getTroubleshootingHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getTroubleshootingCreateRequest creates the GetTroubleshooting request.
@@ -971,7 +971,7 @@ func (client *NetworkWatchersClient) getTroubleshootingCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -983,7 +983,7 @@ func (client *NetworkWatchersClient) getTroubleshootingHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1006,7 +1006,7 @@ func (client *NetworkWatchersClient) BeginGetTroubleshootingResult(ctx context.C
 	}
 	poller := &troubleshootingResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TroubleshootingResultResponse, error) {
@@ -1024,7 +1024,7 @@ func (client *NetworkWatchersClient) ResumeGetTroubleshootingResult(ctx context.
 	}
 	poller := &troubleshootingResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1054,7 +1054,7 @@ func (client *NetworkWatchersClient) getTroubleshootingResult(ctx context.Contex
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getTroubleshootingResultHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getTroubleshootingResultCreateRequest creates the GetTroubleshootingResult request.
@@ -1078,7 +1078,7 @@ func (client *NetworkWatchersClient) getTroubleshootingResultCreateRequest(ctx c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -1090,7 +1090,7 @@ func (client *NetworkWatchersClient) getTroubleshootingResultHandleError(resp *a
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1113,7 +1113,7 @@ func (client *NetworkWatchersClient) BeginGetVMSecurityRules(ctx context.Context
 	}
 	poller := &securityGroupViewResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SecurityGroupViewResultResponse, error) {
@@ -1131,7 +1131,7 @@ func (client *NetworkWatchersClient) ResumeGetVMSecurityRules(ctx context.Contex
 	}
 	poller := &securityGroupViewResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1161,7 +1161,7 @@ func (client *NetworkWatchersClient) getVMSecurityRules(ctx context.Context, res
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getVMSecurityRulesHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getVMSecurityRulesCreateRequest creates the GetVMSecurityRules request.
@@ -1185,7 +1185,7 @@ func (client *NetworkWatchersClient) getVMSecurityRulesCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -1197,7 +1197,7 @@ func (client *NetworkWatchersClient) getVMSecurityRulesHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1238,7 +1238,7 @@ func (client *NetworkWatchersClient) listCreateRequest(ctx context.Context, reso
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1250,7 +1250,7 @@ func (client *NetworkWatchersClient) listHandleResponse(resp *azcore.Response) (
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkWatcherListResultResponse{}, err
 	}
-return NetworkWatcherListResultResponse{RawResponse: resp.Response, NetworkWatcherListResult: val}, nil
+	return NetworkWatcherListResultResponse{RawResponse: resp.Response, NetworkWatcherListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -1259,7 +1259,7 @@ func (client *NetworkWatchersClient) listHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1296,7 +1296,7 @@ func (client *NetworkWatchersClient) listAllCreateRequest(ctx context.Context, o
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1308,7 +1308,7 @@ func (client *NetworkWatchersClient) listAllHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkWatcherListResultResponse{}, err
 	}
-return NetworkWatcherListResultResponse{RawResponse: resp.Response, NetworkWatcherListResult: val}, nil
+	return NetworkWatcherListResultResponse{RawResponse: resp.Response, NetworkWatcherListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -1317,7 +1317,7 @@ func (client *NetworkWatchersClient) listAllHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1341,7 +1341,7 @@ func (client *NetworkWatchersClient) BeginListAvailableProviders(ctx context.Con
 	}
 	poller := &availableProvidersListPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AvailableProvidersListResponse, error) {
@@ -1359,7 +1359,7 @@ func (client *NetworkWatchersClient) ResumeListAvailableProviders(ctx context.Co
 	}
 	poller := &availableProvidersListPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1390,7 +1390,7 @@ func (client *NetworkWatchersClient) listAvailableProviders(ctx context.Context,
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.listAvailableProvidersHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // listAvailableProvidersCreateRequest creates the ListAvailableProviders request.
@@ -1414,7 +1414,7 @@ func (client *NetworkWatchersClient) listAvailableProvidersCreateRequest(ctx con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -1426,7 +1426,7 @@ func (client *NetworkWatchersClient) listAvailableProvidersHandleError(resp *azc
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1449,7 +1449,7 @@ func (client *NetworkWatchersClient) BeginSetFlowLogConfiguration(ctx context.Co
 	}
 	poller := &flowLogInformationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FlowLogInformationResponse, error) {
@@ -1467,7 +1467,7 @@ func (client *NetworkWatchersClient) ResumeSetFlowLogConfiguration(ctx context.C
 	}
 	poller := &flowLogInformationPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1497,7 +1497,7 @@ func (client *NetworkWatchersClient) setFlowLogConfiguration(ctx context.Context
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.setFlowLogConfigurationHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // setFlowLogConfigurationCreateRequest creates the SetFlowLogConfiguration request.
@@ -1521,7 +1521,7 @@ func (client *NetworkWatchersClient) setFlowLogConfigurationCreateRequest(ctx co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -1533,7 +1533,7 @@ func (client *NetworkWatchersClient) setFlowLogConfigurationHandleError(resp *az
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1578,7 +1578,7 @@ func (client *NetworkWatchersClient) updateTagsCreateRequest(ctx context.Context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -1590,7 +1590,7 @@ func (client *NetworkWatchersClient) updateTagsHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkWatcherResponse{}, err
 	}
-return NetworkWatcherResponse{RawResponse: resp.Response, NetworkWatcher: val}, nil
+	return NetworkWatcherResponse{RawResponse: resp.Response, NetworkWatcher: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -1599,7 +1599,7 @@ func (client *NetworkWatchersClient) updateTagsHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1622,7 +1622,7 @@ func (client *NetworkWatchersClient) BeginVerifyIPFlow(ctx context.Context, reso
 	}
 	poller := &verificationIPFlowResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VerificationIPFlowResultResponse, error) {
@@ -1640,7 +1640,7 @@ func (client *NetworkWatchersClient) ResumeVerifyIPFlow(ctx context.Context, tok
 	}
 	poller := &verificationIPFlowResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1670,7 +1670,7 @@ func (client *NetworkWatchersClient) verifyIPFlow(ctx context.Context, resourceG
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.verifyIPFlowHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // verifyIPFlowCreateRequest creates the VerifyIPFlow request.
@@ -1694,7 +1694,7 @@ func (client *NetworkWatchersClient) verifyIPFlowCreateRequest(ctx context.Conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -1706,10 +1706,9 @@ func (client *NetworkWatchersClient) verifyIPFlowHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

@@ -22,7 +22,7 @@ import (
 // ExpressRoutePortsClient contains the methods for the ExpressRoutePorts group.
 // Don't use this type directly, use NewExpressRoutePortsClient() instead.
 type ExpressRoutePortsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *ExpressRoutePortsClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 	poller := &expressRoutePortPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRoutePortResponse, error) {
@@ -65,7 +65,7 @@ func (client *ExpressRoutePortsClient) ResumeCreateOrUpdate(ctx context.Context,
 	}
 	poller := &expressRoutePortPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *ExpressRoutePortsClient) createOrUpdate(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *ExpressRoutePortsClient) createOrUpdateCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *ExpressRoutePortsClient) createOrUpdateHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *ExpressRoutePortsClient) BeginDelete(ctx context.Context, resource
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *ExpressRoutePortsClient) ResumeDelete(ctx context.Context, token s
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *ExpressRoutePortsClient) deleteOperation(ctx context.Context, reso
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *ExpressRoutePortsClient) deleteCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *ExpressRoutePortsClient) deleteHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *ExpressRoutePortsClient) generateLOACreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(request)
@@ -295,7 +295,7 @@ func (client *ExpressRoutePortsClient) generateLOAHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GenerateExpressRoutePortsLOAResultResponse{}, err
 	}
-return GenerateExpressRoutePortsLOAResultResponse{RawResponse: resp.Response, GenerateExpressRoutePortsLOAResult: val}, nil
+	return GenerateExpressRoutePortsLOAResultResponse{RawResponse: resp.Response, GenerateExpressRoutePortsLOAResult: val}, nil
 }
 
 // generateLOAHandleError handles the GenerateLOA error response.
@@ -304,7 +304,7 @@ func (client *ExpressRoutePortsClient) generateLOAHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -349,7 +349,7 @@ func (client *ExpressRoutePortsClient) getCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -361,7 +361,7 @@ func (client *ExpressRoutePortsClient) getHandleResponse(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRoutePortResponse{}, err
 	}
-return ExpressRoutePortResponse{RawResponse: resp.Response, ExpressRoutePort: val}, nil
+	return ExpressRoutePortResponse{RawResponse: resp.Response, ExpressRoutePort: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -370,7 +370,7 @@ func (client *ExpressRoutePortsClient) getHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -379,7 +379,7 @@ func (client *ExpressRoutePortsClient) getHandleError(resp *azcore.Response) err
 
 // List - List all the ExpressRoutePort resources in the specified subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *ExpressRoutePortsClient) List(options *ExpressRoutePortsListOptions) (ExpressRoutePortListResultPager) {
+func (client *ExpressRoutePortsClient) List(options *ExpressRoutePortsListOptions) ExpressRoutePortListResultPager {
 	return &expressRoutePortListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -407,7 +407,7 @@ func (client *ExpressRoutePortsClient) listCreateRequest(ctx context.Context, op
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -419,7 +419,7 @@ func (client *ExpressRoutePortsClient) listHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRoutePortListResultResponse{}, err
 	}
-return ExpressRoutePortListResultResponse{RawResponse: resp.Response, ExpressRoutePortListResult: val}, nil
+	return ExpressRoutePortListResultResponse{RawResponse: resp.Response, ExpressRoutePortListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -428,7 +428,7 @@ func (client *ExpressRoutePortsClient) listHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -437,7 +437,7 @@ func (client *ExpressRoutePortsClient) listHandleError(resp *azcore.Response) er
 
 // ListByResourceGroup - List all the ExpressRoutePort resources in the specified resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *ExpressRoutePortsClient) ListByResourceGroup(resourceGroupName string, options *ExpressRoutePortsListByResourceGroupOptions) (ExpressRoutePortListResultPager) {
+func (client *ExpressRoutePortsClient) ListByResourceGroup(resourceGroupName string, options *ExpressRoutePortsListByResourceGroupOptions) ExpressRoutePortListResultPager {
 	return &expressRoutePortListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -469,7 +469,7 @@ func (client *ExpressRoutePortsClient) listByResourceGroupCreateRequest(ctx cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -481,7 +481,7 @@ func (client *ExpressRoutePortsClient) listByResourceGroupHandleResponse(resp *a
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRoutePortListResultResponse{}, err
 	}
-return ExpressRoutePortListResultResponse{RawResponse: resp.Response, ExpressRoutePortListResult: val}, nil
+	return ExpressRoutePortListResultResponse{RawResponse: resp.Response, ExpressRoutePortListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -490,7 +490,7 @@ func (client *ExpressRoutePortsClient) listByResourceGroupHandleError(resp *azco
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -535,7 +535,7 @@ func (client *ExpressRoutePortsClient) updateTagsCreateRequest(ctx context.Conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -547,7 +547,7 @@ func (client *ExpressRoutePortsClient) updateTagsHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRoutePortResponse{}, err
 	}
-return ExpressRoutePortResponse{RawResponse: resp.Response, ExpressRoutePort: val}, nil
+	return ExpressRoutePortResponse{RawResponse: resp.Response, ExpressRoutePort: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -556,10 +556,9 @@ func (client *ExpressRoutePortsClient) updateTagsHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

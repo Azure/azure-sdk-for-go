@@ -22,7 +22,7 @@ import (
 // SubnetsClient contains the methods for the Subnets group.
 // Don't use this type directly, use NewSubnetsClient() instead.
 type SubnetsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *SubnetsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 	}
 	poller := &subnetPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SubnetResponse, error) {
@@ -65,7 +65,7 @@ func (client *SubnetsClient) ResumeCreateOrUpdate(ctx context.Context, token str
 	}
 	poller := &subnetPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *SubnetsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *SubnetsClient) createOrUpdateCreateRequest(ctx context.Context, re
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(subnetParameters)
@@ -135,7 +135,7 @@ func (client *SubnetsClient) createOrUpdateHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *SubnetsClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +176,7 @@ func (client *SubnetsClient) ResumeDelete(ctx context.Context, token string) (HT
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +206,7 @@ func (client *SubnetsClient) deleteOperation(ctx context.Context, resourceGroupN
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *SubnetsClient) deleteCreateRequest(ctx context.Context, resourceGr
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +246,7 @@ func (client *SubnetsClient) deleteHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +295,7 @@ func (client *SubnetsClient) getCreateRequest(ctx context.Context, resourceGroup
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -310,7 +310,7 @@ func (client *SubnetsClient) getHandleResponse(resp *azcore.Response) (SubnetRes
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SubnetResponse{}, err
 	}
-return SubnetResponse{RawResponse: resp.Response, Subnet: val}, nil
+	return SubnetResponse{RawResponse: resp.Response, Subnet: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -319,7 +319,7 @@ func (client *SubnetsClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -328,7 +328,7 @@ func (client *SubnetsClient) getHandleError(resp *azcore.Response) error {
 
 // List - Gets all subnets in a virtual network.
 // If the operation fails it returns the *CloudError error type.
-func (client *SubnetsClient) List(resourceGroupName string, virtualNetworkName string, options *SubnetsListOptions) (SubnetListResultPager) {
+func (client *SubnetsClient) List(resourceGroupName string, virtualNetworkName string, options *SubnetsListOptions) SubnetListResultPager {
 	return &subnetListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -364,7 +364,7 @@ func (client *SubnetsClient) listCreateRequest(ctx context.Context, resourceGrou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -376,7 +376,7 @@ func (client *SubnetsClient) listHandleResponse(resp *azcore.Response) (SubnetLi
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SubnetListResultResponse{}, err
 	}
-return SubnetListResultResponse{RawResponse: resp.Response, SubnetListResult: val}, nil
+	return SubnetListResultResponse{RawResponse: resp.Response, SubnetListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -385,7 +385,7 @@ func (client *SubnetsClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -408,7 +408,7 @@ func (client *SubnetsClient) BeginPrepareNetworkPolicies(ctx context.Context, re
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -426,7 +426,7 @@ func (client *SubnetsClient) ResumePrepareNetworkPolicies(ctx context.Context, t
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -456,7 +456,7 @@ func (client *SubnetsClient) prepareNetworkPolicies(ctx context.Context, resourc
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.prepareNetworkPoliciesHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // prepareNetworkPoliciesCreateRequest creates the PrepareNetworkPolicies request.
@@ -484,7 +484,7 @@ func (client *SubnetsClient) prepareNetworkPoliciesCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(prepareNetworkPoliciesRequestParameters)
@@ -496,7 +496,7 @@ func (client *SubnetsClient) prepareNetworkPoliciesHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -519,7 +519,7 @@ func (client *SubnetsClient) BeginUnprepareNetworkPolicies(ctx context.Context, 
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -537,7 +537,7 @@ func (client *SubnetsClient) ResumeUnprepareNetworkPolicies(ctx context.Context,
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -567,7 +567,7 @@ func (client *SubnetsClient) unprepareNetworkPolicies(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.unprepareNetworkPoliciesHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // unprepareNetworkPoliciesCreateRequest creates the UnprepareNetworkPolicies request.
@@ -595,7 +595,7 @@ func (client *SubnetsClient) unprepareNetworkPoliciesCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(unprepareNetworkPoliciesRequestParameters)
@@ -607,10 +607,9 @@ func (client *SubnetsClient) unprepareNetworkPoliciesHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

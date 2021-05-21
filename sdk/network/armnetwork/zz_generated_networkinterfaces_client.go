@@ -22,7 +22,7 @@ import (
 // NetworkInterfacesClient contains the methods for the NetworkInterfaces group.
 // Don't use this type directly, use NewNetworkInterfacesClient() instead.
 type NetworkInterfacesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *NetworkInterfacesClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 	poller := &networkInterfacePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkInterfaceResponse, error) {
@@ -65,7 +65,7 @@ func (client *NetworkInterfacesClient) ResumeCreateOrUpdate(ctx context.Context,
 	}
 	poller := &networkInterfacePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *NetworkInterfacesClient) createOrUpdate(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *NetworkInterfacesClient) createOrUpdateCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *NetworkInterfacesClient) createOrUpdateHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *NetworkInterfacesClient) BeginDelete(ctx context.Context, resource
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *NetworkInterfacesClient) ResumeDelete(ctx context.Context, token s
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *NetworkInterfacesClient) deleteOperation(ctx context.Context, reso
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *NetworkInterfacesClient) deleteCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *NetworkInterfacesClient) deleteHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *NetworkInterfacesClient) getCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -298,7 +298,7 @@ func (client *NetworkInterfacesClient) getHandleResponse(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceResponse{}, err
 	}
-return NetworkInterfaceResponse{RawResponse: resp.Response, NetworkInterface: val}, nil
+	return NetworkInterfaceResponse{RawResponse: resp.Response, NetworkInterface: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -307,7 +307,7 @@ func (client *NetworkInterfacesClient) getHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -360,7 +360,7 @@ func (client *NetworkInterfacesClient) getCloudServiceNetworkInterfaceCreateRequ
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -375,7 +375,7 @@ func (client *NetworkInterfacesClient) getCloudServiceNetworkInterfaceHandleResp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceResponse{}, err
 	}
-return NetworkInterfaceResponse{RawResponse: resp.Response, NetworkInterface: val}, nil
+	return NetworkInterfaceResponse{RawResponse: resp.Response, NetworkInterface: val}, nil
 }
 
 // getCloudServiceNetworkInterfaceHandleError handles the GetCloudServiceNetworkInterface error response.
@@ -384,7 +384,7 @@ func (client *NetworkInterfacesClient) getCloudServiceNetworkInterfaceHandleErro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -407,7 +407,7 @@ func (client *NetworkInterfacesClient) BeginGetEffectiveRouteTable(ctx context.C
 	}
 	poller := &effectiveRouteListResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (EffectiveRouteListResultResponse, error) {
@@ -425,7 +425,7 @@ func (client *NetworkInterfacesClient) ResumeGetEffectiveRouteTable(ctx context.
 	}
 	poller := &effectiveRouteListResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -455,7 +455,7 @@ func (client *NetworkInterfacesClient) getEffectiveRouteTable(ctx context.Contex
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getEffectiveRouteTableHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getEffectiveRouteTableCreateRequest creates the GetEffectiveRouteTable request.
@@ -479,7 +479,7 @@ func (client *NetworkInterfacesClient) getEffectiveRouteTableCreateRequest(ctx c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -491,7 +491,7 @@ func (client *NetworkInterfacesClient) getEffectiveRouteTableHandleError(resp *a
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -563,7 +563,7 @@ func (client *NetworkInterfacesClient) getVirtualMachineScaleSetIPConfigurationH
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceIPConfigurationResponse{}, err
 	}
-return NetworkInterfaceIPConfigurationResponse{RawResponse: resp.Response, NetworkInterfaceIPConfiguration: val}, nil
+	return NetworkInterfaceIPConfigurationResponse{RawResponse: resp.Response, NetworkInterfaceIPConfiguration: val}, nil
 }
 
 // getVirtualMachineScaleSetIPConfigurationHandleError handles the GetVirtualMachineScaleSetIPConfiguration error response.
@@ -572,7 +572,7 @@ func (client *NetworkInterfacesClient) getVirtualMachineScaleSetIPConfigurationH
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -640,7 +640,7 @@ func (client *NetworkInterfacesClient) getVirtualMachineScaleSetNetworkInterface
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceResponse{}, err
 	}
-return NetworkInterfaceResponse{RawResponse: resp.Response, NetworkInterface: val}, nil
+	return NetworkInterfaceResponse{RawResponse: resp.Response, NetworkInterface: val}, nil
 }
 
 // getVirtualMachineScaleSetNetworkInterfaceHandleError handles the GetVirtualMachineScaleSetNetworkInterface error response.
@@ -649,7 +649,7 @@ func (client *NetworkInterfacesClient) getVirtualMachineScaleSetNetworkInterface
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -658,7 +658,7 @@ func (client *NetworkInterfacesClient) getVirtualMachineScaleSetNetworkInterface
 
 // List - Gets all network interfaces in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *NetworkInterfacesClient) List(resourceGroupName string, options *NetworkInterfacesListOptions) (NetworkInterfaceListResultPager) {
+func (client *NetworkInterfacesClient) List(resourceGroupName string, options *NetworkInterfacesListOptions) NetworkInterfaceListResultPager {
 	return &networkInterfaceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -690,7 +690,7 @@ func (client *NetworkInterfacesClient) listCreateRequest(ctx context.Context, re
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -702,7 +702,7 @@ func (client *NetworkInterfacesClient) listHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceListResultResponse{}, err
 	}
-return NetworkInterfaceListResultResponse{RawResponse: resp.Response, NetworkInterfaceListResult: val}, nil
+	return NetworkInterfaceListResultResponse{RawResponse: resp.Response, NetworkInterfaceListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -711,7 +711,7 @@ func (client *NetworkInterfacesClient) listHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -720,7 +720,7 @@ func (client *NetworkInterfacesClient) listHandleError(resp *azcore.Response) er
 
 // ListAll - Gets all network interfaces in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *NetworkInterfacesClient) ListAll(options *NetworkInterfacesListAllOptions) (NetworkInterfaceListResultPager) {
+func (client *NetworkInterfacesClient) ListAll(options *NetworkInterfacesListAllOptions) NetworkInterfaceListResultPager {
 	return &networkInterfaceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -748,7 +748,7 @@ func (client *NetworkInterfacesClient) listAllCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -760,7 +760,7 @@ func (client *NetworkInterfacesClient) listAllHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceListResultResponse{}, err
 	}
-return NetworkInterfaceListResultResponse{RawResponse: resp.Response, NetworkInterfaceListResult: val}, nil
+	return NetworkInterfaceListResultResponse{RawResponse: resp.Response, NetworkInterfaceListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -769,7 +769,7 @@ func (client *NetworkInterfacesClient) listAllHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -778,7 +778,7 @@ func (client *NetworkInterfacesClient) listAllHandleError(resp *azcore.Response)
 
 // ListCloudServiceNetworkInterfaces - Gets all network interfaces in a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *NetworkInterfacesClient) ListCloudServiceNetworkInterfaces(resourceGroupName string, cloudServiceName string, options *NetworkInterfacesListCloudServiceNetworkInterfacesOptions) (NetworkInterfaceListResultPager) {
+func (client *NetworkInterfacesClient) ListCloudServiceNetworkInterfaces(resourceGroupName string, cloudServiceName string, options *NetworkInterfacesListCloudServiceNetworkInterfacesOptions) NetworkInterfaceListResultPager {
 	return &networkInterfaceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -814,7 +814,7 @@ func (client *NetworkInterfacesClient) listCloudServiceNetworkInterfacesCreateRe
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -826,7 +826,7 @@ func (client *NetworkInterfacesClient) listCloudServiceNetworkInterfacesHandleRe
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceListResultResponse{}, err
 	}
-return NetworkInterfaceListResultResponse{RawResponse: resp.Response, NetworkInterfaceListResult: val}, nil
+	return NetworkInterfaceListResultResponse{RawResponse: resp.Response, NetworkInterfaceListResult: val}, nil
 }
 
 // listCloudServiceNetworkInterfacesHandleError handles the ListCloudServiceNetworkInterfaces error response.
@@ -835,16 +835,16 @@ func (client *NetworkInterfacesClient) listCloudServiceNetworkInterfacesHandleEr
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
-// ListCloudServiceRoleInstanceNetworkInterfaces - Gets information about all network interfaces in a role instance in a cloud service
+// ListCloudServiceRoleInstanceNetworkInterfaces - Gets information about all network interfaces in a role instance in a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *NetworkInterfacesClient) ListCloudServiceRoleInstanceNetworkInterfaces(resourceGroupName string, cloudServiceName string, roleInstanceName string, options *NetworkInterfacesListCloudServiceRoleInstanceNetworkInterfacesOptions) (NetworkInterfaceListResultPager) {
+func (client *NetworkInterfacesClient) ListCloudServiceRoleInstanceNetworkInterfaces(resourceGroupName string, cloudServiceName string, roleInstanceName string, options *NetworkInterfacesListCloudServiceRoleInstanceNetworkInterfacesOptions) NetworkInterfaceListResultPager {
 	return &networkInterfaceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -884,7 +884,7 @@ func (client *NetworkInterfacesClient) listCloudServiceRoleInstanceNetworkInterf
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -896,7 +896,7 @@ func (client *NetworkInterfacesClient) listCloudServiceRoleInstanceNetworkInterf
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceListResultResponse{}, err
 	}
-return NetworkInterfaceListResultResponse{RawResponse: resp.Response, NetworkInterfaceListResult: val}, nil
+	return NetworkInterfaceListResultResponse{RawResponse: resp.Response, NetworkInterfaceListResult: val}, nil
 }
 
 // listCloudServiceRoleInstanceNetworkInterfacesHandleError handles the ListCloudServiceRoleInstanceNetworkInterfaces error response.
@@ -905,7 +905,7 @@ func (client *NetworkInterfacesClient) listCloudServiceRoleInstanceNetworkInterf
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -928,7 +928,7 @@ func (client *NetworkInterfacesClient) BeginListEffectiveNetworkSecurityGroups(c
 	}
 	poller := &effectiveNetworkSecurityGroupListResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (EffectiveNetworkSecurityGroupListResultResponse, error) {
@@ -946,7 +946,7 @@ func (client *NetworkInterfacesClient) ResumeListEffectiveNetworkSecurityGroups(
 	}
 	poller := &effectiveNetworkSecurityGroupListResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -976,7 +976,7 @@ func (client *NetworkInterfacesClient) listEffectiveNetworkSecurityGroups(ctx co
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.listEffectiveNetworkSecurityGroupsHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // listEffectiveNetworkSecurityGroupsCreateRequest creates the ListEffectiveNetworkSecurityGroups request.
@@ -1000,7 +1000,7 @@ func (client *NetworkInterfacesClient) listEffectiveNetworkSecurityGroupsCreateR
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1012,7 +1012,7 @@ func (client *NetworkInterfacesClient) listEffectiveNetworkSecurityGroupsHandleE
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1021,7 +1021,7 @@ func (client *NetworkInterfacesClient) listEffectiveNetworkSecurityGroupsHandleE
 
 // ListVirtualMachineScaleSetIPConfigurations - Get the specified network interface ip configuration in a virtual machine scale set.
 // If the operation fails it returns the *CloudError error type.
-func (client *NetworkInterfacesClient) ListVirtualMachineScaleSetIPConfigurations(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, options *NetworkInterfacesListVirtualMachineScaleSetIPConfigurationsOptions) (NetworkInterfaceIPConfigurationListResultPager) {
+func (client *NetworkInterfacesClient) ListVirtualMachineScaleSetIPConfigurations(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, options *NetworkInterfacesListVirtualMachineScaleSetIPConfigurationsOptions) NetworkInterfaceIPConfigurationListResultPager {
 	return &networkInterfaceIPConfigurationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -1080,7 +1080,7 @@ func (client *NetworkInterfacesClient) listVirtualMachineScaleSetIPConfiguration
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceIPConfigurationListResultResponse{}, err
 	}
-return NetworkInterfaceIPConfigurationListResultResponse{RawResponse: resp.Response, NetworkInterfaceIPConfigurationListResult: val}, nil
+	return NetworkInterfaceIPConfigurationListResultResponse{RawResponse: resp.Response, NetworkInterfaceIPConfigurationListResult: val}, nil
 }
 
 // listVirtualMachineScaleSetIPConfigurationsHandleError handles the ListVirtualMachineScaleSetIPConfigurations error response.
@@ -1089,7 +1089,7 @@ func (client *NetworkInterfacesClient) listVirtualMachineScaleSetIPConfiguration
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1098,7 +1098,7 @@ func (client *NetworkInterfacesClient) listVirtualMachineScaleSetIPConfiguration
 
 // ListVirtualMachineScaleSetNetworkInterfaces - Gets all network interfaces in a virtual machine scale set.
 // If the operation fails it returns the *CloudError error type.
-func (client *NetworkInterfacesClient) ListVirtualMachineScaleSetNetworkInterfaces(resourceGroupName string, virtualMachineScaleSetName string, options *NetworkInterfacesListVirtualMachineScaleSetNetworkInterfacesOptions) (NetworkInterfaceListResultPager) {
+func (client *NetworkInterfacesClient) ListVirtualMachineScaleSetNetworkInterfaces(resourceGroupName string, virtualMachineScaleSetName string, options *NetworkInterfacesListVirtualMachineScaleSetNetworkInterfacesOptions) NetworkInterfaceListResultPager {
 	return &networkInterfaceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -1146,7 +1146,7 @@ func (client *NetworkInterfacesClient) listVirtualMachineScaleSetNetworkInterfac
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceListResultResponse{}, err
 	}
-return NetworkInterfaceListResultResponse{RawResponse: resp.Response, NetworkInterfaceListResult: val}, nil
+	return NetworkInterfaceListResultResponse{RawResponse: resp.Response, NetworkInterfaceListResult: val}, nil
 }
 
 // listVirtualMachineScaleSetNetworkInterfacesHandleError handles the ListVirtualMachineScaleSetNetworkInterfaces error response.
@@ -1155,7 +1155,7 @@ func (client *NetworkInterfacesClient) listVirtualMachineScaleSetNetworkInterfac
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1164,7 +1164,7 @@ func (client *NetworkInterfacesClient) listVirtualMachineScaleSetNetworkInterfac
 
 // ListVirtualMachineScaleSetVMNetworkInterfaces - Gets information about all network interfaces in a virtual machine in a virtual machine scale set.
 // If the operation fails it returns the *CloudError error type.
-func (client *NetworkInterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfaces(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, options *NetworkInterfacesListVirtualMachineScaleSetVMNetworkInterfacesOptions) (NetworkInterfaceListResultPager) {
+func (client *NetworkInterfacesClient) ListVirtualMachineScaleSetVMNetworkInterfaces(resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, options *NetworkInterfacesListVirtualMachineScaleSetVMNetworkInterfacesOptions) NetworkInterfaceListResultPager {
 	return &networkInterfaceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -1216,7 +1216,7 @@ func (client *NetworkInterfacesClient) listVirtualMachineScaleSetVMNetworkInterf
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceListResultResponse{}, err
 	}
-return NetworkInterfaceListResultResponse{RawResponse: resp.Response, NetworkInterfaceListResult: val}, nil
+	return NetworkInterfaceListResultResponse{RawResponse: resp.Response, NetworkInterfaceListResult: val}, nil
 }
 
 // listVirtualMachineScaleSetVMNetworkInterfacesHandleError handles the ListVirtualMachineScaleSetVMNetworkInterfaces error response.
@@ -1225,7 +1225,7 @@ func (client *NetworkInterfacesClient) listVirtualMachineScaleSetVMNetworkInterf
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1270,7 +1270,7 @@ func (client *NetworkInterfacesClient) updateTagsCreateRequest(ctx context.Conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -1282,7 +1282,7 @@ func (client *NetworkInterfacesClient) updateTagsHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NetworkInterfaceResponse{}, err
 	}
-return NetworkInterfaceResponse{RawResponse: resp.Response, NetworkInterface: val}, nil
+	return NetworkInterfaceResponse{RawResponse: resp.Response, NetworkInterface: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -1291,10 +1291,9 @@ func (client *NetworkInterfacesClient) updateTagsHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

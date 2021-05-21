@@ -22,7 +22,7 @@ import (
 // InboundSecurityRuleClient contains the methods for the InboundSecurityRule group.
 // Don't use this type directly, use NewInboundSecurityRuleClient() instead.
 type InboundSecurityRuleClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *InboundSecurityRuleClient) BeginCreateOrUpdate(ctx context.Context
 	}
 	poller := &inboundSecurityRulePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (InboundSecurityRuleResponse, error) {
@@ -65,7 +65,7 @@ func (client *InboundSecurityRuleClient) ResumeCreateOrUpdate(ctx context.Contex
 	}
 	poller := &inboundSecurityRulePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *InboundSecurityRuleClient) createOrUpdate(ctx context.Context, res
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *InboundSecurityRuleClient) createOrUpdateCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -135,10 +135,9 @@ func (client *InboundSecurityRuleClient) createOrUpdateHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

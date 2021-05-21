@@ -22,7 +22,7 @@ import (
 // ServiceEndpointPolicyDefinitionsClient contains the methods for the ServiceEndpointPolicyDefinitions group.
 // Don't use this type directly, use NewServiceEndpointPolicyDefinitionsClient() instead.
 type ServiceEndpointPolicyDefinitionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) BeginCreateOrUpdate(ctx co
 	}
 	poller := &serviceEndpointPolicyDefinitionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ServiceEndpointPolicyDefinitionResponse, error) {
@@ -65,7 +65,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) ResumeCreateOrUpdate(ctx c
 	}
 	poller := &serviceEndpointPolicyDefinitionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) createOrUpdate(ctx context
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) createOrUpdateCreateReques
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(serviceEndpointPolicyDefinitions)
@@ -135,7 +135,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) createOrUpdateHandleError(
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) BeginDelete(ctx context.Co
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +176,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) ResumeDelete(ctx context.C
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +206,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) deleteOperation(ctx contex
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) deleteCreateRequest(ctx co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +246,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) deleteHandleError(resp *az
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +295,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) getCreateRequest(ctx conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -307,7 +307,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) getHandleResponse(resp *az
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ServiceEndpointPolicyDefinitionResponse{}, err
 	}
-return ServiceEndpointPolicyDefinitionResponse{RawResponse: resp.Response, ServiceEndpointPolicyDefinition: val}, nil
+	return ServiceEndpointPolicyDefinitionResponse{RawResponse: resp.Response, ServiceEndpointPolicyDefinition: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -316,7 +316,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) getHandleError(resp *azcor
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -325,7 +325,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) getHandleError(resp *azcor
 
 // ListByResourceGroup - Gets all service endpoint policy definitions in a service end point policy.
 // If the operation fails it returns the *CloudError error type.
-func (client *ServiceEndpointPolicyDefinitionsClient) ListByResourceGroup(resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPolicyDefinitionsListByResourceGroupOptions) (ServiceEndpointPolicyDefinitionListResultPager) {
+func (client *ServiceEndpointPolicyDefinitionsClient) ListByResourceGroup(resourceGroupName string, serviceEndpointPolicyName string, options *ServiceEndpointPolicyDefinitionsListByResourceGroupOptions) ServiceEndpointPolicyDefinitionListResultPager {
 	return &serviceEndpointPolicyDefinitionListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -361,7 +361,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) listByResourceGroupCreateR
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -373,7 +373,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) listByResourceGroupHandleR
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ServiceEndpointPolicyDefinitionListResultResponse{}, err
 	}
-return ServiceEndpointPolicyDefinitionListResultResponse{RawResponse: resp.Response, ServiceEndpointPolicyDefinitionListResult: val}, nil
+	return ServiceEndpointPolicyDefinitionListResultResponse{RawResponse: resp.Response, ServiceEndpointPolicyDefinitionListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -382,10 +382,9 @@ func (client *ServiceEndpointPolicyDefinitionsClient) listByResourceGroupHandleE
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

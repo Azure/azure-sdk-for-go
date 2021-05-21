@@ -21,7 +21,7 @@ import (
 // DefaultSecurityRulesClient contains the methods for the DefaultSecurityRules group.
 // Don't use this type directly, use NewDefaultSecurityRulesClient() instead.
 type DefaultSecurityRulesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -72,7 +72,7 @@ func (client *DefaultSecurityRulesClient) getCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -84,7 +84,7 @@ func (client *DefaultSecurityRulesClient) getHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SecurityRuleResponse{}, err
 	}
-return SecurityRuleResponse{RawResponse: resp.Response, SecurityRule: val}, nil
+	return SecurityRuleResponse{RawResponse: resp.Response, SecurityRule: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -93,7 +93,7 @@ func (client *DefaultSecurityRulesClient) getHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -102,7 +102,7 @@ func (client *DefaultSecurityRulesClient) getHandleError(resp *azcore.Response) 
 
 // List - Gets all default security rules in a network security group.
 // If the operation fails it returns the *CloudError error type.
-func (client *DefaultSecurityRulesClient) List(resourceGroupName string, networkSecurityGroupName string, options *DefaultSecurityRulesListOptions) (SecurityRuleListResultPager) {
+func (client *DefaultSecurityRulesClient) List(resourceGroupName string, networkSecurityGroupName string, options *DefaultSecurityRulesListOptions) SecurityRuleListResultPager {
 	return &securityRuleListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -138,7 +138,7 @@ func (client *DefaultSecurityRulesClient) listCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -150,7 +150,7 @@ func (client *DefaultSecurityRulesClient) listHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SecurityRuleListResultResponse{}, err
 	}
-return SecurityRuleListResultResponse{RawResponse: resp.Response, SecurityRuleListResult: val}, nil
+	return SecurityRuleListResultResponse{RawResponse: resp.Response, SecurityRuleListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -159,10 +159,9 @@ func (client *DefaultSecurityRulesClient) listHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

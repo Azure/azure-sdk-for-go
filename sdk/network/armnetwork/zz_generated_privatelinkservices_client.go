@@ -22,7 +22,7 @@ import (
 // PrivateLinkServicesClient contains the methods for the PrivateLinkServices group.
 // Don't use this type directly, use NewPrivateLinkServicesClient() instead.
 type PrivateLinkServicesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *PrivateLinkServicesClient) BeginCheckPrivateLinkServiceVisibility(
 	}
 	poller := &privateLinkServiceVisibilityPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateLinkServiceVisibilityResponse, error) {
@@ -65,7 +65,7 @@ func (client *PrivateLinkServicesClient) ResumeCheckPrivateLinkServiceVisibility
 	}
 	poller := &privateLinkServiceVisibilityPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibility(ctx c
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.checkPrivateLinkServiceVisibilityHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // checkPrivateLinkServiceVisibilityCreateRequest creates the CheckPrivateLinkServiceVisibility request.
@@ -115,7 +115,7 @@ func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibilityCreate
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -127,7 +127,7 @@ func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibilityHandle
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -151,7 +151,7 @@ func (client *PrivateLinkServicesClient) BeginCheckPrivateLinkServiceVisibilityB
 	}
 	poller := &privateLinkServiceVisibilityPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateLinkServiceVisibilityResponse, error) {
@@ -169,7 +169,7 @@ func (client *PrivateLinkServicesClient) ResumeCheckPrivateLinkServiceVisibility
 	}
 	poller := &privateLinkServiceVisibilityPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -199,7 +199,7 @@ func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibilityByReso
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.checkPrivateLinkServiceVisibilityByResourceGroupHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // checkPrivateLinkServiceVisibilityByResourceGroupCreateRequest creates the CheckPrivateLinkServiceVisibilityByResourceGroup request.
@@ -223,7 +223,7 @@ func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibilityByReso
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -235,7 +235,7 @@ func (client *PrivateLinkServicesClient) checkPrivateLinkServiceVisibilityByReso
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -258,7 +258,7 @@ func (client *PrivateLinkServicesClient) BeginCreateOrUpdate(ctx context.Context
 	}
 	poller := &privateLinkServicePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateLinkServiceResponse, error) {
@@ -276,7 +276,7 @@ func (client *PrivateLinkServicesClient) ResumeCreateOrUpdate(ctx context.Contex
 	}
 	poller := &privateLinkServicePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -306,7 +306,7 @@ func (client *PrivateLinkServicesClient) createOrUpdate(ctx context.Context, res
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -330,7 +330,7 @@ func (client *PrivateLinkServicesClient) createOrUpdateCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -342,7 +342,7 @@ func (client *PrivateLinkServicesClient) createOrUpdateHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -365,7 +365,7 @@ func (client *PrivateLinkServicesClient) BeginDelete(ctx context.Context, resour
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -383,7 +383,7 @@ func (client *PrivateLinkServicesClient) ResumeDelete(ctx context.Context, token
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -413,7 +413,7 @@ func (client *PrivateLinkServicesClient) deleteOperation(ctx context.Context, re
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -437,7 +437,7 @@ func (client *PrivateLinkServicesClient) deleteCreateRequest(ctx context.Context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -449,7 +449,7 @@ func (client *PrivateLinkServicesClient) deleteHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -472,7 +472,7 @@ func (client *PrivateLinkServicesClient) BeginDeletePrivateEndpointConnection(ct
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -490,7 +490,7 @@ func (client *PrivateLinkServicesClient) ResumeDeletePrivateEndpointConnection(c
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -520,7 +520,7 @@ func (client *PrivateLinkServicesClient) deletePrivateEndpointConnection(ctx con
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deletePrivateEndpointConnectionHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deletePrivateEndpointConnectionCreateRequest creates the DeletePrivateEndpointConnection request.
@@ -548,7 +548,7 @@ func (client *PrivateLinkServicesClient) deletePrivateEndpointConnectionCreateRe
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -560,7 +560,7 @@ func (client *PrivateLinkServicesClient) deletePrivateEndpointConnectionHandleEr
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -605,7 +605,7 @@ func (client *PrivateLinkServicesClient) getCreateRequest(ctx context.Context, r
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -620,7 +620,7 @@ func (client *PrivateLinkServicesClient) getHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateLinkServiceResponse{}, err
 	}
-return PrivateLinkServiceResponse{RawResponse: resp.Response, PrivateLinkService: val}, nil
+	return PrivateLinkServiceResponse{RawResponse: resp.Response, PrivateLinkService: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -629,7 +629,7 @@ func (client *PrivateLinkServicesClient) getHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -678,7 +678,7 @@ func (client *PrivateLinkServicesClient) getPrivateEndpointConnectionCreateReque
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -693,7 +693,7 @@ func (client *PrivateLinkServicesClient) getPrivateEndpointConnectionHandleRespo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateEndpointConnectionResponse{}, err
 	}
-return PrivateEndpointConnectionResponse{RawResponse: resp.Response, PrivateEndpointConnection: val}, nil
+	return PrivateEndpointConnectionResponse{RawResponse: resp.Response, PrivateEndpointConnection: val}, nil
 }
 
 // getPrivateEndpointConnectionHandleError handles the GetPrivateEndpointConnection error response.
@@ -702,7 +702,7 @@ func (client *PrivateLinkServicesClient) getPrivateEndpointConnectionHandleError
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -711,7 +711,7 @@ func (client *PrivateLinkServicesClient) getPrivateEndpointConnectionHandleError
 
 // List - Gets all private link services in a resource group.
 // If the operation fails it returns the *Error error type.
-func (client *PrivateLinkServicesClient) List(resourceGroupName string, options *PrivateLinkServicesListOptions) (PrivateLinkServiceListResultPager) {
+func (client *PrivateLinkServicesClient) List(resourceGroupName string, options *PrivateLinkServicesListOptions) PrivateLinkServiceListResultPager {
 	return &privateLinkServiceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -743,7 +743,7 @@ func (client *PrivateLinkServicesClient) listCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -755,7 +755,7 @@ func (client *PrivateLinkServicesClient) listHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateLinkServiceListResultResponse{}, err
 	}
-return PrivateLinkServiceListResultResponse{RawResponse: resp.Response, PrivateLinkServiceListResult: val}, nil
+	return PrivateLinkServiceListResultResponse{RawResponse: resp.Response, PrivateLinkServiceListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -764,7 +764,7 @@ func (client *PrivateLinkServicesClient) listHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -774,7 +774,7 @@ func (client *PrivateLinkServicesClient) listHandleError(resp *azcore.Response) 
 // ListAutoApprovedPrivateLinkServices - Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this
 // subscription in this region.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServices(location string, options *PrivateLinkServicesListAutoApprovedPrivateLinkServicesOptions) (AutoApprovedPrivateLinkServicesResultPager) {
+func (client *PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServices(location string, options *PrivateLinkServicesListAutoApprovedPrivateLinkServicesOptions) AutoApprovedPrivateLinkServicesResultPager {
 	return &autoApprovedPrivateLinkServicesResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -806,7 +806,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesCrea
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -818,7 +818,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesHand
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AutoApprovedPrivateLinkServicesResultResponse{}, err
 	}
-return AutoApprovedPrivateLinkServicesResultResponse{RawResponse: resp.Response, AutoApprovedPrivateLinkServicesResult: val}, nil
+	return AutoApprovedPrivateLinkServicesResultResponse{RawResponse: resp.Response, AutoApprovedPrivateLinkServicesResult: val}, nil
 }
 
 // listAutoApprovedPrivateLinkServicesHandleError handles the ListAutoApprovedPrivateLinkServices error response.
@@ -827,7 +827,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesHand
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -837,7 +837,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesHand
 // ListAutoApprovedPrivateLinkServicesByResourceGroup - Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved
 // in this subscription in this region.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesByResourceGroup(location string, resourceGroupName string, options *PrivateLinkServicesListAutoApprovedPrivateLinkServicesByResourceGroupOptions) (AutoApprovedPrivateLinkServicesResultPager) {
+func (client *PrivateLinkServicesClient) ListAutoApprovedPrivateLinkServicesByResourceGroup(location string, resourceGroupName string, options *PrivateLinkServicesListAutoApprovedPrivateLinkServicesByResourceGroupOptions) AutoApprovedPrivateLinkServicesResultPager {
 	return &autoApprovedPrivateLinkServicesResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -873,7 +873,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesByRe
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -885,7 +885,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesByRe
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AutoApprovedPrivateLinkServicesResultResponse{}, err
 	}
-return AutoApprovedPrivateLinkServicesResultResponse{RawResponse: resp.Response, AutoApprovedPrivateLinkServicesResult: val}, nil
+	return AutoApprovedPrivateLinkServicesResultResponse{RawResponse: resp.Response, AutoApprovedPrivateLinkServicesResult: val}, nil
 }
 
 // listAutoApprovedPrivateLinkServicesByResourceGroupHandleError handles the ListAutoApprovedPrivateLinkServicesByResourceGroup error response.
@@ -894,7 +894,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesByRe
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -903,7 +903,7 @@ func (client *PrivateLinkServicesClient) listAutoApprovedPrivateLinkServicesByRe
 
 // ListBySubscription - Gets all private link service in a subscription.
 // If the operation fails it returns the *Error error type.
-func (client *PrivateLinkServicesClient) ListBySubscription(options *PrivateLinkServicesListBySubscriptionOptions) (PrivateLinkServiceListResultPager) {
+func (client *PrivateLinkServicesClient) ListBySubscription(options *PrivateLinkServicesListBySubscriptionOptions) PrivateLinkServiceListResultPager {
 	return &privateLinkServiceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -931,7 +931,7 @@ func (client *PrivateLinkServicesClient) listBySubscriptionCreateRequest(ctx con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -943,7 +943,7 @@ func (client *PrivateLinkServicesClient) listBySubscriptionHandleResponse(resp *
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateLinkServiceListResultResponse{}, err
 	}
-return PrivateLinkServiceListResultResponse{RawResponse: resp.Response, PrivateLinkServiceListResult: val}, nil
+	return PrivateLinkServiceListResultResponse{RawResponse: resp.Response, PrivateLinkServiceListResult: val}, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
@@ -952,7 +952,7 @@ func (client *PrivateLinkServicesClient) listBySubscriptionHandleError(resp *azc
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -961,7 +961,7 @@ func (client *PrivateLinkServicesClient) listBySubscriptionHandleError(resp *azc
 
 // ListPrivateEndpointConnections - Gets all private end point connections for a specific private link service.
 // If the operation fails it returns the *Error error type.
-func (client *PrivateLinkServicesClient) ListPrivateEndpointConnections(resourceGroupName string, serviceName string, options *PrivateLinkServicesListPrivateEndpointConnectionsOptions) (PrivateEndpointConnectionListResultPager) {
+func (client *PrivateLinkServicesClient) ListPrivateEndpointConnections(resourceGroupName string, serviceName string, options *PrivateLinkServicesListPrivateEndpointConnectionsOptions) PrivateEndpointConnectionListResultPager {
 	return &privateEndpointConnectionListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -997,7 +997,7 @@ func (client *PrivateLinkServicesClient) listPrivateEndpointConnectionsCreateReq
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1009,7 +1009,7 @@ func (client *PrivateLinkServicesClient) listPrivateEndpointConnectionsHandleRes
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateEndpointConnectionListResultResponse{}, err
 	}
-return PrivateEndpointConnectionListResultResponse{RawResponse: resp.Response, PrivateEndpointConnectionListResult: val}, nil
+	return PrivateEndpointConnectionListResultResponse{RawResponse: resp.Response, PrivateEndpointConnectionListResult: val}, nil
 }
 
 // listPrivateEndpointConnectionsHandleError handles the ListPrivateEndpointConnections error response.
@@ -1018,7 +1018,7 @@ func (client *PrivateLinkServicesClient) listPrivateEndpointConnectionsHandleErr
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1067,7 +1067,7 @@ func (client *PrivateLinkServicesClient) updatePrivateEndpointConnectionCreateRe
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -1079,7 +1079,7 @@ func (client *PrivateLinkServicesClient) updatePrivateEndpointConnectionHandleRe
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateEndpointConnectionResponse{}, err
 	}
-return PrivateEndpointConnectionResponse{RawResponse: resp.Response, PrivateEndpointConnection: val}, nil
+	return PrivateEndpointConnectionResponse{RawResponse: resp.Response, PrivateEndpointConnection: val}, nil
 }
 
 // updatePrivateEndpointConnectionHandleError handles the UpdatePrivateEndpointConnection error response.
@@ -1088,10 +1088,9 @@ func (client *PrivateLinkServicesClient) updatePrivateEndpointConnectionHandleEr
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

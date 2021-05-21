@@ -21,7 +21,7 @@ import (
 // ExpressRouteServiceProvidersClient contains the methods for the ExpressRouteServiceProviders group.
 // Don't use this type directly, use NewExpressRouteServiceProvidersClient() instead.
 type ExpressRouteServiceProvidersClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -32,7 +32,7 @@ func NewExpressRouteServiceProvidersClient(con *armcore.Connection, subscription
 
 // List - Gets all the available express route service providers.
 // If the operation fails it returns the *CloudError error type.
-func (client *ExpressRouteServiceProvidersClient) List(options *ExpressRouteServiceProvidersListOptions) (ExpressRouteServiceProviderListResultPager) {
+func (client *ExpressRouteServiceProvidersClient) List(options *ExpressRouteServiceProvidersListOptions) ExpressRouteServiceProviderListResultPager {
 	return &expressRouteServiceProviderListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -60,7 +60,7 @@ func (client *ExpressRouteServiceProvidersClient) listCreateRequest(ctx context.
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -72,7 +72,7 @@ func (client *ExpressRouteServiceProvidersClient) listHandleResponse(resp *azcor
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRouteServiceProviderListResultResponse{}, err
 	}
-return ExpressRouteServiceProviderListResultResponse{RawResponse: resp.Response, ExpressRouteServiceProviderListResult: val}, nil
+	return ExpressRouteServiceProviderListResultResponse{RawResponse: resp.Response, ExpressRouteServiceProviderListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -81,10 +81,9 @@ func (client *ExpressRouteServiceProvidersClient) listHandleError(resp *azcore.R
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

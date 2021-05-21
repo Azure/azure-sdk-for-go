@@ -22,7 +22,7 @@ import (
 // FirewallPolicyRuleCollectionGroupsClient contains the methods for the FirewallPolicyRuleCollectionGroups group.
 // Don't use this type directly, use NewFirewallPolicyRuleCollectionGroupsClient() instead.
 type FirewallPolicyRuleCollectionGroupsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) BeginCreateOrUpdate(ctx 
 	}
 	poller := &firewallPolicyRuleCollectionGroupPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (FirewallPolicyRuleCollectionGroupResponse, error) {
@@ -65,7 +65,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) ResumeCreateOrUpdate(ctx
 	}
 	poller := &firewallPolicyRuleCollectionGroupPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdate(ctx conte
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdateCreateRequ
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -135,7 +135,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) createOrUpdateHandleErro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) BeginDelete(ctx context.
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +176,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) ResumeDelete(ctx context
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +206,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) deleteOperation(ctx cont
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) deleteCreateRequest(ctx 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +246,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) deleteHandleError(resp *
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +295,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) getCreateRequest(ctx con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -307,7 +307,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) getHandleResponse(resp *
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return FirewallPolicyRuleCollectionGroupResponse{}, err
 	}
-return FirewallPolicyRuleCollectionGroupResponse{RawResponse: resp.Response, FirewallPolicyRuleCollectionGroup: val}, nil
+	return FirewallPolicyRuleCollectionGroupResponse{RawResponse: resp.Response, FirewallPolicyRuleCollectionGroup: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -316,7 +316,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) getHandleError(resp *azc
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -325,7 +325,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) getHandleError(resp *azc
 
 // List - Lists all FirewallPolicyRuleCollectionGroups in a FirewallPolicy resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *FirewallPolicyRuleCollectionGroupsClient) List(resourceGroupName string, firewallPolicyName string, options *FirewallPolicyRuleCollectionGroupsListOptions) (FirewallPolicyRuleCollectionGroupListResultPager) {
+func (client *FirewallPolicyRuleCollectionGroupsClient) List(resourceGroupName string, firewallPolicyName string, options *FirewallPolicyRuleCollectionGroupsListOptions) FirewallPolicyRuleCollectionGroupListResultPager {
 	return &firewallPolicyRuleCollectionGroupListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -361,7 +361,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) listCreateRequest(ctx co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -373,7 +373,7 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) listHandleResponse(resp 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return FirewallPolicyRuleCollectionGroupListResultResponse{}, err
 	}
-return FirewallPolicyRuleCollectionGroupListResultResponse{RawResponse: resp.Response, FirewallPolicyRuleCollectionGroupListResult: val}, nil
+	return FirewallPolicyRuleCollectionGroupListResultResponse{RawResponse: resp.Response, FirewallPolicyRuleCollectionGroupListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -382,10 +382,9 @@ func (client *FirewallPolicyRuleCollectionGroupsClient) listHandleError(resp *az
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

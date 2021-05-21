@@ -22,7 +22,7 @@ import (
 // LocalNetworkGatewaysClient contains the methods for the LocalNetworkGateways group.
 // Don't use this type directly, use NewLocalNetworkGatewaysClient() instead.
 type LocalNetworkGatewaysClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *LocalNetworkGatewaysClient) BeginCreateOrUpdate(ctx context.Contex
 	}
 	poller := &localNetworkGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LocalNetworkGatewayResponse, error) {
@@ -65,7 +65,7 @@ func (client *LocalNetworkGatewaysClient) ResumeCreateOrUpdate(ctx context.Conte
 	}
 	poller := &localNetworkGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *LocalNetworkGatewaysClient) createOrUpdate(ctx context.Context, re
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *LocalNetworkGatewaysClient) createOrUpdateCreateRequest(ctx contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *LocalNetworkGatewaysClient) createOrUpdateHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *LocalNetworkGatewaysClient) BeginDelete(ctx context.Context, resou
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *LocalNetworkGatewaysClient) ResumeDelete(ctx context.Context, toke
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *LocalNetworkGatewaysClient) deleteOperation(ctx context.Context, r
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *LocalNetworkGatewaysClient) deleteCreateRequest(ctx context.Contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *LocalNetworkGatewaysClient) deleteHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *LocalNetworkGatewaysClient) getCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -295,7 +295,7 @@ func (client *LocalNetworkGatewaysClient) getHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LocalNetworkGatewayResponse{}, err
 	}
-return LocalNetworkGatewayResponse{RawResponse: resp.Response, LocalNetworkGateway: val}, nil
+	return LocalNetworkGatewayResponse{RawResponse: resp.Response, LocalNetworkGateway: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -304,7 +304,7 @@ func (client *LocalNetworkGatewaysClient) getHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -313,7 +313,7 @@ func (client *LocalNetworkGatewaysClient) getHandleError(resp *azcore.Response) 
 
 // List - Gets all the local network gateways in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *LocalNetworkGatewaysClient) List(resourceGroupName string, options *LocalNetworkGatewaysListOptions) (LocalNetworkGatewayListResultPager) {
+func (client *LocalNetworkGatewaysClient) List(resourceGroupName string, options *LocalNetworkGatewaysListOptions) LocalNetworkGatewayListResultPager {
 	return &localNetworkGatewayListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -345,7 +345,7 @@ func (client *LocalNetworkGatewaysClient) listCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -357,7 +357,7 @@ func (client *LocalNetworkGatewaysClient) listHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LocalNetworkGatewayListResultResponse{}, err
 	}
-return LocalNetworkGatewayListResultResponse{RawResponse: resp.Response, LocalNetworkGatewayListResult: val}, nil
+	return LocalNetworkGatewayListResultResponse{RawResponse: resp.Response, LocalNetworkGatewayListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -366,7 +366,7 @@ func (client *LocalNetworkGatewaysClient) listHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -411,7 +411,7 @@ func (client *LocalNetworkGatewaysClient) updateTagsCreateRequest(ctx context.Co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -423,7 +423,7 @@ func (client *LocalNetworkGatewaysClient) updateTagsHandleResponse(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LocalNetworkGatewayResponse{}, err
 	}
-return LocalNetworkGatewayResponse{RawResponse: resp.Response, LocalNetworkGateway: val}, nil
+	return LocalNetworkGatewayResponse{RawResponse: resp.Response, LocalNetworkGateway: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -432,10 +432,9 @@ func (client *LocalNetworkGatewaysClient) updateTagsHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

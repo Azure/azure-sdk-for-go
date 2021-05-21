@@ -22,7 +22,7 @@ import (
 // IPGroupsClient contains the methods for the IPGroups group.
 // Don't use this type directly, use NewIPGroupsClient() instead.
 type IPGroupsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *IPGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 	poller := &ipGroupPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (IPGroupResponse, error) {
@@ -65,7 +65,7 @@ func (client *IPGroupsClient) ResumeCreateOrUpdate(ctx context.Context, token st
 	}
 	poller := &ipGroupPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *IPGroupsClient) createOrUpdate(ctx context.Context, resourceGroupN
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *IPGroupsClient) createOrUpdateCreateRequest(ctx context.Context, r
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *IPGroupsClient) createOrUpdateHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *IPGroupsClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *IPGroupsClient) ResumeDelete(ctx context.Context, token string) (H
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *IPGroupsClient) deleteOperation(ctx context.Context, resourceGroup
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *IPGroupsClient) deleteCreateRequest(ctx context.Context, resourceG
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *IPGroupsClient) deleteHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *IPGroupsClient) getCreateRequest(ctx context.Context, resourceGrou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -298,7 +298,7 @@ func (client *IPGroupsClient) getHandleResponse(resp *azcore.Response) (IPGroupR
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return IPGroupResponse{}, err
 	}
-return IPGroupResponse{RawResponse: resp.Response, IPGroup: val}, nil
+	return IPGroupResponse{RawResponse: resp.Response, IPGroup: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -307,7 +307,7 @@ func (client *IPGroupsClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -316,7 +316,7 @@ func (client *IPGroupsClient) getHandleError(resp *azcore.Response) error {
 
 // List - Gets all IpGroups in a subscription.
 // If the operation fails it returns the *Error error type.
-func (client *IPGroupsClient) List(options *IPGroupsListOptions) (IPGroupListResultPager) {
+func (client *IPGroupsClient) List(options *IPGroupsListOptions) IPGroupListResultPager {
 	return &ipGroupListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -344,7 +344,7 @@ func (client *IPGroupsClient) listCreateRequest(ctx context.Context, options *IP
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -356,7 +356,7 @@ func (client *IPGroupsClient) listHandleResponse(resp *azcore.Response) (IPGroup
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return IPGroupListResultResponse{}, err
 	}
-return IPGroupListResultResponse{RawResponse: resp.Response, IPGroupListResult: val}, nil
+	return IPGroupListResultResponse{RawResponse: resp.Response, IPGroupListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -365,7 +365,7 @@ func (client *IPGroupsClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -374,7 +374,7 @@ func (client *IPGroupsClient) listHandleError(resp *azcore.Response) error {
 
 // ListByResourceGroup - Gets all IpGroups in a resource group.
 // If the operation fails it returns the *Error error type.
-func (client *IPGroupsClient) ListByResourceGroup(resourceGroupName string, options *IPGroupsListByResourceGroupOptions) (IPGroupListResultPager) {
+func (client *IPGroupsClient) ListByResourceGroup(resourceGroupName string, options *IPGroupsListByResourceGroupOptions) IPGroupListResultPager {
 	return &ipGroupListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -406,7 +406,7 @@ func (client *IPGroupsClient) listByResourceGroupCreateRequest(ctx context.Conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -418,7 +418,7 @@ func (client *IPGroupsClient) listByResourceGroupHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return IPGroupListResultResponse{}, err
 	}
-return IPGroupListResultResponse{RawResponse: resp.Response, IPGroupListResult: val}, nil
+	return IPGroupListResultResponse{RawResponse: resp.Response, IPGroupListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -427,7 +427,7 @@ func (client *IPGroupsClient) listByResourceGroupHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -472,7 +472,7 @@ func (client *IPGroupsClient) updateGroupsCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -484,7 +484,7 @@ func (client *IPGroupsClient) updateGroupsHandleResponse(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return IPGroupResponse{}, err
 	}
-return IPGroupResponse{RawResponse: resp.Response, IPGroup: val}, nil
+	return IPGroupResponse{RawResponse: resp.Response, IPGroup: val}, nil
 }
 
 // updateGroupsHandleError handles the UpdateGroups error response.
@@ -493,10 +493,9 @@ func (client *IPGroupsClient) updateGroupsHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

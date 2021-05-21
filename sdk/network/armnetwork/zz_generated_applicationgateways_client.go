@@ -22,7 +22,7 @@ import (
 // ApplicationGatewaysClient contains the methods for the ApplicationGateways group.
 // Don't use this type directly, use NewApplicationGatewaysClient() instead.
 type ApplicationGatewaysClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *ApplicationGatewaysClient) BeginBackendHealth(ctx context.Context,
 	}
 	poller := &applicationGatewayBackendHealthPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ApplicationGatewayBackendHealthResponse, error) {
@@ -65,7 +65,7 @@ func (client *ApplicationGatewaysClient) ResumeBackendHealth(ctx context.Context
 	}
 	poller := &applicationGatewayBackendHealthPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *ApplicationGatewaysClient) backendHealth(ctx context.Context, reso
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.backendHealthHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // backendHealthCreateRequest creates the BackendHealth request.
@@ -119,7 +119,7 @@ func (client *ApplicationGatewaysClient) backendHealthCreateRequest(ctx context.
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -134,7 +134,7 @@ func (client *ApplicationGatewaysClient) backendHealthHandleError(resp *azcore.R
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *ApplicationGatewaysClient) BeginBackendHealthOnDemand(ctx context.
 	}
 	poller := &applicationGatewayBackendHealthOnDemandPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ApplicationGatewayBackendHealthOnDemandResponse, error) {
@@ -176,7 +176,7 @@ func (client *ApplicationGatewaysClient) ResumeBackendHealthOnDemand(ctx context
 	}
 	poller := &applicationGatewayBackendHealthOnDemandPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -207,7 +207,7 @@ func (client *ApplicationGatewaysClient) backendHealthOnDemand(ctx context.Conte
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.backendHealthOnDemandHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // backendHealthOnDemandCreateRequest creates the BackendHealthOnDemand request.
@@ -231,7 +231,7 @@ func (client *ApplicationGatewaysClient) backendHealthOnDemandCreateRequest(ctx 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -246,7 +246,7 @@ func (client *ApplicationGatewaysClient) backendHealthOnDemandHandleError(resp *
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -269,7 +269,7 @@ func (client *ApplicationGatewaysClient) BeginCreateOrUpdate(ctx context.Context
 	}
 	poller := &applicationGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ApplicationGatewayResponse, error) {
@@ -287,7 +287,7 @@ func (client *ApplicationGatewaysClient) ResumeCreateOrUpdate(ctx context.Contex
 	}
 	poller := &applicationGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -317,7 +317,7 @@ func (client *ApplicationGatewaysClient) createOrUpdate(ctx context.Context, res
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -341,7 +341,7 @@ func (client *ApplicationGatewaysClient) createOrUpdateCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -353,7 +353,7 @@ func (client *ApplicationGatewaysClient) createOrUpdateHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -376,7 +376,7 @@ func (client *ApplicationGatewaysClient) BeginDelete(ctx context.Context, resour
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -394,7 +394,7 @@ func (client *ApplicationGatewaysClient) ResumeDelete(ctx context.Context, token
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -424,7 +424,7 @@ func (client *ApplicationGatewaysClient) deleteOperation(ctx context.Context, re
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -448,7 +448,7 @@ func (client *ApplicationGatewaysClient) deleteCreateRequest(ctx context.Context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -460,7 +460,7 @@ func (client *ApplicationGatewaysClient) deleteHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -505,7 +505,7 @@ func (client *ApplicationGatewaysClient) getCreateRequest(ctx context.Context, r
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -517,7 +517,7 @@ func (client *ApplicationGatewaysClient) getHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ApplicationGatewayResponse{}, err
 	}
-return ApplicationGatewayResponse{RawResponse: resp.Response, ApplicationGateway: val}, nil
+	return ApplicationGatewayResponse{RawResponse: resp.Response, ApplicationGateway: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -526,7 +526,7 @@ func (client *ApplicationGatewaysClient) getHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -567,7 +567,7 @@ func (client *ApplicationGatewaysClient) getSSLPredefinedPolicyCreateRequest(ctx
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -579,7 +579,7 @@ func (client *ApplicationGatewaysClient) getSSLPredefinedPolicyHandleResponse(re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ApplicationGatewaySSLPredefinedPolicyResponse{}, err
 	}
-return ApplicationGatewaySSLPredefinedPolicyResponse{RawResponse: resp.Response, ApplicationGatewaySSLPredefinedPolicy: val}, nil
+	return ApplicationGatewaySSLPredefinedPolicyResponse{RawResponse: resp.Response, ApplicationGatewaySSLPredefinedPolicy: val}, nil
 }
 
 // getSSLPredefinedPolicyHandleError handles the GetSSLPredefinedPolicy error response.
@@ -588,7 +588,7 @@ func (client *ApplicationGatewaysClient) getSSLPredefinedPolicyHandleError(resp 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -597,7 +597,7 @@ func (client *ApplicationGatewaysClient) getSSLPredefinedPolicyHandleError(resp 
 
 // List - Lists all application gateways in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *ApplicationGatewaysClient) List(resourceGroupName string, options *ApplicationGatewaysListOptions) (ApplicationGatewayListResultPager) {
+func (client *ApplicationGatewaysClient) List(resourceGroupName string, options *ApplicationGatewaysListOptions) ApplicationGatewayListResultPager {
 	return &applicationGatewayListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -629,7 +629,7 @@ func (client *ApplicationGatewaysClient) listCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -641,7 +641,7 @@ func (client *ApplicationGatewaysClient) listHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ApplicationGatewayListResultResponse{}, err
 	}
-return ApplicationGatewayListResultResponse{RawResponse: resp.Response, ApplicationGatewayListResult: val}, nil
+	return ApplicationGatewayListResultResponse{RawResponse: resp.Response, ApplicationGatewayListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -650,7 +650,7 @@ func (client *ApplicationGatewaysClient) listHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -659,7 +659,7 @@ func (client *ApplicationGatewaysClient) listHandleError(resp *azcore.Response) 
 
 // ListAll - Gets all the application gateways in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *ApplicationGatewaysClient) ListAll(options *ApplicationGatewaysListAllOptions) (ApplicationGatewayListResultPager) {
+func (client *ApplicationGatewaysClient) ListAll(options *ApplicationGatewaysListAllOptions) ApplicationGatewayListResultPager {
 	return &applicationGatewayListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -687,7 +687,7 @@ func (client *ApplicationGatewaysClient) listAllCreateRequest(ctx context.Contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -699,7 +699,7 @@ func (client *ApplicationGatewaysClient) listAllHandleResponse(resp *azcore.Resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ApplicationGatewayListResultResponse{}, err
 	}
-return ApplicationGatewayListResultResponse{RawResponse: resp.Response, ApplicationGatewayListResult: val}, nil
+	return ApplicationGatewayListResultResponse{RawResponse: resp.Response, ApplicationGatewayListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -708,7 +708,7 @@ func (client *ApplicationGatewaysClient) listAllHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -745,7 +745,7 @@ func (client *ApplicationGatewaysClient) listAvailableRequestHeadersCreateReques
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -757,7 +757,7 @@ func (client *ApplicationGatewaysClient) listAvailableRequestHeadersHandleRespon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return StringArrayResponse{}, err
 	}
-return StringArrayResponse{RawResponse: resp.Response, StringArray: val}, nil
+	return StringArrayResponse{RawResponse: resp.Response, StringArray: val}, nil
 }
 
 // listAvailableRequestHeadersHandleError handles the ListAvailableRequestHeaders error response.
@@ -766,7 +766,7 @@ func (client *ApplicationGatewaysClient) listAvailableRequestHeadersHandleError(
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -803,7 +803,7 @@ func (client *ApplicationGatewaysClient) listAvailableResponseHeadersCreateReque
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -815,7 +815,7 @@ func (client *ApplicationGatewaysClient) listAvailableResponseHeadersHandleRespo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return StringArrayResponse{}, err
 	}
-return StringArrayResponse{RawResponse: resp.Response, StringArray: val}, nil
+	return StringArrayResponse{RawResponse: resp.Response, StringArray: val}, nil
 }
 
 // listAvailableResponseHeadersHandleError handles the ListAvailableResponseHeaders error response.
@@ -824,7 +824,7 @@ func (client *ApplicationGatewaysClient) listAvailableResponseHeadersHandleError
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -861,7 +861,7 @@ func (client *ApplicationGatewaysClient) listAvailableSSLOptionsCreateRequest(ct
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -873,7 +873,7 @@ func (client *ApplicationGatewaysClient) listAvailableSSLOptionsHandleResponse(r
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ApplicationGatewayAvailableSSLOptionsResponse{}, err
 	}
-return ApplicationGatewayAvailableSSLOptionsResponse{RawResponse: resp.Response, ApplicationGatewayAvailableSSLOptions: val}, nil
+	return ApplicationGatewayAvailableSSLOptionsResponse{RawResponse: resp.Response, ApplicationGatewayAvailableSSLOptions: val}, nil
 }
 
 // listAvailableSSLOptionsHandleError handles the ListAvailableSSLOptions error response.
@@ -882,7 +882,7 @@ func (client *ApplicationGatewaysClient) listAvailableSSLOptionsHandleError(resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -891,7 +891,7 @@ func (client *ApplicationGatewaysClient) listAvailableSSLOptionsHandleError(resp
 
 // ListAvailableSSLPredefinedPolicies - Lists all SSL predefined policies for configuring Ssl policy.
 // If the operation fails it returns the *CloudError error type.
-func (client *ApplicationGatewaysClient) ListAvailableSSLPredefinedPolicies(options *ApplicationGatewaysListAvailableSSLPredefinedPoliciesOptions) (ApplicationGatewayAvailableSSLPredefinedPoliciesPager) {
+func (client *ApplicationGatewaysClient) ListAvailableSSLPredefinedPolicies(options *ApplicationGatewaysListAvailableSSLPredefinedPoliciesOptions) ApplicationGatewayAvailableSSLPredefinedPoliciesPager {
 	return &applicationGatewayAvailableSSLPredefinedPoliciesPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -919,7 +919,7 @@ func (client *ApplicationGatewaysClient) listAvailableSSLPredefinedPoliciesCreat
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -931,7 +931,7 @@ func (client *ApplicationGatewaysClient) listAvailableSSLPredefinedPoliciesHandl
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ApplicationGatewayAvailableSSLPredefinedPoliciesResponse{}, err
 	}
-return ApplicationGatewayAvailableSSLPredefinedPoliciesResponse{RawResponse: resp.Response, ApplicationGatewayAvailableSSLPredefinedPolicies: val}, nil
+	return ApplicationGatewayAvailableSSLPredefinedPoliciesResponse{RawResponse: resp.Response, ApplicationGatewayAvailableSSLPredefinedPolicies: val}, nil
 }
 
 // listAvailableSSLPredefinedPoliciesHandleError handles the ListAvailableSSLPredefinedPolicies error response.
@@ -940,7 +940,7 @@ func (client *ApplicationGatewaysClient) listAvailableSSLPredefinedPoliciesHandl
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -977,7 +977,7 @@ func (client *ApplicationGatewaysClient) listAvailableServerVariablesCreateReque
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -989,7 +989,7 @@ func (client *ApplicationGatewaysClient) listAvailableServerVariablesHandleRespo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return StringArrayResponse{}, err
 	}
-return StringArrayResponse{RawResponse: resp.Response, StringArray: val}, nil
+	return StringArrayResponse{RawResponse: resp.Response, StringArray: val}, nil
 }
 
 // listAvailableServerVariablesHandleError handles the ListAvailableServerVariables error response.
@@ -998,7 +998,7 @@ func (client *ApplicationGatewaysClient) listAvailableServerVariablesHandleError
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1035,7 +1035,7 @@ func (client *ApplicationGatewaysClient) listAvailableWafRuleSetsCreateRequest(c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1047,7 +1047,7 @@ func (client *ApplicationGatewaysClient) listAvailableWafRuleSetsHandleResponse(
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ApplicationGatewayAvailableWafRuleSetsResultResponse{}, err
 	}
-return ApplicationGatewayAvailableWafRuleSetsResultResponse{RawResponse: resp.Response, ApplicationGatewayAvailableWafRuleSetsResult: val}, nil
+	return ApplicationGatewayAvailableWafRuleSetsResultResponse{RawResponse: resp.Response, ApplicationGatewayAvailableWafRuleSetsResult: val}, nil
 }
 
 // listAvailableWafRuleSetsHandleError handles the ListAvailableWafRuleSets error response.
@@ -1056,7 +1056,7 @@ func (client *ApplicationGatewaysClient) listAvailableWafRuleSetsHandleError(res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1079,7 +1079,7 @@ func (client *ApplicationGatewaysClient) BeginStart(ctx context.Context, resourc
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1097,7 +1097,7 @@ func (client *ApplicationGatewaysClient) ResumeStart(ctx context.Context, token 
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1127,7 +1127,7 @@ func (client *ApplicationGatewaysClient) start(ctx context.Context, resourceGrou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.startHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
@@ -1151,7 +1151,7 @@ func (client *ApplicationGatewaysClient) startCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1163,7 +1163,7 @@ func (client *ApplicationGatewaysClient) startHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1186,7 +1186,7 @@ func (client *ApplicationGatewaysClient) BeginStop(ctx context.Context, resource
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1204,7 +1204,7 @@ func (client *ApplicationGatewaysClient) ResumeStop(ctx context.Context, token s
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1234,7 +1234,7 @@ func (client *ApplicationGatewaysClient) stop(ctx context.Context, resourceGroup
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.stopHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // stopCreateRequest creates the Stop request.
@@ -1258,7 +1258,7 @@ func (client *ApplicationGatewaysClient) stopCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -1270,7 +1270,7 @@ func (client *ApplicationGatewaysClient) stopHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1315,7 +1315,7 @@ func (client *ApplicationGatewaysClient) updateTagsCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -1327,7 +1327,7 @@ func (client *ApplicationGatewaysClient) updateTagsHandleResponse(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ApplicationGatewayResponse{}, err
 	}
-return ApplicationGatewayResponse{RawResponse: resp.Response, ApplicationGateway: val}, nil
+	return ApplicationGatewayResponse{RawResponse: resp.Response, ApplicationGateway: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -1336,10 +1336,9 @@ func (client *ApplicationGatewaysClient) updateTagsHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

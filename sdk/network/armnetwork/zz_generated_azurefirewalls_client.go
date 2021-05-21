@@ -22,7 +22,7 @@ import (
 // AzureFirewallsClient contains the methods for the AzureFirewalls group.
 // Don't use this type directly, use NewAzureFirewallsClient() instead.
 type AzureFirewallsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *AzureFirewallsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 	poller := &azureFirewallPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AzureFirewallResponse, error) {
@@ -65,7 +65,7 @@ func (client *AzureFirewallsClient) ResumeCreateOrUpdate(ctx context.Context, to
 	}
 	poller := &azureFirewallPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *AzureFirewallsClient) createOrUpdate(ctx context.Context, resource
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *AzureFirewallsClient) createOrUpdateCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *AzureFirewallsClient) createOrUpdateHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *AzureFirewallsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *AzureFirewallsClient) ResumeDelete(ctx context.Context, token stri
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *AzureFirewallsClient) deleteOperation(ctx context.Context, resourc
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *AzureFirewallsClient) deleteCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *AzureFirewallsClient) deleteHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *AzureFirewallsClient) getCreateRequest(ctx context.Context, resour
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -295,7 +295,7 @@ func (client *AzureFirewallsClient) getHandleResponse(resp *azcore.Response) (Az
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AzureFirewallResponse{}, err
 	}
-return AzureFirewallResponse{RawResponse: resp.Response, AzureFirewall: val}, nil
+	return AzureFirewallResponse{RawResponse: resp.Response, AzureFirewall: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -304,7 +304,7 @@ func (client *AzureFirewallsClient) getHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -313,7 +313,7 @@ func (client *AzureFirewallsClient) getHandleError(resp *azcore.Response) error 
 
 // List - Lists all Azure Firewalls in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *AzureFirewallsClient) List(resourceGroupName string, options *AzureFirewallsListOptions) (AzureFirewallListResultPager) {
+func (client *AzureFirewallsClient) List(resourceGroupName string, options *AzureFirewallsListOptions) AzureFirewallListResultPager {
 	return &azureFirewallListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -345,7 +345,7 @@ func (client *AzureFirewallsClient) listCreateRequest(ctx context.Context, resou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -357,7 +357,7 @@ func (client *AzureFirewallsClient) listHandleResponse(resp *azcore.Response) (A
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AzureFirewallListResultResponse{}, err
 	}
-return AzureFirewallListResultResponse{RawResponse: resp.Response, AzureFirewallListResult: val}, nil
+	return AzureFirewallListResultResponse{RawResponse: resp.Response, AzureFirewallListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -366,7 +366,7 @@ func (client *AzureFirewallsClient) listHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -375,7 +375,7 @@ func (client *AzureFirewallsClient) listHandleError(resp *azcore.Response) error
 
 // ListAll - Gets all the Azure Firewalls in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *AzureFirewallsClient) ListAll(options *AzureFirewallsListAllOptions) (AzureFirewallListResultPager) {
+func (client *AzureFirewallsClient) ListAll(options *AzureFirewallsListAllOptions) AzureFirewallListResultPager {
 	return &azureFirewallListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -403,7 +403,7 @@ func (client *AzureFirewallsClient) listAllCreateRequest(ctx context.Context, op
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -415,7 +415,7 @@ func (client *AzureFirewallsClient) listAllHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AzureFirewallListResultResponse{}, err
 	}
-return AzureFirewallListResultResponse{RawResponse: resp.Response, AzureFirewallListResult: val}, nil
+	return AzureFirewallListResultResponse{RawResponse: resp.Response, AzureFirewallListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -424,7 +424,7 @@ func (client *AzureFirewallsClient) listAllHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -447,7 +447,7 @@ func (client *AzureFirewallsClient) BeginUpdateTags(ctx context.Context, resourc
 	}
 	poller := &azureFirewallPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AzureFirewallResponse, error) {
@@ -465,7 +465,7 @@ func (client *AzureFirewallsClient) ResumeUpdateTags(ctx context.Context, token 
 	}
 	poller := &azureFirewallPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -495,7 +495,7 @@ func (client *AzureFirewallsClient) updateTags(ctx context.Context, resourceGrou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateTagsHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -519,7 +519,7 @@ func (client *AzureFirewallsClient) updateTagsCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -531,10 +531,9 @@ func (client *AzureFirewallsClient) updateTagsHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

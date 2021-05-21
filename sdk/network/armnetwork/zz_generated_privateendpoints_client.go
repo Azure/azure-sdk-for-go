@@ -22,7 +22,7 @@ import (
 // PrivateEndpointsClient contains the methods for the PrivateEndpoints group.
 // Don't use this type directly, use NewPrivateEndpointsClient() instead.
 type PrivateEndpointsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *PrivateEndpointsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 	poller := &privateEndpointPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateEndpointResponse, error) {
@@ -65,7 +65,7 @@ func (client *PrivateEndpointsClient) ResumeCreateOrUpdate(ctx context.Context, 
 	}
 	poller := &privateEndpointPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *PrivateEndpointsClient) createOrUpdate(ctx context.Context, resour
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *PrivateEndpointsClient) createOrUpdateCreateRequest(ctx context.Co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *PrivateEndpointsClient) createOrUpdateHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *PrivateEndpointsClient) BeginDelete(ctx context.Context, resourceG
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *PrivateEndpointsClient) ResumeDelete(ctx context.Context, token st
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *PrivateEndpointsClient) deleteOperation(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *PrivateEndpointsClient) deleteCreateRequest(ctx context.Context, r
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *PrivateEndpointsClient) deleteHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *PrivateEndpointsClient) getCreateRequest(ctx context.Context, reso
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -298,7 +298,7 @@ func (client *PrivateEndpointsClient) getHandleResponse(resp *azcore.Response) (
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateEndpointResponse{}, err
 	}
-return PrivateEndpointResponse{RawResponse: resp.Response, PrivateEndpoint: val}, nil
+	return PrivateEndpointResponse{RawResponse: resp.Response, PrivateEndpoint: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -307,7 +307,7 @@ func (client *PrivateEndpointsClient) getHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -316,7 +316,7 @@ func (client *PrivateEndpointsClient) getHandleError(resp *azcore.Response) erro
 
 // List - Gets all private endpoints in a resource group.
 // If the operation fails it returns the *Error error type.
-func (client *PrivateEndpointsClient) List(resourceGroupName string, options *PrivateEndpointsListOptions) (PrivateEndpointListResultPager) {
+func (client *PrivateEndpointsClient) List(resourceGroupName string, options *PrivateEndpointsListOptions) PrivateEndpointListResultPager {
 	return &privateEndpointListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -348,7 +348,7 @@ func (client *PrivateEndpointsClient) listCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -360,7 +360,7 @@ func (client *PrivateEndpointsClient) listHandleResponse(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateEndpointListResultResponse{}, err
 	}
-return PrivateEndpointListResultResponse{RawResponse: resp.Response, PrivateEndpointListResult: val}, nil
+	return PrivateEndpointListResultResponse{RawResponse: resp.Response, PrivateEndpointListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -369,7 +369,7 @@ func (client *PrivateEndpointsClient) listHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -378,7 +378,7 @@ func (client *PrivateEndpointsClient) listHandleError(resp *azcore.Response) err
 
 // ListBySubscription - Gets all private endpoints in a subscription.
 // If the operation fails it returns the *Error error type.
-func (client *PrivateEndpointsClient) ListBySubscription(options *PrivateEndpointsListBySubscriptionOptions) (PrivateEndpointListResultPager) {
+func (client *PrivateEndpointsClient) ListBySubscription(options *PrivateEndpointsListBySubscriptionOptions) PrivateEndpointListResultPager {
 	return &privateEndpointListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -406,7 +406,7 @@ func (client *PrivateEndpointsClient) listBySubscriptionCreateRequest(ctx contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -418,7 +418,7 @@ func (client *PrivateEndpointsClient) listBySubscriptionHandleResponse(resp *azc
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateEndpointListResultResponse{}, err
 	}
-return PrivateEndpointListResultResponse{RawResponse: resp.Response, PrivateEndpointListResult: val}, nil
+	return PrivateEndpointListResultResponse{RawResponse: resp.Response, PrivateEndpointListResult: val}, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
@@ -427,10 +427,9 @@ func (client *PrivateEndpointsClient) listBySubscriptionHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := Error{raw: string(body)}
+	errType := Error{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

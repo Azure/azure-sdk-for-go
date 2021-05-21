@@ -22,7 +22,7 @@ import (
 // RouteFilterRulesClient contains the methods for the RouteFilterRules group.
 // Don't use this type directly, use NewRouteFilterRulesClient() instead.
 type RouteFilterRulesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *RouteFilterRulesClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 	poller := &routeFilterRulePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RouteFilterRuleResponse, error) {
@@ -65,7 +65,7 @@ func (client *RouteFilterRulesClient) ResumeCreateOrUpdate(ctx context.Context, 
 	}
 	poller := &routeFilterRulePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *RouteFilterRulesClient) createOrUpdate(ctx context.Context, resour
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *RouteFilterRulesClient) createOrUpdateCreateRequest(ctx context.Co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(routeFilterRuleParameters)
@@ -135,7 +135,7 @@ func (client *RouteFilterRulesClient) createOrUpdateHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *RouteFilterRulesClient) BeginDelete(ctx context.Context, resourceG
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +176,7 @@ func (client *RouteFilterRulesClient) ResumeDelete(ctx context.Context, token st
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +206,7 @@ func (client *RouteFilterRulesClient) deleteOperation(ctx context.Context, resou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *RouteFilterRulesClient) deleteCreateRequest(ctx context.Context, r
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +246,7 @@ func (client *RouteFilterRulesClient) deleteHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +295,7 @@ func (client *RouteFilterRulesClient) getCreateRequest(ctx context.Context, reso
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -307,7 +307,7 @@ func (client *RouteFilterRulesClient) getHandleResponse(resp *azcore.Response) (
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteFilterRuleResponse{}, err
 	}
-return RouteFilterRuleResponse{RawResponse: resp.Response, RouteFilterRule: val}, nil
+	return RouteFilterRuleResponse{RawResponse: resp.Response, RouteFilterRule: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -316,7 +316,7 @@ func (client *RouteFilterRulesClient) getHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -325,7 +325,7 @@ func (client *RouteFilterRulesClient) getHandleError(resp *azcore.Response) erro
 
 // ListByRouteFilter - Gets all RouteFilterRules in a route filter.
 // If the operation fails it returns the *CloudError error type.
-func (client *RouteFilterRulesClient) ListByRouteFilter(resourceGroupName string, routeFilterName string, options *RouteFilterRulesListByRouteFilterOptions) (RouteFilterRuleListResultPager) {
+func (client *RouteFilterRulesClient) ListByRouteFilter(resourceGroupName string, routeFilterName string, options *RouteFilterRulesListByRouteFilterOptions) RouteFilterRuleListResultPager {
 	return &routeFilterRuleListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -361,7 +361,7 @@ func (client *RouteFilterRulesClient) listByRouteFilterCreateRequest(ctx context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -373,7 +373,7 @@ func (client *RouteFilterRulesClient) listByRouteFilterHandleResponse(resp *azco
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteFilterRuleListResultResponse{}, err
 	}
-return RouteFilterRuleListResultResponse{RawResponse: resp.Response, RouteFilterRuleListResult: val}, nil
+	return RouteFilterRuleListResultResponse{RawResponse: resp.Response, RouteFilterRuleListResult: val}, nil
 }
 
 // listByRouteFilterHandleError handles the ListByRouteFilter error response.
@@ -382,10 +382,9 @@ func (client *RouteFilterRulesClient) listByRouteFilterHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

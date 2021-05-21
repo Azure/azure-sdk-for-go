@@ -22,7 +22,7 @@ import (
 // VirtualHubBgpConnectionsClient contains the methods for the VirtualHubBgpConnections group.
 // Don't use this type directly, use NewVirtualHubBgpConnectionsClient() instead.
 type VirtualHubBgpConnectionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -33,7 +33,7 @@ func NewVirtualHubBgpConnectionsClient(con *armcore.Connection, subscriptionID s
 
 // List - Retrieves the details of all VirtualHubBgpConnections.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualHubBgpConnectionsClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubBgpConnectionsListOptions) (ListVirtualHubBgpConnectionResultsPager) {
+func (client *VirtualHubBgpConnectionsClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubBgpConnectionsListOptions) ListVirtualHubBgpConnectionResultsPager {
 	return &listVirtualHubBgpConnectionResultsPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -69,7 +69,7 @@ func (client *VirtualHubBgpConnectionsClient) listCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -81,7 +81,7 @@ func (client *VirtualHubBgpConnectionsClient) listHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListVirtualHubBgpConnectionResultsResponse{}, err
 	}
-return ListVirtualHubBgpConnectionResultsResponse{RawResponse: resp.Response, ListVirtualHubBgpConnectionResults: val}, nil
+	return ListVirtualHubBgpConnectionResultsResponse{RawResponse: resp.Response, ListVirtualHubBgpConnectionResults: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -90,7 +90,7 @@ func (client *VirtualHubBgpConnectionsClient) listHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -113,7 +113,7 @@ func (client *VirtualHubBgpConnectionsClient) BeginListAdvertisedRoutes(ctx cont
 	}
 	poller := &peerRouteListPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PeerRouteListResponse, error) {
@@ -131,7 +131,7 @@ func (client *VirtualHubBgpConnectionsClient) ResumeListAdvertisedRoutes(ctx con
 	}
 	poller := &peerRouteListPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -161,7 +161,7 @@ func (client *VirtualHubBgpConnectionsClient) listAdvertisedRoutes(ctx context.C
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.listAdvertisedRoutesHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // listAdvertisedRoutesCreateRequest creates the ListAdvertisedRoutes request.
@@ -189,7 +189,7 @@ func (client *VirtualHubBgpConnectionsClient) listAdvertisedRoutesCreateRequest(
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -201,7 +201,7 @@ func (client *VirtualHubBgpConnectionsClient) listAdvertisedRoutesHandleError(re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -224,7 +224,7 @@ func (client *VirtualHubBgpConnectionsClient) BeginListLearnedRoutes(ctx context
 	}
 	poller := &peerRouteListPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PeerRouteListResponse, error) {
@@ -242,7 +242,7 @@ func (client *VirtualHubBgpConnectionsClient) ResumeListLearnedRoutes(ctx contex
 	}
 	poller := &peerRouteListPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -272,7 +272,7 @@ func (client *VirtualHubBgpConnectionsClient) listLearnedRoutes(ctx context.Cont
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.listLearnedRoutesHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // listLearnedRoutesCreateRequest creates the ListLearnedRoutes request.
@@ -300,7 +300,7 @@ func (client *VirtualHubBgpConnectionsClient) listLearnedRoutesCreateRequest(ctx
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -312,10 +312,9 @@ func (client *VirtualHubBgpConnectionsClient) listLearnedRoutesHandleError(resp 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

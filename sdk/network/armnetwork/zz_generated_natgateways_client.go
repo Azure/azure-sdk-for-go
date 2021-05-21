@@ -22,7 +22,7 @@ import (
 // NatGatewaysClient contains the methods for the NatGateways group.
 // Don't use this type directly, use NewNatGatewaysClient() instead.
 type NatGatewaysClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *NatGatewaysClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 	poller := &natGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NatGatewayResponse, error) {
@@ -65,7 +65,7 @@ func (client *NatGatewaysClient) ResumeCreateOrUpdate(ctx context.Context, token
 	}
 	poller := &natGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *NatGatewaysClient) createOrUpdate(ctx context.Context, resourceGro
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *NatGatewaysClient) createOrUpdateCreateRequest(ctx context.Context
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *NatGatewaysClient) createOrUpdateHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *NatGatewaysClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *NatGatewaysClient) ResumeDelete(ctx context.Context, token string)
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *NatGatewaysClient) deleteOperation(ctx context.Context, resourceGr
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *NatGatewaysClient) deleteCreateRequest(ctx context.Context, resour
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *NatGatewaysClient) deleteHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *NatGatewaysClient) getCreateRequest(ctx context.Context, resourceG
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -298,7 +298,7 @@ func (client *NatGatewaysClient) getHandleResponse(resp *azcore.Response) (NatGa
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NatGatewayResponse{}, err
 	}
-return NatGatewayResponse{RawResponse: resp.Response, NatGateway: val}, nil
+	return NatGatewayResponse{RawResponse: resp.Response, NatGateway: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -307,7 +307,7 @@ func (client *NatGatewaysClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -316,7 +316,7 @@ func (client *NatGatewaysClient) getHandleError(resp *azcore.Response) error {
 
 // List - Gets all nat gateways in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *NatGatewaysClient) List(resourceGroupName string, options *NatGatewaysListOptions) (NatGatewayListResultPager) {
+func (client *NatGatewaysClient) List(resourceGroupName string, options *NatGatewaysListOptions) NatGatewayListResultPager {
 	return &natGatewayListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -348,7 +348,7 @@ func (client *NatGatewaysClient) listCreateRequest(ctx context.Context, resource
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -360,7 +360,7 @@ func (client *NatGatewaysClient) listHandleResponse(resp *azcore.Response) (NatG
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NatGatewayListResultResponse{}, err
 	}
-return NatGatewayListResultResponse{RawResponse: resp.Response, NatGatewayListResult: val}, nil
+	return NatGatewayListResultResponse{RawResponse: resp.Response, NatGatewayListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -369,7 +369,7 @@ func (client *NatGatewaysClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -378,7 +378,7 @@ func (client *NatGatewaysClient) listHandleError(resp *azcore.Response) error {
 
 // ListAll - Gets all the Nat Gateways in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *NatGatewaysClient) ListAll(options *NatGatewaysListAllOptions) (NatGatewayListResultPager) {
+func (client *NatGatewaysClient) ListAll(options *NatGatewaysListAllOptions) NatGatewayListResultPager {
 	return &natGatewayListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -406,7 +406,7 @@ func (client *NatGatewaysClient) listAllCreateRequest(ctx context.Context, optio
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -418,7 +418,7 @@ func (client *NatGatewaysClient) listAllHandleResponse(resp *azcore.Response) (N
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NatGatewayListResultResponse{}, err
 	}
-return NatGatewayListResultResponse{RawResponse: resp.Response, NatGatewayListResult: val}, nil
+	return NatGatewayListResultResponse{RawResponse: resp.Response, NatGatewayListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -427,7 +427,7 @@ func (client *NatGatewaysClient) listAllHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -472,7 +472,7 @@ func (client *NatGatewaysClient) updateTagsCreateRequest(ctx context.Context, re
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -484,7 +484,7 @@ func (client *NatGatewaysClient) updateTagsHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return NatGatewayResponse{}, err
 	}
-return NatGatewayResponse{RawResponse: resp.Response, NatGateway: val}, nil
+	return NatGatewayResponse{RawResponse: resp.Response, NatGateway: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -493,10 +493,9 @@ func (client *NatGatewaysClient) updateTagsHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

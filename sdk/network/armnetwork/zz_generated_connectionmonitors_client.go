@@ -22,7 +22,7 @@ import (
 // ConnectionMonitorsClient contains the methods for the ConnectionMonitors group.
 // Don't use this type directly, use NewConnectionMonitorsClient() instead.
 type ConnectionMonitorsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *ConnectionMonitorsClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 	poller := &connectionMonitorResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectionMonitorResultResponse, error) {
@@ -65,7 +65,7 @@ func (client *ConnectionMonitorsClient) ResumeCreateOrUpdate(ctx context.Context
 	}
 	poller := &connectionMonitorResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *ConnectionMonitorsClient) createOrUpdate(ctx context.Context, reso
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *ConnectionMonitorsClient) createOrUpdateCreateRequest(ctx context.
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Migrate != nil {
 		reqQP.Set("migrate", *options.Migrate)
 	}
@@ -138,7 +138,7 @@ func (client *ConnectionMonitorsClient) createOrUpdateHandleError(resp *azcore.R
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -161,7 +161,7 @@ func (client *ConnectionMonitorsClient) BeginDelete(ctx context.Context, resourc
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -179,7 +179,7 @@ func (client *ConnectionMonitorsClient) ResumeDelete(ctx context.Context, token 
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -209,7 +209,7 @@ func (client *ConnectionMonitorsClient) deleteOperation(ctx context.Context, res
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -237,7 +237,7 @@ func (client *ConnectionMonitorsClient) deleteCreateRequest(ctx context.Context,
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -249,7 +249,7 @@ func (client *ConnectionMonitorsClient) deleteHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -298,7 +298,7 @@ func (client *ConnectionMonitorsClient) getCreateRequest(ctx context.Context, re
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -310,7 +310,7 @@ func (client *ConnectionMonitorsClient) getHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ConnectionMonitorResultResponse{}, err
 	}
-return ConnectionMonitorResultResponse{RawResponse: resp.Response, ConnectionMonitorResult: val}, nil
+	return ConnectionMonitorResultResponse{RawResponse: resp.Response, ConnectionMonitorResult: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -319,7 +319,7 @@ func (client *ConnectionMonitorsClient) getHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -364,7 +364,7 @@ func (client *ConnectionMonitorsClient) listCreateRequest(ctx context.Context, r
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -376,7 +376,7 @@ func (client *ConnectionMonitorsClient) listHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ConnectionMonitorListResultResponse{}, err
 	}
-return ConnectionMonitorListResultResponse{RawResponse: resp.Response, ConnectionMonitorListResult: val}, nil
+	return ConnectionMonitorListResultResponse{RawResponse: resp.Response, ConnectionMonitorListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -385,7 +385,7 @@ func (client *ConnectionMonitorsClient) listHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -408,7 +408,7 @@ func (client *ConnectionMonitorsClient) BeginQuery(ctx context.Context, resource
 	}
 	poller := &connectionMonitorQueryResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConnectionMonitorQueryResultResponse, error) {
@@ -426,7 +426,7 @@ func (client *ConnectionMonitorsClient) ResumeQuery(ctx context.Context, token s
 	}
 	poller := &connectionMonitorQueryResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -456,7 +456,7 @@ func (client *ConnectionMonitorsClient) query(ctx context.Context, resourceGroup
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.queryHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // queryCreateRequest creates the Query request.
@@ -484,7 +484,7 @@ func (client *ConnectionMonitorsClient) queryCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -496,7 +496,7 @@ func (client *ConnectionMonitorsClient) queryHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -519,7 +519,7 @@ func (client *ConnectionMonitorsClient) BeginStart(ctx context.Context, resource
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -537,7 +537,7 @@ func (client *ConnectionMonitorsClient) ResumeStart(ctx context.Context, token s
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -567,7 +567,7 @@ func (client *ConnectionMonitorsClient) start(ctx context.Context, resourceGroup
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.startHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
@@ -595,7 +595,7 @@ func (client *ConnectionMonitorsClient) startCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -607,7 +607,7 @@ func (client *ConnectionMonitorsClient) startHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -630,7 +630,7 @@ func (client *ConnectionMonitorsClient) BeginStop(ctx context.Context, resourceG
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -648,7 +648,7 @@ func (client *ConnectionMonitorsClient) ResumeStop(ctx context.Context, token st
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -678,7 +678,7 @@ func (client *ConnectionMonitorsClient) stop(ctx context.Context, resourceGroupN
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.stopHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // stopCreateRequest creates the Stop request.
@@ -706,7 +706,7 @@ func (client *ConnectionMonitorsClient) stopCreateRequest(ctx context.Context, r
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -718,7 +718,7 @@ func (client *ConnectionMonitorsClient) stopHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -767,7 +767,7 @@ func (client *ConnectionMonitorsClient) updateTagsCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -779,7 +779,7 @@ func (client *ConnectionMonitorsClient) updateTagsHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ConnectionMonitorResultResponse{}, err
 	}
-return ConnectionMonitorResultResponse{RawResponse: resp.Response, ConnectionMonitorResult: val}, nil
+	return ConnectionMonitorResultResponse{RawResponse: resp.Response, ConnectionMonitorResult: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -788,10 +788,9 @@ func (client *ConnectionMonitorsClient) updateTagsHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

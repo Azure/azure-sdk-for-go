@@ -22,7 +22,7 @@ import (
 // PacketCapturesClient contains the methods for the PacketCaptures group.
 // Don't use this type directly, use NewPacketCapturesClient() instead.
 type PacketCapturesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *PacketCapturesClient) BeginCreate(ctx context.Context, resourceGro
 	}
 	poller := &packetCaptureResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PacketCaptureResultResponse, error) {
@@ -65,7 +65,7 @@ func (client *PacketCapturesClient) ResumeCreate(ctx context.Context, token stri
 	}
 	poller := &packetCaptureResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *PacketCapturesClient) create(ctx context.Context, resourceGroupNam
 	if !resp.HasStatusCode(http.StatusCreated) {
 		return nil, client.createHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
@@ -123,7 +123,7 @@ func (client *PacketCapturesClient) createCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -135,7 +135,7 @@ func (client *PacketCapturesClient) createHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *PacketCapturesClient) BeginDelete(ctx context.Context, resourceGro
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +176,7 @@ func (client *PacketCapturesClient) ResumeDelete(ctx context.Context, token stri
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +206,7 @@ func (client *PacketCapturesClient) deleteOperation(ctx context.Context, resourc
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *PacketCapturesClient) deleteCreateRequest(ctx context.Context, res
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +246,7 @@ func (client *PacketCapturesClient) deleteHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +295,7 @@ func (client *PacketCapturesClient) getCreateRequest(ctx context.Context, resour
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -307,7 +307,7 @@ func (client *PacketCapturesClient) getHandleResponse(resp *azcore.Response) (Pa
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PacketCaptureResultResponse{}, err
 	}
-return PacketCaptureResultResponse{RawResponse: resp.Response, PacketCaptureResult: val}, nil
+	return PacketCaptureResultResponse{RawResponse: resp.Response, PacketCaptureResult: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -316,7 +316,7 @@ func (client *PacketCapturesClient) getHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -339,7 +339,7 @@ func (client *PacketCapturesClient) BeginGetStatus(ctx context.Context, resource
 	}
 	poller := &packetCaptureQueryStatusResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PacketCaptureQueryStatusResultResponse, error) {
@@ -357,7 +357,7 @@ func (client *PacketCapturesClient) ResumeGetStatus(ctx context.Context, token s
 	}
 	poller := &packetCaptureQueryStatusResultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -387,7 +387,7 @@ func (client *PacketCapturesClient) getStatus(ctx context.Context, resourceGroup
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getStatusHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getStatusCreateRequest creates the GetStatus request.
@@ -415,7 +415,7 @@ func (client *PacketCapturesClient) getStatusCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -427,7 +427,7 @@ func (client *PacketCapturesClient) getStatusHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -472,7 +472,7 @@ func (client *PacketCapturesClient) listCreateRequest(ctx context.Context, resou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -484,7 +484,7 @@ func (client *PacketCapturesClient) listHandleResponse(resp *azcore.Response) (P
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PacketCaptureListResultResponse{}, err
 	}
-return PacketCaptureListResultResponse{RawResponse: resp.Response, PacketCaptureListResult: val}, nil
+	return PacketCaptureListResultResponse{RawResponse: resp.Response, PacketCaptureListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -493,7 +493,7 @@ func (client *PacketCapturesClient) listHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -516,7 +516,7 @@ func (client *PacketCapturesClient) BeginStop(ctx context.Context, resourceGroup
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -534,7 +534,7 @@ func (client *PacketCapturesClient) ResumeStop(ctx context.Context, token string
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -564,7 +564,7 @@ func (client *PacketCapturesClient) stop(ctx context.Context, resourceGroupName 
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.stopHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // stopCreateRequest creates the Stop request.
@@ -592,7 +592,7 @@ func (client *PacketCapturesClient) stopCreateRequest(ctx context.Context, resou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -604,10 +604,9 @@ func (client *PacketCapturesClient) stopHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

@@ -22,7 +22,7 @@ import (
 // ExpressRouteGatewaysClient contains the methods for the ExpressRouteGateways group.
 // Don't use this type directly, use NewExpressRouteGatewaysClient() instead.
 type ExpressRouteGatewaysClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *ExpressRouteGatewaysClient) BeginCreateOrUpdate(ctx context.Contex
 	}
 	poller := &expressRouteGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteGatewayResponse, error) {
@@ -65,7 +65,7 @@ func (client *ExpressRouteGatewaysClient) ResumeCreateOrUpdate(ctx context.Conte
 	}
 	poller := &expressRouteGatewayPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *ExpressRouteGatewaysClient) createOrUpdate(ctx context.Context, re
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *ExpressRouteGatewaysClient) createOrUpdateCreateRequest(ctx contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(putExpressRouteGatewayParameters)
@@ -131,7 +131,7 @@ func (client *ExpressRouteGatewaysClient) createOrUpdateHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -155,7 +155,7 @@ func (client *ExpressRouteGatewaysClient) BeginDelete(ctx context.Context, resou
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -173,7 +173,7 @@ func (client *ExpressRouteGatewaysClient) ResumeDelete(ctx context.Context, toke
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -204,7 +204,7 @@ func (client *ExpressRouteGatewaysClient) deleteOperation(ctx context.Context, r
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -228,7 +228,7 @@ func (client *ExpressRouteGatewaysClient) deleteCreateRequest(ctx context.Contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -240,7 +240,7 @@ func (client *ExpressRouteGatewaysClient) deleteHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -285,7 +285,7 @@ func (client *ExpressRouteGatewaysClient) getCreateRequest(ctx context.Context, 
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -297,7 +297,7 @@ func (client *ExpressRouteGatewaysClient) getHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRouteGatewayResponse{}, err
 	}
-return ExpressRouteGatewayResponse{RawResponse: resp.Response, ExpressRouteGateway: val}, nil
+	return ExpressRouteGatewayResponse{RawResponse: resp.Response, ExpressRouteGateway: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -306,7 +306,7 @@ func (client *ExpressRouteGatewaysClient) getHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -347,7 +347,7 @@ func (client *ExpressRouteGatewaysClient) listByResourceGroupCreateRequest(ctx c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -359,7 +359,7 @@ func (client *ExpressRouteGatewaysClient) listByResourceGroupHandleResponse(resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRouteGatewayListResponse{}, err
 	}
-return ExpressRouteGatewayListResponse{RawResponse: resp.Response, ExpressRouteGatewayList: val}, nil
+	return ExpressRouteGatewayListResponse{RawResponse: resp.Response, ExpressRouteGatewayList: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -368,7 +368,7 @@ func (client *ExpressRouteGatewaysClient) listByResourceGroupHandleError(resp *a
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -405,7 +405,7 @@ func (client *ExpressRouteGatewaysClient) listBySubscriptionCreateRequest(ctx co
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -417,7 +417,7 @@ func (client *ExpressRouteGatewaysClient) listBySubscriptionHandleResponse(resp 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExpressRouteGatewayListResponse{}, err
 	}
-return ExpressRouteGatewayListResponse{RawResponse: resp.Response, ExpressRouteGatewayList: val}, nil
+	return ExpressRouteGatewayListResponse{RawResponse: resp.Response, ExpressRouteGatewayList: val}, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
@@ -426,10 +426,116 @@ func (client *ExpressRouteGatewaysClient) listBySubscriptionHandleError(resp *az
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
 
+// BeginUpdateTags - Updates express route gateway tags.
+// If the operation fails it returns the *CloudError error type.
+func (client *ExpressRouteGatewaysClient) BeginUpdateTags(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, expressRouteGatewayParameters TagsObject, options *ExpressRouteGatewaysBeginUpdateTagsOptions) (ExpressRouteGatewayPollerResponse, error) {
+	resp, err := client.updateTags(ctx, resourceGroupName, expressRouteGatewayName, expressRouteGatewayParameters, options)
+	if err != nil {
+		return ExpressRouteGatewayPollerResponse{}, err
+	}
+	result := ExpressRouteGatewayPollerResponse{
+		RawResponse: resp.Response,
+	}
+	pt, err := armcore.NewPoller("ExpressRouteGatewaysClient.UpdateTags", "azure-async-operation", resp, client.updateTagsHandleError)
+	if err != nil {
+		return ExpressRouteGatewayPollerResponse{}, err
+	}
+	poller := &expressRouteGatewayPoller{
+		pipeline: client.con.Pipeline(),
+		pt:       pt,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteGatewayResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
+}
+
+// ResumeUpdateTags creates a new ExpressRouteGatewayPoller from the specified resume token.
+// token - The value must come from a previous call to ExpressRouteGatewayPoller.ResumeToken().
+func (client *ExpressRouteGatewaysClient) ResumeUpdateTags(ctx context.Context, token string) (ExpressRouteGatewayPollerResponse, error) {
+	pt, err := armcore.NewPollerFromResumeToken("ExpressRouteGatewaysClient.UpdateTags", token, client.updateTagsHandleError)
+	if err != nil {
+		return ExpressRouteGatewayPollerResponse{}, err
+	}
+	poller := &expressRouteGatewayPoller{
+		pipeline: client.con.Pipeline(),
+		pt:       pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return ExpressRouteGatewayPollerResponse{}, err
+	}
+	result := ExpressRouteGatewayPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExpressRouteGatewayResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
+}
+
+// UpdateTags - Updates express route gateway tags.
+// If the operation fails it returns the *CloudError error type.
+func (client *ExpressRouteGatewaysClient) updateTags(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, expressRouteGatewayParameters TagsObject, options *ExpressRouteGatewaysBeginUpdateTagsOptions) (*azcore.Response, error) {
+	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, expressRouteGatewayName, expressRouteGatewayParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := client.con.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+		return nil, client.updateTagsHandleError(resp)
+	}
+	return resp, nil
+}
+
+// updateTagsCreateRequest creates the UpdateTags request.
+func (client *ExpressRouteGatewaysClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, expressRouteGatewayParameters TagsObject, options *ExpressRouteGatewaysBeginUpdateTagsOptions) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteGateways/{expressRouteGatewayName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if expressRouteGatewayName == "" {
+		return nil, errors.New("parameter expressRouteGatewayName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{expressRouteGatewayName}", url.PathEscape(expressRouteGatewayName))
+	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Telemetry(telemetryInfo)
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.URL.RawQuery = reqQP.Encode()
+	req.Header.Set("Accept", "application/json")
+	return req, req.MarshalAsJSON(expressRouteGatewayParameters)
+}
+
+// updateTagsHandleError handles the UpdateTags error response.
+func (client *ExpressRouteGatewaysClient) updateTagsHandleError(resp *azcore.Response) error {
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
+	}
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
+}

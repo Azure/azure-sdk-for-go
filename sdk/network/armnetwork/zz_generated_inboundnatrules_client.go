@@ -22,7 +22,7 @@ import (
 // InboundNatRulesClient contains the methods for the InboundNatRules group.
 // Don't use this type directly, use NewInboundNatRulesClient() instead.
 type InboundNatRulesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *InboundNatRulesClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 	poller := &inboundNatRulePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (InboundNatRuleResponse, error) {
@@ -65,7 +65,7 @@ func (client *InboundNatRulesClient) ResumeCreateOrUpdate(ctx context.Context, t
 	}
 	poller := &inboundNatRulePoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *InboundNatRulesClient) createOrUpdate(ctx context.Context, resourc
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *InboundNatRulesClient) createOrUpdateCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(inboundNatRuleParameters)
@@ -135,7 +135,7 @@ func (client *InboundNatRulesClient) createOrUpdateHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *InboundNatRulesClient) BeginDelete(ctx context.Context, resourceGr
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +176,7 @@ func (client *InboundNatRulesClient) ResumeDelete(ctx context.Context, token str
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +206,7 @@ func (client *InboundNatRulesClient) deleteOperation(ctx context.Context, resour
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *InboundNatRulesClient) deleteCreateRequest(ctx context.Context, re
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +246,7 @@ func (client *InboundNatRulesClient) deleteHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +295,7 @@ func (client *InboundNatRulesClient) getCreateRequest(ctx context.Context, resou
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -310,7 +310,7 @@ func (client *InboundNatRulesClient) getHandleResponse(resp *azcore.Response) (I
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return InboundNatRuleResponse{}, err
 	}
-return InboundNatRuleResponse{RawResponse: resp.Response, InboundNatRule: val}, nil
+	return InboundNatRuleResponse{RawResponse: resp.Response, InboundNatRule: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -319,7 +319,7 @@ func (client *InboundNatRulesClient) getHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -328,7 +328,7 @@ func (client *InboundNatRulesClient) getHandleError(resp *azcore.Response) error
 
 // List - Gets all the inbound nat rules in a load balancer.
 // If the operation fails it returns the *CloudError error type.
-func (client *InboundNatRulesClient) List(resourceGroupName string, loadBalancerName string, options *InboundNatRulesListOptions) (InboundNatRuleListResultPager) {
+func (client *InboundNatRulesClient) List(resourceGroupName string, loadBalancerName string, options *InboundNatRulesListOptions) InboundNatRuleListResultPager {
 	return &inboundNatRuleListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -364,7 +364,7 @@ func (client *InboundNatRulesClient) listCreateRequest(ctx context.Context, reso
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -376,7 +376,7 @@ func (client *InboundNatRulesClient) listHandleResponse(resp *azcore.Response) (
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return InboundNatRuleListResultResponse{}, err
 	}
-return InboundNatRuleListResultResponse{RawResponse: resp.Response, InboundNatRuleListResult: val}, nil
+	return InboundNatRuleListResultResponse{RawResponse: resp.Response, InboundNatRuleListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -385,10 +385,9 @@ func (client *InboundNatRulesClient) listHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

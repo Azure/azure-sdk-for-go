@@ -22,7 +22,7 @@ import (
 // ApplicationSecurityGroupsClient contains the methods for the ApplicationSecurityGroups group.
 // Don't use this type directly, use NewApplicationSecurityGroupsClient() instead.
 type ApplicationSecurityGroupsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *ApplicationSecurityGroupsClient) BeginCreateOrUpdate(ctx context.C
 	}
 	poller := &applicationSecurityGroupPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ApplicationSecurityGroupResponse, error) {
@@ -65,7 +65,7 @@ func (client *ApplicationSecurityGroupsClient) ResumeCreateOrUpdate(ctx context.
 	}
 	poller := &applicationSecurityGroupPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *ApplicationSecurityGroupsClient) createOrUpdate(ctx context.Contex
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +119,7 @@ func (client *ApplicationSecurityGroupsClient) createOrUpdateCreateRequest(ctx c
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -131,7 +131,7 @@ func (client *ApplicationSecurityGroupsClient) createOrUpdateHandleError(resp *a
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *ApplicationSecurityGroupsClient) BeginDelete(ctx context.Context, 
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -172,7 +172,7 @@ func (client *ApplicationSecurityGroupsClient) ResumeDelete(ctx context.Context,
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -202,7 +202,7 @@ func (client *ApplicationSecurityGroupsClient) deleteOperation(ctx context.Conte
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -226,7 +226,7 @@ func (client *ApplicationSecurityGroupsClient) deleteCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -238,7 +238,7 @@ func (client *ApplicationSecurityGroupsClient) deleteHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -283,7 +283,7 @@ func (client *ApplicationSecurityGroupsClient) getCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -295,7 +295,7 @@ func (client *ApplicationSecurityGroupsClient) getHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ApplicationSecurityGroupResponse{}, err
 	}
-return ApplicationSecurityGroupResponse{RawResponse: resp.Response, ApplicationSecurityGroup: val}, nil
+	return ApplicationSecurityGroupResponse{RawResponse: resp.Response, ApplicationSecurityGroup: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -304,7 +304,7 @@ func (client *ApplicationSecurityGroupsClient) getHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -313,7 +313,7 @@ func (client *ApplicationSecurityGroupsClient) getHandleError(resp *azcore.Respo
 
 // List - Gets all the application security groups in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *ApplicationSecurityGroupsClient) List(resourceGroupName string, options *ApplicationSecurityGroupsListOptions) (ApplicationSecurityGroupListResultPager) {
+func (client *ApplicationSecurityGroupsClient) List(resourceGroupName string, options *ApplicationSecurityGroupsListOptions) ApplicationSecurityGroupListResultPager {
 	return &applicationSecurityGroupListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -345,7 +345,7 @@ func (client *ApplicationSecurityGroupsClient) listCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -357,7 +357,7 @@ func (client *ApplicationSecurityGroupsClient) listHandleResponse(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ApplicationSecurityGroupListResultResponse{}, err
 	}
-return ApplicationSecurityGroupListResultResponse{RawResponse: resp.Response, ApplicationSecurityGroupListResult: val}, nil
+	return ApplicationSecurityGroupListResultResponse{RawResponse: resp.Response, ApplicationSecurityGroupListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -366,7 +366,7 @@ func (client *ApplicationSecurityGroupsClient) listHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -375,7 +375,7 @@ func (client *ApplicationSecurityGroupsClient) listHandleError(resp *azcore.Resp
 
 // ListAll - Gets all application security groups in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *ApplicationSecurityGroupsClient) ListAll(options *ApplicationSecurityGroupsListAllOptions) (ApplicationSecurityGroupListResultPager) {
+func (client *ApplicationSecurityGroupsClient) ListAll(options *ApplicationSecurityGroupsListAllOptions) ApplicationSecurityGroupListResultPager {
 	return &applicationSecurityGroupListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -403,7 +403,7 @@ func (client *ApplicationSecurityGroupsClient) listAllCreateRequest(ctx context.
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -415,7 +415,7 @@ func (client *ApplicationSecurityGroupsClient) listAllHandleResponse(resp *azcor
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ApplicationSecurityGroupListResultResponse{}, err
 	}
-return ApplicationSecurityGroupListResultResponse{RawResponse: resp.Response, ApplicationSecurityGroupListResult: val}, nil
+	return ApplicationSecurityGroupListResultResponse{RawResponse: resp.Response, ApplicationSecurityGroupListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -424,7 +424,7 @@ func (client *ApplicationSecurityGroupsClient) listAllHandleError(resp *azcore.R
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -469,7 +469,7 @@ func (client *ApplicationSecurityGroupsClient) updateTagsCreateRequest(ctx conte
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
@@ -481,7 +481,7 @@ func (client *ApplicationSecurityGroupsClient) updateTagsHandleResponse(resp *az
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ApplicationSecurityGroupResponse{}, err
 	}
-return ApplicationSecurityGroupResponse{RawResponse: resp.Response, ApplicationSecurityGroup: val}, nil
+	return ApplicationSecurityGroupResponse{RawResponse: resp.Response, ApplicationSecurityGroup: val}, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
@@ -490,10 +490,9 @@ func (client *ApplicationSecurityGroupsClient) updateTagsHandleError(resp *azcor
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

@@ -1566,8 +1566,17 @@ type ListP2SVPNGatewaysResultResponse struct {
 // ListVPNConnectionsResultResponse is the response envelope for operations that return a ListVPNConnectionsResult type.
 type ListVPNConnectionsResultResponse struct {
 	// Result of the request to list all vpn connections to a virtual wan vpn gateway. It contains a list of Vpn Connections and a URL nextLink to get the next
-// set of results.
+	// set of results.
 	ListVPNConnectionsResult *ListVPNConnectionsResult
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ListVPNGatewayNatRulesResultResponse is the response envelope for operations that return a ListVPNGatewayNatRulesResult type.
+type ListVPNGatewayNatRulesResultResponse struct {
+	// Result of the request to list all nat rules to a virtual wan vpn gateway. It contains a list of Nat rules and a URL nextLink to get the next set of results.
+	ListVPNGatewayNatRulesResult *ListVPNGatewayNatRulesResult
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1594,7 +1603,7 @@ type ListVPNServerConfigurationsResultResponse struct {
 // ListVPNSiteLinkConnectionsResultResponse is the response envelope for operations that return a ListVPNSiteLinkConnectionsResult type.
 type ListVPNSiteLinkConnectionsResultResponse struct {
 	// Result of the request to list all vpn connections to a virtual wan vpn gateway. It contains a list of Vpn Connections and a URL nextLink to get the next
-// set of results.
+	// set of results.
 	ListVPNSiteLinkConnectionsResult *ListVPNSiteLinkConnectionsResult
 
 	// RawResponse contains the underlying HTTP response.
@@ -1650,6 +1659,15 @@ type ListVirtualHubRouteTableV2SResultResponse struct {
 type ListVirtualHubsResultResponse struct {
 	// Result of the request to list VirtualHubs. It contains a list of VirtualHubs and a URL nextLink to get the next set of results.
 	ListVirtualHubsResult *ListVirtualHubsResult
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ListVirtualNetworkGatewayNatRulesResultResponse is the response envelope for operations that return a ListVirtualNetworkGatewayNatRulesResult type.
+type ListVirtualNetworkGatewayNatRulesResultResponse struct {
+	// Result of the request to list all nat rules to a virtual network gateway. It contains a list of Nat rules and a URL nextLink to get the next set of results.
+	ListVirtualNetworkGatewayNatRulesResult *ListVirtualNetworkGatewayNatRulesResult
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -2637,7 +2655,7 @@ type ServiceEndpointPolicyDefinitionListResultResponse struct {
 	RawResponse *http.Response
 
 	// Response for ListServiceEndpointPolicyDefinition API service call. Retrieves all service endpoint policy definition that belongs to a service endpoint
-// policy.
+	// policy.
 	ServiceEndpointPolicyDefinitionListResult *ServiceEndpointPolicyDefinitionListResult
 }
 
@@ -2726,7 +2744,7 @@ type StringPollerResponse struct {
 type StringResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-	Value *string
+	Value       *string
 }
 
 // SubnetListResultResponse is the response envelope for operations that return a SubnetListResult type.
@@ -2860,6 +2878,27 @@ type VPNConnectionResponse struct {
 
 	// VpnConnection Resource.
 	VPNConnection *VPNConnection
+}
+
+// VPNGatewayNatRulePollerResponse is the response envelope for operations that asynchronously return a VPNGatewayNatRule type.
+type VPNGatewayNatRulePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VPNGatewayNatRuleResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VPNGatewayNatRulePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VPNGatewayNatRuleResponse is the response envelope for operations that return a VPNGatewayNatRule type.
+type VPNGatewayNatRuleResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+
+	// VpnGatewayNatRule Resource.
+	VPNGatewayNatRule *VPNGatewayNatRule
 }
 
 // VPNGatewayPollerResponse is the response envelope for operations that asynchronously return a VPNGateway type.
@@ -3117,6 +3156,27 @@ type VirtualNetworkGatewayListResultResponse struct {
 	VirtualNetworkGatewayListResult *VirtualNetworkGatewayListResult
 }
 
+// VirtualNetworkGatewayNatRulePollerResponse is the response envelope for operations that asynchronously return a VirtualNetworkGatewayNatRule type.
+type VirtualNetworkGatewayNatRulePollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (VirtualNetworkGatewayNatRuleResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller VirtualNetworkGatewayNatRulePoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// VirtualNetworkGatewayNatRuleResponse is the response envelope for operations that return a VirtualNetworkGatewayNatRule type.
+type VirtualNetworkGatewayNatRuleResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+
+	// VirtualNetworkGatewayNatRule Resource.
+	VirtualNetworkGatewayNatRule *VirtualNetworkGatewayNatRule
+}
+
 // VirtualNetworkGatewayPollerResponse is the response envelope for operations that asynchronously return a VirtualNetworkGateway type.
 type VirtualNetworkGatewayPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
@@ -3333,7 +3393,7 @@ type WebApplicationFirewallPolicyListResultResponse struct {
 	RawResponse *http.Response
 
 	// Result of the request to list WebApplicationFirewallPolicies. It contains a list of WebApplicationFirewallPolicy objects and a URL link to get the next
-// set of results.
+	// set of results.
 	WebApplicationFirewallPolicyListResult *WebApplicationFirewallPolicyListResult
 }
 
@@ -3345,4 +3405,3 @@ type WebApplicationFirewallPolicyResponse struct {
 	// Defines web application firewall policy.
 	WebApplicationFirewallPolicy *WebApplicationFirewallPolicy
 }
-

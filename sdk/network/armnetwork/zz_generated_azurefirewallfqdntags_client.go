@@ -21,7 +21,7 @@ import (
 // AzureFirewallFqdnTagsClient contains the methods for the AzureFirewallFqdnTags group.
 // Don't use this type directly, use NewAzureFirewallFqdnTagsClient() instead.
 type AzureFirewallFqdnTagsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -32,7 +32,7 @@ func NewAzureFirewallFqdnTagsClient(con *armcore.Connection, subscriptionID stri
 
 // ListAll - Gets all the Azure Firewall FQDN Tags in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *AzureFirewallFqdnTagsClient) ListAll(options *AzureFirewallFqdnTagsListAllOptions) (AzureFirewallFqdnTagListResultPager) {
+func (client *AzureFirewallFqdnTagsClient) ListAll(options *AzureFirewallFqdnTagsListAllOptions) AzureFirewallFqdnTagListResultPager {
 	return &azureFirewallFqdnTagListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -60,7 +60,7 @@ func (client *AzureFirewallFqdnTagsClient) listAllCreateRequest(ctx context.Cont
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -72,7 +72,7 @@ func (client *AzureFirewallFqdnTagsClient) listAllHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AzureFirewallFqdnTagListResultResponse{}, err
 	}
-return AzureFirewallFqdnTagListResultResponse{RawResponse: resp.Response, AzureFirewallFqdnTagListResult: val}, nil
+	return AzureFirewallFqdnTagListResultResponse{RawResponse: resp.Response, AzureFirewallFqdnTagListResult: val}, nil
 }
 
 // listAllHandleError handles the ListAll error response.
@@ -81,10 +81,9 @@ func (client *AzureFirewallFqdnTagsClient) listAllHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

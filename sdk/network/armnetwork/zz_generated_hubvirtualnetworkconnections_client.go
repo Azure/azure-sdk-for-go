@@ -22,7 +22,7 @@ import (
 // HubVirtualNetworkConnectionsClient contains the methods for the HubVirtualNetworkConnections group.
 // Don't use this type directly, use NewHubVirtualNetworkConnectionsClient() instead.
 type HubVirtualNetworkConnectionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -47,7 +47,7 @@ func (client *HubVirtualNetworkConnectionsClient) BeginCreateOrUpdate(ctx contex
 	}
 	poller := &hubVirtualNetworkConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (HubVirtualNetworkConnectionResponse, error) {
@@ -65,7 +65,7 @@ func (client *HubVirtualNetworkConnectionsClient) ResumeCreateOrUpdate(ctx conte
 	}
 	poller := &hubVirtualNetworkConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *HubVirtualNetworkConnectionsClient) createOrUpdate(ctx context.Con
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +123,7 @@ func (client *HubVirtualNetworkConnectionsClient) createOrUpdateCreateRequest(ct
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(hubVirtualNetworkConnectionParameters)
@@ -135,7 +135,7 @@ func (client *HubVirtualNetworkConnectionsClient) createOrUpdateHandleError(resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *HubVirtualNetworkConnectionsClient) BeginDelete(ctx context.Contex
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -176,7 +176,7 @@ func (client *HubVirtualNetworkConnectionsClient) ResumeDelete(ctx context.Conte
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -206,7 +206,7 @@ func (client *HubVirtualNetworkConnectionsClient) deleteOperation(ctx context.Co
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *HubVirtualNetworkConnectionsClient) deleteCreateRequest(ctx contex
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -246,7 +246,7 @@ func (client *HubVirtualNetworkConnectionsClient) deleteHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -295,7 +295,7 @@ func (client *HubVirtualNetworkConnectionsClient) getCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -307,7 +307,7 @@ func (client *HubVirtualNetworkConnectionsClient) getHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return HubVirtualNetworkConnectionResponse{}, err
 	}
-return HubVirtualNetworkConnectionResponse{RawResponse: resp.Response, HubVirtualNetworkConnection: val}, nil
+	return HubVirtualNetworkConnectionResponse{RawResponse: resp.Response, HubVirtualNetworkConnection: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -316,7 +316,7 @@ func (client *HubVirtualNetworkConnectionsClient) getHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -325,7 +325,7 @@ func (client *HubVirtualNetworkConnectionsClient) getHandleError(resp *azcore.Re
 
 // List - Retrieves the details of all HubVirtualNetworkConnections.
 // If the operation fails it returns the *CloudError error type.
-func (client *HubVirtualNetworkConnectionsClient) List(resourceGroupName string, virtualHubName string, options *HubVirtualNetworkConnectionsListOptions) (ListHubVirtualNetworkConnectionsResultPager) {
+func (client *HubVirtualNetworkConnectionsClient) List(resourceGroupName string, virtualHubName string, options *HubVirtualNetworkConnectionsListOptions) ListHubVirtualNetworkConnectionsResultPager {
 	return &listHubVirtualNetworkConnectionsResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -361,7 +361,7 @@ func (client *HubVirtualNetworkConnectionsClient) listCreateRequest(ctx context.
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-07-01")
+	reqQP.Set("api-version", "2021-02-01")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -373,7 +373,7 @@ func (client *HubVirtualNetworkConnectionsClient) listHandleResponse(resp *azcor
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ListHubVirtualNetworkConnectionsResultResponse{}, err
 	}
-return ListHubVirtualNetworkConnectionsResultResponse{RawResponse: resp.Response, ListHubVirtualNetworkConnectionsResult: val}, nil
+	return ListHubVirtualNetworkConnectionsResultResponse{RawResponse: resp.Response, ListHubVirtualNetworkConnectionsResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -382,10 +382,9 @@ func (client *HubVirtualNetworkConnectionsClient) listHandleError(resp *azcore.R
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

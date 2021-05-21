@@ -7,4 +7,4 @@
 
 package armresources
 
-const telemetryInfo = "azsdk-go-armresources/v0.2.0"
+const telemetryInfo = "azsdk-go-armresources/v0.1.0"

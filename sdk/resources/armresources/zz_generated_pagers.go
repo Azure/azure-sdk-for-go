@@ -15,15 +15,10 @@ import (
 
 // DeploymentListResultPager provides iteration over DeploymentListResult pages.
 type DeploymentListResultPager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current DeploymentListResultResponse.
 	PageResponse() DeploymentListResultResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type deploymentListResultCreateRequest func(context.Context) (*azcore.Request, error)
@@ -96,15 +91,10 @@ func (p *deploymentListResultPager) PageResponse() DeploymentListResultResponse 
 
 // DeploymentOperationsListResultPager provides iteration over DeploymentOperationsListResult pages.
 type DeploymentOperationsListResultPager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current DeploymentOperationsListResultResponse.
 	PageResponse() DeploymentOperationsListResultResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type deploymentOperationsListResultCreateRequest func(context.Context) (*azcore.Request, error)
@@ -177,15 +167,10 @@ func (p *deploymentOperationsListResultPager) PageResponse() DeploymentOperation
 
 // OperationListResultPager provides iteration over OperationListResult pages.
 type OperationListResultPager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current OperationListResultResponse.
 	PageResponse() OperationListResultResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type operationListResultCreateRequest func(context.Context) (*azcore.Request, error)
@@ -258,15 +243,10 @@ func (p *operationListResultPager) PageResponse() OperationListResultResponse {
 
 // ProviderListResultPager provides iteration over ProviderListResult pages.
 type ProviderListResultPager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current ProviderListResultResponse.
 	PageResponse() ProviderListResultResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type providerListResultCreateRequest func(context.Context) (*azcore.Request, error)
@@ -339,15 +319,10 @@ func (p *providerListResultPager) PageResponse() ProviderListResultResponse {
 
 // ResourceGroupListResultPager provides iteration over ResourceGroupListResult pages.
 type ResourceGroupListResultPager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current ResourceGroupListResultResponse.
 	PageResponse() ResourceGroupListResultResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type resourceGroupListResultCreateRequest func(context.Context) (*azcore.Request, error)
@@ -420,15 +395,10 @@ func (p *resourceGroupListResultPager) PageResponse() ResourceGroupListResultRes
 
 // ResourceListResultPager provides iteration over ResourceListResult pages.
 type ResourceListResultPager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current ResourceListResultResponse.
 	PageResponse() ResourceListResultResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type resourceListResultCreateRequest func(context.Context) (*azcore.Request, error)
@@ -501,15 +471,10 @@ func (p *resourceListResultPager) PageResponse() ResourceListResultResponse {
 
 // TagsListResultPager provides iteration over TagsListResult pages.
 type TagsListResultPager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
 	// Page returns the current TagsListResultResponse.
 	PageResponse() TagsListResultResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
 type tagsListResultCreateRequest func(context.Context) (*azcore.Request, error)

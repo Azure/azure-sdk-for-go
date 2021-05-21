@@ -281,6 +281,10 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	if _, ok := entity[RowKey]; !ok {
 		return fmt.Errorf("entity properties must contain a %s property", RowKey)
 	}
+	// Consider empty ETags as '*'
+	if len(transactionAction.ETag) == 0 {
+		transactionAction.ETag = "*"
+	}
 
 	switch transactionAction.ActionType {
 	case Delete:

@@ -2,14 +2,14 @@
 trigger:
   paths:
     include:
-    - sdk/arm/network/
+    - sdk/network/armnetwork/
 
 pr:
   paths:
     include:
-    - sdk/arm/network/
+    - sdk/network/armnetwork/
 
 stages:
 - template: ../../../eng/pipelines/templates/jobs/archetype-sdk-client-samples.yml
   parameters:
-    ServiceDirectory: 'arm/network'
+    ServiceDirectory: 'network/armnetwork'

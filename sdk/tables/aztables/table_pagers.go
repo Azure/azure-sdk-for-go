@@ -86,7 +86,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	var resp TableEntityQueryResponseResponse
-	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.name, p.tableQueryOptions, p.queryOptions)
+	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.Name, p.tableQueryOptions, p.queryOptions)
 	castAndRemoveAnnotationsSlice(&resp.TableEntityQueryResponse.Value)
 	p.current = &resp
 	p.tableQueryOptions.NextPartitionKey = resp.XMSContinuationNextPartitionKey
@@ -116,7 +116,7 @@ func (p *structQueryResponsePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	var resp TableEntityQueryResponseResponse
-	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.name, p.tableQueryOptions, p.queryOptions)
+	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.Name, p.tableQueryOptions, p.queryOptions)
 	castAndRemoveAnnotationsSlice(&resp.TableEntityQueryResponse.Value)
 	//p.current = &resp
 	r := make([]interface{}, 0, len(resp.TableEntityQueryResponse.Value))
@@ -202,17 +202,17 @@ func castAndRemoveAnnotations(entity *map[string]interface{}) error {
 			valAsString := value[valueKey].(string)
 
 			switch v {
-			case EdmBinary:
+			case edmBinary:
 				value[valueKey] = []byte(valAsString)
-			case EdmDateTime:
+			case edmDateTime:
 				t, err := time.Parse(ISO8601, valAsString)
 				if err != nil {
 					return err
 				}
 				value[valueKey] = t
-			case EdmGuid:
+			case edmGuid:
 				value[valueKey] = uuid.Parse(valAsString)
-			case EdmInt64:
+			case edmInt64:
 				i, err := strconv.ParseInt(valAsString, 10, 64)
 				if err != nil {
 					return err
@@ -242,16 +242,16 @@ func toOdataAnnotatedDictionary(entity *map[string]interface{}) error {
 			uuidVal, ok := v.(uuid.UUID)
 			if ok {
 				entMap[k] = uuidVal.String()
-				entMap[odataType(k)] = EdmGuid
+				entMap[odataType(k)] = edmGuid
 			} else {
-				entMap[odataType(k)] = EdmBinary
+				entMap[odataType(k)] = edmBinary
 				b := v.([]byte)
 				entMap[k] = base64.StdEncoding.EncodeToString(b)
 			}
 		case reflect.Struct:
 			switch tn := reflect.TypeOf(v).String(); tn {
 			case "time.Time":
-				entMap[odataType(k)] = EdmDateTime
+				entMap[odataType(k)] = edmDateTime
 				time := v.(time.Time)
 				entMap[k] = time.UTC().Format(ISO8601)
 				continue
@@ -259,9 +259,9 @@ func toOdataAnnotatedDictionary(entity *map[string]interface{}) error {
 				return errors.New(fmt.Sprintf("Invalid struct for entity field '%s' of type '%s'", k, tn))
 			}
 		case reflect.Float32, reflect.Float64:
-			entMap[odataType(k)] = EdmDouble
+			entMap[odataType(k)] = edmDouble
 		case reflect.Int64:
-			entMap[odataType(k)] = EdmInt64
+			entMap[odataType(k)] = edmInt64
 			i64 := v.(int64)
 			entMap[k] = strconv.FormatInt(i64, 10)
 		case reflect.Ptr:
@@ -293,7 +293,7 @@ func toMap(ent interface{}) (*map[string]interface{}, error) {
 	Switch:
 		f := typeOfT.Field(i)
 		name := f.Name
-		if name == ETag || name == Timestamp {
+		if name == etag || name == timestamp {
 			// we do not need to serialize ETag or TimeStamp
 			continue
 		}
@@ -305,13 +305,13 @@ func toMap(ent interface{}) (*map[string]interface{}, error) {
 			}
 			// check if this is a uuid field as decorated by a tag
 			if _, ok := f.Tag.Lookup("uuid"); ok {
-				entMap[odataType(name)] = EdmGuid
+				entMap[odataType(name)] = edmGuid
 				u := v.Interface().([16]byte)
 				var uu uuid.UUID = u
 				entMap[name] = uu.String()
 				continue
 			} else {
-				entMap[odataType(name)] = EdmBinary
+				entMap[odataType(name)] = edmBinary
 				b := v.Interface().([]byte)
 				entMap[name] = base64.StdEncoding.EncodeToString(b)
 				continue
@@ -319,7 +319,7 @@ func toMap(ent interface{}) (*map[string]interface{}, error) {
 		case reflect.Struct:
 			switch tn := v.Type().String(); tn {
 			case "time.Time":
-				entMap[odataType(name)] = EdmDateTime
+				entMap[odataType(name)] = edmDateTime
 				time := v.Interface().(time.Time)
 				entMap[name] = time.UTC().Format(ISO8601)
 				continue
@@ -327,9 +327,9 @@ func toMap(ent interface{}) (*map[string]interface{}, error) {
 				return nil, errors.New(fmt.Sprintf("Invalid struct for entity field '%s' of type '%s'", typeOfT.Field(i).Name, tn))
 			}
 		case reflect.Float32, reflect.Float64:
-			entMap[odataType(name)] = EdmDouble
+			entMap[odataType(name)] = edmDouble
 		case reflect.Int64:
-			entMap[odataType(name)] = EdmInt64
+			entMap[odataType(name)] = edmInt64
 			i64 := v.Interface().(int64)
 			entMap[name] = strconv.FormatInt(i64, 10)
 			continue
@@ -422,8 +422,8 @@ func getTypeValueMap(i interface{}) *map[string]int {
 	for i := 0; i < nf; i++ {
 		f := tt.Field(i)
 		fmap[f.Name] = i
-		if f.Name == ETag {
-			fmap[EtagOdata] = i
+		if f.Name == etag {
+			fmap[etagOdata] = i
 		}
 	}
 	return &fmap

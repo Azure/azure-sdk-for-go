@@ -218,12 +218,12 @@ func closerFromString(content string) io.ReadCloser {
 }
 
 var odataHintProps = map[string]string{
-	"SomeBinaryProperty":  EdmBinary,
-	"SomeDateProperty":    EdmDateTime,
-	"SomeDoubleProperty0": EdmDouble,
-	"SomeDoubleProperty1": EdmDouble,
-	"SomeGuidProperty":    EdmGuid,
-	"SomeInt64Property":   EdmInt64}
+	"SomeBinaryProperty":  edmBinary,
+	"SomeDateProperty":    edmDateTime,
+	"SomeDoubleProperty0": edmDouble,
+	"SomeDoubleProperty1": edmDouble,
+	"SomeGuidProperty":    edmGuid,
+	"SomeInt64Property":   edmInt64}
 
 var complexPayload = "{\"odata.etag\": \"W/\\\"datetime'2021-04-05T05%3A02%3A40.7371784Z'\\\"\"," +
 	"\"PartitionKey\": \"somePartition\"," +

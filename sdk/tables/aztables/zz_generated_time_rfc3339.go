@@ -7,8 +7,6 @@
 
 package aztables
 
-
-
 import (
 	"regexp"
 	"strings"

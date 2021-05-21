@@ -53,7 +53,7 @@ func (s *tableClientLiveTests) TestCreateTable() {
 	resp, err := client.Create(ctx)
 
 	assert.Nil(err)
-	assert.Equal(*resp.TableResponse.TableName, client.Name())
+	assert.Equal(*resp.TableResponse.TableName, client.Name)
 }
 
 func (s *tableClientLiveTests) TestAddEntity() {
@@ -90,7 +90,7 @@ func (s *tableClientLiveTests) TestDeleteEntity() {
 
 	_, err := client.AddEntity(ctx, (*entitiesToCreate)[0])
 	assert.Nil(err)
-	_, delErr := client.DeleteEntity(ctx, (*entitiesToCreate)[0][PartitionKey].(string), (*entitiesToCreate)[0][RowKey].(string), "*")
+	_, delErr := client.DeleteEntity(ctx, (*entitiesToCreate)[0][partitionKey].(string), (*entitiesToCreate)[0][rowKey].(string), "*")
 	assert.Nil(delErr)
 }
 
@@ -115,8 +115,8 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 	mergeProp := "MergeProperty"
 	val := "foo"
 	var mergeProperty = map[string]interface{}{
-		PartitionKey: (*entitiesToCreate)[0][PartitionKey],
-		RowKey:       (*entitiesToCreate)[0][RowKey],
+		partitionKey: (*entitiesToCreate)[0][partitionKey],
+		rowKey:       (*entitiesToCreate)[0][rowKey],
 		mergeProp:    val,
 	}
 
@@ -156,8 +156,8 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 	mergeProp := "MergeProperty"
 	val := "foo"
 	var mergeProperty = map[string]interface{}{
-		PartitionKey: (*entitiesToCreate)[0][PartitionKey],
-		RowKey:       (*entitiesToCreate)[0][RowKey],
+		partitionKey: (*entitiesToCreate)[0][partitionKey],
+		rowKey:       (*entitiesToCreate)[0][rowKey],
 		mergeProp:    val,
 	}
 
@@ -191,13 +191,13 @@ func (s *tableClientLiveTests) _TestGetEntity() {
 	resp, err := client.GetEntity(ctx, "partition", "1")
 	require.Nil(err)
 	e := resp.Value
-	_, ok := e[PartitionKey].(string)
+	_, ok := e[partitionKey].(string)
 	assert.True(ok)
-	_, ok = e[RowKey].(string)
+	_, ok = e[rowKey].(string)
 	assert.True(ok)
-	_, ok = e[Timestamp].(string)
+	_, ok = e[timestamp].(string)
 	assert.True(ok)
-	_, ok = e[EtagOdata].(string)
+	_, ok = e[etagOdata].(string)
 	assert.True(ok)
 	_, ok = e["StringProp"].(string)
 	assert.True(ok)
@@ -231,13 +231,13 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	resp = pager.PageResponse()
 	assert.Nil(pager.Err())
 	for _, e := range resp.TableEntityQueryResponse.Value {
-		_, ok := e[PartitionKey].(string)
+		_, ok := e[partitionKey].(string)
 		assert.True(ok)
-		_, ok = e[RowKey].(string)
+		_, ok = e[rowKey].(string)
 		assert.True(ok)
-		_, ok = e[Timestamp].(string)
+		_, ok = e[timestamp].(string)
 		assert.True(ok)
-		_, ok = e[EtagOdata].(string)
+		_, ok = e[etagOdata].(string)
 		assert.True(ok)
 		_, ok = e["StringProp"].(string)
 		assert.True(ok)
@@ -273,13 +273,13 @@ func (s *tableClientLiveTests) TestQueryComplexEntity() {
 	resp = pager.PageResponse()
 	assert.Nil(pager.Err())
 	for _, e := range resp.TableEntityQueryResponse.Value {
-		_, ok := e[PartitionKey].(string)
+		_, ok := e[partitionKey].(string)
 		assert.True(ok)
-		_, ok = e[RowKey].(string)
+		_, ok = e[rowKey].(string)
 		assert.True(ok)
-		_, ok = e[Timestamp].(string)
+		_, ok = e[timestamp].(string)
 		assert.True(ok)
-		_, ok = e[EtagOdata].(string)
+		_, ok = e[etagOdata].(string)
 		assert.True(ok)
 		_, ok = e["StringProp"].(string)
 		assert.True(ok)
@@ -321,7 +321,7 @@ func (s *tableClientLiveTests) TestBatchAdd() {
 		batch[i] = TableTransactionAction{ActionType: Add, Entity: e}
 	}
 
-	resp, err := client.submitTransactionInternal(&batch, context.recording.UUID(), context.recording.UUID(), nil, ctx)
+	resp, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
 	assert.Nil(err)
 	for i := 0; i < len(*resp.TransactionResponses); i++ {
 		r := (*resp.TransactionResponses)[i]
@@ -344,7 +344,7 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 		batch[i] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[i]}
 	}
 
-	resp, err := client.submitTransactionInternal(&batch, context.recording.UUID(), context.recording.UUID(), nil, ctx)
+	resp, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
 	require.Nil(err)
 	for i := 0; i < len(*resp.TransactionResponses); i++ {
 		r := (*resp.TransactionResponses)[i]
@@ -366,11 +366,11 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 	mergeProp := "MergeProperty"
 	val := "foo"
 	var mergeProperty = map[string]interface{}{
-		PartitionKey: (*entitiesToCreate)[0][PartitionKey],
-		RowKey:       (*entitiesToCreate)[0][RowKey],
+		partitionKey: (*entitiesToCreate)[0][partitionKey],
+		rowKey:       (*entitiesToCreate)[0][rowKey],
 		mergeProp:    val,
 	}
-	batch[0] = TableTransactionAction{ActionType: UpdateMerge, Entity: mergeProperty, ETag: (*resp.TransactionResponses)[0].Header.Get(ETag)}
+	batch[0] = TableTransactionAction{ActionType: UpdateMerge, Entity: mergeProperty, ETag: (*resp.TransactionResponses)[0].Header.Get(etag)}
 
 	// create a delete action for the second added entity
 	batch[1] = TableTransactionAction{ActionType: Delete, Entity: (*entitiesToCreate)[1]}
@@ -378,8 +378,8 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 	// create an upsert action to replace the third added entity with a new value
 	replaceProp := "ReplaceProperty"
 	var replaceProperties = map[string]interface{}{
-		PartitionKey: (*entitiesToCreate)[2][PartitionKey],
-		RowKey:       (*entitiesToCreate)[2][RowKey],
+		partitionKey: (*entitiesToCreate)[2][partitionKey],
+		rowKey:       (*entitiesToCreate)[2][rowKey],
 		replaceProp:  val,
 	}
 	batch[2] = TableTransactionAction{ActionType: UpsertReplace, Entity: replaceProperties}
@@ -390,7 +390,7 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 
 	//batch = batch[1:]
 
-	resp, err = client.submitTransactionInternal(&batch, context.recording.UUID(), context.recording.UUID(), nil, ctx)
+	resp, err = client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
 	require.Nil(err)
 
 	for i := 0; i < len(*resp.TransactionResponses); i++ {
@@ -423,7 +423,7 @@ func (s *tableClientLiveTests) TestBatchError() {
 	batch := make([]TableTransactionAction, 0, 3)
 
 	// Sending an empty batch throws.
-	_, err := client.submitTransactionInternal(&batch, context.recording.UUID(), context.recording.UUID(), nil, ctx)
+	_, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
 	assert.NotNil(err)
 	assert.Equal(error_empty_transaction, err.Error())
 
@@ -435,7 +435,7 @@ func (s *tableClientLiveTests) TestBatchError() {
 		batch = append(batch, TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[i]})
 	}
 
-	resp, err := client.submitTransactionInternal(&batch, context.recording.UUID(), context.recording.UUID(), nil, ctx)
+	resp, err := client.submitTransactionInternal(ctx, &batch, context.recording.UUID(), context.recording.UUID(), nil)
 	assert.NotNil(err)
 	te, ok := err.(*TableTransactionError)
 	require.Truef(ok, "err should be of type TableTransactionError")

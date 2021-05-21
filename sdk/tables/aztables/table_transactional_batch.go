@@ -103,12 +103,12 @@ var defaultChangesetHeaders = map[string]string{
 }
 
 // SubmitTransaction submits the table transactional batch according to the slice of TableTransactionActions provided.
-func (t *TableClient) SubmitTransaction(transactionActions []TableTransactionAction, tableSubmitTransactionOptions *TableSubmitTransactionOptions, ctx context.Context) (TableTransactionResponse, error) {
-	return t.submitTransactionInternal(&transactionActions, uuid.New(), uuid.New(), tableSubmitTransactionOptions, ctx)
+func (t *TableClient) SubmitTransaction(ctx context.Context, transactionActions []TableTransactionAction, tableSubmitTransactionOptions *TableSubmitTransactionOptions) (TableTransactionResponse, error) {
+	return t.submitTransactionInternal(ctx, &transactionActions, uuid.New(), uuid.New(), tableSubmitTransactionOptions)
 }
 
 // submitTransactionInternal is the internal implementation for SubmitTransaction. It allows for explicit configuration of the batch and changeset UUID values for testing.
-func (t *TableClient) submitTransactionInternal(transactionActions *[]TableTransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, tableSubmitTransactionOptions *TableSubmitTransactionOptions, ctx context.Context) (TableTransactionResponse, error) {
+func (t *TableClient) submitTransactionInternal(ctx context.Context, transactionActions *[]TableTransactionAction, batchUuid uuid.UUID, changesetUuid uuid.UUID, tableSubmitTransactionOptions *TableSubmitTransactionOptions) (TableTransactionResponse, error) {
 	if len(*transactionActions) == 0 {
 		return TableTransactionResponse{}, errors.New(error_empty_transaction)
 	}
@@ -286,11 +286,11 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	var req *azcore.Request
 	var entity map[string]interface{} = transactionAction.Entity
 
-	if _, ok := entity[PartitionKey]; !ok {
-		return fmt.Errorf("entity properties must contain a %s property", PartitionKey)
+	if _, ok := entity[partitionKey]; !ok {
+		return fmt.Errorf("entity properties must contain a %s property", partitionKey)
 	}
-	if _, ok := entity[RowKey]; !ok {
-		return fmt.Errorf("entity properties must contain a %s property", RowKey)
+	if _, ok := entity[rowKey]; !ok {
+		return fmt.Errorf("entity properties must contain a %s property", rowKey)
 	}
 	// Consider empty ETags as '*'
 	if len(transactionAction.ETag) == 0 {
@@ -299,10 +299,10 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 
 	switch transactionAction.ActionType {
 	case Delete:
-		req, err = t.client.deleteEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), transactionAction.ETag, &TableDeleteEntityOptions{}, qo)
+		req, err = t.client.deleteEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), transactionAction.ETag, &TableDeleteEntityOptions{}, qo)
 	case Add:
 		toOdataAnnotatedDictionary(&entity)
-		req, err = t.client.insertEntityCreateRequest(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, qo)
+		req, err = t.client.insertEntityCreateRequest(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, qo)
 	case UpdateMerge:
 		fallthrough
 	case UpsertMerge:
@@ -311,7 +311,7 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 		if len(transactionAction.ETag) > 0 {
 			opts.IfMatch = &transactionAction.ETag
 		}
-		req, err = t.client.mergeEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), opts, qo)
+		req, err = t.client.mergeEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), opts, qo)
 		if isCosmosEndpoint(t.client.con.Endpoint()) {
 			transformPatchToCosmosPost(req)
 		}
@@ -319,7 +319,7 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 		fallthrough
 	case UpsertReplace:
 		toOdataAnnotatedDictionary(&entity)
-		req, err = t.client.updateEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), &TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
+		req, err = t.client.updateEntityCreateRequest(ctx, t.Name, entity[partitionKey].(string), entity[rowKey].(string), &TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
 	}
 
 	urlAndVerb := fmt.Sprintf("%s %s HTTP/1.1\r\n", req.Method, req.URL)

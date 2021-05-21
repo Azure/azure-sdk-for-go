@@ -127,8 +127,8 @@ func createSimpleEntities(count int, pk string) *[]map[string]interface{} {
 
 	for i := 1; i <= count; i++ {
 		var e = map[string]interface{}{
-			PartitionKey: pk,
-			RowKey:       fmt.Sprint(i),
+			partitionKey: pk,
+			rowKey:       fmt.Sprint(i),
 			"StringProp": fmt.Sprintf("some string %d", i),
 			"IntProp":    i,
 			"BoolProp":   true,
@@ -143,8 +143,8 @@ func createComplexMapEntities(context *testContext, count int, pk string) *[]map
 
 	for i := 1; i <= count; i++ {
 		var e = map[string]interface{}{
-			PartitionKey:          pk,
-			RowKey:                fmt.Sprint(i),
+			partitionKey:          pk,
+			rowKey:                fmt.Sprint(i),
 			"StringProp":          fmt.Sprintf("some string %d", i),
 			"IntProp":             i,
 			"BoolProp":            true,

@@ -16,7 +16,7 @@ type TableClient struct {
 	client  *tableClient
 	service *TableServiceClient
 	cred    SharedKeyCredential
-	name    string
+	Name    string
 }
 
 type TableUpdateMode string
@@ -32,18 +32,14 @@ func NewTableClient(tableName string, serviceURL string, cred azcore.Credential,
 	return s.GetTableClient(tableName), err
 }
 
-func (t *TableClient) Name() string {
-	return t.name
-}
-
 // Create creates the table with the name specified in NewTableClient
 func (t *TableClient) Create(ctx context.Context) (*TableResponseResponse, *runtime.ResponseError) {
-	return t.service.Create(ctx, t.name)
+	return t.service.Create(ctx, t.Name)
 }
 
 // Delete deletes the current table
 func (t *TableClient) Delete(ctx context.Context) (*TableDeleteResponse, *runtime.ResponseError) {
-	return t.service.Delete(ctx, t.name)
+	return t.service.Delete(ctx, t.Name)
 }
 
 // Query queries the tables using the specified QueryOptions
@@ -57,7 +53,7 @@ func (t *TableClient) QueryAsModel(opt QueryOptions, s FromMapper) StructEntityQ
 }
 
 func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string) (MapOfInterfaceResponse, error) {
-	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.name, partitionKey, rowKey, &TableQueryEntityWithPartitionAndRowKeyOptions{}, &QueryOptions{})
+	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.Name, partitionKey, rowKey, &TableQueryEntityWithPartitionAndRowKeyOptions{}, &QueryOptions{})
 	if err != nil {
 		return resp, err
 	}
@@ -68,7 +64,7 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 // AddEntity Creates an entity from a map value.
 func (t *TableClient) AddEntity(ctx context.Context, entity map[string]interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
 	toOdataAnnotatedDictionary(&entity)
-	resp, err := t.client.InsertEntity(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
+	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
 	if err == nil {
 		insertResp := resp.(TableInsertEntityResponse)
 		return &insertResp, nil
@@ -83,7 +79,7 @@ func (t *TableClient) AddModelEntity(ctx context.Context, entity interface{}) (*
 	if err != nil {
 		return nil, azcore.NewResponseError(err, nil).(*runtime.ResponseError)
 	}
-	resp, err := t.client.InsertEntity(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: *entmap, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
+	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: *entmap, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
 	if err == nil {
 		insertResp := resp.(TableInsertEntityResponse)
 		return &insertResp, nil
@@ -93,7 +89,7 @@ func (t *TableClient) AddModelEntity(ctx context.Context, entity interface{}) (*
 }
 
 func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, rowKey string, etag string) (TableDeleteEntityResponse, error) {
-	return t.client.DeleteEntity(ctx, t.name, partitionKey, rowKey, etag, nil, &QueryOptions{})
+	return t.client.DeleteEntity(ctx, t.Name, partitionKey, rowKey, etag, nil, &QueryOptions{})
 }
 
 // UpdateEntity updates the specified table entity if it exists.
@@ -101,17 +97,17 @@ func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, row
 // If updateMode is Merge, the property values present in the specified entity will be merged with the existing entity.
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
 func (t *TableClient) UpdateEntity(ctx context.Context, entity map[string]interface{}, etag *string, updateMode TableUpdateMode) (interface{}, error) {
-	pk := entity[PartitionKey].(string)
-	rk := entity[RowKey].(string)
+	pk := entity[partitionKey].(string)
+	rk := entity[rowKey].(string)
 	var ifMatch string = "*"
 	if etag != nil {
 		ifMatch = *etag
 	}
 	switch updateMode {
 	case Merge:
-		return t.client.MergeEntity(ctx, t.name, pk, rk, &TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: entity}, &QueryOptions{})
+		return t.client.MergeEntity(ctx, t.Name, pk, rk, &TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: entity}, &QueryOptions{})
 	case Replace:
-		return t.client.UpdateEntity(ctx, t.name, pk, rk, &TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: entity}, &QueryOptions{})
+		return t.client.UpdateEntity(ctx, t.Name, pk, rk, &TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: entity}, &QueryOptions{})
 	}
 	return nil, errors.New("Invalid TableUpdateMode")
 }
@@ -120,14 +116,14 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity map[string]interf
 // If the entity exists and updateMode is Merge, the property values present in the specified entity will be merged with the existing entity rather than replaced.
 // The response type will be TableEntityMergeResponse if updateMode is Merge and TableEntityUpdateResponse if updateMode is Replace.
 func (t *TableClient) UpsertEntity(ctx context.Context, entity map[string]interface{}, updateMode TableUpdateMode) (interface{}, error) {
-	pk := entity[PartitionKey].(string)
-	rk := entity[RowKey].(string)
+	pk := entity[partitionKey].(string)
+	rk := entity[rowKey].(string)
 
 	switch updateMode {
 	case Merge:
-		return t.client.MergeEntity(ctx, t.name, pk, rk, &TableMergeEntityOptions{TableEntityProperties: entity}, &QueryOptions{})
+		return t.client.MergeEntity(ctx, t.Name, pk, rk, &TableMergeEntityOptions{TableEntityProperties: entity}, &QueryOptions{})
 	case Replace:
-		return t.client.UpdateEntity(ctx, t.name, pk, rk, &TableUpdateEntityOptions{TableEntityProperties: entity}, &QueryOptions{})
+		return t.client.UpdateEntity(ctx, t.Name, pk, rk, &TableUpdateEntityOptions{TableEntityProperties: entity}, &QueryOptions{})
 	}
 	return nil, errors.New("Invalid TableUpdateMode")
 }

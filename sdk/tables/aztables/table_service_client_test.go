@@ -86,7 +86,7 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 	resultCount := 0
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
-		resultCount += len(*resp.TableQueryResponse.Value)
+		resultCount += len(resp.TableQueryResponse.Value)
 	}
 
 	assert.Nil(pager.Err())
@@ -100,7 +100,7 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 	pageCount := 0
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
-		resultCount += len(*resp.TableQueryResponse.Value)
+		resultCount += len(resp.TableQueryResponse.Value)
 		pageCount++
 	}
 

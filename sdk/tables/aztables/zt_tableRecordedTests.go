@@ -99,7 +99,7 @@ func cleanupTables(context *testContext, tables *[]string) {
 	if tables == nil {
 		pager := c.QueryTables(QueryOptions{})
 		for pager.NextPage(ctx) {
-			for _, t := range *(pager.PageResponse().TableQueryResponse.Value) {
+			for _, t := range pager.PageResponse().TableQueryResponse.Value {
 				c.Delete(ctx, *t.TableName)
 			}
 		}

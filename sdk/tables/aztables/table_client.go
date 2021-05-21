@@ -56,21 +56,19 @@ func (t *TableClient) QueryAsModel(opt QueryOptions, s FromMapper) StructEntityQ
 	return &structQueryResponsePager{mapper: s, tableClient: t, queryOptions: &opt, tableQueryOptions: &TableQueryEntitiesOptions{}}
 }
 
-func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string) (TableEntityQueryResponseResponse, error) {
-	resp, err := t.client.QueryEntitiesWithPartitionAndRowKey(ctx, t.name, partitionKey, rowKey, &TableQueryEntitiesWithPartitionAndRowKeyOptions{}, &QueryOptions{})
+func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string) (MapOfInterfaceResponse, error) {
+	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.name, partitionKey, rowKey, &TableQueryEntityWithPartitionAndRowKeyOptions{}, &QueryOptions{})
 	if err != nil {
 		return resp, err
 	}
-	for _, e := range *resp.TableEntityQueryResponse.Value {
-		castAndRemoveAnnotations(&e)
-	}
+	castAndRemoveAnnotations(&resp.Value)
 	return resp, err
 }
 
 // AddEntity Creates an entity from a map value.
 func (t *TableClient) AddEntity(ctx context.Context, entity map[string]interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
 	toOdataAnnotatedDictionary(&entity)
-	resp, err := t.client.InsertEntity(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: &entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
+	resp, err := t.client.InsertEntity(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
 	if err == nil {
 		insertResp := resp.(TableInsertEntityResponse)
 		return &insertResp, nil
@@ -85,7 +83,7 @@ func (t *TableClient) AddModelEntity(ctx context.Context, entity interface{}) (*
 	if err != nil {
 		return nil, azcore.NewResponseError(err, nil).(*runtime.ResponseError)
 	}
-	resp, err := t.client.InsertEntity(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: entmap, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
+	resp, err := t.client.InsertEntity(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: *entmap, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
 	if err == nil {
 		insertResp := resp.(TableInsertEntityResponse)
 		return &insertResp, nil
@@ -111,9 +109,9 @@ func (t *TableClient) UpdateEntity(ctx context.Context, entity map[string]interf
 	}
 	switch updateMode {
 	case Merge:
-		return t.client.MergeEntity(ctx, t.name, pk, rk, &TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: &entity}, &QueryOptions{})
+		return t.client.MergeEntity(ctx, t.name, pk, rk, &TableMergeEntityOptions{IfMatch: &ifMatch, TableEntityProperties: entity}, &QueryOptions{})
 	case Replace:
-		return t.client.UpdateEntity(ctx, t.name, pk, rk, &TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: &entity}, &QueryOptions{})
+		return t.client.UpdateEntity(ctx, t.name, pk, rk, &TableUpdateEntityOptions{IfMatch: &ifMatch, TableEntityProperties: entity}, &QueryOptions{})
 	}
 	return nil, errors.New("Invalid TableUpdateMode")
 }
@@ -127,9 +125,9 @@ func (t *TableClient) UpsertEntity(ctx context.Context, entity map[string]interf
 
 	switch updateMode {
 	case Merge:
-		return t.client.MergeEntity(ctx, t.name, pk, rk, &TableMergeEntityOptions{TableEntityProperties: &entity}, &QueryOptions{})
+		return t.client.MergeEntity(ctx, t.name, pk, rk, &TableMergeEntityOptions{TableEntityProperties: entity}, &QueryOptions{})
 	case Replace:
-		return t.client.UpdateEntity(ctx, t.name, pk, rk, &TableUpdateEntityOptions{TableEntityProperties: &entity}, &QueryOptions{})
+		return t.client.UpdateEntity(ctx, t.name, pk, rk, &TableUpdateEntityOptions{TableEntityProperties: entity}, &QueryOptions{})
 	}
 	return nil, errors.New("Invalid TableUpdateMode")
 }

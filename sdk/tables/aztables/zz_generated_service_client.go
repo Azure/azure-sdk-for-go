@@ -9,11 +9,11 @@ package aztables
 
 import (
 	"context"
+	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"strconv"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 type serviceClient struct {
@@ -21,6 +21,7 @@ type serviceClient struct {
 }
 
 // GetProperties - Gets the properties of an account's Table service, including properties for Analytics and CORS (Cross-Origin Resource Sharing) rules.
+// If the operation fails it returns the *TableServiceError error type.
 func (client *serviceClient) GetProperties(ctx context.Context, options *ServiceGetPropertiesOptions) (TableServicePropertiesResponse, error) {
 	req, err := client.getPropertiesCreateRequest(ctx, options)
 	if err != nil {
@@ -43,13 +44,13 @@ func (client *serviceClient) getPropertiesCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("restype", "service")
-	query.Set("comp", "properties")
+	reqQP := req.URL.Query()
+	reqQP.Set("restype", "service")
+	reqQP.Set("comp", "properties")
 	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.URL.RawQuery = query.Encode()
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("x-ms-version", "2019-02-02")
 	if options != nil && options.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestID)
@@ -79,15 +80,20 @@ func (client *serviceClient) getPropertiesHandleResponse(resp *azcore.Response) 
 
 // getPropertiesHandleError handles the GetProperties error response.
 func (client *serviceClient) getPropertiesHandleError(resp *azcore.Response) error {
-	var err TableServiceError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+		errType := TableServiceError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // GetStatistics - Retrieves statistics related to replication for the Table service. It is only available on the secondary location endpoint when read-access
 // geo-redundant replication is enabled for the account.
+// If the operation fails it returns the *TableServiceError error type.
 func (client *serviceClient) GetStatistics(ctx context.Context, options *ServiceGetStatisticsOptions) (TableServiceStatsResponse, error) {
 	req, err := client.getStatisticsCreateRequest(ctx, options)
 	if err != nil {
@@ -110,13 +116,13 @@ func (client *serviceClient) getStatisticsCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("restype", "service")
-	query.Set("comp", "stats")
+	reqQP := req.URL.Query()
+	reqQP.Set("restype", "service")
+	reqQP.Set("comp", "stats")
 	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.URL.RawQuery = query.Encode()
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("x-ms-version", "2019-02-02")
 	if options != nil && options.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestID)
@@ -153,15 +159,20 @@ func (client *serviceClient) getStatisticsHandleResponse(resp *azcore.Response) 
 
 // getStatisticsHandleError handles the GetStatistics error response.
 func (client *serviceClient) getStatisticsHandleError(resp *azcore.Response) error {
-	var err TableServiceError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+		errType := TableServiceError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // SetProperties - Sets properties for an account's Table service endpoint, including properties for Analytics and CORS (Cross-Origin Resource Sharing)
 // rules.
+// If the operation fails it returns the *TableServiceError error type.
 func (client *serviceClient) SetProperties(ctx context.Context, tableServiceProperties TableServiceProperties, options *ServiceSetPropertiesOptions) (ServiceSetPropertiesResponse, error) {
 	req, err := client.setPropertiesCreateRequest(ctx, tableServiceProperties, options)
 	if err != nil {
@@ -184,13 +195,13 @@ func (client *serviceClient) setPropertiesCreateRequest(ctx context.Context, tab
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("restype", "service")
-	query.Set("comp", "properties")
+	reqQP := req.URL.Query()
+	reqQP.Set("restype", "service")
+	reqQP.Set("comp", "properties")
 	if options != nil && options.Timeout != nil {
-		query.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.URL.RawQuery = query.Encode()
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("x-ms-version", "2019-02-02")
 	if options != nil && options.RequestID != nil {
 		req.Header.Set("x-ms-client-request-id", *options.RequestID)
@@ -216,9 +227,14 @@ func (client *serviceClient) setPropertiesHandleResponse(resp *azcore.Response) 
 
 // setPropertiesHandleError handles the SetProperties error response.
 func (client *serviceClient) setPropertiesHandleError(resp *azcore.Response) error {
-	var err TableServiceError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+		errType := TableServiceError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
+

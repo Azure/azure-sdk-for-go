@@ -110,7 +110,7 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
-	preMerge := (*qResp.TableEntityQueryResponse.Value)[0]
+	preMerge := qResp.TableEntityQueryResponse.Value[0]
 
 	mergeProp := "MergeProperty"
 	val := "foo"
@@ -127,7 +127,7 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
-	postMerge := (*qResp.TableEntityQueryResponse.Value)[0]
+	postMerge := qResp.TableEntityQueryResponse.Value[0]
 
 	// The merged entity has all its properties + the merged property
 	assert.Equalf(len(preMerge)+1, len(postMerge), "postMerge should have one more property than preMerge")
@@ -151,7 +151,7 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
-	preMerge := (*qResp.TableEntityQueryResponse.Value)[0]
+	preMerge := qResp.TableEntityQueryResponse.Value[0]
 
 	mergeProp := "MergeProperty"
 	val := "foo"
@@ -168,7 +168,7 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
-	postMerge := (*qResp.TableEntityQueryResponse.Value)[0]
+	postMerge := qResp.TableEntityQueryResponse.Value[0]
 
 	// The merged entity has only the standard properties + the merged property
 	assert.Greater(len(preMerge), len(postMerge), "postMerge should have fewer properties than preMerge")
@@ -190,7 +190,7 @@ func (s *tableClientLiveTests) _TestGetEntity() {
 
 	resp, err := client.GetEntity(ctx, "partition", "1")
 	require.Nil(err)
-	e := (*resp.TableEntityQueryResponse.Value)[0]
+	e := resp.Value
 	_, ok := e[PartitionKey].(string)
 	assert.True(ok)
 	_, ok = e[RowKey].(string)
@@ -226,11 +226,11 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	pager := client.Query(QueryOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		resp = pager.PageResponse()
-		assert.Equal(len(*resp.TableEntityQueryResponse.Value), expectedCount)
+		assert.Equal(len(resp.TableEntityQueryResponse.Value), expectedCount)
 	}
 	resp = pager.PageResponse()
 	assert.Nil(pager.Err())
-	for _, e := range *resp.TableEntityQueryResponse.Value {
+	for _, e := range resp.TableEntityQueryResponse.Value {
 		_, ok := e[PartitionKey].(string)
 		assert.True(ok)
 		_, ok = e[RowKey].(string)
@@ -268,11 +268,11 @@ func (s *tableClientLiveTests) TestQueryComplexEntity() {
 	pager := client.Query(QueryOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		resp = pager.PageResponse()
-		assert.Equal(expectedCount, len(*resp.TableEntityQueryResponse.Value))
+		assert.Equal(expectedCount, len(resp.TableEntityQueryResponse.Value))
 	}
 	resp = pager.PageResponse()
 	assert.Nil(pager.Err())
-	for _, e := range *resp.TableEntityQueryResponse.Value {
+	for _, e := range resp.TableEntityQueryResponse.Value {
 		_, ok := e[PartitionKey].(string)
 		assert.True(ok)
 		_, ok = e[RowKey].(string)
@@ -357,7 +357,7 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
-	preMerge := (*qResp.TableEntityQueryResponse.Value)[0]
+	preMerge := qResp.TableEntityQueryResponse.Value[0]
 
 	// create a new batch slice.
 	batch = make([]TableTransactionAction, 5)
@@ -403,7 +403,7 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
-	postMerge := (*qResp.TableEntityQueryResponse.Value)[0]
+	postMerge := qResp.TableEntityQueryResponse.Value[0]
 
 	// The merged entity has all its properties + the merged property
 	assert.Equalf(len(preMerge)+1, len(postMerge), "postMerge should have one more property than preMerge")

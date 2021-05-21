@@ -26,20 +26,11 @@ type TableServiceClient struct {
 
 // NewTableServiceClient creates a TableClient object using the specified URL and request policy pipeline.
 func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *TableClientOptions) (*TableServiceClient, error) {
-	var con *connection
 	conOptions := options.getConnectionOptions()
 	if isCosmosEndpoint(serviceURL) {
-		p := azcore.NewPipeline(options.HTTPClient,
-			azcore.NewTelemetryPolicy(conOptions.telemetryOptions()),
-			CosmosPatchTransformPolicy{},
-			azcore.NewRetryPolicy(&options.Retry),
-			cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
-			azcore.NewLogPolicy(&conOptions.Logging))
-		con = newConnectionWithPipeline(serviceURL, p)
-
-	} else {
-		con = newConnection(serviceURL, cred, conOptions)
+		conOptions.PerCallPolicies = []azcore.Policy{CosmosPatchTransformPolicy{}}
 	}
+	con := newConnection(serviceURL, cred, conOptions)
 	c, _ := cred.(*SharedKeyCredential)
 	return &TableServiceClient{client: &tableClient{con}, service: &serviceClient{con}, cred: *c}, nil
 }

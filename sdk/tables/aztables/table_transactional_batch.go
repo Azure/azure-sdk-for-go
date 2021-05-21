@@ -302,12 +302,12 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 		req, err = t.client.deleteEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), transactionAction.ETag, &TableDeleteEntityOptions{}, qo)
 	case Add:
 		toOdataAnnotatedDictionary(&entity)
-		req, err = t.client.insertEntityCreateRequest(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: &entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, qo)
+		req, err = t.client.insertEntityCreateRequest(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, qo)
 	case UpdateMerge:
 		fallthrough
 	case UpsertMerge:
 		toOdataAnnotatedDictionary(&entity)
-		opts := &TableMergeEntityOptions{TableEntityProperties: &entity}
+		opts := &TableMergeEntityOptions{TableEntityProperties: entity}
 		if len(transactionAction.ETag) > 0 {
 			opts.IfMatch = &transactionAction.ETag
 		}
@@ -319,7 +319,7 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 		fallthrough
 	case UpsertReplace:
 		toOdataAnnotatedDictionary(&entity)
-		req, err = t.client.updateEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), &TableUpdateEntityOptions{TableEntityProperties: &entity, IfMatch: &transactionAction.ETag}, qo)
+		req, err = t.client.updateEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), &TableUpdateEntityOptions{TableEntityProperties: entity, IfMatch: &transactionAction.ETag}, qo)
 	}
 
 	urlAndVerb := fmt.Sprintf("%s %s HTTP/1.1\r\n", req.Method, req.URL)

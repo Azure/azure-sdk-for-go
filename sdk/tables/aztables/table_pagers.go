@@ -87,11 +87,11 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 	}
 	var resp TableEntityQueryResponseResponse
 	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.name, p.tableQueryOptions, p.queryOptions)
-	castAndRemoveAnnotationsSlice(resp.TableEntityQueryResponse.Value)
+	castAndRemoveAnnotationsSlice(&resp.TableEntityQueryResponse.Value)
 	p.current = &resp
 	p.tableQueryOptions.NextPartitionKey = resp.XMSContinuationNextPartitionKey
 	p.tableQueryOptions.NextRowKey = resp.XMSContinuationNextRowKey
-	return p.err == nil && resp.TableEntityQueryResponse.Value != nil && len(*resp.TableEntityQueryResponse.Value) > 0
+	return p.err == nil && resp.TableEntityQueryResponse.Value != nil && len(resp.TableEntityQueryResponse.Value) > 0
 }
 
 func (p *tableEntityQueryResponsePager) PageResponse() TableEntityQueryResponseResponse {
@@ -117,16 +117,16 @@ func (p *structQueryResponsePager) NextPage(ctx context.Context) bool {
 	}
 	var resp TableEntityQueryResponseResponse
 	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.name, p.tableQueryOptions, p.queryOptions)
-	castAndRemoveAnnotationsSlice(resp.TableEntityQueryResponse.Value)
+	castAndRemoveAnnotationsSlice(&resp.TableEntityQueryResponse.Value)
 	//p.current = &resp
-	r := make([]interface{}, 0, len(*resp.TableEntityQueryResponse.Value))
-	for _, e := range *resp.TableEntityQueryResponse.Value {
+	r := make([]interface{}, 0, len(resp.TableEntityQueryResponse.Value))
+	for _, e := range resp.TableEntityQueryResponse.Value {
 		r = append(r, p.mapper.FromMap(&e))
 	}
 	p.current = &StructQueryResponseResponse{StructQueryResponse: &StructQueryResponse{Value: &r}}
 	p.tableQueryOptions.NextPartitionKey = resp.XMSContinuationNextPartitionKey
 	p.tableQueryOptions.NextRowKey = resp.XMSContinuationNextRowKey
-	return p.err == nil && resp.TableEntityQueryResponse.Value != nil && len(*resp.TableEntityQueryResponse.Value) > 0
+	return p.err == nil && resp.TableEntityQueryResponse.Value != nil && len(resp.TableEntityQueryResponse.Value) > 0
 }
 
 func (p *structQueryResponsePager) PageResponse() StructQueryResponseResponse {
@@ -170,7 +170,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 	resp, p.err = p.client.Query(ctx, p.tableQueryOptions, p.queryOptions)
 	p.current = &resp
 	p.tableQueryOptions.NextTableName = resp.XMSContinuationNextTableName
-	return p.err == nil && resp.TableQueryResponse.Value != nil && len(*resp.TableQueryResponse.Value) > 0
+	return p.err == nil && resp.TableQueryResponse.Value != nil && len(resp.TableQueryResponse.Value) > 0
 }
 
 func (p *tableQueryResponsePager) PageResponse() TableQueryResponseResponse {

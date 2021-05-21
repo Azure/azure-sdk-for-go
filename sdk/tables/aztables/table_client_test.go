@@ -63,10 +63,21 @@ func (s *tableClientLiveTests) TestAddEntity() {
 
 	entitiesToCreate := createSimpleEntities(1, "partition")
 
-	for _, e := range *entitiesToCreate {
-		_, err := client.AddMapEntity(ctx, e)
-		assert.Nil(err)
-	}
+	_, err := client.AddEntity(ctx, (*entitiesToCreate)[0])
+	assert.Nil(err)
+}
+
+func (s *tableClientLiveTests) TestDeleteEntity() {
+	assert := assert.New(s.T())
+	client, delete := s.init(true)
+	defer delete()
+
+	entitiesToCreate := createSimpleEntities(1, "partition")
+
+	_, err := client.AddEntity(ctx, (*entitiesToCreate)[0])
+	assert.Nil(err)
+	_, delErr := client.DeleteEntity(ctx, (*entitiesToCreate)[0][PartitionKey].(string), (*entitiesToCreate)[0][RowKey].(string), "*")
+	assert.Nil(delErr)
 }
 
 func (s *tableClientLiveTests) TestAddComplexEntity() {
@@ -78,7 +89,7 @@ func (s *tableClientLiveTests) TestAddComplexEntity() {
 	entitiesToCreate := createComplexEntities(context, 1, "partition")
 
 	for _, e := range *entitiesToCreate {
-		_, err := client.AddEntity(ctx, e)
+		_, err := client.AddModelEntity(ctx, e)
 		assert.Nilf(err, getStringFromBody(err))
 	}
 }
@@ -91,7 +102,7 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	// Add 5 entities
 	entitiesToCreate := createSimpleEntities(5, "partition")
 	for _, e := range *entitiesToCreate {
-		_, err := client.AddMapEntity(ctx, e)
+		_, err := client.AddEntity(ctx, e)
 		assert.Nil(err)
 	}
 
@@ -133,7 +144,7 @@ func (s *tableClientLiveTests) TestQueryComplexEntity() {
 	// Add 5 entities
 	entitiesToCreate := createComplexMapEntities(context, 5, "partition")
 	for _, e := range *entitiesToCreate {
-		_, err := client.AddMapEntity(ctx, e)
+		_, err := client.AddEntity(ctx, e)
 		assert.Nil(err)
 	}
 
@@ -285,7 +296,7 @@ func (s *tableClientLiveTests) TestBatchError() {
 	assert.Equal(error_empty_transaction, err.Error())
 
 	// Add the last entity to the table prior to adding it as part of the batch to cause a batch failure.
-	client.AddMapEntity(ctx, (*entitiesToCreate)[2])
+	client.AddEntity(ctx, (*entitiesToCreate)[2])
 
 	// Add the entities to the batch
 	for i := 0; i < cap(batch); i++ {

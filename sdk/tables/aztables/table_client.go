@@ -43,12 +43,12 @@ func (t *TableClient) Query(queryOptions QueryOptions) TableEntityQueryResponseP
 	return &tableEntityQueryResponsePager{tableClient: t, queryOptions: &queryOptions, tableQueryOptions: &TableQueryEntitiesOptions{}}
 }
 
-func (t *TableClient) QueryAsStruct(opt QueryOptions, s FromMapper) StructEntityQueryResponsePager {
+func (t *TableClient) QueryAsModel(opt QueryOptions, s FromMapper) StructEntityQueryResponsePager {
 	return &structQueryResponsePager{mapper: s, tableClient: t, queryOptions: &opt, tableQueryOptions: &TableQueryEntitiesOptions{}}
 }
 
-// AddMapEntity Creates an entity from a map value.
-func (t *TableClient) AddMapEntity(ctx context.Context, entity map[string]interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
+// AddEntity Creates an entity from a map value.
+func (t *TableClient) AddEntity(ctx context.Context, entity map[string]interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
 	toOdataAnnotatedDictionary(&entity)
 	resp, err := t.client.InsertEntity(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: &entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
 	if err == nil {
@@ -59,8 +59,8 @@ func (t *TableClient) AddMapEntity(ctx context.Context, entity map[string]interf
 	}
 }
 
-// AddEntity creates an entity from an arbitrary struct value.
-func (t *TableClient) AddEntity(ctx context.Context, entity interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
+// AddModelEntity creates an entity from an arbitrary struct value.
+func (t *TableClient) AddModelEntity(ctx context.Context, entity interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
 	entmap, err := toMap(entity)
 	if err != nil {
 		return nil, azcore.NewResponseError(err, nil).(*runtime.ResponseError)
@@ -72,4 +72,8 @@ func (t *TableClient) AddEntity(ctx context.Context, entity interface{}) (*Table
 	} else {
 		return nil, convertErr(err)
 	}
+}
+
+func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, rowKey string, etag string) (TableDeleteEntityResponse, error) {
+	return t.client.DeleteEntity(ctx, t.name, partitionKey, rowKey, etag, nil, &QueryOptions{})
 }

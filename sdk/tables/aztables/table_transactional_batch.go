@@ -292,19 +292,21 @@ func (t *TableClient) generateEntitySubset(transactionAction *TableTransactionAc
 	case Add:
 		toOdataAnnotatedDictionary(&entity)
 		req, err = t.client.insertEntityCreateRequest(ctx, t.name, &TableInsertEntityOptions{TableEntityProperties: &entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, qo)
-	case UpdateReplace:
+	case UpdateMerge:
 		fallthrough
-	case UpsertReplace:
+	case UpsertMerge:
 		toOdataAnnotatedDictionary(&entity)
 		opts := &TableMergeEntityOptions{TableEntityProperties: &entity}
 		if len(transactionAction.ETag) > 0 {
 			opts.IfMatch = &transactionAction.ETag
 		}
 		req, err = t.client.mergeEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), opts, qo)
-	case UpdateMerge:
+		if isCosmosEndpoint(t.client.con.Endpoint()) {
+			transformPatchToCosmosPost(req)
+		}
+	case UpdateReplace:
 		fallthrough
-	case UpsertMerge:
-
+	case UpsertReplace:
 		toOdataAnnotatedDictionary(&entity)
 		req, err = t.client.updateEntityCreateRequest(ctx, t.name, entity[PartitionKey].(string), entity[RowKey].(string), &TableUpdateEntityOptions{TableEntityProperties: &entity, IfMatch: &transactionAction.ETag}, qo)
 	}

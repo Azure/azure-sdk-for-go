@@ -6,9 +6,15 @@ package aztables
 import (
 	"context"
 	"errors"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
+)
+
+const (
+	LegacyCosmosTableDomain = ".table.cosmosdb."
+	CosmosTableDomain       = ".table.cosmos."
 )
 
 // A TableServiceClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
@@ -20,7 +26,20 @@ type TableServiceClient struct {
 
 // NewTableServiceClient creates a TableClient object using the specified URL and request policy pipeline.
 func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *TableClientOptions) (*TableServiceClient, error) {
-	con := newConnection(serviceURL, cred, options.getConnectionOptions())
+	var con *connection
+	conOptions := options.getConnectionOptions()
+	if isCosmosEndpoint(serviceURL) {
+		p := azcore.NewPipeline(options.HTTPClient,
+			azcore.NewTelemetryPolicy(conOptions.telemetryOptions()),
+			CosmosPatchTransformPolicy{},
+			azcore.NewRetryPolicy(&options.Retry),
+			cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{scope}}}),
+			azcore.NewLogPolicy(&conOptions.Logging))
+		con = newConnectionWithPipeline(serviceURL, p)
+
+	} else {
+		con = newConnection(serviceURL, cred, conOptions)
+	}
 	c, _ := cred.(*SharedKeyCredential)
 	return &TableServiceClient{client: &tableClient{con}, service: &serviceClient{con}, cred: *c}, nil
 }
@@ -50,6 +69,13 @@ func (t *TableServiceClient) Delete(ctx context.Context, name string) (*TableDel
 // Queries the tables using the specified QueryOptions
 func (t *TableServiceClient) QueryTables(queryOptions QueryOptions) TableQueryResponsePager {
 	return &tableQueryResponsePager{client: t.client, queryOptions: &queryOptions, tableQueryOptions: new(TableQueryOptions)}
+}
+
+func isCosmosEndpoint(url string) bool {
+	isCosmosEmulator := strings.Index(url, "localhost") >= 0 && strings.Index(url, "8902") >= 0
+	return isCosmosEmulator ||
+		strings.Index(url, CosmosTableDomain) >= 0 ||
+		strings.Index(url, LegacyCosmosTableDomain) >= 0
 }
 
 func convertErr(err error) *runtime.ResponseError {

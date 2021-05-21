@@ -204,7 +204,7 @@ func (s *tableClientLiveTests) TestBatchAdd() {
 	}
 }
 
-func (s *tableClientLiveTests) TestMixedBatch() {
+func (s *tableClientLiveTests) TestBatchMixed() {
 	assert := assert.New(s.T())
 	require := require.New(s.T())
 	context := getTestContext(s.T().Name())
@@ -254,6 +254,8 @@ func (s *tableClientLiveTests) TestMixedBatch() {
 	// Add the remaining 2 entities.
 	batch[3] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[3]}
 	batch[4] = TableTransactionAction{ActionType: Add, Entity: (*entitiesToCreate)[4]}
+
+	//batch = batch[1:]
 
 	resp, err = client.submitTransactionInternal(&batch, context.recording.UUID(), context.recording.UUID(), nil, ctx)
 	require.Nil(err)

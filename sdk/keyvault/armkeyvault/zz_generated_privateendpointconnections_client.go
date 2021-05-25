@@ -10,6 +10,7 @@ package armkeyvault
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
@@ -22,7 +23,7 @@ import (
 // PrivateEndpointConnectionsClient contains the methods for the PrivateEndpointConnections group.
 // Don't use this type directly, use NewPrivateEndpointConnectionsClient() instead.
 type PrivateEndpointConnectionsClient struct {
-	con            *armcore.Connection
+	con *armcore.Connection
 	subscriptionID string
 }
 
@@ -32,6 +33,7 @@ func NewPrivateEndpointConnectionsClient(con *armcore.Connection, subscriptionID
 }
 
 // BeginDelete - Deletes the specified private endpoint connection associated with the key vault.
+// If the operation fails it returns the *CloudError error type.
 func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsBeginDeleteOptions) (PrivateEndpointConnectionPollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, vaultName, privateEndpointConnectionName, options)
 	if err != nil {
@@ -46,7 +48,7 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 	}
 	poller := &privateEndpointConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error) {
@@ -64,7 +66,7 @@ func (client *PrivateEndpointConnectionsClient) ResumeDelete(ctx context.Context
 	}
 	poller := &privateEndpointConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -81,6 +83,7 @@ func (client *PrivateEndpointConnectionsClient) ResumeDelete(ctx context.Context
 }
 
 // Delete - Deletes the specified private endpoint connection associated with the key vault.
+// If the operation fails it returns the *CloudError error type.
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vaultName, privateEndpointConnectionName, options)
 	if err != nil {
@@ -93,7 +96,7 @@ func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Cont
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	return resp, nil
+	 return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -121,43 +124,27 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2019-09-01")
+	reqQP.Set("api-version", "2021-04-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteHandleResponse handles the Delete response.
-func (client *PrivateEndpointConnectionsClient) deleteHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionResponse, error) {
-	var val *PrivateEndpointConnection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateEndpointConnectionResponse{}, err
-	}
-	result := PrivateEndpointConnectionResponse{RawResponse: resp.Response, PrivateEndpointConnection: val}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return PrivateEndpointConnectionResponse{}, err
-		}
-		result.RetryAfter = &retryAfter
-	}
-	if val := resp.Header.Get("Azure-AsyncOperation"); val != "" {
-		result.AzureAsyncOperation = &val
-	}
-	return result, nil
-}
-
 // deleteHandleError handles the Delete error response.
 func (client *PrivateEndpointConnectionsClient) deleteHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+		errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // Get - Gets the specified private endpoint connection associated with the key vault.
+// If the operation fails it returns the *CloudError error type.
 func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsGetOptions) (PrivateEndpointConnectionResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, privateEndpointConnectionName, options)
 	if err != nil {
@@ -167,7 +154,7 @@ func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return PrivateEndpointConnectionResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
 		return PrivateEndpointConnectionResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
@@ -198,7 +185,7 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2019-09-01")
+	reqQP.Set("api-version", "2021-04-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -227,14 +214,85 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *azcore.R
 
 // getHandleError handles the Get error response.
 func (client *PrivateEndpointConnectionsClient) getHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+		errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
+}
+
+// ListByResource - The List operation gets information about the private endpoint connections associated with the vault.
+// If the operation fails it returns the *CloudError error type.
+func (client *PrivateEndpointConnectionsClient) ListByResource(resourceGroupName string, vaultName string, options *PrivateEndpointConnectionsListByResourceOptions) (PrivateEndpointConnectionListResultPager) {
+	return &privateEndpointConnectionListResultPager{
+		pipeline: client.con.Pipeline(),
+		requester: func(ctx context.Context) (*azcore.Request, error) {
+			return client.listByResourceCreateRequest(ctx, resourceGroupName, vaultName, options)
+		},
+		responder: client.listByResourceHandleResponse,
+		errorer:   client.listByResourceHandleError,
+		advancer: func(ctx context.Context, resp PrivateEndpointConnectionListResultResponse) (*azcore.Request, error) {
+			return azcore.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionListResult.NextLink)
+		},
+		statusCodes: []int{http.StatusOK},
+	}
+}
+
+// listByResourceCreateRequest creates the ListByResource request.
+func (client *PrivateEndpointConnectionsClient) listByResourceCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateEndpointConnectionsListByResourceOptions) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/privateEndpointConnections"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Telemetry(telemetryInfo)
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01-preview")
+	req.URL.RawQuery = reqQP.Encode()
+	req.Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// listByResourceHandleResponse handles the ListByResource response.
+func (client *PrivateEndpointConnectionsClient) listByResourceHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionListResultResponse, error) {
+	var val *PrivateEndpointConnectionListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return PrivateEndpointConnectionListResultResponse{}, err
+	}
+return PrivateEndpointConnectionListResultResponse{RawResponse: resp.Response, PrivateEndpointConnectionListResult: val}, nil
+}
+
+// listByResourceHandleError handles the ListByResource error response.
+func (client *PrivateEndpointConnectionsClient) listByResourceHandleError(resp *azcore.Response) error {
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
+	}
+		errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // Put - Updates the specified private endpoint connection associated with the key vault.
+// If the operation fails it returns the *CloudError error type.
 func (client *PrivateEndpointConnectionsClient) Put(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsPutOptions) (PrivateEndpointConnectionResponse, error) {
 	req, err := client.putCreateRequest(ctx, resourceGroupName, vaultName, privateEndpointConnectionName, properties, options)
 	if err != nil {
@@ -275,7 +333,7 @@ func (client *PrivateEndpointConnectionsClient) putCreateRequest(ctx context.Con
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2019-09-01")
+	reqQP.Set("api-version", "2021-04-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(properties)
@@ -304,9 +362,14 @@ func (client *PrivateEndpointConnectionsClient) putHandleResponse(resp *azcore.R
 
 // putHandleError handles the Put error response.
 func (client *PrivateEndpointConnectionsClient) putHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+		errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
+

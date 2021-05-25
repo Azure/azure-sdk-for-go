@@ -9,11 +9,9 @@ package armkeyvault
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"io/ioutil"
 	"net/http"
 )
 
@@ -29,7 +27,8 @@ func NewOperationsClient(con *armcore.Connection) *OperationsClient {
 }
 
 // List - Lists all of the available Key Vault Rest API operations.
-func (client *OperationsClient) List(options *OperationsListOptions) OperationListResultPager {
+// If the operation fails it returns the *CloudError error type.
+func (client *OperationsClient) List(options *OperationsListOptions) (OperationListResultPager) {
 	return &operationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -53,7 +52,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, options *
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2019-09-01")
+	reqQP.Set("api-version", "2021-04-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -65,17 +64,19 @@ func (client *OperationsClient) listHandleResponse(resp *azcore.Response) (Opera
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return OperationListResultResponse{}, err
 	}
-	return OperationListResultResponse{RawResponse: resp.Response, OperationListResult: val}, nil
+return OperationListResultResponse{RawResponse: resp.Response, OperationListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
 func (client *OperationsClient) listHandleError(resp *azcore.Response) error {
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := resp.Payload()
 	if err != nil {
-		return fmt.Errorf("%s; failed to read response body: %w", resp.Status, err)
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return azcore.NewResponseError(&errType, resp.Response)
 }
+

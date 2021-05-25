@@ -10,6 +10,7 @@ package armkeyvault
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
@@ -32,6 +33,7 @@ func NewKeysClient(con *armcore.Connection, subscriptionID string) *KeysClient {
 // CreateIfNotExist - Creates the first version of a new key if it does not exist. If it already exists, then the existing key is returned without any write
 // operations being performed. This API does not create subsequent
 // versions, and does not update existing keys.
+// If the operation fails it returns the *CloudError error type.
 func (client *KeysClient) CreateIfNotExist(ctx context.Context, resourceGroupName string, vaultName string, keyName string, parameters KeyCreateParameters, options *KeysCreateIfNotExistOptions) (KeyResponse, error) {
 	req, err := client.createIfNotExistCreateRequest(ctx, resourceGroupName, vaultName, keyName, parameters, options)
 	if err != nil {
@@ -89,14 +91,19 @@ func (client *KeysClient) createIfNotExistHandleResponse(resp *azcore.Response) 
 
 // createIfNotExistHandleError handles the CreateIfNotExist error response.
 func (client *KeysClient) createIfNotExistHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // Get - Gets the current version of the specified key from the specified key vault.
+// If the operation fails it returns the *CloudError error type.
 func (client *KeysClient) Get(ctx context.Context, resourceGroupName string, vaultName string, keyName string, options *KeysGetOptions) (KeyResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, keyName, options)
 	if err != nil {
@@ -154,14 +161,19 @@ func (client *KeysClient) getHandleResponse(resp *azcore.Response) (KeyResponse,
 
 // getHandleError handles the Get error response.
 func (client *KeysClient) getHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // GetVersion - Gets the specified version of the specified key in the specified key vault.
+// If the operation fails it returns the *CloudError error type.
 func (client *KeysClient) GetVersion(ctx context.Context, resourceGroupName string, vaultName string, keyName string, keyVersion string, options *KeysGetVersionOptions) (KeyResponse, error) {
 	req, err := client.getVersionCreateRequest(ctx, resourceGroupName, vaultName, keyName, keyVersion, options)
 	if err != nil {
@@ -223,14 +235,19 @@ func (client *KeysClient) getVersionHandleResponse(resp *azcore.Response) (KeyRe
 
 // getVersionHandleError handles the GetVersion error response.
 func (client *KeysClient) getVersionHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // List - Lists the keys in the specified key vault.
+// If the operation fails it returns the *CloudError error type.
 func (client *KeysClient) List(resourceGroupName string, vaultName string, options *KeysListOptions) KeyListResultPager {
 	return &keyListResultPager{
 		pipeline: client.con.Pipeline(),
@@ -284,14 +301,19 @@ func (client *KeysClient) listHandleResponse(resp *azcore.Response) (KeyListResu
 
 // listHandleError handles the List error response.
 func (client *KeysClient) listHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // ListVersions - Lists the versions of the specified key in the specified key vault.
+// If the operation fails it returns the *CloudError error type.
 func (client *KeysClient) ListVersions(resourceGroupName string, vaultName string, keyName string, options *KeysListVersionsOptions) KeyListResultPager {
 	return &keyListResultPager{
 		pipeline: client.con.Pipeline(),
@@ -349,9 +371,13 @@ func (client *KeysClient) listVersionsHandleResponse(resp *azcore.Response) (Key
 
 // listVersionsHandleError handles the ListVersions error response.
 func (client *KeysClient) listVersionsHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }

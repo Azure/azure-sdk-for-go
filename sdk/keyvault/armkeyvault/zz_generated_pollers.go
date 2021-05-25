@@ -26,7 +26,7 @@ type HTTPPoller interface {
 
 type httpPoller struct {
 	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt armcore.Poller
 }
 
 func (p *httpPoller) Done() bool {
@@ -49,6 +49,98 @@ func (p *httpPoller) pollUntilDone(ctx context.Context, freq time.Duration) (*ht
 	return p.pt.PollUntilDone(ctx, freq, p.pipeline, nil)
 }
 
+// MHSMPrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
+type MHSMPrivateEndpointConnectionPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final MHSMPrivateEndpointConnectionResponse will be returned.
+	FinalResponse(ctx context.Context) (MHSMPrivateEndpointConnectionResponse, error)
+}
+
+type mhsmPrivateEndpointConnectionPoller struct {
+	pipeline azcore.Pipeline
+	pt armcore.Poller
+}
+
+func (p *mhsmPrivateEndpointConnectionPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *mhsmPrivateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx, p.pipeline)
+}
+
+func (p *mhsmPrivateEndpointConnectionPoller) FinalResponse(ctx context.Context) (MHSMPrivateEndpointConnectionResponse, error) {
+	respType := MHSMPrivateEndpointConnectionResponse{MHSMPrivateEndpointConnection: &MHSMPrivateEndpointConnection{}}
+	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.MHSMPrivateEndpointConnection)
+	if err != nil {
+		return MHSMPrivateEndpointConnectionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *mhsmPrivateEndpointConnectionPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *mhsmPrivateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (MHSMPrivateEndpointConnectionResponse, error) {
+	respType := MHSMPrivateEndpointConnectionResponse{MHSMPrivateEndpointConnection: &MHSMPrivateEndpointConnection{}}
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.MHSMPrivateEndpointConnection)
+	if err != nil {
+		return MHSMPrivateEndpointConnectionResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// ManagedHsmPoller provides polling facilities until the operation reaches a terminal state.
+type ManagedHsmPoller interface {
+	azcore.Poller
+	// FinalResponse performs a final GET to the service and returns the final response
+	// for the polling operation. If there is an error performing the final GET then an error is returned.
+	// If the final GET succeeded then the final ManagedHsmResponse will be returned.
+	FinalResponse(ctx context.Context) (ManagedHsmResponse, error)
+}
+
+type managedHsmPoller struct {
+	pipeline azcore.Pipeline
+	pt armcore.Poller
+}
+
+func (p *managedHsmPoller) Done() bool {
+	return p.pt.Done()
+}
+
+func (p *managedHsmPoller) Poll(ctx context.Context) (*http.Response, error) {
+	return p.pt.Poll(ctx, p.pipeline)
+}
+
+func (p *managedHsmPoller) FinalResponse(ctx context.Context) (ManagedHsmResponse, error) {
+	respType := ManagedHsmResponse{ManagedHsm: &ManagedHsm{}}
+	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ManagedHsm)
+	if err != nil {
+		return ManagedHsmResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+func (p *managedHsmPoller) ResumeToken() (string, error) {
+	return p.pt.ResumeToken()
+}
+
+func (p *managedHsmPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ManagedHsmResponse, error) {
+	respType := ManagedHsmResponse{ManagedHsm: &ManagedHsm{}}
+	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ManagedHsm)
+	if err != nil {
+		return ManagedHsmResponse{}, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
 // PrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
 type PrivateEndpointConnectionPoller interface {
 	azcore.Poller
@@ -60,7 +152,7 @@ type PrivateEndpointConnectionPoller interface {
 
 type privateEndpointConnectionPoller struct {
 	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt armcore.Poller
 }
 
 func (p *privateEndpointConnectionPoller) Done() bool {
@@ -106,7 +198,7 @@ type VaultPoller interface {
 
 type vaultPoller struct {
 	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt armcore.Poller
 }
 
 func (p *vaultPoller) Done() bool {
@@ -140,3 +232,4 @@ func (p *vaultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (Va
 	respType.RawResponse = resp
 	return respType, nil
 }
+

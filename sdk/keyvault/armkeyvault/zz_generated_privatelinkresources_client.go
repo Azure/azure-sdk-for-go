@@ -10,6 +10,7 @@ package armkeyvault
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
@@ -20,7 +21,7 @@ import (
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
-	con            *armcore.Connection
+	con *armcore.Connection
 	subscriptionID string
 }
 
@@ -30,6 +31,7 @@ func NewPrivateLinkResourcesClient(con *armcore.Connection, subscriptionID strin
 }
 
 // ListByVault - Gets the private link resources supported for the key vault.
+// If the operation fails it returns the *CloudError error type.
 func (client *PrivateLinkResourcesClient) ListByVault(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (PrivateLinkResourceListResultResponse, error) {
 	req, err := client.listByVaultCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
@@ -66,7 +68,7 @@ func (client *PrivateLinkResourcesClient) listByVaultCreateRequest(ctx context.C
 	}
 	req.Telemetry(telemetryInfo)
 	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2019-09-01")
+	reqQP.Set("api-version", "2021-04-01-preview")
 	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
@@ -78,14 +80,19 @@ func (client *PrivateLinkResourcesClient) listByVaultHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateLinkResourceListResultResponse{}, err
 	}
-	return PrivateLinkResourceListResultResponse{RawResponse: resp.Response, PrivateLinkResourceListResult: val}, nil
+return PrivateLinkResourceListResultResponse{RawResponse: resp.Response, PrivateLinkResourceListResult: val}, nil
 }
 
 // listByVaultHandleError handles the ListByVault error response.
 func (client *PrivateLinkResourcesClient) listByVaultHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return azcore.NewResponseError(resp.UnmarshalError(err), resp.Response)
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+		errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
+

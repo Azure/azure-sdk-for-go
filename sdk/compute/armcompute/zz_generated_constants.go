@@ -1080,7 +1080,7 @@ func (c OperatingSystemType) ToPtr() *OperatingSystemType {
 	return &c
 }
 
-// OperatingSystemTypes - This property allows you to specify the type of the OS that is included in the disk when creating a VM from a managed image.
+// OperatingSystemTypes - This property allows you to specify the supported type of the OS that application is built for.
 // Possible values are:
 // Windows
 // Linux

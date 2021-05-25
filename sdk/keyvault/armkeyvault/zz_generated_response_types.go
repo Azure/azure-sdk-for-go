@@ -22,6 +22,23 @@ type CheckNameAvailabilityResultResponse struct {
 	RawResponse *http.Response
 }
 
+// DeletedManagedHsmListResultResponse is the response envelope for operations that return a DeletedManagedHsmListResult type.
+type DeletedManagedHsmListResultResponse struct {
+	// List of deleted managed HSM Pools
+	DeletedManagedHsmListResult *DeletedManagedHsmListResult
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DeletedManagedHsmResponse is the response envelope for operations that return a DeletedManagedHsm type.
+type DeletedManagedHsmResponse struct {
+	DeletedManagedHsm *DeletedManagedHsm
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
 // DeletedVaultListResultResponse is the response envelope for operations that return a DeletedVaultListResult type.
 type DeletedVaultListResultResponse struct {
 	// List of vaults
@@ -52,19 +69,76 @@ type HTTPPollerResponse struct {
 	RawResponse *http.Response
 }
 
-// KeyListResultResponse is the response envelope for operations that return a KeyListResult type.
-type KeyListResultResponse struct {
-	// The page of keys.
-	KeyListResult *KeyListResult
+// MHSMPrivateEndpointConnectionPollerResponse is the response envelope for operations that asynchronously return a MHSMPrivateEndpointConnection type.
+type MHSMPrivateEndpointConnectionPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (MHSMPrivateEndpointConnectionResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller MHSMPrivateEndpointConnectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// KeyResponse is the response envelope for operations that return a Key type.
-type KeyResponse struct {
-	// The key resource.
-	Key *Key
+// MHSMPrivateEndpointConnectionResponse is the response envelope for operations that return a MHSMPrivateEndpointConnection type.
+type MHSMPrivateEndpointConnectionResponse struct {
+	// AzureAsyncOperation contains the information returned from the Azure-AsyncOperation header response.
+	AzureAsyncOperation *string
+
+	// Private endpoint connection resource.
+	MHSMPrivateEndpointConnection *MHSMPrivateEndpointConnection
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+
+	// RetryAfter contains the information returned from the Retry-After header response.
+	RetryAfter *int32
+}
+
+// MHSMPrivateEndpointConnectionsListResultResponse is the response envelope for operations that return a MHSMPrivateEndpointConnectionsListResult type.
+type MHSMPrivateEndpointConnectionsListResultResponse struct {
+	// List of private endpoint connections associated with a managed HSM Pools
+	MHSMPrivateEndpointConnectionsListResult *MHSMPrivateEndpointConnectionsListResult
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// MHSMPrivateLinkResourceListResultResponse is the response envelope for operations that return a MHSMPrivateLinkResourceListResult type.
+type MHSMPrivateLinkResourceListResultResponse struct {
+	// A list of private link resources
+	MHSMPrivateLinkResourceListResult *MHSMPrivateLinkResourceListResult
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedHsmListResultResponse is the response envelope for operations that return a ManagedHsmListResult type.
+type ManagedHsmListResultResponse struct {
+	// List of managed HSM Pools
+	ManagedHsmListResult *ManagedHsmListResult
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedHsmPollerResponse is the response envelope for operations that asynchronously return a ManagedHsm type.
+type ManagedHsmPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
+	PollUntilDone func(ctx context.Context, frequency time.Duration) (ManagedHsmResponse, error)
+
+	// Poller contains an initialized poller.
+	Poller ManagedHsmPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ManagedHsmResponse is the response envelope for operations that return a ManagedHsm type.
+type ManagedHsmResponse struct {
+	// Resource information with extended details.
+	ManagedHsm *ManagedHsm
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -74,6 +148,15 @@ type KeyResponse struct {
 type OperationListResultResponse struct {
 	// Result of the request to list Storage operations. It contains a list of operations and a URL link to get the next set of results.
 	OperationListResult *OperationListResult
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PrivateEndpointConnectionListResultResponse is the response envelope for operations that return a PrivateEndpointConnectionListResult type.
+type PrivateEndpointConnectionListResultResponse struct {
+	// List of private endpoint connections.
+	PrivateEndpointConnectionListResult *PrivateEndpointConnectionListResult
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -124,6 +207,24 @@ type ResourceListResultResponse struct {
 	ResourceListResult *ResourceListResult
 }
 
+// SecretListResultResponse is the response envelope for operations that return a SecretListResult type.
+type SecretListResultResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+
+	// List of secrets
+	SecretListResult *SecretListResult
+}
+
+// SecretResponse is the response envelope for operations that return a Secret type.
+type SecretResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+
+	// Resource information with extended details.
+	Secret *Secret
+}
+
 // VaultAccessPolicyParametersResponse is the response envelope for operations that return a VaultAccessPolicyParameters type.
 type VaultAccessPolicyParametersResponse struct {
 	// RawResponse contains the underlying HTTP response.
@@ -162,3 +263,4 @@ type VaultResponse struct {
 	// Resource information with extended details.
 	Vault *Vault
 }
+

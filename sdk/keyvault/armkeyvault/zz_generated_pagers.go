@@ -13,6 +13,82 @@ import (
 	"reflect"
 )
 
+// DeletedManagedHsmListResultPager provides iteration over DeletedManagedHsmListResult pages.
+type DeletedManagedHsmListResultPager interface {
+	azcore.Pager
+
+	// Page returns the current DeletedManagedHsmListResultResponse.
+	PageResponse() DeletedManagedHsmListResultResponse
+}
+
+type deletedManagedHsmListResultCreateRequest func(context.Context) (*azcore.Request, error)
+
+type deletedManagedHsmListResultHandleError func(*azcore.Response) error
+
+type deletedManagedHsmListResultHandleResponse func(*azcore.Response) (DeletedManagedHsmListResultResponse, error)
+
+type deletedManagedHsmListResultAdvancePage func(context.Context, DeletedManagedHsmListResultResponse) (*azcore.Request, error)
+
+type deletedManagedHsmListResultPager struct {
+	// the pipeline for making the request
+	pipeline azcore.Pipeline
+	// creates the initial request (non-LRO case)
+	requester deletedManagedHsmListResultCreateRequest
+	// callback for handling response errors
+	errorer deletedManagedHsmListResultHandleError
+	// callback for handling the HTTP response
+	responder deletedManagedHsmListResultHandleResponse
+	// callback for advancing to the next page
+	advancer deletedManagedHsmListResultAdvancePage
+	// contains the current response
+	current DeletedManagedHsmListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
+	// any error encountered
+	err error
+}
+
+func (p *deletedManagedHsmListResultPager) Err() error {
+	return p.err
+}
+
+func (p *deletedManagedHsmListResultPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DeletedManagedHsmListResult.NextLink == nil || len(*p.current.DeletedManagedHsmListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+  } else {
+		req, err = p.requester(ctx)
+  }
+	if err != nil {
+		p.err = err
+		return false
+	}
+  	resp, err := p.pipeline.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(p.statusCodes...) {
+	p.err = p.errorer(resp)
+		return false
+	}
+	result, err := p.responder(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *deletedManagedHsmListResultPager) PageResponse() DeletedManagedHsmListResultResponse {
+	return p.current
+}
+
 // DeletedVaultListResultPager provides iteration over DeletedVaultListResult pages.
 type DeletedVaultListResultPager interface {
 	azcore.Pager
@@ -60,20 +136,20 @@ func (p *deletedVaultListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-	} else {
+  } else {
 		req, err = p.requester(ctx)
-	}
+  }
 	if err != nil {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+  	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -89,67 +165,67 @@ func (p *deletedVaultListResultPager) PageResponse() DeletedVaultListResultRespo
 	return p.current
 }
 
-// KeyListResultPager provides iteration over KeyListResult pages.
-type KeyListResultPager interface {
+// MHSMPrivateEndpointConnectionsListResultPager provides iteration over MHSMPrivateEndpointConnectionsListResult pages.
+type MHSMPrivateEndpointConnectionsListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current KeyListResultResponse.
-	PageResponse() KeyListResultResponse
+	// Page returns the current MHSMPrivateEndpointConnectionsListResultResponse.
+	PageResponse() MHSMPrivateEndpointConnectionsListResultResponse
 }
 
-type keyListResultCreateRequest func(context.Context) (*azcore.Request, error)
+type mhsmPrivateEndpointConnectionsListResultCreateRequest func(context.Context) (*azcore.Request, error)
 
-type keyListResultHandleError func(*azcore.Response) error
+type mhsmPrivateEndpointConnectionsListResultHandleError func(*azcore.Response) error
 
-type keyListResultHandleResponse func(*azcore.Response) (KeyListResultResponse, error)
+type mhsmPrivateEndpointConnectionsListResultHandleResponse func(*azcore.Response) (MHSMPrivateEndpointConnectionsListResultResponse, error)
 
-type keyListResultAdvancePage func(context.Context, KeyListResultResponse) (*azcore.Request, error)
+type mhsmPrivateEndpointConnectionsListResultAdvancePage func(context.Context, MHSMPrivateEndpointConnectionsListResultResponse) (*azcore.Request, error)
 
-type keyListResultPager struct {
+type mhsmPrivateEndpointConnectionsListResultPager struct {
 	// the pipeline for making the request
 	pipeline azcore.Pipeline
 	// creates the initial request (non-LRO case)
-	requester keyListResultCreateRequest
+	requester mhsmPrivateEndpointConnectionsListResultCreateRequest
 	// callback for handling response errors
-	errorer keyListResultHandleError
+	errorer mhsmPrivateEndpointConnectionsListResultHandleError
 	// callback for handling the HTTP response
-	responder keyListResultHandleResponse
+	responder mhsmPrivateEndpointConnectionsListResultHandleResponse
 	// callback for advancing to the next page
-	advancer keyListResultAdvancePage
+	advancer mhsmPrivateEndpointConnectionsListResultAdvancePage
 	// contains the current response
-	current KeyListResultResponse
+	current MHSMPrivateEndpointConnectionsListResultResponse
 	// status codes for successful retrieval
 	statusCodes []int
 	// any error encountered
 	err error
 }
 
-func (p *keyListResultPager) Err() error {
+func (p *mhsmPrivateEndpointConnectionsListResultPager) Err() error {
 	return p.err
 }
 
-func (p *keyListResultPager) NextPage(ctx context.Context) bool {
+func (p *mhsmPrivateEndpointConnectionsListResultPager) NextPage(ctx context.Context) bool {
 	var req *azcore.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.KeyListResult.NextLink == nil || len(*p.current.KeyListResult.NextLink) == 0 {
+		if p.current.MHSMPrivateEndpointConnectionsListResult.NextLink == nil || len(*p.current.MHSMPrivateEndpointConnectionsListResult.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-	} else {
+  } else {
 		req, err = p.requester(ctx)
-	}
+  }
 	if err != nil {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+  	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -161,7 +237,83 @@ func (p *keyListResultPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *keyListResultPager) PageResponse() KeyListResultResponse {
+func (p *mhsmPrivateEndpointConnectionsListResultPager) PageResponse() MHSMPrivateEndpointConnectionsListResultResponse {
+	return p.current
+}
+
+// ManagedHsmListResultPager provides iteration over ManagedHsmListResult pages.
+type ManagedHsmListResultPager interface {
+	azcore.Pager
+
+	// Page returns the current ManagedHsmListResultResponse.
+	PageResponse() ManagedHsmListResultResponse
+}
+
+type managedHsmListResultCreateRequest func(context.Context) (*azcore.Request, error)
+
+type managedHsmListResultHandleError func(*azcore.Response) error
+
+type managedHsmListResultHandleResponse func(*azcore.Response) (ManagedHsmListResultResponse, error)
+
+type managedHsmListResultAdvancePage func(context.Context, ManagedHsmListResultResponse) (*azcore.Request, error)
+
+type managedHsmListResultPager struct {
+	// the pipeline for making the request
+	pipeline azcore.Pipeline
+	// creates the initial request (non-LRO case)
+	requester managedHsmListResultCreateRequest
+	// callback for handling response errors
+	errorer managedHsmListResultHandleError
+	// callback for handling the HTTP response
+	responder managedHsmListResultHandleResponse
+	// callback for advancing to the next page
+	advancer managedHsmListResultAdvancePage
+	// contains the current response
+	current ManagedHsmListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
+	// any error encountered
+	err error
+}
+
+func (p *managedHsmListResultPager) Err() error {
+	return p.err
+}
+
+func (p *managedHsmListResultPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ManagedHsmListResult.NextLink == nil || len(*p.current.ManagedHsmListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+  } else {
+		req, err = p.requester(ctx)
+  }
+	if err != nil {
+		p.err = err
+		return false
+	}
+  	resp, err := p.pipeline.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(p.statusCodes...) {
+	p.err = p.errorer(resp)
+		return false
+	}
+	result, err := p.responder(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *managedHsmListResultPager) PageResponse() ManagedHsmListResultResponse {
 	return p.current
 }
 
@@ -212,20 +364,20 @@ func (p *operationListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-	} else {
+  } else {
 		req, err = p.requester(ctx)
-	}
+  }
 	if err != nil {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+  	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -238,6 +390,82 @@ func (p *operationListResultPager) NextPage(ctx context.Context) bool {
 }
 
 func (p *operationListResultPager) PageResponse() OperationListResultResponse {
+	return p.current
+}
+
+// PrivateEndpointConnectionListResultPager provides iteration over PrivateEndpointConnectionListResult pages.
+type PrivateEndpointConnectionListResultPager interface {
+	azcore.Pager
+
+	// Page returns the current PrivateEndpointConnectionListResultResponse.
+	PageResponse() PrivateEndpointConnectionListResultResponse
+}
+
+type privateEndpointConnectionListResultCreateRequest func(context.Context) (*azcore.Request, error)
+
+type privateEndpointConnectionListResultHandleError func(*azcore.Response) error
+
+type privateEndpointConnectionListResultHandleResponse func(*azcore.Response) (PrivateEndpointConnectionListResultResponse, error)
+
+type privateEndpointConnectionListResultAdvancePage func(context.Context, PrivateEndpointConnectionListResultResponse) (*azcore.Request, error)
+
+type privateEndpointConnectionListResultPager struct {
+	// the pipeline for making the request
+	pipeline azcore.Pipeline
+	// creates the initial request (non-LRO case)
+	requester privateEndpointConnectionListResultCreateRequest
+	// callback for handling response errors
+	errorer privateEndpointConnectionListResultHandleError
+	// callback for handling the HTTP response
+	responder privateEndpointConnectionListResultHandleResponse
+	// callback for advancing to the next page
+	advancer privateEndpointConnectionListResultAdvancePage
+	// contains the current response
+	current PrivateEndpointConnectionListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
+	// any error encountered
+	err error
+}
+
+func (p *privateEndpointConnectionListResultPager) Err() error {
+	return p.err
+}
+
+func (p *privateEndpointConnectionListResultPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.PrivateEndpointConnectionListResult.NextLink == nil || len(*p.current.PrivateEndpointConnectionListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+  } else {
+		req, err = p.requester(ctx)
+  }
+	if err != nil {
+		p.err = err
+		return false
+	}
+  	resp, err := p.pipeline.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(p.statusCodes...) {
+	p.err = p.errorer(resp)
+		return false
+	}
+	result, err := p.responder(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *privateEndpointConnectionListResultPager) PageResponse() PrivateEndpointConnectionListResultResponse {
 	return p.current
 }
 
@@ -288,20 +516,20 @@ func (p *resourceListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-	} else {
+  } else {
 		req, err = p.requester(ctx)
-	}
+  }
 	if err != nil {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+  	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -314,6 +542,82 @@ func (p *resourceListResultPager) NextPage(ctx context.Context) bool {
 }
 
 func (p *resourceListResultPager) PageResponse() ResourceListResultResponse {
+	return p.current
+}
+
+// SecretListResultPager provides iteration over SecretListResult pages.
+type SecretListResultPager interface {
+	azcore.Pager
+
+	// Page returns the current SecretListResultResponse.
+	PageResponse() SecretListResultResponse
+}
+
+type secretListResultCreateRequest func(context.Context) (*azcore.Request, error)
+
+type secretListResultHandleError func(*azcore.Response) error
+
+type secretListResultHandleResponse func(*azcore.Response) (SecretListResultResponse, error)
+
+type secretListResultAdvancePage func(context.Context, SecretListResultResponse) (*azcore.Request, error)
+
+type secretListResultPager struct {
+	// the pipeline for making the request
+	pipeline azcore.Pipeline
+	// creates the initial request (non-LRO case)
+	requester secretListResultCreateRequest
+	// callback for handling response errors
+	errorer secretListResultHandleError
+	// callback for handling the HTTP response
+	responder secretListResultHandleResponse
+	// callback for advancing to the next page
+	advancer secretListResultAdvancePage
+	// contains the current response
+	current SecretListResultResponse
+	// status codes for successful retrieval
+	statusCodes []int
+	// any error encountered
+	err error
+}
+
+func (p *secretListResultPager) Err() error {
+	return p.err
+}
+
+func (p *secretListResultPager) NextPage(ctx context.Context) bool {
+	var req *azcore.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SecretListResult.NextLink == nil || len(*p.current.SecretListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+  } else {
+		req, err = p.requester(ctx)
+  }
+	if err != nil {
+		p.err = err
+		return false
+	}
+  	resp, err := p.pipeline.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !resp.HasStatusCode(p.statusCodes...) {
+	p.err = p.errorer(resp)
+		return false
+	}
+	result, err := p.responder(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+func (p *secretListResultPager) PageResponse() SecretListResultResponse {
 	return p.current
 }
 
@@ -364,20 +668,20 @@ func (p *vaultListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-	} else {
+  } else {
 		req, err = p.requester(ctx)
-	}
+  }
 	if err != nil {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+  	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -392,3 +696,4 @@ func (p *vaultListResultPager) NextPage(ctx context.Context) bool {
 func (p *vaultListResultPager) PageResponse() VaultListResultResponse {
 	return p.current
 }
+

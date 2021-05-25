@@ -164,11 +164,11 @@ func (d Dependency) MarshalJSON() ([]byte, error) {
 
 // Deployment operation parameters.
 type Deployment struct {
-	// The location to store the deployment data.
-	Location *string `json:"location,omitempty"`
-
 	// REQUIRED; The deployment properties.
 	Properties *DeploymentProperties `json:"properties,omitempty"`
+
+	// The location to store the deployment data.
+	Location *string `json:"location,omitempty"`
 
 	// Deployment tags
 	Tags map[string]*string `json:"tags,omitempty"`
@@ -430,19 +430,19 @@ func (d DeploymentOperationsListResult) MarshalJSON() ([]byte, error) {
 
 // DeploymentProperties - Deployment properties.
 type DeploymentProperties struct {
-	// The debug setting of the deployment.
-	DebugSetting *DebugSetting `json:"debugSetting,omitempty"`
-
-	// Specifies whether template expressions are evaluated within the scope of the parent template or nested template. Only applicable to nested templates.
-	// If not specified, default value is outer.
-	ExpressionEvaluationOptions *ExpressionEvaluationOptions `json:"expressionEvaluationOptions,omitempty"`
-
 	// REQUIRED; The mode that is used to deploy resources. This value can be either Incremental or Complete. In Incremental mode, resources are deployed without
 	// deleting existing resources that are not included in
 	// the template. In Complete mode, resources are deployed and existing resources in the resource group that are not included in the template are deleted.
 	// Be careful when using Complete mode as you may
 	// unintentionally delete resources.
 	Mode *DeploymentMode `json:"mode,omitempty"`
+
+	// The debug setting of the deployment.
+	DebugSetting *DebugSetting `json:"debugSetting,omitempty"`
+
+	// Specifies whether template expressions are evaluated within the scope of the parent template or nested template. Only applicable to nested templates.
+	// If not specified, default value is outer.
+	ExpressionEvaluationOptions *ExpressionEvaluationOptions `json:"expressionEvaluationOptions,omitempty"`
 
 	// The deployment on error behavior.
 	OnErrorDeployment *OnErrorDeployment `json:"onErrorDeployment,omitempty"`
@@ -467,11 +467,11 @@ type DeploymentProperties struct {
 
 // DeploymentPropertiesExtended - Deployment properties with additional details.
 type DeploymentPropertiesExtended struct {
-	// READ-ONLY; Key/value pairs that represent deployment output.
-	Outputs interface{} `json:"outputs,omitempty" azure:"ro"`
-
 	// READ-ONLY; The correlation ID of the deployment.
 	CorrelationID *string `json:"correlationId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The debug setting of the deployment.
+	DebugSetting *DebugSetting `json:"debugSetting,omitempty" azure:"ro"`
 
 	// READ-ONLY; The list of deployment dependencies.
 	Dependencies []*Dependency `json:"dependencies,omitempty" azure:"ro"`
@@ -491,8 +491,8 @@ type DeploymentPropertiesExtended struct {
 	// READ-ONLY; Array of provisioned resources.
 	OutputResources []*ResourceReference `json:"outputResources,omitempty" azure:"ro"`
 
-	// READ-ONLY; The debug setting of the deployment.
-	DebugSetting *DebugSetting `json:"debugSetting,omitempty" azure:"ro"`
+	// READ-ONLY; Key/value pairs that represent deployment output.
+	Outputs interface{} `json:"outputs,omitempty" azure:"ro"`
 
 	// READ-ONLY; Deployment parameters.
 	Parameters interface{} `json:"parameters,omitempty" azure:"ro"`
@@ -623,11 +623,11 @@ type DeploymentValidateResult struct {
 
 // DeploymentWhatIf - Deployment What-if operation parameters.
 type DeploymentWhatIf struct {
-	// The location to store the deployment data.
-	Location *string `json:"location,omitempty"`
-
 	// REQUIRED; The deployment properties.
 	Properties *DeploymentWhatIfProperties `json:"properties,omitempty"`
+
+	// The location to store the deployment data.
+	Location *string `json:"location,omitempty"`
 }
 
 // DeploymentWhatIfProperties - Deployment What-if properties.
@@ -1209,11 +1209,11 @@ type OperationsListOptions struct {
 
 // ParametersLink - Entity representing the reference to the deployment parameters.
 type ParametersLink struct {
-	// If included, must match the ContentVersion in the template.
-	ContentVersion *string `json:"contentVersion,omitempty"`
-
 	// REQUIRED; The URI of the parameters file.
 	URI *string `json:"uri,omitempty"`
+
+	// If included, must match the ContentVersion in the template.
+	ContentVersion *string `json:"contentVersion,omitempty"`
 }
 
 // Permission - Role definition permissions.
@@ -2158,20 +2158,20 @@ type TemplateLink struct {
 
 // WhatIfChange - Information about a single resource change predicted by What-If operation.
 type WhatIfChange struct {
+	// REQUIRED; Type of change that will be made to the resource when the deployment is executed.
+	ChangeType *ChangeType `json:"changeType,omitempty"`
+
+	// REQUIRED; Resource ID
+	ResourceID *string `json:"resourceId,omitempty"`
+
 	// The predicted snapshot of the resource after the deployment is executed.
 	After interface{} `json:"after,omitempty"`
 
 	// The snapshot of the resource before the deployment is executed.
 	Before interface{} `json:"before,omitempty"`
 
-	// REQUIRED; Type of change that will be made to the resource when the deployment is executed.
-	ChangeType *ChangeType `json:"changeType,omitempty"`
-
 	// The predicted changes to resource properties.
 	Delta []*WhatIfPropertyChange `json:"delta,omitempty"`
-
-	// REQUIRED; Resource ID
-	ResourceID *string `json:"resourceId,omitempty"`
 
 	// The explanation about why the resource is unsupported by What-If.
 	UnsupportedReason *string `json:"unsupportedReason,omitempty"`
@@ -2216,6 +2216,12 @@ type WhatIfOperationResult struct {
 
 // WhatIfPropertyChange - The predicted change to the resource property.
 type WhatIfPropertyChange struct {
+	// REQUIRED; The path of the property.
+	Path *string `json:"path,omitempty"`
+
+	// REQUIRED; The type of property change.
+	PropertyChangeType *PropertyChangeType `json:"propertyChangeType,omitempty"`
+
 	// The value of the property after the deployment is executed.
 	After interface{} `json:"after,omitempty"`
 
@@ -2224,12 +2230,6 @@ type WhatIfPropertyChange struct {
 
 	// Nested property changes.
 	Children []*WhatIfPropertyChange `json:"children,omitempty"`
-
-	// REQUIRED; The path of the property.
-	Path *string `json:"path,omitempty"`
-
-	// REQUIRED; The type of property change.
-	PropertyChangeType *PropertyChangeType `json:"propertyChangeType,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type WhatIfPropertyChange.

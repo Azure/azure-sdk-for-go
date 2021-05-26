@@ -23,7 +23,7 @@ import (
 // ManagedHsmsClient contains the methods for the ManagedHsms group.
 // Don't use this type directly, use NewManagedHsmsClient() instead.
 type ManagedHsmsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -48,7 +48,7 @@ func (client *ManagedHsmsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 	poller := &managedHsmPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedHsmResponse, error) {
@@ -66,7 +66,7 @@ func (client *ManagedHsmsClient) ResumeCreateOrUpdate(ctx context.Context, token
 	}
 	poller := &managedHsmPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -96,7 +96,7 @@ func (client *ManagedHsmsClient) createOrUpdate(ctx context.Context, resourceGro
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -132,7 +132,7 @@ func (client *ManagedHsmsClient) createOrUpdateHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ManagedHsmError{raw: string(body)}
+	errType := ManagedHsmError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -155,7 +155,7 @@ func (client *ManagedHsmsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -173,7 +173,7 @@ func (client *ManagedHsmsClient) ResumeDelete(ctx context.Context, token string)
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -203,7 +203,7 @@ func (client *ManagedHsmsClient) deleteOperation(ctx context.Context, resourceGr
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -239,7 +239,7 @@ func (client *ManagedHsmsClient) deleteHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ManagedHsmError{raw: string(body)}
+	errType := ManagedHsmError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -296,7 +296,7 @@ func (client *ManagedHsmsClient) getHandleResponse(resp *azcore.Response) (Manag
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ManagedHsmResponse{}, err
 	}
-return ManagedHsmResponse{RawResponse: resp.Response, ManagedHsm: val}, nil
+	return ManagedHsmResponse{RawResponse: resp.Response, ManagedHsm: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -305,7 +305,7 @@ func (client *ManagedHsmsClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ManagedHsmError{raw: string(body)}
+	errType := ManagedHsmError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -362,7 +362,7 @@ func (client *ManagedHsmsClient) getDeletedHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DeletedManagedHsmResponse{}, err
 	}
-return DeletedManagedHsmResponse{RawResponse: resp.Response, DeletedManagedHsm: val}, nil
+	return DeletedManagedHsmResponse{RawResponse: resp.Response, DeletedManagedHsm: val}, nil
 }
 
 // getDeletedHandleError handles the GetDeleted error response.
@@ -371,7 +371,7 @@ func (client *ManagedHsmsClient) getDeletedHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ManagedHsmError{raw: string(body)}
+	errType := ManagedHsmError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -381,7 +381,7 @@ func (client *ManagedHsmsClient) getDeletedHandleError(resp *azcore.Response) er
 // ListByResourceGroup - The List operation gets information about the managed HSM Pools associated with the subscription and within the specified resource
 // group.
 // If the operation fails it returns the *ManagedHsmError error type.
-func (client *ManagedHsmsClient) ListByResourceGroup(resourceGroupName string, options *ManagedHsmsListByResourceGroupOptions) (ManagedHsmListResultPager) {
+func (client *ManagedHsmsClient) ListByResourceGroup(resourceGroupName string, options *ManagedHsmsListByResourceGroupOptions) ManagedHsmListResultPager {
 	return &managedHsmListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -428,7 +428,7 @@ func (client *ManagedHsmsClient) listByResourceGroupHandleResponse(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ManagedHsmListResultResponse{}, err
 	}
-return ManagedHsmListResultResponse{RawResponse: resp.Response, ManagedHsmListResult: val}, nil
+	return ManagedHsmListResultResponse{RawResponse: resp.Response, ManagedHsmListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -437,7 +437,7 @@ func (client *ManagedHsmsClient) listByResourceGroupHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ManagedHsmError{raw: string(body)}
+	errType := ManagedHsmError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -446,7 +446,7 @@ func (client *ManagedHsmsClient) listByResourceGroupHandleError(resp *azcore.Res
 
 // ListBySubscription - The List operation gets information about the managed HSM Pools associated with the subscription.
 // If the operation fails it returns the *ManagedHsmError error type.
-func (client *ManagedHsmsClient) ListBySubscription(options *ManagedHsmsListBySubscriptionOptions) (ManagedHsmListResultPager) {
+func (client *ManagedHsmsClient) ListBySubscription(options *ManagedHsmsListBySubscriptionOptions) ManagedHsmListResultPager {
 	return &managedHsmListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -489,7 +489,7 @@ func (client *ManagedHsmsClient) listBySubscriptionHandleResponse(resp *azcore.R
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ManagedHsmListResultResponse{}, err
 	}
-return ManagedHsmListResultResponse{RawResponse: resp.Response, ManagedHsmListResult: val}, nil
+	return ManagedHsmListResultResponse{RawResponse: resp.Response, ManagedHsmListResult: val}, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
@@ -498,7 +498,7 @@ func (client *ManagedHsmsClient) listBySubscriptionHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ManagedHsmError{raw: string(body)}
+	errType := ManagedHsmError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -507,7 +507,7 @@ func (client *ManagedHsmsClient) listBySubscriptionHandleError(resp *azcore.Resp
 
 // ListDeleted - The List operation gets information about the deleted managed HSMs associated with the subscription.
 // If the operation fails it returns the *ManagedHsmError error type.
-func (client *ManagedHsmsClient) ListDeleted(options *ManagedHsmsListDeletedOptions) (DeletedManagedHsmListResultPager) {
+func (client *ManagedHsmsClient) ListDeleted(options *ManagedHsmsListDeletedOptions) DeletedManagedHsmListResultPager {
 	return &deletedManagedHsmListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -547,7 +547,7 @@ func (client *ManagedHsmsClient) listDeletedHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DeletedManagedHsmListResultResponse{}, err
 	}
-return DeletedManagedHsmListResultResponse{RawResponse: resp.Response, DeletedManagedHsmListResult: val}, nil
+	return DeletedManagedHsmListResultResponse{RawResponse: resp.Response, DeletedManagedHsmListResult: val}, nil
 }
 
 // listDeletedHandleError handles the ListDeleted error response.
@@ -556,7 +556,7 @@ func (client *ManagedHsmsClient) listDeletedHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ManagedHsmError{raw: string(body)}
+	errType := ManagedHsmError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -579,7 +579,7 @@ func (client *ManagedHsmsClient) BeginPurgeDeleted(ctx context.Context, name str
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -597,7 +597,7 @@ func (client *ManagedHsmsClient) ResumePurgeDeleted(ctx context.Context, token s
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -627,7 +627,7 @@ func (client *ManagedHsmsClient) purgeDeleted(ctx context.Context, name string, 
 	if !resp.HasStatusCode(http.StatusAccepted) {
 		return nil, client.purgeDeletedHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // purgeDeletedCreateRequest creates the PurgeDeleted request.
@@ -663,7 +663,7 @@ func (client *ManagedHsmsClient) purgeDeletedHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ManagedHsmError{raw: string(body)}
+	errType := ManagedHsmError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -686,7 +686,7 @@ func (client *ManagedHsmsClient) BeginUpdate(ctx context.Context, resourceGroupN
 	}
 	poller := &managedHsmPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedHsmResponse, error) {
@@ -704,7 +704,7 @@ func (client *ManagedHsmsClient) ResumeUpdate(ctx context.Context, token string)
 	}
 	poller := &managedHsmPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -734,7 +734,7 @@ func (client *ManagedHsmsClient) update(ctx context.Context, resourceGroupName s
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
@@ -770,10 +770,9 @@ func (client *ManagedHsmsClient) updateHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ManagedHsmError{raw: string(body)}
+	errType := ManagedHsmError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

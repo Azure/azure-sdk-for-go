@@ -21,7 +21,7 @@ import (
 // MHSMPrivateLinkResourcesClient contains the methods for the MHSMPrivateLinkResources group.
 // Don't use this type directly, use NewMHSMPrivateLinkResourcesClient() instead.
 type MHSMPrivateLinkResourcesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -80,7 +80,7 @@ func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceHandleResponse(r
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return MHSMPrivateLinkResourceListResultResponse{}, err
 	}
-return MHSMPrivateLinkResourceListResultResponse{RawResponse: resp.Response, MHSMPrivateLinkResourceListResult: val}, nil
+	return MHSMPrivateLinkResourceListResultResponse{RawResponse: resp.Response, MHSMPrivateLinkResourceListResult: val}, nil
 }
 
 // listByMHSMResourceHandleError handles the ListByMHSMResource error response.
@@ -89,10 +89,9 @@ func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceHandleError(resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

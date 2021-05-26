@@ -15,33 +15,28 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-func ExampleKeysClient_CreateIfNotExist() {
+func ExampleSecretsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armkeyvault.NewKeysClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
-	resp, err := client.CreateIfNotExist(
+	client := armkeyvault.NewSecretsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	resp, err := client.CreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
 		"<vault name>",
-		"<key name>",
-		armkeyvault.KeyCreateParameters{
-			Properties: &armkeyvault.KeyProperties{
-				Attributes: &armkeyvault.KeyAttributes{
+		"<secret name>",
+		armkeyvault.SecretCreateOrUpdateParameters{
+			Properties: &armkeyvault.SecretProperties{
+				Attributes: &armkeyvault.SecretAttributes{
 					Attributes: armkeyvault.Attributes{
 						Enabled: to.BoolPtr(true),
 					},
 				},
-				KeySize: to.Int32Ptr(2048),
-				KeyOps: []*armkeyvault.JSONWebKeyOperation{
-					armkeyvault.JSONWebKeyOperationEncrypt.ToPtr(),
-					armkeyvault.JSONWebKeyOperationDecrypt.ToPtr(),
-				},
-				Kty: armkeyvault.JSONWebKeyTypeRSA.ToPtr(),
+				Value: to.StringPtr("<serect value>"),
 			}}, nil)
 	if err != nil {
 		log.Fatalf("failed to create the key: %v", err)
 	}
-	log.Printf("key ID: %v\n", *resp.Key.ID)
+	log.Printf("Secret ID: %v\n", *resp.Secret.ID)
 }

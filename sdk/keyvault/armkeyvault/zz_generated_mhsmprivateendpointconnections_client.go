@@ -23,7 +23,7 @@ import (
 // MHSMPrivateEndpointConnectionsClient contains the methods for the MHSMPrivateEndpointConnections group.
 // Don't use this type directly, use NewMHSMPrivateEndpointConnectionsClient() instead.
 type MHSMPrivateEndpointConnectionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -48,7 +48,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) BeginDelete(ctx context.Cont
 	}
 	poller := &mhsmPrivateEndpointConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MHSMPrivateEndpointConnectionResponse, error) {
@@ -66,7 +66,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) ResumeDelete(ctx context.Con
 	}
 	poller := &mhsmPrivateEndpointConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -96,7 +96,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) deleteOperation(ctx context.
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -136,7 +136,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) deleteHandleError(resp *azco
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -218,7 +218,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) getHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ManagedHsmError{raw: string(body)}
+	errType := ManagedHsmError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -227,7 +227,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) getHandleError(resp *azcore.
 
 // ListByResource - The List operation gets information about the private endpoint connections associated with the managed HSM Pool.
 // If the operation fails it returns the *ManagedHsmError error type.
-func (client *MHSMPrivateEndpointConnectionsClient) ListByResource(resourceGroupName string, name string, options *MHSMPrivateEndpointConnectionsListByResourceOptions) (MHSMPrivateEndpointConnectionsListResultPager) {
+func (client *MHSMPrivateEndpointConnectionsClient) ListByResource(resourceGroupName string, name string, options *MHSMPrivateEndpointConnectionsListByResourceOptions) MHSMPrivateEndpointConnectionsListResultPager {
 	return &mhsmPrivateEndpointConnectionsListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -275,7 +275,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) listByResourceHandleResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return MHSMPrivateEndpointConnectionsListResultResponse{}, err
 	}
-return MHSMPrivateEndpointConnectionsListResultResponse{RawResponse: resp.Response, MHSMPrivateEndpointConnectionsListResult: val}, nil
+	return MHSMPrivateEndpointConnectionsListResultResponse{RawResponse: resp.Response, MHSMPrivateEndpointConnectionsListResult: val}, nil
 }
 
 // listByResourceHandleError handles the ListByResource error response.
@@ -284,7 +284,7 @@ func (client *MHSMPrivateEndpointConnectionsClient) listByResourceHandleError(re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ManagedHsmError{raw: string(body)}
+	errType := ManagedHsmError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -366,10 +366,9 @@ func (client *MHSMPrivateEndpointConnectionsClient) putHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

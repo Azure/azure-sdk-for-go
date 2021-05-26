@@ -22,7 +22,7 @@ import (
 // SecretsClient contains the methods for the Secrets group.
 // Don't use this type directly, use NewSecretsClient() instead.
 type SecretsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -87,7 +87,7 @@ func (client *SecretsClient) createOrUpdateHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SecretResponse{}, err
 	}
-return SecretResponse{RawResponse: resp.Response, Secret: val}, nil
+	return SecretResponse{RawResponse: resp.Response, Secret: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -96,7 +96,7 @@ func (client *SecretsClient) createOrUpdateHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -158,7 +158,7 @@ func (client *SecretsClient) getHandleResponse(resp *azcore.Response) (SecretRes
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SecretResponse{}, err
 	}
-return SecretResponse{RawResponse: resp.Response, Secret: val}, nil
+	return SecretResponse{RawResponse: resp.Response, Secret: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -167,7 +167,7 @@ func (client *SecretsClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -178,7 +178,7 @@ func (client *SecretsClient) getHandleError(resp *azcore.Response) error {
 // use the data-plane REST service for interaction with
 // vault secrets.
 // If the operation fails it returns the *CloudError error type.
-func (client *SecretsClient) List(resourceGroupName string, vaultName string, options *SecretsListOptions) (SecretListResultPager) {
+func (client *SecretsClient) List(resourceGroupName string, vaultName string, options *SecretsListOptions) SecretListResultPager {
 	return &secretListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -229,7 +229,7 @@ func (client *SecretsClient) listHandleResponse(resp *azcore.Response) (SecretLi
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SecretListResultResponse{}, err
 	}
-return SecretListResultResponse{RawResponse: resp.Response, SecretListResult: val}, nil
+	return SecretListResultResponse{RawResponse: resp.Response, SecretListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -238,7 +238,7 @@ func (client *SecretsClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -300,7 +300,7 @@ func (client *SecretsClient) updateHandleResponse(resp *azcore.Response) (Secret
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SecretResponse{}, err
 	}
-return SecretResponse{RawResponse: resp.Response, Secret: val}, nil
+	return SecretResponse{RawResponse: resp.Response, Secret: val}, nil
 }
 
 // updateHandleError handles the Update error response.
@@ -309,10 +309,9 @@ func (client *SecretsClient) updateHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

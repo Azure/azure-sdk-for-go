@@ -64,6 +64,18 @@ func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCrede
 // scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+	if opts.Scopes == nil {
+		err := &AuthenticationFailedError{msg: "must specify a resource in order to authenticate"}
+		addGetTokenFailureLogs("Managed Identity Credential", err, true)
+		return nil, err
+	}
+	if len(opts.Scopes) != 1 {
+		err := &AuthenticationFailedError{msg: "can only specify one resource to authenticate with ManagedIdentityCredential"}
+		addGetTokenFailureLogs("Managed Identity Credential", err, true)
+		return nil, err
+	}
+	// The following code will remove the /.default suffix from any scopes passed into the method since ManagedIdentityCredentials expect a resource string instead of a scope string
+	opts.Scopes[0] = strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
 	tk, err := c.client.authenticate(ctx, c.clientID, opts.Scopes)
 	if err != nil {
 		addGetTokenFailureLogs("Managed Identity Credential", err, true)
@@ -77,9 +89,5 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.To
 // AuthenticationPolicy implements the azcore.Credential interface on ManagedIdentityCredential.
 // NOTE: The TokenRequestOptions included in AuthenticationPolicyOptions must be a slice of resources in this case and not scopes.
 func (c *ManagedIdentityCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
-	// The following code will remove the /.default suffix from any scopes passed into the method since ManagedIdentityCredentials expect a resource string instead of a scope string
-	for i := range options.Options.Scopes {
-		options.Options.Scopes[i] = strings.TrimSuffix(options.Options.Scopes[i], defaultSuffix)
-	}
 	return newBearerTokenPolicy(c, options)
 }

@@ -40,7 +40,6 @@ type ClassicAdministratorListResultIterator = original.ClassicAdministratorListR
 type ClassicAdministratorListResultPage = original.ClassicAdministratorListResultPage
 type ClassicAdministratorProperties = original.ClassicAdministratorProperties
 type ClassicAdministratorsClient = original.ClassicAdministratorsClient
-type CustomErrorResponse = original.CustomErrorResponse
 type DenyAssignment = original.DenyAssignment
 type DenyAssignmentFilter = original.DenyAssignmentFilter
 type DenyAssignmentListResult = original.DenyAssignmentListResult

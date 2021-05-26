@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## `v54.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-02-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2021-03-01-preview/appconfiguration`
+- `github.com/Azure/azure-sdk-for-go/services/storage/mgmt/2021-04-01/storage`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/authorization/mgmt/2020-04-01-preview/authorization` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/authorization/mgmt/2020-04-01-preview/authorization/CHANGELOG.md) |
+
 ## `v54.2.0`
 
 ### New Packages

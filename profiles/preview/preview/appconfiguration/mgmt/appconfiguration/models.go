@@ -11,7 +11,7 @@ package appconfiguration
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2020-07-01-preview/appconfiguration"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2021-03-01-preview/appconfiguration"
 )
 
 const (
@@ -21,17 +21,26 @@ const (
 type ActionsRequired = original.ActionsRequired
 
 const (
-	None     ActionsRequired = original.None
-	Recreate ActionsRequired = original.Recreate
+	ActionsRequiredNone     ActionsRequired = original.ActionsRequiredNone
+	ActionsRequiredRecreate ActionsRequired = original.ActionsRequiredRecreate
 )
 
 type ConnectionStatus = original.ConnectionStatus
 
 const (
-	Approved     ConnectionStatus = original.Approved
-	Disconnected ConnectionStatus = original.Disconnected
-	Pending      ConnectionStatus = original.Pending
-	Rejected     ConnectionStatus = original.Rejected
+	ConnectionStatusApproved     ConnectionStatus = original.ConnectionStatusApproved
+	ConnectionStatusDisconnected ConnectionStatus = original.ConnectionStatusDisconnected
+	ConnectionStatusPending      ConnectionStatus = original.ConnectionStatusPending
+	ConnectionStatusRejected     ConnectionStatus = original.ConnectionStatusRejected
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type IdentityType = original.IdentityType
@@ -46,25 +55,26 @@ const (
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Canceled  ProvisioningState = original.Canceled
-	Creating  ProvisioningState = original.Creating
-	Deleting  ProvisioningState = original.Deleting
-	Failed    ProvisioningState = original.Failed
-	Succeeded ProvisioningState = original.Succeeded
-	Updating  ProvisioningState = original.Updating
+	ProvisioningStateCanceled  ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
 )
 
 type PublicNetworkAccess = original.PublicNetworkAccess
 
 const (
-	Disabled PublicNetworkAccess = original.Disabled
-	Enabled  PublicNetworkAccess = original.Enabled
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
 )
 
 type APIKey = original.APIKey
 type APIKeyListResult = original.APIKeyListResult
 type APIKeyListResultIterator = original.APIKeyListResultIterator
 type APIKeyListResultPage = original.APIKeyListResultPage
+type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
 type CheckNameAvailabilityParameters = original.CheckNameAvailabilityParameters
 type ConfigurationStore = original.ConfigurationStore
@@ -118,11 +128,14 @@ type PrivateLinkResourceListResultPage = original.PrivateLinkResourceListResultP
 type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
 type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
 type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
+type ProxyResource = original.ProxyResource
 type RegenerateKeyParameters = original.RegenerateKeyParameters
 type Resource = original.Resource
 type ResourceIdentity = original.ResourceIdentity
 type ServiceSpecification = original.ServiceSpecification
 type Sku = original.Sku
+type SystemData = original.SystemData
+type TrackedResource = original.TrackedResource
 type UserIdentity = original.UserIdentity
 
 func New(subscriptionID string) BaseClient {
@@ -202,6 +215,9 @@ func PossibleActionsRequiredValues() []ActionsRequired {
 }
 func PossibleConnectionStatusValues() []ConnectionStatus {
 	return original.PossibleConnectionStatusValues()
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleIdentityTypeValues() []IdentityType {
 	return original.PossibleIdentityTypeValues()

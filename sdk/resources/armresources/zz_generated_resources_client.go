@@ -9,6 +9,8 @@ package armresources
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
@@ -31,6 +33,7 @@ func NewResourcesClient(con *armcore.Connection, subscriptionID string) *Resourc
 }
 
 // CheckExistence - Checks whether a resource exists.
+// If the operation fails it returns the *CloudError error type.
 func (client *ResourcesClient) CheckExistence(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesCheckExistenceOptions) (BooleanResponse, error) {
 	req, err := client.checkExistenceCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
 	if err != nil {
@@ -52,36 +55,59 @@ func (client *ResourcesClient) CheckExistence(ctx context.Context, resourceGroup
 // checkExistenceCreateRequest creates the CheckExistence request.
 func (client *ResourcesClient) checkExistenceCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesCheckExistenceOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if parentResourcePath == "" {
+		return nil, errors.New("parameter parentResourcePath cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // checkExistenceHandleError handles the CheckExistence error response.
 func (client *ResourcesClient) checkExistenceHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // CheckExistenceByID - Checks by ID whether a resource exists.
-func (client *ResourcesClient) CheckExistenceByID(ctx context.Context, resourceId string, apiVersion string, options *ResourcesCheckExistenceByIDOptions) (BooleanResponse, error) {
-	req, err := client.checkExistenceByIdCreateRequest(ctx, resourceId, apiVersion, options)
+// If the operation fails it returns the *CloudError error type.
+func (client *ResourcesClient) CheckExistenceByID(ctx context.Context, resourceID string, apiVersion string, options *ResourcesCheckExistenceByIDOptions) (BooleanResponse, error) {
+	req, err := client.checkExistenceByIDCreateRequest(ctx, resourceID, apiVersion, options)
 	if err != nil {
 		return BooleanResponse{}, err
 	}
@@ -94,36 +120,44 @@ func (client *ResourcesClient) CheckExistenceByID(ctx context.Context, resourceI
 	} else if resp.StatusCode >= 400 && resp.StatusCode < 500 {
 		return BooleanResponse{RawResponse: resp.Response, Success: false}, nil
 	} else {
-		return BooleanResponse{}, client.checkExistenceByIdHandleError(resp)
+		return BooleanResponse{}, client.checkExistenceByIDHandleError(resp)
 	}
 }
 
-// checkExistenceByIdCreateRequest creates the CheckExistenceByID request.
-func (client *ResourcesClient) checkExistenceByIdCreateRequest(ctx context.Context, resourceId string, apiVersion string, options *ResourcesCheckExistenceByIDOptions) (*azcore.Request, error) {
+// checkExistenceByIDCreateRequest creates the CheckExistenceByID request.
+func (client *ResourcesClient) checkExistenceByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, options *ResourcesCheckExistenceByIDOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceId)
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// checkExistenceByIdHandleError handles the CheckExistenceByID error response.
-func (client *ResourcesClient) checkExistenceByIdHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+// checkExistenceByIDHandleError handles the CheckExistenceByID error response.
+func (client *ResourcesClient) checkExistenceByIDHandleError(resp *azcore.Response) error {
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // BeginCreateOrUpdate - Creates a resource.
+// If the operation fails it returns the *CloudError error type.
 func (client *ResourcesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateOptions) (GenericResourcePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
 	if err != nil {
@@ -137,8 +171,8 @@ func (client *ResourcesClient) BeginCreateOrUpdate(ctx context.Context, resource
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
@@ -149,18 +183,31 @@ func (client *ResourcesClient) BeginCreateOrUpdate(ctx context.Context, resource
 
 // ResumeCreateOrUpdate creates a new GenericResourcePoller from the specified resume token.
 // token - The value must come from a previous call to GenericResourcePoller.ResumeToken().
-func (client *ResourcesClient) ResumeCreateOrUpdate(token string) (GenericResourcePoller, error) {
+func (client *ResourcesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (GenericResourcePollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
-	return &genericResourcePoller{
+	poller := &genericResourcePoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return GenericResourcePollerResponse{}, err
+	}
+	result := GenericResourcePollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates a resource.
+// If the operation fails it returns the *CloudError error type.
 func (client *ResourcesClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
 	if err != nil {
@@ -179,58 +226,72 @@ func (client *ResourcesClient) createOrUpdate(ctx context.Context, resourceGroup
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ResourcesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if parentResourcePath == "" {
+		return nil, errors.New("parameter parentResourcePath cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ResourcesClient) createOrUpdateHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
-	var val *GenericResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return GenericResourceResponse{}, err
-	}
-	return GenericResourceResponse{RawResponse: resp.Response, GenericResource: val}, nil
-}
-
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *ResourcesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // BeginCreateOrUpdateByID - Create a resource by ID.
-func (client *ResourcesClient) BeginCreateOrUpdateByID(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateByIDOptions) (GenericResourcePollerResponse, error) {
-	resp, err := client.createOrUpdateByID(ctx, resourceId, apiVersion, parameters, options)
+// If the operation fails it returns the *CloudError error type.
+func (client *ResourcesClient) BeginCreateOrUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateByIDOptions) (GenericResourcePollerResponse, error) {
+	resp, err := client.createOrUpdateByID(ctx, resourceID, apiVersion, parameters, options)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
 	result := GenericResourcePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourcesClient.CreateOrUpdateByID", "", resp, client.createOrUpdateByIdHandleError)
+	pt, err := armcore.NewPoller("ResourcesClient.CreateOrUpdateByID", "", resp, client.createOrUpdateByIDHandleError)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
@@ -241,20 +302,33 @@ func (client *ResourcesClient) BeginCreateOrUpdateByID(ctx context.Context, reso
 
 // ResumeCreateOrUpdateByID creates a new GenericResourcePoller from the specified resume token.
 // token - The value must come from a previous call to GenericResourcePoller.ResumeToken().
-func (client *ResourcesClient) ResumeCreateOrUpdateByID(token string) (GenericResourcePoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.CreateOrUpdateByID", token, client.createOrUpdateByIdHandleError)
+func (client *ResourcesClient) ResumeCreateOrUpdateByID(ctx context.Context, token string) (GenericResourcePollerResponse, error) {
+	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.CreateOrUpdateByID", token, client.createOrUpdateByIDHandleError)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
-	return &genericResourcePoller{
+	poller := &genericResourcePoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return GenericResourcePollerResponse{}, err
+	}
+	result := GenericResourcePollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // CreateOrUpdateByID - Create a resource by ID.
-func (client *ResourcesClient) createOrUpdateByID(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateByIDOptions) (*azcore.Response, error) {
-	req, err := client.createOrUpdateByIdCreateRequest(ctx, resourceId, apiVersion, parameters, options)
+// If the operation fails it returns the *CloudError error type.
+func (client *ResourcesClient) createOrUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateByIDOptions) (*azcore.Response, error) {
+	req, err := client.createOrUpdateByIDCreateRequest(ctx, resourceID, apiVersion, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -263,48 +337,47 @@ func (client *ResourcesClient) createOrUpdateByID(ctx context.Context, resourceI
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, client.createOrUpdateByIdHandleError(resp)
+		return nil, client.createOrUpdateByIDHandleError(resp)
 	}
 	return resp, nil
 }
 
-// createOrUpdateByIdCreateRequest creates the CreateOrUpdateByID request.
-func (client *ResourcesClient) createOrUpdateByIdCreateRequest(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateByIDOptions) (*azcore.Request, error) {
+// createOrUpdateByIDCreateRequest creates the CreateOrUpdateByID request.
+func (client *ResourcesClient) createOrUpdateByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ResourcesBeginCreateOrUpdateByIDOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceId)
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// createOrUpdateByIdHandleResponse handles the CreateOrUpdateByID response.
-func (client *ResourcesClient) createOrUpdateByIdHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
-	var val *GenericResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return GenericResourceResponse{}, err
+// createOrUpdateByIDHandleError handles the CreateOrUpdateByID error response.
+func (client *ResourcesClient) createOrUpdateByIDHandleError(resp *azcore.Response) error {
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return GenericResourceResponse{RawResponse: resp.Response, GenericResource: val}, nil
-}
-
-// createOrUpdateByIdHandleError handles the CreateOrUpdateByID error response.
-func (client *ResourcesClient) createOrUpdateByIdHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // BeginDelete - Deletes a resource.
+// If the operation fails it returns the *CloudError error type.
 func (client *ResourcesClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesBeginDeleteOptions) (HTTPPollerResponse, error) {
-	resp, err := client.delete(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
+	resp, err := client.deleteOperation(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
@@ -316,8 +389,8 @@ func (client *ResourcesClient) BeginDelete(ctx context.Context, resourceGroupNam
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -328,19 +401,32 @@ func (client *ResourcesClient) BeginDelete(ctx context.Context, resourceGroupNam
 
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ResourcesClient) ResumeDelete(token string) (HTTPPoller, error) {
+func (client *ResourcesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.Delete", token, client.deleteHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Delete - Deletes a resource.
-func (client *ResourcesClient) delete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesBeginDeleteOptions) (*azcore.Response, error) {
+// If the operation fails it returns the *CloudError error type.
+func (client *ResourcesClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesBeginDeleteOptions) (*azcore.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
 	if err != nil {
 		return nil, err
@@ -358,49 +444,72 @@ func (client *ResourcesClient) delete(ctx context.Context, resourceGroupName str
 // deleteCreateRequest creates the Delete request.
 func (client *ResourcesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesBeginDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if parentResourcePath == "" {
+		return nil, errors.New("parameter parentResourcePath cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
 func (client *ResourcesClient) deleteHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // BeginDeleteByID - Deletes a resource by ID.
-func (client *ResourcesClient) BeginDeleteByID(ctx context.Context, resourceId string, apiVersion string, options *ResourcesBeginDeleteByIDOptions) (HTTPPollerResponse, error) {
-	resp, err := client.deleteByID(ctx, resourceId, apiVersion, options)
+// If the operation fails it returns the *CloudError error type.
+func (client *ResourcesClient) BeginDeleteByID(ctx context.Context, resourceID string, apiVersion string, options *ResourcesBeginDeleteByIDOptions) (HTTPPollerResponse, error) {
+	resp, err := client.deleteByID(ctx, resourceID, apiVersion, options)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourcesClient.DeleteByID", "", resp, client.deleteByIdHandleError)
+	pt, err := armcore.NewPoller("ResourcesClient.DeleteByID", "", resp, client.deleteByIDHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -411,20 +520,33 @@ func (client *ResourcesClient) BeginDeleteByID(ctx context.Context, resourceId s
 
 // ResumeDeleteByID creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ResourcesClient) ResumeDeleteByID(token string) (HTTPPoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.DeleteByID", token, client.deleteByIdHandleError)
+func (client *ResourcesClient) ResumeDeleteByID(ctx context.Context, token string) (HTTPPollerResponse, error) {
+	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.DeleteByID", token, client.deleteByIDHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // DeleteByID - Deletes a resource by ID.
-func (client *ResourcesClient) deleteByID(ctx context.Context, resourceId string, apiVersion string, options *ResourcesBeginDeleteByIDOptions) (*azcore.Response, error) {
-	req, err := client.deleteByIdCreateRequest(ctx, resourceId, apiVersion, options)
+// If the operation fails it returns the *CloudError error type.
+func (client *ResourcesClient) deleteByID(ctx context.Context, resourceID string, apiVersion string, options *ResourcesBeginDeleteByIDOptions) (*azcore.Response, error) {
+	req, err := client.deleteByIDCreateRequest(ctx, resourceID, apiVersion, options)
 	if err != nil {
 		return nil, err
 	}
@@ -433,37 +555,45 @@ func (client *ResourcesClient) deleteByID(ctx context.Context, resourceId string
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, client.deleteByIdHandleError(resp)
+		return nil, client.deleteByIDHandleError(resp)
 	}
 	return resp, nil
 }
 
-// deleteByIdCreateRequest creates the DeleteByID request.
-func (client *ResourcesClient) deleteByIdCreateRequest(ctx context.Context, resourceId string, apiVersion string, options *ResourcesBeginDeleteByIDOptions) (*azcore.Request, error) {
+// deleteByIDCreateRequest creates the DeleteByID request.
+func (client *ResourcesClient) deleteByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, options *ResourcesBeginDeleteByIDOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceId)
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// deleteByIdHandleError handles the DeleteByID error response.
-func (client *ResourcesClient) deleteByIdHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+// deleteByIDHandleError handles the DeleteByID error response.
+func (client *ResourcesClient) deleteByIDHandleError(resp *azcore.Response) error {
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // Get - Gets a resource.
+// If the operation fails it returns the *CloudError error type.
 func (client *ResourcesClient) Get(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesGetOptions) (GenericResourceResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, options)
 	if err != nil {
@@ -482,20 +612,38 @@ func (client *ResourcesClient) Get(ctx context.Context, resourceGroupName string
 // getCreateRequest creates the Get request.
 func (client *ResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, options *ResourcesGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if parentResourcePath == "" {
+		return nil, errors.New("parameter parentResourcePath cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -511,16 +659,21 @@ func (client *ResourcesClient) getHandleResponse(resp *azcore.Response) (Generic
 
 // getHandleError handles the Get error response.
 func (client *ResourcesClient) getHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // GetByID - Gets a resource by ID.
-func (client *ResourcesClient) GetByID(ctx context.Context, resourceId string, apiVersion string, options *ResourcesGetByIDOptions) (GenericResourceResponse, error) {
-	req, err := client.getByIdCreateRequest(ctx, resourceId, apiVersion, options)
+// If the operation fails it returns the *CloudError error type.
+func (client *ResourcesClient) GetByID(ctx context.Context, resourceID string, apiVersion string, options *ResourcesGetByIDOptions) (GenericResourceResponse, error) {
+	req, err := client.getByIDCreateRequest(ctx, resourceID, apiVersion, options)
 	if err != nil {
 		return GenericResourceResponse{}, err
 	}
@@ -529,29 +682,32 @@ func (client *ResourcesClient) GetByID(ctx context.Context, resourceId string, a
 		return GenericResourceResponse{}, err
 	}
 	if !resp.HasStatusCode(http.StatusOK) {
-		return GenericResourceResponse{}, client.getByIdHandleError(resp)
+		return GenericResourceResponse{}, client.getByIDHandleError(resp)
 	}
-	return client.getByIdHandleResponse(resp)
+	return client.getByIDHandleResponse(resp)
 }
 
-// getByIdCreateRequest creates the GetByID request.
-func (client *ResourcesClient) getByIdCreateRequest(ctx context.Context, resourceId string, apiVersion string, options *ResourcesGetByIDOptions) (*azcore.Request, error) {
+// getByIDCreateRequest creates the GetByID request.
+func (client *ResourcesClient) getByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, options *ResourcesGetByIDOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceId)
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
-// getByIdHandleResponse handles the GetByID response.
-func (client *ResourcesClient) getByIdHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
+// getByIDHandleResponse handles the GetByID response.
+func (client *ResourcesClient) getByIDHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
 	var val *GenericResource
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GenericResourceResponse{}, err
@@ -559,16 +715,21 @@ func (client *ResourcesClient) getByIdHandleResponse(resp *azcore.Response) (Gen
 	return GenericResourceResponse{RawResponse: resp.Response, GenericResource: val}, nil
 }
 
-// getByIdHandleError handles the GetByID error response.
-func (client *ResourcesClient) getByIdHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+// getByIDHandleError handles the GetByID error response.
+func (client *ResourcesClient) getByIDHandleError(resp *azcore.Response) error {
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // List - Get all the resources in a subscription.
+// If the operation fails it returns the *CloudError error type.
 func (client *ResourcesClient) List(options *ResourcesListOptions) ResourceListResultPager {
 	return &resourceListResultPager{
 		pipeline: client.con.Pipeline(),
@@ -587,24 +748,27 @@ func (client *ResourcesClient) List(options *ResourcesListOptions) ResourceListR
 // listCreateRequest creates the List request.
 func (client *ResourcesClient) listCreateRequest(ctx context.Context, options *ResourcesListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resources"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
+	reqQP := req.URL.Query()
 	if options != nil && options.Filter != nil {
-		query.Set("$filter", *options.Filter)
+		reqQP.Set("$filter", *options.Filter)
 	}
 	if options != nil && options.Expand != nil {
-		query.Set("$expand", *options.Expand)
+		reqQP.Set("$expand", *options.Expand)
 	}
 	if options != nil && options.Top != nil {
-		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -620,14 +784,19 @@ func (client *ResourcesClient) listHandleResponse(resp *azcore.Response) (Resour
 
 // listHandleError handles the List error response.
 func (client *ResourcesClient) listHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // ListByResourceGroup - Get all the resources for a resource group.
+// If the operation fails it returns the *CloudError error type.
 func (client *ResourcesClient) ListByResourceGroup(resourceGroupName string, options *ResourcesListByResourceGroupOptions) ResourceListResultPager {
 	return &resourceListResultPager{
 		pipeline: client.con.Pipeline(),
@@ -646,25 +815,31 @@ func (client *ResourcesClient) ListByResourceGroup(resourceGroupName string, opt
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
 func (client *ResourcesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *ResourcesListByResourceGroupOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
+	reqQP := req.URL.Query()
 	if options != nil && options.Filter != nil {
-		query.Set("$filter", *options.Filter)
+		reqQP.Set("$filter", *options.Filter)
 	}
 	if options != nil && options.Expand != nil {
-		query.Set("$expand", *options.Expand)
+		reqQP.Set("$expand", *options.Expand)
 	}
 	if options != nil && options.Top != nil {
-		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -680,16 +855,21 @@ func (client *ResourcesClient) listByResourceGroupHandleResponse(resp *azcore.Re
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
 func (client *ResourcesClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // BeginMoveResources - The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When
 // moving resources, both the source group and the target group are
 // locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
+// If the operation fails it returns the *CloudError error type.
 func (client *ResourcesClient) BeginMoveResources(ctx context.Context, sourceResourceGroupName string, parameters ResourcesMoveInfo, options *ResourcesBeginMoveResourcesOptions) (HTTPPollerResponse, error) {
 	resp, err := client.moveResources(ctx, sourceResourceGroupName, parameters, options)
 	if err != nil {
@@ -703,8 +883,8 @@ func (client *ResourcesClient) BeginMoveResources(ctx context.Context, sourceRes
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -715,20 +895,33 @@ func (client *ResourcesClient) BeginMoveResources(ctx context.Context, sourceRes
 
 // ResumeMoveResources creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ResourcesClient) ResumeMoveResources(token string) (HTTPPoller, error) {
+func (client *ResourcesClient) ResumeMoveResources(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.MoveResources", token, client.moveResourcesHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // MoveResources - The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving
 // resources, both the source group and the target group are
 // locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
+// If the operation fails it returns the *CloudError error type.
 func (client *ResourcesClient) moveResources(ctx context.Context, sourceResourceGroupName string, parameters ResourcesMoveInfo, options *ResourcesBeginMoveResourcesOptions) (*azcore.Response, error) {
 	req, err := client.moveResourcesCreateRequest(ctx, sourceResourceGroupName, parameters, options)
 	if err != nil {
@@ -747,30 +940,41 @@ func (client *ResourcesClient) moveResources(ctx context.Context, sourceResource
 // moveResourcesCreateRequest creates the MoveResources request.
 func (client *ResourcesClient) moveResourcesCreateRequest(ctx context.Context, sourceResourceGroupName string, parameters ResourcesMoveInfo, options *ResourcesBeginMoveResourcesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/moveResources"
+	if sourceResourceGroupName == "" {
+		return nil, errors.New("parameter sourceResourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{sourceResourceGroupName}", url.PathEscape(sourceResourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
 
 // moveResourcesHandleError handles the MoveResources error response.
 func (client *ResourcesClient) moveResourcesHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // BeginUpdate - Updates a resource.
+// If the operation fails it returns the *CloudError error type.
 func (client *ResourcesClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateOptions) (GenericResourcePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
 	if err != nil {
@@ -784,8 +988,8 @@ func (client *ResourcesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
@@ -796,18 +1000,31 @@ func (client *ResourcesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 
 // ResumeUpdate creates a new GenericResourcePoller from the specified resume token.
 // token - The value must come from a previous call to GenericResourcePoller.ResumeToken().
-func (client *ResourcesClient) ResumeUpdate(token string) (GenericResourcePoller, error) {
+func (client *ResourcesClient) ResumeUpdate(ctx context.Context, token string) (GenericResourcePollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.Update", token, client.updateHandleError)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
-	return &genericResourcePoller{
+	poller := &genericResourcePoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return GenericResourcePollerResponse{}, err
+	}
+	result := GenericResourcePollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // Update - Updates a resource.
+// If the operation fails it returns the *CloudError error type.
 func (client *ResourcesClient) update(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateOptions) (*azcore.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters, options)
 	if err != nil {
@@ -826,58 +1043,72 @@ func (client *ResourcesClient) update(ctx context.Context, resourceGroupName str
 // updateCreateRequest creates the Update request.
 func (client *ResourcesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}"
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if parentResourcePath == "" {
+		return nil, errors.New("parameter parentResourcePath cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
+	if resourceType == "" {
+		return nil, errors.New("parameter resourceType cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// updateHandleResponse handles the Update response.
-func (client *ResourcesClient) updateHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
-	var val *GenericResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return GenericResourceResponse{}, err
-	}
-	return GenericResourceResponse{RawResponse: resp.Response, GenericResource: val}, nil
-}
-
 // updateHandleError handles the Update error response.
 func (client *ResourcesClient) updateHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // BeginUpdateByID - Updates a resource by ID.
-func (client *ResourcesClient) BeginUpdateByID(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateByIDOptions) (GenericResourcePollerResponse, error) {
-	resp, err := client.updateByID(ctx, resourceId, apiVersion, parameters, options)
+// If the operation fails it returns the *CloudError error type.
+func (client *ResourcesClient) BeginUpdateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateByIDOptions) (GenericResourcePollerResponse, error) {
+	resp, err := client.updateByID(ctx, resourceID, apiVersion, parameters, options)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
 	result := GenericResourcePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourcesClient.UpdateByID", "", resp, client.updateByIdHandleError)
+	pt, err := armcore.NewPoller("ResourcesClient.UpdateByID", "", resp, client.updateByIDHandleError)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
@@ -888,20 +1119,33 @@ func (client *ResourcesClient) BeginUpdateByID(ctx context.Context, resourceId s
 
 // ResumeUpdateByID creates a new GenericResourcePoller from the specified resume token.
 // token - The value must come from a previous call to GenericResourcePoller.ResumeToken().
-func (client *ResourcesClient) ResumeUpdateByID(token string) (GenericResourcePoller, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.UpdateByID", token, client.updateByIdHandleError)
+func (client *ResourcesClient) ResumeUpdateByID(ctx context.Context, token string) (GenericResourcePollerResponse, error) {
+	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.UpdateByID", token, client.updateByIDHandleError)
 	if err != nil {
-		return nil, err
+		return GenericResourcePollerResponse{}, err
 	}
-	return &genericResourcePoller{
+	poller := &genericResourcePoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return GenericResourcePollerResponse{}, err
+	}
+	result := GenericResourcePollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // UpdateByID - Updates a resource by ID.
-func (client *ResourcesClient) updateByID(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateByIDOptions) (*azcore.Response, error) {
-	req, err := client.updateByIdCreateRequest(ctx, resourceId, apiVersion, parameters, options)
+// If the operation fails it returns the *CloudError error type.
+func (client *ResourcesClient) updateByID(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateByIDOptions) (*azcore.Response, error) {
+	req, err := client.updateByIDCreateRequest(ctx, resourceID, apiVersion, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -910,43 +1154,41 @@ func (client *ResourcesClient) updateByID(ctx context.Context, resourceId string
 		return nil, err
 	}
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
-		return nil, client.updateByIdHandleError(resp)
+		return nil, client.updateByIDHandleError(resp)
 	}
 	return resp, nil
 }
 
-// updateByIdCreateRequest creates the UpdateByID request.
-func (client *ResourcesClient) updateByIdCreateRequest(ctx context.Context, resourceId string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateByIDOptions) (*azcore.Request, error) {
+// updateByIDCreateRequest creates the UpdateByID request.
+func (client *ResourcesClient) updateByIDCreateRequest(ctx context.Context, resourceID string, apiVersion string, parameters GenericResource, options *ResourcesBeginUpdateByIDOptions) (*azcore.Request, error) {
 	urlPath := "/{resourceId}"
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceId)
+	if resourceID == "" {
+		return nil, errors.New("parameter resourceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
 	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", apiVersion)
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", apiVersion)
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
 
-// updateByIdHandleResponse handles the UpdateByID response.
-func (client *ResourcesClient) updateByIdHandleResponse(resp *azcore.Response) (GenericResourceResponse, error) {
-	var val *GenericResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return GenericResourceResponse{}, err
+// updateByIDHandleError handles the UpdateByID error response.
+func (client *ResourcesClient) updateByIDHandleError(resp *azcore.Response) error {
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return GenericResourceResponse{RawResponse: resp.Response, GenericResource: val}, nil
-}
-
-// updateByIdHandleError handles the UpdateByID error response.
-func (client *ResourcesClient) updateByIdHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // BeginValidateMoveResources - This operation checks whether the specified resources can be moved to the target. The resources to move must be in the same
@@ -954,6 +1196,7 @@ func (client *ResourcesClient) updateByIdHandleError(resp *azcore.Response) erro
 // subscription. If validation succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409 (Conflict)
 // with an error message. Retrieve the URL in the
 // Location header value to check the result of the long-running operation.
+// If the operation fails it returns the *CloudError error type.
 func (client *ResourcesClient) BeginValidateMoveResources(ctx context.Context, sourceResourceGroupName string, parameters ResourcesMoveInfo, options *ResourcesBeginValidateMoveResourcesOptions) (HTTPPollerResponse, error) {
 	resp, err := client.validateMoveResources(ctx, sourceResourceGroupName, parameters, options)
 	if err != nil {
@@ -967,8 +1210,8 @@ func (client *ResourcesClient) BeginValidateMoveResources(ctx context.Context, s
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pt:       pt,
 		pipeline: client.con.Pipeline(),
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -979,15 +1222,27 @@ func (client *ResourcesClient) BeginValidateMoveResources(ctx context.Context, s
 
 // ResumeValidateMoveResources creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ResourcesClient) ResumeValidateMoveResources(token string) (HTTPPoller, error) {
+func (client *ResourcesClient) ResumeValidateMoveResources(ctx context.Context, token string) (HTTPPollerResponse, error) {
 	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.ValidateMoveResources", token, client.validateMoveResourcesHandleError)
 	if err != nil {
-		return nil, err
+		return HTTPPollerResponse{}, err
 	}
-	return &httpPoller{
+	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
 		pt:       pt,
-	}, nil
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return HTTPPollerResponse{}, err
+	}
+	result := HTTPPollerResponse{
+		RawResponse: resp,
+	}
+	result.Poller = poller
+	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
+		return poller.pollUntilDone(ctx, frequency)
+	}
+	return result, nil
 }
 
 // ValidateMoveResources - This operation checks whether the specified resources can be moved to the target. The resources to move must be in the same source
@@ -995,6 +1250,7 @@ func (client *ResourcesClient) ResumeValidateMoveResources(token string) (HTTPPo
 // subscription. If validation succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409 (Conflict)
 // with an error message. Retrieve the URL in the
 // Location header value to check the result of the long-running operation.
+// If the operation fails it returns the *CloudError error type.
 func (client *ResourcesClient) validateMoveResources(ctx context.Context, sourceResourceGroupName string, parameters ResourcesMoveInfo, options *ResourcesBeginValidateMoveResourcesOptions) (*azcore.Response, error) {
 	req, err := client.validateMoveResourcesCreateRequest(ctx, sourceResourceGroupName, parameters, options)
 	if err != nil {
@@ -1013,25 +1269,35 @@ func (client *ResourcesClient) validateMoveResources(ctx context.Context, source
 // validateMoveResourcesCreateRequest creates the ValidateMoveResources request.
 func (client *ResourcesClient) validateMoveResourcesCreateRequest(ctx context.Context, sourceResourceGroupName string, parameters ResourcesMoveInfo, options *ResourcesBeginValidateMoveResourcesOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/validateMoveResources"
+	if sourceResourceGroupName == "" {
+		return nil, errors.New("parameter sourceResourceGroupName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{sourceResourceGroupName}", url.PathEscape(sourceResourceGroupName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
 
 // validateMoveResourcesHandleError handles the ValidateMoveResources error response.
 func (client *ResourcesClient) validateMoveResourcesHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }

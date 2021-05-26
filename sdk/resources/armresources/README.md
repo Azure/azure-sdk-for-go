@@ -1,10 +1,10 @@
 # Azure Resources Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2020-06-01/armresources)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2020-06-01/armresources)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources)
 
 The `armresources` module provides operations for working with Azure resources and resource groups.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/arm/resources/2020-06-01/armresources)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/resources/armresources)
 
 # Getting Started
 
@@ -20,10 +20,10 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Resources module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2020-06-01/armresources
+go get github.com/Azure/azure-sdk-for-go/sdk/resources/armresources
 ```
 
-Documentation and examples are available at [pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2020-06-01/armresources](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2020-06-01/armresources)
+Documentation and examples are available at [pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources)
 
 ## Authorization
 

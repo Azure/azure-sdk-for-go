@@ -9,6 +9,8 @@ package armresources
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
@@ -30,6 +32,7 @@ func NewProvidersClient(con *armcore.Connection, subscriptionID string) *Provide
 }
 
 // Get - Gets the specified resource provider.
+// If the operation fails it returns the *CloudError error type.
 func (client *ProvidersClient) Get(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetOptions) (ProviderResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
@@ -48,19 +51,25 @@ func (client *ProvidersClient) Get(ctx context.Context, resourceProviderNamespac
 // getCreateRequest creates the Get request.
 func (client *ProvidersClient) getCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}"
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
+	reqQP := req.URL.Query()
 	if options != nil && options.Expand != nil {
-		query.Set("$expand", *options.Expand)
+		reqQP.Set("$expand", *options.Expand)
 	}
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -76,14 +85,19 @@ func (client *ProvidersClient) getHandleResponse(resp *azcore.Response) (Provide
 
 // getHandleError handles the Get error response.
 func (client *ProvidersClient) getHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // GetAtTenantScope - Gets the specified resource provider at the tenant level.
+// If the operation fails it returns the *CloudError error type.
 func (client *ProvidersClient) GetAtTenantScope(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetAtTenantScopeOptions) (ProviderResponse, error) {
 	req, err := client.getAtTenantScopeCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
@@ -102,18 +116,21 @@ func (client *ProvidersClient) GetAtTenantScope(ctx context.Context, resourcePro
 // getAtTenantScopeCreateRequest creates the GetAtTenantScope request.
 func (client *ProvidersClient) getAtTenantScopeCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersGetAtTenantScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/{resourceProviderNamespace}"
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
+	reqQP := req.URL.Query()
 	if options != nil && options.Expand != nil {
-		query.Set("$expand", *options.Expand)
+		reqQP.Set("$expand", *options.Expand)
 	}
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -129,14 +146,19 @@ func (client *ProvidersClient) getAtTenantScopeHandleResponse(resp *azcore.Respo
 
 // getAtTenantScopeHandleError handles the GetAtTenantScope error response.
 func (client *ProvidersClient) getAtTenantScopeHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // List - Gets all resource providers for a subscription.
+// If the operation fails it returns the *CloudError error type.
 func (client *ProvidersClient) List(options *ProvidersListOptions) ProviderListResultPager {
 	return &providerListResultPager{
 		pipeline: client.con.Pipeline(),
@@ -155,21 +177,24 @@ func (client *ProvidersClient) List(options *ProvidersListOptions) ProviderListR
 // listCreateRequest creates the List request.
 func (client *ProvidersClient) listCreateRequest(ctx context.Context, options *ProvidersListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
+	reqQP := req.URL.Query()
 	if options != nil && options.Top != nil {
-		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	if options != nil && options.Expand != nil {
-		query.Set("$expand", *options.Expand)
+		reqQP.Set("$expand", *options.Expand)
 	}
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -185,14 +210,19 @@ func (client *ProvidersClient) listHandleResponse(resp *azcore.Response) (Provid
 
 // listHandleError handles the List error response.
 func (client *ProvidersClient) listHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // ListAtTenantScope - Gets all resource providers for the tenant.
+// If the operation fails it returns the *CloudError error type.
 func (client *ProvidersClient) ListAtTenantScope(options *ProvidersListAtTenantScopeOptions) ProviderListResultPager {
 	return &providerListResultPager{
 		pipeline: client.con.Pipeline(),
@@ -216,15 +246,15 @@ func (client *ProvidersClient) listAtTenantScopeCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
+	reqQP := req.URL.Query()
 	if options != nil && options.Top != nil {
-		query.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	if options != nil && options.Expand != nil {
-		query.Set("$expand", *options.Expand)
+		reqQP.Set("$expand", *options.Expand)
 	}
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -240,14 +270,81 @@ func (client *ProvidersClient) listAtTenantScopeHandleResponse(resp *azcore.Resp
 
 // listAtTenantScopeHandleError handles the ListAtTenantScope error response.
 func (client *ProvidersClient) listAtTenantScopeHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
+}
+
+// ProviderPermissions - Get the provider permissions.
+// If the operation fails it returns the *CloudError error type.
+func (client *ProvidersClient) ProviderPermissions(ctx context.Context, resourceProviderNamespace string, options *ProvidersProviderPermissionsOptions) (ProviderPermissionListResultResponse, error) {
+	req, err := client.providerPermissionsCreateRequest(ctx, resourceProviderNamespace, options)
+	if err != nil {
+		return ProviderPermissionListResultResponse{}, err
+	}
+	resp, err := client.con.Pipeline().Do(req)
+	if err != nil {
+		return ProviderPermissionListResultResponse{}, err
+	}
+	if !resp.HasStatusCode(http.StatusOK) {
+		return ProviderPermissionListResultResponse{}, client.providerPermissionsHandleError(resp)
+	}
+	return client.providerPermissionsHandleResponse(resp)
+}
+
+// providerPermissionsCreateRequest creates the ProviderPermissions request.
+func (client *ProvidersClient) providerPermissionsCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersProviderPermissionsOptions) (*azcore.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/providerPermissions"
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Telemetry(telemetryInfo)
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
+	req.Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// providerPermissionsHandleResponse handles the ProviderPermissions response.
+func (client *ProvidersClient) providerPermissionsHandleResponse(resp *azcore.Response) (ProviderPermissionListResultResponse, error) {
+	var val *ProviderPermissionListResult
+	if err := resp.UnmarshalAsJSON(&val); err != nil {
+		return ProviderPermissionListResultResponse{}, err
+	}
+	return ProviderPermissionListResultResponse{RawResponse: resp.Response, ProviderPermissionListResult: val}, nil
+}
+
+// providerPermissionsHandleError handles the ProviderPermissions error response.
+func (client *ProvidersClient) providerPermissionsHandleError(resp *azcore.Response) error {
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
+	}
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // Register - Registers a subscription with a resource provider.
+// If the operation fails it returns the *CloudError error type.
 func (client *ProvidersClient) Register(ctx context.Context, resourceProviderNamespace string, options *ProvidersRegisterOptions) (ProviderResponse, error) {
 	req, err := client.registerCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
@@ -266,17 +363,26 @@ func (client *ProvidersClient) Register(ctx context.Context, resourceProviderNam
 // registerCreateRequest creates the Register request.
 func (client *ProvidersClient) registerCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersRegisterOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/register"
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
+	if options != nil && options.Properties != nil {
+		return req, req.MarshalAsJSON(*options.Properties)
+	}
 	return req, nil
 }
 
@@ -291,16 +397,21 @@ func (client *ProvidersClient) registerHandleResponse(resp *azcore.Response) (Pr
 
 // registerHandleError handles the Register error response.
 func (client *ProvidersClient) registerHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // RegisterAtManagementGroupScope - Registers a management group with a resource provider.
-func (client *ProvidersClient) RegisterAtManagementGroupScope(ctx context.Context, resourceProviderNamespace string, groupId string, options *ProvidersRegisterAtManagementGroupScopeOptions) (*http.Response, error) {
-	req, err := client.registerAtManagementGroupScopeCreateRequest(ctx, resourceProviderNamespace, groupId, options)
+// If the operation fails it returns the *CloudError error type.
+func (client *ProvidersClient) RegisterAtManagementGroupScope(ctx context.Context, resourceProviderNamespace string, groupID string, options *ProvidersRegisterAtManagementGroupScopeOptions) (*http.Response, error) {
+	req, err := client.registerAtManagementGroupScopeCreateRequest(ctx, resourceProviderNamespace, groupID, options)
 	if err != nil {
 		return nil, err
 	}
@@ -315,32 +426,43 @@ func (client *ProvidersClient) RegisterAtManagementGroupScope(ctx context.Contex
 }
 
 // registerAtManagementGroupScopeCreateRequest creates the RegisterAtManagementGroupScope request.
-func (client *ProvidersClient) registerAtManagementGroupScopeCreateRequest(ctx context.Context, resourceProviderNamespace string, groupId string, options *ProvidersRegisterAtManagementGroupScopeOptions) (*azcore.Request, error) {
+func (client *ProvidersClient) registerAtManagementGroupScopeCreateRequest(ctx context.Context, resourceProviderNamespace string, groupID string, options *ProvidersRegisterAtManagementGroupScopeOptions) (*azcore.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/{resourceProviderNamespace}/register"
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
-	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupId))
+	if groupID == "" {
+		return nil, errors.New("parameter groupID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupID))
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // registerAtManagementGroupScopeHandleError handles the RegisterAtManagementGroupScope error response.
 func (client *ProvidersClient) registerAtManagementGroupScopeHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // Unregister - Unregisters a subscription from a resource provider.
+// If the operation fails it returns the *CloudError error type.
 func (client *ProvidersClient) Unregister(ctx context.Context, resourceProviderNamespace string, options *ProvidersUnregisterOptions) (ProviderResponse, error) {
 	req, err := client.unregisterCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
@@ -359,16 +481,22 @@ func (client *ProvidersClient) Unregister(ctx context.Context, resourceProviderN
 // unregisterCreateRequest creates the Unregister request.
 func (client *ProvidersClient) unregisterCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersUnregisterOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/unregister"
+	if resourceProviderNamespace == "" {
+		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -384,9 +512,13 @@ func (client *ProvidersClient) unregisterHandleResponse(resp *azcore.Response) (
 
 // unregisterHandleError handles the Unregister error response.
 func (client *ProvidersClient) unregisterHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }

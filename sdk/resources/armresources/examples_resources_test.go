@@ -9,9 +9,9 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2020-06-01/armresources"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resources/armresources"
 )
 
 func ExampleResourcesClient_GetByID() {
@@ -36,10 +36,10 @@ func ExampleResourcesClient_ListByResourceGroup() {
 	page := client.ListByResourceGroup("<resource group name>", nil)
 	for page.NextPage(context.Background()) {
 		resp := page.PageResponse()
-		if len(*resp.ResourceListResult.Value) == 0 {
+		if len(resp.ResourceListResult.Value) == 0 {
 			log.Fatal("missing payload")
 		}
-		for _, val := range *resp.ResourceListResult.Value {
+		for _, val := range resp.ResourceListResult.Value {
 			log.Printf("resource: %v", *val.ID)
 		}
 	}

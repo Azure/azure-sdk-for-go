@@ -9,6 +9,8 @@ package armresources
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
@@ -31,6 +33,7 @@ func NewTagsClient(con *armcore.Connection, subscriptionID string) *TagsClient {
 // CreateOrUpdate - This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name can have a maximum of
 // 512 characters and is case-insensitive. Tag names cannot have the
 // following prefixes which are reserved for Azure use: 'microsoft', 'azure', 'windows'.
+// If the operation fails it returns the *CloudError error type.
 func (client *TagsClient) CreateOrUpdate(ctx context.Context, tagName string, options *TagsCreateOrUpdateOptions) (TagDetailsResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, tagName, options)
 	if err != nil {
@@ -49,16 +52,22 @@ func (client *TagsClient) CreateOrUpdate(ctx context.Context, tagName string, op
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *TagsClient) createOrUpdateCreateRequest(ctx context.Context, tagName string, options *TagsCreateOrUpdateOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}"
+	if tagName == "" {
+		return nil, errors.New("parameter tagName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -74,15 +83,20 @@ func (client *TagsClient) createOrUpdateHandleResponse(resp *azcore.Response) (T
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
 func (client *TagsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // CreateOrUpdateAtScope - This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The specified entity
 // can have a maximum of 50 tags.
+// If the operation fails it returns the *CloudError error type.
 func (client *TagsClient) CreateOrUpdateAtScope(ctx context.Context, scope string, parameters TagsResource, options *TagsCreateOrUpdateAtScopeOptions) (TagsResourceResponse, error) {
 	req, err := client.createOrUpdateAtScopeCreateRequest(ctx, scope, parameters, options)
 	if err != nil {
@@ -101,15 +115,18 @@ func (client *TagsClient) CreateOrUpdateAtScope(ctx context.Context, scope strin
 // createOrUpdateAtScopeCreateRequest creates the CreateOrUpdateAtScope request.
 func (client *TagsClient) createOrUpdateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsResource, options *TagsCreateOrUpdateAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
@@ -125,15 +142,20 @@ func (client *TagsClient) createOrUpdateAtScopeHandleResponse(resp *azcore.Respo
 
 // createOrUpdateAtScopeHandleError handles the CreateOrUpdateAtScope error response.
 func (client *TagsClient) createOrUpdateAtScopeHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // CreateOrUpdateValue - This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag value can have
 // a maximum of 256 characters.
+// If the operation fails it returns the *CloudError error type.
 func (client *TagsClient) CreateOrUpdateValue(ctx context.Context, tagName string, tagValue string, options *TagsCreateOrUpdateValueOptions) (TagValueResponse, error) {
 	req, err := client.createOrUpdateValueCreateRequest(ctx, tagName, tagValue, options)
 	if err != nil {
@@ -152,17 +174,26 @@ func (client *TagsClient) CreateOrUpdateValue(ctx context.Context, tagName strin
 // createOrUpdateValueCreateRequest creates the CreateOrUpdateValue request.
 func (client *TagsClient) createOrUpdateValueCreateRequest(ctx context.Context, tagName string, tagValue string, options *TagsCreateOrUpdateValueOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}"
+	if tagName == "" {
+		return nil, errors.New("parameter tagName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
+	if tagValue == "" {
+		return nil, errors.New("parameter tagValue cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{tagValue}", url.PathEscape(tagValue))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -178,16 +209,21 @@ func (client *TagsClient) createOrUpdateValueHandleResponse(resp *azcore.Respons
 
 // createOrUpdateValueHandleError handles the CreateOrUpdateValue error response.
 func (client *TagsClient) createOrUpdateValueHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // Delete - This operation allows deleting a name from the list of predefined tag names for the given subscription. The name being deleted must not be in
 // use as a tag name for any resource. All predefined values
 // for the given name must have already been deleted.
+// If the operation fails it returns the *CloudError error type.
 func (client *TagsClient) Delete(ctx context.Context, tagName string, options *TagsDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, tagName, options)
 	if err != nil {
@@ -206,30 +242,41 @@ func (client *TagsClient) Delete(ctx context.Context, tagName string, options *T
 // deleteCreateRequest creates the Delete request.
 func (client *TagsClient) deleteCreateRequest(ctx context.Context, tagName string, options *TagsDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}"
+	if tagName == "" {
+		return nil, errors.New("parameter tagName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
 func (client *TagsClient) deleteHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // DeleteAtScope - Deletes the entire set of tags on a resource or subscription.
+// If the operation fails it returns the *CloudError error type.
 func (client *TagsClient) DeleteAtScope(ctx context.Context, scope string, options *TagsDeleteAtScopeOptions) (*http.Response, error) {
 	req, err := client.deleteAtScopeCreateRequest(ctx, scope, options)
 	if err != nil {
@@ -248,31 +295,39 @@ func (client *TagsClient) DeleteAtScope(ctx context.Context, scope string, optio
 // deleteAtScopeCreateRequest creates the DeleteAtScope request.
 func (client *TagsClient) deleteAtScopeCreateRequest(ctx context.Context, scope string, options *TagsDeleteAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteAtScopeHandleError handles the DeleteAtScope error response.
 func (client *TagsClient) deleteAtScopeHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // DeleteValue - This operation allows deleting a value from the list of predefined values for an existing predefined tag name. The value being deleted
 // must not be in use as a tag value for the given tag name for any
 // resource.
+// If the operation fails it returns the *CloudError error type.
 func (client *TagsClient) DeleteValue(ctx context.Context, tagName string, tagValue string, options *TagsDeleteValueOptions) (*http.Response, error) {
 	req, err := client.deleteValueCreateRequest(ctx, tagName, tagValue, options)
 	if err != nil {
@@ -291,31 +346,45 @@ func (client *TagsClient) DeleteValue(ctx context.Context, tagName string, tagVa
 // deleteValueCreateRequest creates the DeleteValue request.
 func (client *TagsClient) deleteValueCreateRequest(ctx context.Context, tagName string, tagValue string, options *TagsDeleteValueOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}"
+	if tagName == "" {
+		return nil, errors.New("parameter tagName cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{tagName}", url.PathEscape(tagName))
+	if tagValue == "" {
+		return nil, errors.New("parameter tagValue cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{tagValue}", url.PathEscape(tagValue))
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteValueHandleError handles the DeleteValue error response.
 func (client *TagsClient) deleteValueHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // GetAtScope - Gets the entire set of tags on a resource or subscription.
+// If the operation fails it returns the *CloudError error type.
 func (client *TagsClient) GetAtScope(ctx context.Context, scope string, options *TagsGetAtScopeOptions) (TagsResourceResponse, error) {
 	req, err := client.getAtScopeCreateRequest(ctx, scope, options)
 	if err != nil {
@@ -334,15 +403,18 @@ func (client *TagsClient) GetAtScope(ctx context.Context, scope string, options 
 // getAtScopeCreateRequest creates the GetAtScope request.
 func (client *TagsClient) getAtScopeCreateRequest(ctx context.Context, scope string, options *TagsGetAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -358,16 +430,21 @@ func (client *TagsClient) getAtScopeHandleResponse(resp *azcore.Response) (TagsR
 
 // getAtScopeHandleError handles the GetAtScope error response.
 func (client *TagsClient) getAtScopeHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // List - This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and returns a summary of usage for
 // each tag name and value under the given subscription.
 // In case of a large number of tags, this operation may return a previously cached result.
+// If the operation fails it returns the *CloudError error type.
 func (client *TagsClient) List(options *TagsListOptions) TagsListResultPager {
 	return &tagsListResultPager{
 		pipeline: client.con.Pipeline(),
@@ -386,15 +463,18 @@ func (client *TagsClient) List(options *TagsListOptions) TagsListResultPager {
 // listCreateRequest creates the List request.
 func (client *TagsClient) listCreateRequest(ctx context.Context, options *TagsListOptions) (*azcore.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, nil
 }
@@ -410,11 +490,15 @@ func (client *TagsClient) listHandleResponse(resp *azcore.Response) (TagsListRes
 
 // listHandleError handles the List error response.
 func (client *TagsClient) listHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }
 
 // UpdateAtScope - This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription. The specified entity
@@ -422,6 +506,7 @@ func (client *TagsClient) listHandleError(resp *azcore.Response) error {
 // 'replace' option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the values
 // of tags with existing names. The 'delete' option
 // allows selectively deleting tags based on given names or name/value pairs.
+// If the operation fails it returns the *CloudError error type.
 func (client *TagsClient) UpdateAtScope(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsUpdateAtScopeOptions) (TagsResourceResponse, error) {
 	req, err := client.updateAtScopeCreateRequest(ctx, scope, parameters, options)
 	if err != nil {
@@ -440,15 +525,18 @@ func (client *TagsClient) UpdateAtScope(ctx context.Context, scope string, param
 // updateAtScopeCreateRequest creates the UpdateAtScope request.
 func (client *TagsClient) updateAtScopeCreateRequest(ctx context.Context, scope string, parameters TagsPatchResource, options *TagsUpdateAtScopeOptions) (*azcore.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Resources/tags/default"
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	req.Telemetry(telemetryInfo)
-	query := req.URL.Query()
-	query.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = query.Encode()
+	reqQP := req.URL.Query()
+	reqQP.Set("api-version", "2021-04-01")
+	req.URL.RawQuery = reqQP.Encode()
 	req.Header.Set("Accept", "application/json")
 	return req, req.MarshalAsJSON(parameters)
 }
@@ -464,9 +552,13 @@ func (client *TagsClient) updateAtScopeHandleResponse(resp *azcore.Response) (Ta
 
 // updateAtScopeHandleError handles the UpdateAtScope error response.
 func (client *TagsClient) updateAtScopeHandleError(resp *azcore.Response) error {
-	var err CloudError
-	if err := resp.UnmarshalAsJSON(&err); err != nil {
-		return err
+	body, err := resp.Payload()
+	if err != nil {
+		return azcore.NewResponseError(err, resp.Response)
 	}
-	return azcore.NewResponseError(&err, resp.Response)
+	errType := CloudError{raw: string(body)}
+	if err := resp.UnmarshalAsJSON(&errType); err != nil {
+		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	}
+	return azcore.NewResponseError(&errType, resp.Response)
 }

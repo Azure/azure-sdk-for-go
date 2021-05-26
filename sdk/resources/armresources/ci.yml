@@ -2,14 +2,14 @@
 trigger:
   paths:
     include:
-    - sdk/arm/resources/
+    - sdk/resources/armresources/
 
 pr:
   paths:
     include:
-    - sdk/arm/resources/
+    - sdk/resources/armresources/
 
 stages:
 - template: ../../../eng/pipelines/templates/jobs/archetype-sdk-client-samples.yml
   parameters:
-    ServiceDirectory: 'arm/resources'
+    ServiceDirectory: 'resources/armresources'

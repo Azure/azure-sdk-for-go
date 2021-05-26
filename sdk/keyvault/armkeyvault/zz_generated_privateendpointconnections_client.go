@@ -23,7 +23,7 @@ import (
 // PrivateEndpointConnectionsClient contains the methods for the PrivateEndpointConnections group.
 // Don't use this type directly, use NewPrivateEndpointConnectionsClient() instead.
 type PrivateEndpointConnectionsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -48,7 +48,7 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 	}
 	poller := &privateEndpointConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionResponse, error) {
@@ -66,7 +66,7 @@ func (client *PrivateEndpointConnectionsClient) ResumeDelete(ctx context.Context
 	}
 	poller := &privateEndpointConnectionPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -96,7 +96,7 @@ func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Cont
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -136,7 +136,7 @@ func (client *PrivateEndpointConnectionsClient) deleteHandleError(resp *azcore.R
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -218,7 +218,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -227,7 +227,7 @@ func (client *PrivateEndpointConnectionsClient) getHandleError(resp *azcore.Resp
 
 // ListByResource - The List operation gets information about the private endpoint connections associated with the vault.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndpointConnectionsClient) ListByResource(resourceGroupName string, vaultName string, options *PrivateEndpointConnectionsListByResourceOptions) (PrivateEndpointConnectionListResultPager) {
+func (client *PrivateEndpointConnectionsClient) ListByResource(resourceGroupName string, vaultName string, options *PrivateEndpointConnectionsListByResourceOptions) PrivateEndpointConnectionListResultPager {
 	return &privateEndpointConnectionListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -275,7 +275,7 @@ func (client *PrivateEndpointConnectionsClient) listByResourceHandleResponse(res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateEndpointConnectionListResultResponse{}, err
 	}
-return PrivateEndpointConnectionListResultResponse{RawResponse: resp.Response, PrivateEndpointConnectionListResult: val}, nil
+	return PrivateEndpointConnectionListResultResponse{RawResponse: resp.Response, PrivateEndpointConnectionListResult: val}, nil
 }
 
 // listByResourceHandleError handles the ListByResource error response.
@@ -284,7 +284,7 @@ func (client *PrivateEndpointConnectionsClient) listByResourceHandleError(resp *
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -366,10 +366,9 @@ func (client *PrivateEndpointConnectionsClient) putHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

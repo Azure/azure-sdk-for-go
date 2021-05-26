@@ -17,8 +17,11 @@ import (
 // AccessPolicyEntry - An identity that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant
 // ID.
 type AccessPolicyEntry struct {
+	// Application ID of the client making request on behalf of a principal
+	ApplicationID *string `json:"applicationId,omitempty"`
+
 	// REQUIRED; The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique
-// for the list of access policies.
+	// for the list of access policies.
 	ObjectID *string `json:"objectId,omitempty"`
 
 	// REQUIRED; Permissions the identity has for keys, secrets and certificates.
@@ -26,9 +29,6 @@ type AccessPolicyEntry struct {
 
 	// REQUIRED; The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
 	TenantID *string `json:"tenantId,omitempty"`
-
-	// Application ID of the client making request on behalf of a principal
-	ApplicationID *string `json:"applicationId,omitempty"`
 }
 
 // Attributes - The object attributes managed by the KeyVault service.
@@ -55,7 +55,7 @@ type CheckNameAvailabilityResult struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 
 	// READ-ONLY; A boolean value that indicates whether the name is available for you to use. If true, the name is available. If false, the name has already
-// been taken or is invalid and cannot be used.
+	// been taken or is invalid and cannot be used.
 	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
 
 	// READ-ONLY; The reason that a vault name could not be used. The Reason element is only returned if NameAvailable is false.
@@ -159,27 +159,27 @@ func (d *DeletedManagedHsmProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "deletionDate":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				d.DeletionDate = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			d.DeletionDate = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "location":
-				err = unpopulate(val, &d.Location)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.Location)
+			delete(rawMsg, key)
 		case "mhsmId":
-				err = unpopulate(val, &d.MhsmID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.MhsmID)
+			delete(rawMsg, key)
 		case "purgeProtectionEnabled":
-				err = unpopulate(val, &d.PurgeProtectionEnabled)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.PurgeProtectionEnabled)
+			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				d.ScheduledPurgeDate = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			d.ScheduledPurgeDate = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, &d.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.Tags)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -263,27 +263,27 @@ func (d *DeletedVaultProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "deletionDate":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				d.DeletionDate = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			d.DeletionDate = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "location":
-				err = unpopulate(val, &d.Location)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.Location)
+			delete(rawMsg, key)
 		case "purgeProtectionEnabled":
-				err = unpopulate(val, &d.PurgeProtectionEnabled)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.PurgeProtectionEnabled)
+			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				d.ScheduledPurgeDate = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			d.ScheduledPurgeDate = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, &d.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.Tags)
+			delete(rawMsg, key)
 		case "vaultId":
-				err = unpopulate(val, &d.VaultID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.VaultID)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -565,16 +565,16 @@ type ManagedHsmProperties struct {
 	// The create mode to indicate whether the resource is being created or is being recovered from a deleted resource.
 	CreateMode *CreateMode `json:"createMode,omitempty"`
 
-	// Property specifying whether protection against purge is enabled for this managed HSM pool. Setting this property to true activates protection against
-// purge for this managed HSM pool and its content -
-// only the Managed HSM service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this
-// functionality is irreversible.
-	EnablePurgeProtection *bool `json:"enablePurgeProtection,omitempty"`
+	// The Azure Active Directory tenant ID that should be used for authenticating requests to the managed HSM pool.
+	TenantID *string `json:"tenantId,omitempty"`
 
 	// Property to specify whether the 'soft delete' functionality is enabled for this managed HSM pool. If it's not set to any value(true or false) when creating
-// new managed HSM pool, it will be set to true
-// by default. Once set to true, it cannot be reverted to false.
+	// new managed HSM pool, it will be set to true
+	// by default. Once set to true, it cannot be reverted to false.
 	EnableSoftDelete *bool `json:"enableSoftDelete,omitempty"`
+
+	// softDelete data retention days. It accepts >=7 and <=90.
+	SoftDeleteRetentionInDays *int32 `json:"softDeleteRetentionInDays,omitempty"`
 
 	// Array of initial administrators object ids for this managed hsm pool.
 	InitialAdminObjectIDs []*string `json:"initialAdminObjectIds,omitempty"`
@@ -582,20 +582,14 @@ type ManagedHsmProperties struct {
 	// Rules governing the accessibility of the key vault from specific network locations.
 	NetworkACLs *MHSMNetworkRuleSet `json:"networkAcls,omitempty"`
 
+	// Property specifying whether protection against purge is enabled for this managed HSM pool. Setting this property to true activates protection against
+	// purge for this managed HSM pool and its content -
+	// only the Managed HSM service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this
+	// functionality is irreversible.
+	EnablePurgeProtection *bool `json:"enablePurgeProtection,omitempty"`
+
 	// Control permission for data plane traffic coming from public networks while private endpoint is enabled.
 	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
-
-	// softDelete data retention days. It accepts >=7 and <=90.
-	SoftDeleteRetentionInDays *int32 `json:"softDeleteRetentionInDays,omitempty"`
-
-	// The Azure Active Directory tenant ID that should be used for authenticating requests to the managed HSM pool.
-	TenantID *string `json:"tenantId,omitempty"`
-
-	// READ-ONLY; The URI of the managed hsm pool for performing operations on keys.
-	HsmURI *string `json:"hsmUri,omitempty" azure:"ro"`
-
-	// READ-ONLY; List of private endpoint connections associated with the managed hsm pool.
-	PrivateEndpointConnections []*MHSMPrivateEndpointConnectionItem `json:"privateEndpointConnections,omitempty" azure:"ro"`
 
 	// READ-ONLY; Provisioning state.
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
@@ -603,8 +597,14 @@ type ManagedHsmProperties struct {
 	// READ-ONLY; The scheduled purge date in UTC.
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 
+	// READ-ONLY; The URI of the managed hsm pool for performing operations on keys.
+	HsmURI *string `json:"hsmUri,omitempty" azure:"ro"`
+
 	// READ-ONLY; Resource Status Message.
 	StatusMessage *string `json:"statusMessage,omitempty" azure:"ro"`
+
+	// READ-ONLY; List of private endpoint connections associated with the managed hsm pool.
+	PrivateEndpointConnections []*MHSMPrivateEndpointConnectionItem `json:"privateEndpointConnections,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ManagedHsmProperties.
@@ -636,46 +636,46 @@ func (m *ManagedHsmProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createMode":
-				err = unpopulate(val, &m.CreateMode)
-				delete(rawMsg, key)
+			err = unpopulate(val, &m.CreateMode)
+			delete(rawMsg, key)
 		case "enablePurgeProtection":
-				err = unpopulate(val, &m.EnablePurgeProtection)
-				delete(rawMsg, key)
+			err = unpopulate(val, &m.EnablePurgeProtection)
+			delete(rawMsg, key)
 		case "enableSoftDelete":
-				err = unpopulate(val, &m.EnableSoftDelete)
-				delete(rawMsg, key)
+			err = unpopulate(val, &m.EnableSoftDelete)
+			delete(rawMsg, key)
 		case "hsmUri":
-				err = unpopulate(val, &m.HsmURI)
-				delete(rawMsg, key)
+			err = unpopulate(val, &m.HsmURI)
+			delete(rawMsg, key)
 		case "initialAdminObjectIds":
-				err = unpopulate(val, &m.InitialAdminObjectIDs)
-				delete(rawMsg, key)
+			err = unpopulate(val, &m.InitialAdminObjectIDs)
+			delete(rawMsg, key)
 		case "networkAcls":
-				err = unpopulate(val, &m.NetworkACLs)
-				delete(rawMsg, key)
+			err = unpopulate(val, &m.NetworkACLs)
+			delete(rawMsg, key)
 		case "privateEndpointConnections":
-				err = unpopulate(val, &m.PrivateEndpointConnections)
-				delete(rawMsg, key)
+			err = unpopulate(val, &m.PrivateEndpointConnections)
+			delete(rawMsg, key)
 		case "provisioningState":
-				err = unpopulate(val, &m.ProvisioningState)
-				delete(rawMsg, key)
+			err = unpopulate(val, &m.ProvisioningState)
+			delete(rawMsg, key)
 		case "publicNetworkAccess":
-				err = unpopulate(val, &m.PublicNetworkAccess)
-				delete(rawMsg, key)
+			err = unpopulate(val, &m.PublicNetworkAccess)
+			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				m.ScheduledPurgeDate = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			m.ScheduledPurgeDate = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "softDeleteRetentionInDays":
-				err = unpopulate(val, &m.SoftDeleteRetentionInDays)
-				delete(rawMsg, key)
+			err = unpopulate(val, &m.SoftDeleteRetentionInDays)
+			delete(rawMsg, key)
 		case "statusMessage":
-				err = unpopulate(val, &m.StatusMessage)
-				delete(rawMsg, key)
+			err = unpopulate(val, &m.StatusMessage)
+			delete(rawMsg, key)
 		case "tenantId":
-				err = unpopulate(val, &m.TenantID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &m.TenantID)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -784,11 +784,11 @@ type ManagedHsmsListDeletedOptions struct {
 
 // MetricSpecification - Metric specification of operation.
 type MetricSpecification struct {
+	// The internal metric name.
+	InternalMetricName *string `json:"internalMetricName,omitempty"`
+
 	// The metric aggregation type. Possible values include: 'Average', 'Count', 'Total'.
 	AggregationType *string `json:"aggregationType,omitempty"`
-
-	// The dimensions of metric
-	Dimensions []*DimensionProperties `json:"dimensions,omitempty"`
 
 	// Display description of metric specification.
 	DisplayDescription *string `json:"displayDescription,omitempty"`
@@ -799,8 +799,8 @@ type MetricSpecification struct {
 	// Property to specify whether to fill gap with zero.
 	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
 
-	// The internal metric name.
-	InternalMetricName *string `json:"internalMetricName,omitempty"`
+	// The dimensions of metric
+	Dimensions []*DimensionProperties `json:"dimensions,omitempty"`
 
 	// The metric lock aggregation type.
 	LockAggregationType *string `json:"lockAggregationType,omitempty"`
@@ -1247,8 +1247,8 @@ type SecretProperties struct {
 	ContentType *string `json:"contentType,omitempty"`
 
 	// The value of the secret. NOTE: 'value' will never be returned from the service, as APIs using this model are is intended for internal use in ARM deployments.
-// Users should use the data-plane REST
-// service for interaction with vault secrets.
+	// Users should use the data-plane REST
+	// service for interaction with vault secrets.
 	Value *string `json:"value,omitempty"`
 
 	// READ-ONLY; The URI to retrieve the current version of the secret.
@@ -1339,27 +1339,27 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				s.CreatedAt = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			s.CreatedAt = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "createdBy":
-				err = unpopulate(val, &s.CreatedBy)
-				delete(rawMsg, key)
+			err = unpopulate(val, &s.CreatedBy)
+			delete(rawMsg, key)
 		case "createdByType":
-				err = unpopulate(val, &s.CreatedByType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &s.CreatedByType)
+			delete(rawMsg, key)
 		case "lastModifiedAt":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				s.LastModifiedAt = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			s.LastModifiedAt = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "lastModifiedBy":
-				err = unpopulate(val, &s.LastModifiedBy)
-				delete(rawMsg, key)
+			err = unpopulate(val, &s.LastModifiedBy)
+			delete(rawMsg, key)
 		case "lastModifiedByType":
-				err = unpopulate(val, &s.LastModifiedByType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &s.LastModifiedByType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1370,11 +1370,11 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 
 // Vault - Resource information with extended details.
 type Vault struct {
-	// REQUIRED; Properties of the vault
-	Properties *VaultProperties `json:"properties,omitempty"`
-
 	// Azure location of the key vault resource.
 	Location *string `json:"location,omitempty"`
+
+	// REQUIRED; Properties of the vault
+	Properties *VaultProperties `json:"properties,omitempty"`
 
 	// Tags assigned to the key vault resource.
 	Tags map[string]*string `json:"tags,omitempty"`
@@ -1426,7 +1426,7 @@ type VaultAccessPolicyParameters struct {
 // VaultAccessPolicyProperties - Properties of the vault access policy
 type VaultAccessPolicyProperties struct {
 	// REQUIRED; An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's
-// tenant ID.
+	// tenant ID.
 	AccessPolicies []*AccessPolicyEntry `json:"accessPolicies,omitempty"`
 }
 
@@ -1503,24 +1503,24 @@ func (v VaultPatchParameters) MarshalJSON() ([]byte, error) {
 
 // VaultPatchProperties - Properties of the vault
 type VaultPatchProperties struct {
+	// Property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.
+	EnabledForDiskEncryption *bool `json:"enabledForDiskEncryption,omitempty"`
+
 	// An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
 	AccessPolicies []*AccessPolicyEntry `json:"accessPolicies,omitempty"`
 
-	// The vault's create mode to indicate whether the vault need to be recovered or not.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
-
 	// Property specifying whether protection against purge is enabled for this vault. Setting this property to true activates protection against purge for
-// this vault and its content - only the Key Vault
-// service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this functionality is irreversible
-// - that is, the property does not accept
-// false as its value.
+	// this vault and its content - only the Key Vault
+	// service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this functionality is irreversible
+	// - that is, the property does not accept
+	// false as its value.
 	EnablePurgeProtection *bool `json:"enablePurgeProtection,omitempty"`
 
 	// Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data
-// actions, and the access policies specified in vault
-// properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties,
-// and any policy stored on Azure Resource Manager
-// will be ignored. If null or not specified, the value of this property will not change.
+	// actions, and the access policies specified in vault
+	// properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties,
+	// and any policy stored on Azure Resource Manager
+	// will be ignored. If null or not specified, the value of this property will not change.
 	EnableRbacAuthorization *bool `json:"enableRbacAuthorization,omitempty"`
 
 	// Property to specify whether the 'soft delete' functionality is enabled for this key vault. Once set to true, it cannot be reverted to false.
@@ -1529,8 +1529,8 @@ type VaultPatchProperties struct {
 	// Property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.
 	EnabledForDeployment *bool `json:"enabledForDeployment,omitempty"`
 
-	// Property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.
-	EnabledForDiskEncryption *bool `json:"enabledForDiskEncryption,omitempty"`
+	// The vault's create mode to indicate whether the vault need to be recovered or not.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
 
 	// Property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault.
 	EnabledForTemplateDeployment *bool `json:"enabledForTemplateDeployment,omitempty"`
@@ -1568,38 +1568,28 @@ func (v VaultPatchProperties) MarshalJSON() ([]byte, error) {
 
 // VaultProperties - Properties of the vault
 type VaultProperties struct {
-	// REQUIRED; SKU details
-	SKU *SKU `json:"sku,omitempty"`
+	// An array of 0 to 1024 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant
+	// ID. When createMode is set to recover, access
+	// policies are not required. Otherwise, access policies are required.
+	AccessPolicies []*AccessPolicyEntry `json:"accessPolicies,omitempty"`
 
 	// REQUIRED; The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
 	TenantID *string `json:"tenantId,omitempty"`
 
-	// An array of 0 to 1024 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant
-// ID. When createMode is set to recover, access
-// policies are not required. Otherwise, access policies are required.
-	AccessPolicies []*AccessPolicyEntry `json:"accessPolicies,omitempty"`
-
-	// The vault's create mode to indicate whether the vault need to be recovered or not.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
-
-	// Property specifying whether protection against purge is enabled for this vault. Setting this property to true activates protection against purge for
-// this vault and its content - only the Key Vault
-// service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this functionality is irreversible
-// - that is, the property does not accept
-// false as its value.
-	EnablePurgeProtection *bool `json:"enablePurgeProtection,omitempty"`
+	// REQUIRED; SKU details
+	SKU *SKU `json:"sku,omitempty"`
 
 	// Property that controls how data actions are authorized. When true, the key vault will use Role Based Access Control (RBAC) for authorization of data
-// actions, and the access policies specified in vault
-// properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties,
-// and any policy stored on Azure Resource Manager
-// will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with
-// RBAC.
+	// actions, and the access policies specified in vault
+	// properties will be ignored (warning: this is a preview feature). When false, the key vault will use the access policies specified in vault properties,
+	// and any policy stored on Azure Resource Manager
+	// will be ignored. If null or not specified, the vault is created with the default value of false. Note that management actions are always authorized with
+	// RBAC.
 	EnableRbacAuthorization *bool `json:"enableRbacAuthorization,omitempty"`
 
 	// Property to specify whether the 'soft delete' functionality is enabled for this key vault. If it's not set to any value(true or false) when creating
-// new key vault, it will be set to true by default.
-// Once set to true, it cannot be reverted to false.
+	// new key vault, it will be set to true by default.
+	// Once set to true, it cannot be reverted to false.
 	EnableSoftDelete *bool `json:"enableSoftDelete,omitempty"`
 
 	// Property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.
@@ -1611,23 +1601,33 @@ type VaultProperties struct {
 	// Property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault.
 	EnabledForTemplateDeployment *bool `json:"enabledForTemplateDeployment,omitempty"`
 
+	// The vault's create mode to indicate whether the vault need to be recovered or not.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
 	// Rules governing the accessibility of the key vault from specific network locations.
 	NetworkACLs *NetworkRuleSet `json:"networkAcls,omitempty"`
-
-	// Provisioning state of the vault.
-	ProvisioningState *VaultProvisioningState `json:"provisioningState,omitempty"`
-
-	// softDelete data retention days. It accepts >=7 and <=90.
-	SoftDeleteRetentionInDays *int32 `json:"softDeleteRetentionInDays,omitempty"`
 
 	// The URI of the vault for performing operations on keys and secrets.
 	VaultURI *string `json:"vaultUri,omitempty"`
 
-	// READ-ONLY; The resource id of HSM Pool.
-	HsmPoolResourceID *string `json:"hsmPoolResourceId,omitempty" azure:"ro"`
+	// Provisioning state of the vault.
+	ProvisioningState *VaultProvisioningState `json:"provisioningState,omitempty"`
+
+	// Property specifying whether protection against purge is enabled for this vault. Setting this property to true activates protection against purge for
+	// this vault and its content - only the Key Vault
+	// service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is also enabled. Enabling this functionality is irreversible
+	// - that is, the property does not accept
+	// false as its value.
+	EnablePurgeProtection *bool `json:"enablePurgeProtection,omitempty"`
+
+	// softDelete data retention days. It accepts >=7 and <=90.
+	SoftDeleteRetentionInDays *int32 `json:"softDeleteRetentionInDays,omitempty"`
 
 	// READ-ONLY; List of private endpoint connections associated with the key vault.
 	PrivateEndpointConnections []*PrivateEndpointConnectionItem `json:"privateEndpointConnections,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource id of HSM Pool.
+	HsmPoolResourceID *string `json:"hsmPoolResourceId,omitempty" azure:"ro"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type VaultProperties.
@@ -1740,4 +1740,3 @@ func unpopulate(data json.RawMessage, v interface{}) error {
 	}
 	return json.Unmarshal(data, v)
 }
-

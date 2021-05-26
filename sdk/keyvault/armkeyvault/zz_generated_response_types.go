@@ -263,4 +263,3 @@ type VaultResponse struct {
 	// Resource information with extended details.
 	Vault *Vault
 }
-

@@ -23,7 +23,7 @@ import (
 // VaultsClient contains the methods for the Vaults group.
 // Don't use this type directly, use NewVaultsClient() instead.
 type VaultsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -74,7 +74,7 @@ func (client *VaultsClient) checkNameAvailabilityHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CheckNameAvailabilityResultResponse{}, err
 	}
-return CheckNameAvailabilityResultResponse{RawResponse: resp.Response, CheckNameAvailabilityResult: val}, nil
+	return CheckNameAvailabilityResultResponse{RawResponse: resp.Response, CheckNameAvailabilityResult: val}, nil
 }
 
 // checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
@@ -83,7 +83,7 @@ func (client *VaultsClient) checkNameAvailabilityHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -107,7 +107,7 @@ func (client *VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 	}
 	poller := &vaultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VaultResponse, error) {
@@ -125,7 +125,7 @@ func (client *VaultsClient) ResumeCreateOrUpdate(ctx context.Context, token stri
 	}
 	poller := &vaultPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -156,7 +156,7 @@ func (client *VaultsClient) createOrUpdate(ctx context.Context, resourceGroupNam
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -192,7 +192,7 @@ func (client *VaultsClient) createOrUpdateHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -250,7 +250,7 @@ func (client *VaultsClient) deleteHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -307,7 +307,7 @@ func (client *VaultsClient) getHandleResponse(resp *azcore.Response) (VaultRespo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VaultResponse{}, err
 	}
-return VaultResponse{RawResponse: resp.Response, Vault: val}, nil
+	return VaultResponse{RawResponse: resp.Response, Vault: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -316,7 +316,7 @@ func (client *VaultsClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -373,7 +373,7 @@ func (client *VaultsClient) getDeletedHandleResponse(resp *azcore.Response) (Del
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DeletedVaultResponse{}, err
 	}
-return DeletedVaultResponse{RawResponse: resp.Response, DeletedVault: val}, nil
+	return DeletedVaultResponse{RawResponse: resp.Response, DeletedVault: val}, nil
 }
 
 // getDeletedHandleError handles the GetDeleted error response.
@@ -382,7 +382,7 @@ func (client *VaultsClient) getDeletedHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -391,7 +391,7 @@ func (client *VaultsClient) getDeletedHandleError(resp *azcore.Response) error {
 
 // List - The List operation gets information about the vaults associated with the subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *VaultsClient) List(options *VaultsListOptions) (ResourceListResultPager) {
+func (client *VaultsClient) List(options *VaultsListOptions) ResourceListResultPager {
 	return &resourceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -435,7 +435,7 @@ func (client *VaultsClient) listHandleResponse(resp *azcore.Response) (ResourceL
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ResourceListResultResponse{}, err
 	}
-return ResourceListResultResponse{RawResponse: resp.Response, ResourceListResult: val}, nil
+	return ResourceListResultResponse{RawResponse: resp.Response, ResourceListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -444,7 +444,7 @@ func (client *VaultsClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -453,7 +453,7 @@ func (client *VaultsClient) listHandleError(resp *azcore.Response) error {
 
 // ListByResourceGroup - The List operation gets information about the vaults associated with the subscription and within the specified resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *VaultsClient) ListByResourceGroup(resourceGroupName string, options *VaultsListByResourceGroupOptions) (VaultListResultPager) {
+func (client *VaultsClient) ListByResourceGroup(resourceGroupName string, options *VaultsListByResourceGroupOptions) VaultListResultPager {
 	return &vaultListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -500,7 +500,7 @@ func (client *VaultsClient) listByResourceGroupHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VaultListResultResponse{}, err
 	}
-return VaultListResultResponse{RawResponse: resp.Response, VaultListResult: val}, nil
+	return VaultListResultResponse{RawResponse: resp.Response, VaultListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -509,7 +509,7 @@ func (client *VaultsClient) listByResourceGroupHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -518,7 +518,7 @@ func (client *VaultsClient) listByResourceGroupHandleError(resp *azcore.Response
 
 // ListBySubscription - The List operation gets information about the vaults associated with the subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *VaultsClient) ListBySubscription(options *VaultsListBySubscriptionOptions) (VaultListResultPager) {
+func (client *VaultsClient) ListBySubscription(options *VaultsListBySubscriptionOptions) VaultListResultPager {
 	return &vaultListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -561,7 +561,7 @@ func (client *VaultsClient) listBySubscriptionHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VaultListResultResponse{}, err
 	}
-return VaultListResultResponse{RawResponse: resp.Response, VaultListResult: val}, nil
+	return VaultListResultResponse{RawResponse: resp.Response, VaultListResult: val}, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
@@ -570,7 +570,7 @@ func (client *VaultsClient) listBySubscriptionHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -579,7 +579,7 @@ func (client *VaultsClient) listBySubscriptionHandleError(resp *azcore.Response)
 
 // ListDeleted - Gets information about the deleted vaults in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *VaultsClient) ListDeleted(options *VaultsListDeletedOptions) (DeletedVaultListResultPager) {
+func (client *VaultsClient) ListDeleted(options *VaultsListDeletedOptions) DeletedVaultListResultPager {
 	return &deletedVaultListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -619,7 +619,7 @@ func (client *VaultsClient) listDeletedHandleResponse(resp *azcore.Response) (De
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DeletedVaultListResultResponse{}, err
 	}
-return DeletedVaultListResultResponse{RawResponse: resp.Response, DeletedVaultListResult: val}, nil
+	return DeletedVaultListResultResponse{RawResponse: resp.Response, DeletedVaultListResult: val}, nil
 }
 
 // listDeletedHandleError handles the ListDeleted error response.
@@ -628,7 +628,7 @@ func (client *VaultsClient) listDeletedHandleError(resp *azcore.Response) error 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -652,7 +652,7 @@ func (client *VaultsClient) BeginPurgeDeleted(ctx context.Context, vaultName str
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -670,7 +670,7 @@ func (client *VaultsClient) ResumePurgeDeleted(ctx context.Context, token string
 	}
 	poller := &httpPoller{
 		pipeline: client.con.Pipeline(),
-		pt: pt,
+		pt:       pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -701,7 +701,7 @@ func (client *VaultsClient) purgeDeleted(ctx context.Context, vaultName string, 
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.purgeDeletedHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // purgeDeletedCreateRequest creates the PurgeDeleted request.
@@ -737,7 +737,7 @@ func (client *VaultsClient) purgeDeletedHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -795,7 +795,7 @@ func (client *VaultsClient) updateHandleResponse(resp *azcore.Response) (VaultRe
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VaultResponse{}, err
 	}
-return VaultResponse{RawResponse: resp.Response, Vault: val}, nil
+	return VaultResponse{RawResponse: resp.Response, Vault: val}, nil
 }
 
 // updateHandleError handles the Update error response.
@@ -804,7 +804,7 @@ func (client *VaultsClient) updateHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -866,7 +866,7 @@ func (client *VaultsClient) updateAccessPolicyHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VaultAccessPolicyParametersResponse{}, err
 	}
-return VaultAccessPolicyParametersResponse{RawResponse: resp.Response, VaultAccessPolicyParameters: val}, nil
+	return VaultAccessPolicyParametersResponse{RawResponse: resp.Response, VaultAccessPolicyParameters: val}, nil
 }
 
 // updateAccessPolicyHandleError handles the UpdateAccessPolicy error response.
@@ -875,10 +875,9 @@ func (client *VaultsClient) updateAccessPolicyHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

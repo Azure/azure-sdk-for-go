@@ -60,20 +60,20 @@ func (p *deletedManagedHsmListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -136,20 +136,20 @@ func (p *deletedVaultListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -212,20 +212,20 @@ func (p *mhsmPrivateEndpointConnectionsListResultPager) NextPage(ctx context.Con
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -288,20 +288,20 @@ func (p *managedHsmListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -364,20 +364,20 @@ func (p *operationListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -440,20 +440,20 @@ func (p *privateEndpointConnectionListResultPager) NextPage(ctx context.Context)
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -516,20 +516,20 @@ func (p *resourceListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -592,20 +592,20 @@ func (p *secretListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -668,20 +668,20 @@ func (p *vaultListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -696,4 +696,3 @@ func (p *vaultListResultPager) NextPage(ctx context.Context) bool {
 func (p *vaultListResultPager) PageResponse() VaultListResultResponse {
 	return p.current
 }
-

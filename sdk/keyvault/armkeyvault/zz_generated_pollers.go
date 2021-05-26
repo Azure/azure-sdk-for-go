@@ -26,7 +26,7 @@ type HTTPPoller interface {
 
 type httpPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *httpPoller) Done() bool {
@@ -60,7 +60,7 @@ type MHSMPrivateEndpointConnectionPoller interface {
 
 type mhsmPrivateEndpointConnectionPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *mhsmPrivateEndpointConnectionPoller) Done() bool {
@@ -106,7 +106,7 @@ type ManagedHsmPoller interface {
 
 type managedHsmPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *managedHsmPoller) Done() bool {
@@ -152,7 +152,7 @@ type PrivateEndpointConnectionPoller interface {
 
 type privateEndpointConnectionPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *privateEndpointConnectionPoller) Done() bool {
@@ -198,7 +198,7 @@ type VaultPoller interface {
 
 type vaultPoller struct {
 	pipeline azcore.Pipeline
-	pt armcore.Poller
+	pt       armcore.Poller
 }
 
 func (p *vaultPoller) Done() bool {
@@ -232,4 +232,3 @@ func (p *vaultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (Va
 	respType.RawResponse = resp
 	return respType, nil
 }
-

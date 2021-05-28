@@ -11,20 +11,48 @@ package storagepool
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/storagepool/mgmt/2020-03-15-preview/storagepool"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/storagepool/mgmt/2021-04-01-preview/storagepool"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
+type DiskPoolTier = original.DiskPoolTier
+
+const (
+	DiskPoolTierBasic    DiskPoolTier = original.DiskPoolTierBasic
+	DiskPoolTierPremium  DiskPoolTier = original.DiskPoolTierPremium
+	DiskPoolTierStandard DiskPoolTier = original.DiskPoolTierStandard
+)
+
+type IscsiTargetACLMode = original.IscsiTargetACLMode
+
+const (
+	IscsiTargetACLModeDynamic IscsiTargetACLMode = original.IscsiTargetACLModeDynamic
+	IscsiTargetACLModeStatic  IscsiTargetACLMode = original.IscsiTargetACLModeStatic
+)
+
 type OperationalStatus = original.OperationalStatus
 
 const (
-	Healthy   OperationalStatus = original.Healthy
-	Invalid   OperationalStatus = original.Invalid
-	Unhealthy OperationalStatus = original.Unhealthy
-	Unknown   OperationalStatus = original.Unknown
+	OperationalStatusHealthy            OperationalStatus = original.OperationalStatusHealthy
+	OperationalStatusInvalid            OperationalStatus = original.OperationalStatusInvalid
+	OperationalStatusRunning            OperationalStatus = original.OperationalStatusRunning
+	OperationalStatusStopped            OperationalStatus = original.OperationalStatusStopped
+	OperationalStatusStoppeddeallocated OperationalStatus = original.OperationalStatusStoppeddeallocated
+	OperationalStatusUnhealthy          OperationalStatus = original.OperationalStatusUnhealthy
+	OperationalStatusUnknown            OperationalStatus = original.OperationalStatusUnknown
+	OperationalStatusUpdating           OperationalStatus = original.OperationalStatusUpdating
 )
 
 type ProvisioningStates = original.ProvisioningStates
@@ -40,49 +68,60 @@ const (
 	ProvisioningStatesUpdating  ProvisioningStates = original.ProvisioningStatesUpdating
 )
 
-type SkuTier = original.SkuTier
-
-const (
-	Basic    SkuTier = original.Basic
-	Free     SkuTier = original.Free
-	Premium  SkuTier = original.Premium
-	Standard SkuTier = original.Standard
-)
-
 type ACL = original.ACL
-type Attributes = original.Attributes
 type BaseClient = original.BaseClient
 type Disk = original.Disk
 type DiskPool = original.DiskPool
+type DiskPoolCreate = original.DiskPoolCreate
+type DiskPoolCreateProperties = original.DiskPoolCreateProperties
 type DiskPoolListResult = original.DiskPoolListResult
 type DiskPoolListResultIterator = original.DiskPoolListResultIterator
 type DiskPoolListResultPage = original.DiskPoolListResultPage
 type DiskPoolProperties = original.DiskPoolProperties
+type DiskPoolUpdate = original.DiskPoolUpdate
+type DiskPoolUpdateProperties = original.DiskPoolUpdateProperties
+type DiskPoolZoneInfo = original.DiskPoolZoneInfo
+type DiskPoolZoneListResult = original.DiskPoolZoneListResult
+type DiskPoolZoneListResultIterator = original.DiskPoolZoneListResultIterator
+type DiskPoolZoneListResultPage = original.DiskPoolZoneListResultPage
+type DiskPoolZonesClient = original.DiskPoolZonesClient
 type DiskPoolsClient = original.DiskPoolsClient
 type DiskPoolsCreateOrUpdateFuture = original.DiskPoolsCreateOrUpdateFuture
+type DiskPoolsDeallocateFuture = original.DiskPoolsDeallocateFuture
 type DiskPoolsDeleteFuture = original.DiskPoolsDeleteFuture
+type DiskPoolsStartFuture = original.DiskPoolsStartFuture
+type DiskPoolsUpdateFuture = original.DiskPoolsUpdateFuture
+type EndpointDependency = original.EndpointDependency
+type EndpointDetail = original.EndpointDetail
 type Error = original.Error
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorResponse = original.ErrorResponse
 type IscsiLun = original.IscsiLun
 type IscsiTarget = original.IscsiTarget
-type IscsiTargetCredentials = original.IscsiTargetCredentials
+type IscsiTargetCreate = original.IscsiTargetCreate
+type IscsiTargetCreateProperties = original.IscsiTargetCreateProperties
 type IscsiTargetList = original.IscsiTargetList
 type IscsiTargetListIterator = original.IscsiTargetListIterator
 type IscsiTargetListPage = original.IscsiTargetListPage
 type IscsiTargetProperties = original.IscsiTargetProperties
+type IscsiTargetUpdate = original.IscsiTargetUpdate
+type IscsiTargetUpdateProperties = original.IscsiTargetUpdateProperties
 type IscsiTargetsClient = original.IscsiTargetsClient
 type IscsiTargetsCreateOrUpdateFuture = original.IscsiTargetsCreateOrUpdateFuture
 type IscsiTargetsDeleteFuture = original.IscsiTargetsDeleteFuture
+type IscsiTargetsUpdateFuture = original.IscsiTargetsUpdateFuture
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationsClient = original.OperationsClient
+type OutboundEnvironmentEndpoint = original.OutboundEnvironmentEndpoint
+type OutboundEnvironmentEndpointList = original.OutboundEnvironmentEndpointList
+type OutboundEnvironmentEndpointListIterator = original.OutboundEnvironmentEndpointListIterator
+type OutboundEnvironmentEndpointListPage = original.OutboundEnvironmentEndpointListPage
 type ProxyResource = original.ProxyResource
 type RPOperation = original.RPOperation
 type Resource = original.Resource
 type Sku = original.Sku
 type SystemMetadata = original.SystemMetadata
-type TargetPortalGroup = original.TargetPortalGroup
 type TrackedResource = original.TrackedResource
 
 func New(subscriptionID string) BaseClient {
@@ -93,6 +132,18 @@ func NewDiskPoolListResultIterator(page DiskPoolListResultPage) DiskPoolListResu
 }
 func NewDiskPoolListResultPage(cur DiskPoolListResult, getNextPage func(context.Context, DiskPoolListResult) (DiskPoolListResult, error)) DiskPoolListResultPage {
 	return original.NewDiskPoolListResultPage(cur, getNextPage)
+}
+func NewDiskPoolZoneListResultIterator(page DiskPoolZoneListResultPage) DiskPoolZoneListResultIterator {
+	return original.NewDiskPoolZoneListResultIterator(page)
+}
+func NewDiskPoolZoneListResultPage(cur DiskPoolZoneListResult, getNextPage func(context.Context, DiskPoolZoneListResult) (DiskPoolZoneListResult, error)) DiskPoolZoneListResultPage {
+	return original.NewDiskPoolZoneListResultPage(cur, getNextPage)
+}
+func NewDiskPoolZonesClient(subscriptionID string) DiskPoolZonesClient {
+	return original.NewDiskPoolZonesClient(subscriptionID)
+}
+func NewDiskPoolZonesClientWithBaseURI(baseURI string, subscriptionID string) DiskPoolZonesClient {
+	return original.NewDiskPoolZonesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDiskPoolsClient(subscriptionID string) DiskPoolsClient {
 	return original.NewDiskPoolsClient(subscriptionID)
@@ -118,17 +169,29 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewOutboundEnvironmentEndpointListIterator(page OutboundEnvironmentEndpointListPage) OutboundEnvironmentEndpointListIterator {
+	return original.NewOutboundEnvironmentEndpointListIterator(page)
+}
+func NewOutboundEnvironmentEndpointListPage(cur OutboundEnvironmentEndpointList, getNextPage func(context.Context, OutboundEnvironmentEndpointList) (OutboundEnvironmentEndpointList, error)) OutboundEnvironmentEndpointListPage {
+	return original.NewOutboundEnvironmentEndpointListPage(cur, getNextPage)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
+func PossibleDiskPoolTierValues() []DiskPoolTier {
+	return original.PossibleDiskPoolTierValues()
+}
+func PossibleIscsiTargetACLModeValues() []IscsiTargetACLMode {
+	return original.PossibleIscsiTargetACLModeValues()
 }
 func PossibleOperationalStatusValues() []OperationalStatus {
 	return original.PossibleOperationalStatusValues()
 }
 func PossibleProvisioningStatesValues() []ProvisioningStates {
 	return original.PossibleProvisioningStatesValues()
-}
-func PossibleSkuTierValues() []SkuTier {
-	return original.PossibleSkuTierValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

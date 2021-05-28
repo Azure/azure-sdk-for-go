@@ -133,7 +133,7 @@ For more information see the [Code of Conduct FAQ][coc_faq] or contact
 
 From the tables dir:
 
-autorest --use=@autorest/go@4.0.0-preview.20 https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cosmos-db/data-plane/readme.md --tag=package-2019-02 --file-prefix="zz_generated_" --modelerfour.lenient-model-deduplication --license-header=MICROSOFT_MIT_NO_VERSION --output-folder=aztables --module=aztables --openapi-type="data-plane" --credential-scope=none
+autorest --use=@autorest/go@4.0.0-preview.20 https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cosmos-db/data-plane/readme.md --tag=package-2019-02 --file-prefix="zz_generated_" --modelerfour.lenient-model-deduplication --license-header=MICROSOFT_MIT_NO_VERSION --output-folder=aztable --module=aztable --openapi-type="data-plane" --credential-scope=none
 
 <!-- LINKS -->
 [tables_rest]: https://docs.microsoft.com/rest/api/storageservices/table-service-rest-api

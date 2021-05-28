@@ -2,6 +2,10 @@
 
 ## `v55.0.0`
 
+NOTE: Package `github.com/Azure/azure-sdk-for-go/services/virtualmachineimagebuilder/mgmt/2020-02-01/virtualmachineimagebuilder` renamed to `github.com/Azure/azure-sdk-for-go/services/virtualmachineimagebuilder/mgmt/2020-02-14/virtualmachineimagebuilder`
+
+This major version enroll the code generator fix for [this issue](https://github.com/Azure/azure-sdk-for-go/issues/14478), with a side effect that after this version, if a struct only has properties that are marked as `READ-ONLY` in the comment, their `MarshalJSON` function will give you an empty JSON string.
+
 ### New Packages
 
 - `github.com/Azure/azure-sdk-for-go/services/cognitiveservices/mgmt/2021-04-30/cognitiveservices`
@@ -640,6 +644,10 @@
 | `github.com/Azure/azure-sdk-for-go/services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/securityinsight/mgmt/2019-01-01-preview/securityinsight/CHANGELOG.md) |
 | `github.com/Azure/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-05-01-preview/videoanalyzer` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/videoanalyzer/mgmt/2021-05-01-preview/videoanalyzer/CHANGELOG.md) |
 | `github.com/Azure/azure-sdk-for-go/services/securityinsight/mgmt/2020-01-01/securityinsight` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/securityinsight/mgmt/2020-01-01/securityinsight/CHANGELOG.md) |
+
+### Removed Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/virtualmachineimagebuilder/mgmt/2020-02-01/virtualmachineimagebuilder`
 
 ## `v54.3.0`
 

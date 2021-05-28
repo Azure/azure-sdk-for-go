@@ -1342,6 +1342,42 @@ func PossibleInboundSecurityRulesProtocolValues() []InboundSecurityRulesProtocol
 	return []InboundSecurityRulesProtocol{InboundSecurityRulesProtocolTCP, InboundSecurityRulesProtocolUDP}
 }
 
+// InterfaceMigrationPhase enumerates the values for interface migration phase.
+type InterfaceMigrationPhase string
+
+const (
+	// InterfaceMigrationPhaseAbort ...
+	InterfaceMigrationPhaseAbort InterfaceMigrationPhase = "Abort"
+	// InterfaceMigrationPhaseCommit ...
+	InterfaceMigrationPhaseCommit InterfaceMigrationPhase = "Commit"
+	// InterfaceMigrationPhaseCommitted ...
+	InterfaceMigrationPhaseCommitted InterfaceMigrationPhase = "Committed"
+	// InterfaceMigrationPhaseNone ...
+	InterfaceMigrationPhaseNone InterfaceMigrationPhase = "None"
+	// InterfaceMigrationPhasePrepare ...
+	InterfaceMigrationPhasePrepare InterfaceMigrationPhase = "Prepare"
+)
+
+// PossibleInterfaceMigrationPhaseValues returns an array of possible values for the InterfaceMigrationPhase const type.
+func PossibleInterfaceMigrationPhaseValues() []InterfaceMigrationPhase {
+	return []InterfaceMigrationPhase{InterfaceMigrationPhaseAbort, InterfaceMigrationPhaseCommit, InterfaceMigrationPhaseCommitted, InterfaceMigrationPhaseNone, InterfaceMigrationPhasePrepare}
+}
+
+// InterfaceNicType enumerates the values for interface nic type.
+type InterfaceNicType string
+
+const (
+	// InterfaceNicTypeElastic ...
+	InterfaceNicTypeElastic InterfaceNicType = "Elastic"
+	// InterfaceNicTypeStandard ...
+	InterfaceNicTypeStandard InterfaceNicType = "Standard"
+)
+
+// PossibleInterfaceNicTypeValues returns an array of possible values for the InterfaceNicType const type.
+func PossibleInterfaceNicTypeValues() []InterfaceNicType {
+	return []InterfaceNicType{InterfaceNicTypeElastic, InterfaceNicTypeStandard}
+}
+
 // IPAllocationMethod enumerates the values for ip allocation method.
 type IPAllocationMethod string
 
@@ -1901,6 +1937,27 @@ const (
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{ProvisioningStateDeleting, ProvisioningStateFailed, ProvisioningStateSucceeded, ProvisioningStateUpdating}
+}
+
+// PublicIPAddressMigrationPhase enumerates the values for public ip address migration phase.
+type PublicIPAddressMigrationPhase string
+
+const (
+	// PublicIPAddressMigrationPhaseAbort ...
+	PublicIPAddressMigrationPhaseAbort PublicIPAddressMigrationPhase = "Abort"
+	// PublicIPAddressMigrationPhaseCommit ...
+	PublicIPAddressMigrationPhaseCommit PublicIPAddressMigrationPhase = "Commit"
+	// PublicIPAddressMigrationPhaseCommitted ...
+	PublicIPAddressMigrationPhaseCommitted PublicIPAddressMigrationPhase = "Committed"
+	// PublicIPAddressMigrationPhaseNone ...
+	PublicIPAddressMigrationPhaseNone PublicIPAddressMigrationPhase = "None"
+	// PublicIPAddressMigrationPhasePrepare ...
+	PublicIPAddressMigrationPhasePrepare PublicIPAddressMigrationPhase = "Prepare"
+)
+
+// PossiblePublicIPAddressMigrationPhaseValues returns an array of possible values for the PublicIPAddressMigrationPhase const type.
+func PossiblePublicIPAddressMigrationPhaseValues() []PublicIPAddressMigrationPhase {
+	return []PublicIPAddressMigrationPhase{PublicIPAddressMigrationPhaseAbort, PublicIPAddressMigrationPhaseCommit, PublicIPAddressMigrationPhaseCommitted, PublicIPAddressMigrationPhaseNone, PublicIPAddressMigrationPhasePrepare}
 }
 
 // PublicIPAddressSkuName enumerates the values for public ip address sku name.

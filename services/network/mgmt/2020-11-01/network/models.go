@@ -5448,6 +5448,8 @@ type AvailablePrivateEndpointType struct {
 	Type *string `json:"type,omitempty"`
 	// ResourceName - The name of the service and resource.
 	ResourceName *string `json:"resourceName,omitempty"`
+	// DisplayName - Display name of the resource.
+	DisplayName *string `json:"displayName,omitempty"`
 }
 
 // AvailablePrivateEndpointTypesResult an array of available PrivateEndpoint types.
@@ -11323,6 +11325,8 @@ type Delegation struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 }
@@ -11335,6 +11339,9 @@ func (d Delegation) MarshalJSON() ([]byte, error) {
 	}
 	if d.Name != nil {
 		objectMap["name"] = d.Name
+	}
+	if d.Type != nil {
+		objectMap["type"] = d.Type
 	}
 	if d.ID != nil {
 		objectMap["id"] = d.ID
@@ -11377,6 +11384,15 @@ func (d *Delegation) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				d.Etag = &etag
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				d.Type = &typeVar
 			}
 		case "id":
 			if v != nil {
@@ -20472,6 +20488,8 @@ type InterfaceIPConfiguration struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 }
@@ -20484,6 +20502,9 @@ func (iic InterfaceIPConfiguration) MarshalJSON() ([]byte, error) {
 	}
 	if iic.Name != nil {
 		objectMap["name"] = iic.Name
+	}
+	if iic.Type != nil {
+		objectMap["type"] = iic.Type
 	}
 	if iic.ID != nil {
 		objectMap["id"] = iic.ID
@@ -20526,6 +20547,15 @@ func (iic *InterfaceIPConfiguration) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				iic.Etag = &etag
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				iic.Type = &typeVar
 			}
 		case "id":
 			if v != nil {
@@ -21163,6 +21193,12 @@ type InterfacePropertiesFormat struct {
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the network interface resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// NicType - Type of Network Interface resource. Possible values include: 'InterfaceNicTypeStandard', 'InterfaceNicTypeElastic'
+	NicType InterfaceNicType `json:"nicType,omitempty"`
+	// PrivateLinkService - Privatelinkservice of the network interface resource.
+	PrivateLinkService *PrivateLinkService `json:"privateLinkService,omitempty"`
+	// MigrationPhase - Migration phase of Network Interface resource. Possible values include: 'InterfaceMigrationPhaseNone', 'InterfaceMigrationPhasePrepare', 'InterfaceMigrationPhaseCommit', 'InterfaceMigrationPhaseAbort', 'InterfaceMigrationPhaseCommitted'
+	MigrationPhase InterfaceMigrationPhase `json:"migrationPhase,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for InterfacePropertiesFormat.
@@ -21182,6 +21218,15 @@ func (ipf InterfacePropertiesFormat) MarshalJSON() ([]byte, error) {
 	}
 	if ipf.EnableIPForwarding != nil {
 		objectMap["enableIPForwarding"] = ipf.EnableIPForwarding
+	}
+	if ipf.NicType != "" {
+		objectMap["nicType"] = ipf.NicType
+	}
+	if ipf.PrivateLinkService != nil {
+		objectMap["privateLinkService"] = ipf.PrivateLinkService
+	}
+	if ipf.MigrationPhase != "" {
+		objectMap["migrationPhase"] = ipf.MigrationPhase
 	}
 	return json.Marshal(objectMap)
 }
@@ -21715,6 +21760,8 @@ type IPAddressAvailabilityResult struct {
 	Available *bool `json:"available,omitempty"`
 	// AvailableIPAddresses - Contains other available private IP addresses if the asked for address is taken.
 	AvailableIPAddresses *[]string `json:"availableIPAddresses,omitempty"`
+	// IsPlatformReserved - Private IP address platform reserved.
+	IsPlatformReserved *bool `json:"isPlatformReserved,omitempty"`
 }
 
 // IPAllocation ipAllocation resource.
@@ -32771,6 +32818,14 @@ type PublicIPAddressPropertiesFormat struct {
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the public IP address resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// ServicePublicIPAddress - The service public IP address of the public IP address resource.
+	ServicePublicIPAddress *PublicIPAddress `json:"servicePublicIPAddress,omitempty"`
+	// NatGateway - The NatGateway for the Public IP address.
+	NatGateway *NatGateway `json:"natGateway,omitempty"`
+	// MigrationPhase - Migration phase of Public IP Address. Possible values include: 'PublicIPAddressMigrationPhaseNone', 'PublicIPAddressMigrationPhasePrepare', 'PublicIPAddressMigrationPhaseCommit', 'PublicIPAddressMigrationPhaseAbort', 'PublicIPAddressMigrationPhaseCommitted'
+	MigrationPhase PublicIPAddressMigrationPhase `json:"migrationPhase,omitempty"`
+	// LinkedPublicIPAddress - The linked public IP address of the public IP address resource.
+	LinkedPublicIPAddress *PublicIPAddress `json:"linkedPublicIPAddress,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PublicIPAddressPropertiesFormat.
@@ -32799,6 +32854,18 @@ func (piapf PublicIPAddressPropertiesFormat) MarshalJSON() ([]byte, error) {
 	}
 	if piapf.IdleTimeoutInMinutes != nil {
 		objectMap["idleTimeoutInMinutes"] = piapf.IdleTimeoutInMinutes
+	}
+	if piapf.ServicePublicIPAddress != nil {
+		objectMap["servicePublicIPAddress"] = piapf.ServicePublicIPAddress
+	}
+	if piapf.NatGateway != nil {
+		objectMap["natGateway"] = piapf.NatGateway
+	}
+	if piapf.MigrationPhase != "" {
+		objectMap["migrationPhase"] = piapf.MigrationPhase
+	}
+	if piapf.LinkedPublicIPAddress != nil {
+		objectMap["linkedPublicIPAddress"] = piapf.LinkedPublicIPAddress
 	}
 	return json.Marshal(objectMap)
 }
@@ -33227,6 +33294,8 @@ type PublicIPPrefixPropertiesFormat struct {
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the public IP prefix resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// NatGateway - NatGateway of Public IP Prefix.
+	NatGateway *NatGateway `json:"natGateway,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for PublicIPPrefixPropertiesFormat.
@@ -33243,6 +33312,9 @@ func (pippf PublicIPPrefixPropertiesFormat) MarshalJSON() ([]byte, error) {
 	}
 	if pippf.CustomIPPrefix != nil {
 		objectMap["customIPPrefix"] = pippf.CustomIPPrefix
+	}
+	if pippf.NatGateway != nil {
+		objectMap["natGateway"] = pippf.NatGateway
 	}
 	return json.Marshal(objectMap)
 }
@@ -37357,6 +37429,8 @@ type ServiceTagInformationPropertiesFormat struct {
 	SystemService *string `json:"systemService,omitempty"`
 	// AddressPrefixes - READ-ONLY; The list of IP address prefixes.
 	AddressPrefixes *[]string `json:"addressPrefixes,omitempty"`
+	// State - READ-ONLY; The state of the service tag.
+	State *string `json:"state,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ServiceTagInformationPropertiesFormat.
@@ -37421,6 +37495,8 @@ type Subnet struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 }
@@ -37433,6 +37509,9 @@ func (s Subnet) MarshalJSON() ([]byte, error) {
 	}
 	if s.Name != nil {
 		objectMap["name"] = s.Name
+	}
+	if s.Type != nil {
+		objectMap["type"] = s.Type
 	}
 	if s.ID != nil {
 		objectMap["id"] = s.ID
@@ -37475,6 +37554,15 @@ func (s *Subnet) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				s.Etag = &etag
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				s.Type = &typeVar
 			}
 		case "id":
 			if v != nil {
@@ -37706,6 +37794,8 @@ type SubnetPropertiesFormat struct {
 	PrivateEndpointNetworkPolicies VirtualNetworkPrivateEndpointNetworkPolicies `json:"privateEndpointNetworkPolicies,omitempty"`
 	// PrivateLinkServiceNetworkPolicies - Enable or Disable apply network policies on private link service in the subnet. Possible values include: 'VirtualNetworkPrivateLinkServiceNetworkPoliciesEnabled', 'VirtualNetworkPrivateLinkServiceNetworkPoliciesDisabled'
 	PrivateLinkServiceNetworkPolicies VirtualNetworkPrivateLinkServiceNetworkPolicies `json:"privateLinkServiceNetworkPolicies,omitempty"`
+	// ApplicationGatewayIPConfigurations - Application gateway IP configurations of virtual network resource.
+	ApplicationGatewayIPConfigurations *[]ApplicationGatewayIPConfiguration `json:"applicationGatewayIpConfigurations,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SubnetPropertiesFormat.
@@ -37743,6 +37833,9 @@ func (spf SubnetPropertiesFormat) MarshalJSON() ([]byte, error) {
 	}
 	if spf.PrivateLinkServiceNetworkPolicies != "" {
 		objectMap["privateLinkServiceNetworkPolicies"] = spf.PrivateLinkServiceNetworkPolicies
+	}
+	if spf.ApplicationGatewayIPConfigurations != nil {
+		objectMap["applicationGatewayIpConfigurations"] = spf.ApplicationGatewayIPConfigurations
 	}
 	return json.Marshal(objectMap)
 }
@@ -43130,6 +43223,8 @@ type VirtualNetworkPeering struct {
 	Name *string `json:"name,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+	// Type - Resource type.
+	Type *string `json:"type,omitempty"`
 	// ID - Resource ID.
 	ID *string `json:"id,omitempty"`
 }
@@ -43142,6 +43237,9 @@ func (vnp VirtualNetworkPeering) MarshalJSON() ([]byte, error) {
 	}
 	if vnp.Name != nil {
 		objectMap["name"] = vnp.Name
+	}
+	if vnp.Type != nil {
+		objectMap["type"] = vnp.Type
 	}
 	if vnp.ID != nil {
 		objectMap["id"] = vnp.ID
@@ -43184,6 +43282,15 @@ func (vnp *VirtualNetworkPeering) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				vnp.Etag = &etag
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				vnp.Type = &typeVar
 			}
 		case "id":
 			if v != nil {
@@ -43381,6 +43488,10 @@ type VirtualNetworkPeeringPropertiesFormat struct {
 	PeeringState VirtualNetworkPeeringState `json:"peeringState,omitempty"`
 	// ProvisioningState - READ-ONLY; The provisioning state of the virtual network peering resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// DoNotVerifyRemoteGateways - If we need to verify the provisioning state of the remote gateway.
+	DoNotVerifyRemoteGateways *bool `json:"doNotVerifyRemoteGateways,omitempty"`
+	// ResourceGUID - READ-ONLY; The resourceGuid property of the Virtual Network peering resource.
+	ResourceGUID *string `json:"resourceGuid,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for VirtualNetworkPeeringPropertiesFormat.
@@ -43409,6 +43520,9 @@ func (vnppf VirtualNetworkPeeringPropertiesFormat) MarshalJSON() ([]byte, error)
 	}
 	if vnppf.PeeringState != "" {
 		objectMap["peeringState"] = vnppf.PeeringState
+	}
+	if vnppf.DoNotVerifyRemoteGateways != nil {
+		objectMap["doNotVerifyRemoteGateways"] = vnppf.DoNotVerifyRemoteGateways
 	}
 	return json.Marshal(objectMap)
 }

@@ -8,7 +8,7 @@ package virtualmachineimagebuilderapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/virtualmachineimagebuilder/mgmt/2020-02-01/virtualmachineimagebuilder"
+	"github.com/Azure/azure-sdk-for-go/services/virtualmachineimagebuilder/mgmt/2020-02-14/virtualmachineimagebuilder"
 )
 
 // VirtualMachineImageTemplatesClientAPI contains the set of methods on the VirtualMachineImageTemplatesClient type.

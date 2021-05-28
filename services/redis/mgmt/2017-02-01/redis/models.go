@@ -28,6 +28,12 @@ type AccessKeys struct {
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccessKeys.
+func (ak AccessKeys) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CreateFuture struct {
 	azure.FutureAPI
@@ -554,6 +560,12 @@ type ForceRebootResponse struct {
 	Message *string `json:"Message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ForceRebootResponse.
+func (frr ForceRebootResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImportDataFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type ImportDataFuture struct {
 	azure.FutureAPI
@@ -602,6 +614,12 @@ type ImportRDBParameters struct {
 type LinkedServer struct {
 	// ID - READ-ONLY; Linked server Id.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LinkedServer.
+func (ls LinkedServer) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // LinkedServerCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1301,6 +1319,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RebootParameters specifies which Redis node(s) to reboot.
 type RebootParameters struct {
 	// RebootType - Which Redis node(s) to reboot. Depending on this value data loss is possible. Possible values include: 'PrimaryNode', 'SecondaryNode', 'AllNodes'
@@ -1323,6 +1347,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceProperties parameters describing a Redis instance.

@@ -55,6 +55,12 @@ type Display struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Display.
+func (d Display) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorResponse describes the format of Error response.
 type ErrorResponse struct {
 	// Code - Error code
@@ -562,6 +568,12 @@ type HardwareProfile struct {
 	HardwareType HanaHardwareTypeNamesEnum `json:"hardwareType,omitempty"`
 	// HanaInstanceSize - READ-ONLY; Specifies the HANA instance SKU. Possible values include: 'S72m', 'S144m', 'S72', 'S144', 'S192', 'S192m', 'S192xm', 'S96', 'S112', 'S224', 'S224m', 'S224om', 'S224oo', 'S224oom', 'S224ooo', 'S384', 'S384m', 'S384xm', 'S384xxm', 'S448', 'S448m', 'S448om', 'S448oo', 'S448oom', 'S448ooo', 'S576m', 'S576xm', 'S672', 'S672m', 'S672om', 'S672oo', 'S672oom', 'S672ooo', 'S768', 'S768m', 'S768xm', 'S896', 'S896m', 'S896om', 'S896oo', 'S896oom', 'S896ooo', 'S960m'
 	HanaInstanceSize HanaInstanceSizeNamesEnum `json:"hanaInstanceSize,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HardwareProfile.
+func (hp HardwareProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IPAddress specifies the IP address of the network interface.

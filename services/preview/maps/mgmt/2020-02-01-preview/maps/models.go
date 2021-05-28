@@ -85,6 +85,12 @@ type AccountKeys struct {
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountKeys.
+func (ak AccountKeys) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountProperties additional Map account properties
 type AccountProperties struct {
 	// XMsClientID - A unique identifier for the maps account
@@ -96,6 +102,12 @@ type Accounts struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; a Maps Account.
 	Value *[]Account `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Accounts.
+func (a Accounts) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AccountUpdateParameters parameters used to update an existing Maps Account.
@@ -128,6 +140,12 @@ type AzureEntityResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Creator an Azure resource which represents Maps Creator product and provides ability to manage private
@@ -190,6 +208,12 @@ type CreatorList struct {
 	Value *[]Creator `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CreatorList.
+func (cl CreatorList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CreatorProperties creator resource properties
 type CreatorProperties struct {
 	// ProvisioningState - The state of the resource provisioning, terminal states: Succeeded, Failed, Canceled
@@ -219,6 +243,12 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetail the error detail.
 type ErrorDetail struct {
 	// Code - READ-ONLY; The error code.
@@ -231,6 +261,12 @@ type ErrorDetail struct {
 	Details *[]ErrorDetail `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetail.
+func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
@@ -251,6 +287,12 @@ type Operations struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; An operation available for Maps.
 	Value *[]OperationsValueItem `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operations.
+func (o Operations) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationsValueItem ...
@@ -282,6 +324,12 @@ type OperationsValueItemDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 	// Description - READ-ONLY; The description of the operation.
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationsValueItemDisplay.
+func (oI OperationsValueItemDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PrivateAtlas an Azure resource which represents which will provision the ability to create private
@@ -344,6 +392,12 @@ type PrivateAtlasList struct {
 	Value *[]PrivateAtlas `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PrivateAtlasList.
+func (pal PrivateAtlasList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PrivateAtlasProperties private Atlas resource properties
 type PrivateAtlasProperties struct {
 	// ProvisioningState - The state of the resource provisioning, terminal states: Succeeded, Failed, Canceled
@@ -376,6 +430,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -384,6 +444,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Sku the SKU of the Maps Account.

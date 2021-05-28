@@ -88,8 +88,8 @@ const (
 type Type = original.Type
 
 const (
-	TypeTypeAuthenticationBase                      Type = original.TypeTypeAuthenticationBase
-	TypeTypeMicrosoftVideoAnalyzerJwtAuthentication Type = original.TypeTypeMicrosoftVideoAnalyzerJwtAuthentication
+	TypeAuthenticationBase                      Type = original.TypeAuthenticationBase
+	TypeMicrosoftVideoAnalyzerJwtAuthentication Type = original.TypeMicrosoftVideoAnalyzerJwtAuthentication
 )
 
 type TypeBasicTokenKey = original.TypeBasicTokenKey

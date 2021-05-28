@@ -49,6 +49,12 @@ type DeleteOperationResult struct {
 	OperationResult *bool `json:"boolean,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DeleteOperationResult.
+func (dor DeleteOperationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DNSConfig class containing DNS settings in a Traffic Manager profile.
 type DNSConfig struct {
 	// RelativeName - The relative DNS name provided by this Traffic Manager profile. This value is combined with the DNS domain name used by Azure Traffic Manager to form the fully-qualified domain name (FQDN) of the profile.
@@ -506,6 +512,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // QueryExperience class representing a Traffic Manager HeatMap query experience properties.
 type QueryExperience struct {
 	// EndpointID - The id of the endpoint from the 'endpoints' array which these queries were routed to.
@@ -535,6 +547,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource

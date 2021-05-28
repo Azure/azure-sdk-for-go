@@ -43,6 +43,12 @@ type EntitiesBatchResult struct {
 	Statistics *RequestStatistics `json:"statistics,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EntitiesBatchResult.
+func (ebr EntitiesBatchResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // EntitiesBatchResultItem ...
 type EntitiesBatchResultItem struct {
 	// ID - Unique, non-empty document identifier.
@@ -146,6 +152,12 @@ type KeyPhraseBatchResult struct {
 	Statistics *RequestStatistics `json:"statistics,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for KeyPhraseBatchResult.
+func (kpbr KeyPhraseBatchResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // KeyPhraseBatchResultItem ...
 type KeyPhraseBatchResultItem struct {
 	// ID - Unique, non-empty document identifier.
@@ -182,6 +194,12 @@ type LanguageBatchResult struct {
 	Errors *[]ErrorRecord `json:"errors,omitempty"`
 	// Statistics - READ-ONLY; (Optional) if showStats=true was specified in the request this field will contain information about the request payload.
 	Statistics *RequestStatistics `json:"statistics,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LanguageBatchResult.
+func (lbr LanguageBatchResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // LanguageBatchResultItem ...
@@ -251,6 +269,12 @@ type SentimentBatchResult struct {
 	Errors *[]ErrorRecord `json:"errors,omitempty"`
 	// Statistics - READ-ONLY; (Optional) if showStats=true was specified in the request this field will contain information about the request payload.
 	Statistics *RequestStatistics `json:"statistics,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SentimentBatchResult.
+func (sbr SentimentBatchResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SentimentBatchResultItem ...

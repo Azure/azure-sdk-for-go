@@ -2040,6 +2040,12 @@ type QuotaRequestStatusDetails struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for QuotaRequestStatusDetails.
+func (qrsd QuotaRequestStatusDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // QuotaRequestSubmitResponse quota submit request response
 type QuotaRequestSubmitResponse struct {
 	// ID - READ-ONLY; The quota request Id.
@@ -2410,6 +2416,12 @@ type ServiceErrorDetail struct {
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceErrorDetail.
+func (sed ServiceErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SetObject ...

@@ -131,12 +131,24 @@ type DimensionsListResult struct {
 	Value *[]Dimension `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DimensionsListResult.
+func (dlr DimensionsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
 	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse error response indicates that the service is not able to process the incoming request. The
@@ -338,6 +350,12 @@ type ExportExecutionListResult struct {
 	Value *[]ExportExecution `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ExportExecutionListResult.
+func (eelr ExportExecutionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ExportExecutionProperties the properties of the export execution.
 type ExportExecutionProperties struct {
 	// ExecutionType - The type of the export execution. Possible values include: 'OnDemand', 'Scheduled'
@@ -363,6 +381,12 @@ type ExportListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of exports.
 	Value *[]Export `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ExportListResult.
+func (elr ExportListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ExportProperties the properties of the export.
@@ -422,6 +446,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult result of listing cost management operations. It contains a list of operations and a
 // URL link to get the next set of results.
 type OperationListResult struct {
@@ -430,6 +460,12 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -781,6 +817,12 @@ type QueryResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of usage data.
 	Value *[]Query `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryResult.
+func (qr QueryResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // QuerySortingConfiguration the configuration for sorting in the query.

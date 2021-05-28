@@ -209,6 +209,12 @@ type CheckNameAvailabilityResult struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityResult.
+func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CloudError the default error response
 type CloudError struct {
 	// Error - Content of the error
@@ -238,11 +244,23 @@ type KeyDescription struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for KeyDescription.
+func (kd KeyDescription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // KeyDescriptionList the list of the EngagementFabric account keys
 type KeyDescriptionList struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Account keys
 	Value *[]KeyDescription `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for KeyDescriptionList.
+func (kdl KeyDescriptionList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Operation the EngagementFabric operation
@@ -251,6 +269,12 @@ type Operation struct {
 	Name *string `json:"name,omitempty"`
 	// Display - READ-ONLY; The display content of the EngagementFabric operation
 	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay the display information of the EngagementFabric operation
@@ -265,11 +289,23 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (od OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationList the list of the EngagementFabric operations
 type OperationList struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The EngagementFabric operations
 	Value *[]Operation `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationList.
+func (ol OperationList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ProxyOnlyResource the base model for the proxy-only Azure resource
@@ -280,6 +316,12 @@ type ProxyOnlyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The fully qualified type of the resource
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyOnlyResource.
+func (por ProxyOnlyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RegenerateKeyParameter the parameter to regenerate single EngagementFabric account key
@@ -298,6 +340,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The fully qualified type of the resource
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SKU the EngagementFabric SKU
@@ -324,11 +372,23 @@ type SkuDescription struct {
 	Restrictions *[]interface{} `json:"restrictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SkuDescription.
+func (sd SkuDescription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuDescriptionList the list of the EngagementFabric SKU descriptions
 type SkuDescriptionList struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; SKU descriptions
 	Value *[]SkuDescription `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuDescriptionList.
+func (sdl SkuDescriptionList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SkuLocationInfoItem the Locations and zones info for SKU

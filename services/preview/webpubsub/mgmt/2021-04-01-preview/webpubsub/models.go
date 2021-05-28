@@ -119,6 +119,12 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetail the error detail.
 type ErrorDetail struct {
 	// Code - READ-ONLY; The error code.
@@ -131,6 +137,12 @@ type ErrorDetail struct {
 	Details *[]ErrorDetail `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetail.
+func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
@@ -1152,6 +1164,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RegenerateKeyFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type RegenerateKeyFuture struct {
@@ -1209,6 +1227,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceList object that includes an array of resources and a possible link for next set.
@@ -2252,4 +2276,10 @@ type UserAssignedIdentityProperty struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// ClientID - READ-ONLY; Get the client id for the user assigned identity
 	ClientID *string `json:"clientId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UserAssignedIdentityProperty.
+func (uaip UserAssignedIdentityProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

@@ -54,6 +54,12 @@ type DefaultErrorResponse struct {
 	Error *DefaultErrorResponseError `json:"error,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DefaultErrorResponse.
+func (der DefaultErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DefaultErrorResponseError error model.
 type DefaultErrorResponseError struct {
 	// Code - READ-ONLY; Standardized string to programmatically identify the error.
@@ -85,6 +91,12 @@ type DefaultErrorResponseErrorDetailsItem struct {
 	Message *string `json:"message,omitempty"`
 	// Target - READ-ONLY; Detailed error description and debugging information.
 	Target *string `json:"target,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DefaultErrorResponseErrorDetailsItem.
+func (derI DefaultErrorResponseErrorDetailsItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DomainSecuritySettings domain Security Settings
@@ -614,6 +626,12 @@ type HealthAlert struct {
 	ResolutionURI *string `json:"resolutionUri,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HealthAlert.
+func (ha HealthAlert) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // HealthMonitor health Monitor Description
 type HealthMonitor struct {
 	// ID - READ-ONLY; Health Monitor Id
@@ -622,6 +640,12 @@ type HealthMonitor struct {
 	Name *string `json:"name,omitempty"`
 	// Details - READ-ONLY; Health Monitor Details
 	Details *string `json:"details,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HealthMonitor.
+func (hm HealthMonitor) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // LdapsSettings secure LDAP Settings

@@ -61,6 +61,12 @@ type AssessedDisk struct {
 	SuitabilityExplanation AzureDiskSuitabilityExplanation `json:"suitabilityExplanation,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AssessedDisk.
+func (ad AssessedDisk) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AssessedMachine a machine evaluated as part of an assessment.
 type AssessedMachine struct {
 	autorest.Response `json:"-"`
@@ -358,6 +364,12 @@ type AssessmentOptionsResultList struct {
 	ReservedInstanceVMFamilies *[]string `json:"reservedInstanceVmFamilies,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AssessmentOptionsResultList.
+func (aorl AssessmentOptionsResultList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AssessmentProperties properties of an assessment.
 type AssessmentProperties struct {
 	// AzureLocation - Target Azure location for which the machines should be assessed. These enums are the same as used by Compute API. Possible values include: 'AzureLocationUnknown', 'AzureLocationEastAsia', 'AzureLocationSoutheastAsia', 'AzureLocationAustraliaEast', 'AzureLocationAustraliaSoutheast', 'AzureLocationBrazilSouth', 'AzureLocationCanadaCentral', 'AzureLocationCanadaEast', 'AzureLocationWestEurope', 'AzureLocationNorthEurope', 'AzureLocationCentralIndia', 'AzureLocationSouthIndia', 'AzureLocationWestIndia', 'AzureLocationJapanEast', 'AzureLocationJapanWest', 'AzureLocationKoreaCentral', 'AzureLocationKoreaSouth', 'AzureLocationUkWest', 'AzureLocationUkSouth', 'AzureLocationNorthCentralUs', 'AzureLocationEastUs', 'AzureLocationWestUs2', 'AzureLocationSouthCentralUs', 'AzureLocationCentralUs', 'AzureLocationEastUs2', 'AzureLocationWestUs', 'AzureLocationWestCentralUs', 'AzureLocationGermanyCentral', 'AzureLocationGermanyNortheast', 'AzureLocationChinaNorth', 'AzureLocationChinaEast'
@@ -472,6 +484,12 @@ type CheckNameAvailabilityResult struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityResult.
+func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CloudError an error response from the Azure Migrate service.
 type CloudError struct {
 	Error *CloudErrorBody `json:"error,omitempty"`
@@ -497,6 +515,12 @@ type Disk struct {
 	GigabytesConsumed *float64 `json:"gigabytesConsumed,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Disk.
+func (d Disk) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DownloadURL download URL for assessment report.
 type DownloadURL struct {
 	autorest.Response `json:"-"`
@@ -504,6 +528,12 @@ type DownloadURL struct {
 	AssessmentReportURL *string `json:"assessmentReportUrl,omitempty"`
 	// ExpirationTime - READ-ONLY; Expiry date of download url.
 	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DownloadURL.
+func (du DownloadURL) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Group a group created in a Migration project.
@@ -765,6 +795,12 @@ type NetworkAdapter struct {
 	IPAddresses *[]string `json:"ipAddresses,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NetworkAdapter.
+func (na NetworkAdapter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Operation a REST API operation supported by the provider.
 type Operation struct {
 	// Name - READ-ONLY; Name of the operation.
@@ -794,6 +830,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 	// Description - READ-ONLY; Description of the operation.
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (od OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationResultList list of API operations.
@@ -927,6 +969,12 @@ type ProjectKey struct {
 	WorkspaceKey *string `json:"workspaceKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProjectKey.
+func (pk ProjectKey) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ProjectProperties properties of a project.
 type ProjectProperties struct {
 	// CreatedTimestamp - READ-ONLY; Time when this project was created. Date-Time represented in ISO-8601 format.
@@ -985,4 +1033,10 @@ type VMFamily struct {
 	TargetLocations *[]string `json:"targetLocations,omitempty"`
 	// Category - READ-ONLY; Category of the VM family.
 	Category *[]string `json:"category,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VMFamily.
+func (vf VMFamily) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

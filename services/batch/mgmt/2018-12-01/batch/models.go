@@ -283,6 +283,12 @@ type AccountKeys struct {
 	Secondary *string `json:"secondary,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountKeys.
+func (ak AccountKeys) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountListResult values returned by the List operation.
 type AccountListResult struct {
 	autorest.Response `json:"-"`
@@ -462,6 +468,12 @@ type AccountProperties struct {
 	PoolQuota *int32 `json:"poolQuota,omitempty"`
 	// ActiveJobAndJobScheduleQuota - READ-ONLY
 	ActiveJobAndJobScheduleQuota *int32 `json:"activeJobAndJobScheduleQuota,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountProperties.
+func (ap AccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AccountRegenerateKeyParameters parameters supplied to the RegenerateKey operation.
@@ -715,6 +727,12 @@ type ApplicationPackageProperties struct {
 	StorageURLExpiry *date.Time `json:"storageUrlExpiry,omitempty"`
 	// LastActivationTime - READ-ONLY; The time at which the package was last activated, if the package is active.
 	LastActivationTime *date.Time `json:"lastActivationTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationPackageProperties.
+func (app ApplicationPackageProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ApplicationPackageReference ...
@@ -1116,6 +1134,12 @@ type CheckNameAvailabilityResult struct {
 	Reason NameAvailabilityReason `json:"reason,omitempty"`
 	// Message - READ-ONLY; Gets an error message explaining the Reason value in more detail.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityResult.
+func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CloudError an error response from the Batch service.
@@ -1908,6 +1932,12 @@ type LocationQuota struct {
 	AccountQuota *int32 `json:"accountQuota,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LocationQuota.
+func (lq LocationQuota) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MetadataItem the Batch service does not assign any meaning to this metadata; it is solely for the use of
 // user code.
 type MetadataItem struct {
@@ -2381,6 +2411,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - READ-ONLY; The ETag of the resource, used for concurrency statements.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResizeError ...

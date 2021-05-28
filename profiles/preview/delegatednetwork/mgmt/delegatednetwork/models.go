@@ -21,16 +21,16 @@ const (
 type ActionType = original.ActionType
 
 const (
-	Internal ActionType = original.Internal
+	ActionTypeInternal ActionType = original.ActionTypeInternal
 )
 
 type ControllerState = original.ControllerState
 
 const (
-	Deleting     ControllerState = original.Deleting
-	Failed       ControllerState = original.Failed
-	Provisioning ControllerState = original.Provisioning
-	Succeeded    ControllerState = original.Succeeded
+	ControllerStateDeleting     ControllerState = original.ControllerStateDeleting
+	ControllerStateFailed       ControllerState = original.ControllerStateFailed
+	ControllerStateProvisioning ControllerState = original.ControllerStateProvisioning
+	ControllerStateSucceeded    ControllerState = original.ControllerStateSucceeded
 )
 
 type DelegatedSubnetState = original.DelegatedSubnetState
@@ -54,16 +54,16 @@ const (
 type Origin = original.Origin
 
 const (
-	System     Origin = original.System
-	User       Origin = original.User
-	Usersystem Origin = original.Usersystem
+	OriginSystem     Origin = original.OriginSystem
+	OriginUser       Origin = original.OriginUser
+	OriginUsersystem Origin = original.OriginUsersystem
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	None           ResourceIdentityType = original.None
-	SystemAssigned ResourceIdentityType = original.SystemAssigned
+	ResourceIdentityTypeNone           ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
 )
 
 type BaseClient = original.BaseClient

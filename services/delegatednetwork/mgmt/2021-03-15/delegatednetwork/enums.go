@@ -10,32 +10,32 @@ package delegatednetwork
 type ActionType string
 
 const (
-	// Internal ...
-	Internal ActionType = "Internal"
+	// ActionTypeInternal ...
+	ActionTypeInternal ActionType = "Internal"
 )
 
 // PossibleActionTypeValues returns an array of possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{Internal}
+	return []ActionType{ActionTypeInternal}
 }
 
 // ControllerState enumerates the values for controller state.
 type ControllerState string
 
 const (
-	// Deleting ...
-	Deleting ControllerState = "Deleting"
-	// Failed ...
-	Failed ControllerState = "Failed"
-	// Provisioning ...
-	Provisioning ControllerState = "Provisioning"
-	// Succeeded ...
-	Succeeded ControllerState = "Succeeded"
+	// ControllerStateDeleting ...
+	ControllerStateDeleting ControllerState = "Deleting"
+	// ControllerStateFailed ...
+	ControllerStateFailed ControllerState = "Failed"
+	// ControllerStateProvisioning ...
+	ControllerStateProvisioning ControllerState = "Provisioning"
+	// ControllerStateSucceeded ...
+	ControllerStateSucceeded ControllerState = "Succeeded"
 )
 
 // PossibleControllerStateValues returns an array of possible values for the ControllerState const type.
 func PossibleControllerStateValues() []ControllerState {
-	return []ControllerState{Deleting, Failed, Provisioning, Succeeded}
+	return []ControllerState{ControllerStateDeleting, ControllerStateFailed, ControllerStateProvisioning, ControllerStateSucceeded}
 }
 
 // DelegatedSubnetState enumerates the values for delegated subnet state.
@@ -80,30 +80,30 @@ func PossibleOrchestratorInstanceStateValues() []OrchestratorInstanceState {
 type Origin string
 
 const (
-	// System ...
-	System Origin = "system"
-	// User ...
-	User Origin = "user"
-	// Usersystem ...
-	Usersystem Origin = "user,system"
+	// OriginSystem ...
+	OriginSystem Origin = "system"
+	// OriginUser ...
+	OriginUser Origin = "user"
+	// OriginUsersystem ...
+	OriginUsersystem Origin = "user,system"
 )
 
 // PossibleOriginValues returns an array of possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{System, User, Usersystem}
+	return []Origin{OriginSystem, OriginUser, OriginUsersystem}
 }
 
 // ResourceIdentityType enumerates the values for resource identity type.
 type ResourceIdentityType string
 
 const (
-	// None ...
-	None ResourceIdentityType = "None"
-	// SystemAssigned ...
-	SystemAssigned ResourceIdentityType = "SystemAssigned"
+	// ResourceIdentityTypeNone ...
+	ResourceIdentityTypeNone ResourceIdentityType = "None"
+	// ResourceIdentityTypeSystemAssigned ...
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
 )
 
 // PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
-	return []ResourceIdentityType{None, SystemAssigned}
+	return []ResourceIdentityType{ResourceIdentityTypeNone, ResourceIdentityTypeSystemAssigned}
 }

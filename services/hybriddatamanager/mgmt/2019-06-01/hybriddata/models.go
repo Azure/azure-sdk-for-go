@@ -1253,6 +1253,12 @@ type DmsBaseObject struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DmsBaseObject.
+func (dbo DmsBaseObject) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Error top level error for the job.
 type Error struct {
 	// Code - Error code that can be used to programmatically identify the error.

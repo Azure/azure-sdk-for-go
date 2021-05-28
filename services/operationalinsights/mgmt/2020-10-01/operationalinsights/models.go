@@ -31,6 +31,12 @@ type AssociatedWorkspace struct {
 	AssociateDate *string `json:"associateDate,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AssociatedWorkspace.
+func (aw AssociatedWorkspace) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
@@ -43,6 +49,12 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CapacityReservationProperties the Capacity Reservation properties.
 type CapacityReservationProperties struct {
 	// LastSkuUpdate - READ-ONLY; The last time Sku was updated.
@@ -51,6 +63,12 @@ type CapacityReservationProperties struct {
 	MinCapacity *int64 `json:"minCapacity,omitempty"`
 	// MaxCapacity - READ-ONLY; Maximum CapacityReservation value in GB.
 	MaxCapacity *int64 `json:"maxCapacity,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CapacityReservationProperties.
+func (crp CapacityReservationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Cluster the top level Log Analytics cluster resource container.
@@ -572,6 +590,12 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetail the error detail.
 type ErrorDetail struct {
 	// Code - READ-ONLY; The error code.
@@ -584,6 +608,12 @@ type ErrorDetail struct {
 	Details *[]ErrorDetail `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetail.
+func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
@@ -836,6 +866,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -844,6 +880,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
@@ -878,6 +920,12 @@ type UserIdentityProperties struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// ClientID - READ-ONLY; The client id of user assigned identity.
 	ClientID *string `json:"clientId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UserIdentityProperties.
+func (uip UserIdentityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Workspace the top level Workspace resource container.

@@ -713,6 +713,12 @@ type DomainTopic struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DomainTopic.
+func (dt DomainTopic) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DomainTopicsListResult result of the List Domain Topics operation
 type DomainTopicsListResult struct {
 	autorest.Response `json:"-"`
@@ -2431,6 +2437,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Type of the resource
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RetryPolicy information about the retry policy for an event subscription

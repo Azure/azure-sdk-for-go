@@ -659,12 +659,24 @@ type DatabaseSummaryResult struct {
 	ResultPrefix *string `json:"resultPrefix,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DatabaseSummaryResult.
+func (dsr DatabaseSummaryResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DatabaseTable table properties
 type DatabaseTable struct {
 	// HasRows - READ-ONLY; Indicates whether table is empty or not
 	HasRows *bool `json:"hasRows,omitempty"`
 	// Name - READ-ONLY; Schema-qualified name of the table
 	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatabaseTable.
+func (dt DatabaseTable) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DataIntegrityValidationResult results for checksum based Data Integrity validation results
@@ -707,6 +719,12 @@ type DataItemMigrationSummaryResult struct {
 	ErrorPrefix *string `json:"errorPrefix,omitempty"`
 	// ResultPrefix - READ-ONLY; Wildcard string prefix to use for querying all sub-tem results of the item
 	ResultPrefix *string `json:"resultPrefix,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataItemMigrationSummaryResult.
+func (dimsr DataItemMigrationSummaryResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Error migration Task errors
@@ -1409,6 +1427,12 @@ type MigrationTableMetadata struct {
 	TargetTableName *string `json:"targetTableName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MigrationTableMetadata.
+func (mtm MigrationTableMetadata) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MigrationValidationDatabaseLevelResult database level validation results
 type MigrationValidationDatabaseLevelResult struct {
 	// ID - READ-ONLY; Result identifier
@@ -1433,6 +1457,12 @@ type MigrationValidationDatabaseLevelResult struct {
 	Status ValidationStatus `json:"status,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MigrationValidationDatabaseLevelResult.
+func (mvdlr MigrationValidationDatabaseLevelResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MigrationValidationDatabaseSummaryResult migration Validation Database level summary result
 type MigrationValidationDatabaseSummaryResult struct {
 	// ID - READ-ONLY; Result identifier
@@ -1449,6 +1479,12 @@ type MigrationValidationDatabaseSummaryResult struct {
 	EndedOn *date.Time `json:"endedOn,omitempty"`
 	// Status - READ-ONLY; Current status of validation at the database level. Possible values include: 'ValidationStatusDefault', 'ValidationStatusNotStarted', 'ValidationStatusInitialized', 'ValidationStatusInProgress', 'ValidationStatusCompleted', 'ValidationStatusCompletedWithIssues', 'ValidationStatusFailed', 'ValidationStatusStopped'
 	Status ValidationStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrationValidationDatabaseSummaryResult.
+func (mvdsr MigrationValidationDatabaseSummaryResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MigrationValidationOptions types of validations to run after the migration
@@ -1789,6 +1825,12 @@ type ProjectMetadata struct {
 	TargetUsingWinAuth *bool `json:"targetUsingWinAuth,omitempty"`
 	// SelectedMigrationTables - READ-ONLY; List of tables selected for migration
 	SelectedMigrationTables *[]MigrationTableMetadata `json:"selectedMigrationTables,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProjectMetadata.
+func (pm ProjectMetadata) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ProjectProperties project-specific properties
@@ -2321,6 +2363,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceSku describes an available DMS SKU.
 type ResourceSku struct {
 	// ResourceType - READ-ONLY; The type of resource the SKU applies to.
@@ -2349,12 +2397,24 @@ type ResourceSku struct {
 	Restrictions *[]ResourceSkuRestrictions `json:"restrictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceSku.
+func (rs ResourceSku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceSkuCapabilities describes The SKU capabilities object.
 type ResourceSkuCapabilities struct {
 	// Name - READ-ONLY; An invariant to describe the feature.
 	Name *string `json:"name,omitempty"`
 	// Value - READ-ONLY; An invariant if the feature is measured by quantity.
 	Value *string `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceSkuCapabilities.
+func (rsc ResourceSkuCapabilities) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceSkuCapacity describes scaling information of a SKU.
@@ -2369,6 +2429,12 @@ type ResourceSkuCapacity struct {
 	ScaleType ResourceSkuCapacityScaleType `json:"scaleType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceSkuCapacity.
+func (rsc ResourceSkuCapacity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceSkuCosts describes metadata for retrieving price info.
 type ResourceSkuCosts struct {
 	// MeterID - READ-ONLY; Used for querying price from commerce.
@@ -2379,6 +2445,12 @@ type ResourceSkuCosts struct {
 	ExtendedUnit *string `json:"extendedUnit,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceSkuCosts.
+func (rsc ResourceSkuCosts) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceSkuRestrictions describes scaling information of a SKU.
 type ResourceSkuRestrictions struct {
 	// Type - READ-ONLY; The type of restrictions. Possible values include: 'Location'
@@ -2387,6 +2459,12 @@ type ResourceSkuRestrictions struct {
 	Values *[]string `json:"values,omitempty"`
 	// ReasonCode - READ-ONLY; The reason code for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
 	ReasonCode ResourceSkuRestrictionsReasonCode `json:"reasonCode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceSkuRestrictions.
+func (rsr ResourceSkuRestrictions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceSkusResult the DMS List SKUs operation response.

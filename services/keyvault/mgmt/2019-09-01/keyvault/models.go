@@ -76,6 +76,12 @@ type CheckNameAvailabilityResult struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityResult.
+func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CloudError an error response from Key Vault resource provider
 type CloudError struct {
 	Error *CloudErrorBody `json:"error,omitempty"`
@@ -936,6 +942,12 @@ type Permissions struct {
 type PrivateEndpoint struct {
 	// ID - READ-ONLY; Full identifier of the private endpoint resource.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpoint.
+func (peVar PrivateEndpoint) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PrivateEndpointConnection private endpoint connection resource.

@@ -281,6 +281,12 @@ type AccountKeys struct {
 	Secondary *string `json:"secondary,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountKeys.
+func (ak AccountKeys) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountListResult values returned by the List operation.
 type AccountListResult struct {
 	autorest.Response `json:"-"`
@@ -460,6 +466,12 @@ type AccountProperties struct {
 	ActiveJobAndJobScheduleQuota *int32 `json:"activeJobAndJobScheduleQuota,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountProperties.
+func (ap AccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountRegenerateKeyParameters parameters supplied to the RegenerateKey operation.
 type AccountRegenerateKeyParameters struct {
 	// KeyName - The type of account key to regenerate. Possible values include: 'Primary', 'Secondary'
@@ -572,6 +584,12 @@ type ApplicationPackage struct {
 	StorageURLExpiry *date.Time `json:"storageUrlExpiry,omitempty"`
 	// LastActivationTime - READ-ONLY; The time at which the package was last activated, if the package is active.
 	LastActivationTime *date.Time `json:"lastActivationTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationPackage.
+func (ap ApplicationPackage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AutoStorageBaseProperties the properties related to auto storage account.
@@ -773,6 +791,12 @@ type LocationQuota struct {
 	autorest.Response `json:"-"`
 	// AccountQuota - READ-ONLY; The number of Batch accounts that may be created under the subscription in the specified region.
 	AccountQuota *int32 `json:"accountQuota,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LocationQuota.
+func (lq LocationQuota) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Resource a definition of an Azure resource.

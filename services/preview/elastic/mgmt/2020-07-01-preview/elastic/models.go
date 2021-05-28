@@ -38,6 +38,12 @@ type CloudDeployment struct {
 	KibanaSsoURL *string `json:"kibanaSsoUrl,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CloudDeployment.
+func (cd CloudDeployment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CloudUser details of the user's elastic account.
 type CloudUser struct {
 	// EmailAddress - READ-ONLY; Email of the Elastic User Account.
@@ -46,6 +52,12 @@ type CloudUser struct {
 	ID *string `json:"id,omitempty"`
 	// ElasticCloudSsoDefaultURL - READ-ONLY; Elastic cloud default dashboard sso URL of the Elastic user account.
 	ElasticCloudSsoDefaultURL *string `json:"elasticCloudSsoDefaultUrl,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudUser.
+func (cu CloudUser) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CompanyInfo company information of the user to be passed to partners.
@@ -74,6 +86,12 @@ type DeploymentInfoResponse struct {
 	MemoryCapacity *string `json:"memoryCapacity,omitempty"`
 	// DiskCapacity - READ-ONLY; Disk capacity of the elasticsearch in Elastic cloud deployment.
 	DiskCapacity *string `json:"diskCapacity,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeploymentInfoResponse.
+func (dir DeploymentInfoResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponseBody error response body.
@@ -1022,6 +1040,12 @@ type Properties struct {
 type ResourceProviderDefaultErrorResponse struct {
 	// Error - READ-ONLY; Response body of Error
 	Error *ErrorResponseBody `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceProviderDefaultErrorResponse.
+func (rpder ResourceProviderDefaultErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceSku microsoft.Elastic SKU.

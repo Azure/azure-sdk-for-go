@@ -164,6 +164,12 @@ type CheckNameAvailabilityResponse struct {
 	Reason CheckNameAvailabilityReason `json:"reason,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityResponse.
+func (cnar CheckNameAvailabilityResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Database represents a database.
 type Database struct {
 	autorest.Response `json:"-"`
@@ -1174,6 +1180,12 @@ type DatabaseUsage struct {
 	NextResetTime *date.Time `json:"nextResetTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DatabaseUsage.
+func (du DatabaseUsage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DatabaseUsageListResult the response to a list database metrics request.
 type DatabaseUsageListResult struct {
 	autorest.Response `json:"-"`
@@ -1760,6 +1772,12 @@ type EditionCapability struct {
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EditionCapability.
+func (ec EditionCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ElasticPool represents a database elastic pool.
 type ElasticPool struct {
 	autorest.Response `json:"-"`
@@ -2009,6 +2027,12 @@ type ElasticPoolActivityProperties struct {
 	RequestedDtuGuarantee *int32 `json:"requestedDtuGuarantee,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ElasticPoolActivityProperties.
+func (epap ElasticPoolActivityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ElasticPoolDatabaseActivity represents the activity on an elastic pool.
 type ElasticPoolDatabaseActivity struct {
 	// Location - The geo-location where the resource lives
@@ -2137,6 +2161,12 @@ type ElasticPoolDatabaseActivityProperties struct {
 	State *string `json:"state,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ElasticPoolDatabaseActivityProperties.
+func (epdap ElasticPoolDatabaseActivityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ElasticPoolDtuCapability the Elastic Pool DTU capability.
 type ElasticPoolDtuCapability struct {
 	// Limit - READ-ONLY; The maximum size of the database (see 'unit' for the units).
@@ -2155,6 +2185,12 @@ type ElasticPoolDtuCapability struct {
 	SupportedPerDatabaseMaxDtus *[]ElasticPoolPerDatabaseMaxDtuCapability `json:"supportedPerDatabaseMaxDtus,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ElasticPoolDtuCapability.
+func (epdc ElasticPoolDtuCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ElasticPoolEditionCapability the elastic pool edition capabilities.
 type ElasticPoolEditionCapability struct {
 	// Name - READ-ONLY; The elastic pool edition name.
@@ -2165,6 +2201,12 @@ type ElasticPoolEditionCapability struct {
 	SupportedElasticPoolDtus *[]ElasticPoolDtuCapability `json:"supportedElasticPoolDtus,omitempty"`
 	// ZoneRedundant - READ-ONLY; Whether or not zone redundancy is supported for the edition.
 	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ElasticPoolEditionCapability.
+func (epec ElasticPoolEditionCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ElasticPoolListResult represents the response to a list elastic pool request.
@@ -2184,12 +2226,24 @@ type ElasticPoolPerDatabaseMaxDtuCapability struct {
 	SupportedPerDatabaseMinDtus *[]ElasticPoolPerDatabaseMinDtuCapability `json:"supportedPerDatabaseMinDtus,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ElasticPoolPerDatabaseMaxDtuCapability.
+func (eppdmdc ElasticPoolPerDatabaseMaxDtuCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ElasticPoolPerDatabaseMinDtuCapability the minimum per-database DTU capability.
 type ElasticPoolPerDatabaseMinDtuCapability struct {
 	// Limit - READ-ONLY; The maximum DTUs per database.
 	Limit *int64 `json:"limit,omitempty"`
 	// Status - READ-ONLY; The status of the capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ElasticPoolPerDatabaseMinDtuCapability.
+func (eppdmdc ElasticPoolPerDatabaseMinDtuCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ElasticPoolProperties represents the properties of an elastic pool.
@@ -2755,6 +2809,12 @@ type ImportExportResponseProperties struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImportExportResponseProperties.
+func (ierp ImportExportResponseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImportExtensionProperties represents the properties for an import operation
 type ImportExtensionProperties struct {
 	// OperationMode - The type of import operation being performed. This is always Import.
@@ -2886,6 +2946,12 @@ type LocationCapabilities struct {
 	SupportedServerVersions *[]ServerVersionCapability `json:"supportedServerVersions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LocationCapabilities.
+func (lc LocationCapabilities) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MaxSizeCapability the maximum size limits for a database.
 type MaxSizeCapability struct {
 	// Limit - READ-ONLY; The maximum size of the database (see 'unit' for the units).
@@ -2894,6 +2960,12 @@ type MaxSizeCapability struct {
 	Unit MaxSizeUnits `json:"unit,omitempty"`
 	// Status - READ-ONLY; The status of the maximum size capability. Possible values include: 'CapabilityStatusVisible', 'CapabilityStatusAvailable', 'CapabilityStatusDefault', 'CapabilityStatusDisabled'
 	Status CapabilityStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MaxSizeCapability.
+func (msc MaxSizeCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Metric database metrics.
@@ -2912,12 +2984,24 @@ type Metric struct {
 	MetricValues *[]MetricValue `json:"metricValues,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Metric.
+func (mVar Metric) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MetricAvailability a metric availability value.
 type MetricAvailability struct {
 	// Retention - READ-ONLY; The length of retention for the database metric.
 	Retention *string `json:"retention,omitempty"`
 	// TimeGrain - READ-ONLY; The granularity of the database metric.
 	TimeGrain *string `json:"timeGrain,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricAvailability.
+func (ma MetricAvailability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MetricDefinition a database metric definition.
@@ -2932,6 +3016,12 @@ type MetricDefinition struct {
 	Unit UnitDefinitionType `json:"unit,omitempty"`
 	// MetricAvailabilities - READ-ONLY; The list of database metric availabilities for the metric.
 	MetricAvailabilities *[]MetricAvailability `json:"metricAvailabilities,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricDefinition.
+func (md MetricDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MetricDefinitionListResult the response to a list database metric definitions request.
@@ -2956,6 +3046,12 @@ type MetricName struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MetricName.
+func (mn MetricName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MetricValue represents database metrics.
 type MetricValue struct {
 	// Count - READ-ONLY; The number of values for the metric.
@@ -2970,6 +3066,12 @@ type MetricValue struct {
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// Total - READ-ONLY; The total value of the metric.
 	Total *float64 `json:"total,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricValue.
+func (mv MetricValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Operation SQL REST API operation definition.
@@ -3002,6 +3104,12 @@ type OperationImpact struct {
 	ChangeValueRelative *float64 `json:"changeValueRelative,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationImpact.
+func (oi OperationImpact) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult result of the request to list SQL operations. It contains a list of operations and a
 // URL link to get the next set of results.
 type OperationListResult struct {
@@ -3020,6 +3128,12 @@ type PerformanceLevel struct {
 	Value *int32 `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PerformanceLevel.
+func (pl PerformanceLevel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ProxyResource ARM proxy resource.
 type ProxyResource struct {
 	// ID - READ-ONLY; Resource ID.
@@ -3030,6 +3144,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // QueryInterval a database query.
 type QueryInterval struct {
 	// IntervalStartTime - READ-ONLY; The start time of the measurement interval (ISO8601 format).
@@ -3038,6 +3158,12 @@ type QueryInterval struct {
 	ExecutionCount *float64 `json:"executionCount,omitempty"`
 	// Metrics - READ-ONLY; The list of query metrics during this interval.
 	Metrics *[]QueryMetric `json:"metrics,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryInterval.
+func (qi QueryInterval) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // QueryMetric a database query.
@@ -3052,12 +3178,24 @@ type QueryMetric struct {
 	Value *float64 `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for QueryMetric.
+func (qm QueryMetric) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // QueryStatistic a database query.
 type QueryStatistic struct {
 	// QueryID - READ-ONLY; The id of the query
 	QueryID *string `json:"queryId,omitempty"`
 	// Intervals - READ-ONLY; The list of query intervals.
 	Intervals *[]QueryInterval `json:"intervals,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryStatistic.
+func (qs QueryStatistic) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // QueryStatisticListResult represents the response to a get query request.
@@ -3075,6 +3213,12 @@ type QueryText struct {
 	Type *string `json:"type,omitempty"`
 	// QueryText - READ-ONLY; Query text.
 	QueryText *string `json:"queryText,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryText.
+func (qt QueryText) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // QueryTextListResult represents the response to a get query text request.
@@ -3323,6 +3467,12 @@ type RecommendedIndexProperties struct {
 	ReportedImpact *[]OperationImpact `json:"reportedImpact,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RecommendedIndexProperties.
+func (rip RecommendedIndexProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RecoverableDatabase a recoverable database
 type RecoverableDatabase struct {
 	autorest.Response `json:"-"`
@@ -3413,6 +3563,12 @@ type RecoverableDatabaseProperties struct {
 	ElasticPoolName *string `json:"elasticPoolName,omitempty"`
 	// LastAvailableBackupDate - READ-ONLY; The last available backup date of the database (ISO8601 format)
 	LastAvailableBackupDate *date.Time `json:"lastAvailableBackupDate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RecoverableDatabaseProperties.
+func (rdp RecoverableDatabaseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ReplicationLink represents a database replication link.
@@ -3528,6 +3684,12 @@ type ReplicationLinkProperties struct {
 	PercentComplete *int32 `json:"percentComplete,omitempty"`
 	// ReplicationState - READ-ONLY; The replication state for the replication link. Possible values include: 'PENDING', 'SEEDING', 'CATCHUP', 'SUSPENDED'
 	ReplicationState ReplicationState `json:"replicationState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReplicationLinkProperties.
+func (rlp ReplicationLinkProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ReplicationLinksFailoverAllowDataLossFuture an abstraction for monitoring and retrieving the results of
@@ -3651,6 +3813,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RestorableDroppedDatabase a restorable dropped database
 type RestorableDroppedDatabase struct {
 	autorest.Response `json:"-"`
@@ -3762,6 +3930,12 @@ type RestorableDroppedDatabaseProperties struct {
 	EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RestorableDroppedDatabaseProperties.
+func (rddp RestorableDroppedDatabaseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RestorePoint a database restore point.
 type RestorePoint struct {
 	// RestorePointProperties - The properties of the restore point.
@@ -3849,6 +4023,12 @@ type RestorePointProperties struct {
 	RestorePointCreationDate *date.Time `json:"restorePointCreationDate,omitempty"`
 	// EarliestRestoreDate - READ-ONLY; Earliest restore time (ISO8601 format). Populated when restorePointType = DISCRETE. Null otherwise.
 	EarliestRestoreDate *date.Time `json:"earliestRestoreDate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RestorePointProperties.
+func (rpp RestorePointProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Server represents a server.
@@ -4677,6 +4857,12 @@ type ServerUsage struct {
 	NextResetTime *date.Time `json:"nextResetTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServerUsage.
+func (su ServerUsage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ServerUsageListResult represents the response to a list server metrics request.
 type ServerUsageListResult struct {
 	autorest.Response `json:"-"`
@@ -4694,6 +4880,12 @@ type ServerVersionCapability struct {
 	SupportedEditions *[]EditionCapability `json:"supportedEditions,omitempty"`
 	// SupportedElasticPoolEditions - READ-ONLY; The list of supported elastic pool editions.
 	SupportedElasticPoolEditions *[]ElasticPoolEditionCapability `json:"supportedElasticPoolEditions,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerVersionCapability.
+func (svc ServerVersionCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServiceObjective represents a database service objective.
@@ -4881,6 +5073,12 @@ type ServiceObjectiveProperties struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServiceObjectiveProperties.
+func (sop ServiceObjectiveProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ServiceTierAdvisor represents a Service Tier Advisor.
 type ServiceTierAdvisor struct {
 	autorest.Response `json:"-"`
@@ -5000,6 +5198,12 @@ type ServiceTierAdvisorProperties struct {
 	Confidence *float64 `json:"confidence,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServiceTierAdvisorProperties.
+func (stap ServiceTierAdvisorProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SloUsageMetric a Slo Usage Metric.
 type SloUsageMetric struct {
 	// ServiceLevelObjective - READ-ONLY; The serviceLevelObjective for SLO usage metric. Possible values include: 'ServiceObjectiveNameSystem', 'ServiceObjectiveNameSystem0', 'ServiceObjectiveNameSystem1', 'ServiceObjectiveNameSystem2', 'ServiceObjectiveNameSystem3', 'ServiceObjectiveNameSystem4', 'ServiceObjectiveNameSystem2L', 'ServiceObjectiveNameSystem3L', 'ServiceObjectiveNameSystem4L', 'ServiceObjectiveNameFree', 'ServiceObjectiveNameBasic', 'ServiceObjectiveNameS0', 'ServiceObjectiveNameS1', 'ServiceObjectiveNameS2', 'ServiceObjectiveNameS3', 'ServiceObjectiveNameS4', 'ServiceObjectiveNameS6', 'ServiceObjectiveNameS7', 'ServiceObjectiveNameS9', 'ServiceObjectiveNameS12', 'ServiceObjectiveNameP1', 'ServiceObjectiveNameP2', 'ServiceObjectiveNameP3', 'ServiceObjectiveNameP4', 'ServiceObjectiveNameP6', 'ServiceObjectiveNameP11', 'ServiceObjectiveNameP15', 'ServiceObjectiveNamePRS1', 'ServiceObjectiveNamePRS2', 'ServiceObjectiveNamePRS4', 'ServiceObjectiveNamePRS6', 'ServiceObjectiveNameDW100', 'ServiceObjectiveNameDW200', 'ServiceObjectiveNameDW300', 'ServiceObjectiveNameDW400', 'ServiceObjectiveNameDW500', 'ServiceObjectiveNameDW600', 'ServiceObjectiveNameDW1000', 'ServiceObjectiveNameDW1200', 'ServiceObjectiveNameDW1000c', 'ServiceObjectiveNameDW1500', 'ServiceObjectiveNameDW1500c', 'ServiceObjectiveNameDW2000', 'ServiceObjectiveNameDW2000c', 'ServiceObjectiveNameDW3000', 'ServiceObjectiveNameDW2500c', 'ServiceObjectiveNameDW3000c', 'ServiceObjectiveNameDW6000', 'ServiceObjectiveNameDW5000c', 'ServiceObjectiveNameDW6000c', 'ServiceObjectiveNameDW7500c', 'ServiceObjectiveNameDW10000c', 'ServiceObjectiveNameDW15000c', 'ServiceObjectiveNameDW30000c', 'ServiceObjectiveNameDS100', 'ServiceObjectiveNameDS200', 'ServiceObjectiveNameDS300', 'ServiceObjectiveNameDS400', 'ServiceObjectiveNameDS500', 'ServiceObjectiveNameDS600', 'ServiceObjectiveNameDS1000', 'ServiceObjectiveNameDS1200', 'ServiceObjectiveNameDS1500', 'ServiceObjectiveNameDS2000', 'ServiceObjectiveNameElasticPool'
@@ -5008,6 +5212,12 @@ type SloUsageMetric struct {
 	ServiceLevelObjectiveID *uuid.UUID `json:"serviceLevelObjectiveId,omitempty"`
 	// InRangeTimeRatio - READ-ONLY; Gets or sets inRangeTimeRatio for SLO usage metric.
 	InRangeTimeRatio *float64 `json:"inRangeTimeRatio,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SloUsageMetric.
+func (sum SloUsageMetric) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TableAuditingPolicyProperties properties of a table auditing policy.
@@ -5054,6 +5264,12 @@ type TopQueries struct {
 	ObservedMetric QueryObservedMetricType `json:"observedMetric,omitempty"`
 	// Queries - READ-ONLY; The list of queries.
 	Queries *[]QueryStatistic `json:"queries,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TopQueries.
+func (tq TopQueries) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TopQueriesListResult represents the response to a get top queries request.
@@ -5271,6 +5487,12 @@ type TransparentDataEncryptionActivityProperties struct {
 	Status TransparentDataEncryptionActivityStatus `json:"status,omitempty"`
 	// PercentComplete - READ-ONLY; The percent complete of the transparent data encryption scan for a database.
 	PercentComplete *float64 `json:"percentComplete,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TransparentDataEncryptionActivityProperties.
+func (tdeap TransparentDataEncryptionActivityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TransparentDataEncryptionListResult represents the response to a list transparent data encryption

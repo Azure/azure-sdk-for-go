@@ -45,6 +45,12 @@ type AzureAsyncOperationResult struct {
 	Error *Error `json:"error,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureAsyncOperationResult.
+func (aaor AzureAsyncOperationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BlobContainer azure Storage blob container information.
 type BlobContainer struct {
 	autorest.Response `json:"-"`
@@ -58,10 +64,22 @@ type BlobContainer struct {
 	Properties *BlobContainerProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for BlobContainer.
+func (bc BlobContainer) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BlobContainerProperties azure Storage blob container properties information.
 type BlobContainerProperties struct {
 	// LastModifiedTime - READ-ONLY; the last modified time of the blob container.
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BlobContainerProperties.
+func (bcp BlobContainerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -151,6 +169,12 @@ type DataLakeAnalyticsAccountListDataLakeStoreResult struct {
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - READ-ONLY; the link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataLakeAnalyticsAccountListDataLakeStoreResult.
+func (dlaaldlsr DataLakeAnalyticsAccountListDataLakeStoreResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DataLakeAnalyticsAccountListDataLakeStoreResultIterator provides access to a complete listing of
@@ -313,6 +337,12 @@ type DataLakeAnalyticsAccountListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DataLakeAnalyticsAccountListResult.
+func (dlaalr DataLakeAnalyticsAccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DataLakeAnalyticsAccountListResultIterator provides access to a complete listing of
 // DataLakeAnalyticsAccount values.
 type DataLakeAnalyticsAccountListResultIterator struct {
@@ -473,6 +503,12 @@ type DataLakeAnalyticsAccountListStorageAccountsResult struct {
 	Count *int32 `json:"count,omitempty"`
 	// NextLink - READ-ONLY; the link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataLakeAnalyticsAccountListStorageAccountsResult.
+func (dlaalsar DataLakeAnalyticsAccountListStorageAccountsResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DataLakeAnalyticsAccountListStorageAccountsResultIterator provides access to a complete listing of
@@ -737,6 +773,12 @@ type Error struct {
 	InnerError *InnerError `json:"innerError,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetails generic resource error details information.
 type ErrorDetails struct {
 	// Code - READ-ONLY; the HTTP status code or error code associated with this error
@@ -747,12 +789,24 @@ type ErrorDetails struct {
 	Target *string `json:"target,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // InnerError generic resource inner error information.
 type InnerError struct {
 	// Trace - READ-ONLY; the stack trace for the error
 	Trace *string `json:"trace,omitempty"`
 	// Context - READ-ONLY; the context for the error message
 	Context *string `json:"context,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InnerError.
+func (ie InnerError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ListBlobContainersResult the list of blob containers associated with the storage account attached to the
@@ -763,6 +817,12 @@ type ListBlobContainersResult struct {
 	Value *[]BlobContainer `json:"value,omitempty"`
 	// NextLink - READ-ONLY; the link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListBlobContainersResult.
+func (lbcr ListBlobContainersResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ListBlobContainersResultIterator provides access to a complete listing of BlobContainer values.
@@ -925,6 +985,12 @@ type ListSasTokensResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ListSasTokensResult.
+func (lstr ListSasTokensResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ListSasTokensResultIterator provides access to a complete listing of SasTokenInfo values.
 type ListSasTokensResultIterator struct {
 	i    int
@@ -1079,6 +1145,12 @@ func NewListSasTokensResultPage(cur ListSasTokensResult, getNextPage func(contex
 type SasTokenInfo struct {
 	// AccessToken - READ-ONLY; the access token for the associated Azure Storage Container.
 	AccessToken *string `json:"accessToken,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SasTokenInfo.
+func (sti SasTokenInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StorageAccountInfo azure Storage account information.

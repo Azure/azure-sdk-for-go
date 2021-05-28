@@ -483,6 +483,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Topic eventGrid Topic
 type Topic struct {
 	autorest.Response `json:"-"`
@@ -590,6 +596,12 @@ type TopicProperties struct {
 	ProvisioningState TopicProvisioningState `json:"provisioningState,omitempty"`
 	// Endpoint - READ-ONLY; Endpoint for the topic.
 	Endpoint *string `json:"endpoint,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TopicProperties.
+func (tp TopicProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TopicRegenerateKeyRequest topic regenerate share access key request

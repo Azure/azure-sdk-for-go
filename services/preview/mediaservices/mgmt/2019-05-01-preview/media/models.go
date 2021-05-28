@@ -961,6 +961,12 @@ type AssetStreamingLocator struct {
 	DefaultContentKeyPolicyName *string `json:"defaultContentKeyPolicyName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AssetStreamingLocator.
+func (asl AssetStreamingLocator) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BasicAudio defines the common properties for all audio codecs.
 type BasicAudio interface {
 	AsAacAudio() (*AacAudio, bool)
@@ -4641,12 +4647,24 @@ type JobError struct {
 	Details *[]JobErrorDetail `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobError.
+func (je JobError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // JobErrorDetail details of JobOutput errors.
 type JobErrorDetail struct {
 	// Code - READ-ONLY; Code describing the error detail.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; A human-readable representation of the error.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobErrorDetail.
+func (jed JobErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BasicJobInput base class for inputs to a Job.
@@ -5977,6 +5995,12 @@ type ListStreamingLocatorsResponse struct {
 	StreamingLocators *[]AssetStreamingLocator `json:"streamingLocators,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ListStreamingLocatorsResponse.
+func (lslr ListStreamingLocatorsResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // LiveEvent the Live Event.
 type LiveEvent struct {
 	autorest.Response `json:"-"`
@@ -7004,6 +7028,12 @@ type Metric struct {
 	Dimensions *[]MetricDimension `json:"dimensions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Metric.
+func (mVar Metric) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MetricDimension a metric dimension.
 type MetricDimension struct {
 	// Name - READ-ONLY; The metric dimension name.
@@ -7014,10 +7044,22 @@ type MetricDimension struct {
 	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MetricDimension.
+func (md MetricDimension) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MetricProperties metric properties.
 type MetricProperties struct {
 	// ServiceSpecification - READ-ONLY; The service specifications.
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricProperties.
+func (mp MetricProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Mp4Format describes the properties for an output ISO MP4 file.
@@ -7958,6 +8000,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Rectangle describes the properties of a rectangular window applied to the input media before processing
 // it.
 type Rectangle struct {
@@ -7979,6 +8027,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Service a Media Services account.
@@ -8262,6 +8316,12 @@ func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
 type ServiceSpecification struct {
 	// MetricSpecifications - READ-ONLY; List of metric specifications.
 	MetricSpecifications *[]Metric `json:"metricSpecifications,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceSpecification.
+func (ss ServiceSpecification) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StandardEncoderPreset describes all the settings to be used when encoding the input video with the

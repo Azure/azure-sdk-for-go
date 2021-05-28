@@ -442,6 +442,12 @@ type ContainerGroupPropertiesInstanceView struct {
 	State *string `json:"state,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ContainerGroupPropertiesInstanceView.
+func (cgV ContainerGroupPropertiesInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ContainerGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ContainerGroupsCreateOrUpdateFuture struct {
@@ -620,6 +626,12 @@ type ContainerPropertiesInstanceView struct {
 	PreviousState *ContainerState `json:"previousState,omitempty"`
 	// Events - READ-ONLY; The events of the container instance.
 	Events *[]Event `json:"events,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerPropertiesInstanceView.
+func (cpV ContainerPropertiesInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ContainerState the container instance state.
@@ -831,11 +843,23 @@ type Usage struct {
 	Name *UsageName `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Usage.
+func (u Usage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UsageListResult the response containing the usage data
 type UsageListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY
 	Value *[]Usage `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageListResult.
+func (ulr UsageListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UsageName the name object of the resource
@@ -844,6 +868,12 @@ type UsageName struct {
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - READ-ONLY; The localized name of the resource
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageName.
+func (u UsageName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Volume the properties of the volume.

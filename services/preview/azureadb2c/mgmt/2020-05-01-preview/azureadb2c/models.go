@@ -27,6 +27,12 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
 // failed operations. (This also follows the OData error response format.)
 type ErrorResponse struct {
@@ -40,6 +46,12 @@ type ErrorResponse struct {
 	Details *[]ErrorResponse `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // GuestUsagesResource guest Usages Resource
@@ -150,6 +162,12 @@ type GuestUsagesResourceList struct {
 	Value *[]GuestUsagesResource `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GuestUsagesResourceList.
+func (gurl GuestUsagesResourceList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // GuestUsagesResourcePatch guest Usages Resource for Patch
 type GuestUsagesResourcePatch struct {
 	// Tags - Key-value pairs of additional resource provisioning properties.
@@ -214,4 +232,10 @@ type OperationListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of cpim service operations supported by the Microsoft.AzureActiveDirectory resource provider.
 	Value *[]Operation `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

@@ -3096,6 +3096,12 @@ type PolicySnippetContract struct {
 	Scope PolicyScopeContract `json:"scope,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PolicySnippetContract.
+func (psc PolicySnippetContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PolicySnippetsCollection the response of the list policy snippets operation.
 type PolicySnippetsCollection struct {
 	autorest.Response `json:"-"`

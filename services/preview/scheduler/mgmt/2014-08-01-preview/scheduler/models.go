@@ -377,6 +377,12 @@ type JobHistoryDefinition struct {
 	Properties *JobHistoryDefinitionProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobHistoryDefinition.
+func (jhd JobHistoryDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // JobHistoryDefinitionProperties ...
 type JobHistoryDefinitionProperties struct {
 	// StartTime - READ-ONLY; Gets the start time for this job.
@@ -395,6 +401,12 @@ type JobHistoryDefinitionProperties struct {
 	RetryCount *int32 `json:"retryCount,omitempty"`
 	// RepeatCount - READ-ONLY; Gets the repeat count for the job.
 	RepeatCount *int32 `json:"repeatCount,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobHistoryDefinitionProperties.
+func (jhdp JobHistoryDefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // JobHistoryFilter ...
@@ -814,6 +826,12 @@ type JobStatus struct {
 	LastExecutionTime *date.Time `json:"lastExecutionTime,omitempty"`
 	// NextExecutionTime - READ-ONLY; Gets the time of the next occurrence in ISO-8601 format. Could be empty if the job is completed.
 	NextExecutionTime *date.Time `json:"nextExecutionTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobStatus.
+func (js JobStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OAuthAuthentication ...

@@ -791,6 +791,12 @@ type CacheUpgradeStatus struct {
 	PendingFirmwareVersion *string `json:"pendingFirmwareVersion,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CacheUpgradeStatus.
+func (cus CacheUpgradeStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ClfsTarget storage container for use as a CLFS StorageTarget.
 type ClfsTarget struct {
 	// Target - URL of storage container.

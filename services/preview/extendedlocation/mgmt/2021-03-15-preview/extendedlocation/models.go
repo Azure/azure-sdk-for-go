@@ -32,6 +32,12 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CustomLocation custom Locations definition.
 type CustomLocation struct {
 	autorest.Response `json:"-"`
@@ -151,6 +157,12 @@ type CustomLocationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - READ-ONLY; The list of Custom Locations.
 	Value *[]CustomLocation `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomLocationListResult.
+func (cllr CustomLocationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CustomLocationListResultIterator provides access to a complete listing of CustomLocation values.
@@ -548,6 +560,12 @@ type CustomLocationOperationValueDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CustomLocationOperationValueDisplay.
+func (clovd CustomLocationOperationValueDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CustomLocationProperties properties for a custom location.
 type CustomLocationProperties struct {
 	// Authentication - This is optional input that contains the authentication that should be used to generate the namespace.
@@ -767,6 +785,12 @@ type EnabledResourceTypesListResult struct {
 	Value *[]EnabledResourceType `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EnabledResourceTypesListResult.
+func (ertlr EnabledResourceTypesListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // EnabledResourceTypesListResultIterator provides access to a complete listing of EnabledResourceType
 // values.
 type EnabledResourceTypesListResultIterator struct {
@@ -926,6 +950,12 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetail the error detail.
 type ErrorDetail struct {
 	// Code - READ-ONLY; The error code.
@@ -938,6 +968,12 @@ type ErrorDetail struct {
 	Details *[]ErrorDetail `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetail.
+func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
@@ -1011,6 +1047,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1019,6 +1061,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SystemData metadata pertaining to creation and last modification of the resource.

@@ -338,7 +338,7 @@ type BasicAuthenticationBase interface {
 
 // AuthenticationBase base class for access policies authentication methods.
 type AuthenticationBase struct {
-	// Type - Possible values include: 'TypeTypeAuthenticationBase', 'TypeTypeMicrosoftVideoAnalyzerJwtAuthentication'
+	// Type - Possible values include: 'TypeAuthenticationBase', 'TypeMicrosoftVideoAnalyzerJwtAuthentication'
 	Type Type `json:"@type,omitempty"`
 }
 
@@ -350,7 +350,7 @@ func unmarshalBasicAuthenticationBase(body []byte) (BasicAuthenticationBase, err
 	}
 
 	switch m["@type"] {
-	case string(TypeTypeMicrosoftVideoAnalyzerJwtAuthentication):
+	case string(TypeMicrosoftVideoAnalyzerJwtAuthentication):
 		var ja JwtAuthentication
 		err := json.Unmarshal(body, &ja)
 		return ja, err
@@ -381,7 +381,7 @@ func unmarshalBasicAuthenticationBaseArray(body []byte) ([]BasicAuthenticationBa
 
 // MarshalJSON is the custom marshaler for AuthenticationBase.
 func (ab AuthenticationBase) MarshalJSON() ([]byte, error) {
-	ab.Type = TypeTypeAuthenticationBase
+	ab.Type = TypeAuthenticationBase
 	objectMap := make(map[string]interface{})
 	if ab.Type != "" {
 		objectMap["@type"] = ab.Type
@@ -414,6 +414,12 @@ type AzureEntityResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CheckNameAvailabilityRequest the check availability request body.
@@ -747,6 +753,12 @@ type EdgeModuleProperties struct {
 	EdgeModuleID *uuid.UUID `json:"edgeModuleId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EdgeModuleProperties.
+func (emp EdgeModuleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // EdgeModuleProvisioningToken provisioning token properties. A provisioning token allows for a single
 // instance of Azure Video analyzer IoT edge module to be initialized and authorized to the cloud account.
 // The provisioning token itself is short lived and it is only used for the initial handshake between IoT
@@ -760,6 +772,12 @@ type EdgeModuleProvisioningToken struct {
 	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
 	// Token - READ-ONLY; The token blob to be provided to the Azure Video Analyzer IoT edge module through the Azure IoT Edge module twin properties.
 	Token *string `json:"token,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EdgeModuleProvisioningToken.
+func (empt EdgeModuleProvisioningToken) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Endpoint the endpoint details.
@@ -778,6 +796,12 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetail the error detail.
 type ErrorDetail struct {
 	// Code - READ-ONLY; The error code.
@@ -790,6 +814,12 @@ type ErrorDetail struct {
 	Details *[]ErrorDetail `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetail.
+func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
@@ -829,13 +859,13 @@ type JwtAuthentication struct {
 	Claims *[]TokenClaim `json:"claims,omitempty"`
 	// Keys - List of keys which can be used to validate access tokens. Having multiple keys allow for seamless key rotation of the token signing key. Token signature must match exactly one key.
 	Keys *[]BasicTokenKey `json:"keys,omitempty"`
-	// Type - Possible values include: 'TypeTypeAuthenticationBase', 'TypeTypeMicrosoftVideoAnalyzerJwtAuthentication'
+	// Type - Possible values include: 'TypeAuthenticationBase', 'TypeMicrosoftVideoAnalyzerJwtAuthentication'
 	Type Type `json:"@type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for JwtAuthentication.
 func (ja JwtAuthentication) MarshalJSON() ([]byte, error) {
-	ja.Type = TypeTypeMicrosoftVideoAnalyzerJwtAuthentication
+	ja.Type = TypeMicrosoftVideoAnalyzerJwtAuthentication
 	objectMap := make(map[string]interface{})
 	if ja.Issuers != nil {
 		objectMap["issuers"] = ja.Issuers
@@ -963,6 +993,12 @@ type LogSpecification struct {
 	BlobDuration *string `json:"blobDuration,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LogSpecification.
+func (ls LogSpecification) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MetricDimension a metric dimension.
 type MetricDimension struct {
 	// Name - READ-ONLY; The metric dimension name.
@@ -971,6 +1007,12 @@ type MetricDimension struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// ToBeExportedForShoebox - READ-ONLY; Whether to export metric to shoebox.
 	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricDimension.
+func (md MetricDimension) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MetricSpecification a metric emitted by service.
@@ -1177,6 +1219,12 @@ type Properties struct {
 	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Properties.
+func (p Properties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PropertiesType ...
 type PropertiesType struct {
 	// StorageAccounts - The storage accounts for this resource.
@@ -1232,6 +1280,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1240,6 +1294,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceIdentity the user assigned managed identity to use when accessing a resource.
@@ -1310,6 +1370,12 @@ type ServiceSpecification struct {
 	LogSpecifications *[]LogSpecification `json:"logSpecifications,omitempty"`
 	// MetricSpecifications - READ-ONLY; List of metric specifications.
 	MetricSpecifications *[]MetricSpecification `json:"metricSpecifications,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceSpecification.
+func (ss ServiceSpecification) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StorageAccount the details about the associated storage account.
@@ -1554,6 +1620,12 @@ type UserAssignedManagedIdentity struct {
 	ClientID *string `json:"clientId,omitempty"`
 	// PrincipalID - READ-ONLY; The principal ID.
 	PrincipalID *string `json:"principalId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UserAssignedManagedIdentity.
+func (uami UserAssignedManagedIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VideoEntity the representation of a single video in a Video Analyzer account.
@@ -1816,6 +1888,12 @@ type VideoMediaInfo struct {
 	SegmentLength *string `json:"segmentLength,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VideoMediaInfo.
+func (vmi VideoMediaInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VideoProperties application level properties for the video resource.
 type VideoProperties struct {
 	// Title - Optional video title provided by the user. Value can be up to 256 characters long.
@@ -1864,4 +1942,10 @@ type VideoStreamingToken struct {
 	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
 	// Token - READ-ONLY; The streaming token value to be added to the video streaming URL as the value for a "token" query string parameter. The token is specific to a single video.
 	Token *string `json:"token,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VideoStreamingToken.
+func (vst VideoStreamingToken) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

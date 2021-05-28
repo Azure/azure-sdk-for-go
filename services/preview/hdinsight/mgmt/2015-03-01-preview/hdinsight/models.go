@@ -737,6 +737,12 @@ type ClusterIdentityUserAssignedIdentitiesValue struct {
 	ClientID *string `json:"clientId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ClusterIdentityUserAssignedIdentitiesValue.
+func (ciAiv ClusterIdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ClusterListPersistedScriptActionsResult the ListPersistedScriptActions operation response.
 type ClusterListPersistedScriptActionsResult struct {
 	// Value - The list of Persisted Script Actions.
@@ -928,6 +934,12 @@ type ClusterListRuntimeScriptActionDetailResult struct {
 	Value *[]RuntimeScriptActionDetail `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ClusterListRuntimeScriptActionDetailResult.
+func (clrsadr ClusterListRuntimeScriptActionDetailResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ClusterMonitoringRequest the Operations Management Suite (OMS) parameters.
@@ -1457,6 +1469,12 @@ type GatewaySettings struct {
 	Password *string `json:"restAuthCredential.password,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GatewaySettings.
+func (gs GatewaySettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // HardwareProfile the hardware profile.
 type HardwareProfile struct {
 	// VMSize - The size of the VM
@@ -1698,6 +1716,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // QuotaCapability the regional quota capability.
 type QuotaCapability struct {
 	// CoresUsed - The number of cores used in the subscription.
@@ -1738,6 +1762,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Role describes a role on the cluster.
@@ -1858,6 +1888,12 @@ type ScriptActionExecutionHistoryList struct {
 	Value *[]RuntimeScriptActionDetail `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScriptActionExecutionHistoryList.
+func (saehl ScriptActionExecutionHistoryList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ScriptActionExecutionHistoryListIterator provides access to a complete listing of
@@ -2017,6 +2053,12 @@ type ScriptActionExecutionSummary struct {
 	Status *string `json:"status,omitempty"`
 	// InstanceCount - READ-ONLY; The instance count for a given script action execution status.
 	InstanceCount *int32 `json:"instanceCount,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScriptActionExecutionSummary.
+func (saes ScriptActionExecutionSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ScriptActionPersistedGetResponseSpec the persisted script action for cluster.

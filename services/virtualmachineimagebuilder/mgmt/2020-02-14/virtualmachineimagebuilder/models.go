@@ -18,7 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/virtualmachineimagebuilder/mgmt/2020-02-01/virtualmachineimagebuilder"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/virtualmachineimagebuilder/mgmt/2020-02-14/virtualmachineimagebuilder"
 
 // APIError api error.
 type APIError struct {
@@ -173,7 +173,7 @@ type BasicImageTemplateCustomizer interface {
 type ImageTemplateCustomizer struct {
 	// Name - Friendly Name to provide context on what this customization step does
 	Name *string `json:"name,omitempty"`
-	// Type - Possible values include: 'TypeImageTemplateCustomizer', 'TypeShell', 'TypeWindowsRestart', 'TypeWindowsUpdate', 'TypePowerShell', 'TypeFile'
+	// Type - Possible values include: 'TypeBasicImageTemplateCustomizerTypeImageTemplateCustomizer', 'TypeBasicImageTemplateCustomizerTypeShell', 'TypeBasicImageTemplateCustomizerTypeWindowsRestart', 'TypeBasicImageTemplateCustomizerTypeWindowsUpdate', 'TypeBasicImageTemplateCustomizerTypePowerShell', 'TypeBasicImageTemplateCustomizerTypeFile'
 	Type TypeBasicImageTemplateCustomizer `json:"type,omitempty"`
 }
 
@@ -185,23 +185,23 @@ func unmarshalBasicImageTemplateCustomizer(body []byte) (BasicImageTemplateCusto
 	}
 
 	switch m["type"] {
-	case string(TypeShell):
+	case string(TypeBasicImageTemplateCustomizerTypeShell):
 		var itsc ImageTemplateShellCustomizer
 		err := json.Unmarshal(body, &itsc)
 		return itsc, err
-	case string(TypeWindowsRestart):
+	case string(TypeBasicImageTemplateCustomizerTypeWindowsRestart):
 		var itrc ImageTemplateRestartCustomizer
 		err := json.Unmarshal(body, &itrc)
 		return itrc, err
-	case string(TypeWindowsUpdate):
+	case string(TypeBasicImageTemplateCustomizerTypeWindowsUpdate):
 		var itwuc ImageTemplateWindowsUpdateCustomizer
 		err := json.Unmarshal(body, &itwuc)
 		return itwuc, err
-	case string(TypePowerShell):
+	case string(TypeBasicImageTemplateCustomizerTypePowerShell):
 		var itpsc ImageTemplatePowerShellCustomizer
 		err := json.Unmarshal(body, &itpsc)
 		return itpsc, err
-	case string(TypeFile):
+	case string(TypeBasicImageTemplateCustomizerTypeFile):
 		var itfc ImageTemplateFileCustomizer
 		err := json.Unmarshal(body, &itfc)
 		return itfc, err
@@ -232,7 +232,7 @@ func unmarshalBasicImageTemplateCustomizerArray(body []byte) ([]BasicImageTempla
 
 // MarshalJSON is the custom marshaler for ImageTemplateCustomizer.
 func (itc ImageTemplateCustomizer) MarshalJSON() ([]byte, error) {
-	itc.Type = TypeImageTemplateCustomizer
+	itc.Type = TypeBasicImageTemplateCustomizerTypeImageTemplateCustomizer
 	objectMap := make(map[string]interface{})
 	if itc.Name != nil {
 		objectMap["name"] = itc.Name
@@ -393,13 +393,13 @@ type ImageTemplateFileCustomizer struct {
 	Destination *string `json:"destination,omitempty"`
 	// Name - Friendly Name to provide context on what this customization step does
 	Name *string `json:"name,omitempty"`
-	// Type - Possible values include: 'TypeImageTemplateCustomizer', 'TypeShell', 'TypeWindowsRestart', 'TypeWindowsUpdate', 'TypePowerShell', 'TypeFile'
+	// Type - Possible values include: 'TypeBasicImageTemplateCustomizerTypeImageTemplateCustomizer', 'TypeBasicImageTemplateCustomizerTypeShell', 'TypeBasicImageTemplateCustomizerTypeWindowsRestart', 'TypeBasicImageTemplateCustomizerTypeWindowsUpdate', 'TypeBasicImageTemplateCustomizerTypePowerShell', 'TypeBasicImageTemplateCustomizerTypeFile'
 	Type TypeBasicImageTemplateCustomizer `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ImageTemplateFileCustomizer.
 func (itfc ImageTemplateFileCustomizer) MarshalJSON() ([]byte, error) {
-	itfc.Type = TypeFile
+	itfc.Type = TypeBasicImageTemplateCustomizerTypeFile
 	objectMap := make(map[string]interface{})
 	if itfc.SourceURI != nil {
 		objectMap["sourceUri"] = itfc.SourceURI
@@ -456,7 +456,7 @@ func (itfc ImageTemplateFileCustomizer) AsBasicImageTemplateCustomizer() (BasicI
 
 // ImageTemplateIdentity identity for the image template.
 type ImageTemplateIdentity struct {
-	// Type - The type of identity used for the image template. The type 'None' will remove any identities from the image template. Possible values include: 'UserAssigned', 'None'
+	// Type - The type of identity used for the image template. The type 'None' will remove any identities from the image template. Possible values include: 'ResourceIdentityTypeUserAssigned', 'ResourceIdentityTypeNone'
 	Type ResourceIdentityType `json:"type,omitempty"`
 	// UserAssignedIdentities - The list of user identities associated with the image template. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*ImageTemplateIdentityUserAssignedIdentitiesValue `json:"userAssignedIdentities"`
@@ -482,6 +482,12 @@ type ImageTemplateIdentityUserAssignedIdentitiesValue struct {
 	ClientID *string `json:"clientId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImageTemplateIdentityUserAssignedIdentitiesValue.
+func (itiAiv ImageTemplateIdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImageTemplateLastRunStatus describes the latest status of running an image template
 type ImageTemplateLastRunStatus struct {
 	// StartTime - Start time of the last run (UTC)
@@ -490,7 +496,7 @@ type ImageTemplateLastRunStatus struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// RunState - State of the last run. Possible values include: 'RunStateRunning', 'RunStateCanceling', 'RunStateSucceeded', 'RunStatePartiallySucceeded', 'RunStateFailed', 'RunStateCanceled'
 	RunState RunState `json:"runState,omitempty"`
-	// RunSubState - Sub-state of the last run. Possible values include: 'Queued', 'Building', 'Customizing', 'Distributing'
+	// RunSubState - Sub-state of the last run. Possible values include: 'RunSubStateQueued', 'RunSubStateBuilding', 'RunSubStateCustomizing', 'RunSubStateDistributing'
 	RunSubState RunSubState `json:"runSubState,omitempty"`
 	// Message - Verbose information about the last run state
 	Message *string `json:"message,omitempty"`
@@ -847,13 +853,13 @@ type ImageTemplatePowerShellCustomizer struct {
 	ValidExitCodes *[]int32 `json:"validExitCodes,omitempty"`
 	// Name - Friendly Name to provide context on what this customization step does
 	Name *string `json:"name,omitempty"`
-	// Type - Possible values include: 'TypeImageTemplateCustomizer', 'TypeShell', 'TypeWindowsRestart', 'TypeWindowsUpdate', 'TypePowerShell', 'TypeFile'
+	// Type - Possible values include: 'TypeBasicImageTemplateCustomizerTypeImageTemplateCustomizer', 'TypeBasicImageTemplateCustomizerTypeShell', 'TypeBasicImageTemplateCustomizerTypeWindowsRestart', 'TypeBasicImageTemplateCustomizerTypeWindowsUpdate', 'TypeBasicImageTemplateCustomizerTypePowerShell', 'TypeBasicImageTemplateCustomizerTypeFile'
 	Type TypeBasicImageTemplateCustomizer `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ImageTemplatePowerShellCustomizer.
 func (itpsc ImageTemplatePowerShellCustomizer) MarshalJSON() ([]byte, error) {
-	itpsc.Type = TypePowerShell
+	itpsc.Type = TypeBasicImageTemplateCustomizerTypePowerShell
 	objectMap := make(map[string]interface{})
 	if itpsc.ScriptURI != nil {
 		objectMap["scriptUri"] = itpsc.ScriptURI
@@ -925,7 +931,7 @@ type ImageTemplateProperties struct {
 	Customize *[]BasicImageTemplateCustomizer `json:"customize,omitempty"`
 	// Distribute - The distribution targets where the image output needs to go to.
 	Distribute *[]BasicImageTemplateDistributor `json:"distribute,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
+	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateDeleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ProvisioningError - READ-ONLY; Provisioning error, if any
 	ProvisioningError *ProvisioningError `json:"provisioningError,omitempty"`
@@ -1051,13 +1057,13 @@ type ImageTemplateRestartCustomizer struct {
 	RestartTimeout *string `json:"restartTimeout,omitempty"`
 	// Name - Friendly Name to provide context on what this customization step does
 	Name *string `json:"name,omitempty"`
-	// Type - Possible values include: 'TypeImageTemplateCustomizer', 'TypeShell', 'TypeWindowsRestart', 'TypeWindowsUpdate', 'TypePowerShell', 'TypeFile'
+	// Type - Possible values include: 'TypeBasicImageTemplateCustomizerTypeImageTemplateCustomizer', 'TypeBasicImageTemplateCustomizerTypeShell', 'TypeBasicImageTemplateCustomizerTypeWindowsRestart', 'TypeBasicImageTemplateCustomizerTypeWindowsUpdate', 'TypeBasicImageTemplateCustomizerTypePowerShell', 'TypeBasicImageTemplateCustomizerTypeFile'
 	Type TypeBasicImageTemplateCustomizer `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ImageTemplateRestartCustomizer.
 func (itrc ImageTemplateRestartCustomizer) MarshalJSON() ([]byte, error) {
-	itrc.Type = TypeWindowsRestart
+	itrc.Type = TypeBasicImageTemplateCustomizerTypeWindowsRestart
 	objectMap := make(map[string]interface{})
 	if itrc.RestartCommand != nil {
 		objectMap["restartCommand"] = itrc.RestartCommand
@@ -1120,7 +1126,7 @@ type ImageTemplateSharedImageDistributor struct {
 	ReplicationRegions *[]string `json:"replicationRegions,omitempty"`
 	// ExcludeFromLatest - Flag that indicates whether created image version should be excluded from latest. Omit to use the default (false).
 	ExcludeFromLatest *bool `json:"excludeFromLatest,omitempty"`
-	// StorageAccountType - Storage account type to be used to store the shared image. Omit to use the default (Standard_LRS). Possible values include: 'StandardLRS', 'StandardZRS'
+	// StorageAccountType - Storage account type to be used to store the shared image. Omit to use the default (Standard_LRS). Possible values include: 'SharedImageStorageAccountTypeStandardLRS', 'SharedImageStorageAccountTypeStandardZRS'
 	StorageAccountType SharedImageStorageAccountType `json:"storageAccountType,omitempty"`
 	// RunOutputName - The name to be used for the associated RunOutput.
 	RunOutputName *string `json:"runOutputName,omitempty"`
@@ -1241,13 +1247,13 @@ type ImageTemplateShellCustomizer struct {
 	Inline *[]string `json:"inline,omitempty"`
 	// Name - Friendly Name to provide context on what this customization step does
 	Name *string `json:"name,omitempty"`
-	// Type - Possible values include: 'TypeImageTemplateCustomizer', 'TypeShell', 'TypeWindowsRestart', 'TypeWindowsUpdate', 'TypePowerShell', 'TypeFile'
+	// Type - Possible values include: 'TypeBasicImageTemplateCustomizerTypeImageTemplateCustomizer', 'TypeBasicImageTemplateCustomizerTypeShell', 'TypeBasicImageTemplateCustomizerTypeWindowsRestart', 'TypeBasicImageTemplateCustomizerTypeWindowsUpdate', 'TypeBasicImageTemplateCustomizerTypePowerShell', 'TypeBasicImageTemplateCustomizerTypeFile'
 	Type TypeBasicImageTemplateCustomizer `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ImageTemplateShellCustomizer.
 func (itsc ImageTemplateShellCustomizer) MarshalJSON() ([]byte, error) {
-	itsc.Type = TypeShell
+	itsc.Type = TypeBasicImageTemplateCustomizerTypeShell
 	objectMap := make(map[string]interface{})
 	if itsc.ScriptURI != nil {
 		objectMap["scriptUri"] = itsc.ScriptURI
@@ -1488,13 +1494,13 @@ type ImageTemplateWindowsUpdateCustomizer struct {
 	UpdateLimit *int32 `json:"updateLimit,omitempty"`
 	// Name - Friendly Name to provide context on what this customization step does
 	Name *string `json:"name,omitempty"`
-	// Type - Possible values include: 'TypeImageTemplateCustomizer', 'TypeShell', 'TypeWindowsRestart', 'TypeWindowsUpdate', 'TypePowerShell', 'TypeFile'
+	// Type - Possible values include: 'TypeBasicImageTemplateCustomizerTypeImageTemplateCustomizer', 'TypeBasicImageTemplateCustomizerTypeShell', 'TypeBasicImageTemplateCustomizerTypeWindowsRestart', 'TypeBasicImageTemplateCustomizerTypeWindowsUpdate', 'TypeBasicImageTemplateCustomizerTypePowerShell', 'TypeBasicImageTemplateCustomizerTypeFile'
 	Type TypeBasicImageTemplateCustomizer `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ImageTemplateWindowsUpdateCustomizer.
 func (itwuc ImageTemplateWindowsUpdateCustomizer) MarshalJSON() ([]byte, error) {
-	itwuc.Type = TypeWindowsUpdate
+	itwuc.Type = TypeBasicImageTemplateCustomizerTypeWindowsUpdate
 	objectMap := make(map[string]interface{})
 	if itwuc.SearchCriteria != nil {
 		objectMap["searchCriteria"] = itwuc.SearchCriteria
@@ -1745,7 +1751,7 @@ type PlatformImagePurchasePlan struct {
 
 // ProvisioningError describes the error happened when create or update an image template
 type ProvisioningError struct {
-	// ProvisioningErrorCode - Error code of the provisioning failure. Possible values include: 'BadSourceType', 'BadPIRSource', 'BadManagedImageSource', 'BadSharedImageVersionSource', 'BadCustomizerType', 'UnsupportedCustomizerType', 'NoCustomizerScript', 'BadDistributeType', 'BadSharedImageDistribute', 'ServerError', 'Other'
+	// ProvisioningErrorCode - Error code of the provisioning failure. Possible values include: 'ProvisioningErrorCodeBadSourceType', 'ProvisioningErrorCodeBadPIRSource', 'ProvisioningErrorCodeBadManagedImageSource', 'ProvisioningErrorCodeBadSharedImageVersionSource', 'ProvisioningErrorCodeBadCustomizerType', 'ProvisioningErrorCodeUnsupportedCustomizerType', 'ProvisioningErrorCodeNoCustomizerScript', 'ProvisioningErrorCodeBadDistributeType', 'ProvisioningErrorCodeBadSharedImageDistribute', 'ProvisioningErrorCodeServerError', 'ProvisioningErrorCodeOther'
 	ProvisioningErrorCode ProvisioningErrorCode `json:"provisioningErrorCode,omitempty"`
 	// Message - Verbose error message about the provisioning failure
 	Message *string `json:"message,omitempty"`
@@ -2018,7 +2024,7 @@ type RunOutputProperties struct {
 	ArtifactID *string `json:"artifactId,omitempty"`
 	// ArtifactURI - The location URI of the artifact.
 	ArtifactURI *string `json:"artifactUri,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Creating', 'Updating', 'Succeeded', 'Failed', 'Deleting'
+	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateDeleting'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 }
 

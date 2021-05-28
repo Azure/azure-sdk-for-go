@@ -102,6 +102,12 @@ type AlertDefinition struct {
 	Criteria AlertCriteria `json:"criteria,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AlertDefinition.
+func (ad AlertDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AlertListResult result of listing alerts. It contains a list of available alerts in the scope provided.
 type AlertListResult struct {
 	autorest.Response `json:"-"`
@@ -109,6 +115,12 @@ type AlertListResult struct {
 	Value *[]Alert `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URI to fetch the next page of Alerts.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AlertListResult.
+func (alr AlertListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AlertListResultIterator provides access to a complete listing of Alert values.
@@ -318,6 +330,12 @@ type ConnectorCollectionErrorInfo struct {
 	ErrorStartTime *date.Time `json:"errorStartTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ConnectorCollectionErrorInfo.
+func (ccei ConnectorCollectionErrorInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ConnectorCollectionInfo collection and ingestion information
 type ConnectorCollectionInfo struct {
 	// LastRun - READ-ONLY; Last time the data acquisition process completed (even if no new data was found)
@@ -462,6 +480,12 @@ type ConnectorDefinitionListResult struct {
 	Value *[]ConnectorDefinition `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ConnectorDefinitionListResult.
+func (cdlr ConnectorDefinitionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ConnectorProperties the properties of a Connector
 type ConnectorProperties struct {
 	// DisplayName - Connector DisplayName (defaults to Name)
@@ -604,6 +628,12 @@ type DimensionsListResult struct {
 	Value *[]Dimension `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DimensionsListResult.
+func (dlr DimensionsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorBase the details of the error.
 type ErrorBase struct {
 	// Code - READ-ONLY; A machine readable error code.
@@ -612,6 +642,12 @@ type ErrorBase struct {
 	Message *string `json:"message,omitempty"`
 	// Target - READ-ONLY; Indicates which property in the request is responsible for the error.
 	Target *string `json:"target,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorBase.
+func (eb ErrorBase) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorDetails the details of the error.
@@ -672,6 +708,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult result of listing CostManagement operations. It contains a list of operations and a
 // URL link to get the next set of results.
 type OperationListResult struct {
@@ -680,6 +722,12 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -933,6 +981,12 @@ type QueryResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of usage data.
 	Value *[]Query `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryResult.
+func (qr QueryResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Report a report resource.
@@ -1194,6 +1248,12 @@ type ReportExecutionListResult struct {
 	Value *[]ReportExecution `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ReportExecutionListResult.
+func (relr ReportExecutionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ReportExecutionProperties the properties of the report execution.
 type ReportExecutionProperties struct {
 	// ExecutionType - The type of the report execution. Possible values include: 'OnDemand', 'Scheduled'
@@ -1241,6 +1301,12 @@ type ReportListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of reports.
 	Value *[]Report `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReportListResult.
+func (rlr ReportListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ReportProperties the properties of the report.

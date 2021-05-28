@@ -21,9 +21,9 @@ const (
 type ActionType = original.ActionType
 
 const (
-	ActionTypeActionTypeAutomationRuleAction ActionType = original.ActionTypeActionTypeAutomationRuleAction
-	ActionTypeActionTypeModifyProperties     ActionType = original.ActionTypeActionTypeModifyProperties
-	ActionTypeActionTypeRunPlaybook          ActionType = original.ActionTypeActionTypeRunPlaybook
+	ActionTypeAutomationRuleAction ActionType = original.ActionTypeAutomationRuleAction
+	ActionTypeModifyProperties     ActionType = original.ActionTypeModifyProperties
+	ActionTypeRunPlaybook          ActionType = original.ActionTypeRunPlaybook
 )
 
 type AlertRuleKind = original.AlertRuleKind
@@ -184,8 +184,8 @@ const (
 type ConditionType = original.ConditionType
 
 const (
-	ConditionTypeConditionTypeAutomationRuleCondition ConditionType = original.ConditionTypeConditionTypeAutomationRuleCondition
-	ConditionTypeConditionTypeProperty                ConditionType = original.ConditionTypeConditionTypeProperty
+	ConditionTypeAutomationRuleCondition ConditionType = original.ConditionTypeAutomationRuleCondition
+	ConditionTypeProperty                ConditionType = original.ConditionTypeProperty
 )
 
 type ConfidenceLevel = original.ConfidenceLevel
@@ -443,8 +443,8 @@ const (
 type Kind = original.Kind
 
 const (
-	KindKindAggregations     Kind = original.KindKindAggregations
-	KindKindCasesAggregation Kind = original.KindKindCasesAggregation
+	KindAggregations     Kind = original.KindAggregations
+	KindCasesAggregation Kind = original.KindCasesAggregation
 )
 
 type KindBasicAlertRule = original.KindBasicAlertRule

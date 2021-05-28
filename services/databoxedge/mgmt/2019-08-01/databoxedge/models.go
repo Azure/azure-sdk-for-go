@@ -118,6 +118,12 @@ type AlertErrorDetails struct {
 	Occurrences *int32 `json:"occurrences,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AlertErrorDetails.
+func (aed AlertErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AlertList collection of alerts.
 type AlertList struct {
 	autorest.Response `json:"-"`
@@ -125,6 +131,12 @@ type AlertList struct {
 	Value *[]Alert `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AlertList.
+func (al AlertList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AlertListIterator provides access to a complete listing of Alert values.
@@ -309,6 +321,12 @@ type ARMBaseModel struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The hierarchical type of the object.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ARMBaseModel.
+func (abm ARMBaseModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AsymmetricEncryptedSecret represent the secrets intended for encryption with asymmetric key pair.
@@ -509,6 +527,12 @@ type BandwidthSchedulesList struct {
 	Value *[]BandwidthSchedule `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BandwidthSchedulesList.
+func (bsl BandwidthSchedulesList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BandwidthSchedulesListIterator provides access to a complete listing of BandwidthSchedule values.
@@ -778,6 +802,12 @@ type ContainerList struct {
 	Value *[]Container `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerList.
+func (cl ContainerList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ContainerListIterator provides access to a complete listing of Container values.
@@ -1299,6 +1329,12 @@ type DeviceList struct {
 	Value *[]Device `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeviceList.
+func (dl DeviceList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DeviceListIterator provides access to a complete listing of Device values.
@@ -2005,6 +2041,12 @@ type Ipv4Config struct {
 	Gateway *string `json:"gateway,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Ipv4Config.
+func (i4c Ipv4Config) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Ipv6Config details related to the IPv6 address configuration.
 type Ipv6Config struct {
 	// IPAddress - READ-ONLY; The IPv6 address of the network adapter.
@@ -2013,6 +2055,12 @@ type Ipv6Config struct {
 	PrefixLength *int32 `json:"prefixLength,omitempty"`
 	// Gateway - READ-ONLY; The IPv6 gateway of the network adapter.
 	Gateway *string `json:"gateway,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Ipv6Config.
+func (i6c Ipv6Config) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Job a device job.
@@ -2150,6 +2198,12 @@ type JobErrorDetails struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobErrorDetails.
+func (jed JobErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // JobErrorItem the job error items.
 type JobErrorItem struct {
 	// Recommendations - READ-ONLY; The recommended actions.
@@ -2158,6 +2212,12 @@ type JobErrorItem struct {
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; The message that describes the error in detail.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobErrorItem.
+func (jei JobErrorItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // JobProperties the properties for the job.
@@ -2300,6 +2360,12 @@ type NetworkAdapterPosition struct {
 	Port *int32 `json:"port,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NetworkAdapterPosition.
+func (nap NetworkAdapterPosition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // NetworkSettings the network settings of a device.
 type NetworkSettings struct {
 	autorest.Response `json:"-"`
@@ -2374,6 +2440,12 @@ func (ns *NetworkSettings) UnmarshalJSON(body []byte) error {
 type NetworkSettingsProperties struct {
 	// NetworkAdapters - READ-ONLY; The network adapter list on the device.
 	NetworkAdapters *[]NetworkAdapter `json:"networkAdapters,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NetworkSettingsProperties.
+func (nsp NetworkSettingsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Node represents a single node in a Data box Edge/Gateway device
@@ -2454,6 +2526,12 @@ type NodeList struct {
 	Value *[]Node `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NodeList.
+func (nl NodeList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // NodeProperties this class represents the nodes in a highly available cluster
 type NodeProperties struct {
 	// NodeStatus - READ-ONLY; The current status of the individual node. Possible values include: 'NodeStatusUnknown', 'NodeStatusUp', 'NodeStatusDown', 'NodeStatusRebooting', 'NodeStatusShuttingDown'
@@ -2470,6 +2548,12 @@ type NodeProperties struct {
 	NodeHcsVersion *string `json:"nodeHcsVersion,omitempty"`
 	// NodeInstanceID - READ-ONLY; Guid instance id of the node
 	NodeInstanceID *string `json:"nodeInstanceId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NodeProperties.
+func (np NodeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Operation operations.
@@ -2810,6 +2894,12 @@ type OrderList struct {
 	Value *[]Order `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OrderList.
+func (ol OrderList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OrderListIterator provides access to a complete listing of Order values.
@@ -3270,6 +3360,12 @@ type ResourceTypeSku struct {
 	Restrictions *[]SkuRestriction `json:"restrictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceTypeSku.
+func (rts ResourceTypeSku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BasicRole compute role.
 type BasicRole interface {
 	AsIoTRole() (*IoTRole, bool)
@@ -3358,6 +3454,12 @@ type RoleList struct {
 	Value *[]BasicRole `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RoleList.
+func (rl RoleList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for RoleList struct.
@@ -3819,6 +3921,12 @@ type ShareList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ShareList.
+func (sl ShareList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ShareListIterator provides access to a complete listing of Share values.
 type ShareListIterator struct {
 	i    int
@@ -4160,6 +4268,12 @@ type SkuCost struct {
 	ExtendedUnit *string `json:"extendedUnit,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SkuCost.
+func (sc SkuCost) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuInformationList list of SKU Information objects
 type SkuInformationList struct {
 	autorest.Response `json:"-"`
@@ -4167,6 +4281,12 @@ type SkuInformationList struct {
 	Value *[]ResourceTypeSku `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Links to the next set of results
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuInformationList.
+func (sil SkuInformationList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SkuLocationInfo the location info.
@@ -4177,6 +4297,12 @@ type SkuLocationInfo struct {
 	Zones *[]string `json:"zones,omitempty"`
 	// Sites - READ-ONLY; The sites.
 	Sites *[]string `json:"sites,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuLocationInfo.
+func (sli SkuLocationInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SkuRestriction the restrictions because of which SKU cannot be used.
@@ -4191,12 +4317,24 @@ type SkuRestriction struct {
 	RestrictionInfo *SkuRestrictionInfo `json:"restrictionInfo,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SkuRestriction.
+func (sr SkuRestriction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuRestrictionInfo the restriction info with locations and zones.
 type SkuRestrictionInfo struct {
 	// Locations - READ-ONLY; The locations.
 	Locations *[]string `json:"locations,omitempty"`
 	// Zones - READ-ONLY; The zones.
 	Zones *[]string `json:"zones,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuRestrictionInfo.
+func (sri SkuRestrictionInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StorageAccount represents a Storage Account on the  Data Box Edge/Gateway device.
@@ -4352,6 +4490,12 @@ type StorageAccountCredentialList struct {
 	Value *[]StorageAccountCredential `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StorageAccountCredentialList.
+func (sacl StorageAccountCredentialList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StorageAccountCredentialListIterator provides access to a complete listing of StorageAccountCredential
@@ -4612,6 +4756,12 @@ type StorageAccountList struct {
 	Value *[]StorageAccount `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StorageAccountList.
+func (sal StorageAccountList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StorageAccountListIterator provides access to a complete listing of StorageAccount values.
@@ -4996,6 +5146,12 @@ type TriggerList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for TriggerList.
+func (tl TriggerList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UnmarshalJSON is the custom unmarshaler for TriggerList struct.
 func (tl *TriggerList) UnmarshalJSON(body []byte) error {
 	var m map[string]*json.RawMessage
@@ -5291,6 +5447,12 @@ type UpdateDownloadProgress struct {
 	NumberOfUpdatesDownloaded *int32 `json:"numberOfUpdatesDownloaded,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UpdateDownloadProgress.
+func (UDP UpdateDownloadProgress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UpdateInstallProgress progress details during installation of updates.
 type UpdateInstallProgress struct {
 	// PercentComplete - READ-ONLY; Percentage completed.
@@ -5299,6 +5461,12 @@ type UpdateInstallProgress struct {
 	NumberOfUpdatesToInstall *int32 `json:"numberOfUpdatesToInstall,omitempty"`
 	// NumberOfUpdatesInstalled - READ-ONLY; Number of updates installed.
 	NumberOfUpdatesInstalled *int32 `json:"numberOfUpdatesInstalled,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UpdateInstallProgress.
+func (uip UpdateInstallProgress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UpdateSummary details about ongoing updates and availability of updates on the device.
@@ -5587,6 +5755,12 @@ type UserList struct {
 	Value *[]User `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to the next set of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UserList.
+func (ul UserList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UserListIterator provides access to a complete listing of User values.

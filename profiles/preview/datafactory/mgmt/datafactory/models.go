@@ -21,18 +21,18 @@ const (
 type AuthenticationType = original.AuthenticationType
 
 const (
-	AuthenticationTypeAuthenticationTypeAnonymous                      AuthenticationType = original.AuthenticationTypeAuthenticationTypeAnonymous
-	AuthenticationTypeAuthenticationTypeBasic                          AuthenticationType = original.AuthenticationTypeAuthenticationTypeBasic
-	AuthenticationTypeAuthenticationTypeClientCertificate              AuthenticationType = original.AuthenticationTypeAuthenticationTypeClientCertificate
-	AuthenticationTypeAuthenticationTypeWebLinkedServiceTypeProperties AuthenticationType = original.AuthenticationTypeAuthenticationTypeWebLinkedServiceTypeProperties
+	AuthenticationTypeAnonymous                      AuthenticationType = original.AuthenticationTypeAnonymous
+	AuthenticationTypeBasic                          AuthenticationType = original.AuthenticationTypeBasic
+	AuthenticationTypeClientCertificate              AuthenticationType = original.AuthenticationTypeClientCertificate
+	AuthenticationTypeWebLinkedServiceTypeProperties AuthenticationType = original.AuthenticationTypeWebLinkedServiceTypeProperties
 )
 
 type AuthorizationType = original.AuthorizationType
 
 const (
-	AuthorizationTypeAuthorizationTypeKey                          AuthorizationType = original.AuthorizationTypeAuthorizationTypeKey
-	AuthorizationTypeAuthorizationTypeLinkedIntegrationRuntimeType AuthorizationType = original.AuthorizationTypeAuthorizationTypeLinkedIntegrationRuntimeType
-	AuthorizationTypeAuthorizationTypeRBAC                         AuthorizationType = original.AuthorizationTypeAuthorizationTypeRBAC
+	AuthorizationTypeKey                          AuthorizationType = original.AuthorizationTypeKey
+	AuthorizationTypeLinkedIntegrationRuntimeType AuthorizationType = original.AuthorizationTypeLinkedIntegrationRuntimeType
+	AuthorizationTypeRBAC                         AuthorizationType = original.AuthorizationTypeRBAC
 )
 
 type AvroCompressionCodec = original.AvroCompressionCodec
@@ -86,6 +86,21 @@ const (
 	CassandraSourceReadConsistencyLevelsTWO         CassandraSourceReadConsistencyLevels = original.CassandraSourceReadConsistencyLevelsTWO
 )
 
+type CompressionCodec = original.CompressionCodec
+
+const (
+	CompressionCodecBzip2      CompressionCodec = original.CompressionCodecBzip2
+	CompressionCodecDeflate    CompressionCodec = original.CompressionCodecDeflate
+	CompressionCodecGzip       CompressionCodec = original.CompressionCodecGzip
+	CompressionCodecLz4        CompressionCodec = original.CompressionCodecLz4
+	CompressionCodecLzo        CompressionCodec = original.CompressionCodecLzo
+	CompressionCodecNone       CompressionCodec = original.CompressionCodecNone
+	CompressionCodecSnappy     CompressionCodec = original.CompressionCodecSnappy
+	CompressionCodecTar        CompressionCodec = original.CompressionCodecTar
+	CompressionCodecTarGZip    CompressionCodec = original.CompressionCodecTarGZip
+	CompressionCodecZipDeflate CompressionCodec = original.CompressionCodecZipDeflate
+)
+
 type CopyBehaviorType = original.CopyBehaviorType
 
 const (
@@ -122,6 +137,13 @@ const (
 	DataFlowDebugCommandTypeExecuteExpressionQuery DataFlowDebugCommandType = original.DataFlowDebugCommandTypeExecuteExpressionQuery
 	DataFlowDebugCommandTypeExecutePreviewQuery    DataFlowDebugCommandType = original.DataFlowDebugCommandTypeExecutePreviewQuery
 	DataFlowDebugCommandTypeExecuteStatisticsQuery DataFlowDebugCommandType = original.DataFlowDebugCommandTypeExecuteStatisticsQuery
+)
+
+type DatasetCompressionLevel = original.DatasetCompressionLevel
+
+const (
+	DatasetCompressionLevelFastest DatasetCompressionLevel = original.DatasetCompressionLevelFastest
+	DatasetCompressionLevelOptimal DatasetCompressionLevel = original.DatasetCompressionLevelOptimal
 )
 
 type DayOfWeek = original.DayOfWeek
@@ -259,6 +281,14 @@ const (
 	HTTPAuthenticationTypeWindows           HTTPAuthenticationType = original.HTTPAuthenticationTypeWindows
 )
 
+type HdiNodeTypes = original.HdiNodeTypes
+
+const (
+	HdiNodeTypesHeadnode   HdiNodeTypes = original.HdiNodeTypesHeadnode
+	HdiNodeTypesWorkernode HdiNodeTypes = original.HdiNodeTypesWorkernode
+	HdiNodeTypesZookeeper  HdiNodeTypes = original.HdiNodeTypesZookeeper
+)
+
 type HiveAuthenticationType = original.HiveAuthenticationType
 
 const (
@@ -316,6 +346,7 @@ const (
 type IntegrationRuntimeEntityReferenceType = original.IntegrationRuntimeEntityReferenceType
 
 const (
+	IntegrationRuntimeEntityReferenceTypeCredentialReference         IntegrationRuntimeEntityReferenceType = original.IntegrationRuntimeEntityReferenceTypeCredentialReference
 	IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference IntegrationRuntimeEntityReferenceType = original.IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference
 	IntegrationRuntimeEntityReferenceTypeLinkedServiceReference      IntegrationRuntimeEntityReferenceType = original.IntegrationRuntimeEntityReferenceTypeLinkedServiceReference
 )
@@ -372,6 +403,13 @@ const (
 	IntegrationRuntimeUpdateResultFail    IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultFail
 	IntegrationRuntimeUpdateResultNone    IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultNone
 	IntegrationRuntimeUpdateResultSucceed IntegrationRuntimeUpdateResult = original.IntegrationRuntimeUpdateResultSucceed
+)
+
+type JSONFormatFilePattern = original.JSONFormatFilePattern
+
+const (
+	JSONFormatFilePatternArrayOfObjects JSONFormatFilePattern = original.JSONFormatFilePatternArrayOfObjects
+	JSONFormatFilePatternSetOfObjects   JSONFormatFilePattern = original.JSONFormatFilePatternSetOfObjects
 )
 
 type JSONWriteFilePattern = original.JSONWriteFilePattern
@@ -629,6 +667,13 @@ const (
 	ServiceNowAuthenticationTypeOAuth2 ServiceNowAuthenticationType = original.ServiceNowAuthenticationTypeOAuth2
 )
 
+type ServicePrincipalCredentialType = original.ServicePrincipalCredentialType
+
+const (
+	ServicePrincipalCredentialTypeServicePrincipalCert ServicePrincipalCredentialType = original.ServicePrincipalCredentialTypeServicePrincipalCert
+	ServicePrincipalCredentialTypeServicePrincipalKey  ServicePrincipalCredentialType = original.ServicePrincipalCredentialTypeServicePrincipalKey
+)
+
 type SftpAuthenticationType = original.SftpAuthenticationType
 
 const (
@@ -741,9 +786,9 @@ const (
 type Type = original.Type
 
 const (
-	TypeTypeAzureKeyVaultSecret Type = original.TypeTypeAzureKeyVaultSecret
-	TypeTypeSecretBase          Type = original.TypeTypeSecretBase
-	TypeTypeSecureString        Type = original.TypeTypeSecureString
+	TypeAzureKeyVaultSecret Type = original.TypeAzureKeyVaultSecret
+	TypeSecretBase          Type = original.TypeSecretBase
+	TypeSecureString        Type = original.TypeSecureString
 )
 
 type TypeBasicActivity = original.TypeBasicActivity
@@ -1939,6 +1984,7 @@ type MarketoLinkedService = original.MarketoLinkedService
 type MarketoLinkedServiceTypeProperties = original.MarketoLinkedServiceTypeProperties
 type MarketoObjectDataset = original.MarketoObjectDataset
 type MarketoSource = original.MarketoSource
+type MetadataItem = original.MetadataItem
 type MicrosoftAccessLinkedService = original.MicrosoftAccessLinkedService
 type MicrosoftAccessLinkedServiceTypeProperties = original.MicrosoftAccessLinkedServiceTypeProperties
 type MicrosoftAccessSink = original.MicrosoftAccessSink
@@ -2555,6 +2601,9 @@ func PossibleBlobEventTypesValues() []BlobEventTypes {
 func PossibleCassandraSourceReadConsistencyLevelsValues() []CassandraSourceReadConsistencyLevels {
 	return original.PossibleCassandraSourceReadConsistencyLevelsValues()
 }
+func PossibleCompressionCodecValues() []CompressionCodec {
+	return original.PossibleCompressionCodecValues()
+}
 func PossibleCopyBehaviorTypeValues() []CopyBehaviorType {
 	return original.PossibleCopyBehaviorTypeValues()
 }
@@ -2569,6 +2618,9 @@ func PossibleDataFlowComputeTypeValues() []DataFlowComputeType {
 }
 func PossibleDataFlowDebugCommandTypeValues() []DataFlowDebugCommandType {
 	return original.PossibleDataFlowDebugCommandTypeValues()
+}
+func PossibleDatasetCompressionLevelValues() []DatasetCompressionLevel {
+	return original.PossibleDatasetCompressionLevelValues()
 }
 func PossibleDayOfWeekValues() []DayOfWeek {
 	return original.PossibleDayOfWeekValues()
@@ -2618,6 +2670,9 @@ func PossibleHDInsightActivityDebugInfoOptionValues() []HDInsightActivityDebugIn
 func PossibleHTTPAuthenticationTypeValues() []HTTPAuthenticationType {
 	return original.PossibleHTTPAuthenticationTypeValues()
 }
+func PossibleHdiNodeTypesValues() []HdiNodeTypes {
+	return original.PossibleHdiNodeTypesValues()
+}
 func PossibleHiveAuthenticationTypeValues() []HiveAuthenticationType {
 	return original.PossibleHiveAuthenticationTypeValues()
 }
@@ -2659,6 +2714,9 @@ func PossibleIntegrationRuntimeTypeValues() []IntegrationRuntimeType {
 }
 func PossibleIntegrationRuntimeUpdateResultValues() []IntegrationRuntimeUpdateResult {
 	return original.PossibleIntegrationRuntimeUpdateResultValues()
+}
+func PossibleJSONFormatFilePatternValues() []JSONFormatFilePattern {
+	return original.PossibleJSONFormatFilePatternValues()
 }
 func PossibleJSONWriteFilePatternValues() []JSONWriteFilePattern {
 	return original.PossibleJSONWriteFilePatternValues()
@@ -2746,6 +2804,9 @@ func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrat
 }
 func PossibleServiceNowAuthenticationTypeValues() []ServiceNowAuthenticationType {
 	return original.PossibleServiceNowAuthenticationTypeValues()
+}
+func PossibleServicePrincipalCredentialTypeValues() []ServicePrincipalCredentialType {
+	return original.PossibleServicePrincipalCredentialTypeValues()
 }
 func PossibleSftpAuthenticationTypeValues() []SftpAuthenticationType {
 	return original.PossibleSftpAuthenticationTypeValues()

@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/tables/aztables
+module github.com/Azure/azure-sdk-for-go/sdk/tables/aztable
 
 go 1.13
 

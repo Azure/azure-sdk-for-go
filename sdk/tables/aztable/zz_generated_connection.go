@@ -14,7 +14,7 @@ import (
 )
 
 const scope = "none"
-const telemetryInfo = "azsdk-go-aztables/<version>"
+const telemetryInfo = "azsdk-go-aztable/<version>"
 
 // connectionOptions contains configuration settings for the connection's pipeline.
 // All zero-value fields will be initialized with their default values.

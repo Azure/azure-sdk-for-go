@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package aztables
+package aztable
 
 import (
 	"context"
@@ -81,7 +81,7 @@ func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType,
 		uri = cosmosURI(accountName, suffix)
 	}
 
-	client, err := NewTableServiceClient(uri, cred, &TableClientOptions{HTTPClient: recording, Retry: azcore.RetryOptions{MaxRetries: -1}})
+	client, err := NewTableServiceClient(uri, cred, TableClientOptions{HTTPClient: recording, Retry: azcore.RetryOptions{MaxRetries: -1}})
 	assert.Nil(err)
 	clientsMap[testName] = &testContext{client: client, recording: recording, context: &context}
 }
@@ -184,6 +184,16 @@ func createComplexEntities(context *testContext, count int, pk string) *[]comple
 		result[i-1] = e
 	}
 	return &result
+}
+
+type simpleEntity struct {
+	ETag         string
+	PartitionKey string
+	RowKey       string
+	Timestamp    time.Time
+	IntProp      int
+	BoolProp     bool
+	StringProp   string
 }
 
 type complexEntity struct {

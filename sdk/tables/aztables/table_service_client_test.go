@@ -1,13 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package aztables
+package aztable
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
@@ -41,7 +43,9 @@ func (s *tableServiceClientLiveTests) TestServiceErrors() {
 	assert.Nil(err)
 
 	// Create a duplicate table to produce an error
-	_, svcErr := context.client.Create(ctx, tableName)
+	_, err = context.client.Create(ctx, tableName)
+	var svcErr *runtime.ResponseError
+	errors.As(err, &svcErr)
 	assert.Equal(svcErr.RawResponse().StatusCode, http.StatusConflict)
 }
 

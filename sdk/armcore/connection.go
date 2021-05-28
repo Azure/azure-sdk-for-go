@@ -48,6 +48,16 @@ type ConnectionOptions struct {
 	// PerRetryPolicies contains custom policies to inject into the pipeline.
 	// Each policy is executed once per request, and for each retry request.
 	PerRetryPolicies []azcore.Policy
+
+	// MultiTenantIDs contains the additional tenant IDs to be used in a
+	// multi-tenant application. If more than 3 tenant IDs are specified,
+	// an error will be returned.
+	MultiTenantIDs []string
+}
+
+type ARMAuthenticationPolicyOptions struct {
+	Options        azcore.TokenRequestOptions
+	MultiTenantIDs []string
 }
 
 // Connection is a connection to an Azure Resource Manager endpoint.
@@ -92,6 +102,9 @@ func NewConnection(endpoint string, cred azcore.TokenCredential, options *Connec
 		policies = append(policies, NewRPRegistrationPolicy(endpoint, cred, &regRPOpts))
 	}
 	policies = append(policies, options.PerCallPolicies...)
+	if len(options.MultiTenantIDs) > 0 {
+		policies = append(policies, NewMultiTenantAuthenticationPolicy(cred, ARMAuthenticationPolicyOptions{MultiTenantIDs: options.MultiTenantIDs, Options: azcore.TokenRequestOptions{Scopes: []string{endpointToScope(endpoint)}}}))
+	}
 	policies = append(policies, azcore.NewRetryPolicy(&options.Retry))
 	policies = append(policies, options.PerRetryPolicies...)
 	policies = append(policies,

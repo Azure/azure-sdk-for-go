@@ -80,3 +80,10 @@ func (c *ClientSecretCredential) AuthenticationPolicy(options azcore.Authenticat
 }
 
 var _ azcore.TokenCredential = (*ClientSecretCredential)(nil)
+
+func (c *ClientSecretCredential) GetTenantID() string {
+	return c.tenantID
+}
+func (c *ClientSecretCredential) SetTenantID(tenantID string) {
+	c.tenantID = tenantID
+}

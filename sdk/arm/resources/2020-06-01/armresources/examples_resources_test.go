@@ -8,10 +8,12 @@ package armresources_test
 import (
 	"context"
 	"log"
+	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2020-06-01/armresources"
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 func ExampleResourcesClient_GetByID() {
@@ -27,12 +29,23 @@ func ExampleResourcesClient_GetByID() {
 	log.Printf("resource ID: %v\n", resp.GenericResource.ID)
 }
 
-func ExampleResourcesClient_ListByResourceGroup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+func TestExampleResourcesClient_ListByResourceGroup(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "token1", "expires_in": 3600}`)))
+	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "token2", "expires_in": 3600}`)))
+	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "token3", "expires_in": 3600}`)))
+	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "token4", "expires_in": 3600}`)))
+	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "token5", "expires_in": 3600}`)))
+	options := &azidentity.ClientSecretCredentialOptions{}
+	options.AuthorityHost = srv.URL()
+	options.HTTPClient = srv
+	cred, err := azidentity.NewClientSecretCredential("maintenant", "client_id", "secret", options)
+	// cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{MultiTenantIDs: []string{"tenant1", "tenant2", "tenant3"}}), "<subscription ID>")
 	page := client.ListByResourceGroup("<resource group name>", nil)
 	for page.NextPage(context.Background()) {
 		resp := page.PageResponse()

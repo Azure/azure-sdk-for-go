@@ -149,8 +149,8 @@ func (crup ControllerResourceUpdateParameters) MarshalJSON() ([]byte, error) {
 // DelegatedController represents an instance of a DNC controller.
 type DelegatedController struct {
 	autorest.Response `json:"-"`
-	// DelegatedControllerProperties - READ-ONLY; Properties of the provision operation request.
-	*DelegatedControllerProperties `json:"properties,omitempty"`
+	// Properties - READ-ONLY; Properties of the provision operation request.
+	Properties *DelegatedControllerProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; An identifier that represents the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource.
@@ -175,80 +175,11 @@ func (dc DelegatedController) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for DelegatedController struct.
-func (dc *DelegatedController) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var delegatedControllerProperties DelegatedControllerProperties
-				err = json.Unmarshal(*v, &delegatedControllerProperties)
-				if err != nil {
-					return err
-				}
-				dc.DelegatedControllerProperties = &delegatedControllerProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				dc.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				dc.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				dc.Type = &typeVar
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				dc.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				dc.Tags = tags
-			}
-		}
-	}
-
-	return nil
-}
-
 // DelegatedControllerProperties properties of Delegated controller resource.
 type DelegatedControllerProperties struct {
 	// ResourceGUID - READ-ONLY; Resource guid.
 	ResourceGUID *string `json:"resourceGuid,omitempty"`
-	// ProvisioningState - READ-ONLY; The current state of dnc controller resource. Possible values include: 'Deleting', 'Succeeded', 'Failed', 'Provisioning'
+	// ProvisioningState - READ-ONLY; The current state of dnc controller resource. Possible values include: 'ControllerStateDeleting', 'ControllerStateSucceeded', 'ControllerStateFailed', 'ControllerStateProvisioning'
 	ProvisioningState ControllerState `json:"provisioningState,omitempty"`
 	// DncAppID - READ-ONLY; dnc application id should be used by customer to authenticate with dnc gateway.
 	DncAppID *string `json:"dncAppId,omitempty"`
@@ -435,8 +366,8 @@ func NewDelegatedControllersPage(cur DelegatedControllers, getNextPage func(cont
 // DelegatedSubnet represents an instance of a orchestrator.
 type DelegatedSubnet struct {
 	autorest.Response `json:"-"`
-	// DelegatedSubnetProperties - READ-ONLY; Properties of the provision operation request.
-	*DelegatedSubnetProperties `json:"properties,omitempty"`
+	// Properties - Properties of the provision operation request.
+	Properties *DelegatedSubnetProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; An identifier that represents the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource.
@@ -452,6 +383,9 @@ type DelegatedSubnet struct {
 // MarshalJSON is the custom marshaler for DelegatedSubnet.
 func (ds DelegatedSubnet) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if ds.Properties != nil {
+		objectMap["properties"] = ds.Properties
+	}
 	if ds.Location != nil {
 		objectMap["location"] = ds.Location
 	}
@@ -459,75 +393,6 @@ func (ds DelegatedSubnet) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = ds.Tags
 	}
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for DelegatedSubnet struct.
-func (ds *DelegatedSubnet) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var delegatedSubnetProperties DelegatedSubnetProperties
-				err = json.Unmarshal(*v, &delegatedSubnetProperties)
-				if err != nil {
-					return err
-				}
-				ds.DelegatedSubnetProperties = &delegatedSubnetProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				ds.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				ds.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				ds.Type = &typeVar
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				ds.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				ds.Tags = tags
-			}
-		}
-	}
-
-	return nil
 }
 
 // DelegatedSubnetProperties properties of delegated subnet
@@ -920,9 +785,9 @@ type Operation struct {
 	IsDataAction *bool `json:"isDataAction,omitempty"`
 	// Display - Localized display information for this particular operation.
 	Display *OperationDisplay `json:"display,omitempty"`
-	// Origin - READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system". Possible values include: 'User', 'System', 'Usersystem'
+	// Origin - READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system". Possible values include: 'OriginUser', 'OriginSystem', 'OriginUsersystem'
 	Origin Origin `json:"origin,omitempty"`
-	// ActionType - READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs. Possible values include: 'Internal'
+	// ActionType - READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs. Possible values include: 'ActionTypeInternal'
 	ActionType ActionType `json:"actionType,omitempty"`
 }
 
@@ -1122,8 +987,8 @@ func NewOperationListResultPage(cur OperationListResult, getNextPage func(contex
 // Orchestrator represents an instance of a orchestrator.
 type Orchestrator struct {
 	autorest.Response `json:"-"`
-	// OrchestratorResourceProperties - Properties of the provision operation request.
-	*OrchestratorResourceProperties `json:"properties,omitempty"`
+	// Properties - Properties of the provision operation request.
+	Properties *OrchestratorResourceProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; An identifier that represents the resource.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource.
@@ -1143,8 +1008,8 @@ type Orchestrator struct {
 // MarshalJSON is the custom marshaler for Orchestrator.
 func (o Orchestrator) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if o.OrchestratorResourceProperties != nil {
-		objectMap["properties"] = o.OrchestratorResourceProperties
+	if o.Properties != nil {
+		objectMap["properties"] = o.Properties
 	}
 	if o.Location != nil {
 		objectMap["location"] = o.Location
@@ -1161,100 +1026,13 @@ func (o Orchestrator) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for Orchestrator struct.
-func (o *Orchestrator) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var orchestratorResourceProperties OrchestratorResourceProperties
-				err = json.Unmarshal(*v, &orchestratorResourceProperties)
-				if err != nil {
-					return err
-				}
-				o.OrchestratorResourceProperties = &orchestratorResourceProperties
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				o.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				o.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				o.Type = &typeVar
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				o.Location = &location
-			}
-		case "kind":
-			if v != nil {
-				var kind string
-				err = json.Unmarshal(*v, &kind)
-				if err != nil {
-					return err
-				}
-				o.Kind = &kind
-			}
-		case "identity":
-			if v != nil {
-				var identity OrchestratorIdentity
-				err = json.Unmarshal(*v, &identity)
-				if err != nil {
-					return err
-				}
-				o.Identity = &identity
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				o.Tags = tags
-			}
-		}
-	}
-
-	return nil
-}
-
 // OrchestratorIdentity ...
 type OrchestratorIdentity struct {
 	// PrincipalID - READ-ONLY; The principal id of the system assigned identity which is used by orchestrator.
 	PrincipalID *string `json:"principalId,omitempty"`
 	// TenantID - READ-ONLY; The tenant id of the system assigned identity which is used by orchestrator.
 	TenantID *string `json:"tenantId,omitempty"`
-	// Type - The type of identity used for orchestrator cluster. Type 'SystemAssigned' will use an implicitly created identity orchestrator clusters. Possible values include: 'SystemAssigned', 'None'
+	// Type - The type of identity used for orchestrator cluster. Type 'SystemAssigned' will use an implicitly created identity orchestrator clusters. Possible values include: 'ResourceIdentityTypeSystemAssigned', 'ResourceIdentityTypeNone'
 	Type ResourceIdentityType `json:"type,omitempty"`
 }
 

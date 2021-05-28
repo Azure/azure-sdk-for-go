@@ -70,7 +70,7 @@ func (client GalleriesClient) CreateOrUpdatePreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -150,7 +150,7 @@ func (client GalleriesClient) DeletePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -193,7 +193,8 @@ func (client GalleriesClient) DeleteResponder(resp *http.Response) (result autor
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // galleryName - the name of the Shared Image Gallery.
-func (client GalleriesClient) Get(ctx context.Context, resourceGroupName string, galleryName string) (result Gallery, err error) {
+// selectParameter - the select expression to apply on the operation.
+func (client GalleriesClient) Get(ctx context.Context, resourceGroupName string, galleryName string, selectParameter SelectPermissions) (result Gallery, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/GalleriesClient.Get")
 		defer func() {
@@ -204,7 +205,7 @@ func (client GalleriesClient) Get(ctx context.Context, resourceGroupName string,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceGroupName, galleryName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, galleryName, selectParameter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "compute.GalleriesClient", "Get", nil, "Failure preparing request")
 		return
@@ -227,16 +228,19 @@ func (client GalleriesClient) Get(ctx context.Context, resourceGroupName string,
 }
 
 // GetPreparer prepares the Get request.
-func (client GalleriesClient) GetPreparer(ctx context.Context, resourceGroupName string, galleryName string) (*http.Request, error) {
+func (client GalleriesClient) GetPreparer(ctx context.Context, resourceGroupName string, galleryName string, selectParameter SelectPermissions) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"galleryName":       autorest.Encode("path", galleryName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(string(selectParameter)) > 0 {
+		queryParameters["$select"] = autorest.Encode("query", selectParameter)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -310,7 +314,7 @@ func (client GalleriesClient) ListPreparer(ctx context.Context) (*http.Request, 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -426,7 +430,7 @@ func (client GalleriesClient) ListByResourceGroupPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -534,7 +538,7 @@ func (client GalleriesClient) UpdatePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -31,11 +31,11 @@ func NewGalleryImagesClientWithBaseURI(baseURI string, subscriptionID string) Ga
 	return GalleryImagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create or update a gallery Image Definition.
+// CreateOrUpdate create or update a gallery image definition.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // galleryName - the name of the Shared Image Gallery in which the Image Definition is to be created.
-// galleryImageName - the name of the gallery Image Definition to be created or updated. The allowed characters
+// galleryImageName - the name of the gallery image definition to be created or updated. The allowed characters
 // are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
 // characters.
 // galleryImage - parameters supplied to the create or update gallery image operation.
@@ -86,7 +86,7 @@ func (client GalleryImagesClient) CreateOrUpdatePreparer(ctx context.Context, re
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -132,7 +132,7 @@ func (client GalleryImagesClient) CreateOrUpdateResponder(resp *http.Response) (
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // galleryName - the name of the Shared Image Gallery in which the Image Definition is to be deleted.
-// galleryImageName - the name of the gallery Image Definition to be deleted.
+// galleryImageName - the name of the gallery image definition to be deleted.
 func (client GalleryImagesClient) Delete(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string) (result GalleryImagesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/GalleryImagesClient.Delete")
@@ -168,7 +168,7 @@ func (client GalleryImagesClient) DeletePreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -207,11 +207,11 @@ func (client GalleryImagesClient) DeleteResponder(resp *http.Response) (result a
 	return
 }
 
-// Get retrieves information about a gallery Image Definition.
+// Get retrieves information about a gallery image definition.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // galleryName - the name of the Shared Image Gallery from which the Image Definitions are to be retrieved.
-// galleryImageName - the name of the gallery Image Definition to be retrieved.
+// galleryImageName - the name of the gallery image definition to be retrieved.
 func (client GalleryImagesClient) Get(ctx context.Context, resourceGroupName string, galleryName string, galleryImageName string) (result GalleryImage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/GalleryImagesClient.Get")
@@ -254,7 +254,7 @@ func (client GalleryImagesClient) GetPreparer(ctx context.Context, resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -285,7 +285,7 @@ func (client GalleryImagesClient) GetResponder(resp *http.Response) (result Gall
 	return
 }
 
-// ListByGallery list gallery Image Definitions in a gallery.
+// ListByGallery list gallery image definitions in a gallery.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // galleryName - the name of the Shared Image Gallery from which Image Definitions are to be listed.
@@ -335,7 +335,7 @@ func (client GalleryImagesClient) ListByGalleryPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -403,11 +403,11 @@ func (client GalleryImagesClient) ListByGalleryComplete(ctx context.Context, res
 	return
 }
 
-// Update update a gallery Image Definition.
+// Update update a gallery image definition.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // galleryName - the name of the Shared Image Gallery in which the Image Definition is to be updated.
-// galleryImageName - the name of the gallery Image Definition to be updated. The allowed characters are
+// galleryImageName - the name of the gallery image definition to be updated. The allowed characters are
 // alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
 // characters.
 // galleryImage - parameters supplied to the update gallery image operation.
@@ -446,7 +446,7 @@ func (client GalleryImagesClient) UpdatePreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

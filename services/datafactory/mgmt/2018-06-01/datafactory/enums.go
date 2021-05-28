@@ -149,6 +149,37 @@ func PossibleCassandraSourceReadConsistencyLevelsValues() []CassandraSourceReadC
 	return []CassandraSourceReadConsistencyLevels{CassandraSourceReadConsistencyLevelsALL, CassandraSourceReadConsistencyLevelsEACHQUORUM, CassandraSourceReadConsistencyLevelsLOCALONE, CassandraSourceReadConsistencyLevelsLOCALQUORUM, CassandraSourceReadConsistencyLevelsLOCALSERIAL, CassandraSourceReadConsistencyLevelsONE, CassandraSourceReadConsistencyLevelsQUORUM, CassandraSourceReadConsistencyLevelsSERIAL, CassandraSourceReadConsistencyLevelsTHREE, CassandraSourceReadConsistencyLevelsTWO}
 }
 
+// CompressionCodec enumerates the values for compression codec.
+type CompressionCodec string
+
+const (
+	// CompressionCodecBzip2 ...
+	CompressionCodecBzip2 CompressionCodec = "bzip2"
+	// CompressionCodecDeflate ...
+	CompressionCodecDeflate CompressionCodec = "deflate"
+	// CompressionCodecGzip ...
+	CompressionCodecGzip CompressionCodec = "gzip"
+	// CompressionCodecLz4 ...
+	CompressionCodecLz4 CompressionCodec = "lz4"
+	// CompressionCodecLzo ...
+	CompressionCodecLzo CompressionCodec = "lzo"
+	// CompressionCodecNone ...
+	CompressionCodecNone CompressionCodec = "none"
+	// CompressionCodecSnappy ...
+	CompressionCodecSnappy CompressionCodec = "snappy"
+	// CompressionCodecTar ...
+	CompressionCodecTar CompressionCodec = "tar"
+	// CompressionCodecTarGZip ...
+	CompressionCodecTarGZip CompressionCodec = "tarGZip"
+	// CompressionCodecZipDeflate ...
+	CompressionCodecZipDeflate CompressionCodec = "zipDeflate"
+)
+
+// PossibleCompressionCodecValues returns an array of possible values for the CompressionCodec const type.
+func PossibleCompressionCodecValues() []CompressionCodec {
+	return []CompressionCodec{CompressionCodecBzip2, CompressionCodecDeflate, CompressionCodecGzip, CompressionCodecLz4, CompressionCodecLzo, CompressionCodecNone, CompressionCodecSnappy, CompressionCodecTar, CompressionCodecTarGZip, CompressionCodecZipDeflate}
+}
+
 // CopyBehaviorType enumerates the values for copy behavior type.
 type CopyBehaviorType string
 
@@ -229,6 +260,21 @@ const (
 // PossibleDataFlowDebugCommandTypeValues returns an array of possible values for the DataFlowDebugCommandType const type.
 func PossibleDataFlowDebugCommandTypeValues() []DataFlowDebugCommandType {
 	return []DataFlowDebugCommandType{DataFlowDebugCommandTypeExecuteExpressionQuery, DataFlowDebugCommandTypeExecutePreviewQuery, DataFlowDebugCommandTypeExecuteStatisticsQuery}
+}
+
+// DatasetCompressionLevel enumerates the values for dataset compression level.
+type DatasetCompressionLevel string
+
+const (
+	// DatasetCompressionLevelFastest ...
+	DatasetCompressionLevelFastest DatasetCompressionLevel = "Fastest"
+	// DatasetCompressionLevelOptimal ...
+	DatasetCompressionLevelOptimal DatasetCompressionLevel = "Optimal"
+)
+
+// PossibleDatasetCompressionLevelValues returns an array of possible values for the DatasetCompressionLevel const type.
+func PossibleDatasetCompressionLevelValues() []DatasetCompressionLevel {
+	return []DatasetCompressionLevel{DatasetCompressionLevelFastest, DatasetCompressionLevelOptimal}
 }
 
 // DayOfWeek enumerates the values for day of week.
@@ -479,6 +525,23 @@ func PossibleHBaseAuthenticationTypeValues() []HBaseAuthenticationType {
 	return []HBaseAuthenticationType{HBaseAuthenticationTypeAnonymous, HBaseAuthenticationTypeBasic}
 }
 
+// HdiNodeTypes enumerates the values for hdi node types.
+type HdiNodeTypes string
+
+const (
+	// HdiNodeTypesHeadnode ...
+	HdiNodeTypesHeadnode HdiNodeTypes = "Headnode"
+	// HdiNodeTypesWorkernode ...
+	HdiNodeTypesWorkernode HdiNodeTypes = "Workernode"
+	// HdiNodeTypesZookeeper ...
+	HdiNodeTypesZookeeper HdiNodeTypes = "Zookeeper"
+)
+
+// PossibleHdiNodeTypesValues returns an array of possible values for the HdiNodeTypes const type.
+func PossibleHdiNodeTypesValues() []HdiNodeTypes {
+	return []HdiNodeTypes{HdiNodeTypesHeadnode, HdiNodeTypesWorkernode, HdiNodeTypesZookeeper}
+}
+
 // HDInsightActivityDebugInfoOption enumerates the values for hd insight activity debug info option.
 type HDInsightActivityDebugInfoOption string
 
@@ -636,6 +699,8 @@ func PossibleIntegrationRuntimeEditionValues() []IntegrationRuntimeEdition {
 type IntegrationRuntimeEntityReferenceType string
 
 const (
+	// IntegrationRuntimeEntityReferenceTypeCredentialReference ...
+	IntegrationRuntimeEntityReferenceTypeCredentialReference IntegrationRuntimeEntityReferenceType = "CredentialReference"
 	// IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference ...
 	IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference IntegrationRuntimeEntityReferenceType = "IntegrationRuntimeReference"
 	// IntegrationRuntimeEntityReferenceTypeLinkedServiceReference ...
@@ -644,7 +709,7 @@ const (
 
 // PossibleIntegrationRuntimeEntityReferenceTypeValues returns an array of possible values for the IntegrationRuntimeEntityReferenceType const type.
 func PossibleIntegrationRuntimeEntityReferenceTypeValues() []IntegrationRuntimeEntityReferenceType {
-	return []IntegrationRuntimeEntityReferenceType{IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference, IntegrationRuntimeEntityReferenceTypeLinkedServiceReference}
+	return []IntegrationRuntimeEntityReferenceType{IntegrationRuntimeEntityReferenceTypeCredentialReference, IntegrationRuntimeEntityReferenceTypeIntegrationRuntimeReference, IntegrationRuntimeEntityReferenceTypeLinkedServiceReference}
 }
 
 // IntegrationRuntimeInternalChannelEncryptionMode enumerates the values for integration runtime internal
@@ -761,6 +826,21 @@ const (
 // PossibleIntegrationRuntimeUpdateResultValues returns an array of possible values for the IntegrationRuntimeUpdateResult const type.
 func PossibleIntegrationRuntimeUpdateResultValues() []IntegrationRuntimeUpdateResult {
 	return []IntegrationRuntimeUpdateResult{IntegrationRuntimeUpdateResultFail, IntegrationRuntimeUpdateResultNone, IntegrationRuntimeUpdateResultSucceed}
+}
+
+// JSONFormatFilePattern enumerates the values for json format file pattern.
+type JSONFormatFilePattern string
+
+const (
+	// JSONFormatFilePatternArrayOfObjects ...
+	JSONFormatFilePatternArrayOfObjects JSONFormatFilePattern = "arrayOfObjects"
+	// JSONFormatFilePatternSetOfObjects ...
+	JSONFormatFilePatternSetOfObjects JSONFormatFilePattern = "setOfObjects"
+)
+
+// PossibleJSONFormatFilePatternValues returns an array of possible values for the JSONFormatFilePattern const type.
+func PossibleJSONFormatFilePatternValues() []JSONFormatFilePattern {
+	return []JSONFormatFilePattern{JSONFormatFilePatternArrayOfObjects, JSONFormatFilePatternSetOfObjects}
 }
 
 // JSONWriteFilePattern enumerates the values for json write file pattern.
@@ -1270,6 +1350,21 @@ const (
 // PossibleServiceNowAuthenticationTypeValues returns an array of possible values for the ServiceNowAuthenticationType const type.
 func PossibleServiceNowAuthenticationTypeValues() []ServiceNowAuthenticationType {
 	return []ServiceNowAuthenticationType{ServiceNowAuthenticationTypeBasic, ServiceNowAuthenticationTypeOAuth2}
+}
+
+// ServicePrincipalCredentialType enumerates the values for service principal credential type.
+type ServicePrincipalCredentialType string
+
+const (
+	// ServicePrincipalCredentialTypeServicePrincipalCert ...
+	ServicePrincipalCredentialTypeServicePrincipalCert ServicePrincipalCredentialType = "ServicePrincipalCert"
+	// ServicePrincipalCredentialTypeServicePrincipalKey ...
+	ServicePrincipalCredentialTypeServicePrincipalKey ServicePrincipalCredentialType = "ServicePrincipalKey"
+)
+
+// PossibleServicePrincipalCredentialTypeValues returns an array of possible values for the ServicePrincipalCredentialType const type.
+func PossibleServicePrincipalCredentialTypeValues() []ServicePrincipalCredentialType {
+	return []ServicePrincipalCredentialType{ServicePrincipalCredentialTypeServicePrincipalCert, ServicePrincipalCredentialTypeServicePrincipalKey}
 }
 
 // SftpAuthenticationType enumerates the values for sftp authentication type.

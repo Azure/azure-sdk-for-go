@@ -82,6 +82,12 @@ type AsyncOperationErrorInfo struct {
 	Details *[]AsyncOperationErrorInfo `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AsyncOperationErrorInfo.
+func (aoei AsyncOperationErrorInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AsyncOperationStatus azure async operation status.
 type AsyncOperationStatus struct {
 	autorest.Response `json:"-"`
@@ -99,6 +105,12 @@ type AsyncOperationStatus struct {
 	PercentComplete *float64 `json:"percentComplete,omitempty"`
 	// ErrorInfo - READ-ONLY; If the async operation fails, this structure contains the error details.
 	ErrorInfo *AsyncOperationErrorInfo `json:"errorInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AsyncOperationStatus.
+func (aos AsyncOperationStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BlobLocation describes the access location for a blob.
@@ -397,6 +409,12 @@ type OperationDisplayInfo struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplayInfo.
+func (odi OperationDisplayInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationEntity an API operation.
 type OperationEntity struct {
 	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
@@ -419,6 +437,12 @@ type OperationEntityListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of operations.
 	Value *[]OperationEntity `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationEntityListResult.
+func (oelr OperationEntityListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OutputPort asset output port

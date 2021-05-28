@@ -2024,36 +2024,36 @@ func PossibleRoutingStateValues() []RoutingState {
 type RuleCollectionType string
 
 const (
-	// RuleCollectionTypeRuleCollectionTypeFirewallPolicyFilterRuleCollection ...
-	RuleCollectionTypeRuleCollectionTypeFirewallPolicyFilterRuleCollection RuleCollectionType = "FirewallPolicyFilterRuleCollection"
-	// RuleCollectionTypeRuleCollectionTypeFirewallPolicyNatRuleCollection ...
-	RuleCollectionTypeRuleCollectionTypeFirewallPolicyNatRuleCollection RuleCollectionType = "FirewallPolicyNatRuleCollection"
-	// RuleCollectionTypeRuleCollectionTypeFirewallPolicyRuleCollection ...
-	RuleCollectionTypeRuleCollectionTypeFirewallPolicyRuleCollection RuleCollectionType = "FirewallPolicyRuleCollection"
+	// RuleCollectionTypeFirewallPolicyFilterRuleCollection ...
+	RuleCollectionTypeFirewallPolicyFilterRuleCollection RuleCollectionType = "FirewallPolicyFilterRuleCollection"
+	// RuleCollectionTypeFirewallPolicyNatRuleCollection ...
+	RuleCollectionTypeFirewallPolicyNatRuleCollection RuleCollectionType = "FirewallPolicyNatRuleCollection"
+	// RuleCollectionTypeFirewallPolicyRuleCollection ...
+	RuleCollectionTypeFirewallPolicyRuleCollection RuleCollectionType = "FirewallPolicyRuleCollection"
 )
 
 // PossibleRuleCollectionTypeValues returns an array of possible values for the RuleCollectionType const type.
 func PossibleRuleCollectionTypeValues() []RuleCollectionType {
-	return []RuleCollectionType{RuleCollectionTypeRuleCollectionTypeFirewallPolicyFilterRuleCollection, RuleCollectionTypeRuleCollectionTypeFirewallPolicyNatRuleCollection, RuleCollectionTypeRuleCollectionTypeFirewallPolicyRuleCollection}
+	return []RuleCollectionType{RuleCollectionTypeFirewallPolicyFilterRuleCollection, RuleCollectionTypeFirewallPolicyNatRuleCollection, RuleCollectionTypeFirewallPolicyRuleCollection}
 }
 
 // RuleType enumerates the values for rule type.
 type RuleType string
 
 const (
-	// RuleTypeRuleTypeApplicationRule ...
-	RuleTypeRuleTypeApplicationRule RuleType = "ApplicationRule"
-	// RuleTypeRuleTypeFirewallPolicyRule ...
-	RuleTypeRuleTypeFirewallPolicyRule RuleType = "FirewallPolicyRule"
-	// RuleTypeRuleTypeNatRule ...
-	RuleTypeRuleTypeNatRule RuleType = "NatRule"
-	// RuleTypeRuleTypeNetworkRule ...
-	RuleTypeRuleTypeNetworkRule RuleType = "NetworkRule"
+	// RuleTypeApplicationRule ...
+	RuleTypeApplicationRule RuleType = "ApplicationRule"
+	// RuleTypeFirewallPolicyRule ...
+	RuleTypeFirewallPolicyRule RuleType = "FirewallPolicyRule"
+	// RuleTypeNatRule ...
+	RuleTypeNatRule RuleType = "NatRule"
+	// RuleTypeNetworkRule ...
+	RuleTypeNetworkRule RuleType = "NetworkRule"
 )
 
 // PossibleRuleTypeValues returns an array of possible values for the RuleType const type.
 func PossibleRuleTypeValues() []RuleType {
-	return []RuleType{RuleTypeRuleTypeApplicationRule, RuleTypeRuleTypeFirewallPolicyRule, RuleTypeRuleTypeNatRule, RuleTypeRuleTypeNetworkRule}
+	return []RuleType{RuleTypeApplicationRule, RuleTypeFirewallPolicyRule, RuleTypeNatRule, RuleTypeNetworkRule}
 }
 
 // SecurityPartnerProviderConnectionStatus enumerates the values for security partner provider connection

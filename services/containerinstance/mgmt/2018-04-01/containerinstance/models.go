@@ -110,6 +110,12 @@ type ContainerExecResponse struct {
 	Password *string `json:"password,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ContainerExecResponse.
+func (cer ContainerExecResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ContainerGroup a container group.
 type ContainerGroup struct {
 	autorest.Response         `json:"-"`
@@ -425,6 +431,12 @@ type ContainerGroupPropertiesInstanceView struct {
 	State *string `json:"state,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ContainerGroupPropertiesInstanceView.
+func (cgV ContainerGroupPropertiesInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ContainerGroupsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ContainerGroupsCreateOrUpdateFuture struct {
@@ -530,6 +542,12 @@ type ContainerPropertiesInstanceView struct {
 	Events *[]Event `json:"events,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ContainerPropertiesInstanceView.
+func (cpV ContainerPropertiesInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ContainerState the container instance state.
 type ContainerState struct {
 	// State - READ-ONLY; The state of the container instance.
@@ -542,6 +560,12 @@ type ContainerState struct {
 	FinishTime *date.Time `json:"finishTime,omitempty"`
 	// DetailStatus - READ-ONLY; The human-readable status of the container instance state.
 	DetailStatus *string `json:"detailStatus,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerState.
+func (cs ContainerState) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // EnvironmentVariable the environment variable to set within the container instance.
@@ -566,6 +590,12 @@ type Event struct {
 	Message *string `json:"message,omitempty"`
 	// Type - READ-ONLY; The event type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Event.
+func (e Event) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // GitRepoVolume represents a volume that is populated with the contents of a git repository
@@ -627,6 +657,12 @@ type Logs struct {
 	Content *string `json:"content,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Logs.
+func (l Logs) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Operation an operation for Azure Container Instance service.
 type Operation struct {
 	// Name - READ-ONLY; The name of the operation.
@@ -656,6 +692,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 	// Description - READ-ONLY; The description of the operation.
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResult the operation list response that contains all operations for Azure Container
@@ -738,11 +780,23 @@ type Usage struct {
 	Name *UsageName `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Usage.
+func (u Usage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UsageListResult the response containing the usage data
 type UsageListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY
 	Value *[]Usage `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageListResult.
+func (ulr UsageListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UsageName the name object of the resource
@@ -751,6 +805,12 @@ type UsageName struct {
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - READ-ONLY; The localized name of the resource
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageName.
+func (u UsageName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Volume the properties of the volume.

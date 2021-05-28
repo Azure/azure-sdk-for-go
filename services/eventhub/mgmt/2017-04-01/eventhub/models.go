@@ -39,6 +39,12 @@ type AccessKeys struct {
 	KeyName *string `json:"keyName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccessKeys.
+func (ak AccessKeys) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ArmDisasterRecovery single item in List or Get Alias(Disaster Recovery configuration) operation
 type ArmDisasterRecovery struct {
 	autorest.Response `json:"-"`
@@ -1495,6 +1501,12 @@ type MessagingPlanProperties struct {
 	Revision *int64 `json:"revision,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MessagingPlanProperties.
+func (mp MessagingPlanProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MessagingRegions messaging Region
 type MessagingRegions struct {
 	// Properties - Properties of Messaging Region
@@ -1700,6 +1712,12 @@ type MessagingRegionsProperties struct {
 	Code *string `json:"code,omitempty"`
 	// FullName - READ-ONLY; Full name of the region
 	FullName *string `json:"fullName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MessagingRegionsProperties.
+func (mr MessagingRegionsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Model single item in List or Get Event Hub operation
@@ -2140,6 +2158,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult result of the request to list Event Hub operations. It contains a list of operations
 // and a URL link to get the next set of results.
 type OperationListResult struct {
@@ -2148,6 +2172,12 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -2353,6 +2383,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Sku SKU parameters supplied to the create namespace operation

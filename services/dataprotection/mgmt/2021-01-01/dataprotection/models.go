@@ -3928,12 +3928,24 @@ type Error struct {
 	Target *string `json:"target,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorAdditionalInfo the resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// Info - READ-ONLY; The additional info.
 	Info interface{} `json:"info,omitempty"`
 	// Type - READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ExportJobsResult the result for export jobs containing blob details.
@@ -3947,6 +3959,12 @@ type ExportJobsResult struct {
 	ExcelFileBlobURL *string `json:"excelFileBlobUrl,omitempty"`
 	// ExcelFileBlobSasKey - READ-ONLY; SAS key to access the ExcelFile blob.
 	ExcelFileBlobSasKey *string `json:"excelFileBlobSasKey,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ExportJobsResult.
+func (ejr ExportJobsResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ExportJobsTriggerFuture an abstraction for monitoring and retrieving the results of a long-running

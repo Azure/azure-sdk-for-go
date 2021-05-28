@@ -250,6 +250,12 @@ type AccountKey struct {
 	Permissions KeyPermission `json:"permissions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountKey.
+func (ak AccountKey) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountListKeysResult the response from the ListKeys operation.
 type AccountListKeysResult struct {
 	autorest.Response `json:"-"`
@@ -257,11 +263,23 @@ type AccountListKeysResult struct {
 	Keys *[]AccountKey `json:"keys,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountListKeysResult.
+func (alkr AccountListKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountListResult the response from the List Storage Accounts operation.
 type AccountListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Gets the list of storage accounts and their properties.
 	Value *[]Account `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountListResult.
+func (alr AccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AccountProperties ...
@@ -290,6 +308,12 @@ type AccountProperties struct {
 	Encryption *Encryption `json:"encryption,omitempty"`
 	// AccessTier - READ-ONLY; Required for storage accounts where kind = BlobStorage. The access tier used for billing. Possible values include: 'Hot', 'Cool'
 	AccessTier AccessTier `json:"accessTier,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountProperties.
+func (ap AccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AccountPropertiesCreateParameters ...
@@ -438,6 +462,12 @@ type CheckNameAvailabilityResult struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityResult.
+func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CustomDomain the custom domain assigned to this storage account. This can be set via Update.
 type CustomDomain struct {
 	// Name - Gets or sets the custom domain name assigned to the storage account. Name is the CNAME source.
@@ -487,6 +517,12 @@ type Endpoints struct {
 	Table *string `json:"table,omitempty"`
 	// File - READ-ONLY; Gets the file endpoint.
 	File *string `json:"file,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Endpoints.
+func (e Endpoints) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Resource ...
@@ -544,6 +580,12 @@ type Usage struct {
 	Name *UsageName `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Usage.
+func (u Usage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UsageListResult the response from the List Usages operation.
 type UsageListResult struct {
 	autorest.Response `json:"-"`
@@ -557,4 +599,10 @@ type UsageName struct {
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - READ-ONLY; Gets a localized string describing the resource name.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageName.
+func (un UsageName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

@@ -10879,6 +10879,12 @@ type MigrationRecoveryPointProperties struct {
 	RecoveryPointType MigrationRecoveryPointType `json:"recoveryPointType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MigrationRecoveryPointProperties.
+func (mrpp MigrationRecoveryPointProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MobilityServiceUpdate the Mobility Service update details.
 type MobilityServiceUpdate struct {
 	// Version - The version of the latest update.
@@ -12811,6 +12817,12 @@ func NewProtectionContainerCollectionPage(cur ProtectionContainerCollection, get
 type ProtectionContainerFabricSpecificDetails struct {
 	// InstanceType - READ-ONLY; Gets the class type. Overridden in derived classes.
 	InstanceType *string `json:"instanceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProtectionContainerFabricSpecificDetails.
+func (pcfsd ProtectionContainerFabricSpecificDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ProtectionContainerMapping protection container mapping object.

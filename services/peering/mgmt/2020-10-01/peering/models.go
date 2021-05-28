@@ -331,6 +331,12 @@ type CdnPeeringPrefixProperties struct {
 	BgpCommunity *string `json:"bgpCommunity,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CdnPeeringPrefixProperties.
+func (cppp CdnPeeringPrefixProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CheckServiceProviderAvailabilityInput class for CheckServiceProviderAvailabilityInput
 type CheckServiceProviderAvailabilityInput struct {
 	// PeeringServiceLocation - Gets or sets the peering service location.
@@ -415,6 +421,12 @@ type ErrorDetail struct {
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetail.
+func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse the error response that indicates why an operation has failed.
@@ -1044,6 +1056,12 @@ type Operation struct {
 	IsDataAction *bool `json:"isDataAction,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationDisplayInfo the information related to the operation.
 type OperationDisplayInfo struct {
 	// Provider - READ-ONLY; The name of the resource provider.
@@ -1054,6 +1072,12 @@ type OperationDisplayInfo struct {
 	Operation *string `json:"operation,omitempty"`
 	// Description - READ-ONLY; The description of the operation.
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationDisplayInfo.
+func (odi OperationDisplayInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResult the paginated list of peering API operations.
@@ -1557,6 +1581,12 @@ type ReceivedRoute struct {
 	TrustAnchor *string `json:"trustAnchor,omitempty"`
 	// ReceivedTimestamp - READ-ONLY; The received timestamp associated with the prefix.
 	ReceivedTimestamp *string `json:"receivedTimestamp,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReceivedRoute.
+func (rr ReceivedRoute) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ReceivedRouteListResult the paginated list of received routes for the peering.
@@ -2234,6 +2264,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceTags the resource tags.
 type ResourceTags struct {
 	// Tags - Gets or sets the tags, a dictionary of descriptors arm object
@@ -2372,6 +2408,12 @@ type ServiceCountry struct {
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceCountry.
+func (sc ServiceCountry) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServiceCountryListResult the paginated list of peering service countries.
@@ -3018,6 +3060,12 @@ type ServicePrefixEvent struct {
 	EventLevel *string `json:"eventLevel,omitempty"`
 	// EventDescription - READ-ONLY; The description of the event associated with a prefix.
 	EventDescription *string `json:"eventDescription,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServicePrefixEvent.
+func (spe ServicePrefixEvent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServicePrefixListResult the paginated list of peering service prefixes.

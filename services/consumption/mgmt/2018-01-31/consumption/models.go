@@ -158,6 +158,12 @@ type BudgetsListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for BudgetsListResult.
+func (blr BudgetsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BudgetsListResultIterator provides access to a complete listing of Budget values.
 type BudgetsListResultIterator struct {
 	i    int
@@ -324,12 +330,24 @@ type CurrentSpend struct {
 	Unit *string `json:"unit,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CurrentSpend.
+func (cs CurrentSpend) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetails the details of the error.
 type ErrorDetails struct {
 	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse error response indicates that the service is not able to process the incoming request. The
@@ -483,6 +501,12 @@ type MarketplaceProperties struct {
 	PlanName *string `json:"planName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MarketplaceProperties.
+func (mp MarketplaceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MarketplacesListResult result of listing marketplaces. It contains a list of available marketplaces in
 // reverse chronological order by billing period.
 type MarketplacesListResult struct {
@@ -491,6 +515,12 @@ type MarketplacesListResult struct {
 	Value *[]Marketplace `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MarketplacesListResult.
+func (mlr MarketplacesListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MarketplacesListResultIterator provides access to a complete listing of Marketplace values.
@@ -661,6 +691,12 @@ type MeterDetails struct {
 	PretaxStandardRate *decimal.Decimal `json:"pretaxStandardRate,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MeterDetails.
+func (md MeterDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Notification the notification associated with a budget.
 type Notification struct {
 	// Enabled - The notification is enabled or not.
@@ -704,6 +740,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult result of listing consumption operations. It contains a list of operations and a URL
 // link to get the next set of results.
 type OperationListResult struct {
@@ -712,6 +754,12 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -872,6 +920,12 @@ type PriceSheetModel struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PriceSheetModel.
+func (psm PriceSheetModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PriceSheetProperties the properties of the price sheet.
 type PriceSheetProperties struct {
 	// BillingPeriodID - READ-ONLY; The id of the billing period resource that the usage belongs to.
@@ -890,6 +944,12 @@ type PriceSheetProperties struct {
 	UnitPrice *decimal.Decimal `json:"unitPrice,omitempty"`
 	// CurrencyCode - READ-ONLY; Currency Code
 	CurrencyCode *string `json:"currencyCode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PriceSheetProperties.
+func (psp PriceSheetProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PriceSheetResult an pricesheet resource.
@@ -1087,6 +1147,12 @@ type ReservationDetailsListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ReservationDetailsListResult.
+func (rdlr ReservationDetailsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ReservationDetailsListResultIterator provides access to a complete listing of ReservationDetails values.
 type ReservationDetailsListResultIterator struct {
 	i    int
@@ -1257,6 +1323,12 @@ type ReservationDetailsProperties struct {
 	TotalReservedQuantity *decimal.Decimal `json:"totalReservedQuantity,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ReservationDetailsProperties.
+func (rdp ReservationDetailsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ReservationSummaries reservation summaries resource.
 type ReservationSummaries struct {
 	*ReservationSummariesProperties `json:"properties,omitempty"`
@@ -1346,6 +1418,12 @@ type ReservationSummariesListResult struct {
 	Value *[]ReservationSummaries `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReservationSummariesListResult.
+func (rslr ReservationSummariesListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ReservationSummariesListResultIterator provides access to a complete listing of ReservationSummaries
@@ -1521,6 +1599,12 @@ type ReservationSummariesProperties struct {
 	MaxUtilizationPercentage *decimal.Decimal `json:"maxUtilizationPercentage,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ReservationSummariesProperties.
+func (rsp ReservationSummariesProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource the Resource model definition.
 type Resource struct {
 	// ID - READ-ONLY; Resource Id.
@@ -1669,6 +1753,12 @@ type UsageDetailProperties struct {
 	AdditionalProperties *string `json:"additionalProperties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UsageDetailProperties.
+func (UDP UsageDetailProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UsageDetailsListResult result of listing usage details. It contains a list of available usage details in
 // reverse chronological order by billing period.
 type UsageDetailsListResult struct {
@@ -1677,6 +1767,12 @@ type UsageDetailsListResult struct {
 	Value *[]UsageDetail `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageDetailsListResult.
+func (udlr UsageDetailsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UsageDetailsListResultIterator provides access to a complete listing of UsageDetail values.

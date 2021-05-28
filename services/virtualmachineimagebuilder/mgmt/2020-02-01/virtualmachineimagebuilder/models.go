@@ -482,6 +482,12 @@ type ImageTemplateIdentityUserAssignedIdentitiesValue struct {
 	ClientID *string `json:"clientId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImageTemplateIdentityUserAssignedIdentitiesValue.
+func (itiAiv ImageTemplateIdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImageTemplateLastRunStatus describes the latest status of running an image template
 type ImageTemplateLastRunStatus struct {
 	// StartTime - Start time of the last run (UTC)

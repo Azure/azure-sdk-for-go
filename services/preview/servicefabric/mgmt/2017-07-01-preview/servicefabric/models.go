@@ -294,6 +294,12 @@ type ApplicationTypeProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ApplicationTypeProperties.
+func (atp ApplicationTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ApplicationTypeResource the application type name resource
 type ApplicationTypeResource struct {
 	*ApplicationTypeProperties `json:"properties,omitempty"`

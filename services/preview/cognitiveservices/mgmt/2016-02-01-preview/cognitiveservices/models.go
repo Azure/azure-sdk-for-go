@@ -206,6 +206,12 @@ type AccountEnumerateSkusResult struct {
 	Value *[]ResourceAndSku `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountEnumerateSkusResult.
+func (aesr AccountEnumerateSkusResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountKeys the access keys for the cognitive services account.
 type AccountKeys struct {
 	autorest.Response `json:"-"`
@@ -220,6 +226,12 @@ type AccountListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Gets the list of Cognitive Services accounts and their properties.
 	Value *[]Account `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountListResult.
+func (alr AccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AccountProperties ...

@@ -745,3 +745,9 @@ type Resource struct {
 	// Type - READ-ONLY; The resource type.
 	Type *string `json:"type,omitempty"`
 }
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}

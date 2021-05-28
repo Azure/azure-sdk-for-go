@@ -302,6 +302,12 @@ type PrivateEndpoint struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PrivateEndpoint.
+func (peVar PrivateEndpoint) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PrivateEndpointConnection a private endpoint connection
 type PrivateEndpointConnection struct {
 	autorest.Response `json:"-"`
@@ -638,6 +644,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource the core properties of ARM resources
 type Resource struct {
 	// ID - READ-ONLY; ARM resource id of the EnterprisePolicy.
@@ -648,6 +660,12 @@ type Resource struct {
 	Location *string `json:"location,omitempty"`
 	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Subnet a subnet

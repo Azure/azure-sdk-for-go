@@ -140,15 +140,15 @@ func PossibleResultTruncatedValues() []ResultTruncated {
 type ResultType string
 
 const (
-	// ResultTypeResultTypeFacet ...
-	ResultTypeResultTypeFacet ResultType = "Facet"
-	// ResultTypeResultTypeFacetError ...
-	ResultTypeResultTypeFacetError ResultType = "FacetError"
-	// ResultTypeResultTypeFacetResult ...
-	ResultTypeResultTypeFacetResult ResultType = "FacetResult"
+	// ResultTypeFacet ...
+	ResultTypeFacet ResultType = "Facet"
+	// ResultTypeFacetError ...
+	ResultTypeFacetError ResultType = "FacetError"
+	// ResultTypeFacetResult ...
+	ResultTypeFacetResult ResultType = "FacetResult"
 )
 
 // PossibleResultTypeValues returns an array of possible values for the ResultType const type.
 func PossibleResultTypeValues() []ResultType {
-	return []ResultType{ResultTypeResultTypeFacet, ResultTypeResultTypeFacetError, ResultTypeResultTypeFacetResult}
+	return []ResultType{ResultTypeFacet, ResultTypeFacetError, ResultTypeFacetResult}
 }

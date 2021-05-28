@@ -124,6 +124,12 @@ type Catalog struct {
 	Restrictions *[]SkuRestriction `json:"restrictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Catalog.
+func (c Catalog) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Error ...
 type Error struct {
 	Error *ExtendedErrorInfo `json:"error,omitempty"`

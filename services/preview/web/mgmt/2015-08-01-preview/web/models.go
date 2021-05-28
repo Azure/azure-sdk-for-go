@@ -7483,6 +7483,12 @@ type KeyValuePairStringString struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for KeyValuePairStringString.
+func (kvpSs KeyValuePairStringString) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ListCertificateEmail ...
 type ListCertificateEmail struct {
 	autorest.Response `json:"-"`

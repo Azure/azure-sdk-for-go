@@ -52940,6 +52940,12 @@ type IntegrationRuntimeNodeIPAddress struct {
 	IPAddress *string `json:"ipAddress,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IntegrationRuntimeNodeIPAddress.
+func (irnia IntegrationRuntimeNodeIPAddress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // IntegrationRuntimeNodeMonitoringData monitoring data for integration runtime node.
 type IntegrationRuntimeNodeMonitoringData struct {
 	// AdditionalProperties - Unmatched properties from the message are deserialized this collection
@@ -55357,6 +55363,12 @@ type LinkedIntegrationRuntime struct {
 	DataFactoryLocation *string `json:"dataFactoryLocation,omitempty"`
 	// CreateTime - READ-ONLY; The creating time of the linked integration runtime.
 	CreateTime *date.Time `json:"createTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LinkedIntegrationRuntime.
+func (lir LinkedIntegrationRuntime) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // LinkedIntegrationRuntimeKey the base definition of a secret type.
@@ -58474,6 +58486,12 @@ type ManagedIntegrationRuntimeError struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ManagedIntegrationRuntimeError.
+func (mire ManagedIntegrationRuntimeError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ManagedIntegrationRuntimeNode properties of integration runtime node.
 type ManagedIntegrationRuntimeNode struct {
 	// NodeID - READ-ONLY; The managed integration runtime node id.
@@ -58507,6 +58525,12 @@ type ManagedIntegrationRuntimeOperationResult struct {
 	Parameters *[]string `json:"parameters,omitempty"`
 	// ActivityID - READ-ONLY; The activity id for the operation request.
 	ActivityID *string `json:"activityId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedIntegrationRuntimeOperationResult.
+func (miror ManagedIntegrationRuntimeOperationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ManagedIntegrationRuntimeStatus managed integration runtime status.
@@ -58632,6 +58656,12 @@ type ManagedIntegrationRuntimeStatusTypeProperties struct {
 	OtherErrors *[]ManagedIntegrationRuntimeError `json:"otherErrors,omitempty"`
 	// LastOperation - READ-ONLY; The last operation result that occurred on this integration runtime.
 	LastOperation *ManagedIntegrationRuntimeOperationResult `json:"lastOperation,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedIntegrationRuntimeStatusTypeProperties.
+func (mirstp ManagedIntegrationRuntimeStatusTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ManagedIntegrationRuntimeTypeProperties managed integration runtime type properties.
@@ -71547,6 +71577,12 @@ type PipelineRunInvokedBy struct {
 	Name *string `json:"name,omitempty"`
 	// ID - READ-ONLY; The ID of the entity that started the run.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PipelineRunInvokedBy.
+func (prib PipelineRunInvokedBy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PipelineRunQueryFilter query filter option for listing pipeline runs.
@@ -94034,6 +94070,12 @@ type SubResource struct {
 	Type *string `json:"type,omitempty"`
 	// Etag - READ-ONLY; Etag identifies change in the resource.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SubResource.
+func (sr SubResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SybaseLinkedService linked service for Sybase data source.

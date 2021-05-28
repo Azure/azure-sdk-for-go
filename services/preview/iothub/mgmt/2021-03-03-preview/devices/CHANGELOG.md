@@ -1,123 +1,16 @@
 # Change History
 
-## Breaking Changes
-
-### Removed Constants
-
-1. AccessRights.DeviceConnect
-1. AccessRights.RegistryRead
-1. AccessRights.RegistryReadDeviceConnect
-1. AccessRights.RegistryReadRegistryWrite
-1. AccessRights.RegistryReadRegistryWriteDeviceConnect
-1. AccessRights.RegistryReadRegistryWriteServiceConnect
-1. AccessRights.RegistryReadRegistryWriteServiceConnectDeviceConnect
-1. AccessRights.RegistryReadServiceConnect
-1. AccessRights.RegistryReadServiceConnectDeviceConnect
-1. AccessRights.RegistryWrite
-1. AccessRights.RegistryWriteDeviceConnect
-1. AccessRights.RegistryWriteServiceConnect
-1. AccessRights.RegistryWriteServiceConnectDeviceConnect
-1. AccessRights.ServiceConnect
-1. AccessRights.ServiceConnectDeviceConnect
-1. AuthenticationType.IdentityBased
-1. AuthenticationType.KeyBased
-1. Capabilities.DeviceManagement
-1. Capabilities.None
-1. DefaultAction.Allow
-1. DefaultAction.Deny
-1. Encoding.Avro
-1. Encoding.AvroDeflate
-1. Encoding.JSON
-1. EndpointHealthStatus.Dead
-1. EndpointHealthStatus.Degraded
-1. EndpointHealthStatus.Healthy
-1. EndpointHealthStatus.Unhealthy
-1. EndpointHealthStatus.Unknown
-1. IPFilterActionType.Accept
-1. IPFilterActionType.Reject
-1. IotHubNameUnavailabilityReason.AlreadyExists
-1. IotHubNameUnavailabilityReason.Invalid
-1. IotHubReplicaRoleType.Primary
-1. IotHubReplicaRoleType.Secondary
-1. IotHubSku.B1
-1. IotHubSku.B2
-1. IotHubSku.B3
-1. IotHubSku.F1
-1. IotHubSku.S1
-1. IotHubSku.S2
-1. IotHubSku.S3
-1. IotHubSkuTier.Basic
-1. IotHubSkuTier.Free
-1. IotHubSkuTier.Standard
-1. PrivateLinkServiceConnectionStatus.Approved
-1. PrivateLinkServiceConnectionStatus.Disconnected
-1. PrivateLinkServiceConnectionStatus.Pending
-1. PrivateLinkServiceConnectionStatus.Rejected
-1. PublicNetworkAccess.Disabled
-1. PublicNetworkAccess.Enabled
-1. RouteErrorSeverity.Error
-1. RouteErrorSeverity.Warning
-1. TestResultStatus.False
-1. TestResultStatus.True
-1. TestResultStatus.Undefined
-
 ## Additive Changes
 
-### New Constants
+### New Funcs
 
-1. AccessRights.AccessRightsDeviceConnect
-1. AccessRights.AccessRightsRegistryRead
-1. AccessRights.AccessRightsRegistryReadDeviceConnect
-1. AccessRights.AccessRightsRegistryReadRegistryWrite
-1. AccessRights.AccessRightsRegistryReadRegistryWriteDeviceConnect
-1. AccessRights.AccessRightsRegistryReadRegistryWriteServiceConnect
-1. AccessRights.AccessRightsRegistryReadRegistryWriteServiceConnectDeviceConnect
-1. AccessRights.AccessRightsRegistryReadServiceConnect
-1. AccessRights.AccessRightsRegistryReadServiceConnectDeviceConnect
-1. AccessRights.AccessRightsRegistryWrite
-1. AccessRights.AccessRightsRegistryWriteDeviceConnect
-1. AccessRights.AccessRightsRegistryWriteServiceConnect
-1. AccessRights.AccessRightsRegistryWriteServiceConnectDeviceConnect
-1. AccessRights.AccessRightsServiceConnect
-1. AccessRights.AccessRightsServiceConnectDeviceConnect
-1. AuthenticationType.AuthenticationTypeIdentityBased
-1. AuthenticationType.AuthenticationTypeKeyBased
-1. Capabilities.CapabilitiesDeviceManagement
-1. Capabilities.CapabilitiesNone
-1. DefaultAction.DefaultActionAllow
-1. DefaultAction.DefaultActionDeny
-1. Encoding.EncodingAvro
-1. Encoding.EncodingAvroDeflate
-1. Encoding.EncodingJSON
-1. EndpointHealthStatus.EndpointHealthStatusDead
-1. EndpointHealthStatus.EndpointHealthStatusDegraded
-1. EndpointHealthStatus.EndpointHealthStatusHealthy
-1. EndpointHealthStatus.EndpointHealthStatusUnhealthy
-1. EndpointHealthStatus.EndpointHealthStatusUnknown
-1. IPFilterActionType.IPFilterActionTypeAccept
-1. IPFilterActionType.IPFilterActionTypeReject
-1. IotHubNameUnavailabilityReason.IotHubNameUnavailabilityReasonAlreadyExists
-1. IotHubNameUnavailabilityReason.IotHubNameUnavailabilityReasonInvalid
-1. IotHubReplicaRoleType.IotHubReplicaRoleTypePrimary
-1. IotHubReplicaRoleType.IotHubReplicaRoleTypeSecondary
-1. IotHubSku.IotHubSkuB1
-1. IotHubSku.IotHubSkuB2
-1. IotHubSku.IotHubSkuB3
-1. IotHubSku.IotHubSkuF1
-1. IotHubSku.IotHubSkuS1
-1. IotHubSku.IotHubSkuS2
-1. IotHubSku.IotHubSkuS3
-1. IotHubSkuTier.IotHubSkuTierBasic
-1. IotHubSkuTier.IotHubSkuTierFree
-1. IotHubSkuTier.IotHubSkuTierStandard
-1. PrivateLinkServiceConnectionStatus.PrivateLinkServiceConnectionStatusApproved
-1. PrivateLinkServiceConnectionStatus.PrivateLinkServiceConnectionStatusDisconnected
-1. PrivateLinkServiceConnectionStatus.PrivateLinkServiceConnectionStatusPending
-1. PrivateLinkServiceConnectionStatus.PrivateLinkServiceConnectionStatusRejected
-1. PublicNetworkAccess.PublicNetworkAccessDisabled
-1. PublicNetworkAccess.PublicNetworkAccessEnabled
-1. RouteErrorSeverity.RouteErrorSeverityError
-1. RouteErrorSeverity.RouteErrorSeverityWarning
-1. TestResultStatus.TestResultStatusFalse
-1. TestResultStatus.TestResultStatusTrue
-1. TestResultStatus.TestResultStatusUndefined
+1. ArmUserIdentity.MarshalJSON() ([]byte, error)
+1. CertificatePropertiesWithNonce.MarshalJSON() ([]byte, error)
+1. ErrorDetails.MarshalJSON() ([]byte, error)
+1. IotHubCapacity.MarshalJSON() ([]byte, error)
+1. IotHubQuotaMetricInfo.MarshalJSON() ([]byte, error)
+1. JobResponse.MarshalJSON() ([]byte, error)
+1. OperationDisplay.MarshalJSON() ([]byte, error)
+1. OperationListResult.MarshalJSON() ([]byte, error)
+1. PrivateEndpoint.MarshalJSON() ([]byte, error)
+1. RegistryStatistics.MarshalJSON() ([]byte, error)

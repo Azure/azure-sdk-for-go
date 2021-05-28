@@ -2383,6 +2383,12 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
 // failed operations. (This also follows the OData error response format.)
 type ErrorResponse struct {
@@ -2396,6 +2402,12 @@ type ErrorResponse struct {
 	Details *[]ErrorResponse `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // FusionAlertRule represents Fusion alert rule.
@@ -2812,6 +2824,12 @@ type IncidentAdditionalData struct {
 	AlertProductNames *[]string `json:"alertProductNames,omitempty"`
 	// Tactics - READ-ONLY; The tactics associated with incident
 	Tactics *[]AttackTactic `json:"tactics,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IncidentAdditionalData.
+func (iad IncidentAdditionalData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IncidentComment represents an incident comment
@@ -4525,6 +4543,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceWithEtag an azure resource object with an Etag property
 type ResourceWithEtag struct {
 	// ID - READ-ONLY; Azure resource Id
@@ -5058,6 +5082,12 @@ type ThreatIntelligence struct {
 	ThreatName *string `json:"threatName,omitempty"`
 	// ThreatType - READ-ONLY; Threat type (e.g. "Botnet")
 	ThreatType *string `json:"threatType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ThreatIntelligence.
+func (ti ThreatIntelligence) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TIDataConnector represents threat intelligence data connector.

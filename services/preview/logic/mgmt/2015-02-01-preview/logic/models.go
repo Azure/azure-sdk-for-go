@@ -1066,6 +1066,12 @@ type WorkflowRunActionProperties struct {
 	OutputsLink *ContentLink `json:"outputsLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for WorkflowRunActionProperties.
+func (wrap WorkflowRunActionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // WorkflowRunFilter ...
 type WorkflowRunFilter struct {
 	// Status - Gets or sets the status of workflow run. Possible values include: 'WorkflowStatusNotSpecified', 'WorkflowStatusPaused', 'WorkflowStatusRunning', 'WorkflowStatusWaiting', 'WorkflowStatusSucceeded', 'WorkflowStatusSkipped', 'WorkflowStatusSuspended', 'WorkflowStatusCancelled', 'WorkflowStatusFailed', 'WorkflowStatusFaulted', 'WorkflowStatusTimedOut', 'WorkflowStatusAborted'
@@ -1285,6 +1291,12 @@ type WorkflowRunTrigger struct {
 	Error interface{} `json:"error,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for WorkflowRunTrigger.
+func (wrt WorkflowRunTrigger) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // WorkflowSecretKeys ...
 type WorkflowSecretKeys struct {
 	autorest.Response `json:"-"`
@@ -1292,6 +1304,12 @@ type WorkflowSecretKeys struct {
 	PrimarySecretKey *string `json:"primarySecretKey,omitempty"`
 	// SecondarySecretKey - READ-ONLY; Gets the secondary secret key.
 	SecondarySecretKey *string `json:"secondarySecretKey,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkflowSecretKeys.
+func (wsk WorkflowSecretKeys) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WorkflowsRunFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -1684,6 +1702,12 @@ type WorkflowTriggerHistoryProperties struct {
 	Run *ResourceReference `json:"run,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for WorkflowTriggerHistoryProperties.
+func (wthp WorkflowTriggerHistoryProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // WorkflowTriggerListResult ...
 type WorkflowTriggerListResult struct {
 	autorest.Response `json:"-"`
@@ -1863,6 +1887,12 @@ type WorkflowTriggerProperties struct {
 	Recurrence *WorkflowTriggerRecurrence `json:"recurrence,omitempty"`
 	// Workflow - READ-ONLY; Gets the reference to workflow.
 	Workflow *ResourceReference `json:"workflow,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkflowTriggerProperties.
+func (wtp WorkflowTriggerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WorkflowTriggerRecurrence ...

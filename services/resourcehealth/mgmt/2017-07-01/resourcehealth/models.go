@@ -252,6 +252,12 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // EmergingIssue on-going emerging issue from azure status.
 type EmergingIssue struct {
 	// RefreshTimestamp - Timestamp for when last time refreshed for ongoing emerging issue.
@@ -514,6 +520,12 @@ type ErrorResponse struct {
 	Details *string `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImpactedRegion object of impacted region.
 type ImpactedRegion struct {
 	// ID - The impacted region id.
@@ -560,6 +572,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RecommendedAction lists actions the user can take based on the current availabilityState of the
 // resource.
 type RecommendedAction struct {
@@ -579,6 +597,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServiceImpactingEvent lists the service impacting events that may be affecting the health of the

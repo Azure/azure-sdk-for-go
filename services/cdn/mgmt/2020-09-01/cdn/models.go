@@ -2044,6 +2044,12 @@ type AFDStateProperties struct {
 	DeploymentStatus DeploymentStatus `json:"deploymentStatus,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AFDStateProperties.
+func (asp AFDStateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CacheExpirationActionParameters defines the parameters for the cache expiration action.
 type CacheExpirationActionParameters struct {
 	OdataType *string `json:"@odata.type,omitempty"`
@@ -2099,6 +2105,12 @@ type CheckNameAvailabilityOutput struct {
 	Reason *string `json:"reason,omitempty"`
 	// Message - READ-ONLY; The detailed error message describing why the name is not available.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityOutput.
+func (cnao CheckNameAvailabilityOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CidrIPAddress CIDR Ip address
@@ -5020,6 +5032,12 @@ type DomainValidationProperties struct {
 	ExpirationDate *string `json:"expirationDate,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DomainValidationProperties.
+func (dvp DomainValidationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // EdgeNode edgenode is a global Point of Presence (POP) location used to deliver CDN content to end users.
 type EdgeNode struct {
 	*EdgeNodeProperties `json:"properties,omitempty"`
@@ -6053,6 +6071,12 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // GeoFilter rules defining user's geo access within a CDN endpoint.
 type GeoFilter struct {
 	// RelativePath - Relative path applicable to geo filter. (e.g. '/mypictures', '/mypicture/kitty.jpg', and etc.)
@@ -6290,6 +6314,12 @@ type ManagedRuleDefinition struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ManagedRuleDefinition.
+func (mrd ManagedRuleDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ManagedRuleGroupDefinition describes a managed rule group.
 type ManagedRuleGroupDefinition struct {
 	// RuleGroupName - READ-ONLY; Name of the managed rule group.
@@ -6298,6 +6328,12 @@ type ManagedRuleGroupDefinition struct {
 	Description *string `json:"description,omitempty"`
 	// Rules - READ-ONLY; List of rules within the managed rule group.
 	Rules *[]ManagedRuleDefinition `json:"rules,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedRuleGroupDefinition.
+func (mrgd ManagedRuleGroupDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ManagedRuleGroupOverride defines a managed rule group override setting.
@@ -6597,6 +6633,12 @@ type ManagedRuleSetDefinitionProperties struct {
 	RuleGroups *[]ManagedRuleGroupDefinition `json:"ruleGroups,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ManagedRuleSetDefinitionProperties.
+func (mrsdp ManagedRuleSetDefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ManagedRuleSetList defines the list of managed rule sets for the policy.
 type ManagedRuleSetList struct {
 	// ManagedRuleSets - List of rule sets.
@@ -6675,6 +6717,12 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 	// Operation - READ-ONLY; Operation type: Read, write, delete, etc.
 	Operation *string `json:"operation,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationsListResult result of the request to list CDN operations. It contains a list of operations and
@@ -8316,6 +8364,12 @@ type ProfileProperties struct {
 	FrontdoorID *string `json:"frontdoorId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProfileProperties.
+func (pp ProfileProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ProfilesCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ProfilesCreateFuture struct {
@@ -8465,6 +8519,12 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PurgeParameters parameters required for content purge.
@@ -8623,6 +8683,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceReference reference to another resource.
 type ResourceReference struct {
 	// ID - Resource ID.
@@ -8670,6 +8736,12 @@ type ResourceUsage struct {
 	CurrentValue *int32 `json:"currentValue,omitempty"`
 	// Limit - READ-ONLY; Quota of the specified resource type.
 	Limit *int32 `json:"limit,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceUsage.
+func (ru ResourceUsage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceUsageListResult output of check resource usage API.
@@ -10054,6 +10126,12 @@ type RuleSetProperties struct {
 	DeploymentStatus DeploymentStatus `json:"deploymentStatus,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RuleSetProperties.
+func (rsp RuleSetProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RuleSetsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type RuleSetsCreateFuture struct {
@@ -11386,11 +11464,23 @@ type SsoURI struct {
 	SsoURIValue *string `json:"ssoUriValue,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SsoURI.
+func (su SsoURI) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SupportedOptimizationTypesListResult the result of the GetSupportedOptimizationTypes API
 type SupportedOptimizationTypesListResult struct {
 	autorest.Response `json:"-"`
 	// SupportedOptimizationTypes - READ-ONLY; Supported optimization types for a profile.
 	SupportedOptimizationTypes *[]OptimizationType `json:"supportedOptimizationTypes,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SupportedOptimizationTypesListResult.
+func (sotlr SupportedOptimizationTypesListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SystemData read only system data
@@ -12066,6 +12156,12 @@ type ValidateCustomDomainOutput struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ValidateCustomDomainOutput.
+func (vcdo ValidateCustomDomainOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ValidateProbeInput input of the validate probe API.
 type ValidateProbeInput struct {
 	// ProbeURL - The probe URL to validate.
@@ -12081,6 +12177,12 @@ type ValidateProbeOutput struct {
 	ErrorCode *string `json:"errorCode,omitempty"`
 	// Message - READ-ONLY; The detailed error message describing why the probe URL is not accepted.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ValidateProbeOutput.
+func (vpo ValidateProbeOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ValidateSecretInput input of the secret to be validated.
@@ -12105,6 +12207,12 @@ type ValidationToken struct {
 	autorest.Response `json:"-"`
 	// Token - READ-ONLY
 	Token *string `json:"token,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ValidationToken.
+func (vt ValidationToken) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WafMetricsResponse waf Metrics Response

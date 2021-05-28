@@ -28,12 +28,24 @@ type ConnectivityCollection struct {
 	Peerings *[]PeeringPolicy `json:"peerings,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ConnectivityCollection.
+func (cc ConnectivityCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorResponse the error response that indicates why an operation has failed.
 type ErrorResponse struct {
 	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Group the Managed Network Group resource
@@ -1374,6 +1386,12 @@ type ResourceProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Etag - READ-ONLY; A unique read-only string that changes whenever the resource is updated.
 	Etag *string `json:"etag,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceProperties.
+func (rp ResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Scope scope of a Managed Network

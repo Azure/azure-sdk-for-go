@@ -30,6 +30,12 @@ type ACL struct {
 	Permission PermissionType `json:"permission,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ACL.
+func (a ACL) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ACLCreateOrUpdateParameters the parameters used to create or update an access control list (ACL) entry.
 type ACLCreateOrUpdateParameters struct {
 	// AceType - the access control list (ACL) entry type. UserObj and GroupObj denote the owning user and group, respectively. Possible values include: 'UserObj', 'GroupObj', 'Other', 'User', 'Group'

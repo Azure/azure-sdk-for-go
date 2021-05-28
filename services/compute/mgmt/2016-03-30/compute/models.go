@@ -377,6 +377,12 @@ type BootDiagnosticsInstanceView struct {
 	SerialConsoleLogBlobURI *string `json:"serialConsoleLogBlobUri,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for BootDiagnosticsInstanceView.
+func (bdiv BootDiagnosticsInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DataDisk describes a data disk.
 type DataDisk struct {
 	// Lun - Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
@@ -399,6 +405,12 @@ type DataDisk struct {
 type DataDiskImage struct {
 	// Lun - READ-ONLY; Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
 	Lun *int32 `json:"lun,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataDiskImage.
+func (ddi DataDiskImage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DiagnosticsProfile specifies the boot diagnostic settings state. <br><br>Minimum api-version:
@@ -751,6 +763,12 @@ type OperationStatusResponse struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// Error - READ-ONLY; Api error
 	Error *APIError `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationStatusResponse.
+func (osr OperationStatusResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OSDisk specifies information about the operating system disk used by the virtual machine. <br><br> For
@@ -2342,6 +2360,12 @@ type VirtualMachineScaleSetInstanceViewStatusesSummary struct {
 	StatusesSummary *[]VirtualMachineStatusCodeCount `json:"statusesSummary,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetInstanceViewStatusesSummary.
+func (vmssivss VirtualMachineScaleSetInstanceViewStatusesSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VirtualMachineScaleSetIPConfiguration describes a virtual machine scale set network profile's IP
 // configuration.
 type VirtualMachineScaleSetIPConfiguration struct {
@@ -3227,6 +3251,12 @@ type VirtualMachineScaleSetSku struct {
 	Capacity *VirtualMachineScaleSetSkuCapacity `json:"capacity,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetSku.
+func (vmsss VirtualMachineScaleSetSku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VirtualMachineScaleSetSkuCapacity describes scaling information of a sku.
 type VirtualMachineScaleSetSkuCapacity struct {
 	// Minimum - READ-ONLY; The minimum capacity.
@@ -3237,6 +3267,12 @@ type VirtualMachineScaleSetSkuCapacity struct {
 	DefaultCapacity *int64 `json:"defaultCapacity,omitempty"`
 	// ScaleType - READ-ONLY; The scale type applicable to the sku. Possible values include: 'VirtualMachineScaleSetSkuScaleTypeAutomatic', 'VirtualMachineScaleSetSkuScaleTypeNone'
 	ScaleType VirtualMachineScaleSetSkuScaleType `json:"scaleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetSkuCapacity.
+func (vmsssc VirtualMachineScaleSetSkuCapacity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualMachineScaleSetsPowerOffFuture an abstraction for monitoring and retrieving the results of a
@@ -3616,6 +3652,12 @@ type VirtualMachineScaleSetVMExtensionsSummary struct {
 	Name *string `json:"name,omitempty"`
 	// StatusesSummary - READ-ONLY; The extensions information.
 	StatusesSummary *[]VirtualMachineStatusCodeCount `json:"statusesSummary,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetVMExtensionsSummary.
+func (vmssves VirtualMachineScaleSetVMExtensionsSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualMachineScaleSetVMInstanceIDs specifies a list of virtual machine instance IDs from the VM scale
@@ -4511,6 +4553,12 @@ type VirtualMachineStatusCodeCount struct {
 	Code *string `json:"code,omitempty"`
 	// Count - READ-ONLY; The number of instances having a particular status code.
 	Count *int32 `json:"count,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineStatusCodeCount.
+func (vmscc VirtualMachineStatusCodeCount) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WindowsConfiguration specifies Windows operating system settings on the virtual machine.

@@ -387,17 +387,17 @@ func PossibleIotHubDataFormatValues() []IotHubDataFormat {
 type Kind string
 
 const (
-	// KindKindDatabase ...
-	KindKindDatabase Kind = "Database"
-	// KindKindReadOnlyFollowing ...
-	KindKindReadOnlyFollowing Kind = "ReadOnlyFollowing"
-	// KindKindReadWrite ...
-	KindKindReadWrite Kind = "ReadWrite"
+	// KindDatabase ...
+	KindDatabase Kind = "Database"
+	// KindReadOnlyFollowing ...
+	KindReadOnlyFollowing Kind = "ReadOnlyFollowing"
+	// KindReadWrite ...
+	KindReadWrite Kind = "ReadWrite"
 )
 
 // PossibleKindValues returns an array of possible values for the Kind const type.
 func PossibleKindValues() []Kind {
-	return []Kind{KindKindDatabase, KindKindReadOnlyFollowing, KindKindReadWrite}
+	return []Kind{KindDatabase, KindReadOnlyFollowing, KindReadWrite}
 }
 
 // KindBasicDataConnection enumerates the values for kind basic data connection.

@@ -308,6 +308,12 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CloudError the error information object.
 type CloudError struct {
 	// Error - The properties that define the error.
@@ -360,6 +366,12 @@ type Message struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Message.
+func (mVar Message) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Operation represents an operation that can be performed on the service.
 type Operation struct {
 	// Name - The name of the operation.
@@ -401,6 +413,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -409,6 +427,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceOperation individual resource operation information.
@@ -568,6 +592,12 @@ type RolloutOperationInfo struct {
 	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RolloutOperationInfo.
+func (roi RolloutOperationInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RolloutProperties the properties that define a rollout.
 type RolloutProperties struct {
 	// BuildVersion - The version of the build being deployed.
@@ -616,6 +646,12 @@ type RolloutPropertiesModel struct {
 	OperationInfo *RolloutOperationInfo `json:"operationInfo,omitempty"`
 	// Services - READ-ONLY; The detailed information on the services being deployed.
 	Services *[]Service `json:"services,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RolloutPropertiesModel.
+func (rpm RolloutPropertiesModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RolloutRequest defines the PUT rollout request body.

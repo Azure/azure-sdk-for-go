@@ -712,7 +712,7 @@ type BasicAlertRule interface {
 // AlertRule alert rule.
 type AlertRule struct {
 	autorest.Response `json:"-"`
-	// Kind - Possible values include: 'KindKindAlertRule', 'KindKindFusion', 'KindKindMicrosoftSecurityIncidentCreation', 'KindKindScheduled'
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
 	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -732,15 +732,15 @@ func unmarshalBasicAlertRule(body []byte) (BasicAlertRule, error) {
 	}
 
 	switch m["kind"] {
-	case string(KindKindFusion):
+	case string(KindFusion):
 		var far FusionAlertRule
 		err := json.Unmarshal(body, &far)
 		return far, err
-	case string(KindKindMicrosoftSecurityIncidentCreation):
+	case string(KindMicrosoftSecurityIncidentCreation):
 		var msicar MicrosoftSecurityIncidentCreationAlertRule
 		err := json.Unmarshal(body, &msicar)
 		return msicar, err
-	case string(KindKindScheduled):
+	case string(KindScheduled):
 		var sar ScheduledAlertRule
 		err := json.Unmarshal(body, &sar)
 		return sar, err
@@ -771,7 +771,7 @@ func unmarshalBasicAlertRuleArray(body []byte) ([]BasicAlertRule, error) {
 
 // MarshalJSON is the custom marshaler for AlertRule.
 func (ar AlertRule) MarshalJSON() ([]byte, error) {
-	ar.Kind = KindKindAlertRule
+	ar.Kind = KindAlertRule
 	objectMap := make(map[string]interface{})
 	if ar.Kind != "" {
 		objectMap["kind"] = ar.Kind
@@ -2389,6 +2389,12 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
 // failed operations. (This also follows the OData error response format.)
 type ErrorResponse struct {
@@ -2404,11 +2410,17 @@ type ErrorResponse struct {
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // FusionAlertRule represents Fusion alert rule.
 type FusionAlertRule struct {
 	// FusionAlertRuleProperties - Fusion alert rule properties
 	*FusionAlertRuleProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindKindAlertRule', 'KindKindFusion', 'KindKindMicrosoftSecurityIncidentCreation', 'KindKindScheduled'
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
 	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -2422,7 +2434,7 @@ type FusionAlertRule struct {
 
 // MarshalJSON is the custom marshaler for FusionAlertRule.
 func (far FusionAlertRule) MarshalJSON() ([]byte, error) {
-	far.Kind = KindKindFusion
+	far.Kind = KindFusion
 	objectMap := make(map[string]interface{})
 	if far.FusionAlertRuleProperties != nil {
 		objectMap["properties"] = far.FusionAlertRuleProperties
@@ -2818,6 +2830,12 @@ type IncidentAdditionalData struct {
 	AlertProductNames *[]string `json:"alertProductNames,omitempty"`
 	// Tactics - READ-ONLY; The tactics associated with incident
 	Tactics *[]AttackTactic `json:"tactics,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IncidentAdditionalData.
+func (iad IncidentAdditionalData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IncidentComment represents an incident comment
@@ -3698,7 +3716,7 @@ type MDATPDataConnectorProperties struct {
 type MicrosoftSecurityIncidentCreationAlertRule struct {
 	// MicrosoftSecurityIncidentCreationAlertRuleProperties - MicrosoftSecurityIncidentCreation rule properties
 	*MicrosoftSecurityIncidentCreationAlertRuleProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindKindAlertRule', 'KindKindFusion', 'KindKindMicrosoftSecurityIncidentCreation', 'KindKindScheduled'
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
 	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -3712,7 +3730,7 @@ type MicrosoftSecurityIncidentCreationAlertRule struct {
 
 // MarshalJSON is the custom marshaler for MicrosoftSecurityIncidentCreationAlertRule.
 func (msicar MicrosoftSecurityIncidentCreationAlertRule) MarshalJSON() ([]byte, error) {
-	msicar.Kind = KindKindMicrosoftSecurityIncidentCreation
+	msicar.Kind = KindMicrosoftSecurityIncidentCreation
 	objectMap := make(map[string]interface{})
 	if msicar.MicrosoftSecurityIncidentCreationAlertRuleProperties != nil {
 		objectMap["properties"] = msicar.MicrosoftSecurityIncidentCreationAlertRuleProperties
@@ -4541,6 +4559,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceWithEtag an azure resource object with an Etag property
 type ResourceWithEtag struct {
 	// ID - READ-ONLY; Azure resource Id
@@ -4566,7 +4590,7 @@ func (rwe ResourceWithEtag) MarshalJSON() ([]byte, error) {
 type ScheduledAlertRule struct {
 	// ScheduledAlertRuleProperties - Scheduled alert rule properties
 	*ScheduledAlertRuleProperties `json:"properties,omitempty"`
-	// Kind - Possible values include: 'KindKindAlertRule', 'KindKindFusion', 'KindKindMicrosoftSecurityIncidentCreation', 'KindKindScheduled'
+	// Kind - Possible values include: 'KindAlertRule', 'KindFusion', 'KindMicrosoftSecurityIncidentCreation', 'KindScheduled'
 	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Azure resource Id
 	ID *string `json:"id,omitempty"`
@@ -4580,7 +4604,7 @@ type ScheduledAlertRule struct {
 
 // MarshalJSON is the custom marshaler for ScheduledAlertRule.
 func (sar ScheduledAlertRule) MarshalJSON() ([]byte, error) {
-	sar.Kind = KindKindScheduled
+	sar.Kind = KindScheduled
 	objectMap := make(map[string]interface{})
 	if sar.ScheduledAlertRuleProperties != nil {
 		objectMap["properties"] = sar.ScheduledAlertRuleProperties
@@ -5074,6 +5098,12 @@ type ThreatIntelligence struct {
 	ThreatName *string `json:"threatName,omitempty"`
 	// ThreatType - READ-ONLY; Threat type (e.g. "Botnet")
 	ThreatType *string `json:"threatType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ThreatIntelligence.
+func (ti ThreatIntelligence) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TIDataConnector represents threat intelligence data connector.

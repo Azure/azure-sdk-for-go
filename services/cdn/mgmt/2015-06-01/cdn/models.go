@@ -1622,6 +1622,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Sku the SKU (pricing tier) of the CDN profile.
 type Sku struct {
 	// Name - Name of the pricing tier. Possible values include: 'Standard', 'Premium'

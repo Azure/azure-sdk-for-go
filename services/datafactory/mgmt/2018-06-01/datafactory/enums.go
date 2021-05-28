@@ -10,36 +10,36 @@ package datafactory
 type AuthenticationType string
 
 const (
-	// AuthenticationTypeAuthenticationTypeAnonymous ...
-	AuthenticationTypeAuthenticationTypeAnonymous AuthenticationType = "Anonymous"
-	// AuthenticationTypeAuthenticationTypeBasic ...
-	AuthenticationTypeAuthenticationTypeBasic AuthenticationType = "Basic"
-	// AuthenticationTypeAuthenticationTypeClientCertificate ...
-	AuthenticationTypeAuthenticationTypeClientCertificate AuthenticationType = "ClientCertificate"
-	// AuthenticationTypeAuthenticationTypeWebLinkedServiceTypeProperties ...
-	AuthenticationTypeAuthenticationTypeWebLinkedServiceTypeProperties AuthenticationType = "WebLinkedServiceTypeProperties"
+	// AuthenticationTypeAnonymous ...
+	AuthenticationTypeAnonymous AuthenticationType = "Anonymous"
+	// AuthenticationTypeBasic ...
+	AuthenticationTypeBasic AuthenticationType = "Basic"
+	// AuthenticationTypeClientCertificate ...
+	AuthenticationTypeClientCertificate AuthenticationType = "ClientCertificate"
+	// AuthenticationTypeWebLinkedServiceTypeProperties ...
+	AuthenticationTypeWebLinkedServiceTypeProperties AuthenticationType = "WebLinkedServiceTypeProperties"
 )
 
 // PossibleAuthenticationTypeValues returns an array of possible values for the AuthenticationType const type.
 func PossibleAuthenticationTypeValues() []AuthenticationType {
-	return []AuthenticationType{AuthenticationTypeAuthenticationTypeAnonymous, AuthenticationTypeAuthenticationTypeBasic, AuthenticationTypeAuthenticationTypeClientCertificate, AuthenticationTypeAuthenticationTypeWebLinkedServiceTypeProperties}
+	return []AuthenticationType{AuthenticationTypeAnonymous, AuthenticationTypeBasic, AuthenticationTypeClientCertificate, AuthenticationTypeWebLinkedServiceTypeProperties}
 }
 
 // AuthorizationType enumerates the values for authorization type.
 type AuthorizationType string
 
 const (
-	// AuthorizationTypeAuthorizationTypeKey ...
-	AuthorizationTypeAuthorizationTypeKey AuthorizationType = "Key"
-	// AuthorizationTypeAuthorizationTypeLinkedIntegrationRuntimeType ...
-	AuthorizationTypeAuthorizationTypeLinkedIntegrationRuntimeType AuthorizationType = "LinkedIntegrationRuntimeType"
-	// AuthorizationTypeAuthorizationTypeRBAC ...
-	AuthorizationTypeAuthorizationTypeRBAC AuthorizationType = "RBAC"
+	// AuthorizationTypeKey ...
+	AuthorizationTypeKey AuthorizationType = "Key"
+	// AuthorizationTypeLinkedIntegrationRuntimeType ...
+	AuthorizationTypeLinkedIntegrationRuntimeType AuthorizationType = "LinkedIntegrationRuntimeType"
+	// AuthorizationTypeRBAC ...
+	AuthorizationTypeRBAC AuthorizationType = "RBAC"
 )
 
 // PossibleAuthorizationTypeValues returns an array of possible values for the AuthorizationType const type.
 func PossibleAuthorizationTypeValues() []AuthorizationType {
-	return []AuthorizationType{AuthorizationTypeAuthorizationTypeKey, AuthorizationTypeAuthorizationTypeLinkedIntegrationRuntimeType, AuthorizationTypeAuthorizationTypeRBAC}
+	return []AuthorizationType{AuthorizationTypeKey, AuthorizationTypeLinkedIntegrationRuntimeType, AuthorizationTypeRBAC}
 }
 
 // AvroCompressionCodec enumerates the values for avro compression codec.
@@ -1539,17 +1539,17 @@ func PossibleTumblingWindowFrequencyValues() []TumblingWindowFrequency {
 type Type string
 
 const (
-	// TypeTypeAzureKeyVaultSecret ...
-	TypeTypeAzureKeyVaultSecret Type = "AzureKeyVaultSecret"
-	// TypeTypeSecretBase ...
-	TypeTypeSecretBase Type = "SecretBase"
-	// TypeTypeSecureString ...
-	TypeTypeSecureString Type = "SecureString"
+	// TypeAzureKeyVaultSecret ...
+	TypeAzureKeyVaultSecret Type = "AzureKeyVaultSecret"
+	// TypeSecretBase ...
+	TypeSecretBase Type = "SecretBase"
+	// TypeSecureString ...
+	TypeSecureString Type = "SecureString"
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{TypeTypeAzureKeyVaultSecret, TypeTypeSecretBase, TypeTypeSecureString}
+	return []Type{TypeAzureKeyVaultSecret, TypeSecretBase, TypeSecureString}
 }
 
 // TypeBasicActivity enumerates the values for type basic activity.

@@ -1,201 +1,40 @@
 # Change History
 
-## Breaking Changes
-
-### Removed Constants
-
-1. AccessTier.Cool
-1. AccessTier.Hot
-1. AccountStatus.Available
-1. AccountStatus.Unavailable
-1. Action.Allow
-1. Action1.Acquire
-1. Action1.Break
-1. Action1.Change
-1. Action1.Release
-1. Action1.Renew
-1. BlobRestoreProgressStatus.Complete
-1. BlobRestoreProgressStatus.Failed
-1. BlobRestoreProgressStatus.InProgress
-1. Bypass.AzureServices
-1. Bypass.Logging
-1. Bypass.Metrics
-1. Bypass.None
-1. CreatedByType.Application
-1. CreatedByType.Key
-1. CreatedByType.ManagedIdentity
-1. CreatedByType.User
-1. EnabledProtocols.NFS
-1. EnabledProtocols.SMB
-1. EncryptionScopeSource.MicrosoftKeyVault
-1. EncryptionScopeSource.MicrosoftStorage
-1. EncryptionScopeState.Disabled
-1. EncryptionScopeState.Enabled
-1. ExtendedLocationTypes.EdgeZone
-1. GetShareExpand.Stats
-1. HTTPProtocol.HTTPS
-1. HTTPProtocol.Httpshttp
-1. ImmutabilityPolicyState.Locked
-1. ImmutabilityPolicyState.Unlocked
-1. ImmutabilityPolicyUpdateType.Extend
-1. ImmutabilityPolicyUpdateType.Lock
-1. ImmutabilityPolicyUpdateType.Put
-1. KeyPermission.Full
-1. KeyPermission.Read
-1. Kind.BlobStorage
-1. Kind.BlockBlobStorage
-1. Kind.FileStorage
-1. Kind.Storage
-1. Kind.StorageV2
-1. LeaseDuration.Fixed
-1. LeaseDuration.Infinite
-1. ListContainersInclude.Deleted
-1. ListKeyExpand.Kerb
-1. MinimumTLSVersion.TLS10
-1. MinimumTLSVersion.TLS11
-1. MinimumTLSVersion.TLS12
-1. Name.AccessTimeTracking
-1. Permissions.A
-1. Permissions.C
-1. Permissions.D
-1. Permissions.L
-1. Permissions.P
-1. Permissions.R
-1. Permissions.U
-1. Permissions.W
-1. PrivateEndpointServiceConnectionStatus.Approved
-1. PrivateEndpointServiceConnectionStatus.Pending
-1. PrivateEndpointServiceConnectionStatus.Rejected
-1. ProvisioningState.Creating
-1. ProvisioningState.ResolvingDNS
-1. ProvisioningState.Succeeded
-1. PutSharesExpand.Snapshots
-1. Reason.AccountNameInvalid
-1. Reason.AlreadyExists
-1. ReasonCode.NotAvailableForSubscription
-1. ReasonCode.QuotaID
-1. RootSquashType.AllSquash
-1. RootSquashType.NoRootSquash
-1. RootSquashType.RootSquash
-1. RoutingChoice.InternetRouting
-1. RoutingChoice.MicrosoftRouting
-1. Services.B
-1. Services.F
-1. Services.Q
-1. Services.T
-1. SkuName.PremiumLRS
-1. SkuName.PremiumZRS
-1. SkuName.StandardGRS
-1. SkuName.StandardGZRS
-1. SkuName.StandardLRS
-1. SkuName.StandardRAGRS
-1. SkuName.StandardRAGZRS
-1. SkuName.StandardZRS
-1. SkuTier.Premium
-1. SkuTier.Standard
-1. UsageUnit.Bytes
-1. UsageUnit.BytesPerSecond
-1. UsageUnit.Count
-1. UsageUnit.CountsPerSecond
-1. UsageUnit.Percent
-1. UsageUnit.Seconds
-
 ## Additive Changes
 
-### New Constants
+### New Funcs
 
-1. AccessTier.AccessTierCool
-1. AccessTier.AccessTierHot
-1. AccountStatus.AccountStatusAvailable
-1. AccountStatus.AccountStatusUnavailable
-1. Action.ActionAllow
-1. Action1.Action1Acquire
-1. Action1.Action1Break
-1. Action1.Action1Change
-1. Action1.Action1Release
-1. Action1.Action1Renew
-1. BlobRestoreProgressStatus.BlobRestoreProgressStatusComplete
-1. BlobRestoreProgressStatus.BlobRestoreProgressStatusFailed
-1. BlobRestoreProgressStatus.BlobRestoreProgressStatusInProgress
-1. Bypass.BypassAzureServices
-1. Bypass.BypassLogging
-1. Bypass.BypassMetrics
-1. Bypass.BypassNone
-1. CreatedByType.CreatedByTypeApplication
-1. CreatedByType.CreatedByTypeKey
-1. CreatedByType.CreatedByTypeManagedIdentity
-1. CreatedByType.CreatedByTypeUser
-1. EnabledProtocols.EnabledProtocolsNFS
-1. EnabledProtocols.EnabledProtocolsSMB
-1. EncryptionScopeSource.EncryptionScopeSourceMicrosoftKeyVault
-1. EncryptionScopeSource.EncryptionScopeSourceMicrosoftStorage
-1. EncryptionScopeState.EncryptionScopeStateDisabled
-1. EncryptionScopeState.EncryptionScopeStateEnabled
-1. ExtendedLocationTypes.ExtendedLocationTypesEdgeZone
-1. GetShareExpand.GetShareExpandStats
-1. HTTPProtocol.HTTPProtocolHTTPS
-1. HTTPProtocol.HTTPProtocolHttpshttp
-1. ImmutabilityPolicyState.ImmutabilityPolicyStateLocked
-1. ImmutabilityPolicyState.ImmutabilityPolicyStateUnlocked
-1. ImmutabilityPolicyUpdateType.ImmutabilityPolicyUpdateTypeExtend
-1. ImmutabilityPolicyUpdateType.ImmutabilityPolicyUpdateTypeLock
-1. ImmutabilityPolicyUpdateType.ImmutabilityPolicyUpdateTypePut
-1. KeyPermission.KeyPermissionFull
-1. KeyPermission.KeyPermissionRead
-1. Kind.KindBlobStorage
-1. Kind.KindBlockBlobStorage
-1. Kind.KindFileStorage
-1. Kind.KindStorage
-1. Kind.KindStorageV2
-1. LeaseDuration.LeaseDurationFixed
-1. LeaseDuration.LeaseDurationInfinite
-1. ListContainersInclude.ListContainersIncludeDeleted
-1. ListKeyExpand.ListKeyExpandKerb
-1. MinimumTLSVersion.MinimumTLSVersionTLS10
-1. MinimumTLSVersion.MinimumTLSVersionTLS11
-1. MinimumTLSVersion.MinimumTLSVersionTLS12
-1. Name.NameAccessTimeTracking
-1. Permissions.PermissionsA
-1. Permissions.PermissionsC
-1. Permissions.PermissionsD
-1. Permissions.PermissionsL
-1. Permissions.PermissionsP
-1. Permissions.PermissionsR
-1. Permissions.PermissionsU
-1. Permissions.PermissionsW
-1. PrivateEndpointServiceConnectionStatus.PrivateEndpointServiceConnectionStatusApproved
-1. PrivateEndpointServiceConnectionStatus.PrivateEndpointServiceConnectionStatusPending
-1. PrivateEndpointServiceConnectionStatus.PrivateEndpointServiceConnectionStatusRejected
-1. ProvisioningState.ProvisioningStateCreating
-1. ProvisioningState.ProvisioningStateResolvingDNS
-1. ProvisioningState.ProvisioningStateSucceeded
-1. PutSharesExpand.PutSharesExpandSnapshots
-1. Reason.ReasonAccountNameInvalid
-1. Reason.ReasonAlreadyExists
-1. ReasonCode.ReasonCodeNotAvailableForSubscription
-1. ReasonCode.ReasonCodeQuotaID
-1. RootSquashType.RootSquashTypeAllSquash
-1. RootSquashType.RootSquashTypeNoRootSquash
-1. RootSquashType.RootSquashTypeRootSquash
-1. RoutingChoice.RoutingChoiceInternetRouting
-1. RoutingChoice.RoutingChoiceMicrosoftRouting
-1. Services.ServicesB
-1. Services.ServicesF
-1. Services.ServicesQ
-1. Services.ServicesT
-1. SkuName.SkuNamePremiumLRS
-1. SkuName.SkuNamePremiumZRS
-1. SkuName.SkuNameStandardGRS
-1. SkuName.SkuNameStandardGZRS
-1. SkuName.SkuNameStandardLRS
-1. SkuName.SkuNameStandardRAGRS
-1. SkuName.SkuNameStandardRAGZRS
-1. SkuName.SkuNameStandardZRS
-1. SkuTier.SkuTierPremium
-1. SkuTier.SkuTierStandard
-1. UsageUnit.UsageUnitBytes
-1. UsageUnit.UsageUnitBytesPerSecond
-1. UsageUnit.UsageUnitCount
-1. UsageUnit.UsageUnitCountsPerSecond
-1. UsageUnit.UsageUnitPercent
-1. UsageUnit.UsageUnitSeconds
+1. AccountInternetEndpoints.MarshalJSON() ([]byte, error)
+1. AccountKey.MarshalJSON() ([]byte, error)
+1. AccountListKeysResult.MarshalJSON() ([]byte, error)
+1. AccountListResult.MarshalJSON() ([]byte, error)
+1. AccountMicrosoftEndpoints.MarshalJSON() ([]byte, error)
+1. AzureEntityResource.MarshalJSON() ([]byte, error)
+1. BlobRestoreStatus.MarshalJSON() ([]byte, error)
+1. BlobServiceItems.MarshalJSON() ([]byte, error)
+1. CheckNameAvailabilityResult.MarshalJSON() ([]byte, error)
+1. DeletedAccountListResult.MarshalJSON() ([]byte, error)
+1. DeletedAccountProperties.MarshalJSON() ([]byte, error)
+1. EncryptionScopeListResult.MarshalJSON() ([]byte, error)
+1. FileServiceItems.MarshalJSON() ([]byte, error)
+1. FileShareItems.MarshalJSON() ([]byte, error)
+1. GeoReplicationStats.MarshalJSON() ([]byte, error)
+1. ListAccountSasResponse.MarshalJSON() ([]byte, error)
+1. ListBlobInventoryPolicy.MarshalJSON() ([]byte, error)
+1. ListContainerItems.MarshalJSON() ([]byte, error)
+1. ListQueueResource.MarshalJSON() ([]byte, error)
+1. ListQueueServices.MarshalJSON() ([]byte, error)
+1. ListServiceSasResponse.MarshalJSON() ([]byte, error)
+1. ListTableResource.MarshalJSON() ([]byte, error)
+1. ListTableServices.MarshalJSON() ([]byte, error)
+1. PrivateEndpoint.MarshalJSON() ([]byte, error)
+1. ProxyResource.MarshalJSON() ([]byte, error)
+1. Resource.MarshalJSON() ([]byte, error)
+1. SKUCapability.MarshalJSON() ([]byte, error)
+1. SkuListResult.MarshalJSON() ([]byte, error)
+1. TableProperties.MarshalJSON() ([]byte, error)
+1. TagProperty.MarshalJSON() ([]byte, error)
+1. UpdateHistoryProperty.MarshalJSON() ([]byte, error)
+1. Usage.MarshalJSON() ([]byte, error)
+1. UsageName.MarshalJSON() ([]byte, error)
+1. UserAssignedIdentity.MarshalJSON() ([]byte, error)

@@ -7,6 +7,7 @@ package prediction
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/gofrs/uuid"
@@ -50,6 +51,12 @@ type ImagePrediction struct {
 	Predictions *[]Model `json:"predictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImagePrediction.
+func (IP ImagePrediction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImageURL image url.
 type ImageURL struct {
 	// URL - Url of the image.
@@ -68,4 +75,10 @@ type Model struct {
 	BoundingBox *BoundingBox `json:"boundingBox,omitempty"`
 	// TagType - READ-ONLY; Type of the predicted tag. Possible values include: 'Regular', 'Negative', 'GeneralProduct'
 	TagType TagType `json:"tagType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Model.
+func (mVar Model) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

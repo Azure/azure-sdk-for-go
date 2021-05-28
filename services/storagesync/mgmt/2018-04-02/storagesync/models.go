@@ -43,6 +43,12 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BackupRequest backup request
 type BackupRequest struct {
 	// AzureFileShare - Azure File Share.
@@ -66,6 +72,12 @@ type CheckNameAvailabilityResult struct {
 	Reason NameAvailabilityReason `json:"reason,omitempty"`
 	// Message - READ-ONLY; Gets an error message explaining the Reason value in more detail.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityResult.
+func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CloudEndpoint cloud Endpoint object.
@@ -768,6 +780,12 @@ type PostBackupResponseProperties struct {
 	CloudEndpointName *string `json:"cloudEndpointName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PostBackupResponseProperties.
+func (pbrp PostBackupResponseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PostRestoreRequest post Restore Request
 type PostRestoreRequest struct {
 	// Partition - Post Restore partition.
@@ -819,6 +837,12 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RecallActionParameters the parameters used when calling recall action on server endpoint.
@@ -1126,6 +1150,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourcesMoveInfo resource Move Info.
@@ -1691,6 +1721,12 @@ type ServiceProperties struct {
 	StorageSyncServiceStatus *int32 `json:"storageSyncServiceStatus,omitempty"`
 	// StorageSyncServiceUID - READ-ONLY; Storage Sync service Uid
 	StorageSyncServiceUID *string `json:"storageSyncServiceUid,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceProperties.
+func (sp ServiceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServiceUpdateParameters parameters for updating an Storage sync service.

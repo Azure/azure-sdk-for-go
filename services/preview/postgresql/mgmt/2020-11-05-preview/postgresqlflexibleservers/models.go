@@ -32,6 +32,12 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CapabilitiesListResult location capability
 type CapabilitiesListResult struct {
 	autorest.Response `json:"-"`
@@ -39,6 +45,12 @@ type CapabilitiesListResult struct {
 	Value *[]CapabilityProperties `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CapabilitiesListResult.
+func (clr CapabilitiesListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CapabilitiesListResultIterator provides access to a complete listing of CapabilityProperties values.
@@ -197,6 +209,12 @@ type CapabilityProperties struct {
 	Zone *string `json:"zone,omitempty"`
 	// SupportedFlexibleServerEditions - READ-ONLY
 	SupportedFlexibleServerEditions *[]ServerEditionCapability `json:"supportedFlexibleServerEditions,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CapabilityProperties.
+func (cp CapabilityProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CloudError an error response from the Batch service.
@@ -835,12 +853,24 @@ type DelegatedSubnetUsage struct {
 	Usage *int64 `json:"usage,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DelegatedSubnetUsage.
+func (dsu DelegatedSubnetUsage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorAdditionalInfo the resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// Type - READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty"`
 	// Info - READ-ONLY; The additional info.
 	Info interface{} `json:"info,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
@@ -856,6 +886,12 @@ type ErrorResponse struct {
 	Details *[]ErrorResponse `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // FirewallRule represents a server firewall rule.
@@ -1265,6 +1301,12 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (od OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult a list of resource provider operations.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
@@ -1300,6 +1342,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1308,6 +1356,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceModelWithAllowedPropertySet the resource model definition containing the full set of allowed
@@ -1540,6 +1594,12 @@ type ServerEditionCapability struct {
 	SupportedStorageEditions *[]StorageEditionCapability `json:"supportedStorageEditions,omitempty"`
 	// SupportedServerVersions - READ-ONLY
 	SupportedServerVersions *[]ServerVersionCapability `json:"supportedServerVersions,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerEditionCapability.
+func (sec ServerEditionCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServerForUpdate represents a server to be updated.
@@ -2126,6 +2186,12 @@ type ServerVersionCapability struct {
 	SupportedVcores *[]VcoreCapability `json:"supportedVcores,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ServerVersionCapability.
+func (svc ServerVersionCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Sku sku information related properties of a server.
 type Sku struct {
 	// Name - The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.
@@ -2142,6 +2208,12 @@ type StorageEditionCapability struct {
 	SupportedStorageMB *[]StorageMBCapability `json:"supportedStorageMB,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StorageEditionCapability.
+func (sec StorageEditionCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // StorageMBCapability storage size in MB capability
 type StorageMBCapability struct {
 	// Name - READ-ONLY; storage MB name
@@ -2150,6 +2222,12 @@ type StorageMBCapability struct {
 	SupportedIops *int64 `json:"supportedIops,omitempty"`
 	// StorageSizeMB - READ-ONLY; storage size in MB
 	StorageSizeMB *int64 `json:"storageSizeMB,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StorageMBCapability.
+func (smc StorageMBCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StorageProfile storage Profile properties of a server
@@ -2199,6 +2277,12 @@ type VcoreCapability struct {
 	SupportedMemoryPerVcoreMB *int64 `json:"supportedMemoryPerVcoreMB,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VcoreCapability.
+func (vc VcoreCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VirtualNetworkSubnetUsageParameter virtual network subnet usage parameter
 type VirtualNetworkSubnetUsageParameter struct {
 	// VirtualNetworkArmResourceID - Virtual network resource id.
@@ -2210,4 +2294,10 @@ type VirtualNetworkSubnetUsageResult struct {
 	autorest.Response `json:"-"`
 	// DelegatedSubnetsUsage - READ-ONLY
 	DelegatedSubnetsUsage *[]DelegatedSubnetUsage `json:"delegatedSubnetsUsage,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualNetworkSubnetUsageResult.
+func (vnsur VirtualNetworkSubnetUsageResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

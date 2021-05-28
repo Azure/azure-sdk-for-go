@@ -256,6 +256,12 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AzureResourceSku azure resource SKU definition.
 type AzureResourceSku struct {
 	// ResourceType - Resource Namespace and Type.
@@ -1251,7 +1257,7 @@ type Database struct {
 	autorest.Response `json:"-"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// Kind - Possible values include: 'KindKindDatabase', 'KindKindReadWrite', 'KindKindReadOnlyFollowing'
+	// Kind - Possible values include: 'KindDatabase', 'KindReadWrite', 'KindReadOnlyFollowing'
 	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -1269,11 +1275,11 @@ func unmarshalBasicDatabase(body []byte) (BasicDatabase, error) {
 	}
 
 	switch m["kind"] {
-	case string(KindKindReadWrite):
+	case string(KindReadWrite):
 		var rwd ReadWriteDatabase
 		err := json.Unmarshal(body, &rwd)
 		return rwd, err
-	case string(KindKindReadOnlyFollowing):
+	case string(KindReadOnlyFollowing):
 		var rofd ReadOnlyFollowingDatabase
 		err := json.Unmarshal(body, &rofd)
 		return rofd, err
@@ -1304,7 +1310,7 @@ func unmarshalBasicDatabaseArray(body []byte) ([]BasicDatabase, error) {
 
 // MarshalJSON is the custom marshaler for Database.
 func (d Database) MarshalJSON() ([]byte, error) {
-	d.Kind = KindKindDatabase
+	d.Kind = KindDatabase
 	objectMap := make(map[string]interface{})
 	if d.Location != nil {
 		objectMap["location"] = d.Location
@@ -2517,6 +2523,12 @@ type IdentityUserAssignedIdentitiesValue struct {
 	ClientID *string `json:"clientId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IdentityUserAssignedIdentitiesValue.
+func (iAiv IdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // IotHubConnectionProperties class representing the Kusto Iot hub connection properties.
 type IotHubConnectionProperties struct {
 	// IotHubResourceID - The resource ID of the Iot hub to be used to create a data connection.
@@ -3041,13 +3053,19 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ReadOnlyFollowingDatabase class representing a read only following database.
 type ReadOnlyFollowingDatabase struct {
 	// ReadOnlyFollowingDatabaseProperties - The database properties.
 	*ReadOnlyFollowingDatabaseProperties `json:"properties,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// Kind - Possible values include: 'KindKindDatabase', 'KindKindReadWrite', 'KindKindReadOnlyFollowing'
+	// Kind - Possible values include: 'KindDatabase', 'KindReadWrite', 'KindReadOnlyFollowing'
 	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -3059,7 +3077,7 @@ type ReadOnlyFollowingDatabase struct {
 
 // MarshalJSON is the custom marshaler for ReadOnlyFollowingDatabase.
 func (rofd ReadOnlyFollowingDatabase) MarshalJSON() ([]byte, error) {
-	rofd.Kind = KindKindReadOnlyFollowing
+	rofd.Kind = KindReadOnlyFollowing
 	objectMap := make(map[string]interface{})
 	if rofd.ReadOnlyFollowingDatabaseProperties != nil {
 		objectMap["properties"] = rofd.ReadOnlyFollowingDatabaseProperties
@@ -3201,7 +3219,7 @@ type ReadWriteDatabase struct {
 	*ReadWriteDatabaseProperties `json:"properties,omitempty"`
 	// Location - Resource location.
 	Location *string `json:"location,omitempty"`
-	// Kind - Possible values include: 'KindKindDatabase', 'KindKindReadWrite', 'KindKindReadOnlyFollowing'
+	// Kind - Possible values include: 'KindDatabase', 'KindReadWrite', 'KindReadOnlyFollowing'
 	Kind Kind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -3213,7 +3231,7 @@ type ReadWriteDatabase struct {
 
 // MarshalJSON is the custom marshaler for ReadWriteDatabase.
 func (rwd ReadWriteDatabase) MarshalJSON() ([]byte, error) {
-	rwd.Kind = KindKindReadWrite
+	rwd.Kind = KindReadWrite
 	objectMap := make(map[string]interface{})
 	if rwd.ReadWriteDatabaseProperties != nil {
 		objectMap["properties"] = rwd.ReadWriteDatabaseProperties
@@ -3356,6 +3374,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Script class representing a database script.
@@ -3610,11 +3634,23 @@ type SkuDescription struct {
 	Restrictions *[]interface{} `json:"restrictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SkuDescription.
+func (sd SkuDescription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuDescriptionList the list of the EngagementFabric SKU descriptions
 type SkuDescriptionList struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; SKU descriptions
 	Value *[]SkuDescription `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuDescriptionList.
+func (sdl SkuDescriptionList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SkuLocationInfoItem the locations and zones info for SKU.

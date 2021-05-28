@@ -196,6 +196,12 @@ type OperationDisplayValue struct {
 	Provider *string `json:"provider,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplayValue.
+func (odv OperationDisplayValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult result of a request to list all operations supported by Microsoft.DevOps resource
 // provider.
 type OperationListResult struct {

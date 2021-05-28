@@ -4187,6 +4187,12 @@ type RankingRankingResponse struct {
 	Sidebar *RankingRankingGroup `json:"sidebar,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RankingRankingResponse.
+func (rrr RankingRankingResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RelatedSearchesRelatedSearchAnswer defines a list of related queries made by others.
 type RelatedSearchesRelatedSearchAnswer struct {
 	// Value - A list of related queries that were made by others.
@@ -7282,6 +7288,12 @@ type WebMetaTag struct {
 	Name *string `json:"name,omitempty"`
 	// Content - READ-ONLY; The name of the metadata.
 	Content *string `json:"content,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WebMetaTag.
+func (wmt WebMetaTag) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WebPage defines a webpage that is relevant to the query.

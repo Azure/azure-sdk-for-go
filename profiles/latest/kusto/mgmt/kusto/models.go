@@ -202,9 +202,9 @@ const (
 type Kind = original.Kind
 
 const (
-	KindKindDatabase          Kind = original.KindKindDatabase
-	KindKindReadOnlyFollowing Kind = original.KindKindReadOnlyFollowing
-	KindKindReadWrite         Kind = original.KindKindReadWrite
+	KindDatabase          Kind = original.KindDatabase
+	KindReadOnlyFollowing Kind = original.KindReadOnlyFollowing
+	KindReadWrite         Kind = original.KindReadWrite
 )
 
 type KindBasicDataConnection = original.KindBasicDataConnection

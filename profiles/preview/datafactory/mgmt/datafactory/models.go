@@ -21,18 +21,18 @@ const (
 type AuthenticationType = original.AuthenticationType
 
 const (
-	AuthenticationTypeAuthenticationTypeAnonymous                      AuthenticationType = original.AuthenticationTypeAuthenticationTypeAnonymous
-	AuthenticationTypeAuthenticationTypeBasic                          AuthenticationType = original.AuthenticationTypeAuthenticationTypeBasic
-	AuthenticationTypeAuthenticationTypeClientCertificate              AuthenticationType = original.AuthenticationTypeAuthenticationTypeClientCertificate
-	AuthenticationTypeAuthenticationTypeWebLinkedServiceTypeProperties AuthenticationType = original.AuthenticationTypeAuthenticationTypeWebLinkedServiceTypeProperties
+	AuthenticationTypeAnonymous                      AuthenticationType = original.AuthenticationTypeAnonymous
+	AuthenticationTypeBasic                          AuthenticationType = original.AuthenticationTypeBasic
+	AuthenticationTypeClientCertificate              AuthenticationType = original.AuthenticationTypeClientCertificate
+	AuthenticationTypeWebLinkedServiceTypeProperties AuthenticationType = original.AuthenticationTypeWebLinkedServiceTypeProperties
 )
 
 type AuthorizationType = original.AuthorizationType
 
 const (
-	AuthorizationTypeAuthorizationTypeKey                          AuthorizationType = original.AuthorizationTypeAuthorizationTypeKey
-	AuthorizationTypeAuthorizationTypeLinkedIntegrationRuntimeType AuthorizationType = original.AuthorizationTypeAuthorizationTypeLinkedIntegrationRuntimeType
-	AuthorizationTypeAuthorizationTypeRBAC                         AuthorizationType = original.AuthorizationTypeAuthorizationTypeRBAC
+	AuthorizationTypeKey                          AuthorizationType = original.AuthorizationTypeKey
+	AuthorizationTypeLinkedIntegrationRuntimeType AuthorizationType = original.AuthorizationTypeLinkedIntegrationRuntimeType
+	AuthorizationTypeRBAC                         AuthorizationType = original.AuthorizationTypeRBAC
 )
 
 type AvroCompressionCodec = original.AvroCompressionCodec
@@ -741,9 +741,9 @@ const (
 type Type = original.Type
 
 const (
-	TypeTypeAzureKeyVaultSecret Type = original.TypeTypeAzureKeyVaultSecret
-	TypeTypeSecretBase          Type = original.TypeTypeSecretBase
-	TypeTypeSecureString        Type = original.TypeTypeSecureString
+	TypeAzureKeyVaultSecret Type = original.TypeAzureKeyVaultSecret
+	TypeSecretBase          Type = original.TypeSecretBase
+	TypeSecureString        Type = original.TypeSecureString
 )
 
 type TypeBasicActivity = original.TypeBasicActivity

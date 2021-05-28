@@ -78,9 +78,9 @@ const (
 type ResultType = original.ResultType
 
 const (
-	ResultTypeResultTypeFacet       ResultType = original.ResultTypeResultTypeFacet
-	ResultTypeResultTypeFacetError  ResultType = original.ResultTypeResultTypeFacetError
-	ResultTypeResultTypeFacetResult ResultType = original.ResultTypeResultTypeFacetResult
+	ResultTypeFacet       ResultType = original.ResultTypeFacet
+	ResultTypeFacetError  ResultType = original.ResultTypeFacetError
+	ResultTypeFacetResult ResultType = original.ResultTypeFacetResult
 )
 
 type BaseClient = original.BaseClient

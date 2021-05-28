@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package aztables
+package aztable
 
 import (
 	"encoding/base64"
@@ -11,6 +11,7 @@ import (
 	"io/ioutil"
 	"math"
 	"net/http"
+	"reflect"
 	"strconv"
 	"strings"
 	"testing"
@@ -83,15 +84,16 @@ func BenchmarkUnMarshal_AsJson_CastAndRemove_Map(b *testing.B) {
 
 func BenchmarkUnMarshal_FromMap_Entity(b *testing.B) {
 	assert := assert.New(b)
-	fmap := getTypeValueMap(complexEntity{})
+	tt := reflect.TypeOf(complexEntity{})
+	fmap := getTypeValueMap(tt)
 	bt := []byte(complexPayload)
 	for i := 0; i < b.N; i++ {
 		var val = make(map[string]interface{})
 		json.Unmarshal(bt, &val)
-		result, err := fromMap(complexEntity{}, fmap, &val)
+		result := complexEntity{}
+		err := fromMap(tt, fmap, &val, reflect.ValueOf(&result).Elem())
 		assert.Nil(err)
-		ent := result.(complexEntity)
-		assert.Equal("somePartition", ent.PartitionKey)
+		assert.Equal("somePartition", result.PartitionKey)
 	}
 }
 
@@ -163,10 +165,11 @@ func TestDeserializeFromMap(t *testing.T) {
 	bt := []byte(complexPayload)
 	var val = make(map[string]interface{})
 	json.Unmarshal(bt, &val)
-	result, err := fromMap(complexEntity{}, getTypeValueMap(complexEntity{}), &val)
+	var result complexEntity = complexEntity{}
+	tt := reflect.TypeOf(complexEntity{})
+	err := fromMap(tt, getTypeValueMap(tt), &val, reflect.ValueOf(&result).Elem())
 	assert.Nil(err)
-	ent := result.(complexEntity)
-	assert.EqualValues(expected, ent)
+	assert.EqualValues(expected, result)
 }
 
 func createComplexEntity() complexEntity {

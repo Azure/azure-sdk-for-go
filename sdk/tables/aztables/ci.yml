@@ -2,12 +2,12 @@
 trigger:
   paths:
     include:
-    - sdk/tables/aztables/
+    - sdk/tables/aztable/
 
 pr:
   paths:
     include:
-    - sdk/tables/aztables/
+    - sdk/tables/aztable/
 
 stages:
 - template: ../../../eng/pipelines/templates/jobs/archetype-sdk-client.yml

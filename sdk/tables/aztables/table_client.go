@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package aztables
+package aztable
 
 import (
 	"context"
 	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
 )
 
 // A TableClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
@@ -27,29 +26,24 @@ const (
 )
 
 // NewTableClient creates a TableClient object using the specified URL and request policy pipeline.
-func NewTableClient(tableName string, serviceURL string, cred azcore.Credential, options *TableClientOptions) (*TableClient, error) {
+func NewTableClient(tableName string, serviceURL string, cred azcore.Credential, options TableClientOptions) (*TableClient, error) {
 	s, err := NewTableServiceClient(serviceURL, cred, options)
-	return s.GetTableClient(tableName), err
+	return s.NewTableClient(tableName), err
 }
 
 // Create creates the table with the name specified in NewTableClient
-func (t *TableClient) Create(ctx context.Context) (*TableResponseResponse, *runtime.ResponseError) {
+func (t *TableClient) Create(ctx context.Context) (TableResponseResponse, error) {
 	return t.service.Create(ctx, t.Name)
 }
 
 // Delete deletes the current table
-func (t *TableClient) Delete(ctx context.Context) (*TableDeleteResponse, *runtime.ResponseError) {
+func (t *TableClient) Delete(ctx context.Context) (TableDeleteResponse, error) {
 	return t.service.Delete(ctx, t.Name)
 }
 
 // Query queries the tables using the specified QueryOptions
 func (t *TableClient) Query(queryOptions QueryOptions) TableEntityQueryResponsePager {
 	return &tableEntityQueryResponsePager{tableClient: t, queryOptions: &queryOptions, tableQueryOptions: &TableQueryEntitiesOptions{}}
-}
-
-// QueryAsModel queries the table using the specified QueryOptions and attempts to serialize the response as the supplied interface type
-func (t *TableClient) QueryAsModel(opt QueryOptions, s FromMapper) StructEntityQueryResponsePager {
-	return &structQueryResponsePager{mapper: s, tableClient: t, queryOptions: &opt, tableQueryOptions: &TableQueryEntitiesOptions{}}
 }
 
 func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey string) (MapOfInterfaceResponse, error) {
@@ -62,29 +56,29 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 }
 
 // AddEntity Creates an entity from a map value.
-func (t *TableClient) AddEntity(ctx context.Context, entity map[string]interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
+func (t *TableClient) AddEntity(ctx context.Context, entity map[string]interface{}) (TableInsertEntityResponse, error) {
 	toOdataAnnotatedDictionary(&entity)
 	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
 	if err == nil {
 		insertResp := resp.(TableInsertEntityResponse)
-		return &insertResp, nil
+		return insertResp, nil
 	} else {
-		return nil, convertErr(err)
+		return TableInsertEntityResponse{}, err
 	}
 }
 
 // AddModelEntity creates an entity from an arbitrary struct value.
-func (t *TableClient) AddModelEntity(ctx context.Context, entity interface{}) (*TableInsertEntityResponse, *runtime.ResponseError) {
+func (t *TableClient) AddModelEntity(ctx context.Context, entity interface{}) (TableInsertEntityResponse, error) {
 	entmap, err := toMap(entity)
 	if err != nil {
-		return nil, azcore.NewResponseError(err, nil).(*runtime.ResponseError)
+		return TableInsertEntityResponse{}, azcore.NewResponseError(err, nil)
 	}
 	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: *entmap, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
 	if err == nil {
 		insertResp := resp.(TableInsertEntityResponse)
-		return &insertResp, nil
+		return insertResp, nil
 	} else {
-		return nil, convertErr(err)
+		return TableInsertEntityResponse{}, err
 	}
 }
 

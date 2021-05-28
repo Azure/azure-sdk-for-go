@@ -1,76 +1,28 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package aztables
+package aztable
 
 import (
 	"context"
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"net/http"
 	"reflect"
 	"strconv"
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
-// Pager for Table entity queries
+// TableEntityQueryResponsePager is a Pager for Table entity query results.
 type TableEntityQueryResponsePager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
-	// Page returns the current TableQueryResponseResponse.
+	// PageResponse returns the current TableQueryResponseResponse.
 	PageResponse() TableEntityQueryResponseResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
-}
-
-type StructEntityQueryResponsePager interface {
-	NextPage(context.Context) bool
-	PageResponse() StructQueryResponseResponse
-	Err() error
-}
-
-type StructQueryResponseResponse struct {
-	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
-	ClientRequestID *string
-
-	// Date contains the information returned from the Date header response.
-	Date *time.Time
-
-	// ETag contains the information returned from the ETag header response.
-	ETag *string
-
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// RequestID contains the information returned from the x-ms-request-id header response.
-	RequestID *string
-
-	// The properties for the table entity query response.
-	StructQueryResponse *StructQueryResponse
-
-	// Version contains the information returned from the x-ms-version header response.
-	Version *string
-
-	// XMSContinuationNextPartitionKey contains the information returned from the x-ms-continuation-NextPartitionKey header response.
-	XMSContinuationNextPartitionKey *string
-
-	// XMSContinuationNextRowKey contains the information returned from the x-ms-continuation-NextRowKey header response.
-	XMSContinuationNextRowKey *string
-}
-
-type StructQueryResponse struct {
-	// The metadata response of the table.
-	OdataMetadata *string `json:"odata.metadata,omitempty"`
-
-	// List of table entities.
-	Value *[]interface{} `json:"value,omitempty"`
 }
 
 type tableEntityQueryResponsePager struct {
@@ -102,56 +54,28 @@ func (p *tableEntityQueryResponsePager) Err() error {
 	return p.err
 }
 
-type structQueryResponsePager struct {
-	mapper            FromMapper
-	tableClient       *TableClient
-	current           *StructQueryResponseResponse
-	tableQueryOptions *TableQueryEntitiesOptions
-	queryOptions      *QueryOptions
-	err               error
-}
-
-func (p *structQueryResponsePager) NextPage(ctx context.Context) bool {
-	if p.err != nil || (p.current != nil && p.current.XMSContinuationNextPartitionKey == nil && p.current.XMSContinuationNextRowKey == nil) {
-		return false
-	}
-	var resp TableEntityQueryResponseResponse
-	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.Name, p.tableQueryOptions, p.queryOptions)
-	castAndRemoveAnnotationsSlice(&resp.TableEntityQueryResponse.Value)
-	//p.current = &resp
-	r := make([]interface{}, 0, len(resp.TableEntityQueryResponse.Value))
-	for _, e := range resp.TableEntityQueryResponse.Value {
-		r = append(r, p.mapper.FromMap(&e))
-	}
-	p.current = &StructQueryResponseResponse{StructQueryResponse: &StructQueryResponse{Value: &r}}
-	p.tableQueryOptions.NextPartitionKey = resp.XMSContinuationNextPartitionKey
-	p.tableQueryOptions.NextRowKey = resp.XMSContinuationNextRowKey
-	return p.err == nil && resp.TableEntityQueryResponse.Value != nil && len(resp.TableEntityQueryResponse.Value) > 0
-}
-
-func (p *structQueryResponsePager) PageResponse() StructQueryResponseResponse {
-	return *p.current
-}
-
-func (p *structQueryResponsePager) Err() error {
-	return p.err
-}
-
-// Pager for Table Queries
+// TableQueryResponsePager is a Pager for Table Queries
 type TableQueryResponsePager interface {
-	// NextPage returns true if the pager advanced to the next page.
-	// Returns false if there are no more pages or an error occurred.
-	NextPage(context.Context) bool
+	azcore.Pager
 
-	// Page returns the current TableQueryResponseResponse.
+	// PageResponse returns the current TableQueryResponseResponse.
 	PageResponse() TableQueryResponseResponse
-
-	// Err returns the last error encountered while paging.
-	Err() error
 }
 
-type FromMapper interface {
-	FromMap(e *map[string]interface{}) interface{}
+// AsModels converts each map[string]interface{} entity result into a strongly slice of strongly typed models
+// The modelSlice parameter should be a pointer to a slice of stuct types that match the entity model type in the table response.
+func (r *TableEntityQueryResponse) AsModels(modelSlice interface{}) error {
+	models := reflect.ValueOf(modelSlice).Elem()
+	tt := GetTypeArray(models.Interface())
+	fmap := getTypeValueMap(tt)
+	for i, e := range r.Value {
+		err := fromMap(tt, fmap, &e, models.Index(i))
+		if err != nil {
+			return nil
+		}
+	}
+
+	return nil
 }
 
 type tableQueryResponsePager struct {
@@ -349,11 +273,8 @@ func toMap(ent interface{}) (*map[string]interface{}, error) {
 	return &entMap, nil
 }
 
-func fromMap(src interface{}, fmap *map[string]int, m *map[string]interface{}) (interface{}, error) {
-	tt := reflect.TypeOf(src)
-	srcVal := reflect.New(tt).Elem()
-
-	for k, v := range *m {
+func fromMap(tt reflect.Type, fmap *map[string]int, src *map[string]interface{}, srcVal reflect.Value) error {
+	for k, v := range *src {
 		// skip if this is an OData type descriptor
 		iSuffix := strings.Index(k, OdataType)
 		if iSuffix > 0 {
@@ -367,6 +288,8 @@ func fromMap(src interface{}, fmap *map[string]int, m *map[string]interface{}) (
 		switch val.Kind() {
 		case reflect.String:
 			val.SetString(v.(string))
+		case reflect.Bool:
+			val.SetBool(v.(bool))
 		case reflect.Float64:
 			val.SetFloat(v.(float64))
 		case reflect.Int:
@@ -374,7 +297,7 @@ func fromMap(src interface{}, fmap *map[string]int, m *map[string]interface{}) (
 		case reflect.Int64:
 			i64, err := strconv.ParseInt(v.(string), 10, 64)
 			if err != nil {
-				return nil, err
+				return err
 			}
 			val.SetInt(i64)
 		case reflect.Struct:
@@ -382,7 +305,7 @@ func fromMap(src interface{}, fmap *map[string]int, m *map[string]interface{}) (
 			case "time.Time":
 				t, err := time.Parse(ISO8601, v.(string))
 				if err != nil {
-					return nil, err
+					return err
 				}
 				val.Set(reflect.ValueOf(t))
 			}
@@ -395,7 +318,7 @@ func fromMap(src interface{}, fmap *map[string]int, m *map[string]interface{}) (
 			}
 		case reflect.Array, reflect.Map, reflect.Slice:
 			if GetTypeArray(val.Interface()) != reflect.TypeOf(byte(0)) {
-				return nil, errors.New("arrays and slices must be of type byte")
+				return errors.New("arrays and slices must be of type byte")
 			}
 			// 	// check if this is a uuid field as decorated by a tag
 			if _, ok := tt.Field(fIndex).Tag.Lookup("uuid"); ok {
@@ -404,18 +327,17 @@ func fromMap(src interface{}, fmap *map[string]int, m *map[string]interface{}) (
 			} else {
 				b, err := base64.StdEncoding.DecodeString(v.(string))
 				if err != nil {
-					return nil, err
+					return err
 				}
 				val.SetBytes(b)
 			}
 		}
 	}
-	return srcVal.Interface(), nil
+	return nil
 }
 
 // getTypeValueMap - builds a map of Field names to their Field index for the given interface{}
-func getTypeValueMap(i interface{}) *map[string]int {
-	tt := reflect.TypeOf(complexEntity{})
+func getTypeValueMap(tt reflect.Type) *map[string]int {
 	nf := tt.NumField()
 	fmap := make(map[string]int)
 	// build a map of field types

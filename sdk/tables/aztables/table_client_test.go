@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package aztables
+package aztable
 
 import (
 	"bytes"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"testing"
@@ -42,7 +43,9 @@ func (s *tableClientLiveTests) TestServiceErrors() {
 
 	// Create a duplicate table to produce an error
 	_, err := client.Create(ctx)
-	assert.Equal(s.T(), err.RawResponse().StatusCode, http.StatusConflict)
+	var svcErr *runtime.ResponseError
+	errors.As(err, &svcErr)
+	assert.Equal(s.T(), svcErr.RawResponse().StatusCode, http.StatusConflict)
 }
 
 func (s *tableClientLiveTests) TestCreateTable() {
@@ -77,7 +80,9 @@ func (s *tableClientLiveTests) TestAddComplexEntity() {
 
 	for _, e := range *entitiesToCreate {
 		_, err := client.AddModelEntity(ctx, e)
-		assert.Nilf(err, getStringFromBody(err))
+		var svcErr *runtime.ResponseError
+		errors.As(err, &svcErr)
+		assert.Nilf(err, getStringFromBody(svcErr))
 	}
 }
 
@@ -223,28 +228,37 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	filter := "RowKey lt '5'"
 	expectedCount := 4
 	var resp TableEntityQueryResponseResponse
+	var models []simpleEntity
 	pager := client.Query(QueryOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		resp = pager.PageResponse()
+		models = make([]simpleEntity, len(resp.TableEntityQueryResponse.Value))
+		resp.TableEntityQueryResponse.AsModels(&models)
 		assert.Equal(len(resp.TableEntityQueryResponse.Value), expectedCount)
 	}
 	resp = pager.PageResponse()
 	assert.Nil(pager.Err())
-	for _, e := range resp.TableEntityQueryResponse.Value {
+	for i, e := range resp.TableEntityQueryResponse.Value {
 		_, ok := e[partitionKey].(string)
 		assert.True(ok)
+		assert.Equal(e[partitionKey], models[i].PartitionKey)
 		_, ok = e[rowKey].(string)
 		assert.True(ok)
+		assert.Equal(e[rowKey], models[i].RowKey)
 		_, ok = e[timestamp].(string)
 		assert.True(ok)
 		_, ok = e[etagOdata].(string)
 		assert.True(ok)
+		assert.Equal(e[etagOdata], models[i].ETag)
 		_, ok = e["StringProp"].(string)
 		assert.True(ok)
 		//TODO: fix when serialization is implemented
 		_, ok = e["IntProp"].(float64)
+		assert.Equal(int(e["IntProp"].(float64)), models[i].IntProp)
 		assert.True(ok)
 		_, ok = e["BoolProp"].(bool)
+		assert.Equal((*entitiesToCreate)[i]["BoolProp"], e["BoolProp"])
+		assert.Equal(e["BoolProp"], models[i].BoolProp)
 		assert.True(ok)
 	}
 }
@@ -458,11 +472,13 @@ func (s *tableClientLiveTests) init(doCreate bool) (*TableClient, func()) {
 	assert := assert.New(s.T())
 	context := getTestContext(s.T().Name())
 	tableName, _ := getTableName(context)
-	client := context.client.GetTableClient(tableName)
+	client := context.client.NewTableClient(tableName)
 	if doCreate {
 		_, err := client.Create(ctx)
 		if err != nil {
-			assert.FailNow(getStringFromBody(err))
+			var svcErr *runtime.ResponseError
+			errors.As(err, &svcErr)
+			assert.FailNow(getStringFromBody(svcErr))
 		}
 	}
 	return client, func() {

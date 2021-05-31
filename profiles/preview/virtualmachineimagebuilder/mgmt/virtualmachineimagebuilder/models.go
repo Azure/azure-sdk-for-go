@@ -11,7 +11,7 @@ package virtualmachineimagebuilder
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/virtualmachineimagebuilder/mgmt/2020-02-01/virtualmachineimagebuilder"
+	original "github.com/Azure/azure-sdk-for-go/services/virtualmachineimagebuilder/mgmt/2020-02-14/virtualmachineimagebuilder"
 )
 
 const (
@@ -21,34 +21,34 @@ const (
 type ProvisioningErrorCode = original.ProvisioningErrorCode
 
 const (
-	BadCustomizerType           ProvisioningErrorCode = original.BadCustomizerType
-	BadDistributeType           ProvisioningErrorCode = original.BadDistributeType
-	BadManagedImageSource       ProvisioningErrorCode = original.BadManagedImageSource
-	BadPIRSource                ProvisioningErrorCode = original.BadPIRSource
-	BadSharedImageDistribute    ProvisioningErrorCode = original.BadSharedImageDistribute
-	BadSharedImageVersionSource ProvisioningErrorCode = original.BadSharedImageVersionSource
-	BadSourceType               ProvisioningErrorCode = original.BadSourceType
-	NoCustomizerScript          ProvisioningErrorCode = original.NoCustomizerScript
-	Other                       ProvisioningErrorCode = original.Other
-	ServerError                 ProvisioningErrorCode = original.ServerError
-	UnsupportedCustomizerType   ProvisioningErrorCode = original.UnsupportedCustomizerType
+	ProvisioningErrorCodeBadCustomizerType           ProvisioningErrorCode = original.ProvisioningErrorCodeBadCustomizerType
+	ProvisioningErrorCodeBadDistributeType           ProvisioningErrorCode = original.ProvisioningErrorCodeBadDistributeType
+	ProvisioningErrorCodeBadManagedImageSource       ProvisioningErrorCode = original.ProvisioningErrorCodeBadManagedImageSource
+	ProvisioningErrorCodeBadPIRSource                ProvisioningErrorCode = original.ProvisioningErrorCodeBadPIRSource
+	ProvisioningErrorCodeBadSharedImageDistribute    ProvisioningErrorCode = original.ProvisioningErrorCodeBadSharedImageDistribute
+	ProvisioningErrorCodeBadSharedImageVersionSource ProvisioningErrorCode = original.ProvisioningErrorCodeBadSharedImageVersionSource
+	ProvisioningErrorCodeBadSourceType               ProvisioningErrorCode = original.ProvisioningErrorCodeBadSourceType
+	ProvisioningErrorCodeNoCustomizerScript          ProvisioningErrorCode = original.ProvisioningErrorCodeNoCustomizerScript
+	ProvisioningErrorCodeOther                       ProvisioningErrorCode = original.ProvisioningErrorCodeOther
+	ProvisioningErrorCodeServerError                 ProvisioningErrorCode = original.ProvisioningErrorCodeServerError
+	ProvisioningErrorCodeUnsupportedCustomizerType   ProvisioningErrorCode = original.ProvisioningErrorCodeUnsupportedCustomizerType
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Creating  ProvisioningState = original.Creating
-	Deleting  ProvisioningState = original.Deleting
-	Failed    ProvisioningState = original.Failed
-	Succeeded ProvisioningState = original.Succeeded
-	Updating  ProvisioningState = original.Updating
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	None         ResourceIdentityType = original.None
-	UserAssigned ResourceIdentityType = original.UserAssigned
+	ResourceIdentityTypeNone         ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeUserAssigned ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
 type RunState = original.RunState
@@ -65,17 +65,17 @@ const (
 type RunSubState = original.RunSubState
 
 const (
-	Building     RunSubState = original.Building
-	Customizing  RunSubState = original.Customizing
-	Distributing RunSubState = original.Distributing
-	Queued       RunSubState = original.Queued
+	RunSubStateBuilding     RunSubState = original.RunSubStateBuilding
+	RunSubStateCustomizing  RunSubState = original.RunSubStateCustomizing
+	RunSubStateDistributing RunSubState = original.RunSubStateDistributing
+	RunSubStateQueued       RunSubState = original.RunSubStateQueued
 )
 
 type SharedImageStorageAccountType = original.SharedImageStorageAccountType
 
 const (
-	StandardLRS SharedImageStorageAccountType = original.StandardLRS
-	StandardZRS SharedImageStorageAccountType = original.StandardZRS
+	SharedImageStorageAccountTypeStandardLRS SharedImageStorageAccountType = original.SharedImageStorageAccountTypeStandardLRS
+	SharedImageStorageAccountTypeStandardZRS SharedImageStorageAccountType = original.SharedImageStorageAccountTypeStandardZRS
 )
 
 type Type = original.Type
@@ -90,12 +90,12 @@ const (
 type TypeBasicImageTemplateCustomizer = original.TypeBasicImageTemplateCustomizer
 
 const (
-	TypeFile                    TypeBasicImageTemplateCustomizer = original.TypeFile
-	TypeImageTemplateCustomizer TypeBasicImageTemplateCustomizer = original.TypeImageTemplateCustomizer
-	TypePowerShell              TypeBasicImageTemplateCustomizer = original.TypePowerShell
-	TypeShell                   TypeBasicImageTemplateCustomizer = original.TypeShell
-	TypeWindowsRestart          TypeBasicImageTemplateCustomizer = original.TypeWindowsRestart
-	TypeWindowsUpdate           TypeBasicImageTemplateCustomizer = original.TypeWindowsUpdate
+	TypeBasicImageTemplateCustomizerTypeFile                    TypeBasicImageTemplateCustomizer = original.TypeBasicImageTemplateCustomizerTypeFile
+	TypeBasicImageTemplateCustomizerTypeImageTemplateCustomizer TypeBasicImageTemplateCustomizer = original.TypeBasicImageTemplateCustomizerTypeImageTemplateCustomizer
+	TypeBasicImageTemplateCustomizerTypePowerShell              TypeBasicImageTemplateCustomizer = original.TypeBasicImageTemplateCustomizerTypePowerShell
+	TypeBasicImageTemplateCustomizerTypeShell                   TypeBasicImageTemplateCustomizer = original.TypeBasicImageTemplateCustomizerTypeShell
+	TypeBasicImageTemplateCustomizerTypeWindowsRestart          TypeBasicImageTemplateCustomizer = original.TypeBasicImageTemplateCustomizerTypeWindowsRestart
+	TypeBasicImageTemplateCustomizerTypeWindowsUpdate           TypeBasicImageTemplateCustomizer = original.TypeBasicImageTemplateCustomizerTypeWindowsUpdate
 )
 
 type TypeBasicImageTemplateDistributor = original.TypeBasicImageTemplateDistributor

@@ -31,6 +31,12 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Component model for component.
 type Component struct {
 	autorest.Response `json:"-"`
@@ -163,6 +169,12 @@ type ComponentsCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - READ-ONLY; Collection of components.
 	Value *[]Component `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ComponentsCollection.
+func (cc ComponentsCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ComponentsCollectionIterator provides access to a complete listing of Component values.
@@ -343,6 +355,12 @@ type HealthStateChange struct {
 	HealthStateChangeTime *date.Time `json:"healthStateChangeTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HealthStateChange.
+func (hsc HealthStateChange) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Monitor model for Monitor
 type Monitor struct {
 	autorest.Response `json:"-"`
@@ -432,6 +450,12 @@ type MonitorCriteria struct {
 	Threshold *float64 `json:"threshold,omitempty"`
 	// ComparisonOperator - READ-ONLY; Comparison enum on threshold of this criteria. Possible values include: 'Equals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual', 'NotEquals'
 	ComparisonOperator Operator `json:"comparisonOperator,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MonitorCriteria.
+func (mc MonitorCriteria) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MonitorInstance model for monitor instance.
@@ -572,6 +596,12 @@ type MonitorInstancesCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - READ-ONLY; Collection of health instances.
 	Value *[]MonitorInstance `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MonitorInstancesCollection.
+func (mic MonitorInstancesCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MonitorInstancesCollectionIterator provides access to a complete listing of MonitorInstance values.
@@ -766,6 +796,12 @@ type MonitorProperties struct {
 	SignalType *string `json:"signalType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MonitorProperties.
+func (mp MonitorProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MonitorsCollection model for collection of Monitor.
 type MonitorsCollection struct {
 	autorest.Response `json:"-"`
@@ -773,6 +809,12 @@ type MonitorsCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - READ-ONLY; Collection of Monitor.
 	Value *[]Monitor `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MonitorsCollection.
+func (mc MonitorsCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MonitorsCollectionIterator provides access to a complete listing of Monitor values.
@@ -1012,6 +1054,12 @@ type NotificationSettingProperties struct {
 	ActionGroupResourceIds *[]string `json:"actionGroupResourceIds,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NotificationSettingProperties.
+func (nsp NotificationSettingProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // NotificationSettingsCollection model for collection of notificationSettings.
 type NotificationSettingsCollection struct {
 	autorest.Response `json:"-"`
@@ -1190,6 +1238,12 @@ type Operation struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult container for a list of operations supported by the resource provider.
 type OperationListResult struct {
 	autorest.Response `json:"-"`
@@ -1197,6 +1251,12 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Value - READ-ONLY; List of operations.
 	Value *[]Operation `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -1361,6 +1421,12 @@ type OperationProperties struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationProperties.
+func (op OperationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
 // have tags and a location
 type ProxyResource struct {
@@ -1372,6 +1438,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1380,6 +1452,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource

@@ -2187,6 +2187,12 @@ type ProxyResource struct {
 	SystemData *SystemData `json:"systemData,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // QuarantinePolicy the quarantine policy for a container registry.
 type QuarantinePolicy struct {
 	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'Enabled', 'Disabled'
@@ -3177,6 +3183,12 @@ type ReplicationProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Status - READ-ONLY; The status of the replication at the time the operation was called.
 	Status *Status `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReplicationProperties.
+func (rp ReplicationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ReplicationsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -4556,6 +4568,12 @@ type Status struct {
 	Message *string `json:"message,omitempty"`
 	// Timestamp - READ-ONLY; The timestamp when the status was changed to the current value.
 	Timestamp *date.Time `json:"timestamp,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Status.
+func (s Status) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StorageAccountProperties the properties of a storage account for a container registry. Only applicable

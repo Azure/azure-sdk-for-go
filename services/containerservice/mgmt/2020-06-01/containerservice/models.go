@@ -798,11 +798,23 @@ type CredentialResult struct {
 	Value *[]byte `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CredentialResult.
+func (cr CredentialResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CredentialResults the list of credential result response.
 type CredentialResults struct {
 	autorest.Response `json:"-"`
 	// Kubeconfigs - READ-ONLY; Base64-encoded Kubernetes configuration file.
 	Kubeconfigs *[]CredentialResult `json:"kubeconfigs,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CredentialResults.
+func (cr CredentialResults) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CustomProfile properties to configure a custom container service cluster.
@@ -1580,6 +1592,12 @@ type ManagedClusterIdentityUserAssignedIdentitiesValue struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// ClientID - READ-ONLY; The client id of user assigned identity.
 	ClientID *string `json:"clientId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedClusterIdentityUserAssignedIdentitiesValue.
+func (mciAiv ManagedClusterIdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ManagedClusterListResult the response from the List Managed Clusters operation.
@@ -3035,6 +3053,12 @@ type OperationListResult struct {
 	Value *[]OperationValue `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationValue describes the properties of a Compute Operation value.
 type OperationValue struct {
 	// Origin - READ-ONLY; The origin of the compute operation.
@@ -3106,6 +3130,12 @@ type OperationValueDisplay struct {
 	Description *string `json:"description,omitempty"`
 	// Provider - READ-ONLY; The resource provider for the operation.
 	Provider *string `json:"provider,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationValueDisplay.
+func (ovd OperationValueDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OrchestratorProfile contains information about orchestrator.
@@ -3499,6 +3529,12 @@ type SubResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SubResource.
+func (sr SubResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TagsObject tags object for patch operations.

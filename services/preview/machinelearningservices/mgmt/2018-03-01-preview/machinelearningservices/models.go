@@ -822,6 +822,12 @@ type ListWorkspaceKeysResult struct {
 	ContainerRegistryCredentials *RegistryListCredentialsResult `json:"containerRegistryCredentials,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ListWorkspaceKeysResult.
+func (lwkr ListWorkspaceKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MachineLearningComputeCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type MachineLearningComputeCreateOrUpdateFuture struct {
@@ -1134,6 +1140,12 @@ type Password struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Password.
+func (p Password) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RegistryListCredentialsResult ...
 type RegistryListCredentialsResult struct {
 	// Location - READ-ONLY
@@ -1221,6 +1233,12 @@ type SystemService struct {
 	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
 	// Version - READ-ONLY; The version for this type.
 	Version *string `json:"version,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SystemService.
+func (ss SystemService) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualMachine a Machine Learning compute based on Azure Virtual Machines.

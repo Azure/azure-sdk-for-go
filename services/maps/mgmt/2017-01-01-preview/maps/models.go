@@ -76,6 +76,12 @@ type AccountKeys struct {
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountKeys.
+func (ak AccountKeys) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountProperties additional Map account properties
 type AccountProperties struct {
 	// XMsClientID - A unique identifier for the maps account
@@ -87,6 +93,12 @@ type Accounts struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; a Maps Account.
 	Value *[]Account `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Accounts.
+func (a Accounts) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AccountsMoveRequest the description of what resources to move between resource groups.
@@ -129,6 +141,12 @@ type Error struct {
 	Details *[]ErrorDetailsItem `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetailsItem ...
 type ErrorDetailsItem struct {
 	// Code - READ-ONLY; Error code.
@@ -137,6 +155,12 @@ type ErrorDetailsItem struct {
 	Message *string `json:"message,omitempty"`
 	// Target - READ-ONLY; If available, the component generating the error.
 	Target *string `json:"target,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetailsItem.
+func (eI ErrorDetailsItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // KeySpecification whether the operation refers to the primary or secondary key.
@@ -150,6 +174,12 @@ type Operations struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; An operation available for Maps.
 	Value *[]OperationsValueItem `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operations.
+func (o Operations) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationsValueItem ...
@@ -183,6 +213,12 @@ type OperationsValueItemDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationsValueItemDisplay.
+func (oI OperationsValueItemDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource an Azure resource
 type Resource struct {
 	// ID - READ-ONLY; The fully qualified Maps Account resource identifier.
@@ -191,6 +227,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Sku the SKU of the Maps Account.

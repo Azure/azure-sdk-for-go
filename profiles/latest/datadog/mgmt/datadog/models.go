@@ -21,70 +21,70 @@ const (
 type CreatedByType = original.CreatedByType
 
 const (
-	Application     CreatedByType = original.Application
-	Key             CreatedByType = original.Key
-	ManagedIdentity CreatedByType = original.ManagedIdentity
-	User            CreatedByType = original.User
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type LiftrResourceCategories = original.LiftrResourceCategories
 
 const (
-	MonitorLogs LiftrResourceCategories = original.MonitorLogs
-	Unknown     LiftrResourceCategories = original.Unknown
+	LiftrResourceCategoriesMonitorLogs LiftrResourceCategories = original.LiftrResourceCategoriesMonitorLogs
+	LiftrResourceCategoriesUnknown     LiftrResourceCategories = original.LiftrResourceCategoriesUnknown
 )
 
 type ManagedIdentityTypes = original.ManagedIdentityTypes
 
 const (
-	SystemAssigned ManagedIdentityTypes = original.SystemAssigned
-	UserAssigned   ManagedIdentityTypes = original.UserAssigned
+	ManagedIdentityTypesSystemAssigned ManagedIdentityTypes = original.ManagedIdentityTypesSystemAssigned
+	ManagedIdentityTypesUserAssigned   ManagedIdentityTypes = original.ManagedIdentityTypesUserAssigned
 )
 
 type MarketplaceSubscriptionStatus = original.MarketplaceSubscriptionStatus
 
 const (
-	Active       MarketplaceSubscriptionStatus = original.Active
-	Provisioning MarketplaceSubscriptionStatus = original.Provisioning
-	Suspended    MarketplaceSubscriptionStatus = original.Suspended
-	Unsubscribed MarketplaceSubscriptionStatus = original.Unsubscribed
+	MarketplaceSubscriptionStatusActive       MarketplaceSubscriptionStatus = original.MarketplaceSubscriptionStatusActive
+	MarketplaceSubscriptionStatusProvisioning MarketplaceSubscriptionStatus = original.MarketplaceSubscriptionStatusProvisioning
+	MarketplaceSubscriptionStatusSuspended    MarketplaceSubscriptionStatus = original.MarketplaceSubscriptionStatusSuspended
+	MarketplaceSubscriptionStatusUnsubscribed MarketplaceSubscriptionStatus = original.MarketplaceSubscriptionStatusUnsubscribed
 )
 
 type MonitoringStatus = original.MonitoringStatus
 
 const (
-	Disabled MonitoringStatus = original.Disabled
-	Enabled  MonitoringStatus = original.Enabled
+	MonitoringStatusDisabled MonitoringStatus = original.MonitoringStatusDisabled
+	MonitoringStatusEnabled  MonitoringStatus = original.MonitoringStatusEnabled
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Accepted     ProvisioningState = original.Accepted
-	Canceled     ProvisioningState = original.Canceled
-	Creating     ProvisioningState = original.Creating
-	Deleted      ProvisioningState = original.Deleted
-	Deleting     ProvisioningState = original.Deleting
-	Failed       ProvisioningState = original.Failed
-	NotSpecified ProvisioningState = original.NotSpecified
-	Succeeded    ProvisioningState = original.Succeeded
-	Updating     ProvisioningState = original.Updating
+	ProvisioningStateAccepted     ProvisioningState = original.ProvisioningStateAccepted
+	ProvisioningStateCanceled     ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreating     ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleted      ProvisioningState = original.ProvisioningStateDeleted
+	ProvisioningStateDeleting     ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed       ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateNotSpecified ProvisioningState = original.ProvisioningStateNotSpecified
+	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUpdating     ProvisioningState = original.ProvisioningStateUpdating
 )
 
 type SingleSignOnStates = original.SingleSignOnStates
 
 const (
-	Disable  SingleSignOnStates = original.Disable
-	Enable   SingleSignOnStates = original.Enable
-	Existing SingleSignOnStates = original.Existing
-	Initial  SingleSignOnStates = original.Initial
+	SingleSignOnStatesDisable  SingleSignOnStates = original.SingleSignOnStatesDisable
+	SingleSignOnStatesEnable   SingleSignOnStates = original.SingleSignOnStatesEnable
+	SingleSignOnStatesExisting SingleSignOnStates = original.SingleSignOnStatesExisting
+	SingleSignOnStatesInitial  SingleSignOnStates = original.SingleSignOnStatesInitial
 )
 
 type TagAction = original.TagAction
 
 const (
-	Exclude TagAction = original.Exclude
-	Include TagAction = original.Include
+	TagActionExclude TagAction = original.TagActionExclude
+	TagActionInclude TagAction = original.TagActionInclude
 )
 
 type APIKey = original.APIKey
@@ -135,6 +135,7 @@ type MonitoringTagRulesProperties = original.MonitoringTagRulesProperties
 type MonitorsClient = original.MonitorsClient
 type MonitorsCreateFuture = original.MonitorsCreateFuture
 type MonitorsDeleteFuture = original.MonitorsDeleteFuture
+type MonitorsUpdateFuture = original.MonitorsUpdateFuture
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator

@@ -37,6 +37,12 @@ type AvailableServiceTier struct {
 	LastSkuUpdate *date.Time `json:"LastSkuUpdate,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AvailableServiceTier.
+func (astVar AvailableServiceTier) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CoreSummary the core summary of a search.
 type CoreSummary struct {
 	// Status - The status of a core summary.

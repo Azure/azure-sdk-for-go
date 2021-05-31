@@ -134,6 +134,12 @@ type DetectedBrand struct {
 	Rectangle *BoundingRect `json:"rectangle,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DetectedBrand.
+func (db DetectedBrand) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DetectedObject an object detected in an image.
 type DetectedObject struct {
 	// Rectangle - READ-ONLY; Approximate location of the detected object.
@@ -405,6 +411,12 @@ type ListModelsResult struct {
 	autorest.Response `json:"-"`
 	// ModelsProperty - READ-ONLY; An array of supported models.
 	ModelsProperty *[]ModelDescription `json:"models,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListModelsResult.
+func (lmr ListModelsResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ModelDescription an object describing supported model by name and categories.

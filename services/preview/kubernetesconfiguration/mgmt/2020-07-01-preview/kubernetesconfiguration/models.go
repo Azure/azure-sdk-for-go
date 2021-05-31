@@ -245,6 +245,12 @@ type ExtensionInstancesList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ExtensionInstancesList.
+func (eil ExtensionInstancesList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ExtensionInstancesListIterator provides access to a complete listing of ExtensionInstance values.
 type ExtensionInstancesListIterator struct {
 	i    int
@@ -834,6 +840,12 @@ type SourceControlConfigurationList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SourceControlConfigurationList.
+func (sccl SourceControlConfigurationList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SourceControlConfigurationListIterator provides access to a complete listing of
 // SourceControlConfiguration values.
 type SourceControlConfigurationListIterator struct {
@@ -1103,4 +1115,10 @@ type SystemData struct {
 	LastModifiedByType *string `json:"lastModifiedByType,omitempty"`
 	// LastModifiedAt - READ-ONLY; The timestamp of resource last modification (UTC)
 	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SystemData.
+func (sd SystemData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

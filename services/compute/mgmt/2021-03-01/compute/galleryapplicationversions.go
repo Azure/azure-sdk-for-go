@@ -94,7 +94,7 @@ func (client GalleryApplicationVersionsClient) CreateOrUpdatePreparer(ctx contex
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -179,7 +179,7 @@ func (client GalleryApplicationVersionsClient) DeletePreparer(ctx context.Contex
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -269,7 +269,7 @@ func (client GalleryApplicationVersionsClient) GetPreparer(ctx context.Context, 
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -356,7 +356,7 @@ func (client GalleryApplicationVersionsClient) ListByGalleryApplicationPreparer(
 		"subscriptionId":         autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -470,7 +470,7 @@ func (client GalleryApplicationVersionsClient) UpdatePreparer(ctx context.Contex
 		"subscriptionId":                autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2019-12-01"
+	const APIVersion = "2020-09-30"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

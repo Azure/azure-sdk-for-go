@@ -8,10 +8,17 @@
 
 package backupapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2020-02-02/backup/backupapi"
+import original "github.com/Azure/azure-sdk-for-go/services/recoveryservices/mgmt/2021-01-01/backup/backupapi"
 
+type AadPropertiesClientAPI = original.AadPropertiesClientAPI
+type BMSPrepareDataMoveOperationResultClientAPI = original.BMSPrepareDataMoveOperationResultClientAPI
 type BackupsClientAPI = original.BackupsClientAPI
 type BaseClientAPI = original.BaseClientAPI
+type CrossRegionRestoreClientAPI = original.CrossRegionRestoreClientAPI
+type CrrJobDetailsClientAPI = original.CrrJobDetailsClientAPI
+type CrrJobsClientAPI = original.CrrJobsClientAPI
+type CrrOperationResultsClientAPI = original.CrrOperationResultsClientAPI
+type CrrOperationStatusClientAPI = original.CrrOperationStatusClientAPI
 type EnginesClientAPI = original.EnginesClientAPI
 type ExportJobsOperationResultsClientAPI = original.ExportJobsOperationResultsClientAPI
 type FeatureSupportClientAPI = original.FeatureSupportClientAPI
@@ -26,12 +33,14 @@ type OperationResultsClientAPI = original.OperationResultsClientAPI
 type OperationStatusesClientAPI = original.OperationStatusesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PoliciesClientAPI = original.PoliciesClientAPI
+type PrivateEndpointClientAPI = original.PrivateEndpointClientAPI
 type PrivateEndpointConnectionClientAPI = original.PrivateEndpointConnectionClientAPI
 type ProtectableContainersClientAPI = original.ProtectableContainersClientAPI
 type ProtectableItemsClientAPI = original.ProtectableItemsClientAPI
 type ProtectedItemOperationResultsClientAPI = original.ProtectedItemOperationResultsClientAPI
 type ProtectedItemOperationStatusesClientAPI = original.ProtectedItemOperationStatusesClientAPI
 type ProtectedItemsClientAPI = original.ProtectedItemsClientAPI
+type ProtectedItemsCrrClientAPI = original.ProtectedItemsCrrClientAPI
 type ProtectedItemsGroupClientAPI = original.ProtectedItemsGroupClientAPI
 type ProtectionContainerOperationResultsClientAPI = original.ProtectionContainerOperationResultsClientAPI
 type ProtectionContainerRefreshOperationResultsClientAPI = original.ProtectionContainerRefreshOperationResultsClientAPI
@@ -43,10 +52,14 @@ type ProtectionPoliciesClientAPI = original.ProtectionPoliciesClientAPI
 type ProtectionPolicyOperationResultsClientAPI = original.ProtectionPolicyOperationResultsClientAPI
 type ProtectionPolicyOperationStatusesClientAPI = original.ProtectionPolicyOperationStatusesClientAPI
 type RecoveryPointsClientAPI = original.RecoveryPointsClientAPI
+type RecoveryPointsCrrClientAPI = original.RecoveryPointsCrrClientAPI
+type RecoveryPointsRecommendedForMoveClientAPI = original.RecoveryPointsRecommendedForMoveClientAPI
+type ResourceEncryptionConfigsClientAPI = original.ResourceEncryptionConfigsClientAPI
 type ResourceStorageConfigsClientAPI = original.ResourceStorageConfigsClientAPI
 type ResourceVaultConfigsClientAPI = original.ResourceVaultConfigsClientAPI
 type RestoresClientAPI = original.RestoresClientAPI
 type SecurityPINsClientAPI = original.SecurityPINsClientAPI
 type StatusClientAPI = original.StatusClientAPI
+type UsageSummariesCRRClientAPI = original.UsageSummariesCRRClientAPI
 type UsageSummariesClientAPI = original.UsageSummariesClientAPI
 type WorkloadItemsClientAPI = original.WorkloadItemsClientAPI

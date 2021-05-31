@@ -642,17 +642,17 @@ func PossibleTriggerTypeValues() []TriggerType {
 type Type string
 
 const (
-	// TypeTypeBackupPolicy ...
-	TypeTypeBackupPolicy Type = "BackupPolicy"
-	// TypeTypeContinuous ...
-	TypeTypeContinuous Type = "Continuous"
-	// TypeTypePeriodic ...
-	TypeTypePeriodic Type = "Periodic"
+	// TypeBackupPolicy ...
+	TypeBackupPolicy Type = "BackupPolicy"
+	// TypeContinuous ...
+	TypeContinuous Type = "Continuous"
+	// TypePeriodic ...
+	TypePeriodic Type = "Periodic"
 )
 
 // PossibleTypeValues returns an array of possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{TypeTypeBackupPolicy, TypeTypeContinuous, TypeTypePeriodic}
+	return []Type{TypeBackupPolicy, TypeContinuous, TypePeriodic}
 }
 
 // UnitType enumerates the values for unit type.

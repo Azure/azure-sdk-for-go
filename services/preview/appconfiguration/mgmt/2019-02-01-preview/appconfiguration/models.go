@@ -37,6 +37,12 @@ type APIKey struct {
 	ReadOnly *bool `json:"readOnly,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for APIKey.
+func (ak APIKey) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // APIKeyListResult the result of a request to list API keys.
 type APIKeyListResult struct {
 	autorest.Response `json:"-"`
@@ -475,6 +481,12 @@ type ConfigurationStoreProperties struct {
 	Endpoint *string `json:"endpoint,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ConfigurationStoreProperties.
+func (csp ConfigurationStoreProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ConfigurationStoresCreateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ConfigurationStoresCreateFuture struct {
@@ -674,6 +686,12 @@ type NameAvailabilityStatus struct {
 	Message *string `json:"message,omitempty"`
 	// Reason - READ-ONLY; If any, the reason that the name is not available.
 	Reason *string `json:"reason,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NameAvailabilityStatus.
+func (nas NameAvailabilityStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationDefinition the definition of a configuration store operation.

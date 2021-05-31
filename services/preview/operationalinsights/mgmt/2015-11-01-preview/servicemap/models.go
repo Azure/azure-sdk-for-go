@@ -2560,6 +2560,12 @@ type MachineReferenceWithHintsProperties struct {
 	OsFamilyHint OperatingSystemFamily `json:"osFamilyHint,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MachineReferenceWithHintsProperties.
+func (mrwh MachineReferenceWithHintsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MachineResourcesConfiguration describes the resources of a machine.
 type MachineResourcesConfiguration struct {
 	// PhysicalMemory - Physical memory in megabytes (MB).
@@ -4178,6 +4184,12 @@ type ProcessReferenceProperties struct {
 	Machine *MachineReference `json:"machine,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProcessReferenceProperties.
+func (pr ProcessReferenceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ProcessUser describes the user under which a process is running.
 type ProcessUser struct {
 	// UserName - User name under which the process is running.
@@ -4345,6 +4357,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BasicResourceReference represents a reference to another resource.
@@ -4545,6 +4563,12 @@ type Summary struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Resource name.
 	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Summary.
+func (s Summary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SummaryProperties base for all summaries.

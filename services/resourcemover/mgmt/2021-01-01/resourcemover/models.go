@@ -29,6 +29,12 @@ type AffectedMoveResource struct {
 	MoveResources *[]AffectedMoveResource `json:"moveResources,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AffectedMoveResource.
+func (amr AffectedMoveResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AutomaticResolutionProperties defines the properties for automatic resolution.
 type AutomaticResolutionProperties struct {
 	// MoveResourceID - Gets the MoveResource ARM ID of
@@ -1152,6 +1158,12 @@ type MoveErrorInfo struct {
 	MoveResources *[]AffectedMoveResource `json:"moveResources,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MoveErrorInfo.
+func (mei MoveErrorInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MoveResource defines the move resource.
 type MoveResource struct {
 	autorest.Response `json:"-"`
@@ -1392,6 +1404,12 @@ type MoveResourceErrorBody struct {
 	Target *string `json:"target,omitempty"`
 	// Details - READ-ONLY; A list of additional details about the error.
 	Details *[]MoveResourceErrorBody `json:"details,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MoveResourceErrorBody.
+func (mreb MoveResourceErrorBody) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MoveResourceFilter move resource filter.
@@ -1944,6 +1962,12 @@ type OperationErrorAdditionalInfo struct {
 	Info *MoveErrorInfo `json:"info,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationErrorAdditionalInfo.
+func (oeai OperationErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationsDiscovery operations discovery class.
 type OperationsDiscovery struct {
 	// Name - Gets or sets Name of the API.
@@ -2008,6 +2032,12 @@ type OperationStatus struct {
 	Properties interface{} `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationStatus.
+func (osVar OperationStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationStatusError class for operation status errors.
 type OperationStatusError struct {
 	// Code - READ-ONLY; The error code.
@@ -2018,6 +2048,12 @@ type OperationStatusError struct {
 	Details *[]OperationStatusError `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The additional info.
 	AdditionalInfo *[]OperationErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationStatusError.
+func (ose OperationStatusError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PrepareRequest defines the request body for initiate prepare operation.

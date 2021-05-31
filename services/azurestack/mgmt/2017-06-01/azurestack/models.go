@@ -407,12 +407,24 @@ type DataDiskImage struct {
 	SourceBlobSasURI *string `json:"sourceBlobSasUri,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DataDiskImage.
+func (ddi DataDiskImage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DeviceConfiguration device Configuration.
 type DeviceConfiguration struct {
 	// DeviceVersion - READ-ONLY; Version of the device.
 	DeviceVersion *string `json:"deviceVersion,omitempty"`
 	// IdentitySystem - READ-ONLY; Identity system of the device. Possible values include: 'AzureAD', 'ADFS'
 	IdentitySystem Category `json:"identitySystem,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeviceConfiguration.
+func (dc DeviceConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Display contains the localized display information for this particular operation or action.
@@ -435,6 +447,12 @@ type ErrorDetails struct {
 	Message *string `json:"message,omitempty"`
 	// Target - READ-ONLY; The target of the particular error.
 	Target *string `json:"target,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse error response indicates that the service is not able to process the incoming request. The
@@ -653,6 +671,12 @@ type MarketplaceProductLogUpdate struct {
 	Details *string `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MarketplaceProductLogUpdate.
+func (mplu MarketplaceProductLogUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Operation describes the supported REST operation.
 type Operation struct {
 	// Name - The name of the operation being performed on this particular object.
@@ -828,6 +852,12 @@ type OsDiskImage struct {
 	OperatingSystem OperatingSystem `json:"operatingSystem,omitempty"`
 	// SourceBlobSasURI - READ-ONLY; SAS key for source blob.
 	SourceBlobSasURI *string `json:"sourceBlobSasUri,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OsDiskImage.
+func (odi OsDiskImage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Product product information.
@@ -1109,6 +1139,12 @@ type ProductLog struct {
 	Error *string `json:"error,omitempty"`
 	// Details - READ-ONLY; Operation error details.
 	Details *string `json:"details,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProductLog.
+func (pl ProductLog) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ProductNestedProperties properties portion of the product resource.
@@ -1558,6 +1594,12 @@ type URI struct {
 	URI *string `json:"uri,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for URI.
+func (u URI) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VirtualMachineExtensionProductProperties product information.
 type VirtualMachineExtensionProductProperties struct {
 	// ComputeRole - READ-ONLY; Specifies kind of compute role included in the package. Possible values include: 'None', 'IaaS', 'PaaS'
@@ -1668,4 +1710,10 @@ type VirtualMachineProductProperties struct {
 	OsDiskImage *OsDiskImage `json:"osDiskImage,omitempty"`
 	// DataDiskImages - READ-ONLY; List of attached data disks.
 	DataDiskImages *[]DataDiskImage `json:"dataDiskImages,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineProductProperties.
+func (vmpp VirtualMachineProductProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

@@ -4785,6 +4785,12 @@ type ErrorDetail struct {
 	Recommendations *[]string `json:"recommendations,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorDetail.
+func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // GenericContainer base class for generic container of backup items
 type GenericContainer struct {
 	// FabricName - Name of the container's fabric

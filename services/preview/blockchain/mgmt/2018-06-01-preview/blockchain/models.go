@@ -769,6 +769,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceProviderOperation operation payload which is exposed in the response of the resource provider.
 type ResourceProviderOperation struct {
 	// Origin - Gets or sets the origin.

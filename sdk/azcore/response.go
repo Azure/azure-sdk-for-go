@@ -60,33 +60,7 @@ func (r *Response) UnmarshalAsByteArray(v *[]byte, format Base64Encoding) error 
 	if err != nil {
 		return err
 	}
-	if len(p) == 0 {
-		return nil
-	}
-	payload := string(p)
-	if payload[0] == '"' {
-		// remove surrounding quotes
-		payload = payload[1 : len(payload)-1]
-	}
-	switch format {
-	case Base64StdFormat:
-		decoded, err := base64.StdEncoding.DecodeString(payload)
-		if err == nil {
-			*v = decoded
-			return nil
-		}
-		return err
-	case Base64URLFormat:
-		// use raw encoding as URL format should not contain any '=' characters
-		decoded, err := base64.RawURLEncoding.DecodeString(payload)
-		if err == nil {
-			*v = decoded
-			return nil
-		}
-		return err
-	default:
-		return fmt.Errorf("unrecognized byte array format: %d", format)
-	}
+	return DecodeByteArray(string(p), v, format)
 }
 
 // UnmarshalAsJSON calls json.Unmarshal() to unmarshal the received payload into the value pointed to by v.
@@ -196,6 +170,37 @@ func RetryAfter(resp *http.Response) time.Duration {
 		return time.Until(t)
 	}
 	return 0
+}
+
+// DecodeByteArray will base-64 decode the provided string into v.
+func DecodeByteArray(s string, v *[]byte, format Base64Encoding) error {
+	if len(s) == 0 {
+		return nil
+	}
+	payload := string(s)
+	if payload[0] == '"' {
+		// remove surrounding quotes
+		payload = payload[1 : len(payload)-1]
+	}
+	switch format {
+	case Base64StdFormat:
+		decoded, err := base64.StdEncoding.DecodeString(payload)
+		if err == nil {
+			*v = decoded
+			return nil
+		}
+		return err
+	case Base64URLFormat:
+		// use raw encoding as URL format should not contain any '=' characters
+		decoded, err := base64.RawURLEncoding.DecodeString(payload)
+		if err == nil {
+			*v = decoded
+			return nil
+		}
+		return err
+	default:
+		return fmt.Errorf("unrecognized byte array format: %d", format)
+	}
 }
 
 // writeRequestWithResponse appends a formatted HTTP request into a Buffer. If request and/or err are

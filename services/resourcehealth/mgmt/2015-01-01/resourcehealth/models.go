@@ -8,6 +8,7 @@ package resourcehealth
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
@@ -241,6 +242,12 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 	// Details - READ-ONLY; The error details.
 	Details *string `json:"details,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Operation operation available in the resourcehealth resource provider.

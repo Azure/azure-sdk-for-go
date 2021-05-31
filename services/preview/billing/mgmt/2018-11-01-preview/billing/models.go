@@ -148,6 +148,12 @@ type AccountListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountListResult.
+func (alr AccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountListResultIterator provides access to a complete listing of Account values.
 type AccountListResultIterator struct {
 	i    int
@@ -533,6 +539,12 @@ type AgreementListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AgreementListResult.
+func (alr AgreementListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AgreementListResultIterator provides access to a complete listing of Agreement values.
 type AgreementListResultIterator struct {
 	i    int
@@ -801,6 +813,12 @@ type AvailableBalanceProperties struct {
 	Amount *Amount `json:"amount,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AvailableBalanceProperties.
+func (abp AvailableBalanceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Customer a partner's customer.
 type Customer struct {
 	autorest.Response `json:"-"`
@@ -881,6 +899,12 @@ type CustomerListResult struct {
 	Value *[]Customer `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CustomerListResult.
+func (clr CustomerListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CustomerListResultIterator provides access to a complete listing of Customer values.
@@ -1125,6 +1149,12 @@ type DepartmentListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DepartmentListResult.
+func (dlr DepartmentListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DepartmentListResultIterator provides access to a complete listing of Department values.
 type DepartmentListResultIterator struct {
 	i    int
@@ -1316,6 +1346,12 @@ type DownloadProperties struct {
 	URL *string `json:"url,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DownloadProperties.
+func (dp DownloadProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DownloadURL a secure URL that can be used to download a an entity until the URL expires.
 type DownloadURL struct {
 	autorest.Response `json:"-"`
@@ -1323,6 +1359,12 @@ type DownloadURL struct {
 	ExpiryTime *date.Time `json:"expiryTime,omitempty"`
 	// URL - READ-ONLY; The URL to the PDF file.
 	URL *string `json:"url,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DownloadURL.
+func (du DownloadURL) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // EnabledAzureSKUs details about the enabled azure sku.
@@ -1468,6 +1510,12 @@ type EnrollmentAccountListResult struct {
 	Value *[]EnrollmentAccount `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for EnrollmentAccountListResult.
+func (ealr EnrollmentAccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // EnrollmentAccountListResultIterator provides access to a complete listing of EnrollmentAccount values.
@@ -1650,12 +1698,24 @@ type EnrollmentPolicies struct {
 	ReservedInstancesEnabled *bool `json:"reservedInstancesEnabled,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EnrollmentPolicies.
+func (ep EnrollmentPolicies) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Error error details for transfer execution.
 type Error struct {
 	// ErrorCode - READ-ONLY; Error code.
 	ErrorCode *string `json:"errorCode,omitempty"`
 	// ErrorMessage - READ-ONLY; Error message.
 	ErrorMessage *string `json:"errorMessage,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorDetails the details of the error.
@@ -1666,6 +1726,12 @@ type ErrorDetails struct {
 	Message *string `json:"message,omitempty"`
 	// Target - READ-ONLY; The target of the particular error.
 	Target *string `json:"target,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse error response indicates that the service is not able to process the incoming request. The
@@ -1729,6 +1795,12 @@ type InvoiceListResult struct {
 	Value *[]InvoiceSummary `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InvoiceListResult.
+func (ilr InvoiceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // InvoiceListResultIterator provides access to a complete listing of InvoiceSummary values.
@@ -1969,6 +2041,12 @@ type InvoiceSectionListResult struct {
 	Value *[]InvoiceSection `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InvoiceSectionListResult.
+func (islr InvoiceSectionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // InvoiceSectionListResultIterator provides access to a complete listing of InvoiceSection values.
@@ -2316,6 +2394,12 @@ type InvoiceSummaryProperties struct {
 	Payments *[]PaymentProperties `json:"payments,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for InvoiceSummaryProperties.
+func (isp InvoiceSummaryProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // LineOfCredit line of credit resource.
 type LineOfCredit struct {
 	autorest.Response `json:"-"`
@@ -2483,6 +2567,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult result listing billing operations. It contains a list of operations and a URL link
 // to get the next set of results.
 type OperationListResult struct {
@@ -2491,6 +2581,12 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -2675,6 +2771,12 @@ type Participants struct {
 	Email *string `json:"email,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Participants.
+func (p Participants) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PaymentMethod a payment method resource.
 type PaymentMethod struct {
 	*PaymentMethodProperties `json:"properties,omitempty"`
@@ -2774,6 +2876,12 @@ type PaymentMethodsListResult struct {
 	Value *[]PaymentMethod `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PaymentMethodsListResult.
+func (pmlr PaymentMethodsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PaymentMethodsListResultIterator provides access to a complete listing of PaymentMethod values.
@@ -2936,11 +3044,23 @@ type PaymentProperties struct {
 	Date *date.Time `json:"date,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PaymentProperties.
+func (pp PaymentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PermissionsListResult result of list billingPermissions a caller has on a billing account.
 type PermissionsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list OF billingPermissions a caller has on a billing account.
 	Value *[]PermissionsProperties `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PermissionsListResult.
+func (plr PermissionsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PermissionsProperties the set of allowed action and not allowed actions a caller has on a billing
@@ -2950,6 +3070,12 @@ type PermissionsProperties struct {
 	Actions *[]string `json:"actions,omitempty"`
 	// NotActions - READ-ONLY; The set of actions the caller is not allowed to do
 	NotActions *[]string `json:"notActions,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PermissionsProperties.
+func (pp PermissionsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Policy the Policy.
@@ -3093,6 +3219,12 @@ type ProductsListResult struct {
 	Value *[]ProductSummary `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProductsListResult.
+func (plr ProductsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ProductsListResultIterator provides access to a complete listing of ProductSummary values.
@@ -3463,6 +3595,12 @@ type ProfileListResult struct {
 	Value *[]Profile `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProfileListResult.
+func (plr ProfileListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ProfileListResultIterator provides access to a complete listing of Profile values.
@@ -3845,6 +3983,12 @@ type PropertySummary struct {
 	SkuDescription *string `json:"skuDescription,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PropertySummary.
+func (ps PropertySummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RecipientTransferDetails details of the transfer.
 type RecipientTransferDetails struct {
 	autorest.Response `json:"-"`
@@ -3892,6 +4036,12 @@ type RecipientTransferDetailsListResult struct {
 	Value *[]RecipientTransferDetails `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RecipientTransferDetailsListResult.
+func (rtdlr RecipientTransferDetailsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RecipientTransferDetailsListResultIterator provides access to a complete listing of
@@ -4067,12 +4217,24 @@ type RecipientTransferProperties struct {
 	DetailedTransferStatus *[]DetailedTransferStatus `json:"detailedTransferStatus,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RecipientTransferProperties.
+func (rtp RecipientTransferProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Reseller details about a reseller.
 type Reseller struct {
 	// ResellerID - READ-ONLY; The reseller id.
 	ResellerID *string `json:"resellerId,omitempty"`
 	// Description - READ-ONLY; A description of the reseller.
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Reseller.
+func (r Reseller) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Resource the Resource model definition.
@@ -4083,6 +4245,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RoleAssignment a role assignment
@@ -4165,6 +4333,12 @@ type RoleAssignmentListResult struct {
 	Value *[]RoleAssignment `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RoleAssignmentListResult.
+func (ralr RoleAssignmentListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RoleAssignmentPayload the payload use to update role assignment on a scope
 type RoleAssignmentPayload struct {
 	// PrincipalID - The user's principal id that the role gets assigned to
@@ -4189,6 +4363,12 @@ type RoleAssignmentProperties struct {
 	RoleDefinitionName *string `json:"roleDefinitionName,omitempty"`
 	// Scope - READ-ONLY; The scope the role get assigned to
 	Scope *string `json:"scope,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RoleAssignmentProperties.
+func (rap RoleAssignmentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RoleDefinition result of get role definition for a role.
@@ -4269,6 +4449,12 @@ type RoleDefinitionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of role definitions.
 	Value *[]RoleDefinition `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RoleDefinitionListResult.
+func (rdlr RoleDefinitionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RoleDefinitionProperties the properties of the a role definition.
@@ -4383,6 +4569,12 @@ type SubscriptionsListResult struct {
 	Value *[]SubscriptionSummary `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SubscriptionsListResult.
+func (slr SubscriptionsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SubscriptionsListResultIterator provides access to a complete listing of SubscriptionSummary values.
@@ -4657,6 +4849,12 @@ type TransactionsListResult struct {
 	Value *[]TransactionsSummary `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TransactionsListResult.
+func (tlr TransactionsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TransactionsListResultIterator provides access to a complete listing of TransactionsSummary values.
@@ -5078,6 +5276,12 @@ type TransferDetailsListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for TransferDetailsListResult.
+func (tdlr TransferDetailsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // TransferDetailsListResultIterator provides access to a complete listing of TransferDetails values.
 type TransferDetailsListResultIterator struct {
 	i    int
@@ -5258,6 +5462,12 @@ type TransferProperties struct {
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
 	// DetailedTransferStatus - READ-ONLY; Detailed transfer status.
 	DetailedTransferStatus *[]DetailedTransferStatus `json:"detailedTransferStatus,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TransferProperties.
+func (tp TransferProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UpdateAutoRenewOperationSummary summary of cancel product operation

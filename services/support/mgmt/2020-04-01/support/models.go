@@ -39,6 +39,12 @@ type CheckNameAvailabilityOutput struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityOutput.
+func (cnao CheckNameAvailabilityOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CommunicationDetails object that represents a Communication resource.
 type CommunicationDetails struct {
 	autorest.Response `json:"-"`
@@ -373,6 +379,12 @@ type Engineer struct {
 	EmailAddress *string `json:"emailAddress,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Engineer.
+func (e Engineer) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ExceptionResponse the API error.
 type ExceptionResponse struct {
 	// Error - The API error details.
@@ -406,6 +418,12 @@ type OperationDisplay struct {
 	Provider *string `json:"provider,omitempty"`
 	// Resource - READ-ONLY; Resource on which the operation is performed.
 	Resource *string `json:"resource,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationsListResult the list of operations supported by Microsoft Support resource provider.
@@ -648,6 +666,12 @@ type ServiceLevelAgreement struct {
 	ExpirationTime *date.Time `json:"expirationTime,omitempty"`
 	// SLAMinutes - READ-ONLY; Service Level Agreement in minutes.
 	SLAMinutes *int32 `json:"slaMinutes,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceLevelAgreement.
+func (SLA ServiceLevelAgreement) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServiceProperties details about an Azure service available for support ticket creation.

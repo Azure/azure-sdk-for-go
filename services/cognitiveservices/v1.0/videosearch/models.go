@@ -3362,3 +3362,9 @@ type VideosModule struct {
 	// Value - READ-ONLY
 	Value *[]VideoObject `json:"value,omitempty"`
 }
+
+// MarshalJSON is the custom marshaler for VideosModule.
+func (VM VideosModule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}

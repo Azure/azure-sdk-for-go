@@ -118,18 +118,8 @@ func (req *Request) Next() (*Response, error) {
 // MarshalAsByteArray will base-64 encode the byte slice v, then calls SetBody.
 // The encoded value is treated as a JSON string.
 func (req *Request) MarshalAsByteArray(v []byte, format Base64Encoding) error {
-	var encode string
-	switch format {
-	case Base64StdFormat:
-		encode = base64.StdEncoding.EncodeToString(v)
-	case Base64URLFormat:
-		// use raw encoding so that '=' characters are omitted as they have special meaning in URLs
-		encode = base64.RawURLEncoding.EncodeToString(v)
-	default:
-		return fmt.Errorf("unrecognized byte array format: %d", format)
-	}
 	// send as a JSON string
-	encode = fmt.Sprintf("\"%s\"", encode)
+	encode := fmt.Sprintf("\"%s\"", EncodeByteArray(v, format))
 	return req.SetBody(NopCloser(strings.NewReader(encode)), contentTypeAppJSON)
 }
 
@@ -307,6 +297,14 @@ func (req *Request) writeBody(b *bytes.Buffer) error {
 	}
 	logBody(b, body)
 	return nil
+}
+
+// EncodeByteArray will base-64 encode the byte slice v.
+func EncodeByteArray(v []byte, format Base64Encoding) string {
+	if format == Base64URLFormat {
+		return base64.RawURLEncoding.EncodeToString(v)
+	}
+	return base64.StdEncoding.EncodeToString(v)
 }
 
 // returns a clone of the object graph pointed to by v, omitting values of all read-only

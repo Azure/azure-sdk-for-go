@@ -37,6 +37,12 @@ type ARMProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ARMProxyResource.
+func (apr ARMProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ARMResourceProperties the core properties of ARM resources.
 type ARMResourceProperties struct {
 	// ID - READ-ONLY; The unique resource identifier of the ARM resource.
@@ -110,6 +116,12 @@ type AzureEntityResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BasicBackupPolicy the object representing the policy for taking backups on an account.
@@ -830,6 +842,12 @@ type CassandraKeyspaceListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of Cassandra keyspaces and their properties.
 	Value *[]CassandraKeyspaceGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CassandraKeyspaceListResult.
+func (cklr CassandraKeyspaceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CassandraKeyspaceResource cosmos DB Cassandra keyspace resource object
@@ -1563,6 +1581,12 @@ type CassandraTableListResult struct {
 	Value *[]CassandraTableGetResults `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CassandraTableListResult.
+func (ctlr CassandraTableListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CassandraTableResource cosmos DB Cassandra table resource object
 type CassandraTableResource struct {
 	// ID - Name of the Cosmos DB Cassandra table
@@ -1866,6 +1890,12 @@ type DatabaseAccountConnectionString struct {
 	ConnectionString *string `json:"connectionString,omitempty"`
 	// Description - READ-ONLY; Description of the connection string
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatabaseAccountConnectionString.
+func (dacs DatabaseAccountConnectionString) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DatabaseAccountCreateUpdateParameters parameters to create and update Cosmos DB database accounts.
@@ -2963,6 +2993,12 @@ type DatabaseAccountListKeysResult struct {
 	SecondaryReadonlyMasterKey *string `json:"secondaryReadonlyMasterKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DatabaseAccountListKeysResult.
+func (dalkr DatabaseAccountListKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DatabaseAccountListReadOnlyKeysResult the read-only access keys for the given database account.
 type DatabaseAccountListReadOnlyKeysResult struct {
 	autorest.Response `json:"-"`
@@ -2970,6 +3006,12 @@ type DatabaseAccountListReadOnlyKeysResult struct {
 	PrimaryReadonlyMasterKey *string `json:"primaryReadonlyMasterKey,omitempty"`
 	// SecondaryReadonlyMasterKey - READ-ONLY; Base 64 encoded value of the secondary read-only key.
 	SecondaryReadonlyMasterKey *string `json:"secondaryReadonlyMasterKey,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatabaseAccountListReadOnlyKeysResult.
+func (dalrokr DatabaseAccountListReadOnlyKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DatabaseAccountRegenerateKeyParameters parameters to regenerate the keys within the database account.
@@ -3101,6 +3143,12 @@ type DatabaseAccountsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of database account and their properties.
 	Value *[]DatabaseAccountGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatabaseAccountsListResult.
+func (dalr DatabaseAccountsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DatabaseAccountsOfflineRegionFuture an abstraction for monitoring and retrieving the results of a
@@ -4017,6 +4065,12 @@ type ExtendedResourceProperties struct {
 	Etag *string `json:"_etag,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ExtendedResourceProperties.
+func (erp ExtendedResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // FailoverPolicies the list of new failover policies for the failover priority change.
 type FailoverPolicies struct {
 	// FailoverPolicies - List of failover policies.
@@ -4319,6 +4373,12 @@ type GremlinDatabaseListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of Gremlin databases and their properties.
 	Value *[]GremlinDatabaseGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GremlinDatabaseListResult.
+func (gdlr GremlinDatabaseListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // GremlinDatabaseResource cosmos DB Gremlin database resource object
@@ -4625,6 +4685,12 @@ type GremlinGraphListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of graphs and their properties.
 	Value *[]GremlinGraphGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GremlinGraphListResult.
+func (gglr GremlinGraphListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // GremlinGraphResource cosmos DB Gremlin graph resource object
@@ -5108,6 +5174,12 @@ type ListBackups struct {
 	Value *[]BackupResource `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ListBackups.
+func (lb ListBackups) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ListClusters list of managed Cassandra clusters.
 type ListClusters struct {
 	autorest.Response `json:"-"`
@@ -5120,6 +5192,12 @@ type ListDataCenters struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Container for array of data centers.
 	Value *[]DataCenterResource `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListDataCenters.
+func (ldc ListDataCenters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Location a region in which the Azure Cosmos DB database account is deployed.
@@ -5187,6 +5265,12 @@ type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
 	ClientID *string `json:"clientId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ManagedServiceIdentityUserAssignedIdentitiesValue.
+func (msiAiv ManagedServiceIdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Metric metric data
 type Metric struct {
 	// StartTime - READ-ONLY; The start time for the metric (ISO-8601 format).
@@ -5220,6 +5304,12 @@ type MetricAvailability struct {
 	Retention *string `json:"retention,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MetricAvailability.
+func (ma MetricAvailability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MetricDefinition the definition of a metric.
 type MetricDefinition struct {
 	// MetricAvailabilities - READ-ONLY; The list of metric availabilities for the account.
@@ -5250,11 +5340,23 @@ type MetricDefinitionsListResult struct {
 	Value *[]MetricDefinition `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MetricDefinitionsListResult.
+func (mdlr MetricDefinitionsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MetricListResult the response to a list metrics request.
 type MetricListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of metrics for the account.
 	Value *[]Metric `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricListResult.
+func (mlr MetricListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MetricName a metric name.
@@ -5263,6 +5365,12 @@ type MetricName struct {
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - READ-ONLY; The friendly name of the metric.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricName.
+func (mn MetricName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MetricValue represents metrics values.
@@ -5279,6 +5387,12 @@ type MetricValue struct {
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// Total - READ-ONLY; The total value of the metric.
 	Total *float64 `json:"total,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricValue.
+func (mv MetricValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MongoDBCollectionCreateUpdateParameters parameters to create and update Cosmos DB MongoDB collection.
@@ -5571,6 +5685,12 @@ type MongoDBCollectionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of MongoDB collections and their properties.
 	Value *[]MongoDBCollectionGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MongoDBCollectionListResult.
+func (mdclr MongoDBCollectionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MongoDBCollectionResource cosmos DB MongoDB collection resource object
@@ -5877,6 +5997,12 @@ type MongoDBDatabaseListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of MongoDB databases and their properties.
 	Value *[]MongoDBDatabaseGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MongoDBDatabaseListResult.
+func (mddlr MongoDBDatabaseListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MongoDBDatabaseResource cosmos DB MongoDB database resource object
@@ -6407,6 +6533,12 @@ type NotebookWorkspaceConnectionInfoResult struct {
 	NotebookServerEndpoint *string `json:"notebookServerEndpoint,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NotebookWorkspaceConnectionInfoResult.
+func (nwcir NotebookWorkspaceConnectionInfoResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // NotebookWorkspaceCreateUpdateParameters parameters to create a notebook workspace resource
 type NotebookWorkspaceCreateUpdateParameters struct {
 	// ID - READ-ONLY; The unique resource identifier of the database account.
@@ -6415,6 +6547,12 @@ type NotebookWorkspaceCreateUpdateParameters struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NotebookWorkspaceCreateUpdateParameters.
+func (nwcup NotebookWorkspaceCreateUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // NotebookWorkspaceListResult a list of notebook workspace resources
@@ -6430,6 +6568,12 @@ type NotebookWorkspaceProperties struct {
 	NotebookServerEndpoint *string `json:"notebookServerEndpoint,omitempty"`
 	// Status - READ-ONLY; Status of the notebook workspace. Possible values are: Creating, Online, Deleting, Failed, Updating.
 	Status *string `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NotebookWorkspaceProperties.
+func (nwp NotebookWorkspaceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // NotebookWorkspacesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
@@ -6810,6 +6954,12 @@ type PartitionMetricListResult struct {
 	Value *[]PartitionMetric `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PartitionMetricListResult.
+func (pmlr PartitionMetricListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PartitionUsage the partition level usage data for a usage request.
 type PartitionUsage struct {
 	// PartitionID - READ-ONLY; The partition id (GUID identifier) of the usages.
@@ -6844,6 +6994,12 @@ type PartitionUsagesResult struct {
 	Value *[]PartitionUsage `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PartitionUsagesResult.
+func (pur PartitionUsagesResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PercentileMetric percentile Metric data
 type PercentileMetric struct {
 	// StartTime - READ-ONLY; The start time for the metric (ISO-8601 format).
@@ -6876,6 +7032,12 @@ type PercentileMetricListResult struct {
 	Value *[]PercentileMetric `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PercentileMetricListResult.
+func (pmlr PercentileMetricListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PercentileMetricValue represents percentile metrics values.
 type PercentileMetricValue struct {
 	// P10 - READ-ONLY; The 10th percentile value for the metric.
@@ -6904,6 +7066,12 @@ type PercentileMetricValue struct {
 	Timestamp *date.Time `json:"timestamp,omitempty"`
 	// Total - READ-ONLY; The total value of the metric.
 	Total *float64 `json:"total,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PercentileMetricValue.
+func (pmv PercentileMetricValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PeriodicModeBackupPolicy the object representing periodic mode backup policy.
@@ -7233,6 +7401,12 @@ type PrivateLinkResourceProperties struct {
 	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PrivateLinkResourceProperties.
+func (plrp PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PrivateLinkServiceConnectionStateProperty connection State of the Private Endpoint Connection.
 type PrivateLinkServiceConnectionStateProperty struct {
 	// Status - The private link service connection status.
@@ -7266,6 +7440,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RegionForOnlineOffline cosmos DB region to online or offline.
 type RegionForOnlineOffline struct {
 	// Region - Cosmos DB region, with spaces between words and each word capitalized.
@@ -7288,6 +7468,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RestorableDatabaseAccountGetResult a Azure Cosmos DB restorable database account.
@@ -7414,6 +7600,12 @@ type RestorableDatabaseAccountsListResult struct {
 	Value *[]RestorableDatabaseAccountGetResult `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RestorableDatabaseAccountsListResult.
+func (rdalr RestorableDatabaseAccountsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RestorableLocationResource properties of the regional restorable account.
 type RestorableLocationResource struct {
 	// LocationName - READ-ONLY; The location of the regional restorable account.
@@ -7424,6 +7616,12 @@ type RestorableLocationResource struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// DeletionTime - READ-ONLY; The time at which the regional restorable database account has been deleted (ISO-8601 format).
 	DeletionTime *date.Time `json:"deletionTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RestorableLocationResource.
+func (rlr RestorableLocationResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RestorableMongodbCollectionGetResult an Azure Cosmos DB MongoDB collection event
@@ -7519,12 +7717,24 @@ type RestorableMongodbCollectionPropertiesResource struct {
 	OwnerResourceID *string `json:"ownerResourceId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RestorableMongodbCollectionPropertiesResource.
+func (rmcp RestorableMongodbCollectionPropertiesResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RestorableMongodbCollectionsListResult the List operation response, that contains the MongoDB collection
 // events and their properties.
 type RestorableMongodbCollectionsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of MongoDB collection events and their properties.
 	Value *[]RestorableMongodbCollectionGetResult `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RestorableMongodbCollectionsListResult.
+func (rmclr RestorableMongodbCollectionsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RestorableMongodbDatabaseGetResult an Azure Cosmos DB MongoDB database event
@@ -7619,6 +7829,12 @@ type RestorableMongodbDatabasePropertiesResource struct {
 	OwnerResourceID *string `json:"ownerResourceId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RestorableMongodbDatabasePropertiesResource.
+func (rmdp RestorableMongodbDatabasePropertiesResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RestorableMongodbDatabasesListResult the List operation response, that contains the MongoDB database
 // events and their properties.
 type RestorableMongodbDatabasesListResult struct {
@@ -7627,12 +7843,24 @@ type RestorableMongodbDatabasesListResult struct {
 	Value *[]RestorableMongodbDatabaseGetResult `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RestorableMongodbDatabasesListResult.
+func (rmdlr RestorableMongodbDatabasesListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RestorableMongodbResourcesListResult the List operation response, that contains the restorable MongoDB
 // resources.
 type RestorableMongodbResourcesListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of restorable MongoDB resources, including the database and collection names.
 	Value *[]DatabaseRestoreResource `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RestorableMongodbResourcesListResult.
+func (rmrlr RestorableMongodbResourcesListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RestorableSQLContainerGetResult an Azure Cosmos DB SQL container event
@@ -7799,6 +8027,12 @@ type RestorableSQLContainersListResult struct {
 	Value *[]RestorableSQLContainerGetResult `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RestorableSQLContainersListResult.
+func (rsclr RestorableSQLContainersListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RestorableSQLDatabaseGetResult an Azure Cosmos DB SQL database event
 type RestorableSQLDatabaseGetResult struct {
 	// RestorableSQLDatabaseProperties - The properties of a SQL database event.
@@ -7937,12 +8171,24 @@ type RestorableSQLDatabasesListResult struct {
 	Value *[]RestorableSQLDatabaseGetResult `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RestorableSQLDatabasesListResult.
+func (rsdlr RestorableSQLDatabasesListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RestorableSQLResourcesListResult the List operation response, that contains the restorable SQL
 // resources.
 type RestorableSQLResourcesListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of restorable SQL resources, including the database and collection names.
 	Value *[]DatabaseRestoreResource `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RestorableSQLResourcesListResult.
+func (rsrlr RestorableSQLResourcesListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RestoreParameters parameters to indicate the information about the restore.
@@ -8642,6 +8888,12 @@ type SQLContainerListResult struct {
 	Value *[]SQLContainerGetResults `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SQLContainerListResult.
+func (sclr SQLContainerListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SQLContainerResource cosmos DB SQL container resource object
 type SQLContainerResource struct {
 	// ID - Name of the Cosmos DB SQL container
@@ -8943,6 +9195,12 @@ type SQLDatabaseListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of SQL databases and their properties.
 	Value *[]SQLDatabaseGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLDatabaseListResult.
+func (sdlr SQLDatabaseListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SQLDatabaseResource cosmos DB SQL database resource object
@@ -9889,6 +10147,12 @@ type SQLRoleAssignmentListResult struct {
 	Value *[]SQLRoleAssignmentGetResults `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SQLRoleAssignmentListResult.
+func (sralr SQLRoleAssignmentListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SQLRoleAssignmentResource azure Cosmos DB SQL Role Assignment resource object.
 type SQLRoleAssignmentResource struct {
 	// RoleDefinitionID - The unique identifier for the associated Role Definition.
@@ -10017,6 +10281,12 @@ type SQLRoleDefinitionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of Role Definitions and their properties.
 	Value *[]SQLRoleDefinitionGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLRoleDefinitionListResult.
+func (srdlr SQLRoleDefinitionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SQLRoleDefinitionResource azure Cosmos DB SQL Role Definition resource object.
@@ -10302,6 +10572,12 @@ type SQLStoredProcedureListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of storedProcedures and their properties.
 	Value *[]SQLStoredProcedureGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLStoredProcedureListResult.
+func (ssplr SQLStoredProcedureListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SQLStoredProcedureResource cosmos DB SQL storedProcedure resource object
@@ -10593,6 +10869,12 @@ type SQLTriggerListResult struct {
 	Value *[]SQLTriggerGetResults `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SQLTriggerListResult.
+func (stlr SQLTriggerListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SQLTriggerResource cosmos DB SQL trigger resource object
 type SQLTriggerResource struct {
 	// ID - Name of the Cosmos DB SQL trigger
@@ -10877,6 +11159,12 @@ type SQLUserDefinedFunctionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of userDefinedFunctions and their properties.
 	Value *[]SQLUserDefinedFunctionGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SQLUserDefinedFunctionListResult.
+func (sudflr SQLUserDefinedFunctionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SQLUserDefinedFunctionResource cosmos DB SQL userDefinedFunction resource object
@@ -11176,6 +11464,12 @@ type TableListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; List of Table and their properties.
 	Value *[]TableGetResults `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TableListResult.
+func (tlr TableListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TableResource cosmos DB table resource object
@@ -11761,6 +12055,12 @@ type UsagesResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of usages for the database. A usage is a point in time metric
 	Value *[]Usage `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsagesResult.
+func (ur UsagesResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualNetworkRule virtual Network ACL Rule object

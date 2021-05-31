@@ -486,6 +486,12 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Disk specifies the disk information fo the AzureBareMetal instance
 type Disk struct {
 	// Name - The disk name.
@@ -522,6 +528,12 @@ type Display struct {
 	Origin *string `json:"origin,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Display.
+func (d Display) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDefinition error definition.
 type ErrorDefinition struct {
 	// Code - READ-ONLY; Service specific error code which serves as the substatus for the HTTP error code.
@@ -530,6 +542,12 @@ type ErrorDefinition struct {
 	Message *string `json:"message,omitempty"`
 	// Details - READ-ONLY; Internal error details.
 	Details *[]ErrorDefinition `json:"details,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDefinition.
+func (ed ErrorDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse error response.
@@ -544,6 +562,12 @@ type HardwareProfile struct {
 	HardwareType AzureBareMetalHardwareTypeNamesEnum `json:"hardwareType,omitempty"`
 	// AzureBareMetalInstanceSize - READ-ONLY; Specifies the AzureBareMetal instance SKU. Possible values include: 'S72m', 'S144m', 'S72', 'S144', 'S192', 'S192m', 'S192xm', 'S96', 'S112', 'S224', 'S224m', 'S224om', 'S224oo', 'S224oom', 'S224ooo', 'S384', 'S384m', 'S384xm', 'S384xxm', 'S448', 'S448m', 'S448om', 'S448oo', 'S448oom', 'S448ooo', 'S576m', 'S576xm', 'S672', 'S672m', 'S672om', 'S672oo', 'S672oom', 'S672ooo', 'S768', 'S768m', 'S768xm', 'S896', 'S896m', 'S896om', 'S896oo', 'S896oom', 'S896ooo', 'S960m'
 	AzureBareMetalInstanceSize AzureBareMetalInstanceSizeNamesEnum `json:"azureBareMetalInstanceSize,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HardwareProfile.
+func (hp HardwareProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IPAddress specifies the IP address of the network interface.
@@ -633,6 +657,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -641,6 +671,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Result sample result definition

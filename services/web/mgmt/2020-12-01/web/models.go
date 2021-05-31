@@ -347,6 +347,12 @@ type AnalysisDefinitionProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AnalysisDefinitionProperties.
+func (ad AnalysisDefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // APIDefinitionInfo information about the formal API definition for the app.
 type APIDefinitionInfo struct {
 	// URL - The URL of the API definition.
@@ -803,6 +809,12 @@ type AppInsightsWebAppStackSettings struct {
 	IsSupported *bool `json:"isSupported,omitempty"`
 	// IsDefaultOff - READ-ONLY; <code>true</code> if Application Insights is disabled by default for the stack; otherwise, <code>false</code>.
 	IsDefaultOff *bool `json:"isDefaultOff,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AppInsightsWebAppStackSettings.
+func (aiwass AppInsightsWebAppStackSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AppInstanceStatusCollection collection of app instances.
@@ -1449,6 +1461,12 @@ type AppMajorVersion struct {
 	MinorVersions *[]AppMinorVersion `json:"minorVersions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AppMajorVersion.
+func (amv AppMajorVersion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AppMinorVersion web App stack minor version.
 type AppMinorVersion struct {
 	// DisplayText - READ-ONLY; Web App stack minor version (display only).
@@ -1457,6 +1475,12 @@ type AppMinorVersion struct {
 	Value *string `json:"value,omitempty"`
 	// StackSettings - READ-ONLY; Settings associated with the minor version.
 	StackSettings *AppRuntimes `json:"stackSettings,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AppMinorVersion.
+func (amv AppMinorVersion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AppRegistration ...
@@ -1563,6 +1587,12 @@ type AppRuntimes struct {
 	WindowsContainerSettings *WindowsJavaContainerSettings `json:"windowsContainerSettings,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AppRuntimes.
+func (ar AppRuntimes) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AppRuntimeSettings web App runtime settings.
 type AppRuntimeSettings struct {
 	// RuntimeVersion - READ-ONLY; Web App stack minor version (runtime only).
@@ -1585,6 +1615,12 @@ type AppRuntimeSettings struct {
 	IsAutoUpdate *bool `json:"isAutoUpdate,omitempty"`
 	// IsEarlyAccess - READ-ONLY; <code>true</code> if the minor version is early-access; otherwise, <code>false</code>.
 	IsEarlyAccess *bool `json:"isEarlyAccess,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AppRuntimeSettings.
+func (ars AppRuntimeSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AppsApproveOrRejectPrivateEndpointConnectionFuture an abstraction for monitoring and retrieving the
@@ -5832,10 +5868,22 @@ type AppStackProperties struct {
 	PreferredOs StackPreferredOs `json:"preferredOs,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AppStackProperties.
+func (as AppStackProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ArmIDWrapper a wrapper for an ARM resource id
 type ArmIDWrapper struct {
 	// ID - READ-ONLY
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ArmIDWrapper.
+func (aiw ArmIDWrapper) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AseV3NetworkingConfiguration full view of networking configuration for an ASE.
@@ -7020,6 +7068,12 @@ type BackupItemProperties struct {
 	WebsiteSizeInBytes *int64 `json:"websiteSizeInBytes,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for BackupItemProperties.
+func (bi BackupItemProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BackupRequest description of a backup which will be performed.
 type BackupRequest struct {
 	autorest.Response `json:"-"`
@@ -7838,6 +7892,12 @@ type CertificateDetails struct {
 	RawData *string `json:"rawData,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CertificateDetails.
+func (cd CertificateDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CertificateEmail SSL certificate email.
 type CertificateEmail struct {
 	// CertificateEmailProperties - CertificateEmail resource specific properties
@@ -8024,6 +8084,12 @@ type CertificateOrderActionProperties struct {
 	ActionType CertificateOrderActionType `json:"actionType,omitempty"`
 	// CreatedAt - READ-ONLY; Time at which the certificate action was performed.
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CertificateOrderActionProperties.
+func (coa CertificateOrderActionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CertificateOrderContact ...
@@ -9852,6 +9918,12 @@ type DefaultErrorResponse struct {
 	Error *DefaultErrorResponseError `json:"error,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DefaultErrorResponse.
+func (der DefaultErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DefaultErrorResponseError error model.
 type DefaultErrorResponseError struct {
 	// Code - READ-ONLY; Standardized string to programmatically identify the error.
@@ -9882,6 +9954,12 @@ type DefaultErrorResponseErrorDetailsItem struct {
 	Message *string `json:"message,omitempty"`
 	// Target - READ-ONLY; Detailed error description and debugging information.
 	Target *string `json:"target,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DefaultErrorResponseErrorDetailsItem.
+func (derI DefaultErrorResponseErrorDetailsItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DeletedAppRestoreRequest details about restoring a deleted app.
@@ -10089,6 +10167,12 @@ type DeletedSiteProperties struct {
 	Kind *string `json:"kind,omitempty"`
 	// GeoRegionName - READ-ONLY; Geo Region of the deleted site
 	GeoRegionName *string `json:"geoRegionName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeletedSiteProperties.
+func (ds DeletedSiteProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DeletedWebAppCollection collection of deleted apps.
@@ -10667,6 +10751,12 @@ type DetectorDefinitionProperties struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DetectorDefinitionProperties.
+func (dd DetectorDefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DetectorInfo definition of Detector
 type DetectorInfo struct {
 	// ID - READ-ONLY; Id of detector
@@ -10687,6 +10777,12 @@ type DetectorInfo struct {
 	Type DetectorType `json:"type,omitempty"`
 	// Score - READ-ONLY; Defines score of a detector to power ML based matching.
 	Score *float64 `json:"score,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DetectorInfo.
+func (di DetectorInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DetectorResponse class representing Response from Detector
@@ -11488,6 +11584,12 @@ type DiagnosticCategoryProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DiagnosticCategoryProperties.
+func (dc DiagnosticCategoryProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DiagnosticData set of data with rendering instructions
 type DiagnosticData struct {
 	// Table - Data in table form
@@ -12118,6 +12220,12 @@ type DomainControlCenterSsoRequest struct {
 	PostParameterKey *string `json:"postParameterKey,omitempty"`
 	// PostParameterValue - READ-ONLY; Post parameter value. Client should use 'application/x-www-form-urlencoded' encoding for this value.
 	PostParameterValue *string `json:"postParameterValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DomainControlCenterSsoRequest.
+func (dccsr DomainControlCenterSsoRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DomainOwnershipIdentifier domain ownership Identifier.
@@ -13055,6 +13163,12 @@ type FunctionAppMajorVersion struct {
 	MinorVersions *[]FunctionAppMinorVersion `json:"minorVersions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for FunctionAppMajorVersion.
+func (famv FunctionAppMajorVersion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // FunctionAppMinorVersion function App stack minor version.
 type FunctionAppMinorVersion struct {
 	// DisplayText - READ-ONLY; Function App stack (display only).
@@ -13065,12 +13179,24 @@ type FunctionAppMinorVersion struct {
 	StackSettings *FunctionAppRuntimes `json:"stackSettings,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for FunctionAppMinorVersion.
+func (famv FunctionAppMinorVersion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // FunctionAppRuntimes function App stack runtimes.
 type FunctionAppRuntimes struct {
 	// LinuxRuntimeSettings - READ-ONLY; Linux-specific settings associated with the minor version.
 	LinuxRuntimeSettings *FunctionAppRuntimeSettings `json:"linuxRuntimeSettings,omitempty"`
 	// WindowsRuntimeSettings - READ-ONLY; Windows-specific settings associated with the minor version.
 	WindowsRuntimeSettings *FunctionAppRuntimeSettings `json:"windowsRuntimeSettings,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FunctionAppRuntimes.
+func (far FunctionAppRuntimes) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // FunctionAppRuntimeSettings function App runtime settings.
@@ -13386,6 +13512,12 @@ type FunctionAppStackProperties struct {
 	MajorVersions *[]FunctionAppMajorVersion `json:"majorVersions,omitempty"`
 	// PreferredOs - READ-ONLY; Function App stack preferred OS. Possible values include: 'Windows', 'Linux'
 	PreferredOs StackPreferredOs `json:"preferredOs,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FunctionAppStackProperties.
+func (fas FunctionAppStackProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // FunctionEnvelope function information.
@@ -13991,6 +14123,12 @@ type GeoRegionProperties struct {
 	OrgDomain *string `json:"orgDomain,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GeoRegionProperties.
+func (gr GeoRegionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // GitHub ...
 type GitHub struct {
 	// GitHubProperties - GitHub resource specific properties
@@ -14115,6 +14253,12 @@ type GitHubActionWebAppStackSettings struct {
 	IsSupported *bool `json:"isSupported,omitempty"`
 	// SupportedVersion - READ-ONLY; The minor version that is supported for GitHub Actions.
 	SupportedVersion *string `json:"supportedVersion,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GitHubActionWebAppStackSettings.
+func (ghawass GitHubActionWebAppStackSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // GitHubProperties gitHub resource specific properties
@@ -15288,6 +15432,12 @@ type HybridConnectionKeyProperties struct {
 	SendKeyValue *string `json:"sendKeyValue,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HybridConnectionKeyProperties.
+func (hck HybridConnectionKeyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // HybridConnectionLimits hybrid Connection limits contract. This is used to return the plan limits of
 // Hybrid Connections.
 type HybridConnectionLimits struct {
@@ -15382,6 +15532,12 @@ type HybridConnectionLimitsProperties struct {
 	Current *int32 `json:"current,omitempty"`
 	// Maximum - READ-ONLY; The maximum number of Hybrid Connections allowed.
 	Maximum *int32 `json:"maximum,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HybridConnectionLimitsProperties.
+func (hcl HybridConnectionLimitsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // HybridConnectionProperties hybridConnection resource specific properties
@@ -16468,6 +16624,12 @@ type KeyValuePairStringObject struct {
 	Value interface{} `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for KeyValuePairStringObject.
+func (kvpSo KeyValuePairStringObject) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // KubeEnvironmentProfile specification for a Kubernetes Environment to use for this resource.
 type KubeEnvironmentProfile struct {
 	// ID - Resource ID of the Kubernetes Environment.
@@ -16599,6 +16761,12 @@ type LinuxJavaContainerSettings struct {
 	IsAutoUpdate *bool `json:"isAutoUpdate,omitempty"`
 	// IsEarlyAccess - READ-ONLY; <code>true</code> if the minor version is early-access; otherwise, <code>false</code>.
 	IsEarlyAccess *bool `json:"isEarlyAccess,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LinuxJavaContainerSettings.
+func (ljcs LinuxJavaContainerSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ListCapability ...
@@ -16981,6 +17149,12 @@ type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
 	ClientID *string `json:"clientId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ManagedServiceIdentityUserAssignedIdentitiesValue.
+func (msiAiv ManagedServiceIdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MetricAvailability retention policy of a resource metric.
 type MetricAvailability struct {
 	TimeGrain    *string `json:"timeGrain,omitempty"`
@@ -17197,6 +17371,12 @@ type MigrateMySQLStatusProperties struct {
 	OperationID *string `json:"operationId,omitempty"`
 	// LocalMySQLEnabled - READ-ONLY; True if the web app has in app MySql enabled
 	LocalMySQLEnabled *bool `json:"localMySqlEnabled,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateMySQLStatusProperties.
+func (mmss MigrateMySQLStatusProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MSDeploy mSDeploy ARM PUT information
@@ -17431,10 +17611,22 @@ type MSDeployLogEntry struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MSDeployLogEntry.
+func (mdle MSDeployLogEntry) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MSDeployLogProperties mSDeployLog resource specific properties
 type MSDeployLogProperties struct {
 	// Entries - READ-ONLY; List of log entry messages
 	Entries *[]MSDeployLogEntry `json:"entries,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MSDeployLogProperties.
+func (mdl MSDeployLogProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MSDeployStatus mSDeploy ARM response
@@ -17536,6 +17728,12 @@ type MSDeployStatusProperties struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// Complete - READ-ONLY; Whether the deployment operation has completed
 	Complete *bool `json:"complete,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MSDeployStatusProperties.
+func (mds MSDeployStatusProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // NameIdentifier identifies an object.
@@ -17818,6 +18016,12 @@ type NetworkFeaturesProperties struct {
 	HybridConnections *[]RelayServiceConnectionEntity `json:"hybridConnections,omitempty"`
 	// HybridConnectionsV2 - READ-ONLY; The Hybrid Connection V2 (Service Bus) view.
 	HybridConnectionsV2 *[]HybridConnection `json:"hybridConnectionsV2,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NetworkFeaturesProperties.
+func (nf NetworkFeaturesProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // NetworkTrace network trace
@@ -19607,6 +19811,12 @@ type PrivateLinkResourceProperties struct {
 	RequiredMembers *[]string `json:"requiredMembers,omitempty"`
 	// RequiredZoneNames - READ-ONLY; RequiredZoneNames of a private link resource
 	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateLinkResourceProperties.
+func (plrp PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourcesWrapper wrapper for a collection of private link resources
@@ -22536,6 +22746,12 @@ type ResourceMetricAvailability struct {
 	Retention *string `json:"retention,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceMetricAvailability.
+func (rma ResourceMetricAvailability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceMetricDefinition metadata for the metrics.
 type ResourceMetricDefinition struct {
 	// ResourceMetricDefinitionProperties - ResourceMetricDefinition resource specific properties
@@ -23784,6 +24000,12 @@ type SiteConfigPropertiesDictionary struct {
 	PowerShellVersion *string `json:"powerShellVersion,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SiteConfigPropertiesDictionary.
+func (scpd SiteConfigPropertiesDictionary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SiteConfigResource web app configuration ARM resource.
 type SiteConfigResource struct {
 	autorest.Response `json:"-"`
@@ -24301,6 +24523,12 @@ type SiteConfigurationSnapshotInfoProperties struct {
 	Time *date.Time `json:"time,omitempty"`
 	// SnapshotID - READ-ONLY; The id of the snapshot
 	SnapshotID *int32 `json:"snapshotId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SiteConfigurationSnapshotInfoProperties.
+func (scsi SiteConfigurationSnapshotInfoProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SiteExtensionInfo site Extension Information.
@@ -26085,6 +26313,12 @@ type SlotDifferenceProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SlotDifferenceProperties.
+func (sd SlotDifferenceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SlotSwapStatus the status of the last successful slot swap operation.
 type SlotSwapStatus struct {
 	// TimestampUtc - READ-ONLY; The time the last successful slot swap completed.
@@ -26093,6 +26327,12 @@ type SlotSwapStatus struct {
 	SourceSlotName *string `json:"sourceSlotName,omitempty"`
 	// DestinationSlotName - READ-ONLY; The destination slot of the last swap operation.
 	DestinationSlotName *string `json:"destinationSlotName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SlotSwapStatus.
+func (sss SlotSwapStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SlowRequestsBasedTrigger trigger based on request execution time.
@@ -26365,6 +26605,12 @@ func NewSnapshotCollectionPage(cur SnapshotCollection, getNextPage func(context.
 type SnapshotProperties struct {
 	// Time - READ-ONLY; The time the snapshot was taken.
 	Time *string `json:"time,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SnapshotProperties.
+func (s SnapshotProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SnapshotRecoverySource specifies the web app that snapshot contents will be retrieved from.
@@ -27337,6 +27583,12 @@ type StaticSiteBuildARMResourceProperties struct {
 	UserProvidedFunctionApps *[]StaticSiteUserProvidedFunctionApp `json:"userProvidedFunctionApps,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StaticSiteBuildARMResourceProperties.
+func (ssbar StaticSiteBuildARMResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // StaticSiteBuildCollection collection of static site builds.
 type StaticSiteBuildCollection struct {
 	autorest.Response `json:"-"`
@@ -27796,6 +28048,12 @@ type StaticSiteCustomDomainOverviewARMResourceProperties struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StaticSiteCustomDomainOverviewARMResourceProperties.
+func (sscdoar StaticSiteCustomDomainOverviewARMResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // StaticSiteCustomDomainOverviewCollection collection of static site custom domains.
 type StaticSiteCustomDomainOverviewCollection struct {
 	autorest.Response `json:"-"`
@@ -28153,6 +28411,12 @@ type StaticSiteFunctionOverviewARMResourceProperties struct {
 	FunctionName *string `json:"functionName,omitempty"`
 	// TriggerType - READ-ONLY; The trigger type of the function. Possible values include: 'TriggerTypesHTTPTrigger', 'TriggerTypesUnknown'
 	TriggerType TriggerTypes `json:"triggerType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StaticSiteFunctionOverviewARMResourceProperties.
+func (ssfoar StaticSiteFunctionOverviewARMResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StaticSiteFunctionOverviewCollection collection of static site functions.
@@ -29118,6 +29382,12 @@ type StaticSitesWorkflowPreviewProperties struct {
 	Contents *string `json:"contents,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StaticSitesWorkflowPreviewProperties.
+func (sswp StaticSitesWorkflowPreviewProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // StaticSitesWorkflowPreviewRequest request entity for previewing the Static Site workflow
 type StaticSitesWorkflowPreviewRequest struct {
 	// StaticSitesWorkflowPreviewRequestProperties - StaticSitesWorkflowPreviewRequest resource specific properties
@@ -29701,6 +29971,12 @@ type StaticSiteUserInvitationResponseResourceProperties struct {
 	ExpiresOn *date.Time `json:"expiresOn,omitempty"`
 	// InvitationURL - READ-ONLY; The url for the invitation link
 	InvitationURL *string `json:"invitationUrl,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StaticSiteUserInvitationResponseResourceProperties.
+func (ssuirr StaticSiteUserInvitationResponseResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StaticSiteUserProvidedFunctionApp a static site user provided function.
@@ -30418,6 +30694,12 @@ type StorageMigrationResponseProperties struct {
 	OperationID *string `json:"operationId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StorageMigrationResponseProperties.
+func (smr StorageMigrationResponseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // String ...
 type String struct {
 	autorest.Response `json:"-"`
@@ -30484,6 +30766,12 @@ type SupportTopic struct {
 	ID *string `json:"id,omitempty"`
 	// PesID - READ-ONLY; Unique resource Id
 	PesID *string `json:"pesId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SupportTopic.
+func (st SupportTopic) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SwiftVirtualNetwork swift Virtual Network Contract. This is used to enable the new Swift way of doing
@@ -32272,6 +32560,12 @@ type UsageProperties struct {
 	SiteMode *string `json:"siteMode,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UsageProperties.
+func (u UsageProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // User user credentials used for publishing activity.
 type User struct {
 	autorest.Response `json:"-"`
@@ -33191,6 +33485,12 @@ type WindowsJavaContainerSettings struct {
 	IsAutoUpdate *bool `json:"isAutoUpdate,omitempty"`
 	// IsEarlyAccess - READ-ONLY; <code>true</code> if the minor version is early-access; otherwise, <code>false</code>.
 	IsEarlyAccess *bool `json:"isEarlyAccess,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WindowsJavaContainerSettings.
+func (wjcs WindowsJavaContainerSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WorkerPool worker pool of an App Service Environment.

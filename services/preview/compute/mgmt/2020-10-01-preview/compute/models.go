@@ -28,6 +28,12 @@ type AccessURI struct {
 	AccessSAS *string `json:"accessSAS,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccessURI.
+func (au AccessURI) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AdditionalCapabilities enables or disables a capability on the virtual machine or virtual machine scale
 // set.
 type AdditionalCapabilities struct {
@@ -504,6 +510,12 @@ type AvailablePatchSummary struct {
 	Error *APIError `json:"error,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AvailablePatchSummary.
+func (aps AvailablePatchSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BillingProfile specifies the billing related details of a Azure Spot VM or VMSS. <br><br>Minimum
 // api-version: 2019-03-01.
 type BillingProfile struct {
@@ -529,6 +541,12 @@ type BootDiagnosticsInstanceView struct {
 	SerialConsoleLogBlobURI *string `json:"serialConsoleLogBlobUri,omitempty"`
 	// Status - READ-ONLY; The boot diagnostics status information for the VM. <br><br> NOTE: It will be set only if there are errors encountered in enabling boot diagnostics.
 	Status *InstanceViewStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BootDiagnosticsInstanceView.
+func (bdiv BootDiagnosticsInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CloudError an error response from the Compute service.
@@ -1229,6 +1247,12 @@ type CloudServiceRoleProfileProperties struct {
 type CloudServiceRoleProperties struct {
 	// UniqueID - READ-ONLY; Specifies the ID which uniquely identifies a cloud service role.
 	UniqueID *string `json:"uniqueId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudServiceRoleProperties.
+func (csrp CloudServiceRoleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CloudServiceRoleSku describes the cloud service role sku.
@@ -2296,6 +2320,12 @@ func (dd DataDisk) MarshalJSON() ([]byte, error) {
 type DataDiskImage struct {
 	// Lun - READ-ONLY; Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and therefore must be unique for each data disk attached to a VM.
 	Lun *int32 `json:"lun,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataDiskImage.
+func (ddi DataDiskImage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DataDiskImageEncryption contains encryption settings for a data disk image.
@@ -3885,6 +3915,12 @@ type DiskAccessProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// TimeCreated - READ-ONLY; The time when the disk access was created.
 	TimeCreated *date.Time `json:"timeCreated,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DiskAccessProperties.
+func (dap DiskAccessProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DiskAccessUpdate used for updating a disk access resource.
@@ -6672,6 +6708,12 @@ type GalleryIdentifier struct {
 	UniqueName *string `json:"uniqueName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GalleryIdentifier.
+func (gi GalleryIdentifier) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // GalleryImage specifies information about the gallery Image Definition that you want to create or update.
 type GalleryImage struct {
 	autorest.Response       `json:"-"`
@@ -8658,6 +8700,12 @@ type InstanceSku struct {
 	Tier *string `json:"tier,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for InstanceSku.
+func (is InstanceSku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // InstanceViewStatus instance view status.
 type InstanceViewStatus struct {
 	// Code - The status code.
@@ -8676,6 +8724,12 @@ type InstanceViewStatus struct {
 type InstanceViewStatusesSummary struct {
 	// StatusesSummary - READ-ONLY
 	StatusesSummary *[]StatusCodeCount `json:"statusesSummary,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InstanceViewStatusesSummary.
+func (ivss InstanceViewStatusesSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // KeyForDiskEncryptionSet key Vault Key Url to be used for server side encryption of Managed Disks and
@@ -8748,6 +8802,12 @@ type LastPatchInstallationSummary struct {
 	StartedBy *string `json:"startedBy,omitempty"`
 	// Error - READ-ONLY; The errors that were encountered during execution of the operation. The details array contains the list of them.
 	Error *APIError `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LastPatchInstallationSummary.
+func (lpis LastPatchInstallationSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // LinuxConfiguration specifies the Linux operating system settings on the virtual machine. <br><br>For a
@@ -9075,10 +9135,22 @@ type LogAnalyticsOperationResult struct {
 	Properties *LogAnalyticsOutput `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LogAnalyticsOperationResult.
+func (laor LogAnalyticsOperationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // LogAnalyticsOutput logAnalytics output properties
 type LogAnalyticsOutput struct {
 	// Output - READ-ONLY; Output file Uri path to blob container.
 	Output *string `json:"output,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LogAnalyticsOutput.
+func (lao LogAnalyticsOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MaintenanceRedeployStatus maintenance Operation Status.
@@ -9186,6 +9258,12 @@ type OperationListResult struct {
 	Value *[]OperationValue `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationValue describes the properties of a Compute Operation value.
 type OperationValue struct {
 	// Origin - READ-ONLY; The origin of the compute operation.
@@ -9258,6 +9336,12 @@ type OperationValueDisplay struct {
 	Provider *string `json:"provider,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationValueDisplay.
+func (ovd OperationValueDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OrchestrationServiceStateInput the input for OrchestrationServiceState
 type OrchestrationServiceStateInput struct {
 	// ServiceName - The name of the service. Possible values include: 'AutomaticRepairs'
@@ -9272,6 +9356,12 @@ type OrchestrationServiceSummary struct {
 	ServiceName OrchestrationServiceNames `json:"serviceName,omitempty"`
 	// ServiceState - READ-ONLY; The current state of the service. Possible values include: 'NotRunning', 'Running', 'Suspended'
 	ServiceState OrchestrationServiceState `json:"serviceState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OrchestrationServiceSummary.
+func (oss OrchestrationServiceSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OSDisk specifies information about the operating system disk used by the virtual machine. <br><br> For
@@ -9363,6 +9453,12 @@ type Plan struct {
 type PrivateEndpoint struct {
 	// ID - READ-ONLY; The ARM identifier for Private Endpoint
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpoint.
+func (peVar PrivateEndpoint) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PrivateEndpointConnection the Private Endpoint Connection resource.
@@ -10029,6 +10125,12 @@ type ProxyOnlyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyOnlyResource.
+func (por ProxyOnlyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PurchasePlan used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
 type PurchasePlan struct {
 	// Publisher - The publisher ID.
@@ -10063,6 +10165,12 @@ type RecoveryWalkResponse struct {
 	NextPlatformUpdateDomain *int32 `json:"nextPlatformUpdateDomain,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RecoveryWalkResponse.
+func (rwr RecoveryWalkResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RegionalReplicationStatus this is the regional replication status.
 type RegionalReplicationStatus struct {
 	// Region - READ-ONLY; The region to which the gallery Image Version is being replicated to.
@@ -10075,12 +10183,24 @@ type RegionalReplicationStatus struct {
 	Progress *int32 `json:"progress,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RegionalReplicationStatus.
+func (rrs RegionalReplicationStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ReplicationStatus this is the replication status of the gallery Image Version.
 type ReplicationStatus struct {
 	// AggregatedState - READ-ONLY; This is the aggregated replication status based on all the regional replication status flags. Possible values include: 'Unknown', 'InProgress', 'Completed', 'Failed'
 	AggregatedState AggregatedReplicationState `json:"aggregatedState,omitempty"`
 	// Summary - READ-ONLY; This is a summary of replication status for each region.
 	Summary *[]RegionalReplicationStatus `json:"summary,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReplicationStatus.
+func (rs ReplicationStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RequestRateByIntervalInput api request input for LogAnalytics getRequestRateByInterval Api.
@@ -10192,12 +10312,24 @@ type ResourceSku struct {
 	Restrictions *[]ResourceSkuRestrictions `json:"restrictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceSku.
+func (rs ResourceSku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceSkuCapabilities describes The SKU capabilities object.
 type ResourceSkuCapabilities struct {
 	// Name - READ-ONLY; An invariant to describe the feature.
 	Name *string `json:"name,omitempty"`
 	// Value - READ-ONLY; An invariant if the feature is measured by quantity.
 	Value *string `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceSkuCapabilities.
+func (rsc ResourceSkuCapabilities) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceSkuCapacity describes scaling information of a SKU.
@@ -10212,6 +10344,12 @@ type ResourceSkuCapacity struct {
 	ScaleType ResourceSkuCapacityScaleType `json:"scaleType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceSkuCapacity.
+func (rsc ResourceSkuCapacity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceSkuCosts describes metadata for retrieving price info.
 type ResourceSkuCosts struct {
 	// MeterID - READ-ONLY; Used for querying price from commerce.
@@ -10220,6 +10358,12 @@ type ResourceSkuCosts struct {
 	Quantity *int64 `json:"quantity,omitempty"`
 	// ExtendedUnit - READ-ONLY; An invariant to show the extended unit.
 	ExtendedUnit *string `json:"extendedUnit,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceSkuCosts.
+func (rsc ResourceSkuCosts) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceSkuLocationInfo ...
@@ -10232,12 +10376,24 @@ type ResourceSkuLocationInfo struct {
 	ZoneDetails *[]ResourceSkuZoneDetails `json:"zoneDetails,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceSkuLocationInfo.
+func (rsli ResourceSkuLocationInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceSkuRestrictionInfo ...
 type ResourceSkuRestrictionInfo struct {
 	// Locations - READ-ONLY; Locations where the SKU is restricted
 	Locations *[]string `json:"locations,omitempty"`
 	// Zones - READ-ONLY; List of availability zones where the SKU is restricted.
 	Zones *[]string `json:"zones,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceSkuRestrictionInfo.
+func (rsri ResourceSkuRestrictionInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceSkuRestrictions describes scaling information of a SKU.
@@ -10250,6 +10406,12 @@ type ResourceSkuRestrictions struct {
 	RestrictionInfo *ResourceSkuRestrictionInfo `json:"restrictionInfo,omitempty"`
 	// ReasonCode - READ-ONLY; The reason for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
 	ReasonCode ResourceSkuRestrictionsReasonCode `json:"reasonCode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceSkuRestrictions.
+func (rsr ResourceSkuRestrictions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceSkusResult the List Resource Skus operation response.
@@ -10417,6 +10579,12 @@ type ResourceSkuZoneDetails struct {
 	Name *[]string `json:"name,omitempty"`
 	// Capabilities - READ-ONLY; A list of capabilities that are available for the SKU in the specified list of zones.
 	Capabilities *[]ResourceSkuCapabilities `json:"capabilities,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceSkuZoneDetails.
+func (rszd ResourceSkuZoneDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceURIList the List resources which are encrypted with the disk encryption set.
@@ -10587,6 +10755,12 @@ type RetrieveBootDiagnosticsDataResult struct {
 	SerialConsoleLogBlobURI *string `json:"serialConsoleLogBlobUri,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RetrieveBootDiagnosticsDataResult.
+func (rbddr RetrieveBootDiagnosticsDataResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RoleInstance ...
 type RoleInstance struct {
 	autorest.Response `json:"-"`
@@ -10627,6 +10801,12 @@ type RoleInstanceInstanceView struct {
 	PrivateID *string `json:"privateId,omitempty"`
 	// Statuses - READ-ONLY
 	Statuses *[]ResourceInstanceViewStatus `json:"statuses,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RoleInstanceInstanceView.
+func (riiv RoleInstanceInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RoleInstanceListResult ...
@@ -10792,6 +10972,12 @@ type RoleInstanceNetworkProfile struct {
 	NetworkInterfaces *[]SubResource `json:"networkInterfaces,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RoleInstanceNetworkProfile.
+func (rinp RoleInstanceNetworkProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RoleInstanceProperties ...
 type RoleInstanceProperties struct {
 	NetworkProfile *RoleInstanceNetworkProfile `json:"networkProfile,omitempty"`
@@ -10812,6 +10998,12 @@ type RollbackStatusInfo struct {
 	FailedRolledbackInstanceCount *int32 `json:"failedRolledbackInstanceCount,omitempty"`
 	// RollbackError - READ-ONLY; Error details if OS rollback failed.
 	RollbackError *APIError `json:"rollbackError,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RollbackStatusInfo.
+func (rsi RollbackStatusInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RollingUpgradePolicy the configuration parameters used while performing a rolling upgrade.
@@ -10839,6 +11031,12 @@ type RollingUpgradeProgressInfo struct {
 	PendingInstanceCount *int32 `json:"pendingInstanceCount,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RollingUpgradeProgressInfo.
+func (rupi RollingUpgradeProgressInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RollingUpgradeRunningStatus information about the current running state of the overall upgrade.
 type RollingUpgradeRunningStatus struct {
 	// Code - READ-ONLY; Code indicating the current status of the upgrade. Possible values include: 'RollingUpgradeStatusCodeRollingForward', 'RollingUpgradeStatusCodeCancelled', 'RollingUpgradeStatusCodeCompleted', 'RollingUpgradeStatusCodeFaulted'
@@ -10849,6 +11047,12 @@ type RollingUpgradeRunningStatus struct {
 	LastAction RollingUpgradeActionType `json:"lastAction,omitempty"`
 	// LastActionTime - READ-ONLY; Last action time of the upgrade.
 	LastActionTime *date.Time `json:"lastActionTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RollingUpgradeRunningStatus.
+func (rurs RollingUpgradeRunningStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RollingUpgradeStatusInfo the status of the latest virtual machine scale set rolling upgrade.
@@ -10961,6 +11165,12 @@ type RollingUpgradeStatusInfoProperties struct {
 	Progress *RollingUpgradeProgressInfo `json:"progress,omitempty"`
 	// Error - READ-ONLY; Error details for this upgrade, if there are any.
 	Error *APIError `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RollingUpgradeStatusInfoProperties.
+func (rusip RollingUpgradeStatusInfoProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RunCommandDocument describes the properties of a Run Command.
@@ -11215,6 +11425,12 @@ type SecurityProfile struct {
 type ShareInfoElement struct {
 	// VMURI - READ-ONLY; A relative URI containing the ID of the VM that has the disk attached.
 	VMURI *string `json:"vmUri,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ShareInfoElement.
+func (sie ShareInfoElement) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Sku describes a virtual machine scale set sku. NOTE: If the new VM SKU is not supported on the hardware
@@ -12263,6 +12479,12 @@ type StatusCodeCount struct {
 	Count *int32 `json:"count,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StatusCodeCount.
+func (scc StatusCodeCount) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // StorageProfile specifies the storage settings for the virtual machine disks.
 type StorageProfile struct {
 	// ImageReference - Specifies information about the image to use. You can specify information about platform images, marketplace images, or virtual machine images. This element is required when you want to use a platform image, marketplace image, or virtual machine image, but is not used in other creation operations.
@@ -12283,6 +12505,12 @@ type SubResource struct {
 type SubResourceReadOnly struct {
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SubResourceReadOnly.
+func (srro SubResourceReadOnly) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SubResourceWithColocationStatus ...
@@ -12339,6 +12567,12 @@ type UpdateDomain struct {
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource Name
 	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UpdateDomain.
+func (ud UpdateDomain) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UpdateDomainListResult ...
@@ -12544,6 +12778,12 @@ type UpgradeOperationHistoricalStatusInfo struct {
 	Location *string `json:"location,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UpgradeOperationHistoricalStatusInfo.
+func (uohsi UpgradeOperationHistoricalStatusInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UpgradeOperationHistoricalStatusInfoProperties describes each OS upgrade on the Virtual Machine Scale
 // Set.
 type UpgradeOperationHistoricalStatusInfoProperties struct {
@@ -12561,6 +12801,12 @@ type UpgradeOperationHistoricalStatusInfoProperties struct {
 	RollbackInfo *RollbackStatusInfo `json:"rollbackInfo,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UpgradeOperationHistoricalStatusInfoProperties.
+func (uohsip UpgradeOperationHistoricalStatusInfoProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UpgradeOperationHistoryStatus information about the current running state of the overall upgrade.
 type UpgradeOperationHistoryStatus struct {
 	// Code - READ-ONLY; Code indicating the current status of the upgrade. Possible values include: 'UpgradeStateRollingForward', 'UpgradeStateCancelled', 'UpgradeStateCompleted', 'UpgradeStateFaulted'
@@ -12569,6 +12815,12 @@ type UpgradeOperationHistoryStatus struct {
 	StartTime *date.Time `json:"startTime,omitempty"`
 	// EndTime - READ-ONLY; End time of the upgrade.
 	EndTime *date.Time `json:"endTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UpgradeOperationHistoryStatus.
+func (uohs UpgradeOperationHistoryStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UpgradePolicy describes an upgrade policy - automatic, manual, or rolling.
@@ -12824,6 +13076,12 @@ type VirtualMachineAssessPatchesResult struct {
 	Patches *[]VirtualMachineSoftwarePatchProperties `json:"patches,omitempty"`
 	// Error - READ-ONLY; The errors that were encountered during execution of the operation. The details array contains the list of them.
 	Error *APIError `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineAssessPatchesResult.
+func (vmapr VirtualMachineAssessPatchesResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualMachineCaptureParameters capture Virtual Machine parameters.
@@ -13363,6 +13621,12 @@ type VirtualMachineHealthStatus struct {
 	Status *InstanceViewStatus `json:"status,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VirtualMachineHealthStatus.
+func (vmhs VirtualMachineHealthStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VirtualMachineIdentity identity for the virtual machine.
 type VirtualMachineIdentity struct {
 	// PrincipalID - READ-ONLY; The principal id of virtual machine identity. This property will only be provided for a system assigned identity.
@@ -13393,6 +13657,12 @@ type VirtualMachineIdentityUserAssignedIdentitiesValue struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// ClientID - READ-ONLY; The client id of user assigned identity.
 	ClientID *string `json:"clientId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineIdentityUserAssignedIdentitiesValue.
+func (vmiAiv VirtualMachineIdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualMachineImage describes a Virtual Machine Image.
@@ -15164,6 +15434,12 @@ type VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue struct {
 	ClientID *string `json:"clientId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue.
+func (vmssiAiv VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VirtualMachineScaleSetInstanceView the instance view of a virtual machine scale set.
 type VirtualMachineScaleSetInstanceView struct {
 	autorest.Response `json:"-"`
@@ -15191,6 +15467,12 @@ func (vmssiv VirtualMachineScaleSetInstanceView) MarshalJSON() ([]byte, error) {
 type VirtualMachineScaleSetInstanceViewStatusesSummary struct {
 	// StatusesSummary - READ-ONLY; The extensions information.
 	StatusesSummary *[]VirtualMachineStatusCodeCount `json:"statusesSummary,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetInstanceViewStatusesSummary.
+func (vmssivss VirtualMachineScaleSetInstanceViewStatusesSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualMachineScaleSetIPConfiguration describes a virtual machine scale set network profile's IP
@@ -16514,6 +16796,12 @@ type VirtualMachineScaleSetSku struct {
 	Capacity *VirtualMachineScaleSetSkuCapacity `json:"capacity,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetSku.
+func (vmsss VirtualMachineScaleSetSku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VirtualMachineScaleSetSkuCapacity describes scaling information of a sku.
 type VirtualMachineScaleSetSkuCapacity struct {
 	// Minimum - READ-ONLY; The minimum capacity.
@@ -16524,6 +16812,12 @@ type VirtualMachineScaleSetSkuCapacity struct {
 	DefaultCapacity *int64 `json:"defaultCapacity,omitempty"`
 	// ScaleType - READ-ONLY; The scale type applicable to the sku. Possible values include: 'VirtualMachineScaleSetSkuScaleTypeAutomatic', 'VirtualMachineScaleSetSkuScaleTypeNone'
 	ScaleType VirtualMachineScaleSetSkuScaleType `json:"scaleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetSkuCapacity.
+func (vmsssc VirtualMachineScaleSetSkuCapacity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualMachineScaleSetsPerformMaintenanceFuture an abstraction for monitoring and retrieving the results
@@ -17659,6 +17953,12 @@ type VirtualMachineScaleSetVMExtensionsSummary struct {
 	Name *string `json:"name,omitempty"`
 	// StatusesSummary - READ-ONLY; The extensions information.
 	StatusesSummary *[]VirtualMachineStatusCodeCount `json:"statusesSummary,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineScaleSetVMExtensionsSummary.
+func (vmssves VirtualMachineScaleSetVMExtensionsSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualMachineScaleSetVMExtensionsUpdateFuture an abstraction for monitoring and retrieving the results
@@ -18923,6 +19223,12 @@ type VirtualMachineSoftwarePatchProperties struct {
 	AssessmentState PatchAssessmentState `json:"assessmentState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VirtualMachineSoftwarePatchProperties.
+func (vmspp VirtualMachineSoftwarePatchProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VirtualMachinesPerformMaintenanceFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type VirtualMachinesPerformMaintenanceFuture struct {
@@ -19232,6 +19538,12 @@ type VirtualMachineStatusCodeCount struct {
 	Code *string `json:"code,omitempty"`
 	// Count - READ-ONLY; The number of instances having a particular status code.
 	Count *int32 `json:"count,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineStatusCodeCount.
+func (vmscc VirtualMachineStatusCodeCount) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualMachinesUpdateFuture an abstraction for monitoring and retrieving the results of a long-running

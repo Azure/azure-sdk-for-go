@@ -503,6 +503,12 @@ type ArmTemplateProperties struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ArmTemplateProperties.
+func (atp ArmTemplateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Artifact an artifact.
 type Artifact struct {
 	autorest.Response `json:"-"`
@@ -853,6 +859,12 @@ type ArtifactProperties struct {
 	Parameters interface{} `json:"parameters,omitempty"`
 	// CreatedDate - READ-ONLY; The artifact's creation date.
 	CreatedDate *date.Time `json:"createdDate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ArtifactProperties.
+func (ap ArtifactProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ArtifactSource properties of an artifact source.

@@ -41,6 +41,12 @@ type ErrorDetails struct {
 	Details *string `json:"Details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // EventHubConsumerGroupInfo the properties of the EventHubConsumerGroupInfo object.
 type EventHubConsumerGroupInfo struct {
 	autorest.Response `json:"-"`
@@ -311,6 +317,12 @@ type IotHubCapacity struct {
 	Default *int64 `json:"default,omitempty"`
 	// ScaleType - READ-ONLY; The type of the scaling enabled. Possible values include: 'IotHubScaleTypeAutomatic', 'IotHubScaleTypeManual', 'IotHubScaleTypeNone'
 	ScaleType IotHubScaleType `json:"scaleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IotHubCapacity.
+func (ihc IotHubCapacity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IotHubDescription the description of the IoT hub.
@@ -625,6 +637,12 @@ type IotHubQuotaMetricInfo struct {
 	CurrentValue *int64 `json:"CurrentValue,omitempty"`
 	// MaxValue - READ-ONLY; The maximum value of the quota metric.
 	MaxValue *int64 `json:"MaxValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IotHubQuotaMetricInfo.
+func (ihqmi IotHubQuotaMetricInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IotHubQuotaMetricInfoListResult the JSON-serialized array of IotHubQuotaMetricInfo objects with a next
@@ -1126,6 +1144,12 @@ type JobResponse struct {
 	ParentJobID *string `json:"parentJobId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobResponse.
+func (jr JobResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // JobResponseListResult the JSON-serialized array of JobResponse objects with a next link.
 type JobResponseListResult struct {
 	autorest.Response `json:"-"`
@@ -1336,6 +1360,12 @@ type RegistryStatistics struct {
 	EnabledDeviceCount *int64 `json:"enabledDeviceCount,omitempty"`
 	// DisabledDeviceCount - READ-ONLY; The count of disabled devices in the identity registry.
 	DisabledDeviceCount *int64 `json:"disabledDeviceCount,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RegistryStatistics.
+func (rs RegistryStatistics) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Resource the common properties of an Azure resource.

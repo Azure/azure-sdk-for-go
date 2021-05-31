@@ -2084,6 +2084,12 @@ type BgpPeerStatus struct {
 	MessagesReceived *int64 `json:"messagesReceived,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for BgpPeerStatus.
+func (bps BgpPeerStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BgpPeerStatusListResult response for list BGP peer status API service call
 type BgpPeerStatusListResult struct {
 	autorest.Response `json:"-"`
@@ -3868,6 +3874,12 @@ type GatewayRoute struct {
 	AsPath *string `json:"asPath,omitempty"`
 	// Weight - READ-ONLY; The route's weight
 	Weight *int32 `json:"weight,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GatewayRoute.
+func (gr GatewayRoute) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // GatewayRouteListResult list of virtual network gateway routes
@@ -8835,6 +8847,12 @@ type TunnelConnectionHealth struct {
 	LastConnectionEstablishedUtcTime *string `json:"lastConnectionEstablishedUtcTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for TunnelConnectionHealth.
+func (tch TunnelConnectionHealth) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Usage describes network resource usage.
 type Usage struct {
 	// Unit - An enum describing the unit of measurement.
@@ -11355,6 +11373,12 @@ type WatcherListResult struct {
 type WatcherPropertiesFormat struct {
 	// ProvisioningState - READ-ONLY; The provisioning state of the resource. Possible values include: 'ProvisioningStateSucceeded', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateFailed'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WatcherPropertiesFormat.
+func (wpf WatcherPropertiesFormat) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WatchersDeleteFuture an abstraction for monitoring and retrieving the results of a long-running

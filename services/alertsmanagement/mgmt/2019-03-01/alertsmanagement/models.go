@@ -682,6 +682,12 @@ type AzureResource struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureResource.
+func (ar AzureResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Detector the detector information. By default this is not populated, unless it's specified in
 // expandDetector
 type Detector struct {
@@ -1027,6 +1033,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 	// Name - READ-ONLY; Azure resource name
 	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SmartDetectorErrorResponse describe the format of an Error response.

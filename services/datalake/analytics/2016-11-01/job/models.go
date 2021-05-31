@@ -358,6 +358,12 @@ type DataPath struct {
 	Paths *[]string `json:"paths,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DataPath.
+func (dp DataPath) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Diagnostics error diagnostic information for failed jobs.
 type Diagnostics struct {
 	// ColumnNumber - READ-ONLY; the column where the error occurred.
@@ -372,6 +378,12 @@ type Diagnostics struct {
 	Severity SeverityTypes `json:"severity,omitempty"`
 	// Start - READ-ONLY; the starting index of the error.
 	Start *int32 `json:"start,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Diagnostics.
+func (d Diagnostics) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorDetails the Data Lake Analytics job error details.
@@ -404,6 +416,12 @@ type ErrorDetails struct {
 	Source *string `json:"source,omitempty"`
 	// StartOffset - READ-ONLY; the start offset in the job where the error was found
 	StartOffset *int32 `json:"startOffset,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // HiveJobProperties hive job properties used when retrieving Hive jobs.
@@ -464,6 +482,12 @@ type InfoListResult struct {
 	Value *[]InformationBasic `json:"value,omitempty"`
 	// NextLink - READ-ONLY; the link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InfoListResult.
+func (ilr InfoListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // InfoListResultIterator provides access to a complete listing of InformationBasic values.
@@ -940,6 +964,12 @@ type InnerError struct {
 	InnerError *InnerError `json:"innerError,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for InnerError.
+func (ie InnerError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PipelineInformation job Pipeline Information, showing the relationship of jobs and recurrences of those
 // jobs in a pipeline.
 type PipelineInformation struct {
@@ -970,6 +1000,12 @@ type PipelineInformation struct {
 	Recurrences *[]uuid.UUID `json:"recurrences,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PipelineInformation.
+func (pi PipelineInformation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PipelineInformationListResult list of job pipeline information items.
 type PipelineInformationListResult struct {
 	autorest.Response `json:"-"`
@@ -977,6 +1013,12 @@ type PipelineInformationListResult struct {
 	Value *[]PipelineInformation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; the link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PipelineInformationListResult.
+func (pilr PipelineInformationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PipelineInformationListResultIterator provides access to a complete listing of PipelineInformation
@@ -1138,6 +1180,12 @@ type PipelineRunInformation struct {
 	LastSubmitTime *date.Time `json:"lastSubmitTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PipelineRunInformation.
+func (pri PipelineRunInformation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BasicProperties the common Data Lake Analytics job properties.
 type BasicProperties interface {
 	AsUSQLJobProperties() (*USQLJobProperties, bool)
@@ -1252,6 +1300,12 @@ type RecurrenceInformation struct {
 	LastSubmitTime *date.Time `json:"lastSubmitTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RecurrenceInformation.
+func (ri RecurrenceInformation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RecurrenceInformationListResult list of job recurrence information items.
 type RecurrenceInformationListResult struct {
 	autorest.Response `json:"-"`
@@ -1259,6 +1313,12 @@ type RecurrenceInformationListResult struct {
 	Value *[]RecurrenceInformation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; the link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RecurrenceInformationListResult.
+func (rilr RecurrenceInformationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RecurrenceInformationListResultIterator provides access to a complete listing of RecurrenceInformation
@@ -1451,6 +1511,12 @@ type StateAuditRecord struct {
 	Details *string `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StateAuditRecord.
+func (sar StateAuditRecord) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Statistics the Data Lake Analytics job execution statistics.
 type Statistics struct {
 	autorest.Response `json:"-"`
@@ -1460,6 +1526,12 @@ type Statistics struct {
 	FinalizingTimeUtc *date.Time `json:"finalizingTimeUtc,omitempty"`
 	// Stages - READ-ONLY; the list of stages for the job.
 	Stages *[]StatisticsVertexStage `json:"stages,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Statistics.
+func (s Statistics) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StatisticsVertexStage the Data Lake Analytics job statistics vertex stage information.
@@ -1504,6 +1576,12 @@ type StatisticsVertexStage struct {
 	TotalProgress *int32 `json:"totalProgress,omitempty"`
 	// TotalSucceededTime - READ-ONLY; the amount of time all successful vertices took in this stage.
 	TotalSucceededTime *string `json:"totalSucceededTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StatisticsVertexStage.
+func (svs StatisticsVertexStage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // USQLJobProperties u-SQL job properties used when retrieving U-SQL jobs.

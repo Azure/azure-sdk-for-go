@@ -255,6 +255,12 @@ type CheckNameAvailabilityOutput struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityOutput.
+func (cnao CheckNameAvailabilityOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CustomHTTPSConfiguration https settings for a domain
 type CustomHTTPSConfiguration struct {
 	// CertificateSource - Defines the source of the SSL certificate. Possible values include: 'CertificateSourceAzureKeyVault', 'CertificateSourceFrontDoor'
@@ -454,6 +460,12 @@ type ErrorResponse struct {
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // FrontDoor front Door represents a collection of backend endpoints to route traffic to along with rules
@@ -1895,6 +1907,12 @@ type ValidateCustomDomainOutput struct {
 	Reason *string `json:"reason,omitempty"`
 	// Message - READ-ONLY; Error message describing why the custom domain is not valid.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ValidateCustomDomainOutput.
+func (vcdo ValidateCustomDomainOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WebApplicationFirewallPolicy1 defines web application firewall policy.

@@ -1993,6 +1993,12 @@ type ResourcePoolProperties struct {
 	FullName *string `json:"fullName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourcePoolProperties.
+func (rpp ResourcePoolProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourcePoolsListResponse list of resource pools response model
 type ResourcePoolsListResponse struct {
 	autorest.Response `json:"-"`
@@ -2583,6 +2589,12 @@ type VirtualDiskController struct {
 	SubType *string `json:"subType,omitempty"`
 	// Type - READ-ONLY; disk controller type (SCSI)
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualDiskController.
+func (vdc VirtualDiskController) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualMachine virtual machine model
@@ -3717,6 +3729,12 @@ func NewVirtualNetworkListResponsePage(cur VirtualNetworkListResponse, getNextPa
 type VirtualNetworkProperties struct {
 	// PrivateCloudID - READ-ONLY; The Private Cloud id
 	PrivateCloudID *string `json:"privateCloudId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualNetworkProperties.
+func (vnp VirtualNetworkProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualNic virtual NIC model

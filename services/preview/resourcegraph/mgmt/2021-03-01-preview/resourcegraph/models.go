@@ -131,7 +131,7 @@ type BasicFacet interface {
 type Facet struct {
 	// Expression - Facet expression, same as in the corresponding facet request.
 	Expression *string `json:"expression,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeResultTypeFacet', 'ResultTypeResultTypeFacetResult', 'ResultTypeResultTypeFacetError'
+	// ResultType - Possible values include: 'ResultTypeFacet', 'ResultTypeFacetResult', 'ResultTypeFacetError'
 	ResultType ResultType `json:"resultType,omitempty"`
 }
 
@@ -143,11 +143,11 @@ func unmarshalBasicFacet(body []byte) (BasicFacet, error) {
 	}
 
 	switch m["resultType"] {
-	case string(ResultTypeResultTypeFacetResult):
+	case string(ResultTypeFacetResult):
 		var fr FacetResult
 		err := json.Unmarshal(body, &fr)
 		return fr, err
-	case string(ResultTypeResultTypeFacetError):
+	case string(ResultTypeFacetError):
 		var fe FacetError
 		err := json.Unmarshal(body, &fe)
 		return fe, err
@@ -178,7 +178,7 @@ func unmarshalBasicFacetArray(body []byte) ([]BasicFacet, error) {
 
 // MarshalJSON is the custom marshaler for Facet.
 func (f Facet) MarshalJSON() ([]byte, error) {
-	f.ResultType = ResultTypeResultTypeFacet
+	f.ResultType = ResultTypeFacet
 	objectMap := make(map[string]interface{})
 	if f.Expression != nil {
 		objectMap["expression"] = f.Expression
@@ -215,13 +215,13 @@ type FacetError struct {
 	Errors *[]ErrorDetails `json:"errors,omitempty"`
 	// Expression - Facet expression, same as in the corresponding facet request.
 	Expression *string `json:"expression,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeResultTypeFacet', 'ResultTypeResultTypeFacetResult', 'ResultTypeResultTypeFacetError'
+	// ResultType - Possible values include: 'ResultTypeFacet', 'ResultTypeFacetResult', 'ResultTypeFacetError'
 	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FacetError.
 func (fe FacetError) MarshalJSON() ([]byte, error) {
-	fe.ResultType = ResultTypeResultTypeFacetError
+	fe.ResultType = ResultTypeFacetError
 	objectMap := make(map[string]interface{})
 	if fe.Errors != nil {
 		objectMap["errors"] = fe.Errors
@@ -285,13 +285,13 @@ type FacetResult struct {
 	Data interface{} `json:"data,omitempty"`
 	// Expression - Facet expression, same as in the corresponding facet request.
 	Expression *string `json:"expression,omitempty"`
-	// ResultType - Possible values include: 'ResultTypeResultTypeFacet', 'ResultTypeResultTypeFacetResult', 'ResultTypeResultTypeFacetError'
+	// ResultType - Possible values include: 'ResultTypeFacet', 'ResultTypeFacetResult', 'ResultTypeFacetError'
 	ResultType ResultType `json:"resultType,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for FacetResult.
 func (fr FacetResult) MarshalJSON() ([]byte, error) {
-	fr.ResultType = ResultTypeResultTypeFacetResult
+	fr.ResultType = ResultTypeFacetResult
 	objectMap := make(map[string]interface{})
 	if fr.TotalRecords != nil {
 		objectMap["totalRecords"] = fr.TotalRecords

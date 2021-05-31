@@ -18,7 +18,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/packages/track1"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
-	"github.com/Azure/azure-sdk-for-go/version"
 	"github.com/spf13/cobra"
 )
 
@@ -212,7 +211,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			breaking := p.Package.Changelog.HasBreakingChanges()
 			breakingChangeItems := p.Package.Changelog.GetBreakingChangeItems()
 			set.add(pipeline.PackageResult{
-				Version:     version.Number, // TODO -- after migrate this to a module, we cannot get the version number in this way anymore
+				Version:     ctx.sdkVersion,
 				PackageName: getPackageIdentifier(p.Package.PackageName),
 				Path:        []string{p.Package.PackageName},
 				ReadmeMd:    []string{readme},

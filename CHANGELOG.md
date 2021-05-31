@@ -10,7 +10,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2018-06-01/hdinsight` | [details](services/hdinsight/mgmt/2018-06-01/hdinsight/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2018-06-01/hdinsight` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/hdinsight/mgmt/2018-06-01/hdinsight/CHANGELOG.md) |
 
 ## `v55.0.0`
 

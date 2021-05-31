@@ -24,8 +24,9 @@ type generateContext struct {
 
 	repoContent map[string]exports.Content
 
-	existingPackages packagesForReadme
-	defaultOptions   model.Options
+	existingPackages  packagesForReadme
+	defaultOptions    model.Options
+	additionalOptions []model.Option
 }
 
 func (ctx generateContext) SDKRoot() string {
@@ -112,7 +113,7 @@ func (ctx generateContext) generateForTag(readme, tag string) (*autorest.Generat
 		options = ctx.defaultOptions.MergeOptions(additionalOptions.Arguments()...)
 	} else {
 		// this is a new tag
-		options = ctx.defaultOptions
+		options = ctx.defaultOptions.MergeOptions(ctx.additionalOptions...)
 	}
 
 	input := autorest.GenerateInput{

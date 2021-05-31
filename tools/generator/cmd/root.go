@@ -69,6 +69,7 @@ func execute(inputPath, outputPath string, flags Flags) error {
 	if err != nil {
 		return err
 	}
+	log.Printf("Using current directory as SDK root: %s", cwd)
 
 	ctx := automationContext{
 		sdkRoot:    utils.NormalizePath(cwd),
@@ -107,7 +108,8 @@ type automationContext struct {
 
 	existingPackages existingPackageMap
 
-	defaultOptions model.Options
+	defaultOptions    model.Options
+	additionalOptions []model.Option
 }
 
 func (ctx *automationContext) categorizePackages() error {
@@ -138,9 +140,15 @@ func (ctx *automationContext) readDefaultOptions() error {
 		return err
 	}
 
-	defaultOptions, err := model.NewOptionsFrom(optionFile)
+	generateOptions, err := model.NewGenerateOptionsFrom(optionFile)
 	if err != nil {
 		return err
+	}
+
+	// parsing the default options
+	defaultOptions, err := model.ParseOptions(generateOptions.AutorestArguments)
+	if err != nil {
+		return fmt.Errorf("cannot parse default options from %v: %+v", generateOptions.AutorestArguments, err)
 	}
 
 	// remove the `--multiapi` in default options
@@ -154,6 +162,13 @@ func (ctx *automationContext) readDefaultOptions() error {
 
 	ctx.defaultOptions = model.NewOptions(options...)
 	log.Printf("Autorest defaultOptions: \n%+v", ctx.defaultOptions.Arguments())
+
+	// parsing the additional options
+	additionalOptions, err := model.ParseOptions(generateOptions.AdditionalOptions)
+	if err != nil {
+		return fmt.Errorf("cannot parse additional options from %v: %+v", generateOptions.AdditionalOptions, err)
+	}
+	ctx.additionalOptions = additionalOptions.Arguments()
 
 	return nil
 }

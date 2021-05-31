@@ -6,8 +6,6 @@ package model
 import (
 	"encoding/json"
 	"fmt"
-	"io"
-	"io/ioutil"
 	"reflect"
 )
 
@@ -36,10 +34,6 @@ func MergeOptions(options Options, other ...Option) Options {
 	return localOptions(arguments)
 }
 
-type generateOptions struct {
-	AutorestArguments []string `json:"autorestArguments"`
-}
-
 type localOptions []Option
 
 // ParseOptions returns an Options instance by parsing the given raw option strings
@@ -59,27 +53,6 @@ func ParseOptions(raw []string) (Options, error) {
 // NewOptions returns a new instance of Options with the give slice of Option
 func NewOptions(options ...Option) Options {
 	return localOptions(options)
-}
-
-// NewOptionsFrom returns a new instance of Options from the given io.Reader
-func NewOptionsFrom(reader io.Reader) (Options, error) {
-	b, err := ioutil.ReadAll(reader)
-	if err != nil {
-		return nil, err
-	}
-	var raw generateOptions
-	if err := json.Unmarshal(b, &raw); err != nil {
-		return nil, err
-	}
-	var options []Option
-	for _, r := range raw.AutorestArguments {
-		o, err := NewOption(r)
-		if err != nil {
-			return nil, err
-		}
-		options = append(options, o)
-	}
-	return localOptions(options), nil
 }
 
 // Arguments ...

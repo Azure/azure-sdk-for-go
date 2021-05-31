@@ -1,5 +1,5 @@
 {
-  "commit": "c2ea3a3ccd14293b4bd1d17e684ef9129f0dc604",
+  "commit": "5f9965cd81e1651c38651ddc9a964a7f1ba4b218",
   "readme": "/_/azure-rest-api-specs/specification/hdinsight/resource-manager/readme.md",
   "tag": "package-2018-06-preview",
   "use": "@microsoft.azure/autorest.go@2.1.183",

@@ -9,12 +9,13 @@ import (
 	"io/ioutil"
 )
 
+// GenerateOptions deserialize from generate_options.json file in root directory of azure-sdk-for-go
 type GenerateOptions struct {
 	AutorestArguments []string `json:"autorestArguments"`
 	AdditionalOptions []string `json:"additionalOptions,omitempty"`
 }
 
-// NewGenerateOptionsFrom returns a new instance of Options from the given io.Reader
+// NewGenerateOptionsFrom reads GenerateOptions from the given io.Reader
 func NewGenerateOptionsFrom(reader io.Reader) (*GenerateOptions, error) {
 	b, err := ioutil.ReadAll(reader)
 	if err != nil {

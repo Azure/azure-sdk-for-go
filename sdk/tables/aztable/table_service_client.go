@@ -15,14 +15,14 @@ const (
 	CosmosTableDomain       = ".table.cosmos."
 )
 
-// A TableServiceClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
+// A TableServiceClient represents a client to the table service. It can be used to query the available tables, add/remove tables, and various other service level operations.
 type TableServiceClient struct {
 	client  *tableClient
 	service *serviceClient
 	cred    SharedKeyCredential
 }
 
-// NewTableServiceClient creates a TableClient object using the specified URL and request policy pipeline.
+// NewTableServiceClient creates a TableServiceClient struct using the specified serviceURL, credential, and options.
 func NewTableServiceClient(serviceURL string, cred azcore.Credential, options TableClientOptions) (*TableServiceClient, error) {
 	conOptions := options.getConnectionOptions()
 	if isCosmosEndpoint(serviceURL) {
@@ -33,12 +33,12 @@ func NewTableServiceClient(serviceURL string, cred azcore.Credential, options Ta
 	return &TableServiceClient{client: &tableClient{con}, service: &serviceClient{con}, cred: *c}, nil
 }
 
-// Gets a TableClient affinitzed to the specified table name and initialized with the same serviceURL and credentials as this TableServiceClient
+// NewTableClient returns a pointer to a TableClient affinitzed to the specified table name and initialized with the same serviceURL and credentials as this TableServiceClient
 func (t *TableServiceClient) NewTableClient(tableName string) *TableClient {
 	return &TableClient{client: t.client, cred: t.cred, Name: tableName, service: t}
 }
 
-// Creates a table with the specified name
+// Create creates a table with the specified name.
 func (t *TableServiceClient) Create(ctx context.Context, name string) (TableResponseResponse, error) {
 	resp, err := t.client.Create(ctx, TableProperties{&name}, new(TableCreateOptions), new(QueryOptions))
 	if err == nil {
@@ -48,13 +48,20 @@ func (t *TableServiceClient) Create(ctx context.Context, name string) (TableResp
 	return TableResponseResponse{}, err
 }
 
-// Deletes a table by name
+// Delete deletes a table by name.
 func (t *TableServiceClient) Delete(ctx context.Context, name string) (TableDeleteResponse, error) {
 	return t.client.Delete(ctx, name, nil)
 }
 
-// Queries the tables using the specified QueryOptions
-func (t *TableServiceClient) QueryTables(queryOptions QueryOptions) TableQueryResponsePager {
+// Query queries the existing tables using the specified QueryOptions.
+// QueryOptions can specify the following properties to affect the query results returned:
+//
+// Filter: An Odata filter expression that limits results to those tables that satisfy the filter expression.
+// For example, the following expression would return only tables with a TableName of 'foo': "TableName eq 'foo'"
+//
+// Top: The maximum number of tables that will be returned per page of results.
+// Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
+func (t *TableServiceClient) Query(queryOptions QueryOptions) TableQueryResponsePager {
 	return &tableQueryResponsePager{client: t.client, queryOptions: &queryOptions, tableQueryOptions: new(TableQueryOptions)}
 }
 

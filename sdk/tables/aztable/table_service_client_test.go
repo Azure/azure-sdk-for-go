@@ -85,7 +85,7 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 
 	// Query for tables with no pagination. The filter should exclude one table from the results
 	filter := fmt.Sprintf("TableName ge '%s' and TableName lt '%s'", prefix1, prefix2)
-	pager := context.client.QueryTables(QueryOptions{Filter: &filter})
+	pager := context.client.Query(QueryOptions{Filter: &filter})
 
 	resultCount := 0
 	for pager.NextPage(ctx) {
@@ -98,7 +98,7 @@ func (s *tableServiceClientLiveTests) TestQueryTable() {
 
 	// Query for tables with pagination
 	top := int32(2)
-	pager = context.client.QueryTables(QueryOptions{Filter: &filter, Top: &top})
+	pager = context.client.Query(QueryOptions{Filter: &filter, Top: &top})
 
 	resultCount = 0
 	pageCount := 0

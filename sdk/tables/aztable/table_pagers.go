@@ -33,6 +33,9 @@ type tableEntityQueryResponsePager struct {
 	err               error
 }
 
+// NextPage fetches the next available page of results from the service.
+// If the fetched page contains results, the return value is true, else false.
+// Results fetched from the service can be evaulated by calling PageResponse on this Pager.
 func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 	if p.err != nil || (p.current != nil && p.current.XMSContinuationNextPartitionKey == nil && p.current.XMSContinuationNextRowKey == nil) {
 		return false
@@ -46,10 +49,18 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 	return p.err == nil && resp.TableEntityQueryResponse.Value != nil && len(resp.TableEntityQueryResponse.Value) > 0
 }
 
+// PageResponse returns the results from the page most recently fetched from the service.
+// Example usage of this in combination with NextPage would look like the following:
+//
+// for pager.NextPage(ctx) {
+//     resp = pager.PageResponse()
+//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+// }
 func (p *tableEntityQueryResponsePager) PageResponse() TableEntityQueryResponseResponse {
 	return *p.current
 }
 
+// Err returns an error value if the most recent call to NextPage was not successful, else nil.
 func (p *tableEntityQueryResponsePager) Err() error {
 	return p.err
 }
@@ -66,7 +77,7 @@ type TableQueryResponsePager interface {
 // The modelSlice parameter should be a pointer to a slice of stuct types that match the entity model type in the table response.
 func (r *TableEntityQueryResponse) AsModels(modelSlice interface{}) error {
 	models := reflect.ValueOf(modelSlice).Elem()
-	tt := GetTypeArray(models.Interface())
+	tt := getTypeArray(models.Interface())
 	fmap := getTypeValueMap(tt)
 	for i, e := range r.Value {
 		err := fromMap(tt, fmap, &e, models.Index(i))
@@ -86,6 +97,9 @@ type tableQueryResponsePager struct {
 	err               error
 }
 
+// NextPage fetches the next available page of results from the service.
+// If the fetched page contains results, the return value is true, else false.
+// Results fetched from the service can be evaulated by calling PageResponse on this Pager.
 func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 	if p.err != nil || (p.current != nil && p.current.XMSContinuationNextTableName == nil) {
 		return false
@@ -97,10 +111,18 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 	return p.err == nil && resp.TableQueryResponse.Value != nil && len(resp.TableQueryResponse.Value) > 0
 }
 
+// PageResponse returns the results from the page most recently fetched from the service.
+// Example usage of this in combination with NextPage would look like the following:
+//
+// for pager.NextPage(ctx) {
+//     resp = pager.PageResponse()
+//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+// }
 func (p *tableQueryResponsePager) PageResponse() TableQueryResponseResponse {
 	return *p.current
 }
 
+// Err returns an error value if the most recent call to NextPage was not successful, else nil.
 func (p *tableQueryResponsePager) Err() error {
 	return p.err
 }
@@ -159,7 +181,7 @@ func toOdataAnnotatedDictionary(entity *map[string]interface{}) error {
 	Switch:
 		switch t.Kind() {
 		case reflect.Slice, reflect.Array:
-			if GetTypeArray(v) != reflect.TypeOf(byte(0)) {
+			if getTypeArray(v) != reflect.TypeOf(byte(0)) {
 				return errors.New("arrays and slices must be of type byte")
 			}
 			// check if this is a uuid
@@ -224,7 +246,7 @@ func toMap(ent interface{}) (*map[string]interface{}, error) {
 		// add odata annotations for the types that require it.
 		switch k := v.Type().Kind(); k {
 		case reflect.Array, reflect.Slice:
-			if GetTypeArray(v.Interface()) != reflect.TypeOf(byte(0)) {
+			if getTypeArray(v.Interface()) != reflect.TypeOf(byte(0)) {
 				return nil, errors.New("arrays and slices must be of type byte")
 			}
 			// check if this is a uuid field as decorated by a tag
@@ -317,7 +339,7 @@ func fromMap(tt reflect.Type, fmap *map[string]int, src *map[string]interface{},
 				goto Switch
 			}
 		case reflect.Array, reflect.Map, reflect.Slice:
-			if GetTypeArray(val.Interface()) != reflect.TypeOf(byte(0)) {
+			if getTypeArray(val.Interface()) != reflect.TypeOf(byte(0)) {
 				return errors.New("arrays and slices must be of type byte")
 			}
 			// 	// check if this is a uuid field as decorated by a tag
@@ -359,6 +381,6 @@ func odataType(n string) string {
 	return b.String()
 }
 
-func GetTypeArray(arr interface{}) reflect.Type {
+func getTypeArray(arr interface{}) reflect.Type {
 	return reflect.TypeOf(arr).Elem()
 }

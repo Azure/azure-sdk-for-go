@@ -6,4 +6,11 @@ package common
 const (
 	// DefaultOptionPath the default path of the option file
 	DefaultOptionPath = "generate_options.json"
+
+	Services          = "services"
+	ChangelogFilename = "CHANGELOG.md"
+	MetadataFilename  = "_meta.json"
+	RelativeVersionGo = "version/version.go"
+
+	Root = "github.com/Azure/azure-sdk-for-go"
 )

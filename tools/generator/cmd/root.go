@@ -11,8 +11,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// Command returns the command for the generator. Note that this command is designed to run in the root directory of
-// azure-sdk-for-go. It does not work if you are running this tool in somewhere else
+// Command returns the command for the generator
 func Command() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use: "generator",

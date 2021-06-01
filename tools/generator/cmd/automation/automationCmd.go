@@ -19,6 +19,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Command returns the automation command. Note that this command is designed to run in the root directory of
+// azure-sdk-for-go. It does not work if you are running this tool in somewhere else
 func Command() *cobra.Command {
 	automationCmd := &cobra.Command{
 		Use:  "automation <generate input filepath> <generate output filepath>",

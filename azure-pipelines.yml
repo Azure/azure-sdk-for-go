@@ -2,11 +2,13 @@ trigger:
   paths:
     exclude:
     - sdk/
+    - tools/generator
 
 pr:
   paths:
     exclude:
     - sdk/
+    - tools/generator
 
 jobs:
   - job: Build_Test

@@ -11,8 +11,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/automation/pipeline"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/packages/track1"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"

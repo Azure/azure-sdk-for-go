@@ -92,6 +92,10 @@ func (f argument) Argument() string {
 	return f.value
 }
 
+func (f argument) String() string {
+	return f.Format()
+}
+
 var _ ArgumentOption = (*argument)(nil)
 
 type flagOption struct {
@@ -105,6 +109,10 @@ func (f flagOption) Type() OptionType {
 // Format ...
 func (f flagOption) Format() string {
 	return fmt.Sprintf("--%s", f.value)
+}
+
+func (f flagOption) String() string {
+	return f.Format()
 }
 
 func (f flagOption) Flag() string {
@@ -125,6 +133,10 @@ func (f keyValueOption) Type() OptionType {
 // Format ...
 func (f keyValueOption) Format() string {
 	return fmt.Sprintf("--%s=%s", f.key, f.value)
+}
+
+func (f keyValueOption) String() string {
+	return f.Format()
 }
 
 func (f keyValueOption) Key() string {

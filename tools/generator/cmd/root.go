@@ -11,16 +11,13 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/pipeline"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/ioext"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/packages/track1"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
-	"github.com/Azure/azure-sdk-for-go/version"
 	"github.com/spf13/cobra"
 )
 
@@ -72,17 +69,9 @@ func execute(inputPath, outputPath string, flags Flags) error {
 	if err != nil {
 		return err
 	}
+	log.Printf("Using current directory as SDK root: %s", cwd)
 
-	// we no longer need to back up the repo
-	//log.Printf("Backuping azure-sdk-for-go to temp directory...")
-	//backupRoot, err := backupSDKRepository(cwd)
-	//if err != nil {
-	//	return err
-	//}
-	//defer eraseBackup(backupRoot)
-	//log.Printf("Finished backuping to '%s'", backupRoot)
-
-	ctx := generateContext{
+	ctx := automationContext{
 		sdkRoot:    utils.NormalizePath(cwd),
 		specRoot:   input.SpecFolder,
 		commitHash: input.HeadSha,
@@ -100,18 +89,6 @@ func execute(inputPath, outputPath string, flags Flags) error {
 	return nil
 }
 
-func backupSDKRepository(sdk string) (string, error) {
-	tempRepoDir := filepath.Join(tempDir(), fmt.Sprintf("generator-%v", time.Now().Unix()))
-	if err := ioext.CopyDir(sdk, tempRepoDir); err != nil {
-		return "", fmt.Errorf("failed to backup azure-sdk-for-go to '%s': %+v", tempRepoDir, err)
-	}
-	return tempRepoDir, nil
-}
-
-func eraseBackup(tempDir string) error {
-	return os.RemoveAll(tempDir)
-}
-
 func tempDir() string {
 	if dir := os.Getenv("TMP_DIR"); dir != "" {
 		return dir
@@ -119,18 +96,85 @@ func tempDir() string {
 	return os.TempDir()
 }
 
-type generateContext struct {
+type automationContext struct {
 	sdkRoot    string
-	clnRoot    string
 	specRoot   string
 	commitHash string
 	optionPath string
 
 	repoContent map[string]exports.Content
+
+	sdkVersion string
+
+	existingPackages existingPackageMap
+
+	defaultOptions    model.Options
+	additionalOptions []model.Option
+}
+
+func (ctx *automationContext) categorizePackages() error {
+	ctx.existingPackages = existingPackageMap{}
+
+	serviceRoot := filepath.Join(ctx.sdkRoot, "services")
+	m, err := autorest.CollectGenerationMetadata(serviceRoot)
+	if err != nil {
+		return err
+	}
+
+	for path, metadata := range m {
+		// the path in the metadata map is the absolute path
+		relPath, err := filepath.Rel(ctx.sdkRoot, path)
+		if err != nil {
+			return err
+		}
+		ctx.existingPackages.add(utils.NormalizePath(relPath), metadata)
+	}
+
+	return nil
+}
+
+func (ctx *automationContext) readDefaultOptions() error {
+	log.Printf("Reading defaultOptions from file '%s'...", ctx.optionPath)
+	optionFile, err := os.Open(ctx.optionPath)
+	if err != nil {
+		return err
+	}
+
+	generateOptions, err := model.NewGenerateOptionsFrom(optionFile)
+	if err != nil {
+		return err
+	}
+
+	// parsing the default options
+	defaultOptions, err := model.ParseOptions(generateOptions.AutorestArguments)
+	if err != nil {
+		return fmt.Errorf("cannot parse default options from %v: %+v", generateOptions.AutorestArguments, err)
+	}
+
+	// remove the `--multiapi` in default options
+	var options []model.Option
+	for _, o := range defaultOptions.Arguments() {
+		if v, ok := o.(model.FlagOption); ok && v.Flag() == "multiapi" {
+			continue
+		}
+		options = append(options, o)
+	}
+
+	ctx.defaultOptions = model.NewOptions(options...)
+	log.Printf("Autorest defaultOptions: \n%+v", ctx.defaultOptions.Arguments())
+
+	// parsing the additional options
+	additionalOptions, err := model.ParseOptions(generateOptions.AdditionalOptions)
+	if err != nil {
+		return fmt.Errorf("cannot parse additional options from %v: %+v", generateOptions.AdditionalOptions, err)
+	}
+	ctx.additionalOptions = additionalOptions.Arguments()
+
+	return nil
 }
 
 // TODO -- support dry run
-func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.GenerateOutput, error) {
+func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline.GenerateOutput, error) {
 	if input.DryRun {
 		return nil, fmt.Errorf("dry run not supported yet")
 	}
@@ -140,80 +184,51 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 		return nil, err
 	}
 
-	// now we summary all the metadata in sdk
-	log.Printf("Cleaning up all the packages related with the following readme files: [%s]", strings.Join(input.RelatedReadmeMdFiles, ", "))
-	cleanUpCtx := cleanUpContext{
-		root:        filepath.Join(ctx.sdkRoot, "services"),
-		readmeFiles: input.RelatedReadmeMdFiles,
-	}
-	removedPackages, err := cleanUpCtx.clean()
-	if err != nil {
-		return nil, err
-	}
-	var removedPackagePaths []string
-	for _, p := range removedPackages.packages() {
-		removedPackagePaths = append(removedPackagePaths, p.outputFolder)
-	}
-	log.Printf("The following %d package(s) have been cleaned up: [%s]", len(removedPackagePaths), strings.Join(removedPackagePaths, ", "))
-
-	log.Printf("Reading options from file '%s'...", ctx.optionPath)
-	optionFile, err := os.Open(ctx.optionPath)
-	if err != nil {
+	log.Printf("Reading metadata information in azure-sdk-for-go...")
+	if err := ctx.categorizePackages(); err != nil {
 		return nil, err
 	}
 
-	options, err := model.NewOptionsFrom(optionFile)
-	if err != nil {
+	log.Printf("Reading default options...")
+	if err := ctx.readDefaultOptions(); err != nil {
 		return nil, err
 	}
-	log.Printf("Autorest options: \n%+v", options)
+
+	log.Printf("Reading version number...")
+	if err := ctx.readVersion(); err != nil {
+		return nil, err
+	}
 
 	// iterate over all the readme
 	results := make([]pipeline.PackageResult, 0)
 	errorBuilder := generateErrorBuilder{}
 	for _, readme := range input.RelatedReadmeMdFiles {
-		log.Printf("Processing readme '%s'...", readme)
-		absReadme := filepath.Join(input.SpecFolder, readme)
-		metadataOutput := filepath.Dir(absReadme)
-		// generate code
-		g := autorestContext{
-			generator: autorest.NewGeneratorFromOptions(options).WithReadme(absReadme).WithMetadataOutput(metadataOutput),
+		generateCtx := generateContext{
+			sdkRoot:          ctx.sdkRoot,
+			specRoot:         ctx.specRoot,
+			commitHash:       ctx.commitHash,
+			repoContent:      ctx.repoContent,
+			existingPackages: ctx.existingPackages[readme],
+			defaultOptions:   ctx.defaultOptions,
 		}
-		if err := g.generate(); err != nil {
-			errorBuilder.add(fmt.Errorf("cannot generate readme '%s': %+v", readme, err))
-			continue
-		}
-		m := changelogContext{
-			sdkRoot:         ctx.sdkRoot,
-			readme:          readme,
-			removedPackages: removedPackages[readme],
-			commonMetadata: autorest.GenerationMetadata{
-				CommitHash:     ctx.commitHash,
-				Readme:         autorest.NormalizedSpecRoot + utils.NormalizePath(readme),
-				CodeGenVersion: options.CodeGeneratorVersion(),
-				RepositoryURL:  "https://github.com/Azure/azure-rest-api-specs.git",
-			},
-			repoContent:       ctx.repoContent,
-			autorestArguments: g.autorestArguments(),
-		}
-		log.Printf("Processing metadata generated in readme '%s'...", readme)
-		packages, err := m.process(metadataOutput)
-		if err != nil {
-			errorBuilder.add(fmt.Errorf("cannot process metadata for readme '%s': %+v", readme, err))
+
+		packageResults, errors := generateCtx.generate(readme)
+		if len(errors) != 0 {
+			errorBuilder.add(errors...)
 			continue
 		}
 
 		// iterate over the changed packages
 		set := packageResultSet{}
-		for _, p := range packages {
-			log.Printf("Getting package result for package '%s'", p.PackageName)
-			content := p.Changelog.ToCompactMarkdown()
-			breaking := p.Changelog.HasBreakingChanges()
-			breakingChangeItems := p.Changelog.GetBreakingChangeItems()
+		for _, p := range packageResults {
+			log.Printf("Getting package result for package '%s'", p.Package.PackageName)
+			content := p.Package.Changelog.ToCompactMarkdown()
+			breaking := p.Package.Changelog.HasBreakingChanges()
+			breakingChangeItems := p.Package.Changelog.GetBreakingChangeItems()
 			set.add(pipeline.PackageResult{
-				Version:     version.Number,
-				PackageName: getPackageIdentifier(p.PackageName),
-				Path:        []string{p.PackageName},
+				Version:     ctx.sdkVersion,
+				PackageName: getPackageIdentifier(p.Package.PackageName),
+				Path:        []string{p.Package.PackageName},
 				ReadmeMd:    []string{readme},
 				Changelog: &pipeline.Changelog{
 					Content:             &content,
@@ -228,6 +243,9 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	// validate the sdk structure
 	log.Printf("Validating services directory structure...")
 	exceptions, err := loadExceptions(filepath.Join(ctx.sdkRoot, "tools/pkgchk/exceptions.txt"))
+	if err != nil {
+		return nil, err
+	}
 	if err := track1.VerifyWithDefaultVerifiers(filepath.Join(ctx.sdkRoot, "services"), exceptions); err != nil {
 		return nil, err
 	}
@@ -237,7 +255,7 @@ func (ctx generateContext) generate(input *pipeline.GenerateInput) (*pipeline.Ge
 	}, errorBuilder.build()
 }
 
-func (ctx *generateContext) readRepoContent() error {
+func (ctx *automationContext) readRepoContent() error {
 	ctx.repoContent = make(map[string]exports.Content)
 	pkgs, err := track1.List(filepath.Join(ctx.sdkRoot, "services"))
 	if err != nil {
@@ -263,12 +281,30 @@ func (ctx *generateContext) readRepoContent() error {
 	return nil
 }
 
+func (ctx *automationContext) readVersion() error {
+	v, err := ReadVersion(filepath.Join(ctx.sdkRoot, "version"))
+	if err != nil {
+		return err
+	}
+	ctx.sdkVersion = v
+	return nil
+}
+
+func contains(array []autorest.GenerateResult, item string) bool {
+	for _, r := range array {
+		if utils.NormalizePath(r.Package.PackageName) == utils.NormalizePath(item) {
+			return true
+		}
+	}
+	return false
+}
+
 type generateErrorBuilder struct {
 	errors []error
 }
 
-func (b *generateErrorBuilder) add(err error) {
-	b.errors = append(b.errors, err)
+func (b *generateErrorBuilder) add(err ...error) {
+	b.errors = append(b.errors, err...)
 }
 
 func (b *generateErrorBuilder) build() error {
@@ -284,21 +320,21 @@ func (b *generateErrorBuilder) build() error {
 
 type packageResultSet map[string]pipeline.PackageResult
 
-func (s *packageResultSet) contains(r pipeline.PackageResult) bool {
-	_, ok := (*s)[r.PackageName]
+func (s packageResultSet) contains(r pipeline.PackageResult) bool {
+	_, ok := s[r.PackageName]
 	return ok
 }
 
-func (s *packageResultSet) add(r pipeline.PackageResult) {
+func (s packageResultSet) add(r pipeline.PackageResult) {
 	if s.contains(r) {
-		log.Printf("[WARNING] The result set already contains key %s with value %+v, but we are still trying to insert a new value %+v on the same key", r.PackageName, (*s)[r.PackageName], r)
+		log.Printf("[WARNING] The result set already contains key %s with value %+v, but we are still trying to insert a new value %+v on the same key", r.PackageName, s[r.PackageName], r)
 	}
-	(*s)[r.PackageName] = r
+	s[r.PackageName] = r
 }
 
-func (s *packageResultSet) toSlice() []pipeline.PackageResult {
+func (s packageResultSet) toSlice() []pipeline.PackageResult {
 	results := make([]pipeline.PackageResult, 0)
-	for _, r := range *s {
+	for _, r := range s {
 		results = append(results, r)
 	}
 	// sort the results

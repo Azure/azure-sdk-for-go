@@ -4,5 +4,6 @@
 package common
 
 const (
+	// DefaultOptionPath the default path of the option file
 	DefaultOptionPath = "generate_options.json"
 )

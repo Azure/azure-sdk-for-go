@@ -15,7 +15,7 @@ import (
 // azure-sdk-for-go. It does not work if you are running this tool in somewhere else
 func Command() *cobra.Command {
 	rootCmd := &cobra.Command{
-		Use:  "generator",
+		Use: "generator",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			log.SetFlags(0) // remove the time stamp prefix
 			return nil

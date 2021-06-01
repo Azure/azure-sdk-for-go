@@ -32,11 +32,16 @@ func Command() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			optionPath, err := cmd.Flags().GetString("options")
 			if err != nil {
+				logError(err)
 				return err
 			}
-			return execute(args[0], args[1], Flags{
+			if err := execute(args[0], args[1], Flags{
 				OptionPath: optionPath,
-			})
+			}); err != nil {
+				logError(err)
+				return err
+			}
+			return nil
 		},
 		SilenceUsage: true, // this command is used for a pipeline, the usage should never show
 	}
@@ -365,4 +370,12 @@ func loadExceptions(exceptFile string) (map[string]bool, error) {
 	}
 
 	return exceptions, nil
+}
+
+func logError(err error) {
+	for _, line := range strings.Split(err.Error(), "\n") {
+		if l := strings.TrimSpace(line); l != "" {
+			log.Printf("[ERROR] %s", l)
+		}
+	}
 }

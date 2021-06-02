@@ -194,10 +194,32 @@ func (p *poller) handleResponse(resp *azcore.Response, respType interface{}) (*h
 }
 
 func (p *poller) Poll(ctx context.Context, pipeline azcore.Pipeline) (*http.Response, error) {
-	if p.pollForStatus(ctx, pipeline, p.pt) {
-		return p.pt.latestResponse().Response, p.pt.pollingError()
+	if p.pt.hasTerminated() {
+		if err := p.pt.pollingError(); err != nil {
+			return nil, err
+		}
+		return p.pt.latestResponse().Response, nil
 	}
-	return nil, p.pt.pollingError()
+	if err := p.pt.pollForStatus(ctx, pipeline); err != nil {
+		return nil, err
+	}
+	if err := p.pt.checkForErrors(); err != nil {
+		return nil, err
+	}
+	if err := p.pt.updatePollingState(p.pt.provisioningStateApplicable()); err != nil {
+		return nil, err
+	}
+	if err := p.pt.initPollingMethod(); err != nil {
+		return nil, err
+	}
+	if err := p.pt.updatePollingMethod(); err != nil {
+		return nil, err
+	}
+	// if we get here the polling was successful.  log the state and return the response
+	// VERB method status URL
+	azcore.Log().Writef(azcore.LogLongRunningOperation, "%s %s %s %s",
+		strings.ToUpper(p.pt.pollerMethodVerb()), p.pt.pollingMethod(), p.pt.pollingStatus(), p.pt.pollingURL())
+	return p.pt.latestResponse().Response, nil
 }
 
 func (p *poller) PollUntilDone(ctx context.Context, frequency time.Duration, pipeline azcore.Pipeline, respType interface{}) (*http.Response, error) {
@@ -251,32 +273,6 @@ func delay(ctx context.Context, delay time.Duration) error {
 	case <-ctx.Done():
 		return ctx.Err()
 	}
-}
-
-// pollForStatus queries the service to see if the operation has completed.
-func (p *poller) pollForStatus(ctx context.Context, pl azcore.Pipeline, pt pollingTracker) bool {
-	if pt.hasTerminated() {
-		return true
-	}
-	if err := pt.pollForStatus(ctx, pl); err != nil {
-		return true
-	}
-	if err := pt.checkForErrors(); err != nil {
-		return true
-	}
-	if err := pt.updatePollingState(pt.provisioningStateApplicable()); err != nil {
-		return true
-	}
-	if err := pt.initPollingMethod(); err != nil {
-		return true
-	}
-	if err := pt.updatePollingMethod(); err != nil {
-		return true
-	}
-	// VERB status method URL
-	azcore.Log().Writef(azcore.LogLongRunningOperation, "%s %s %s %s",
-		strings.ToUpper(pt.pollerMethodVerb()), pt.pollingStatus(), pt.pollingMethod(), pt.pollingURL())
-	return pt.hasTerminated()
 }
 
 type pollingTracker interface {
@@ -484,11 +480,15 @@ func (pt *pollingTrackerBase) pollForStatus(ctx context.Context, client azcore.P
 		return err
 	}
 	resp, err := client.Do(req)
-	pt.resp = resp
 	if err != nil {
 		pt.Err = err
 		return pt.Err
+	} else if resp == nil {
+		// received nil response and error
+		pt.Err = errors.New("received nil response")
+		return pt.Err
 	}
+	pt.resp = resp
 	if pt.resp.HasStatusCode(pollingCodes[:]...) {
 		// reset the service error on success case
 		pt.Err = nil

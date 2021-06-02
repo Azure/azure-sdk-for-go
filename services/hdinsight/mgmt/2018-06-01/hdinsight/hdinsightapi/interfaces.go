@@ -71,10 +71,13 @@ var _ ConfigurationsClientAPI = (*hdinsight.ConfigurationsClient)(nil)
 type ExtensionsClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters hdinsight.Extension) (result hdinsight.ExtensionsCreateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (result hdinsight.ExtensionsDeleteFuture, err error)
+	DisableAzureMonitor(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ExtensionsDisableAzureMonitorFuture, err error)
 	DisableMonitoring(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ExtensionsDisableMonitoringFuture, err error)
+	EnableAzureMonitor(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.AzureMonitorRequest) (result hdinsight.ExtensionsEnableAzureMonitorFuture, err error)
 	EnableMonitoring(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterMonitoringRequest) (result hdinsight.ExtensionsEnableMonitoringFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (result hdinsight.ClusterMonitoringResponse, err error)
 	GetAzureAsyncOperationStatus(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, operationID string) (result hdinsight.AsyncOperationResult, err error)
+	GetAzureMonitorStatus(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.AzureMonitorResponse, err error)
 	GetMonitoringStatus(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ClusterMonitoringResponse, err error)
 }
 

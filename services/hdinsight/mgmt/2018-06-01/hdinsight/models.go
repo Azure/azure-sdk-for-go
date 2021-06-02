@@ -480,6 +480,58 @@ type AutoscaleTimeAndCapacity struct {
 	MaxInstanceCount *int32 `json:"maxInstanceCount,omitempty"`
 }
 
+// AzureMonitorRequest the azure monitor parameters.
+type AzureMonitorRequest struct {
+	// WorkspaceID - The Log Analytics workspace ID.
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+	// PrimaryKey - The Log Analytics workspace key.
+	PrimaryKey *string `json:"primaryKey,omitempty"`
+	// SelectedConfigurations - The selected configurations.
+	SelectedConfigurations *AzureMonitorSelectedConfigurations `json:"selectedConfigurations,omitempty"`
+}
+
+// AzureMonitorResponse the azure monitor status response.
+type AzureMonitorResponse struct {
+	autorest.Response `json:"-"`
+	// ClusterMonitoringEnabled - The status of the monitor on the HDInsight cluster.
+	ClusterMonitoringEnabled *bool `json:"clusterMonitoringEnabled,omitempty"`
+	// WorkspaceID - The workspace ID of the monitor on the HDInsight cluster.
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+	// SelectedConfigurations - The selected configurations.
+	SelectedConfigurations *AzureMonitorSelectedConfigurations `json:"selectedConfigurations,omitempty"`
+}
+
+// AzureMonitorSelectedConfigurations the selected configurations for azure monitor.
+type AzureMonitorSelectedConfigurations struct {
+	// ConfigurationVersion - The configuration version.
+	ConfigurationVersion *string `json:"configurationVersion,omitempty"`
+	// GlobalConfigurations - The global configurations of selected configurations.
+	GlobalConfigurations map[string]*string `json:"globalConfigurations"`
+	// TableList - The table list.
+	TableList *[]AzureMonitorTableConfiguration `json:"tableList,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureMonitorSelectedConfigurations.
+func (amsc AzureMonitorSelectedConfigurations) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if amsc.ConfigurationVersion != nil {
+		objectMap["configurationVersion"] = amsc.ConfigurationVersion
+	}
+	if amsc.GlobalConfigurations != nil {
+		objectMap["globalConfigurations"] = amsc.GlobalConfigurations
+	}
+	if amsc.TableList != nil {
+		objectMap["tableList"] = amsc.TableList
+	}
+	return json.Marshal(objectMap)
+}
+
+// AzureMonitorTableConfiguration the table configuration for the Log Analytics integration.
+type AzureMonitorTableConfiguration struct {
+	// Name - The name.
+	Name *string `json:"name,omitempty"`
+}
+
 // BillingMeters the billing meters.
 type BillingMeters struct {
 	// MeterParameter - The virtual machine sizes.
@@ -1676,6 +1728,43 @@ func (future *ExtensionsDeleteFuture) result(client ExtensionsClient) (ar autore
 	return
 }
 
+// ExtensionsDisableAzureMonitorFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ExtensionsDisableAzureMonitorFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ExtensionsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ExtensionsDisableAzureMonitorFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ExtensionsDisableAzureMonitorFuture.Result.
+func (future *ExtensionsDisableAzureMonitorFuture) result(client ExtensionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsDisableAzureMonitorFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionsDisableAzureMonitorFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // ExtensionsDisableMonitoringFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ExtensionsDisableMonitoringFuture struct {
@@ -1707,6 +1796,43 @@ func (future *ExtensionsDisableMonitoringFuture) result(client ExtensionsClient)
 	if !done {
 		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionsDisableMonitoringFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ExtensionsEnableAzureMonitorFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ExtensionsEnableAzureMonitorFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ExtensionsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ExtensionsEnableAzureMonitorFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ExtensionsEnableAzureMonitorFuture.Result.
+func (future *ExtensionsEnableAzureMonitorFuture) result(client ExtensionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsEnableAzureMonitorFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionsEnableAzureMonitorFuture")
 		return
 	}
 	ar.Response = future.Response()

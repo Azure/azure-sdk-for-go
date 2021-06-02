@@ -8,7 +8,7 @@ This CLI tool provides 2 commands now: `automation`, `issue`.
 
 ### The `issue` command and the configuration file
 
-The `issue` command fetches the release request issues from [GitHub](https://github.com/Azure/sdk-release-request/issues?q=is%3Aissue+is%3Aopen+label%3AGo) and parses them into the configuration that other commands consume. The configuration will output to stdout.
+The `issue` command fetches the release request issues from `github.com/Azure/sdk-release-request/issues` and parses them into the configuration that other commands consume. The configuration will output to stdout.
 
 The configuration is a JSON string, which has the following pattern:
 ```json

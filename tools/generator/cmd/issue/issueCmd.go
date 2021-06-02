@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
 package issue
 
 import (
@@ -19,8 +22,8 @@ import (
 )
 
 const (
-	Repo  = "sdk-release-request"
-	Owner = "Azure"
+	repoName  = "sdk-release-request"
+	repoOwner = "Azure"
 )
 
 // Command returns the issue command
@@ -144,7 +147,7 @@ func (c *commandContext) listOpenIssues() ([]*github.Issue, error) {
 	}
 	var issues []*github.Issue
 	for {
-		r, resp, err := c.client.Issues.ListByRepo(c.ctx, Owner, Repo, opt)
+		r, resp, err := c.client.Issues.ListByRepo(c.ctx, repoOwner, repoName, opt)
 		if err != nil {
 			return nil, err
 		}
@@ -161,7 +164,7 @@ func (c *commandContext) listOpenIssues() ([]*github.Issue, error) {
 func (c *commandContext) listSpecifiedIssues(ids []int) ([]*github.Issue, error) {
 	var issues []*github.Issue
 	for _, id := range ids {
-		issue, _, err := c.client.Issues.Get(c.ctx, Owner, Repo, id)
+		issue, _, err := c.client.Issues.Get(c.ctx, repoOwner, repoName, id)
 		if err != nil {
 			return nil, err
 		}

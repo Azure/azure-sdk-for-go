@@ -12,13 +12,13 @@ import (
 const defaultScope = "/.default"
 
 const (
-	// AzureChina is the Azure Resourece Manager China cloud endpoint.
+	// AzureChina is the Azure Resource Manager China cloud endpoint.
 	AzureChina = "https://management.chinacloudapi.cn/"
-	// AzureGermany is the Azure Resourece Manager Germany cloud endpoint.
+	// AzureGermany is the Azure Resource Manager Germany cloud endpoint.
 	AzureGermany = "https://management.microsoftazure.de/"
-	// AzureGovernment is the Azure Resourece Manager US government cloud endpoint.
+	// AzureGovernment is the Azure Resource Manager US government cloud endpoint.
 	AzureGovernment = "https://management.usgovcloudapi.net/"
-	// AzurePublicCloud is the Azure Resourece Manager public cloud endpoint.
+	// AzurePublicCloud is the Azure Resource Manager public cloud endpoint.
 	AzurePublicCloud = "https://management.azure.com/"
 )
 

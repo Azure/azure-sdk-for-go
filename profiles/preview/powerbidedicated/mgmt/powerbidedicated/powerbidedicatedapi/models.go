@@ -8,7 +8,8 @@
 
 package powerbidedicatedapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/powerbidedicated/mgmt/2017-10-01/powerbidedicated/powerbidedicatedapi"
+import original "github.com/Azure/azure-sdk-for-go/services/powerbidedicated/mgmt/2021-01-01/powerbidedicated/powerbidedicatedapi"
 
+type AutoScaleVCoresClientAPI = original.AutoScaleVCoresClientAPI
 type CapacitiesClientAPI = original.CapacitiesClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

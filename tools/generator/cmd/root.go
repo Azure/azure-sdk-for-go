@@ -8,6 +8,7 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/automation"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/issue"
 	"github.com/spf13/cobra"
 )
 
@@ -25,6 +26,10 @@ func Command() *cobra.Command {
 		Hidden: true,
 	}
 
+	rootCmd.AddCommand(
+		automation.Command(),
+		issue.Command(),
+	)
 	rootCmd.AddCommand(
 		automation.Command(),
 	)

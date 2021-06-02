@@ -39,7 +39,7 @@ type bearerTokenPolicy struct {
 	options ARMAuthenticationPolicyOptions
 }
 
-func NewMultiTenantAuthenticationPolicy(creds azcore.TokenCredential, opts ARMAuthenticationPolicyOptions) *bearerTokenPolicy {
+func NewMultiTenantAuthenticationPolicy(creds azcore.TokenCredential, opts ARMAuthenticationPolicyOptions) azcore.Policy {
 	return &bearerTokenPolicy{
 		cond:    sync.NewCond(&sync.Mutex{}),
 		creds:   creds,

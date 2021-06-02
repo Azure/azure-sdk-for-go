@@ -42,9 +42,9 @@ type Code string
 
 const (
 	// CodeSuccess marks the resolve is successful
-	CodeSuccess     Code = "Success"
+	CodeSuccess Code = "Success"
 	// CodeDataPlane marks the resolved readme belongs to a data plane package
-	CodeDataPlane   Code = "DataPlaneRequest"
+	CodeDataPlane Code = "DataPlaneRequest"
 	// CodePRNotMerged marks the resolve succeeds but the requested PR is not merged yet
 	CodePRNotMerged Code = "PRNotMerged"
 )

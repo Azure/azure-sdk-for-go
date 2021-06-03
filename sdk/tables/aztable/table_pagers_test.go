@@ -143,6 +143,24 @@ func TestToMap(t *testing.T) {
 	assert.Equal(*ent.SomePtrStringProperty, (*entMap)["SomePtrStringProperty"])
 }
 
+func TestToMapWithMap(t *testing.T) {
+	assert := assert.New(t)
+
+	ent := createComplexEntityMap()
+
+	entMap, err := toMap(ent)
+	assert.Nil(err)
+
+	// Validate that we have all the @odata.type properties for types []byte, int64, float64, time.Time, and uuid
+	for k, v := range odataHintProps {
+		vv, ok := (*entMap)[odataType(k)]
+		assert.Truef(ok, "Should have found map key of name '%s'", odataType(k))
+		assert.Equal(v, vv)
+	}
+
+	assert.Equal(&ent, entMap)
+}
+
 func TestEntitySerialization(t *testing.T) {
 	assert := assert.New(t)
 

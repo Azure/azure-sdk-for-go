@@ -23,7 +23,7 @@ type TableServiceClient struct {
 }
 
 // NewTableServiceClient creates a TableServiceClient struct using the specified serviceURL, credential, and options.
-func NewTableServiceClient(serviceURL string, cred azcore.Credential, options TableClientOptions) (*TableServiceClient, error) {
+func NewTableServiceClient(serviceURL string, cred azcore.Credential, options *TableClientOptions) (*TableServiceClient, error) {
 	conOptions := options.getConnectionOptions()
 	if isCosmosEndpoint(serviceURL) {
 		conOptions.PerCallPolicies = []azcore.Policy{CosmosPatchTransformPolicy{}}
@@ -61,6 +61,14 @@ func (t *TableServiceClient) Delete(ctx context.Context, name string) (TableDele
 //
 // Top: The maximum number of tables that will be returned per page of results.
 // Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
+//
+// Query returns a Pager, which allows iteration through each page of results. Example:
+//
+// pager := client.Query()
+// for pager.NextPage(ctx) {
+//     resp = pager.PageResponse()
+//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+// }
 func (t *TableServiceClient) Query(queryOptions QueryOptions) TableQueryResponsePager {
 	return &tableQueryResponsePager{client: t.client, queryOptions: &queryOptions, tableQueryOptions: new(TableQueryOptions)}
 }

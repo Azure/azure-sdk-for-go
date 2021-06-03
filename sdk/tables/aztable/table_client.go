@@ -25,8 +25,8 @@ const (
 	Merge   TableUpdateMode = "merge"
 )
 
-// NewTableClient creates a TableClient struct in the context of the table speecified in tableName, using the specified serviceURL, credential, and options.
-func NewTableClient(tableName string, serviceURL string, cred azcore.Credential, options TableClientOptions) (*TableClient, error) {
+// NewTableClient creates a TableClient struct in the context of the table specified in tableName, using the specified serviceURL, credential, and options.
+func NewTableClient(tableName string, serviceURL string, cred azcore.Credential, options *TableClientOptions) (*TableClient, error) {
 	s, err := NewTableServiceClient(serviceURL, cred, options)
 	return s.NewTableClient(tableName), err
 }
@@ -52,7 +52,14 @@ func (t *TableClient) Delete(ctx context.Context) (TableDeleteResponse, error) {
 //
 // Top: The maximum number of entities that will be returned per page of results.
 // Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
-
+//
+// Query returns a Pager, which allows iteration through each page of results. Example:
+//
+// pager := client.Query()
+// for pager.NextPage(ctx) {
+//     resp = pager.PageResponse()
+//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+// }
 func (t *TableClient) Query(queryOptions QueryOptions) TableEntityQueryResponsePager {
 	return &tableEntityQueryResponsePager{tableClient: t, queryOptions: &queryOptions, tableQueryOptions: &TableQueryEntitiesOptions{}}
 }
@@ -67,8 +74,8 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 	return resp, err
 }
 
-// AddEntity adds an entity to the table.
-func (t *TableClient) AddEntity(ctx context.Context, entity map[string]interface{}) (TableInsertEntityResponse, error) {
+// AddMapEntity adds an entity to the table.
+func (t *TableClient) AddMapEntity(ctx context.Context, entity map[string]interface{}) (TableInsertEntityResponse, error) {
 	toOdataAnnotatedDictionary(&entity)
 	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
 	if err == nil {
@@ -79,8 +86,8 @@ func (t *TableClient) AddEntity(ctx context.Context, entity map[string]interface
 	}
 }
 
-// AddModelEntity adds an entity from an arbitrary interface value to the table.
-func (t *TableClient) AddModelEntity(ctx context.Context, entity interface{}) (TableInsertEntityResponse, error) {
+// AddEntity adds an entity from an arbitrary interface value to the table.
+func (t *TableClient) AddEntity(ctx context.Context, entity interface{}) (TableInsertEntityResponse, error) {
 	entmap, err := toMap(entity)
 	if err != nil {
 		return TableInsertEntityResponse{}, azcore.NewResponseError(err, nil)

@@ -81,7 +81,7 @@ func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType,
 		uri = cosmosURI(accountName, suffix)
 	}
 
-	client, err := NewTableServiceClient(uri, cred, TableClientOptions{HTTPClient: recording, Retry: azcore.RetryOptions{MaxRetries: -1}})
+	client, err := NewTableServiceClient(uri, cred, &TableClientOptions{HTTPClient: recording, Retry: azcore.RetryOptions{MaxRetries: -1}})
 	assert.Nil(err)
 	clientsMap[testName] = &testContext{client: client, recording: recording, context: &context}
 }

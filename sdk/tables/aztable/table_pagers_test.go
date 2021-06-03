@@ -11,7 +11,6 @@ import (
 	"io/ioutil"
 	"math"
 	"net/http"
-	"reflect"
 	"strconv"
 	"strings"
 	"testing"
@@ -84,14 +83,13 @@ func BenchmarkUnMarshal_AsJson_CastAndRemove_Map(b *testing.B) {
 
 func BenchmarkUnMarshal_FromMap_Entity(b *testing.B) {
 	assert := assert.New(b)
-	tt := reflect.TypeOf(complexEntity{})
-	fmap := getTypeValueMap(tt)
+
 	bt := []byte(complexPayload)
 	for i := 0; i < b.N; i++ {
 		var val = make(map[string]interface{})
 		json.Unmarshal(bt, &val)
 		result := complexEntity{}
-		err := fromMap(tt, fmap, &val, reflect.ValueOf(&result).Elem())
+		err := EntityMapAsModel(val, &result)
 		assert.Nil(err)
 		assert.Equal("somePartition", result.PartitionKey)
 	}
@@ -165,9 +163,10 @@ func TestDeserializeFromMap(t *testing.T) {
 	bt := []byte(complexPayload)
 	var val = make(map[string]interface{})
 	json.Unmarshal(bt, &val)
-	var result complexEntity = complexEntity{}
-	tt := reflect.TypeOf(complexEntity{})
-	err := fromMap(tt, getTypeValueMap(tt), &val, reflect.ValueOf(&result).Elem())
+	result := complexEntity{}
+	// tt := reflect.TypeOf(complexEntity{})
+	// err := fromMap(tt, getTypeValueMap(tt), &val, reflect.ValueOf(&result).Elem())
+	err := EntityMapAsModel(val, &result)
 	assert.Nil(err)
 	assert.EqualValues(expected, result)
 }

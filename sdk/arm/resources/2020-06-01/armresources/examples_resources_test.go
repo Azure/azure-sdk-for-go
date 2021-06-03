@@ -8,6 +8,7 @@ package armresources_test
 import (
 	"context"
 	"log"
+	"net/http"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/arm/resources/2020-06-01/armresources"
@@ -37,6 +38,7 @@ func TestExampleResourcesClient_ListByResourceGroup(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "token3", "expires_in": 3600}`)))
 	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "token4", "expires_in": 3600}`)))
 	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "token5", "expires_in": 3600}`)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	options := &azidentity.ClientSecretCredentialOptions{}
 	options.AuthorityHost = srv.URL()
 	options.HTTPClient = srv
@@ -45,7 +47,7 @@ func TestExampleResourcesClient_ListByResourceGroup(t *testing.T) {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{MultiTenantIDs: []string{"tenant1", "tenant2", "tenant3"}}), "<subscription ID>")
+	client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{MultiTenantIDs: []string{"tenant1", "tenant2", "tenant3"}, HTTPClient: srv}), "<subscription ID>")
 	page := client.ListByResourceGroup("<resource group name>", nil)
 	for page.NextPage(context.Background()) {
 		resp := page.PageResponse()
@@ -59,5 +61,4 @@ func TestExampleResourcesClient_ListByResourceGroup(t *testing.T) {
 	if err := page.Err(); err != nil {
 		log.Fatal(err)
 	}
-
 }

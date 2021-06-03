@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
 const (
@@ -92,6 +91,16 @@ func (b *bearerTokenPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
 	if getToken {
 		// this go routine has been elected to refresh the token
 		tk, err := b.creds.GetToken(req.Context(), b.options.Options)
+		auxH := []string{}
+		for _, id := range b.options.MultiTenantIDs {
+			opts := b.options.Options
+			opts.TenantIDHint = id
+			tk, err = b.creds.GetToken(req.Context(), opts)
+			if err != nil {
+				return nil, err
+			}
+			auxH = append(auxH, bearerTokenPrefix+tk.Token)
+		}
 		// update shared state
 		b.cond.L.Lock()
 		// to avoid a deadlock if GetToken() fails we MUST reset b.renewing to false before returning
@@ -103,28 +112,6 @@ func (b *bearerTokenPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
 		header = bearerTokenPrefix + tk.Token
 		b.header = header
 		b.expiresOn = tk.ExpiresOn
-		b.unlock()
-		auxH := []string{}
-		for _, id := range b.options.MultiTenantIDs {
-			switch v := b.creds.(type) {
-			case *azidentity.ClientSecretCredential:
-				ot := v.GetTenantID()
-				v.SetTenantID(id)
-				// this go routine has been elected to refresh the token
-				tk, err = b.creds.GetToken(req.Context(), b.options.Options)
-				if err != nil {
-					return nil, err
-				}
-				auxH = append(auxH, bearerTokenPrefix+tk.Token)
-				v.SetTenantID(ot)
-			// case *azidentity.ClientCertificateCredential:
-			// 	v.SetTenantID(id)
-			default:
-				return nil, &ARMAuthenticationFailedError{msg: "not a supported credential for multi-tenant authentication"}
-			}
-		}
-		// update shared state
-		b.cond.L.Lock()
 		auxHeader := strings.Join(auxH, ", ")
 		b.auxHeader = auxHeader
 		b.unlock()

@@ -89,6 +89,22 @@ func (r *TableEntityQueryResponse) AsModels(modelSlice interface{}) error {
 	return nil
 }
 
+// EntityMapAsModel converts a table entity in the form of map[string]interface{} and converts it to a strongly typed model.
+//
+// Example:
+// mapEntity, err := client.GetEntity("somePartition", "someRow")
+// myEntityModel := MyModel{}
+// err = EntityMapAsModel(mapEntity, &myEntityModel)
+func EntityMapAsModel(entityMap map[string]interface{}, model interface{}) error {
+	tt := getTypeArray(model)
+	fmap := getTypeValueMap(tt)
+	err := fromMap(reflect.TypeOf(model).Elem(), fmap, &entityMap, reflect.ValueOf(model).Elem())
+	if err != nil {
+		return nil
+	}
+	return err
+}
+
 type tableQueryResponsePager struct {
 	client            *tableClient
 	current           *TableQueryResponseResponse
@@ -295,6 +311,11 @@ func toMap(ent interface{}) (*map[string]interface{}, error) {
 	return &entMap, nil
 }
 
+// fromMap converts an entity map to a strongly typed model interface
+// tt is the type of the model
+// fmap is the result of getTypeValueMap for the model type
+// src is the source map value
+// srcVal is the the Value of the source map value
 func fromMap(tt reflect.Type, fmap *map[string]int, src *map[string]interface{}, srcVal reflect.Value) error {
 	for k, v := range *src {
 		// skip if this is an OData type descriptor

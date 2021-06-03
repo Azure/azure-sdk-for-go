@@ -74,17 +74,17 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 	return resp, err
 }
 
-// AddMapEntity adds an entity to the table.
-func (t *TableClient) AddMapEntity(ctx context.Context, entity map[string]interface{}) (TableInsertEntityResponse, error) {
-	toOdataAnnotatedDictionary(&entity)
-	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
-	if err == nil {
-		insertResp := resp.(TableInsertEntityResponse)
-		return insertResp, nil
-	} else {
-		return TableInsertEntityResponse{}, err
-	}
-}
+// // AddMapEntity adds an entity to the table.
+// func (t *TableClient) AddMapEntity(ctx context.Context, entity map[string]interface{}) (TableInsertEntityResponse, error) {
+// 	toOdataAnnotatedDictionary(&entity)
+// 	resp, err := t.client.InsertEntity(ctx, t.Name, &TableInsertEntityOptions{TableEntityProperties: entity, ResponsePreference: ResponseFormatReturnNoContent.ToPtr()}, &QueryOptions{})
+// 	if err == nil {
+// 		insertResp := resp.(TableInsertEntityResponse)
+// 		return insertResp, nil
+// 	} else {
+// 		return TableInsertEntityResponse{}, err
+// 	}
+// }
 
 // AddEntity adds an entity from an arbitrary interface value to the table.
 func (t *TableClient) AddEntity(ctx context.Context, entity interface{}) (TableInsertEntityResponse, error) {

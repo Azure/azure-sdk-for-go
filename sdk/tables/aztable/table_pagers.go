@@ -240,12 +240,16 @@ func toOdataAnnotatedDictionary(entity *map[string]interface{}) error {
 }
 
 func toMap(ent interface{}) (*map[string]interface{}, error) {
-	var s reflect.Value
-	if reflect.ValueOf(ent).Kind() == reflect.Ptr {
-		s = reflect.ValueOf(ent).Elem()
-	} else {
-		s = reflect.ValueOf(&ent).Elem().Elem()
+	// If we were provided a map already, send that back.
+	if reflect.ValueOf(ent).Kind() == reflect.Map {
+		entMap := ent.(map[string]interface{})
+		err := toOdataAnnotatedDictionary(&entMap)
+		if err != nil {
+			return nil, err
+		}
+		return &entMap, nil
 	}
+	s := reflect.ValueOf(&ent).Elem().Elem()
 	typeOfT := s.Type()
 	nf := s.NumField()
 	entMap := make(map[string]interface{}, nf)

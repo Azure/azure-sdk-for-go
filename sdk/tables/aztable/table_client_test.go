@@ -66,7 +66,7 @@ func (s *tableClientLiveTests) TestAddEntity() {
 
 	entitiesToCreate := createSimpleEntities(1, "partition")
 
-	_, err := client.AddMapEntity(ctx, (*entitiesToCreate)[0])
+	_, err := client.AddEntity(ctx, (*entitiesToCreate)[0])
 	assert.Nil(err)
 }
 
@@ -93,7 +93,7 @@ func (s *tableClientLiveTests) TestDeleteEntity() {
 
 	entitiesToCreate := createSimpleEntities(1, "partition")
 
-	_, err := client.AddMapEntity(ctx, (*entitiesToCreate)[0])
+	_, err := client.AddEntity(ctx, (*entitiesToCreate)[0])
 	assert.Nil(err)
 	_, delErr := client.DeleteEntity(ctx, (*entitiesToCreate)[0][partitionKey].(string), (*entitiesToCreate)[0][rowKey].(string), "*")
 	assert.Nil(delErr)
@@ -106,7 +106,7 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 
 	entitiesToCreate := createSimpleEntities(1, "partition")
 
-	_, err := client.AddMapEntity(ctx, (*entitiesToCreate)[0])
+	_, err := client.AddEntity(ctx, (*entitiesToCreate)[0])
 	assert.Nil(err)
 
 	var qResp TableEntityQueryResponseResponse
@@ -189,7 +189,7 @@ func (s *tableClientLiveTests) _TestGetEntity() {
 	// Add 5 entities
 	entitiesToCreate := createSimpleEntities(1, "partition")
 	for _, e := range *entitiesToCreate {
-		_, err := client.AddMapEntity(ctx, e)
+		_, err := client.AddEntity(ctx, e)
 		assert.Nil(err)
 	}
 
@@ -221,7 +221,7 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	// Add 5 entities
 	entitiesToCreate := createSimpleEntities(5, "partition")
 	for _, e := range *entitiesToCreate {
-		_, err := client.AddMapEntity(ctx, e)
+		_, err := client.AddEntity(ctx, e)
 		assert.Nil(err)
 	}
 
@@ -272,7 +272,7 @@ func (s *tableClientLiveTests) TestQueryComplexEntity() {
 	// Add 5 entities
 	entitiesToCreate := createComplexMapEntities(context, 5, "partition")
 	for _, e := range *entitiesToCreate {
-		_, err := client.AddMapEntity(ctx, e)
+		_, err := client.AddEntity(ctx, e)
 		assert.Nil(err)
 	}
 
@@ -442,7 +442,7 @@ func (s *tableClientLiveTests) TestBatchError() {
 	assert.Equal(error_empty_transaction, err.Error())
 
 	// Add the last entity to the table prior to adding it as part of the batch to cause a batch failure.
-	client.AddMapEntity(ctx, (*entitiesToCreate)[2])
+	client.AddEntity(ctx, (*entitiesToCreate)[2])
 
 	// Add the entities to the batch
 	for i := 0; i < cap(batch); i++ {

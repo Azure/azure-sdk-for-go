@@ -45,10 +45,6 @@ const (
 	msiTypeAzureArc            msiType = 6
 )
 
-const (
-	qpResID string = "mi_res_id"
-)
-
 // managedIdentityClient provides the base for authenticating in managed identity environments
 // This type includes an azcore.Pipeline and TokenCredentialOptions.
 type managedIdentityClient struct {
@@ -168,7 +164,7 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID 
 	}
 }
 
-func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, clientID string, scopes []string) (*azcore.Request, error) {
+func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, id string, scopes []string) (*azcore.Request, error) {
 	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return nil, err
@@ -178,15 +174,15 @@ func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, clien
 	q.Add("api-version", c.imdsAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
 	if c.id == ResourceID {
-		q.Add(string(qpResID), clientID)
-	} else if clientID != "" {
-		q.Add(qpClientID, clientID)
+		q.Add(string(qpResID), id)
+	} else if id != "" {
+		q.Add(qpClientID, id)
 	}
 	request.URL.RawQuery = q.Encode()
 	return request, nil
 }
 
-func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context, clientID string, scopes []string) (*azcore.Request, error) {
+func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context, id string, scopes []string) (*azcore.Request, error) {
 	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return nil, err
@@ -197,19 +193,19 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 		q.Add("api-version", "2017-09-01")
 		q.Add("resource", strings.Join(scopes, " "))
 		if c.id == ResourceID {
-			q.Add(string(qpResID), clientID)
-		} else if clientID != "" {
+			q.Add(string(qpResID), id)
+		} else if id != "" {
 			// the legacy 2017 API version specifically specifies "clientid" and not "client_id" as a query param
-			q.Add("clientid", clientID)
+			q.Add("clientid", id)
 		}
 	} else if c.msiType == msiTypeAppServiceV20190801 {
 		request.Header.Set("X-IDENTITY-HEADER", os.Getenv(identityHeader))
 		q.Add("api-version", "2019-08-01")
 		q.Add("resource", scopes[0])
 		if c.id == ResourceID {
-			q.Add(string(qpResID), clientID)
-		} else if clientID != "" {
-			q.Add(qpClientID, clientID)
+			q.Add(string(qpResID), id)
+		} else if id != "" {
+			q.Add(qpClientID, id)
 		}
 	}
 

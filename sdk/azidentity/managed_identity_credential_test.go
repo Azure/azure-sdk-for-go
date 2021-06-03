@@ -532,3 +532,91 @@ func TestManagedIdentityCredential_GetTokenMultipleResources(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 }
+
+func TestManagedIdentityCredential_UseResourceID(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(appServiceWindowsSuccessResp)))
+	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
+	_ = os.Setenv("MSI_SECRET", "secret")
+	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
+	options := ManagedIdentityCredentialOptions{}
+	options.HTTPClient = srv
+	options.ID = ResourceID
+	cred, err := NewManagedIdentityCredential("sample/resource/id", &options)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if tk.Token != "new_token" {
+		t.Fatalf("unexpected token returned. Expected: %s, Received: %s", "new_token", tk.Token)
+	}
+}
+
+func TestManagedIdentityCredential_ResourceID_AppService(t *testing.T) {
+	// setting a dummy value for IDENTITY_ENDPOINT in order to be able to get a ManagedIdentityCredential type in order
+	// to test App Service authentication request creation.
+	_ = os.Setenv("IDENTITY_ENDPOINT", "somevalue")
+	_ = os.Setenv("IDENTITY_HEADER", "header")
+	defer clearEnvVars("IDENTITY_ENDPOINT", "IDENTITY_HEADER")
+	resID := "sample/resource/id"
+	cred, err := NewManagedIdentityCredential(resID, &ManagedIdentityCredentialOptions{ID: ResourceID})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	cred.client.endpoint = imdsEndpoint
+	req, err := cred.client.createAuthRequest(context.Background(), resID, []string{msiScope})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if req.Request.Header.Get("X-IDENTITY-HEADER") != "header" {
+		t.Fatalf("Unexpected value for secret header")
+	}
+	reqQueryParams, err := url.ParseQuery(req.URL.RawQuery)
+	if err != nil {
+		t.Fatalf("Unable to parse App Service request query params: %v", err)
+	}
+	if reqQueryParams["api-version"][0] != "2019-08-01" {
+		t.Fatalf("Unexpected App Service API version")
+	}
+	if reqQueryParams["resource"][0] != msiScope {
+		t.Fatalf("Unexpected resource in resource query param")
+	}
+	if reqQueryParams[qpResID][0] != resID {
+		t.Fatalf("Unexpected resource ID in resource query param")
+	}
+}
+
+func TestManagedIdentityCredential_ResourceID_IMDS(t *testing.T) {
+	// setting a dummy value for MSI_ENDPOINT in order to avoid failure in the constructor
+	_ = os.Setenv("MSI_ENDPOINT", "http://foo.com/")
+	defer clearEnvVars("MSI_ENDPOINT")
+	resID := "sample/resource/id"
+	cred, err := NewManagedIdentityCredential(resID, &ManagedIdentityCredentialOptions{ID: ResourceID})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	cred.client.msiType = msiTypeIMDS
+	cred.client.endpoint = imdsEndpoint
+	req, err := cred.client.createAuthRequest(context.Background(), resID, []string{msiScope})
+	if err != nil {
+		t.Fatal(err)
+	}
+	reqQueryParams, err := url.ParseQuery(req.URL.RawQuery)
+	if err != nil {
+		t.Fatalf("Unable to parse App Service request query params: %v", err)
+	}
+	if reqQueryParams["api-version"][0] != "2018-02-01" {
+		t.Fatalf("Unexpected App Service API version")
+	}
+	if reqQueryParams["resource"][0] != msiScope {
+		t.Fatalf("Unexpected resource in resource query param")
+	}
+	if reqQueryParams[qpResID][0] != resID {
+		t.Fatalf("Unexpected resource ID in resource query param")
+	}
+}

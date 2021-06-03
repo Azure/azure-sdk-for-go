@@ -21,9 +21,10 @@ const (
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure the pipeline used with Managed Identity Credential.
 // All zero-value fields will be initialized with their default values.
 type ManagedIdentityCredentialOptions struct {
-	// ID helps to configure using an alternate user-assigned identity identifier. The default is client ID.
-	// Select the identifier to be used and pass the ID value in the string param on the ManagedIdentityCredential constructor.
-	// Hint: Choose from the exported list of allowed AlternateUserAssignedIdentifier values.
+	// ID is used to configure an alternate identifier for a user-assigned identity. The default is client ID.
+	// Select the identifier to be used and pass the corresponding ID value in the string param in
+	// NewManagedIdentityCredential().
+	// Hint: Choose from the list of allowed IDKind values.
 	ID IDKind
 
 	// HTTPClient sets the transport for making HTTP requests.
@@ -46,8 +47,8 @@ type ManagedIdentityCredential struct {
 }
 
 // NewManagedIdentityCredential creates an instance of the ManagedIdentityCredential capable of authenticating a resource that has a managed identity.
-// id: The ID that will be used to authenticate for a user assigned managed identity. Defaults to client ID. To use another identifier, pass in the value for the identifier here AND choose the
-// correct ID kind to be used in the request by setting IDKind in the options.
+// id: The ID that corresponds to the user assigned managed identity. Defaults to the identity's client ID. To use another identifier,
+// pass in the value for the identifier here AND choose the correct ID kind to be used in the request by setting IDKind in the options.
 // options: ManagedIdentityCredentialOptions that configure the pipeline for requests sent to Azure Active Directory.
 // More information on user assigned managed identities cam be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview#how-a-user-assigned-managed-identity-works-with-an-azure-vm

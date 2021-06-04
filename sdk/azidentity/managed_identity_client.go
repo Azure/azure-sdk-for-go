@@ -174,7 +174,7 @@ func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, id st
 	q.Add("api-version", c.imdsAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
 	if c.id == ResourceID {
-		q.Add(string(qpResID), id)
+		q.Add(qpResID, id)
 	} else if id != "" {
 		q.Add(qpClientID, id)
 	}
@@ -193,7 +193,7 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 		q.Add("api-version", "2017-09-01")
 		q.Add("resource", strings.Join(scopes, " "))
 		if c.id == ResourceID {
-			q.Add(string(qpResID), id)
+			q.Add(qpResID, id)
 		} else if id != "" {
 			// the legacy 2017 API version specifically specifies "clientid" and not "client_id" as a query param
 			q.Add("clientid", id)
@@ -203,7 +203,7 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 		q.Add("api-version", "2019-08-01")
 		q.Add("resource", scopes[0])
 		if c.id == ResourceID {
-			q.Add(string(qpResID), id)
+			q.Add(qpResID, id)
 		} else if id != "" {
 			q.Add(qpClientID, id)
 		}

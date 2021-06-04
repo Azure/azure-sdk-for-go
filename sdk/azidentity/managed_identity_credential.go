@@ -11,10 +11,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
+// IDKind is used to specify the type of identifier that is passed in for a user-assigned managed identity.
 type IDKind int
 
 const (
-	ClientID   IDKind = 0
+	// ClientID is the default identifier for a user-assigned managed identity.
+	ClientID IDKind = 0
+	// ResourceID is set when the resource ID of the user-assigned managed identity is to be used.
 	ResourceID IDKind = 1
 )
 

@@ -92,7 +92,7 @@ func (b *bearerTokenPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
 		// this go routine has been elected to refresh the token
 		tk, err := b.creds.GetToken(req.Context(), b.options.Options)
 		auxH := []string{}
-		for _, id := range b.options.MultiTenantIDs {
+		for _, id := range b.options.AuxiliaryTenants {
 			opts := b.options.Options
 			opts.TenantIDHint = id
 			tk, err = b.creds.GetToken(req.Context(), opts)

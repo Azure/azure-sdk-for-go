@@ -67,7 +67,7 @@ func (t *TableServiceClient) Delete(ctx context.Context, name string) (TableDele
 // pager := client.Query(QueryOptions{})
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
-//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+//     fmt.sprintf("The page contains %i results", len(resp.TableQueryResponse.Value))
 // }
 // err := pager.Err()
 func (t *TableServiceClient) Query(queryOptions QueryOptions) TableQueryResponsePager {

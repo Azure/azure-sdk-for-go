@@ -76,6 +76,7 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 }
 
 // AddEntity adds an entity from an arbitrary interface value to the table.
+// An entity must have at least a PartionKey and RowKey property.
 func (t *TableClient) AddEntity(ctx context.Context, entity interface{}) (TableInsertEntityResponse, error) {
 	entmap, err := toMap(entity)
 	if err != nil {

@@ -18,6 +18,20 @@ import (
 )
 
 // TableEntityQueryResponsePager is a Pager for Table entity query results.
+//
+// NextPage should be called first. It fetches the next available page of results from the service.
+// If the fetched page contains results, the return value is true, else false.
+// Results fetched from the service can be evaluated by calling PageResponse on this Pager.
+// If the result is false, the value of Err() will indicate if an error occurred.
+//
+// PageResponse returns the results from the page most recently fetched from the service.
+// Example usage of this in combination with NextPage would look like the following:
+//
+// for pager.NextPage(ctx) {
+//     resp = pager.PageResponse()
+//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+// }
+// err := pager.Err()
 type TableEntityQueryResponsePager interface {
 	azcore.Pager
 
@@ -35,18 +49,20 @@ type tableEntityQueryResponsePager struct {
 
 // NextPage fetches the next available page of results from the service.
 // If the fetched page contains results, the return value is true, else false.
-// Results fetched from the service can be evaulated by calling PageResponse on this Pager.
+// Results fetched from the service can be evaluated by calling PageResponse on this Pager.
 func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 	if p.err != nil || (p.current != nil && p.current.XMSContinuationNextPartitionKey == nil && p.current.XMSContinuationNextRowKey == nil) {
 		return false
 	}
 	var resp TableEntityQueryResponseResponse
 	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.Name, p.tableQueryOptions, p.queryOptions)
-	castAndRemoveAnnotationsSlice(&resp.TableEntityQueryResponse.Value)
+	if p.err == nil {
+		castAndRemoveAnnotationsSlice(&resp.TableEntityQueryResponse.Value)
+	}
 	p.current = &resp
 	p.tableQueryOptions.NextPartitionKey = resp.XMSContinuationNextPartitionKey
 	p.tableQueryOptions.NextRowKey = resp.XMSContinuationNextRowKey
-	return p.err == nil && resp.TableEntityQueryResponse.Value != nil && len(resp.TableEntityQueryResponse.Value) > 0
+	return p.err == nil && resp.TableEntityQueryResponse != nil && len(resp.TableEntityQueryResponse.Value) > 0
 }
 
 // PageResponse returns the results from the page most recently fetched from the service.
@@ -56,6 +72,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 //     resp = pager.PageResponse()
 //     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
 // }
+// err := pager.Err()
 func (p *tableEntityQueryResponsePager) PageResponse() TableEntityQueryResponseResponse {
 	return *p.current
 }
@@ -66,6 +83,20 @@ func (p *tableEntityQueryResponsePager) Err() error {
 }
 
 // TableQueryResponsePager is a Pager for Table Queries
+//
+// NextPage should be called first. It fetches the next available page of results from the service.
+// If the fetched page contains results, the return value is true, else false.
+// Results fetched from the service can be evaluated by calling PageResponse on this Pager.
+// If the result is false, the value of Err() will indicate if an error occurred.
+//
+// PageResponse returns the results from the page most recently fetched from the service.
+// Example usage of this in combination with NextPage would look like the following:
+//
+// for pager.NextPage(ctx) {
+//     resp = pager.PageResponse()
+//     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
+// }
+// err := pager.Err()
 type TableQueryResponsePager interface {
 	azcore.Pager
 
@@ -74,7 +105,7 @@ type TableQueryResponsePager interface {
 }
 
 // AsModels converts each map[string]interface{} entity result into a strongly slice of strongly typed models
-// The modelSlice parameter should be a pointer to a slice of stuct types that match the entity model type in the table response.
+// The modelSlice parameter should be a pointer to a slice of struct types that match the entity model type in the table response.
 func (r *TableEntityQueryResponse) AsModels(modelSlice interface{}) error {
 	models := reflect.ValueOf(modelSlice).Elem()
 	tt := getTypeArray(models.Interface())

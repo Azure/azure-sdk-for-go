@@ -7,7 +7,7 @@ package pollers
 
 import (
 	"errors"
-	"io"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"testing"
@@ -34,7 +34,7 @@ func TestGetStatusSuccess(t *testing.T) {
 	const jsonBody = `{ "status": "InProgress" }`
 	resp := azcore.Response{
 		Response: &http.Response{
-			Body: io.NopCloser(strings.NewReader(jsonBody)),
+			Body: ioutil.NopCloser(strings.NewReader(jsonBody)),
 		},
 	}
 	status, err := GetStatus(&resp)
@@ -65,7 +65,7 @@ func TestGetProvisioningState(t *testing.T) {
 	const jsonBody = `{ "properties": { "provisioningState": "Canceled" } }`
 	resp := azcore.Response{
 		Response: &http.Response{
-			Body: io.NopCloser(strings.NewReader(jsonBody)),
+			Body: ioutil.NopCloser(strings.NewReader(jsonBody)),
 		},
 	}
 	state, err := GetProvisioningState(&resp)

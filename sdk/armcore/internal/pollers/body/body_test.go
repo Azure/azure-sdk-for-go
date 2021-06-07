@@ -7,6 +7,7 @@ package body
 
 import (
 	"io"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"testing"
@@ -25,7 +26,7 @@ func initialResponse(method string, resp io.Reader) *azcore.Response {
 	}
 	return &azcore.Response{
 		Response: &http.Response{
-			Body:    io.NopCloser(resp),
+			Body:    ioutil.NopCloser(resp),
 			Header:  http.Header{},
 			Request: req,
 		},
@@ -35,7 +36,7 @@ func initialResponse(method string, resp io.Reader) *azcore.Response {
 func pollingResponse(resp io.Reader) *azcore.Response {
 	return &azcore.Response{
 		Response: &http.Response{
-			Body:   io.NopCloser(resp),
+			Body:   ioutil.NopCloser(resp),
 			Header: http.Header{},
 		},
 	}

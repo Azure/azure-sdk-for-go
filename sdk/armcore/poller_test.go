@@ -8,6 +8,7 @@ package armcore
 import (
 	"context"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"testing"
@@ -64,7 +65,7 @@ func initialResponse(method, u string, resp io.Reader) *azcore.Response {
 	}
 	return &azcore.Response{
 		Response: &http.Response{
-			Body:    io.NopCloser(resp),
+			Body:    ioutil.NopCloser(resp),
 			Header:  http.Header{},
 			Request: req,
 		},

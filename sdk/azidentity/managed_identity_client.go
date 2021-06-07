@@ -53,7 +53,7 @@ type managedIdentityClient struct {
 	imdsAvailableTimeoutMS time.Duration
 	msiType                msiType
 	endpoint               string
-	id                     IDKind
+	id                     ManagedIdentityIDKind
 }
 
 type wrappedNumber json.Number

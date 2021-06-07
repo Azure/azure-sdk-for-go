@@ -11,14 +11,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// IDKind is used to specify the type of identifier that is passed in for a user-assigned managed identity.
-type IDKind int
+// ManagedIdentityIDKind is used to specify the type of identifier that is passed in for a user-assigned managed identity.
+type ManagedIdentityIDKind int
 
 const (
 	// ClientID is the default identifier for a user-assigned managed identity.
-	ClientID IDKind = 0
+	ClientID ManagedIdentityIDKind = 0
 	// ResourceID is set when the resource ID of the user-assigned managed identity is to be used.
-	ResourceID IDKind = 1
+	ResourceID ManagedIdentityIDKind = 1
 )
 
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure the pipeline used with Managed Identity Credential.
@@ -27,8 +27,8 @@ type ManagedIdentityCredentialOptions struct {
 	// ID is used to configure an alternate identifier for a user-assigned identity. The default is client ID.
 	// Select the identifier to be used and pass the corresponding ID value in the string param in
 	// NewManagedIdentityCredential().
-	// Hint: Choose from the list of allowed IDKind values.
-	ID IDKind
+	// Hint: Choose from the list of allowed ManagedIdentityIDKind values.
+	ID ManagedIdentityIDKind
 
 	// HTTPClient sets the transport for making HTTP requests.
 	// Leave this as nil to use the default HTTP transport.
@@ -51,7 +51,7 @@ type ManagedIdentityCredential struct {
 
 // NewManagedIdentityCredential creates an instance of the ManagedIdentityCredential capable of authenticating a resource that has a managed identity.
 // id: The ID that corresponds to the user assigned managed identity. Defaults to the identity's client ID. To use another identifier,
-// pass in the value for the identifier here AND choose the correct ID kind to be used in the request by setting IDKind in the options.
+// pass in the value for the identifier here AND choose the correct ID kind to be used in the request by setting ManagedIdentityIDKind in the options.
 // options: ManagedIdentityCredentialOptions that configure the pipeline for requests sent to Azure Active Directory.
 // More information on user assigned managed identities cam be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview#how-a-user-assigned-managed-identity-works-with-an-azure-vm

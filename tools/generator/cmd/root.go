@@ -30,9 +30,6 @@ func Command() *cobra.Command {
 		automation.Command(),
 		issue.Command(),
 	)
-	rootCmd.AddCommand(
-		automation.Command(),
-	)
 
 	return rootCmd
 }

@@ -11373,6 +11373,12 @@ type ProtectionContainerFabricSpecificDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProtectionContainerFabricSpecificDetails.
+func (pcfsd ProtectionContainerFabricSpecificDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ProtectionContainerMapping protection container mapping object.
 type ProtectionContainerMapping struct {
 	autorest.Response `json:"-"`
@@ -11592,6 +11598,12 @@ type ProtectionContainerMappingProviderSpecificDetails struct {
 	InstanceType *string `json:"instanceType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProtectionContainerMappingProviderSpecificDetails.
+func (pcmpsd ProtectionContainerMappingProviderSpecificDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ProtectionContainerProperties protection profile custom data details.
 type ProtectionContainerProperties struct {
 	// FabricFriendlyName - Fabric friendly name.
@@ -11742,6 +11754,12 @@ func (psfi ProviderSpecificFailoverInput) AsBasicProviderSpecificFailoverInput()
 type ProviderSpecificRecoveryPointDetails struct {
 	// Type - READ-ONLY; Gets the provider type.
 	Type *string `json:"Type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProviderSpecificRecoveryPointDetails.
+func (psrpd ProviderSpecificRecoveryPointDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RcmAzureMigrationPolicyDetails RCM based Azure migration specific policy details.

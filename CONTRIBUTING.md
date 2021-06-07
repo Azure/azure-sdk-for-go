@@ -14,7 +14,7 @@ Also please see these [guidelines][] about contributing to Azure projects.
 
 This project follows the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][cocfaq]. Contact [opencode@microsoft.com][cocmail] with questions and comments.
 
-[guidelines]: http://azure.github.io/guidelines/
+[guidelines]: https://opensource.microsoft.com/collaborate/
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [cocfaq]: https://opensource.microsoft.com/codeofconduct/faq/
 [cocmail]: mailto:opencode@microsoft.com

@@ -510,6 +510,12 @@ type AvailableRuntimeVersions struct {
 	Value *[]SupportedRuntimeVersion `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AvailableRuntimeVersions.
+func (arv AvailableRuntimeVersions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BindingResource binding resource payload
 type BindingResource struct {
 	autorest.Response `json:"-"`
@@ -1284,6 +1290,12 @@ type DeploymentInstance struct {
 	StartTime *string `json:"startTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DeploymentInstance.
+func (di DeploymentInstance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DeploymentResource deployment resource payload
 type DeploymentResource struct {
 	autorest.Response `json:"-"`
@@ -1894,6 +1906,12 @@ type NetworkProfileOutboundIPs struct {
 	PublicIPs *[]string `json:"publicIPs,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NetworkProfileOutboundIPs.
+func (npP NetworkProfileOutboundIPs) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationDetail operation detail payload
 type OperationDetail struct {
 	// Name - Name of the operation
@@ -1959,6 +1977,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RegenerateTestKeyRequestPayload regenerate test key request payload
 type RegenerateTestKeyRequestPayload struct {
 	// KeyType - Type of the test key. Possible values include: 'Primary', 'Secondary'
@@ -1973,6 +1997,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceSku describes an available Azure Spring Cloud SKU.

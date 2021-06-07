@@ -1672,6 +1672,12 @@ type WebMetaTag struct {
 	Content *string `json:"content,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for WebMetaTag.
+func (wmt WebMetaTag) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // WebPage defines a webpage that is relevant to the query.
 type WebPage struct {
 	// DisplayURL - READ-ONLY; The display URL of the webpage. The URL is meant for display purposes only and is not well formed.

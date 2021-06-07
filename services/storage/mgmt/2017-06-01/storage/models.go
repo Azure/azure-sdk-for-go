@@ -283,6 +283,12 @@ type AccountKey struct {
 	Permissions KeyPermission `json:"permissions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountKey.
+func (ak AccountKey) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountListKeysResult the response from the ListKeys operation.
 type AccountListKeysResult struct {
 	autorest.Response `json:"-"`
@@ -290,11 +296,23 @@ type AccountListKeysResult struct {
 	Keys *[]AccountKey `json:"keys,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountListKeysResult.
+func (alkr AccountListKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountListResult the response from the List Storage Accounts operation.
 type AccountListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Gets the list of storage accounts and their properties.
 	Value *[]Account `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountListResult.
+func (alr AccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AccountProperties properties of the storage account.
@@ -528,6 +546,12 @@ type CheckNameAvailabilityResult struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityResult.
+func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CustomDomain the custom domain assigned to this storage account. This can be set via Update.
 type CustomDomain struct {
 	// Name - Gets or sets the custom domain name assigned to the storage account. Name is the CNAME source.
@@ -607,6 +631,12 @@ type Endpoints struct {
 	File *string `json:"file,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Endpoints.
+func (e Endpoints) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Identity identity for the resource.
 type Identity struct {
 	// PrincipalID - READ-ONLY; The principal ID of resource identity.
@@ -651,11 +681,23 @@ type ListAccountSasResponse struct {
 	AccountSasToken *string `json:"accountSasToken,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ListAccountSasResponse.
+func (lasr ListAccountSasResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ListServiceSasResponse the List service SAS credentials operation response.
 type ListServiceSasResponse struct {
 	autorest.Response `json:"-"`
 	// ServiceSasToken - READ-ONLY; List service SAS credentials of specific resource.
 	ServiceSasToken *string `json:"serviceSasToken,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListServiceSasResponse.
+func (lssr ListServiceSasResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MetricSpecification metric specification of operation.
@@ -927,11 +969,23 @@ type SKUCapability struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SKUCapability.
+func (sc SKUCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuListResult the response from the List Storage SKUs operation.
 type SkuListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Get the list result of storage SKUs and their properties.
 	Value *[]Sku `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuListResult.
+func (slr SkuListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Usage describes Storage Resource Usage.
@@ -944,6 +998,12 @@ type Usage struct {
 	Limit *int32 `json:"limit,omitempty"`
 	// Name - READ-ONLY; Gets the name of the type of usage.
 	Name *UsageName `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Usage.
+func (u Usage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UsageListResult the response from the List Usages operation.
@@ -959,6 +1019,12 @@ type UsageName struct {
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - READ-ONLY; Gets a localized string describing the resource name.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageName.
+func (un UsageName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualNetworkRule virtual Network rule.

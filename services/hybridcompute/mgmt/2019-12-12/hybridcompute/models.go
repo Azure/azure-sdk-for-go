@@ -32,12 +32,24 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorAdditionalInfo the resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// Type - READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty"`
 	// Info - READ-ONLY; The additional info.
 	Info interface{} `json:"info,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorDetail ...
@@ -65,6 +77,12 @@ type ErrorResponse struct {
 	Details *[]ErrorResponse `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Identity identity for the resource.
@@ -1114,6 +1132,12 @@ type MachinePropertiesOsProfile struct {
 	ComputerName *string `json:"computerName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MachinePropertiesOsProfile.
+func (mpP MachinePropertiesOsProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MachineReconnect describes a hybrid machine reconnect.
 type MachineReconnect struct {
 	// MachineReconnectPropertiesModel - Hybrid Compute Machine properties
@@ -1272,6 +1296,12 @@ type OperationListResult struct {
 	Value *[]OperationValue `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationValue describes the properties of a Compute Operation value.
 type OperationValue struct {
 	// Origin - READ-ONLY; The origin of the compute operation.
@@ -1345,6 +1375,12 @@ type OperationValueDisplay struct {
 	Provider *string `json:"provider,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationValueDisplay.
+func (ov OperationValueDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationValueDisplayModel describes the properties of a Hybrid Compute Operation Value Display.
 type OperationValueDisplayModel struct {
 	// Operation - READ-ONLY; The display name of the compute operation.
@@ -1357,10 +1393,22 @@ type OperationValueDisplayModel struct {
 	Provider *string `json:"provider,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationValueDisplayModel.
+func (ovdm OperationValueDisplayModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OSProfile specifies the operating system settings for the hybrid machine.
 type OSProfile struct {
 	// ComputerName - READ-ONLY; Specifies the host OS name of the hybrid machine.
 	ComputerName *string `json:"computerName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OSProfile.
+func (op OSProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Plan plan for the resource.
@@ -1388,6 +1436,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1396,6 +1450,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceModelWithAllowedPropertySet the resource model definition containing the full set of allowed

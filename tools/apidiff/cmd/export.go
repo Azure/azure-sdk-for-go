@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
 	"github.com/spf13/cobra"
 )
 

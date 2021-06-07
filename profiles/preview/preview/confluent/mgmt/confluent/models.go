@@ -11,25 +11,34 @@ package confluent
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/confluent/mgmt/2020-03-01-preview/confluent"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/confluent/mgmt/2021-03-01-preview/confluent"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
 type ProvisionState = original.ProvisionState
 
 const (
-	Accepted     ProvisionState = original.Accepted
-	Canceled     ProvisionState = original.Canceled
-	Creating     ProvisionState = original.Creating
-	Deleted      ProvisionState = original.Deleted
-	Deleting     ProvisionState = original.Deleting
-	Failed       ProvisionState = original.Failed
-	NotSpecified ProvisionState = original.NotSpecified
-	Succeeded    ProvisionState = original.Succeeded
-	Updating     ProvisionState = original.Updating
+	ProvisionStateAccepted     ProvisionState = original.ProvisionStateAccepted
+	ProvisionStateCanceled     ProvisionState = original.ProvisionStateCanceled
+	ProvisionStateCreating     ProvisionState = original.ProvisionStateCreating
+	ProvisionStateDeleted      ProvisionState = original.ProvisionStateDeleted
+	ProvisionStateDeleting     ProvisionState = original.ProvisionStateDeleting
+	ProvisionStateFailed       ProvisionState = original.ProvisionStateFailed
+	ProvisionStateNotSpecified ProvisionState = original.ProvisionStateNotSpecified
+	ProvisionStateSucceeded    ProvisionState = original.ProvisionStateSucceeded
+	ProvisionStateUpdating     ProvisionState = original.ProvisionStateUpdating
 )
 
 type SaaSOfferStatus = original.SaaSOfferStatus
@@ -70,12 +79,11 @@ type OrganizationResourceListResult = original.OrganizationResourceListResult
 type OrganizationResourceListResultIterator = original.OrganizationResourceListResultIterator
 type OrganizationResourceListResultPage = original.OrganizationResourceListResultPage
 type OrganizationResourceProperties = original.OrganizationResourceProperties
-type OrganizationResourcePropertiesModel = original.OrganizationResourcePropertiesModel
-type OrganizationResourcePropertiesOfferDetail = original.OrganizationResourcePropertiesOfferDetail
-type OrganizationResourcePropertiesUserDetail = original.OrganizationResourcePropertiesUserDetail
 type OrganizationResourceUpdate = original.OrganizationResourceUpdate
 type ResourceProviderDefaultErrorResponse = original.ResourceProviderDefaultErrorResponse
+type SystemData = original.SystemData
 type UserDetail = original.UserDetail
+type ValidationsClient = original.ValidationsClient
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -116,8 +124,17 @@ func NewOrganizationResourceListResultIterator(page OrganizationResourceListResu
 func NewOrganizationResourceListResultPage(cur OrganizationResourceListResult, getNextPage func(context.Context, OrganizationResourceListResult) (OrganizationResourceListResult, error)) OrganizationResourceListResultPage {
 	return original.NewOrganizationResourceListResultPage(cur, getNextPage)
 }
+func NewValidationsClient(subscriptionID string) ValidationsClient {
+	return original.NewValidationsClient(subscriptionID)
+}
+func NewValidationsClientWithBaseURI(baseURI string, subscriptionID string) ValidationsClient {
+	return original.NewValidationsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleProvisionStateValues() []ProvisionState {
 	return original.PossibleProvisionStateValues()

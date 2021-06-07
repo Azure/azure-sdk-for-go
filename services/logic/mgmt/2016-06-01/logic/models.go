@@ -3196,6 +3196,12 @@ type KeyVaultReference struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for KeyVaultReference.
+func (kvr KeyVaultReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ListKeyVaultKeysDefinition the list key vault keys definition.
 type ListKeyVaultKeysDefinition struct {
 	// KeyVault - The key vault reference.
@@ -3748,6 +3754,12 @@ type ResourceReference struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceReference.
+func (rr ResourceReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Response a response.
 type Response struct {
 	// Headers - A list of all the headers attached to the response.
@@ -3882,6 +3894,12 @@ type Sku struct {
 type SubResource struct {
 	// ID - READ-ONLY; The resource id.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SubResource.
+func (sr SubResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TrackingEvent ...
@@ -5602,6 +5620,12 @@ type WorkflowTriggerProperties struct {
 	Recurrence *WorkflowTriggerRecurrence `json:"recurrence,omitempty"`
 	// Workflow - READ-ONLY; Gets the reference to workflow.
 	Workflow *ResourceReference `json:"workflow,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkflowTriggerProperties.
+func (wtp WorkflowTriggerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WorkflowTriggerRecurrence the workflow trigger recurrence.

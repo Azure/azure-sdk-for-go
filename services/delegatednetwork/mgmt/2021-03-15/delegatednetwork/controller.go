@@ -89,7 +89,7 @@ func (client ControllerClient) CreatePreparer(ctx context.Context, resourceGroup
 		"api-version": APIVersion,
 	}
 
-	parameters.DelegatedControllerProperties = nil
+	parameters.Properties = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

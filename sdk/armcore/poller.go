@@ -623,13 +623,17 @@ func (pt *pollingTrackerBase) setFinalState() error {
 		if err != nil {
 			return err
 		}
-		pt.FinalGetURI = ao
+		if ao != "" {
+			pt.FinalGetURI = ao
+		}
 	} else if pt.FinalStateVia == "location" {
 		lh, err := getURLFromLocationHeader(pt.latestResponse())
 		if err != nil {
 			return err
 		}
-		pt.FinalGetURI = lh
+		if lh != "" {
+			pt.FinalGetURI = lh
+		}
 	} else if pt.FinalStateVia == "original-uri" {
 		pt.FinalGetURI = pt.OriginalURI
 	}

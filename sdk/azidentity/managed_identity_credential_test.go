@@ -435,7 +435,7 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	cred.client.endpoint = imdsEndpoint
-	req, err := cred.client.createIMDSAuthRequest(context.Background(), []string{msiScope})
+	req, err := cred.client.createIMDSAuthRequest(context.Background(), clientID, []string{msiScope})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -451,6 +451,9 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 	}
 	if reqQueryParams["resource"][0] != msiScope {
 		t.Fatalf("Unexpected resource in resource query param")
+	}
+	if reqQueryParams["client_id"][0] != clientID {
+		t.Fatalf("Unexpected client ID. Expected: %s, Received: %s", clientID, reqQueryParams["client_id"][0])
 	}
 	if u := req.Request.URL.String(); !strings.HasPrefix(u, imdsEndpoint) {
 		t.Fatalf("Unexpected default authority host %s", u)
@@ -483,5 +486,49 @@ func TestManagedIdentityCredential_GetTokenEnvVar(t *testing.T) {
 	}
 	if at.Token != "new_token" {
 		t.Fatalf("Did not receive the correct access token")
+	}
+}
+
+func TestManagedIdentityCredential_GetTokenNilResource(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
+	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
+	defer clearEnvVars("MSI_ENDPOINT")
+	options := ManagedIdentityCredentialOptions{}
+	options.HTTPClient = srv
+	msiCred, err := NewManagedIdentityCredential("", &options)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: nil})
+	if err == nil {
+		t.Fatalf("Expected an error but did not receive one")
+	}
+	if err.Error() != "must specify a resource in order to authenticate" {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestManagedIdentityCredential_GetTokenMultipleResources(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
+	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
+	defer clearEnvVars("MSI_ENDPOINT")
+	options := ManagedIdentityCredentialOptions{}
+	options.HTTPClient = srv
+	msiCred, err := NewManagedIdentityCredential("", &options)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{"resource1", "resource2"}})
+	if err == nil {
+		t.Fatalf("Expected an error but did not receive one")
+	}
+	if err.Error() != "can only specify one resource to authenticate with ManagedIdentityCredential" {
+		t.Fatalf("unexpected error: %v", err)
 	}
 }

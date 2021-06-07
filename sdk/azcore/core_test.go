@@ -5,7 +5,10 @@
 
 package azcore
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 func TestNullValue(t *testing.T) {
 	v := NullValue("")
@@ -48,5 +51,43 @@ func TestIsNullValue(t *testing.T) {
 	i = &i2
 	if IsNullValue(i) {
 		t.Fatal("i should no longer be null value")
+	}
+}
+
+func TestNullValueMapSlice(t *testing.T) {
+	v := NullValue([]string{})
+	if _, ok := v.([]string); !ok {
+		t.Fatalf("unexpected type %T", v)
+	}
+	vv := NullValue(([]string)(nil))
+	if _, ok := vv.([]string); !ok {
+		t.Fatalf("unexpected type %T", vv)
+	}
+	if reflect.TypeOf(v) != reflect.TypeOf(vv) {
+		t.Fatal("null values should match for the same types")
+	}
+	m := NullValue(map[string]int{})
+	if _, ok := m.(map[string]int); !ok {
+		t.Fatalf("unexpected type %T", m)
+	}
+	if reflect.TypeOf(v) == reflect.TypeOf(m) {
+		t.Fatal("null values for string and int should not match")
+	}
+}
+
+func TestIsNullValueMapSlice(t *testing.T) {
+	if IsNullValue([]string{}) {
+		t.Fatal("slice literal can't be a null value")
+	}
+	if IsNullValue(map[int]string{}) {
+		t.Fatal("map literal can't be a null value")
+	}
+	s := NullValue([]int{}).([]int)
+	if !IsNullValue(s) {
+		t.Fatal("expected null value for s")
+	}
+	m := NullValue(map[string]interface{}{}).(map[string]interface{})
+	if !IsNullValue(m) {
+		t.Fatal("expected null value for s")
 	}
 }

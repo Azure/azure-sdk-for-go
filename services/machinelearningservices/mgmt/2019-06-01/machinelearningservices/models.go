@@ -323,6 +323,12 @@ type AmlComputeNodeInformation struct {
 	RunID *string `json:"runId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AmlComputeNodeInformation.
+func (acni AmlComputeNodeInformation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AmlComputeNodesInformation compute node information related to a AmlCompute.
 type AmlComputeNodesInformation struct {
 	autorest.Response `json:"-"`
@@ -1247,6 +1253,12 @@ type Error struct {
 	Error *ErrorResponse `json:"error,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetail error detail information.
 type ErrorDetail struct {
 	// Code - Error code.
@@ -1263,6 +1275,12 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 	// Details - READ-ONLY; An array of error detail objects.
 	Details *[]ErrorDetail `json:"details,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // HDInsight a HDInsight compute.
@@ -1391,6 +1409,12 @@ type ListUsagesResult struct {
 	Value *[]Usage `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URI to fetch the next page of AML resource usage information. Call ListNext() with this to fetch the next page of AML resource usage information.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListUsagesResult.
+func (lur ListUsagesResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ListUsagesResultIterator provides access to a complete listing of Usage values.
@@ -1556,6 +1580,12 @@ type ListWorkspaceKeysResult struct {
 	ContainerRegistryCredentials *RegistryListCredentialsResult `json:"containerRegistryCredentials,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ListWorkspaceKeysResult.
+func (lwkr ListWorkspaceKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ListWorkspaceQuotas the List WorkspaceQuotasByVMFamily operation response.
 type ListWorkspaceQuotas struct {
 	autorest.Response `json:"-"`
@@ -1563,6 +1593,12 @@ type ListWorkspaceQuotas struct {
 	Value *[]ResourceQuota `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URI to fetch the next page of workspace quota information by VM Family. Call ListNext() with this to fetch the next page of Workspace Quota information.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListWorkspaceQuotas.
+func (lwq ListWorkspaceQuotas) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ListWorkspaceQuotasIterator provides access to a complete listing of ResourceQuota values.
@@ -1854,6 +1890,12 @@ type NodeStateCounts struct {
 	PreemptedNodeCount *int32 `json:"preemptedNodeCount,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NodeStateCounts.
+func (nsc NodeStateCounts) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Operation azure Machine Learning workspace REST API operation
 type Operation struct {
 	// Name - Operation name: {provider}/{resource}/{operation}
@@ -2049,6 +2091,12 @@ type Password struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Password.
+func (p Password) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // QuotaBaseProperties the properties for Quota update or retrieval.
 type QuotaBaseProperties struct {
 	// ID - Specifies the resource ID.
@@ -2130,6 +2178,12 @@ type ResourceName struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceName.
+func (rn ResourceName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceQuota the quota assigned to a resource.
 type ResourceQuota struct {
 	// ID - READ-ONLY; Specifies the resource ID.
@@ -2142,6 +2196,12 @@ type ResourceQuota struct {
 	Limit *int64 `json:"limit,omitempty"`
 	// Unit - READ-ONLY; An enum describing the unit of quota measurement. Possible values include: 'Count'
 	Unit QuotaUnit `json:"unit,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceQuota.
+func (rq ResourceQuota) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ScaleSettings scale settings for AML Compute
@@ -2184,6 +2244,12 @@ type SystemService struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SystemService.
+func (ss SystemService) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UpdateWorkspaceQuotas the properties for update Quota response.
 type UpdateWorkspaceQuotas struct {
 	// ID - READ-ONLY; Specifies the resource ID.
@@ -2219,6 +2285,12 @@ type UpdateWorkspaceQuotasResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UpdateWorkspaceQuotasResult.
+func (uwqr UpdateWorkspaceQuotasResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Usage describes AML Resource Usage.
 type Usage struct {
 	// ID - READ-ONLY; Specifies the resource ID.
@@ -2235,12 +2307,24 @@ type Usage struct {
 	Name *UsageName `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Usage.
+func (u Usage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UsageName the Usage Names.
 type UsageName struct {
 	// Value - READ-ONLY; The name of the resource.
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - READ-ONLY; The localized name of the resource.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageName.
+func (un UsageName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UserAccountCredentials settings for user account that gets created on each on the nodes of a compute.
@@ -2421,6 +2505,12 @@ type VirtualMachineSize struct {
 	LowPriorityCapable *bool `json:"lowPriorityCapable,omitempty"`
 	// PremiumIO - READ-ONLY; Specifies if the virtual machine size supports premium IO.
 	PremiumIO *bool `json:"premiumIO,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VirtualMachineSize.
+func (vms VirtualMachineSize) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualMachineSizeListResult the List Virtual Machine size operation response.

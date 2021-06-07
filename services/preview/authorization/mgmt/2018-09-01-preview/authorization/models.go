@@ -720,6 +720,12 @@ type Principal struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Principal.
+func (p Principal) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ProviderOperation operation
 type ProviderOperation struct {
 	// Name - The operation name.

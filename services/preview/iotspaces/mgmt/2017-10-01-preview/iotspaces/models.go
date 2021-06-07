@@ -310,6 +310,12 @@ type ErrorDetails struct {
 	Target *string `json:"target,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // NameAvailabilityInfo the properties indicating whether a given IoTSpaces service name is available.
 type NameAvailabilityInfo struct {
 	autorest.Response `json:"-"`
@@ -356,6 +362,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 	// Description - READ-ONLY; Friendly description for the operation,
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (od OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationInputs input values.

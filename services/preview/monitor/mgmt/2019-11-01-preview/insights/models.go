@@ -1527,6 +1527,12 @@ type AzureMonitorPrivateLinkScopeProperties struct {
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureMonitorPrivateLinkScopeProperties.
+func (amplsp AzureMonitorPrivateLinkScopeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Baseline the baseline values for a single sensitivity value.
 type Baseline struct {
 	// Sensitivity - the sensitivity of the baseline. Possible values include: 'SensitivityLow', 'SensitivityMedium', 'SensitivityHigh'
@@ -2151,6 +2157,12 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorResponse describes the format of Error response.
 type ErrorResponse struct {
 	// Code - Error code
@@ -2433,6 +2445,12 @@ type Incident struct {
 	ActivatedTime *date.Time `json:"activatedTime,omitempty"`
 	// ResolvedTime - READ-ONLY; The time at which the incident was resolved in ISO8601 format. If null, it means the incident is still active.
 	ResolvedTime *date.Time `json:"resolvedTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Incident.
+func (i Incident) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IncidentListResult the List incidents operation response.
@@ -4827,6 +4845,12 @@ type PrivateEndpointConnectionListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PrivateEndpointConnectionListResult.
+func (peclr PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PrivateEndpointConnectionListResultIterator provides access to a complete listing of
 // PrivateEndpointConnection values.
 type PrivateEndpointConnectionListResultIterator struct {
@@ -5168,6 +5192,12 @@ type PrivateLinkResourceListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PrivateLinkResourceListResult.
+func (plrlr PrivateLinkResourceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PrivateLinkResourceListResultIterator provides access to a complete listing of PrivateLinkResource
 // values.
 type PrivateLinkResourceListResultIterator struct {
@@ -5325,6 +5355,12 @@ type PrivateLinkResourceProperties struct {
 	GroupID *string `json:"groupId,omitempty"`
 	// RequiredMembers - READ-ONLY; The private link resource required member names.
 	RequiredMembers *[]string `json:"requiredMembers,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateLinkResourceProperties.
+func (plrp PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PrivateLinkScopedResourcesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
@@ -5502,6 +5538,12 @@ type ProxyOnlyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyOnlyResource.
+func (por ProxyOnlyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ProxyResource an azure resource object
 type ProxyResource struct {
 	// ID - READ-ONLY; Azure resource Id
@@ -5510,6 +5552,12 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Recurrence the repeating times at which this profile begins. This element is not used if the FixedDate
@@ -6256,6 +6304,12 @@ type ScopedResourceListResult struct {
 	Value *[]ScopedResource `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Link to retrieve next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScopedResourceListResult.
+func (srlr ScopedResourceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ScopedResourceListResultIterator provides access to a complete listing of ScopedResource values.

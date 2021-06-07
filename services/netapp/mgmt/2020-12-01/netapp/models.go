@@ -1392,6 +1392,12 @@ type BackupStatus struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for BackupStatus.
+func (bs BackupStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BackupsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type BackupsUpdateFuture struct {
@@ -2924,6 +2930,12 @@ type SnapshotProperties struct {
 	Created *date.Time `json:"created,omitempty"`
 	// ProvisioningState - READ-ONLY; Azure lifecycle management
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SnapshotProperties.
+func (sp SnapshotProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SnapshotsCreateFuture an abstraction for monitoring and retrieving the results of a long-running

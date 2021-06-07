@@ -10,30 +10,30 @@ package extendedlocation
 type CreatedByType string
 
 const (
-	// Application ...
-	Application CreatedByType = "Application"
-	// Key ...
-	Key CreatedByType = "Key"
-	// ManagedIdentity ...
-	ManagedIdentity CreatedByType = "ManagedIdentity"
-	// User ...
-	User CreatedByType = "User"
+	// CreatedByTypeApplication ...
+	CreatedByTypeApplication CreatedByType = "Application"
+	// CreatedByTypeKey ...
+	CreatedByTypeKey CreatedByType = "Key"
+	// CreatedByTypeManagedIdentity ...
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	// CreatedByTypeUser ...
+	CreatedByTypeUser CreatedByType = "User"
 )
 
 // PossibleCreatedByTypeValues returns an array of possible values for the CreatedByType const type.
 func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{Application, Key, ManagedIdentity, User}
+	return []CreatedByType{CreatedByTypeApplication, CreatedByTypeKey, CreatedByTypeManagedIdentity, CreatedByTypeUser}
 }
 
 // HostType enumerates the values for host type.
 type HostType string
 
 const (
-	// Kubernetes ...
-	Kubernetes HostType = "Kubernetes"
+	// HostTypeKubernetes ...
+	HostTypeKubernetes HostType = "Kubernetes"
 )
 
 // PossibleHostTypeValues returns an array of possible values for the HostType const type.
 func PossibleHostTypeValues() []HostType {
-	return []HostType{Kubernetes}
+	return []HostType{HostTypeKubernetes}
 }

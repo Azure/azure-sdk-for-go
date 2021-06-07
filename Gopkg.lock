@@ -79,6 +79,30 @@
   version = "v4.0.0"
 
 [[projects]]
+  digest = "1:9e62e8886ca549ad17aa4db1783e469f10e424652595304fdc2c8ecda5d25476"
+  name = "github.com/golang/protobuf"
+  packages = ["proto"]
+  pruneopts = "UT"
+  revision = "ae97035608a719c7a1c1c41bed0ae0744bdb0c6f"
+  version = "v1.5.2"
+
+[[projects]]
+  digest = "1:d06fbb4c29d4266211e7fa20d29b61469db346e6df1bea40a70cea066cf25019"
+  name = "github.com/hashicorp/errwrap"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "7b00e5db719c64d14dd0caaacbd13e76254d02c0"
+  version = "v1.1.0"
+
+[[projects]]
+  digest = "1:71c646a40ec9bcfcc93ce31cde043356cb95670203d219c7edede05779081fe4"
+  name = "github.com/hashicorp/go-multierror"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "9974e9ec57696378079ecc3accd3d6f29401b3a0"
+  version = "v1.1.1"
+
+[[projects]]
   digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
@@ -174,9 +198,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:ac468a38e9185df579ec927199704bb13a825417ac94d858387500762c29ae69"
+  digest = "1:60397b4be0f6f80cf41b1b29863778b5afcb7d9cf4ccfd2d00bf438738caa888"
   name = "golang.org/x/net"
   packages = [
+    "context",
+    "context/ctxhttp",
     "http/httpguts",
     "http2",
     "http2/hpack",
@@ -184,6 +210,17 @@
   ]
   pruneopts = "UT"
   revision = "e915ea6b2b7d7f3955e2d6d432eaebd7cf5921e7"
+
+[[projects]]
+  branch = "master"
+  digest = "1:f61fe67341c0aa7358c3050eb03d66e4484721526eef17c74e43bd648518492e"
+  name = "golang.org/x/oauth2"
+  packages = [
+    ".",
+    "internal",
+  ]
+  pruneopts = "UT"
+  revision = "f6687ab2804cbebdfdeef385bee94918b1ce83de"
 
 [[projects]]
   branch = "master"
@@ -253,6 +290,58 @@
   revision = "5ec99f83aff198f5fbd629d6c8d8eb38a04218ca"
 
 [[projects]]
+  digest = "1:15bbb120d95283019f8891f2762fab3e735075b2cf9b378497277d2fe6c4abca"
+  name = "google.golang.org/appengine"
+  packages = [
+    "internal",
+    "internal/base",
+    "internal/datastore",
+    "internal/log",
+    "internal/remote_api",
+    "internal/urlfetch",
+    "urlfetch",
+  ]
+  pruneopts = "UT"
+  revision = "5d1c1d03f8703c2e81478d9a30e9afa2d3e4bd8a"
+  version = "v1.6.7"
+
+[[projects]]
+  digest = "1:bc8a58ba53d55c6c60aba097ba2981a37cf074c8c19e852763529dbc0ae0eb05"
+  name = "google.golang.org/protobuf"
+  packages = [
+    "encoding/prototext",
+    "encoding/protowire",
+    "internal/descfmt",
+    "internal/descopts",
+    "internal/detrand",
+    "internal/encoding/defval",
+    "internal/encoding/messageset",
+    "internal/encoding/tag",
+    "internal/encoding/text",
+    "internal/errors",
+    "internal/filedesc",
+    "internal/filetype",
+    "internal/flags",
+    "internal/genid",
+    "internal/impl",
+    "internal/order",
+    "internal/pragma",
+    "internal/set",
+    "internal/strs",
+    "internal/version",
+    "proto",
+    "reflect/protodesc",
+    "reflect/protoreflect",
+    "reflect/protoregistry",
+    "runtime/protoiface",
+    "runtime/protoimpl",
+    "types/descriptorpb",
+  ]
+  pruneopts = "UT"
+  revision = "f2d1f6cbe10b90d22296ea09a7217081c2798009"
+  version = "v1.26.0"
+
+[[projects]]
   branch = "v1"
   digest = "1:b39f3febddd151ee9993a0a10c20393efeddb1d31c0c706c9d03d054dbafd308"
   name = "gopkg.in/check.v1"
@@ -285,13 +374,16 @@
     "github.com/dnaeon/go-vcr/recorder",
     "github.com/globalsign/mgo",
     "github.com/gofrs/uuid",
+    "github.com/hashicorp/go-multierror",
     "github.com/jongio/azidext/go/azidext",
     "github.com/pkg/browser",
     "github.com/shopspring/decimal",
     "github.com/spf13/cobra",
+    "github.com/spf13/pflag",
     "golang.org/x/crypto/pkcs12",
     "golang.org/x/net/http/httpguts",
     "golang.org/x/net/http2",
+    "golang.org/x/oauth2",
     "golang.org/x/tools/imports",
     "gopkg.in/check.v1",
   ]

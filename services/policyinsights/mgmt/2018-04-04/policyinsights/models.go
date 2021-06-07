@@ -972,6 +972,12 @@ type QueryFailureError struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for QueryFailureError.
+func (qf QueryFailureError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // String ...
 type String struct {
 	autorest.Response `json:"-"`

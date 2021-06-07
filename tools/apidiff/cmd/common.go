@@ -12,9 +12,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/repo"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/ioext"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/report"
 )
 
 func printf(format string, a ...interface{}) {

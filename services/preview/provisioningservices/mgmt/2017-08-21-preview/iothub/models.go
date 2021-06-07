@@ -56,6 +56,12 @@ type CertificateProperties struct {
 	Updated *date.TimeRFC1123 `json:"updated,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CertificateProperties.
+func (cp CertificateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CertificateResponse the X509 Certificate.
 type CertificateResponse struct {
 	autorest.Response `json:"-"`
@@ -490,6 +496,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationInputs input values for operation results call.
 type OperationInputs struct {
 	// Name - The name of the Provisioning Service to check.
@@ -504,6 +516,12 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.

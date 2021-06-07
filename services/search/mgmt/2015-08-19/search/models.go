@@ -27,6 +27,12 @@ type AdminKeyResult struct {
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AdminKeyResult.
+func (akr AdminKeyResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CheckNameAvailabilityInput input of check name availability API.
 type CheckNameAvailabilityInput struct {
 	// Name - The Search service name to validate. Search service names must only contain lowercase letters, digits or dashes, cannot use dash as the first two or last one characters, cannot contain consecutive dashes, and must be between 2 and 60 characters in length.
@@ -44,6 +50,12 @@ type CheckNameAvailabilityOutput struct {
 	Reason UnavailableNameReason `json:"reason,omitempty"`
 	// Message - READ-ONLY; A message that explains why the name is invalid and provides resource naming requirements. Available only if 'Invalid' is returned in the 'reason' property.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityOutput.
+func (cnao CheckNameAvailabilityOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CloudError contains information about an API error.
@@ -90,12 +102,24 @@ type ListQueryKeysResult struct {
 	Value *[]QueryKey `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ListQueryKeysResult.
+func (lqkr ListQueryKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Operation describes a REST API operation.
 type Operation struct {
 	// Name - READ-ONLY; The name of the operation. This name is of the form {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty"`
 	// Display - READ-ONLY; The object that describes the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay the object that describes the operation.
@@ -110,6 +134,12 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult the result of the request to list REST API operations. It contains a list of
 // operations and a URL  to get the next set of results.
 type OperationListResult struct {
@@ -120,6 +150,12 @@ type OperationListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // QueryKey describes an API key for a given Azure Cognitive Search service that has permissions for query
 // operations only.
 type QueryKey struct {
@@ -128,6 +164,12 @@ type QueryKey struct {
 	Name *string `json:"name,omitempty"`
 	// Key - READ-ONLY; The value of the query API key.
 	Key *string `json:"key,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryKey.
+func (qk QueryKey) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Resource base type for all Azure resources.
@@ -295,6 +337,12 @@ type ServiceListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of Search services.
 	Value *[]Service `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceListResult.
+func (slr ServiceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServiceProperties properties of the Search service.

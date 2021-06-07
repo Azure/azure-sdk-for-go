@@ -23,11 +23,23 @@ type AdminKeyResult struct {
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AdminKeyResult.
+func (akr AdminKeyResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ListQueryKeysResult response containing the query API keys for a given Azure Search service.
 type ListQueryKeysResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The query keys for the Azure Search service.
 	Value *[]QueryKey `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListQueryKeysResult.
+func (lqkr ListQueryKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // QueryKey describes an API key for a given Azure Search service that has permissions for query operations
@@ -37,6 +49,12 @@ type QueryKey struct {
 	Name *string `json:"name,omitempty"`
 	// Key - READ-ONLY; The value of the query API key.
 	Key *string `json:"key,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryKey.
+func (qk QueryKey) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Resource ...
@@ -95,6 +113,12 @@ type ServiceListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The Search services in the resource group.
 	Value *[]ServiceResource `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServiceListResult.
+func (slr ServiceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServiceProperties defines properties of an Azure Search service that can be modified.

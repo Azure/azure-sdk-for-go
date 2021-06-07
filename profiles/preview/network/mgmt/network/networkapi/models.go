@@ -8,7 +8,7 @@
 
 package networkapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2020-11-01/network/networkapi"
+import original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-02-01/network/networkapi"
 
 type ApplicationGatewayPrivateEndpointConnectionsClientAPI = original.ApplicationGatewayPrivateEndpointConnectionsClientAPI
 type ApplicationGatewayPrivateLinkResourcesClientAPI = original.ApplicationGatewayPrivateLinkResourcesClientAPI
@@ -98,6 +98,7 @@ type VirtualHubIPConfigurationClientAPI = original.VirtualHubIPConfigurationClie
 type VirtualHubRouteTableV2sClientAPI = original.VirtualHubRouteTableV2sClientAPI
 type VirtualHubsClientAPI = original.VirtualHubsClientAPI
 type VirtualNetworkGatewayConnectionsClientAPI = original.VirtualNetworkGatewayConnectionsClientAPI
+type VirtualNetworkGatewayNatRulesClientAPI = original.VirtualNetworkGatewayNatRulesClientAPI
 type VirtualNetworkGatewaysClientAPI = original.VirtualNetworkGatewaysClientAPI
 type VirtualNetworkPeeringsClientAPI = original.VirtualNetworkPeeringsClientAPI
 type VirtualNetworkTapsClientAPI = original.VirtualNetworkTapsClientAPI

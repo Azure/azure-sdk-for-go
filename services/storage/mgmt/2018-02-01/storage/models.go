@@ -283,6 +283,12 @@ type AccountKey struct {
 	Permissions KeyPermission `json:"permissions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountKey.
+func (ak AccountKey) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountListKeysResult the response from the ListKeys operation.
 type AccountListKeysResult struct {
 	autorest.Response `json:"-"`
@@ -290,11 +296,23 @@ type AccountListKeysResult struct {
 	Keys *[]AccountKey `json:"keys,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountListKeysResult.
+func (alkr AccountListKeysResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AccountListResult the response from the List Storage Accounts operation.
 type AccountListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Gets the list of storage accounts and their properties.
 	Value *[]Account `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AccountListResult.
+func (alr AccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AccountProperties properties of the storage account.
@@ -550,6 +568,12 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BlobContainer properties of the blob container, including Id, resource name, resource type, Etag.
 type BlobContainer struct {
 	autorest.Response `json:"-"`
@@ -643,6 +667,12 @@ type CheckNameAvailabilityResult struct {
 	Reason Reason `json:"reason,omitempty"`
 	// Message - READ-ONLY; Gets an error message explaining the Reason value in more detail.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityResult.
+func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ContainerProperties the properties of a container.
@@ -763,6 +793,12 @@ type Endpoints struct {
 	Web *string `json:"web,omitempty"`
 	// Dfs - READ-ONLY; Gets the dfs endpoint.
 	Dfs *string `json:"dfs,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Endpoints.
+func (e Endpoints) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Identity identity for the resource.
@@ -1030,6 +1066,12 @@ type ListAccountSasResponse struct {
 	AccountSasToken *string `json:"accountSasToken,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ListAccountSasResponse.
+func (lasr ListAccountSasResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ListContainerItem the blob container properties be listed out.
 type ListContainerItem struct {
 	// ContainerProperties - The blob container properties be listed out.
@@ -1125,6 +1167,12 @@ type ListServiceSasResponse struct {
 	autorest.Response `json:"-"`
 	// ServiceSasToken - READ-ONLY; List service SAS credentials of specific resource.
 	ServiceSasToken *string `json:"serviceSasToken,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListServiceSasResponse.
+func (lssr ListServiceSasResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MetricSpecification metric specification of operation.
@@ -1279,6 +1327,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1287,6 +1341,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Restriction the restriction because of which SKU cannot be used.
@@ -1393,11 +1453,23 @@ type SKUCapability struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SKUCapability.
+func (sc SKUCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuListResult the response from the List Storage SKUs operation.
 type SkuListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; Get the list result of storage SKUs and their properties.
 	Value *[]Sku `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuListResult.
+func (slr SkuListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TagProperty a tag of the LegalHold of a blob container.
@@ -1412,6 +1484,12 @@ type TagProperty struct {
 	TenantID *string `json:"tenantId,omitempty"`
 	// Upn - READ-ONLY; Returns the User Principal Name of the user who added the tag.
 	Upn *string `json:"upn,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TagProperty.
+func (tp TagProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
@@ -1457,6 +1535,12 @@ type UpdateHistoryProperty struct {
 	Upn *string `json:"upn,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for UpdateHistoryProperty.
+func (uhp UpdateHistoryProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Usage describes Storage Resource Usage.
 type Usage struct {
 	// Unit - READ-ONLY; Gets the unit of measurement. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountsPerSecond', 'BytesPerSecond'
@@ -1467,6 +1551,12 @@ type Usage struct {
 	Limit *int32 `json:"limit,omitempty"`
 	// Name - READ-ONLY; Gets the name of the type of usage.
 	Name *UsageName `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Usage.
+func (u Usage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UsageListResult the response from the List Usages operation.
@@ -1482,6 +1572,12 @@ type UsageName struct {
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - READ-ONLY; Gets a localized string describing the resource name.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageName.
+func (un UsageName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VirtualNetworkRule virtual Network rule.

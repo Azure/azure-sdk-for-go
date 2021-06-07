@@ -65,26 +65,34 @@ func (s *server) Start(reqState string, port int) string {
 	s.s.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			s.done <- struct{}{}
+
+			page := okPage
+			if s.err != nil {
+				page = failPage
+			}
+			w.Write([]byte(page))
 		}()
+
 		qp := r.URL.Query()
-		if respState, ok := qp["state"]; !ok {
-			s.err = errors.New("missing OAuth state")
-			return
-		} else if respState[0] != reqState {
+		if reqState != qp.Get("state") {
 			s.err = errors.New("mismatched OAuth state")
 			return
 		}
-		if err, ok := qp["error"]; ok {
-			w.Write([]byte(failPage))
-			s.err = fmt.Errorf("authentication error: %s; description: %s", err[0], qp.Get("error_description"))
+		if err := qp.Get("error"); err != "" {
+			errMsg := fmt.Sprintf("authentication error: %s", err)
+			if detail := qp.Get("error_description"); detail != "" {
+				errMsg = fmt.Sprintf("%s; description: %s", errMsg, detail)
+			}
+			s.err = fmt.Errorf("%s", errMsg)
 			return
 		}
-		if code, ok := qp["code"]; ok {
-			w.Write([]byte(okPage))
-			s.code = code[0]
-		} else {
+
+		code := qp.Get("code")
+		if code == "" {
 			s.err = errors.New("authorization code missing in query string")
+			return
 		}
+		s.code = code
 	})
 	go s.s.ListenAndServe()
 	return fmt.Sprintf("http://localhost:%d", port)

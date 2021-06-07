@@ -615,7 +615,6 @@ func (client DelegatedSubnetServiceClient) PutDetailsPreparer(ctx context.Contex
 		"api-version": APIVersion,
 	}
 
-	parameters.DelegatedSubnetProperties = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

@@ -70,6 +70,12 @@ type ConnectionPropertiesPrivateEndpoint struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ConnectionPropertiesPrivateEndpoint.
+func (cpE ConnectionPropertiesPrivateEndpoint) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ConnectionPropertiesPrivateLinkServiceConnectionState ...
 type ConnectionPropertiesPrivateLinkServiceConnectionState struct {
 	// Status - The status of a private endpoint connection. Possible values include: 'PrivateLinkServiceConnectionStatusPending', 'PrivateLinkServiceConnectionStatusApproved', 'PrivateLinkServiceConnectionStatusRejected', 'PrivateLinkServiceConnectionStatusDisconnected'
@@ -887,6 +893,12 @@ type ErrorDefinition struct {
 	Details *[]ErrorDefinition `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorDefinition.
+func (ed ErrorDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorResponse error response.
 type ErrorResponse struct {
 	// Error - Error description
@@ -1058,6 +1070,12 @@ type ExternalResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ExternalResource.
+func (er ExternalResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // GroupIDInformation the group information for creating a private endpoint on Digital Twin.
 type GroupIDInformation struct {
 	autorest.Response `json:"-"`
@@ -1159,6 +1177,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 	// Description - READ-ONLY; Friendly description for the operation,
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (od OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResult a list of DigitalTwins service operations. It contains a list of operations and a
@@ -1365,6 +1389,12 @@ type PatchProperties struct {
 type PrivateEndpoint struct {
 	// ID - READ-ONLY; The resource identifier.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpoint.
+func (peVar PrivateEndpoint) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PrivateEndpointConnection the private endpoint connection of a Digital Twin.

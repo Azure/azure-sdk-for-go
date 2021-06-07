@@ -57,6 +57,12 @@ type Domain struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Domain.
+func (d Domain) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Export ...
 type Export struct {
 	autorest.Response `json:"-"`
@@ -70,6 +76,12 @@ type Export struct {
 	Flavor ExportFlavor `json:"flavor,omitempty"`
 	// NewerVersionAvailable - READ-ONLY; Indicates an updated version of the export package is available and should be re-exported for the latest changes.
 	NewerVersionAvailable *bool `json:"newerVersionAvailable,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Export.
+func (e Export) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Image image model to be sent as JSON.
@@ -94,6 +106,12 @@ type Image struct {
 	Regions *[]ImageRegion `json:"regions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Image.
+func (i Image) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImageCreateResult ...
 type ImageCreateResult struct {
 	// SourceURL - READ-ONLY; Source URL of the image.
@@ -104,6 +122,12 @@ type ImageCreateResult struct {
 	Image *Image `json:"image,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImageCreateResult.
+func (icr ImageCreateResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImageCreateSummary ...
 type ImageCreateSummary struct {
 	autorest.Response `json:"-"`
@@ -111,6 +135,12 @@ type ImageCreateSummary struct {
 	IsBatchSuccessful *bool `json:"isBatchSuccessful,omitempty"`
 	// Images - READ-ONLY; List of the image creation results.
 	Images *[]ImageCreateResult `json:"images,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageCreateSummary.
+func (ics ImageCreateSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ImageFileCreateBatch ...
@@ -163,6 +193,12 @@ type ImagePerformance struct {
 	Regions *[]ImageRegion `json:"regions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImagePerformance.
+func (IP ImagePerformance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImagePrediction result of an image prediction request.
 type ImagePrediction struct {
 	autorest.Response `json:"-"`
@@ -176,6 +212,12 @@ type ImagePrediction struct {
 	Created *date.Time `json:"created,omitempty"`
 	// Predictions - READ-ONLY; List of predictions.
 	Predictions *[]Prediction `json:"predictions,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImagePrediction.
+func (IP ImagePrediction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ImageRegion ...
@@ -302,6 +344,12 @@ type ImageRegionProposal struct {
 	Proposals *[]RegionProposal `json:"proposals,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImageRegionProposal.
+func (irp ImageRegionProposal) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImageTag ...
 type ImageTag struct {
 	// TagID - READ-ONLY
@@ -310,6 +358,12 @@ type ImageTag struct {
 	TagName *string `json:"tagName,omitempty"`
 	// Created - READ-ONLY
 	Created *date.Time `json:"created,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImageTag.
+func (it ImageTag) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ImageTagCreateBatch batch of image tags.
@@ -421,6 +475,12 @@ type IterationPerformance struct {
 	AveragePrecision *float64 `json:"averagePrecision,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IterationPerformance.
+func (IP IterationPerformance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ListDomain ...
 type ListDomain struct {
 	autorest.Response `json:"-"`
@@ -475,6 +535,12 @@ type Prediction struct {
 	BoundingBox *BoundingBox `json:"boundingBox,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Prediction.
+func (p Prediction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PredictionQueryResult ...
 type PredictionQueryResult struct {
 	autorest.Response `json:"-"`
@@ -482,6 +548,12 @@ type PredictionQueryResult struct {
 	Token *PredictionQueryToken `json:"token,omitempty"`
 	// Results - READ-ONLY
 	Results *[]StoredImagePrediction `json:"results,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PredictionQueryResult.
+func (pqr PredictionQueryResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PredictionQueryTag ...
@@ -492,6 +564,12 @@ type PredictionQueryTag struct {
 	MinThreshold *float64 `json:"minThreshold,omitempty"`
 	// MaxThreshold - READ-ONLY
 	MaxThreshold *float64 `json:"maxThreshold,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PredictionQueryTag.
+func (pqt PredictionQueryTag) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PredictionQueryToken ...
@@ -576,6 +654,12 @@ type RegionProposal struct {
 	BoundingBox *BoundingBox `json:"boundingBox,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RegionProposal.
+func (rp RegionProposal) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // StoredImagePrediction result of an image classification request.
 type StoredImagePrediction struct {
 	// ResizedImageURI - READ-ONLY; The URI to the (resized) prediction image.
@@ -596,6 +680,12 @@ type StoredImagePrediction struct {
 	Created *date.Time `json:"created,omitempty"`
 	// Predictions - READ-ONLY; List of predictions.
 	Predictions *[]Prediction `json:"predictions,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StoredImagePrediction.
+func (sip StoredImagePrediction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Tag represents a Tag.
@@ -644,4 +734,10 @@ type TagPerformance struct {
 	RecallStdDeviation *float64 `json:"recallStdDeviation,omitempty"`
 	// AveragePrecision - READ-ONLY; Gets the average precision when applicable.
 	AveragePrecision *float64 `json:"averagePrecision,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TagPerformance.
+func (tp TagPerformance) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

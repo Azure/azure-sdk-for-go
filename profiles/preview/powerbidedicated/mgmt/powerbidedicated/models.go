@@ -11,34 +11,52 @@ package powerbidedicated
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/powerbidedicated/mgmt/2017-10-01/powerbidedicated"
+	original "github.com/Azure/azure-sdk-for-go/services/powerbidedicated/mgmt/2021-01-01/powerbidedicated"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
-type ProvisioningState = original.ProvisioningState
+type CapacityProvisioningState = original.CapacityProvisioningState
 
 const (
-	Deleting     ProvisioningState = original.Deleting
-	Failed       ProvisioningState = original.Failed
-	Paused       ProvisioningState = original.Paused
-	Pausing      ProvisioningState = original.Pausing
-	Preparing    ProvisioningState = original.Preparing
-	Provisioning ProvisioningState = original.Provisioning
-	Resuming     ProvisioningState = original.Resuming
-	Scaling      ProvisioningState = original.Scaling
-	Succeeded    ProvisioningState = original.Succeeded
-	Suspended    ProvisioningState = original.Suspended
-	Suspending   ProvisioningState = original.Suspending
-	Updating     ProvisioningState = original.Updating
+	CapacityProvisioningStateDeleting     CapacityProvisioningState = original.CapacityProvisioningStateDeleting
+	CapacityProvisioningStateFailed       CapacityProvisioningState = original.CapacityProvisioningStateFailed
+	CapacityProvisioningStatePaused       CapacityProvisioningState = original.CapacityProvisioningStatePaused
+	CapacityProvisioningStatePausing      CapacityProvisioningState = original.CapacityProvisioningStatePausing
+	CapacityProvisioningStatePreparing    CapacityProvisioningState = original.CapacityProvisioningStatePreparing
+	CapacityProvisioningStateProvisioning CapacityProvisioningState = original.CapacityProvisioningStateProvisioning
+	CapacityProvisioningStateResuming     CapacityProvisioningState = original.CapacityProvisioningStateResuming
+	CapacityProvisioningStateScaling      CapacityProvisioningState = original.CapacityProvisioningStateScaling
+	CapacityProvisioningStateSucceeded    CapacityProvisioningState = original.CapacityProvisioningStateSucceeded
+	CapacityProvisioningStateSuspended    CapacityProvisioningState = original.CapacityProvisioningStateSuspended
+	CapacityProvisioningStateSuspending   CapacityProvisioningState = original.CapacityProvisioningStateSuspending
+	CapacityProvisioningStateUpdating     CapacityProvisioningState = original.CapacityProvisioningStateUpdating
 )
 
-type SkuTier = original.SkuTier
+type CapacitySkuTier = original.CapacitySkuTier
 
 const (
-	PBIEAzure SkuTier = original.PBIEAzure
+	CapacitySkuTierAutoPremiumHost CapacitySkuTier = original.CapacitySkuTierAutoPremiumHost
+	CapacitySkuTierPBIEAzure       CapacitySkuTier = original.CapacitySkuTierPBIEAzure
+	CapacitySkuTierPremium         CapacitySkuTier = original.CapacitySkuTierPremium
+)
+
+type IdentityType = original.IdentityType
+
+const (
+	IdentityTypeApplication     IdentityType = original.IdentityTypeApplication
+	IdentityTypeKey             IdentityType = original.IdentityTypeKey
+	IdentityTypeManagedIdentity IdentityType = original.IdentityTypeManagedIdentity
+	IdentityTypeUser            IdentityType = original.IdentityTypeUser
+)
+
+type Mode = original.Mode
+
+const (
+	ModeGen1 Mode = original.ModeGen1
+	ModeGen2 Mode = original.ModeGen2
 )
 
 type State = original.State
@@ -58,6 +76,25 @@ const (
 	StateUpdating     State = original.StateUpdating
 )
 
+type VCoreProvisioningState = original.VCoreProvisioningState
+
+const (
+	VCoreProvisioningStateSucceeded VCoreProvisioningState = original.VCoreProvisioningStateSucceeded
+)
+
+type VCoreSkuTier = original.VCoreSkuTier
+
+const (
+	VCoreSkuTierAutoScale VCoreSkuTier = original.VCoreSkuTierAutoScale
+)
+
+type AutoScaleVCore = original.AutoScaleVCore
+type AutoScaleVCoreListResult = original.AutoScaleVCoreListResult
+type AutoScaleVCoreMutableProperties = original.AutoScaleVCoreMutableProperties
+type AutoScaleVCoreProperties = original.AutoScaleVCoreProperties
+type AutoScaleVCoreSku = original.AutoScaleVCoreSku
+type AutoScaleVCoreUpdateParameters = original.AutoScaleVCoreUpdateParameters
+type AutoScaleVCoresClient = original.AutoScaleVCoresClient
 type BaseClient = original.BaseClient
 type CapacitiesClient = original.CapacitiesClient
 type CapacitiesCreateFuture = original.CapacitiesCreateFuture
@@ -65,6 +102,7 @@ type CapacitiesDeleteFuture = original.CapacitiesDeleteFuture
 type CapacitiesResumeFuture = original.CapacitiesResumeFuture
 type CapacitiesSuspendFuture = original.CapacitiesSuspendFuture
 type CapacitiesUpdateFuture = original.CapacitiesUpdateFuture
+type CapacitySku = original.CapacitySku
 type CheckCapacityNameAvailabilityParameters = original.CheckCapacityNameAvailabilityParameters
 type CheckCapacityNameAvailabilityResult = original.CheckCapacityNameAvailabilityResult
 type DedicatedCapacities = original.DedicatedCapacities
@@ -74,6 +112,7 @@ type DedicatedCapacityMutableProperties = original.DedicatedCapacityMutablePrope
 type DedicatedCapacityProperties = original.DedicatedCapacityProperties
 type DedicatedCapacityUpdateParameters = original.DedicatedCapacityUpdateParameters
 type ErrorResponse = original.ErrorResponse
+type ErrorResponseError = original.ErrorResponseError
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -81,13 +120,19 @@ type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type Resource = original.Resource
-type ResourceSku = original.ResourceSku
 type SkuDetailsForExistingResource = original.SkuDetailsForExistingResource
 type SkuEnumerationForExistingResourceResult = original.SkuEnumerationForExistingResourceResult
 type SkuEnumerationForNewResourceResult = original.SkuEnumerationForNewResourceResult
+type SystemData = original.SystemData
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
+}
+func NewAutoScaleVCoresClient(subscriptionID string) AutoScaleVCoresClient {
+	return original.NewAutoScaleVCoresClient(subscriptionID)
+}
+func NewAutoScaleVCoresClientWithBaseURI(baseURI string, subscriptionID string) AutoScaleVCoresClient {
+	return original.NewAutoScaleVCoresClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCapacitiesClient(subscriptionID string) CapacitiesClient {
 	return original.NewCapacitiesClient(subscriptionID)
@@ -110,14 +155,26 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
-func PossibleProvisioningStateValues() []ProvisioningState {
-	return original.PossibleProvisioningStateValues()
+func PossibleCapacityProvisioningStateValues() []CapacityProvisioningState {
+	return original.PossibleCapacityProvisioningStateValues()
 }
-func PossibleSkuTierValues() []SkuTier {
-	return original.PossibleSkuTierValues()
+func PossibleCapacitySkuTierValues() []CapacitySkuTier {
+	return original.PossibleCapacitySkuTierValues()
+}
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
+}
+func PossibleModeValues() []Mode {
+	return original.PossibleModeValues()
 }
 func PossibleStateValues() []State {
 	return original.PossibleStateValues()
+}
+func PossibleVCoreProvisioningStateValues() []VCoreProvisioningState {
+	return original.PossibleVCoreProvisioningStateValues()
+}
+func PossibleVCoreSkuTierValues() []VCoreSkuTier {
+	return original.PossibleVCoreSkuTierValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

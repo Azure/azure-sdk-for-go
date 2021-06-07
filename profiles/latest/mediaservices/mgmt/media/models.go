@@ -11,7 +11,7 @@ package media
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2020-05-01/media"
+	original "github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2021-05-01/media"
 )
 
 const (
@@ -21,87 +21,93 @@ const (
 type AacAudioProfile = original.AacAudioProfile
 
 const (
-	AacLc   AacAudioProfile = original.AacLc
-	HeAacV1 AacAudioProfile = original.HeAacV1
-	HeAacV2 AacAudioProfile = original.HeAacV2
+	AacAudioProfileAacLc   AacAudioProfile = original.AacAudioProfileAacLc
+	AacAudioProfileHeAacV1 AacAudioProfile = original.AacAudioProfileHeAacV1
+	AacAudioProfileHeAacV2 AacAudioProfile = original.AacAudioProfileHeAacV2
 )
 
 type AccountEncryptionKeyType = original.AccountEncryptionKeyType
 
 const (
-	CustomerKey AccountEncryptionKeyType = original.CustomerKey
-	SystemKey   AccountEncryptionKeyType = original.SystemKey
+	AccountEncryptionKeyTypeCustomerKey AccountEncryptionKeyType = original.AccountEncryptionKeyTypeCustomerKey
+	AccountEncryptionKeyTypeSystemKey   AccountEncryptionKeyType = original.AccountEncryptionKeyTypeSystemKey
+)
+
+type ActionType = original.ActionType
+
+const (
+	ActionTypeInternal ActionType = original.ActionTypeInternal
 )
 
 type AnalysisResolution = original.AnalysisResolution
 
 const (
-	SourceResolution   AnalysisResolution = original.SourceResolution
-	StandardDefinition AnalysisResolution = original.StandardDefinition
+	AnalysisResolutionSourceResolution   AnalysisResolution = original.AnalysisResolutionSourceResolution
+	AnalysisResolutionStandardDefinition AnalysisResolution = original.AnalysisResolutionStandardDefinition
 )
 
 type AssetContainerPermission = original.AssetContainerPermission
 
 const (
-	Read            AssetContainerPermission = original.Read
-	ReadWrite       AssetContainerPermission = original.ReadWrite
-	ReadWriteDelete AssetContainerPermission = original.ReadWriteDelete
+	AssetContainerPermissionRead            AssetContainerPermission = original.AssetContainerPermissionRead
+	AssetContainerPermissionReadWrite       AssetContainerPermission = original.AssetContainerPermissionReadWrite
+	AssetContainerPermissionReadWriteDelete AssetContainerPermission = original.AssetContainerPermissionReadWriteDelete
 )
 
 type AssetStorageEncryptionFormat = original.AssetStorageEncryptionFormat
 
 const (
-	MediaStorageClientEncryption AssetStorageEncryptionFormat = original.MediaStorageClientEncryption
-	None                         AssetStorageEncryptionFormat = original.None
+	AssetStorageEncryptionFormatMediaStorageClientEncryption AssetStorageEncryptionFormat = original.AssetStorageEncryptionFormatMediaStorageClientEncryption
+	AssetStorageEncryptionFormatNone                         AssetStorageEncryptionFormat = original.AssetStorageEncryptionFormatNone
 )
 
 type AttributeFilter = original.AttributeFilter
 
 const (
-	All         AttributeFilter = original.All
-	Bottom      AttributeFilter = original.Bottom
-	Top         AttributeFilter = original.Top
-	ValueEquals AttributeFilter = original.ValueEquals
+	AttributeFilterAll         AttributeFilter = original.AttributeFilterAll
+	AttributeFilterBottom      AttributeFilter = original.AttributeFilterBottom
+	AttributeFilterTop         AttributeFilter = original.AttributeFilterTop
+	AttributeFilterValueEquals AttributeFilter = original.AttributeFilterValueEquals
 )
 
 type AudioAnalysisMode = original.AudioAnalysisMode
 
 const (
-	Basic    AudioAnalysisMode = original.Basic
-	Standard AudioAnalysisMode = original.Standard
+	AudioAnalysisModeBasic    AudioAnalysisMode = original.AudioAnalysisModeBasic
+	AudioAnalysisModeStandard AudioAnalysisMode = original.AudioAnalysisModeStandard
 )
 
 type BlurType = original.BlurType
 
 const (
-	Black BlurType = original.Black
-	Box   BlurType = original.Box
-	High  BlurType = original.High
-	Low   BlurType = original.Low
-	Med   BlurType = original.Med
+	BlurTypeBlack BlurType = original.BlurTypeBlack
+	BlurTypeBox   BlurType = original.BlurTypeBox
+	BlurTypeHigh  BlurType = original.BlurTypeHigh
+	BlurTypeLow   BlurType = original.BlurTypeLow
+	BlurTypeMed   BlurType = original.BlurTypeMed
 )
 
 type ChannelMapping = original.ChannelMapping
 
 const (
-	BackLeft            ChannelMapping = original.BackLeft
-	BackRight           ChannelMapping = original.BackRight
-	Center              ChannelMapping = original.Center
-	FrontLeft           ChannelMapping = original.FrontLeft
-	FrontRight          ChannelMapping = original.FrontRight
-	LowFrequencyEffects ChannelMapping = original.LowFrequencyEffects
-	StereoLeft          ChannelMapping = original.StereoLeft
-	StereoRight         ChannelMapping = original.StereoRight
+	ChannelMappingBackLeft            ChannelMapping = original.ChannelMappingBackLeft
+	ChannelMappingBackRight           ChannelMapping = original.ChannelMappingBackRight
+	ChannelMappingCenter              ChannelMapping = original.ChannelMappingCenter
+	ChannelMappingFrontLeft           ChannelMapping = original.ChannelMappingFrontLeft
+	ChannelMappingFrontRight          ChannelMapping = original.ChannelMappingFrontRight
+	ChannelMappingLowFrequencyEffects ChannelMapping = original.ChannelMappingLowFrequencyEffects
+	ChannelMappingStereoLeft          ChannelMapping = original.ChannelMappingStereoLeft
+	ChannelMappingStereoRight         ChannelMapping = original.ChannelMappingStereoRight
 )
 
 type ContentKeyPolicyFairPlayRentalAndLeaseKeyType = original.ContentKeyPolicyFairPlayRentalAndLeaseKeyType
 
 const (
-	DualExpiry          ContentKeyPolicyFairPlayRentalAndLeaseKeyType = original.DualExpiry
-	PersistentLimited   ContentKeyPolicyFairPlayRentalAndLeaseKeyType = original.PersistentLimited
-	PersistentUnlimited ContentKeyPolicyFairPlayRentalAndLeaseKeyType = original.PersistentUnlimited
-	Undefined           ContentKeyPolicyFairPlayRentalAndLeaseKeyType = original.Undefined
-	Unknown             ContentKeyPolicyFairPlayRentalAndLeaseKeyType = original.Unknown
+	ContentKeyPolicyFairPlayRentalAndLeaseKeyTypeDualExpiry          ContentKeyPolicyFairPlayRentalAndLeaseKeyType = original.ContentKeyPolicyFairPlayRentalAndLeaseKeyTypeDualExpiry
+	ContentKeyPolicyFairPlayRentalAndLeaseKeyTypePersistentLimited   ContentKeyPolicyFairPlayRentalAndLeaseKeyType = original.ContentKeyPolicyFairPlayRentalAndLeaseKeyTypePersistentLimited
+	ContentKeyPolicyFairPlayRentalAndLeaseKeyTypePersistentUnlimited ContentKeyPolicyFairPlayRentalAndLeaseKeyType = original.ContentKeyPolicyFairPlayRentalAndLeaseKeyTypePersistentUnlimited
+	ContentKeyPolicyFairPlayRentalAndLeaseKeyTypeUndefined           ContentKeyPolicyFairPlayRentalAndLeaseKeyType = original.ContentKeyPolicyFairPlayRentalAndLeaseKeyTypeUndefined
+	ContentKeyPolicyFairPlayRentalAndLeaseKeyTypeUnknown             ContentKeyPolicyFairPlayRentalAndLeaseKeyType = original.ContentKeyPolicyFairPlayRentalAndLeaseKeyTypeUnknown
 )
 
 type ContentKeyPolicyPlayReadyContentType = original.ContentKeyPolicyPlayReadyContentType
@@ -141,46 +147,53 @@ const (
 type CreatedByType = original.CreatedByType
 
 const (
-	Application     CreatedByType = original.Application
-	Key             CreatedByType = original.Key
-	ManagedIdentity CreatedByType = original.ManagedIdentity
-	User            CreatedByType = original.User
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
+type DefaultAction = original.DefaultAction
+
+const (
+	DefaultActionAllow DefaultAction = original.DefaultActionAllow
+	DefaultActionDeny  DefaultAction = original.DefaultActionDeny
 )
 
 type DeinterlaceMode = original.DeinterlaceMode
 
 const (
-	AutoPixelAdaptive DeinterlaceMode = original.AutoPixelAdaptive
-	Off               DeinterlaceMode = original.Off
+	DeinterlaceModeAutoPixelAdaptive DeinterlaceMode = original.DeinterlaceModeAutoPixelAdaptive
+	DeinterlaceModeOff               DeinterlaceMode = original.DeinterlaceModeOff
 )
 
 type DeinterlaceParity = original.DeinterlaceParity
 
 const (
-	Auto             DeinterlaceParity = original.Auto
-	BottomFieldFirst DeinterlaceParity = original.BottomFieldFirst
-	TopFieldFirst    DeinterlaceParity = original.TopFieldFirst
+	DeinterlaceParityAuto             DeinterlaceParity = original.DeinterlaceParityAuto
+	DeinterlaceParityBottomFieldFirst DeinterlaceParity = original.DeinterlaceParityBottomFieldFirst
+	DeinterlaceParityTopFieldFirst    DeinterlaceParity = original.DeinterlaceParityTopFieldFirst
 )
 
 type EncoderNamedPreset = original.EncoderNamedPreset
 
 const (
-	AACGoodQualityAudio              EncoderNamedPreset = original.AACGoodQualityAudio
-	AdaptiveStreaming                EncoderNamedPreset = original.AdaptiveStreaming
-	ContentAwareEncoding             EncoderNamedPreset = original.ContentAwareEncoding
-	ContentAwareEncodingExperimental EncoderNamedPreset = original.ContentAwareEncodingExperimental
-	CopyAllBitrateNonInterleaved     EncoderNamedPreset = original.CopyAllBitrateNonInterleaved
-	H264MultipleBitrate1080p         EncoderNamedPreset = original.H264MultipleBitrate1080p
-	H264MultipleBitrate720p          EncoderNamedPreset = original.H264MultipleBitrate720p
-	H264MultipleBitrateSD            EncoderNamedPreset = original.H264MultipleBitrateSD
-	H264SingleBitrate1080p           EncoderNamedPreset = original.H264SingleBitrate1080p
-	H264SingleBitrate720p            EncoderNamedPreset = original.H264SingleBitrate720p
-	H264SingleBitrateSD              EncoderNamedPreset = original.H264SingleBitrateSD
-	H265AdaptiveStreaming            EncoderNamedPreset = original.H265AdaptiveStreaming
-	H265ContentAwareEncoding         EncoderNamedPreset = original.H265ContentAwareEncoding
-	H265SingleBitrate1080p           EncoderNamedPreset = original.H265SingleBitrate1080p
-	H265SingleBitrate4K              EncoderNamedPreset = original.H265SingleBitrate4K
-	H265SingleBitrate720p            EncoderNamedPreset = original.H265SingleBitrate720p
+	EncoderNamedPresetAACGoodQualityAudio              EncoderNamedPreset = original.EncoderNamedPresetAACGoodQualityAudio
+	EncoderNamedPresetAdaptiveStreaming                EncoderNamedPreset = original.EncoderNamedPresetAdaptiveStreaming
+	EncoderNamedPresetContentAwareEncoding             EncoderNamedPreset = original.EncoderNamedPresetContentAwareEncoding
+	EncoderNamedPresetContentAwareEncodingExperimental EncoderNamedPreset = original.EncoderNamedPresetContentAwareEncodingExperimental
+	EncoderNamedPresetCopyAllBitrateNonInterleaved     EncoderNamedPreset = original.EncoderNamedPresetCopyAllBitrateNonInterleaved
+	EncoderNamedPresetH264MultipleBitrate1080p         EncoderNamedPreset = original.EncoderNamedPresetH264MultipleBitrate1080p
+	EncoderNamedPresetH264MultipleBitrate720p          EncoderNamedPreset = original.EncoderNamedPresetH264MultipleBitrate720p
+	EncoderNamedPresetH264MultipleBitrateSD            EncoderNamedPreset = original.EncoderNamedPresetH264MultipleBitrateSD
+	EncoderNamedPresetH264SingleBitrate1080p           EncoderNamedPreset = original.EncoderNamedPresetH264SingleBitrate1080p
+	EncoderNamedPresetH264SingleBitrate720p            EncoderNamedPreset = original.EncoderNamedPresetH264SingleBitrate720p
+	EncoderNamedPresetH264SingleBitrateSD              EncoderNamedPreset = original.EncoderNamedPresetH264SingleBitrateSD
+	EncoderNamedPresetH265AdaptiveStreaming            EncoderNamedPreset = original.EncoderNamedPresetH265AdaptiveStreaming
+	EncoderNamedPresetH265ContentAwareEncoding         EncoderNamedPreset = original.EncoderNamedPresetH265ContentAwareEncoding
+	EncoderNamedPresetH265SingleBitrate1080p           EncoderNamedPreset = original.EncoderNamedPresetH265SingleBitrate1080p
+	EncoderNamedPresetH265SingleBitrate4K              EncoderNamedPreset = original.EncoderNamedPresetH265SingleBitrate4K
+	EncoderNamedPresetH265SingleBitrate720p            EncoderNamedPreset = original.EncoderNamedPresetH265SingleBitrate720p
 )
 
 type EncryptionScheme = original.EncryptionScheme
@@ -195,23 +208,23 @@ const (
 type EntropyMode = original.EntropyMode
 
 const (
-	Cabac EntropyMode = original.Cabac
-	Cavlc EntropyMode = original.Cavlc
+	EntropyModeCabac EntropyMode = original.EntropyModeCabac
+	EntropyModeCavlc EntropyMode = original.EntropyModeCavlc
 )
 
 type FaceRedactorMode = original.FaceRedactorMode
 
 const (
-	Analyze  FaceRedactorMode = original.Analyze
-	Combined FaceRedactorMode = original.Combined
-	Redact   FaceRedactorMode = original.Redact
+	FaceRedactorModeAnalyze  FaceRedactorMode = original.FaceRedactorModeAnalyze
+	FaceRedactorModeCombined FaceRedactorMode = original.FaceRedactorModeCombined
+	FaceRedactorModeRedact   FaceRedactorMode = original.FaceRedactorModeRedact
 )
 
 type FilterTrackPropertyCompareOperation = original.FilterTrackPropertyCompareOperation
 
 const (
-	Equal    FilterTrackPropertyCompareOperation = original.Equal
-	NotEqual FilterTrackPropertyCompareOperation = original.NotEqual
+	FilterTrackPropertyCompareOperationEqual    FilterTrackPropertyCompareOperation = original.FilterTrackPropertyCompareOperationEqual
+	FilterTrackPropertyCompareOperationNotEqual FilterTrackPropertyCompareOperation = original.FilterTrackPropertyCompareOperationNotEqual
 )
 
 type FilterTrackPropertyType = original.FilterTrackPropertyType
@@ -228,9 +241,9 @@ const (
 type H264Complexity = original.H264Complexity
 
 const (
-	Balanced H264Complexity = original.Balanced
-	Quality  H264Complexity = original.Quality
-	Speed    H264Complexity = original.Speed
+	H264ComplexityBalanced H264Complexity = original.H264ComplexityBalanced
+	H264ComplexityQuality  H264Complexity = original.H264ComplexityQuality
+	H264ComplexitySpeed    H264Complexity = original.H264ComplexitySpeed
 )
 
 type H264VideoProfile = original.H264VideoProfile
@@ -262,9 +275,9 @@ const (
 type InsightsType = original.InsightsType
 
 const (
-	AllInsights       InsightsType = original.AllInsights
-	AudioInsightsOnly InsightsType = original.AudioInsightsOnly
-	VideoInsightsOnly InsightsType = original.VideoInsightsOnly
+	InsightsTypeAllInsights       InsightsType = original.InsightsTypeAllInsights
+	InsightsTypeAudioInsightsOnly InsightsType = original.InsightsTypeAudioInsightsOnly
+	InsightsTypeVideoInsightsOnly InsightsType = original.InsightsTypeVideoInsightsOnly
 )
 
 type JobErrorCategory = original.JobErrorCategory
@@ -280,34 +293,34 @@ const (
 type JobErrorCode = original.JobErrorCode
 
 const (
-	ConfigurationUnsupported JobErrorCode = original.ConfigurationUnsupported
-	ContentMalformed         JobErrorCode = original.ContentMalformed
-	ContentUnsupported       JobErrorCode = original.ContentUnsupported
-	DownloadNotAccessible    JobErrorCode = original.DownloadNotAccessible
-	DownloadTransientError   JobErrorCode = original.DownloadTransientError
-	ServiceError             JobErrorCode = original.ServiceError
-	ServiceTransientError    JobErrorCode = original.ServiceTransientError
-	UploadNotAccessible      JobErrorCode = original.UploadNotAccessible
-	UploadTransientError     JobErrorCode = original.UploadTransientError
+	JobErrorCodeConfigurationUnsupported JobErrorCode = original.JobErrorCodeConfigurationUnsupported
+	JobErrorCodeContentMalformed         JobErrorCode = original.JobErrorCodeContentMalformed
+	JobErrorCodeContentUnsupported       JobErrorCode = original.JobErrorCodeContentUnsupported
+	JobErrorCodeDownloadNotAccessible    JobErrorCode = original.JobErrorCodeDownloadNotAccessible
+	JobErrorCodeDownloadTransientError   JobErrorCode = original.JobErrorCodeDownloadTransientError
+	JobErrorCodeServiceError             JobErrorCode = original.JobErrorCodeServiceError
+	JobErrorCodeServiceTransientError    JobErrorCode = original.JobErrorCodeServiceTransientError
+	JobErrorCodeUploadNotAccessible      JobErrorCode = original.JobErrorCodeUploadNotAccessible
+	JobErrorCodeUploadTransientError     JobErrorCode = original.JobErrorCodeUploadTransientError
 )
 
 type JobRetry = original.JobRetry
 
 const (
-	DoNotRetry JobRetry = original.DoNotRetry
-	MayRetry   JobRetry = original.MayRetry
+	JobRetryDoNotRetry JobRetry = original.JobRetryDoNotRetry
+	JobRetryMayRetry   JobRetry = original.JobRetryMayRetry
 )
 
 type JobState = original.JobState
 
 const (
-	Canceled   JobState = original.Canceled
-	Canceling  JobState = original.Canceling
-	Error      JobState = original.Error
-	Finished   JobState = original.Finished
-	Processing JobState = original.Processing
-	Queued     JobState = original.Queued
-	Scheduled  JobState = original.Scheduled
+	JobStateCanceled   JobState = original.JobStateCanceled
+	JobStateCanceling  JobState = original.JobStateCanceling
+	JobStateError      JobState = original.JobStateError
+	JobStateFinished   JobState = original.JobStateFinished
+	JobStateProcessing JobState = original.JobStateProcessing
+	JobStateQueued     JobState = original.JobStateQueued
+	JobStateScheduled  JobState = original.JobStateScheduled
 )
 
 type LiveEventEncodingType = original.LiveEventEncodingType
@@ -321,20 +334,20 @@ const (
 type LiveEventInputProtocol = original.LiveEventInputProtocol
 
 const (
-	FragmentedMP4 LiveEventInputProtocol = original.FragmentedMP4
-	RTMP          LiveEventInputProtocol = original.RTMP
+	LiveEventInputProtocolFragmentedMP4 LiveEventInputProtocol = original.LiveEventInputProtocolFragmentedMP4
+	LiveEventInputProtocolRTMP          LiveEventInputProtocol = original.LiveEventInputProtocolRTMP
 )
 
 type LiveEventResourceState = original.LiveEventResourceState
 
 const (
-	Allocating LiveEventResourceState = original.Allocating
-	Deleting   LiveEventResourceState = original.Deleting
-	Running    LiveEventResourceState = original.Running
-	StandBy    LiveEventResourceState = original.StandBy
-	Starting   LiveEventResourceState = original.Starting
-	Stopped    LiveEventResourceState = original.Stopped
-	Stopping   LiveEventResourceState = original.Stopping
+	LiveEventResourceStateAllocating LiveEventResourceState = original.LiveEventResourceStateAllocating
+	LiveEventResourceStateDeleting   LiveEventResourceState = original.LiveEventResourceStateDeleting
+	LiveEventResourceStateRunning    LiveEventResourceState = original.LiveEventResourceStateRunning
+	LiveEventResourceStateStandBy    LiveEventResourceState = original.LiveEventResourceStateStandBy
+	LiveEventResourceStateStarting   LiveEventResourceState = original.LiveEventResourceStateStarting
+	LiveEventResourceStateStopped    LiveEventResourceState = original.LiveEventResourceStateStopped
+	LiveEventResourceStateStopping   LiveEventResourceState = original.LiveEventResourceStateStopping
 )
 
 type LiveOutputResourceState = original.LiveOutputResourceState
@@ -355,9 +368,9 @@ const (
 type MetricAggregationType = original.MetricAggregationType
 
 const (
-	Average MetricAggregationType = original.Average
-	Count   MetricAggregationType = original.Count
-	Total   MetricAggregationType = original.Total
+	MetricAggregationTypeAverage MetricAggregationType = original.MetricAggregationTypeAverage
+	MetricAggregationTypeCount   MetricAggregationType = original.MetricAggregationTypeCount
+	MetricAggregationTypeTotal   MetricAggregationType = original.MetricAggregationTypeTotal
 )
 
 type MetricUnit = original.MetricUnit
@@ -379,143 +392,143 @@ const (
 type OdataTypeBasicClipTime = original.OdataTypeBasicClipTime
 
 const (
-	OdataTypeClipTime                       OdataTypeBasicClipTime = original.OdataTypeClipTime
-	OdataTypeMicrosoftMediaAbsoluteClipTime OdataTypeBasicClipTime = original.OdataTypeMicrosoftMediaAbsoluteClipTime
-	OdataTypeMicrosoftMediaUtcClipTime      OdataTypeBasicClipTime = original.OdataTypeMicrosoftMediaUtcClipTime
+	OdataTypeBasicClipTimeOdataTypeClipTime                       OdataTypeBasicClipTime = original.OdataTypeBasicClipTimeOdataTypeClipTime
+	OdataTypeBasicClipTimeOdataTypeMicrosoftMediaAbsoluteClipTime OdataTypeBasicClipTime = original.OdataTypeBasicClipTimeOdataTypeMicrosoftMediaAbsoluteClipTime
+	OdataTypeBasicClipTimeOdataTypeMicrosoftMediaUtcClipTime      OdataTypeBasicClipTime = original.OdataTypeBasicClipTimeOdataTypeMicrosoftMediaUtcClipTime
 )
 
 type OdataTypeBasicCodec = original.OdataTypeBasicCodec
 
 const (
-	OdataTypeCodec                   OdataTypeBasicCodec = original.OdataTypeCodec
-	OdataTypeMicrosoftMediaAacAudio  OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaAacAudio
-	OdataTypeMicrosoftMediaAudio     OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaAudio
-	OdataTypeMicrosoftMediaCopyAudio OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaCopyAudio
-	OdataTypeMicrosoftMediaCopyVideo OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaCopyVideo
-	OdataTypeMicrosoftMediaH264Video OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaH264Video
-	OdataTypeMicrosoftMediaH265Video OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaH265Video
-	OdataTypeMicrosoftMediaImage     OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaImage
-	OdataTypeMicrosoftMediaJpgImage  OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaJpgImage
-	OdataTypeMicrosoftMediaPngImage  OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaPngImage
-	OdataTypeMicrosoftMediaVideo     OdataTypeBasicCodec = original.OdataTypeMicrosoftMediaVideo
+	OdataTypeBasicCodecOdataTypeCodec                   OdataTypeBasicCodec = original.OdataTypeBasicCodecOdataTypeCodec
+	OdataTypeBasicCodecOdataTypeMicrosoftMediaAacAudio  OdataTypeBasicCodec = original.OdataTypeBasicCodecOdataTypeMicrosoftMediaAacAudio
+	OdataTypeBasicCodecOdataTypeMicrosoftMediaAudio     OdataTypeBasicCodec = original.OdataTypeBasicCodecOdataTypeMicrosoftMediaAudio
+	OdataTypeBasicCodecOdataTypeMicrosoftMediaCopyAudio OdataTypeBasicCodec = original.OdataTypeBasicCodecOdataTypeMicrosoftMediaCopyAudio
+	OdataTypeBasicCodecOdataTypeMicrosoftMediaCopyVideo OdataTypeBasicCodec = original.OdataTypeBasicCodecOdataTypeMicrosoftMediaCopyVideo
+	OdataTypeBasicCodecOdataTypeMicrosoftMediaH264Video OdataTypeBasicCodec = original.OdataTypeBasicCodecOdataTypeMicrosoftMediaH264Video
+	OdataTypeBasicCodecOdataTypeMicrosoftMediaH265Video OdataTypeBasicCodec = original.OdataTypeBasicCodecOdataTypeMicrosoftMediaH265Video
+	OdataTypeBasicCodecOdataTypeMicrosoftMediaImage     OdataTypeBasicCodec = original.OdataTypeBasicCodecOdataTypeMicrosoftMediaImage
+	OdataTypeBasicCodecOdataTypeMicrosoftMediaJpgImage  OdataTypeBasicCodec = original.OdataTypeBasicCodecOdataTypeMicrosoftMediaJpgImage
+	OdataTypeBasicCodecOdataTypeMicrosoftMediaPngImage  OdataTypeBasicCodec = original.OdataTypeBasicCodecOdataTypeMicrosoftMediaPngImage
+	OdataTypeBasicCodecOdataTypeMicrosoftMediaVideo     OdataTypeBasicCodec = original.OdataTypeBasicCodecOdataTypeMicrosoftMediaVideo
 )
 
 type OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeBasicContentKeyPolicyConfiguration
 
 const (
-	OdataTypeContentKeyPolicyConfiguration                        OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeContentKeyPolicyConfiguration
-	OdataTypeMicrosoftMediaContentKeyPolicyClearKeyConfiguration  OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeMicrosoftMediaContentKeyPolicyClearKeyConfiguration
-	OdataTypeMicrosoftMediaContentKeyPolicyFairPlayConfiguration  OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeMicrosoftMediaContentKeyPolicyFairPlayConfiguration
-	OdataTypeMicrosoftMediaContentKeyPolicyPlayReadyConfiguration OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeMicrosoftMediaContentKeyPolicyPlayReadyConfiguration
-	OdataTypeMicrosoftMediaContentKeyPolicyUnknownConfiguration   OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeMicrosoftMediaContentKeyPolicyUnknownConfiguration
-	OdataTypeMicrosoftMediaContentKeyPolicyWidevineConfiguration  OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeMicrosoftMediaContentKeyPolicyWidevineConfiguration
+	OdataTypeBasicContentKeyPolicyConfigurationOdataTypeContentKeyPolicyConfiguration                        OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeBasicContentKeyPolicyConfigurationOdataTypeContentKeyPolicyConfiguration
+	OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyClearKeyConfiguration  OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyClearKeyConfiguration
+	OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyFairPlayConfiguration  OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyFairPlayConfiguration
+	OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyPlayReadyConfiguration OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyPlayReadyConfiguration
+	OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyUnknownConfiguration   OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyUnknownConfiguration
+	OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyWidevineConfiguration  OdataTypeBasicContentKeyPolicyConfiguration = original.OdataTypeBasicContentKeyPolicyConfigurationOdataTypeMicrosoftMediaContentKeyPolicyWidevineConfiguration
 )
 
 type OdataTypeBasicContentKeyPolicyRestriction = original.OdataTypeBasicContentKeyPolicyRestriction
 
 const (
-	OdataTypeContentKeyPolicyRestriction                      OdataTypeBasicContentKeyPolicyRestriction = original.OdataTypeContentKeyPolicyRestriction
-	OdataTypeMicrosoftMediaContentKeyPolicyOpenRestriction    OdataTypeBasicContentKeyPolicyRestriction = original.OdataTypeMicrosoftMediaContentKeyPolicyOpenRestriction
-	OdataTypeMicrosoftMediaContentKeyPolicyTokenRestriction   OdataTypeBasicContentKeyPolicyRestriction = original.OdataTypeMicrosoftMediaContentKeyPolicyTokenRestriction
-	OdataTypeMicrosoftMediaContentKeyPolicyUnknownRestriction OdataTypeBasicContentKeyPolicyRestriction = original.OdataTypeMicrosoftMediaContentKeyPolicyUnknownRestriction
+	OdataTypeBasicContentKeyPolicyRestrictionOdataTypeContentKeyPolicyRestriction                      OdataTypeBasicContentKeyPolicyRestriction = original.OdataTypeBasicContentKeyPolicyRestrictionOdataTypeContentKeyPolicyRestriction
+	OdataTypeBasicContentKeyPolicyRestrictionOdataTypeMicrosoftMediaContentKeyPolicyOpenRestriction    OdataTypeBasicContentKeyPolicyRestriction = original.OdataTypeBasicContentKeyPolicyRestrictionOdataTypeMicrosoftMediaContentKeyPolicyOpenRestriction
+	OdataTypeBasicContentKeyPolicyRestrictionOdataTypeMicrosoftMediaContentKeyPolicyTokenRestriction   OdataTypeBasicContentKeyPolicyRestriction = original.OdataTypeBasicContentKeyPolicyRestrictionOdataTypeMicrosoftMediaContentKeyPolicyTokenRestriction
+	OdataTypeBasicContentKeyPolicyRestrictionOdataTypeMicrosoftMediaContentKeyPolicyUnknownRestriction OdataTypeBasicContentKeyPolicyRestriction = original.OdataTypeBasicContentKeyPolicyRestrictionOdataTypeMicrosoftMediaContentKeyPolicyUnknownRestriction
 )
 
 type OdataTypeBasicContentKeyPolicyRestrictionTokenKey = original.OdataTypeBasicContentKeyPolicyRestrictionTokenKey
 
 const (
-	OdataTypeContentKeyPolicyRestrictionTokenKey                   OdataTypeBasicContentKeyPolicyRestrictionTokenKey = original.OdataTypeContentKeyPolicyRestrictionTokenKey
-	OdataTypeMicrosoftMediaContentKeyPolicyRsaTokenKey             OdataTypeBasicContentKeyPolicyRestrictionTokenKey = original.OdataTypeMicrosoftMediaContentKeyPolicyRsaTokenKey
-	OdataTypeMicrosoftMediaContentKeyPolicySymmetricTokenKey       OdataTypeBasicContentKeyPolicyRestrictionTokenKey = original.OdataTypeMicrosoftMediaContentKeyPolicySymmetricTokenKey
-	OdataTypeMicrosoftMediaContentKeyPolicyX509CertificateTokenKey OdataTypeBasicContentKeyPolicyRestrictionTokenKey = original.OdataTypeMicrosoftMediaContentKeyPolicyX509CertificateTokenKey
+	OdataTypeBasicContentKeyPolicyRestrictionTokenKeyOdataTypeContentKeyPolicyRestrictionTokenKey                   OdataTypeBasicContentKeyPolicyRestrictionTokenKey = original.OdataTypeBasicContentKeyPolicyRestrictionTokenKeyOdataTypeContentKeyPolicyRestrictionTokenKey
+	OdataTypeBasicContentKeyPolicyRestrictionTokenKeyOdataTypeMicrosoftMediaContentKeyPolicyRsaTokenKey             OdataTypeBasicContentKeyPolicyRestrictionTokenKey = original.OdataTypeBasicContentKeyPolicyRestrictionTokenKeyOdataTypeMicrosoftMediaContentKeyPolicyRsaTokenKey
+	OdataTypeBasicContentKeyPolicyRestrictionTokenKeyOdataTypeMicrosoftMediaContentKeyPolicySymmetricTokenKey       OdataTypeBasicContentKeyPolicyRestrictionTokenKey = original.OdataTypeBasicContentKeyPolicyRestrictionTokenKeyOdataTypeMicrosoftMediaContentKeyPolicySymmetricTokenKey
+	OdataTypeBasicContentKeyPolicyRestrictionTokenKeyOdataTypeMicrosoftMediaContentKeyPolicyX509CertificateTokenKey OdataTypeBasicContentKeyPolicyRestrictionTokenKey = original.OdataTypeBasicContentKeyPolicyRestrictionTokenKeyOdataTypeMicrosoftMediaContentKeyPolicyX509CertificateTokenKey
 )
 
 type OdataTypeBasicFormat = original.OdataTypeBasicFormat
 
 const (
-	OdataTypeFormat                              OdataTypeBasicFormat = original.OdataTypeFormat
-	OdataTypeMicrosoftMediaImageFormat           OdataTypeBasicFormat = original.OdataTypeMicrosoftMediaImageFormat
-	OdataTypeMicrosoftMediaJpgFormat             OdataTypeBasicFormat = original.OdataTypeMicrosoftMediaJpgFormat
-	OdataTypeMicrosoftMediaMp4Format             OdataTypeBasicFormat = original.OdataTypeMicrosoftMediaMp4Format
-	OdataTypeMicrosoftMediaMultiBitrateFormat    OdataTypeBasicFormat = original.OdataTypeMicrosoftMediaMultiBitrateFormat
-	OdataTypeMicrosoftMediaPngFormat             OdataTypeBasicFormat = original.OdataTypeMicrosoftMediaPngFormat
-	OdataTypeMicrosoftMediaTransportStreamFormat OdataTypeBasicFormat = original.OdataTypeMicrosoftMediaTransportStreamFormat
+	OdataTypeBasicFormatOdataTypeFormat                              OdataTypeBasicFormat = original.OdataTypeBasicFormatOdataTypeFormat
+	OdataTypeBasicFormatOdataTypeMicrosoftMediaImageFormat           OdataTypeBasicFormat = original.OdataTypeBasicFormatOdataTypeMicrosoftMediaImageFormat
+	OdataTypeBasicFormatOdataTypeMicrosoftMediaJpgFormat             OdataTypeBasicFormat = original.OdataTypeBasicFormatOdataTypeMicrosoftMediaJpgFormat
+	OdataTypeBasicFormatOdataTypeMicrosoftMediaMp4Format             OdataTypeBasicFormat = original.OdataTypeBasicFormatOdataTypeMicrosoftMediaMp4Format
+	OdataTypeBasicFormatOdataTypeMicrosoftMediaMultiBitrateFormat    OdataTypeBasicFormat = original.OdataTypeBasicFormatOdataTypeMicrosoftMediaMultiBitrateFormat
+	OdataTypeBasicFormatOdataTypeMicrosoftMediaPngFormat             OdataTypeBasicFormat = original.OdataTypeBasicFormatOdataTypeMicrosoftMediaPngFormat
+	OdataTypeBasicFormatOdataTypeMicrosoftMediaTransportStreamFormat OdataTypeBasicFormat = original.OdataTypeBasicFormatOdataTypeMicrosoftMediaTransportStreamFormat
 )
 
 type OdataTypeBasicInputDefinition = original.OdataTypeBasicInputDefinition
 
 const (
-	OdataTypeInputDefinition                 OdataTypeBasicInputDefinition = original.OdataTypeInputDefinition
-	OdataTypeMicrosoftMediaFromAllInputFile  OdataTypeBasicInputDefinition = original.OdataTypeMicrosoftMediaFromAllInputFile
-	OdataTypeMicrosoftMediaFromEachInputFile OdataTypeBasicInputDefinition = original.OdataTypeMicrosoftMediaFromEachInputFile
-	OdataTypeMicrosoftMediaInputFile         OdataTypeBasicInputDefinition = original.OdataTypeMicrosoftMediaInputFile
+	OdataTypeBasicInputDefinitionOdataTypeInputDefinition                 OdataTypeBasicInputDefinition = original.OdataTypeBasicInputDefinitionOdataTypeInputDefinition
+	OdataTypeBasicInputDefinitionOdataTypeMicrosoftMediaFromAllInputFile  OdataTypeBasicInputDefinition = original.OdataTypeBasicInputDefinitionOdataTypeMicrosoftMediaFromAllInputFile
+	OdataTypeBasicInputDefinitionOdataTypeMicrosoftMediaFromEachInputFile OdataTypeBasicInputDefinition = original.OdataTypeBasicInputDefinitionOdataTypeMicrosoftMediaFromEachInputFile
+	OdataTypeBasicInputDefinitionOdataTypeMicrosoftMediaInputFile         OdataTypeBasicInputDefinition = original.OdataTypeBasicInputDefinitionOdataTypeMicrosoftMediaInputFile
 )
 
 type OdataTypeBasicJobInput = original.OdataTypeBasicJobInput
 
 const (
-	OdataTypeJobInput                       OdataTypeBasicJobInput = original.OdataTypeJobInput
-	OdataTypeMicrosoftMediaJobInputAsset    OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputAsset
-	OdataTypeMicrosoftMediaJobInputClip     OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputClip
-	OdataTypeMicrosoftMediaJobInputHTTP     OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputHTTP
-	OdataTypeMicrosoftMediaJobInputs        OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputs
-	OdataTypeMicrosoftMediaJobInputSequence OdataTypeBasicJobInput = original.OdataTypeMicrosoftMediaJobInputSequence
+	OdataTypeBasicJobInputOdataTypeJobInput                       OdataTypeBasicJobInput = original.OdataTypeBasicJobInputOdataTypeJobInput
+	OdataTypeBasicJobInputOdataTypeMicrosoftMediaJobInputAsset    OdataTypeBasicJobInput = original.OdataTypeBasicJobInputOdataTypeMicrosoftMediaJobInputAsset
+	OdataTypeBasicJobInputOdataTypeMicrosoftMediaJobInputClip     OdataTypeBasicJobInput = original.OdataTypeBasicJobInputOdataTypeMicrosoftMediaJobInputClip
+	OdataTypeBasicJobInputOdataTypeMicrosoftMediaJobInputHTTP     OdataTypeBasicJobInput = original.OdataTypeBasicJobInputOdataTypeMicrosoftMediaJobInputHTTP
+	OdataTypeBasicJobInputOdataTypeMicrosoftMediaJobInputs        OdataTypeBasicJobInput = original.OdataTypeBasicJobInputOdataTypeMicrosoftMediaJobInputs
+	OdataTypeBasicJobInputOdataTypeMicrosoftMediaJobInputSequence OdataTypeBasicJobInput = original.OdataTypeBasicJobInputOdataTypeMicrosoftMediaJobInputSequence
 )
 
 type OdataTypeBasicJobOutput = original.OdataTypeBasicJobOutput
 
 const (
-	OdataTypeJobOutput                    OdataTypeBasicJobOutput = original.OdataTypeJobOutput
-	OdataTypeMicrosoftMediaJobOutputAsset OdataTypeBasicJobOutput = original.OdataTypeMicrosoftMediaJobOutputAsset
+	OdataTypeBasicJobOutputOdataTypeJobOutput                    OdataTypeBasicJobOutput = original.OdataTypeBasicJobOutputOdataTypeJobOutput
+	OdataTypeBasicJobOutputOdataTypeMicrosoftMediaJobOutputAsset OdataTypeBasicJobOutput = original.OdataTypeBasicJobOutputOdataTypeMicrosoftMediaJobOutputAsset
 )
 
 type OdataTypeBasicLayer = original.OdataTypeBasicLayer
 
 const (
-	OdataTypeLayer                        OdataTypeBasicLayer = original.OdataTypeLayer
-	OdataTypeMicrosoftMediaH264Layer      OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaH264Layer
-	OdataTypeMicrosoftMediaH265Layer      OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaH265Layer
-	OdataTypeMicrosoftMediaH265VideoLayer OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaH265VideoLayer
-	OdataTypeMicrosoftMediaJpgLayer       OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaJpgLayer
-	OdataTypeMicrosoftMediaPngLayer       OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaPngLayer
-	OdataTypeMicrosoftMediaVideoLayer     OdataTypeBasicLayer = original.OdataTypeMicrosoftMediaVideoLayer
+	OdataTypeBasicLayerOdataTypeLayer                        OdataTypeBasicLayer = original.OdataTypeBasicLayerOdataTypeLayer
+	OdataTypeBasicLayerOdataTypeMicrosoftMediaH264Layer      OdataTypeBasicLayer = original.OdataTypeBasicLayerOdataTypeMicrosoftMediaH264Layer
+	OdataTypeBasicLayerOdataTypeMicrosoftMediaH265Layer      OdataTypeBasicLayer = original.OdataTypeBasicLayerOdataTypeMicrosoftMediaH265Layer
+	OdataTypeBasicLayerOdataTypeMicrosoftMediaH265VideoLayer OdataTypeBasicLayer = original.OdataTypeBasicLayerOdataTypeMicrosoftMediaH265VideoLayer
+	OdataTypeBasicLayerOdataTypeMicrosoftMediaJpgLayer       OdataTypeBasicLayer = original.OdataTypeBasicLayerOdataTypeMicrosoftMediaJpgLayer
+	OdataTypeBasicLayerOdataTypeMicrosoftMediaPngLayer       OdataTypeBasicLayer = original.OdataTypeBasicLayerOdataTypeMicrosoftMediaPngLayer
+	OdataTypeBasicLayerOdataTypeMicrosoftMediaVideoLayer     OdataTypeBasicLayer = original.OdataTypeBasicLayerOdataTypeMicrosoftMediaVideoLayer
 )
 
 type OdataTypeBasicOverlay = original.OdataTypeBasicOverlay
 
 const (
-	OdataTypeMicrosoftMediaAudioOverlay OdataTypeBasicOverlay = original.OdataTypeMicrosoftMediaAudioOverlay
-	OdataTypeMicrosoftMediaVideoOverlay OdataTypeBasicOverlay = original.OdataTypeMicrosoftMediaVideoOverlay
-	OdataTypeOverlay                    OdataTypeBasicOverlay = original.OdataTypeOverlay
+	OdataTypeBasicOverlayOdataTypeMicrosoftMediaAudioOverlay OdataTypeBasicOverlay = original.OdataTypeBasicOverlayOdataTypeMicrosoftMediaAudioOverlay
+	OdataTypeBasicOverlayOdataTypeMicrosoftMediaVideoOverlay OdataTypeBasicOverlay = original.OdataTypeBasicOverlayOdataTypeMicrosoftMediaVideoOverlay
+	OdataTypeBasicOverlayOdataTypeOverlay                    OdataTypeBasicOverlay = original.OdataTypeBasicOverlayOdataTypeOverlay
 )
 
 type OdataTypeBasicPreset = original.OdataTypeBasicPreset
 
 const (
-	OdataTypeMicrosoftMediaAudioAnalyzerPreset          OdataTypeBasicPreset = original.OdataTypeMicrosoftMediaAudioAnalyzerPreset
-	OdataTypeMicrosoftMediaBuiltInStandardEncoderPreset OdataTypeBasicPreset = original.OdataTypeMicrosoftMediaBuiltInStandardEncoderPreset
-	OdataTypeMicrosoftMediaFaceDetectorPreset           OdataTypeBasicPreset = original.OdataTypeMicrosoftMediaFaceDetectorPreset
-	OdataTypeMicrosoftMediaStandardEncoderPreset        OdataTypeBasicPreset = original.OdataTypeMicrosoftMediaStandardEncoderPreset
-	OdataTypeMicrosoftMediaVideoAnalyzerPreset          OdataTypeBasicPreset = original.OdataTypeMicrosoftMediaVideoAnalyzerPreset
-	OdataTypePreset                                     OdataTypeBasicPreset = original.OdataTypePreset
+	OdataTypeBasicPresetOdataTypeMicrosoftMediaAudioAnalyzerPreset          OdataTypeBasicPreset = original.OdataTypeBasicPresetOdataTypeMicrosoftMediaAudioAnalyzerPreset
+	OdataTypeBasicPresetOdataTypeMicrosoftMediaBuiltInStandardEncoderPreset OdataTypeBasicPreset = original.OdataTypeBasicPresetOdataTypeMicrosoftMediaBuiltInStandardEncoderPreset
+	OdataTypeBasicPresetOdataTypeMicrosoftMediaFaceDetectorPreset           OdataTypeBasicPreset = original.OdataTypeBasicPresetOdataTypeMicrosoftMediaFaceDetectorPreset
+	OdataTypeBasicPresetOdataTypeMicrosoftMediaStandardEncoderPreset        OdataTypeBasicPreset = original.OdataTypeBasicPresetOdataTypeMicrosoftMediaStandardEncoderPreset
+	OdataTypeBasicPresetOdataTypeMicrosoftMediaVideoAnalyzerPreset          OdataTypeBasicPreset = original.OdataTypeBasicPresetOdataTypeMicrosoftMediaVideoAnalyzerPreset
+	OdataTypeBasicPresetOdataTypePreset                                     OdataTypeBasicPreset = original.OdataTypeBasicPresetOdataTypePreset
 )
 
 type OdataTypeBasicTrackDescriptor = original.OdataTypeBasicTrackDescriptor
 
 const (
-	OdataTypeMicrosoftMediaAudioTrackDescriptor        OdataTypeBasicTrackDescriptor = original.OdataTypeMicrosoftMediaAudioTrackDescriptor
-	OdataTypeMicrosoftMediaSelectAudioTrackByAttribute OdataTypeBasicTrackDescriptor = original.OdataTypeMicrosoftMediaSelectAudioTrackByAttribute
-	OdataTypeMicrosoftMediaSelectAudioTrackByID        OdataTypeBasicTrackDescriptor = original.OdataTypeMicrosoftMediaSelectAudioTrackByID
-	OdataTypeMicrosoftMediaSelectVideoTrackByAttribute OdataTypeBasicTrackDescriptor = original.OdataTypeMicrosoftMediaSelectVideoTrackByAttribute
-	OdataTypeMicrosoftMediaSelectVideoTrackByID        OdataTypeBasicTrackDescriptor = original.OdataTypeMicrosoftMediaSelectVideoTrackByID
-	OdataTypeMicrosoftMediaVideoTrackDescriptor        OdataTypeBasicTrackDescriptor = original.OdataTypeMicrosoftMediaVideoTrackDescriptor
-	OdataTypeTrackDescriptor                           OdataTypeBasicTrackDescriptor = original.OdataTypeTrackDescriptor
+	OdataTypeBasicTrackDescriptorOdataTypeMicrosoftMediaAudioTrackDescriptor        OdataTypeBasicTrackDescriptor = original.OdataTypeBasicTrackDescriptorOdataTypeMicrosoftMediaAudioTrackDescriptor
+	OdataTypeBasicTrackDescriptorOdataTypeMicrosoftMediaSelectAudioTrackByAttribute OdataTypeBasicTrackDescriptor = original.OdataTypeBasicTrackDescriptorOdataTypeMicrosoftMediaSelectAudioTrackByAttribute
+	OdataTypeBasicTrackDescriptorOdataTypeMicrosoftMediaSelectAudioTrackByID        OdataTypeBasicTrackDescriptor = original.OdataTypeBasicTrackDescriptorOdataTypeMicrosoftMediaSelectAudioTrackByID
+	OdataTypeBasicTrackDescriptorOdataTypeMicrosoftMediaSelectVideoTrackByAttribute OdataTypeBasicTrackDescriptor = original.OdataTypeBasicTrackDescriptorOdataTypeMicrosoftMediaSelectVideoTrackByAttribute
+	OdataTypeBasicTrackDescriptorOdataTypeMicrosoftMediaSelectVideoTrackByID        OdataTypeBasicTrackDescriptor = original.OdataTypeBasicTrackDescriptorOdataTypeMicrosoftMediaSelectVideoTrackByID
+	OdataTypeBasicTrackDescriptorOdataTypeMicrosoftMediaVideoTrackDescriptor        OdataTypeBasicTrackDescriptor = original.OdataTypeBasicTrackDescriptorOdataTypeMicrosoftMediaVideoTrackDescriptor
+	OdataTypeBasicTrackDescriptorOdataTypeTrackDescriptor                           OdataTypeBasicTrackDescriptor = original.OdataTypeBasicTrackDescriptorOdataTypeTrackDescriptor
 )
 
 type OnErrorType = original.OnErrorType
 
 const (
-	ContinueJob       OnErrorType = original.ContinueJob
-	StopProcessingJob OnErrorType = original.StopProcessingJob
+	OnErrorTypeContinueJob       OnErrorType = original.OnErrorTypeContinueJob
+	OnErrorTypeStopProcessingJob OnErrorType = original.OnErrorTypeStopProcessingJob
 )
 
 type Priority = original.Priority
@@ -538,9 +551,9 @@ const (
 type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
 
 const (
-	Approved PrivateEndpointServiceConnectionStatus = original.Approved
-	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
-	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusApproved
+	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusPending
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusRejected
 )
 
 type Rotation = original.Rotation
@@ -557,8 +570,8 @@ const (
 type StorageAccountType = original.StorageAccountType
 
 const (
-	Primary   StorageAccountType = original.Primary
-	Secondary StorageAccountType = original.Secondary
+	StorageAccountTypePrimary   StorageAccountType = original.StorageAccountTypePrimary
+	StorageAccountTypeSecondary StorageAccountType = original.StorageAccountTypeSecondary
 )
 
 type StorageAuthentication = original.StorageAuthentication
@@ -571,8 +584,8 @@ const (
 type StreamOptionsFlag = original.StreamOptionsFlag
 
 const (
-	Default    StreamOptionsFlag = original.Default
-	LowLatency StreamOptionsFlag = original.LowLatency
+	StreamOptionsFlagDefault    StreamOptionsFlag = original.StreamOptionsFlagDefault
+	StreamOptionsFlagLowLatency StreamOptionsFlag = original.StreamOptionsFlagLowLatency
 )
 
 type StreamingEndpointResourceState = original.StreamingEndpointResourceState
@@ -614,8 +627,8 @@ const (
 type TrackAttribute = original.TrackAttribute
 
 const (
-	Bitrate  TrackAttribute = original.Bitrate
-	Language TrackAttribute = original.Language
+	TrackAttributeBitrate  TrackAttribute = original.TrackAttributeBitrate
+	TrackAttributeLanguage TrackAttribute = original.TrackAttributeLanguage
 )
 
 type TrackPropertyCompareOperation = original.TrackPropertyCompareOperation
@@ -644,6 +657,7 @@ const (
 type APIError = original.APIError
 type AacAudio = original.AacAudio
 type AbsoluteClipTime = original.AbsoluteClipTime
+type AccessControl = original.AccessControl
 type AccountEncryption = original.AccountEncryption
 type AccountFilter = original.AccountFilter
 type AccountFilterCollection = original.AccountFilterCollection
@@ -785,6 +799,7 @@ type JobsClient = original.JobsClient
 type JpgFormat = original.JpgFormat
 type JpgImage = original.JpgImage
 type JpgLayer = original.JpgLayer
+type KeyDelivery = original.KeyDelivery
 type KeyVaultProperties = original.KeyVaultProperties
 type Layer = original.Layer
 type ListContainerSasInput = original.ListContainerSasInput
@@ -872,6 +887,7 @@ type ServiceCollectionPage = original.ServiceCollectionPage
 type ServiceIdentity = original.ServiceIdentity
 type ServiceProperties = original.ServiceProperties
 type ServiceSpecification = original.ServiceSpecification
+type ServiceUpdate = original.ServiceUpdate
 type StandardEncoderPreset = original.StandardEncoderPreset
 type StorageAccount = original.StorageAccount
 type StorageEncryptedAssetDecryptionData = original.StorageEncryptedAssetDecryptionData
@@ -1115,6 +1131,9 @@ func PossibleAacAudioProfileValues() []AacAudioProfile {
 func PossibleAccountEncryptionKeyTypeValues() []AccountEncryptionKeyType {
 	return original.PossibleAccountEncryptionKeyTypeValues()
 }
+func PossibleActionTypeValues() []ActionType {
+	return original.PossibleActionTypeValues()
+}
 func PossibleAnalysisResolutionValues() []AnalysisResolution {
 	return original.PossibleAnalysisResolutionValues()
 }
@@ -1153,6 +1172,9 @@ func PossibleContentKeyPolicyRestrictionTokenTypeValues() []ContentKeyPolicyRest
 }
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
+}
+func PossibleDefaultActionValues() []DefaultAction {
+	return original.PossibleDefaultActionValues()
 }
 func PossibleDeinterlaceModeValues() []DeinterlaceMode {
 	return original.PossibleDeinterlaceModeValues()

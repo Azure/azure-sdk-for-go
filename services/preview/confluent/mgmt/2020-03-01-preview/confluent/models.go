@@ -233,6 +233,12 @@ type ErrorResponseBody struct {
 	Details *[]ErrorResponseBody `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorResponseBody.
+func (erb ErrorResponseBody) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OfferDetail confluent Offer detail
 type OfferDetail struct {
 	// PublisherID - Publisher Id
@@ -876,6 +882,12 @@ func (oru OrganizationResourceUpdate) MarshalJSON() ([]byte, error) {
 type ResourceProviderDefaultErrorResponse struct {
 	// Error - READ-ONLY; Response body of Error
 	Error *ErrorResponseBody `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceProviderDefaultErrorResponse.
+func (rpder ResourceProviderDefaultErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UserDetail subscriber detail

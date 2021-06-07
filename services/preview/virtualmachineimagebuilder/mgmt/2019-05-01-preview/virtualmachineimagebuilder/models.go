@@ -467,6 +467,12 @@ type ImageTemplateIdentityUserAssignedIdentitiesValue struct {
 	ClientID *string `json:"clientId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImageTemplateIdentityUserAssignedIdentitiesValue.
+func (itiAiv ImageTemplateIdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImageTemplateIsoSource describes an image source that is an installation ISO. Currently only supports
 // Red Hat Enterprise Linux 7.2-7.5 ISO's.
 type ImageTemplateIsoSource struct {

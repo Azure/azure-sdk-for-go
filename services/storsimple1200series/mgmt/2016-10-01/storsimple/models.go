@@ -1424,6 +1424,12 @@ type BaseModel struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for BaseModel.
+func (bm BaseModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ChapProperties chap properties
 type ChapProperties struct {
 	// Password - The chap password.

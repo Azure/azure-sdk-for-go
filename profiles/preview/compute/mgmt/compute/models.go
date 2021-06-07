@@ -21,25 +21,25 @@ const (
 type AccessLevel = original.AccessLevel
 
 const (
-	None  AccessLevel = original.None
-	Read  AccessLevel = original.Read
-	Write AccessLevel = original.Write
+	AccessLevelNone  AccessLevel = original.AccessLevelNone
+	AccessLevelRead  AccessLevel = original.AccessLevelRead
+	AccessLevelWrite AccessLevel = original.AccessLevelWrite
 )
 
 type AggregatedReplicationState = original.AggregatedReplicationState
 
 const (
-	Completed  AggregatedReplicationState = original.Completed
-	Failed     AggregatedReplicationState = original.Failed
-	InProgress AggregatedReplicationState = original.InProgress
-	Unknown    AggregatedReplicationState = original.Unknown
+	AggregatedReplicationStateCompleted  AggregatedReplicationState = original.AggregatedReplicationStateCompleted
+	AggregatedReplicationStateFailed     AggregatedReplicationState = original.AggregatedReplicationStateFailed
+	AggregatedReplicationStateInProgress AggregatedReplicationState = original.AggregatedReplicationStateInProgress
+	AggregatedReplicationStateUnknown    AggregatedReplicationState = original.AggregatedReplicationStateUnknown
 )
 
 type AvailabilitySetSkuTypes = original.AvailabilitySetSkuTypes
 
 const (
-	Aligned AvailabilitySetSkuTypes = original.Aligned
-	Classic AvailabilitySetSkuTypes = original.Classic
+	AvailabilitySetSkuTypesAligned AvailabilitySetSkuTypes = original.AvailabilitySetSkuTypesAligned
+	AvailabilitySetSkuTypesClassic AvailabilitySetSkuTypes = original.AvailabilitySetSkuTypesClassic
 )
 
 type CachingTypes = original.CachingTypes
@@ -53,15 +53,23 @@ const (
 type CloudServiceUpgradeMode = original.CloudServiceUpgradeMode
 
 const (
-	Auto         CloudServiceUpgradeMode = original.Auto
-	Manual       CloudServiceUpgradeMode = original.Manual
-	Simultaneous CloudServiceUpgradeMode = original.Simultaneous
+	CloudServiceUpgradeModeAuto         CloudServiceUpgradeMode = original.CloudServiceUpgradeModeAuto
+	CloudServiceUpgradeModeManual       CloudServiceUpgradeMode = original.CloudServiceUpgradeModeManual
+	CloudServiceUpgradeModeSimultaneous CloudServiceUpgradeMode = original.CloudServiceUpgradeModeSimultaneous
 )
 
 type ComponentNames = original.ComponentNames
 
 const (
-	MicrosoftWindowsShellSetup ComponentNames = original.MicrosoftWindowsShellSetup
+	ComponentNamesMicrosoftWindowsShellSetup ComponentNames = original.ComponentNamesMicrosoftWindowsShellSetup
+)
+
+type ConsistencyModeTypes = original.ConsistencyModeTypes
+
+const (
+	ConsistencyModeTypesApplicationConsistent ConsistencyModeTypes = original.ConsistencyModeTypesApplicationConsistent
+	ConsistencyModeTypesCrashConsistent       ConsistencyModeTypes = original.ConsistencyModeTypesCrashConsistent
+	ConsistencyModeTypesFileSystemConsistent  ConsistencyModeTypes = original.ConsistencyModeTypesFileSystemConsistent
 )
 
 type DedicatedHostLicenseTypes = original.DedicatedHostLicenseTypes
@@ -72,29 +80,36 @@ const (
 	DedicatedHostLicenseTypesWindowsServerPerpetual DedicatedHostLicenseTypes = original.DedicatedHostLicenseTypesWindowsServerPerpetual
 )
 
+type DeleteOptions = original.DeleteOptions
+
+const (
+	DeleteOptionsDelete DeleteOptions = original.DeleteOptionsDelete
+	DeleteOptionsDetach DeleteOptions = original.DeleteOptionsDetach
+)
+
 type DiffDiskOptions = original.DiffDiskOptions
 
 const (
-	Local DiffDiskOptions = original.Local
+	DiffDiskOptionsLocal DiffDiskOptions = original.DiffDiskOptionsLocal
 )
 
 type DiffDiskPlacement = original.DiffDiskPlacement
 
 const (
-	CacheDisk    DiffDiskPlacement = original.CacheDisk
-	ResourceDisk DiffDiskPlacement = original.ResourceDisk
+	DiffDiskPlacementCacheDisk    DiffDiskPlacement = original.DiffDiskPlacementCacheDisk
+	DiffDiskPlacementResourceDisk DiffDiskPlacement = original.DiffDiskPlacementResourceDisk
 )
 
 type DiskCreateOption = original.DiskCreateOption
 
 const (
-	Attach    DiskCreateOption = original.Attach
-	Copy      DiskCreateOption = original.Copy
-	Empty     DiskCreateOption = original.Empty
-	FromImage DiskCreateOption = original.FromImage
-	Import    DiskCreateOption = original.Import
-	Restore   DiskCreateOption = original.Restore
-	Upload    DiskCreateOption = original.Upload
+	DiskCreateOptionAttach    DiskCreateOption = original.DiskCreateOptionAttach
+	DiskCreateOptionCopy      DiskCreateOption = original.DiskCreateOptionCopy
+	DiskCreateOptionEmpty     DiskCreateOption = original.DiskCreateOptionEmpty
+	DiskCreateOptionFromImage DiskCreateOption = original.DiskCreateOptionFromImage
+	DiskCreateOptionImport    DiskCreateOption = original.DiskCreateOptionImport
+	DiskCreateOptionRestore   DiskCreateOption = original.DiskCreateOptionRestore
+	DiskCreateOptionUpload    DiskCreateOption = original.DiskCreateOptionUpload
 )
 
 type DiskCreateOptionTypes = original.DiskCreateOptionTypes
@@ -105,10 +120,17 @@ const (
 	DiskCreateOptionTypesFromImage DiskCreateOptionTypes = original.DiskCreateOptionTypesFromImage
 )
 
+type DiskDeleteOptionTypes = original.DiskDeleteOptionTypes
+
+const (
+	DiskDeleteOptionTypesDelete DiskDeleteOptionTypes = original.DiskDeleteOptionTypesDelete
+	DiskDeleteOptionTypesDetach DiskDeleteOptionTypes = original.DiskDeleteOptionTypesDetach
+)
+
 type DiskDetachOptionTypes = original.DiskDetachOptionTypes
 
 const (
-	ForceDetach DiskDetachOptionTypes = original.ForceDetach
+	DiskDetachOptionTypesForceDetach DiskDetachOptionTypes = original.DiskDetachOptionTypesForceDetach
 )
 
 type DiskEncryptionSetIdentityType = original.DiskEncryptionSetIdentityType
@@ -121,36 +143,36 @@ const (
 type DiskEncryptionSetType = original.DiskEncryptionSetType
 
 const (
-	EncryptionAtRestWithCustomerKey             DiskEncryptionSetType = original.EncryptionAtRestWithCustomerKey
-	EncryptionAtRestWithPlatformAndCustomerKeys DiskEncryptionSetType = original.EncryptionAtRestWithPlatformAndCustomerKeys
+	DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey             DiskEncryptionSetType = original.DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey
+	DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys DiskEncryptionSetType = original.DiskEncryptionSetTypeEncryptionAtRestWithPlatformAndCustomerKeys
 )
 
 type DiskSecurityTypes = original.DiskSecurityTypes
 
 const (
-	TrustedLaunch DiskSecurityTypes = original.TrustedLaunch
+	DiskSecurityTypesTrustedLaunch DiskSecurityTypes = original.DiskSecurityTypesTrustedLaunch
 )
 
 type DiskState = original.DiskState
 
 const (
-	ActiveSAS     DiskState = original.ActiveSAS
-	ActiveUpload  DiskState = original.ActiveUpload
-	Attached      DiskState = original.Attached
-	ReadyToUpload DiskState = original.ReadyToUpload
-	Reserved      DiskState = original.Reserved
-	Unattached    DiskState = original.Unattached
+	DiskStateActiveSAS     DiskState = original.DiskStateActiveSAS
+	DiskStateActiveUpload  DiskState = original.DiskStateActiveUpload
+	DiskStateAttached      DiskState = original.DiskStateAttached
+	DiskStateReadyToUpload DiskState = original.DiskStateReadyToUpload
+	DiskStateReserved      DiskState = original.DiskStateReserved
+	DiskStateUnattached    DiskState = original.DiskStateUnattached
 )
 
 type DiskStorageAccountTypes = original.DiskStorageAccountTypes
 
 const (
-	PremiumLRS     DiskStorageAccountTypes = original.PremiumLRS
-	PremiumZRS     DiskStorageAccountTypes = original.PremiumZRS
-	StandardLRS    DiskStorageAccountTypes = original.StandardLRS
-	StandardSSDLRS DiskStorageAccountTypes = original.StandardSSDLRS
-	StandardSSDZRS DiskStorageAccountTypes = original.StandardSSDZRS
-	UltraSSDLRS    DiskStorageAccountTypes = original.UltraSSDLRS
+	DiskStorageAccountTypesPremiumLRS     DiskStorageAccountTypes = original.DiskStorageAccountTypesPremiumLRS
+	DiskStorageAccountTypesPremiumZRS     DiskStorageAccountTypes = original.DiskStorageAccountTypesPremiumZRS
+	DiskStorageAccountTypesStandardLRS    DiskStorageAccountTypes = original.DiskStorageAccountTypesStandardLRS
+	DiskStorageAccountTypesStandardSSDLRS DiskStorageAccountTypes = original.DiskStorageAccountTypesStandardSSDLRS
+	DiskStorageAccountTypesStandardSSDZRS DiskStorageAccountTypes = original.DiskStorageAccountTypesStandardSSDZRS
+	DiskStorageAccountTypesUltraSSDLRS    DiskStorageAccountTypes = original.DiskStorageAccountTypesUltraSSDLRS
 )
 
 type EncryptionType = original.EncryptionType
@@ -173,10 +195,23 @@ const (
 	ExecutionStateUnknown   ExecutionState = original.ExecutionStateUnknown
 )
 
+type ExpandTypesForGetVMScaleSets = original.ExpandTypesForGetVMScaleSets
+
+const (
+	ExpandTypesForGetVMScaleSetsUserData ExpandTypesForGetVMScaleSets = original.ExpandTypesForGetVMScaleSetsUserData
+)
+
 type ExtendedLocationTypes = original.ExtendedLocationTypes
 
 const (
-	EdgeZone ExtendedLocationTypes = original.EdgeZone
+	ExtendedLocationTypesEdgeZone ExtendedLocationTypes = original.ExtendedLocationTypesEdgeZone
+)
+
+type GallerySharingPermissionTypes = original.GallerySharingPermissionTypes
+
+const (
+	GallerySharingPermissionTypesGroups  GallerySharingPermissionTypes = original.GallerySharingPermissionTypesGroups
+	GallerySharingPermissionTypesPrivate GallerySharingPermissionTypes = original.GallerySharingPermissionTypesPrivate
 )
 
 type HostCaching = original.HostCaching
@@ -190,8 +225,8 @@ const (
 type HyperVGeneration = original.HyperVGeneration
 
 const (
-	V1 HyperVGeneration = original.V1
-	V2 HyperVGeneration = original.V2
+	HyperVGenerationV1 HyperVGeneration = original.HyperVGenerationV1
+	HyperVGenerationV2 HyperVGeneration = original.HyperVGenerationV2
 )
 
 type HyperVGenerationType = original.HyperVGenerationType
@@ -211,30 +246,45 @@ const (
 type IPVersion = original.IPVersion
 
 const (
-	IPv4 IPVersion = original.IPv4
-	IPv6 IPVersion = original.IPv6
+	IPVersionIPv4 IPVersion = original.IPVersionIPv4
+	IPVersionIPv6 IPVersion = original.IPVersionIPv6
+)
+
+type IPVersions = original.IPVersions
+
+const (
+	IPVersionsIPv4 IPVersions = original.IPVersionsIPv4
+	IPVersionsIPv6 IPVersions = original.IPVersionsIPv6
 )
 
 type InstanceViewTypes = original.InstanceViewTypes
 
 const (
-	InstanceView InstanceViewTypes = original.InstanceView
+	InstanceViewTypesInstanceView InstanceViewTypes = original.InstanceViewTypesInstanceView
+	InstanceViewTypesUserData     InstanceViewTypes = original.InstanceViewTypesUserData
 )
 
 type IntervalInMins = original.IntervalInMins
 
 const (
-	FiveMins   IntervalInMins = original.FiveMins
-	SixtyMins  IntervalInMins = original.SixtyMins
-	ThirtyMins IntervalInMins = original.ThirtyMins
-	ThreeMins  IntervalInMins = original.ThreeMins
+	IntervalInMinsFiveMins   IntervalInMins = original.IntervalInMinsFiveMins
+	IntervalInMinsSixtyMins  IntervalInMins = original.IntervalInMinsSixtyMins
+	IntervalInMinsThirtyMins IntervalInMins = original.IntervalInMinsThirtyMins
+	IntervalInMinsThreeMins  IntervalInMins = original.IntervalInMinsThreeMins
+)
+
+type LinuxPatchAssessmentMode = original.LinuxPatchAssessmentMode
+
+const (
+	LinuxPatchAssessmentModeAutomaticByPlatform LinuxPatchAssessmentMode = original.LinuxPatchAssessmentModeAutomaticByPlatform
+	LinuxPatchAssessmentModeImageDefault        LinuxPatchAssessmentMode = original.LinuxPatchAssessmentModeImageDefault
 )
 
 type LinuxVMGuestPatchMode = original.LinuxVMGuestPatchMode
 
 const (
-	AutomaticByPlatform LinuxVMGuestPatchMode = original.AutomaticByPlatform
-	ImageDefault        LinuxVMGuestPatchMode = original.ImageDefault
+	LinuxVMGuestPatchModeAutomaticByPlatform LinuxVMGuestPatchMode = original.LinuxVMGuestPatchModeAutomaticByPlatform
+	LinuxVMGuestPatchModeImageDefault        LinuxVMGuestPatchMode = original.LinuxVMGuestPatchModeImageDefault
 )
 
 type MaintenanceOperationResultCodeTypes = original.MaintenanceOperationResultCodeTypes
@@ -246,60 +296,73 @@ const (
 	MaintenanceOperationResultCodeTypesRetryLater           MaintenanceOperationResultCodeTypes = original.MaintenanceOperationResultCodeTypesRetryLater
 )
 
+type NetworkAPIVersion = original.NetworkAPIVersion
+
+const (
+	NetworkAPIVersionTwoZeroTwoZeroHyphenMinusOneOneHyphenMinusZeroOne NetworkAPIVersion = original.NetworkAPIVersionTwoZeroTwoZeroHyphenMinusOneOneHyphenMinusZeroOne
+)
+
 type NetworkAccessPolicy = original.NetworkAccessPolicy
 
 const (
-	AllowAll     NetworkAccessPolicy = original.AllowAll
-	AllowPrivate NetworkAccessPolicy = original.AllowPrivate
-	DenyAll      NetworkAccessPolicy = original.DenyAll
+	NetworkAccessPolicyAllowAll     NetworkAccessPolicy = original.NetworkAccessPolicyAllowAll
+	NetworkAccessPolicyAllowPrivate NetworkAccessPolicy = original.NetworkAccessPolicyAllowPrivate
+	NetworkAccessPolicyDenyAll      NetworkAccessPolicy = original.NetworkAccessPolicyDenyAll
 )
 
 type OperatingSystemStateTypes = original.OperatingSystemStateTypes
 
 const (
-	Generalized OperatingSystemStateTypes = original.Generalized
-	Specialized OperatingSystemStateTypes = original.Specialized
+	OperatingSystemStateTypesGeneralized OperatingSystemStateTypes = original.OperatingSystemStateTypesGeneralized
+	OperatingSystemStateTypesSpecialized OperatingSystemStateTypes = original.OperatingSystemStateTypesSpecialized
+)
+
+type OperatingSystemType = original.OperatingSystemType
+
+const (
+	OperatingSystemTypeLinux   OperatingSystemType = original.OperatingSystemTypeLinux
+	OperatingSystemTypeWindows OperatingSystemType = original.OperatingSystemTypeWindows
 )
 
 type OperatingSystemTypes = original.OperatingSystemTypes
 
 const (
-	Linux   OperatingSystemTypes = original.Linux
-	Windows OperatingSystemTypes = original.Windows
+	OperatingSystemTypesLinux   OperatingSystemTypes = original.OperatingSystemTypesLinux
+	OperatingSystemTypesWindows OperatingSystemTypes = original.OperatingSystemTypesWindows
 )
 
 type OrchestrationMode = original.OrchestrationMode
 
 const (
-	Flexible OrchestrationMode = original.Flexible
-	Uniform  OrchestrationMode = original.Uniform
+	OrchestrationModeFlexible OrchestrationMode = original.OrchestrationModeFlexible
+	OrchestrationModeUniform  OrchestrationMode = original.OrchestrationModeUniform
 )
 
 type OrchestrationServiceNames = original.OrchestrationServiceNames
 
 const (
-	AutomaticRepairs OrchestrationServiceNames = original.AutomaticRepairs
+	OrchestrationServiceNamesAutomaticRepairs OrchestrationServiceNames = original.OrchestrationServiceNamesAutomaticRepairs
 )
 
 type OrchestrationServiceState = original.OrchestrationServiceState
 
 const (
-	NotRunning OrchestrationServiceState = original.NotRunning
-	Running    OrchestrationServiceState = original.Running
-	Suspended  OrchestrationServiceState = original.Suspended
+	OrchestrationServiceStateNotRunning OrchestrationServiceState = original.OrchestrationServiceStateNotRunning
+	OrchestrationServiceStateRunning    OrchestrationServiceState = original.OrchestrationServiceStateRunning
+	OrchestrationServiceStateSuspended  OrchestrationServiceState = original.OrchestrationServiceStateSuspended
 )
 
 type OrchestrationServiceStateAction = original.OrchestrationServiceStateAction
 
 const (
-	Resume  OrchestrationServiceStateAction = original.Resume
-	Suspend OrchestrationServiceStateAction = original.Suspend
+	OrchestrationServiceStateActionResume  OrchestrationServiceStateAction = original.OrchestrationServiceStateActionResume
+	OrchestrationServiceStateActionSuspend OrchestrationServiceStateAction = original.OrchestrationServiceStateActionSuspend
 )
 
 type PassNames = original.PassNames
 
 const (
-	OobeSystem PassNames = original.OobeSystem
+	PassNamesOobeSystem PassNames = original.PassNamesOobeSystem
 )
 
 type PatchAssessmentState = original.PatchAssessmentState
@@ -342,16 +405,16 @@ const (
 type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
 
 const (
-	Approved PrivateEndpointServiceConnectionStatus = original.Approved
-	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
-	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusApproved
+	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusPending
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusRejected
 )
 
 type ProtocolTypes = original.ProtocolTypes
 
 const (
-	HTTP  ProtocolTypes = original.HTTP
-	HTTPS ProtocolTypes = original.HTTPS
+	ProtocolTypesHTTP  ProtocolTypes = original.ProtocolTypesHTTP
+	ProtocolTypesHTTPS ProtocolTypes = original.ProtocolTypesHTTPS
 )
 
 type ProvisioningState = original.ProvisioningState
@@ -401,8 +464,29 @@ const (
 type ProximityPlacementGroupType = original.ProximityPlacementGroupType
 
 const (
-	Standard ProximityPlacementGroupType = original.Standard
-	Ultra    ProximityPlacementGroupType = original.Ultra
+	ProximityPlacementGroupTypeStandard ProximityPlacementGroupType = original.ProximityPlacementGroupTypeStandard
+	ProximityPlacementGroupTypeUltra    ProximityPlacementGroupType = original.ProximityPlacementGroupTypeUltra
+)
+
+type PublicIPAddressSkuName = original.PublicIPAddressSkuName
+
+const (
+	PublicIPAddressSkuNameBasic    PublicIPAddressSkuName = original.PublicIPAddressSkuNameBasic
+	PublicIPAddressSkuNameStandard PublicIPAddressSkuName = original.PublicIPAddressSkuNameStandard
+)
+
+type PublicIPAddressSkuTier = original.PublicIPAddressSkuTier
+
+const (
+	PublicIPAddressSkuTierGlobal   PublicIPAddressSkuTier = original.PublicIPAddressSkuTierGlobal
+	PublicIPAddressSkuTierRegional PublicIPAddressSkuTier = original.PublicIPAddressSkuTierRegional
+)
+
+type PublicIPAllocationMethod = original.PublicIPAllocationMethod
+
+const (
+	PublicIPAllocationMethodDynamic PublicIPAllocationMethod = original.PublicIPAllocationMethodDynamic
+	PublicIPAllocationMethodStatic  PublicIPAllocationMethod = original.PublicIPAllocationMethodStatic
 )
 
 type ReplicationState = original.ReplicationState
@@ -440,22 +524,28 @@ const (
 type ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCode
 
 const (
-	NotAvailableForSubscription ResourceSkuRestrictionsReasonCode = original.NotAvailableForSubscription
-	QuotaID                     ResourceSkuRestrictionsReasonCode = original.QuotaID
+	ResourceSkuRestrictionsReasonCodeNotAvailableForSubscription ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCodeNotAvailableForSubscription
+	ResourceSkuRestrictionsReasonCodeQuotaID                     ResourceSkuRestrictionsReasonCode = original.ResourceSkuRestrictionsReasonCodeQuotaID
 )
 
 type ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsType
 
 const (
-	Location ResourceSkuRestrictionsType = original.Location
-	Zone     ResourceSkuRestrictionsType = original.Zone
+	ResourceSkuRestrictionsTypeLocation ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsTypeLocation
+	ResourceSkuRestrictionsTypeZone     ResourceSkuRestrictionsType = original.ResourceSkuRestrictionsTypeZone
+)
+
+type RestorePointCollectionExpandOptions = original.RestorePointCollectionExpandOptions
+
+const (
+	RestorePointCollectionExpandOptionsRestorePoints RestorePointCollectionExpandOptions = original.RestorePointCollectionExpandOptionsRestorePoints
 )
 
 type RollingUpgradeActionType = original.RollingUpgradeActionType
 
 const (
-	Cancel RollingUpgradeActionType = original.Cancel
-	Start  RollingUpgradeActionType = original.Start
+	RollingUpgradeActionTypeCancel RollingUpgradeActionType = original.RollingUpgradeActionTypeCancel
+	RollingUpgradeActionTypeStart  RollingUpgradeActionType = original.RollingUpgradeActionTypeStart
 )
 
 type RollingUpgradeStatusCode = original.RollingUpgradeStatusCode
@@ -473,11 +563,38 @@ const (
 	SecurityTypesTrustedLaunch SecurityTypes = original.SecurityTypesTrustedLaunch
 )
 
+type SelectPermissions = original.SelectPermissions
+
+const (
+	SelectPermissionsPermissions SelectPermissions = original.SelectPermissionsPermissions
+)
+
 type SettingNames = original.SettingNames
 
 const (
-	AutoLogon          SettingNames = original.AutoLogon
-	FirstLogonCommands SettingNames = original.FirstLogonCommands
+	SettingNamesAutoLogon          SettingNames = original.SettingNamesAutoLogon
+	SettingNamesFirstLogonCommands SettingNames = original.SettingNamesFirstLogonCommands
+)
+
+type SharedToValues = original.SharedToValues
+
+const (
+	SharedToValuesTenant SharedToValues = original.SharedToValuesTenant
+)
+
+type SharingProfileGroupTypes = original.SharingProfileGroupTypes
+
+const (
+	SharingProfileGroupTypesAADTenants    SharingProfileGroupTypes = original.SharingProfileGroupTypesAADTenants
+	SharingProfileGroupTypesSubscriptions SharingProfileGroupTypes = original.SharingProfileGroupTypesSubscriptions
+)
+
+type SharingUpdateOperationTypes = original.SharingUpdateOperationTypes
+
+const (
+	SharingUpdateOperationTypesAdd    SharingUpdateOperationTypes = original.SharingUpdateOperationTypesAdd
+	SharingUpdateOperationTypesRemove SharingUpdateOperationTypes = original.SharingUpdateOperationTypesRemove
+	SharingUpdateOperationTypesReset  SharingUpdateOperationTypes = original.SharingUpdateOperationTypesReset
 )
 
 type SnapshotStorageAccountTypes = original.SnapshotStorageAccountTypes
@@ -491,9 +608,9 @@ const (
 type StatusLevelTypes = original.StatusLevelTypes
 
 const (
-	Error   StatusLevelTypes = original.Error
-	Info    StatusLevelTypes = original.Info
-	Warning StatusLevelTypes = original.Warning
+	StatusLevelTypesError   StatusLevelTypes = original.StatusLevelTypesError
+	StatusLevelTypesInfo    StatusLevelTypes = original.StatusLevelTypesInfo
+	StatusLevelTypesWarning StatusLevelTypes = original.StatusLevelTypesWarning
 )
 
 type StorageAccountType = original.StorageAccountType
@@ -550,9 +667,9 @@ const (
 type VMGuestPatchClassificationLinux = original.VMGuestPatchClassificationLinux
 
 const (
-	Critical VMGuestPatchClassificationLinux = original.Critical
-	Other    VMGuestPatchClassificationLinux = original.Other
-	Security VMGuestPatchClassificationLinux = original.Security
+	VMGuestPatchClassificationLinuxCritical VMGuestPatchClassificationLinux = original.VMGuestPatchClassificationLinuxCritical
+	VMGuestPatchClassificationLinuxOther    VMGuestPatchClassificationLinux = original.VMGuestPatchClassificationLinuxOther
+	VMGuestPatchClassificationLinuxSecurity VMGuestPatchClassificationLinux = original.VMGuestPatchClassificationLinuxSecurity
 )
 
 type VMGuestPatchClassificationWindows = original.VMGuestPatchClassificationWindows
@@ -580,9 +697,9 @@ const (
 type VMGuestPatchRebootSetting = original.VMGuestPatchRebootSetting
 
 const (
-	Always     VMGuestPatchRebootSetting = original.Always
-	IfRequired VMGuestPatchRebootSetting = original.IfRequired
-	Never      VMGuestPatchRebootSetting = original.Never
+	VMGuestPatchRebootSettingAlways     VMGuestPatchRebootSetting = original.VMGuestPatchRebootSettingAlways
+	VMGuestPatchRebootSettingIfRequired VMGuestPatchRebootSetting = original.VMGuestPatchRebootSettingIfRequired
+	VMGuestPatchRebootSettingNever      VMGuestPatchRebootSetting = original.VMGuestPatchRebootSettingNever
 )
 
 type VMGuestPatchRebootStatus = original.VMGuestPatchRebootStatus
@@ -599,24 +716,24 @@ const (
 type VirtualMachineEvictionPolicyTypes = original.VirtualMachineEvictionPolicyTypes
 
 const (
-	Deallocate VirtualMachineEvictionPolicyTypes = original.Deallocate
-	Delete     VirtualMachineEvictionPolicyTypes = original.Delete
+	VirtualMachineEvictionPolicyTypesDeallocate VirtualMachineEvictionPolicyTypes = original.VirtualMachineEvictionPolicyTypesDeallocate
+	VirtualMachineEvictionPolicyTypesDelete     VirtualMachineEvictionPolicyTypes = original.VirtualMachineEvictionPolicyTypesDelete
 )
 
 type VirtualMachinePriorityTypes = original.VirtualMachinePriorityTypes
 
 const (
-	Low     VirtualMachinePriorityTypes = original.Low
-	Regular VirtualMachinePriorityTypes = original.Regular
-	Spot    VirtualMachinePriorityTypes = original.Spot
+	VirtualMachinePriorityTypesLow     VirtualMachinePriorityTypes = original.VirtualMachinePriorityTypesLow
+	VirtualMachinePriorityTypesRegular VirtualMachinePriorityTypes = original.VirtualMachinePriorityTypesRegular
+	VirtualMachinePriorityTypesSpot    VirtualMachinePriorityTypes = original.VirtualMachinePriorityTypesSpot
 )
 
 type VirtualMachineScaleSetScaleInRules = original.VirtualMachineScaleSetScaleInRules
 
 const (
-	Default  VirtualMachineScaleSetScaleInRules = original.Default
-	NewestVM VirtualMachineScaleSetScaleInRules = original.NewestVM
-	OldestVM VirtualMachineScaleSetScaleInRules = original.OldestVM
+	VirtualMachineScaleSetScaleInRulesDefault  VirtualMachineScaleSetScaleInRules = original.VirtualMachineScaleSetScaleInRulesDefault
+	VirtualMachineScaleSetScaleInRulesNewestVM VirtualMachineScaleSetScaleInRules = original.VirtualMachineScaleSetScaleInRulesNewestVM
+	VirtualMachineScaleSetScaleInRulesOldestVM VirtualMachineScaleSetScaleInRules = original.VirtualMachineScaleSetScaleInRulesOldestVM
 )
 
 type VirtualMachineScaleSetSkuScaleType = original.VirtualMachineScaleSetSkuScaleType
@@ -629,172 +746,179 @@ const (
 type VirtualMachineSizeTypes = original.VirtualMachineSizeTypes
 
 const (
-	BasicA0          VirtualMachineSizeTypes = original.BasicA0
-	BasicA1          VirtualMachineSizeTypes = original.BasicA1
-	BasicA2          VirtualMachineSizeTypes = original.BasicA2
-	BasicA3          VirtualMachineSizeTypes = original.BasicA3
-	BasicA4          VirtualMachineSizeTypes = original.BasicA4
-	StandardA0       VirtualMachineSizeTypes = original.StandardA0
-	StandardA1       VirtualMachineSizeTypes = original.StandardA1
-	StandardA10      VirtualMachineSizeTypes = original.StandardA10
-	StandardA11      VirtualMachineSizeTypes = original.StandardA11
-	StandardA1V2     VirtualMachineSizeTypes = original.StandardA1V2
-	StandardA2       VirtualMachineSizeTypes = original.StandardA2
-	StandardA2mV2    VirtualMachineSizeTypes = original.StandardA2mV2
-	StandardA2V2     VirtualMachineSizeTypes = original.StandardA2V2
-	StandardA3       VirtualMachineSizeTypes = original.StandardA3
-	StandardA4       VirtualMachineSizeTypes = original.StandardA4
-	StandardA4mV2    VirtualMachineSizeTypes = original.StandardA4mV2
-	StandardA4V2     VirtualMachineSizeTypes = original.StandardA4V2
-	StandardA5       VirtualMachineSizeTypes = original.StandardA5
-	StandardA6       VirtualMachineSizeTypes = original.StandardA6
-	StandardA7       VirtualMachineSizeTypes = original.StandardA7
-	StandardA8       VirtualMachineSizeTypes = original.StandardA8
-	StandardA8mV2    VirtualMachineSizeTypes = original.StandardA8mV2
-	StandardA8V2     VirtualMachineSizeTypes = original.StandardA8V2
-	StandardA9       VirtualMachineSizeTypes = original.StandardA9
-	StandardB1ms     VirtualMachineSizeTypes = original.StandardB1ms
-	StandardB1s      VirtualMachineSizeTypes = original.StandardB1s
-	StandardB2ms     VirtualMachineSizeTypes = original.StandardB2ms
-	StandardB2s      VirtualMachineSizeTypes = original.StandardB2s
-	StandardB4ms     VirtualMachineSizeTypes = original.StandardB4ms
-	StandardB8ms     VirtualMachineSizeTypes = original.StandardB8ms
-	StandardD1       VirtualMachineSizeTypes = original.StandardD1
-	StandardD11      VirtualMachineSizeTypes = original.StandardD11
-	StandardD11V2    VirtualMachineSizeTypes = original.StandardD11V2
-	StandardD12      VirtualMachineSizeTypes = original.StandardD12
-	StandardD12V2    VirtualMachineSizeTypes = original.StandardD12V2
-	StandardD13      VirtualMachineSizeTypes = original.StandardD13
-	StandardD13V2    VirtualMachineSizeTypes = original.StandardD13V2
-	StandardD14      VirtualMachineSizeTypes = original.StandardD14
-	StandardD14V2    VirtualMachineSizeTypes = original.StandardD14V2
-	StandardD15V2    VirtualMachineSizeTypes = original.StandardD15V2
-	StandardD16sV3   VirtualMachineSizeTypes = original.StandardD16sV3
-	StandardD16V3    VirtualMachineSizeTypes = original.StandardD16V3
-	StandardD1V2     VirtualMachineSizeTypes = original.StandardD1V2
-	StandardD2       VirtualMachineSizeTypes = original.StandardD2
-	StandardD2sV3    VirtualMachineSizeTypes = original.StandardD2sV3
-	StandardD2V2     VirtualMachineSizeTypes = original.StandardD2V2
-	StandardD2V3     VirtualMachineSizeTypes = original.StandardD2V3
-	StandardD3       VirtualMachineSizeTypes = original.StandardD3
-	StandardD32sV3   VirtualMachineSizeTypes = original.StandardD32sV3
-	StandardD32V3    VirtualMachineSizeTypes = original.StandardD32V3
-	StandardD3V2     VirtualMachineSizeTypes = original.StandardD3V2
-	StandardD4       VirtualMachineSizeTypes = original.StandardD4
-	StandardD4sV3    VirtualMachineSizeTypes = original.StandardD4sV3
-	StandardD4V2     VirtualMachineSizeTypes = original.StandardD4V2
-	StandardD4V3     VirtualMachineSizeTypes = original.StandardD4V3
-	StandardD5V2     VirtualMachineSizeTypes = original.StandardD5V2
-	StandardD64sV3   VirtualMachineSizeTypes = original.StandardD64sV3
-	StandardD64V3    VirtualMachineSizeTypes = original.StandardD64V3
-	StandardD8sV3    VirtualMachineSizeTypes = original.StandardD8sV3
-	StandardD8V3     VirtualMachineSizeTypes = original.StandardD8V3
-	StandardDS1      VirtualMachineSizeTypes = original.StandardDS1
-	StandardDS11     VirtualMachineSizeTypes = original.StandardDS11
-	StandardDS11V2   VirtualMachineSizeTypes = original.StandardDS11V2
-	StandardDS12     VirtualMachineSizeTypes = original.StandardDS12
-	StandardDS12V2   VirtualMachineSizeTypes = original.StandardDS12V2
-	StandardDS13     VirtualMachineSizeTypes = original.StandardDS13
-	StandardDS132V2  VirtualMachineSizeTypes = original.StandardDS132V2
-	StandardDS134V2  VirtualMachineSizeTypes = original.StandardDS134V2
-	StandardDS13V2   VirtualMachineSizeTypes = original.StandardDS13V2
-	StandardDS14     VirtualMachineSizeTypes = original.StandardDS14
-	StandardDS144V2  VirtualMachineSizeTypes = original.StandardDS144V2
-	StandardDS148V2  VirtualMachineSizeTypes = original.StandardDS148V2
-	StandardDS14V2   VirtualMachineSizeTypes = original.StandardDS14V2
-	StandardDS15V2   VirtualMachineSizeTypes = original.StandardDS15V2
-	StandardDS1V2    VirtualMachineSizeTypes = original.StandardDS1V2
-	StandardDS2      VirtualMachineSizeTypes = original.StandardDS2
-	StandardDS2V2    VirtualMachineSizeTypes = original.StandardDS2V2
-	StandardDS3      VirtualMachineSizeTypes = original.StandardDS3
-	StandardDS3V2    VirtualMachineSizeTypes = original.StandardDS3V2
-	StandardDS4      VirtualMachineSizeTypes = original.StandardDS4
-	StandardDS4V2    VirtualMachineSizeTypes = original.StandardDS4V2
-	StandardDS5V2    VirtualMachineSizeTypes = original.StandardDS5V2
-	StandardE16sV3   VirtualMachineSizeTypes = original.StandardE16sV3
-	StandardE16V3    VirtualMachineSizeTypes = original.StandardE16V3
-	StandardE2sV3    VirtualMachineSizeTypes = original.StandardE2sV3
-	StandardE2V3     VirtualMachineSizeTypes = original.StandardE2V3
-	StandardE3216V3  VirtualMachineSizeTypes = original.StandardE3216V3
-	StandardE328sV3  VirtualMachineSizeTypes = original.StandardE328sV3
-	StandardE32sV3   VirtualMachineSizeTypes = original.StandardE32sV3
-	StandardE32V3    VirtualMachineSizeTypes = original.StandardE32V3
-	StandardE4sV3    VirtualMachineSizeTypes = original.StandardE4sV3
-	StandardE4V3     VirtualMachineSizeTypes = original.StandardE4V3
-	StandardE6416sV3 VirtualMachineSizeTypes = original.StandardE6416sV3
-	StandardE6432sV3 VirtualMachineSizeTypes = original.StandardE6432sV3
-	StandardE64sV3   VirtualMachineSizeTypes = original.StandardE64sV3
-	StandardE64V3    VirtualMachineSizeTypes = original.StandardE64V3
-	StandardE8sV3    VirtualMachineSizeTypes = original.StandardE8sV3
-	StandardE8V3     VirtualMachineSizeTypes = original.StandardE8V3
-	StandardF1       VirtualMachineSizeTypes = original.StandardF1
-	StandardF16      VirtualMachineSizeTypes = original.StandardF16
-	StandardF16s     VirtualMachineSizeTypes = original.StandardF16s
-	StandardF16sV2   VirtualMachineSizeTypes = original.StandardF16sV2
-	StandardF1s      VirtualMachineSizeTypes = original.StandardF1s
-	StandardF2       VirtualMachineSizeTypes = original.StandardF2
-	StandardF2s      VirtualMachineSizeTypes = original.StandardF2s
-	StandardF2sV2    VirtualMachineSizeTypes = original.StandardF2sV2
-	StandardF32sV2   VirtualMachineSizeTypes = original.StandardF32sV2
-	StandardF4       VirtualMachineSizeTypes = original.StandardF4
-	StandardF4s      VirtualMachineSizeTypes = original.StandardF4s
-	StandardF4sV2    VirtualMachineSizeTypes = original.StandardF4sV2
-	StandardF64sV2   VirtualMachineSizeTypes = original.StandardF64sV2
-	StandardF72sV2   VirtualMachineSizeTypes = original.StandardF72sV2
-	StandardF8       VirtualMachineSizeTypes = original.StandardF8
-	StandardF8s      VirtualMachineSizeTypes = original.StandardF8s
-	StandardF8sV2    VirtualMachineSizeTypes = original.StandardF8sV2
-	StandardG1       VirtualMachineSizeTypes = original.StandardG1
-	StandardG2       VirtualMachineSizeTypes = original.StandardG2
-	StandardG3       VirtualMachineSizeTypes = original.StandardG3
-	StandardG4       VirtualMachineSizeTypes = original.StandardG4
-	StandardG5       VirtualMachineSizeTypes = original.StandardG5
-	StandardGS1      VirtualMachineSizeTypes = original.StandardGS1
-	StandardGS2      VirtualMachineSizeTypes = original.StandardGS2
-	StandardGS3      VirtualMachineSizeTypes = original.StandardGS3
-	StandardGS4      VirtualMachineSizeTypes = original.StandardGS4
-	StandardGS44     VirtualMachineSizeTypes = original.StandardGS44
-	StandardGS48     VirtualMachineSizeTypes = original.StandardGS48
-	StandardGS5      VirtualMachineSizeTypes = original.StandardGS5
-	StandardGS516    VirtualMachineSizeTypes = original.StandardGS516
-	StandardGS58     VirtualMachineSizeTypes = original.StandardGS58
-	StandardH16      VirtualMachineSizeTypes = original.StandardH16
-	StandardH16m     VirtualMachineSizeTypes = original.StandardH16m
-	StandardH16mr    VirtualMachineSizeTypes = original.StandardH16mr
-	StandardH16r     VirtualMachineSizeTypes = original.StandardH16r
-	StandardH8       VirtualMachineSizeTypes = original.StandardH8
-	StandardH8m      VirtualMachineSizeTypes = original.StandardH8m
-	StandardL16s     VirtualMachineSizeTypes = original.StandardL16s
-	StandardL32s     VirtualMachineSizeTypes = original.StandardL32s
-	StandardL4s      VirtualMachineSizeTypes = original.StandardL4s
-	StandardL8s      VirtualMachineSizeTypes = original.StandardL8s
-	StandardM12832ms VirtualMachineSizeTypes = original.StandardM12832ms
-	StandardM12864ms VirtualMachineSizeTypes = original.StandardM12864ms
-	StandardM128ms   VirtualMachineSizeTypes = original.StandardM128ms
-	StandardM128s    VirtualMachineSizeTypes = original.StandardM128s
-	StandardM6416ms  VirtualMachineSizeTypes = original.StandardM6416ms
-	StandardM6432ms  VirtualMachineSizeTypes = original.StandardM6432ms
-	StandardM64ms    VirtualMachineSizeTypes = original.StandardM64ms
-	StandardM64s     VirtualMachineSizeTypes = original.StandardM64s
-	StandardNC12     VirtualMachineSizeTypes = original.StandardNC12
-	StandardNC12sV2  VirtualMachineSizeTypes = original.StandardNC12sV2
-	StandardNC12sV3  VirtualMachineSizeTypes = original.StandardNC12sV3
-	StandardNC24     VirtualMachineSizeTypes = original.StandardNC24
-	StandardNC24r    VirtualMachineSizeTypes = original.StandardNC24r
-	StandardNC24rsV2 VirtualMachineSizeTypes = original.StandardNC24rsV2
-	StandardNC24rsV3 VirtualMachineSizeTypes = original.StandardNC24rsV3
-	StandardNC24sV2  VirtualMachineSizeTypes = original.StandardNC24sV2
-	StandardNC24sV3  VirtualMachineSizeTypes = original.StandardNC24sV3
-	StandardNC6      VirtualMachineSizeTypes = original.StandardNC6
-	StandardNC6sV2   VirtualMachineSizeTypes = original.StandardNC6sV2
-	StandardNC6sV3   VirtualMachineSizeTypes = original.StandardNC6sV3
-	StandardND12s    VirtualMachineSizeTypes = original.StandardND12s
-	StandardND24rs   VirtualMachineSizeTypes = original.StandardND24rs
-	StandardND24s    VirtualMachineSizeTypes = original.StandardND24s
-	StandardND6s     VirtualMachineSizeTypes = original.StandardND6s
-	StandardNV12     VirtualMachineSizeTypes = original.StandardNV12
-	StandardNV24     VirtualMachineSizeTypes = original.StandardNV24
-	StandardNV6      VirtualMachineSizeTypes = original.StandardNV6
+	VirtualMachineSizeTypesBasicA0          VirtualMachineSizeTypes = original.VirtualMachineSizeTypesBasicA0
+	VirtualMachineSizeTypesBasicA1          VirtualMachineSizeTypes = original.VirtualMachineSizeTypesBasicA1
+	VirtualMachineSizeTypesBasicA2          VirtualMachineSizeTypes = original.VirtualMachineSizeTypesBasicA2
+	VirtualMachineSizeTypesBasicA3          VirtualMachineSizeTypes = original.VirtualMachineSizeTypesBasicA3
+	VirtualMachineSizeTypesBasicA4          VirtualMachineSizeTypes = original.VirtualMachineSizeTypesBasicA4
+	VirtualMachineSizeTypesStandardA0       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA0
+	VirtualMachineSizeTypesStandardA1       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA1
+	VirtualMachineSizeTypesStandardA10      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA10
+	VirtualMachineSizeTypesStandardA11      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA11
+	VirtualMachineSizeTypesStandardA1V2     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA1V2
+	VirtualMachineSizeTypesStandardA2       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA2
+	VirtualMachineSizeTypesStandardA2mV2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA2mV2
+	VirtualMachineSizeTypesStandardA2V2     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA2V2
+	VirtualMachineSizeTypesStandardA3       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA3
+	VirtualMachineSizeTypesStandardA4       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA4
+	VirtualMachineSizeTypesStandardA4mV2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA4mV2
+	VirtualMachineSizeTypesStandardA4V2     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA4V2
+	VirtualMachineSizeTypesStandardA5       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA5
+	VirtualMachineSizeTypesStandardA6       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA6
+	VirtualMachineSizeTypesStandardA7       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA7
+	VirtualMachineSizeTypesStandardA8       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA8
+	VirtualMachineSizeTypesStandardA8mV2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA8mV2
+	VirtualMachineSizeTypesStandardA8V2     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA8V2
+	VirtualMachineSizeTypesStandardA9       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardA9
+	VirtualMachineSizeTypesStandardB1ms     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardB1ms
+	VirtualMachineSizeTypesStandardB1s      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardB1s
+	VirtualMachineSizeTypesStandardB2ms     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardB2ms
+	VirtualMachineSizeTypesStandardB2s      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardB2s
+	VirtualMachineSizeTypesStandardB4ms     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardB4ms
+	VirtualMachineSizeTypesStandardB8ms     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardB8ms
+	VirtualMachineSizeTypesStandardD1       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD1
+	VirtualMachineSizeTypesStandardD11      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD11
+	VirtualMachineSizeTypesStandardD11V2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD11V2
+	VirtualMachineSizeTypesStandardD12      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD12
+	VirtualMachineSizeTypesStandardD12V2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD12V2
+	VirtualMachineSizeTypesStandardD13      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD13
+	VirtualMachineSizeTypesStandardD13V2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD13V2
+	VirtualMachineSizeTypesStandardD14      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD14
+	VirtualMachineSizeTypesStandardD14V2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD14V2
+	VirtualMachineSizeTypesStandardD15V2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD15V2
+	VirtualMachineSizeTypesStandardD16sV3   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD16sV3
+	VirtualMachineSizeTypesStandardD16V3    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD16V3
+	VirtualMachineSizeTypesStandardD1V2     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD1V2
+	VirtualMachineSizeTypesStandardD2       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD2
+	VirtualMachineSizeTypesStandardD2sV3    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD2sV3
+	VirtualMachineSizeTypesStandardD2V2     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD2V2
+	VirtualMachineSizeTypesStandardD2V3     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD2V3
+	VirtualMachineSizeTypesStandardD3       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD3
+	VirtualMachineSizeTypesStandardD32sV3   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD32sV3
+	VirtualMachineSizeTypesStandardD32V3    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD32V3
+	VirtualMachineSizeTypesStandardD3V2     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD3V2
+	VirtualMachineSizeTypesStandardD4       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD4
+	VirtualMachineSizeTypesStandardD4sV3    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD4sV3
+	VirtualMachineSizeTypesStandardD4V2     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD4V2
+	VirtualMachineSizeTypesStandardD4V3     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD4V3
+	VirtualMachineSizeTypesStandardD5V2     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD5V2
+	VirtualMachineSizeTypesStandardD64sV3   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD64sV3
+	VirtualMachineSizeTypesStandardD64V3    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD64V3
+	VirtualMachineSizeTypesStandardD8sV3    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD8sV3
+	VirtualMachineSizeTypesStandardD8V3     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardD8V3
+	VirtualMachineSizeTypesStandardDS1      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS1
+	VirtualMachineSizeTypesStandardDS11     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS11
+	VirtualMachineSizeTypesStandardDS11V2   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS11V2
+	VirtualMachineSizeTypesStandardDS12     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS12
+	VirtualMachineSizeTypesStandardDS12V2   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS12V2
+	VirtualMachineSizeTypesStandardDS13     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS13
+	VirtualMachineSizeTypesStandardDS132V2  VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS132V2
+	VirtualMachineSizeTypesStandardDS134V2  VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS134V2
+	VirtualMachineSizeTypesStandardDS13V2   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS13V2
+	VirtualMachineSizeTypesStandardDS14     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS14
+	VirtualMachineSizeTypesStandardDS144V2  VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS144V2
+	VirtualMachineSizeTypesStandardDS148V2  VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS148V2
+	VirtualMachineSizeTypesStandardDS14V2   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS14V2
+	VirtualMachineSizeTypesStandardDS15V2   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS15V2
+	VirtualMachineSizeTypesStandardDS1V2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS1V2
+	VirtualMachineSizeTypesStandardDS2      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS2
+	VirtualMachineSizeTypesStandardDS2V2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS2V2
+	VirtualMachineSizeTypesStandardDS3      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS3
+	VirtualMachineSizeTypesStandardDS3V2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS3V2
+	VirtualMachineSizeTypesStandardDS4      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS4
+	VirtualMachineSizeTypesStandardDS4V2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS4V2
+	VirtualMachineSizeTypesStandardDS5V2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardDS5V2
+	VirtualMachineSizeTypesStandardE16sV3   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE16sV3
+	VirtualMachineSizeTypesStandardE16V3    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE16V3
+	VirtualMachineSizeTypesStandardE2sV3    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE2sV3
+	VirtualMachineSizeTypesStandardE2V3     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE2V3
+	VirtualMachineSizeTypesStandardE3216V3  VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE3216V3
+	VirtualMachineSizeTypesStandardE328sV3  VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE328sV3
+	VirtualMachineSizeTypesStandardE32sV3   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE32sV3
+	VirtualMachineSizeTypesStandardE32V3    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE32V3
+	VirtualMachineSizeTypesStandardE4sV3    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE4sV3
+	VirtualMachineSizeTypesStandardE4V3     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE4V3
+	VirtualMachineSizeTypesStandardE6416sV3 VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE6416sV3
+	VirtualMachineSizeTypesStandardE6432sV3 VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE6432sV3
+	VirtualMachineSizeTypesStandardE64sV3   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE64sV3
+	VirtualMachineSizeTypesStandardE64V3    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE64V3
+	VirtualMachineSizeTypesStandardE8sV3    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE8sV3
+	VirtualMachineSizeTypesStandardE8V3     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardE8V3
+	VirtualMachineSizeTypesStandardF1       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF1
+	VirtualMachineSizeTypesStandardF16      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF16
+	VirtualMachineSizeTypesStandardF16s     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF16s
+	VirtualMachineSizeTypesStandardF16sV2   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF16sV2
+	VirtualMachineSizeTypesStandardF1s      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF1s
+	VirtualMachineSizeTypesStandardF2       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF2
+	VirtualMachineSizeTypesStandardF2s      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF2s
+	VirtualMachineSizeTypesStandardF2sV2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF2sV2
+	VirtualMachineSizeTypesStandardF32sV2   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF32sV2
+	VirtualMachineSizeTypesStandardF4       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF4
+	VirtualMachineSizeTypesStandardF4s      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF4s
+	VirtualMachineSizeTypesStandardF4sV2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF4sV2
+	VirtualMachineSizeTypesStandardF64sV2   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF64sV2
+	VirtualMachineSizeTypesStandardF72sV2   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF72sV2
+	VirtualMachineSizeTypesStandardF8       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF8
+	VirtualMachineSizeTypesStandardF8s      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF8s
+	VirtualMachineSizeTypesStandardF8sV2    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardF8sV2
+	VirtualMachineSizeTypesStandardG1       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardG1
+	VirtualMachineSizeTypesStandardG2       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardG2
+	VirtualMachineSizeTypesStandardG3       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardG3
+	VirtualMachineSizeTypesStandardG4       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardG4
+	VirtualMachineSizeTypesStandardG5       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardG5
+	VirtualMachineSizeTypesStandardGS1      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardGS1
+	VirtualMachineSizeTypesStandardGS2      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardGS2
+	VirtualMachineSizeTypesStandardGS3      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardGS3
+	VirtualMachineSizeTypesStandardGS4      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardGS4
+	VirtualMachineSizeTypesStandardGS44     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardGS44
+	VirtualMachineSizeTypesStandardGS48     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardGS48
+	VirtualMachineSizeTypesStandardGS5      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardGS5
+	VirtualMachineSizeTypesStandardGS516    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardGS516
+	VirtualMachineSizeTypesStandardGS58     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardGS58
+	VirtualMachineSizeTypesStandardH16      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardH16
+	VirtualMachineSizeTypesStandardH16m     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardH16m
+	VirtualMachineSizeTypesStandardH16mr    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardH16mr
+	VirtualMachineSizeTypesStandardH16r     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardH16r
+	VirtualMachineSizeTypesStandardH8       VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardH8
+	VirtualMachineSizeTypesStandardH8m      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardH8m
+	VirtualMachineSizeTypesStandardL16s     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardL16s
+	VirtualMachineSizeTypesStandardL32s     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardL32s
+	VirtualMachineSizeTypesStandardL4s      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardL4s
+	VirtualMachineSizeTypesStandardL8s      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardL8s
+	VirtualMachineSizeTypesStandardM12832ms VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardM12832ms
+	VirtualMachineSizeTypesStandardM12864ms VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardM12864ms
+	VirtualMachineSizeTypesStandardM128ms   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardM128ms
+	VirtualMachineSizeTypesStandardM128s    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardM128s
+	VirtualMachineSizeTypesStandardM6416ms  VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardM6416ms
+	VirtualMachineSizeTypesStandardM6432ms  VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardM6432ms
+	VirtualMachineSizeTypesStandardM64ms    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardM64ms
+	VirtualMachineSizeTypesStandardM64s     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardM64s
+	VirtualMachineSizeTypesStandardNC12     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNC12
+	VirtualMachineSizeTypesStandardNC12sV2  VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNC12sV2
+	VirtualMachineSizeTypesStandardNC12sV3  VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNC12sV3
+	VirtualMachineSizeTypesStandardNC24     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNC24
+	VirtualMachineSizeTypesStandardNC24r    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNC24r
+	VirtualMachineSizeTypesStandardNC24rsV2 VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNC24rsV2
+	VirtualMachineSizeTypesStandardNC24rsV3 VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNC24rsV3
+	VirtualMachineSizeTypesStandardNC24sV2  VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNC24sV2
+	VirtualMachineSizeTypesStandardNC24sV3  VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNC24sV3
+	VirtualMachineSizeTypesStandardNC6      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNC6
+	VirtualMachineSizeTypesStandardNC6sV2   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNC6sV2
+	VirtualMachineSizeTypesStandardNC6sV3   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNC6sV3
+	VirtualMachineSizeTypesStandardND12s    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardND12s
+	VirtualMachineSizeTypesStandardND24rs   VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardND24rs
+	VirtualMachineSizeTypesStandardND24s    VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardND24s
+	VirtualMachineSizeTypesStandardND6s     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardND6s
+	VirtualMachineSizeTypesStandardNV12     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNV12
+	VirtualMachineSizeTypesStandardNV24     VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNV24
+	VirtualMachineSizeTypesStandardNV6      VirtualMachineSizeTypes = original.VirtualMachineSizeTypesStandardNV6
+)
+
+type WindowsPatchAssessmentMode = original.WindowsPatchAssessmentMode
+
+const (
+	WindowsPatchAssessmentModeAutomaticByPlatform WindowsPatchAssessmentMode = original.WindowsPatchAssessmentModeAutomaticByPlatform
+	WindowsPatchAssessmentModeImageDefault        WindowsPatchAssessmentMode = original.WindowsPatchAssessmentModeImageDefault
 )
 
 type WindowsVMGuestPatchMode = original.WindowsVMGuestPatchMode
@@ -986,6 +1110,7 @@ type GalleryDataDiskImage = original.GalleryDataDiskImage
 type GalleryDiskImage = original.GalleryDiskImage
 type GalleryIdentifier = original.GalleryIdentifier
 type GalleryImage = original.GalleryImage
+type GalleryImageFeature = original.GalleryImageFeature
 type GalleryImageIdentifier = original.GalleryImageIdentifier
 type GalleryImageList = original.GalleryImageList
 type GalleryImageListIterator = original.GalleryImageListIterator
@@ -1013,6 +1138,8 @@ type GalleryListIterator = original.GalleryListIterator
 type GalleryListPage = original.GalleryListPage
 type GalleryOSDiskImage = original.GalleryOSDiskImage
 type GalleryProperties = original.GalleryProperties
+type GallerySharingProfileClient = original.GallerySharingProfileClient
+type GallerySharingProfileUpdateFuture = original.GallerySharingProfileUpdateFuture
 type GalleryUpdate = original.GalleryUpdate
 type GrantAccessData = original.GrantAccessData
 type HardwareProfile = original.HardwareProfile
@@ -1090,6 +1217,8 @@ type OrchestrationServiceStateInput = original.OrchestrationServiceStateInput
 type OrchestrationServiceSummary = original.OrchestrationServiceSummary
 type PatchInstallationDetail = original.PatchInstallationDetail
 type PatchSettings = original.PatchSettings
+type PirResource = original.PirResource
+type PirSharedGalleryResource = original.PirSharedGalleryResource
 type Plan = original.Plan
 type PrivateEndpoint = original.PrivateEndpoint
 type PrivateEndpointConnection = original.PrivateEndpointConnection
@@ -1110,6 +1239,8 @@ type ProximityPlacementGroupProperties = original.ProximityPlacementGroupPropert
 type ProximityPlacementGroupUpdate = original.ProximityPlacementGroupUpdate
 type ProximityPlacementGroupsClient = original.ProximityPlacementGroupsClient
 type ProxyOnlyResource = original.ProxyOnlyResource
+type ProxyResource = original.ProxyResource
+type PublicIPAddressSku = original.PublicIPAddressSku
 type PurchasePlan = original.PurchasePlan
 type ReadCloser = original.ReadCloser
 type RecommendedMachineConfiguration = original.RecommendedMachineConfiguration
@@ -1135,6 +1266,24 @@ type ResourceSkusResultPage = original.ResourceSkusResultPage
 type ResourceURIList = original.ResourceURIList
 type ResourceURIListIterator = original.ResourceURIListIterator
 type ResourceURIListPage = original.ResourceURIListPage
+type RestorePoint = original.RestorePoint
+type RestorePointCollection = original.RestorePointCollection
+type RestorePointCollectionListResult = original.RestorePointCollectionListResult
+type RestorePointCollectionListResultIterator = original.RestorePointCollectionListResultIterator
+type RestorePointCollectionListResultPage = original.RestorePointCollectionListResultPage
+type RestorePointCollectionProperties = original.RestorePointCollectionProperties
+type RestorePointCollectionSourceProperties = original.RestorePointCollectionSourceProperties
+type RestorePointCollectionUpdate = original.RestorePointCollectionUpdate
+type RestorePointCollectionsClient = original.RestorePointCollectionsClient
+type RestorePointCollectionsDeleteFuture = original.RestorePointCollectionsDeleteFuture
+type RestorePointProvisioningDetails = original.RestorePointProvisioningDetails
+type RestorePointSourceMetadata = original.RestorePointSourceMetadata
+type RestorePointSourceVMDataDisk = original.RestorePointSourceVMDataDisk
+type RestorePointSourceVMOSDisk = original.RestorePointSourceVMOSDisk
+type RestorePointSourceVMStorageProfile = original.RestorePointSourceVMStorageProfile
+type RestorePointsClient = original.RestorePointsClient
+type RestorePointsCreateFuture = original.RestorePointsCreateFuture
+type RestorePointsDeleteFuture = original.RestorePointsDeleteFuture
 type RetrieveBootDiagnosticsDataResult = original.RetrieveBootDiagnosticsDataResult
 type RoleInstance = original.RoleInstance
 type RoleInstanceInstanceView = original.RoleInstanceInstanceView
@@ -1173,6 +1322,27 @@ type ScaleInPolicy = original.ScaleInPolicy
 type ScheduledEventsProfile = original.ScheduledEventsProfile
 type SecurityProfile = original.SecurityProfile
 type ShareInfoElement = original.ShareInfoElement
+type SharedGalleriesClient = original.SharedGalleriesClient
+type SharedGallery = original.SharedGallery
+type SharedGalleryIdentifier = original.SharedGalleryIdentifier
+type SharedGalleryImage = original.SharedGalleryImage
+type SharedGalleryImageList = original.SharedGalleryImageList
+type SharedGalleryImageListIterator = original.SharedGalleryImageListIterator
+type SharedGalleryImageListPage = original.SharedGalleryImageListPage
+type SharedGalleryImageProperties = original.SharedGalleryImageProperties
+type SharedGalleryImageVersion = original.SharedGalleryImageVersion
+type SharedGalleryImageVersionList = original.SharedGalleryImageVersionList
+type SharedGalleryImageVersionListIterator = original.SharedGalleryImageVersionListIterator
+type SharedGalleryImageVersionListPage = original.SharedGalleryImageVersionListPage
+type SharedGalleryImageVersionProperties = original.SharedGalleryImageVersionProperties
+type SharedGalleryImageVersionsClient = original.SharedGalleryImageVersionsClient
+type SharedGalleryImagesClient = original.SharedGalleryImagesClient
+type SharedGalleryList = original.SharedGalleryList
+type SharedGalleryListIterator = original.SharedGalleryListIterator
+type SharedGalleryListPage = original.SharedGalleryListPage
+type SharingProfile = original.SharingProfile
+type SharingProfileGroup = original.SharingProfileGroup
+type SharingUpdate = original.SharingUpdate
 type Sku = original.Sku
 type Snapshot = original.Snapshot
 type SnapshotList = original.SnapshotList
@@ -1237,6 +1407,7 @@ type VirtualMachineExtensionsDeleteFuture = original.VirtualMachineExtensionsDel
 type VirtualMachineExtensionsListResult = original.VirtualMachineExtensionsListResult
 type VirtualMachineExtensionsUpdateFuture = original.VirtualMachineExtensionsUpdateFuture
 type VirtualMachineHealthStatus = original.VirtualMachineHealthStatus
+type VirtualMachineIPTag = original.VirtualMachineIPTag
 type VirtualMachineIdentity = original.VirtualMachineIdentity
 type VirtualMachineIdentityUserAssignedIdentitiesValue = original.VirtualMachineIdentityUserAssignedIdentitiesValue
 type VirtualMachineImage = original.VirtualMachineImage
@@ -1251,8 +1422,16 @@ type VirtualMachineInstanceView = original.VirtualMachineInstanceView
 type VirtualMachineListResult = original.VirtualMachineListResult
 type VirtualMachineListResultIterator = original.VirtualMachineListResultIterator
 type VirtualMachineListResultPage = original.VirtualMachineListResultPage
+type VirtualMachineNetworkInterfaceConfiguration = original.VirtualMachineNetworkInterfaceConfiguration
+type VirtualMachineNetworkInterfaceConfigurationProperties = original.VirtualMachineNetworkInterfaceConfigurationProperties
+type VirtualMachineNetworkInterfaceDNSSettingsConfiguration = original.VirtualMachineNetworkInterfaceDNSSettingsConfiguration
+type VirtualMachineNetworkInterfaceIPConfiguration = original.VirtualMachineNetworkInterfaceIPConfiguration
+type VirtualMachineNetworkInterfaceIPConfigurationProperties = original.VirtualMachineNetworkInterfaceIPConfigurationProperties
 type VirtualMachinePatchStatus = original.VirtualMachinePatchStatus
 type VirtualMachineProperties = original.VirtualMachineProperties
+type VirtualMachinePublicIPAddressConfiguration = original.VirtualMachinePublicIPAddressConfiguration
+type VirtualMachinePublicIPAddressConfigurationProperties = original.VirtualMachinePublicIPAddressConfigurationProperties
+type VirtualMachinePublicIPAddressDNSSettingsConfiguration = original.VirtualMachinePublicIPAddressDNSSettingsConfiguration
 type VirtualMachineReimageParameters = original.VirtualMachineReimageParameters
 type VirtualMachineRunCommand = original.VirtualMachineRunCommand
 type VirtualMachineRunCommandInstanceView = original.VirtualMachineRunCommandInstanceView
@@ -1598,6 +1777,12 @@ func NewGalleryListIterator(page GalleryListPage) GalleryListIterator {
 func NewGalleryListPage(cur GalleryList, getNextPage func(context.Context, GalleryList) (GalleryList, error)) GalleryListPage {
 	return original.NewGalleryListPage(cur, getNextPage)
 }
+func NewGallerySharingProfileClient(subscriptionID string) GallerySharingProfileClient {
+	return original.NewGallerySharingProfileClient(subscriptionID)
+}
+func NewGallerySharingProfileClientWithBaseURI(baseURI string, subscriptionID string) GallerySharingProfileClient {
+	return original.NewGallerySharingProfileClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewImageListResultIterator(page ImageListResultPage) ImageListResultIterator {
 	return original.NewImageListResultIterator(page)
 }
@@ -1676,6 +1861,24 @@ func NewResourceURIListIterator(page ResourceURIListPage) ResourceURIListIterato
 func NewResourceURIListPage(cur ResourceURIList, getNextPage func(context.Context, ResourceURIList) (ResourceURIList, error)) ResourceURIListPage {
 	return original.NewResourceURIListPage(cur, getNextPage)
 }
+func NewRestorePointCollectionListResultIterator(page RestorePointCollectionListResultPage) RestorePointCollectionListResultIterator {
+	return original.NewRestorePointCollectionListResultIterator(page)
+}
+func NewRestorePointCollectionListResultPage(cur RestorePointCollectionListResult, getNextPage func(context.Context, RestorePointCollectionListResult) (RestorePointCollectionListResult, error)) RestorePointCollectionListResultPage {
+	return original.NewRestorePointCollectionListResultPage(cur, getNextPage)
+}
+func NewRestorePointCollectionsClient(subscriptionID string) RestorePointCollectionsClient {
+	return original.NewRestorePointCollectionsClient(subscriptionID)
+}
+func NewRestorePointCollectionsClientWithBaseURI(baseURI string, subscriptionID string) RestorePointCollectionsClient {
+	return original.NewRestorePointCollectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRestorePointsClient(subscriptionID string) RestorePointsClient {
+	return original.NewRestorePointsClient(subscriptionID)
+}
+func NewRestorePointsClientWithBaseURI(baseURI string, subscriptionID string) RestorePointsClient {
+	return original.NewRestorePointsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewRoleInstanceListResultIterator(page RoleInstanceListResultPage) RoleInstanceListResultIterator {
 	return original.NewRoleInstanceListResultIterator(page)
 }
@@ -1699,6 +1902,42 @@ func NewSSHPublicKeysGroupListResultIterator(page SSHPublicKeysGroupListResultPa
 }
 func NewSSHPublicKeysGroupListResultPage(cur SSHPublicKeysGroupListResult, getNextPage func(context.Context, SSHPublicKeysGroupListResult) (SSHPublicKeysGroupListResult, error)) SSHPublicKeysGroupListResultPage {
 	return original.NewSSHPublicKeysGroupListResultPage(cur, getNextPage)
+}
+func NewSharedGalleriesClient(subscriptionID string) SharedGalleriesClient {
+	return original.NewSharedGalleriesClient(subscriptionID)
+}
+func NewSharedGalleriesClientWithBaseURI(baseURI string, subscriptionID string) SharedGalleriesClient {
+	return original.NewSharedGalleriesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSharedGalleryImageListIterator(page SharedGalleryImageListPage) SharedGalleryImageListIterator {
+	return original.NewSharedGalleryImageListIterator(page)
+}
+func NewSharedGalleryImageListPage(cur SharedGalleryImageList, getNextPage func(context.Context, SharedGalleryImageList) (SharedGalleryImageList, error)) SharedGalleryImageListPage {
+	return original.NewSharedGalleryImageListPage(cur, getNextPage)
+}
+func NewSharedGalleryImageVersionListIterator(page SharedGalleryImageVersionListPage) SharedGalleryImageVersionListIterator {
+	return original.NewSharedGalleryImageVersionListIterator(page)
+}
+func NewSharedGalleryImageVersionListPage(cur SharedGalleryImageVersionList, getNextPage func(context.Context, SharedGalleryImageVersionList) (SharedGalleryImageVersionList, error)) SharedGalleryImageVersionListPage {
+	return original.NewSharedGalleryImageVersionListPage(cur, getNextPage)
+}
+func NewSharedGalleryImageVersionsClient(subscriptionID string) SharedGalleryImageVersionsClient {
+	return original.NewSharedGalleryImageVersionsClient(subscriptionID)
+}
+func NewSharedGalleryImageVersionsClientWithBaseURI(baseURI string, subscriptionID string) SharedGalleryImageVersionsClient {
+	return original.NewSharedGalleryImageVersionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSharedGalleryImagesClient(subscriptionID string) SharedGalleryImagesClient {
+	return original.NewSharedGalleryImagesClient(subscriptionID)
+}
+func NewSharedGalleryImagesClientWithBaseURI(baseURI string, subscriptionID string) SharedGalleryImagesClient {
+	return original.NewSharedGalleryImagesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSharedGalleryListIterator(page SharedGalleryListPage) SharedGalleryListIterator {
+	return original.NewSharedGalleryListIterator(page)
+}
+func NewSharedGalleryListPage(cur SharedGalleryList, getNextPage func(context.Context, SharedGalleryList) (SharedGalleryList, error)) SharedGalleryListPage {
+	return original.NewSharedGalleryListPage(cur, getNextPage)
 }
 func NewSnapshotListIterator(page SnapshotListPage) SnapshotListIterator {
 	return original.NewSnapshotListIterator(page)
@@ -1871,8 +2110,14 @@ func PossibleCloudServiceUpgradeModeValues() []CloudServiceUpgradeMode {
 func PossibleComponentNamesValues() []ComponentNames {
 	return original.PossibleComponentNamesValues()
 }
+func PossibleConsistencyModeTypesValues() []ConsistencyModeTypes {
+	return original.PossibleConsistencyModeTypesValues()
+}
 func PossibleDedicatedHostLicenseTypesValues() []DedicatedHostLicenseTypes {
 	return original.PossibleDedicatedHostLicenseTypesValues()
+}
+func PossibleDeleteOptionsValues() []DeleteOptions {
+	return original.PossibleDeleteOptionsValues()
 }
 func PossibleDiffDiskOptionsValues() []DiffDiskOptions {
 	return original.PossibleDiffDiskOptionsValues()
@@ -1885,6 +2130,9 @@ func PossibleDiskCreateOptionTypesValues() []DiskCreateOptionTypes {
 }
 func PossibleDiskCreateOptionValues() []DiskCreateOption {
 	return original.PossibleDiskCreateOptionValues()
+}
+func PossibleDiskDeleteOptionTypesValues() []DiskDeleteOptionTypes {
+	return original.PossibleDiskDeleteOptionTypesValues()
 }
 func PossibleDiskDetachOptionTypesValues() []DiskDetachOptionTypes {
 	return original.PossibleDiskDetachOptionTypesValues()
@@ -1910,8 +2158,14 @@ func PossibleEncryptionTypeValues() []EncryptionType {
 func PossibleExecutionStateValues() []ExecutionState {
 	return original.PossibleExecutionStateValues()
 }
+func PossibleExpandTypesForGetVMScaleSetsValues() []ExpandTypesForGetVMScaleSets {
+	return original.PossibleExpandTypesForGetVMScaleSetsValues()
+}
 func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	return original.PossibleExtendedLocationTypesValues()
+}
+func PossibleGallerySharingPermissionTypesValues() []GallerySharingPermissionTypes {
+	return original.PossibleGallerySharingPermissionTypesValues()
 }
 func PossibleHostCachingValues() []HostCaching {
 	return original.PossibleHostCachingValues()
@@ -1928,11 +2182,17 @@ func PossibleHyperVGenerationValues() []HyperVGeneration {
 func PossibleIPVersionValues() []IPVersion {
 	return original.PossibleIPVersionValues()
 }
+func PossibleIPVersionsValues() []IPVersions {
+	return original.PossibleIPVersionsValues()
+}
 func PossibleInstanceViewTypesValues() []InstanceViewTypes {
 	return original.PossibleInstanceViewTypesValues()
 }
 func PossibleIntervalInMinsValues() []IntervalInMins {
 	return original.PossibleIntervalInMinsValues()
+}
+func PossibleLinuxPatchAssessmentModeValues() []LinuxPatchAssessmentMode {
+	return original.PossibleLinuxPatchAssessmentModeValues()
 }
 func PossibleLinuxVMGuestPatchModeValues() []LinuxVMGuestPatchMode {
 	return original.PossibleLinuxVMGuestPatchModeValues()
@@ -1940,11 +2200,17 @@ func PossibleLinuxVMGuestPatchModeValues() []LinuxVMGuestPatchMode {
 func PossibleMaintenanceOperationResultCodeTypesValues() []MaintenanceOperationResultCodeTypes {
 	return original.PossibleMaintenanceOperationResultCodeTypesValues()
 }
+func PossibleNetworkAPIVersionValues() []NetworkAPIVersion {
+	return original.PossibleNetworkAPIVersionValues()
+}
 func PossibleNetworkAccessPolicyValues() []NetworkAccessPolicy {
 	return original.PossibleNetworkAccessPolicyValues()
 }
 func PossibleOperatingSystemStateTypesValues() []OperatingSystemStateTypes {
 	return original.PossibleOperatingSystemStateTypesValues()
+}
+func PossibleOperatingSystemTypeValues() []OperatingSystemType {
+	return original.PossibleOperatingSystemTypeValues()
 }
 func PossibleOperatingSystemTypesValues() []OperatingSystemTypes {
 	return original.PossibleOperatingSystemTypesValues()
@@ -1997,6 +2263,15 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 func PossibleProximityPlacementGroupTypeValues() []ProximityPlacementGroupType {
 	return original.PossibleProximityPlacementGroupTypeValues()
 }
+func PossiblePublicIPAddressSkuNameValues() []PublicIPAddressSkuName {
+	return original.PossiblePublicIPAddressSkuNameValues()
+}
+func PossiblePublicIPAddressSkuTierValues() []PublicIPAddressSkuTier {
+	return original.PossiblePublicIPAddressSkuTierValues()
+}
+func PossiblePublicIPAllocationMethodValues() []PublicIPAllocationMethod {
+	return original.PossiblePublicIPAllocationMethodValues()
+}
 func PossibleReplicationStateValues() []ReplicationState {
 	return original.PossibleReplicationStateValues()
 }
@@ -2015,6 +2290,9 @@ func PossibleResourceSkuRestrictionsReasonCodeValues() []ResourceSkuRestrictions
 func PossibleResourceSkuRestrictionsTypeValues() []ResourceSkuRestrictionsType {
 	return original.PossibleResourceSkuRestrictionsTypeValues()
 }
+func PossibleRestorePointCollectionExpandOptionsValues() []RestorePointCollectionExpandOptions {
+	return original.PossibleRestorePointCollectionExpandOptionsValues()
+}
 func PossibleRollingUpgradeActionTypeValues() []RollingUpgradeActionType {
 	return original.PossibleRollingUpgradeActionTypeValues()
 }
@@ -2024,8 +2302,20 @@ func PossibleRollingUpgradeStatusCodeValues() []RollingUpgradeStatusCode {
 func PossibleSecurityTypesValues() []SecurityTypes {
 	return original.PossibleSecurityTypesValues()
 }
+func PossibleSelectPermissionsValues() []SelectPermissions {
+	return original.PossibleSelectPermissionsValues()
+}
 func PossibleSettingNamesValues() []SettingNames {
 	return original.PossibleSettingNamesValues()
+}
+func PossibleSharedToValuesValues() []SharedToValues {
+	return original.PossibleSharedToValuesValues()
+}
+func PossibleSharingProfileGroupTypesValues() []SharingProfileGroupTypes {
+	return original.PossibleSharingProfileGroupTypesValues()
+}
+func PossibleSharingUpdateOperationTypesValues() []SharingUpdateOperationTypes {
+	return original.PossibleSharingUpdateOperationTypesValues()
 }
 func PossibleSnapshotStorageAccountTypesValues() []SnapshotStorageAccountTypes {
 	return original.PossibleSnapshotStorageAccountTypesValues()
@@ -2080,6 +2370,9 @@ func PossibleVirtualMachineScaleSetSkuScaleTypeValues() []VirtualMachineScaleSet
 }
 func PossibleVirtualMachineSizeTypesValues() []VirtualMachineSizeTypes {
 	return original.PossibleVirtualMachineSizeTypesValues()
+}
+func PossibleWindowsPatchAssessmentModeValues() []WindowsPatchAssessmentMode {
+	return original.PossibleWindowsPatchAssessmentModeValues()
 }
 func PossibleWindowsVMGuestPatchModeValues() []WindowsVMGuestPatchMode {
 	return original.PossibleWindowsVMGuestPatchModeValues()

@@ -13,6 +13,7 @@ import original "github.com/Azure/azure-sdk-for-go/services/preview/securityinsi
 type ActionsClientAPI = original.ActionsClientAPI
 type AlertRuleTemplatesClientAPI = original.AlertRuleTemplatesClientAPI
 type AlertRulesClientAPI = original.AlertRulesClientAPI
+type AutomationRulesClientAPI = original.AutomationRulesClientAPI
 type BookmarkClientAPI = original.BookmarkClientAPI
 type BookmarkRelationsClientAPI = original.BookmarkRelationsClientAPI
 type BookmarksClientAPI = original.BookmarksClientAPI
@@ -37,5 +38,5 @@ type ProductSettingsClientAPI = original.ProductSettingsClientAPI
 type ThreatIntelligenceIndicatorClientAPI = original.ThreatIntelligenceIndicatorClientAPI
 type ThreatIntelligenceIndicatorMetricsClientAPI = original.ThreatIntelligenceIndicatorMetricsClientAPI
 type ThreatIntelligenceIndicatorsClientAPI = original.ThreatIntelligenceIndicatorsClientAPI
-type WatchlistItemClientAPI = original.WatchlistItemClientAPI
+type WatchlistItemsClientAPI = original.WatchlistItemsClientAPI
 type WatchlistsClientAPI = original.WatchlistsClientAPI

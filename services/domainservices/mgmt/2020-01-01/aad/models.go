@@ -565,6 +565,12 @@ type HealthAlert struct {
 	ResolutionURI *string `json:"resolutionUri,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HealthAlert.
+func (ha HealthAlert) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // HealthMonitor health Monitor Description
 type HealthMonitor struct {
 	// ID - READ-ONLY; Health Monitor Id
@@ -573,6 +579,12 @@ type HealthMonitor struct {
 	Name *string `json:"name,omitempty"`
 	// Details - READ-ONLY; Health Monitor Details
 	Details *string `json:"details,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HealthMonitor.
+func (hm HealthMonitor) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // LdapsSettings secure LDAP Settings

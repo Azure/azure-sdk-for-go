@@ -886,6 +886,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SmartGroup set of related alerts grouped together smartly by AMS.
 type SmartGroup struct {
 	autorest.Response     `json:"-"`

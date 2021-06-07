@@ -199,6 +199,12 @@ type EnvironmentDetails struct {
 	PasswordLastReset *date.Time `json:"passwordLastReset,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EnvironmentDetails.
+func (ed EnvironmentDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // EnvironmentFragment represents an environment instance
 type EnvironmentFragment struct {
 	// EnvironmentPropertiesFragment - The properties of the Environment resource
@@ -1268,6 +1274,12 @@ type GetEnvironmentResponse struct {
 	Environment *EnvironmentDetails `json:"environment,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GetEnvironmentResponse.
+func (ger GetEnvironmentResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // GetPersonalPreferencesResponse represents the PersonalPreferences for the user
 type GetPersonalPreferencesResponse struct {
 	autorest.Response `json:"-"`
@@ -2019,6 +2031,12 @@ type LatestOperationResult struct {
 	OperationURL *string `json:"operationUrl,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LatestOperationResult.
+func (lor LatestOperationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ListEnvironmentsPayload represents the payload to list environments owned by a user
 type ListEnvironmentsPayload struct {
 	// LabID - The resource Id of the lab
@@ -2051,6 +2069,12 @@ type NetworkInterface struct {
 	Username *string `json:"username,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NetworkInterface.
+func (ni NetworkInterface) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationBatchStatusPayload payload to get the status of an operation
 type OperationBatchStatusPayload struct {
 	// Urls - The operation url of long running operation
@@ -2064,12 +2088,24 @@ type OperationBatchStatusResponse struct {
 	Items *[]OperationBatchStatusResponseItem `json:"items,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationBatchStatusResponse.
+func (obsr OperationBatchStatusResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationBatchStatusResponseItem represents the status of an operation that used the batch API.
 type OperationBatchStatusResponseItem struct {
 	// OperationURL - READ-ONLY; status of the long running operation for an environment
 	OperationURL *string `json:"operationUrl,omitempty"`
 	// Status - READ-ONLY; status of the long running operation for an environment
 	Status *string `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationBatchStatusResponseItem.
+func (obsri OperationBatchStatusResponseItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationError error details for the operation in case of a failure.
@@ -2120,6 +2156,12 @@ type OperationStatusResponse struct {
 	autorest.Response `json:"-"`
 	// Status - READ-ONLY; status of the long running operation for an environment
 	Status *string `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationStatusResponse.
+func (osr OperationStatusResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PersonalPreferencesOperationsPayload represents payload for any Environment operations like get, start,
@@ -3761,6 +3803,12 @@ type VirtualMachineDetails struct {
 	LastKnownPowerState *string `json:"lastKnownPowerState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VirtualMachineDetails.
+func (vmd VirtualMachineDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VMStateDetails details about the state of the reference virtual machine.
 type VMStateDetails struct {
 	// RdpAuthority - READ-ONLY; The RdpAuthority property is a server DNS host name or IP address followed by the service port number for RDP (Remote Desktop Protocol).
@@ -3771,4 +3819,10 @@ type VMStateDetails struct {
 	PowerState *string `json:"powerState,omitempty"`
 	// LastKnownPowerState - READ-ONLY; Last known compute power state captured in DTL
 	LastKnownPowerState *string `json:"lastKnownPowerState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VMStateDetails.
+func (vsd VMStateDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

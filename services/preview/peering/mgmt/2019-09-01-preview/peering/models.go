@@ -162,6 +162,12 @@ type ErrorResponse struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ExchangeConnection the properties that define an exchange connection.
 type ExchangeConnection struct {
 	// PeeringDBFacilityID - The PeeringDB.com ID of the facility at which the connection has to be set up.
@@ -783,6 +789,12 @@ type Operation struct {
 	IsDataAction *bool `json:"isDataAction,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationDisplayInfo the information related to the operation.
 type OperationDisplayInfo struct {
 	// Provider - READ-ONLY; The name of the resource provider.
@@ -793,6 +805,12 @@ type OperationDisplayInfo struct {
 	Operation *string `json:"operation,omitempty"`
 	// Description - READ-ONLY; The description of the operation.
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationDisplayInfo.
+func (odi OperationDisplayInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResult the paginated list of peering API operations.
@@ -1288,6 +1306,12 @@ type Resource struct {
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceTags the resource tags.
@@ -1891,6 +1915,12 @@ type ServicePrefixEvent struct {
 	EventLevel *string `json:"eventLevel,omitempty"`
 	// EventDescription - READ-ONLY; The description of the event associated with a prefix.
 	EventDescription *string `json:"eventDescription,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServicePrefixEvent.
+func (spe ServicePrefixEvent) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServicePrefixListResult the paginated list of peering service prefixes.

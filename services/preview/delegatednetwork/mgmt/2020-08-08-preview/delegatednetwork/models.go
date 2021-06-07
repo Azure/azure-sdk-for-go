@@ -264,6 +264,12 @@ type DelegatedControllerProperties struct {
 	DncEndpoint *string `json:"dncEndpoint,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DelegatedControllerProperties.
+func (dcp DelegatedControllerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DelegatedControllers an array of Delegated controller resources.
 type DelegatedControllers struct {
 	autorest.Response `json:"-"`
@@ -881,6 +887,12 @@ type ErrorDefinition struct {
 	Details *[]ErrorDefinition `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorDefinition.
+func (ed ErrorDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorResponse error response.
 type ErrorResponse struct {
 	// Error - Error description
@@ -929,6 +941,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 	// Description - READ-ONLY; Friendly description for the operation,
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (od OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResult result of request to list controller operations.It contains a list of operations and

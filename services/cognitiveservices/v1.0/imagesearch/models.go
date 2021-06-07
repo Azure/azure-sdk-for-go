@@ -3676,10 +3676,22 @@ type ImagesImageMetadata struct {
 	AggregateOffer *AggregateOffer `json:"aggregateOffer,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImagesImageMetadata.
+func (iim ImagesImageMetadata) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImagesModule defines a list of images.
 type ImagesModule struct {
 	// Value - READ-ONLY; A list of images.
 	Value *[]ImageObject `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImagesModule.
+func (im ImagesModule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ImageTagsModule defines the characteristics of content found in an image.
@@ -3692,6 +3704,12 @@ type ImageTagsModule struct {
 type InsightsTag struct {
 	// Name - READ-ONLY; The name of the characteristic. For example, cat, kitty, calico cat.
 	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InsightsTag.
+func (it InsightsTag) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BasicIntangible a utility class that serves as the umbrella for a number of 'intangible' things such as quantities,
@@ -6100,10 +6118,22 @@ type RecipesModule struct {
 	Value *[]Recipe `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RecipesModule.
+func (rm RecipesModule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RecognizedEntitiesModule defines a list of previously recognized entities.
 type RecognizedEntitiesModule struct {
 	// Value - READ-ONLY; A list of recognized entities.
 	Value *[]RecognizedEntityGroup `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RecognizedEntitiesModule.
+func (rem RecognizedEntitiesModule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RecognizedEntity defines a recognized entity.
@@ -6631,10 +6661,22 @@ type RelatedCollectionsModule struct {
 	Value *[]ImageGallery `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RelatedCollectionsModule.
+func (rcm RelatedCollectionsModule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RelatedSearchesModule defines a list of related searches.
 type RelatedSearchesModule struct {
 	// Value - READ-ONLY; A list of related searches.
 	Value *[]Query `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RelatedSearchesModule.
+func (rsm RelatedSearchesModule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BasicResponse defines a response. All schemas that could be returned at the root of a response should inherit from

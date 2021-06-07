@@ -923,6 +923,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RetryPolicy information about the retry policy for an event subscription
 type RetryPolicy struct {
 	// MaxDeliveryAttempts - Maximum number of delivery retry attempts for events.
@@ -1208,6 +1214,12 @@ type TopicProperties struct {
 	ProvisioningState TopicProvisioningState `json:"provisioningState,omitempty"`
 	// Endpoint - READ-ONLY; Endpoint for the topic.
 	Endpoint *string `json:"endpoint,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TopicProperties.
+func (tp TopicProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TopicRegenerateKeyRequest topic regenerate share access key request

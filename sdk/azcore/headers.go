@@ -28,3 +28,8 @@ const (
 	HeaderXmsDate            = "x-ms-date"
 	HeaderXmsVersion         = "x-ms-version"
 )
+
+const (
+	headerOperationLocation = "Operation-Location"
+	headerLocation          = "Location"
+)

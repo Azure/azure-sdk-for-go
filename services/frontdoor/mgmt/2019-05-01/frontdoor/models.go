@@ -209,6 +209,12 @@ type CheckNameAvailabilityOutput struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CheckNameAvailabilityOutput.
+func (cnao CheckNameAvailabilityOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CustomHTTPSConfiguration https settings for a domain
 type CustomHTTPSConfiguration struct {
 	// CertificateSource - Defines the source of the SSL certificate. Possible values include: 'CertificateSourceAzureKeyVault', 'CertificateSourceFrontDoor'
@@ -390,6 +396,12 @@ type ErrorResponse struct {
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ForwardingConfiguration describes Forwarding Route.
@@ -1462,6 +1474,12 @@ type ManagedRuleDefinition struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ManagedRuleDefinition.
+func (mrd ManagedRuleDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ManagedRuleGroupDefinition describes a managed rule group.
 type ManagedRuleGroupDefinition struct {
 	// RuleGroupName - READ-ONLY; Name of the managed rule group.
@@ -1470,6 +1488,12 @@ type ManagedRuleGroupDefinition struct {
 	Description *string `json:"description,omitempty"`
 	// Rules - READ-ONLY; List of rules within the managed rule group.
 	Rules *[]ManagedRuleDefinition `json:"rules,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedRuleGroupDefinition.
+func (mrgd ManagedRuleGroupDefinition) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ManagedRuleGroupOverride defines a managed rule group override setting.
@@ -1781,6 +1805,12 @@ type ManagedRuleSetDefinitionProperties struct {
 	RuleSetVersion *string `json:"ruleSetVersion,omitempty"`
 	// RuleGroups - READ-ONLY; Rule groups of the managed rule set.
 	RuleGroups *[]ManagedRuleGroupDefinition `json:"ruleGroups,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedRuleSetDefinitionProperties.
+func (mrsdp ManagedRuleSetDefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ManagedRuleSetList defines the list of managed rule sets for the policy.
@@ -2450,6 +2480,12 @@ type ValidateCustomDomainOutput struct {
 	Reason *string `json:"reason,omitempty"`
 	// Message - READ-ONLY; Error message describing why the custom domain is not valid.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ValidateCustomDomainOutput.
+func (vcdo ValidateCustomDomainOutput) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WebApplicationFirewallPolicy defines web application firewall policy.

@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/delta"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/markdown"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/delta"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/markdown"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/report"
 )
 
 // Changelog describes the changelog generated for a package.
@@ -56,6 +56,11 @@ func (c Changelog) ToCompactMarkdown() string {
 
 // GetBreakingChangeItems returns an array of the breaking change items
 func (c Changelog) GetBreakingChangeItems() []string {
+	if c.RemovedPackage {
+		return []string{
+			fmt.Sprintf("Package was removed"),
+		}
+	}
 	if c.Modified == nil {
 		return []string{}
 	}
@@ -72,13 +77,13 @@ func writeChangelogForPackage(r *report.Package) string {
 	// write breaking changes
 	md.WriteHeader("Breaking Changes")
 	for _, item := range getBreakingChanges(r.BreakingChanges) {
-		md.WriteLine(item)
+		md.WriteListItem(item)
 	}
 
 	// write additional changes
 	md.WriteHeader("New Content")
 	for _, item := range getNewContents(r.AdditiveChanges) {
-		md.WriteLine(item)
+		md.WriteListItem(item)
 	}
 
 	md.EmptyLine()
@@ -110,7 +115,7 @@ func getNewContents(c *delta.Content) []string {
 
 	if len(c.Consts) > 0 {
 		for k := range c.Consts {
-			line := fmt.Sprintf("- New const `%s`", k)
+			line := fmt.Sprintf("New const `%s`", k)
 			items = append(items, line)
 		}
 	}
@@ -127,13 +132,13 @@ func getNewContents(c *delta.Content) []string {
 					returns = fmt.Sprintf("(%s)", returns)
 				}
 			}
-			line := fmt.Sprintf("- New function `%s(%s) %s`", k, params, returns)
+			line := fmt.Sprintf("New function `%s(%s) %s`", k, params, returns)
 			items = append(items, line)
 		}
 	}
 	if len(c.CompleteStructs) > 0 {
 		for _, v := range c.CompleteStructs {
-			line := fmt.Sprintf("- New struct `%s`", v)
+			line := fmt.Sprintf("New struct `%s`", v)
 			items = append(items, line)
 		}
 	}
@@ -141,11 +146,11 @@ func getNewContents(c *delta.Content) []string {
 		modified := c.GetModifiedStructs()
 		for s, f := range modified {
 			for _, af := range f.AnonymousFields {
-				line := fmt.Sprintf("- New anonymous field `%s` in struct `%s`", af, s)
+				line := fmt.Sprintf("New anonymous field `%s` in struct `%s`", af, s)
 				items = append(items, line)
 			}
 			for f := range f.Fields {
-				line := fmt.Sprintf("- New field `%s` in struct `%s`", f, s)
+				line := fmt.Sprintf("New field `%s` in struct `%s`", f, s)
 				items = append(items, line)
 			}
 		}
@@ -179,7 +184,7 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 	// write const changes
 	if len(b.Consts) > 0 {
 		for k, v := range b.Consts {
-			line := fmt.Sprintf("- Const `%s` type has been changed from `%s` to `%s`", k, v.From, v.To)
+			line := fmt.Sprintf("Const `%s` type has been changed from `%s` to `%s`", k, v.From, v.To)
 			items = append(items, line)
 		}
 		// TODO -- sort?
@@ -188,11 +193,11 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 	if len(b.Funcs) > 0 {
 		for k, v := range b.Funcs {
 			if v.Params != nil {
-				line := fmt.Sprintf("- Function `%s` parameter(s) have been changed from `(%s)` to `(%s)`", k, v.Params.From, v.Params.To)
+				line := fmt.Sprintf("Function `%s` parameter(s) have been changed from `(%s)` to `(%s)`", k, v.Params.From, v.Params.To)
 				items = append(items, line)
 			}
 			if v.Returns != nil {
-				line := fmt.Sprintf("- Function `%s` return value(s) have been changed from `(%s)` to `(%s)`", k, v.Returns.From, v.Returns.To)
+				line := fmt.Sprintf("Function `%s` return value(s) have been changed from `(%s)` to `(%s)`", k, v.Returns.From, v.Returns.To)
 				items = append(items, line)
 			}
 		}
@@ -201,7 +206,7 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 	if len(b.Structs) > 0 {
 		for k, v := range b.Structs {
 			for f, d := range v.Fields {
-				line := fmt.Sprintf("- Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
+				line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
 				items = append(items, line)
 			}
 		}
@@ -220,21 +225,21 @@ func getRemovedContent(removed *delta.Content) []string {
 	// write constants
 	if len(removed.Consts) > 0 {
 		for k := range removed.Consts {
-			line := fmt.Sprintf("- Const `%s` has been removed", k)
+			line := fmt.Sprintf("Const `%s` has been removed", k)
 			items = append(items, line)
 		}
 	}
 	// write functions
 	if len(removed.Funcs) > 0 {
 		for k := range removed.Funcs {
-			line := fmt.Sprintf("- Function `%s` has been removed", k)
+			line := fmt.Sprintf("Function `%s` has been removed", k)
 			items = append(items, line)
 		}
 	}
 	// write complete struct removal
 	if len(removed.CompleteStructs) > 0 {
 		for _, v := range removed.CompleteStructs {
-			line := fmt.Sprintf("- Struct `%s` has been removed", v)
+			line := fmt.Sprintf("Struct `%s` has been removed", v)
 			items = append(items, line)
 		}
 	}
@@ -243,11 +248,11 @@ func getRemovedContent(removed *delta.Content) []string {
 	if len(modified) > 0 {
 		for s, f := range modified {
 			for _, af := range f.AnonymousFields {
-				line := fmt.Sprintf("- Field `%s` of struct `%s` has been removed", af, s)
+				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", af, s)
 				items = append(items, line)
 			}
 			for f := range f.Fields {
-				line := fmt.Sprintf("- Field `%s` of struct `%s` has been removed", f, s)
+				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", f, s)
 				items = append(items, line)
 			}
 		}

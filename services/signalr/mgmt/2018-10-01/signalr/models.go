@@ -570,6 +570,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceList object that includes an array of SignalR services and a possible link for next set.
 type ResourceList struct {
 	autorest.Response `json:"-"`

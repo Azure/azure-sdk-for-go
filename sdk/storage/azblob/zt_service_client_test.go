@@ -5,6 +5,7 @@ package azblob
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"time"
 
@@ -341,4 +342,17 @@ func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(c *chk.C) {
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeInvalidXMLDocument)
+}
+
+func (s *aztestsSuite) TestParseConnectionString(c *chk.C) {
+	accountName, accountKey := accountInfo()
+	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
+		accountName, accountKey)
+	serviceURL, _, cred, err := ParseConnectionString(connectionString, "")
+	c.Assert(err, chk.IsNil)
+	c.Assert(serviceURL, chk.Equals, "https://"+accountName+".blob.core.windows.net/")
+	svcClient, err := NewServiceClient(serviceURL, cred, nil)
+	c.Assert(err, chk.IsNil)
+	contClient, _ := createNewContainer(c, svcClient)
+	defer deleteContainer(c, contClient)
 }

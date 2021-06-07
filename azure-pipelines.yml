@@ -29,6 +29,7 @@ jobs:
       sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
       IGNORE_BREAKING_CHANGES: true
       go.list.filter: '| grep -v vendor | grep -v azure-sdk-for-go/sdk | grep -v azure-sdk-for-go/tools/generator'
+      go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./sdk -prune -o -path ./tools/generator -prune'
 
     steps:
     - task: GoTool@0
@@ -58,7 +59,7 @@ jobs:
     - script: go build -v $(go list ./... $(go.list.filter))
       workingDirectory: '$(sdkPath)'
       displayName: 'Build'
-    - script: go test $(dirname $(find . -path ./vendor -prune -o -path ./sdk -prune -o -path ./sdk -prune -o -name '*_test.go' -print) | sort -u)
+    - script: go test $(dirname $(find . $(go.test.filter) -name '*_test.go' -print) | sort -u)
       workingDirectory: '$(sdkPath)'
       displayName: 'Run Tests'
     - template: /eng/common/pipelines/templates/steps/verify-links.yml
@@ -85,7 +86,6 @@ jobs:
       condition: succeededOrFailed()
     - script: |
         golint ./storage/... >&2
-        golint ./tools/... >&2
       workingDirectory: '$(sdkPath)'
       displayName: 'Linter Check'
       failOnStderr: true

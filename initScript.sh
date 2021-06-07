@@ -8,6 +8,7 @@ fi
 curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 PATH=$PATH:$GOPATH/bin
 dep ensure
+go get github.com/Azure/azure-sdk-for-go/tools/generator@latest
 cat > $2 << EOF
 {
   "envs": {

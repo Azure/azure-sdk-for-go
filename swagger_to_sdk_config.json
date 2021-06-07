@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/documentation/sdkautomation/SwaggerToSdkConfigSchema.json",
   "generateOptions": {
     "generateScript": {
-      "path": "go run ./tools/generator/main.go automation",
+      "path": "generator automation",
       "stderr": {
         "showInComment": "^\\[AUTOREST\\]",
         "scriptError": "^\\[ERROR\\]",

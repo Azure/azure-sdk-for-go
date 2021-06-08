@@ -4,11 +4,11 @@
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/Azure.azure-sdk-for-go?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=640&branchName=master)
 
 This repository is for active development of the Azure SDK for Go. For consumers of the SDK you can follow the links below to visit the documentation you are interested in
-    * [Overview of Azure SDK for Go](https://docs.microsoft.com/azure/developer/go/)
-    * [SDK Reference](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go)
-    * [Code Samples for Azure Go SDK](https://github.com/azure-samples/azure-sdk-for-go-samples)
-    * [Azure REST API Docs](https://docs.microsoft.com/rest/api/)
-    * [General Azure Docs](https://docs.microsoft.com/azure)
+* [Overview of Azure SDK for Go](https://docs.microsoft.com/azure/developer/go/)
+* [SDK Reference](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go)
+* [Code Samples for Azure Go SDK](https://github.com/azure-samples/azure-sdk-for-go-samples)
+* [Azure REST API Docs](https://docs.microsoft.com/rest/api/)
+* [General Azure Docs](https://docs.microsoft.com/azure)
 
 
 ## New Releases

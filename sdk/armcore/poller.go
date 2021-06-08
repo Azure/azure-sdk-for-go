@@ -169,8 +169,11 @@ func (l *LROPoller) FinalResponse(ctx context.Context, respType interface{}) (*h
 	if !l.Done() {
 		return nil, errors.New("cannot return a final response from a poller in a non-terminal state")
 	}
-	// if there's nothing to unmarshall into just return the final response
+	// if there's nothing to unmarshall into or no response body just return the final response
 	if respType == nil {
+		return l.resp.Response, nil
+	} else if l.resp.StatusCode == http.StatusNoContent || l.resp.ContentLength == 0 {
+		azcore.Log().Write(azcore.LogLongRunningOperation, "final response specifies a response type but no payload was received")
 		return l.resp.Response, nil
 	}
 	if u := l.lro.FinalGetURL(); u != "" {

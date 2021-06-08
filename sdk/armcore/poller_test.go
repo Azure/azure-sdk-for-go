@@ -65,9 +65,10 @@ func initialResponse(method, u string, resp io.Reader) *azcore.Response {
 	}
 	return &azcore.Response{
 		Response: &http.Response{
-			Body:    ioutil.NopCloser(resp),
-			Header:  http.Header{},
-			Request: req,
+			Body:          ioutil.NopCloser(resp),
+			ContentLength: -1,
+			Header:        http.Header{},
+			Request:       req,
 		},
 	}
 }
@@ -245,5 +246,35 @@ func TestNewLROPollerFailed(t *testing.T) {
 	}
 	if _, ok := err.(mockError); !ok {
 		t.Fatalf("unexpected error type %T", err)
+	}
+}
+
+func TestNewLROPollerSuccessNoContent(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(provStateUpdating)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusNoContent))
+	resp := initialResponse(http.MethodPatch, srv.URL(), strings.NewReader(provStateStarted))
+	resp.StatusCode = http.StatusCreated
+	pl := getPipeline(srv)
+	poller, err := NewLROPoller("pollerID", "", resp, pl, handleError)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, ok := poller.lro.(*body.Poller); !ok {
+		t.Fatalf("unexpected poller type %T", poller.lro)
+	}
+	tk, err := poller.ResumeToken()
+	if err != nil {
+		t.Fatal(err)
+	}
+	poller, err = NewLROPollerFromResumeToken("pollerID", tk, pl, handleError)
+	var result mockType
+	_, err = poller.PollUntilDone(context.Background(), 10*time.Millisecond, &result)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if result.Field != nil {
+		t.Fatal("expected nil result")
 	}
 }

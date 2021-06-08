@@ -109,3 +109,12 @@ func TestMakeID(t *testing.T) {
 		t.Fatalf("unexpected poller kind %s", p)
 	}
 }
+
+func TestIsValidURL(t *testing.T) {
+	if IsValidURL("/foo") {
+		t.Fatal("unexpected valid URL")
+	}
+	if !IsValidURL("https://foo.bar/baz") {
+		t.Fatal("expected valid URL")
+	}
+}

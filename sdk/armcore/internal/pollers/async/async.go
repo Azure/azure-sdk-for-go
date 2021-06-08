@@ -7,6 +7,7 @@ package async
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore/internal/pollers"
@@ -41,6 +42,9 @@ func New(resp *azcore.Response, finalState string, pollerID string) (*Poller, er
 	asyncURL := resp.Header.Get(pollers.HeaderAzureAsync)
 	if asyncURL == "" {
 		return nil, errors.New("response is missing Azure-AsyncOperation header")
+	}
+	if !pollers.IsValidURL(asyncURL) {
+		return nil, fmt.Errorf("invalid polling URL %s", asyncURL)
 	}
 	p := &Poller{
 		Type:       pollers.MakeID(pollerID, "async"),

@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -106,6 +107,12 @@ func GetProvisioningState(resp *azcore.Response) (string, error) {
 		return ps, nil
 	}
 	return "", ErrNoProvisioningState
+}
+
+// IsValidURL verifies that the URL is valid and absolute.
+func IsValidURL(s string) bool {
+	u, err := url.Parse(s)
+	return err == nil && u.IsAbs()
 }
 
 // MakeID returns the unique poller identifier in the format pollerID;poller.

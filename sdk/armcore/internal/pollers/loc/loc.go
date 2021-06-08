@@ -6,6 +6,7 @@
 package loc
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore/internal/pollers"
@@ -27,9 +28,13 @@ type Poller struct {
 // New creates a new Poller from the provided initial response.
 func New(resp *azcore.Response, pollerID string) (*Poller, error) {
 	azcore.Log().Write(azcore.LogLongRunningOperation, "Using Location poller.")
+	locURL := resp.Header.Get(pollers.HeaderLocation)
+	if !pollers.IsValidURL(locURL) {
+		return nil, fmt.Errorf("invalid polling URL %s", locURL)
+	}
 	p := &Poller{
 		Type:     pollers.MakeID(pollerID, "loc"),
-		PollURL:  resp.Header.Get(pollers.HeaderLocation),
+		PollURL:  locURL,
 		CurState: "InProgress",
 	}
 	return p, nil

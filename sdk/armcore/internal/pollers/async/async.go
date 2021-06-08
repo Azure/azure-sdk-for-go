@@ -87,13 +87,15 @@ func (p *Poller) FinalGetURL() string {
 		// for PATCH and PUT, the final GET is on the original resource URL
 		return p.OrigURL
 	} else if p.Method == http.MethodPost {
-		// for POST, we need to consult the final-state-via flag
-		if p.FinalState == finalStateLoc && p.LocURL != "" {
-			return p.LocURL
+		if p.FinalState == finalStateAsync {
+			return ""
 		} else if p.FinalState == finalStateOrig {
 			return p.OrigURL
+		} else if p.LocURL != "" {
+			// ideally FinalState would be set to "location" but it isn't always.
+			// must check last due to more permissive condition.
+			return p.LocURL
 		}
-		// finalStateAsync fall through
 	}
 	return ""
 }

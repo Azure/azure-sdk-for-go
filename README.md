@@ -18,11 +18,11 @@ To get started, please follow the [quickstart guide] here (https://aka.ms/azsdk/
 To see the benefits of migrating to the new libraries, please visit this migration guideIn addition, a migration guide that shows how to transition from older versions of libraries is located [here](todo-addthislink).
 Those new libraries can be identified by locating them under the [/sdk folder](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk) in the repo
 
-You can find the [most up to date list of all of the new packages on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk) as well as our [official releases page](https://azure.github.io/azure-sdk/releases/latest/go.html)
+You can find the most up to date list of all of the new packages [on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk) as well as our [official releases page](https://azure.github.io/azure-sdk/releases/latest/go.html)
 
 ## Previous Releases
 
-Previous Go SDK packages are located under [/services]((https://github.com/Azure/azure-sdk-for-go/tree/master/services) folder, and you can see the full list [on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services). They might not have the same feature set as the new releases but they do offer wider coverage of services.
+Previous Go SDK packages are located under [/services folder](https://github.com/Azure/azure-sdk-for-go/tree/master/services), and you can see the full list [on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services). They might not have the same feature set as the new releases but they do offer wider coverage of services.
 
 
 ## Getting Started

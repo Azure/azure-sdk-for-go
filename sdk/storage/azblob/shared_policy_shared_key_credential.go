@@ -8,6 +8,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -22,6 +23,9 @@ import (
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
 // storage account's name and either its primary or secondary key.
 func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
+	if accountName == "" || accountKey == "" {
+		return nil, errors.New("empty account name or account key")
+	}
 	c := SharedKeyCredential{accountName: accountName}
 	if err := c.SetAccountKey(accountKey); err != nil {
 		return nil, err

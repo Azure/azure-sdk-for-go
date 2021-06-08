@@ -312,6 +312,17 @@ func getBSU() ServiceClient {
 	return bsu
 }
 
+func getBSUFromConnectionString() ServiceClient {
+	connectionString := getConnectionString()
+	primaryURL, _, cred, err := ParseConnectionString(connectionString, "")
+	if err != nil {
+		return ServiceClient{}
+	}
+
+	svcClient, _ := NewServiceClient(primaryURL, cred, nil)
+	return svcClient
+}
+
 func getAlternateBSU() (ServiceClient, error) {
 	return getGenericBSU("SECONDARY_")
 }
@@ -398,4 +409,11 @@ func blobListToMap(list []string) map[string]bool {
 	}
 
 	return out
+}
+
+func getConnectionString() string {
+	accountName, accountKey := accountInfo()
+	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
+		accountName, accountKey)
+	return connectionString
 }

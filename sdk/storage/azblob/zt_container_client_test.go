@@ -109,21 +109,30 @@ func (s *aztestsSuite) TestContainerCreateInvalidMetadata(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestContainerCreateNilMetadata(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := getContainerClient(c, bsu)
+	for i := 1; i <= 2; i++ {
+		var bsu ServiceClient
+		if i == 1 {
+			bsu = getBSU()
+		} else {
+			bsu = getBSUFromConnectionString()
+		}
 
-	access := PublicAccessBlob
-	createContainerOptions := CreateContainerOptions{
-		Access:   &access,
-		Metadata: &map[string]string{},
+		containerClient, _ := getContainerClient(c, bsu)
+
+		access := PublicAccessBlob
+		createContainerOptions := CreateContainerOptions{
+			Access:   &access,
+			Metadata: &map[string]string{},
+		}
+		_, err := containerClient.Create(ctx, &createContainerOptions)
+		defer deleteContainer(c, containerClient)
+		c.Assert(err, chk.IsNil)
+
+		response, err := containerClient.GetProperties(ctx, nil)
+		c.Assert(err, chk.IsNil)
+		c.Assert(response.Metadata, chk.IsNil)
 	}
-	_, err := containerClient.Create(ctx, &createContainerOptions)
-	defer deleteContainer(c, containerClient)
-	c.Assert(err, chk.IsNil)
 
-	response, err := containerClient.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(response.Metadata, chk.IsNil)
 }
 
 func (s *aztestsSuite) TestContainerCreateEmptyMetadata(c *chk.C) {
@@ -148,113 +157,133 @@ func (s *aztestsSuite) TestContainerCreateEmptyMetadata(c *chk.C) {
 // simply delete the whole container after the test
 
 func (s *aztestsSuite) TestContainerCreateAccessContainer(c *chk.C) {
-	bsu := getBSU()
-	credential, err := getGenericCredential("")
-	c.Assert(err, chk.IsNil)
-	containerClient, _ := getContainerClient(c, bsu)
-
-	access := PublicAccessBlob
-	createContainerOptions := CreateContainerOptions{
-		Access: &access,
-	}
-	_, err = containerClient.Create(ctx, &createContainerOptions)
-	defer deleteContainer(c, containerClient)
-	c.Assert(err, chk.IsNil)
-
-	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		Metadata: &basicMetadata,
-	}
-	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
-	c.Assert(err, chk.IsNil)
-
-	// Anonymous enumeration should be valid with container access
-	containerClient2, _ := NewContainerClient(containerClient.URL(), credential, nil)
-	pager := containerClient2.ListBlobsFlatSegment(nil)
-
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
-
-		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
-			c.Assert(*blob.Name, chk.Equals, blobPrefix)
+	for i := 1; i <= 2; i++ {
+		var bsu ServiceClient
+		if i == 1 {
+			bsu = getBSU()
+		} else {
+			bsu = getBSUFromConnectionString()
 		}
+		credential, err := getGenericCredential("")
+		c.Assert(err, chk.IsNil)
+		containerClient, _ := getContainerClient(c, bsu)
+
+		access := PublicAccessBlob
+		createContainerOptions := CreateContainerOptions{
+			Access: &access,
+		}
+		_, err = containerClient.Create(ctx, &createContainerOptions)
+		defer deleteContainer(c, containerClient)
+		c.Assert(err, chk.IsNil)
+
+		bbClient := containerClient.NewBlockBlobClient(blobPrefix)
+		uploadBlockBlobOptions := UploadBlockBlobOptions{
+			Metadata: &basicMetadata,
+		}
+		_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
+		c.Assert(err, chk.IsNil)
+
+		// Anonymous enumeration should be valid with container access
+		containerClient2, _ := NewContainerClient(containerClient.URL(), credential, nil)
+		pager := containerClient2.ListBlobsFlatSegment(nil)
+
+		for pager.NextPage(ctx) {
+			resp := pager.PageResponse()
+
+			for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+				c.Assert(*blob.Name, chk.Equals, blobPrefix)
+			}
+		}
+
+		c.Assert(pager.Err(), chk.IsNil)
+
+		// Getting blob data anonymously should still be valid with container access
+		blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
+		resp, err := blobURL2.GetProperties(ctx, nil)
+		c.Assert(err, chk.IsNil)
+		c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 	}
-
-	c.Assert(pager.Err(), chk.IsNil)
-
-	// Getting blob data anonymously should still be valid with container access
-	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
-	resp, err := blobURL2.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestContainerCreateAccessBlob(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := getContainerClient(c, bsu)
+	for i := 1; i <= 2; i++ {
+		var bsu ServiceClient
+		if i == 1 {
+			bsu = getBSU()
+		} else {
+			bsu = getBSUFromConnectionString()
+		}
 
-	access := PublicAccessBlob
-	createContainerOptions := CreateContainerOptions{
-		Access: &access,
+		containerClient, _ := getContainerClient(c, bsu)
+
+		access := PublicAccessBlob
+		createContainerOptions := CreateContainerOptions{
+			Access: &access,
+		}
+		_, err := containerClient.Create(ctx, &createContainerOptions)
+		defer deleteContainer(c, containerClient)
+		c.Assert(err, chk.IsNil)
+
+		bbClient := containerClient.NewBlockBlobClient(blobPrefix)
+		uploadBlockBlobOptions := UploadBlockBlobOptions{
+			Metadata: &basicMetadata,
+		}
+		_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
+		c.Assert(err, chk.IsNil)
+
+		// Reference the same container URL but with anonymous credentials
+		containerClient2, err := NewContainerClient(containerClient.URL(), azcore.AnonymousCredential(), nil)
+		c.Assert(err, chk.IsNil)
+
+		pager := containerClient2.ListBlobsFlatSegment(nil)
+
+		c.Assert(pager.NextPage(ctx), chk.Equals, false)
+		c.Assert(pager.Err(), chk.NotNil)
+
+		// Accessing blob specific data should be public
+		blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
+		resp, err := blobURL2.GetProperties(ctx, nil)
+		c.Assert(err, chk.IsNil)
+		c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 	}
-	_, err := containerClient.Create(ctx, &createContainerOptions)
-	defer deleteContainer(c, containerClient)
-	c.Assert(err, chk.IsNil)
-
-	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		Metadata: &basicMetadata,
-	}
-	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
-	c.Assert(err, chk.IsNil)
-
-	// Reference the same container URL but with anonymous credentials
-	containerClient2, err := NewContainerClient(containerClient.URL(), azcore.AnonymousCredential(), nil)
-	c.Assert(err, chk.IsNil)
-
-	pager := containerClient2.ListBlobsFlatSegment(nil)
-
-	c.Assert(pager.NextPage(ctx), chk.Equals, false)
-	c.Assert(pager.Err(), chk.NotNil)
-
-	// Accessing blob specific data should be public
-	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
-	resp, err := blobURL2.GetProperties(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestContainerCreateAccessNone(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := getContainerClient(c, bsu)
+	for i := 1; i <= 2; i++ {
+		var bsu ServiceClient
+		if i == 1 {
+			bsu = getBSU()
+		} else {
+			bsu = getBSUFromConnectionString()
+		}
+		containerClient, _ := getContainerClient(c, bsu)
 
-	// Public Access Type None
-	_, err := containerClient.Create(ctx, nil)
-	defer deleteContainer(c, containerClient)
+		// Public Access Type None
+		_, err := containerClient.Create(ctx, nil)
+		defer deleteContainer(c, containerClient)
 
-	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
-	uploadBlockBlobOptions := UploadBlockBlobOptions{
-		Metadata: &basicMetadata,
+		bbClient := containerClient.NewBlockBlobClient(blobPrefix)
+		uploadBlockBlobOptions := UploadBlockBlobOptions{
+			Metadata: &basicMetadata,
+		}
+		_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
+		c.Assert(err, chk.IsNil)
+
+		// Reference the same container URL but with anonymous credentials
+		containerClient2, err := NewContainerClient(containerClient.URL(), azcore.AnonymousCredential(), nil)
+		c.Assert(err, chk.IsNil)
+
+		pager := containerClient2.ListBlobsFlatSegment(nil)
+
+		c.Assert(pager.NextPage(ctx), chk.Equals, false)
+		c.Assert(pager.Err(), chk.NotNil)
+
+		// Blob data is not public
+		blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
+		_, err = blobURL2.GetProperties(ctx, nil)
+		c.Assert(err, chk.NotNil)
+
 	}
-	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
-	c.Assert(err, chk.IsNil)
-
-	// Reference the same container URL but with anonymous credentials
-	containerClient2, err := NewContainerClient(containerClient.URL(), azcore.AnonymousCredential(), nil)
-	c.Assert(err, chk.IsNil)
-
-	pager := containerClient2.ListBlobsFlatSegment(nil)
-
-	c.Assert(pager.NextPage(ctx), chk.Equals, false)
-	c.Assert(pager.Err(), chk.NotNil)
-
-	// Blob data is not public
-	blobURL2 := containerClient2.NewBlockBlobClient(blobPrefix)
-	_, err = blobURL2.GetProperties(ctx, nil)
-	c.Assert(err, chk.NotNil)
-
-	//serr := err.(StorageError)
-	//c.Assert(serr.Response().StatusCode, chk.Equals, 401) // HEAD request does not return a status code
 }
 
 func validateContainerDeleted(c *chk.C, containerClient ContainerClient) {
@@ -1369,13 +1398,20 @@ func (s *aztestsSuite) TestContainerSetMetadataIfModifiedSinceFalse(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestContainerNewBlobURL(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := getContainerClient(c, bsu)
+	for i := 1; i <= 2; i++ {
+		var bsu ServiceClient
+		if i == 1 {
+			bsu = getBSU()
+		} else {
+			bsu = getBSUFromConnectionString()
+		}
+		containerClient, _ := getContainerClient(c, bsu)
 
-	bbClient := containerClient.NewBlobClient(blobPrefix)
+		bbClient := containerClient.NewBlobClient(blobPrefix)
 
-	c.Assert(bbClient.URL(), chk.Equals, containerClient.URL()+"/"+blobPrefix)
-	c.Assert(bbClient, chk.FitsTypeOf, BlobClient{})
+		c.Assert(bbClient.URL(), chk.Equals, containerClient.URL()+"/"+blobPrefix)
+		c.Assert(bbClient, chk.FitsTypeOf, BlobClient{})
+	}
 }
 
 func (s *aztestsSuite) TestContainerNewBlockBlobClient(c *chk.C) {

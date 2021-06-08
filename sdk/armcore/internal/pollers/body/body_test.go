@@ -67,6 +67,7 @@ func TestApplicable(t *testing.T) {
 func TestNew(t *testing.T) {
 	const jsonBody = `{ "properties": { "provisioningState": "Started" } }`
 	resp := initialResponse(http.MethodPut, strings.NewReader(jsonBody))
+	resp.StatusCode = http.StatusCreated
 	poller, err := New(resp, "pollerID")
 	if err != nil {
 		t.Fatal(err)
@@ -94,6 +95,7 @@ func TestNew(t *testing.T) {
 func TestUpdateNoProvState(t *testing.T) {
 	const jsonBody = `{ "properties": { "provisioningState": "Started" } }`
 	resp := initialResponse(http.MethodPut, strings.NewReader(jsonBody))
+	resp.StatusCode = http.StatusOK
 	poller, err := New(resp, "pollerID")
 	if err != nil {
 		t.Fatal(err)
@@ -118,14 +120,38 @@ func TestUpdateNoProvState(t *testing.T) {
 	}
 }
 
-func TestNewFail(t *testing.T) {
-	// missing provisioning state on initial response
+func TestNewNoInitialProvStateOK(t *testing.T) {
 	resp := initialResponse(http.MethodPut, http.NoBody)
+	resp.StatusCode = http.StatusOK
 	poller, err := New(resp, "pollerID")
-	if err == nil {
-		t.Fatal("unexpected nil error")
+	if err != nil {
+		t.Fatal(err)
 	}
-	if poller != nil {
-		t.Fatal("expected nil poller")
+	if !poller.Done() {
+		t.Fatal("poller not be done")
+	}
+	if u := poller.FinalGetURL(); u != "" {
+		t.Fatal("expected empty final GET URL")
+	}
+	if s := poller.Status(); s != "Succeeded" {
+		t.Fatalf("unexpected status %s", s)
+	}
+}
+
+func TestNewNoInitialProvStateNC(t *testing.T) {
+	resp := initialResponse(http.MethodPut, http.NoBody)
+	resp.StatusCode = http.StatusNoContent
+	poller, err := New(resp, "pollerID")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !poller.Done() {
+		t.Fatal("poller not be done")
+	}
+	if u := poller.FinalGetURL(); u != "" {
+		t.Fatal("expected empty final GET URL")
+	}
+	if s := poller.Status(); s != "Succeeded" {
+		t.Fatalf("unexpected status %s", s)
 	}
 }

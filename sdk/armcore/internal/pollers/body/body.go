@@ -35,12 +35,27 @@ func New(resp *azcore.Response, pollerID string) (*Poller, error) {
 		Type:    pollers.MakeID(pollerID, "body"),
 		PollURL: resp.Request.URL.String(),
 	}
-	// the initial response must contain a provisioning state
-	state, err := pollers.GetProvisioningState(resp)
-	if err != nil {
+	// default initial state to InProgress.  depending on the HTTP
+	// status code and provisioning state, we might change the value.
+	curState := "InProgress"
+	provState, err := pollers.GetProvisioningState(resp)
+	if err != nil && !errors.Is(err, pollers.ErrNoProvisioningState) {
 		return nil, err
 	}
-	p.CurState = state
+	if resp.StatusCode == http.StatusCreated && provState != "" {
+		// absense of provisioning state is ok for a 201, means the operation is in progress
+		curState = provState
+	} else if resp.StatusCode == http.StatusOK {
+		if provState != "" {
+			curState = provState
+		} else if provState == "" {
+			// for a 200, absense of provisioning state indicates success
+			curState = "Succeeded"
+		}
+	} else if resp.StatusCode == http.StatusNoContent {
+		curState = "Succeeded"
+	}
+	p.CurState = curState
 	return p, nil
 }
 

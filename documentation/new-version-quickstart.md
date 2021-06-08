@@ -1,5 +1,5 @@
 
-Getting Started - New Releases of Azure SDK for Go
+Getting Started - New Azure Go SDK
 =============================================================
 
 We are excited to announce that a new set of management libraries are
@@ -130,7 +130,7 @@ Now that we are authenticated and have created our sub-resource clients, we can 
 
 Example: Managing Resource Groups
 ---------------------------------
-We can use the Resource client (``Azure.ResourceManager.Resources.ResourcesManagementClient``) we have created to perform operations on Resource Group. In this example, we will show to manage Resource Groups.
+We can use the Resource client (``ResourceClient``) we have created to perform operations on Resource Group. In this example, we will show to manage Resource Groups.
 
 ***Create a resource group***
 
@@ -160,8 +160,8 @@ Driver program
 ```
 ## Code Samples
 
-More code samples for using the management library for .NET can be found in the following locations
-- [.NET Management Library Code Samples](https://docs.microsoft.com/samples/browse/?branch=master&languages=csharp&term=managing%20using%20Azure%20.NET%20SDK&terms=managing%20using%20Azure%20.NET%20SDK)
+More code samples for using the management library for Go SDK can be found in the following locations
+- [Go SDK Code Samples](https://github.com/Azure-Samples/azure-sdk-for-go-samples)
 
 Need help?
 ----------

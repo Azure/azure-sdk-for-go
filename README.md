@@ -4,11 +4,11 @@
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/Azure.azure-sdk-for-go?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=640&branchName=master)
 
 This repository is for active development of the Azure SDK for Go. For consumers of the SDK you can follow the links below to visit the documentation you are interested in
-* [Overview of Azure SDK for Go](https://docs.microsoft.com/azure/developer/go/)
-* [SDK Reference](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go)
-* [Code Samples for Azure Go SDK](https://github.com/azure-samples/azure-sdk-for-go-samples)
-* [Azure REST API Docs](https://docs.microsoft.com/rest/api/)
-* [General Azure Docs](https://docs.microsoft.com/azure)
+    * [Overview of Azure SDK for Go](https://docs.microsoft.com/azure/developer/go/)
+    * [SDK Reference](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go)
+    * [Code Samples for Azure Go SDK](https://github.com/azure-samples/azure-sdk-for-go-samples)
+    * [Azure REST API Docs](https://docs.microsoft.com/rest/api/)
+    * [General Azure Docs](https://docs.microsoft.com/azure)
 
 
 ## New Releases
@@ -16,21 +16,21 @@ This repository is for active development of the Azure SDK for Go. For consumers
 A new set of management libraries for Go that follow the [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html) are now available. These new libraries provide a number of core capabilities that are shared amongst all Azure SDKs, including the intuitive Azure Identity library, an HTTP Pipeline with custom policies, error-handling, distributed tracing, and much more.
 To get started, please follow the [quickstart guide] here (https://aka.ms/azsdk/go/mgmt). 
 To see the benefits of migrating to the new libraries, please visit this migration guideIn addition, a migration guide that shows how to transition from older versions of libraries is located [here](todo-addthislink).
-Those new libraries can be identified by locating them under the [/sdk folder](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk) in the repo. 
+Those new libraries can be identified by locating them under the [/sdk folder](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk) in the repo
 
-You can find the [most up to date list of all of the new packages on our page](https://azure.github.io/azure-sdk/releases/latest/go.html)
+You can find the [most up to date list of all of the new packages on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk) as well as our [official releases page](https://azure.github.io/azure-sdk/releases/latest/go.html)
 
 ## Previous Releases
 
-Previous Go SDK packages are located under [/services]((https://github.com/Azure/azure-sdk-for-go/tree/master/services) folder. They might not have the same feature set as the new releases but they do offer wider coverage of services.
+Previous Go SDK packages are located under [/services]((https://github.com/Azure/azure-sdk-for-go/tree/master/services) folder, and you can see the full list [on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services). They might not have the same feature set as the new releases but they do offer wider coverage of services.
 
 
 ## Getting Started
 
 For instructions and documentation on how to use our Azure SDK for Go, we have provided quickstart tutorials for both new and previous releases.
 
-*
-*
+* [Quickstart tutorial for new releases]
+* [Quickstart tutorial for previous releases]
 
 ## Other Azure Go Packages
 

@@ -29,8 +29,8 @@ Previous Go SDK packages are located under [/services folder](https://github.com
 
 For instructions and documentation on how to use our Azure SDK for Go, we have provided quickstart tutorials for both new and previous releases.
 
-* [Quickstart tutorial for new releases]
-* [Quickstart tutorial for previous releases]
+* [Quickstart tutorial for new releases](https://github.com/Azure/azure-sdk-for-go/blob/master/documentation/previous-versions-quickstart.md)
+* [Quickstart tutorial for previous releases](https://github.com/Azure/azure-sdk-for-go/blob/master/documentation/previous-versions-quickstart.md)
 
 ## Other Azure Go Packages
 

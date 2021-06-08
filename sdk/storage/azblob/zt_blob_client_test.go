@@ -21,63 +21,64 @@ import (
 )
 
 func (s *aztestsSuite) TestCreateBlobClient(c *chk.C) {
-	bsu := getBSU()
-	containerClient, containerName := getContainerClient(c, bsu)
-	testURL, testName := getBlockBlobClient(c, containerClient)
+	for i := 1; i <= 2; i++ {
+		var bsu ServiceClient
+		if i == 1 {
+			bsu = getBSU()
+		} else {
+			bsu = getBSUFromConnectionString()
+		}
+		containerClient, containerName := getContainerClient(c, bsu)
+		testURL, testName := getBlockBlobClient(c, containerClient)
 
-	parts := NewBlobURLParts(testURL.URL())
-	c.Assert(parts.BlobName, chk.Equals, testName)
-	c.Assert(parts.ContainerName, chk.Equals, containerName)
+		parts := NewBlobURLParts(testURL.URL())
+		c.Assert(parts.BlobName, chk.Equals, testName)
+		c.Assert(parts.ContainerName, chk.Equals, containerName)
 
-	correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + containerName + "/" + testName
-	c.Assert(testURL.URL(), chk.Equals, correctURL)
+		correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + containerName + "/" + testName
+		c.Assert(testURL.URL(), chk.Equals, correctURL)
+	}
 }
 
 func (s *aztestsSuite) TestCreateBlobClientWithSnapshotAndSAS(c *chk.C) {
-	bsu := getBSU()
-	containerClient, containerName := getContainerClient(c, bsu)
-	blobClient, blobName := getBlockBlobClient(c, containerClient)
+	for i := 1; i <= 2; i++ {
+		var bsu ServiceClient
+		if i == 1 {
+			bsu = getBSU()
+		} else {
+			bsu = getBSUFromConnectionString()
+		}
+		containerClient, containerName := getContainerClient(c, bsu)
+		blobClient, blobName := getBlockBlobClient(c, containerClient)
 
-	currentTime := time.Now().UTC()
-	credential, err := getGenericCredential("")
-	if err != nil {
-		c.Fatal("Invalid credential")
+		currentTime := time.Now().UTC()
+		credential, err := getGenericCredential("")
+		if err != nil {
+			c.Fatal("Invalid credential")
+		}
+		sasQueryParams, err := AccountSASSignatureValues{
+			Protocol:      SASProtocolHTTPS,
+			ExpiryTime:    currentTime.Add(48 * time.Hour),
+			Permissions:   AccountSASPermissions{Read: true, List: true}.String(),
+			Services:      AccountSASServices{Blob: true}.String(),
+			ResourceTypes: AccountSASResourceTypes{Container: true, Object: true}.String(),
+		}.NewSASQueryParameters(credential)
+		if err != nil {
+			c.Fatal(err)
+		}
+
+		parts := NewBlobURLParts(blobClient.URL())
+		parts.SAS = sasQueryParams
+		parts.Snapshot = currentTime.Format(SnapshotTimeFormat)
+		testURL := parts.URL()
+
+		// The snapshot format string is taken from the snapshotTimeFormat value in parsing_urls.go. The field is not public, so
+		// it is copied here
+		correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + containerName + "/" + blobName +
+			"?" + "snapshot=" + currentTime.Format("2006-01-02T15:04:05.0000000Z07:00") + "&" + sasQueryParams.Encode()
+		c.Assert(testURL, chk.Equals, correctURL)
 	}
-	sasQueryParams, err := AccountSASSignatureValues{
-		Protocol:      SASProtocolHTTPS,
-		ExpiryTime:    currentTime.Add(48 * time.Hour),
-		Permissions:   AccountSASPermissions{Read: true, List: true}.String(),
-		Services:      AccountSASServices{Blob: true}.String(),
-		ResourceTypes: AccountSASResourceTypes{Container: true, Object: true}.String(),
-	}.NewSASQueryParameters(credential)
-	if err != nil {
-		c.Fatal(err)
-	}
-
-	parts := NewBlobURLParts(blobClient.URL())
-	parts.SAS = sasQueryParams
-	parts.Snapshot = currentTime.Format(SnapshotTimeFormat)
-	testURL := parts.URL()
-
-	// The snapshot format string is taken from the snapshotTimeFormat value in parsing_urls.go. The field is not public, so
-	// it is copied here
-	correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + containerName + "/" + blobName +
-		"?" + "snapshot=" + currentTime.Format("2006-01-02T15:04:05.0000000Z07:00") + "&" + sasQueryParams.Encode()
-	c.Assert(testURL, chk.Equals, correctURL)
 }
-
-// func (s *aztestsSuite) TestBlobWithNewPipeline(c *chk.C) {
-// 	bsu := getBSU()
-// 	containerClient, _ := getContainerClient(c, bsu)
-// 	blobClient := containerClient.NewBlockBlobClient(blobPrefix)
-//
-// 	newBlobClient := blobClient.WithPipeline(newTestPipeline())
-//
-// 	// exercise the new pipeline
-// 	_, err := newBlobClient.GetAccountInfo(ctx)
-// 	c.Assert(err, chk.NotNil)
-// 	c.Assert(err.Error(), chk.Equals, testPipelineMessage)
-// }
 
 func waitForCopy(c *chk.C, copyBlobClient BlockBlobClient, blobCopyResponse BlobStartCopyFromURLResponse) {
 	status := *blobCopyResponse.CopyStatus
@@ -290,84 +291,91 @@ func (s *aztestsSuite) TestBlobStartCopyUsingSASSrc(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestBlobStartCopyUsingSASDest(c *chk.C) {
-	bsu := getBSU()
-	containerClient, containerName := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-	_, err := containerClient.SetAccessPolicy(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	blobClient, blobName := createNewBlockBlob(c, containerClient)
-	_ = blobClient
+	for i := 1; i <= 2; i++ {
+		var bsu ServiceClient
+		if i == 1 {
+			bsu = getBSU()
+		} else {
+			bsu = getBSUFromConnectionString()
+		}
+		containerClient, containerName := createNewContainer(c, bsu)
+		defer deleteContainer(c, containerClient)
+		_, err := containerClient.SetAccessPolicy(ctx, nil)
+		c.Assert(err, chk.IsNil)
+		blobClient, blobName := createNewBlockBlob(c, containerClient)
+		_ = blobClient
 
-	// Generate SAS on the source
-	serviceSASValues := BlobSASSignatureValues{ExpiryTime: time.Now().Add(time.Hour).UTC(),
-		Permissions: BlobSASPermissions{Read: true, Write: true, Create: true}.String(), ContainerName: containerName, BlobName: blobName}
-	credential, err := getGenericCredential("")
-	if err != nil {
-		c.Fatal("Invalid credential")
+		// Generate SAS on the source
+		serviceSASValues := BlobSASSignatureValues{ExpiryTime: time.Now().Add(time.Hour).UTC(),
+			Permissions: BlobSASPermissions{Read: true, Write: true, Create: true}.String(), ContainerName: containerName, BlobName: blobName}
+		credential, err := getGenericCredential("")
+		if err != nil {
+			c.Fatal("Invalid credential")
+		}
+		queryParams, err := serviceSASValues.NewSASQueryParameters(credential)
+		if err != nil {
+			c.Fatal(err)
+		}
+
+		// Create destination container
+		bsu2, err := getAlternateBSU()
+		if err != nil {
+			c.Skip(err.Error())
+			return
+		}
+
+		copyContainerClient, copyContainerName := createNewContainer(c, bsu2)
+		defer deleteContainer(c, copyContainerClient)
+		copyBlobClient, copyBlobName := getBlockBlobClient(c, copyContainerClient)
+
+		// Generate Sas for the destination
+		credential, err = getGenericCredential("SECONDARY_")
+		if err != nil {
+			c.Fatal("Invalid secondary credential")
+		}
+		copyServiceSASvalues := BlobSASSignatureValues{StartTime: time.Now().Add(-1 * time.Hour).UTC(),
+			ExpiryTime: time.Now().Add(time.Hour).UTC(), Permissions: BlobSASPermissions{Read: true, Write: true}.String(),
+			ContainerName: copyContainerName, BlobName: copyBlobName}
+		copyQueryParams, err := copyServiceSASvalues.NewSASQueryParameters(credential)
+		if err != nil {
+			c.Fatal(err)
+		}
+
+		// Generate anonymous URL to destination with SAS
+		anonURL := NewBlobURLParts(bsu2.URL())
+		anonURL.SAS = copyQueryParams
+		anonymousBSU, err := NewServiceClient(anonURL.URL(), azcore.AnonymousCredential(), nil)
+		if err != nil {
+			c.Fatal(err)
+		}
+
+		anonymousContainerClient := anonymousBSU.NewContainerClient(copyContainerName)
+		anonymousBlobClient := anonymousContainerClient.NewBlockBlobClient(copyBlobName)
+
+		// Apply sas to source
+		srcBlobWithSasURL := NewBlobURLParts(blobClient.URL())
+		srcBlobWithSasURL.SAS = queryParams
+
+		resp, err := anonymousBlobClient.StartCopyFromURL(ctx, srcBlobWithSasURL.URL(), nil)
+		c.Assert(err, chk.IsNil)
+
+		// Allow copy to happen
+		waitForCopy(c, anonymousBlobClient, resp)
+
+		offset, count := int64(0), int64(len(blockBlobDefaultData))
+		downloadBlobOptions := DownloadBlobOptions{
+			Offset: &offset,
+			Count:  &count,
+		}
+		resp2, err := copyBlobClient.Download(ctx, &downloadBlobOptions)
+		c.Assert(err, chk.IsNil)
+
+		data, err := ioutil.ReadAll(resp2.RawResponse.Body)
+		_, err = resp2.Body(RetryReaderOptions{}).Read(data)
+		c.Assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
+		c.Assert(string(data), chk.Equals, blockBlobDefaultData)
+		resp2.Body(RetryReaderOptions{}).Close()
 	}
-	queryParams, err := serviceSASValues.NewSASQueryParameters(credential)
-	if err != nil {
-		c.Fatal(err)
-	}
-
-	// Create destination container
-	bsu2, err := getAlternateBSU()
-	if err != nil {
-		c.Skip(err.Error())
-		return
-	}
-
-	copyContainerClient, copyContainerName := createNewContainer(c, bsu2)
-	defer deleteContainer(c, copyContainerClient)
-	copyBlobClient, copyBlobName := getBlockBlobClient(c, copyContainerClient)
-
-	// Generate Sas for the destination
-	credential, err = getGenericCredential("SECONDARY_")
-	if err != nil {
-		c.Fatal("Invalid secondary credential")
-	}
-	copyServiceSASvalues := BlobSASSignatureValues{StartTime: time.Now().Add(-1 * time.Hour).UTC(),
-		ExpiryTime: time.Now().Add(time.Hour).UTC(), Permissions: BlobSASPermissions{Read: true, Write: true}.String(),
-		ContainerName: copyContainerName, BlobName: copyBlobName}
-	copyQueryParams, err := copyServiceSASvalues.NewSASQueryParameters(credential)
-	if err != nil {
-		c.Fatal(err)
-	}
-
-	// Generate anonymous URL to destination with SAS
-	anonURL := NewBlobURLParts(bsu2.URL())
-	anonURL.SAS = copyQueryParams
-	anonymousBSU, err := NewServiceClient(anonURL.URL(), azcore.AnonymousCredential(), nil)
-	if err != nil {
-		c.Fatal(err)
-	}
-
-	anonymousContainerClient := anonymousBSU.NewContainerClient(copyContainerName)
-	anonymousBlobClient := anonymousContainerClient.NewBlockBlobClient(copyBlobName)
-
-	// Apply sas to source
-	srcBlobWithSasURL := NewBlobURLParts(blobClient.URL())
-	srcBlobWithSasURL.SAS = queryParams
-
-	resp, err := anonymousBlobClient.StartCopyFromURL(ctx, srcBlobWithSasURL.URL(), nil)
-	c.Assert(err, chk.IsNil)
-
-	// Allow copy to happen
-	waitForCopy(c, anonymousBlobClient, resp)
-
-	offset, count := int64(0), int64(len(blockBlobDefaultData))
-	downloadBlobOptions := DownloadBlobOptions{
-		Offset: &offset,
-		Count:  &count,
-	}
-	resp2, err := copyBlobClient.Download(ctx, &downloadBlobOptions)
-	c.Assert(err, chk.IsNil)
-
-	data, err := ioutil.ReadAll(resp2.RawResponse.Body)
-	_, err = resp2.Body(RetryReaderOptions{}).Read(data)
-	c.Assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
-	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
-	resp2.Body(RetryReaderOptions{}).Close()
 }
 
 func (s *aztestsSuite) TestBlobStartCopySourceIfModifiedSinceTrue(c *chk.C) {

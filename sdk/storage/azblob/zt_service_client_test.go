@@ -5,7 +5,6 @@ package azblob
 
 import (
 	"context"
-	"fmt"
 	"strings"
 	"time"
 
@@ -15,151 +14,158 @@ import (
 )
 
 func (s *aztestsSuite) TestGetAccountInfo(c *chk.C) {
-	sa := getBSU()
+	for i := 1; i <= 2; i++ {
+		var bsu ServiceClient
+		if i == 1 {
+			bsu = getBSU()
+		} else {
+			bsu = getBSUFromConnectionString()
+		}
 
-	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
-	sAccInfo, err := sa.GetAccountInfo(context.Background())
-	c.Assert(err, chk.IsNil)
-	c.Assert(sAccInfo, chk.Not(chk.DeepEquals), ServiceGetAccountInfoResponse{})
+		// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
+		sAccInfo, err := bsu.GetAccountInfo(context.Background())
+		c.Assert(err, chk.IsNil)
+		c.Assert(sAccInfo, chk.Not(chk.DeepEquals), ServiceGetAccountInfoResponse{})
 
-	//Test on a container
-	containerClient := sa.NewContainerClient(generateContainerName())
-	_, err = containerClient.Create(ctx, nil)
-	defer containerClient.Delete(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	cAccInfo, err := containerClient.GetAccountInfo(ctx)
-	c.Assert(err, chk.IsNil)
-	c.Assert(cAccInfo, chk.Not(chk.DeepEquals), ContainerGetAccountInfoResponse{})
+		//Test on a container
+		containerClient := bsu.NewContainerClient(generateContainerName())
+		_, err = containerClient.Create(ctx, nil)
+		defer containerClient.Delete(ctx, nil)
+		c.Assert(err, chk.IsNil)
+		cAccInfo, err := containerClient.GetAccountInfo(ctx)
+		c.Assert(err, chk.IsNil)
+		c.Assert(cAccInfo, chk.Not(chk.DeepEquals), ContainerGetAccountInfoResponse{})
 
-	// test on a block blob URL. They all call the same thing on the base URL, so only one test is needed for that.
-	blobClient := containerClient.NewBlockBlobClient(generateBlobName())
-	_, err = blobClient.Upload(ctx, azcore.NopCloser(strings.NewReader("blah")), nil)
-	c.Assert(err, chk.IsNil)
-	bAccInfo, err := blobClient.GetAccountInfo(ctx)
-	c.Assert(err, chk.IsNil)
-	c.Assert(bAccInfo, chk.Not(chk.DeepEquals), BlobGetAccountInfoResponse{})
+		// test on a block blob URL. They all call the same thing on the base URL, so only one test is needed for that.
+		blobClient := containerClient.NewBlockBlobClient(generateBlobName())
+		_, err = blobClient.Upload(ctx, azcore.NopCloser(strings.NewReader("blah")), nil)
+		c.Assert(err, chk.IsNil)
+		bAccInfo, err := blobClient.GetAccountInfo(ctx)
+		c.Assert(err, chk.IsNil)
+		c.Assert(bAccInfo, chk.Not(chk.DeepEquals), BlobGetAccountInfoResponse{})
+	}
 }
 
 func (s *aztestsSuite) TestListContainersBasic(c *chk.C) {
-	sa, err := getGenericBSU("")
-	c.Assert(err, chk.IsNil)
+	for i := 1; i <= 2; i++ {
+		var bsu ServiceClient
+		if i == 1 {
+			bsu, _ = getGenericBSU("")
+		} else {
+			bsu = getBSUFromConnectionString()
+		}
 
-	md := map[string]string{
-		"foo": "foovalue",
-		"bar": "barvalue",
-	}
+		md := map[string]string{
+			"foo": "foovalue",
+			"bar": "barvalue",
+		}
 
-	container, name := getContainerClient(c, sa)
-	_, err = container.Create(ctx, &CreateContainerOptions{Metadata: &md})
-	defer container.Delete(ctx, nil)
-	c.Assert(err, chk.IsNil)
+		container, name := getContainerClient(c, bsu)
+		_, err := container.Create(ctx, &CreateContainerOptions{Metadata: &md})
+		defer container.Delete(ctx, nil)
+		c.Assert(err, chk.IsNil)
 
-	prefix := containerPrefix
-	listOptions := ListContainersSegmentOptions{Prefix: &prefix, Include: ListContainersDetail{Metadata: true}}
-	pager := sa.ListContainersSegment(&listOptions)
+		prefix := containerPrefix
+		listOptions := ListContainersSegmentOptions{Prefix: &prefix, Include: ListContainersDetail{Metadata: true}}
+		pager := bsu.ListContainersSegment(&listOptions)
 
-	count := 0
-	for pager.NextPage(ctx) {
-		resp := pager.PageResponse()
+		for pager.NextPage(ctx) {
+			resp := pager.PageResponse()
 
-		for _, container := range *resp.EnumerationResults.ContainerItems {
-			c.Assert(container.Name, chk.NotNil)
+			for _, container := range *resp.EnumerationResults.ContainerItems {
+				c.Assert(container.Name, chk.NotNil)
 
-			if *container.Name == name {
-				c.Assert(container.Properties, chk.NotNil)
-				c.Assert(container.Properties.LastModified, chk.NotNil)
-				c.Assert(container.Properties.Etag, chk.NotNil)
-				c.Assert(*container.Properties.LeaseStatus, chk.Equals, LeaseStatusUnlocked)
-				c.Assert(*container.Properties.LeaseState, chk.Equals, LeaseStateAvailable)
-				c.Assert(container.Properties.LeaseDuration, chk.IsNil)
-				c.Assert(container.Properties.PublicAccess, chk.IsNil)
-				c.Assert(container.Metadata, chk.NotNil)
+				if *container.Name == name {
+					c.Assert(container.Properties, chk.NotNil)
+					c.Assert(container.Properties.LastModified, chk.NotNil)
+					c.Assert(container.Properties.Etag, chk.NotNil)
+					c.Assert(*container.Properties.LeaseStatus, chk.Equals, LeaseStatusUnlocked)
+					c.Assert(*container.Properties.LeaseState, chk.Equals, LeaseStateAvailable)
+					c.Assert(container.Properties.LeaseDuration, chk.IsNil)
+					c.Assert(container.Properties.PublicAccess, chk.IsNil)
+					c.Assert(container.Metadata, chk.NotNil)
 
-				unwrappedMeta := map[string]string{}
-				for k, v := range *container.Metadata {
-					if v != nil {
-						unwrappedMeta[k] = *v
+					unwrappedMeta := map[string]string{}
+					for k, v := range *container.Metadata {
+						if v != nil {
+							unwrappedMeta[k] = *v
+						}
 					}
-				}
 
-				c.Assert(unwrappedMeta, chk.DeepEquals, md)
+					c.Assert(unwrappedMeta, chk.DeepEquals, md)
+				}
 			}
 		}
+
+		c.Assert(pager.Err(), chk.IsNil)
+
+		c.Assert(err, chk.IsNil)
 	}
-
-	c.Assert(pager.Err(), chk.IsNil)
-
-	// for container := range pager {
-	// 	count++
-	//
-	// 	c.Assert(container.Name, chk.NotNil)
-	//
-	// 	if *container.Name == name {
-	//
-	// 	}
-	// }
-	// err = <-errs
-
-	c.Assert(err, chk.IsNil)
-	c.Assert(count >= 0, chk.Equals, true)
 }
 
 func (s *aztestsSuite) TestListContainersPaged(c *chk.C) {
-	sa := getBSU()
-
-	const numContainers = 6
-	maxResults := int32(2)
-	const pagedContainersPrefix = "azcontainerpaged"
-
-	containers := make([]ContainerClient, numContainers)
-	expectedResults := make(map[string]bool)
-	for i := 0; i < numContainers; i++ {
-		containerClient, containerName := createNewContainerWithSuffix(c, sa, pagedContainersPrefix)
-		containers[i] = containerClient
-		expectedResults[containerName] = false
-	}
-
-	defer func() {
-		for i := range containers {
-			deleteContainer(c, containers[i])
+	for i := 1; i <= 2; i++ {
+		var bsu ServiceClient
+		if i == 1 {
+			bsu = getBSU()
+		} else {
+			bsu = getBSUFromConnectionString()
 		}
-	}()
 
-	// list for a first time
-	prefix := containerPrefix + pagedContainersPrefix
-	listOptions := ListContainersSegmentOptions{MaxResults: &maxResults, Prefix: &prefix}
-	count := 0
-	results := make([]ContainerItem, 0)
+		const numContainers = 6
+		maxResults := int32(2)
+		const pagedContainersPrefix = "azcontainerpaged"
 
-	pager := sa.ListContainersSegment(&listOptions)
+		containers := make([]ContainerClient, numContainers)
+		expectedResults := make(map[string]bool)
+		for i := 0; i < numContainers; i++ {
+			containerClient, containerName := createNewContainerWithSuffix(c, bsu, pagedContainersPrefix)
+			containers[i] = containerClient
+			expectedResults[containerName] = false
+		}
 
-	for pager.NextPage(ctx) {
-		for _, container := range *pager.PageResponse().EnumerationResults.ContainerItems {
-			if container == nil {
-				continue
+		defer func() {
+			for i := range containers {
+				deleteContainer(c, containers[i])
 			}
+		}()
 
-			results = append(results, *container)
-			count += 1
-			c.Assert(container.Name, chk.NotNil)
+		// list for a first time
+		prefix := containerPrefix + pagedContainersPrefix
+		listOptions := ListContainersSegmentOptions{MaxResults: &maxResults, Prefix: &prefix}
+		count := 0
+		results := make([]ContainerItem, 0)
+
+		pager := bsu.ListContainersSegment(&listOptions)
+
+		for pager.NextPage(ctx) {
+			for _, container := range *pager.PageResponse().EnumerationResults.ContainerItems {
+				if container == nil {
+					continue
+				}
+
+				results = append(results, *container)
+				count += 1
+				c.Assert(container.Name, chk.NotNil)
+			}
 		}
-	}
 
-	c.Assert(pager.Err(), chk.IsNil)
-	c.Assert(count, chk.Equals, numContainers)
-	c.Assert(len(results), chk.Equals, numContainers)
+		c.Assert(pager.Err(), chk.IsNil)
+		c.Assert(count, chk.Equals, numContainers)
+		c.Assert(len(results), chk.Equals, numContainers)
 
-	// make sure each container we see is expected
-	for _, container := range results {
-		_, ok := expectedResults[*container.Name]
-		c.Assert(ok, chk.Equals, true)
+		// make sure each container we see is expected
+		for _, container := range results {
+			_, ok := expectedResults[*container.Name]
+			c.Assert(ok, chk.Equals, true)
 
-		expectedResults[*container.Name] = true
-	}
+			expectedResults[*container.Name] = true
+		}
 
-	// make sure every expected container was seen
-	for _, seen := range expectedResults {
-		c.Assert(seen, chk.Equals, true)
+		// make sure every expected container was seen
+		for _, seen := range expectedResults {
+			c.Assert(seen, chk.Equals, true)
+		}
 	}
 }
 
@@ -334,25 +340,33 @@ func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge(c *chk.C) {
 }
 
 func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(c *chk.C) {
-	bsu := getBSU()
+	for i := 1; i <= 2; i++ {
+		var bsu ServiceClient
+		if i == 1 {
+			bsu = getBSU()
+		} else {
+			bsu = getBSUFromConnectionString()
+		}
 
-	// Days is required if enabled is true.
-	enabled := true
-	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
-	c.Assert(err, chk.NotNil)
+		// Days is required if enabled is true.
+		enabled := true
+		_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
+		c.Assert(err, chk.NotNil)
 
-	validateStorageError(c, err, StorageErrorCodeInvalidXMLDocument)
+		validateStorageError(c, err, StorageErrorCodeInvalidXMLDocument)
+	}
 }
 
-func (s *aztestsSuite) TestParseConnectionString(c *chk.C) {
-	accountName, accountKey := accountInfo()
-	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
-		accountName, accountKey)
+func (s *aztestsSuite) TestServiceClientFromConnectionString(c *chk.C) {
+	accountName, _ := accountInfo()
+	connectionString := getConnectionString()
+
 	serviceURL, _, cred, err := ParseConnectionString(connectionString, "")
 	c.Assert(err, chk.IsNil)
 	c.Assert(serviceURL, chk.Equals, "https://"+accountName+".blob.core.windows.net/")
+
 	svcClient, err := NewServiceClient(serviceURL, cred, nil)
 	c.Assert(err, chk.IsNil)
-	contClient, _ := createNewContainer(c, svcClient)
-	defer deleteContainer(c, contClient)
+	containerClient, _ := createNewContainer(c, svcClient)
+	defer deleteContainer(c, containerClient)
 }

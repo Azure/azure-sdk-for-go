@@ -20,7 +20,7 @@ Those new libraries can be identified by locating them under the [/sdk folder](h
 
 You can find the most up to date list of all of the new packages [on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk) as well as our [official releases page](https://azure.github.io/azure-sdk/releases/latest/go.html)
 
-## Previous Releases
+## Previous Versions
 
 Previous Go SDK packages are located under [/services folder](https://github.com/Azure/azure-sdk-for-go/tree/master/services), and you can see the full list [on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services). They might not have the same feature set as the new releases but they do offer wider coverage of services.
 

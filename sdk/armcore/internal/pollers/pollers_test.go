@@ -118,3 +118,12 @@ func TestIsValidURL(t *testing.T) {
 		t.Fatal("expected valid URL")
 	}
 }
+
+func TestFailed(t *testing.T) {
+	if Failed("Succeeded") || Failed("Updating") {
+		t.Fatal("unexpected failure")
+	}
+	if !Failed("failed") {
+		t.Fatal("expected failure")
+	}
+}

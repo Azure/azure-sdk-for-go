@@ -22,6 +22,12 @@ const (
 	HeaderLocation   = "Location"
 )
 
+const (
+	statusSucceeded = "succeeded"
+	statusCanceled  = "canceled"
+	statusFailed    = "failed"
+)
+
 // reads the response body into a raw JSON object.
 // returns an empty object if there was no content.
 func getJSON(resp *azcore.Response) (map[string]interface{}, error) {
@@ -79,7 +85,12 @@ func status(jsonBody map[string]interface{}) string {
 
 // IsTerminalState returns true if the LRO's state is terminal.
 func IsTerminalState(s string) bool {
-	return strings.EqualFold(s, "succeeded") || strings.EqualFold(s, "failed") || strings.EqualFold(s, "canceled")
+	return strings.EqualFold(s, statusSucceeded) || strings.EqualFold(s, statusFailed) || strings.EqualFold(s, statusCanceled)
+}
+
+// Failed returns true if the LRO's state is terminal failure.
+func Failed(s string) bool {
+	return strings.EqualFold(s, statusFailed) || strings.EqualFold(s, statusCanceled)
 }
 
 // GetStatus returns the LRO's status from the response body.

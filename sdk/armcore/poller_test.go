@@ -26,8 +26,10 @@ const (
 	provStateStarted   = `{ "properties": { "provisioningState": "Started" } }`
 	provStateUpdating  = `{ "properties": { "provisioningState": "Updating" } }`
 	provStateSucceeded = `{ "properties": { "provisioningState": "Succeeded" }, "field": "value" }`
+	provStateFailed    = `{ "properties": { "provisioningState": "Failed" } }`
 	statusInProgress   = `{ "status": "InProgress" }`
 	statusSucceeded    = `{ "status": "Succeeded" }`
+	statusCanceled     = `{ "status": "Canceled" }`
 	successResp        = `{ "field": "value" }`
 	errorResp          = `{ "error": "the operation failed" }`
 )
@@ -223,7 +225,33 @@ func TestNewLROPollerInitialRetryAfter(t *testing.T) {
 	}
 }
 
-func TestNewLROPollerFailed(t *testing.T) {
+func TestNewLROPollerCanceled(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(statusInProgress)))
+	srv.AppendResponse(mock.WithBody([]byte(statusCanceled)), mock.WithStatusCode(http.StatusOK))
+	resp := initialResponse(http.MethodPut, srv.URL(), strings.NewReader(provStateStarted))
+	resp.Header.Set(pollers.HeaderAzureAsync, srv.URL())
+	resp.StatusCode = http.StatusCreated
+	pl := getPipeline(srv)
+	poller, err := NewLROPoller("pollerID", "", resp, pl, handleError)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, ok := poller.lro.(*async.Poller); !ok {
+		t.Fatalf("unexpected poller type %T", poller.lro)
+	}
+	_, err = poller.Poll(context.Background())
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = poller.Poll(context.Background())
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+}
+
+func TestNewLROPollerFailedWithError(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(statusInProgress)))

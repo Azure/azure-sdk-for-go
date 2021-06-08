@@ -82,19 +82,26 @@ As an example, to install the Azure Compute module, you would run :
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute
 ```
+We also recommend installing other packages for authentication and core functionalities :
+
+```sh
+go get github.com/Azure/azure-sdk-for-go/sdk/armcore
+go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
+go get github.com/Azure/azure-sdk-for-go/sdk/to
+```
 
 Authentication
 --------------
 
-Since the environment is setup, all you need to do is to create an authenticated client. Before creating a client, you will first need to authenticate to Azure. In specific, you will need to provide a credential for authenticating with the Azure service.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+Once the environment is setup, all you need to do is to create an authenticated client. Before creating a client, you will first need to authenticate to Azure. In specific, you will need to provide a credential for authenticating with the Azure service.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
-Our default option is to use **DefaultAzureCredential** which will take care of the authentication flow for us.
+Our default option is to use **DefaultAzureCredential** which will make use of the environment variables we have set and take care of the authentication flow for us.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
 ```
 
-For more details on authentication and `azidentity`, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
+For more details on how authentication works in `azidentity`, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
 
 
 Connecting to Azure 
@@ -111,53 +118,99 @@ For more information on ARM connections, please see the documentation for `armco
 Creating a Resource Management Client
 -------------------------------------
 
-Azure Compute modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
+Once you have a connection to ARM, you will need to decide what service to use and create a client to connect to that service. In this section, we will use `Compute` as our target service. The Compute modules consist of one or more clients. A client groups a set of related APIs, providing access to its functionality within the specified subscription. You will need to create one or more clients to access the APIs you require using your `armcore.Connection`.
 
-In this guide we have picked **Compute** as our target service, but you can set it up similarly for any other service that you are using. **For example, in order to manage Network resources, you would create a ``NetworkManagementClient``**
-
-Take Virtual Machines for example, they are part of Azure Compute, and in order to create a resource management client to manage Virtual Machines, you would do
+To show an example, we will create a client to manage Virtual Machines. The code to achieve this task would be:
 
 ```go
 client := armcompute.NewVirtualMachinesClient(con, "<subscription ID>")
 ```
+You can use the same pattern to connect with other Azure services that you are using. For example, in order to manage Virtual Network resources, you would install the Network package and create a `VirtualNetwork` Client:
 
-From this code snippet, we showed that in order to interact with Resources, we need to create a connection first, then get the corresponding sub-resource client we are interested in, in this case we called **armcompute.NewVirtualMachinesClient** to get access to Virtual Machine related operations
+```go
+client := armnetwork.NewVirtualNetworksClient(acon, "<subscription ID>")
+```
 
 Interacting with Azure Resources
 --------------------------------
 
-Now that we are authenticated and have created our sub-resource clients, we can use our client to make API calls. Let's demonstrate management client's usage by showing concrete examples
+Now that we are authenticated and have created our sub-resource clients, we can use our client to make API calls. Let's demonstrate management client's usage by showing various concrete examples
 
 Example: Managing Resource Groups
 ---------------------------------
-We can use the Resource client (``ResourceClient``) we have created to perform operations on Resource Group. In this example, we will show to manage Resource Groups.
+In this example, we will show how to manage Resource Groups.
+
+***Import the packages***
+```go
+// insert code
+```
 
 ***Create a resource group***
 
 ```go
+// insert code
 ```
 
 ***Update a resource group***
 
 ```go
+// insert code
 ```
 
 
 ***List all resource groups***
 
 ```go
+// insert code
 ```
 
 ***Delete a resource group***
 
 ```go
-```
+// insert code
 ```
 
-Driver program
+Example: Managing Network Resources
+---------------------------------
+In this example, we will show to manage Network related resources.
 
+***Import the packages***
 ```go
+// insert code
 ```
+***Creating a Virtual Network***
+```go
+// insert code
+```
+
+***Get a Virtual Network***
+```go
+// insert code
+```
+
+Example: Managing Virtual Machines
+---------------------------------
+In this example, we will show how to manage Virtual Machines
+
+***Import the packages***
+```go
+// insert code
+```
+***Creating a Virtual Machine***
+```go
+// insert code
+```
+
+***List all Virtual Machines***
+```go
+// insert code
+```
+
+***Delete a Virtual Machine***
+```go
+// insert code
+```
+
 ## Code Samples
 
 More code samples for using the management library for Go SDK can be found in the following locations

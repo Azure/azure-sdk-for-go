@@ -47,6 +47,10 @@ func (p *Poller) Done() bool {
 
 // Update updates the Poller from the polling response.
 func (p *Poller) Update(resp *azcore.Response) error {
+	// location polling can return an updated polling URL
+	if h := resp.Header.Get(pollers.HeaderLocation); h != "" {
+		p.PollURL = h
+	}
 	// any 2xx code other than 202 indicates success
 	if resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
 		p.CurState = "Succeeded"

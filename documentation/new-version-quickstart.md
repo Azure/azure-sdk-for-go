@@ -12,9 +12,8 @@ You can find the full list of those new libraries
 [here](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk)
 
 In this basic quickstart guide, we will walk you through how to
-authenticate to Azure using the preview libraries and start interacting
-with Azure resources. There are several possible approaches to
-authentication. This document illustrates the most common scenario
+authenticate to Azure and start interacting with Azure resources. There are several possible approaches to
+authentication. This document illustrates the most common scenario.
 
 Prerequisites
 -------------
@@ -39,8 +38,7 @@ These values can be obtained from the portal, here's the instructions:
 ### Get Client ID / Client Secret / Tenant ID
 
 For information on how to get Client ID, Client Secret, and Tenant ID,
-please refer to [this
-document](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal)
+please refer to [this document](https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal)
 
 ### Setting Environment Variables
 

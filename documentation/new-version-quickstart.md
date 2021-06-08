@@ -181,7 +181,12 @@ In this example, we will show to manage Network related resources.
 // insert code
 ```
 
-***Get a Virtual Network***
+***Updating a Virtual Network***
+```go
+// insert code
+```
+
+***List all Virtual Networks***
 ```go
 // insert code
 ```
@@ -194,7 +199,13 @@ In this example, we will show how to manage Virtual Machines
 ```go
 // insert code
 ```
+
 ***Creating a Virtual Machine***
+```go
+// insert code
+```
+
+***Updating a Virtual Machine***
 ```go
 // insert code
 ```

@@ -30,7 +30,7 @@ const (
 )
 
 // reads the response body into a raw JSON object.
-// returns an empty object if there was no content.
+// returns ErrNoBody if there was no content.
 func getJSON(resp *azcore.Response) (map[string]interface{}, error) {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {

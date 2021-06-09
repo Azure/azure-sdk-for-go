@@ -45,6 +45,10 @@ func NewLROPoller(pollerID string, finalState string, resp *azcore.Response, pl 
 		// must test body poller last as it's a subset of the other pollers.
 		// TODO: this is ambiguous for PATCH/PUT if it returns a 200 with no polling headers (sync completion)
 		lro, err = body.New(resp, pollerID)
+	} else if m := resp.Request.Method; resp.StatusCode == http.StatusAccepted && (m == http.MethodDelete || m == http.MethodPost) {
+		// if we get here it means we have a 202 with no polling headers.
+		// for DELETE and POST this is a hard error per ARM RPC spec.
+		return nil, errors.New("response is missing polling URL")
 	} else {
 		lro = &nopPoller{}
 	}

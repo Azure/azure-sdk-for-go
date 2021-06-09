@@ -306,3 +306,18 @@ func TestNewLROPollerSuccessNoContent(t *testing.T) {
 		t.Fatal("expected nil result")
 	}
 }
+
+func TestNewLROPollerFail202NoHeaders(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	resp := initialResponse(http.MethodDelete, srv.URL(), http.NoBody)
+	resp.StatusCode = http.StatusAccepted
+	pl := getPipeline(srv)
+	poller, err := NewLROPoller("pollerID", "", resp, pl, handleError)
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if poller != nil {
+		t.Fatal("expected nil poller")
+	}
+}

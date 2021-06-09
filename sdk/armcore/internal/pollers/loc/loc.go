@@ -6,6 +6,7 @@
 package loc
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -56,12 +57,24 @@ func (p *Poller) Update(resp *azcore.Response) error {
 	if h := resp.Header.Get(pollers.HeaderLocation); h != "" {
 		p.PollURL = h
 	}
-	// any 2xx code other than 202 indicates success
-	if resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusNoContent) {
+	if resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+		// if a 200/201 returns a provisioning state, use that instead
+		state, err := pollers.GetProvisioningState(resp)
+		if err != nil && !errors.Is(err, pollers.ErrNoBody) && !errors.Is(err, pollers.ErrNoProvisioningState) {
+			return err
+		}
+		if state != "" {
+			p.CurState = state
+		} else {
+			// a 200/201 with no provisioning state indicates success
+			p.CurState = "Succeeded"
+		}
+	} else if resp.StatusCode == http.StatusNoContent {
 		p.CurState = "Succeeded"
 	} else if resp.StatusCode > 399 && resp.StatusCode < 500 {
 		p.CurState = "Failed"
 	}
+	// a 202 falls through, means the LRO is still in progress and we don't check for provisioning state
 	return nil
 }
 

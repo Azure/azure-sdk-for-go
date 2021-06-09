@@ -58,6 +58,7 @@ If a package you need isn't available please open an issue and let us know.
 | Service Bus          | [github.com/Azure/azure-service-bus-go](https://github.com/Azure/azure-service-bus-go)             |
 | Event Hubs           | [github.com/Azure/azure-event-hubs-go](https://github.com/Azure/azure-event-hubs-go)               |
 | Application Insights | [github.com/Microsoft/ApplicationInsights-go](https://github.com/Microsoft/ApplicationInsights-go) |
+| Microsoft Graph      | [github.com/yaegashi/msgraph.go](https://github.com/yaegashi/msgraph.go)                           |
 
 # Install and Use:
 

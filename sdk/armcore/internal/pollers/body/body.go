@@ -13,6 +13,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
+const (
+	stateSucceeded  = "Succeeded"
+	stateInProgress = "InProgress"
+)
+
 // Applicable returns true if the LRO is using no headers, just provisioning state.
 // This is only applicable to PATCH and PUT methods and assumes no polling headers.
 func Applicable(resp *azcore.Response) bool {
@@ -37,9 +42,9 @@ func New(resp *azcore.Response, pollerID string) (*Poller, error) {
 	}
 	// default initial state to InProgress.  depending on the HTTP
 	// status code and provisioning state, we might change the value.
-	curState := "InProgress"
+	curState := stateInProgress
 	provState, err := pollers.GetProvisioningState(resp)
-	if err != nil && !errors.Is(err, pollers.ErrNoProvisioningState) {
+	if err != nil && !errors.Is(err, pollers.ErrNoBody) && !errors.Is(err, pollers.ErrNoProvisioningState) {
 		return nil, err
 	}
 	if resp.StatusCode == http.StatusCreated && provState != "" {
@@ -50,10 +55,10 @@ func New(resp *azcore.Response, pollerID string) (*Poller, error) {
 			curState = provState
 		} else if provState == "" {
 			// for a 200, absense of provisioning state indicates success
-			curState = "Succeeded"
+			curState = stateSucceeded
 		}
 	} else if resp.StatusCode == http.StatusNoContent {
-		curState = "Succeeded"
+		curState = stateSucceeded
 	}
 	p.CurState = curState
 	return p, nil
@@ -71,10 +76,17 @@ func (p *Poller) Done() bool {
 
 // Update updates the Poller from the polling response.
 func (p *Poller) Update(resp *azcore.Response) error {
+	if resp.StatusCode == http.StatusNoContent {
+		p.CurState = stateSucceeded
+		return nil
+	}
 	state, err := pollers.GetProvisioningState(resp)
-	if errors.Is(err, pollers.ErrNoProvisioningState) {
-		// absense of any provisioning state is considered terminal success
-		state = "Succeeded"
+	if errors.Is(err, pollers.ErrNoBody) {
+		// a missing response body in non-204 case is an error
+		return err
+	} else if errors.Is(err, pollers.ErrNoProvisioningState) {
+		// a response body without provisioning state is considered terminal success
+		state = stateSucceeded
 	} else if err != nil {
 		return err
 	}

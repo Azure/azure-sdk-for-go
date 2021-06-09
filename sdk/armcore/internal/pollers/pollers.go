@@ -37,7 +37,7 @@ func getJSON(resp *azcore.Response) (map[string]interface{}, error) {
 	}
 	resp.Body.Close()
 	if len(body) == 0 {
-		return map[string]interface{}{}, nil
+		return nil, ErrNoBody
 	}
 	// put the body back so it's available to others
 	resp.Body = ioutil.NopCloser(bytes.NewReader(body))
@@ -130,6 +130,9 @@ func IsValidURL(s string) bool {
 func MakeID(pollerID string, kind string) string {
 	return fmt.Sprintf("%s;%s", pollerID, kind)
 }
+
+// ErrNoBody is returned if the response didn't contain a body.
+var ErrNoBody = errors.New("the response did not contain a body")
 
 // ErrNoStatus is returned if the response body didn't contain a status.
 var ErrNoStatus = errors.New("the response did not contain a status")

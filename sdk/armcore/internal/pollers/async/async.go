@@ -56,7 +56,7 @@ func New(resp *azcore.Response, finalState string, pollerID string) (*Poller, er
 	}
 	// check for provisioning state
 	state, err := pollers.GetProvisioningState(resp)
-	if errors.Is(err, pollers.ErrNoProvisioningState) {
+	if errors.Is(err, pollers.ErrNoBody) || errors.Is(err, pollers.ErrNoProvisioningState) {
 		if resp.Request.Method == http.MethodPut {
 			// initial response for a PUT requires a provisioning state
 			return nil, err

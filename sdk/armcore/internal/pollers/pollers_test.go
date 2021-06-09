@@ -46,10 +46,32 @@ func TestGetStatusSuccess(t *testing.T) {
 	}
 }
 
-func TestGetStatusError(t *testing.T) {
+func TestGetNoBody(t *testing.T) {
 	resp := azcore.Response{
 		Response: &http.Response{
 			Body: http.NoBody,
+		},
+	}
+	status, err := GetStatus(&resp)
+	if !errors.Is(err, ErrNoBody) {
+		t.Fatalf("unexpected error %T", err)
+	}
+	if status != "" {
+		t.Fatal("expected empty status")
+	}
+	status, err = GetProvisioningState(&resp)
+	if !errors.Is(err, ErrNoBody) {
+		t.Fatalf("unexpected error %T", err)
+	}
+	if status != "" {
+		t.Fatal("expected empty status")
+	}
+}
+
+func TestGetStatusError(t *testing.T) {
+	resp := azcore.Response{
+		Response: &http.Response{
+			Body: ioutil.NopCloser(strings.NewReader("{}")),
 		},
 	}
 	status, err := GetStatus(&resp)
@@ -80,7 +102,7 @@ func TestGetProvisioningState(t *testing.T) {
 func TestGetProvisioningStateError(t *testing.T) {
 	resp := azcore.Response{
 		Response: &http.Response{
-			Body: http.NoBody,
+			Body: ioutil.NopCloser(strings.NewReader("{}")),
 		},
 	}
 	state, err := GetProvisioningState(&resp)

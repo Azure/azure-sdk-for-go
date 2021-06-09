@@ -6,12 +6,14 @@
 package body
 
 import (
+	"errors"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/armcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
@@ -33,11 +35,12 @@ func initialResponse(method string, resp io.Reader) *azcore.Response {
 	}
 }
 
-func pollingResponse(resp io.Reader) *azcore.Response {
+func pollingResponse(status int, resp io.Reader) *azcore.Response {
 	return &azcore.Response{
 		Response: &http.Response{
-			Body:   ioutil.NopCloser(resp),
-			Header: http.Header{},
+			Body:       ioutil.NopCloser(resp),
+			Header:     http.Header{},
+			StatusCode: status,
 		},
 	}
 }
@@ -84,7 +87,7 @@ func TestNew(t *testing.T) {
 	if u := poller.URL(); u != fakeResourceURL {
 		t.Fatalf("unexpected polling URL %s", u)
 	}
-	if err := poller.Update(pollingResponse(strings.NewReader(`{ "properties": { "provisioningState": "InProgress" } }`))); err != nil {
+	if err := poller.Update(pollingResponse(http.StatusOK, strings.NewReader(`{ "properties": { "provisioningState": "InProgress" } }`))); err != nil {
 		t.Fatal(err)
 	}
 	if s := poller.Status(); s != "InProgress" {
@@ -92,7 +95,7 @@ func TestNew(t *testing.T) {
 	}
 }
 
-func TestUpdateNoProvState(t *testing.T) {
+func TestUpdateNoProvStateFail(t *testing.T) {
 	const jsonBody = `{ "properties": { "provisioningState": "Started" } }`
 	resp := initialResponse(http.MethodPut, strings.NewReader(jsonBody))
 	resp.StatusCode = http.StatusOK
@@ -112,11 +115,64 @@ func TestUpdateNoProvState(t *testing.T) {
 	if u := poller.URL(); u != fakeResourceURL {
 		t.Fatalf("unexpected polling URL %s", u)
 	}
-	if err := poller.Update(pollingResponse(http.NoBody)); err != nil {
+	err = poller.Update(pollingResponse(http.StatusOK, http.NoBody))
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if !errors.Is(err, pollers.ErrNoBody) {
+		t.Fatalf("unexpected error type %T", err)
+	}
+}
+
+func TestUpdateNoProvStateSuccess(t *testing.T) {
+	const jsonBody = `{ "properties": { "provisioningState": "Started" } }`
+	resp := initialResponse(http.MethodPut, strings.NewReader(jsonBody))
+	resp.StatusCode = http.StatusOK
+	poller, err := New(resp, "pollerID")
+	if err != nil {
 		t.Fatal(err)
 	}
-	if s := poller.Status(); s != "Succeeded" {
+	if poller.Done() {
+		t.Fatal("poller should not be done")
+	}
+	if u := poller.FinalGetURL(); u != "" {
+		t.Fatal("expected empty final GET URL")
+	}
+	if s := poller.Status(); s != "Started" {
 		t.Fatalf("unexpected status %s", s)
+	}
+	if u := poller.URL(); u != fakeResourceURL {
+		t.Fatalf("unexpected polling URL %s", u)
+	}
+	err = poller.Update(pollingResponse(http.StatusOK, strings.NewReader(`{}`)))
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestUpdateNoProvState204(t *testing.T) {
+	const jsonBody = `{ "properties": { "provisioningState": "Started" } }`
+	resp := initialResponse(http.MethodPut, strings.NewReader(jsonBody))
+	resp.StatusCode = http.StatusOK
+	poller, err := New(resp, "pollerID")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if poller.Done() {
+		t.Fatal("poller should not be done")
+	}
+	if u := poller.FinalGetURL(); u != "" {
+		t.Fatal("expected empty final GET URL")
+	}
+	if s := poller.Status(); s != "Started" {
+		t.Fatalf("unexpected status %s", s)
+	}
+	if u := poller.URL(); u != fakeResourceURL {
+		t.Fatalf("unexpected polling URL %s", u)
+	}
+	err = poller.Update(pollingResponse(http.StatusNoContent, http.NoBody))
+	if err != nil {
+		t.Fatal(err)
 	}
 }
 

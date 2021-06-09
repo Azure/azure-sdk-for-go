@@ -12,7 +12,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/armcore/internal/pollers"
@@ -76,18 +75,17 @@ func NewLROPollerFromResumeToken(pollerID string, token string, pl azcore.Pipeli
 	if !ok {
 		return nil, fmt.Errorf("invalid type format %T", t)
 	}
-	// the type is encoded as "pollerID;pollerType"
-	sem := strings.LastIndex(tt, ";")
-	if sem < 0 {
-		return nil, fmt.Errorf("invalid poller type %s", tt)
+	ttID, ttKind, err := pollers.DecodeID(tt)
+	if err != nil {
+		return nil, err
 	}
 	// ensure poller types match
-	if received := tt[:sem]; received != pollerID {
-		return nil, fmt.Errorf("cannot resume from this poller token.  expected %s, received %s", pollerID, received)
+	if ttID != pollerID {
+		return nil, fmt.Errorf("cannot resume from this poller token.  expected %s, received %s", pollerID, ttID)
 	}
 	// now rehydrate the poller based on the encoded poller type
 	var lro lroPoller
-	switch pt := tt[sem+1:]; pt {
+	switch ttKind {
 	case "async":
 		azcore.Log().Write(azcore.LogLongRunningOperation, "Resuming Azure-AsyncOperation poller.")
 		lro = &async.Poller{}
@@ -98,7 +96,7 @@ func NewLROPollerFromResumeToken(pollerID string, token string, pl azcore.Pipeli
 		azcore.Log().Write(azcore.LogLongRunningOperation, "Resuming Body poller.")
 		lro = &body.Poller{}
 	default:
-		return nil, fmt.Errorf("unhandled poller type %s", pt)
+		return nil, fmt.Errorf("unhandled poller type %s", ttKind)
 	}
 	if err = json.Unmarshal([]byte(token), lro); err != nil {
 		return nil, err

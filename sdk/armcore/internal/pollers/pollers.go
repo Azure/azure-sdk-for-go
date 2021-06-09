@@ -126,9 +126,27 @@ func IsValidURL(s string) bool {
 	return err == nil && u.IsAbs()
 }
 
-// MakeID returns the unique poller identifier in the format pollerID;poller.
+const idSeparator = ";"
+
+// MakeID returns the poller ID from the provided values.
 func MakeID(pollerID string, kind string) string {
-	return fmt.Sprintf("%s;%s", pollerID, kind)
+	return fmt.Sprintf("%s%s%s", pollerID, idSeparator, kind)
+}
+
+// DecodeID decodes the poller ID, returning [pollerID, kind] or an error.
+func DecodeID(tk string) (string, string, error) {
+	raw := strings.Split(tk, idSeparator)
+	// strings.Split will include any/all whitespace strings, we want to omit those
+	parts := []string{}
+	for _, r := range raw {
+		if s := strings.TrimSpace(r); s != "" {
+			parts = append(parts, s)
+		}
+	}
+	if len(parts) != 2 {
+		return "", "", fmt.Errorf("invalid token %s", tk)
+	}
+	return parts[0], parts[1], nil
 }
 
 // ErrNoBody is returned if the response didn't contain a body.

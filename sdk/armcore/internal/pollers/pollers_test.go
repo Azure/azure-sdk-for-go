@@ -120,7 +120,7 @@ func TestMakeID(t *testing.T) {
 		kind     = "kind"
 	)
 	id := MakeID(pollerID, kind)
-	parts := strings.Split(id, ";")
+	parts := strings.Split(id, idSeparator)
 	if l := len(parts); l != 2 {
 		t.Fatalf("unexpected length %d", l)
 	}
@@ -129,6 +129,39 @@ func TestMakeID(t *testing.T) {
 	}
 	if p := parts[1]; p != kind {
 		t.Fatalf("unexpected poller kind %s", p)
+	}
+}
+
+func TestDecodeID(t *testing.T) {
+	id, kind, err := DecodeID("")
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	id, kind, err = DecodeID("invalid_token")
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	id, kind, err = DecodeID("invalid_token;")
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	id, kind, err = DecodeID("  ;invalid_token")
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	id, kind, err = DecodeID("invalid;token;too")
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	id, kind, err = DecodeID("pollerID;kind")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if id != "pollerID" {
+		t.Fatalf("unexpected ID %s", id)
+	}
+	if kind != "kind" {
+		t.Fatalf("unexpected kin %s", kind)
 	}
 }
 

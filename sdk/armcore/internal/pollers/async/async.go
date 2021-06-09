@@ -57,10 +57,13 @@ func New(resp *azcore.Response, finalState string, pollerID string) (*Poller, er
 	// check for provisioning state
 	state, err := pollers.GetProvisioningState(resp)
 	if errors.Is(err, pollers.ErrNoBody) || errors.Is(err, pollers.ErrNoProvisioningState) {
-		if resp.Request.Method == http.MethodPut {
+		// NOTE: the ARM RPC spec explicitly states that for async PUT the initial response MUST
+		// contain a provisioning state.  to maintain compat with track 1 and other implementations
+		// we are explicitly relaxing this requirement.
+		/*if resp.Request.Method == http.MethodPut {
 			// initial response for a PUT requires a provisioning state
 			return nil, err
-		}
+		}*/
 		// for DELETE/PATCH/POST, provisioning state is optional
 		state = "InProgress"
 	} else if err != nil {

@@ -102,16 +102,20 @@ func TestNewDeleteNoProvState(t *testing.T) {
 	}
 }
 
-func TestNewFail(t *testing.T) {
+func TestNewPutNoProvState(t *testing.T) {
 	// missing provisioning state on initial response
+	// NOTE: ARM RPC forbids this but we allow it for back-compat
 	resp := initialResponse(http.MethodPut, http.NoBody)
 	resp.Header.Set(pollers.HeaderAzureAsync, fakePollingURL)
 	poller, err := New(resp, "", "pollerID")
-	if err == nil {
-		t.Fatal("unexpected nil error")
+	if err != nil {
+		t.Fatal(err)
 	}
-	if poller != nil {
-		t.Fatal("expected nil poller")
+	if poller.Done() {
+		t.Fatal("poller should not be done")
+	}
+	if s := poller.Status(); s != "InProgress" {
+		t.Fatalf("unexpected status %s", s)
 	}
 }
 

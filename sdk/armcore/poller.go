@@ -51,7 +51,7 @@ func NewLROPoller(pollerID string, finalState string, resp *azcore.Response, pl 
 	if err != nil {
 		return nil, err
 	}
-	return &LROPoller{lro: lro, pl: pl, eu: eu, resp: resp}, nil
+	return &LROPoller{lro: lro, Pipeline: pl, eu: eu, resp: resp}, nil
 }
 
 // NewLROPollerFromResumeToken creates an LROPoller from a resume token string.
@@ -99,17 +99,17 @@ func NewLROPollerFromResumeToken(pollerID string, token string, pl azcore.Pipeli
 	if err = json.Unmarshal([]byte(token), lro); err != nil {
 		return nil, err
 	}
-	return &LROPoller{lro: lro, pl: pl, eu: eu}, nil
+	return &LROPoller{lro: lro, Pipeline: pl, eu: eu}, nil
 }
 
 // LROPoller encapsulates state and logic for polling on long-running operations.
 // NOTE: this is only meant for internal use in generated code.
 type LROPoller struct {
-	lro  lroPoller
-	pl   azcore.Pipeline
-	eu   ErrorUnmarshaller
-	resp *azcore.Response
-	err  error
+	Pipeline azcore.Pipeline
+	lro      lroPoller
+	eu       ErrorUnmarshaller
+	resp     *azcore.Response
+	err      error
 }
 
 // Done returns true if the LRO has reached a terminal state.
@@ -133,7 +133,7 @@ func (l *LROPoller) Poll(ctx context.Context) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	resp, err := l.pl.Do(req)
+	resp, err := l.Pipeline.Do(req)
 	if err != nil {
 		// don't update the poller for failed requests
 		return nil, err
@@ -189,7 +189,7 @@ func (l *LROPoller) FinalResponse(ctx context.Context, respType interface{}) (*h
 		if err != nil {
 			return nil, err
 		}
-		resp, err := l.pl.Do(req)
+		resp, err := l.Pipeline.Do(req)
 		if err != nil {
 			return nil, err
 		}

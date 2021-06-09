@@ -33,10 +33,10 @@ const (
 // returns ErrNoBody if there was no content.
 func getJSON(resp *azcore.Response) (map[string]interface{}, error) {
 	body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
 	if err != nil {
 		return nil, err
 	}
-	resp.Body.Close()
 	if len(body) == 0 {
 		return nil, ErrNoBody
 	}

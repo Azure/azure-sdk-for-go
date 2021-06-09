@@ -149,6 +149,7 @@ func (l *LROPoller) Poll(ctx context.Context) (*http.Response, error) {
 		return nil, err
 	}
 	l.resp = resp
+	azcore.Log().Writef(azcore.LogLongRunningOperation, "Status %s", l.lro.Status())
 	if pollers.Failed(l.lro.Status()) {
 		l.err = l.eu(resp)
 		l.resp = nil
@@ -237,9 +238,7 @@ func (l *LROPoller) PollUntilDone(ctx context.Context, freq time.Duration, respT
 			return nil, err
 		}
 		if l.Done() {
-			status := l.lro.Status()
-			azcore.Log().Writef(azcore.LogLongRunningOperation, "Status %s", status)
-			logPollUntilDoneExit(status)
+			logPollUntilDoneExit(l.lro.Status())
 			return l.FinalResponse(ctx, respType)
 		}
 		d := freq

@@ -294,7 +294,7 @@ func (*nopPoller) FinalGetURL() string {
 }
 
 func (*nopPoller) Status() string {
-	return "Succeeded"
+	return pollers.StatusSucceeded
 }
 
 // returns true if the LRO response contains a valid HTTP status code

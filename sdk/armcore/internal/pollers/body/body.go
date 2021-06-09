@@ -13,11 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-const (
-	stateSucceeded  = "Succeeded"
-	stateInProgress = "InProgress"
-)
-
 // Applicable returns true if the LRO is using no headers, just provisioning state.
 // This is only applicable to PATCH and PUT methods and assumes no polling headers.
 func Applicable(resp *azcore.Response) bool {
@@ -42,7 +37,7 @@ func New(resp *azcore.Response, pollerID string) (*Poller, error) {
 	}
 	// default initial state to InProgress.  depending on the HTTP
 	// status code and provisioning state, we might change the value.
-	curState := stateInProgress
+	curState := pollers.StatusInProgress
 	provState, err := pollers.GetProvisioningState(resp)
 	if err != nil && !errors.Is(err, pollers.ErrNoBody) && !errors.Is(err, pollers.ErrNoProvisioningState) {
 		return nil, err
@@ -55,10 +50,10 @@ func New(resp *azcore.Response, pollerID string) (*Poller, error) {
 			curState = provState
 		} else if provState == "" {
 			// for a 200, absense of provisioning state indicates success
-			curState = stateSucceeded
+			curState = pollers.StatusSucceeded
 		}
 	} else if resp.StatusCode == http.StatusNoContent {
-		curState = stateSucceeded
+		curState = pollers.StatusSucceeded
 	}
 	p.CurState = curState
 	return p, nil
@@ -77,7 +72,7 @@ func (p *Poller) Done() bool {
 // Update updates the Poller from the polling response.
 func (p *Poller) Update(resp *azcore.Response) error {
 	if resp.StatusCode == http.StatusNoContent {
-		p.CurState = stateSucceeded
+		p.CurState = pollers.StatusSucceeded
 		return nil
 	}
 	state, err := pollers.GetProvisioningState(resp)
@@ -86,7 +81,7 @@ func (p *Poller) Update(resp *azcore.Response) error {
 		return err
 	} else if errors.Is(err, pollers.ErrNoProvisioningState) {
 		// a response body without provisioning state is considered terminal success
-		state = stateSucceeded
+		state = pollers.StatusSucceeded
 	} else if err != nil {
 		return err
 	}

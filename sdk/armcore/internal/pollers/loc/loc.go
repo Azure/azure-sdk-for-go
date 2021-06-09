@@ -36,7 +36,7 @@ func New(resp *azcore.Response, pollerID string) (*Poller, error) {
 	p := &Poller{
 		Type:     pollers.MakeID(pollerID, "loc"),
 		PollURL:  locURL,
-		CurState: "InProgress",
+		CurState: pollers.StatusInProgress,
 	}
 	return p, nil
 }
@@ -67,12 +67,12 @@ func (p *Poller) Update(resp *azcore.Response) error {
 			p.CurState = state
 		} else {
 			// a 200/201 with no provisioning state indicates success
-			p.CurState = "Succeeded"
+			p.CurState = pollers.StatusSucceeded
 		}
 	} else if resp.StatusCode == http.StatusNoContent {
-		p.CurState = "Succeeded"
+		p.CurState = pollers.StatusSucceeded
 	} else if resp.StatusCode > 399 && resp.StatusCode < 500 {
-		p.CurState = "Failed"
+		p.CurState = pollers.StatusFailed
 	}
 	// a 202 falls through, means the LRO is still in progress and we don't check for provisioning state
 	return nil

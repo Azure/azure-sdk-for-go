@@ -65,7 +65,7 @@ func New(resp *azcore.Response, finalState string, pollerID string) (*Poller, er
 			return nil, err
 		}*/
 		// for DELETE/PATCH/POST, provisioning state is optional
-		state = "InProgress"
+		state = pollers.StatusInProgress
 	} else if err != nil {
 		return nil, err
 	}

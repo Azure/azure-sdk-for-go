@@ -23,9 +23,10 @@ const (
 )
 
 const (
-	statusSucceeded = "succeeded"
-	statusCanceled  = "canceled"
-	statusFailed    = "failed"
+	StatusSucceeded  = "Succeeded"
+	StatusCanceled   = "Canceled"
+	StatusFailed     = "Failed"
+	StatusInProgress = "InProgress"
 )
 
 // reads the response body into a raw JSON object.
@@ -85,12 +86,12 @@ func status(jsonBody map[string]interface{}) string {
 
 // IsTerminalState returns true if the LRO's state is terminal.
 func IsTerminalState(s string) bool {
-	return strings.EqualFold(s, statusSucceeded) || strings.EqualFold(s, statusFailed) || strings.EqualFold(s, statusCanceled)
+	return strings.EqualFold(s, StatusSucceeded) || strings.EqualFold(s, StatusFailed) || strings.EqualFold(s, StatusCanceled)
 }
 
 // Failed returns true if the LRO's state is terminal failure.
 func Failed(s string) bool {
-	return strings.EqualFold(s, statusFailed) || strings.EqualFold(s, statusCanceled)
+	return strings.EqualFold(s, StatusFailed) || strings.EqualFold(s, StatusCanceled)
 }
 
 // GetStatus returns the LRO's status from the response body.

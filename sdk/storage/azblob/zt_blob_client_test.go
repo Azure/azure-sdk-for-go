@@ -111,7 +111,7 @@ func (s *aztestsSuite) TestBlobStartCopyDestEmpty(c *chk.C) {
 	data, err := ioutil.ReadAll(resp.RawResponse.Body)
 	c.Assert(*resp.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
-	resp.Body(RetryReaderOptions{}).Close()
+	_ = resp.Body(RetryReaderOptions{}).Close()
 }
 
 func (s *aztestsSuite) TestBlobStartCopyMetadata(c *chk.C) {
@@ -286,7 +286,7 @@ func (s *aztestsSuite) TestBlobStartCopyUsingSASSrc(c *chk.C) {
 	data, err := ioutil.ReadAll(resp2.RawResponse.Body)
 	c.Assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
-	resp2.Body(RetryReaderOptions{}).Close()
+	_ = resp2.Body(RetryReaderOptions{}).Close()
 }
 
 func (s *aztestsSuite) TestBlobStartCopyUsingSASDest(c *chk.C) {
@@ -367,7 +367,7 @@ func (s *aztestsSuite) TestBlobStartCopyUsingSASDest(c *chk.C) {
 	_, err = resp2.Body(RetryReaderOptions{}).Read(data)
 	c.Assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
-	resp2.Body(RetryReaderOptions{}).Close()
+	_ = resp2.Body(RetryReaderOptions{}).Close()
 }
 
 func (s *aztestsSuite) TestBlobStartCopySourceIfModifiedSinceTrue(c *chk.C) {
@@ -711,8 +711,8 @@ func (s *aztestsSuite) TestBlobAbortCopyInProgress(c *chk.C) {
 	blobClient, _ := getBlockBlobClient(c, containerClient)
 
 	// Create a large blob that takes time to copy
-	blobSize := 8 * 1024 * 1024
-	blobReader, _ := getRandomDataAndReader(blobSize)
+	contentSize := int64(8 * 1024 * 1024)
+	blobReader, _ := getRandomDataAndReader(contentSize)
 	_, err := blobClient.Upload(ctx, azcore.NopCloser(blobReader), nil)
 	c.Assert(err, chk.IsNil)
 
@@ -2044,7 +2044,7 @@ func (s *aztestsSuite) TestBlobSetMetadataIfNoneMatchFalse(c *chk.C) {
 	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 }
 
-func testBlobsUndeleteImpl(c *chk.C, bsu ServiceClient) error {
+func testBlobsUndeleteImpl(_ *chk.C, _ ServiceClient) error {
 	//containerURL, _ := createNewContainer(c, bsu)
 	//defer deleteContainer(c, containerURL)
 	//blobURL, _ := createNewBlockBlob(c, containerURL)
@@ -2059,7 +2059,7 @@ func testBlobsUndeleteImpl(c *chk.C, bsu ServiceClient) error {
 	//
 	//resp, err := blobURL.GetProperties(ctx, BlobAccessConditions{})
 	//if err != nil {
-	//	return errors.New(string(err.(StorageError).ErrorCode()))
+	//	return errors.New(string(err.(*StorageError).ErrorCode()))
 	//}
 	//c.Assert(resp.BlobType(), chk.Equals, BlobBlockBlob) // We could check any property. This is just to double check it was undeleted.
 	return nil

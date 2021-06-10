@@ -20,8 +20,8 @@ func (s *aztestsSuite) TestPutGetPages(c *chk.C) {
 
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	contentSize := 1024
-	offset, end, count := int64(0), int64(contentSize-1), int64(contentSize)
+	contentSize := int64(1024)
+	offset, end, count := int64(0), contentSize-1, contentSize
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	putResp, err := pbClient.UploadPages(context.Background(), getReaderToRandomBytes(1024), &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
@@ -64,13 +64,13 @@ func (s *aztestsSuite) TestUploadPagesFromURL(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	contentSize := 4 * 1024 * 1024 // 4MB
+	contentSize := int64(4 * 1024 * 1024) // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	ctx := context.Background() // Use default Background context
-	srcBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(contentSize))
-	destBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(contentSize))
+	srcBlob, _ := createNewPageBlobWithSize(c, containerClient, contentSize)
+	destBlob, _ := createNewPageBlobWithSize(c, containerClient, contentSize)
 
-	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
+	offset, _, count := int64(0), contentSize-1, contentSize
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	uploadSrcResp1, err := srcBlob.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
@@ -102,7 +102,7 @@ func (s *aztestsSuite) TestUploadPagesFromURL(c *chk.C) {
 	srcBlobURLWithSAS := srcBlobParts.URL()
 
 	// Upload page from URL.
-	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), nil)
+	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, contentSize, nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(pResp1.RawResponse.StatusCode, chk.Equals, 201)
 	c.Assert(pResp1.ETag, chk.NotNil)
@@ -121,6 +121,79 @@ func (s *aztestsSuite) TestUploadPagesFromURL(c *chk.C) {
 	c.Assert(destData, chk.DeepEquals, sourceData)
 }
 
+func (s *aztestsSuite) TestPageBlobCreateIfExists(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+
+	pbClient, _ := createNewPageBlob(c, containerClient)
+
+	contentSize := int64(1024)
+	offset, end, count := int64(0), contentSize-1, contentSize
+	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
+	putResp, err := pbClient.UploadPages(context.Background(), getReaderToRandomBytes(1024), &uploadPagesOptions)
+	c.Assert(err, chk.IsNil)
+	c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
+	c.Assert(putResp.LastModified, chk.NotNil)
+	c.Assert((*putResp.LastModified).IsZero(), chk.Equals, false)
+	c.Assert(putResp.ETag, chk.NotNil)
+	c.Assert(putResp.ContentMD5, chk.IsNil)
+	c.Assert(*putResp.BlobSequenceNumber, chk.Equals, int64(0))
+	c.Assert(*putResp.RequestID, chk.NotNil)
+	c.Assert(*putResp.Version, chk.NotNil)
+	c.Assert(putResp.Date, chk.NotNil)
+	c.Assert((*putResp.Date).IsZero(), chk.Equals, false)
+
+	pageList, err := pbClient.GetPageRanges(context.Background(), HttpRange{0, 1023}, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(pageList.RawResponse.StatusCode, chk.Equals, 200)
+	c.Assert(pageList.LastModified, chk.NotNil)
+	c.Assert((*pageList.LastModified).IsZero(), chk.Equals, false)
+	c.Assert(pageList.ETag, chk.NotNil)
+	c.Assert(*pageList.BlobContentLength, chk.Equals, int64(512*10))
+	c.Assert(*pageList.RequestID, chk.NotNil)
+	c.Assert(*pageList.Version, chk.NotNil)
+	c.Assert(pageList.Date, chk.NotNil)
+	c.Assert((*pageList.Date).IsZero(), chk.Equals, false)
+	c.Assert(pageList.PageList, chk.NotNil)
+	pageRangeResp := pageList.PageList.PageRange
+	c.Assert(*pageRangeResp, chk.HasLen, 1)
+	rawStart, rawEnd := (*pageRangeResp)[0].Raw()
+	c.Assert(rawStart, chk.Equals, offset)
+	c.Assert(rawEnd, chk.Equals, end)
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+		Metadata:           &basicMetadata,
+	}
+
+	_, err = pbClient.CreateIfNotExists(ctx, contentSize, &createPageBlobOptions)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *aztestsSuite) TestPageBlobCreateIfNotExists(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+
+	pbClient := containerClient.NewPageBlobClient(generateBlobName())
+
+	sequenceNumber := int64(0)
+	createPageBlobOptions := CreatePageBlobOptions{
+		BlobSequenceNumber: &sequenceNumber,
+		Metadata:           &basicMetadata,
+	}
+
+	_, err := pbClient.CreateIfNotExists(ctx, PageBlobPageBytes*10, &createPageBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	getResp, err := pbClient.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(getResp.Metadata, chk.DeepEquals, basicMetadata)
+	c.Assert(getResp.BlobSequenceNumber, chk.NotNil)
+}
+
 func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 	bsu := getBSU()
 	credential, err := getGenericCredential("")
@@ -130,16 +203,16 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	contentSize := 4 * 1024 * 1024 // 4MB
+	contentSize := int64(4 * 1024 * 1024) // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	md5Value := md5.Sum(sourceData)
 	contentMD5 := md5Value[:]
 	ctx := context.Background() // Use default Background context
-	srcBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(contentSize))
-	destBlob, _ := createNewPageBlobWithSize(c, containerClient, int64(contentSize))
+	srcBlob, _ := createNewPageBlobWithSize(c, containerClient, contentSize)
+	destBlob, _ := createNewPageBlobWithSize(c, containerClient, contentSize)
 
 	// Prepare source pbClient for copy.
-	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
+	offset, _, count := int64(0), contentSize-1, contentSize
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	uploadSrcResp1, err := srcBlob.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
@@ -165,7 +238,7 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 	uploadPagesFromURLOptions := UploadPagesFromURLOptions{
 		SourceContentMD5: &contentMD5,
 	}
-	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
+	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, contentSize, &uploadPagesFromURLOptions)
 	c.Assert(err, chk.IsNil)
 	c.Assert(pResp1.RawResponse.StatusCode, chk.Equals, 201)
 	c.Assert(pResp1.ETag, chk.NotNil)
@@ -191,7 +264,7 @@ func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
 	uploadPagesFromURLOptions = UploadPagesFromURLOptions{
 		SourceContentMD5: &badContentMD5,
 	}
-	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
+	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, contentSize, &uploadPagesFromURLOptions)
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeMD5Mismatch)
@@ -204,9 +277,9 @@ func (s *aztestsSuite) TestClearDiffPages(c *chk.C) {
 
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	contentSize := 2 * 1024
+	contentSize := int64(2 * 1024)
 	r := getReaderToRandomBytes(contentSize)
-	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
+	offset, _, count := int64(0), contentSize-1, contentSize
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err := pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
@@ -214,7 +287,7 @@ func (s *aztestsSuite) TestClearDiffPages(c *chk.C) {
 	snapshotResp, err := pbClient.CreateSnapshot(context.Background(), nil)
 	c.Assert(err, chk.IsNil)
 
-	offset1, end1, count1 := int64(contentSize), int64(2*contentSize-1), int64(contentSize)
+	offset1, end1, count1 := contentSize, 2*contentSize-1, contentSize
 	uploadPagesOptions1 := UploadPagesOptions{PageRange: &HttpRange{offset1, count1}}
 	_, err = pbClient.UploadPages(context.Background(), getReaderToRandomBytes(2048), &uploadPagesOptions1)
 	c.Assert(err, chk.IsNil)
@@ -267,9 +340,9 @@ func (s *aztestsSuite) TestIncrementalCopy(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	srcBlob, _ := createNewPageBlob(c, containerClient)
-	contentSize := 1024
+	contentSize := int64(1024)
 	r := getReaderToRandomBytes(contentSize)
-	offset, _, count := int64(0), int64(0)+int64(contentSize-1), int64(contentSize)
+	offset, _, count := int64(0), int64(0)+contentSize-1, contentSize
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = srcBlob.UploadPages(context.Background(), r, &uploadPagesOptions)
 	c.Assert(err, chk.IsNil)
@@ -360,9 +433,9 @@ func (s *aztestsSuite) TestPutPagesWithMD5(c *chk.C) {
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
 	// put page with valid MD5
-	contentSize := 1024
+	contentSize := int64(1024)
 	readerToBody, body := getRandomDataAndReader(contentSize)
-	offset, _, count := int64(0), int64(0)+int64(contentSize-1), int64(contentSize)
+	offset, _, count := int64(0), int64(0)+contentSize-1, contentSize
 	md5Value := md5.Sum(body)
 	contentMD5 := md5Value[:]
 	uploadPagesOptions := UploadPagesOptions{
@@ -716,24 +789,13 @@ func (s *aztestsSuite) TestBlobPutPagesInvalidRange(c *chk.C) {
 	defer deleteContainer(c, containerClient)
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	contentSize := 1024
+	contentSize := int64(1024)
 	r := getReaderToRandomBytes(contentSize)
-	offset, count := int64(0), int64(contentSize/2)
+	offset, count := int64(0), contentSize/2
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
 	c.Assert(err, chk.Not(chk.IsNil))
 }
-
-// Body cannot be nil check already added in the request preparer
-//func (s *aztestsSuite) TestBlobPutPagesNilBody(c *chk.C) {
-//	bsu := getBSU()
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(c, containerClient)
-//	pbClient, _ := createNewPageBlob(c, containerClient)
-//
-//	_, err := pbClient.UploadPages(ctx, nil, nil)
-//	c.Assert(err, chk.NotNil)
-//}
 
 func (s *aztestsSuite) TestBlobPutPagesEmptyBody(c *chk.C) {
 	bsu := getBSU()
@@ -1689,7 +1751,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfModifiedSinceFalse(c *chk.C) {
 	_, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
-	//serr := err.(StorageError)
+	//serr := err.(*StorageError)
 	//c.Assert(serr.RawResponse.StatusCode, chk.Equals, 304)
 }
 
@@ -1799,7 +1861,7 @@ func (s *aztestsSuite) TestBlobGetPageRangesIfNoneMatchFalse(c *chk.C) {
 	}
 	_, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
-	//serr := err.(StorageError)
+	//serr := err.(*StorageError)
 	//c.Assert(serr.RawResponse.StatusCode, chk.Equals, 304) // Service Code not returned in the body for a HEAD
 }
 
@@ -1894,7 +1956,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfModifiedSinceFalse(c *chk.C) {
 	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
-	//stgErr := err.(StorageError)
+	//stgErr := err.(*StorageError)
 	//c.Assert(stgErr.Response().StatusCode, chk.Equals, 304)
 }
 
@@ -2004,7 +2066,7 @@ func (s *aztestsSuite) TestBlobDiffPageRangeIfNoneMatchFalse(c *chk.C) {
 	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
 	c.Assert(err, chk.NotNil)
 
-	//serr := err.(StorageError)
+	//serr := err.(*StorageError)
 	//c.Assert(serr.Response().StatusCode, chk.Equals, 304)
 }
 

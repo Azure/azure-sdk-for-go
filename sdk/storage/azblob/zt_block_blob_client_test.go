@@ -105,7 +105,7 @@ func (s *aztestsSuite) TestStageBlockFromURL(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	contentSize := 8 * 1024 // 8 KB
+	contentSize := int64(8 * 1024) // 8 KB
 	content := make([]byte, contentSize)
 	body := bytes.NewReader(content)
 	rsc := azcore.NopCloser(body)
@@ -356,7 +356,7 @@ func (s *aztestsSuite) TestStageBlockWithMD5(c *chk.C) {
 	bbClient := containerClient.NewBlockBlobClient(generateBlobName())
 
 	// test put block with valid MD5 value
-	contentSize := 8 * 1024 // 8 KB
+	contentSize := int64(8 * 1024) // 8 KB
 	content := make([]byte, contentSize)
 	body := bytes.NewReader(content)
 	rsc := azcore.NopCloser(body)
@@ -393,7 +393,7 @@ func (s *aztestsSuite) TestStageBlockWithMD5(c *chk.C) {
 	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &badStageBlockOptions)
 	c.Assert(err, chk.NotNil)
 
-	//c.Assert(err.(StorageError), chk.Equals, StorageErrorCodeMD5Mismatch)
+	//c.Assert(err.(*StorageError), chk.Equals, StorageErrorCodeMD5Mismatch)
 }
 
 func (s *aztestsSuite) TestBlobPutBlobHTTPHeaders(c *chk.C) {
@@ -972,7 +972,7 @@ func (s *aztestsSuite) TestSetTierOnStageBlockFromURL(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	contentSize := 8 * 1024 // 8 KB
+	contentSize := int64(8 * 1024) // 8 KB
 	content := make([]byte, contentSize)
 	body := bytes.NewReader(content)
 	rsc := azcore.NopCloser(body)

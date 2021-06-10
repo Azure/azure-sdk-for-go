@@ -27,7 +27,7 @@ func (s *aztestsSuite) TestSetBlobTags(c *chk.C) {
 		"sdk":      "go",
 	}
 
-	contentSize := 4 * 1024 * 1024 // 4MB
+	contentSize := int64(4 * 1024 * 1024) // 4MB
 	r, _ := getRandomDataAndReader(contentSize)
 
 	blockBlobUploadResp, err := bbClient.Upload(ctx, r, nil)
@@ -202,7 +202,7 @@ func (s *aztestsSuite) TestStageBlockFromURLWithTags(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	contentSize := 4 * 1024 * 1024 // 4MB
+	contentSize := int64(4 * 1024 * 1024) // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	ctx := ctx // Use default Background context
 	srcBlob := containerClient.NewBlockBlobClient("sourceBlob")
@@ -240,7 +240,7 @@ func (s *aztestsSuite) TestStageBlockFromURLWithTags(c *chk.C) {
 	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 
-	offset1, count1 := int64(0), int64(contentSize/2)
+	offset1, count1 := int64(0), contentSize/2
 	options1 := StageBlockFromURLOptions{
 		Offset: &offset1,
 		Count:  &count1,
@@ -253,7 +253,7 @@ func (s *aztestsSuite) TestStageBlockFromURLWithTags(c *chk.C) {
 	c.Assert(stageResp1.Date, chk.NotNil)
 	c.Assert((*stageResp1.Date).IsZero(), chk.Equals, false)
 
-	offset2, count2 := int64(contentSize/2), int64(CountToEnd)
+	offset2, count2 := contentSize/2, CountToEnd
 	options2 := StageBlockFromURLOptions{
 		Offset: &offset2,
 		Count:  &count2,
@@ -303,7 +303,7 @@ func (s *aztestsSuite) TestCopyBlockBlobFromURLWithTags(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	contentSize := 8 * 1024 // 1MB
+	contentSize := int64(8 * 1024) // 1MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	sourceDataMD5Value := md5.Sum(sourceData)
 	srcBlob := containerClient.NewBlockBlobClient("srcBlob")
@@ -568,8 +568,8 @@ func (s *aztestsSuite) TestCreatePageBlobWithTags(c *chk.C) {
 
 	pbClient, _ := createNewPageBlob(c, containerClient)
 
-	contentSize := 1 * 1024
-	offset, count := int64(0), int64(contentSize)
+	contentSize := int64(1 * 1024) // 1KB
+	offset, count := int64(0), contentSize
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}

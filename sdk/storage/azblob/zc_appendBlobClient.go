@@ -6,6 +6,7 @@ package azblob
 import (
 	"context"
 	"io"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -68,6 +69,21 @@ func (ab AppendBlobClient) Create(ctx context.Context, options *CreateAppendBlob
 	return resp, handleError(err)
 }
 
+// CreateIfNotExists operation creates a new 0-length append blob.
+// If the append blob already exists, the content of the existing append blob will remain unchanged.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
+func (ab AppendBlobClient) CreateIfNotExists(ctx context.Context, options *CreateAppendBlobOptions) (AppendBlobCreateResponse, error) {
+
+	appendBlobAppendBlockOptions, blobHttpHeaders, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions := options.pointers()
+	resp, err := ab.client.Create(ctx, 0, appendBlobAppendBlockOptions, blobHttpHeaders, leaseAccessConditions, cpkInfo, cpkScopeInfo, modifiedAccessConditions)
+
+	err = handleError(err)
+	if err != nil && strings.Contains(err.Error(), string(StorageErrorCodeBlobAlreadyExists)) {
+		return AppendBlobCreateResponse{}, nil
+	}
+	return resp, err
+}
+
 // AppendBlock writes a stream to a new block of data to the end of the existing append blob.
 // This method panics if the stream is not at position 0.
 // Note that the http client closes the body stream after the request is sent to the service.
@@ -88,10 +104,11 @@ func (ab AppendBlobClient) AppendBlock(ctx context.Context, body io.ReadSeeker, 
 // AppendBlockFromURL copies a new block of data from source URL to the end of the existing append blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/append-block-from-url.
 func (ab AppendBlobClient) AppendBlockFromURL(ctx context.Context, source string, options *AppendBlockURLOptions) (AppendBlobAppendBlockFromURLResponse, error) {
-	appendOptions, aac, cpkinfo, cpkscope, mac, lac, smac := options.pointers()
-
+	appendOptions, appendPositionAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions,
+		leaseAccessConditions, sourceModifiedAccessConditions := options.pointers()
 	// content length should be 0 on * from URL. always. It's a 400 if it isn't.
-	resp, err := ab.client.AppendBlockFromURL(ctx, source, 0, appendOptions, cpkinfo, cpkscope, lac, aac, mac, smac)
+	resp, err := ab.client.AppendBlockFromURL(ctx, source, 0, appendOptions, cpkInfo, cpkScope,
+		leaseAccessConditions, appendPositionAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions)
 
 	return resp, handleError(err)
 }

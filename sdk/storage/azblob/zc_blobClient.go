@@ -85,7 +85,7 @@ func (b BlobClient) Download(ctx context.Context, options *DownloadBlobOptions) 
 	}, err
 }
 
-// DeleteBlob marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.
+// Delete marks the specified blob or snapshot for deletion. The blob is later deleted during garbage collection.
 // Note that deleting a blob also deletes all its snapshots.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob.
 func (b BlobClient) Delete(ctx context.Context, options *DeleteBlobOptions) (BlobDeleteResponse, error) {
@@ -108,7 +108,7 @@ func (b BlobClient) Undelete(ctx context.Context) (BlobUndeleteResponse, error) 
 // redundant storage only). A premium page blob's tier determines the allowed size, IOPS, and
 // bandwidth of the blob. A block blob's tier determines Hot/Cool/Archive storage type. This operation
 // does not update the blob's ETag.
-// For detailed information about block blob level tiering see https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.
+// For detailed information about block blob level tier-ing see https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-storage-tiers.
 func (b BlobClient) SetTier(ctx context.Context, tier AccessTier, options *SetTierOptions) (BlobSetTierResponse, error) {
 	basics, lease, accessConditions := options.pointers()
 	resp, err := b.client.SetTier(ctx, tier, basics, lease, accessConditions)
@@ -116,7 +116,7 @@ func (b BlobClient) SetTier(ctx context.Context, tier AccessTier, options *SetTi
 	return resp, handleError(err)
 }
 
-// GetBlobProperties returns the blob's properties.
+// GetProperties returns the blob's properties.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-properties.
 func (b BlobClient) GetProperties(ctx context.Context, options *GetBlobPropertiesOptions) (BlobGetPropertiesResponse, error) {
 	basics, lease, cpk, access := options.pointers()
@@ -125,7 +125,7 @@ func (b BlobClient) GetProperties(ctx context.Context, options *GetBlobPropertie
 	return resp, handleError(err)
 }
 
-// SetBlobHTTPHeaders changes a blob's HTTP headers.
+// SetHTTPHeaders changes a blob's HTTP headers.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-blob-properties.
 func (b BlobClient) SetHTTPHeaders(ctx context.Context, blobHttpHeaders BlobHTTPHeaders, options *SetBlobHTTPHeadersOptions) (BlobSetHTTPHeadersResponse, error) {
 	basics, lease, access := options.pointers()
@@ -134,7 +134,7 @@ func (b BlobClient) SetHTTPHeaders(ctx context.Context, blobHttpHeaders BlobHTTP
 	return resp, handleError(err)
 }
 
-// SetBlobMetadata changes a blob's metadata.
+// SetMetadata changes a blob's metadata.
 // https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata.
 func (b BlobClient) SetMetadata(ctx context.Context, metadata map[string]string, options *SetBlobMetadataOptions) (BlobSetMetadataResponse, error) {
 	lease, cpk, cpkScope, access := options.pointers()

@@ -18,7 +18,7 @@ func (s *aztestsSuite) TestAppendBlock(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	abClient := containerClient.NewAppendBlobURL(generateBlobName())
+	abClient := containerClient.NewAppendBlobClient(generateBlobName())
 
 	resp, err := abClient.Create(context.Background(), nil)
 	c.Assert(err, chk.IsNil)
@@ -50,7 +50,7 @@ func (s *aztestsSuite) TestAppendBlockWithMD5(c *chk.C) {
 	defer deleteContainer(c, containerClient)
 
 	// set up abClient to test
-	abClient := containerClient.NewAppendBlobURL(generateBlobName())
+	abClient := containerClient.NewAppendBlobClient(generateBlobName())
 	resp, err := abClient.Create(context.Background(), nil)
 	c.Assert(err, chk.IsNil)
 	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
@@ -99,11 +99,11 @@ func (s *aztestsSuite) TestAppendBlockFromURL(c *chk.C) {
 	defer deleteContainer(c, containerClient)
 
 	//ctx := context.Background()
-	contentSize := 4 * 1024 * 1024 // 4MB
+	contentSize := int64(4 * 1024 * 1024) // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	contentMD5 := md5.Sum(sourceData)
-	srcBlob := containerClient.NewAppendBlobURL(generateName("appendsrc"))
-	destBlob := containerClient.NewAppendBlobURL(generateName("appenddest"))
+	srcBlob := containerClient.NewAppendBlobClient(generateName("appendsrc"))
+	destBlob := containerClient.NewAppendBlobClient(generateName("appenddest"))
 
 	// Prepare source abClient for copy.
 	cResp1, err := srcBlob.Create(ctx, nil)
@@ -186,12 +186,12 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	containerClient, _ := createNewContainer(c, bsu)
 	defer deleteContainer(c, containerClient)
 
-	contentSize := 4 * 1024 * 1024 // 4MB
+	contentSize := int64(4 * 1024 * 1024) // 4MB
 	r, sourceData := getRandomDataAndReader(contentSize)
 	md5Value := md5.Sum(sourceData)
 	ctx := context.Background() // Use default Background context
-	srcBlob := containerClient.NewAppendBlobURL(generateName("appendsrc"))
-	destBlob := containerClient.NewAppendBlobURL(generateName("appenddest"))
+	srcBlob := containerClient.NewAppendBlobClient(generateName("appendsrc"))
+	destBlob := containerClient.NewAppendBlobClient(generateName("appenddest"))
 
 	// Prepare source abClient for copy.
 	cResp1, err := srcBlob.Create(context.Background(), nil)
@@ -234,7 +234,7 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	c.Assert(cResp2.RawResponse.StatusCode, chk.Equals, 201)
 
 	offset := int64(0)
-	count := int64(contentSize)
+	count := contentSize
 	contentMD5 := md5Value[:]
 	appendBlockURLOptions := AppendBlockURLOptions{
 		Offset:           &offset,
@@ -274,6 +274,55 @@ func (s *aztestsSuite) TestAppendBlockFromURLWithMD5(c *chk.C) {
 	c.Assert(err, chk.NotNil)
 
 	validateStorageError(c, err, StorageErrorCodeMD5Mismatch)
+}
+
+func (s *aztestsSuite) TestAppendBlobCreateIfExists(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+
+	abClient, _ := createNewAppendBlob(c, containerClient)
+
+	appendResp, err := abClient.AppendBlock(context.Background(), getReaderToRandomBytes(1024), nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(appendResp.RawResponse.StatusCode, chk.Equals, 201)
+	c.Assert(*appendResp.BlobAppendOffset, chk.Equals, "0")
+	c.Assert(*appendResp.BlobCommittedBlockCount, chk.Equals, int32(1))
+	c.Assert(appendResp.ETag, chk.NotNil)
+	c.Assert(appendResp.LastModified, chk.NotNil)
+	c.Assert((*appendResp.LastModified).IsZero(), chk.Equals, false)
+	c.Assert(appendResp.ContentMD5, chk.IsNil)
+	c.Assert(appendResp.RequestID, chk.NotNil)
+	c.Assert(appendResp.Version, chk.NotNil)
+	c.Assert(appendResp.Date, chk.NotNil)
+	c.Assert((*appendResp.Date).IsZero(), chk.Equals, false)
+
+	appendResp, err = abClient.AppendBlock(context.Background(), getReaderToRandomBytes(1024), nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*appendResp.BlobAppendOffset, chk.Equals, "1024")
+	c.Assert(*appendResp.BlobCommittedBlockCount, chk.Equals, int32(2))
+
+	_, err = abClient.CreateIfNotExists(ctx, nil)
+	c.Assert(err, chk.IsNil)
+}
+
+func (s *aztestsSuite) TestAppendBlobCreateIfNotExists(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+
+	abClient := containerClient.NewAppendBlobClient(generateBlobName())
+
+	createAppendBlobOptions := CreateAppendBlobOptions{
+		Metadata: &basicMetadata,
+	}
+
+	_, err := abClient.CreateIfNotExists(ctx, &createAppendBlobOptions)
+	c.Assert(err, chk.IsNil)
+
+	getResp, err := abClient.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(getResp.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestBlobCreateAppendMetadataNonEmpty(c *chk.C) {

@@ -68,15 +68,15 @@ type StorageError struct {
 }
 
 func handleError(err error) error {
+	if err == nil {
+		return nil
+	}
+
 	if err, ok := err.(*runtime.ResponseError); ok {
 		return &InternalError{defunkifyStorageError(err)}
 	}
 
-	if err != nil {
-		return &InternalError{err}
-	}
-
-	return nil
+	return &InternalError{err}
 }
 
 // defunkifyStorageError is a function that takes the "funky" *runtime.ResponseError and reduces it to a storageError.
@@ -101,7 +101,7 @@ func defunkifyStorageError(responseError *runtime.ResponseError) error {
 	}
 }
 
-// ServiceCode returns service-error information. The caller may examine these values but should not modify any of them.
+// StatusCode returns service-error information. The caller may examine these values but should not modify any of them.
 func (e *StorageError) StatusCode() int {
 	return e.response.StatusCode
 }
@@ -132,8 +132,6 @@ func (e StorageError) Error() string {
 	}
 
 	return b.String()
-	// azcore.writeRequestWithResponse(b, prepareRequestForLogging(req), e.response, nil)
-	// return e.ErrorNode.Error(b.String())
 }
 
 func (e StorageError) Is(err error) bool {
@@ -158,7 +156,7 @@ func writeRequestWithResponse(b *bytes.Buffer, request *azcore.Request, response
 	}
 }
 
-// formatHeaders appends an HTTP request's or response's header into a Buffer.
+// writeHeader appends an HTTP request's or response's header into a Buffer.
 func writeHeader(b *bytes.Buffer, header map[string][]string) {
 	if len(header) == 0 {
 		b.WriteString("   (no headers)\n")

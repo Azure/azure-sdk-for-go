@@ -30,22 +30,6 @@ func (s *aztestsSuite) TestCreateRootContainerURL(c *chk.C) {
 	c.Assert(testURL.URL(), chk.Equals, correctURL)
 }
 
-// func (s *aztestsSuite) TestAccountWithPipeline(c *chk.C) {
-// 	bsu := getBSU()
-// 	pipeline := newTestPipeline()
-// 	bsu = bsu.WithPipeline(pipeline) // testPipeline returns an identifying message as an error
-// 	containerClient := bsu.NewContainerClient("name")
-//
-// 	access := PublicAccessBlob
-// 	createContainerOptions := CreateContainerOptions{
-// 		Access:   &access,
-// 		Metadata: &map[string]string{},
-// 	}
-// 	_, err := containerClient.Create(ctx, &createContainerOptions)
-// 	c.Assert(err, chk.NotNil)
-// 	c.Assert(err.Error(), chk.Equals, testPipelineMessage)
-// }
-
 func (s *aztestsSuite) TestContainerCreateInvalidName(c *chk.C) {
 	bsu := getBSU()
 	containerClient := bsu.NewContainerClient("foo bar")
@@ -58,6 +42,46 @@ func (s *aztestsSuite) TestContainerCreateInvalidName(c *chk.C) {
 	_, err := containerClient.Create(ctx, &createContainerOptions)
 	c.Assert(err, chk.NotNil)
 	validateStorageError(c, err, StorageErrorCodeInvalidResourceName)
+}
+
+func (s *aztestsSuite) TestContainerCreateIfExists(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+	defer deleteContainer(c, containerClient)
+
+	access := PublicAccessBlob
+	createContainerOptions := CreateContainerOptions{
+		Access:   &access,
+		Metadata: &map[string]string{},
+	}
+	_, err := containerClient.CreateIsNotExists(ctx, &createContainerOptions)
+	c.Assert(err, chk.IsNil)
+
+	// Ensure that next create call doesn't update the properties of already created container
+	getResp, err := containerClient.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(getResp.BlobPublicAccess, chk.IsNil)
+	c.Assert(getResp.Metadata, chk.IsNil)
+}
+
+func (s *aztestsSuite) TestContainerCreateIfNotExists(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := getContainerClient(c, bsu)
+
+	access := PublicAccessBlob
+	createContainerOptions := CreateContainerOptions{
+		Access:   &access,
+		Metadata: &basicMetadata,
+	}
+	_, err := containerClient.CreateIsNotExists(ctx, &createContainerOptions)
+	c.Assert(err, chk.IsNil)
+	defer deleteContainer(c, containerClient)
+
+	// Ensure that next create call doesn't update the properties of already created container
+	getResp, err := containerClient.GetProperties(ctx, nil)
+	c.Assert(err, chk.IsNil)
+	c.Assert(*getResp.BlobPublicAccess, chk.DeepEquals, PublicAccessBlob)
+	c.Assert(getResp.Metadata, chk.DeepEquals, basicMetadata)
 }
 
 func (s *aztestsSuite) TestContainerCreateEmptyName(c *chk.C) {
@@ -272,6 +296,29 @@ func (s *aztestsSuite) TestContainerDelete(c *chk.C) {
 	c.Assert(err, chk.IsNil)
 
 	validateContainerDeleted(c, containerClient)
+}
+
+func (s *aztestsSuite) TestContainerDeleteIfExists(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+
+	_, err := containerClient.DeleteIfExists(ctx, nil)
+	c.Assert(err, chk.IsNil)
+
+	validateContainerDeleted(c, containerClient)
+}
+
+func (s *aztestsSuite) TestContainerDeleteIfNotExists(c *chk.C) {
+	bsu := getBSU()
+	containerClient, _ := createNewContainer(c, bsu)
+
+	_, err := containerClient.Delete(ctx, nil)
+	c.Assert(err, chk.IsNil)
+
+	validateContainerDeleted(c, containerClient)
+
+	_, err = containerClient.DeleteIfExists(ctx, nil)
+	c.Assert(err, chk.IsNil)
 }
 
 func (s *aztestsSuite) TestContainerDeleteNonExistent(c *chk.C) {

@@ -6,6 +6,7 @@ package azblob
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -45,12 +46,12 @@ func (c ContainerClient) NewBlobClient(blobName string) BlobClient {
 	}
 }
 
-// NewAppendBlobURL creates a new AppendBlobURL object by concatenating blobName to the end of
+// NewAppendBlobClient creates a new AppendBlobURL object by concatenating blobName to the end of
 // ContainerClient's URL. The new AppendBlobURL uses the same request policy pipeline as the ContainerClient.
 // To change the pipeline, create the AppendBlobURL and then call its WithPipeline method passing in the
-// desired pipeline object. Or, call this package's NewAppendBlobURL instead of calling this object's
-// NewAppendBlobURL method.
-func (c ContainerClient) NewAppendBlobURL(blobName string) AppendBlobClient {
+// desired pipeline object. Or, call this package's NewAppendBlobClient instead of calling this object's
+// NewAppendBlobClient method.
+func (c ContainerClient) NewAppendBlobClient(blobName string) AppendBlobClient {
 	blobURL := appendToURLPath(c.URL(), blobName)
 	newCon := &connection{blobURL, c.client.con.p}
 
@@ -75,8 +76,8 @@ func (c ContainerClient) NewBlockBlobClient(blobName string) BlockBlobClient {
 	}
 }
 
-// NewPageBlobURL creates a new PageBlobURL object by concatenating blobName to the end of
-// ContainerClient's URL. The new PageBlobURL uses the same request policy pipeline as the ContainerClient.
+// NewPageBlobClient creates a new PageBlobURL object by concatenating blobName to the end of
+// ContainerClient. The new PageBlobURL uses the same request policy pipeline as the ContainerClient.
 // To change the pipeline, create the PageBlobURL and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewPageBlobURL instead of calling this object's
 // NewPageBlobURL method.
@@ -112,6 +113,23 @@ func (c ContainerClient) Create(ctx context.Context, options *CreateContainerOpt
 	return resp, handleError(err)
 }
 
+// CreateIsNotExists operation creates a new container under the specified account.
+// If the container with the same name already exists, it is not changed.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/create-container.
+func (c ContainerClient) CreateIsNotExists(ctx context.Context, options *CreateContainerOptions) (ContainerCreateResponse, error) {
+	basics, cpkInfo := options.pointers()
+
+	resp, err := c.client.Create(ctx, basics, cpkInfo)
+
+	// If container already exists, return nil error
+	err = handleError(err)
+	if err != nil && strings.Contains(err.Error(), string(StorageErrorCodeContainerAlreadyExists)) {
+		return ContainerCreateResponse{}, nil
+	}
+
+	return resp, err
+}
+
 // Delete marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-container.
 func (c ContainerClient) Delete(ctx context.Context, options *DeleteContainerOptions) (ContainerDeleteResponse, error) {
@@ -119,6 +137,21 @@ func (c ContainerClient) Delete(ctx context.Context, options *DeleteContainerOpt
 	resp, err := c.client.Delete(ctx, basics, leaseInfo, accessConditions)
 
 	return resp, handleError(err)
+}
+
+// DeleteIfExists operation marks the specified container for deletion if it exists.
+// The container and any blobs contained within it are later deleted during garbage collection.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-container
+func (c ContainerClient) DeleteIfExists(ctx context.Context, options *DeleteContainerOptions) (ContainerDeleteResponse, error) {
+	basics, leaseInfo, accessConditions := options.pointers()
+	resp, err := c.client.Delete(ctx, basics, leaseInfo, accessConditions)
+
+	err = handleError(err)
+	// If container is already deleted, return nil error
+	if err != nil && (strings.Contains(err.Error(), string(StorageErrorCodeContainerNotFound)) || strings.Contains(err.Error(), string(StorageErrorCodeBlobNotFound))) {
+		return ContainerDeleteResponse{}, nil
+	}
+	return resp, err
 }
 
 func (c ContainerClient) GetMetadata(ctx context.Context, gpo *GetPropertiesOptionsContainer) (map[string]string, error) {
@@ -131,9 +164,8 @@ func (c ContainerClient) GetMetadata(ctx context.Context, gpo *GetPropertiesOpti
 	return resp.Metadata, nil
 }
 
-//
-//// GetProperties returns the container's properties.
-//// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-container-metadata.
+// GetProperties returns the container's properties.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-container-metadata.
 func (c ContainerClient) GetProperties(ctx context.Context, gpo *GetPropertiesOptionsContainer) (ContainerGetPropertiesResponse, error) {
 	// NOTE: GetMetadata actually calls GetProperties internally because GetProperties returns the metadata AND the properties.
 	// This allows us to not expose a GetProperties method at all simplifying the API.
@@ -145,8 +177,8 @@ func (c ContainerClient) GetProperties(ctx context.Context, gpo *GetPropertiesOp
 	return resp, handleError(err)
 }
 
-//// SetMetadata sets the container's metadata.
-//// For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-metadata.
+// SetMetadata sets the container's metadata.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-metadata.
 func (c ContainerClient) SetMetadata(ctx context.Context, options *SetMetadataContainerOptions) (ContainerSetMetadataResponse, error) {
 	// TODO: Ask Ze/Adele: Why we introduced this check. We should let service do this kind of validations.
 	//if ac != nil && ac.ModifiedAccessConditions != nil {

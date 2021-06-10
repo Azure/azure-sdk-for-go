@@ -8,6 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"io"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -65,11 +66,28 @@ func (pb PageBlobClient) WithVersionID(versionID string) PageBlobClient {
 // Create creates a page blob of the specified length. Call PutPage to upload data to a page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
 func (pb PageBlobClient) Create(ctx context.Context, size int64, options *CreatePageBlobOptions) (PageBlobCreateResponse, error) {
-	creationOptions, httpHeaders, cpkInfo, cpkScope, lac, mac := options.pointers()
+	creationOptions, httpHeaders, cpkInfo, cpkScope, leaseAccessConditions, modifiedAccessConditions := options.pointers()
 
-	resp, err := pb.client.Create(ctx, 0, size, creationOptions, httpHeaders, lac, cpkInfo, cpkScope, mac)
+	resp, err := pb.client.Create(ctx, 0, size, creationOptions, httpHeaders, leaseAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions)
 
 	return resp, handleError(err)
+}
+
+// CreateIfNotExists operation creates a new page blob of the specified size.
+// If the blob already exists, the content of the existing blob will remain unchanged.
+// If the blob does not already exists, a new page blob with the specified size  will be created.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
+func (pb PageBlobClient) CreateIfNotExists(ctx context.Context, size int64, options *CreatePageBlobOptions) (PageBlobCreateResponse, error) {
+	creationOptions, httpHeaders, cpkInfo, cpkScope, leaseAccessConditions, modifiedAccessConditions := options.pointers()
+
+	resp, err := pb.client.Create(ctx, 0, size, creationOptions, httpHeaders, leaseAccessConditions, cpkInfo, cpkScope, modifiedAccessConditions)
+
+	err = handleError(err)
+	if err != nil && strings.Contains(err.Error(), string(StorageErrorCodeBlobAlreadyExists)) {
+		return PageBlobCreateResponse{}, nil
+	}
+
+	return resp, err
 }
 
 // UploadPages writes 1 or more pages to the page blob. The start offset and the stream size must be a multiple of 512 bytes.
@@ -131,20 +149,6 @@ func (pb PageBlobClient) GetPageRanges(ctx context.Context, pageRange HttpRange,
 
 	return resp, handleError(err)
 }
-
-// GetManagedDiskPageRangesDiff gets the collection of page ranges that differ between a specified snapshot and this page blob representing managed disk.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
-//func (pb PageBlobURL) GetManagedDiskPageRangesDiff(ctx context.Context, offset int64, count int64, prevSnapshot *string, prevSnapshotURL *string, ac BlobAccessConditions) (*PageList, error) {
-//	ifModifiedSince, ifUnmodifiedSince, ifMatchETag, ifNoneMatchETag := ac.ModifiedAccessConditions.pointers()
-//
-//	return pb.pbClient.GetPageRangesDiff(ctx, nil, nil, prevSnapshot,
-//		prevSnapshotURL, // Get managed disk diff
-//		HttpRange{offset: offset, count: count}.pointers(),
-//		ac.LeaseAccessConditions.pointers(),
-//		ifModifiedSince, ifUnmodifiedSince, ifMatchETag, ifNoneMatchETag,
-//		nil, // Blob ifTags
-//		nil)
-//}
 
 // GetPageRangesDiff gets the collection of page ranges that differ between a specified snapshot and this page blob.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.

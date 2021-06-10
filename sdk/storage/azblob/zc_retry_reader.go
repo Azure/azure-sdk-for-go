@@ -12,7 +12,7 @@ import (
 	"sync"
 )
 
-const CountToEnd = 0
+const CountToEnd = int64(0)
 
 // HTTPGetter is a function type that refers to a method that performs an HTTP GET operation.
 type HTTPGetter func(ctx context.Context, i HTTPGetterInfo) (*http.Response, error)
@@ -102,7 +102,6 @@ func (s *retryReader) setResponse(r *http.Response) {
 
 func (s *retryReader) Read(p []byte) (n int, err error) {
 	for try := 0; ; try++ {
-		//fmt.Println(try)       // Comment out for debugging.
 		if s.countWasBounded && s.info.Count == CountToEnd {
 			// User specified an original count and the remaining bytes are 0, return 0, EOF
 			return 0, io.EOF

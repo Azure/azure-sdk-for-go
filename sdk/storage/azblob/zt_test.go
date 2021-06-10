@@ -50,18 +50,17 @@ const (
 	containerPrefix             = "go"
 	blobPrefix                  = "gotestblob"
 	blockBlobDefaultData        = "GoBlockBlobData"
-	validationErrorSubstring    = "validation failed"
 	invalidHeaderErrorSubstring = "invalid header field" // error thrown by the http client
 )
 
 var ctx = context.Background()
 
 var (
-	blobContentType        string = "my_type"
-	blobContentDisposition string = "my_disposition"
-	blobCacheControl       string = "control"
-	blobContentLanguage    string = "my_language"
-	blobContentEncoding    string = "my_encoding"
+	blobContentType        = "my_type"
+	blobContentDisposition = "my_disposition"
+	blobCacheControl       = "control"
+	blobContentLanguage    = "my_language"
+	blobContentEncoding    = "my_encoding"
 )
 
 var basicHeaders = BlobHTTPHeaders{
@@ -90,18 +89,6 @@ var specialCharBlobTagsMap = map[string]string{
 	"GO ":             ".Net",
 }
 
-const testPipelineMessage string = "test factory invoked"
-
-func newTestPipeline() azcore.Pipeline {
-	return azcore.NewPipeline(nil, newTestPolicy())
-}
-
-func newTestPolicy() azcore.Policy {
-	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
-		return nil, errors.New(testPipelineMessage)
-	})
-}
-
 // This function generates an entity name by concatenating the passed prefix,
 // the name of the test requesting the entity name, and the minute, second, and nanoseconds of the call.
 // This should make it easy to associate the entities with their test, uniquely identify
@@ -109,7 +96,7 @@ func newTestPolicy() azcore.Policy {
 // Note that this imposes a restriction on the length of test names
 func generateName(prefix string) string {
 	// These next lines up through the for loop are obtaining and walking up the stack
-	// trace to extrat the test name, which is stored in name
+	// trace to extract the test name, which is stored in name
 	pc := make([]uintptr, 10)
 	runtime.Callers(0, pc)
 	frames := runtime.CallersFrames(pc)
@@ -136,40 +123,40 @@ func generateBlobName() string {
 	return generateName(blobPrefix)
 }
 
-func getContainerClient(c *chk.C, s ServiceClient) (container ContainerClient, name string) {
+func getContainerClient(_ *chk.C, s ServiceClient) (container ContainerClient, name string) {
 	name = generateContainerName()
 	container = s.NewContainerClient(name)
 
 	return container, name
 }
 
-func getBlockBlobClient(c *chk.C, container ContainerClient) (blob BlockBlobClient, name string) {
+func getBlockBlobClient(_ *chk.C, container ContainerClient) (blob BlockBlobClient, name string) {
 	name = generateBlobName()
 	blob = container.NewBlockBlobClient(name)
 
 	return blob, name
 }
 
-func getAppendBlobClient(c *chk.C, container ContainerClient) (blob AppendBlobClient, name string) {
+func getAppendBlobClient(_ *chk.C, container ContainerClient) (blob AppendBlobClient, name string) {
 	name = generateBlobName()
-	blob = container.NewAppendBlobURL(name)
+	blob = container.NewAppendBlobClient(name)
 
 	return blob, name
 }
 
-func getPageBlobClient(c *chk.C, container ContainerClient) (blob PageBlobClient, name string) {
+func getPageBlobClient(_ *chk.C, container ContainerClient) (blob PageBlobClient, name string) {
 	name = generateBlobName()
 	blob = container.NewPageBlobClient(name)
 
 	return
 }
 
-func getReaderToRandomBytes(n int) *bytes.Reader {
+func getReaderToRandomBytes(n int64) *bytes.Reader {
 	r, _ := getRandomDataAndReader(n)
 	return r
 }
 
-func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
+func getRandomDataAndReader(n int64) (*bytes.Reader, []byte) {
 	data := make([]byte, n, n)
 	rand.Read(data)
 	return bytes.NewReader(data), data
@@ -318,10 +305,6 @@ func getAlternateBSU() (ServiceClient, error) {
 
 func getPremiumBSU() (ServiceClient, error) {
 	return getGenericBSU("PREMIUM_")
-}
-
-func getBlobStorageBSU() (ServiceClient, error) {
-	return getGenericBSU("BLOB_STORAGE_")
 }
 
 func getRelativeTimeGMT(amount time.Duration) time.Time {

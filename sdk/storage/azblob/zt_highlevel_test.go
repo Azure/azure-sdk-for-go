@@ -15,7 +15,7 @@ import (
 )
 
 // create a test file
-func generateFile(fileName string, fileSize int) []byte {
+func generateFile(fileName string, fileSize int64) []byte {
 	// generate random data
 	_, bigBuff := getRandomDataAndReader(fileSize)
 
@@ -24,7 +24,7 @@ func generateFile(fileName string, fileSize int) []byte {
 	return bigBuff
 }
 
-func performUploadStreamToBlockBlobTest(c *chk.C, blobSize, bufferSize, maxBuffers int) {
+func performUploadStreamToBlockBlobTest(c *chk.C, blobSize int64, bufferSize, maxBuffers int) {
 	// Set up test container
 	bsu := getBSU()
 	containerClient, _ := createNewContainer(c, bsu)
@@ -51,46 +51,46 @@ func performUploadStreamToBlockBlobTest(c *chk.C, blobSize, bufferSize, maxBuffe
 	// Assert that the content is correct
 	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
 	c.Assert(err, chk.IsNil)
-	c.Assert(len(actualBlobData), chk.Equals, blobSize)
+	c.Assert(int64(len(actualBlobData)), chk.Equals, blobSize)
 	c.Assert(actualBlobData, chk.DeepEquals, blobData)
 }
 
 func (s *aztestsSuite) TestUploadStreamToBlockBlobInChunks(c *chk.C) {
-	blobSize := 8 * 1024
+	blobSize := int64(8 * 1024)
 	bufferSize := 1024
 	maxBuffers := 3
 	performUploadStreamToBlockBlobTest(c, blobSize, bufferSize, maxBuffers)
 }
 
 func (s *aztestsSuite) TestUploadStreamToBlockBlobSingleBuffer(c *chk.C) {
-	blobSize := 8 * 1024
+	blobSize := int64(8 * 1024)
 	bufferSize := 1024
 	maxBuffers := 1
 	performUploadStreamToBlockBlobTest(c, blobSize, bufferSize, maxBuffers)
 }
 
 func (s *aztestsSuite) TestUploadStreamToBlockBlobSingleIO(c *chk.C) {
-	blobSize := 1024
+	blobSize := int64(1024)
 	bufferSize := 8 * 1024
 	maxBuffers := 3
 	performUploadStreamToBlockBlobTest(c, blobSize, bufferSize, maxBuffers)
 }
 
 func (s *aztestsSuite) TestUploadStreamToBlockBlobSingleIOEdgeCase(c *chk.C) {
-	blobSize := 8 * 1024
+	blobSize := int64(8 * 1024)
 	bufferSize := 8 * 1024
 	maxBuffers := 3
 	performUploadStreamToBlockBlobTest(c, blobSize, bufferSize, maxBuffers)
 }
 
 func (s *aztestsSuite) TestUploadStreamToBlockBlobEmpty(c *chk.C) {
-	blobSize := 0
+	blobSize := int64(0)
 	bufferSize := 8 * 1024
 	maxBuffers := 3
 	performUploadStreamToBlockBlobTest(c, blobSize, bufferSize, maxBuffers)
 }
 
-func performUploadAndDownloadFileTest(c *chk.C, fileSize, blockSize, parallelism, downloadOffset, downloadCount int) {
+func performUploadAndDownloadFileTest(c *chk.C, fileSize, blockSize, downloadOffset, downloadCount int64, parallelism int) {
 	// Set up file to upload
 	fileName := "BigFile.bin"
 	fileData := generateFile(fileName, fileSize)
@@ -98,8 +98,12 @@ func performUploadAndDownloadFileTest(c *chk.C, fileSize, blockSize, parallelism
 	// Open the file to upload
 	file, err := os.Open(fileName)
 	c.Assert(err, chk.Equals, nil)
-	defer file.Close()
-	defer os.Remove(fileName)
+	defer func(file *os.File) {
+		_ = file.Close()
+	}(file)
+	defer func(name string) {
+		_ = os.Remove(name)
+	}(fileName)
 
 	// Set up test container
 	bsu := getBSU()
@@ -107,16 +111,16 @@ func performUploadAndDownloadFileTest(c *chk.C, fileSize, blockSize, parallelism
 	defer deleteContainer(c, containerClient)
 
 	// Set up test blob
-	blockblobClient, _ := getBlockBlobClient(c, containerClient)
+	blockBlobClient, _ := getBlockBlobClient(c, containerClient)
 
 	// Upload the file to a block blob
-	response, err := UploadFileToBlockBlob(context.Background(), file, blockblobClient,
+	response, err := UploadFileToBlockBlob(context.Background(), file, blockBlobClient,
 		HighLevelUploadToBlockBlobOption{
-			BlockSize:   int64(blockSize),
+			BlockSize:   blockSize,
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
-				c.Assert(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), chk.Equals, true)
+				c.Assert(bytesTransferred > 0 && bytesTransferred <= fileSize, chk.Equals, true)
 			},
 		})
 	c.Assert(err, chk.Equals, nil)
@@ -126,18 +130,22 @@ func performUploadAndDownloadFileTest(c *chk.C, fileSize, blockSize, parallelism
 	destFileName := "BigFile-downloaded.bin"
 	destFile, err := os.Create(destFileName)
 	c.Assert(err, chk.Equals, nil)
-	defer destFile.Close()
-	defer os.Remove(destFileName)
+	defer func(destFile *os.File) {
+		_ = destFile.Close()
+	}(destFile)
+	defer func(name string) {
+		_ = os.Remove(name)
+	}(destFileName)
 
 	// Perform download
-	err = DownloadBlobToFile(context.Background(), blockblobClient.BlobClient, int64(downloadOffset), int64(downloadCount),
+	err = DownloadBlobToFile(context.Background(), blockBlobClient.BlobClient, downloadOffset, downloadCount,
 		destFile,
 		HighLevelDownloadFromBlobOptions{
-			BlockSize:   int64(blockSize),
+			BlockSize:   blockSize,
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
-				c.Assert(bytesTransferred > 0 && bytesTransferred <= int64(fileSize), chk.Equals, true)
+				c.Assert(bytesTransferred > 0 && bytesTransferred <= fileSize, chk.Equals, true)
 			},
 		})
 
@@ -159,71 +167,71 @@ func performUploadAndDownloadFileTest(c *chk.C, fileSize, blockSize, parallelism
 		c.Assert(destBuffer, chk.DeepEquals, fileData)
 	} else {
 		if downloadCount == 0 {
-			c.Assert(n, chk.Equals, fileSize-downloadOffset)
+			c.Assert(int64(n), chk.Equals, fileSize-downloadOffset)
 			c.Assert(destBuffer, chk.DeepEquals, fileData[downloadOffset:])
 		} else {
-			c.Assert(n, chk.Equals, downloadCount)
+			c.Assert(int64(n), chk.Equals, downloadCount)
 			c.Assert(destBuffer, chk.DeepEquals, fileData[downloadOffset:downloadOffset+downloadCount])
 		}
 	}
 }
 
 func (s *aztestsSuite) TestUploadAndDownloadFileInChunks(c *chk.C) {
-	fileSize := 8 * 1024
-	blockSize := 1024
+	fileSize := int64(8 * 1024)
+	blockSize := int64(1024)
 	parallelism := 3
-	performUploadAndDownloadFileTest(c, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(c, fileSize, blockSize, 0, 0, parallelism)
 }
 
 func (s *aztestsSuite) TestUploadAndDownloadFileSingleIO(c *chk.C) {
-	fileSize := 1024
-	blockSize := 2048
+	fileSize := int64(1024)
+	blockSize := int64(2048)
 	parallelism := 3
-	performUploadAndDownloadFileTest(c, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(c, fileSize, blockSize, 0, 0, parallelism)
 }
 
 func (s *aztestsSuite) TestUploadAndDownloadFileSingleRoutine(c *chk.C) {
-	fileSize := 8 * 1024
-	blockSize := 1024
+	fileSize := int64(8 * 1024)
+	blockSize := int64(1024)
 	parallelism := 1
-	performUploadAndDownloadFileTest(c, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(c, fileSize, blockSize, 0, 0, parallelism)
 }
 
 func (s *aztestsSuite) TestUploadAndDownloadFileEmpty(c *chk.C) {
-	fileSize := 0
-	blockSize := 1024
+	fileSize := int64(0)
+	blockSize := int64(1024)
 	parallelism := 3
-	performUploadAndDownloadFileTest(c, fileSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadFileTest(c, fileSize, blockSize, 0, 0, parallelism)
 }
 
 func (s *aztestsSuite) TestUploadAndDownloadFileNonZeroOffset(c *chk.C) {
-	fileSize := 8 * 1024
-	blockSize := 1024
+	fileSize := int64(8 * 1024)
+	blockSize := int64(1024)
 	parallelism := 3
-	downloadOffset := 1000
-	downloadCount := 0
-	performUploadAndDownloadFileTest(c, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
+	downloadOffset := int64(1000)
+	downloadCount := int64(0)
+	performUploadAndDownloadFileTest(c, fileSize, blockSize, downloadOffset, downloadCount, parallelism)
 }
 
 func (s *aztestsSuite) TestUploadAndDownloadFileNonZeroCount(c *chk.C) {
-	fileSize := 8 * 1024
-	blockSize := 1024
+	fileSize := int64(8 * 1024)
+	blockSize := int64(1024)
 	parallelism := 3
-	downloadOffset := 0
-	downloadCount := 6000
-	performUploadAndDownloadFileTest(c, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
+	downloadOffset := int64(0)
+	downloadCount := int64(6000)
+	performUploadAndDownloadFileTest(c, fileSize, blockSize, downloadOffset, downloadCount, parallelism)
 }
 
 func (s *aztestsSuite) TestUploadAndDownloadFileNonZeroOffsetAndCount(c *chk.C) {
-	fileSize := 8 * 1024
-	blockSize := 1024
+	fileSize := int64(8 * 1024)
+	blockSize := int64(1024)
 	parallelism := 3
-	downloadOffset := 1000
-	downloadCount := 6000
-	performUploadAndDownloadFileTest(c, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
+	downloadOffset := int64(1000)
+	downloadCount := int64(6000)
+	performUploadAndDownloadFileTest(c, fileSize, blockSize, downloadOffset, downloadCount, parallelism)
 }
 
-func performUploadAndDownloadBufferTest(c *chk.C, blobSize, blockSize, parallelism, downloadOffset, downloadCount int) {
+func performUploadAndDownloadBufferTest(c *chk.C, blobSize, blockSize, downloadOffset, downloadCount int64, parallelism int) {
 	// Set up buffer to upload
 	_, bytesToUpload := getRandomDataAndReader(blobSize)
 
@@ -233,16 +241,16 @@ func performUploadAndDownloadBufferTest(c *chk.C, blobSize, blockSize, paralleli
 	defer deleteContainer(c, containerClient)
 
 	// Set up test blob
-	blockblobClient, _ := getBlockBlobClient(c, containerClient)
+	blockBlobClient, _ := getBlockBlobClient(c, containerClient)
 
 	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
-	response, err := UploadBufferToBlockBlob(context.Background(), bytesToUpload, blockblobClient,
+	response, err := UploadBufferToBlockBlob(context.Background(), bytesToUpload, blockBlobClient,
 		HighLevelUploadToBlockBlobOption{
-			BlockSize:   int64(blockSize),
+			BlockSize:   blockSize,
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			Progress: func(bytesTransferred int64) {
-				c.Assert(bytesTransferred > 0 && bytesTransferred <= int64(blobSize), chk.Equals, true)
+				c.Assert(bytesTransferred > 0 && bytesTransferred <= blobSize, chk.Equals, true)
 			},
 		})
 	c.Assert(err, chk.Equals, nil)
@@ -257,9 +265,9 @@ func performUploadAndDownloadBufferTest(c *chk.C, blobSize, blockSize, paralleli
 	}
 
 	// Download the blob to a buffer
-	err = DownloadBlobToBuffer(context.Background(), blockblobClient.BlobClient, int64(downloadOffset), int64(downloadCount),
+	err = DownloadBlobToBuffer(context.Background(), blockBlobClient.BlobClient, downloadOffset, downloadCount,
 		destBuffer, HighLevelDownloadFromBlobOptions{
-			BlockSize:   int64(blockSize),
+			BlockSize:   blockSize,
 			Parallelism: uint16(parallelism),
 			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
 			//Progress: func(bytesTransferred int64) {
@@ -281,58 +289,58 @@ func performUploadAndDownloadBufferTest(c *chk.C, blobSize, blockSize, paralleli
 }
 
 func (s *aztestsSuite) TestUploadAndDownloadBufferInChunks(c *chk.C) {
-	blobSize := 8 * 1024
-	blockSize := 1024
+	blobSize := int64(8 * 1024)
+	blockSize := int64(1024)
 	parallelism := 3
-	performUploadAndDownloadBufferTest(c, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(c, blobSize, blockSize, 0, 0, parallelism)
 }
 
 func (s *aztestsSuite) TestUploadAndDownloadBufferSingleIO(c *chk.C) {
-	blobSize := 1024
-	blockSize := 8 * 1024
+	blobSize := int64(1024)
+	blockSize := int64(8 * 1024)
 	parallelism := 3
-	performUploadAndDownloadBufferTest(c, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(c, blobSize, blockSize, 0, 0, parallelism)
 }
 
 func (s *aztestsSuite) TestUploadAndDownloadBufferSingleRoutine(c *chk.C) {
-	blobSize := 8 * 1024
-	blockSize := 1024
+	blobSize := int64(8 * 1024)
+	blockSize := int64(1024)
 	parallelism := 1
-	performUploadAndDownloadBufferTest(c, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(c, blobSize, blockSize, 0, 0, parallelism)
 }
 
 func (s *aztestsSuite) TestUploadAndDownloadBufferEmpty(c *chk.C) {
-	blobSize := 0
-	blockSize := 1024
+	blobSize := int64(0)
+	blockSize := int64(1024)
 	parallelism := 3
-	performUploadAndDownloadBufferTest(c, blobSize, blockSize, parallelism, 0, 0)
+	performUploadAndDownloadBufferTest(c, blobSize, blockSize, 0, 0, parallelism)
 }
 
 func (s *aztestsSuite) TestDownloadBufferWithNonZeroOffset(c *chk.C) {
-	blobSize := 8 * 1024
-	blockSize := 1024
+	blobSize := int64(8 * 1024)
+	blockSize := int64(1024)
 	parallelism := 3
-	downloadOffset := 1000
-	downloadCount := 0
-	performUploadAndDownloadBufferTest(c, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
+	downloadOffset := int64(1000)
+	downloadCount := int64(0)
+	performUploadAndDownloadBufferTest(c, blobSize, blockSize, downloadOffset, downloadCount, parallelism)
 }
 
 func (s *aztestsSuite) TestDownloadBufferWithNonZeroCount(c *chk.C) {
-	blobSize := 8 * 1024
-	blockSize := 1024
+	blobSize := int64(8 * 1024)
+	blockSize := int64(1024)
 	parallelism := 3
-	downloadOffset := 0
-	downloadCount := 6000
-	performUploadAndDownloadBufferTest(c, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
+	downloadOffset := int64(0)
+	downloadCount := int64(6000)
+	performUploadAndDownloadBufferTest(c, blobSize, blockSize, downloadOffset, downloadCount, parallelism)
 }
 
 func (s *aztestsSuite) TestDownloadBufferWithNonZeroOffsetAndCount(c *chk.C) {
-	blobSize := 8 * 1024
-	blockSize := 1024
+	blobSize := int64(8 * 1024)
+	blockSize := int64(1024)
 	parallelism := 3
-	downloadOffset := 2000
-	downloadCount := 6 * 1024
-	performUploadAndDownloadBufferTest(c, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
+	downloadOffset := int64(2000)
+	downloadCount := int64(6 * 1024)
+	performUploadAndDownloadBufferTest(c, blobSize, blockSize, downloadOffset, downloadCount, parallelism)
 }
 
 func (s *aztestsSuite) TestBasicDoBatchTransfer(c *chk.C) {

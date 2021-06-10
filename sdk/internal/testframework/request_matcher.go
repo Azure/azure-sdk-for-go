@@ -16,8 +16,15 @@ import (
 )
 
 type RequestMatcher struct {
-	ignoredHeaders map[string]*string
+	context        TestContext
+	IgnoredHeaders map[string]*string
+	bodyMatcher    StringMatcher
+	urlMatcher     StringMatcher
+	methodMatcher  StringMatcher
 }
+
+type StringMatcher func(reqVal string, recVal string) bool
+type matcherWrapper func(matcher StringMatcher, testContext TestContext) bool
 
 var ignoredHeaders = map[string]*string{
 	"Date":                   nil,
@@ -37,39 +44,81 @@ var methodMismatch = "Test recording methods do not match. request: %s, recordin
 var urlMismatch = "Test recording URLs do not match. request: %s, recording: %s"
 var bodiesMismatch = "Test recording bodies do not match.\nrequest: %s\nrecording: %s"
 
-func compareBodies(r *http.Request, i cassette.Request, c TestContext) bool {
+func DefaultMatcher(testContext TestContext) *RequestMatcher {
+	// The default sanitizer sanitizes the Authorization header
+	matcher := &RequestMatcher{
+		context:        testContext,
+		IgnoredHeaders: ignoredHeaders,
+	}
+	matcher.SetBodyMatcher(defaultStringMatcher)
+	matcher.SetURLMatcher(defaultStringMatcher)
+	matcher.SetMethodMatcher(defaultStringMatcher)
+
+	return matcher
+}
+
+func (m *RequestMatcher) SetBodyMatcher(matcher StringMatcher) {
+	m.setMatcher(matcher, bodiesMismatch)
+}
+
+func (m *RequestMatcher) SetURLMatcher(matcher StringMatcher) {
+	m.setMatcher(matcher, urlMismatch)
+}
+
+func (m *RequestMatcher) SetMethodMatcher(matcher StringMatcher) {
+	m.setMatcher(matcher, methodMismatch)
+}
+
+func (m *RequestMatcher) setMatcher(matcher StringMatcher, message string) {
+	m.bodyMatcher = func(reqVal string, recVal string) bool {
+		isMatch := matcher(reqVal, recVal)
+		if !isMatch {
+			m.context.Log(fmt.Sprintf(message, recVal, recVal))
+		}
+		return isMatch
+	}
+}
+
+func defaultStringMatcher(s1 string, s2 string) bool {
+	return s1 == s2
+}
+
+func getBody(r *http.Request) string {
 	body := bytes.Buffer{}
 	if r.Body != nil {
 		_, err := body.ReadFrom(r.Body)
 		if err != nil {
-			return false
+			return "could not parse body: " + err.Error()
 		}
 		r.Body = ioutil.NopCloser(&body)
 	}
-	bodiesMatch := body.String() == i.Body
-	if !bodiesMatch {
-		c.Log(fmt.Sprintf(bodiesMismatch, body.String(), i.Body))
-	}
-	return bodiesMatch
+	return body.String()
 }
 
-func compareURLs(r *http.Request, i cassette.Request, c TestContext) bool {
-	if r.URL.String() != i.URL {
-		c.Log(fmt.Sprintf(urlMismatch, r.URL.String(), i.URL))
-		return false
-	}
-	return true
+func getUrl(r *http.Request) string {
+	return r.URL.String()
 }
 
-func compareMethods(r *http.Request, i cassette.Request, c TestContext) bool {
-	if r.Method != i.Method {
-		c.Log(fmt.Sprintf(methodMismatch, r.Method, i.Method))
-		return false
-	}
-	return true
+func getMethod(r *http.Request) string {
+	return r.Method
 }
 
-func compareHeaders(r *http.Request, i cassette.Request, c TestContext) bool {
+func (m *RequestMatcher) compareBodies(r *http.Request, recordedBody string) bool {
+	body := getBody(r)
+	return m.bodyMatcher(body, recordedBody)
+}
+
+func (m *RequestMatcher) compareURLs(r *http.Request, recordedUrl string) bool {
+	body := getUrl(r)
+	return m.urlMatcher(body, recordedUrl)
+}
+
+func (m *RequestMatcher) compareMethods(r *http.Request, recordedMethod string) bool {
+	body := getMethod(r)
+	return m.urlMatcher(body, recordedMethod)
+}
+
+func (m *RequestMatcher) compareHeaders(r *http.Request, i cassette.Request) bool {
 	unVisitedCassetteKeys := make(map[string]*string, len(i.Headers))
 	// clone the cassette keys to track which we have seen
 	for k := range i.Headers {
@@ -90,20 +139,20 @@ func compareHeaders(r *http.Request, i cassette.Request, c TestContext) bool {
 			headersMatch := reflect.DeepEqual(requestHeader, recordedHeader)
 			if !headersMatch {
 				// headers don't match
-				c.Log(fmt.Sprintf(headerValuesMismatch, key, requestHeader, recordedHeader))
+				m.context.Log(fmt.Sprintf(headerValuesMismatch, key, requestHeader, recordedHeader))
 				return false
 			}
 
 		} else {
 			// header not found
-			c.Log(fmt.Sprintf(recordingHeaderMissing, key))
+			m.context.Log(fmt.Sprintf(recordingHeaderMissing, key))
 			return false
 		}
 	}
 	if len(unVisitedCassetteKeys) > 0 {
 		// headers exist in the recording that do not exist in the request
 		for headerName := range unVisitedCassetteKeys {
-			c.Log(fmt.Sprintf(requestHeaderMissing, headerName))
+			m.context.Log(fmt.Sprintf(requestHeaderMissing, headerName))
 		}
 		return false
 	}

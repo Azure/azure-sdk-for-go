@@ -11,98 +11,105 @@ package documentdb
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-03-15/documentdb"
+	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-05-15/documentdb"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type AnalyticalStorageSchemaType = original.AnalyticalStorageSchemaType
+
+const (
+	AnalyticalStorageSchemaTypeFullFidelity AnalyticalStorageSchemaType = original.AnalyticalStorageSchemaTypeFullFidelity
+	AnalyticalStorageSchemaTypeWellDefined  AnalyticalStorageSchemaType = original.AnalyticalStorageSchemaTypeWellDefined
+)
+
 type BackupPolicyType = original.BackupPolicyType
 
 const (
-	Continuous BackupPolicyType = original.Continuous
-	Periodic   BackupPolicyType = original.Periodic
+	BackupPolicyTypeContinuous BackupPolicyType = original.BackupPolicyTypeContinuous
+	BackupPolicyTypePeriodic   BackupPolicyType = original.BackupPolicyTypePeriodic
 )
 
 type CompositePathSortOrder = original.CompositePathSortOrder
 
 const (
-	Ascending  CompositePathSortOrder = original.Ascending
-	Descending CompositePathSortOrder = original.Descending
+	CompositePathSortOrderAscending  CompositePathSortOrder = original.CompositePathSortOrderAscending
+	CompositePathSortOrderDescending CompositePathSortOrder = original.CompositePathSortOrderDescending
 )
 
 type ConflictResolutionMode = original.ConflictResolutionMode
 
 const (
-	Custom         ConflictResolutionMode = original.Custom
-	LastWriterWins ConflictResolutionMode = original.LastWriterWins
+	ConflictResolutionModeCustom         ConflictResolutionMode = original.ConflictResolutionModeCustom
+	ConflictResolutionModeLastWriterWins ConflictResolutionMode = original.ConflictResolutionModeLastWriterWins
 )
 
 type ConnectorOffer = original.ConnectorOffer
 
 const (
-	Small ConnectorOffer = original.Small
+	ConnectorOfferSmall ConnectorOffer = original.ConnectorOfferSmall
 )
 
 type DataType = original.DataType
 
 const (
-	LineString   DataType = original.LineString
-	MultiPolygon DataType = original.MultiPolygon
-	Number       DataType = original.Number
-	Point        DataType = original.Point
-	Polygon      DataType = original.Polygon
-	String       DataType = original.String
+	DataTypeLineString   DataType = original.DataTypeLineString
+	DataTypeMultiPolygon DataType = original.DataTypeMultiPolygon
+	DataTypeNumber       DataType = original.DataTypeNumber
+	DataTypePoint        DataType = original.DataTypePoint
+	DataTypePolygon      DataType = original.DataTypePolygon
+	DataTypeString       DataType = original.DataTypeString
 )
 
 type DatabaseAccountKind = original.DatabaseAccountKind
 
 const (
-	GlobalDocumentDB DatabaseAccountKind = original.GlobalDocumentDB
-	MongoDB          DatabaseAccountKind = original.MongoDB
-	Parse            DatabaseAccountKind = original.Parse
+	DatabaseAccountKindGlobalDocumentDB DatabaseAccountKind = original.DatabaseAccountKindGlobalDocumentDB
+	DatabaseAccountKindMongoDB          DatabaseAccountKind = original.DatabaseAccountKindMongoDB
+	DatabaseAccountKindParse            DatabaseAccountKind = original.DatabaseAccountKindParse
 )
 
 type DatabaseAccountOfferType = original.DatabaseAccountOfferType
 
 const (
-	Standard DatabaseAccountOfferType = original.Standard
+	DatabaseAccountOfferTypeStandard DatabaseAccountOfferType = original.DatabaseAccountOfferTypeStandard
 )
 
 type DefaultConsistencyLevel = original.DefaultConsistencyLevel
 
 const (
-	BoundedStaleness DefaultConsistencyLevel = original.BoundedStaleness
-	ConsistentPrefix DefaultConsistencyLevel = original.ConsistentPrefix
-	Eventual         DefaultConsistencyLevel = original.Eventual
-	Session          DefaultConsistencyLevel = original.Session
-	Strong           DefaultConsistencyLevel = original.Strong
+	DefaultConsistencyLevelBoundedStaleness DefaultConsistencyLevel = original.DefaultConsistencyLevelBoundedStaleness
+	DefaultConsistencyLevelConsistentPrefix DefaultConsistencyLevel = original.DefaultConsistencyLevelConsistentPrefix
+	DefaultConsistencyLevelEventual         DefaultConsistencyLevel = original.DefaultConsistencyLevelEventual
+	DefaultConsistencyLevelSession          DefaultConsistencyLevel = original.DefaultConsistencyLevelSession
+	DefaultConsistencyLevelStrong           DefaultConsistencyLevel = original.DefaultConsistencyLevelStrong
 )
 
 type IndexKind = original.IndexKind
 
 const (
-	Hash    IndexKind = original.Hash
-	Range   IndexKind = original.Range
-	Spatial IndexKind = original.Spatial
+	IndexKindHash    IndexKind = original.IndexKindHash
+	IndexKindRange   IndexKind = original.IndexKindRange
+	IndexKindSpatial IndexKind = original.IndexKindSpatial
 )
 
 type IndexingMode = original.IndexingMode
 
 const (
-	Consistent IndexingMode = original.Consistent
-	Lazy       IndexingMode = original.Lazy
-	None       IndexingMode = original.None
+	IndexingModeConsistent IndexingMode = original.IndexingModeConsistent
+	IndexingModeLazy       IndexingMode = original.IndexingModeLazy
+	IndexingModeNone       IndexingMode = original.IndexingModeNone
 )
 
 type KeyKind = original.KeyKind
 
 const (
-	Primary           KeyKind = original.Primary
-	PrimaryReadonly   KeyKind = original.PrimaryReadonly
-	Secondary         KeyKind = original.Secondary
-	SecondaryReadonly KeyKind = original.SecondaryReadonly
+	KeyKindPrimary           KeyKind = original.KeyKindPrimary
+	KeyKindPrimaryReadonly   KeyKind = original.KeyKindPrimaryReadonly
+	KeyKindSecondary         KeyKind = original.KeyKindSecondary
+	KeyKindSecondaryReadonly KeyKind = original.KeyKindSecondaryReadonly
 )
 
 type NetworkACLBypass = original.NetworkACLBypass
@@ -134,8 +141,8 @@ const (
 type PublicNetworkAccess = original.PublicNetworkAccess
 
 const (
-	Disabled PublicNetworkAccess = original.Disabled
-	Enabled  PublicNetworkAccess = original.Enabled
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
@@ -147,12 +154,19 @@ const (
 	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
+type RoleDefinitionType = original.RoleDefinitionType
+
+const (
+	RoleDefinitionTypeBuiltInRole RoleDefinitionType = original.RoleDefinitionTypeBuiltInRole
+	RoleDefinitionTypeCustomRole  RoleDefinitionType = original.RoleDefinitionTypeCustomRole
+)
+
 type ServerVersion = original.ServerVersion
 
 const (
-	FourFullStopZero ServerVersion = original.FourFullStopZero
-	ThreeFullStopSix ServerVersion = original.ThreeFullStopSix
-	ThreeFullStopTwo ServerVersion = original.ThreeFullStopTwo
+	ServerVersionFourFullStopZero ServerVersion = original.ServerVersionFourFullStopZero
+	ServerVersionThreeFullStopSix ServerVersion = original.ServerVersionThreeFullStopSix
+	ServerVersionThreeFullStopTwo ServerVersion = original.ServerVersionThreeFullStopTwo
 )
 
 type SpatialType = original.SpatialType
@@ -167,18 +181,18 @@ const (
 type TriggerOperation = original.TriggerOperation
 
 const (
-	All     TriggerOperation = original.All
-	Create  TriggerOperation = original.Create
-	Delete  TriggerOperation = original.Delete
-	Replace TriggerOperation = original.Replace
-	Update  TriggerOperation = original.Update
+	TriggerOperationAll     TriggerOperation = original.TriggerOperationAll
+	TriggerOperationCreate  TriggerOperation = original.TriggerOperationCreate
+	TriggerOperationDelete  TriggerOperation = original.TriggerOperationDelete
+	TriggerOperationReplace TriggerOperation = original.TriggerOperationReplace
+	TriggerOperationUpdate  TriggerOperation = original.TriggerOperationUpdate
 )
 
 type TriggerType = original.TriggerType
 
 const (
-	Post TriggerType = original.Post
-	Pre  TriggerType = original.Pre
+	TriggerTypePost TriggerType = original.TriggerTypePost
+	TriggerTypePre  TriggerType = original.TriggerTypePre
 )
 
 type Type = original.Type
@@ -192,18 +206,19 @@ const (
 type UnitType = original.UnitType
 
 const (
-	Bytes          UnitType = original.Bytes
-	BytesPerSecond UnitType = original.BytesPerSecond
-	Count          UnitType = original.Count
-	CountPerSecond UnitType = original.CountPerSecond
-	Milliseconds   UnitType = original.Milliseconds
-	Percent        UnitType = original.Percent
-	Seconds        UnitType = original.Seconds
+	UnitTypeBytes          UnitType = original.UnitTypeBytes
+	UnitTypeBytesPerSecond UnitType = original.UnitTypeBytesPerSecond
+	UnitTypeCount          UnitType = original.UnitTypeCount
+	UnitTypeCountPerSecond UnitType = original.UnitTypeCountPerSecond
+	UnitTypeMilliseconds   UnitType = original.UnitTypeMilliseconds
+	UnitTypePercent        UnitType = original.UnitTypePercent
+	UnitTypeSeconds        UnitType = original.UnitTypeSeconds
 )
 
 type APIProperties = original.APIProperties
 type ARMProxyResource = original.ARMProxyResource
 type ARMResourceProperties = original.ARMResourceProperties
+type AnalyticalStorageConfiguration = original.AnalyticalStorageConfiguration
 type AutoUpgradePolicyResource = original.AutoUpgradePolicyResource
 type AutoscaleSettings = original.AutoscaleSettings
 type AutoscaleSettingsResource = original.AutoscaleSettingsResource
@@ -241,6 +256,7 @@ type CassandraTableGetPropertiesResource = original.CassandraTableGetPropertiesR
 type CassandraTableGetResults = original.CassandraTableGetResults
 type CassandraTableListResult = original.CassandraTableListResult
 type CassandraTableResource = original.CassandraTableResource
+type CloudError = original.CloudError
 type ClusterKey = original.ClusterKey
 type CollectionClient = original.CollectionClient
 type CollectionPartitionClient = original.CollectionPartitionClient
@@ -277,7 +293,6 @@ type DatabaseAccountsRegenerateKeyFuture = original.DatabaseAccountsRegenerateKe
 type DatabaseAccountsUpdateFuture = original.DatabaseAccountsUpdateFuture
 type DatabaseClient = original.DatabaseClient
 type ErrorResponse = original.ErrorResponse
-type ErrorResponseUpdatedFormat = original.ErrorResponseUpdatedFormat
 type ExcludedPath = original.ExcludedPath
 type ExtendedResourceProperties = original.ExtendedResourceProperties
 type FailoverPolicies = original.FailoverPolicies
@@ -384,6 +399,7 @@ type PercentileSourceTargetClient = original.PercentileSourceTargetClient
 type PercentileTargetClient = original.PercentileTargetClient
 type PeriodicModeBackupPolicy = original.PeriodicModeBackupPolicy
 type PeriodicModeProperties = original.PeriodicModeProperties
+type Permission = original.Permission
 type PrivateEndpointConnection = original.PrivateEndpointConnection
 type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
 type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
@@ -418,11 +434,15 @@ type SQLDatabaseResource = original.SQLDatabaseResource
 type SQLResourcesClient = original.SQLResourcesClient
 type SQLResourcesCreateUpdateSQLContainerFuture = original.SQLResourcesCreateUpdateSQLContainerFuture
 type SQLResourcesCreateUpdateSQLDatabaseFuture = original.SQLResourcesCreateUpdateSQLDatabaseFuture
+type SQLResourcesCreateUpdateSQLRoleAssignmentFuture = original.SQLResourcesCreateUpdateSQLRoleAssignmentFuture
+type SQLResourcesCreateUpdateSQLRoleDefinitionFuture = original.SQLResourcesCreateUpdateSQLRoleDefinitionFuture
 type SQLResourcesCreateUpdateSQLStoredProcedureFuture = original.SQLResourcesCreateUpdateSQLStoredProcedureFuture
 type SQLResourcesCreateUpdateSQLTriggerFuture = original.SQLResourcesCreateUpdateSQLTriggerFuture
 type SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture = original.SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture
 type SQLResourcesDeleteSQLContainerFuture = original.SQLResourcesDeleteSQLContainerFuture
 type SQLResourcesDeleteSQLDatabaseFuture = original.SQLResourcesDeleteSQLDatabaseFuture
+type SQLResourcesDeleteSQLRoleAssignmentFuture = original.SQLResourcesDeleteSQLRoleAssignmentFuture
+type SQLResourcesDeleteSQLRoleDefinitionFuture = original.SQLResourcesDeleteSQLRoleDefinitionFuture
 type SQLResourcesDeleteSQLStoredProcedureFuture = original.SQLResourcesDeleteSQLStoredProcedureFuture
 type SQLResourcesDeleteSQLTriggerFuture = original.SQLResourcesDeleteSQLTriggerFuture
 type SQLResourcesDeleteSQLUserDefinedFunctionFuture = original.SQLResourcesDeleteSQLUserDefinedFunctionFuture
@@ -432,6 +452,14 @@ type SQLResourcesMigrateSQLDatabaseToAutoscaleFuture = original.SQLResourcesMigr
 type SQLResourcesMigrateSQLDatabaseToManualThroughputFuture = original.SQLResourcesMigrateSQLDatabaseToManualThroughputFuture
 type SQLResourcesUpdateSQLContainerThroughputFuture = original.SQLResourcesUpdateSQLContainerThroughputFuture
 type SQLResourcesUpdateSQLDatabaseThroughputFuture = original.SQLResourcesUpdateSQLDatabaseThroughputFuture
+type SQLRoleAssignmentCreateUpdateParameters = original.SQLRoleAssignmentCreateUpdateParameters
+type SQLRoleAssignmentGetResults = original.SQLRoleAssignmentGetResults
+type SQLRoleAssignmentListResult = original.SQLRoleAssignmentListResult
+type SQLRoleAssignmentResource = original.SQLRoleAssignmentResource
+type SQLRoleDefinitionCreateUpdateParameters = original.SQLRoleDefinitionCreateUpdateParameters
+type SQLRoleDefinitionGetResults = original.SQLRoleDefinitionGetResults
+type SQLRoleDefinitionListResult = original.SQLRoleDefinitionListResult
+type SQLRoleDefinitionResource = original.SQLRoleDefinitionResource
 type SQLStoredProcedureCreateUpdateParameters = original.SQLStoredProcedureCreateUpdateParameters
 type SQLStoredProcedureCreateUpdateProperties = original.SQLStoredProcedureCreateUpdateProperties
 type SQLStoredProcedureGetProperties = original.SQLStoredProcedureGetProperties
@@ -620,6 +648,9 @@ func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string) T
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleAnalyticalStorageSchemaTypeValues() []AnalyticalStorageSchemaType {
+	return original.PossibleAnalyticalStorageSchemaTypeValues()
+}
 func PossibleBackupPolicyTypeValues() []BackupPolicyType {
 	return original.PossibleBackupPolicyTypeValues()
 }
@@ -667,6 +698,9 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleRoleDefinitionTypeValues() []RoleDefinitionType {
+	return original.PossibleRoleDefinitionTypeValues()
 }
 func PossibleServerVersionValues() []ServerVersion {
 	return original.PossibleServerVersionValues()

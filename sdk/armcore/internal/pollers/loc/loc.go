@@ -65,7 +65,7 @@ func (p *Poller) Update(resp *azcore.Response) error {
 	if resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		// if a 200/201 returns a provisioning state, use that instead
 		state, err := pollers.GetProvisioningState(resp)
-		if err != nil && !errors.Is(err, pollers.ErrNoBody) && !errors.Is(err, pollers.ErrNoProvisioningState) {
+		if err != nil && !errors.Is(err, pollers.ErrNoBody) {
 			return err
 		}
 		if state != "" {

@@ -96,29 +96,23 @@ func Failed(s string) bool {
 
 // GetStatus returns the LRO's status from the response body.
 // Typically used for Azure-AsyncOperation flows.
-// If there is no status in the response body ErrNoStatus is returned.
+// If there is no status in the response body the empty string is returned.
 func GetStatus(resp *azcore.Response) (string, error) {
 	jsonBody, err := getJSON(resp)
 	if err != nil {
 		return "", err
 	}
-	if s := status(jsonBody); s != "" {
-		return s, nil
-	}
-	return "", ErrNoStatus
+	return status(jsonBody), nil
 }
 
 // GetProvisioningState returns the LRO's state from the response body.
-// If there is no state in the response body ErrNoProvisioningState is returned.
+// If there is no state in the response body the empty string is returned.
 func GetProvisioningState(resp *azcore.Response) (string, error) {
 	jsonBody, err := getJSON(resp)
 	if err != nil {
 		return "", err
 	}
-	if ps := provisioningState(jsonBody); ps != "" {
-		return ps, nil
-	}
-	return "", ErrNoProvisioningState
+	return provisioningState(jsonBody), nil
 }
 
 // IsValidURL verifies that the URL is valid and absolute.
@@ -152,9 +146,3 @@ func DecodeID(tk string) (string, string, error) {
 
 // ErrNoBody is returned if the response didn't contain a body.
 var ErrNoBody = errors.New("the response did not contain a body")
-
-// ErrNoStatus is returned if the response body didn't contain a status.
-var ErrNoStatus = errors.New("the response did not contain a status")
-
-// ErrNoProvisioningState is returned if the response body didn't contain a provisioning state.
-var ErrNoProvisioningState = errors.New("the response did not contain a provisioning state")

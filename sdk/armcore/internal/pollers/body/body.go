@@ -44,7 +44,7 @@ func New(resp *azcore.Response, pollerID string) (*Poller, error) {
 	// status code and provisioning state, we might change the value.
 	curState := pollers.StatusInProgress
 	provState, err := pollers.GetProvisioningState(resp)
-	if err != nil && !errors.Is(err, pollers.ErrNoBody) && !errors.Is(err, pollers.ErrNoProvisioningState) {
+	if err != nil && !errors.Is(err, pollers.ErrNoBody) {
 		return nil, err
 	}
 	if resp.StatusCode == http.StatusCreated && provState != "" {
@@ -84,7 +84,7 @@ func (p *Poller) Update(resp *azcore.Response) error {
 	if errors.Is(err, pollers.ErrNoBody) {
 		// a missing response body in non-204 case is an error
 		return err
-	} else if errors.Is(err, pollers.ErrNoProvisioningState) {
+	} else if state == "" {
 		// a response body without provisioning state is considered terminal success
 		state = pollers.StatusSucceeded
 	} else if err != nil {

@@ -75,8 +75,8 @@ func TestGetStatusError(t *testing.T) {
 		},
 	}
 	status, err := GetStatus(&resp)
-	if !errors.Is(err, ErrNoStatus) {
-		t.Fatalf("unexpected error %T", err)
+	if err != nil {
+		t.Fatal(err)
 	}
 	if status != "" {
 		t.Fatalf("expected empty status, got %s", status)
@@ -106,8 +106,8 @@ func TestGetProvisioningStateError(t *testing.T) {
 		},
 	}
 	state, err := GetProvisioningState(&resp)
-	if !errors.Is(err, ErrNoProvisioningState) {
-		t.Fatalf("unexpected error %T", err)
+	if err != nil {
+		t.Fatal(err)
 	}
 	if state != "" {
 		t.Fatalf("expected empty provisioning state, got %s", state)

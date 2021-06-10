@@ -69,7 +69,7 @@ func New(resp *azcore.Response, finalState string, pollerID string) (*Poller, er
 	}
 	// check for provisioning state
 	state, err := pollers.GetProvisioningState(resp)
-	if errors.Is(err, pollers.ErrNoBody) || errors.Is(err, pollers.ErrNoProvisioningState) {
+	if errors.Is(err, pollers.ErrNoBody) || state == "" {
 		// NOTE: the ARM RPC spec explicitly states that for async PUT the initial response MUST
 		// contain a provisioning state.  to maintain compat with track 1 and other implementations
 		// we are explicitly relaxing this requirement.
@@ -96,6 +96,8 @@ func (p *Poller) Update(resp *azcore.Response) error {
 	state, err := pollers.GetStatus(resp)
 	if err != nil {
 		return err
+	} else if state == "" {
+		return errors.New("the response did not contain a status")
 	}
 	p.CurState = state
 	return nil

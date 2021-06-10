@@ -27,13 +27,26 @@ func Applicable(resp *azcore.Response) bool {
 
 // Poller is an LRO poller that uses the Azure-AsyncOperation pattern.
 type Poller struct {
-	Type       string `json:"type"`
-	AsyncURL   string `json:"asyncURL"`
-	LocURL     string `json:"locURL"`
-	OrigURL    string `json:"origURL"`
-	Method     string `json:"method"`
+	// The poller's type, used for resume token processing.
+	Type string `json:"type"`
+
+	// The URL from Azure-AsyncOperation header.
+	AsyncURL string `json:"asyncURL"`
+
+	// The URL from Location header.
+	LocURL string `json:"locURL"`
+
+	// The URL from the initial LRO request.
+	OrigURL string `json:"origURL"`
+
+	// The HTTP method from the initial LRO request.
+	Method string `json:"method"`
+
+	// The value of final-state-via from swagger, can be the empty string.
 	FinalState string `json:"finalState"`
-	CurState   string `json:"state"`
+
+	// The LRO's current state.
+	CurState string `json:"state"`
 }
 
 // New creates a new Poller from the provided initial response and final-state type.

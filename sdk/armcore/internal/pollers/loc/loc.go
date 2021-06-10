@@ -21,8 +21,13 @@ func Applicable(resp *azcore.Response) bool {
 
 // Poller is an LRO poller that uses the Location pattern.
 type Poller struct {
-	Type     string `json:"type"`
-	PollURL  string `json:"pollURL"`
+	// The poller's type, used for resume token processing.
+	Type string `json:"type"`
+
+	// The URL for polling.
+	PollURL string `json:"pollURL"`
+
+	// The LRO's current state.
 	CurState string `json:"state"`
 }
 

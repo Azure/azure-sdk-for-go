@@ -50,36 +50,50 @@ func DefaultMatcher(testContext TestContext) *RequestMatcher {
 		context:        testContext,
 		IgnoredHeaders: ignoredHeaders,
 	}
-	matcher.SetBodyMatcher(defaultStringMatcher)
-	matcher.SetURLMatcher(defaultStringMatcher)
-	matcher.SetMethodMatcher(defaultStringMatcher)
+	matcher.SetBodyMatcher(func(req string, rec string) bool {
+		return DefaultStringMatcher(req, rec)
+	})
+	matcher.SetURLMatcher(func(req string, rec string) bool {
+		return DefaultStringMatcher(req, rec)
+	})
+	matcher.SetMethodMatcher(func(req string, rec string) bool {
+		return DefaultStringMatcher(req, rec)
+	})
 
 	return matcher
 }
 
 func (m *RequestMatcher) SetBodyMatcher(matcher StringMatcher) {
-	m.setMatcher(matcher, bodiesMismatch)
-}
-
-func (m *RequestMatcher) SetURLMatcher(matcher StringMatcher) {
-	m.setMatcher(matcher, urlMismatch)
-}
-
-func (m *RequestMatcher) SetMethodMatcher(matcher StringMatcher) {
-	m.setMatcher(matcher, methodMismatch)
-}
-
-func (m *RequestMatcher) setMatcher(matcher StringMatcher, message string) {
 	m.bodyMatcher = func(reqVal string, recVal string) bool {
 		isMatch := matcher(reqVal, recVal)
 		if !isMatch {
-			m.context.Log(fmt.Sprintf(message, recVal, recVal))
+			m.context.Log(fmt.Sprintf(bodiesMismatch, recVal, recVal))
 		}
 		return isMatch
 	}
 }
 
-func defaultStringMatcher(s1 string, s2 string) bool {
+func (m *RequestMatcher) SetURLMatcher(matcher StringMatcher) {
+	m.urlMatcher = func(reqVal string, recVal string) bool {
+		isMatch := matcher(reqVal, recVal)
+		if !isMatch {
+			m.context.Log(fmt.Sprintf(urlMismatch, recVal, recVal))
+		}
+		return isMatch
+	}
+}
+
+func (m *RequestMatcher) SetMethodMatcher(matcher StringMatcher) {
+	m.methodMatcher = func(reqVal string, recVal string) bool {
+		isMatch := matcher(reqVal, recVal)
+		if !isMatch {
+			m.context.Log(fmt.Sprintf(methodMismatch, recVal, recVal))
+		}
+		return isMatch
+	}
+}
+
+func DefaultStringMatcher(s1 string, s2 string) bool {
 	return s1 == s2
 }
 
@@ -109,13 +123,13 @@ func (m *RequestMatcher) compareBodies(r *http.Request, recordedBody string) boo
 }
 
 func (m *RequestMatcher) compareURLs(r *http.Request, recordedUrl string) bool {
-	body := getUrl(r)
-	return m.urlMatcher(body, recordedUrl)
+	url := getUrl(r)
+	return m.urlMatcher(url, recordedUrl)
 }
 
 func (m *RequestMatcher) compareMethods(r *http.Request, recordedMethod string) bool {
-	body := getMethod(r)
-	return m.urlMatcher(body, recordedMethod)
+	method := getMethod(r)
+	return m.methodMatcher(method, recordedMethod)
 }
 
 func (m *RequestMatcher) compareHeaders(r *http.Request, i cassette.Request) bool {

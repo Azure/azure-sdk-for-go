@@ -12,8 +12,8 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.2.0/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.2.0/services/web/mgmt/2020-12-01/web/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/web/mgmt/2020-12-01/web/CHANGELOG.md) |
 
 ## `v55.1.0`
 

@@ -37,12 +37,14 @@ var ignoredHeaders = map[string]*string{
 	"Authorization":          nil,
 }
 
-const recordingHeaderMissing = "Test recording headers do not match. Header '%s' is present in request but not in recording."
-const requestHeaderMissing = "Test recording headers do not match. Header '%s' is present in recording but not in request."
-const headerValuesMismatch = "Test recording header '%s' does not match. request: %s, recording: %s"
-const methodMismatch = "Test recording methods do not match. request: %s, recording: %s"
-const urlMismatch = "Test recording URLs do not match. request: %s, recording: %s"
-const bodiesMismatch = "Test recording bodies do not match.\nrequest: %s\nrecording: %s"
+const (
+	recordingHeaderMissing = "Test recording headers do not match. Header '%s' is present in request but not in recording."
+	requestHeaderMissing   = "Test recording headers do not match. Header '%s' is present in recording but not in request."
+	headerValuesMismatch   = "Test recording header '%s' does not match. request: %s, recording: %s"
+	methodMismatch         = "Test recording methods do not match. request: %s, recording: %s"
+	urlMismatch            = "Test recording URLs do not match. request: %s, recording: %s"
+	bodiesMismatch         = "Test recording bodies do not match.\nrequest: %s\nrecording: %s"
+)
 
 func DefaultMatcher(testContext TestContext) *RequestMatcher {
 	// The default sanitizer sanitizes the Authorization header

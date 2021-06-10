@@ -152,33 +152,34 @@ client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, nil
 
 ### Authenticating Azure Hosted Applications
 
-|credential|usage
-|-|-
-|DefaultAzureCredential|simplified authentication to get started developing applications for the Azure cloud
-|ChainedTokenCredential|define custom authentication flows composing multiple credentials
-|EnvironmentCredential|authenticate a service principal or user configured by environment variables
-|ManagedIdentityCredential|authenticate the managed identity of an Azure resource
+|credential|usage|configuration|example
+|-|-|-|-
+|DefaultAzureCredential|simplified authentication experience to get started developing applications for the Azure cloud|[configuration](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#configure--defaultazurecredential)|[example](https://github.com/Azure/azure-sdk-for-go/wiki/Azure-Identity-Examples#authenticating-with-defaultazurecredential)
+|ChainedTokenCredential|define custom authentication flows composing multiple credentials||[example](https://github.com/Azure/azure-sdk-for-go/wiki/Azure-Identity-Examples#chaining-credentials)
+|EnvironmentCredential|authenticate a service principal or user configured by environment variables||
+|ManagedIdentityCredential|authenticate the managed identity of an Azure resource|[configuration](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#enable-managed-identity-for-azure-resources)|[example](https://github.com/Azure/azure-sdk-for-go/wiki/Azure-Identity-Examples#authenticating-in-azure-with-managed-identity)
 
 ### Authenticating Service Principals
 
-|credential|usage
-|-|-
-|ClientSecretCredential| authenticate a service principal using a secret
-|CertificateCredential| authenticate a service principal using a certificate
+|credential|usage|configuration|example|reference
+|-|-|-|-|-
+|ClientSecretCredential|authenticate a service principal using a secret|[configuration](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#creating-a-service-principal-with-the-azure-cli)|[example](https://github.com/Azure/azure-sdk-for-go/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-a-client-secret)|[Service principal authentication](https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals)
+|CertificateCredential|authenticate a service principal using a certificate|[configuration](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#creating-a-service-principal-with-the-azure-cli)|[example](https://github.com/Azure/azure-sdk-for-go/wiki/Azure-Identity-Examples#authenticating-a-service-principal-with-a-client-certificate)|[Service principal authentication](https://docs.microsoft.com/azure/active-directory/develop/app-objects-and-service-principals)
 
 ### Authenticating Users
 
-|credential|usage
-|-|-
-|InteractiveBrowserCredential|interactively authenticate a user with the default web browser
-|DeviceCodeCredential| interactively authenticate a user on a device with limited UI
-|UsernamePasswordCredential| authenticate a user with a username and password
+|credential|usage|configuration|example|reference
+|-|-|-|-|-
+|InteractiveBrowserCredential|interactively authenticate a user with the default web browser|[configuration](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-interactive-browser-oauth-2-flow)|[example](https://github.com/Azure/azure-sdk-for-go/wiki/Azure-Identity-Examples#authenticating-a-user-account-interactively-in-the-browser)|[OAuth2 authentication code](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow)
+|DeviceCodeCredential|interactively authenticate a user on a device with limited UI|[configuration](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-device-code-flow)|[example](https://github.com/Azure/azure-sdk-for-go/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-device-code-flow)|[Device code authentication](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-device-code)
+|UsernamePasswordCredential|authenticate a user with a username and password||[example](https://github.com/Azure/azure-sdk-for-go/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-username-and-password)|[Username + password authentication](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth-ropc)
+|AuthorizationCodeCredential|authenticate a user with a previously obtained authorization code as part of an Oauth 2 flow|[configuration](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#enable-applications-for-oauth-2-auth-code-flow)||[OAuth2 authentication code](https://docs.microsoft.com/azure/active-directory/develop/v2-oauth2-auth-code-flow)
 
 ### Authenticating via Development Tools
 
-|credential|usage
-|-|-
-|AzureCLICredential|authenticate as the user signed in to the Azure CLI
+|credential|usage|configuration|example|reference
+|-|-|-|-|-
+|AzureCLICredential|authenticate as the user signed in to the Azure CLI|[configuration](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#sign-in-azure-cli-for-azureclicredential)|[example](https://github.com/Azure/azure-sdk-for-go/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-cli)|[Azure CLI authentication](https://docs.microsoft.com/cli/azure/authenticate-azure-cli)
 
 ## Environment Variables
 

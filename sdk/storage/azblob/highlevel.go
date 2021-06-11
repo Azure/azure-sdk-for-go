@@ -8,6 +8,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/uuid"
 	"io"
 	"net/http"
 	"sync"
@@ -180,7 +181,7 @@ func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSi
 
 			// Block IDs are unique values to avoid issue if 2+ clients are uploading blocks
 			// at the same time causing PutBlockList to get a mix of blocks from all the clients.
-			blockIDList[blockNum] = base64.StdEncoding.EncodeToString(newUUID().bytes())
+			blockIDList[blockNum] = base64.StdEncoding.EncodeToString(uuid.New().Bytes())
 			stageBlockOptions := o.getStageBlockOptions()
 			_, err := blockBlobClient.StageBlock(ctx, blockIDList[blockNum], body, stageBlockOptions)
 			return err

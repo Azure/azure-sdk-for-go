@@ -10,6 +10,9 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/testframework"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 	"io/ioutil"
 	"math/rand"
 	"net/url"
@@ -31,20 +34,85 @@ import (
 // For testing docs, see: https://labix.org/gocheck
 // To test a specific test: go test -check.f MyTestSuite
 
+type aztestsSuite struct{
+	suite.Suite
+	mode testframework.RecordMode
+}
+
 // Hookup to the testing framework
-func Test(t *testing.T) { chk.TestingT(t) }
+func Test(t *testing.T) {
+	suite.Run(t, &aztestsSuite{mode: testframework.Playback} )
+}
 
-type aztestsSuite struct{}
+type testContext struct {
+	recording  *testframework.Recording
+	context    *testframework.TestContext
+}
 
-var _ = chk.Suite(&aztestsSuite{})
+// a map to store our created test contexts
+var clientsMap = make(map[string]*testContext)
 
-//func (s *aztestsSuite) TestRetryPolicyRetryReadsFromSecondaryHostField(c *chk.C) {
-//	_, found := reflect.TypeOf(RetryOptions{}).FieldByName("RetryReadsFromSecondaryHost")
-//	if !found {
-//		// Make sure the RetryOption was not erroneously overwritten
-//		c.Fatal("RetryOption's RetryReadsFromSecondaryHost field must exist in the Blob SDK - uncomment it and make sure the field is returned from the retryReadsFromSecondaryHost() method too!")
-//	}
-//}
+// recordedTestSetup is called before each test execution by the test suite's BeforeTest method
+func recordedTestSetup(t *testing.T, accountType string, testName string, mode testframework.RecordMode) {
+	var accountName string
+	var suffix string
+	var cred *SharedKeyCredential
+	var accountKey string
+	var primaryBlobURL string
+
+	_assert := assert.New(t)
+
+	// init the test framework
+	_testContext := testframework.NewTestContext(
+		func(msg string) { _assert.FailNow(msg) },
+		func(msg string) { t.Log(msg) },
+		func() string { return testName })
+
+	// mode should be testframework.Playback.
+	//This will automatically record if no test recording is available and playback if it is.
+	recording, err := testframework.NewRecording(_testContext, mode)
+	_assert.Nil(err)
+
+	accountNameEnvVar := accountType + AccountNameEnvVar
+	accountKeyEnvVar := accountType + AccountKeyEnvVar
+	defaultEndpointSuffixEnvVar := DefaultEndpointSuffixEnvVar
+
+	accountName, err = recording.GetRecordedVariable(accountNameEnvVar, testframework.Default)
+	accountKey, err = recording.GetRecordedVariable(accountKeyEnvVar, testframework.Secret_Base64String)
+	suffix = recording.GetOptionalRecordedVariable(defaultEndpointSuffixEnvVar, DefaultEndpointSuffix, testframework.Default)
+	cred, _ = NewSharedKeyCredential(accountName, accountKey)
+	primaryBlobURL = "https://" + cred.AccountName() + suffix
+	_ = primaryBlobURL
+
+	clientsMap[testName] = &testContext{recording: recording, context: &_testContext}
+}
+
+func getTestContext(key string) *testContext {
+	return clientsMap[key]
+}
+
+func recordedTestTeardown(key string) {
+	_context, ok := clientsMap[key]
+	if ok && !(*_context.context).IsFailed() {
+		_ = _context.recording.Stop()
+	}
+}
+
+func (s *aztestsSuite) BeforeTest(suite string, test string) {
+	// setup the test environment
+	recordedTestSetup(s.T(), "", s.T().Name(), s.mode)
+}
+
+func (s *aztestsSuite) AfterTest(suite string, test string) {
+	// teardown the test context
+	recordedTestTeardown(s.T().Name())
+}
+
+// Vars for
+const DefaultEndpointSuffix = "core.windows.net/"
+const AccountNameEnvVar = "AZURE_STORAGE_ACCOUNT_NAME"
+const AccountKeyEnvVar = "AZURE_STORAGE_ACCOUNT_KEY"
+const DefaultEndpointSuffixEnvVar = "AZURE_STORAGE_ENDPOINT_SUFFIX"
 
 const (
 	containerPrefix             = "go"
@@ -136,10 +204,8 @@ func generateBlobName() string {
 	return generateName(blobPrefix)
 }
 
-func getContainerClient(c *chk.C, s ServiceClient) (container ContainerClient, name string) {
-	name = generateContainerName()
-	container = s.NewContainerClient(name)
-
+func getContainerClient(containerName string, s ServiceClient) (container ContainerClient, name string) {
+	container = s.NewContainerClient(containerName)
 	return container, name
 }
 
@@ -175,19 +241,19 @@ func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 	return bytes.NewReader(data), data
 }
 
-func createNewContainer(c *chk.C, bsu ServiceClient) (container ContainerClient, name string) {
-	container, name = getContainerClient(c, bsu)
+//func createNewContainer(c *chk.C, bsu ServiceClient) (container ContainerClient, name string) {
+//	container, name = getContainerClient(bsu)
+//
+//	cResp, err := container.Create(ctx, nil)
+//	c.Assert(err, chk.IsNil)
+//	c.Assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
+//	return container, name
+//}
 
-	cResp, err := container.Create(ctx, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
-	return container, name
-}
-
-func deleteContainer(c *chk.C, container ContainerClient) {
-	resp, err := container.Delete(context.Background(), nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 202)
+func deleteContainer(container ContainerClient) {
+	_, _ = container.Delete(context.Background(), nil)
+	//c.Assert(err, chk.IsNil)
+	//c.Assert(resp.RawResponse.StatusCode, chk.Equals, 202)
 }
 
 func createNewContainerWithSuffix(c *chk.C, bsu ServiceClient, suffix string) (container ContainerClient, name string) {
@@ -297,31 +363,31 @@ func getGenericServiceClientWithOAuth(c *chk.C, accountType string) (ServiceClie
 	return NewServiceClient(blobPrimaryURL.String(), getOAuthCredential(c), nil)
 }
 
-func getGenericBSU(accountType string) (ServiceClient, error) {
+func getGenericBSU(accountType string, options *ClientOptions) (ServiceClient, error) {
 	credential, err := getGenericCredential(accountType)
 	if err != nil {
 		return ServiceClient{}, err
 	}
 
 	blobPrimaryURL, _ := url.Parse("https://" + credential.AccountName() + ".blob.core.windows.net/")
-	return NewServiceClient(blobPrimaryURL.String(), credential, nil)
+	return NewServiceClient(blobPrimaryURL.String(), credential, options)
 }
 
-func getBSU() ServiceClient {
-	bsu, _ := getGenericBSU("")
+func getBSU(options *ClientOptions) ServiceClient {
+	bsu, _ := getGenericBSU("", options)
 	return bsu
 }
 
 func getAlternateBSU() (ServiceClient, error) {
-	return getGenericBSU("SECONDARY_")
+	return getGenericBSU("SECONDARY_", nil)
 }
 
 func getPremiumBSU() (ServiceClient, error) {
-	return getGenericBSU("PREMIUM_")
+	return getGenericBSU("PREMIUM_", nil)
 }
 
 func getBlobStorageBSU() (ServiceClient, error) {
-	return getGenericBSU("BLOB_STORAGE_")
+	return getGenericBSU("BLOB_STORAGE_", nil)
 }
 
 func getRelativeTimeGMT(amount time.Duration) time.Time {

@@ -6,6 +6,7 @@ package azblob
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/uuid"
 	"net/url"
 	"strings"
 	"time"
@@ -69,7 +70,7 @@ func (s ServiceClient) NewContainerLeaseClient(containerName string, leaseID *st
 	containerConnection := &connection{containerURL, s.client.con.p}
 
 	if leaseID == nil {
-		leaseID = to.StringPtr(newUUID().String())
+		leaseID = to.StringPtr(uuid.New().String())
 	}
 
 	return ContainerLeaseClient{

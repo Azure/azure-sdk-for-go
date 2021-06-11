@@ -5,6 +5,7 @@ package azblob
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"time"
 
@@ -93,7 +94,7 @@ func (c ContainerClient) NewPageBlobClient(blobName string) PageBlobClient {
 func (c ContainerClient) NewContainerLeaseClient() ContainerLeaseClient {
 	return ContainerLeaseClient{
 		ContainerClient: c,
-		LeaseID:         to.StringPtr(newUUID().String()),
+		LeaseID:         to.StringPtr(uuid.New().String()),
 	}
 }
 

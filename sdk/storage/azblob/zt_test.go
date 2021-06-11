@@ -115,7 +115,7 @@ const AccountKeyEnvVar = "AZURE_STORAGE_ACCOUNT_KEY"
 const DefaultEndpointSuffixEnvVar = "AZURE_STORAGE_ENDPOINT_SUFFIX"
 
 const (
-	containerPrefix             = "go"
+	containerPrefix             = "goc"
 	blobPrefix                  = "gotestblob"
 	blockBlobDefaultData        = "GoBlockBlobData"
 	validationErrorSubstring    = "validation failed"
@@ -196,17 +196,16 @@ func generateName(prefix string) string {
 	return name
 }
 
-func generateContainerName() string {
-	return generateName(containerPrefix)
+func generateContainerName(testName string) string {
+	return containerPrefix + strings.ReplaceAll(strings.ReplaceAll(strings.ToLower(testName), "/", ""), "test", "")
 }
 
 func generateBlobName() string {
 	return generateName(blobPrefix)
 }
 
-func getContainerClient(containerName string, s ServiceClient) (container ContainerClient, name string) {
-	container = s.NewContainerClient(containerName)
-	return container, name
+func getContainerClient(containerName string, s ServiceClient)  ContainerClient {
+	return s.NewContainerClient(containerName)
 }
 
 func getBlockBlobClient(c *chk.C, container ContainerClient) (blob BlockBlobClient, name string) {
@@ -241,14 +240,15 @@ func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 	return bytes.NewReader(data), data
 }
 
-//func createNewContainer(c *chk.C, bsu ServiceClient) (container ContainerClient, name string) {
-//	container, name = getContainerClient(bsu)
-//
-//	cResp, err := container.Create(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
-//	return container, name
-//}
+func createNewContainer(_assert *assert.Assertions, testName string, bsu ServiceClient) (ContainerClient, string) {
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, bsu)
+
+	cResp, err := containerClient.Create(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(cResp.RawResponse.StatusCode,201)
+	return containerClient, containerName
+}
 
 func deleteContainer(container ContainerClient) {
 	_, _ = container.Delete(context.Background(), nil)
@@ -448,12 +448,12 @@ func blockIDIntToBase64(blockID int) string {
 }
 
 // TODO: Figure out in which scenario, the parsing will fail.
-func validateStorageError(c *chk.C, err error, code StorageErrorCode) {
-	c.Assert(err, chk.NotNil)
+func validateStorageError(_assert *assert.Assertions, err error, code StorageErrorCode) {
+	_assert.NotNil(err)
 	var storageError *StorageError
-	c.Assert(errors.As(err, &storageError), chk.Equals, true)
+	_assert.Equal(errors.As(err, &storageError),true)
 
-	c.Assert(storageError.ErrorCode, chk.Equals, code)
+	_assert.Equal(storageError.ErrorCode, code)
 }
 
 func blobListToMap(list []string) map[string]bool {

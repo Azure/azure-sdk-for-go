@@ -53,52 +53,66 @@ import (
 //// 	c.Assert(err.Error(), chk.Equals, testPipelineMessage)
 //// }
 //
-//func (s *aztestsSuite) TestContainerCreateInvalidName(c *chk.C) {
-//	bsu := getBSU(nil)
-//	containerClient := bsu.NewContainerClient("foo bar")
-//
-//	access := PublicAccessBlob
-//	createContainerOptions := CreateContainerOptions{
-//		Access:   &access,
-//		Metadata: &map[string]string{},
-//	}
-//	_, err := containerClient.Create(ctx, &createContainerOptions)
-//	c.Assert(err, chk.NotNil)
-//	validateStorageError(c, err, StorageErrorCodeInvalidResourceName)
-//}
-//
-//func (s *aztestsSuite) TestContainerCreateEmptyName(c *chk.C) {
-//	bsu := getBSU(nil)
-//	containerClient := bsu.NewContainerClient("")
-//
-//	access := PublicAccessBlob
-//	createContainerOptions := CreateContainerOptions{
-//		Access:   &access,
-//		Metadata: &map[string]string{},
-//	}
-//	_, err := containerClient.Create(ctx, &createContainerOptions)
-//	c.Assert(err, chk.NotNil)
-//
-//	validateStorageError(c, err, StorageErrorCodeInvalidQueryParameterValue)
-//}
-//
-//func (s *aztestsSuite) TestContainerCreateNameCollision(c *chk.C) {
-//	bsu := getBSU(nil)
-//	containerClient, containerName := createNewContainer(c, bsu)
-//
-//	defer deleteContainer(containerClient)
-//
-//	access := PublicAccessBlob
-//	createContainerOptions := CreateContainerOptions{
-//		Access:   &access,
-//		Metadata: &map[string]string{},
-//	}
-//	containerClient = bsu.NewContainerClient(containerName)
-//	_, err := containerClient.Create(ctx, &createContainerOptions)
-//	c.Assert(err, chk.NotNil)
-//
-//	validateStorageError(c, err, StorageErrorCodeContainerAlreadyExists)
-//}
+func (s *aztestsSuite) TestContainerCreateInvalidName() {
+	_assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	bsu := getBSU(&ClientOptions{
+		HTTPClient: context.recording,
+		Retry: azcore.RetryOptions{MaxRetries: -1}})
+	containerClient := bsu.NewContainerClient("foo bar")
+
+	access := PublicAccessBlob
+	createContainerOptions := CreateContainerOptions{
+		Access:   &access,
+		Metadata: &map[string]string{},
+	}
+	_, err := containerClient.Create(ctx, &createContainerOptions)
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeInvalidResourceName)
+}
+
+func (s *aztestsSuite) TestContainerCreateEmptyName() {
+	_assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	bsu := getBSU(&ClientOptions{
+		HTTPClient: context.recording,
+		Retry: azcore.RetryOptions{MaxRetries: -1}})
+
+	containerClient := bsu.NewContainerClient("")
+
+	access := PublicAccessBlob
+	createContainerOptions := CreateContainerOptions{
+		Access:   &access,
+		Metadata: &map[string]string{},
+	}
+	_, err := containerClient.Create(ctx, &createContainerOptions)
+	_assert.NotNil(err)
+
+	validateStorageError(_assert, err, StorageErrorCodeInvalidQueryParameterValue)
+}
+
+func (s *aztestsSuite) TestContainerCreateNameCollision() {
+	_assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	bsu := getBSU(&ClientOptions{
+		HTTPClient: context.recording,
+		Retry: azcore.RetryOptions{MaxRetries: -1}})
+	testName := s.T().Name()
+	containerClient, containerName := createNewContainer(_assert, testName, bsu)
+
+	defer deleteContainer(containerClient)
+
+	access := PublicAccessBlob
+	createContainerOptions := CreateContainerOptions{
+		Access:   &access,
+		Metadata: &map[string]string{},
+	}
+	containerClient = bsu.NewContainerClient(containerName)
+	_, err := containerClient.Create(ctx, &createContainerOptions)
+	_assert.NotNil(err)
+
+	validateStorageError(_assert, err, StorageErrorCodeContainerAlreadyExists)
+}
 //
 //func (s *aztestsSuite) TestContainerCreateInvalidMetadata(c *chk.C) {
 //	bsu := getBSU(nil)
@@ -141,7 +155,8 @@ func (s *aztestsSuite) TestContainerCreateEmptyMetadata() {
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
 		Retry: azcore.RetryOptions{MaxRetries: -1}})
-	containerClient, _ := getContainerClient("mytestcontainer1", bsu)
+	containerName := generateContainerName(s.T().Name())
+	containerClient := getContainerClient(containerName, bsu)
 
 	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{

@@ -25,8 +25,7 @@ type HTTPPoller interface {
 }
 
 type httpPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *httpPoller) Done() bool {
@@ -34,11 +33,11 @@ func (p *httpPoller) Done() bool {
 }
 
 func (p *httpPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *httpPoller) FinalResponse(ctx context.Context) (*http.Response, error) {
-	return p.pt.FinalResponse(ctx, p.pipeline, nil)
+	return p.pt.FinalResponse(ctx, nil)
 }
 
 func (p *httpPoller) ResumeToken() (string, error) {
@@ -46,7 +45,7 @@ func (p *httpPoller) ResumeToken() (string, error) {
 }
 
 func (p *httpPoller) pollUntilDone(ctx context.Context, freq time.Duration) (*http.Response, error) {
-	return p.pt.PollUntilDone(ctx, freq, p.pipeline, nil)
+	return p.pt.PollUntilDone(ctx, freq, nil)
 }
 
 // MHSMPrivateEndpointConnectionPoller provides polling facilities until the operation reaches a terminal state.
@@ -59,8 +58,7 @@ type MHSMPrivateEndpointConnectionPoller interface {
 }
 
 type mhsmPrivateEndpointConnectionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *mhsmPrivateEndpointConnectionPoller) Done() bool {
@@ -68,12 +66,12 @@ func (p *mhsmPrivateEndpointConnectionPoller) Done() bool {
 }
 
 func (p *mhsmPrivateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *mhsmPrivateEndpointConnectionPoller) FinalResponse(ctx context.Context) (MHSMPrivateEndpointConnectionResponse, error) {
 	respType := MHSMPrivateEndpointConnectionResponse{MHSMPrivateEndpointConnection: &MHSMPrivateEndpointConnection{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.MHSMPrivateEndpointConnection)
+	resp, err := p.pt.FinalResponse(ctx, respType.MHSMPrivateEndpointConnection)
 	if err != nil {
 		return MHSMPrivateEndpointConnectionResponse{}, err
 	}
@@ -87,7 +85,7 @@ func (p *mhsmPrivateEndpointConnectionPoller) ResumeToken() (string, error) {
 
 func (p *mhsmPrivateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (MHSMPrivateEndpointConnectionResponse, error) {
 	respType := MHSMPrivateEndpointConnectionResponse{MHSMPrivateEndpointConnection: &MHSMPrivateEndpointConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.MHSMPrivateEndpointConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.MHSMPrivateEndpointConnection)
 	if err != nil {
 		return MHSMPrivateEndpointConnectionResponse{}, err
 	}
@@ -105,8 +103,7 @@ type ManagedHsmPoller interface {
 }
 
 type managedHsmPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *managedHsmPoller) Done() bool {
@@ -114,12 +111,12 @@ func (p *managedHsmPoller) Done() bool {
 }
 
 func (p *managedHsmPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *managedHsmPoller) FinalResponse(ctx context.Context) (ManagedHsmResponse, error) {
 	respType := ManagedHsmResponse{ManagedHsm: &ManagedHsm{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ManagedHsm)
+	resp, err := p.pt.FinalResponse(ctx, respType.ManagedHsm)
 	if err != nil {
 		return ManagedHsmResponse{}, err
 	}
@@ -133,7 +130,7 @@ func (p *managedHsmPoller) ResumeToken() (string, error) {
 
 func (p *managedHsmPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ManagedHsmResponse, error) {
 	respType := ManagedHsmResponse{ManagedHsm: &ManagedHsm{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ManagedHsm)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ManagedHsm)
 	if err != nil {
 		return ManagedHsmResponse{}, err
 	}
@@ -151,8 +148,7 @@ type PrivateEndpointConnectionPoller interface {
 }
 
 type privateEndpointConnectionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *privateEndpointConnectionPoller) Done() bool {
@@ -160,12 +156,12 @@ func (p *privateEndpointConnectionPoller) Done() bool {
 }
 
 func (p *privateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *privateEndpointConnectionPoller) FinalResponse(ctx context.Context) (PrivateEndpointConnectionResponse, error) {
 	respType := PrivateEndpointConnectionResponse{PrivateEndpointConnection: &PrivateEndpointConnection{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.PrivateEndpointConnection)
+	resp, err := p.pt.FinalResponse(ctx, respType.PrivateEndpointConnection)
 	if err != nil {
 		return PrivateEndpointConnectionResponse{}, err
 	}
@@ -179,7 +175,7 @@ func (p *privateEndpointConnectionPoller) ResumeToken() (string, error) {
 
 func (p *privateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionResponse, error) {
 	respType := PrivateEndpointConnectionResponse{PrivateEndpointConnection: &PrivateEndpointConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PrivateEndpointConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.PrivateEndpointConnection)
 	if err != nil {
 		return PrivateEndpointConnectionResponse{}, err
 	}
@@ -197,8 +193,7 @@ type VaultPoller interface {
 }
 
 type vaultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *vaultPoller) Done() bool {
@@ -206,12 +201,12 @@ func (p *vaultPoller) Done() bool {
 }
 
 func (p *vaultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *vaultPoller) FinalResponse(ctx context.Context) (VaultResponse, error) {
 	respType := VaultResponse{Vault: &Vault{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.Vault)
+	resp, err := p.pt.FinalResponse(ctx, respType.Vault)
 	if err != nil {
 		return VaultResponse{}, err
 	}
@@ -225,7 +220,7 @@ func (p *vaultPoller) ResumeToken() (string, error) {
 
 func (p *vaultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VaultResponse, error) {
 	respType := VaultResponse{Vault: &Vault{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.Vault)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.Vault)
 	if err != nil {
 		return VaultResponse{}, err
 	}

@@ -42,13 +42,12 @@ func (client *MHSMPrivateEndpointConnectionsClient) BeginDelete(ctx context.Cont
 	result := MHSMPrivateEndpointConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("MHSMPrivateEndpointConnectionsClient.Delete", "", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("MHSMPrivateEndpointConnectionsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return MHSMPrivateEndpointConnectionPollerResponse{}, err
 	}
 	poller := &mhsmPrivateEndpointConnectionPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MHSMPrivateEndpointConnectionResponse, error) {
@@ -60,13 +59,12 @@ func (client *MHSMPrivateEndpointConnectionsClient) BeginDelete(ctx context.Cont
 // ResumeDelete creates a new MHSMPrivateEndpointConnectionPoller from the specified resume token.
 // token - The value must come from a previous call to MHSMPrivateEndpointConnectionPoller.ResumeToken().
 func (client *MHSMPrivateEndpointConnectionsClient) ResumeDelete(ctx context.Context, token string) (MHSMPrivateEndpointConnectionPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("MHSMPrivateEndpointConnectionsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("MHSMPrivateEndpointConnectionsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return MHSMPrivateEndpointConnectionPollerResponse{}, err
 	}
 	poller := &mhsmPrivateEndpointConnectionPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

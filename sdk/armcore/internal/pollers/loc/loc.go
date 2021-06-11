@@ -35,6 +35,9 @@ type Poller struct {
 func New(resp *azcore.Response, pollerID string) (*Poller, error) {
 	azcore.Log().Write(azcore.LogLongRunningOperation, "Using Location poller.")
 	locURL := resp.Header.Get(pollers.HeaderLocation)
+	if locURL == "" {
+		return nil, errors.New("response is missing Location header")
+	}
 	if !pollers.IsValidURL(locURL) {
 		return nil, fmt.Errorf("invalid polling URL %s", locURL)
 	}

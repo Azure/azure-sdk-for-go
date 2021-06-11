@@ -41,13 +41,12 @@ func (client *InboundNatRulesClient) BeginCreateOrUpdate(ctx context.Context, re
 	result := InboundNatRulePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("InboundNatRulesClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("InboundNatRulesClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return InboundNatRulePollerResponse{}, err
 	}
 	poller := &inboundNatRulePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (InboundNatRuleResponse, error) {
@@ -59,13 +58,12 @@ func (client *InboundNatRulesClient) BeginCreateOrUpdate(ctx context.Context, re
 // ResumeCreateOrUpdate creates a new InboundNatRulePoller from the specified resume token.
 // token - The value must come from a previous call to InboundNatRulePoller.ResumeToken().
 func (client *InboundNatRulesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (InboundNatRulePollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("InboundNatRulesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("InboundNatRulesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return InboundNatRulePollerResponse{}, err
 	}
 	poller := &inboundNatRulePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -152,13 +150,12 @@ func (client *InboundNatRulesClient) BeginDelete(ctx context.Context, resourceGr
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("InboundNatRulesClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("InboundNatRulesClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -170,13 +167,12 @@ func (client *InboundNatRulesClient) BeginDelete(ctx context.Context, resourceGr
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *InboundNatRulesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("InboundNatRulesClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("InboundNatRulesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

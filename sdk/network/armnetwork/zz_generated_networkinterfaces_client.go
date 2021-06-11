@@ -41,13 +41,12 @@ func (client *NetworkInterfacesClient) BeginCreateOrUpdate(ctx context.Context, 
 	result := NetworkInterfacePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("NetworkInterfacesClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("NetworkInterfacesClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return NetworkInterfacePollerResponse{}, err
 	}
 	poller := &networkInterfacePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (NetworkInterfaceResponse, error) {
@@ -59,13 +58,12 @@ func (client *NetworkInterfacesClient) BeginCreateOrUpdate(ctx context.Context, 
 // ResumeCreateOrUpdate creates a new NetworkInterfacePoller from the specified resume token.
 // token - The value must come from a previous call to NetworkInterfacePoller.ResumeToken().
 func (client *NetworkInterfacesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (NetworkInterfacePollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("NetworkInterfacesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("NetworkInterfacesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return NetworkInterfacePollerResponse{}, err
 	}
 	poller := &networkInterfacePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -148,13 +146,12 @@ func (client *NetworkInterfacesClient) BeginDelete(ctx context.Context, resource
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("NetworkInterfacesClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("NetworkInterfacesClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -166,13 +163,12 @@ func (client *NetworkInterfacesClient) BeginDelete(ctx context.Context, resource
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *NetworkInterfacesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("NetworkInterfacesClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("NetworkInterfacesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -401,13 +397,12 @@ func (client *NetworkInterfacesClient) BeginGetEffectiveRouteTable(ctx context.C
 	result := EffectiveRouteListResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("NetworkInterfacesClient.GetEffectiveRouteTable", "location", resp, client.getEffectiveRouteTableHandleError)
+	pt, err := armcore.NewLROPoller("NetworkInterfacesClient.GetEffectiveRouteTable", "location", resp, client.con.Pipeline(), client.getEffectiveRouteTableHandleError)
 	if err != nil {
 		return EffectiveRouteListResultPollerResponse{}, err
 	}
 	poller := &effectiveRouteListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (EffectiveRouteListResultResponse, error) {
@@ -419,13 +414,12 @@ func (client *NetworkInterfacesClient) BeginGetEffectiveRouteTable(ctx context.C
 // ResumeGetEffectiveRouteTable creates a new EffectiveRouteListResultPoller from the specified resume token.
 // token - The value must come from a previous call to EffectiveRouteListResultPoller.ResumeToken().
 func (client *NetworkInterfacesClient) ResumeGetEffectiveRouteTable(ctx context.Context, token string) (EffectiveRouteListResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("NetworkInterfacesClient.GetEffectiveRouteTable", token, client.getEffectiveRouteTableHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("NetworkInterfacesClient.GetEffectiveRouteTable", token, client.con.Pipeline(), client.getEffectiveRouteTableHandleError)
 	if err != nil {
 		return EffectiveRouteListResultPollerResponse{}, err
 	}
 	poller := &effectiveRouteListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -922,13 +916,12 @@ func (client *NetworkInterfacesClient) BeginListEffectiveNetworkSecurityGroups(c
 	result := EffectiveNetworkSecurityGroupListResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("NetworkInterfacesClient.ListEffectiveNetworkSecurityGroups", "location", resp, client.listEffectiveNetworkSecurityGroupsHandleError)
+	pt, err := armcore.NewLROPoller("NetworkInterfacesClient.ListEffectiveNetworkSecurityGroups", "location", resp, client.con.Pipeline(), client.listEffectiveNetworkSecurityGroupsHandleError)
 	if err != nil {
 		return EffectiveNetworkSecurityGroupListResultPollerResponse{}, err
 	}
 	poller := &effectiveNetworkSecurityGroupListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (EffectiveNetworkSecurityGroupListResultResponse, error) {
@@ -940,13 +933,12 @@ func (client *NetworkInterfacesClient) BeginListEffectiveNetworkSecurityGroups(c
 // ResumeListEffectiveNetworkSecurityGroups creates a new EffectiveNetworkSecurityGroupListResultPoller from the specified resume token.
 // token - The value must come from a previous call to EffectiveNetworkSecurityGroupListResultPoller.ResumeToken().
 func (client *NetworkInterfacesClient) ResumeListEffectiveNetworkSecurityGroups(ctx context.Context, token string) (EffectiveNetworkSecurityGroupListResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("NetworkInterfacesClient.ListEffectiveNetworkSecurityGroups", token, client.listEffectiveNetworkSecurityGroupsHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("NetworkInterfacesClient.ListEffectiveNetworkSecurityGroups", token, client.con.Pipeline(), client.listEffectiveNetworkSecurityGroupsHandleError)
 	if err != nil {
 		return EffectiveNetworkSecurityGroupListResultPollerResponse{}, err
 	}
 	poller := &effectiveNetworkSecurityGroupListResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

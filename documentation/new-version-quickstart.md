@@ -140,32 +140,72 @@ In this example, we will show how to manage Resource Groups.
 
 ***Import the packages***
 ```go
-// insert code
+import "github.com/Azure/azure-sdk-for-go/sdk/resources/armresources"
 ```
 
 ***Create a resource group***
 
 ```go
-// insert code
+func createResourceGroup(connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
+	rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
+
+	param := armresources.ResourceGroup{
+		Location: to.StringPtr(location),
+	}
+
+	return rgClient.CreateOrUpdate(ctx, resourceGroupName, param, nil)
+}
 ```
 
 ***Update a resource group***
 
 ```go
-// insert code
+func updateResourceGroup(connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
+    rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
+    
+    update := armresources.ResourceGroupPatchable{
+        Tags: map[string]*string{
+            "new": to.StringPtr("tag"),
+        },
+    }
+    return rgClient.Update(ctx, resourceGroupName, update, nil)
+}
 ```
-
 
 ***List all resource groups***
 
 ```go
-// insert code
+func listResourceGroups(connection *armcore.Connection) ([]*armresources.ResourceGroup, error) {
+    rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
+    
+    pager := rgClient.List(nil)
+    
+    var resourceGroups []*armresources.ResourceGroup
+    for pager.NextPage(ctx) {
+        resp := pager.PageResponse()
+        if resp.ResourceGroupListResult != nil {
+            resourceGroups = append(resourceGroups, resp.ResourceGroupListResult.Value...)
+        }
+    }
+    return resourceGroups, pager.Err()
+}
 ```
 
 ***Delete a resource group***
 
 ```go
-// insert code
+func deleteResourceGroup(connection *armcore.Connection) error {
+    rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
+    
+    poller, err := rgClient.BeginDelete(ctx, resourceGroupName, nil)
+    if err != nil {
+        return err
+    }
+    if _, err := poller.PollUntilDone(ctx, interval); err != nil {
+        return err
+    }
+    return nil
+}
 ```
 
 Example: Managing Network Resources
@@ -176,6 +216,7 @@ In this example, we will show to manage Network related resources.
 ```go
 // insert code
 ```
+
 ***Creating a Virtual Network***
 ```go
 // insert code

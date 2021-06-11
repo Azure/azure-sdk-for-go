@@ -7318,10 +7318,10 @@ type VirtualMachineCaptureResult struct {
 	ContentVersion *string `json:"contentVersion,omitempty" azure:"ro"`
 
 	// READ-ONLY; parameters of the captured virtual machine
-	Parameters interface{} `json:"parameters,omitempty" azure:"ro"`
+	Parameters map[string]interface{} `json:"parameters,omitempty" azure:"ro"`
 
 	// READ-ONLY; a list of resource items of the captured virtual machine
-	Resources []interface{} `json:"resources,omitempty" azure:"ro"`
+	Resources []map[string]interface{} `json:"resources,omitempty" azure:"ro"`
 
 	// READ-ONLY; the schema of the captured virtual machine
 	Schema *string `json:"$schema,omitempty" azure:"ro"`
@@ -7461,13 +7461,13 @@ type VirtualMachineExtensionProperties struct {
 	InstanceView *VirtualMachineExtensionInstanceView `json:"instanceView,omitempty"`
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings map[string]interface{} `json:"protectedSettings,omitempty"`
 
 	// The name of the extension handler publisher.
 	Publisher *string `json:"publisher,omitempty"`
 
 	// Json formatted public settings for the extension.
-	Settings interface{} `json:"settings,omitempty"`
+	Settings map[string]interface{} `json:"settings,omitempty"`
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string `json:"type,omitempty"`
@@ -7507,13 +7507,13 @@ type VirtualMachineExtensionUpdateProperties struct {
 	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings map[string]interface{} `json:"protectedSettings,omitempty"`
 
 	// The name of the extension handler publisher.
 	Publisher *string `json:"publisher,omitempty"`
 
 	// Json formatted public settings for the extension.
-	Settings interface{} `json:"settings,omitempty"`
+	Settings map[string]interface{} `json:"settings,omitempty"`
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string `json:"type,omitempty"`
@@ -8685,7 +8685,7 @@ type VirtualMachineScaleSetExtensionProperties struct {
 	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings interface{} `json:"protectedSettings,omitempty"`
+	ProtectedSettings map[string]interface{} `json:"protectedSettings,omitempty"`
 
 	// Collection of extension names after which this extension needs to be provisioned.
 	ProvisionAfterExtensions []*string `json:"provisionAfterExtensions,omitempty"`
@@ -8694,7 +8694,7 @@ type VirtualMachineScaleSetExtensionProperties struct {
 	Publisher *string `json:"publisher,omitempty"`
 
 	// Json formatted public settings for the extension.
-	Settings interface{} `json:"settings,omitempty"`
+	Settings map[string]interface{} `json:"settings,omitempty"`
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string `json:"type,omitempty"`

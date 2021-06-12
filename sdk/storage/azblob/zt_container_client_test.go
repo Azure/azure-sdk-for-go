@@ -96,7 +96,7 @@ func (s *azblobTestSuite) TestContainerCreateNameCollision() {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
@@ -150,7 +150,7 @@ func (s *azblobTestSuite) TestContainerCreateNilMetadata() {
 		Metadata: &map[string]string{},
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 	_assert.Nil(err)
 
 	response, err := containerClient.GetProperties(ctx, nil)
@@ -176,7 +176,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 		Metadata: &map[string]string{},
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 	_assert.Nil(err)
 
 	response, err := containerClient.GetProperties(ctx, nil)
@@ -292,7 +292,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 
 	// Public Access Type None
 	_, err = containerClient.Create(ctx, nil)
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
@@ -575,7 +575,7 @@ func (s *azblobTestSuite) TestContainerListBlobsWithSnapshots() {
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	// initialize a blob and create a snapshot of it
 	snapBlobName := generateBlobName(testName)
@@ -616,10 +616,11 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 	prefixes := []string{"a/1", "a/2", "b/1", "blob"}
 	for _, prefix := range prefixes {
-		createNewBlockBlobWithPrefix(_assert, testName, containerClient, prefix)
+		blobName := prefix + generateBlobName(testName)
+		createNewBlockBlob(_assert, blobName, containerClient)
 	}
 
 	pager := containerClient.ListBlobsHierarchySegment("^", nil)
@@ -822,10 +823,12 @@ func (s *azblobTestSuite) TestContainerListBlobsMaxResultsExact() {
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 	blobNames := make([]string, 2)
-	_, blobNames[0] = createNewBlockBlobWithPrefix(_assert, testName, containerClient, "a")
-	_, blobNames[1] = createNewBlockBlobWithPrefix(_assert, testName, containerClient, "b")
+	blobName := generateBlobName(testName)
+	blobNames[0], blobNames[1] = "a"+blobName, "b"+blobName
+	createNewBlockBlob(_assert, blobNames[0], containerClient)
+	createNewBlockBlob(_assert, blobNames[1], containerClient)
 
 	maxResult := int32(2)
 	pager := containerClient.ListBlobsFlatSegment(&ContainerListBlobFlatSegmentOptions{
@@ -856,11 +859,13 @@ func (s *azblobTestSuite) TestContainerListBlobsMaxResultsSufficient() {
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
-	defer deleteContainer(containerClient)
-	blobNames := make([]string, 2)
+	defer deleteContainer(_assert, containerClient)
 
-	_, blobNames[0] = createNewBlockBlobWithPrefix(_assert, testName, containerClient, "a")
-	_, blobNames[1] = createNewBlockBlobWithPrefix(_assert, testName, containerClient, "b")
+	blobNames := make([]string, 2)
+	blobName := generateBlobName(testName)
+	blobNames[0], blobNames[1] = "a"+blobName, "b"+blobName
+	createNewBlockBlob(_assert, blobNames[0], containerClient)
+	createNewBlockBlob(_assert, blobNames[1], containerClient)
 
 	maxResult := int32(3)
 	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
@@ -910,7 +915,7 @@ func (s *azblobTestSuite) TestContainerGetSetPermissionsMultiplePolicies() {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	// Define the policies
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
@@ -968,7 +973,7 @@ func (s *azblobTestSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions) // We create the container explicitly so we can be sure the access policy is not empty
 	_assert.Nil(err)
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
 
@@ -1021,7 +1026,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessBlob() {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	access := PublicAccessBlob
 	setAccessPolicyOptions := SetAccessPolicyOptions{
@@ -1048,7 +1053,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	access := PublicAccessContainer
 	setAccessPolicyOptions := SetAccessPolicyOptions{
@@ -1131,7 +1136,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsACLMoreThanFive() {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 	_assert.Nil(err)
@@ -1175,7 +1180,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 	_assert.Nil(err)
@@ -1237,7 +1242,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAllPolicies() {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	start, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 	_assert.Nil(err)
@@ -1297,7 +1302,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsInvalidPolicyTimes() {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	// Swap start and expiry
 	expiry, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
@@ -1340,7 +1345,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsNilPolicySlice() {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	_, err = containerClient.SetAccessPolicy(ctx, nil)
 	_assert.Nil(err)
@@ -1357,7 +1362,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	id := ""
 	for i := 0; i < 65; i++ {
@@ -1490,7 +1495,7 @@ func (s *azblobTestSuite) TestContainerGetPropertiesAndMetadataNoMetadata() {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	resp, err := containerClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
@@ -1532,7 +1537,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	setMetadataContainerOptions := SetMetadataContainerOptions{
 		Metadata: &map[string]string{},
@@ -1562,7 +1567,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataNil() {
 	}
 	_, err = containerClient.Create(ctx, &createContainerOptions)
 
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	_, err = containerClient.SetMetadata(ctx, nil)
 	_assert.Nil(err)
@@ -1583,7 +1588,7 @@ func (s *azblobTestSuite) TestContainerSetMetadataInvalidField() {
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
-	defer deleteContainer(containerClient)
+	defer deleteContainer(_assert, containerClient)
 
 	setMetadataContainerOptions := SetMetadataContainerOptions{
 		Metadata: &map[string]string{"!nval!d Field!@#%": "value"},

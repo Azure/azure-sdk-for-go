@@ -2,71 +2,80 @@
 // Licensed under the MIT License.
 
 package azblob
-//
-//import (
-//	"bytes"
-//	"crypto/md5"
-//	"errors"
-//	"io"
-//	"io/ioutil"
-//	"net/url"
-//	"os"
-//	"strings"
-//	"time"
-//
-//	"github.com/Azure/azure-sdk-for-go/sdk/to"
-//
-//	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-//	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
-//)
-//
-//func (s *aztestsSuite) TestCreateBlobClient(c *chk.C) {
-//	bsu := getBSU(nil)
-//	containerClient, containerName := getContainerClient(bsu)
-//	testURL, testName := getBlockBlobClient(c, containerClient)
-//
-//	parts := NewBlobURLParts(testURL.URL())
-//	c.Assert(parts.BlobName, chk.Equals, testName)
-//	c.Assert(parts.ContainerName, chk.Equals, containerName)
-//
-//	correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + containerName + "/" + testName
-//	c.Assert(testURL.URL(), chk.Equals, correctURL)
-//}
-//
-//func (s *aztestsSuite) TestCreateBlobClientWithSnapshotAndSAS(c *chk.C) {
-//	bsu := getBSU(nil)
-//	containerClient, containerName := getContainerClient(bsu)
-//	blobClient, blobName := getBlockBlobClient(c, containerClient)
-//
-//	currentTime := time.Now().UTC()
-//	credential, err := getGenericCredential("")
-//	if err != nil {
-//		c.Fatal("Invalid credential")
-//	}
-//	sasQueryParams, err := AccountSASSignatureValues{
-//		Protocol:      SASProtocolHTTPS,
-//		ExpiryTime:    currentTime.Add(48 * time.Hour),
-//		Permissions:   AccountSASPermissions{Read: true, List: true}.String(),
-//		Services:      AccountSASServices{Blob: true}.String(),
-//		ResourceTypes: AccountSASResourceTypes{Container: true, Object: true}.String(),
-//	}.NewSASQueryParameters(credential)
-//	if err != nil {
-//		c.Fatal(err)
-//	}
-//
-//	parts := NewBlobURLParts(blobClient.URL())
-//	parts.SAS = sasQueryParams
-//	parts.Snapshot = currentTime.Format(SnapshotTimeFormat)
-//	testURL := parts.URL()
-//
-//	// The snapshot format string is taken from the snapshotTimeFormat value in parsing_urls.go. The field is not public, so
-//	// it is copied here
-//	correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + containerName + "/" + blobName +
-//		"?" + "snapshot=" + currentTime.Format("2006-01-02T15:04:05.0000000Z07:00") + "&" + sasQueryParams.Encode()
-//	c.Assert(testURL, chk.Equals, correctURL)
-//}
-//
-//// func (s *aztestsSuite) TestBlobWithNewPipeline(c *chk.C) {
+
+import (
+	"bytes"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/stretchr/testify/assert"
+	"io/ioutil"
+	"os"
+	"strings"
+	"time"
+)
+
+func (s *aztestsSuite) TestCreateBlobClient() {
+	_assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	bsu := getBSU(&ClientOptions{
+		HTTPClient: context.recording,
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
+	containerName := generateContainerName(s.T().Name())
+	containerClient := getContainerClient(containerName, bsu)
+
+	blobName := generateBlobName(s.T().Name())
+	blobClient := getBlockBlobClient(blobName, containerClient)
+
+	blobURLParts := NewBlobURLParts(blobClient.URL())
+	_assert.Equal(blobURLParts.BlobName, blobName)
+	_assert.Equal(blobURLParts.ContainerName, containerName)
+
+	correctURL := "https://" + os.Getenv(AccountNameEnvVar) + "." + DefaultBlobEndpointSuffix + containerName + "/" + blobName
+	_assert.Equal(blobClient.URL(), correctURL)
+}
+
+func (s *aztestsSuite) TestCreateBlobClientWithSnapshotAndSAS() {
+	_assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	bsu := getBSU(&ClientOptions{
+		HTTPClient: context.recording,
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
+	containerName := generateContainerName(s.T().Name())
+	containerClient := getContainerClient(containerName, bsu)
+
+	blobName := generateBlobName(s.T().Name())
+	blobClient := getBlockBlobClient(blobName, containerClient)
+
+	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_assert.Nil(err)
+
+	credential, err := getGenericCredential("")
+	if err != nil {
+		s.Fail(err.Error())
+	}
+	sasQueryParams, err := AccountSASSignatureValues{
+		Protocol:      SASProtocolHTTPS,
+		ExpiryTime:    currentTime,
+		Permissions:   AccountSASPermissions{Read: true, List: true}.String(),
+		Services:      AccountSASServices{Blob: true}.String(),
+		ResourceTypes: AccountSASResourceTypes{Container: true, Object: true}.String(),
+	}.NewSASQueryParameters(credential)
+	if err != nil {
+		s.Fail(err.Error())
+	}
+
+	parts := NewBlobURLParts(blobClient.URL())
+	parts.SAS = sasQueryParams
+	parts.Snapshot = currentTime.Format(SnapshotTimeFormat)
+	blobURLParts := parts.URL()
+
+	// The snapshot format string is taken from the snapshotTimeFormat value in parsing_urls.go. The field is not public, so
+	// it is copied here
+	correctURL := "https://" + os.Getenv(AccountNameEnvVar) + "." + DefaultBlobEndpointSuffix + containerName + "/" + blobName +
+		"?" + "snapshot=" + currentTime.Format("2006-01-02T15:04:05.0000000Z07:00") + "&" + sasQueryParams.Encode()
+	_assert.Equal(blobURLParts, correctURL)
+}
+
+//// func (s *aztestsSuite) TestBlobWithNewPipeline() {
 //// 	bsu := getBSU()
 //// 	containerClient, _ := getContainerClient(c, bsu)
 //// 	blobClient := containerClient.NewBlockBlobClient(blobPrefix)
@@ -75,172 +84,238 @@ package azblob
 ////
 //// 	// exercise the new pipeline
 //// 	_, err := newBlobClient.GetAccountInfo(ctx)
-//// 	c.Assert(err, chk.NotNil)
-//// 	c.Assert(err.Error(), chk.Equals, testPipelineMessage)
+//// 	_assert(err, chk.NotNil)
+//// 	_assert(err.Error(), chk.Equals, testPipelineMessage)
 //// }
-//
-//func waitForCopy(c *chk.C, copyBlobClient BlockBlobClient, blobCopyResponse BlobStartCopyFromURLResponse) {
-//	status := *blobCopyResponse.CopyStatus
-//	// Wait for the copy to finish. If the copy takes longer than a minute, we will fail
-//	start := time.Now()
-//	for status != CopyStatusSuccess {
-//		props, _ := copyBlobClient.GetProperties(ctx, nil)
-//		status = *props.CopyStatus
-//		currentTime := time.Now()
-//		if currentTime.Sub(start) >= time.Minute {
-//			c.Fail()
-//		}
-//	}
-//}
-//
-//func (s *aztestsSuite) TestBlobStartCopyDestEmpty(c *chk.C) {
-//	bsu := getBSU(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//	copyBlobClient, _ := getBlockBlobClient(c, containerClient)
-//
-//	blobCopyResponse, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), nil)
-//	c.Assert(err, chk.IsNil)
-//	waitForCopy(c, copyBlobClient, blobCopyResponse)
-//
-//	resp, err := copyBlobClient.Download(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	// Read the blob data to verify the copy
-//	data, err := ioutil.ReadAll(resp.RawResponse.Body)
-//	c.Assert(*resp.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
-//	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
-//	resp.Body(RetryReaderOptions{}).Close()
-//}
-//
-//func (s *aztestsSuite) TestBlobStartCopyMetadata(c *chk.C) {
-//	bsu := getBSU(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//	copyBlobClient, _ := getBlockBlobClient(c, containerClient)
-//
-//	metadata := make(map[string]string)
-//	metadata["Bla"] = "foo"
-//	options := StartCopyBlobOptions{
-//		Metadata: &metadata,
-//	}
-//	resp, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.IsNil)
-//	waitForCopy(c, copyBlobClient, resp)
-//
-//	resp2, err := copyBlobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp2.Metadata, chk.DeepEquals, metadata)
-//}
-//
-//func (s *aztestsSuite) TestBlobStartCopyMetadataNil(c *chk.C) {
-//	bsu := getBSU(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//	copyBlobClient, _ := getBlockBlobClient(c, containerClient)
-//
-//	// Have the destination start with metadata so we ensure the nil metadata passed later takes effect
-//	_, err := copyBlobClient.Upload(ctx, azcore.NopCloser(bytes.NewReader([]byte("data"))), nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	resp, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	waitForCopy(c, copyBlobClient, resp)
-//
-//	resp2, err := copyBlobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp2.Metadata, chk.HasLen, 0)
-//}
-//
-//func (s *aztestsSuite) TestBlobStartCopyMetadataEmpty(c *chk.C) {
-//	bsu := getBSU(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//	copyBlobClient, _ := getBlockBlobClient(c, containerClient)
-//
-//	// Have the destination start with metadata so we ensure the empty metadata passed later takes effect
-//	_, err := copyBlobClient.Upload(ctx, azcore.NopCloser(bytes.NewReader([]byte("data"))), nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	metadata := make(map[string]string)
-//	options := StartCopyBlobOptions{
-//		Metadata: &metadata,
-//	}
-//	resp, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.IsNil)
-//
-//	waitForCopy(c, copyBlobClient, resp)
-//
-//	resp2, err := copyBlobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp2.Metadata, chk.HasLen, 0)
-//}
-//
-//func (s *aztestsSuite) TestBlobStartCopyMetadataInvalidField(c *chk.C) {
-//	bsu := getBSU(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//	copyBlobClient, _ := getBlockBlobClient(c, containerClient)
-//
-//	metadata := make(map[string]string)
-//	metadata["I nvalid."] = "foo"
-//	options := StartCopyBlobOptions{
-//		Metadata: &metadata,
-//	}
-//	_, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.NotNil)
-//	c.Assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
-//}
-//
-//func (s *aztestsSuite) TestBlobStartCopySourceNonExistent(c *chk.C) {
-//	bsu := getBSU(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	blobClient, _ := getBlockBlobClient(c, containerClient)
-//	copyBlobClient, _ := getBlockBlobClient(c, containerClient)
-//
-//	_, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), nil)
-//	c.Assert(err, chk.NotNil)
-//	c.Assert(strings.Contains(err.Error(), "not exist"), chk.Equals, true)
-//}
-//
-//func (s *aztestsSuite) TestBlobStartCopySourcePrivate(c *chk.C) {
-//	bsu := getBSU(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
+
+func waitForCopy(_assert *assert.Assertions, copyBlobClient BlockBlobClient, blobCopyResponse BlobStartCopyFromURLResponse) {
+	status := *blobCopyResponse.CopyStatus
+	// Wait for the copy to finish. If the copy takes longer than a minute, we will fail
+	start := time.Now()
+	for status != CopyStatusSuccess {
+		props, _ := copyBlobClient.GetProperties(ctx, nil)
+		status = *props.CopyStatus
+		currentTime := time.Now()
+		if currentTime.Sub(start) >= time.Minute {
+			_assert.Fail("If the copy takes longer than a minute, we will fail")
+		}
+	}
+}
+
+func (s *aztestsSuite) TestBlobStartCopyDestEmpty() {
+	_assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	bsu := getBSU(&ClientOptions{
+		HTTPClient: context.recording,
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
+	testName := s.T().Name()
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, bsu)
+
+	_, err := containerClient.Create(ctx, nil)
+	_assert.Nil(err)
+	defer deleteContainer(containerClient)
+
+	blobClient, blobName := createNewBlockBlob(_assert, testName, containerClient)
+
+	anotherBlobName := "copy" + blobName
+	copyBlobClient := getBlockBlobClient(anotherBlobName, containerClient)
+
+	blobCopyResponse, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), nil)
+	_assert.Nil(err)
+	waitForCopy(_assert, copyBlobClient, blobCopyResponse)
+
+	resp, err := copyBlobClient.Download(ctx, nil)
+	_assert.Nil(err)
+
+	// Read the blob data to verify the copy
+	data, err := ioutil.ReadAll(resp.RawResponse.Body)
+	_assert.Equal(*resp.ContentLength, int64(len(blockBlobDefaultData)))
+	_assert.Equal(string(data), blockBlobDefaultData)
+	resp.Body(RetryReaderOptions{}).Close()
+}
+
+func (s *aztestsSuite) TestBlobStartCopyMetadata() {
+	_assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	bsu := getBSU(&ClientOptions{
+		HTTPClient: context.recording,
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
+	testName := s.T().Name()
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, bsu)
+
+	_, err := containerClient.Create(ctx, nil)
+	_assert.Nil(err)
+	defer deleteContainer(containerClient)
+
+	blobClient, blobName := createNewBlockBlob(_assert, testName, containerClient)
+
+	anotherBlobName := "copy" + blobName
+	copyBlobClient := getBlockBlobClient(anotherBlobName, containerClient)
+
+	metadata := make(map[string]string)
+	metadata["Bla"] = "foo"
+	options := StartCopyBlobOptions{
+		Metadata: &metadata,
+	}
+	resp, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
+	_assert.Nil(err)
+	waitForCopy(_assert, copyBlobClient, resp)
+
+	resp2, err := copyBlobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.EqualValues(resp2.Metadata, metadata)
+}
+
+func (s *aztestsSuite) TestBlobStartCopyMetadataNil() {
+	_assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	bsu := getBSU(&ClientOptions{
+		HTTPClient: context.recording,
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
+	testName := s.T().Name()
+	containerClient, _ := createNewContainer(_assert, testName, bsu)
+	defer deleteContainer(containerClient)
+
+	blobClient, _ := createNewBlockBlob(_assert, testName, containerClient)
+
+	anotherBlobName := "copy" + generateBlobName(testName)
+	copyBlobClient := getBlockBlobClient(anotherBlobName, containerClient)
+
+	// Have the destination start with metadata so we ensure the nil metadata passed later takes effect
+	_, err := copyBlobClient.Upload(ctx, azcore.NopCloser(bytes.NewReader([]byte("data"))), nil)
+	_assert.Nil(err)
+
+	resp, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), nil)
+	_assert.Nil(err)
+
+	waitForCopy(_assert, copyBlobClient, resp)
+
+	resp2, err := copyBlobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Len(resp2.Metadata, 0)
+}
+
+func (s *aztestsSuite) TestBlobStartCopyMetadataEmpty() {
+	_assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	bsu := getBSU(&ClientOptions{
+		HTTPClient: context.recording,
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
+	testName := s.T().Name()
+	containerClient, _ := createNewContainer(_assert, testName, bsu)
+	defer deleteContainer(containerClient)
+
+	blobClient, _ := createNewBlockBlob(_assert, testName, containerClient)
+
+	anotherBlobName := "copy" + generateBlobName(testName)
+	copyBlobClient := getBlockBlobClient(anotherBlobName, containerClient)
+
+	// Have the destination start with metadata so we ensure the empty metadata passed later takes effect
+	_, err := copyBlobClient.Upload(ctx, azcore.NopCloser(bytes.NewReader([]byte("data"))), nil)
+	_assert.Nil(err)
+
+	metadata := make(map[string]string)
+	options := StartCopyBlobOptions{
+		Metadata: &metadata,
+	}
+	resp, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
+	_assert.Nil(err)
+
+	waitForCopy(_assert, copyBlobClient, resp)
+
+	resp2, err := copyBlobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Len(resp2.Metadata, 0)
+}
+
+func (s *aztestsSuite) TestBlobStartCopyMetadataInvalidField() {
+	_assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	bsu := getBSU(&ClientOptions{
+		HTTPClient: context.recording,
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
+	testName := s.T().Name()
+	containerClient, _ := createNewContainer(_assert, testName, bsu)
+	defer deleteContainer(containerClient)
+
+	blobClient, _ := createNewBlockBlob(_assert, testName, containerClient)
+
+	anotherBlobName := "copy" + generateBlobName(testName)
+	copyBlobClient := getBlockBlobClient(anotherBlobName, containerClient)
+
+	metadata := make(map[string]string)
+	metadata["I nvalid."] = "foo"
+	options := StartCopyBlobOptions{
+		Metadata: &metadata,
+	}
+	_, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
+	_assert.NotNil(err)
+	_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
+}
+
+func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
+	_assert := assert.New(s.T())
+	context := getTestContext(s.T().Name())
+	bsu := getBSU(&ClientOptions{
+		HTTPClient: context.recording,
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
+	testName := s.T().Name()
+	containerClient, _ := createNewContainer(_assert, testName, bsu)
+	defer deleteContainer(containerClient)
+
+	blobName := generateBlobName(testName)
+	blobClient := getBlockBlobClient(blobName, containerClient)
+
+	anotherBlobName := "copy" + blobName
+	copyBlobClient := getBlockBlobClient(anotherBlobName, containerClient)
+
+	_, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), nil)
+	_assert.NotNil(err)
+	_assert.Equal(strings.Contains(err.Error(), "not exist"), true)
+}
+
+//func (s *aztestsSuite) TestBlobStartCopySourcePrivate() {
+//	_assert := assert.New(s.T())
+//	context := getTestContext(s.T().Name())
+//	bsu := getBSU(&ClientOptions{
+//		HTTPClient: context.recording,
+//		Retry: azcore.RetryOptions{MaxRetries: -1}})
+//	testName := s.T().Name()
+//	containerClient, _ := createNewContainer(_assert, testName, bsu)
 //	defer deleteContainer(containerClient)
 //
 //	_, err := containerClient.SetAccessPolicy(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
+//	_assert.Nil(err)
+//
+//	blobClient, _ := createNewBlockBlob(_assert, testName, containerClient)
 //
 //	bsu2, err := getAlternateBSU()
+
 //	if err != nil {
-//		c.Skip(err.Error())
+//		s.T().Skip(err.Error())
 //		return
 //	}
-//	copyContainerClient, _ := createNewContainer(c, bsu2)
+//
+//	copyContainerClient, _ := createNewContainer(_assert, "cpyc" + testName, bsu2)
 //	defer deleteContainer(copyContainerClient)
-//	copyBlobClient, _ := getBlockBlobClient(c, copyContainerClient)
+//	copyBlobName := "copyb" + generateBlobName(testName)
+//	copyBlobClient := getBlockBlobClient(copyBlobName, copyContainerClient)
 //
 //	if bsu.URL() == bsu2.URL() {
-//		c.Skip("Test not valid because primary and secondary accounts are the same")
+//		s.T().Skip("Test not valid because primary and secondary accounts are the same")
 //	}
 //	_, err = copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), nil)
-//	validateStorageError(c, err, StorageErrorCodeCannotVerifyCopySource)
+//	validateStorageError(_assert, err, StorageErrorCodeCannotVerifyCopySource)
 //}
-//
-//func (s *aztestsSuite) TestBlobStartCopyUsingSASSrc(c *chk.C) {
+
+//func (s *aztestsSuite) TestBlobStartCopyUsingSASSrc() {
 //	bsu := getBSU(nil)
 //	containerClient, containerName := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	_, err := containerClient.SetAccessPolicy(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //	blobClient, blobName := createNewBlockBlob(c, containerClient)
 //
 //	// Create sas values for the source blob
@@ -271,7 +346,7 @@ package azblob
 //	copyBlobClient, _ := getBlockBlobClient(c, copyContainerClient)
 //
 //	resp, err := copyBlobClient.StartCopyFromURL(ctx, sasURL.URL(), nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	waitForCopy(c, copyBlobClient, resp)
 //
@@ -281,20 +356,20 @@ package azblob
 //		Count:  &count,
 //	}
 //	resp2, err := copyBlobClient.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	data, err := ioutil.ReadAll(resp2.RawResponse.Body)
-//	c.Assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
-//	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
+//	_assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
+//	_assert(string(data), chk.Equals, blockBlobDefaultData)
 //	resp2.Body(RetryReaderOptions{}).Close()
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyUsingSASDest(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopyUsingSASDest() {
 //	bsu := getBSU(nil)
 //	containerClient, containerName := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	_, err := containerClient.SetAccessPolicy(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //	blobClient, blobName := createNewBlockBlob(c, containerClient)
 //	_ = blobClient
 //
@@ -350,7 +425,7 @@ package azblob
 //	srcBlobWithSasURL.SAS = queryParams
 //
 //	resp, err := anonymousBlobClient.StartCopyFromURL(ctx, srcBlobWithSasURL.URL(), nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	// Allow copy to happen
 //	waitForCopy(c, anonymousBlobClient, resp)
@@ -361,16 +436,16 @@ package azblob
 //		Count:  &count,
 //	}
 //	resp2, err := copyBlobClient.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	data, err := ioutil.ReadAll(resp2.RawResponse.Body)
 //	_, err = resp2.Body(RetryReaderOptions{}).Read(data)
-//	c.Assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
-//	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
+//	_assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
+//	_assert(string(data), chk.Equals, blockBlobDefaultData)
 //	resp2.Body(RetryReaderOptions{}).Close()
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfModifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopySourceIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	bsu := getBSU(nil)
@@ -386,13 +461,13 @@ package azblob
 //	}
 //	destBlobClient, _ := getBlockBlobClient(c, containerClient)
 //	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	_, err = destBlobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfModifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopySourceIfModifiedSinceFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -407,10 +482,10 @@ package azblob
 //	}
 //	destBlobClient, _ := getBlockBlobClient(c, containerClient)
 //	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopySourceIfUnmodifiedSinceTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -425,13 +500,13 @@ package azblob
 //	}
 //	destBlobClient, _ := getBlockBlobClient(c, containerClient)
 //	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	_, err = destBlobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopySourceIfUnmodifiedSinceFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -446,17 +521,17 @@ package azblob
 //	}
 //	destBlobClient, _ := getBlockBlobClient(c, containerClient)
 //	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopySourceIfMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	accessConditions := SourceModifiedAccessConditions{
 //		SourceIfMatch: resp.ETag,
@@ -466,13 +541,13 @@ package azblob
 //	}
 //	destBlobClient, _ := getBlockBlobClient(c, containerClient)
 //	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	_, err = destBlobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopySourceIfMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -488,10 +563,10 @@ package azblob
 //
 //	destBlobClient, _ := getBlockBlobClient(c, containerClient)
 //	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfNoneMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopySourceIfNoneMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -506,20 +581,20 @@ package azblob
 //	}
 //	destBlobClient, _ := getBlockBlobClient(c, containerClient)
 //	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	_, err = destBlobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfNoneMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopySourceIfNoneMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	accessConditions := SourceModifiedAccessConditions{
 //		SourceIfNoneMatch: resp.ETag,
@@ -530,10 +605,10 @@ package azblob
 //
 //	destBlobClient, _ := getBlockBlobClient(c, containerClient)
 //	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfModifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopyDestIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
@@ -548,13 +623,13 @@ package azblob
 //	}
 //	destBlobClient, _ := createNewBlockBlob(c, containerClient) // The blob must exist to have a last-modified time
 //	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	_, err = destBlobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfModifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopyDestIfModifiedSinceFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -569,10 +644,10 @@ package azblob
 //		ModifiedAccessConditions: &accessConditions,
 //	}
 //	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopyDestIfUnmodifiedSinceTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -587,13 +662,13 @@ package azblob
 //		ModifiedAccessConditions: &accessConditions,
 //	}
 //	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	_, err = destBlobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopyDestIfUnmodifiedSinceFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -609,10 +684,10 @@ package azblob
 //	}
 //
 //	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopyDestIfMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -629,13 +704,13 @@ package azblob
 //	}
 //
 //	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	resp, err = destBlobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopyDestIfMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -653,13 +728,13 @@ package azblob
 //	metadata := make(map[string]string)
 //	metadata["bla"] = "bla"
 //	_, err := destBlobClient.SetMetadata(ctx, metadata, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfNoneMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopyDestIfNoneMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -675,16 +750,16 @@ package azblob
 //		ModifiedAccessConditions: &accessConditions,
 //	}
 //	_, err := destBlobClient.SetMetadata(ctx, nil, nil) // SetMetadata chances the blob's etag
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	resp, err = destBlobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfNoneMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -701,10 +776,10 @@ package azblob
 //	}
 //
 //	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobAbortCopyInProgress(c *chk.C) {
+//func (s *aztestsSuite) TestBlobAbortCopyInProgress() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -714,7 +789,7 @@ package azblob
 //	blobSize := 8 * 1024 * 1024
 //	blobReader, _ := getRandomDataAndReader(blobSize)
 //	_, err := blobClient.Upload(ctx, azcore.NopCloser(blobReader), nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	access := PublicAccessBlob
 //	setAccessPolicyOptions := SetAccessPolicyOptions{
@@ -723,7 +798,7 @@ package azblob
 //		},
 //	}
 //	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions) // So that we don't have to create a SAS
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	// Must copy across accounts so it takes time to copy
 //	bsu2, err := getAlternateBSU()
@@ -738,9 +813,9 @@ package azblob
 //	defer deleteContainer(copyContainerClient)
 //
 //	resp, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.CopyStatus, chk.Equals, CopyStatusPending)
-//	c.Assert(resp.CopyID, chk.NotNil)
+//	_assert(err, chk.IsNil)
+//	_assert(resp.CopyStatus, chk.Equals, CopyStatusPending)
+//	_assert(resp.CopyID, chk.NotNil)
 //
 //	_, err = copyBlobClient.AbortCopyFromURL(ctx, *resp.CopyID, nil)
 //	if err != nil {
@@ -751,10 +826,10 @@ package azblob
 //	}
 //
 //	resp2, _ := copyBlobClient.GetProperties(ctx, nil)
-//	c.Assert(resp2.CopyStatus, chk.Equals, CopyStatusAborted)
+//	_assert(resp2.CopyStatus, chk.Equals, CopyStatusAborted)
 //}
 //
-//func (s *aztestsSuite) TestBlobAbortCopyNoCopyStarted(c *chk.C) {
+//func (s *aztestsSuite) TestBlobAbortCopyNoCopyStarted() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //
@@ -762,10 +837,10 @@ package azblob
 //
 //	copyBlobClient, _ := getBlockBlobClient(c, containerClient)
 //	_, err := copyBlobClient.AbortCopyFromURL(ctx, "copynotstarted", nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotMetadata(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSnapshotMetadata() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -775,56 +850,56 @@ package azblob
 //		Metadata: &basicMetadata,
 //	}
 //	resp, err := blobClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Snapshot, chk.NotNil)
+//	_assert(err, chk.IsNil)
+//	_assert(resp.Snapshot, chk.NotNil)
 //
 //	// Since metadata is specified on the snapshot, the snapshot should have its own metadata different from the (empty) metadata on the source
 //	snapshotURL := blobClient.WithSnapshot(*resp.Snapshot)
 //	resp2, err := snapshotURL.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp2.Metadata, chk.DeepEquals, basicMetadata)
+//	_assert(err, chk.IsNil)
+//	_assert(resp2.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotMetadataEmpty(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSnapshotMetadataEmpty() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	_, err := blobClient.SetMetadata(ctx, basicMetadata, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	resp, err := blobClient.CreateSnapshot(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Snapshot, chk.NotNil)
+//	_assert(err, chk.IsNil)
+//	_assert(resp.Snapshot, chk.NotNil)
 //
 //	// In this case, because no metadata was specified, it should copy the basicMetadata from the source
 //	snapshotURL := blobClient.WithSnapshot(*resp.Snapshot)
 //	resp2, err := snapshotURL.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp2.Metadata, chk.DeepEquals, basicMetadata)
+//	_assert(err, chk.IsNil)
+//	_assert(resp2.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotMetadataNil(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSnapshotMetadataNil() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	_, err := blobClient.SetMetadata(ctx, basicMetadata, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	resp, err := blobClient.CreateSnapshot(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Snapshot, chk.NotNil)
+//	_assert(err, chk.IsNil)
+//	_assert(resp.Snapshot, chk.NotNil)
 //
 //	snapshotURL := blobClient.WithSnapshot(*resp.Snapshot)
 //	resp2, err := snapshotURL.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp2.Metadata, chk.DeepEquals, basicMetadata)
+//	_assert(err, chk.IsNil)
+//	_assert(resp2.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotMetadataInvalid(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSnapshotMetadataInvalid() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -834,21 +909,21 @@ package azblob
 //		Metadata: &map[string]string{"Invalid Field!": "value"},
 //	}
 //	_, err := blobClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
-//	c.Assert(err, chk.NotNil)
-//	c.Assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
+//	_assert(err, chk.NotNil)
+//	_assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotBlobNotExist(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSnapshotBlobNotExist() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := getBlockBlobClient(c, containerClient)
 //
 //	_, err := blobClient.CreateSnapshot(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotOfSnapshot(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSnapshotOfSnapshot() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -857,10 +932,10 @@ package azblob
 //	snapshotURL := blobClient.WithSnapshot(time.Now().UTC().Format(SnapshotTimeFormat))
 //	// The library allows the server to handle the snapshot of snapshot error
 //	_, err := snapshotURL.CreateSnapshot(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfModifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSnapshotIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	bsu := getBSU(nil)
@@ -875,11 +950,11 @@ package azblob
 //		ModifiedAccessConditions: &access,
 //	}
 //	resp, err := blobClient.CreateSnapshot(ctx, &options)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(*resp.Snapshot != "", chk.Equals, true) // i.e. The snapshot time is not zero. If the service gives us back a snapshot time, it successfully created a snapshot
+//	_assert(err, chk.IsNil)
+//	_assert(*resp.Snapshot != "", chk.Equals, true) // i.e. The snapshot time is not zero. If the service gives us back a snapshot time, it successfully created a snapshot
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfModifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSnapshotIfModifiedSinceFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -893,10 +968,10 @@ package azblob
 //		ModifiedAccessConditions: &access,
 //	}
 //	_, err := blobClient.CreateSnapshot(ctx, &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSnapshotIfUnmodifiedSinceTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -910,11 +985,11 @@ package azblob
 //		ModifiedAccessConditions: &access,
 //	}
 //	resp, err := blobClient.CreateSnapshot(ctx, &options)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(*resp.Snapshot == "", chk.Equals, false)
+//	_assert(err, chk.IsNil)
+//	_assert(*resp.Snapshot == "", chk.Equals, false)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSnapshotIfUnmodifiedSinceFalse() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	bsu := getBSU(nil)
@@ -928,17 +1003,17 @@ package azblob
 //		ModifiedAccessConditions: &access,
 //	}
 //	_, err := blobClient.CreateSnapshot(ctx, &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSnapshotIfMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	access := ModifiedAccessConditions{
 //		IfMatch: resp.ETag,
@@ -947,11 +1022,11 @@ package azblob
 //		ModifiedAccessConditions: &access,
 //	}
 //	resp2, err := blobClient.CreateSnapshot(ctx, &options)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(*resp2.Snapshot == "", chk.Equals, false)
+//	_assert(err, chk.IsNil)
+//	_assert(*resp2.Snapshot == "", chk.Equals, false)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSnapshotIfMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -965,10 +1040,10 @@ package azblob
 //		ModifiedAccessConditions: &access,
 //	}
 //	_, err := blobClient.CreateSnapshot(ctx, &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfNoneMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSnapshotIfNoneMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -982,18 +1057,18 @@ package azblob
 //		ModifiedAccessConditions: &access,
 //	}
 //	resp, err := blobClient.CreateSnapshot(ctx, &options)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(*resp.Snapshot == "", chk.Equals, false)
+//	_assert(err, chk.IsNil)
+//	_assert(*resp.Snapshot == "", chk.Equals, false)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfNoneMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSnapshotIfNoneMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	access := ModifiedAccessConditions{
 //		IfNoneMatch: resp.ETag,
@@ -1002,20 +1077,20 @@ package azblob
 //		ModifiedAccessConditions: &access,
 //	}
 //	_, err = blobClient.CreateSnapshot(ctx, &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataNonExistentBlob(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataNonExistentBlob() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := getBlockBlobClient(c, containerClient)
 //
 //	_, err := blobClient.Download(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataNegativeOffset(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataNegativeOffset() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1026,10 +1101,10 @@ package azblob
 //		Offset: &offset,
 //	}
 //	_, err := blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataOffsetOutOfRange(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataOffsetOutOfRange() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1040,10 +1115,10 @@ package azblob
 //		Offset: &offset,
 //	}
 //	_, err := blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataCountNegative(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataCountNegative() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1054,10 +1129,10 @@ package azblob
 //		Count: &count,
 //	}
 //	_, err := blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataCountZero(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataCountZero() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1068,15 +1143,15 @@ package azblob
 //		Count: &count,
 //	}
 //	resp, err := blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	// Specifying a count of 0 results in the value being ignored
 //	data, err := ioutil.ReadAll(resp.RawResponse.Body)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
+//	_assert(err, chk.IsNil)
+//	_assert(string(data), chk.Equals, blockBlobDefaultData)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataCountExact(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataCountExact() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1087,14 +1162,14 @@ package azblob
 //		Count: &count,
 //	}
 //	resp, err := blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	data, err := ioutil.ReadAll(resp.RawResponse.Body)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
+//	_assert(err, chk.IsNil)
+//	_assert(string(data), chk.Equals, blockBlobDefaultData)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataCountOutOfRange(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataCountOutOfRange() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1105,14 +1180,14 @@ package azblob
 //		Count: &count,
 //	}
 //	resp, err := blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	data, err := ioutil.ReadAll(resp.RawResponse.Body)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
+//	_assert(err, chk.IsNil)
+//	_assert(string(data), chk.Equals, blockBlobDefaultData)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataEmptyRangeStruct(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataEmptyRangeStruct() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1125,14 +1200,14 @@ package azblob
 //		Offset: &offset,
 //	}
 //	resp, err := blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	data, err := ioutil.ReadAll(resp.RawResponse.Body)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
+//	_assert(err, chk.IsNil)
+//	_assert(string(data), chk.Equals, blockBlobDefaultData)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataContentMD5(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataContentMD5() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1147,12 +1222,12 @@ package azblob
 //		RangeGetContentMD5: &getMD5,
 //	}
 //	resp, err := blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //	mdf := md5.Sum([]byte(blockBlobDefaultData)[10:13])
-//	c.Assert(*resp.ContentMD5, chk.DeepEquals, mdf[:])
+//	_assert(*resp.ContentMD5, chk.DeepEquals, mdf[:])
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfModifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	bsu := getBSU(nil)
@@ -1167,11 +1242,11 @@ package azblob
 //		ModifiedAccessConditions: &access,
 //	}
 //	resp, err := blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(*resp.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
+//	_assert(err, chk.IsNil)
+//	_assert(*resp.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfModifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataIfModifiedSinceFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1186,10 +1261,10 @@ package azblob
 //		ModifiedAccessConditions: &access,
 //	}
 //	_, err := blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataIfUnmodifiedSinceTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1203,11 +1278,11 @@ package azblob
 //		ModifiedAccessConditions: &access,
 //	}
 //	resp, err := blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(*resp.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
+//	_assert(err, chk.IsNil)
+//	_assert(*resp.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataIfUnmodifiedSinceFalse() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	bsu := getBSU(nil)
@@ -1221,17 +1296,17 @@ package azblob
 //		ModifiedAccessConditions: &access,
 //	}
 //	_, err := blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataIfMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //	access := ModifiedAccessConditions{
 //		IfMatch: resp.ETag,
 //	}
@@ -1240,18 +1315,18 @@ package azblob
 //	}
 //
 //	resp2, err := blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
+//	_assert(err, chk.IsNil)
+//	_assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataIfMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //	access := ModifiedAccessConditions{
 //		IfMatch: resp.ETag,
 //	}
@@ -1260,20 +1335,20 @@ package azblob
 //	}
 //
 //	_, err = blobClient.SetMetadata(ctx, nil, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	_, err = blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfNoneMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataIfNoneMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //	access := ModifiedAccessConditions{
 //		IfNoneMatch: resp.ETag,
 //	}
@@ -1282,21 +1357,21 @@ package azblob
 //	}
 //
 //	_, err = blobClient.SetMetadata(ctx, nil, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	resp2, err := blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
+//	_assert(err, chk.IsNil)
+//	_assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfNoneMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDownloadDataIfNoneMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //	access := ModifiedAccessConditions{
 //		IfNoneMatch: resp.ETag,
 //	}
@@ -1305,106 +1380,106 @@ package azblob
 //	}
 //
 //	_, err = blobClient.Download(ctx, &options)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteNonExistant(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDeleteNonExistant() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := getBlockBlobClient(c, containerClient)
 //
 //	_, err := blobClient.Delete(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteSnapshot(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDeleteSnapshot() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.CreateSnapshot(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //	snapshotURL := blobClient.WithSnapshot(*resp.Snapshot)
 //
 //	_, err = snapshotURL.Delete(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	validateBlobDeleted(c, snapshotURL.BlobClient)
 //}
 //
-////func (s *aztestsSuite) TestBlobDeleteSnapshotsInclude(c *chk.C) {
+////func (s *aztestsSuite) TestBlobDeleteSnapshotsInclude() {
 ////	bsu := getBSU()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient)
 ////	blobClient, _ := createNewBlockBlob(c, containerClient)
 ////
 ////	_, err := blobClient.CreateSnapshot(ctx, nil)
-////	c.Assert(err, chk.IsNil)
+////	_assert(err, chk.IsNil)
 ////
 ////	deleteSnapshots := DeleteSnapshotsOptionInclude
 ////	_, err = blobClient.Delete(ctx, &DeleteBlobOptions{
 ////		DeleteSnapshots: &deleteSnapshots,
 ////	})
-////	c.Assert(err, chk.IsNil)
+////	_assert(err, chk.IsNil)
 ////
 ////	include := []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots}
 ////	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
 ////		Include: &include,
 ////	}
 ////	blobs, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
-////	c.Assert(<- errChan, chk.IsNil)
-////	c.Assert(<- blobs, chk.HasLen, 0)
+////	_assert(<- errChan, chk.IsNil)
+////	_assert(<- blobs, chk.HasLen, 0)
 ////}
 //
-////func (s *aztestsSuite) TestBlobDeleteSnapshotsOnly(c *chk.C) {
+////func (s *aztestsSuite) TestBlobDeleteSnapshotsOnly() {
 ////	bsu := getBSU()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient)
 ////	blobClient, _ := createNewBlockBlob(c, containerClient)
 ////
 ////	_, err := blobClient.CreateSnapshot(ctx, nil)
-////	c.Assert(err, chk.IsNil)
+////	_assert(err, chk.IsNil)
 ////	deleteSnapshot := DeleteSnapshotsOptionOnly
 ////	deleteBlobOptions := DeleteBlobOptions{
 ////		DeleteSnapshots: &deleteSnapshot,
 ////	}
 ////	_, err = blobClient.Delete(ctx, &deleteBlobOptions)
-////	c.Assert(err, chk.IsNil)
+////	_assert(err, chk.IsNil)
 ////
 ////	include := []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots}
 ////	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
 ////		Include: &include,
 ////	}
 ////	blobs, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
-////	c.Assert(<- errChan, chk.IsNil)
-////	c.Assert(blobs, chk.HasLen, 1)
-////	c.Assert(*(<-blobs).Snapshot == "", chk.Equals, true)
+////	_assert(<- errChan, chk.IsNil)
+////	_assert(blobs, chk.HasLen, 1)
+////	_assert(*(<-blobs).Snapshot == "", chk.Equals, true)
 ////}
 //
-//func (s *aztestsSuite) TestBlobDeleteSnapshotsNoneWithSnapshots(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDeleteSnapshotsNoneWithSnapshots() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	_, err := blobClient.CreateSnapshot(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //	_, err = blobClient.Delete(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func validateBlobDeleted(c *chk.C, blobClient BlobClient) {
+//func validateBlobDeleted(, blobClient BlobClient) {
 //	_, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //
 //	var serr *StorageError
-//	c.Assert(errors.As(err, &serr), chk.Equals, true)
-//	c.Assert(serr.ErrorCode, chk.Equals, StorageErrorCodeBlobNotFound)
+//	_assert(errors.As(err, &serr), chk.Equals, true)
+//	_assert(serr.ErrorCode, chk.Equals, StorageErrorCodeBlobNotFound)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfModifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDeleteIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
@@ -1415,12 +1490,12 @@ package azblob
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 //	}
 //	_, err := blobClient.Delete(ctx, &deleteBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	validateBlobDeleted(c, blobClient.BlobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfModifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDeleteIfModifiedSinceFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1435,7 +1510,7 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDeleteIfUnmodifiedSinceTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1447,12 +1522,12 @@ package azblob
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 //	}
 //	_, err := blobClient.Delete(ctx, &deleteBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	validateBlobDeleted(c, blobClient.BlobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDeleteIfUnmodifiedSinceFalse() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	bsu := getBSU(nil)
@@ -1467,7 +1542,7 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDeleteIfMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1479,23 +1554,23 @@ package azblob
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag},
 //	}
 //	_, err := blobClient.Delete(ctx, &deleteBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	validateBlobDeleted(c, blobClient.BlobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDeleteIfMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //	etag := resp.ETag
 //
 //	_, err = blobClient.SetMetadata(ctx, nil, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	deleteBlobOptions := DeleteBlobOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: etag},
@@ -1504,7 +1579,7 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfNoneMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDeleteIfNoneMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1513,18 +1588,18 @@ package azblob
 //	resp, _ := blobClient.GetProperties(ctx, nil)
 //	etag := resp.ETag
 //	_, err := blobClient.SetMetadata(ctx, nil, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	deleteBlobOptions := DeleteBlobOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: etag},
 //	}
 //	_, err = blobClient.Delete(ctx, &deleteBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	validateBlobDeleted(c, blobClient.BlobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfNoneMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobDeleteIfNoneMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1540,7 +1615,7 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfModifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	bsu := getBSU(nil)
@@ -1549,24 +1624,24 @@ package azblob
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	_, err := blobClient.SetMetadata(ctx, basicMetadata, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	getBlobPropertiesOptions := GetBlobPropertiesOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 //	}
 //	resp, err := blobClient.GetProperties(ctx, &getBlobPropertiesOptions)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
+//	_assert(err, chk.IsNil)
+//	_assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfModifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfModifiedSinceFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	_, err := blobClient.SetMetadata(ctx, basicMetadata, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	currentTime := getRelativeTimeGMT(10)
 //
@@ -1574,20 +1649,20 @@ package azblob
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 //	}
 //	_, err = blobClient.GetProperties(ctx, &getBlobPropertiesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //	var serr *StorageError
-//	c.Assert(errors.As(err, &serr), chk.Equals, true)
-//	c.Assert(serr.response.StatusCode, chk.Equals, 304) // No service code returned for a HEAD
+//	_assert(errors.As(err, &serr), chk.Equals, true)
+//	_assert(serr.response.StatusCode, chk.Equals, 304) // No service code returned for a HEAD
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	_, err := blobClient.SetMetadata(ctx, basicMetadata, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	currentTime := getRelativeTimeGMT(10)
 //
@@ -1595,11 +1670,11 @@ package azblob
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 //	}
 //	resp, err := blobClient.GetProperties(ctx, &getBlobPropertiesOptions)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
+//	_assert(err, chk.IsNil)
+//	_assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1608,51 +1683,51 @@ package azblob
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	_, err := blobClient.SetMetadata(ctx, basicMetadata, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	getBlobPropertiesOptions := GetBlobPropertiesOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 //	}
 //	_, err = blobClient.GetProperties(ctx, &getBlobPropertiesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //	var serr *StorageError
-//	c.Assert(errors.As(err, &serr), chk.Equals, true)
-//	c.Assert(serr.response.StatusCode, chk.Equals, 412)
+//	_assert(errors.As(err, &serr), chk.Equals, true)
+//	_assert(serr.response.StatusCode, chk.Equals, 412)
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.SetMetadata(ctx, basicMetadata, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	getBlobPropertiesOptions := GetBlobPropertiesOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag},
 //	}
 //	resp2, err := blobClient.GetProperties(ctx, &getBlobPropertiesOptions)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp2.Metadata, chk.DeepEquals, basicMetadata)
+//	_assert(err, chk.IsNil)
+//	_assert(resp2.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsOnMissingBlob(c *chk.C) {
+//func (s *aztestsSuite) TestBlobGetPropsOnMissingBlob() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient := containerClient.NewBlobClient("MISSING")
 //
 //	_, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //	var storageError *StorageError
-//	c.Assert(errors.As(err, &storageError), chk.Equals, true)
-//	c.Assert(storageError.response.StatusCode, chk.Equals, 404)
-//	//c.Assert(storageError.ErrorCode(), chk.Equals, StorageErrorCodeBlobNotFound)
-//	c.Assert(storageError.response.Header.Get("x-ms-error-code"), chk.Equals, string(StorageErrorCodeBlobNotFound))
+//	_assert(errors.As(err, &storageError), chk.Equals, true)
+//	_assert(storageError.response.StatusCode, chk.Equals, 404)
+//	//_assert(storageError.ErrorCode(), chk.Equals, StorageErrorCodeBlobNotFound)
+//	_assert(storageError.response.Header.Get("x-ms-error-code"), chk.Equals, string(StorageErrorCodeBlobNotFound))
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1663,50 +1738,50 @@ package azblob
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag},
 //	}
 //	_, err := blobClient.GetProperties(ctx, &getBlobPropertiesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //	var serr *StorageError
-//	c.Assert(errors.As(err, &serr), chk.Equals, true)
-//	c.Assert(serr.response.StatusCode, chk.Equals, 412)
+//	_assert(errors.As(err, &serr), chk.Equals, true)
+//	_assert(serr.response.StatusCode, chk.Equals, 412)
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfNoneMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfNoneMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	_, err := blobClient.SetMetadata(ctx, basicMetadata, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	eTag := "garbage"
 //	getBlobPropertiesOptions := GetBlobPropertiesOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag},
 //	}
 //	resp, err := blobClient.GetProperties(ctx, &getBlobPropertiesOptions)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
+//	_assert(err, chk.IsNil)
+//	_assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfNoneMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfNoneMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.SetMetadata(ctx, nil, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	getBlobPropertiesOptions := GetBlobPropertiesOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag},
 //	}
 //	_, err = blobClient.GetProperties(ctx, &getBlobPropertiesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //	var serr *StorageError
-//	c.Assert(errors.As(err, &serr), chk.Equals, true)
-//	c.Assert(serr.response.StatusCode, chk.Equals, 304)
+//	_assert(errors.As(err, &serr), chk.Equals, true)
+//	_assert(serr.response.StatusCode, chk.Equals, 304)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesBasic(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetPropertiesBasic() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1724,14 +1799,14 @@ package azblob
 //		BlobContentLanguage:    &contentLanguage,
 //		BlobContentEncoding:    &contentEncoding}
 //	_, err := blobClient.SetHTTPHeaders(ctx, headers, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	resp, _ := blobClient.GetProperties(ctx, nil)
 //	h := resp.NewHTTPHeaders()
-//	c.Assert(h, chk.DeepEquals, headers)
+//	_assert(h, chk.DeepEquals, headers)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesEmptyValue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetPropertiesEmptyValue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1739,23 +1814,23 @@ package azblob
 //
 //	contentType := "my_type"
 //	_, err := blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentType: &contentType}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	_, err = blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.ContentType, chk.IsNil)
+//	_assert(err, chk.IsNil)
+//	_assert(resp.ContentType, chk.IsNil)
 //}
 //
-//func validatePropertiesSet(c *chk.C, blobClient BlockBlobClient, disposition string) {
+//func validatePropertiesSet(, blobClient BlockBlobClient, disposition string) {
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(*resp.ContentDisposition, chk.Equals, disposition)
+//	_assert(err, chk.IsNil)
+//	_assert(*resp.ContentDisposition, chk.Equals, disposition)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfModifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetPropertiesIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	bsu := getBSU(nil)
@@ -1765,12 +1840,12 @@ package azblob
 //
 //	_, err := blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
 //		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}})
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	validatePropertiesSet(c, blobClient, "my_disposition")
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfModifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetPropertiesIfModifiedSinceFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1780,10 +1855,10 @@ package azblob
 //
 //	_, err := blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
 //		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}})
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetPropertiesIfUnmodifiedSinceTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1793,12 +1868,12 @@ package azblob
 //
 //	_, err := blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
 //		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}})
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	validatePropertiesSet(c, blobClient, "my_disposition")
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetPropertiesIfUnmodifiedSinceFalse() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	bsu := getBSU(nil)
@@ -1808,26 +1883,26 @@ package azblob
 //
 //	_, err := blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
 //		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}})
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetPropertiesIfMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	_, err = blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
 //		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag}})
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	validatePropertiesSet(c, blobClient, "my_disposition")
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetPropertiesIfMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1835,10 +1910,10 @@ package azblob
 //
 //	_, err := blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
 //		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: to.StringPtr("garbage")}})
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfNoneMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetPropertiesIfNoneMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1846,77 +1921,77 @@ package azblob
 //
 //	_, err := blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
 //		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: to.StringPtr("garbage")}})
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	validatePropertiesSet(c, blobClient, "my_disposition")
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfNoneMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetPropertiesIfNoneMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	_, err = blobClient.SetHTTPHeaders(ctx, BlobHTTPHeaders{BlobContentDisposition: to.StringPtr("my_disposition")},
 //		&SetBlobHTTPHeadersOptions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag}})
-//	c.Assert(err, chk.NotNil)
+//	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataNil(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetMetadataNil() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	_, err := blobClient.SetMetadata(ctx, map[string]string{"not": "nil"}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	_, err = blobClient.SetMetadata(ctx, nil, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Metadata, chk.HasLen, 0)
+//	_assert(err, chk.IsNil)
+//	_assert(resp.Metadata, chk.HasLen, 0)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataEmpty(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetMetadataEmpty() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	_, err := blobClient.SetMetadata(ctx, map[string]string{"not": "nil"}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	_, err = blobClient.SetMetadata(ctx, map[string]string{}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Metadata, chk.HasLen, 0)
+//	_assert(err, chk.IsNil)
+//	_assert(resp.Metadata, chk.HasLen, 0)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataInvalidField(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetMetadataInvalidField() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	_, err := blobClient.SetMetadata(ctx, map[string]string{"Invalid field!": "value"}, nil)
-//	c.Assert(err, chk.NotNil)
-//	c.Assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
+//	_assert(err, chk.NotNil)
+//	_assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
 //}
 //
-//func validateMetadataSet(c *chk.C, blobClient BlockBlobClient) {
+//func validateMetadataSet(, blobClient BlockBlobClient) {
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
+//	_assert(err, chk.IsNil)
+//	_assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfModifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetMetadataIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	bsu := getBSU(nil)
@@ -1928,12 +2003,12 @@ package azblob
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 //	}
 //	_, err := blobClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	validateMetadataSet(c, blobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfModifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetMetadataIfModifiedSinceFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1948,7 +2023,7 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetMetadataIfUnmodifiedSinceTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1960,12 +2035,12 @@ package azblob
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 //	}
 //	_, err := blobClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	validateMetadataSet(c, blobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetMetadataIfUnmodifiedSinceFalse() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	bsu := getBSU(nil)
@@ -1980,25 +2055,25 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetMetadataIfMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	setBlobMetadataOptions := SetBlobMetadataOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag},
 //	}
 //	_, err = blobClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	validateMetadataSet(c, blobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetMetadataIfMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2012,7 +2087,7 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfNoneMatchTrue(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetMetadataIfNoneMatchTrue() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2023,19 +2098,19 @@ package azblob
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag},
 //	}
 //	_, err := blobClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	validateMetadataSet(c, blobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfNoneMatchFalse(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetMetadataIfNoneMatchFalse() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	setBlobMetadataOptions := SetBlobMetadataOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag},
@@ -2044,13 +2119,13 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func testBlobsUndeleteImpl(c *chk.C, bsu ServiceClient) error {
+//func testBlobsUndeleteImpl(, bsu ServiceClient) error {
 //	//containerURL, _ := createNewContainer(c, bsu)
 //	//defer deleteContainer(containerURL)
 //	//blobURL, _ := createNewBlockBlob(c, containerURL)
 //	//
 //	//_, err := blobURL.Delete(ctx, DeleteSnapshotsOptionNone, BlobAccessConditions{})
-//	//c.Assert(err, chk.IsNil) // This call will not have errors related to slow update of service properties, so we assert.
+//	//_assert(err, chk.IsNil) // This call will not have errors related to slow update of service properties, so we assert.
 //	//
 //	//_, err = blobURL.Undelete(ctx)
 //	//if err != nil { // We want to give the wrapper method a chance to check if it was an error related to the service properties update.
@@ -2061,27 +2136,27 @@ package azblob
 //	//if err != nil {
 //	//	return errors.New(string(err.(StorageError).ErrorCode()))
 //	//}
-//	//c.Assert(resp.BlobType(), chk.Equals, BlobBlockBlob) // We could check any property. This is just to double check it was undeleted.
+//	//_assert(resp.BlobType(), chk.Equals, BlobBlockBlob) // We could check any property. This is just to double check it was undeleted.
 //	return nil
 //}
 //
-//func (s *aztestsSuite) TestBlobsUndelete(c *chk.C) {
+//func (s *aztestsSuite) TestBlobsUndelete() {
 //	bsu := getBSU(nil)
 //
 //	code := 404
 //	runTestRequiringServiceProperties(c, bsu, string(rune(code)), enableSoftDelete, testBlobsUndeleteImpl, disableSoftDelete)
 //}
 //
-//func setAndCheckBlobTier(c *chk.C, blobClient BlobClient, tier AccessTier) {
+//func setAndCheckBlobTier(, blobClient BlobClient, tier AccessTier) {
 //	_, err := blobClient.SetTier(ctx, tier, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	resp, err := blobClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(*resp.AccessTier, chk.Equals, string(tier))
+//	_assert(err, chk.IsNil)
+//	_assert(*resp.AccessTier, chk.Equals, string(tier))
 //}
 //
-//func (s *aztestsSuite) TestBlobSetTierAllTiers(c *chk.C) {
+//func (s *aztestsSuite) TestBlobSetTierAllTiers() {
 //	bsu := getBSU(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2109,7 +2184,7 @@ package azblob
 //	setAndCheckBlobTier(c, pageblobClient.BlobClient, AccessTierP50)
 //}
 //
-////func (s *aztestsSuite) TestBlobTierInferred(c *chk.C) {
+////func (s *aztestsSuite) TestBlobTierInferred() {
 ////	bsu, err := getPremiumBSU()
 ////	if err != nil {
 ////		c.Skip(err.Error())
@@ -2120,27 +2195,27 @@ package azblob
 ////	blobClient, _ := createNewPageBlob(c, containerClient)
 ////
 ////	resp, err := blobClient.GetProperties(ctx, nil)
-////	c.Assert(err, chk.IsNil)
-////	c.Assert(resp.AccessTierInferred(), chk.Equals, "true")
+////	_assert(err, chk.IsNil)
+////	_assert(resp.AccessTierInferred(), chk.Equals, "true")
 ////
 ////	resp2, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
-////	c.Assert(err, chk.IsNil)
-////	c.Assert(resp2.Segment.BlobItems[0].Properties.AccessTierInferred, chk.NotNil)
-////	c.Assert(resp2.Segment.BlobItems[0].Properties.AccessTier, chk.Not(chk.Equals), "")
+////	_assert(err, chk.IsNil)
+////	_assert(resp2.Segment.BlobItems[0].Properties.AccessTierInferred, chk.NotNil)
+////	_assert(resp2.Segment.BlobItems[0].Properties.AccessTier, chk.Not(chk.Equals), "")
 ////
 ////	_, err = blobClient.SetTier(ctx, AccessTierP4, LeaseAccessConditions{})
-////	c.Assert(err, chk.IsNil)
+////	_assert(err, chk.IsNil)
 ////
 ////	resp, err = blobClient.GetProperties(ctx, nil)
-////	c.Assert(err, chk.IsNil)
-////	c.Assert(resp.AccessTierInferred(), chk.Equals, "")
+////	_assert(err, chk.IsNil)
+////	_assert(resp.AccessTierInferred(), chk.Equals, "")
 ////
 ////	resp2, err = containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
-////	c.Assert(err, chk.IsNil)
-////	c.Assert(resp2.Segment.BlobItems[0].Properties.AccessTierInferred, chk.IsNil) // AccessTierInferred never returned if false
+////	_assert(err, chk.IsNil)
+////	_assert(resp2.Segment.BlobItems[0].Properties.AccessTierInferred, chk.IsNil) // AccessTierInferred never returned if false
 ////}
 ////
-////func (s *aztestsSuite) TestBlobArchiveStatus(c *chk.C) {
+////func (s *aztestsSuite) TestBlobArchiveStatus() {
 ////	bsu, err := getBlobStorageBSU()
 ////	if err != nil {
 ////		c.Skip(err.Error())
@@ -2151,39 +2226,39 @@ package azblob
 ////	blobClient, _ := createNewBlockBlob(c, containerClient)
 ////
 ////	_, err = blobClient.SetTier(ctx, AccessTierArchive, LeaseAccessConditions{})
-////	c.Assert(err, chk.IsNil)
+////	_assert(err, chk.IsNil)
 ////	_, err = blobClient.SetTier(ctx, AccessTierCool, LeaseAccessConditions{})
-////	c.Assert(err, chk.IsNil)
+////	_assert(err, chk.IsNil)
 ////
 ////	resp, err := blobClient.GetProperties(ctx, nil)
-////	c.Assert(err, chk.IsNil)
-////	c.Assert(resp.ArchiveStatus(), chk.Equals, string(ArchiveStatusRehydratePendingToCool))
+////	_assert(err, chk.IsNil)
+////	_assert(resp.ArchiveStatus(), chk.Equals, string(ArchiveStatusRehydratePendingToCool))
 ////
 ////	resp2, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
-////	c.Assert(err, chk.IsNil)
-////	c.Assert(resp2.Segment.BlobItems[0].Properties.ArchiveStatus, chk.Equals, ArchiveStatusRehydratePendingToCool)
+////	_assert(err, chk.IsNil)
+////	_assert(resp2.Segment.BlobItems[0].Properties.ArchiveStatus, chk.Equals, ArchiveStatusRehydratePendingToCool)
 ////
 ////	// delete first blob
 ////	_, err = blobClient.Delete(ctx, DeleteSnapshotsOptionNone, nil)
-////	c.Assert(err, chk.IsNil)
+////	_assert(err, chk.IsNil)
 ////
 ////	blobClient, _ = createNewBlockBlob(c, containerClient)
 ////
 ////	_, err = blobClient.SetTier(ctx, AccessTierArchive, LeaseAccessConditions{})
-////	c.Assert(err, chk.IsNil)
+////	_assert(err, chk.IsNil)
 ////	_, err = blobClient.SetTier(ctx, AccessTierHot, LeaseAccessConditions{})
-////	c.Assert(err, chk.IsNil)
+////	_assert(err, chk.IsNil)
 ////
 ////	resp, err = blobClient.GetProperties(ctx, nil)
-////	c.Assert(err, chk.IsNil)
-////	c.Assert(resp.ArchiveStatus(), chk.Equals, string(ArchiveStatusRehydratePendingToHot))
+////	_assert(err, chk.IsNil)
+////	_assert(resp.ArchiveStatus(), chk.Equals, string(ArchiveStatusRehydratePendingToHot))
 ////
 ////	resp2, err = containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
-////	c.Assert(err, chk.IsNil)
-////	c.Assert(resp2.Segment.BlobItems[0].Properties.ArchiveStatus, chk.Equals, ArchiveStatusRehydratePendingToHot)
+////	_assert(err, chk.IsNil)
+////	_assert(resp2.Segment.BlobItems[0].Properties.ArchiveStatus, chk.Equals, ArchiveStatusRehydratePendingToHot)
 ////}
 ////
-////func (s *aztestsSuite) TestBlobTierInvalidValue(c *chk.C) {
+////func (s *aztestsSuite) TestBlobTierInvalidValue() {
 ////	bsu, err := getBlobStorageBSU()
 ////	if err != nil {
 ////		c.Skip(err.Error())
@@ -2197,7 +2272,7 @@ package azblob
 ////	validateStorageError(c, err, StorageErrorCodeInvalidHeaderValue)
 ////}
 ////
-//func (s *aztestsSuite) TestblobClientPartsSASQueryTimes(c *chk.C) {
+//func (s *aztestsSuite) TestblobClientPartsSASQueryTimes() {
 //	StartTimesInputs := []string{
 //		"2020-04-20",
 //		"2020-04-20T07:00Z",
@@ -2235,40 +2310,40 @@ package azblob
 //				"sv=2019-10-10"
 //
 //		parts := NewBlobURLParts(urlString)
-//		c.Assert(parts.Scheme, chk.Equals, "https")
-//		c.Assert(parts.Host, chk.Equals, "myaccount.blob.core.windows.net")
-//		c.Assert(parts.ContainerName, chk.Equals, "mycontainer")
-//		c.Assert(parts.BlobName, chk.Equals, "mydirectory/myfile.txt")
+//		_assert(parts.Scheme, chk.Equals, "https")
+//		_assert(parts.Host, chk.Equals, "myaccount.blob.core.windows.net")
+//		_assert(parts.ContainerName, chk.Equals, "mycontainer")
+//		_assert(parts.BlobName, chk.Equals, "mydirectory/myfile.txt")
 //
 //		sas := parts.SAS
-//		c.Assert(sas.StartTime(), chk.Equals, StartTimesExpected[i])
-//		c.Assert(sas.ExpiryTime(), chk.Equals, ExpiryTimesExpected[i])
+//		_assert(sas.StartTime(), chk.Equals, StartTimesExpected[i])
+//		_assert(sas.ExpiryTime(), chk.Equals, ExpiryTimesExpected[i])
 //
-//		c.Assert(parts.URL(), chk.Equals, urlString)
+//		_assert(parts.URL(), chk.Equals, urlString)
 //	}
 //}
 //
-//func (s *aztestsSuite) TestDownloadBlockBlobUnexpectedEOF(c *chk.C) {
+//func (s *aztestsSuite) TestDownloadBlockBlobUnexpectedEOF() {
 //	bsu := getBSU(nil)
 //	cURL, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(cURL)
 //	bURL, _ := createNewBlockBlob(c, cURL) // This uploads for us.
 //	resp, err := bURL.Download(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert(err, chk.IsNil)
 //
 //	// Verify that we can inject errors first.
 //	reader := resp.Body(InjectErrorInRetryReaderOptions(errors.New("unrecoverable error")))
 //
 //	_, err = ioutil.ReadAll(reader)
-//	c.Assert(err, chk.NotNil)
-//	c.Assert(err.Error(), chk.Equals, "unrecoverable error")
+//	_assert(err, chk.NotNil)
+//	_assert(err.Error(), chk.Equals, "unrecoverable error")
 //
 //	// Then inject the retryable error.
 //	reader = resp.Body(InjectErrorInRetryReaderOptions(io.ErrUnexpectedEOF))
 //
 //	buf, err := ioutil.ReadAll(reader)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(buf, chk.DeepEquals, []byte(blockBlobDefaultData))
+//	_assert(err, chk.IsNil)
+//	_assert(buf, chk.DeepEquals, []byte(blockBlobDefaultData))
 //}
 //
 //func InjectErrorInRetryReaderOptions(err error) RetryReaderOptions {

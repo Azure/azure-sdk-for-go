@@ -34,19 +34,19 @@ import (
 // For testing docs, see: https://labix.org/gocheck
 // To test a specific test: go test -check.f MyTestSuite
 
-type aztestsSuite struct{
+type aztestsSuite struct {
 	suite.Suite
 	mode testframework.RecordMode
 }
 
 // Hookup to the testing framework
 func Test(t *testing.T) {
-	suite.Run(t, &aztestsSuite{mode: testframework.Playback} )
+	suite.Run(t, &aztestsSuite{mode: testframework.Playback})
 }
 
 type testContext struct {
-	recording  *testframework.Recording
-	context    *testframework.TestContext
+	recording *testframework.Recording
+	context   *testframework.TestContext
 }
 
 // a map to store our created test contexts
@@ -54,12 +54,6 @@ var clientsMap = make(map[string]*testContext)
 
 // recordedTestSetup is called before each test execution by the test suite's BeforeTest method
 func recordedTestSetup(t *testing.T, accountType string, testName string, mode testframework.RecordMode) {
-	var accountName string
-	var suffix string
-	var cred *SharedKeyCredential
-	var accountKey string
-	var primaryBlobURL string
-
 	_assert := assert.New(t)
 
 	// init the test framework
@@ -73,16 +67,11 @@ func recordedTestSetup(t *testing.T, accountType string, testName string, mode t
 	recording, err := testframework.NewRecording(_testContext, mode)
 	_assert.Nil(err)
 
-	accountNameEnvVar := accountType + AccountNameEnvVar
-	accountKeyEnvVar := accountType + AccountKeyEnvVar
-	defaultEndpointSuffixEnvVar := DefaultEndpointSuffixEnvVar
-
-	accountName, err = recording.GetRecordedVariable(accountNameEnvVar, testframework.Default)
-	accountKey, err = recording.GetRecordedVariable(accountKeyEnvVar, testframework.Secret_Base64String)
-	suffix = recording.GetOptionalRecordedVariable(defaultEndpointSuffixEnvVar, DefaultEndpointSuffix, testframework.Default)
-	cred, _ = NewSharedKeyCredential(accountName, accountKey)
-	primaryBlobURL = "https://" + cred.AccountName() + suffix
-	_ = primaryBlobURL
+	_, err = recording.GetRecordedVariable(accountType+AccountNameEnvVar, testframework.Default)
+	_, err = recording.GetRecordedVariable(accountType+AccountKeyEnvVar, testframework.Secret_Base64String)
+	_ = recording.GetOptionalRecordedVariable(DefaultEndpointSuffixEnvVar, DefaultEndpointSuffix, testframework.Default)
+	_, err = recording.GetRecordedVariable("SECONDARY_"+AccountNameEnvVar, testframework.Default)
+	_, err = recording.GetRecordedVariable("SECONDARY_"+AccountKeyEnvVar, testframework.Secret_Base64String)
 
 	clientsMap[testName] = &testContext{recording: recording, context: &_testContext}
 }
@@ -110,6 +99,7 @@ func (s *aztestsSuite) AfterTest(suite string, test string) {
 
 // Vars for
 const DefaultEndpointSuffix = "core.windows.net/"
+const DefaultBlobEndpointSuffix = "blob.core.windows.net/"
 const AccountNameEnvVar = "AZURE_STORAGE_ACCOUNT_NAME"
 const AccountKeyEnvVar = "AZURE_STORAGE_ACCOUNT_KEY"
 const DefaultEndpointSuffixEnvVar = "AZURE_STORAGE_ENDPOINT_SUFFIX"
@@ -196,7 +186,7 @@ func generateName(prefix string) string {
 	return name
 }
 
-func generateEntityName(testName string) string{
+func generateEntityName(testName string) string {
 	return strings.ReplaceAll(strings.ReplaceAll(strings.ToLower(testName), "/", ""), "test", "")
 }
 func generateContainerName(testName string) string {
@@ -240,7 +230,7 @@ func createNewContainer(_assert *assert.Assertions, testName string, bsu Service
 
 	cResp, err := containerClient.Create(ctx, nil)
 	_assert.Nil(err)
-	_assert.Equal(cResp.RawResponse.StatusCode,201)
+	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 	return containerClient, containerName
 }
 
@@ -298,7 +288,7 @@ func createNewAppendBlob(_assert *assert.Assertions, testName string, containerC
 	appendBlobCreateResp, err := appendBlobClient.Create(ctx, nil)
 
 	_assert.Nil(err)
-	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode,201)
+	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode, 201)
 	return appendBlobClient, appendBlobName
 }
 
@@ -308,17 +298,17 @@ func createNewPageBlob(_assert *assert.Assertions, testName string, containerCli
 
 	pageBlobCreateResponse, err := pageBlobClient.Create(ctx, PageBlobPageBytes*10, nil)
 	_assert.Nil(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode,201)
+	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 	return pageBlobClient, pageBlobName
 }
 
-func createNewPageBlobWithSize(_assert *assert.Assertions, testName string, containerClient ContainerClient, sizeInBytes int64)(PageBlobClient, string) {
+func createNewPageBlobWithSize(_assert *assert.Assertions, testName string, containerClient ContainerClient, sizeInBytes int64) (PageBlobClient, string) {
 	pageBlobName := generateBlobName(testName)
 	pageBlobClient := getPageBlobClient(pageBlobName, containerClient)
 
 	pageBlobCreateResponse, err := pageBlobClient.Create(ctx, sizeInBytes, nil)
 	_assert.Nil(err)
-	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode,201)
+	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 	return pageBlobClient, pageBlobName
 }
 
@@ -329,7 +319,7 @@ func createNewBlockBlobWithPrefix(_assert *assert.Assertions, testName string, c
 	blockBlobUploadResp, err := blob.Upload(ctx, strings.NewReader(blockBlobDefaultData), nil)
 
 	_assert.Nil(err)
-	_assert.Equal(blockBlobUploadResp.RawResponse.StatusCode,201)
+	_assert.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 	return
 }
 
@@ -448,7 +438,7 @@ func blockIDIntToBase64(blockID int) string {
 func validateStorageError(_assert *assert.Assertions, err error, code StorageErrorCode) {
 	_assert.NotNil(err)
 	var storageError *StorageError
-	_assert.Equal(errors.As(err, &storageError),true)
+	_assert.Equal(errors.As(err, &storageError), true)
 
 	_assert.Equal(storageError.ErrorCode, code)
 }

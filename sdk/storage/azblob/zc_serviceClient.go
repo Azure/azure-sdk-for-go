@@ -62,6 +62,7 @@ func (s ServiceClient) NewContainerClient(containerName string) ContainerClient 
 		client: &containerClient{
 			con: containerConnection,
 		},
+		cred: s.cred,
 	}
 }
 

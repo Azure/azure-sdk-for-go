@@ -19,10 +19,10 @@ func (s *aztestsSuite) TestNewContainerClientValidName() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testURL := bsu.NewContainerClient(containerPrefix)
 
-	correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + containerPrefix
+	correctURL := "https://" + os.Getenv(AccountNameEnvVar) + "." + DefaultBlobEndpointSuffix + containerPrefix
 	_assert.Equal(testURL.URL(), correctURL)
 }
 
@@ -31,7 +31,7 @@ func (s *aztestsSuite) TestCreateRootContainerURL() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testURL := bsu.NewContainerClient(ContainerNameRoot)
 
 	correctURL := "https://" + os.Getenv(AccountNameEnvVar) + ".blob.core.windows.net/$root"
@@ -43,7 +43,7 @@ func (s *aztestsSuite) TestContainerCreateInvalidName() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerClient := bsu.NewContainerClient("foo bar")
 
 	access := PublicAccessBlob
@@ -61,7 +61,7 @@ func (s *aztestsSuite) TestContainerCreateEmptyName() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 
 	containerClient := bsu.NewContainerClient("")
 
@@ -81,7 +81,7 @@ func (s *aztestsSuite) TestContainerCreateNameCollision() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
 	containerClient, containerName := createNewContainer(_assert, testName, bsu)
 
@@ -104,7 +104,7 @@ func (s *aztestsSuite) TestContainerCreateInvalidMetadata() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerName := generateContainerName(s.T().Name())
 	containerClient := getContainerClient(containerName, bsu)
 
@@ -116,7 +116,7 @@ func (s *aztestsSuite) TestContainerCreateInvalidMetadata() {
 	_, err := containerClient.Create(ctx, &createContainerOptions)
 
 	_assert.NotNil(err)
-	_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring),true)
+	_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
 }
 
 func (s *aztestsSuite) TestContainerCreateNilMetadata() {
@@ -124,7 +124,7 @@ func (s *aztestsSuite) TestContainerCreateNilMetadata() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerName := generateContainerName(s.T().Name())
 	containerClient := getContainerClient(containerName, bsu)
 
@@ -142,14 +142,13 @@ func (s *aztestsSuite) TestContainerCreateNilMetadata() {
 	_assert.Nil(response.Metadata)
 }
 
-
 func (s *aztestsSuite) TestContainerCreateEmptyMetadata() {
 	_assert := assert.New(s.T())
 	context := getTestContext(s.T().Name())
 
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerName := generateContainerName(s.T().Name())
 	containerClient := getContainerClient(containerName, bsu)
 
@@ -264,7 +263,7 @@ func (s *aztestsSuite) TestContainerCreateAccessNone() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, bsu)
@@ -310,7 +309,7 @@ func (s *aztestsSuite) TestContainerDelete() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
 	containerClient, _ := createNewContainer(_assert, testName, bsu)
 
@@ -325,7 +324,7 @@ func (s *aztestsSuite) TestContainerDeleteNonExistent() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerName := generateContainerName(s.T().Name())
 	containerClient := getContainerClient(containerName, bsu)
 
@@ -341,7 +340,7 @@ func (s *aztestsSuite) TestContainerDeleteIfModifiedSinceTrue() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
 	containerClient, _ := createNewContainer(_assert, testName, bsu)
 
@@ -389,7 +388,7 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
 	containerClient, _ := createNewContainer(_assert, testName, bsu)
 
@@ -535,7 +534,7 @@ func (s *aztestsSuite) TestContainerListBlobsWithSnapshots() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
 	containerClient, _ := createNewContainer(_assert, testName, bsu)
 	defer deleteContainer(containerClient)
@@ -572,7 +571,7 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
 	containerClient, _ := createNewContainer(_assert, testName, bsu)
 	defer deleteContainer(containerClient)
@@ -775,7 +774,7 @@ func (s *aztestsSuite) TestContainerListBlobsMaxResultsExact() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
 	containerClient, _ := createNewContainer(_assert, testName, bsu)
 	defer deleteContainer(containerClient)
@@ -806,7 +805,7 @@ func (s *aztestsSuite) TestContainerListBlobsMaxResultsSufficient() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
 	containerClient, _ := createNewContainer(_assert, testName, bsu)
 	defer deleteContainer(containerClient)
@@ -839,7 +838,7 @@ func (s *aztestsSuite) TestContainerListBlobsNonExistentContainer() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerName := generateContainerName(s.T().Name())
 	containerClient := getContainerClient(containerName, bsu)
 
@@ -854,7 +853,7 @@ func (s *aztestsSuite) TestContainerGetSetPermissionsMultiplePolicies() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
 
 	defer deleteContainer(containerClient)
@@ -903,7 +902,7 @@ func (s *aztestsSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerName := generateContainerName(s.T().Name())
 	containerClient := getContainerClient(containerName, bsu)
 
@@ -960,7 +959,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessBlob() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
 
 	defer deleteContainer(containerClient)
@@ -984,7 +983,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
 
 	defer deleteContainer(containerClient)
@@ -1064,7 +1063,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsACLMoreThanFive() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
 
 	defer deleteContainer(containerClient)
@@ -1105,7 +1104,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
 
 	defer deleteContainer(containerClient)
@@ -1164,7 +1163,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAllPolicies() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
 
 	defer deleteContainer(containerClient)
@@ -1221,7 +1220,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsInvalidPolicyTimes() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
 
 	defer deleteContainer(containerClient)
@@ -1261,7 +1260,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsNilPolicySlice() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
 
 	defer deleteContainer(containerClient)
@@ -1275,7 +1274,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
 
 	defer deleteContainer(containerClient)
@@ -1312,6 +1311,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 
 	validateStorageError(_assert, err, StorageErrorCodeInvalidXMLDocument)
 }
+
 //
 //func (s *aztestsSuite) TestContainerSetPermissionsIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
@@ -1403,7 +1403,7 @@ func (s *aztestsSuite) TestContainerGetPropertiesAndMetadataNoMetadata() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
 
 	defer deleteContainer(containerClient)
@@ -1418,7 +1418,7 @@ func (s *aztestsSuite) TestContainerGetPropsAndMetaNonExistentContainer() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerName := generateContainerName(s.T().Name())
 	containerClient := getContainerClient(containerName, bsu)
 
@@ -1433,7 +1433,7 @@ func (s *aztestsSuite) TestContainerSetMetadataEmpty() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerName := generateContainerName(s.T().Name())
 	containerClient := getContainerClient(containerName, bsu)
 
@@ -1462,7 +1462,7 @@ func (s *aztestsSuite) TestContainerSetMetadataNil() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerName := generateContainerName(s.T().Name())
 	containerClient := getContainerClient(containerName, bsu)
 	access := PublicAccessBlob
@@ -1487,7 +1487,7 @@ func (s *aztestsSuite) TestContainerSetMetadataInvalidField() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
 
 	defer deleteContainer(containerClient)
@@ -1505,7 +1505,7 @@ func (s *aztestsSuite) TestContainerSetMetadataNonExistent() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerName := generateContainerName(s.T().Name())
 	containerClient := getContainerClient(containerName, bsu)
 
@@ -1514,6 +1514,7 @@ func (s *aztestsSuite) TestContainerSetMetadataNonExistent() {
 
 	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
 }
+
 //
 //func (s *aztestsSuite) TestContainerSetMetadataIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
@@ -1571,13 +1572,13 @@ func (s *aztestsSuite) TestContainerNewBlobURL() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerName := generateContainerName(s.T().Name())
 	containerClient := getContainerClient(containerName, bsu)
 
 	bbClient := containerClient.NewBlobClient(blobPrefix)
 
-	_assert.Equal(bbClient.URL(), containerClient.URL() + "/" + blobPrefix)
+	_assert.Equal(bbClient.URL(), containerClient.URL()+"/"+blobPrefix)
 	_assert.IsTypef(bbClient, BlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlobClient{}))
 }
 
@@ -1586,12 +1587,12 @@ func (s *aztestsSuite) TestContainerNewBlockBlobClient() {
 	context := getTestContext(s.T().Name())
 	bsu := getBSU(&ClientOptions{
 		HTTPClient: context.recording,
-		Retry: azcore.RetryOptions{MaxRetries: -1}})
+		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	containerName := generateContainerName(s.T().Name())
 	containerClient := getContainerClient(containerName, bsu)
 
 	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 
-	_assert.Equal(bbClient.URL(), containerClient.URL() + "/" + blobPrefix)
+	_assert.Equal(bbClient.URL(), containerClient.URL()+"/"+blobPrefix)
 	_assert.IsTypef(bbClient, BlockBlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlockBlobClient{}))
 }

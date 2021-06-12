@@ -13,7 +13,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Sat, 12 Jun 2021 04:07:33 GMT
+      - Sat, 12 Jun 2021 16:44:47 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstrgmohitcanada.blob.core.windows.net/goccontainerdelete?restype=container
@@ -24,15 +24,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Sat, 12 Jun 2021 04:07:32 GMT
+      - Sat, 12 Jun 2021 16:44:47 GMT
       Etag:
-      - '"0x8D92D579AFACB36"'
+      - '"0x8D92DC163DF69A6"'
       Last-Modified:
-      - Sat, 12 Jun 2021 04:07:33 GMT
+      - Sat, 12 Jun 2021 16:44:47 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 85364285-801e-000f-0440-5fe7ee000000
+      - eee58bb8-301e-0068-5caa-5ff712000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -50,7 +50,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Sat, 12 Jun 2021 04:07:33 GMT
+      - Sat, 12 Jun 2021 16:44:47 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstrgmohitcanada.blob.core.windows.net/goccontainerdelete?restype=container
@@ -61,11 +61,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Sat, 12 Jun 2021 04:07:36 GMT
+      - Sat, 12 Jun 2021 16:44:51 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 8536445e-801e-000f-4140-5fe7ee000000
+      - eee58c29-301e-0068-41aa-5ff712000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted
@@ -83,26 +83,26 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Sat, 12 Jun 2021 04:07:37 GMT
+      - Sat, 12 Jun 2021 16:44:52 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstrgmohitcanada.blob.core.windows.net/goccontainerdelete?comp=acl&restype=container
     method: GET
   response:
-    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x43\x6F\x6E\x74\x61\x69\x6E\x65\x72\x4E\x6F\x74\x46\x6F\x75\x6E\x64\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x63\x6F\x6E\x74\x61\x69\x6E\x65\x72\x20\x64\x6F\x65\x73\x20\x6E\x6F\x74\x20\x65\x78\x69\x73\x74\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x38\x35\x33\x36\x35\x35\x31\x33\x2D\x38\x30\x31\x65\x2D\x30\x30\x30\x66\x2D\x37\x63\x34\x30\x2D\x35\x66\x65\x37\x65\x65\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x31\x2D\x30\x36\x2D\x31\x32\x54\x30\x34\x3A\x30\x37\x3A\x33\x37\x2E\x37\x34\x39\x37\x36\x30\x31\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x43\x6F\x6E\x74\x61\x69\x6E\x65\x72\x4E\x6F\x74\x46\x6F\x75\x6E\x64\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x63\x6F\x6E\x74\x61\x69\x6E\x65\x72\x20\x64\x6F\x65\x73\x20\x6E\x6F\x74\x20\x65\x78\x69\x73\x74\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x65\x65\x65\x35\x39\x38\x34\x62\x2D\x33\x30\x31\x65\x2D\x30\x30\x36\x38\x2D\x37\x65\x61\x61\x2D\x35\x66\x66\x37\x31\x32\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x31\x2D\x30\x36\x2D\x31\x32\x54\x31\x36\x3A\x34\x34\x3A\x35\x32\x2E\x35\x38\x34\x34\x34\x35\x36\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
     headers:
       Content-Length:
       - "225"
       Content-Type:
       - application/xml
       Date:
-      - Sat, 12 Jun 2021 04:07:36 GMT
+      - Sat, 12 Jun 2021 16:44:51 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - ContainerNotFound
       X-Ms-Request-Id:
-      - 85365513-801e-000f-7c40-5fe7ee000000
+      - eee5984b-301e-0068-7eaa-5ff712000000
       X-Ms-Version:
       - "2019-12-12"
     status: 404 The specified container does not exist.

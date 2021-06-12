@@ -67,10 +67,10 @@ func recordedTestSetup(t *testing.T, accountType string, testName string, mode t
 	recording, err := testframework.NewRecording(_testContext, mode)
 	_assert.Nil(err)
 
-	_, err = recording.GetRecordedVariable(accountType+AccountNameEnvVar, testframework.Default)
+	_, err = recording.GetRecordedVariable(accountType+AccountNameEnvVar, testframework.Secret_Base64String)
 	_, err = recording.GetRecordedVariable(accountType+AccountKeyEnvVar, testframework.Secret_Base64String)
 	_ = recording.GetOptionalRecordedVariable(DefaultEndpointSuffixEnvVar, DefaultEndpointSuffix, testframework.Default)
-	_, err = recording.GetRecordedVariable("SECONDARY_"+AccountNameEnvVar, testframework.Default)
+	_, err = recording.GetRecordedVariable("SECONDARY_"+AccountNameEnvVar, testframework.Secret_Base64String)
 	_, err = recording.GetRecordedVariable("SECONDARY_"+AccountKeyEnvVar, testframework.Secret_Base64String)
 
 	clientsMap[testName] = &testContext{recording: recording, context: &_testContext}

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package azblob
+
 //
 //import (
 //	"context"
@@ -11,7 +12,7 @@ package azblob
 //)
 //
 //func (s *aztestsSuite) TestContainerAcquireLease(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, containerName := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -28,7 +29,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestContainerDeleteContainerWithoutLeaseId(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, containerName := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -53,7 +54,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestContainerReleaseLease(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, containerName := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -76,7 +77,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestContainerRenewLease(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, containerName := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -96,7 +97,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestContainerChangeLease(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, containerName := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -124,7 +125,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobAcquireLease(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -142,7 +143,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestDeleteBlobWithoutLeaseId(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -168,7 +169,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobReleaseLease(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -192,7 +193,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobRenewLease(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -213,7 +214,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobChangeLease(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //

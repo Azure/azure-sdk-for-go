@@ -16,11 +16,13 @@ import (
 
 func (s *aztestsSuite) TestNewContainerClientValidName() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	testURL := bsu.NewContainerClient(containerPrefix)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	testURL := serviceClient.NewContainerClient(containerPrefix)
 
 	correctURL := "https://" + os.Getenv(AccountNameEnvVar) + "." + DefaultBlobEndpointSuffix + containerPrefix
 	_assert.Equal(testURL.URL(), correctURL)
@@ -28,11 +30,13 @@ func (s *aztestsSuite) TestNewContainerClientValidName() {
 
 func (s *aztestsSuite) TestCreateRootContainerURL() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	testURL := bsu.NewContainerClient(ContainerNameRoot)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	testURL := serviceClient.NewContainerClient(ContainerNameRoot)
 
 	correctURL := "https://" + os.Getenv(AccountNameEnvVar) + ".blob.core.windows.net/$root"
 	_assert.Equal(testURL.URL(), correctURL)
@@ -40,37 +44,41 @@ func (s *aztestsSuite) TestCreateRootContainerURL() {
 
 func (s *aztestsSuite) TestContainerCreateInvalidName() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerClient := bsu.NewContainerClient("foo bar")
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerClient := serviceClient.NewContainerClient("foo bar")
 
 	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
 		Metadata: &map[string]string{},
 	}
-	_, err := containerClient.Create(ctx, &createContainerOptions)
+	_, err = containerClient.Create(ctx, &createContainerOptions)
 	_assert.NotNil(err)
 	validateStorageError(_assert, err, StorageErrorCodeInvalidResourceName)
 }
 
 func (s *aztestsSuite) TestContainerCreateEmptyName() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	containerClient := bsu.NewContainerClient("")
+	containerClient := serviceClient.NewContainerClient("")
 
 	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
 		Metadata: &map[string]string{},
 	}
-	_, err := containerClient.Create(ctx, &createContainerOptions)
+	_, err = containerClient.Create(ctx, &createContainerOptions)
 	_assert.NotNil(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeInvalidQueryParameterValue)
@@ -78,12 +86,15 @@ func (s *aztestsSuite) TestContainerCreateEmptyName() {
 
 func (s *aztestsSuite) TestContainerCreateNameCollision() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
-	containerClient, containerName := createNewContainer(_assert, testName, bsu)
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
 	defer deleteContainer(containerClient)
 
@@ -92,8 +103,9 @@ func (s *aztestsSuite) TestContainerCreateNameCollision() {
 		Access:   &access,
 		Metadata: &map[string]string{},
 	}
-	containerClient = bsu.NewContainerClient(containerName)
-	_, err := containerClient.Create(ctx, &createContainerOptions)
+
+	containerClient = serviceClient.NewContainerClient(containerName)
+	_, err = containerClient.Create(ctx, &createContainerOptions)
 	_assert.NotNil(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeContainerAlreadyExists)
@@ -101,19 +113,21 @@ func (s *aztestsSuite) TestContainerCreateNameCollision() {
 
 func (s *aztestsSuite) TestContainerCreateInvalidMetadata() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerName := generateContainerName(s.T().Name())
-	containerClient := getContainerClient(containerName, bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
 
 	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
 		Metadata: &map[string]string{"1 foo": "bar"},
 	}
-	_, err := containerClient.Create(ctx, &createContainerOptions)
+	_, err = containerClient.Create(ctx, &createContainerOptions)
 
 	_assert.NotNil(err)
 	_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
@@ -121,19 +135,21 @@ func (s *aztestsSuite) TestContainerCreateInvalidMetadata() {
 
 func (s *aztestsSuite) TestContainerCreateNilMetadata() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerName := generateContainerName(s.T().Name())
-	containerClient := getContainerClient(containerName, bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
 
 	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
 		Metadata: &map[string]string{},
 	}
-	_, err := containerClient.Create(ctx, &createContainerOptions)
+	_, err = containerClient.Create(ctx, &createContainerOptions)
 	defer deleteContainer(containerClient)
 	_assert.Nil(err)
 
@@ -144,20 +160,22 @@ func (s *aztestsSuite) TestContainerCreateNilMetadata() {
 
 func (s *aztestsSuite) TestContainerCreateEmptyMetadata() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
+	testName := s.T().Name()
+	context := getTestContext(testName)
 
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerName := generateContainerName(s.T().Name())
-	containerClient := getContainerClient(containerName, bsu)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
 
 	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
 		Metadata: &map[string]string{},
 	}
-	_, err := containerClient.Create(ctx, &createContainerOptions)
+	_, err = containerClient.Create(ctx, &createContainerOptions)
 	defer deleteContainer(containerClient)
 	_assert.Nil(err)
 
@@ -169,16 +187,17 @@ func (s *aztestsSuite) TestContainerCreateEmptyMetadata() {
 //func (s *aztestsSuite) TestContainerCreateAccessContainer() {
 //	// TOD0: NotWorking
 //	_assert := assert.New(s.T())
-//	context := getTestContext(s.T().Name())
+//testName := s.T().Name()
+//	context := getTestContext(testName)
 //
-//	bsu := getBSU(&ClientOptions{
+//	serviceClient := getServiceClient(&ClientOptions{
 //		HTTPClient: context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
 //	credential, err := getGenericCredential("")
 //	_assert.Nil(err)
 //
-//	containerName := generateContainerName(s.T().Name())
-//	containerClient := getContainerClient(containerName, bsu)
+//	containerName := generateContainerName(testName)
+//	containerClient := getContainerClient(containerName, serviceClient)
 //
 //	access := PublicAccessBlob
 //	createContainerOptions := CreateContainerOptions{
@@ -219,19 +238,20 @@ func (s *aztestsSuite) TestContainerCreateEmptyMetadata() {
 //func (s *aztestsSuite) TestContainerCreateAccessBlob() {
 //	// TODO: Not Working
 //	_assert := assert.New(s.T())
-//	context := getTestContext(s.T().Name())
-//	bsu := getBSU(&ClientOptions{
+// testName := s.T().Name()
+//	context := getTestContext(testName)
+//	serviceClient := getServiceClient(&ClientOptions{
 //		HTTPClient: context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
-//	testName := s.T().Name()
+//
 //	containerName := generateContainerName(testName)
-//	containerClient := getContainerClient(containerName, bsu)
+//	containerClient := getContainerClient(containerName, serviceClient)
 //
 //	access := PublicAccessBlob
 //	createContainerOptions := CreateContainerOptions{
 //		Access: &access,
 //	}
-//	_, err := containerClient.Create(ctx, &createContainerOptions)
+//	_, err = containerClient.Create(ctx, &createContainerOptions)
 //	defer deleteContainer(containerClient)
 //	_assert.Nil(err)
 //
@@ -260,16 +280,18 @@ func (s *aztestsSuite) TestContainerCreateEmptyMetadata() {
 
 func (s *aztestsSuite) TestContainerCreateAccessNone() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
 	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, bsu)
+	containerClient := getContainerClient(containerName, serviceClient)
 
 	// Public Access Type None
-	_, err := containerClient.Create(ctx, nil)
+	_, err = containerClient.Create(ctx, nil)
 	defer deleteContainer(containerClient)
 
 	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
@@ -306,14 +328,17 @@ func validateContainerDeleted(_assert *assert.Assertions, containerClient Contai
 
 func (s *aztestsSuite) TestContainerDelete() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
-	containerClient, _ := createNewContainer(_assert, testName, bsu)
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-	_, err := containerClient.Delete(ctx, nil)
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+
+	_, err = containerClient.Delete(ctx, nil)
 	_assert.Nil(err)
 
 	validateContainerDeleted(_assert, containerClient)
@@ -321,14 +346,16 @@ func (s *aztestsSuite) TestContainerDelete() {
 
 func (s *aztestsSuite) TestContainerDeleteNonExistent() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerName := generateContainerName(s.T().Name())
-	containerClient := getContainerClient(containerName, bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
 
-	_, err := containerClient.Delete(ctx, nil)
+	_, err = containerClient.Delete(ctx, nil)
 	_assert.NotNil(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
@@ -337,12 +364,15 @@ func (s *aztestsSuite) TestContainerDeleteNonExistent() {
 func (s *aztestsSuite) TestContainerDeleteIfModifiedSinceTrue() {
 
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
-	containerClient, _ := createNewContainer(_assert, testName, bsu)
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 	_assert.Nil(err) // Ensure the requests occur at different times
@@ -360,12 +390,13 @@ func (s *aztestsSuite) TestContainerDeleteIfModifiedSinceTrue() {
 //func (s *aztestsSuite) TestContainerDeleteIfModifiedSinceFalse() {
 //	// TODO: NotWorking
 //	_assert := assert.New(s.T())
-//	context := getTestContext(s.T().Name())
-//	bsu := getBSU(&ClientOptions{
+// testName := s.T().Name()
+//	context := getTestContext(testName)
+//	serviceClient := getServiceClient(&ClientOptions{
 //		HTTPClient: context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
-//	testName := s.T().Name()
-//	containerClient, _ := createNewContainer(_assert, testName, bsu)
+//
+//	containerClient, _ := createNewContainer(_assert, testName, serviceClient)
 //
 //	defer deleteContainer(containerClient)
 //
@@ -385,12 +416,15 @@ func (s *aztestsSuite) TestContainerDeleteIfModifiedSinceTrue() {
 
 func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
-	containerClient, _ := createNewContainer(_assert, testName, bsu)
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 	_assert.Nil(err)
@@ -409,16 +443,17 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 //func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 //	// TODO: Not Working
 //	_assert := assert.New(s.T())
-//	context := getTestContext(s.T().Name())
-//	bsu := getBSU(&ClientOptions{
+// testName := s.T().Name()
+//	context := getTestContext(testName)
+//	serviceClient := getServiceClient(&ClientOptions{
 //		HTTPClient: context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
-//	testName := s.T().Name()
+//
 //
 //	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 //	_assert.Nil(err)
 //
-//	containerClient, _ := createNewContainer(_assert, testName, bsu)
+//	containerClient, _ := createNewContainer(_assert, testName, serviceClient)
 //
 //	defer deleteContainer(containerClient)
 //
@@ -436,8 +471,8 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 ////func (s *aztestsSuite) TestContainerAccessConditionsUnsupportedConditions() {
 ////	// This test defines that the library will panic if the user specifies conditional headers
 ////	// that will be ignored by the service
-////	bsu := getBSU()
-////	containerClient, _ := createNewContainer(c, bsu)
+////	serviceClient := getServiceClient()
+////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
 ////
 ////	invalidEtag := "invalid"
@@ -452,8 +487,8 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 ////}
 //
 ////func (s *aztestsSuite) TestContainerListBlobsNonexistentPrefix() {
-////	bsu := getBSU()
-////	containerClient, _ := createNewContainer(c, bsu)
+////	serviceClient := getServiceClient()
+////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
 ////	createNewBlockBlob(c, containerClient)
 ////
@@ -467,8 +502,8 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 ////}
 //
 //func (s *aztestsSuite) TestContainerListBlobsSpecificValidPrefix() {
-//	bsu := getBSU(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
+//	serviceClient := getServiceClient(nil)
+//	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
 //	_, blobName := createNewBlockBlob(c, containerClient)
 //
@@ -495,8 +530,8 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 //}
 //
 //func (s *aztestsSuite) TestContainerListBlobsValidDelimiter() {
-//	bsu := getBSU(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
+//	serviceClient := getServiceClient(nil)
+//	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
 //	prefixes := []string{"a/1", "a/2", "b/2", "blob"}
 //	blobNames := make([]string, 4)
@@ -531,16 +566,20 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 
 func (s *aztestsSuite) TestContainerListBlobsWithSnapshots() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
-	containerClient, _ := createNewContainer(_assert, testName, bsu)
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 	defer deleteContainer(containerClient)
 
 	// initialize a blob and create a snapshot of it
-	snapBlob, snapBlobName := createNewBlockBlob(_assert, testName, containerClient)
+	snapBlobName := generateBlobName(testName)
+	snapBlob := createNewBlockBlob(_assert, snapBlobName, containerClient)
 	snap, err := snapBlob.CreateSnapshot(ctx, nil)
 	// snap.
 	_assert.Nil(err)
@@ -568,12 +607,15 @@ func (s *aztestsSuite) TestContainerListBlobsWithSnapshots() {
 
 func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
-	containerClient, _ := createNewContainer(_assert, testName, bsu)
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 	defer deleteContainer(containerClient)
 	prefixes := []string{"a/1", "a/2", "b/1", "blob"}
 	for _, prefix := range prefixes {
@@ -588,8 +630,8 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 }
 
 ////func (s *aztestsSuite) TestContainerListBlobsIncludeTypeMetadata() {
-////	bsu := getBSU()
-////	container, _ := createNewContainer(c, bsu)
+////	serviceClient := getServiceClient()
+////	container, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(container)
 ////	_, blobNameNoMetadata := createNewBlockBlobWithPrefix(c, container, "a")
 ////	blobMetadata, blobNameMetadata := createNewBlockBlobWithPrefix(c, container, "b")
@@ -606,8 +648,8 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////}
 //
 ////func (s *aztestsSuite) TestContainerListBlobsIncludeTypeSnapshots() {
-////	bsu := getBSU()
-////	containerClient, _ := createNewContainer(c, bsu)
+////	serviceClient := getServiceClient()
+////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
 ////	blob, blobName := createNewBlockBlob(c, containerClient)
 ////	_, err := blob.CreateSnapshot(ctx, Metadata{}, BlobAccessConditions{}, ClientProvidedKeyOptions{})
@@ -625,8 +667,8 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////}
 ////
 ////func (s *aztestsSuite) TestContainerListBlobsIncludeTypeCopy() {
-////	bsu := getBSU()
-////	containerClient, _ := createNewContainer(c, bsu)
+////	serviceClient := getServiceClient()
+////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
 ////	bbClient, blobName := createNewBlockBlob(c, containerClient)
 ////	blobCopyURL, blobCopyName := createNewBlockBlobWithPrefix(c, containerClient, "copy")
@@ -648,8 +690,8 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////}
 ////
 ////func (s *aztestsSuite) TestContainerListBlobsIncludeTypeUncommitted() {
-////	bsu := getBSU()
-////	containerClient, _ := createNewContainer(c, bsu)
+////	serviceClient := getServiceClient()
+////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
 ////	bbClient, blobName := getBlockBlobURL(c, containerClient)
 ////	_, err := bbClient.StageBlock(ctx, blockID, strings.NewReader(blockBlobDefaultData), LeaseAccessConditions{}, nil, ClientProvidedKeyOptions{})
@@ -663,8 +705,8 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
 ////}
 //
-////func testContainerListBlobsIncludeTypeDeletedImpl(, bsu ServiceURL) error {
-////	containerClient, _ := createNewContainer(c, bsu)
+////func testContainerListBlobsIncludeTypeDeletedImpl(, serviceClient ServiceURL) error {
+////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
 ////	bbClient, _ := createNewBlockBlob(c, containerClient)
 ////
@@ -689,14 +731,14 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////}
 ////
 ////func (s *aztestsSuite) TestContainerListBlobsIncludeTypeDeleted() {
-////	bsu := getBSU()
+////	serviceClient := getServiceClient()
 ////
-////	runTestRequiringServiceProperties(c, bsu, "DeletedBlobNotFound", enableSoftDelete,
+////	runTestRequiringServiceProperties(c, serviceClient, "DeletedBlobNotFound", enableSoftDelete,
 ////		testContainerListBlobsIncludeTypeDeletedImpl, disableSoftDelete)
 ////}
 ////
-////func testContainerListBlobsIncludeMultipleImpl(, bsu ServiceURL) error {
-////	containerClient, _ := createNewContainer(c, bsu)
+////func testContainerListBlobsIncludeMultipleImpl(, serviceClient ServiceURL) error {
+////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
 ////
 ////	bbClient, _ := createNewBlockBlobWithPrefix(c, containerClient, "z")
@@ -726,15 +768,15 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////}
 ////
 ////func (s *aztestsSuite) TestContainerListBlobsIncludeMultiple() {
-////	bsu := getBSU()
+////	serviceClient := getServiceClient()
 ////
-////	runTestRequiringServiceProperties(c, bsu, "DeletedBlobNotFound", enableSoftDelete,
+////	runTestRequiringServiceProperties(c, serviceClient, "DeletedBlobNotFound", enableSoftDelete,
 ////		testContainerListBlobsIncludeMultipleImpl, disableSoftDelete)
 ////}
 ////
 ////func (s *aztestsSuite) TestContainerListBlobsMaxResultsNegative() {
-////	bsu := getBSU()
-////	containerClient, _ := createNewContainer(c, bsu)
+////	serviceClient := getServiceClient()
+////	containerClient, _ := createNewContainer(c, serviceClient)
 ////
 ////	defer deleteContainer(containerClient)
 ////	_, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{MaxResults: -2})
@@ -742,8 +784,8 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////}
 //
 ////func (s *aztestsSuite) TestContainerListBlobsMaxResultsZero() {
-////	bsu := getBSU()
-////	containerClient, _ := createNewContainer(c, bsu)
+////	serviceClient := getServiceClient()
+////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
 ////	createNewBlockBlob(c, containerClient)
 ////
@@ -756,8 +798,8 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 //
 //// TODO: Adele: Case failing
 ////func (s *aztestsSuite) TestContainerListBlobsMaxResultsInsufficient() {
-////	bsu := getBSU()
-////	containerClient, _ := createNewContainer(c, bsu)
+////	serviceClient := getServiceClient()
+////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
 ////	_, blobName := createNewBlockBlobWithPrefix(c, containerClient, "a")
 ////	createNewBlockBlobWithPrefix(c, containerClient, "b")
@@ -771,12 +813,15 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 
 func (s *aztestsSuite) TestContainerListBlobsMaxResultsExact() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
-	containerClient, _ := createNewContainer(_assert, testName, bsu)
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 	defer deleteContainer(containerClient)
 	blobNames := make([]string, 2)
 	_, blobNames[0] = createNewBlockBlobWithPrefix(_assert, testName, containerClient, "a")
@@ -802,12 +847,15 @@ func (s *aztestsSuite) TestContainerListBlobsMaxResultsExact() {
 
 func (s *aztestsSuite) TestContainerListBlobsMaxResultsSufficient() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
 	testName := s.T().Name()
-	containerClient, _ := createNewContainer(_assert, testName, bsu)
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 	defer deleteContainer(containerClient)
 	blobNames := make([]string, 2)
 
@@ -835,12 +883,15 @@ func (s *aztestsSuite) TestContainerListBlobsMaxResultsSufficient() {
 
 func (s *aztestsSuite) TestContainerListBlobsNonExistentContainer() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerName := generateContainerName(s.T().Name())
-	containerClient := getContainerClient(containerName, bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
 
 	pager := containerClient.ListBlobsFlatSegment(nil)
 
@@ -850,11 +901,14 @@ func (s *aztestsSuite) TestContainerListBlobsNonExistentContainer() {
 
 func (s *aztestsSuite) TestContainerGetSetPermissionsMultiplePolicies() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
 	defer deleteContainer(containerClient)
 
@@ -899,18 +953,20 @@ func (s *aztestsSuite) TestContainerGetSetPermissionsMultiplePolicies() {
 
 func (s *aztestsSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerName := generateContainerName(s.T().Name())
-	containerClient := getContainerClient(containerName, bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
 
 	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access: &access,
 	}
-	_, err := containerClient.Create(ctx, &createContainerOptions) // We create the container explicitly so we can be sure the access policy is not empty
+	_, err = containerClient.Create(ctx, &createContainerOptions) // We create the container explicitly so we can be sure the access policy is not empty
 	_assert.Nil(err)
 	defer deleteContainer(containerClient)
 
@@ -923,8 +979,8 @@ func (s *aztestsSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 //func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessNone() {
 //	// Test the basic one by making an anonymous request to ensure it's actually doing it and also with GetPermissions
 //	// For all the others, can just use GetPermissions since we've validated that it at least registers on the server correctly
-//	bsu := getBSU(nil)
-//	containerClient, containerName := createNewContainer(c, bsu)
+//	serviceClient := getServiceClient(nil)
+//	containerClient, containerName := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
 //	_, blobName := createNewBlockBlob(c, containerClient)
 //
@@ -933,7 +989,7 @@ func (s *aztestsSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 //	_assert(err, chk.IsNil)
 //
 //	_assert(err, chk.IsNil)
-//	bsu2, err := NewServiceClient(bsu.URL(), azcore.AnonymousCredential(), nil)
+//	bsu2, err := NewServiceClient(serviceClient.URL(), azcore.AnonymousCredential(), nil)
 //	_assert(err, chk.IsNil)
 //
 //	containerClient2 := bsu2.NewContainerClient(containerName)
@@ -956,11 +1012,14 @@ func (s *aztestsSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 
 func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessBlob() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
 	defer deleteContainer(containerClient)
 
@@ -970,7 +1029,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessBlob() {
 			Access: &access,
 		},
 	}
-	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	_assert.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
@@ -980,11 +1039,14 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessBlob() {
 
 func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
 	defer deleteContainer(containerClient)
 
@@ -994,7 +1056,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer() {
 			Access: &access,
 		},
 	}
-	_, err := containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
+	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions)
 	_assert.Nil(err)
 
 	resp, err := containerClient.GetAccessPolicy(ctx, nil)
@@ -1004,12 +1066,12 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer() {
 
 ////// TODO: After Pacer is ready
 ////func (s *aztestsSuite) TestContainerSetPermissionsACLSinglePolicy() {
-////	bsu := getBSU()
+////	serviceClient := getServiceClient()
 ////	credential, err := getGenericCredential("")
 ////	if err != nil {
 ////		c.Fatal("Invalid credential")
 ////	}
-////	containerClient, containerName := createNewContainer(c, bsu)
+////	containerClient, containerName := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
 ////	_, blobName := createNewBlockBlob(c, containerClient)
 ////
@@ -1040,7 +1102,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer() {
 ////		c.Fatal(err)
 ////	}
 ////
-////	sasURL := bsu.URL()
+////	sasURL := serviceClient.URL()
 ////	sasURL.RawQuery = queryParams.Encode()
 ////	sasPipeline := (NewAnonymousCredential(), PipelineOptions{})
 ////	sasBlobServiceURL := NewServiceURL(sasURL, sasPipeline)
@@ -1052,7 +1114,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer() {
 ////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
 ////
 ////	// Verifies that successful sas access is not just because it's public
-////	anonymousBlobService := NewServiceURL(bsu.URL(), sasPipeline)
+////	anonymousBlobService := NewServiceURL(serviceClient.URL(), sasPipeline)
 ////	anonymousContainer := anonymousBlobService.NewContainerClient(containerName)
 ////	_, err = anonymousContainer.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
 ////	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
@@ -1060,11 +1122,14 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer() {
 
 func (s *aztestsSuite) TestContainerSetPermissionsACLMoreThanFive() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
 	defer deleteContainer(containerClient)
 
@@ -1101,11 +1166,14 @@ func (s *aztestsSuite) TestContainerSetPermissionsACLMoreThanFive() {
 
 func (s *aztestsSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
 	defer deleteContainer(containerClient)
 
@@ -1160,11 +1228,14 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 
 func (s *aztestsSuite) TestContainerSetPermissionsDeleteAllPolicies() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
 	defer deleteContainer(containerClient)
 
@@ -1217,11 +1288,14 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAllPolicies() {
 
 func (s *aztestsSuite) TestContainerSetPermissionsInvalidPolicyTimes() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
 	defer deleteContainer(containerClient)
 
@@ -1257,25 +1331,31 @@ func (s *aztestsSuite) TestContainerSetPermissionsInvalidPolicyTimes() {
 
 func (s *aztestsSuite) TestContainerSetPermissionsNilPolicySlice() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
 	defer deleteContainer(containerClient)
 
-	_, err := containerClient.SetAccessPolicy(ctx, nil)
+	_, err = containerClient.SetAccessPolicy(ctx, nil)
 	_assert.Nil(err)
 }
 
 func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
 	defer deleteContainer(containerClient)
 
@@ -1315,8 +1395,8 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 //
 //func (s *aztestsSuite) TestContainerSetPermissionsIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
-//	bsu := getBSU(nil)
-//	container, _ := createNewContainer(c, bsu)
+//	serviceClient := getServiceClient(nil)
+//	container, _ := createNewContainer(c, serviceClient)
 //
 //	defer deleteContainer(container)
 //
@@ -1334,8 +1414,8 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 //}
 //
 //func (s *aztestsSuite) TestContainerSetPermissionsIfModifiedSinceFalse() {
-//	bsu := getBSU(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
+//	serviceClient := getServiceClient(nil)
+//	containerClient, _ := createNewContainer(c, serviceClient)
 //
 //	defer deleteContainer(containerClient)
 //
@@ -1353,8 +1433,8 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 //}
 //
 //func (s *aztestsSuite) TestContainerSetPermissionsIfUnModifiedSinceTrue() {
-//	bsu := getBSU(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
+//	serviceClient := getServiceClient(nil)
+//	containerClient, _ := createNewContainer(c, serviceClient)
 //
 //	defer deleteContainer(containerClient)
 //
@@ -1376,14 +1456,15 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 //func (s *aztestsSuite) TestContainerSetPermissionsIfUnModifiedSinceFalse() {
 //	// TODO: NotWorking
 //	_assert := assert.New(s.T())
-//	context := getTestContext(s.T().Name())
+// testName := s.T().Name()
+//	context := getTestContext(testName)
 //
 //	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
 //
-//	bsu := getBSU(&ClientOptions{
+//	serviceClient := getServiceClient(&ClientOptions{
 //		HTTPClient: context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
-//	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
+//	containerClient, _ := createNewContainer(_assert, testName, serviceClient)
 //
 //	defer deleteContainer(containerClient)
 //
@@ -1400,11 +1481,14 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 
 func (s *aztestsSuite) TestContainerGetPropertiesAndMetadataNoMetadata() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
 	defer deleteContainer(containerClient)
 
@@ -1415,14 +1499,16 @@ func (s *aztestsSuite) TestContainerGetPropertiesAndMetadataNoMetadata() {
 
 func (s *aztestsSuite) TestContainerGetPropsAndMetaNonExistentContainer() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerName := generateContainerName(s.T().Name())
-	containerClient := getContainerClient(containerName, bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
 
-	_, err := containerClient.GetProperties(ctx, nil)
+	_, err = containerClient.GetProperties(ctx, nil)
 	_assert.NotNil(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
@@ -1430,19 +1516,21 @@ func (s *aztestsSuite) TestContainerGetPropsAndMetaNonExistentContainer() {
 
 func (s *aztestsSuite) TestContainerSetMetadataEmpty() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerName := generateContainerName(s.T().Name())
-	containerClient := getContainerClient(containerName, bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
 
 	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Metadata: &basicMetadata,
 		Access:   &access,
 	}
-	_, err := containerClient.Create(ctx, &createContainerOptions)
+	_, err = containerClient.Create(ctx, &createContainerOptions)
 
 	defer deleteContainer(containerClient)
 
@@ -1459,18 +1547,20 @@ func (s *aztestsSuite) TestContainerSetMetadataEmpty() {
 
 func (s *aztestsSuite) TestContainerSetMetadataNil() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerName := generateContainerName(s.T().Name())
-	containerClient := getContainerClient(containerName, bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
 	access := PublicAccessBlob
 	createContainerOptions := CreateContainerOptions{
 		Access:   &access,
 		Metadata: &basicMetadata,
 	}
-	_, err := containerClient.Create(ctx, &createContainerOptions)
+	_, err = containerClient.Create(ctx, &createContainerOptions)
 
 	defer deleteContainer(containerClient)
 
@@ -1484,32 +1574,37 @@ func (s *aztestsSuite) TestContainerSetMetadataNil() {
 
 func (s *aztestsSuite) TestContainerSetMetadataInvalidField() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
 
 	defer deleteContainer(containerClient)
 
 	setMetadataContainerOptions := SetMetadataContainerOptions{
 		Metadata: &map[string]string{"!nval!d Field!@#%": "value"},
 	}
-	_, err := containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
+	_, err = containerClient.SetMetadata(ctx, &setMetadataContainerOptions)
 	_assert.NotNil(err)
 	_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
 }
 
 func (s *aztestsSuite) TestContainerSetMetadataNonExistent() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerName := generateContainerName(s.T().Name())
-	containerClient := getContainerClient(containerName, bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
 
-	_, err := containerClient.SetMetadata(ctx, nil)
+	_, err = containerClient.SetMetadata(ctx, nil)
 	_assert.NotNil(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
@@ -1519,8 +1614,8 @@ func (s *aztestsSuite) TestContainerSetMetadataNonExistent() {
 //func (s *aztestsSuite) TestContainerSetMetadataIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
-//	bsu := getBSU(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
+//	serviceClient := getServiceClient(nil)
+//	containerClient, _ := createNewContainer(c, serviceClient)
 //
 //	defer deleteContainer(containerClient)
 //
@@ -1543,11 +1638,12 @@ func (s *aztestsSuite) TestContainerSetMetadataNonExistent() {
 //func (s *aztestsSuite) TestContainerSetMetadataIfModifiedSinceFalse() {
 //	// TODO: NotWorking
 //	_assert := assert.New(s.T())
-//	context := getTestContext(s.T().Name())
-//	bsu := getBSU(&ClientOptions{
+// testName := s.T().Name()
+//	context := getTestContext(testName)
+//	serviceClient := getServiceClient(&ClientOptions{
 //		HTTPClient: context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
-//	containerClient, _ := createNewContainer(_assert, s.T().Name(), bsu)
+//	containerClient, _ := createNewContainer(_assert, testName, serviceClient)
 //
 //	defer deleteContainer(containerClient)
 //
@@ -1569,12 +1665,14 @@ func (s *aztestsSuite) TestContainerSetMetadataNonExistent() {
 
 func (s *aztestsSuite) TestContainerNewBlobURL() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerName := generateContainerName(s.T().Name())
-	containerClient := getContainerClient(containerName, bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
 
 	bbClient := containerClient.NewBlobClient(blobPrefix)
 
@@ -1584,12 +1682,14 @@ func (s *aztestsSuite) TestContainerNewBlobURL() {
 
 func (s *aztestsSuite) TestContainerNewBlockBlobClient() {
 	_assert := assert.New(s.T())
-	context := getTestContext(s.T().Name())
-	bsu := getBSU(&ClientOptions{
-		HTTPClient: context.recording,
-		Retry:      azcore.RetryOptions{MaxRetries: -1}})
-	containerName := generateContainerName(s.T().Name())
-	containerClient := getContainerClient(containerName, bsu)
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, serviceClient)
 
 	bbClient := containerClient.NewBlockBlobClient(blobPrefix)
 

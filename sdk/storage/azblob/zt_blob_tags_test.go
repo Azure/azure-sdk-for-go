@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package azblob
+
 //
 //import (
 //	"bytes"
@@ -16,7 +17,7 @@ package azblob
 //)
 //
 //func (s *aztestsSuite) TestSetBlobTags(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -53,7 +54,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestSetBlobTagsWithVID(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := getBlockBlobClient(c, containerClient)
@@ -102,7 +103,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestUploadBlockBlobWithSpecialCharactersInTags(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := getBlockBlobClient(c, containerClient)
@@ -137,7 +138,7 @@ package azblob
 //		binary.LittleEndian.PutUint32(binaryBlockID, uint32(blockID))
 //		return base64.StdEncoding.EncodeToString(binaryBlockID)
 //	}
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -194,7 +195,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestStageBlockFromURLWithTags(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
 //		c.Fatal("Invalid credential")
@@ -295,7 +296,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestCopyBlockBlobFromURLWithTags(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
 //		c.Fatal("Invalid credential")
@@ -378,7 +379,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestGetPropertiesReturnsTagsCount(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := getBlockBlobClient(c, containerClient)
@@ -403,7 +404,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestSetBlobTagForSnapshot(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := createNewBlockBlob(c, containerClient)
@@ -429,7 +430,7 @@ package azblob
 //
 //// TODO: Once new pacer is done.
 ////func (s *aztestsSuite) TestListBlobReturnsTags(c *chk.C) {
-////	bsu := getBSU()
+////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient)
 ////	blobClient, blobName := createNewBlockBlob(c, containerClient)
@@ -453,7 +454,7 @@ package azblob
 ////}
 ////
 ////func (s *aztestsSuite) TestFindBlobsByTags(c *chk.C) {
-////	bsu := getBSU()
+////	bsu := getServiceClient()
 ////	containerClient1, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient1)
 ////	containerClient2, _ := createNewContainer(c, bsu)
@@ -562,7 +563,7 @@ package azblob
 ////}
 //
 //func (s *aztestsSuite) TestCreatePageBlobWithTags(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -631,7 +632,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestPageBlobSetBlobTagForSnapshot(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -662,7 +663,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestCreateAppendBlobWithTags(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	abClient, _ := getAppendBlobClient(c, containerClient)

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package azblob
+
 //
 //import (
 //	"context"
@@ -26,7 +27,7 @@ package azblob
 //
 //func performUploadStreamToBlockBlobTest(c *chk.C, blobSize, bufferSize, maxBuffers int) {
 //	// Set up test container
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -102,7 +103,7 @@ package azblob
 //	defer os.Remove(fileName)
 //
 //	// Set up test container
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -228,7 +229,7 @@ package azblob
 //	_, bytesToUpload := getRandomDataAndReader(blobSize)
 //
 //	// Set up test container
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //

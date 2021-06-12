@@ -67,7 +67,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestPutBlockAndPutBlockListWithCPK(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -115,7 +115,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -170,7 +170,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPK(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -281,7 +281,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPKWithScope(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -388,7 +388,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestUploadBlobWithMD5WithCPK(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -430,7 +430,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestUploadBlobWithMD5WithCPKScope(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -462,7 +462,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestAppendBlockWithCPK(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -515,7 +515,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestAppendBlockWithCPKScope(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -564,7 +564,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestAppendBlockFromURLWithCPK(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
 //		c.Fatal("Invalid credential")
@@ -670,7 +670,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestAppendBlockFromURLWithCPKScope(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
 //		c.Fatal("Invalid credential")
@@ -776,7 +776,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestPageBlockWithCPK(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -826,7 +826,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestPageBlockWithCPKScope(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -867,7 +867,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestPageBlockFromURLWithCPK(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
 //		c.Fatal("Invalid credential")
@@ -946,7 +946,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestPageBlockFromURLWithCPKScope(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
 //		c.Fatal("Invalid credential")
@@ -1016,7 +1016,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestUploadPagesFromURLWithMD5WithCPK(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
 //		c.Fatal("Invalid credential")
@@ -1105,7 +1105,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestClearDiffPagesWithCPK(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -1151,7 +1151,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobResizeWithCPK(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlobWithCPK(c, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
@@ -1190,7 +1190,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestGetSetBlobMetadataWithCPK(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := createNewBlockBlobWithCPK(c, containerClient, &testCPKByValue, nil)
@@ -1228,7 +1228,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestGetSetBlobMetadataWithCPKScope(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := createNewBlockBlobWithCPK(c, containerClient, nil, &testCPKByScope)
@@ -1259,7 +1259,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobSnapshotWithCPK(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := createNewBlockBlobWithCPK(c, containerClient, &testCPKByValue, nil)
@@ -1300,7 +1300,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobSnapshotWithCPKScope(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := createNewBlockBlobWithCPK(c, containerClient, nil, &testCPKByScope)

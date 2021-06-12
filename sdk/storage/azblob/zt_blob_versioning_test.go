@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package azblob
+
 //
 //import (
 //	"context"
@@ -12,7 +13,7 @@ package azblob
 //)
 //
 //func (s *aztestsSuite) TestBlockBlobGetPropertiesUsingVID(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewBlockBlob(c, containerClient)
@@ -34,7 +35,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestAppendBlobGetPropertiesUsingVID(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobClient, _ := createNewAppendBlob(c, containerClient)
@@ -58,7 +59,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestSetBlobMetadataReturnsVID(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	blobURL, blobName := createNewBlockBlob(c, containerClient)
@@ -92,7 +93,7 @@ package azblob
 //}
 //
 ////func (s *aztestsSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID(c *chk.C) {
-////	bsu := getBSU()
+////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient)
 ////	data := []rune("-._/()$=',~0123456789")
@@ -115,7 +116,7 @@ package azblob
 ////}
 //
 ////func (s *aztestsSuite) TestDeleteSpecificBlobVersion(c *chk.C) {
-////	bsu := getBSU()
+////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient)
 ////	blobURL, _ := getBlockBlobURL(c, containerClient)
@@ -147,7 +148,7 @@ package azblob
 ////}
 //
 ////func (s *aztestsSuite) TestDeleteSpecificBlobVersionWithBlobSAS(c *chk.C) {
-////	bsu := getBSU()
+////	bsu := getServiceClient()
 ////	credential, err := getGenericCredential("")
 ////	if err != nil {
 ////		c.Fatal(err)
@@ -190,7 +191,7 @@ package azblob
 ////}
 //
 ////func (s *aztestsSuite) TestDownloadSpecificBlobVersion(c *chk.C) {
-////	bsu := getBSU()
+////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient)
 ////	blobURL, _ := getBlockBlobURL(c, containerClient)
@@ -222,7 +223,7 @@ package azblob
 ////}
 //
 ////func (s *aztestsSuite) TestCreateBlobSnapshotReturnsVID(c *chk.C) {
-////	bsu := getBSU()
+////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer delContainer(c, containerClient)
 ////	blobURL := containerClient.NewBlockBlobClient(generateBlobName())
@@ -255,7 +256,7 @@ package azblob
 ////}
 //
 ////func (s *aztestsSuite) TestCopyBlobFromURLWithSASReturnsVID(c *chk.C) {
-////	bsu := getBSU()
+////	bsu := getServiceClient()
 ////	credential, err := getGenericCredential("")
 ////	if err != nil {
 ////		c.Fatal("Invalid credential")
@@ -318,7 +319,7 @@ package azblob
 ////}
 //
 ////func (s *aztestsSuite) TestCreateBlockBlobReturnsVID(c *chk.C) {
-////	bsu := getBSU()
+////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer delContainer(c, containerClient)
 ////
@@ -362,7 +363,7 @@ package azblob
 ////}
 //
 //func (s *aztestsSuite) TestPutBlockListReturnsVID(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -391,7 +392,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestCreatePageBlobReturnsVID(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package azblob
+
 //
 //import (
 //	"bytes"
@@ -14,7 +15,7 @@ package azblob
 //)
 //
 //func (s *aztestsSuite) TestPutGetPages(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -56,7 +57,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestUploadPagesFromURL(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
 //		c.Fatal("Invalid credential")
@@ -122,7 +123,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
 //		c.Fatal("Invalid credential")
@@ -198,7 +199,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestClearDiffPages(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -255,7 +256,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestIncrementalCopy(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -296,7 +297,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestResizePageBlob(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -315,7 +316,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestPageSequenceNumbers(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
 //
@@ -353,7 +354,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestPutPagesWithMD5(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -399,7 +400,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobCreatePageSizeInvalid(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := getPageBlobClient(c, containerClient)
@@ -415,7 +416,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobCreatePageSequenceInvalid(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := getPageBlobClient(c, containerClient)
@@ -429,7 +430,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobCreatePageMetadataNonEmpty(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := getPageBlobClient(c, containerClient)
@@ -449,7 +450,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobCreatePageMetadataEmpty(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := getPageBlobClient(c, containerClient)
@@ -467,7 +468,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobCreatePageMetadataInvalid(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := getPageBlobClient(c, containerClient)
@@ -484,7 +485,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobCreatePageHTTPHeaders(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := getPageBlobClient(c, containerClient)
@@ -512,7 +513,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobCreatePageIfModifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
@@ -537,7 +538,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobCreatePageIfModifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
@@ -562,7 +563,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobCreatePageIfUnmodifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
@@ -587,7 +588,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobCreatePageIfUnmodifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
@@ -612,7 +613,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobCreatePageIfMatchTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
@@ -638,7 +639,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobCreatePageIfMatchFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
@@ -662,7 +663,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobCreatePageIfNoneMatchTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
@@ -686,7 +687,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobCreatePageIfNoneMatchFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
@@ -711,7 +712,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesInvalidRange(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -726,7 +727,7 @@ package azblob
 //
 //// Body cannot be nil check already added in the request preparer
 ////func (s *aztestsSuite) TestBlobPutPagesNilBody(c *chk.C) {
-////	bsu := getBSU()
+////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient)
 ////	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -736,7 +737,7 @@ package azblob
 ////}
 //
 //func (s *aztestsSuite) TestBlobPutPagesEmptyBody(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -749,7 +750,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesNonExistentBlob(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := getPageBlobClient(c, containerClient)
@@ -775,7 +776,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfModifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -799,7 +800,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfModifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -822,7 +823,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfUnmodifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -846,7 +847,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfUnmodifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -870,7 +871,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfMatchTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -894,7 +895,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfMatchFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -917,7 +918,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfNoneMatchTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -940,7 +941,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfNoneMatchFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -964,7 +965,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -985,7 +986,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -1015,7 +1016,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -1036,7 +1037,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTETrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -1066,7 +1067,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -1096,7 +1097,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberLTENegOne(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -1117,7 +1118,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -1147,7 +1148,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -1168,7 +1169,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutPagesIfSequenceNumberEqualNegOne(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -1189,7 +1190,7 @@ package azblob
 //}
 //
 //func setupClearPagesTest(c *chk.C) (ContainerClient, PageBlobClient) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
 //
@@ -1550,7 +1551,7 @@ package azblob
 //}
 //
 //func setupGetPageRangesTest(c *chk.C) (containerClient ContainerClient, pbClient PageBlobClient) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ = createNewContainer(c, bsu)
 //	pbClient, _ = createNewPageBlob(c, containerClient)
 //
@@ -1576,7 +1577,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobGetPageRangesEmptyBlob(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -1804,7 +1805,7 @@ package azblob
 //}
 //
 //func setupDiffPageRangesTest(c *chk.C) (containerClient ContainerClient, pbClient PageBlobClient, snapshot string) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ = createNewContainer(c, bsu)
 //	pbClient, _ = createNewPageBlob(c, containerClient)
 //
@@ -2009,7 +2010,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobResizeZero(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2024,7 +2025,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobResizeInvalidSizeNegative(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2034,7 +2035,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobResizeInvalidSizeMisaligned(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2049,7 +2050,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobResizeIfModifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2070,7 +2071,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobResizeIfModifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2091,7 +2092,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobResizeIfUnmodifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2112,7 +2113,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobResizeIfUnmodifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2133,7 +2134,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobResizeIfMatchTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2154,7 +2155,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobResizeIfMatchFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2174,7 +2175,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobResizeIfNoneMatchTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2194,7 +2195,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobResizeIfNoneMatchFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2215,7 +2216,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobSetSequenceNumberActionTypeInvalid(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2233,7 +2234,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobSetSequenceNumberSequenceNumberInvalid(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2262,7 +2263,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2285,7 +2286,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2308,7 +2309,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2331,7 +2332,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2354,7 +2355,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobSetSequenceNumberIfMatchTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2377,7 +2378,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobSetSequenceNumberIfMatchFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2399,7 +2400,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobSetSequenceNumberIfNoneMatchTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2421,7 +2422,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobSetSequenceNumberIfNoneMatchFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -2444,7 +2445,7 @@ package azblob
 //}
 //
 //func setupStartIncrementalCopyTest(c *chk.C) (containerClient ContainerClient, pbClient PageBlobClient, copyPBClient PageBlobClient, snapshot string) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ = createNewContainer(c, bsu)
 //
 //	accessType := PublicAccessBlob
@@ -2478,7 +2479,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobStartIncrementalCopySnapshotNotExist(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)

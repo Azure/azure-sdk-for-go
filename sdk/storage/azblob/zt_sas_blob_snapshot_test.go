@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package azblob
+
 //
 //import (
 //	"bytes"
@@ -14,7 +15,7 @@ package azblob
 //
 //func (s *aztestsSuite) TestSnapshotSAS(c *chk.C) {
 //	//Generate URLs ----------------------------------------------------------------------------------------------------
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, containerName := getContainerClient(bsu)
 //	blobURL, blobName := getBlockBlobClient(c, containerClient)
 //

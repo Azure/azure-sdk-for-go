@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package azblob
+
 //
 //import (
 //	"bytes"
@@ -15,7 +16,7 @@ package azblob
 //
 ////Creates a container and tests permissions by listing blobs
 //func (s *aztestsSuite) TestUserDelegationSASContainer(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, containerName := getContainerClient(bsu)
 //	currentTime := time.Now().UTC()
 //	time.Sleep(2 * time.Second)

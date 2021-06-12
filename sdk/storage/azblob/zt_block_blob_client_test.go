@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package azblob
+
 //
 //import (
 //	"bytes"
@@ -30,7 +31,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestStageGetBlocks(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -97,7 +98,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestStageBlockFromURL(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
 //		c.Fatal("Invalid credential")
@@ -196,7 +197,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestCopyBlockBlobFromURL(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
 //		c.Fatal("Invalid credential")
@@ -287,7 +288,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobSASQueryParamOverrideResponseHeaders(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
 //		c.Fatal("Invalid credential")
@@ -349,7 +350,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestStageBlockWithMD5(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -397,7 +398,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutBlobHTTPHeaders(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := getBlockBlobClient(c, containerClient)
@@ -420,7 +421,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutBlobMetadataNotEmpty(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := getBlockBlobClient(c, containerClient)
@@ -443,7 +444,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutBlobMetadataEmpty(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := getBlockBlobClient(c, containerClient)
@@ -461,7 +462,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutBlobMetadataInvalid(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := getBlockBlobClient(c, containerClient)
@@ -479,7 +480,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutBlobIfModifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -502,7 +503,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutBlobIfModifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := createNewBlockBlob(c, containerClient)
@@ -528,7 +529,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := createNewBlockBlob(c, containerClient)
@@ -551,7 +552,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := createNewBlockBlob(c, containerClient)
@@ -570,7 +571,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutBlobIfMatchTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := createNewBlockBlob(c, containerClient)
@@ -594,7 +595,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutBlobIfMatchFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := createNewBlockBlob(c, containerClient)
@@ -617,7 +618,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutBlobIfNoneMatchTrue(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := createNewBlockBlob(c, containerClient)
@@ -643,7 +644,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobPutBlobIfNoneMatchFalse(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	bbClient, _ := createNewBlockBlob(c, containerClient)
@@ -666,7 +667,7 @@ package azblob
 //}
 //
 //func setupPutBlockListTest(c *chk.C) (containerClient ContainerClient, bbClient BlockBlobClient, id string) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ = createNewContainer(c, bsu)
 //	bbClient, _ = getBlockBlobClient(c, containerClient)
 //
@@ -866,7 +867,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestSetTierOnBlobUpload(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	for _, tier := range []AccessTier{AccessTierArchive, AccessTierCool, AccessTierHot} {
@@ -886,7 +887,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestBlobSetTierOnCommit(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -913,7 +914,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestSetTierOnCopyBlockBlobFromURL(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
@@ -968,7 +969,7 @@ package azblob
 //}
 //
 //func (s *aztestsSuite) TestSetTierOnStageBlockFromURL(c *chk.C) {
-//	bsu := getBSU(nil)
+//	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //

@@ -32,14 +32,14 @@ import (
 	chk "gopkg.in/check.v1"
 )
 
-type aztestsSuite struct {
+type azblobTestSuite struct {
 	suite.Suite
 	mode testframework.RecordMode
 }
 
 // Hookup to the testing framework
 func Test(t *testing.T) {
-	suite.Run(t, &aztestsSuite{mode: testframework.Playback})
+	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
 }
 
 type testContext struct {
@@ -84,12 +84,12 @@ func recordedTestTeardown(key string) {
 	}
 }
 
-func (s *aztestsSuite) BeforeTest(suite string, test string) {
+func (s *azblobTestSuite) BeforeTest(suite string, test string) {
 	// setup the test environment
 	recordedTestSetup(s.T(), s.mode)
 }
 
-func (s *aztestsSuite) AfterTest(suite string, test string) {
+func (s *azblobTestSuite) AfterTest(suite string, test string) {
 	// teardown the test context
 	recordedTestTeardown(s.T().Name())
 }

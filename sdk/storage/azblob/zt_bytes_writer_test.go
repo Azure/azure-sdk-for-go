@@ -10,7 +10,7 @@ package azblob
 //	chk "gopkg.in/check.v1"
 //)
 //
-//func (s *aztestsSuite) TestBytesWriterWriteAt(c *chk.C) {
+//func (s *azblobTestSuite) TestBytesWriterWriteAt(c *chk.C) {
 //	b := make([]byte, 10)
 //	buffer := newBytesWriter(b)
 //

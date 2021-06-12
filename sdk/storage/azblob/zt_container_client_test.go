@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-func (s *aztestsSuite) TestNewContainerClientValidName() {
+func (s *azblobTestSuite) TestNewContainerClientValidName() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -28,7 +28,7 @@ func (s *aztestsSuite) TestNewContainerClientValidName() {
 	_assert.Equal(testURL.URL(), correctURL)
 }
 
-func (s *aztestsSuite) TestCreateRootContainerURL() {
+func (s *azblobTestSuite) TestCreateRootContainerURL() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -42,7 +42,7 @@ func (s *aztestsSuite) TestCreateRootContainerURL() {
 	_assert.Equal(testURL.URL(), correctURL)
 }
 
-func (s *aztestsSuite) TestContainerCreateInvalidName() {
+func (s *azblobTestSuite) TestContainerCreateInvalidName() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -62,7 +62,7 @@ func (s *aztestsSuite) TestContainerCreateInvalidName() {
 	validateStorageError(_assert, err, StorageErrorCodeInvalidResourceName)
 }
 
-func (s *aztestsSuite) TestContainerCreateEmptyName() {
+func (s *azblobTestSuite) TestContainerCreateEmptyName() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -84,7 +84,7 @@ func (s *aztestsSuite) TestContainerCreateEmptyName() {
 	validateStorageError(_assert, err, StorageErrorCodeInvalidQueryParameterValue)
 }
 
-func (s *aztestsSuite) TestContainerCreateNameCollision() {
+func (s *azblobTestSuite) TestContainerCreateNameCollision() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -111,7 +111,7 @@ func (s *aztestsSuite) TestContainerCreateNameCollision() {
 	validateStorageError(_assert, err, StorageErrorCodeContainerAlreadyExists)
 }
 
-func (s *aztestsSuite) TestContainerCreateInvalidMetadata() {
+func (s *azblobTestSuite) TestContainerCreateInvalidMetadata() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -133,7 +133,7 @@ func (s *aztestsSuite) TestContainerCreateInvalidMetadata() {
 	_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
 }
 
-func (s *aztestsSuite) TestContainerCreateNilMetadata() {
+func (s *azblobTestSuite) TestContainerCreateNilMetadata() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -158,7 +158,7 @@ func (s *aztestsSuite) TestContainerCreateNilMetadata() {
 	_assert.Nil(response.Metadata)
 }
 
-func (s *aztestsSuite) TestContainerCreateEmptyMetadata() {
+func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -184,7 +184,7 @@ func (s *aztestsSuite) TestContainerCreateEmptyMetadata() {
 	_assert.Nil(response.Metadata)
 }
 
-//func (s *aztestsSuite) TestContainerCreateAccessContainer() {
+//func (s *azblobTestSuite) TestContainerCreateAccessContainer() {
 //	// TOD0: NotWorking
 //	_assert := assert.New(s.T())
 //testName := s.T().Name()
@@ -235,7 +235,7 @@ func (s *aztestsSuite) TestContainerCreateEmptyMetadata() {
 //	_assert.EqualValues(resp.Metadata, basicMetadata)
 //}
 
-//func (s *aztestsSuite) TestContainerCreateAccessBlob() {
+//func (s *azblobTestSuite) TestContainerCreateAccessBlob() {
 //	// TODO: Not Working
 //	_assert := assert.New(s.T())
 // testName := s.T().Name()
@@ -278,7 +278,7 @@ func (s *aztestsSuite) TestContainerCreateEmptyMetadata() {
 //	_assert.EqualValues(resp.Metadata, basicMetadata)
 //}
 
-func (s *aztestsSuite) TestContainerCreateAccessNone() {
+func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -326,7 +326,7 @@ func validateContainerDeleted(_assert *assert.Assertions, containerClient Contai
 	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
 }
 
-func (s *aztestsSuite) TestContainerDelete() {
+func (s *azblobTestSuite) TestContainerDelete() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -344,7 +344,7 @@ func (s *aztestsSuite) TestContainerDelete() {
 	validateContainerDeleted(_assert, containerClient)
 }
 
-func (s *aztestsSuite) TestContainerDeleteNonExistent() {
+func (s *azblobTestSuite) TestContainerDeleteNonExistent() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -361,7 +361,7 @@ func (s *aztestsSuite) TestContainerDeleteNonExistent() {
 	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
 }
 
-func (s *aztestsSuite) TestContainerDeleteIfModifiedSinceTrue() {
+func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceTrue() {
 
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -387,7 +387,7 @@ func (s *aztestsSuite) TestContainerDeleteIfModifiedSinceTrue() {
 	validateContainerDeleted(_assert, containerClient)
 }
 
-//func (s *aztestsSuite) TestContainerDeleteIfModifiedSinceFalse() {
+//func (s *azblobTestSuite) TestContainerDeleteIfModifiedSinceFalse() {
 //	// TODO: NotWorking
 //	_assert := assert.New(s.T())
 // testName := s.T().Name()
@@ -414,7 +414,7 @@ func (s *aztestsSuite) TestContainerDeleteIfModifiedSinceTrue() {
 //	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 //}
 
-func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
+func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -440,7 +440,7 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 	validateContainerDeleted(_assert, containerClient)
 }
 
-//func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
+//func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 //	// TODO: Not Working
 //	_assert := assert.New(s.T())
 // testName := s.T().Name()
@@ -468,7 +468,7 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 //	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 //}
 
-////func (s *aztestsSuite) TestContainerAccessConditionsUnsupportedConditions() {
+////func (s *azblobTestSuite) TestContainerAccessConditionsUnsupportedConditions() {
 ////	// This test defines that the library will panic if the user specifies conditional headers
 ////	// that will be ignored by the service
 ////	serviceClient := getServiceClient()
@@ -486,7 +486,7 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 ////	_assert(err, chk.NotNil)
 ////}
 //
-////func (s *aztestsSuite) TestContainerListBlobsNonexistentPrefix() {
+////func (s *azblobTestSuite) TestContainerListBlobsNonexistentPrefix() {
 ////	serviceClient := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
@@ -501,7 +501,7 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 ////	_assert(listResponse, chk.IsNil)
 ////}
 //
-//func (s *aztestsSuite) TestContainerListBlobsSpecificValidPrefix() {
+//func (s *azblobTestSuite) TestContainerListBlobsSpecificValidPrefix() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -529,7 +529,7 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 //	_assert(count, chk.Equals, 1)
 //}
 //
-//func (s *aztestsSuite) TestContainerListBlobsValidDelimiter() {
+//func (s *azblobTestSuite) TestContainerListBlobsValidDelimiter() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -564,7 +564,7 @@ func (s *aztestsSuite) TestContainerDeleteIfUnModifiedSinceTrue() {
 //	//_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
 //}
 
-func (s *aztestsSuite) TestContainerListBlobsWithSnapshots() {
+func (s *azblobTestSuite) TestContainerListBlobsWithSnapshots() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -605,7 +605,7 @@ func (s *aztestsSuite) TestContainerListBlobsWithSnapshots() {
 	_assert.Equal(wasFound, true)
 }
 
-func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
+func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -629,7 +629,7 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 	_assert.Nil(pager.PageResponse().EnumerationResults.Segment.BlobPrefixes)
 }
 
-////func (s *aztestsSuite) TestContainerListBlobsIncludeTypeMetadata() {
+////func (s *azblobTestSuite) TestContainerListBlobsIncludeTypeMetadata() {
 ////	serviceClient := getServiceClient()
 ////	container, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(container)
@@ -647,7 +647,7 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_assert(resp.Segment.BlobItems[1].Metadata["field"], chk.Equals, "value")
 ////}
 //
-////func (s *aztestsSuite) TestContainerListBlobsIncludeTypeSnapshots() {
+////func (s *azblobTestSuite) TestContainerListBlobsIncludeTypeSnapshots() {
 ////	serviceClient := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
@@ -666,7 +666,7 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_assert(resp.Segment.BlobItems[1].Snapshot, chk.Equals, "")
 ////}
 ////
-////func (s *aztestsSuite) TestContainerListBlobsIncludeTypeCopy() {
+////func (s *azblobTestSuite) TestContainerListBlobsIncludeTypeCopy() {
 ////	serviceClient := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
@@ -689,7 +689,7 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_assert(resp.Segment.BlobItems[0].Properties.CopyStatus, chk.Equals, CopyStatusSuccess)
 ////}
 ////
-////func (s *aztestsSuite) TestContainerListBlobsIncludeTypeUncommitted() {
+////func (s *azblobTestSuite) TestContainerListBlobsIncludeTypeUncommitted() {
 ////	serviceClient := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
@@ -730,7 +730,7 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	return nil
 ////}
 ////
-////func (s *aztestsSuite) TestContainerListBlobsIncludeTypeDeleted() {
+////func (s *azblobTestSuite) TestContainerListBlobsIncludeTypeDeleted() {
 ////	serviceClient := getServiceClient()
 ////
 ////	runTestRequiringServiceProperties(c, serviceClient, "DeletedBlobNotFound", enableSoftDelete,
@@ -767,14 +767,14 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	return nil
 ////}
 ////
-////func (s *aztestsSuite) TestContainerListBlobsIncludeMultiple() {
+////func (s *azblobTestSuite) TestContainerListBlobsIncludeMultiple() {
 ////	serviceClient := getServiceClient()
 ////
 ////	runTestRequiringServiceProperties(c, serviceClient, "DeletedBlobNotFound", enableSoftDelete,
 ////		testContainerListBlobsIncludeMultipleImpl, disableSoftDelete)
 ////}
 ////
-////func (s *aztestsSuite) TestContainerListBlobsMaxResultsNegative() {
+////func (s *azblobTestSuite) TestContainerListBlobsMaxResultsNegative() {
 ////	serviceClient := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, serviceClient)
 ////
@@ -783,7 +783,7 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_assert(err, chk.Not(chk.IsNil))
 ////}
 //
-////func (s *aztestsSuite) TestContainerListBlobsMaxResultsZero() {
+////func (s *azblobTestSuite) TestContainerListBlobsMaxResultsZero() {
 ////	serviceClient := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
@@ -797,7 +797,7 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////}
 //
 //// TODO: Adele: Case failing
-////func (s *aztestsSuite) TestContainerListBlobsMaxResultsInsufficient() {
+////func (s *azblobTestSuite) TestContainerListBlobsMaxResultsInsufficient() {
 ////	serviceClient := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
@@ -811,7 +811,7 @@ func (s *aztestsSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_assert((<- resp).Name, chk.Equals, blobName)
 ////}
 
-func (s *aztestsSuite) TestContainerListBlobsMaxResultsExact() {
+func (s *azblobTestSuite) TestContainerListBlobsMaxResultsExact() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -845,7 +845,7 @@ func (s *aztestsSuite) TestContainerListBlobsMaxResultsExact() {
 	_assert.Nil(pager.Err())
 }
 
-func (s *aztestsSuite) TestContainerListBlobsMaxResultsSufficient() {
+func (s *azblobTestSuite) TestContainerListBlobsMaxResultsSufficient() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -881,7 +881,7 @@ func (s *aztestsSuite) TestContainerListBlobsMaxResultsSufficient() {
 	_assert.Nil(pager.Err())
 }
 
-func (s *aztestsSuite) TestContainerListBlobsNonExistentContainer() {
+func (s *azblobTestSuite) TestContainerListBlobsNonExistentContainer() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -899,7 +899,7 @@ func (s *aztestsSuite) TestContainerListBlobsNonExistentContainer() {
 	_assert.NotNil(pager.Err())
 }
 
-func (s *aztestsSuite) TestContainerGetSetPermissionsMultiplePolicies() {
+func (s *azblobTestSuite) TestContainerGetSetPermissionsMultiplePolicies() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -951,7 +951,7 @@ func (s *aztestsSuite) TestContainerGetSetPermissionsMultiplePolicies() {
 	_assert.EqualValues(resp.SignedIdentifiers, permissions)
 }
 
-func (s *aztestsSuite) TestContainerGetPermissionsPublicAccessNotNone() {
+func (s *azblobTestSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -976,7 +976,7 @@ func (s *aztestsSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 	_assert.Equal(*resp.BlobPublicAccess, PublicAccessBlob)
 }
 
-//func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessNone() {
+//func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessNone() {
 //	// Test the basic one by making an anonymous request to ensure it's actually doing it and also with GetPermissions
 //	// For all the others, can just use GetPermissions since we've validated that it at least registers on the server correctly
 //	serviceClient := getServiceClient(nil)
@@ -1010,7 +1010,7 @@ func (s *aztestsSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 //	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
 //}
 
-func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessBlob() {
+func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessBlob() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -1037,7 +1037,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessBlob() {
 	_assert.Equal(*resp.BlobPublicAccess, PublicAccessBlob)
 }
 
-func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer() {
+func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -1065,7 +1065,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer() {
 }
 
 ////// TODO: After Pacer is ready
-////func (s *aztestsSuite) TestContainerSetPermissionsACLSinglePolicy() {
+////func (s *azblobTestSuite) TestContainerSetPermissionsACLSinglePolicy() {
 ////	serviceClient := getServiceClient()
 ////	credential, err := getGenericCredential("")
 ////	if err != nil {
@@ -1120,7 +1120,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsPublicAccessContainer() {
 ////	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
 ////}
 
-func (s *aztestsSuite) TestContainerSetPermissionsACLMoreThanFive() {
+func (s *azblobTestSuite) TestContainerSetPermissionsACLMoreThanFive() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -1164,7 +1164,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsACLMoreThanFive() {
 	validateStorageError(_assert, err, StorageErrorCodeInvalidXMLDocument)
 }
 
-func (s *aztestsSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
+func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -1226,7 +1226,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAndModifyACL() {
 	_assert.EqualValues(resp.SignedIdentifiers, permissions)
 }
 
-func (s *aztestsSuite) TestContainerSetPermissionsDeleteAllPolicies() {
+func (s *azblobTestSuite) TestContainerSetPermissionsDeleteAllPolicies() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -1286,7 +1286,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsDeleteAllPolicies() {
 	_assert.Nil(resp.SignedIdentifiers)
 }
 
-func (s *aztestsSuite) TestContainerSetPermissionsInvalidPolicyTimes() {
+func (s *azblobTestSuite) TestContainerSetPermissionsInvalidPolicyTimes() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -1329,7 +1329,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsInvalidPolicyTimes() {
 	_assert.Nil(err)
 }
 
-func (s *aztestsSuite) TestContainerSetPermissionsNilPolicySlice() {
+func (s *azblobTestSuite) TestContainerSetPermissionsNilPolicySlice() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -1346,7 +1346,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsNilPolicySlice() {
 	_assert.Nil(err)
 }
 
-func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
+func (s *azblobTestSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -1393,7 +1393,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 }
 
 //
-//func (s *aztestsSuite) TestContainerSetPermissionsIfModifiedSinceTrue() {
+//func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //	serviceClient := getServiceClient(nil)
 //	container, _ := createNewContainer(c, serviceClient)
@@ -1413,7 +1413,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 //	_assert(resp.BlobPublicAccess, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestContainerSetPermissionsIfModifiedSinceFalse() {
+//func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //
@@ -1432,7 +1432,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestContainerSetPermissionsIfUnModifiedSinceTrue() {
+//func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //
@@ -1453,7 +1453,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 //	_assert(resp.BlobPublicAccess, chk.IsNil)
 //}
 
-//func (s *aztestsSuite) TestContainerSetPermissionsIfUnModifiedSinceFalse() {
+//func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceFalse() {
 //	// TODO: NotWorking
 //	_assert := assert.New(s.T())
 // testName := s.T().Name()
@@ -1479,7 +1479,7 @@ func (s *aztestsSuite) TestContainerSetPermissionsSignedIdentifierTooLong() {
 //	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 //}
 
-func (s *aztestsSuite) TestContainerGetPropertiesAndMetadataNoMetadata() {
+func (s *azblobTestSuite) TestContainerGetPropertiesAndMetadataNoMetadata() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -1497,7 +1497,7 @@ func (s *aztestsSuite) TestContainerGetPropertiesAndMetadataNoMetadata() {
 	_assert.Nil(resp.Metadata)
 }
 
-func (s *aztestsSuite) TestContainerGetPropsAndMetaNonExistentContainer() {
+func (s *azblobTestSuite) TestContainerGetPropsAndMetaNonExistentContainer() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -1514,7 +1514,7 @@ func (s *aztestsSuite) TestContainerGetPropsAndMetaNonExistentContainer() {
 	validateStorageError(_assert, err, StorageErrorCodeContainerNotFound)
 }
 
-func (s *aztestsSuite) TestContainerSetMetadataEmpty() {
+func (s *azblobTestSuite) TestContainerSetMetadataEmpty() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -1545,7 +1545,7 @@ func (s *aztestsSuite) TestContainerSetMetadataEmpty() {
 	_assert.Nil(resp.Metadata)
 }
 
-func (s *aztestsSuite) TestContainerSetMetadataNil() {
+func (s *azblobTestSuite) TestContainerSetMetadataNil() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -1572,7 +1572,7 @@ func (s *aztestsSuite) TestContainerSetMetadataNil() {
 	_assert.Nil(resp.Metadata)
 }
 
-func (s *aztestsSuite) TestContainerSetMetadataInvalidField() {
+func (s *azblobTestSuite) TestContainerSetMetadataInvalidField() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -1593,7 +1593,7 @@ func (s *aztestsSuite) TestContainerSetMetadataInvalidField() {
 	_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
 }
 
-func (s *aztestsSuite) TestContainerSetMetadataNonExistent() {
+func (s *azblobTestSuite) TestContainerSetMetadataNonExistent() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -1611,7 +1611,7 @@ func (s *aztestsSuite) TestContainerSetMetadataNonExistent() {
 }
 
 //
-//func (s *aztestsSuite) TestContainerSetMetadataIfModifiedSinceTrue() {
+//func (s *azblobTestSuite) TestContainerSetMetadataIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	serviceClient := getServiceClient(nil)
@@ -1635,7 +1635,7 @@ func (s *aztestsSuite) TestContainerSetMetadataNonExistent() {
 //
 //}
 
-//func (s *aztestsSuite) TestContainerSetMetadataIfModifiedSinceFalse() {
+//func (s *azblobTestSuite) TestContainerSetMetadataIfModifiedSinceFalse() {
 //	// TODO: NotWorking
 //	_assert := assert.New(s.T())
 // testName := s.T().Name()
@@ -1663,7 +1663,7 @@ func (s *aztestsSuite) TestContainerSetMetadataNonExistent() {
 //	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 //}
 
-func (s *aztestsSuite) TestContainerNewBlobURL() {
+func (s *azblobTestSuite) TestContainerNewBlobURL() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -1680,7 +1680,7 @@ func (s *aztestsSuite) TestContainerNewBlobURL() {
 	_assert.IsTypef(bbClient, BlobClient{}, fmt.Sprintf("%T should be of type %T", bbClient, BlobClient{}))
 }
 
-func (s *aztestsSuite) TestContainerNewBlockBlobClient() {
+func (s *azblobTestSuite) TestContainerNewBlockBlobClient() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)

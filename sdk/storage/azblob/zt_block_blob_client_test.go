@@ -30,7 +30,7 @@ package azblob
 //	blockID = base64.StdEncoding.EncodeToString(u[:])
 //}
 //
-//func (s *aztestsSuite) TestStageGetBlocks(c *chk.C) {
+//func (s *azblobTestSuite) TestStageGetBlocks(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -97,7 +97,7 @@ package azblob
 //	c.Assert(*blockList.BlockList.CommittedBlocks, chk.HasLen, len(data))
 //}
 //
-//func (s *aztestsSuite) TestStageBlockFromURL(c *chk.C) {
+//func (s *azblobTestSuite) TestStageBlockFromURL(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -196,7 +196,7 @@ package azblob
 //	c.Assert(destData, chk.DeepEquals, content)
 //}
 //
-//func (s *aztestsSuite) TestCopyBlockBlobFromURL(c *chk.C) {
+//func (s *azblobTestSuite) TestCopyBlockBlobFromURL(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -287,7 +287,7 @@ package azblob
 //	c.Assert(*resp.CopyStatus, chk.DeepEquals, "success")
 //}
 //
-//func (s *aztestsSuite) TestBlobSASQueryParamOverrideResponseHeaders(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSASQueryParamOverrideResponseHeaders(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -349,7 +349,7 @@ package azblob
 //	c.Assert(*gResp.ContentType, chk.Equals, contentTypeVal)
 //}
 //
-//func (s *aztestsSuite) TestStageBlockWithMD5(c *chk.C) {
+//func (s *azblobTestSuite) TestStageBlockWithMD5(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -397,7 +397,7 @@ package azblob
 //	//c.Assert(err.(StorageError), chk.Equals, StorageErrorCodeMD5Mismatch)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlobHTTPHeaders(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlobHTTPHeaders(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -420,7 +420,7 @@ package azblob
 //	c.Assert(h, chk.DeepEquals, basicHeaders)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlobMetadataNotEmpty(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlobMetadataNotEmpty(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -443,7 +443,7 @@ package azblob
 //	c.Assert(actualMetadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlobMetadataEmpty(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlobMetadataEmpty(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -461,7 +461,7 @@ package azblob
 //	c.Assert(resp.Metadata, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlobMetadataInvalid(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlobMetadataInvalid(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -479,7 +479,7 @@ package azblob
 //	c.Assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlobIfModifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -502,7 +502,7 @@ package azblob
 //	validateUpload(c, bbClient.BlobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlobIfModifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -528,7 +528,7 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -551,7 +551,7 @@ package azblob
 //	validateUpload(c, bbClient.BlobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlobIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -570,7 +570,7 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlobIfMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -594,7 +594,7 @@ package azblob
 //	validateUpload(c, bbClient.BlobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlobIfMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -617,7 +617,7 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlobIfNoneMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -643,7 +643,7 @@ package azblob
 //	validateUpload(c, bbClient.BlobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlobIfNoneMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -676,7 +676,7 @@ package azblob
 //	return containerClient, bbClient, blockID
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlockListHTTPHeadersEmpty(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlockListHTTPHeadersEmpty(c *chk.C) {
 //	contClient, bbClient, blockId := setupPutBlockListTest(c)
 //	defer deleteContainer(contClient)
 //
@@ -700,7 +700,7 @@ package azblob
 //	c.Assert(*(resp.BlockList.CommittedBlocks), chk.HasLen, 1)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlockListIfModifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceTrue(c *chk.C) {
 //	contClient, bbClient, blockId := setupPutBlockListTest(c)
 //	defer deleteContainer(contClient)
 //	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
@@ -717,7 +717,7 @@ package azblob
 //	validateBlobCommitted(c, bbClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlockListIfModifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceFalse(c *chk.C) {
 //	contClient, bbClient, blockId := setupPutBlockListTest(c)
 //	defer deleteContainer(contClient)
 //
@@ -732,7 +732,7 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue(c *chk.C) {
 //	contClient, bbClient, blockId := setupPutBlockListTest(c)
 //	defer deleteContainer(contClient)
 //	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
@@ -749,7 +749,7 @@ package azblob
 //	validateBlobCommitted(c, bbClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse(c *chk.C) {
 //	contClient, bbClient, blockId := setupPutBlockListTest(c)
 //	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
 //	c.Assert(err, chk.IsNil)
@@ -765,7 +765,7 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlockListIfMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlockListIfMatchTrue(c *chk.C) {
 //	contClient, bbClient, blockId := setupPutBlockListTest(c)
 //	defer deleteContainer(contClient)
 //	resp, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
@@ -780,7 +780,7 @@ package azblob
 //	validateBlobCommitted(c, bbClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlockListIfMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlockListIfMatchFalse(c *chk.C) {
 //	contClient, bbClient, blockId := setupPutBlockListTest(c)
 //	defer deleteContainer(contClient)
 //	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
@@ -796,7 +796,7 @@ package azblob
 //
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlockListIfNoneMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchTrue(c *chk.C) {
 //	contClient, bbClient, blockId := setupPutBlockListTest(c)
 //	defer deleteContainer(contClient)
 //	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
@@ -812,7 +812,7 @@ package azblob
 //	validateBlobCommitted(c, bbClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlockListIfNoneMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchFalse(c *chk.C) {
 //	contClient, bbClient, blockId := setupPutBlockListTest(c)
 //	defer deleteContainer(contClient)
 //	resp, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
@@ -826,7 +826,7 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlockListValidateData(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlockListValidateData(c *chk.C) {
 //	contClient, bbClient, blockId := setupPutBlockListTest(c)
 //	defer deleteContainer(contClient)
 //
@@ -838,7 +838,7 @@ package azblob
 //	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
 //}
 //
-//func (s *aztestsSuite) TestBlobPutBlockListModifyBlob(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutBlockListModifyBlob(c *chk.C) {
 //	contClient, bbClient, blockId := setupPutBlockListTest(c)
 //	defer deleteContainer(contClient)
 //
@@ -866,7 +866,7 @@ package azblob
 //	c.Assert(resp.BlockList.UncommittedBlocks, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestSetTierOnBlobUpload(c *chk.C) {
+//func (s *azblobTestSuite) TestSetTierOnBlobUpload(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -886,7 +886,7 @@ package azblob
 //	}
 //}
 //
-//func (s *aztestsSuite) TestBlobSetTierOnCommit(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSetTierOnCommit(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -913,7 +913,7 @@ package azblob
 //	}
 //}
 //
-//func (s *aztestsSuite) TestSetTierOnCopyBlockBlobFromURL(c *chk.C) {
+//func (s *azblobTestSuite) TestSetTierOnCopyBlockBlobFromURL(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -968,7 +968,7 @@ package azblob
 //	}
 //}
 //
-//func (s *aztestsSuite) TestSetTierOnStageBlockFromURL(c *chk.C) {
+//func (s *azblobTestSuite) TestSetTierOnStageBlockFromURL(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)

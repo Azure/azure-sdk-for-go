@@ -16,7 +16,7 @@ package azblob
 //	"time"
 //)
 //
-//func (s *aztestsSuite) TestSetBlobTags(c *chk.C) {
+//func (s *azblobTestSuite) TestSetBlobTags(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -53,7 +53,7 @@ package azblob
 //	}
 //}
 //
-//func (s *aztestsSuite) TestSetBlobTagsWithVID(c *chk.C) {
+//func (s *azblobTestSuite) TestSetBlobTagsWithVID(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -102,7 +102,7 @@ package azblob
 //	c.Assert(blobGetTagsResponse.Tags.BlobTagSet, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestUploadBlockBlobWithSpecialCharactersInTags(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadBlockBlobWithSpecialCharactersInTags(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -132,7 +132,7 @@ package azblob
 //	}
 //}
 //
-//func (s *aztestsSuite) TestStageBlockWithTags(c *chk.C) {
+//func (s *azblobTestSuite) TestStageBlockWithTags(c *chk.C) {
 //	blockIDIntToBase64 := func(blockID int) string {
 //		binaryBlockID := (&[4]byte{})[:]
 //		binary.LittleEndian.PutUint32(binaryBlockID, uint32(blockID))
@@ -194,7 +194,7 @@ package azblob
 //	}
 //}
 //
-//func (s *aztestsSuite) TestStageBlockFromURLWithTags(c *chk.C) {
+//func (s *azblobTestSuite) TestStageBlockFromURLWithTags(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -295,7 +295,7 @@ package azblob
 //	c.Assert(destData, chk.DeepEquals, sourceData)
 //}
 //
-//func (s *aztestsSuite) TestCopyBlockBlobFromURLWithTags(c *chk.C) {
+//func (s *azblobTestSuite) TestCopyBlockBlobFromURLWithTags(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -378,7 +378,7 @@ package azblob
 //	c.Assert(resp.RawResponse.Header.Get("x-ms-content-crc64"), chk.Not(chk.Equals), "")
 //}
 //
-//func (s *aztestsSuite) TestGetPropertiesReturnsTagsCount(c *chk.C) {
+//func (s *azblobTestSuite) TestGetPropertiesReturnsTagsCount(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -403,7 +403,7 @@ package azblob
 //	c.Assert(downloadResp.RawResponse.Header.Get("x-ms-tag-count"), chk.Equals, "3")
 //}
 //
-//func (s *aztestsSuite) TestSetBlobTagForSnapshot(c *chk.C) {
+//func (s *azblobTestSuite) TestSetBlobTagForSnapshot(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -429,7 +429,7 @@ package azblob
 //}
 //
 //// TODO: Once new pacer is done.
-////func (s *aztestsSuite) TestListBlobReturnsTags(c *chk.C) {
+////func (s *azblobTestSuite) TestListBlobReturnsTags(c *chk.C) {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient)
@@ -453,7 +453,7 @@ package azblob
 ////	}
 ////}
 ////
-////func (s *aztestsSuite) TestFindBlobsByTags(c *chk.C) {
+////func (s *azblobTestSuite) TestFindBlobsByTags(c *chk.C) {
 ////	bsu := getServiceClient()
 ////	containerClient1, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient1)
@@ -506,7 +506,7 @@ package azblob
 ////	}
 ////}
 ////
-////func (s *aztestsSuite) TestFilterBlobsUsingAccountSAS(c *chk.C) {
+////func (s *azblobTestSuite) TestFilterBlobsUsingAccountSAS(c *chk.C) {
 ////	accountName, accountKey := accountInfo()
 ////	credential, err := NewSharedKeyCredential(accountName, accountKey)
 ////	if err != nil {
@@ -562,7 +562,7 @@ package azblob
 ////	c.Assert(err, chk.IsNil)
 ////}
 //
-//func (s *aztestsSuite) TestCreatePageBlobWithTags(c *chk.C) {
+//func (s *azblobTestSuite) TestCreatePageBlobWithTags(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -631,7 +631,7 @@ package azblob
 //	}
 //}
 //
-//func (s *aztestsSuite) TestPageBlobSetBlobTagForSnapshot(c *chk.C) {
+//func (s *azblobTestSuite) TestPageBlobSetBlobTagForSnapshot(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -662,7 +662,7 @@ package azblob
 //	}
 //}
 //
-//func (s *aztestsSuite) TestCreateAppendBlobWithTags(c *chk.C) {
+//func (s *azblobTestSuite) TestCreateAppendBlobWithTags(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)

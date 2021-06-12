@@ -11,7 +11,7 @@ package azblob
 //)
 //
 //// tests general functionality
-//func (s *aztestsSuite) TestBlobListWrapper(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobListWrapper(c *chk.C) {
 //	bsu, err := getGenericBSU("", nil)
 //
 //	c.Assert(err, chk.IsNil)
@@ -46,7 +46,7 @@ package azblob
 //}
 //
 //// tests that the buffer filling isn't a problem
-//func (s *aztestsSuite) TestBlobListWrapperFullBuffer(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobListWrapperFullBuffer(c *chk.C) {
 //	bsu, err := getGenericBSU("", nil)
 //
 //	c.Assert(err, chk.IsNil)
@@ -80,7 +80,7 @@ package azblob
 //	c.Assert(files, chk.DeepEquals, found)
 //}
 //
-//func (s *aztestsSuite) TestBlobListWrapperListingError(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobListWrapperListingError(c *chk.C) {
 //	bsu, err := getGenericBSU("", nil)
 //
 //	c.Assert(err, chk.IsNil)

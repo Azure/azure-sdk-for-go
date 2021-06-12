@@ -66,7 +66,7 @@ package azblob
 //	return int(binary.LittleEndian.Uint32(blockIDBase64ToBinary(blockID)))
 //}
 //
-//func (s *aztestsSuite) TestPutBlockAndPutBlockListWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -114,7 +114,7 @@ package azblob
 //	c.Assert(*getResp.LastModified, chk.DeepEquals, *resp.LastModified)
 //}
 //
-//func (s *aztestsSuite) TestPutBlockAndPutBlockListWithCPKByScope(c *chk.C) {
+//func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -169,7 +169,7 @@ package azblob
 //	c.Assert(*getResp.EncryptionScope, chk.DeepEquals, *testCPKByScope.EncryptionScope)
 //}
 //
-//func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestPutBlockFromURLAndCommitWithCPK(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -280,7 +280,7 @@ package azblob
 //	c.Assert(*downloadResp.EncryptionKeySHA256, chk.DeepEquals, *testCPKByValue.EncryptionKeySHA256)
 //}
 //
-//func (s *aztestsSuite) TestPutBlockFromURLAndCommitWithCPKWithScope(c *chk.C) {
+//func (s *azblobTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -387,7 +387,7 @@ package azblob
 //	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, *testCPKByScope.EncryptionScope)
 //}
 //
-//func (s *aztestsSuite) TestUploadBlobWithMD5WithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPK(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -429,7 +429,7 @@ package azblob
 //	c.Assert(downloadResp.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySHA256)
 //}
 //
-//func (s *aztestsSuite) TestUploadBlobWithMD5WithCPKScope(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -461,7 +461,7 @@ package azblob
 //	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, *testCPKByScope.EncryptionScope)
 //}
 //
-//func (s *aztestsSuite) TestAppendBlockWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestAppendBlockWithCPK(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -514,7 +514,7 @@ package azblob
 //	c.Assert(*downloadResp.EncryptionKeySHA256, chk.DeepEquals, *testCPKByValue.EncryptionKeySHA256)
 //}
 //
-//func (s *aztestsSuite) TestAppendBlockWithCPKScope(c *chk.C) {
+//func (s *azblobTestSuite) TestAppendBlockWithCPKScope(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -563,7 +563,7 @@ package azblob
 //	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, *testCPKByScope.EncryptionScope)
 //}
 //
-//func (s *aztestsSuite) TestAppendBlockFromURLWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestAppendBlockFromURLWithCPK(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -669,7 +669,7 @@ package azblob
 //	c.Assert(destData, chk.DeepEquals, srcData)
 //}
 //
-//func (s *aztestsSuite) TestAppendBlockFromURLWithCPKScope(c *chk.C) {
+//func (s *azblobTestSuite) TestAppendBlockFromURLWithCPKScope(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -775,7 +775,7 @@ package azblob
 //	return
 //}
 //
-//func (s *aztestsSuite) TestPageBlockWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestPageBlockWithCPK(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -825,7 +825,7 @@ package azblob
 //	c.Assert(*downloadResp.EncryptionKeySHA256, chk.DeepEquals, *testCPKByValue.EncryptionKeySHA256)
 //}
 //
-//func (s *aztestsSuite) TestPageBlockWithCPKScope(c *chk.C) {
+//func (s *azblobTestSuite) TestPageBlockWithCPKScope(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -866,7 +866,7 @@ package azblob
 //	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, *testCPKByScope.EncryptionScope)
 //}
 //
-//func (s *aztestsSuite) TestPageBlockFromURLWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestPageBlockFromURLWithCPK(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -945,7 +945,7 @@ package azblob
 //	c.Assert(destData, chk.DeepEquals, srcData)
 //}
 //
-//func (s *aztestsSuite) TestPageBlockFromURLWithCPKScope(c *chk.C) {
+//func (s *azblobTestSuite) TestPageBlockFromURLWithCPKScope(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -1015,7 +1015,7 @@ package azblob
 //	c.Assert(destData, chk.DeepEquals, srcData)
 //}
 //
-//func (s *aztestsSuite) TestUploadPagesFromURLWithMD5WithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadPagesFromURLWithMD5WithCPK(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -1104,7 +1104,7 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeMD5Mismatch)
 //}
 //
-//func (s *aztestsSuite) TestClearDiffPagesWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestClearDiffPagesWithCPK(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1150,7 +1150,7 @@ package azblob
 //	c.Assert(pageListResp.PageList.PageRange, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobResizeWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobResizeWithCPK(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1189,7 +1189,7 @@ package azblob
 //	return
 //}
 //
-//func (s *aztestsSuite) TestGetSetBlobMetadataWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPK(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1227,7 +1227,7 @@ package azblob
 //	c.Assert(getResp.Metadata, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestGetSetBlobMetadataWithCPKScope(c *chk.C) {
+//func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPKScope(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1258,7 +1258,7 @@ package azblob
 //	c.Assert(getResp.Metadata, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSnapshotWithCPK(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1299,7 +1299,7 @@ package azblob
 //	//c.Assert(err.(StorageError).Response().StatusCode, chk.Equals, 404)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotWithCPKScope(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)

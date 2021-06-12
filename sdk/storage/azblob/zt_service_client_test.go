@@ -14,7 +14,7 @@ package azblob
 //	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
 //)
 //
-//func (s *aztestsSuite) TestGetAccountInfo(c *chk.C) {
+//func (s *azblobTestSuite) TestGetAccountInfo(c *chk.C) {
 //	sa := getServiceClient(nil)
 //
 //	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
@@ -40,7 +40,7 @@ package azblob
 //	c.Assert(bAccInfo, chk.Not(chk.DeepEquals), BlobGetAccountInfoResponse{})
 //}
 //
-//func (s *aztestsSuite) TestListContainersBasic(c *chk.C) {
+//func (s *azblobTestSuite) TestListContainersBasic(c *chk.C) {
 //	sa, err := getGenericBSU("", nil)
 //	c.Assert(err, chk.IsNil)
 //
@@ -104,7 +104,7 @@ package azblob
 //	c.Assert(count >= 0, chk.Equals, true)
 //}
 //
-//func (s *aztestsSuite) TestListContainersPaged(c *chk.C) {
+//func (s *azblobTestSuite) TestListContainersPaged(c *chk.C) {
 //	sa := getServiceClient(nil)
 //
 //	const numContainers = 6
@@ -163,7 +163,7 @@ package azblob
 //	}
 //}
 //
-//func (s *aztestsSuite) TestAccountListContainersEmptyPrefix(c *chk.C) {
+//func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient1, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient1)
@@ -187,7 +187,7 @@ package azblob
 //}
 //
 //// TODO re-enable after fixing error handling
-////func (s *aztestsSuite) TestAccountListContainersMaxResultsNegative(c *chk.C) {
+////func (s *azblobTestSuite) TestAccountListContainersMaxResultsNegative(c *chk.C) {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient)
@@ -205,7 +205,7 @@ package azblob
 ////	}
 ////}
 //
-////func (s *aztestsSuite) TestAccountListContainersMaxResultsExact(c *chk.C) {
+////func (s *azblobTestSuite) TestAccountListContainersMaxResultsExact(c *chk.C) {
 ////	// If this test fails, ensure there are no extra containers prefixed with go in the account. These may be left over if a test is interrupted.
 ////	bsu := getServiceClient()
 ////	containerClient1, containerName1 := createNewContainerWithSuffix(c, bsu, "abc")
@@ -230,7 +230,7 @@ package azblob
 ////	c.Assert(*(*page.EnumerationResults.ContainerItems)[1].Name, chk.DeepEquals, containerName2)
 ////}
 //
-//func (s *aztestsSuite) TestAccountDeleteRetentionPolicy(c *chk.C) {
+//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicy(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //
 //	days := int32(5)
@@ -259,7 +259,7 @@ package azblob
 //	c.Assert(resp.StorageServiceProperties.DeleteRetentionPolicy.Days, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestAccountDeleteRetentionPolicyEmpty(c *chk.C) {
+//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyEmpty(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //
 //	days := int32(5)
@@ -280,7 +280,7 @@ package azblob
 //	c.Assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestAccountDeleteRetentionPolicyNil(c *chk.C) {
+//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyNil(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //
 //	days := int32(5)
@@ -313,7 +313,7 @@ package azblob
 //	bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
 //}
 //
-//func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysTooSmall(c *chk.C) {
+//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysTooSmall(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //
 //	days := int32(0) // Minimum days is 1. Validated on the client.
@@ -322,7 +322,7 @@ package azblob
 //	c.Assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysTooLarge(c *chk.C) {
+//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysTooLarge(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //
 //	days := int32(366) // Max days is 365. Left to the service for validation.
@@ -333,7 +333,7 @@ package azblob
 //	validateStorageError(c, err, StorageErrorCodeInvalidXMLDocument)
 //}
 //
-//func (s *aztestsSuite) TestAccountDeleteRetentionPolicyDaysOmitted(c *chk.C) {
+//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysOmitted(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //
 //	// Days is required if enabled is true.

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-func (s *aztestsSuite) TestCreateBlobClient() {
+func (s *azblobTestSuite) TestCreateBlobClient() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -36,7 +36,7 @@ func (s *aztestsSuite) TestCreateBlobClient() {
 	_assert.Equal(blobClient.URL(), correctURL)
 }
 
-func (s *aztestsSuite) TestCreateBlobClientWithSnapshotAndSAS() {
+func (s *azblobTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -78,7 +78,7 @@ func (s *aztestsSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	_assert.Equal(blobURLParts, correctURL)
 }
 
-//// func (s *aztestsSuite) TestBlobWithNewPipeline() {
+//// func (s *azblobTestSuite) TestBlobWithNewPipeline() {
 //// 	serviceClient := getServiceClient()
 //// 	containerClient, _ := getContainerClient(c, serviceClient)
 //// 	blobClient := containerClient.NewBlockBlobClient(blobPrefix)
@@ -105,7 +105,7 @@ func waitForCopy(_assert *assert.Assertions, copyBlobClient BlockBlobClient, blo
 	}
 }
 
-func (s *aztestsSuite) TestBlobStartCopyDestEmpty() {
+func (s *azblobTestSuite) TestBlobStartCopyDestEmpty() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -141,7 +141,7 @@ func (s *aztestsSuite) TestBlobStartCopyDestEmpty() {
 	resp.Body(RetryReaderOptions{}).Close()
 }
 
-func (s *aztestsSuite) TestBlobStartCopyMetadata() {
+func (s *azblobTestSuite) TestBlobStartCopyMetadata() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -177,7 +177,7 @@ func (s *aztestsSuite) TestBlobStartCopyMetadata() {
 	_assert.EqualValues(resp2.Metadata, metadata)
 }
 
-func (s *aztestsSuite) TestBlobStartCopyMetadataNil() {
+func (s *azblobTestSuite) TestBlobStartCopyMetadataNil() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -210,7 +210,7 @@ func (s *aztestsSuite) TestBlobStartCopyMetadataNil() {
 	_assert.Len(resp2.Metadata, 0)
 }
 
-func (s *aztestsSuite) TestBlobStartCopyMetadataEmpty() {
+func (s *azblobTestSuite) TestBlobStartCopyMetadataEmpty() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -247,7 +247,7 @@ func (s *aztestsSuite) TestBlobStartCopyMetadataEmpty() {
 	_assert.Len(resp2.Metadata, 0)
 }
 
-func (s *aztestsSuite) TestBlobStartCopyMetadataInvalidField() {
+func (s *azblobTestSuite) TestBlobStartCopyMetadataInvalidField() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -276,7 +276,7 @@ func (s *aztestsSuite) TestBlobStartCopyMetadataInvalidField() {
 	_assert.Equal(strings.Contains(err.Error(), invalidHeaderErrorSubstring), true)
 }
 
-func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
+func (s *azblobTestSuite) TestBlobStartCopySourceNonExistent() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	context := getTestContext(testName)
@@ -300,7 +300,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 	_assert.Equal(strings.Contains(err.Error(), "not exist"), true)
 }
 
-//func (s *aztestsSuite) TestBlobStartCopySourcePrivate() {
+//func (s *azblobTestSuite) TestBlobStartCopySourcePrivate() {
 //	_assert := assert.New(s.T())
 //	context := getTestContext(testName)
 //	serviceClient := getServiceClient(&ClientOptions{
@@ -334,7 +334,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateStorageError(_assert, err, StorageErrorCodeCannotVerifyCopySource)
 //}
 
-//func (s *aztestsSuite) TestBlobStartCopyUsingSASSrc() {
+//func (s *azblobTestSuite) TestBlobStartCopyUsingSASSrc() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, containerName := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -388,7 +388,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	resp2.Body(RetryReaderOptions{}).Close()
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyUsingSASDest() {
+//func (s *azblobTestSuite) TestBlobStartCopyUsingSASDest() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, containerName := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -469,7 +469,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	resp2.Body(RetryReaderOptions{}).Close()
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfModifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobStartCopySourceIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	serviceClient := getServiceClient(nil)
@@ -491,7 +491,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfModifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobStartCopySourceIfModifiedSinceFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -509,7 +509,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfUnmodifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobStartCopySourceIfUnmodifiedSinceTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -530,7 +530,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfUnmodifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobStartCopySourceIfUnmodifiedSinceFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -548,7 +548,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfMatchTrue() {
+//func (s *azblobTestSuite) TestBlobStartCopySourceIfMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -571,7 +571,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfMatchFalse() {
+//func (s *azblobTestSuite) TestBlobStartCopySourceIfMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -590,7 +590,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfNoneMatchTrue() {
+//func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -611,7 +611,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopySourceIfNoneMatchFalse() {
+//func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -632,7 +632,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfModifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobStartCopyDestIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
@@ -653,7 +653,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfModifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobStartCopyDestIfModifiedSinceFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -671,7 +671,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfUnmodifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobStartCopyDestIfUnmodifiedSinceTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -692,7 +692,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfUnmodifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobStartCopyDestIfUnmodifiedSinceFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -711,7 +711,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfMatchTrue() {
+//func (s *azblobTestSuite) TestBlobStartCopyDestIfMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -734,7 +734,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfMatchFalse() {
+//func (s *azblobTestSuite) TestBlobStartCopyDestIfMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -758,7 +758,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfNoneMatchTrue() {
+//func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -783,7 +783,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
+//func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -803,7 +803,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobAbortCopyInProgress() {
+//func (s *azblobTestSuite) TestBlobAbortCopyInProgress() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -853,7 +853,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(resp2.CopyStatus, chk.Equals, CopyStatusAborted)
 //}
 //
-//func (s *aztestsSuite) TestBlobAbortCopyNoCopyStarted() {
+//func (s *azblobTestSuite) TestBlobAbortCopyNoCopyStarted() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //
@@ -864,7 +864,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotMetadata() {
+//func (s *azblobTestSuite) TestBlobSnapshotMetadata() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -884,7 +884,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(resp2.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotMetadataEmpty() {
+//func (s *azblobTestSuite) TestBlobSnapshotMetadataEmpty() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -904,7 +904,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(resp2.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotMetadataNil() {
+//func (s *azblobTestSuite) TestBlobSnapshotMetadataNil() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -923,7 +923,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(resp2.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotMetadataInvalid() {
+//func (s *azblobTestSuite) TestBlobSnapshotMetadataInvalid() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -937,7 +937,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotBlobNotExist() {
+//func (s *azblobTestSuite) TestBlobSnapshotBlobNotExist() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -947,7 +947,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotOfSnapshot() {
+//func (s *azblobTestSuite) TestBlobSnapshotOfSnapshot() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -959,7 +959,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfModifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobSnapshotIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	serviceClient := getServiceClient(nil)
@@ -978,7 +978,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(*resp.Snapshot != "", chk.Equals, true) // i.e. The snapshot time is not zero. If the service gives us back a snapshot time, it successfully created a snapshot
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfModifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobSnapshotIfModifiedSinceFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -995,7 +995,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfUnmodifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobSnapshotIfUnmodifiedSinceTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1013,7 +1013,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(*resp.Snapshot == "", chk.Equals, false)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfUnmodifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobSnapshotIfUnmodifiedSinceFalse() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	serviceClient := getServiceClient(nil)
@@ -1030,7 +1030,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfMatchTrue() {
+//func (s *azblobTestSuite) TestBlobSnapshotIfMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1050,7 +1050,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(*resp2.Snapshot == "", chk.Equals, false)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfMatchFalse() {
+//func (s *azblobTestSuite) TestBlobSnapshotIfMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1067,7 +1067,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfNoneMatchTrue() {
+//func (s *azblobTestSuite) TestBlobSnapshotIfNoneMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1085,7 +1085,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(*resp.Snapshot == "", chk.Equals, false)
 //}
 //
-//func (s *aztestsSuite) TestBlobSnapshotIfNoneMatchFalse() {
+//func (s *azblobTestSuite) TestBlobSnapshotIfNoneMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1104,7 +1104,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataNonExistentBlob() {
+//func (s *azblobTestSuite) TestBlobDownloadDataNonExistentBlob() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1114,7 +1114,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataNegativeOffset() {
+//func (s *azblobTestSuite) TestBlobDownloadDataNegativeOffset() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1128,7 +1128,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataOffsetOutOfRange() {
+//func (s *azblobTestSuite) TestBlobDownloadDataOffsetOutOfRange() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1142,7 +1142,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataCountNegative() {
+//func (s *azblobTestSuite) TestBlobDownloadDataCountNegative() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1156,7 +1156,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataCountZero() {
+//func (s *azblobTestSuite) TestBlobDownloadDataCountZero() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1175,7 +1175,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(string(data), chk.Equals, blockBlobDefaultData)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataCountExact() {
+//func (s *azblobTestSuite) TestBlobDownloadDataCountExact() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1193,7 +1193,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(string(data), chk.Equals, blockBlobDefaultData)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataCountOutOfRange() {
+//func (s *azblobTestSuite) TestBlobDownloadDataCountOutOfRange() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1211,7 +1211,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(string(data), chk.Equals, blockBlobDefaultData)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataEmptyRangeStruct() {
+//func (s *azblobTestSuite) TestBlobDownloadDataEmptyRangeStruct() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1231,7 +1231,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(string(data), chk.Equals, blockBlobDefaultData)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataContentMD5() {
+//func (s *azblobTestSuite) TestBlobDownloadDataContentMD5() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1251,7 +1251,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(*resp.ContentMD5, chk.DeepEquals, mdf[:])
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfModifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobDownloadDataIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	serviceClient := getServiceClient(nil)
@@ -1270,7 +1270,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(*resp.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfModifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobDownloadDataIfModifiedSinceFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1288,7 +1288,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfUnmodifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobDownloadDataIfUnmodifiedSinceTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1306,7 +1306,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(*resp.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfUnmodifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobDownloadDataIfUnmodifiedSinceFalse() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	serviceClient := getServiceClient(nil)
@@ -1323,7 +1323,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfMatchTrue() {
+//func (s *azblobTestSuite) TestBlobDownloadDataIfMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1343,7 +1343,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfMatchFalse() {
+//func (s *azblobTestSuite) TestBlobDownloadDataIfMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1365,7 +1365,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfNoneMatchTrue() {
+//func (s *azblobTestSuite) TestBlobDownloadDataIfNoneMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1388,7 +1388,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
 //}
 //
-//func (s *aztestsSuite) TestBlobDownloadDataIfNoneMatchFalse() {
+//func (s *azblobTestSuite) TestBlobDownloadDataIfNoneMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1407,7 +1407,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteNonExistant() {
+//func (s *azblobTestSuite) TestBlobDeleteNonExistant() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1417,7 +1417,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteSnapshot() {
+//func (s *azblobTestSuite) TestBlobDeleteSnapshot() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1433,7 +1433,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateBlobDeleted(c, snapshotURL.BlobClient)
 //}
 //
-////func (s *aztestsSuite) TestBlobDeleteSnapshotsInclude() {
+////func (s *azblobTestSuite) TestBlobDeleteSnapshotsInclude() {
 ////	serviceClient := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
@@ -1457,7 +1457,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 ////	_assert(<- blobs, chk.HasLen, 0)
 ////}
 //
-////func (s *aztestsSuite) TestBlobDeleteSnapshotsOnly() {
+////func (s *azblobTestSuite) TestBlobDeleteSnapshotsOnly() {
 ////	serviceClient := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, serviceClient)
 ////	defer deleteContainer(containerClient)
@@ -1482,7 +1482,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 ////	_assert(*(<-blobs).Snapshot == "", chk.Equals, true)
 ////}
 //
-//func (s *aztestsSuite) TestBlobDeleteSnapshotsNoneWithSnapshots() {
+//func (s *azblobTestSuite) TestBlobDeleteSnapshotsNoneWithSnapshots() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1503,7 +1503,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(serr.ErrorCode, chk.Equals, StorageErrorCodeBlobNotFound)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfModifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobDeleteIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
@@ -1519,7 +1519,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateBlobDeleted(c, blobClient.BlobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfModifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobDeleteIfModifiedSinceFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1534,7 +1534,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfUnmodifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobDeleteIfUnmodifiedSinceTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1551,7 +1551,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateBlobDeleted(c, blobClient.BlobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfUnmodifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobDeleteIfUnmodifiedSinceFalse() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	serviceClient := getServiceClient(nil)
@@ -1566,7 +1566,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfMatchTrue() {
+//func (s *azblobTestSuite) TestBlobDeleteIfMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1583,7 +1583,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateBlobDeleted(c, blobClient.BlobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfMatchFalse() {
+//func (s *azblobTestSuite) TestBlobDeleteIfMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1603,7 +1603,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfNoneMatchTrue() {
+//func (s *azblobTestSuite) TestBlobDeleteIfNoneMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1623,7 +1623,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateBlobDeleted(c, blobClient.BlobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobDeleteIfNoneMatchFalse() {
+//func (s *azblobTestSuite) TestBlobDeleteIfNoneMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1639,7 +1639,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfModifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	serviceClient := getServiceClient(nil)
@@ -1658,7 +1658,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfModifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfModifiedSinceFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1679,7 +1679,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(serr.response.StatusCode, chk.Equals, 304) // No service code returned for a HEAD
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1698,7 +1698,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1719,7 +1719,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(serr.response.StatusCode, chk.Equals, 412)
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfMatchTrue() {
+//func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1736,7 +1736,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(resp2.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsOnMissingBlob() {
+//func (s *azblobTestSuite) TestBlobGetPropsOnMissingBlob() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1751,7 +1751,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(storageError.response.Header.Get("x-ms-error-code"), chk.Equals, string(StorageErrorCodeBlobNotFound))
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfMatchFalse() {
+//func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1768,7 +1768,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(serr.response.StatusCode, chk.Equals, 412)
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfNoneMatchTrue() {
+//func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfNoneMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1786,7 +1786,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobGetPropsAndMetadataIfNoneMatchFalse() {
+//func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfNoneMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1805,7 +1805,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(serr.response.StatusCode, chk.Equals, 304)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesBasic() {
+//func (s *azblobTestSuite) TestBlobSetPropertiesBasic() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1830,7 +1830,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(h, chk.DeepEquals, headers)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesEmptyValue() {
+//func (s *azblobTestSuite) TestBlobSetPropertiesEmptyValue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1854,7 +1854,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(*resp.ContentDisposition, chk.Equals, disposition)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfModifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobSetPropertiesIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	serviceClient := getServiceClient(nil)
@@ -1869,7 +1869,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validatePropertiesSet(c, blobClient, "my_disposition")
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfModifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobSetPropertiesIfModifiedSinceFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1882,7 +1882,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfUnmodifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobSetPropertiesIfUnmodifiedSinceTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1897,7 +1897,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validatePropertiesSet(c, blobClient, "my_disposition")
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfUnmodifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobSetPropertiesIfUnmodifiedSinceFalse() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	serviceClient := getServiceClient(nil)
@@ -1910,7 +1910,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfMatchTrue() {
+//func (s *azblobTestSuite) TestBlobSetPropertiesIfMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1926,7 +1926,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validatePropertiesSet(c, blobClient, "my_disposition")
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfMatchFalse() {
+//func (s *azblobTestSuite) TestBlobSetPropertiesIfMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1937,7 +1937,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfNoneMatchTrue() {
+//func (s *azblobTestSuite) TestBlobSetPropertiesIfNoneMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1950,7 +1950,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validatePropertiesSet(c, blobClient, "my_disposition")
 //}
 //
-//func (s *aztestsSuite) TestBlobSetPropertiesIfNoneMatchFalse() {
+//func (s *azblobTestSuite) TestBlobSetPropertiesIfNoneMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1964,7 +1964,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(err, chk.NotNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataNil() {
+//func (s *azblobTestSuite) TestBlobSetMetadataNil() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1981,7 +1981,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(resp.Metadata, chk.HasLen, 0)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataEmpty() {
+//func (s *azblobTestSuite) TestBlobSetMetadataEmpty() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -1998,7 +1998,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(resp.Metadata, chk.HasLen, 0)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataInvalidField() {
+//func (s *azblobTestSuite) TestBlobSetMetadataInvalidField() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -2015,7 +2015,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfModifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobSetMetadataIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	serviceClient := getServiceClient(nil)
@@ -2032,7 +2032,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateMetadataSet(c, blobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfModifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobSetMetadataIfModifiedSinceFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -2047,7 +2047,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfUnmodifiedSinceTrue() {
+//func (s *azblobTestSuite) TestBlobSetMetadataIfUnmodifiedSinceTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -2064,7 +2064,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateMetadataSet(c, blobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfUnmodifiedSinceFalse() {
+//func (s *azblobTestSuite) TestBlobSetMetadataIfUnmodifiedSinceFalse() {
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	serviceClient := getServiceClient(nil)
@@ -2079,7 +2079,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfMatchTrue() {
+//func (s *azblobTestSuite) TestBlobSetMetadataIfMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -2097,7 +2097,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateMetadataSet(c, blobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfMatchFalse() {
+//func (s *azblobTestSuite) TestBlobSetMetadataIfMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -2111,7 +2111,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfNoneMatchTrue() {
+//func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchTrue() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -2127,7 +2127,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	validateMetadataSet(c, blobClient)
 //}
 //
-//func (s *aztestsSuite) TestBlobSetMetadataIfNoneMatchFalse() {
+//func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchFalse() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -2164,7 +2164,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	return nil
 //}
 //
-//func (s *aztestsSuite) TestBloserviceClientndelete() {
+//func (s *azblobTestSuite) TestBloserviceClientndelete() {
 //	serviceClient := getServiceClient(nil)
 //
 //	code := 404
@@ -2180,7 +2180,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	_assert(*resp.AccessTier, chk.Equals, string(tier))
 //}
 //
-//func (s *aztestsSuite) TestBlobSetTierAllTiers() {
+//func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 //	serviceClient := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(containerClient)
@@ -2208,7 +2208,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	setAndCheckBlobTier(c, pageblobClient.BlobClient, AccessTierP50)
 //}
 //
-////func (s *aztestsSuite) TestBlobTierInferred() {
+////func (s *azblobTestSuite) TestBlobTierInferred() {
 ////	serviceClient, err := getPremiumserviceClient()
 ////	if err != nil {
 ////		c.Skip(err.Error())
@@ -2239,7 +2239,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 ////	_assert(resp2.Segment.BlobItems[0].Properties.AccessTierInferred, chk.IsNil) // AccessTierInferred never returned if false
 ////}
 ////
-////func (s *aztestsSuite) TestBlobArchiveStatus() {
+////func (s *azblobTestSuite) TestBlobArchiveStatus() {
 ////	serviceClient, err := getBlobStorageserviceClient()
 ////	if err != nil {
 ////		c.Skip(err.Error())
@@ -2282,7 +2282,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 ////	_assert(resp2.Segment.BlobItems[0].Properties.ArchiveStatus, chk.Equals, ArchiveStatusRehydratePendingToHot)
 ////}
 ////
-////func (s *aztestsSuite) TestBlobTierInvalidValue() {
+////func (s *azblobTestSuite) TestBlobTierInvalidValue() {
 ////	serviceClient, err := getBlobStorageserviceClient()
 ////	if err != nil {
 ////		c.Skip(err.Error())
@@ -2296,7 +2296,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 ////	validateStorageError(c, err, StorageErrorCodeInvalidHeaderValue)
 ////}
 ////
-//func (s *aztestsSuite) TestblobClientPartsSASQueryTimes() {
+//func (s *azblobTestSuite) TestblobClientPartsSASQueryTimes() {
 //	StartTimesInputs := []string{
 //		"2020-04-20",
 //		"2020-04-20T07:00Z",
@@ -2347,7 +2347,7 @@ func (s *aztestsSuite) TestBlobStartCopySourceNonExistent() {
 //	}
 //}
 //
-//func (s *aztestsSuite) TestDownloadBlockBlobUnexpectedEOF() {
+//func (s *azblobTestSuite) TestDownloadBlockBlobUnexpectedEOF() {
 //	serviceClient := getServiceClient(nil)
 //	cURL, _ := createNewContainer(c, serviceClient)
 //	defer deleteContainer(cURL)

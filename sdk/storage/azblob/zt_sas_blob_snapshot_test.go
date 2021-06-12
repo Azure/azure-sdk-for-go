@@ -13,7 +13,7 @@ package azblob
 //	chk "gopkg.in/check.v1"
 //)
 //
-//func (s *aztestsSuite) TestSnapshotSAS(c *chk.C) {
+//func (s *azblobTestSuite) TestSnapshotSAS(c *chk.C) {
 //	//Generate URLs ----------------------------------------------------------------------------------------------------
 //	bsu := getServiceClient(nil)
 //	containerClient, containerName := getContainerClient(bsu)

@@ -12,7 +12,7 @@ package azblob
 //	chk "gopkg.in/check.v1"
 //)
 //
-//func (s *aztestsSuite) TestBlockBlobGetPropertiesUsingVID(c *chk.C) {
+//func (s *azblobTestSuite) TestBlockBlobGetPropertiesUsingVID(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -34,7 +34,7 @@ package azblob
 //	c.Assert(*blobProp.IsCurrentVersion, chk.Equals, true)
 //}
 //
-//func (s *aztestsSuite) TestAppendBlobGetPropertiesUsingVID(c *chk.C) {
+//func (s *azblobTestSuite) TestAppendBlobGetPropertiesUsingVID(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -58,7 +58,7 @@ package azblob
 //	c.Assert(*blobProp.IsCurrentVersion, chk.Equals, true)
 //}
 //
-//func (s *aztestsSuite) TestSetBlobMetadataReturnsVID(c *chk.C) {
+//func (s *azblobTestSuite) TestSetBlobMetadataReturnsVID(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -92,7 +92,7 @@ package azblob
 //
 //}
 //
-////func (s *aztestsSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID(c *chk.C) {
+////func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID(c *chk.C) {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient)
@@ -115,7 +115,7 @@ package azblob
 ////	}
 ////}
 //
-////func (s *aztestsSuite) TestDeleteSpecificBlobVersion(c *chk.C) {
+////func (s *azblobTestSuite) TestDeleteSpecificBlobVersion(c *chk.C) {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient)
@@ -147,7 +147,7 @@ package azblob
 ////	}
 ////}
 //
-////func (s *aztestsSuite) TestDeleteSpecificBlobVersionWithBlobSAS(c *chk.C) {
+////func (s *azblobTestSuite) TestDeleteSpecificBlobVersionWithBlobSAS(c *chk.C) {
 ////	bsu := getServiceClient()
 ////	credential, err := getGenericCredential("")
 ////	if err != nil {
@@ -190,7 +190,7 @@ package azblob
 ////	}
 ////}
 //
-////func (s *aztestsSuite) TestDownloadSpecificBlobVersion(c *chk.C) {
+////func (s *azblobTestSuite) TestDownloadSpecificBlobVersion(c *chk.C) {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient)
@@ -222,7 +222,7 @@ package azblob
 ////	c.Assert(string(data), chk.Equals, "updated_data")
 ////}
 //
-////func (s *aztestsSuite) TestCreateBlobSnapshotReturnsVID(c *chk.C) {
+////func (s *azblobTestSuite) TestCreateBlobSnapshotReturnsVID(c *chk.C) {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer delContainer(c, containerClient)
@@ -255,7 +255,7 @@ package azblob
 ////	}
 ////}
 //
-////func (s *aztestsSuite) TestCopyBlobFromURLWithSASReturnsVID(c *chk.C) {
+////func (s *azblobTestSuite) TestCopyBlobFromURLWithSASReturnsVID(c *chk.C) {
 ////	bsu := getServiceClient()
 ////	credential, err := getGenericCredential("")
 ////	if err != nil {
@@ -318,7 +318,7 @@ package azblob
 ////	c.Assert(resp.Response().Header.Get("x-ms-version-id"), chk.NotNil)
 ////}
 //
-////func (s *aztestsSuite) TestCreateBlockBlobReturnsVID(c *chk.C) {
+////func (s *azblobTestSuite) TestCreateBlockBlobReturnsVID(c *chk.C) {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer delContainer(c, containerClient)
@@ -362,7 +362,7 @@ package azblob
 ////	c.Assert(blobs[0].Snapshot, chk.Equals, "")
 ////}
 //
-//func (s *aztestsSuite) TestPutBlockListReturnsVID(c *chk.C) {
+//func (s *azblobTestSuite) TestPutBlockListReturnsVID(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -391,7 +391,7 @@ package azblob
 //	c.Assert(contentData, chk.DeepEquals, []uint8(strings.Join(data, "")))
 //}
 //
-//func (s *aztestsSuite) TestCreatePageBlobReturnsVID(c *chk.C) {
+//func (s *azblobTestSuite) TestCreatePageBlobReturnsVID(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)

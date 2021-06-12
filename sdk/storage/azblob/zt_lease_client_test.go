@@ -11,7 +11,7 @@ package azblob
 //	chk "gopkg.in/check.v1"
 //)
 //
-//func (s *aztestsSuite) TestContainerAcquireLease(c *chk.C) {
+//func (s *azblobTestSuite) TestContainerAcquireLease(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, containerName := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -28,7 +28,7 @@ package azblob
 //	c.Assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestContainerDeleteContainerWithoutLeaseId(c *chk.C) {
+//func (s *azblobTestSuite) TestContainerDeleteContainerWithoutLeaseId(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, containerName := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -53,7 +53,7 @@ package azblob
 //	c.Assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestContainerReleaseLease(c *chk.C) {
+//func (s *azblobTestSuite) TestContainerReleaseLease(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, containerName := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -76,7 +76,7 @@ package azblob
 //	c.Assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestContainerRenewLease(c *chk.C) {
+//func (s *azblobTestSuite) TestContainerRenewLease(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, containerName := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -96,7 +96,7 @@ package azblob
 //	c.Assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestContainerChangeLease(c *chk.C) {
+//func (s *azblobTestSuite) TestContainerChangeLease(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, containerName := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -124,7 +124,7 @@ package azblob
 //	c.Assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobAcquireLease(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobAcquireLease(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -142,7 +142,7 @@ package azblob
 //	c.Assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestDeleteBlobWithoutLeaseId(c *chk.C) {
+//func (s *azblobTestSuite) TestDeleteBlobWithoutLeaseId(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -168,7 +168,7 @@ package azblob
 //	c.Assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobReleaseLease(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobReleaseLease(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -192,7 +192,7 @@ package azblob
 //	c.Assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobRenewLease(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobRenewLease(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -213,7 +213,7 @@ package azblob
 //	c.Assert(err, chk.IsNil)
 //}
 //
-//func (s *aztestsSuite) TestBlobChangeLease(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobChangeLease(c *chk.C) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)

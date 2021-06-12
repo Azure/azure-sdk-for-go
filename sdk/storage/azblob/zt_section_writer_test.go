@@ -11,7 +11,7 @@ package azblob
 //	chk "gopkg.in/check.v1"
 //)
 //
-//func (s *aztestsSuite) TestSectionWriter(c *chk.C) {
+//func (s *azblobTestSuite) TestSectionWriter(c *chk.C) {
 //	b := [10]byte{}
 //	buffer := newBytesWriter(b[:])
 //
@@ -68,7 +68,7 @@ package azblob
 //	c.Assert(b, chk.Equals, [10]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 //}
 //
-//func (s *aztestsSuite) TestSectionWriterCopySrcDestEmpty(c *chk.C) {
+//func (s *azblobTestSuite) TestSectionWriterCopySrcDestEmpty(c *chk.C) {
 //	input := make([]byte, 0)
 //	reader := bytes.NewReader(input)
 //
@@ -81,7 +81,7 @@ package azblob
 //	c.Assert(count, chk.Equals, int64(0))
 //}
 //
-//func (s *aztestsSuite) TestSectionWriterCopyDestEmpty(c *chk.C) {
+//func (s *azblobTestSuite) TestSectionWriterCopyDestEmpty(c *chk.C) {
 //	input := make([]byte, 10)
 //	reader := bytes.NewReader(input)
 //

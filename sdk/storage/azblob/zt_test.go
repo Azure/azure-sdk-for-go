@@ -196,37 +196,31 @@ func generateName(prefix string) string {
 	return name
 }
 
+func generateEntityName(testName string) string{
+	return strings.ReplaceAll(strings.ReplaceAll(strings.ToLower(testName), "/", ""), "test", "")
+}
 func generateContainerName(testName string) string {
-	return containerPrefix + strings.ReplaceAll(strings.ReplaceAll(strings.ToLower(testName), "/", ""), "test", "")
+	return containerPrefix + generateEntityName(testName)
 }
 
-func generateBlobName() string {
-	return generateName(blobPrefix)
+func generateBlobName(testName string) string {
+	return blobPrefix + generateEntityName(testName)
 }
 
-func getContainerClient(containerName string, s ServiceClient)  ContainerClient {
+func getContainerClient(containerName string, s ServiceClient) ContainerClient {
 	return s.NewContainerClient(containerName)
 }
 
-func getBlockBlobClient(c *chk.C, container ContainerClient) (blob BlockBlobClient, name string) {
-	name = generateBlobName()
-	blob = container.NewBlockBlobClient(name)
-
-	return blob, name
+func getBlockBlobClient(blockBlobName string, containerClient ContainerClient) BlockBlobClient {
+	return containerClient.NewBlockBlobClient(blockBlobName)
 }
 
-func getAppendBlobClient(c *chk.C, container ContainerClient) (blob AppendBlobClient, name string) {
-	name = generateBlobName()
-	blob = container.NewAppendBlobURL(name)
-
-	return blob, name
+func getAppendBlobClient(appendBlobName string, containerClient ContainerClient) AppendBlobClient {
+	return containerClient.NewAppendBlobURL(appendBlobName)
 }
 
-func getPageBlobClient(c *chk.C, container ContainerClient) (blob PageBlobClient, name string) {
-	name = generateBlobName()
-	blob = container.NewPageBlobClient(name)
-
-	return
+func getPageBlobClient(pageBlobName string, containerClient ContainerClient) PageBlobClient {
+	return containerClient.NewPageBlobClient(pageBlobName)
 }
 
 func getReaderToRandomBytes(n int) *bytes.Reader {
@@ -269,15 +263,16 @@ func createNewContainerWithSuffix(c *chk.C, bsu ServiceClient, suffix string) (c
 	return container, name
 }
 
-func createNewBlockBlob(c *chk.C, container ContainerClient) (blob BlockBlobClient, name string) {
-	blob, name = getBlockBlobClient(c, container)
+func createNewBlockBlob(_assert *assert.Assertions, testName string, containerClient ContainerClient) (BlockBlobClient, string) {
+	blockBlobName := generateBlobName(testName)
+	blockBlobClient := getBlockBlobClient(blockBlobName, containerClient)
 
-	cResp, err := blob.Upload(ctx, azcore.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	cResp, err := blockBlobClient.Upload(ctx, azcore.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 
-	c.Assert(err, chk.IsNil)
-	c.Assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
+	_assert.Nil(err)
+	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 
-	return
+	return blockBlobClient, blockBlobName
 }
 
 func createNewBlobs(c *chk.C, container ContainerClient, blobNames []string) {
@@ -296,49 +291,51 @@ func createNewBlockBlobWithName(c *chk.C, container ContainerClient, name string
 	return
 }
 
-func createNewAppendBlob(c *chk.C, container ContainerClient) (blob AppendBlobClient, name string) {
-	blob, name = getAppendBlobClient(c, container)
+func createNewAppendBlob(_assert *assert.Assertions, testName string, containerClient ContainerClient) (AppendBlobClient, string) {
+	appendBlobName := generateBlobName(testName)
+	appendBlobClient := getAppendBlobClient(appendBlobName, containerClient)
 
-	resp, err := blob.Create(ctx, nil)
+	appendBlobCreateResp, err := appendBlobClient.Create(ctx, nil)
 
-	c.Assert(err, chk.IsNil)
-	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
-	return
+	_assert.Nil(err)
+	_assert.Equal(appendBlobCreateResp.RawResponse.StatusCode,201)
+	return appendBlobClient, appendBlobName
 }
 
-func createNewPageBlob(c *chk.C, container ContainerClient) (blob PageBlobClient, name string) {
-	blob, name = getPageBlobClient(c, container)
+func createNewPageBlob(_assert *assert.Assertions, testName string, containerClient ContainerClient) (PageBlobClient, string) {
+	pageBlobName := generateBlobName(testName)
+	pageBlobClient := getPageBlobClient(pageBlobName, containerClient)
 
-	resp, err := blob.Create(ctx, PageBlobPageBytes*10, nil)
-	c.Assert(err, chk.IsNil)
-	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
-	return
+	pageBlobCreateResponse, err := pageBlobClient.Create(ctx, PageBlobPageBytes*10, nil)
+	_assert.Nil(err)
+	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode,201)
+	return pageBlobClient, pageBlobName
 }
 
-func createNewPageBlobWithSize(c *chk.C, container ContainerClient, sizeInBytes int64) (blob PageBlobClient, name string) {
-	blob, name = getPageBlobClient(c, container)
+func createNewPageBlobWithSize(_assert *assert.Assertions, testName string, containerClient ContainerClient, sizeInBytes int64)(PageBlobClient, string) {
+	pageBlobName := generateBlobName(testName)
+	pageBlobClient := getPageBlobClient(pageBlobName, containerClient)
 
-	resp, err := blob.Create(ctx, sizeInBytes, nil)
-
-	c.Assert(err, chk.IsNil)
-	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
-	return
+	pageBlobCreateResponse, err := pageBlobClient.Create(ctx, sizeInBytes, nil)
+	_assert.Nil(err)
+	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode,201)
+	return pageBlobClient, pageBlobName
 }
 
-func createNewBlockBlobWithPrefix(c *chk.C, container ContainerClient, prefix string) (blob BlockBlobClient, name string) {
-	name = prefix + generateName(blobPrefix)
+func createNewBlockBlobWithPrefix(_assert *assert.Assertions, testName string, container ContainerClient, prefix string) (blob BlockBlobClient, name string) {
+	name = prefix + generateBlobName(testName)
 	blob = container.NewBlockBlobClient(name)
 
-	cResp, err := blob.Upload(ctx, strings.NewReader(blockBlobDefaultData), nil)
+	blockBlobUploadResp, err := blob.Upload(ctx, strings.NewReader(blockBlobDefaultData), nil)
 
-	c.Assert(err, chk.IsNil)
-	c.Assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
+	_assert.Nil(err)
+	_assert.Equal(blockBlobUploadResp.RawResponse.StatusCode,201)
 	return
 }
 
 func getGenericCredential(accountType string) (*SharedKeyCredential, error) {
-	accountNameEnvVar := accountType + "AZURE_STORAGE_ACCOUNT_NAME"
-	accountKeyEnvVar := accountType + "AZURE_STORAGE_ACCOUNT_KEY"
+	accountNameEnvVar := accountType + AccountNameEnvVar
+	accountKeyEnvVar := accountType + AccountKeyEnvVar
 	accountName, accountKey := os.Getenv(accountNameEnvVar), os.Getenv(accountKeyEnvVar)
 	if accountName == "" || accountKey == "" {
 		return nil, errors.New(accountNameEnvVar + " and/or " + accountKeyEnvVar + " environment variables not specified.")
@@ -353,7 +350,7 @@ func getOAuthCredential(c *chk.C) azcore.Credential {
 }
 
 func getGenericServiceClientWithOAuth(c *chk.C, accountType string) (ServiceClient, error) {
-	accountNameEnvVar := accountType + "AZURE_STORAGE_ACCOUNT_NAME"
+	accountNameEnvVar := accountType + AccountNameEnvVar
 	accountName := os.Getenv(accountNameEnvVar)
 	if accountName == "" {
 		return ServiceClient{}, errors.New(accountNameEnvVar + " environment variables not specified.")

@@ -35,9 +35,14 @@ type azblobTestSuite struct {
 	mode testframework.RecordMode
 }
 
+type azblobUnrecordedTestSuite struct {
+	suite.Suite
+}
+
 // Hookup to the testing framework
 func Test(t *testing.T) {
 	suite.Run(t, &azblobTestSuite{mode: testframework.Playback})
+	suite.Run(t, &azblobUnrecordedTestSuite{})
 }
 
 type testContext struct {
@@ -90,6 +95,14 @@ func (s *azblobTestSuite) BeforeTest(suite string, test string) {
 func (s *azblobTestSuite) AfterTest(suite string, test string) {
 	// teardown the test context
 	recordedTestTeardown(s.T().Name())
+}
+
+func (s *azblobUnrecordedTestSuite) BeforeTest(suite string, test string) {
+
+}
+
+func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
+
 }
 
 // Vars for
@@ -274,20 +287,44 @@ func createNewPageBlobWithSize(_assert *assert.Assertions, pageBlobName string, 
 	return pageBlobClient
 }
 
+// getRequiredEnv gets an environment variable by name and returns an error if it is not found
+func getRequiredEnv(name string) (string, error) {
+	env, ok := os.LookupEnv(name)
+	if ok {
+		return env, nil
+	} else {
+		return "", errors.New("Required environment variable not set: " + name)
+	}
+}
+
 func getGenericCredential(recording *testframework.Recording, accountType testAccountType) (*SharedKeyCredential, error) {
 	accountNameEnvVar := string(accountType) + AccountNameEnvVar
 	accountKeyEnvVar := string(accountType) + AccountKeyEnvVar
-	accountName, err := recording.GetRecordedVariable(accountNameEnvVar, testframework.Default)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	accountKey, err := recording.GetRecordedVariable(accountKeyEnvVar, testframework.Secret_Base64String)
-	if err != nil {
-		log.Fatalln(err)
+	var err error
+	accountName, accountKey := "", ""
+	if recording == nil {
+		accountName, err = getRequiredEnv(accountNameEnvVar)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		accountKey, err = getRequiredEnv(accountKeyEnvVar)
+		if err != nil {
+			log.Fatalln(err)
+		}
+	} else {
+		accountName, err = recording.GetRecordedVariable(accountNameEnvVar, testframework.Default)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		accountKey, err = recording.GetRecordedVariable(accountKeyEnvVar, testframework.Secret_Base64String)
+		if err != nil {
+			log.Fatalln(err)
+		}
 	}
 	if accountName == "" || accountKey == "" {
 		return nil, errors.New(accountNameEnvVar + " and/or " + accountKeyEnvVar + " environment variables not specified.")
 	}
+
 	return NewSharedKeyCredential(accountName, accountKey)
 }
 
@@ -323,10 +360,12 @@ const (
 )
 
 func getServiceClient(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {
-	if options == nil {
-		options = &ClientOptions{
-			HTTPClient: recording,
-			Retry:      azcore.RetryOptions{MaxRetries: -1}}
+	if recording != nil {
+		if options == nil {
+			options = &ClientOptions{
+				HTTPClient: recording,
+				Retry:      azcore.RetryOptions{MaxRetries: -1}}
+		}
 	}
 
 	cred, err := getGenericCredential(recording, accountType)

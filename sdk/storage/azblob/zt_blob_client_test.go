@@ -82,19 +82,6 @@ func (s *azblobTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	_assert.Equal(blobURLParts, correctURL)
 }
 
-//// func (s *azblobTestSuite) TestBlobWithNewPipeline() {
-//// 	serviceClient := getServiceClient()
-//// 	containerClient, _ := getContainerClient(c, serviceClient)
-//// 	blobClient := containerClient.NewBlockBlobClient(blobPrefix)
-////
-//// 	newBlobClient := blobClient.WithPipeline(newTestPipeline())
-////
-//// 	// exercise the new pipeline
-//// 	_, err := newBlobClient.GetAccountInfo(ctx)
-//// 	_assert.NotNil(err)
-//// 	_assert(err.Error(), chk.Equals, testPipelineMessage)
-//// }
-
 func waitForCopy(_assert *assert.Assertions, copyBlobClient BlockBlobClient, blobCopyResponse BlobStartCopyFromURLResponse) {
 	status := *blobCopyResponse.CopyStatus
 	// Wait for the copy to finish. If the copy takes longer than a minute, we will fail
@@ -338,11 +325,10 @@ func (s *azblobTestSuite) TestBlobStartCopySourceNonExistent() {
 //	validateStorageError(_assert, err, StorageErrorCodeCannotVerifyCopySource)
 //}
 
-func (s *azblobTestSuite) TestBlobStartCopyUsingSASSrc() {
+func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -358,7 +344,7 @@ func (s *azblobTestSuite) TestBlobStartCopyUsingSASSrc() {
 	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 
 	// Create sas values for the source blob
-	credential, err := getGenericCredential(context.recording, "")
+	credential, err := getGenericCredential(nil, testAccountDefault)
 	if err != nil {
 		s.T().Fatal("Couldn't fetch credential because " + err.Error())
 	}
@@ -383,7 +369,7 @@ func (s *azblobTestSuite) TestBlobStartCopyUsingSASSrc() {
 	sasURL.SAS = queryParams
 
 	// Create a new container for the destination
-	serviceClient2, err := getServiceClient(context.recording, testAccountSecondary, nil)
+	serviceClient2, err := getServiceClient(nil, testAccountSecondary, nil)
 	if err != nil {
 		s.T().Skip(err.Error())
 	}

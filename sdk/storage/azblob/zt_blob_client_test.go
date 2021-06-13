@@ -307,7 +307,7 @@ func (s *azblobTestSuite) TestBlobStartCopySourceNonExistent() {
 //	blobClient, _ := createNewBlockBlob(_assert, testName, containerClient)
 //
 //	serviceClient2, err := getAlternateserviceClient()
-
+//
 //	if err != nil {
 //		s.T().Skip(err.Error())
 //		return
@@ -399,60 +399,86 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	resp2.Body(RetryReaderOptions{}).Close()
 }
 
-//func (s *azblobTestSuite) TestBlobStartCopyUsingSASDest() {
-//	serviceClient := getServiceClient(nil)
-//	containerClient, containerName := createNewContainer(c, serviceClient)
-//	defer deleteContainer(containerClient)
-//	_, err := containerClient.SetAccessPolicy(ctx, nil)
+//func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASDest() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//
+//	containerName := generateContainerName(testName)
+//	containerClient := createNewContainer(_assert, containerName, serviceClient)
+//	defer deleteContainer(_assert, containerClient)
+//
+//	_, err = containerClient.SetAccessPolicy(ctx, nil)
 //	_assert.Nil(err)
-//	blobClient, blobName := createNewBlockBlob(c, containerClient)
-//	_ = blobClient
+//
+//	blockBlobName := generateBlobName(testName)
+//	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+//	//_ = blobClient
+//
+//	// Create sas values for the source blob
+//	credential, err := getGenericCredential(nil, testAccountDefault)
+//	if err != nil {
+//		s.T().Fatal("Couldn't fetch credential because " + err.Error())
+//	}
 //
 //	// Generate SAS on the source
-//	serviceSASValues := BlobSASSignatureValues{ExpiryTime: time.Now().Add(time.Hour).UTC(),
-//		Permissions: BlobSASPermissions{Read: true, Write: true, Create: true}.String(), ContainerName: containerName, BlobName: blobName}
-//	credential, err := getGenericCredential("")
+//	startTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2021")
+//	_assert.Nil(err)
+//	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+//	_assert.Nil(err)
+//	blobSASSignatureValues := BlobSASSignatureValues{
+//		StartTime:     startTime,
+//		ExpiryTime:    expiryTime,
+//		Permissions:   BlobSASPermissions{Read: true, Write: true}.String(),
+//		ContainerName: containerName,
+//		BlobName:      blockBlobName}
+//	queryParams, err := blobSASSignatureValues.NewSASQueryParameters(credential)
 //	if err != nil {
-//		c.Fatal("Invalid credential")
-//	}
-//	queryParams, err := serviceSASValues.NewSASQueryParameters(credential)
-//	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //
 //	// Create destination container
-//	serviceClient2, err := getAlternateserviceClient()
+//	serviceClient2, err := getServiceClient(nil, testAccountSecondary, nil)
 //	if err != nil {
-//		c.Skip(err.Error())
-//		return
+//		s.T().Skip(err.Error())
 //	}
 //
-//	copyContainerClient, copyContainerName := createNewContainer(c, serviceClient2)
-//	defer deleteContainer(copyContainerClient)
-//	copyBlobClient, copyBlobName := getBlockBlobClient(c, copyContainerClient)
+//	copyContainerName := "copy" + generateContainerName(testName)
+//	copyContainerClient := createNewContainer(_assert, copyContainerName, serviceClient2)
+//	defer deleteContainer(_assert, copyContainerClient)
+//
+//	copyBlobName := "copy" + generateBlobName(testName)
+//	copyBlobClient := getBlockBlobClient(copyBlobName, copyContainerClient)
 //
 //	// Generate Sas for the destination
-//	credential, err = getGenericCredential("SECONDARY_")
+//	credential, err = getGenericCredential(nil, testAccountSecondary)
 //	if err != nil {
-//		c.Fatal("Invalid secondary credential")
+//		s.T().Fatal("Couldn't fetch credential because " + err.Error())
 //	}
-//	copyServiceSASvalues := BlobSASSignatureValues{StartTime: time.Now().Add(-1 * time.Hour).UTC(),
-//		ExpiryTime: time.Now().Add(time.Hour).UTC(), Permissions: BlobSASPermissions{Read: true, Write: true}.String(),
-//		ContainerName: copyContainerName, BlobName: copyBlobName}
-//	copyQueryParams, err := copyServiceSASvalues.NewSASQueryParameters(credential)
+//
+//	copyBlobSASSignatureValues := BlobSASSignatureValues{
+//		StartTime:     startTime,
+//		ExpiryTime:    expiryTime,
+//		Permissions:   BlobSASPermissions{Read: true, Write: true}.String(),
+//		ContainerName: containerName,
+//		BlobName:      blockBlobName}
+//	copyQueryParams, err := copyBlobSASSignatureValues.NewSASQueryParameters(credential)
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //
 //	// Generate anonymous URL to destination with SAS
 //	anonURL := NewBlobURLParts(serviceClient2.URL())
 //	anonURL.SAS = copyQueryParams
-//	anonymousserviceClient, err := NewServiceClient(anonURL.URL(), azcore.AnonymousCredential(), nil)
+//	anonymousServiceClient, err := NewServiceClient(anonURL.URL(), azcore.AnonymousCredential(), nil)
 //	if err != nil {
-//		c.Fatal(err)
+//		s.T().Fatal(err)
 //	}
 //
-//	anonymousContainerClient := anonymousserviceClient.NewContainerClient(copyContainerName)
+//	anonymousContainerClient := anonymousServiceClient.NewContainerClient(copyContainerName)
 //	anonymousBlobClient := anonymousContainerClient.NewBlockBlobClient(copyBlobName)
 //
 //	// Apply sas to source
@@ -463,20 +489,19 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 //	_assert.Nil(err)
 //
 //	// Allow copy to happen
-//	waitForCopy(c, anonymousBlobClient, resp)
+//	waitForCopy(_assert, anonymousBlobClient, resp)
 //
-//	offset, count := int64(0), int64(len(blockBlobDefaultData))
 //	downloadBlobOptions := DownloadBlobOptions{
-//		Offset: &offset,
-//		Count:  &count,
+//		Offset: to.Int64Ptr(0),
+//		Count:  to.Int64Ptr(int64(len(blockBlobDefaultData))),
 //	}
 //	resp2, err := copyBlobClient.Download(ctx, &downloadBlobOptions)
 //	_assert.Nil(err)
 //
 //	data, err := ioutil.ReadAll(resp2.RawResponse.Body)
 //	_, err = resp2.Body(RetryReaderOptions{}).Read(data)
-//	_assert(*resp2.ContentLength, chk.Equals, int64(len(blockBlobDefaultData)))
-//	_assert(string(data), chk.Equals, blockBlobDefaultData)
+//	_assert.Equal(*resp2.ContentLength, int64(len(blockBlobDefaultData)))
+//	_assert.Equal(string(data), blockBlobDefaultData)
 //	resp2.Body(RetryReaderOptions{}).Close()
 //}
 //
@@ -558,91 +583,138 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 //	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
 //	_assert.NotNil(err)
 //}
-//
-//func (s *azblobTestSuite) TestBlobStartCopySourceIfMatchTrue() {
-//	serviceClient := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, serviceClient)
-//	defer deleteContainer(containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	resp, err := blobClient.GetProperties(ctx, nil)
-//	_assert.Nil(err)
-//
-//	accessConditions := SourceModifiedAccessConditions{
-//		SourceIfMatch: resp.ETag,
-//	}
-//	options := StartCopyBlobOptions{
-//		SourceModifiedAccessConditions: &accessConditions,
-//	}
-//	destBlobClient, _ := getBlockBlobClient(c, containerClient)
-//	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	_assert.Nil(err)
-//
-//	_, err = destBlobClient.GetProperties(ctx, nil)
-//	_assert.Nil(err)
-//}
-//
-//func (s *azblobTestSuite) TestBlobStartCopySourceIfMatchFalse() {
-//	serviceClient := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, serviceClient)
-//	defer deleteContainer(containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	randomEtag := "a"
-//	accessConditions := SourceModifiedAccessConditions{
-//		SourceIfMatch: &randomEtag,
-//	}
-//	options := StartCopyBlobOptions{
-//		SourceModifiedAccessConditions: &accessConditions,
-//	}
-//
-//	destBlobClient, _ := getBlockBlobClient(c, containerClient)
-//	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	_assert.NotNil(err)
-//}
-//
-//func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchTrue() {
-//	serviceClient := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, serviceClient)
-//	defer deleteContainer(containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	randomEtag := "a"
-//	accessConditions := SourceModifiedAccessConditions{
-//		SourceIfNoneMatch: &randomEtag,
-//	}
-//	options := StartCopyBlobOptions{
-//		SourceModifiedAccessConditions: &accessConditions,
-//	}
-//	destBlobClient, _ := getBlockBlobClient(c, containerClient)
-//	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	_assert.Nil(err)
-//
-//	_, err = destBlobClient.GetProperties(ctx, nil)
-//	_assert.Nil(err)
-//}
-//
-//func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchFalse() {
-//	serviceClient := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, serviceClient)
-//	defer deleteContainer(containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	resp, err := blobClient.GetProperties(ctx, nil)
-//	_assert.Nil(err)
-//
-//	accessConditions := SourceModifiedAccessConditions{
-//		SourceIfNoneMatch: resp.ETag,
-//	}
-//	options := StartCopyBlobOptions{
-//		SourceModifiedAccessConditions: &accessConditions,
-//	}
-//
-//	destBlobClient, _ := getBlockBlobClient(c, containerClient)
-//	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	_assert.NotNil(err)
-//}
-//
+
+func (s *azblobTestSuite) TestBlobStartCopySourceIfMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	resp, err := blobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+
+	options := StartCopyBlobOptions{
+		SourceModifiedAccessConditions: &SourceModifiedAccessConditions{
+			SourceIfMatch: resp.ETag,
+		},
+	}
+
+	destBlobName := "dest" + generateBlobName(testName)
+	destBlobClient := getBlockBlobClient(destBlobName, containerClient)
+	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
+	_assert.Nil(err)
+
+	_, err = destBlobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+}
+
+func (s *azblobTestSuite) TestBlobStartCopySourceIfMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	randomEtag := "a"
+	accessConditions := SourceModifiedAccessConditions{
+		SourceIfMatch: &randomEtag,
+	}
+	options := StartCopyBlobOptions{
+		SourceModifiedAccessConditions: &accessConditions,
+	}
+
+	destBlobName := "dest" + generateBlobName(testName)
+	destBlobClient := getBlockBlobClient(destBlobName, containerClient)
+	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeSourceConditionNotMet)
+}
+
+func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	_, err = blobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+
+	options := StartCopyBlobOptions{
+		SourceModifiedAccessConditions: &SourceModifiedAccessConditions{
+			SourceIfNoneMatch: to.StringPtr("a"),
+		},
+	}
+
+	destBlobName := "dest" + generateBlobName(testName)
+	destBlobClient := getBlockBlobClient(destBlobName, containerClient)
+	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
+	_assert.Nil(err)
+
+	_, err = destBlobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+}
+
+func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	resp, err := blobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+
+	options := StartCopyBlobOptions{
+		SourceModifiedAccessConditions: &SourceModifiedAccessConditions{
+			SourceIfNoneMatch: resp.ETag,
+		},
+	}
+
+	destBlobName := "dest" + generateBlobName(testName)
+	destBlobClient := getBlockBlobClient(destBlobName, containerClient)
+	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeSourceConditionNotMet)
+}
+
 //func (s *azblobTestSuite) TestBlobStartCopyDestIfModifiedSinceTrue() {
 //	currentTime := getRelativeTimeGMT(-10)
 //	serviceClient := getServiceClient(nil)
@@ -721,161 +793,206 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 //	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
 //	_assert.NotNil(err)
 //}
-//
-//func (s *azblobTestSuite) TestBlobStartCopyDestIfMatchTrue() {
-//	serviceClient := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, serviceClient)
-//	defer deleteContainer(containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	destBlobClient, _ := createNewBlockBlob(c, containerClient)
-//	resp, _ := destBlobClient.GetProperties(ctx, nil)
-//
-//	accessConditions := ModifiedAccessConditions{
-//		IfMatch: resp.ETag,
-//	}
-//	options := StartCopyBlobOptions{
-//		ModifiedAccessConditions: &accessConditions,
-//	}
-//
-//	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	_assert.Nil(err)
-//
-//	resp, err = destBlobClient.GetProperties(ctx, nil)
-//	_assert.Nil(err)
-//}
-//
-//func (s *azblobTestSuite) TestBlobStartCopyDestIfMatchFalse() {
-//	serviceClient := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, serviceClient)
-//	defer deleteContainer(containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	destBlobClient, _ := createNewBlockBlob(c, containerClient)
-//	resp, _ := destBlobClient.GetProperties(ctx, nil)
-//
-//	accessConditions := ModifiedAccessConditions{
-//		IfMatch: resp.ETag,
-//	}
-//	options := StartCopyBlobOptions{
-//		ModifiedAccessConditions: &accessConditions,
-//	}
-//	metadata := make(map[string]string)
-//	metadata["bla"] = "bla"
-//	_, err := destBlobClient.SetMetadata(ctx, metadata, nil)
-//	_assert.Nil(err)
-//
-//	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	_assert.NotNil(err)
-//}
-//
-//func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchTrue() {
-//	serviceClient := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, serviceClient)
-//	defer deleteContainer(containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	destBlobClient, _ := createNewBlockBlob(c, containerClient)
-//	resp, _ := destBlobClient.GetProperties(ctx, nil)
-//
-//	accessConditions := ModifiedAccessConditions{
-//		IfNoneMatch: resp.ETag,
-//	}
-//	options := StartCopyBlobOptions{
-//		ModifiedAccessConditions: &accessConditions,
-//	}
-//	_, err := destBlobClient.SetMetadata(ctx, nil, nil) // SetMetadata chances the blob's etag
-//	_assert.Nil(err)
-//
-//	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	_assert.Nil(err)
-//
-//	resp, err = destBlobClient.GetProperties(ctx, nil)
-//	_assert.Nil(err)
-//}
-//
-//func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
-//	serviceClient := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, serviceClient)
-//	defer deleteContainer(containerClient)
-//	blobClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	destBlobClient, _ := createNewBlockBlob(c, containerClient)
-//	resp, _ := destBlobClient.GetProperties(ctx, nil)
-//
-//	accessConditions := ModifiedAccessConditions{
-//		IfNoneMatch: resp.ETag,
-//	}
-//	options := StartCopyBlobOptions{
-//		ModifiedAccessConditions: &accessConditions,
-//	}
-//
-//	_, err := destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
-//	_assert.NotNil(err)
-//}
 
-//func (s *azblobTestSuite) TestBlobAbortCopyInProgress() {
-//	// TODO: NotWorking. Need to setup 8MB block
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	context := getTestContext(testName)
-//	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, serviceClient)
-//	defer deleteContainer(_assert, containerClient)
-//
-//	blockBlobName := generateBlobName(testName)
-//	blobClient := getBlockBlobClient(blockBlobName, containerClient)
-//
-//	// Create a large blob that takes time to copy
-//	blobSize := 8 * 1024 * 1024
-//	blobReader, _ := getRandomDataAndReader(blobSize)
-//	_, err = blobClient.Upload(ctx, azcore.NopCloser(blobReader), nil)
-//	_assert.Nil(err)
-//
-//	access := PublicAccessBlob
-//	setAccessPolicyOptions := SetAccessPolicyOptions{
-//		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
-//			Access: &access,
-//		},
-//	}
-//	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions) // So that we don't have to create a SAS
-//	_assert.Nil(err)
-//
-//	// Must copy across accounts so it takes time to copy
-//	serviceClient2, err := getServiceClient(context.recording, testAccountSecondary, nil)
-//	if err != nil {
-//		s.T().Skip(err.Error())
-//	}
-//
-//	copyContainerName := "copy" + generateContainerName(testName)
-//	copyContainerClient := createNewContainer(_assert, copyContainerName, serviceClient2)
-//
-//	copyBlobName := "copy" + generateBlobName(testName)
-//	copyBlobClient := getBlockBlobClient(copyBlobName, copyContainerClient)
-//
-//	defer deleteContainer(_assert, copyContainerClient)
-//
-//	resp, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), nil)
-//	_assert.Nil(err)
-//	_assert.Equal(*resp.CopyStatus, CopyStatusPending)
-//	_assert.NotNil(resp.CopyID)
-//
-//	_, err = copyBlobClient.AbortCopyFromURL(ctx, *resp.CopyID, nil)
-//	if err != nil {
-//		// If the error is nil, the test continues as normal.
-//		// If the error is not nil, we want to check if it's because the copy is finished and send a message indicating this.
-//		validateStorageError(_assert, err, StorageErrorCodeNoPendingCopyOperation)
-//		_assert.Error(errors.New("the test failed because the copy completed because it was aborted"))
-//	}
-//
-//	resp2, _ := copyBlobClient.GetProperties(ctx, nil)
-//	_assert.Equal(*resp2.CopyStatus, CopyStatusAborted)
-//}
+func (s *azblobTestSuite) TestBlobStartCopyDestIfMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	destBlobName := "dest" + generateBlobName(testName)
+	destBlobClient := createNewBlockBlob(_assert, destBlobName, containerClient)
+	resp, err := destBlobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+
+	options := StartCopyBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfMatch: resp.ETag,
+		},
+	}
+
+	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
+	_assert.Nil(err)
+
+	resp, err = destBlobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+}
+
+func (s *azblobTestSuite) TestBlobStartCopyDestIfMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	destBlobName := "dest" + generateBlobName(testName)
+	destBlobClient := createNewBlockBlob(_assert, destBlobName, containerClient)
+	resp, err := destBlobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+
+	options := StartCopyBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfMatch: resp.ETag,
+		},
+	}
+	metadata := make(map[string]string)
+	metadata["bla"] = "bla"
+	_, err = destBlobClient.SetMetadata(ctx, metadata, nil)
+	_assert.Nil(err)
+
+	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeTargetConditionNotMet)
+}
+
+func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	destBlobName := "dest" + generateBlobName(testName)
+	destBlobClient := createNewBlockBlob(_assert, destBlobName, containerClient)
+	resp, err := destBlobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+
+	options := StartCopyBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfNoneMatch: resp.ETag,
+		},
+	}
+
+	_, err = destBlobClient.SetMetadata(ctx, nil, nil) // SetMetadata chances the blob's etag
+	_assert.Nil(err)
+
+	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
+	_assert.Nil(err)
+
+	resp, err = destBlobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+}
+
+func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	context := getTestContext(testName)
+	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	destBlobName := "dest" + generateBlobName(testName)
+	destBlobClient := createNewBlockBlob(_assert, destBlobName, containerClient)
+	resp, err := destBlobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+
+	options := StartCopyBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfNoneMatch: resp.ETag,
+		},
+	}
+
+	_, err = destBlobClient.StartCopyFromURL(ctx, blobClient.URL(), &options)
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeTargetConditionNotMet)
+}
+
+func (s *azblobUnrecordedTestSuite) TestBlobAbortCopyInProgress() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := getBlockBlobClient(blockBlobName, containerClient)
+
+	// Create a large blob that takes time to copy
+	blobSize := 8 * 1024 * 1024
+	blobReader, _ := getRandomDataAndReader(blobSize)
+	_, err = blobClient.Upload(ctx, azcore.NopCloser(blobReader), nil)
+	_assert.Nil(err)
+
+	access := PublicAccessBlob
+	setAccessPolicyOptions := SetAccessPolicyOptions{
+		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{
+			Access: &access,
+		},
+	}
+	_, err = containerClient.SetAccessPolicy(ctx, &setAccessPolicyOptions) // So that we don't have to create a SAS
+	_assert.Nil(err)
+
+	// Must copy across accounts so it takes time to copy
+	serviceClient2, err := getServiceClient(nil, testAccountSecondary, nil)
+	if err != nil {
+		s.T().Skip(err.Error())
+	}
+
+	copyContainerName := "copy" + generateContainerName(testName)
+	copyContainerClient := createNewContainer(_assert, copyContainerName, serviceClient2)
+
+	copyBlobName := "copy" + generateBlobName(testName)
+	copyBlobClient := getBlockBlobClient(copyBlobName, copyContainerClient)
+
+	defer deleteContainer(_assert, copyContainerClient)
+
+	resp, err := copyBlobClient.StartCopyFromURL(ctx, blobClient.URL(), nil)
+	_assert.Nil(err)
+	_assert.Equal(*resp.CopyStatus, CopyStatusPending)
+	_assert.NotNil(resp.CopyID)
+
+	_, err = copyBlobClient.AbortCopyFromURL(ctx, *resp.CopyID, nil)
+	if err != nil {
+		// If the error is nil, the test continues as normal.
+		// If the error is not nil, we want to check if it's because the copy is finished and send a message indicating this.
+		validateStorageError(_assert, err, StorageErrorCodeNoPendingCopyOperation)
+		_assert.Error(errors.New("the test failed because the copy completed because it was aborted"))
+	}
+
+	resp2, _ := copyBlobClient.GetProperties(ctx, nil)
+	_assert.Equal(*resp2.CopyStatus, CopyStatusAborted)
+}
 
 func (s *azblobTestSuite) TestBlobAbortCopyNoCopyStarted() {
 	_assert := assert.New(s.T())

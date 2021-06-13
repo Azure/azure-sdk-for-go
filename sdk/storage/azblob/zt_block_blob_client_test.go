@@ -415,7 +415,7 @@ package azblob
 //
 //	resp, err := bbClient.GetProperties(ctx, nil)
 //	c.Assert(err, chk.IsNil)
-//	h := resp.NewHTTPHeaders()
+//	h := resp.GetHTTPHeaders()
 //	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
 //	c.Assert(h, chk.DeepEquals, basicHeaders)
 //}

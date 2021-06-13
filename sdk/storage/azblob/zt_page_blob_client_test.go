@@ -500,7 +500,7 @@ package azblob
 //
 //	resp, err := pbClient.GetProperties(ctx, nil)
 //	c.Assert(err, chk.IsNil)
-//	h := resp.NewHTTPHeaders()
+//	h := resp.GetHTTPHeaders()
 //	c.Assert(h, chk.DeepEquals, basicHeaders)
 //}
 //
@@ -509,7 +509,7 @@ package azblob
 //	c.Assert(err, chk.IsNil)
 //	c.Assert(resp.Metadata, chk.NotNil)
 //	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
-//	c.Assert(resp.NewHTTPHeaders(), chk.DeepEquals, basicHeaders)
+//	c.Assert(resp.GetHTTPHeaders(), chk.DeepEquals, basicHeaders)
 //}
 //
 //func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceTrue(c *chk.C) {

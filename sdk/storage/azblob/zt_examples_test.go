@@ -589,7 +589,7 @@ func ExampleBlobHTTPHeaders() {
 	fmt.Println(*get.BlobType, *get.ETag, *get.LastModified)
 
 	// Shows some of the blob's HTTP Headers
-	httpHeaders := get.NewHTTPHeaders()
+	httpHeaders := get.GetHTTPHeaders()
 	fmt.Println(httpHeaders.BlobContentType, httpHeaders.BlobContentDisposition)
 
 	// Update the blob's HTTP Headers and write them back to the blob

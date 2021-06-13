@@ -1,0 +1,202 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Sun, 13 Jun 2021 07:04:59 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobgetpropsandmetadataifnonematchfalse?restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 13 Jun 2021 07:05:00 GMT
+      Etag:
+      - '"0x8D92E398F9C49EC"'
+      Last-Modified:
+      - Sun, 13 Jun 2021 07:05:00 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 506286c0-001e-0063-2e22-600c79000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: GoBlockBlobData
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "15"
+      Content-Type:
+      - application/octet-stream
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Blob-Type:
+      - BlockBlob
+      X-Ms-Date:
+      - Sun, 13 Jun 2021 07:05:00 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobgetpropsandmetadataifnonematchfalse/gotestblobblobgetpropsandmetadataifnonematchfalse
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Content-Md5:
+      - ebncwguMQu9sgPmr0GazhA==
+      Date:
+      - Sun, 13 Jun 2021 07:05:00 GMT
+      Etag:
+      - '"0x8D92E398FC9C6E8"'
+      Last-Modified:
+      - Sun, 13 Jun 2021 07:05:01 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Content-Crc64:
+      - +JGsS7CR5kg=
+      X-Ms-Request-Id:
+      - 506287e0-001e-0063-3222-600c79000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+      X-Ms-Version-Id:
+      - "2021-06-13T07:05:01.0014952Z"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Sun, 13 Jun 2021 07:05:01 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobgetpropsandmetadataifnonematchfalse/gotestblobblobgetpropsandmetadataifnonematchfalse?comp=metadata
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 13 Jun 2021 07:05:01 GMT
+      Etag:
+      - '"0x8D92E398FF8A7A7"'
+      Last-Modified:
+      - Sun, 13 Jun 2021 07:05:01 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 5062894f-001e-0063-0222-600c79000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+      X-Ms-Version-Id:
+      - "2021-06-13T07:05:01.3097143Z"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      If-None-Match:
+      - '"0x8D92E398FF8A7A7"'
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Sun, 13 Jun 2021 07:05:01 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobgetpropsandmetadataifnonematchfalse/gotestblobblobgetpropsandmetadataifnonematchfalse
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 13 Jun 2021 07:05:01 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Error-Code:
+      - ConditionNotMet
+      X-Ms-Request-Id:
+      - 50628a7c-001e-0063-0f22-600c79000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 304 The condition specified using HTTP conditional header(s) is not met.
+    code: 304
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Sun, 13 Jun 2021 07:05:01 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobgetpropsandmetadataifnonematchfalse?restype=container
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Sun, 13 Jun 2021 07:05:01 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 50628bc1-001e-0063-3222-600c79000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 202 Accepted
+    code: 202
+    duration: ""

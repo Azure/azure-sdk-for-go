@@ -162,7 +162,7 @@ func newTestPolicy() azcore.Policy {
 // Note that this imposes a restriction on the length of test names
 func generateName(prefix string) string {
 	// These next lines up through the for loop are obtaining and walking up the stack
-	// trace to extrat the test name, which is stored in name
+	// trace to extract the test name, which is stored in name
 	pc := make([]uintptr, 10)
 	runtime.Callers(0, pc)
 	frames := runtime.CallersFrames(pc)

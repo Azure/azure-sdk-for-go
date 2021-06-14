@@ -432,6 +432,14 @@ func validateUpload(_assert *assert.Assertions, blobClient BlobClient) {
 	_assert.Len(data, 0)
 }
 
+func generateBlockIDsList(count int) []string {
+	blockIDs := make([]string, count)
+	for i := 0; i < count; i++ {
+		blockIDs[i] = blockIDIntToBase64(i)
+	}
+	return blockIDs
+}
+
 // blockIDIntToBase64 functions convert an int block ID to a base-64 string and vice versa
 func blockIDIntToBase64(blockID int) string {
 	binaryBlockID := (&[4]byte{})[:]

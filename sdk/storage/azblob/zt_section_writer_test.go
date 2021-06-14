@@ -11,7 +11,7 @@ package azblob
 //	chk "gopkg.in/check.v1"
 //)
 //
-//func (s *azblobTestSuite) TestSectionWriter(c *chk.C) {
+//func (s *azblobTestSuite) TestSectionWriter() {
 //	b := [10]byte{}
 //	buffer := newBytesWriter(b[:])
 //
@@ -21,7 +21,7 @@ package azblob
 //	c.Assert(section.position, chk.Equals, int64(0))
 //
 //	count, err := section.Write([]byte{1, 2, 3})
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(count, chk.Equals, 3)
 //	c.Assert(section.position, chk.Equals, int64(3))
 //	c.Assert(b, chk.Equals, [10]byte{1, 2, 3, 0, 0, 0, 0, 0, 0, 0})
@@ -46,7 +46,7 @@ package azblob
 //	c.Assert(section.position, chk.Equals, int64(0))
 //
 //	count, err = section.Write([]byte{6, 7, 8})
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(count, chk.Equals, 3)
 //	c.Assert(section.position, chk.Equals, int64(3))
 //	c.Assert(b, chk.Equals, [10]byte{1, 2, 3, 4, 5, 6, 7, 8, 0, 0})
@@ -68,7 +68,7 @@ package azblob
 //	c.Assert(b, chk.Equals, [10]byte{1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 //}
 //
-//func (s *azblobTestSuite) TestSectionWriterCopySrcDestEmpty(c *chk.C) {
+//func (s *azblobTestSuite) TestSectionWriterCopySrcDestEmpty() {
 //	input := make([]byte, 0)
 //	reader := bytes.NewReader(input)
 //
@@ -77,11 +77,11 @@ package azblob
 //	section := newSectionWriter(buffer, 0, 0)
 //
 //	count, err := io.Copy(section, reader)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(count, chk.Equals, int64(0))
 //}
 //
-//func (s *azblobTestSuite) TestSectionWriterCopyDestEmpty(c *chk.C) {
+//func (s *azblobTestSuite) TestSectionWriterCopyDestEmpty() {
 //	input := make([]byte, 10)
 //	reader := bytes.NewReader(input)
 //

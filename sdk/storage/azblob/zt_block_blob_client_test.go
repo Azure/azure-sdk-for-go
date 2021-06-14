@@ -3,510 +3,563 @@
 
 package azblob
 
-//
-//import (
-//	"bytes"
-//	"context"
-//	"crypto/md5"
-//	"encoding/base64"
-//	"encoding/binary"
-//	"fmt"
-//	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-//	guuid "github.com/google/uuid"
-//	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
-//	"io"
-//	"io/ioutil"
-//	"math"
-//	"strings"
-//	"time"
-//)
-//
-//// a single blockID used in tests when only a single ID is needed
-//var blockID string
-//
-//func init() {
-//	u := [64]byte{}
-//	binary.BigEndian.PutUint32(u[len(guuid.UUID{}):], math.MaxUint32)
-//	blockID = base64.StdEncoding.EncodeToString(u[:])
-//}
-//
-//func (s *azblobTestSuite) TestStageGetBlocks(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//
-//	bbClient := containerClient.NewBlockBlobClient(generateBlobName())
-//
-//	data := []string{"Azure ", "Storage ", "Block ", "Blob."}
-//	base64BlockIDs := make([]string, len(data))
-//
-//	for index, d := range data {
-//		base64BlockIDs[index] = blockIDIntToBase64(index)
-//		putResp, err := bbClient.StageBlock(context.Background(), base64BlockIDs[index], strings.NewReader(d), nil)
-//		c.Assert(err, chk.IsNil)
-//		c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
-//		c.Assert(putResp.ContentMD5, chk.IsNil)
-//		c.Assert(putResp.RequestID, chk.NotNil)
-//		c.Assert(putResp.Version, chk.NotNil)
-//		c.Assert(putResp.Date, chk.NotNil)
-//		c.Assert((*putResp.Date).IsZero(), chk.Equals, false)
-//	}
-//
-//	blockList, err := bbClient.GetBlockList(context.Background(), BlockListAll, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
-//	c.Assert(blockList.LastModified, chk.IsNil)
-//	c.Assert(blockList.ETag, chk.IsNil)
-//	c.Assert(blockList.ContentType, chk.NotNil)
-//	c.Assert(blockList.BlobContentLength, chk.IsNil)
-//	c.Assert(blockList.RequestID, chk.NotNil)
-//	c.Assert(blockList.Version, chk.NotNil)
-//	c.Assert(blockList.Date, chk.NotNil)
-//	c.Assert((*blockList.Date).IsZero(), chk.Equals, false)
-//	c.Assert(blockList.BlockList, chk.NotNil)
-//	c.Assert(blockList.BlockList.CommittedBlocks, chk.IsNil)
-//	c.Assert(blockList.BlockList.UncommittedBlocks, chk.NotNil)
-//	c.Assert(*blockList.BlockList.UncommittedBlocks, chk.HasLen, len(data))
-//
-//	listResp, err := bbClient.CommitBlockList(context.Background(), base64BlockIDs, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(listResp.RawResponse.StatusCode, chk.Equals, 201)
-//	c.Assert(listResp.LastModified, chk.NotNil)
-//	c.Assert((*listResp.LastModified).IsZero(), chk.Equals, false)
-//	c.Assert(listResp.ETag, chk.NotNil)
-//	c.Assert(listResp.RequestID, chk.NotNil)
-//	c.Assert(listResp.Version, chk.NotNil)
-//	c.Assert(listResp.Date, chk.NotNil)
-//	c.Assert((*listResp.Date).IsZero(), chk.Equals, false)
-//
-//	blockList, err = bbClient.GetBlockList(context.Background(), BlockListAll, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
-//	c.Assert(blockList.LastModified, chk.NotNil)
-//	c.Assert((*blockList.LastModified).IsZero(), chk.Equals, false)
-//	c.Assert(blockList.ETag, chk.NotNil)
-//	c.Assert(blockList.ContentType, chk.NotNil)
-//	c.Assert(*blockList.BlobContentLength, chk.Equals, int64(25))
-//	c.Assert(blockList.RequestID, chk.NotNil)
-//	c.Assert(blockList.Version, chk.NotNil)
-//	c.Assert(blockList.Date, chk.NotNil)
-//	c.Assert((*blockList.Date).IsZero(), chk.Equals, false)
-//	c.Assert(blockList.BlockList, chk.NotNil)
-//	c.Assert(blockList.BlockList.CommittedBlocks, chk.NotNil)
-//	c.Assert(blockList.BlockList.UncommittedBlocks, chk.IsNil)
-//	c.Assert(*blockList.BlockList.CommittedBlocks, chk.HasLen, len(data))
-//}
-//
-//func (s *azblobTestSuite) TestStageBlockFromURL(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	credential, err := getGenericCredential("")
+import (
+	"bytes"
+	"context"
+	"crypto/md5"
+	"encoding/base64"
+	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
+	"github.com/stretchr/testify/assert"
+	"io"
+	"io/ioutil"
+	"strings"
+	"time"
+)
+
+func (s *azblobTestSuite) TestStageGetBlocks() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blobName := generateBlobName(testName)
+	blockBlobClient := containerClient.NewBlockBlobClient(blobName)
+
+	data := []string{"Azure ", "Storage ", "Block ", "Blob."}
+	base64BlockIDs := make([]string, len(data))
+
+	for index, d := range data {
+		base64BlockIDs[index] = blockIDIntToBase64(index)
+		putResp, err := blockBlobClient.StageBlock(context.Background(), base64BlockIDs[index], strings.NewReader(d), nil)
+		_assert.Nil(err)
+		_assert.Equal(putResp.RawResponse.StatusCode, 201)
+		_assert.Nil(putResp.ContentMD5)
+		_assert.NotNil(putResp.RequestID)
+		_assert.NotNil(putResp.Version)
+		_assert.NotNil(putResp.Date)
+		_assert.Equal((*putResp.Date).IsZero(), false)
+	}
+
+	blockList, err := blockBlobClient.GetBlockList(context.Background(), BlockListAll, nil)
+	_assert.Nil(err)
+	_assert.Equal(blockList.RawResponse.StatusCode, 200)
+	_assert.Nil(blockList.LastModified)
+	_assert.Nil(blockList.ETag)
+	_assert.NotNil(blockList.ContentType)
+	_assert.Nil(blockList.BlobContentLength)
+	_assert.NotNil(blockList.RequestID)
+	_assert.NotNil(blockList.Version)
+	_assert.NotNil(blockList.Date)
+	_assert.Equal((*blockList.Date).IsZero(), false)
+	_assert.NotNil(blockList.BlockList)
+	_assert.Nil(blockList.BlockList.CommittedBlocks)
+	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
+	_assert.Len(*blockList.BlockList.UncommittedBlocks, len(data))
+
+	listResp, err := blockBlobClient.CommitBlockList(context.Background(), base64BlockIDs, nil)
+	_assert.Nil(err)
+	_assert.Equal(listResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(listResp.LastModified)
+	_assert.Equal((*listResp.LastModified).IsZero(), false)
+	_assert.NotNil(listResp.ETag)
+	_assert.NotNil(listResp.RequestID)
+	_assert.NotNil(listResp.Version)
+	_assert.NotNil(listResp.Date)
+	_assert.Equal((*listResp.Date).IsZero(), false)
+
+	blockList, err = blockBlobClient.GetBlockList(context.Background(), BlockListAll, nil)
+	_assert.Nil(err)
+	_assert.Equal(blockList.RawResponse.StatusCode, 200)
+	_assert.NotNil(blockList.LastModified)
+	_assert.Equal((*blockList.LastModified).IsZero(), false)
+	_assert.NotNil(blockList.ETag)
+	_assert.NotNil(blockList.ContentType)
+	_assert.Equal(*blockList.BlobContentLength, int64(25))
+	_assert.NotNil(blockList.RequestID)
+	_assert.NotNil(blockList.Version)
+	_assert.NotNil(blockList.Date)
+	_assert.Equal((*blockList.Date).IsZero(), false)
+	_assert.NotNil(blockList.BlockList)
+	_assert.NotNil(blockList.BlockList.CommittedBlocks)
+	_assert.Nil(blockList.BlockList.UncommittedBlocks)
+	_assert.Len(*blockList.BlockList.CommittedBlocks, len(data))
+}
+
+func (s *azblobUnrecordedTestSuite) TestStageBlockFromURL() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	contentSize := 8 * 1024 // 8 KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	ctx := context.Background() // Use default Background context
+	srcBlob := containerClient.NewBlockBlobClient("src" + generateBlobName(testName))
+
+	destBlob := containerClient.NewBlockBlobClient("dst" + generateBlobName(testName))
+
+	// Prepare source bbClient for copy.
+	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, nil)
+	_assert.Nil(err)
+	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+
+	// Get source blob url with SAS for StageFromURL.
+	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+
+	credential, err := getGenericCredential(nil, testAccountDefault)
+	_assert.Nil(err)
+	srcBlobParts.SAS, err = BlobSASSignatureValues{
+		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ContainerName: srcBlobParts.ContainerName,
+		BlobName:      srcBlobParts.BlobName,
+		Permissions:   BlobSASPermissions{Read: true}.String(),
+	}.NewSASQueryParameters(credential)
+	_assert.Nil(err)
+
+	srcBlobURLWithSAS := srcBlobParts.URL()
+
+	// Stage blocks from URL.
+	blockIDs := generateBlockIDsList(2)
+
+	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockIDs[0], srcBlobURLWithSAS, 0, &StageBlockFromURLOptions{
+		Offset: to.Int64Ptr(0),
+		Count:  to.Int64Ptr(int64(contentSize / 2)),
+	})
+	_assert.Nil(err)
+	_assert.Equal(stageResp1.RawResponse.StatusCode, 201)
+	_assert.NotEqual(stageResp1.ContentMD5, "")
+	_assert.NotEqual(stageResp1.RequestID, "")
+	_assert.NotEqual(stageResp1.Version, "")
+	_assert.Equal(stageResp1.Date.IsZero(), false)
+
+	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockIDs[1], srcBlobURLWithSAS, 0, &StageBlockFromURLOptions{
+		Offset: to.Int64Ptr(int64(contentSize / 2)),
+		Count:  to.Int64Ptr(int64(CountToEnd)),
+	})
+	_assert.Nil(err)
+	_assert.Equal(stageResp2.RawResponse.StatusCode, 201)
+	_assert.NotEqual(stageResp2.ContentMD5, "")
+	_assert.NotEqual(stageResp2.RequestID, "")
+	_assert.NotEqual(stageResp2.Version, "")
+	_assert.Equal(stageResp2.Date.IsZero(), false)
+
+	// Check block list.
+	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
+	_assert.Nil(err)
+	_assert.Equal(blockList.RawResponse.StatusCode, 200)
+	_assert.NotNil(blockList.BlockList)
+	_assert.Nil(blockList.BlockList.CommittedBlocks)
+	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
+	_assert.Len(*blockList.BlockList.UncommittedBlocks, 2)
+
+	// Commit block list.
+	listResp, err := destBlob.CommitBlockList(context.Background(), blockIDs, nil)
+	_assert.Nil(err)
+	_assert.Equal(listResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(listResp.LastModified)
+	_assert.Equal((*listResp.LastModified).IsZero(), false)
+	_assert.NotNil(listResp.ETag)
+	_assert.NotNil(listResp.RequestID)
+	_assert.NotNil(listResp.Version)
+	_assert.NotNil(listResp.Date)
+	_assert.Equal((*listResp.Date).IsZero(), false)
+
+	// Check data integrity through downloading.
+	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
+	_assert.Nil(err)
+	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	_assert.Nil(err)
+	_assert.EqualValues(destData, content)
+}
+
+func (s *azblobUnrecordedTestSuite) TestCopyBlockBlobFromURL() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	const contentSize = 8 * 1024 // 8 KB
+	content := make([]byte, contentSize)
+	contentMD5 := md5.Sum(content)
+	body := bytes.NewReader(content)
+	ctx := context.Background()
+
+	srcBlob := containerClient.NewBlockBlobClient("srcblob")
+	destBlob := containerClient.NewBlockBlobClient("destblob")
+
+	// Prepare source bbClient for copy.
+	uploadSrcResp, err := srcBlob.Upload(ctx, azcore.NopCloser(body), nil)
+	_assert.Nil(err)
+	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+
+	// Get source blob url with SAS for StageFromURL.
+	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+
+	credential, err := getGenericCredential(nil, testAccountDefault)
+	_assert.Nil(err)
+
+	srcBlobParts.SAS, err = BlobSASSignatureValues{
+		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ContainerName: srcBlobParts.ContainerName,
+		BlobName:      srcBlobParts.BlobName,
+		Permissions:   BlobSASPermissions{Read: true}.String(),
+	}.NewSASQueryParameters(credential)
+	if err != nil {
+		s.T().Fatal(err)
+	}
+
+	srcBlobURLWithSAS := srcBlobParts.URL()
+
+	// Invoke copy bbClient from URL.
+	sourceContentMD5 := contentMD5[:]
+	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &CopyBlockBlobFromURLOptions{
+		Metadata:         &map[string]string{"foo": "bar"},
+		SourceContentMD5: &sourceContentMD5,
+	})
+	_assert.Nil(err)
+	_assert.Equal(resp.RawResponse.StatusCode, 202)
+	_assert.NotNil(resp.ETag)
+	_assert.NotNil(resp.RequestID)
+	_assert.NotNil(resp.Version)
+	_assert.NotNil(resp.Date)
+	_assert.Equal((*resp.Date).IsZero(), false)
+	_assert.NotNil(resp.CopyID)
+	_assert.EqualValues(*resp.ContentMD5, sourceContentMD5)
+	_assert.Equal(*resp.CopyStatus, "success")
+
+	// Make sure the metadata got copied over
+	getPropResp, err := destBlob.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	metadata := getPropResp.Metadata
+	_assert.NotNil(metadata)
+	_assert.Len(metadata, 1)
+	_assert.EqualValues(metadata, map[string]string{"Foo": "bar"})
+
+	// Check data integrity through downloading.
+	downloadResp, err := destBlob.Download(ctx, nil)
+	_assert.Nil(err)
+	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	_assert.Nil(err)
+	_assert.EqualValues(destData, content)
+
+	// Edge case 1: Provide bad MD5 and make sure the copy fails
+	_, badMD5 := getRandomDataAndReader(16)
+	copyBlockBlobFromURLOptions1 := CopyBlockBlobFromURLOptions{
+		SourceContentMD5: &badMD5,
+	}
+	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
+	_assert.NotNil(err)
+
+	// Edge case 2: Not providing any source MD5 should see the CRC getting returned instead
+	copyBlockBlobFromURLOptions2 := CopyBlockBlobFromURLOptions{
+		SourceContentMD5: &sourceContentMD5,
+	}
+	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
+	_assert.Nil(err)
+	_assert.Equal(resp.RawResponse.StatusCode, 202)
+	_assert.EqualValues(*resp.CopyStatus, "success")
+}
+
+func (s *azblobUnrecordedTestSuite) TestBlobSASQueryParamOverrideResponseHeaders() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	const contentSize = 8 * 1024 // 8 KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	//contentMD5 := md5.Sum(content)
+
+	ctx := context.Background()
+
+	blockBlobClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
+
+	uploadSrcResp, err := blockBlobClient.Upload(ctx, azcore.NopCloser(body), nil)
+	_assert.Nil(err)
+	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+
+	// Get blob url with SAS.
+	blobParts := NewBlobURLParts(blockBlobClient.URL())
+
+	cacheControlVal := "cache-control-override"
+	contentDispositionVal := "content-disposition-override"
+	contentEncodingVal := "content-encoding-override"
+	contentLanguageVal := "content-language-override"
+	contentTypeVal := "content-type-override"
+
+	credential, err := getGenericCredential(nil, testAccountDefault)
+	_assert.Nil(err)
+	// Append User Delegation SAS token to URL
+	blobParts.SAS, err = BlobSASSignatureValues{
+		Protocol:           SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:         time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ContainerName:      blobParts.ContainerName,
+		BlobName:           blobParts.BlobName,
+		Permissions:        BlobSASPermissions{Read: true}.String(),
+		CacheControl:       cacheControlVal,
+		ContentDisposition: contentDispositionVal,
+		ContentEncoding:    contentEncodingVal,
+		ContentLanguage:    contentLanguageVal,
+		ContentType:        contentTypeVal,
+	}.NewSASQueryParameters(credential)
+	_assert.Nil(err)
+
+	// Generate new bbClient client
+	blobURLWithSAS := blobParts.URL()
+	_assert.NotNil(blobURLWithSAS)
+
+	blobClientWithSAS, err := NewBlockBlobClient(blobURLWithSAS, azcore.AnonymousCredential(), nil)
+	_assert.Nil(err)
+
+	gResp, err := blobClientWithSAS.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*gResp.CacheControl, cacheControlVal)
+	_assert.Equal(*gResp.ContentDisposition, contentDispositionVal)
+	_assert.Equal(*gResp.ContentEncoding, contentEncodingVal)
+	_assert.Equal(*gResp.ContentLanguage, contentLanguageVal)
+	_assert.Equal(*gResp.ContentType, contentTypeVal)
+}
+
+func (s *azblobTestSuite) TestStageBlockWithMD5() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blobName := generateBlobName(testName)
+	blockBlobClient := containerClient.NewBlockBlobClient(blobName)
+
+	// test put block with valid MD5 value
+	contentSize := 8 * 1024 // 8 KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
+
+	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+	putResp, err := blockBlobClient.StageBlock(context.Background(), blockID1, rsc, &StageBlockOptions{
+		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
+			TransactionalContentMD5: &contentMD5,
+		},
+	})
+	_assert.Nil(err)
+	_assert.Equal(putResp.RawResponse.StatusCode, 201)
+	_assert.EqualValues(*(putResp.ContentMD5), contentMD5)
+	_assert.NotNil(putResp.RequestID)
+	_assert.NotNil(putResp.Version)
+	_assert.NotNil(putResp.Date)
+	_assert.Equal((*putResp.Date).IsZero(), false)
+
+	// test put block with bad MD5 value
+	_, badContent := getRandomDataAndReader(contentSize)
+	badMD5Value := md5.Sum(badContent)
+	badContentMD5 := badMD5Value[:]
+
+	_, _ = rsc.Seek(0, io.SeekStart)
+	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
+	_, err = blockBlobClient.StageBlock(context.Background(), blockID2, rsc, &StageBlockOptions{
+		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
+			TransactionalContentMD5: &badContentMD5,
+		},
+	})
+	_assert.NotNil(err)
+	_assert.Contains(err.Error(), StorageErrorCodeMD5Mismatch)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlobHTTPHeaders() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	_, err = blobClient.Upload(ctx, azcore.NopCloser(body), &UploadBlockBlobOptions{
+		BlobHTTPHeaders: &basicHeaders,
+	})
+	_assert.Nil(err)
+
+	resp, err := blobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	h := resp.GetHTTPHeaders()
+	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
+	_assert.EqualValues(h, basicHeaders)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlobMetadataNotEmpty() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	_, err = blobClient.Upload(ctx, azcore.NopCloser(body), &UploadBlockBlobOptions{
+		Metadata: &basicMetadata,
+	})
+	_assert.Nil(err)
+
+	resp, err := blobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	actualMetadata := resp.Metadata
+	_assert.NotNil(actualMetadata)
+	_assert.EqualValues(actualMetadata, basicMetadata)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlobMetadataEmpty() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	_, err = blobClient.Upload(ctx, rsc, nil)
+	_assert.Nil(err)
+
+	resp, err := blobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Nil(resp.Metadata)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlobMetadataInvalid() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	_, err = blobClient.Upload(ctx, rsc, &UploadBlockBlobOptions{
+		Metadata: &map[string]string{"In valid!": "bar"},
+	})
+	_assert.NotNil(err)
+	_assert.Contains(err.Error(), invalidHeaderErrorSubstring)
+}
+
+//func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
 //	if err != nil {
-//		c.Fatal("Invalid credential")
-//	}
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//
-//	contentSize := 8 * 1024 // 8 KB
-//	content := make([]byte, contentSize)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//
-//	ctx := context.Background() // Use default Background context
-//	srcBlob := containerClient.NewBlockBlobClient(generateBlobName())
-//	destBlob := containerClient.NewBlockBlobClient(generateBlobName())
-//
-//	// Prepare source bbClient for copy.
-//	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
-//
-//	// Get source blob url with SAS for StageFromURL.
-//	srcBlobParts := NewBlobURLParts(srcBlob.URL())
-//
-//	srcBlobParts.SAS, err = BlobSASSignatureValues{
-//		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
-//		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
-//		ContainerName: srcBlobParts.ContainerName,
-//		BlobName:      srcBlobParts.BlobName,
-//		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
-//	c.Assert(err, chk.IsNil)
-//
-//	srcBlobURLWithSAS := srcBlobParts.URL()
-//
-//	// Stage blocks from URL.
-//	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
-//
-//	offset, count := int64(0), int64(contentSize/2)
-//	options1 := StageBlockFromURLOptions{
-//		Offset: &offset,
-//		Count:  &count,
+//		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
 //
-//	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(stageResp1.RawResponse.StatusCode, chk.Equals, 201)
-//	c.Assert(stageResp1.ContentMD5, chk.Not(chk.Equals), "")
-//	c.Assert(stageResp1.RequestID, chk.Not(chk.Equals), "")
-//	c.Assert(stageResp1.Version, chk.Not(chk.Equals), "")
-//	c.Assert(stageResp1.Date.IsZero(), chk.Equals, false)
+//	containerName := generateContainerName(testName)
+//	containerClient := createNewContainer(_assert, containerName, serviceClient)
+//	defer deleteContainer(_assert, containerClient)
 //
-//	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 //
-//	offset2, count2 := int64(contentSize/2), int64(CountToEnd)
-//	options2 := StageBlockFromURLOptions{
-//		Offset: &offset2,
-//		Count:  &count2,
-//	}
-//
-//	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(stageResp2.RawResponse.StatusCode, chk.Equals, 201)
-//	c.Assert(stageResp2.ContentMD5, chk.Not(chk.Equals), "")
-//	c.Assert(stageResp2.RequestID, chk.Not(chk.Equals), "")
-//	c.Assert(stageResp2.Version, chk.Not(chk.Equals), "")
-//	c.Assert(stageResp2.Date.IsZero(), chk.Equals, false)
-//
-//	// Check block list.
-//	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
-//	c.Assert(blockList.BlockList, chk.NotNil)
-//	c.Assert(blockList.BlockList.CommittedBlocks, chk.IsNil)
-//	c.Assert(blockList.BlockList.UncommittedBlocks, chk.NotNil)
-//	c.Assert(*blockList.BlockList.UncommittedBlocks, chk.HasLen, 2)
-//
-//	// Commit block list.
-//	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(listResp.RawResponse.StatusCode, chk.Equals, 201)
-//	c.Assert(listResp.LastModified, chk.NotNil)
-//	c.Assert((*listResp.LastModified).IsZero(), chk.Equals, false)
-//	c.Assert(listResp.ETag, chk.NotNil)
-//	c.Assert(listResp.RequestID, chk.NotNil)
-//	c.Assert(listResp.Version, chk.NotNil)
-//	c.Assert(listResp.Date, chk.NotNil)
-//	c.Assert((*listResp.Date).IsZero(), chk.Equals, false)
-//
-//	// Check data integrity through downloading.
-//	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(destData, chk.DeepEquals, content)
-//}
-//
-//func (s *azblobTestSuite) TestCopyBlockBlobFromURL(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	credential, err := getGenericCredential("")
-//	if err != nil {
-//		c.Fatal("Invalid credential")
-//	}
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//
-//	const contentSize = 8 * 1024 // 8 KB
-//	content := make([]byte, contentSize)
-//	contentMD5 := md5.Sum(content)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//	ctx := context.Background()
-//
-//	srcBlob := containerClient.NewBlockBlobClient("srcblob")
-//	destBlob := containerClient.NewBlockBlobClient("destblob")
-//
-//	// Prepare source bbClient for copy.
-//	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
-//
-//	// Get source blob url with SAS for StageFromURL.
-//	srcBlobParts := NewBlobURLParts(srcBlob.URL())
-//
-//	srcBlobParts.SAS, err = BlobSASSignatureValues{
-//		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
-//		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
-//		ContainerName: srcBlobParts.ContainerName,
-//		BlobName:      srcBlobParts.BlobName,
-//		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
-//	if err != nil {
-//		c.Fatal(err)
-//	}
-//
-//	srcBlobURLWithSAS := srcBlobParts.URL()
-//
-//	// Invoke copy bbClient from URL.
-//	sourceContentMD5 := contentMD5[:]
-//	copyBlockBlobFromURLOptions := CopyBlockBlobFromURLOptions{
-//		Metadata:         &map[string]string{"foo": "bar"},
-//		SourceContentMD5: &sourceContentMD5,
-//	}
-//	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 202)
-//	c.Assert(resp.ETag, chk.NotNil)
-//	c.Assert(resp.RequestID, chk.NotNil)
-//	c.Assert(resp.Version, chk.NotNil)
-//	c.Assert(resp.Date, chk.NotNil)
-//	c.Assert((*resp.Date).IsZero(), chk.Equals, false)
-//	c.Assert(resp.CopyID, chk.NotNil)
-//	c.Assert(*resp.ContentMD5, chk.DeepEquals, sourceContentMD5)
-//	c.Assert(*resp.CopyStatus, chk.DeepEquals, "success")
-//
-//	// Make sure the metadata got copied over
-//	getPropResp, err := destBlob.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	metadata := getPropResp.Metadata
-//	c.Assert(metadata, chk.NotNil)
-//	c.Assert(metadata, chk.HasLen, 1)
-//	c.Assert(metadata, chk.DeepEquals, map[string]string{"Foo": "bar"})
-//
-//	// Check data integrity through downloading.
-//	downloadResp, err := destBlob.Download(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(destData, chk.DeepEquals, content)
-//
-//	// Edge case 1: Provide bad MD5 and make sure the copy fails
-//	_, badMD5 := getRandomDataAndReader(16)
-//	copyBlockBlobFromURLOptions1 := CopyBlockBlobFromURLOptions{
-//		SourceContentMD5: &badMD5,
-//	}
-//	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
-//	c.Assert(err, chk.NotNil)
-//
-//	// Edge case 2: Not providing any source MD5 should see the CRC getting returned instead
-//	copyBlockBlobFromURLOptions2 := CopyBlockBlobFromURLOptions{
-//		SourceContentMD5: &sourceContentMD5,
-//	}
-//	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 202)
-//	c.Assert(*resp.CopyStatus, chk.DeepEquals, "success")
-//}
-//
-//func (s *azblobTestSuite) TestBlobSASQueryParamOverrideResponseHeaders(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	credential, err := getGenericCredential("")
-//	if err != nil {
-//		c.Fatal("Invalid credential")
-//	}
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//
-//	const contentSize = 8 * 1024 // 8 KB
-//	content := make([]byte, contentSize)
-//	contentMD5 := md5.Sum(content)
-//	_ = contentMD5
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//	ctx := context.Background()
-//
-//	bbClient := containerClient.NewBlockBlobClient(generateBlobName())
-//
-//	uploadSrcResp, err := bbClient.Upload(ctx, rsc, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
-//
-//	// Get blob url with SAS.
-//	blobParts := NewBlobURLParts(bbClient.URL())
-//
-//	cacheControlVal := "cache-control-override"
-//	contentDispositionVal := "content-disposition-override"
-//	contentEncodingVal := "content-encoding-override"
-//	contentLanguageVal := "content-language-override"
-//	contentTypeVal := "content-type-override"
-//
-//	// Append User Delegation SAS token to URL
-//	blobParts.SAS, err = BlobSASSignatureValues{
-//		Protocol:           SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
-//		ExpiryTime:         time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
-//		ContainerName:      blobParts.ContainerName,
-//		BlobName:           blobParts.BlobName,
-//		Permissions:        BlobSASPermissions{Read: true}.String(),
-//		CacheControl:       cacheControlVal,
-//		ContentDisposition: contentDispositionVal,
-//		ContentEncoding:    contentEncodingVal,
-//		ContentLanguage:    contentLanguageVal,
-//		ContentType:        contentTypeVal,
-//	}.NewSASQueryParameters(credential)
-//	c.Assert(err, chk.IsNil)
-//
-//	// Generate new bbClient client
-//	blobURLWithSAS := blobParts.URL()
-//	c.Assert(blobURLWithSAS, chk.NotNil)
-//	blobClientWithSAS, err := NewBlockBlobClient(blobURLWithSAS, azcore.AnonymousCredential(), nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	gResp, err := blobClientWithSAS.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(*gResp.CacheControl, chk.Equals, cacheControlVal)
-//	c.Assert(*gResp.ContentDisposition, chk.Equals, contentDispositionVal)
-//	c.Assert(*gResp.ContentEncoding, chk.Equals, contentEncodingVal)
-//	c.Assert(*gResp.ContentLanguage, chk.Equals, contentLanguageVal)
-//	c.Assert(*gResp.ContentType, chk.Equals, contentTypeVal)
-//}
-//
-//func (s *azblobTestSuite) TestStageBlockWithMD5(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//
-//	bbClient := containerClient.NewBlockBlobClient(generateBlobName())
-//
-//	// test put block with valid MD5 value
-//	contentSize := 8 * 1024 // 8 KB
-//	content := make([]byte, contentSize)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//	md5Value := md5.Sum(content)
-//	contentMD5 := md5Value[:]
-//
-//	stageBlockOptions := StageBlockOptions{
-//		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
-//			TransactionalContentMD5: &contentMD5,
-//		},
-//	}
-//	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
-//	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &stageBlockOptions)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
-//	c.Assert(*(putResp.ContentMD5), chk.DeepEquals, contentMD5)
-//	c.Assert(putResp.RequestID, chk.NotNil)
-//	c.Assert(putResp.Version, chk.NotNil)
-//	c.Assert(putResp.Date, chk.NotNil)
-//	c.Assert((*putResp.Date).IsZero(), chk.Equals, false)
-//
-//	// test put block with bad MD5 value
-//	_, badContent := getRandomDataAndReader(contentSize)
-//	badMD5Value := md5.Sum(badContent)
-//	badContentMD5 := badMD5Value[:]
-//
-//	badStageBlockOptions := StageBlockOptions{
-//		BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
-//			TransactionalContentMD5: &badContentMD5,
-//		},
-//	}
-//	_, _ = rsc.Seek(0, io.SeekStart)
-//	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
-//	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &badStageBlockOptions)
-//	c.Assert(err, chk.NotNil)
-//
-//	//c.Assert(err.(StorageError), chk.Equals, StorageErrorCodeMD5Mismatch)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlobHTTPHeaders(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	bbClient, _ := getBlockBlobClient(c, containerClient)
-//
-//	content := make([]byte, 0)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		BlobHTTPHeaders: &basicHeaders,
-//	}
-//	_, err := bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-//	c.Assert(err, chk.IsNil)
-//
-//	resp, err := bbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	h := resp.GetHTTPHeaders()
-//	h.BlobContentMD5 = nil // the service generates a MD5 value, omit before comparing
-//	c.Assert(h, chk.DeepEquals, basicHeaders)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlobMetadataNotEmpty(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	bbClient, _ := getBlockBlobClient(c, containerClient)
-//
-//	content := make([]byte, 0)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		Metadata: &basicMetadata,
-//	}
-//	_, err := bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-//	c.Assert(err, chk.IsNil)
-//
-//	resp, err := bbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	actualMetadata := resp.Metadata
-//	c.Assert(actualMetadata, chk.NotNil)
-//	c.Assert(actualMetadata, chk.DeepEquals, basicMetadata)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlobMetadataEmpty(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	bbClient, _ := getBlockBlobClient(c, containerClient)
-//
-//	content := make([]byte, 0)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//
-//	_, err := bbClient.Upload(ctx, rsc, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	resp, err := bbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.Metadata, chk.IsNil)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlobMetadataInvalid(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	bbClient, _ := getBlockBlobClient(c, containerClient)
-//
-//	content := make([]byte, 0)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		Metadata: &map[string]string{"In valid!": "bar"},
-//	}
-//	_, err := bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-//	c.Assert(err, chk.NotNil)
-//	c.Assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//
-//	content := make([]byte, 0)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//
-//	bbClient, _ := createNewBlockBlob(c, containerClient)
+//	blockBlobName := generateBlobName(testName)
+//	blockBlobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 //
 //	currentTime := getRelativeTimeGMT(-10)
 //
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
+//	content := make([]byte, 0)
+//	body := bytes.NewReader(content)
+//	_, err = blockBlobClient.Upload(ctx, azcore.NopCloser(body), &UploadBlockBlobOptions{
 //		ModifiedAccessConditions: &ModifiedAccessConditions{
 //			IfModifiedSince: &currentTime,
 //		},
-//	}
-//	_, err := bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-//	c.Assert(err, chk.IsNil)
-//	validateUpload(c, bbClient.BlobClient)
+//	})
+//	_assert.Nil(err)
+//	validateUpload(_assert, blockBlobClient.BlobClient)
 //}
+
+//func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
 //
-//func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	bbClient, _ := createNewBlockBlob(c, containerClient)
+//	containerName := generateContainerName(testName)
+//	containerClient := createNewContainer(_assert, containerName, serviceClient)
+//	defer deleteContainer(_assert, containerClient)
+//
+//	blockBlobName := generateBlobName(testName)
+//	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 //
 //	currentTime := getRelativeTimeGMT(10)
 //
@@ -520,19 +573,28 @@ package azblob
 //		},
 //	}
 //
-//	_, err := bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_, err = blobClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
+//	_assert.NotNil(err)
 //
 //	//TODO: Fix issue with storage error interface
-//	//c.Assert(strings.Contains(err.Error(), string(StorageErrorCodeConditionNotMet)), chk.Equals, true)
-//	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
+//	//_assert.(strings.Contains(err.Error(), string(StorageErrorCodeConditionNotMet)), chk.Equals, true)
+//	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 //}
+
+//func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
 //
-//func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	bbClient, _ := createNewBlockBlob(c, containerClient)
+//	containerName := generateContainerName(testName)
+//	containerClient := createNewContainer(_assert, containerName, serviceClient)
+//	defer deleteContainer(_assert, containerClient)
+//
+//	blockBlobName := generateBlobName(testName)
+//	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 //
 //	currentTime := getRelativeTimeGMT(10)
 //
@@ -545,17 +607,26 @@ package azblob
 //			IfUnmodifiedSince: &currentTime,
 //		},
 //	}
-//	_, err := bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_, err = blobClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
+//	_assert.Nil(err)
 //
-//	validateUpload(c, bbClient.BlobClient)
+//	validateUpload(_assert, blobClient.BlobClient)
 //}
+
+//func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
 //
-//func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	bbClient, _ := createNewBlockBlob(c, containerClient)
+//	containerName := generateContainerName(testName)
+//	containerClient := createNewContainer(_assert, containerName, serviceClient)
+//	defer deleteContainer(_assert, containerClient)
+//
+//	blockBlobName := generateBlobName(testName)
+//	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
 //
 //	currentTime := getRelativeTimeGMT(-10)
 //
@@ -564,505 +635,618 @@ package azblob
 //			IfUnmodifiedSince: &currentTime,
 //		},
 //	}
-//	_, err := bbClient.Upload(ctx, bytes.NewReader(nil), &uploadBlockBlobOptions)
+//	_, err = blobClient.Upload(ctx, bytes.NewReader(nil), &uploadBlockBlobOptions)
 //	_ = err
 //
-//	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
+//	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 //}
+
+func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	resp, err := blobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	_, err = blobClient.Upload(ctx, rsc, &UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfMatch: resp.ETag,
+		},
+	})
+	_assert.Nil(err)
+
+	validateUpload(_assert, blobClient.BlobClient)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	_, err = blobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+
+	ifMatch := "garbage"
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfMatch: &ifMatch,
+		},
+	}
+	_, err = blobClient.Upload(ctx, body, &uploadBlockBlobOptions)
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	_, err = blobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	ifNoneMatch := "garbage"
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfNoneMatch: &ifNoneMatch,
+		},
+	}
+
+	_, err = blobClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
+	_assert.Nil(err)
+
+	validateUpload(_assert, blobClient.BlobClient)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	resp, err := blobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	_, err = blobClient.Upload(ctx, rsc, &UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfNoneMatch: resp.ETag,
+		},
+	})
+
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+}
+
+func validateBlobCommitted(_assert *assert.Assertions, blockBlobClient BlockBlobClient) {
+	resp, err := blockBlobClient.GetBlockList(ctx, BlockListAll, nil)
+	_assert.Nil(err)
+	_assert.Len(*(resp.BlockList.CommittedBlocks), 1)
+}
+
+func setupPutBlockListTest(_assert *assert.Assertions, _context *testContext,
+	testName string) (ContainerClient, BlockBlobClient, []string) {
+
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		_assert.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+
+	blobName := generateBlobName(testName)
+	blockBlobClient := getBlockBlobClient(blobName, containerClient)
+
+	blockIDs := generateBlockIDsList(1)
+	_, err = blockBlobClient.StageBlock(ctx, blockIDs[0], strings.NewReader(blockBlobDefaultData), nil)
+	_assert.Nil(err)
+	return containerClient, blockBlobClient, blockIDs
+}
+
+func (s *azblobTestSuite) TestBlobPutBlockListHTTPHeadersEmpty() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, blockBlobClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
+
+	_, err := blockBlobClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
+		BlobHTTPHeaders: &BlobHTTPHeaders{BlobContentDisposition: &blobContentDisposition},
+	})
+	_assert.Nil(err)
+
+	_, err = blockBlobClient.CommitBlockList(ctx, blockIDs, nil)
+	_assert.Nil(err)
+
+	resp, err := blockBlobClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Nil(resp.ContentDisposition)
+}
+
+//func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceTrue() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//	_context := getTestContext(testName)
+//	containerClient, blockBlobClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+//	defer deleteContainer(_assert, containerClient)
 //
-//func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	bbClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	resp, err := bbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	content := make([]byte, 0)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
-//			IfMatch: resp.ETag,
-//		},
-//	}
-//	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-//	c.Assert(err, chk.IsNil)
-//
-//	validateUpload(c, bbClient.BlobClient)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlobIfMatchFalse(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	bbClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	_, err := bbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	content := make([]byte, 0)
-//	body := bytes.NewReader(content)
-//
-//	ifMatch := "garbage"
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
-//			IfMatch: &ifMatch,
-//		},
-//	}
-//	_, err = bbClient.Upload(ctx, body, &uploadBlockBlobOptions)
-//	c.Assert(err, chk.NotNil)
-//	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchTrue(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	bbClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	_, err := bbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	content := make([]byte, 0)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//
-//	ifNoneMatch := "garbage"
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
-//			IfNoneMatch: &ifNoneMatch,
-//		},
-//	}
-//
-//	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-//	c.Assert(err, chk.IsNil)
-//
-//	validateUpload(c, bbClient.BlobClient)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlobIfNoneMatchFalse(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	bbClient, _ := createNewBlockBlob(c, containerClient)
-//
-//	resp, err := bbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	content := make([]byte, 0)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
-//			IfNoneMatch: resp.ETag,
-//		},
-//	}
-//	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-//
-//	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
-//}
-//
-//func setupPutBlockListTest(c *chk.C) (containerClient ContainerClient, bbClient BlockBlobClient, id string) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ = createNewContainer(c, bsu)
-//	bbClient, _ = getBlockBlobClient(c, containerClient)
-//
-//	_, err := bbClient.StageBlock(ctx, blockID, strings.NewReader(blockBlobDefaultData), nil)
-//	c.Assert(err, chk.IsNil)
-//	return containerClient, bbClient, blockID
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlockListHTTPHeadersEmpty(c *chk.C) {
-//	contClient, bbClient, blockId := setupPutBlockListTest(c)
-//	defer deleteContainer(contClient)
-//
-//	commitBlockListOptions := CommitBlockListOptions{
-//		BlobHTTPHeaders: &BlobHTTPHeaders{BlobContentDisposition: &blobContentDisposition},
-//	}
-//	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
-//	c.Assert(err, chk.IsNil)
-//
-//	_, err = bbClient.CommitBlockList(ctx, []string{blockId}, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	resp, err := bbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(resp.ContentDisposition, chk.IsNil)
-//}
-//
-//func validateBlobCommitted(c *chk.C, bbClient BlockBlobClient) {
-//	resp, err := bbClient.GetBlockList(ctx, BlockListAll, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(*(resp.BlockList.CommittedBlocks), chk.HasLen, 1)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceTrue(c *chk.C) {
-//	contClient, bbClient, blockId := setupPutBlockListTest(c)
-//	defer deleteContainer(contClient)
-//	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
-//	c.Assert(err, chk.IsNil)
+//	_, err := blockBlobClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
+//	_assert.Nil(err)
 //
 //	currentTime := getRelativeTimeGMT(-10)
 //
-//	commitBlockListOptions := CommitBlockListOptions{
-//		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
-//	}
-//	_, err = bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
-//	c.Assert(err, chk.IsNil)
+//	_, err = blockBlobClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
+//		BlobAccessConditions: BlobAccessConditions{
+//			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
+//	})
+//	_assert.Nil(err)
 //
-//	validateBlobCommitted(c, bbClient)
+//	validateBlobCommitted(_assert, blockBlobClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceFalse(c *chk.C) {
-//	contClient, bbClient, blockId := setupPutBlockListTest(c)
-//	defer deleteContainer(contClient)
+//func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceFalse() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//	_context := getTestContext(testName)
+//	containerClient, blockBlobClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+//	defer deleteContainer(_assert, containerClient)
 //
 //	currentTime := getRelativeTimeGMT(10)
 //
-//	commitBlockListOptions := CommitBlockListOptions{
-//		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
-//	}
-//	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
+//	_, err := blockBlobClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
+//		BlobAccessConditions: BlobAccessConditions{
+//			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
+//	})
 //	_ = err
 //
-//	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
+//	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue(c *chk.C) {
-//	contClient, bbClient, blockId := setupPutBlockListTest(c)
-//	defer deleteContainer(contClient)
-//	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
-//	c.Assert(err, chk.IsNil)
+//func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//	_context := getTestContext(testName)
+//	containerClient, blockBlobClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+//	defer deleteContainer(_assert, containerClient)
+//
+//	_, err := blockBlobClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
+//	_assert.Nil(err)
 //
 //	currentTime := getRelativeTimeGMT(10)
 //
 //	commitBlockListOptions := CommitBlockListOptions{
 //		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
 //	}
-//	_, err = bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
-//	c.Assert(err, chk.IsNil)
+//	_, err = blockBlobClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
+//	_assert.Nil(err)
 //
-//	validateBlobCommitted(c, bbClient)
+//	validateBlobCommitted(_assert, blockBlobClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse(c *chk.C) {
-//	contClient, bbClient, blockId := setupPutBlockListTest(c)
-//	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
-//	c.Assert(err, chk.IsNil)
-//	defer deleteContainer(contClient)
+//func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//	_context := getTestContext(testName)
+//	containerClient, blockBlobClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+//	defer deleteContainer(_assert, containerClient)
+//
+//	_, err := blockBlobClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
+//	_assert.Nil(err)
 //
 //	currentTime := getRelativeTimeGMT(-10)
 //
 //	commitBlockListOptions := CommitBlockListOptions{
-//		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
+//		BlobAccessConditions: BlobAccessConditions{
+//			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
 //	}
-//	_, err = bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
+//	_, err = blockBlobClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
 //
-//	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
+//	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
 //}
-//
-//func (s *azblobTestSuite) TestBlobPutBlockListIfMatchTrue(c *chk.C) {
-//	contClient, bbClient, blockId := setupPutBlockListTest(c)
-//	defer deleteContainer(contClient)
-//	resp, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
-//	c.Assert(err, chk.IsNil)
-//
-//	commitBlockListOptions := CommitBlockListOptions{
-//		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag}},
-//	}
-//	_, err = bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
-//	c.Assert(err, chk.IsNil)
-//
-//	validateBlobCommitted(c, bbClient)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlockListIfMatchFalse(c *chk.C) {
-//	contClient, bbClient, blockId := setupPutBlockListTest(c)
-//	defer deleteContainer(contClient)
-//	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
-//	c.Assert(err, chk.IsNil)
-//
-//	eTag := "garbage"
-//	commitBlockListOptions := CommitBlockListOptions{
-//		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag}},
-//	}
-//	_, err = bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
-//
-//	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
-//
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchTrue(c *chk.C) {
-//	contClient, bbClient, blockId := setupPutBlockListTest(c)
-//	defer deleteContainer(contClient)
-//	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
-//	c.Assert(err, chk.IsNil)
-//
-//	eTag := "garbage"
-//	commitBlockListOptions := CommitBlockListOptions{
-//		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag}},
-//	}
-//	_, err = bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
-//	c.Assert(err, chk.IsNil)
-//
-//	validateBlobCommitted(c, bbClient)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchFalse(c *chk.C) {
-//	contClient, bbClient, blockId := setupPutBlockListTest(c)
-//	defer deleteContainer(contClient)
-//	resp, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil) // The bbClient must actually exist to have a modifed time
-//	c.Assert(err, chk.IsNil)
-//
-//	commitBlockListOptions := CommitBlockListOptions{
-//		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag}},
-//	}
-//	_, err = bbClient.CommitBlockList(ctx, []string{blockId}, &commitBlockListOptions)
-//
-//	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlockListValidateData(c *chk.C) {
-//	contClient, bbClient, blockId := setupPutBlockListTest(c)
-//	defer deleteContainer(contClient)
-//
-//	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil)
-//
-//	resp, err := bbClient.Download(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	data, _ := ioutil.ReadAll(resp.RawResponse.Body)
-//	c.Assert(string(data), chk.Equals, blockBlobDefaultData)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlockListModifyBlob(c *chk.C) {
-//	contClient, bbClient, blockId := setupPutBlockListTest(c)
-//	defer deleteContainer(contClient)
-//
-//	_, err := bbClient.CommitBlockList(ctx, []string{blockId}, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	_, err = bbClient.StageBlock(ctx, "0001", bytes.NewReader([]byte("new data")), nil)
-//	c.Assert(err, chk.IsNil)
-//	_, err = bbClient.StageBlock(ctx, "0010", bytes.NewReader([]byte("new data")), nil)
-//	c.Assert(err, chk.IsNil)
-//	_, err = bbClient.StageBlock(ctx, "0011", bytes.NewReader([]byte("new data")), nil)
-//	c.Assert(err, chk.IsNil)
-//	_, err = bbClient.StageBlock(ctx, "0100", bytes.NewReader([]byte("new data")), nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	_, err = bbClient.CommitBlockList(ctx, []string{"0001", "0011"}, nil)
-//	c.Assert(err, chk.IsNil)
-//
-//	resp, err := bbClient.GetBlockList(ctx, BlockListAll, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(*(resp.BlockList.CommittedBlocks), chk.HasLen, 2)
-//	committed := *(resp.BlockList.CommittedBlocks)
-//	c.Assert(*(committed[0].Name), chk.Equals, "0001")
-//	c.Assert(*(committed[1].Name), chk.Equals, "0011")
-//	c.Assert(resp.BlockList.UncommittedBlocks, chk.IsNil)
-//}
-//
-//func (s *azblobTestSuite) TestSetTierOnBlobUpload(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	for _, tier := range []AccessTier{AccessTierArchive, AccessTierCool, AccessTierHot} {
-//		bbClient, _ := getBlockBlobClient(c, containerClient)
-//
-//		uploadBlockBlobOptions := UploadBlockBlobOptions{
-//			BlobHTTPHeaders: &basicHeaders,
-//			Tier:            &tier,
-//		}
-//		_, err := bbClient.Upload(ctx, strings.NewReader(blockBlobDefaultData), &uploadBlockBlobOptions)
-//		c.Assert(err, chk.IsNil)
-//
-//		resp, err := bbClient.GetProperties(ctx, nil)
-//		c.Assert(err, chk.IsNil)
-//		c.Assert(*resp.AccessTier, chk.Equals, string(tier))
-//	}
-//}
-//
-//func (s *azblobTestSuite) TestBlobSetTierOnCommit(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//
-//	for _, tier := range []AccessTier{AccessTierCool, AccessTierHot} {
-//		bbClient, _ := getBlockBlobClient(c, containerClient)
-//
-//		_, err := bbClient.StageBlock(ctx, blockID, strings.NewReader(blockBlobDefaultData), nil)
-//		c.Assert(err, chk.IsNil)
-//
-//		commitBlockListOptions := CommitBlockListOptions{
-//			Tier: &tier,
-//		}
-//		_, err = bbClient.CommitBlockList(ctx, []string{blockID}, &commitBlockListOptions)
-//		c.Assert(err, chk.IsNil)
-//
-//		resp, err := bbClient.GetBlockList(ctx, BlockListCommitted, nil)
-//		c.Assert(err, chk.IsNil)
-//		c.Assert(resp.BlockList, chk.NotNil)
-//		c.Assert(resp.BlockList.CommittedBlocks, chk.NotNil)
-//		c.Assert(resp.BlockList.UncommittedBlocks, chk.IsNil)
-//		c.Assert(*(resp.BlockList.CommittedBlocks), chk.HasLen, 1)
-//
-//	}
-//}
-//
-//func (s *azblobTestSuite) TestSetTierOnCopyBlockBlobFromURL(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//
-//	const contentSize = 4 * 1024 * 1024 // 4 MB
-//	content := make([]byte, contentSize)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//	ctx := context.Background()
-//	srcBlob := containerClient.NewBlockBlobClient(generateBlobName())
-//
-//	tier := AccessTierCool
-//	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, &UploadBlockBlobOptions{Tier: &tier})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
-//
-//	// Get source blob url with SAS for StageFromURL.
-//	currentTime := time.Now().UTC()
-//	credential, err := getGenericCredential("")
-//	if err != nil {
-//		c.Fatal("Invalid credential")
-//	}
-//	sasQueryParams, err := AccountSASSignatureValues{
-//		Protocol:      SASProtocolHTTPS,
-//		ExpiryTime:    currentTime.Add(48 * time.Hour),
-//		Permissions:   AccountSASPermissions{Read: true, List: true}.String(),
-//		Services:      AccountSASServices{Blob: true}.String(),
-//		ResourceTypes: AccountSASResourceTypes{Container: true, Object: true}.String(),
-//	}.NewSASQueryParameters(credential)
-//	c.Assert(err, chk.IsNil)
-//
-//	srcBlobParts := NewBlobURLParts(srcBlob.URL())
-//	srcBlobParts.SAS = sasQueryParams
-//	srcBlobURLWithSAS := srcBlobParts.URL()
-//
-//	for _, tier := range []AccessTier{AccessTierArchive, AccessTierCool, AccessTierHot} {
-//		destBlob := containerClient.NewBlockBlobClient(generateBlobName())
-//
-//		copyBlockBlobFromURLOptions := CopyBlockBlobFromURLOptions{
-//			Tier:     &tier,
-//			Metadata: &map[string]string{"foo": "bar"},
-//		}
-//		resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions)
-//		c.Assert(err, chk.IsNil)
-//		c.Assert(resp.RawResponse.StatusCode, chk.Equals, 202)
-//		c.Assert(*resp.CopyStatus, chk.DeepEquals, "success")
-//
-//		destBlobPropResp, err := destBlob.GetProperties(ctx, nil)
-//		c.Assert(err, chk.IsNil)
-//		c.Assert(*destBlobPropResp.AccessTier, chk.Equals, string(tier))
-//
-//	}
-//}
-//
-//func (s *azblobTestSuite) TestSetTierOnStageBlockFromURL(c *chk.C) {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//
-//	contentSize := 8 * 1024 // 8 KB
-//	content := make([]byte, contentSize)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//	ctx := context.Background()
-//	srcBlob := containerClient.NewBlockBlobClient("src" + generateBlobName())
-//	destBlob := containerClient.NewBlockBlobClient("dst" + generateBlobName())
-//	tier := AccessTierCool
-//	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, &UploadBlockBlobOptions{Tier: &tier})
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
-//
-//	// Get source blob url with SAS for StageFromURL.
-//	srcBlobParts := NewBlobURLParts(srcBlob.URL())
-//	credential, err := getGenericCredential("")
-//	srcBlobParts.SAS, err = BlobSASSignatureValues{
-//		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
-//		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
-//		ContainerName: srcBlobParts.ContainerName,
-//		BlobName:      srcBlobParts.BlobName,
-//		Permissions:   BlobSASPermissions{Read: true}.String(),
-//	}.NewSASQueryParameters(credential)
-//	if err != nil {
-//		c.Fatal(err)
-//	}
-//
-//	srcBlobURLWithSAS := srcBlobParts.URL()
-//
-//	// Stage blocks from URL.
-//	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
-//	offset1, count1 := int64(0), int64(4*1024)
-//	options1 := StageBlockFromURLOptions{
-//		Offset: &offset1,
-//		Count:  &count1,
-//	}
-//	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(stageResp1.RawResponse.StatusCode, chk.Equals, 201)
-//	c.Assert(stageResp1.ContentMD5, chk.Not(chk.Equals), "")
-//	c.Assert(stageResp1.RequestID, chk.Not(chk.Equals), "")
-//	c.Assert(stageResp1.Version, chk.Not(chk.Equals), "")
-//	c.Assert(stageResp1.Date.IsZero(), chk.Equals, false)
-//
-//	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
-//	offset2, count2 := int64(4*1024), int64(CountToEnd)
-//	options2 := StageBlockFromURLOptions{
-//		Offset: &offset2,
-//		Count:  &count2,
-//	}
-//	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(stageResp2.RawResponse.StatusCode, chk.Equals, 201)
-//	c.Assert(stageResp2.ContentMD5, chk.Not(chk.Equals), "")
-//	c.Assert(stageResp2.RequestID, chk.Not(chk.Equals), "")
-//	c.Assert(stageResp2.Version, chk.Not(chk.Equals), "")
-//	c.Assert(stageResp2.Date.IsZero(), chk.Equals, false)
-//
-//	// Check block list.
-//	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
-//	c.Assert(blockList.BlockList, chk.NotNil)
-//	c.Assert(blockList.BlockList.CommittedBlocks, chk.IsNil)
-//	c.Assert(blockList.BlockList.UncommittedBlocks, chk.NotNil)
-//	c.Assert(*blockList.BlockList.UncommittedBlocks, chk.HasLen, 2)
-//
-//	// Commit block list.
-//	commitBlockListOptions := CommitBlockListOptions{
-//		Tier: &tier,
-//	}
-//	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &commitBlockListOptions)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(listResp.RawResponse.StatusCode, chk.Equals, 201)
-//	c.Assert(listResp.LastModified, chk.NotNil)
-//	c.Assert((*listResp.LastModified).IsZero(), chk.Equals, false)
-//	c.Assert(listResp.ETag, chk.NotNil)
-//	c.Assert(listResp.RequestID, chk.NotNil)
-//	c.Assert(listResp.Version, chk.NotNil)
-//	c.Assert(listResp.Date, chk.NotNil)
-//	c.Assert((*listResp.Date).IsZero(), chk.Equals, false)
-//
-//	// Check data integrity through downloading.
-//	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(destData, chk.DeepEquals, content)
-//
-//	// Get properties to validate the tier
-//	destBlobPropResp, err := destBlob.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
-//	c.Assert(*destBlobPropResp.AccessTier, chk.Equals, string(tier))
-//}
+
+func (s *azblobTestSuite) TestBlobPutBlockListIfMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, blockBlobClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
+
+	resp, err := blockBlobClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
+	_assert.Nil(err)
+
+	_, err = blockBlobClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag}},
+	})
+	_assert.Nil(err)
+
+	validateBlobCommitted(_assert, blockBlobClient)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlockListIfMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, blockBlobClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
+
+	_, err := blockBlobClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
+	_assert.Nil(err)
+
+	eTag := "garbage"
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag}},
+	}
+	_, err = blockBlobClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
+
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, blockBlobClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
+
+	_, err := blockBlobClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
+	_assert.Nil(err)
+
+	eTag := "garbage"
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag}},
+	}
+	_, err = blockBlobClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
+	_assert.Nil(err)
+
+	validateBlobCommitted(_assert, blockBlobClient)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlockListIfNoneMatchFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, blockBlobClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
+
+	resp, err := blockBlobClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
+	_assert.Nil(err)
+
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag}},
+	}
+	_, err = blockBlobClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
+
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlockListValidateData() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, blockBlobClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
+
+	_, err := blockBlobClient.CommitBlockList(ctx, blockIDs, nil)
+
+	resp, err := blockBlobClient.Download(ctx, nil)
+	_assert.Nil(err)
+	data, _ := ioutil.ReadAll(resp.RawResponse.Body)
+	_assert.Equal(string(data), blockBlobDefaultData)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlockListModifyBlob() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, blockBlobClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
+
+	_, err := blockBlobClient.CommitBlockList(ctx, blockIDs, nil)
+	_assert.Nil(err)
+
+	_, err = blockBlobClient.StageBlock(ctx, "0001", bytes.NewReader([]byte("new data")), nil)
+	_assert.Nil(err)
+	_, err = blockBlobClient.StageBlock(ctx, "0010", bytes.NewReader([]byte("new data")), nil)
+	_assert.Nil(err)
+	_, err = blockBlobClient.StageBlock(ctx, "0011", bytes.NewReader([]byte("new data")), nil)
+	_assert.Nil(err)
+	_, err = blockBlobClient.StageBlock(ctx, "0100", bytes.NewReader([]byte("new data")), nil)
+	_assert.Nil(err)
+
+	_, err = blockBlobClient.CommitBlockList(ctx, []string{"0001", "0011"}, nil)
+	_assert.Nil(err)
+
+	resp, err := blockBlobClient.GetBlockList(ctx, BlockListAll, nil)
+	_assert.Nil(err)
+	_assert.Len(*(resp.BlockList.CommittedBlocks), 2)
+	committed := *(resp.BlockList.CommittedBlocks)
+	_assert.Equal(*(committed[0].Name), "0001")
+	_assert.Equal(*(committed[1].Name), "0011")
+	_assert.Nil(resp.BlockList.UncommittedBlocks)
+}
+
+func (s *azblobTestSuite) TestSetTierOnBlobUpload() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+
+	for _, tier := range []AccessTier{AccessTierArchive, AccessTierCool, AccessTierHot} {
+		blobName := strings.ToLower(string(tier)) + generateBlobName(testName)
+		bbClient := getBlockBlobClient(blobName, containerClient)
+
+		uploadBlockBlobOptions := UploadBlockBlobOptions{
+			BlobHTTPHeaders: &basicHeaders,
+			Tier:            &tier,
+		}
+		_, err := bbClient.Upload(ctx, strings.NewReader(blockBlobDefaultData), &uploadBlockBlobOptions)
+		_assert.Nil(err)
+
+		resp, err := bbClient.GetProperties(ctx, nil)
+		_assert.Nil(err)
+		_assert.Equal(*resp.AccessTier, string(tier))
+	}
+}
+
+func (s *azblobTestSuite) TestBlobSetTierOnCommit() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+
+	for _, tier := range []AccessTier{AccessTierCool, AccessTierHot} {
+		blobName := strings.ToLower(string(tier)) + generateBlobName(testName)
+		bbClient := getBlockBlobClient(blobName, containerClient)
+
+		blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+		_, err := bbClient.StageBlock(ctx, blockID, strings.NewReader(blockBlobDefaultData), nil)
+		_assert.Nil(err)
+
+		_, err = bbClient.CommitBlockList(ctx, []string{blockID}, &CommitBlockListOptions{
+			Tier: &tier,
+		})
+		_assert.Nil(err)
+
+		resp, err := bbClient.GetBlockList(ctx, BlockListCommitted, nil)
+		_assert.Nil(err)
+		_assert.NotNil(resp.BlockList)
+		_assert.NotNil(resp.BlockList.CommittedBlocks)
+		_assert.Nil(resp.BlockList.UncommittedBlocks)
+		_assert.Len(*(resp.BlockList.CommittedBlocks), 1)
+	}
+}
+
+func (s *azblobUnrecordedTestSuite) TestSetTierOnCopyBlockBlobFromURL() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	const contentSize = 4 * 1024 * 1024 // 4 MB
+	contentReader, _ := getRandomDataAndReader(contentSize)
+
+	ctx := context.Background()
+	srcBlob := containerClient.NewBlockBlobClient(generateBlobName(testName))
+
+	tier := AccessTierCool
+	uploadSrcResp, err := srcBlob.Upload(ctx, azcore.NopCloser(contentReader), &UploadBlockBlobOptions{Tier: &tier})
+	_assert.Nil(err)
+	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+
+	// Get source blob url with SAS for StageFromURL.
+	expiryTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
+	_assert.Nil(err)
+
+	credential, err := getGenericCredential(nil, testAccountDefault)
+	if err != nil {
+		s.T().Fatal("Couldn't fetch credential because " + err.Error())
+	}
+	sasQueryParams, err := AccountSASSignatureValues{
+		Protocol:      SASProtocolHTTPS,
+		ExpiryTime:    expiryTime,
+		Permissions:   AccountSASPermissions{Read: true, List: true}.String(),
+		Services:      AccountSASServices{Blob: true}.String(),
+		ResourceTypes: AccountSASResourceTypes{Container: true, Object: true}.String(),
+	}.NewSASQueryParameters(credential)
+	_assert.Nil(err)
+
+	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	srcBlobParts.SAS = sasQueryParams
+	srcBlobURLWithSAS := srcBlobParts.URL()
+
+	for _, tier := range []AccessTier{AccessTierArchive, AccessTierCool, AccessTierHot} {
+		destBlobName := strings.ToLower(string(tier)) + generateBlobName(testName)
+		destBlob := containerClient.NewBlockBlobClient(generateBlobName(destBlobName))
+
+		copyBlockBlobFromURLOptions := CopyBlockBlobFromURLOptions{
+			Tier:     &tier,
+			Metadata: &map[string]string{"foo": "bar"},
+		}
+		resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions)
+		_assert.Nil(err)
+		_assert.Equal(resp.RawResponse.StatusCode, 202)
+		_assert.Equal(*resp.CopyStatus, "success")
+
+		destBlobPropResp, err := destBlob.GetProperties(ctx, nil)
+		_assert.Nil(err)
+		_assert.Equal(*destBlobPropResp.AccessTier, string(tier))
+	}
+}
+
+func (s *azblobUnrecordedTestSuite) TestSetTierOnStageBlockFromURL() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	contentSize := 8 * 1024 // 8 KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+	ctx := context.Background()
+	srcBlob := containerClient.NewBlockBlobClient("src" + generateBlobName(testName))
+	destBlob := containerClient.NewBlockBlobClient("dst" + generateBlobName(testName))
+	tier := AccessTierCool
+	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, &UploadBlockBlobOptions{Tier: &tier})
+	_assert.Nil(err)
+	_assert.Equal(uploadSrcResp.RawResponse.StatusCode, 201)
+
+	// Get source blob url with SAS for StageFromURL.
+	srcBlobParts := NewBlobURLParts(srcBlob.URL())
+	credential, err := getGenericCredential(nil, testAccountDefault)
+	srcBlobParts.SAS, err = BlobSASSignatureValues{
+		Protocol:      SASProtocolHTTPS,                     // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ContainerName: srcBlobParts.ContainerName,
+		BlobName:      srcBlobParts.BlobName,
+		Permissions:   BlobSASPermissions{Read: true}.String(),
+	}.NewSASQueryParameters(credential)
+	if err != nil {
+		s.T().Fatal(err)
+	}
+
+	srcBlobURLWithSAS := srcBlobParts.URL()
+
+	// Stage blocks from URL.
+	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+	offset1, count1 := int64(0), int64(4*1024)
+	options1 := StageBlockFromURLOptions{
+		Offset: &offset1,
+		Count:  &count1,
+	}
+	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
+	_assert.Nil(err)
+	_assert.Equal(stageResp1.RawResponse.StatusCode, 201)
+	_assert.Nil(stageResp1.ContentMD5)
+	_assert.NotEqual(*stageResp1.RequestID, "")
+	_assert.NotEqual(*stageResp1.Version, "")
+	_assert.Equal(stageResp1.Date.IsZero(), false)
+
+	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
+	offset2, count2 := int64(4*1024), int64(CountToEnd)
+	options2 := StageBlockFromURLOptions{
+		Offset: &offset2,
+		Count:  &count2,
+	}
+	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
+	_assert.Nil(err)
+	_assert.Equal(stageResp2.RawResponse.StatusCode, 201)
+	_assert.NotEqual(stageResp2.ContentMD5, "")
+	_assert.NotEqual(stageResp2.RequestID, "")
+	_assert.NotEqual(stageResp2.Version, "")
+	_assert.Equal(stageResp2.Date.IsZero(), false)
+
+	// Check block list.
+	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
+	_assert.Nil(err)
+	_assert.Equal(blockList.RawResponse.StatusCode, 200)
+	_assert.NotNil(blockList.BlockList)
+	_assert.Nil(blockList.BlockList.CommittedBlocks)
+	_assert.NotNil(blockList.BlockList.UncommittedBlocks)
+	_assert.Len(*blockList.BlockList.UncommittedBlocks, 2)
+
+	// Commit block list.
+	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &CommitBlockListOptions{
+		Tier: &tier,
+	})
+	_assert.Nil(err)
+	_assert.Equal(listResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(listResp.LastModified)
+	_assert.Equal((*listResp.LastModified).IsZero(), false)
+	_assert.NotNil(listResp.ETag)
+	_assert.NotNil(listResp.RequestID)
+	_assert.NotNil(listResp.Version)
+	_assert.NotNil(listResp.Date)
+	_assert.Equal((*listResp.Date).IsZero(), false)
+
+	// Check data integrity through downloading.
+	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
+	_assert.Nil(err)
+	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
+	_assert.Nil(err)
+	_assert.EqualValues(destData, content)
+
+	// Get properties to validate the tier
+	destBlobPropResp, err := destBlob.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*destBlobPropResp.AccessTier, string(tier))
+}

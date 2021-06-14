@@ -47,44 +47,44 @@ package azblob
 //
 //	// Download the blob to verify
 //	downloadResponse, err := blobClient.Download(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	// Assert that the content is correct
 //	actualBlobData, err := ioutil.ReadAll(downloadResponse.RawResponse.Body)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(len(actualBlobData), chk.Equals, blobSize)
 //	c.Assert(actualBlobData, chk.DeepEquals, blobData)
 //}
 //
-//func (s *azblobTestSuite) TestUploadStreamToBlockBlobInChunks(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadStreamToBlockBlobInChunks() {
 //	blobSize := 8 * 1024
 //	bufferSize := 1024
 //	maxBuffers := 3
 //	performUploadStreamToBlockBlobTest(c, blobSize, bufferSize, maxBuffers)
 //}
 //
-//func (s *azblobTestSuite) TestUploadStreamToBlockBlobSingleBuffer(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadStreamToBlockBlobSingleBuffer() {
 //	blobSize := 8 * 1024
 //	bufferSize := 1024
 //	maxBuffers := 1
 //	performUploadStreamToBlockBlobTest(c, blobSize, bufferSize, maxBuffers)
 //}
 //
-//func (s *azblobTestSuite) TestUploadStreamToBlockBlobSingleIO(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadStreamToBlockBlobSingleIO() {
 //	blobSize := 1024
 //	bufferSize := 8 * 1024
 //	maxBuffers := 3
 //	performUploadStreamToBlockBlobTest(c, blobSize, bufferSize, maxBuffers)
 //}
 //
-//func (s *azblobTestSuite) TestUploadStreamToBlockBlobSingleIOEdgeCase(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadStreamToBlockBlobSingleIOEdgeCase() {
 //	blobSize := 8 * 1024
 //	bufferSize := 8 * 1024
 //	maxBuffers := 3
 //	performUploadStreamToBlockBlobTest(c, blobSize, bufferSize, maxBuffers)
 //}
 //
-//func (s *azblobTestSuite) TestUploadStreamToBlockBlobEmpty(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadStreamToBlockBlobEmpty() {
 //	blobSize := 0
 //	bufferSize := 8 * 1024
 //	maxBuffers := 3
@@ -169,35 +169,35 @@ package azblob
 //	}
 //}
 //
-//func (s *azblobTestSuite) TestUploadAndDownloadFileInChunks(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadAndDownloadFileInChunks() {
 //	fileSize := 8 * 1024
 //	blockSize := 1024
 //	parallelism := 3
 //	performUploadAndDownloadFileTest(c, fileSize, blockSize, parallelism, 0, 0)
 //}
 //
-//func (s *azblobTestSuite) TestUploadAndDownloadFileSingleIO(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadAndDownloadFileSingleIO() {
 //	fileSize := 1024
 //	blockSize := 2048
 //	parallelism := 3
 //	performUploadAndDownloadFileTest(c, fileSize, blockSize, parallelism, 0, 0)
 //}
 //
-//func (s *azblobTestSuite) TestUploadAndDownloadFileSingleRoutine(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadAndDownloadFileSingleRoutine() {
 //	fileSize := 8 * 1024
 //	blockSize := 1024
 //	parallelism := 1
 //	performUploadAndDownloadFileTest(c, fileSize, blockSize, parallelism, 0, 0)
 //}
 //
-//func (s *azblobTestSuite) TestUploadAndDownloadFileEmpty(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadAndDownloadFileEmpty() {
 //	fileSize := 0
 //	blockSize := 1024
 //	parallelism := 3
 //	performUploadAndDownloadFileTest(c, fileSize, blockSize, parallelism, 0, 0)
 //}
 //
-//func (s *azblobTestSuite) TestUploadAndDownloadFileNonZeroOffset(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadAndDownloadFileNonZeroOffset() {
 //	fileSize := 8 * 1024
 //	blockSize := 1024
 //	parallelism := 3
@@ -206,7 +206,7 @@ package azblob
 //	performUploadAndDownloadFileTest(c, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
 //}
 //
-//func (s *azblobTestSuite) TestUploadAndDownloadFileNonZeroCount(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadAndDownloadFileNonZeroCount() {
 //	fileSize := 8 * 1024
 //	blockSize := 1024
 //	parallelism := 3
@@ -215,7 +215,7 @@ package azblob
 //	performUploadAndDownloadFileTest(c, fileSize, blockSize, parallelism, downloadOffset, downloadCount)
 //}
 //
-//func (s *azblobTestSuite) TestUploadAndDownloadFileNonZeroOffsetAndCount(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadAndDownloadFileNonZeroOffsetAndCount() {
 //	fileSize := 8 * 1024
 //	blockSize := 1024
 //	parallelism := 3
@@ -281,35 +281,35 @@ package azblob
 //	}
 //}
 //
-//func (s *azblobTestSuite) TestUploadAndDownloadBufferInChunks(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadAndDownloadBufferInChunks() {
 //	blobSize := 8 * 1024
 //	blockSize := 1024
 //	parallelism := 3
 //	performUploadAndDownloadBufferTest(c, blobSize, blockSize, parallelism, 0, 0)
 //}
 //
-//func (s *azblobTestSuite) TestUploadAndDownloadBufferSingleIO(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadAndDownloadBufferSingleIO() {
 //	blobSize := 1024
 //	blockSize := 8 * 1024
 //	parallelism := 3
 //	performUploadAndDownloadBufferTest(c, blobSize, blockSize, parallelism, 0, 0)
 //}
 //
-//func (s *azblobTestSuite) TestUploadAndDownloadBufferSingleRoutine(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadAndDownloadBufferSingleRoutine() {
 //	blobSize := 8 * 1024
 //	blockSize := 1024
 //	parallelism := 1
 //	performUploadAndDownloadBufferTest(c, blobSize, blockSize, parallelism, 0, 0)
 //}
 //
-//func (s *azblobTestSuite) TestUploadAndDownloadBufferEmpty(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadAndDownloadBufferEmpty() {
 //	blobSize := 0
 //	blockSize := 1024
 //	parallelism := 3
 //	performUploadAndDownloadBufferTest(c, blobSize, blockSize, parallelism, 0, 0)
 //}
 //
-//func (s *azblobTestSuite) TestDownloadBufferWithNonZeroOffset(c *chk.C) {
+//func (s *azblobTestSuite) TestDownloadBufferWithNonZeroOffset() {
 //	blobSize := 8 * 1024
 //	blockSize := 1024
 //	parallelism := 3
@@ -318,7 +318,7 @@ package azblob
 //	performUploadAndDownloadBufferTest(c, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
 //}
 //
-//func (s *azblobTestSuite) TestDownloadBufferWithNonZeroCount(c *chk.C) {
+//func (s *azblobTestSuite) TestDownloadBufferWithNonZeroCount() {
 //	blobSize := 8 * 1024
 //	blockSize := 1024
 //	parallelism := 3
@@ -327,7 +327,7 @@ package azblob
 //	performUploadAndDownloadBufferTest(c, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
 //}
 //
-//func (s *azblobTestSuite) TestDownloadBufferWithNonZeroOffsetAndCount(c *chk.C) {
+//func (s *azblobTestSuite) TestDownloadBufferWithNonZeroOffsetAndCount() {
 //	blobSize := 8 * 1024
 //	blockSize := 1024
 //	parallelism := 3
@@ -336,7 +336,7 @@ package azblob
 //	performUploadAndDownloadBufferTest(c, blobSize, blockSize, parallelism, downloadOffset, downloadCount)
 //}
 //
-//func (s *azblobTestSuite) TestBasicDoBatchTransfer(c *chk.C) {
+//func (s *azblobTestSuite) TestBasicDoBatchTransfer() {
 //	// test the basic multi-routine processing
 //	type testInstance struct {
 //		transferSize int64
@@ -374,9 +374,9 @@ package azblob
 //		})
 //
 //		if test.expectError {
-//			c.Assert(err, chk.NotNil)
+//			_assert.NotNil(err)
 //		} else {
-//			c.Assert(err, chk.IsNil)
+//			_assert.Nil(err)
 //			c.Assert(totalSizeCount, chk.Equals, test.transferSize)
 //			c.Assert(runCount, chk.Equals, ((test.transferSize-1)/test.chunkSize)+1)
 //		}
@@ -397,7 +397,7 @@ package azblob
 //	}
 //}
 //
-//func (s *azblobTestSuite) TestDoBatchTransferWithError(c *chk.C) {
+//func (s *azblobTestSuite) TestDoBatchTransferWithError() {
 //	ctx := context.Background()
 //	mmf := mockMMF{failHandle: c}
 //	expectedFirstError := errors.New("#3 means trouble")

@@ -16,7 +16,7 @@ package azblob
 //	"time"
 //)
 //
-//func (s *azblobTestSuite) TestSetBlobTags(c *chk.C) {
+//func (s *azblobTestSuite) TestSetBlobTags() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -32,18 +32,18 @@ package azblob
 //	r, _ := getRandomDataAndReader(contentSize)
 //
 //	blockBlobUploadResp, err := bbClient.Upload(ctx, r, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blockBlobUploadResp.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	setTagsBlobOptions := SetTagsBlobOptions{
 //		BlobTagsMap: &blobTagsMap,
 //	}
 //	blobSetTagsResponse, err := bbClient.SetTags(ctx, &setTagsBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blobSetTagsResponse.RawResponse.StatusCode, chk.Equals, 204)
 //
 //	blobGetTagsResponse, err := bbClient.GetTags(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
 //	blobTagsSet := blobGetTagsResponse.Tags.BlobTagSet
 //	c.Assert(blobTagsSet, chk.NotNil)
@@ -53,7 +53,7 @@ package azblob
 //	}
 //}
 //
-//func (s *azblobTestSuite) TestSetBlobTagsWithVID(c *chk.C) {
+//func (s *azblobTestSuite) TestSetBlobTagsWithVID() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -64,12 +64,12 @@ package azblob
 //		"Javascript": "Android",
 //	}
 //	blockBlobUploadResp, err := bbClient.Upload(ctx, bytes.NewReader([]byte("data")), nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blockBlobUploadResp.RawResponse.StatusCode, chk.Equals, 201)
 //	versionId1 := blockBlobUploadResp.VersionID
 //
 //	blockBlobUploadResp, err = bbClient.Upload(ctx, bytes.NewReader([]byte("updated_data")), nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blockBlobUploadResp.RawResponse.StatusCode, chk.Equals, 201)
 //	versionId2 := blockBlobUploadResp.VersionID
 //
@@ -78,14 +78,14 @@ package azblob
 //		VersionID:   versionId1,
 //	}
 //	blobSetTagsResponse, err := bbClient.SetTags(ctx, &setTagsBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blobSetTagsResponse.RawResponse.StatusCode, chk.Equals, 204)
 //
 //	getTagsBlobOptions1 := GetTagsBlobOptions{
 //		VersionID: versionId1,
 //	}
 //	blobGetTagsResponse, err := bbClient.GetTags(ctx, &getTagsBlobOptions1)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
 //	c.Assert(blobGetTagsResponse.Tags.BlobTagSet, chk.NotNil)
 //	c.Assert(*blobGetTagsResponse.Tags.BlobTagSet, chk.HasLen, 3)
@@ -97,12 +97,12 @@ package azblob
 //		VersionID: versionId2,
 //	}
 //	blobGetTagsResponse, err = bbClient.GetTags(ctx, &getTagsBlobOptions2)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
 //	c.Assert(blobGetTagsResponse.Tags.BlobTagSet, chk.IsNil)
 //}
 //
-//func (s *azblobTestSuite) TestUploadBlockBlobWithSpecialCharactersInTags(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadBlockBlobWithSpecialCharactersInTags() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -119,12 +119,12 @@ package azblob
 //		BlobTagsMap:     &blobTagsMap,
 //	}
 //	blockBlobUploadResp, err := bbClient.Upload(ctx, bytes.NewReader([]byte("data")), &uploadBlockBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	// TODO: Check for metadata and header
 //	c.Assert(blockBlobUploadResp.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	blobGetTagsResponse, err := bbClient.GetTags(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
 //	c.Assert(*blobGetTagsResponse.Tags.BlobTagSet, chk.HasLen, 3)
 //	for _, blobTag := range *blobGetTagsResponse.Tags.BlobTagSet {
@@ -132,7 +132,7 @@ package azblob
 //	}
 //}
 //
-//func (s *azblobTestSuite) TestStageBlockWithTags(c *chk.C) {
+//func (s *azblobTestSuite) TestStageBlockWithTags() {
 //	blockIDIntToBase64 := func(blockID int) string {
 //		binaryBlockID := (&[4]byte{})[:]
 //		binary.LittleEndian.PutUint32(binaryBlockID, uint32(blockID))
@@ -150,7 +150,7 @@ package azblob
 //	for index, d := range data {
 //		base64BlockIDs[index] = blockIDIntToBase64(index)
 //		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], strings.NewReader(d), nil)
-//		c.Assert(err, chk.IsNil)
+//		_assert.Nil(err)
 //		c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
 //		c.Assert(*resp.Version, chk.Not(chk.Equals), "")
 //	}
@@ -165,12 +165,12 @@ package azblob
 //		BlobTagsMap: &blobTagsMap,
 //	}
 //	commitResp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, &commitBlockListOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(commitResp.VersionID, chk.NotNil)
 //	versionId := commitResp.VersionID
 //
 //	contentResp, err := bbClient.Download(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	contentData, err := ioutil.ReadAll(contentResp.Body(RetryReaderOptions{}))
 //	c.Assert(contentData, chk.DeepEquals, []uint8(strings.Join(data, "")))
 //
@@ -178,7 +178,7 @@ package azblob
 //		VersionID: versionId,
 //	}
 //	blobGetTagsResp, err := bbClient.GetTags(ctx, &getTagsBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blobGetTagsResp, chk.NotNil)
 //	c.Assert(*blobGetTagsResp.Tags.BlobTagSet, chk.HasLen, 3)
 //	for _, blobTag := range *blobGetTagsResp.Tags.BlobTagSet {
@@ -186,7 +186,7 @@ package azblob
 //	}
 //
 //	blobGetTagsResp, err = bbClient.GetTags(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blobGetTagsResp, chk.NotNil)
 //	c.Assert(*blobGetTagsResp.Tags.BlobTagSet, chk.HasLen, 3)
 //	for _, blobTag := range *blobGetTagsResp.Tags.BlobTagSet {
@@ -194,7 +194,7 @@ package azblob
 //	}
 //}
 //
-//func (s *azblobTestSuite) TestStageBlockFromURLWithTags(c *chk.C) {
+//func (s *azblobTestSuite) TestStageBlockFromURLWithTags() {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -219,7 +219,7 @@ package azblob
 //		BlobTagsMap: &blobTagsMap,
 //	}
 //	uploadSrcResp, err := srcBlob.Upload(ctx, r, &uploadBlockBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	// Get source blob url with SAS for StageFromURL.
@@ -247,7 +247,7 @@ package azblob
 //		Count:  &count1,
 //	}
 //	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(stageResp1.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(*stageResp1.RequestID, chk.Not(chk.Equals), "")
 //	c.Assert(*stageResp1.Version, chk.Not(chk.Equals), "")
@@ -260,7 +260,7 @@ package azblob
 //		Count:  &count2,
 //	}
 //	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(stageResp2.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(*stageResp2.RequestID, chk.Not(chk.Equals), "")
 //	c.Assert(*stageResp2.Version, chk.Not(chk.Equals), "")
@@ -268,7 +268,7 @@ package azblob
 //	c.Assert((*stageResp2.Date).IsZero(), chk.Equals, false)
 //
 //	blockList, err := destBlob.GetBlockList(ctx, BlockListAll, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 //	c.Assert(blockList.BlockList.CommittedBlocks, chk.IsNil)
 //	c.Assert(*blockList.BlockList.UncommittedBlocks, chk.HasLen, 2)
@@ -277,25 +277,25 @@ package azblob
 //		BlobTagsMap: &blobTagsMap,
 //	}
 //	listResp, err := destBlob.CommitBlockList(ctx, []string{blockID1, blockID2}, &commitBlockListOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(listResp.RawResponse.StatusCode, chk.Equals, 201)
 //	//versionId := listResp.VersionID()
 //
 //	blobGetTagsResp, err := destBlob.GetTags(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*blobGetTagsResp.Tags.BlobTagSet, chk.HasLen, 3)
 //	for _, blobTag := range *blobGetTagsResp.Tags.BlobTagSet {
 //		c.Assert(blobTagsMap[*blobTag.Key], chk.Equals, *blobTag.Value)
 //	}
 //
 //	downloadResp, err := destBlob.Download(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(destData, chk.DeepEquals, sourceData)
 //}
 //
-//func (s *azblobTestSuite) TestCopyBlockBlobFromURLWithTags(c *chk.C) {
+//func (s *azblobTestSuite) TestCopyBlockBlobFromURLWithTags() {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -320,7 +320,7 @@ package azblob
 //		BlobTagsMap: &blobTagsMap,
 //	}
 //	uploadSrcResp, err := srcBlob.Upload(ctx, r, &uploadBlockBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	// Get source blob url with SAS for StageFromURL.
@@ -344,7 +344,7 @@ package azblob
 //		SourceContentMD5: &sourceContentMD5,
 //	}
 //	resp, err := destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions1)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 202)
 //	c.Assert(*resp.ETag, chk.Not(chk.Equals), "")
 //	c.Assert(*resp.RequestID, chk.Not(chk.Equals), "")
@@ -355,9 +355,9 @@ package azblob
 //	c.Assert(*resp.CopyStatus, chk.DeepEquals, "success")
 //
 //	downloadResp, err := destBlob.Download(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(destData, chk.DeepEquals, sourceData)
 //	c.Assert(*downloadResp.TagCount, chk.Equals, int64(1))
 //
@@ -367,18 +367,18 @@ package azblob
 //		SourceContentMD5: &badMD5,
 //	}
 //	_, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions2)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	copyBlockBlobFromURLOptions3 := CopyBlockBlobFromURLOptions{
 //		BlobTagsMap: &blobTagsMap,
 //	}
 //	resp, err = destBlob.CopyFromURL(ctx, srcBlobURLWithSAS, &copyBlockBlobFromURLOptions3)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 202)
 //	c.Assert(resp.RawResponse.Header.Get("x-ms-content-crc64"), chk.Not(chk.Equals), "")
 //}
 //
-//func (s *azblobTestSuite) TestGetPropertiesReturnsTagsCount(c *chk.C) {
+//func (s *azblobTestSuite) TestGetPropertiesReturnsTagsCount() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -390,20 +390,20 @@ package azblob
 //		Metadata:        &basicMetadata,
 //	}
 //	blockBlobUploadResp, err := bbClient.Upload(ctx, bytes.NewReader([]byte("data")), &uploadBlockBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blockBlobUploadResp.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	getPropertiesResponse, err := bbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*getPropertiesResponse.TagCount, chk.Equals, int64(3))
 //
 //	downloadResp, err := bbClient.Download(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(downloadResp, chk.NotNil)
 //	c.Assert(downloadResp.RawResponse.Header.Get("x-ms-tag-count"), chk.Equals, "3")
 //}
 //
-//func (s *azblobTestSuite) TestSetBlobTagForSnapshot(c *chk.C) {
+//func (s *azblobTestSuite) TestSetBlobTagForSnapshot() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -417,19 +417,19 @@ package azblob
 //		BlobTagsMap: &blobTagsMap,
 //	}
 //	_, err := bbClient.SetTags(ctx, &setTagsBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	resp, err := bbClient.CreateSnapshot(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	snapshotURL := bbClient.WithSnapshot(*resp.Snapshot)
 //	resp2, err := snapshotURL.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*resp2.TagCount, chk.Equals, int64(3))
 //}
 //
 //// TODO: Once new pacer is done.
-////func (s *azblobTestSuite) TestListBlobReturnsTags(c *chk.C) {
+////func (s *azblobTestSuite) TestListBlobReturnsTags() {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient)
@@ -440,12 +440,12 @@ package azblob
 ////		"+-./:=_1": "+-./:=_",
 ////	}
 ////	resp, err := blobClient.SetTags(ctx, nil, nil, nil, nil, nil, nil, blobTagsMap)
-////	c.Assert(err, chk.IsNil)
+////	_assert.Nil(err)
 ////	c.Assert(resp.StatusCode(), chk.Equals, 204)
 ////
 ////	listBlobResp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Tags: true}})
 ////
-////	c.Assert(err, chk.IsNil)
+////	_assert.Nil(err)
 ////	c.Assert(listBlobResp.Segment.BlobItems[0].Name, chk.Equals, blobName)
 ////	c.Assert(listBlobResp.Segment.BlobItems[0].BlobTags.BlobTagSet, chk.HasLen, 3)
 ////	for _, blobTag := range listBlobResp.Segment.BlobItems[0].BlobTags.BlobTagSet {
@@ -453,7 +453,7 @@ package azblob
 ////	}
 ////}
 ////
-////func (s *azblobTestSuite) TestFindBlobsByTags(c *chk.C) {
+////func (s *azblobTestSuite) TestFindBlobsByTags() {
 ////	bsu := getServiceClient()
 ////	containerClient1, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient1)
@@ -473,25 +473,25 @@ package azblob
 ////	}
 ////	blobURL11, _ := getBlockBlobURL(c, containerClient1)
 ////	_, err := blobURL11.Upload(ctx, bytes.NewReader([]byte("random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, blobTagsMap1, ClientProvidedKeyOptions{})
-////	c.Assert(err, chk.IsNil)
+////	_assert.Nil(err)
 ////	blobURL12, _ := getBlockBlobURL(c, containerClient1)
 ////	_, err = blobURL12.Upload(ctx, bytes.NewReader([]byte("another random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, blobTagsMap2, ClientProvidedKeyOptions{})
-////	c.Assert(err, chk.IsNil)
+////	_assert.Nil(err)
 ////
 ////	blobURL21, _ := getBlockBlobURL(c, containerClient2)
 ////	_, err = blobURL21.Upload(ctx, bytes.NewReader([]byte("random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-////	c.Assert(err, chk.IsNil)
+////	_assert.Nil(err)
 ////	blobURL22, _ := getBlockBlobURL(c, containerClient2)
 ////	_, err = blobURL22.Upload(ctx, bytes.NewReader([]byte("another random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, blobTagsMap2, ClientProvidedKeyOptions{})
-////	c.Assert(err, chk.IsNil)
+////	_assert.Nil(err)
 ////
 ////	blobURL31, _ := getBlockBlobURL(c, containerClient3)
 ////	_, err = blobURL31.Upload(ctx, bytes.NewReader([]byte("random data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
-////	c.Assert(err, chk.IsNil)
+////	_assert.Nil(err)
 ////
 ////	where := "\"tag4\"='fourthtag'"
 ////	lResp, err := bsu.FindBlobsByTags(ctx, nil, nil, &where, Marker{}, nil)
-////	c.Assert(err, chk.IsNil)
+////	_assert.Nil(err)
 ////	c.Assert(lResp.Blobs, chk.HasLen, 0)
 ////
 ////	//where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'AND\"@container\"='"+ containerName1 + "'"
@@ -499,14 +499,14 @@ package azblob
 ////	where = "\"tag1\"='firsttag'AND\"tag2\"='secondtag'"
 ////
 ////	lResp, err = bsu.FindBlobsByTags(ctx, nil, nil, &where, Marker{}, nil)
-////	c.Assert(err, chk.IsNil)
+////	_assert.Nil(err)
 ////
 ////	for _, blob := range lResp.Blobs {
 ////		c.Assert(blob.TagValue, chk.Equals, "firsttag")
 ////	}
 ////}
 ////
-////func (s *azblobTestSuite) TestFilterBlobsUsingAccountSAS(c *chk.C) {
+////func (s *azblobTestSuite) TestFilterBlobsUsingAccountSAS() {
 ////	accountName, accountKey := accountInfo()
 ////	credential, err := NewSharedKeyCredential(accountName, accountKey)
 ////	if err != nil {
@@ -545,11 +545,11 @@ package azblob
 ////
 ////	blobTagsMap := BlobTagsMap{"tag1": "firsttag", "tag2": "secondtag", "tag3": "thirdtag"}
 ////	setBlobTagsResp, err := blobClient.SetTags(ctx, nil, nil, nil, nil, nil, nil, blobTagsMap)
-////	c.Assert(err, chk.IsNil)
+////	_assert.Nil(err)
 ////	c.Assert(setBlobTagsResp.StatusCode(), chk.Equals, 204)
 ////
 ////	blobGetTagsResp, err := blobClient.GetTags(ctx, nil, nil, nil, nil, nil)
-////	c.Assert(err, chk.IsNil)
+////	_assert.Nil(err)
 ////	c.Assert(blobGetTagsResp.StatusCode(), chk.Equals, 200)
 ////	c.Assert(blobGetTagsResp.BlobTagSet, chk.HasLen, 3)
 ////	for _, blobTag := range blobGetTagsResp.BlobTagSet {
@@ -559,10 +559,10 @@ package azblob
 ////	time.Sleep(30 * time.Second)
 ////	where := "\"tag1\"='firsttag'AND\"tag2\"='secondtag'AND@container='" + containerName + "'"
 ////	_, err = serviceURL.FindBlobsByTags(ctx, nil, nil, &where, Marker{}, nil)
-////	c.Assert(err, chk.IsNil)
+////	_assert.Nil(err)
 ////}
 //
-//func (s *azblobTestSuite) TestCreatePageBlobWithTags(c *chk.C) {
+//func (s *azblobTestSuite) TestCreatePageBlobWithTags() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -575,7 +575,7 @@ package azblob
 //		PageRange: &HttpRange{offset, count},
 //	}
 //	putResp, err := pbClient.UploadPages(ctx, getReaderToRandomBytes(1024), &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(putResp.LastModified.IsZero(), chk.Equals, false)
 //	c.Assert(putResp.ETag, chk.Not(chk.Equals), ETagNone)
@@ -585,16 +585,16 @@ package azblob
 //		BlobTagsMap: &basicBlobTagsMap,
 //	}
 //	setTagResp, err := pbClient.SetTags(ctx, &setTagsBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(setTagResp.RawResponse.StatusCode, chk.Equals, 204)
 //
 //	gpResp, err := pbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(gpResp, chk.NotNil)
 //	c.Assert(*gpResp.TagCount, chk.Equals, int64(len(basicBlobTagsMap)))
 //
 //	blobGetTagsResponse, err := pbClient.GetTags(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
 //	blobTagsSet := blobGetTagsResponse.Tags.BlobTagSet
 //	c.Assert(blobTagsSet, chk.NotNil)
@@ -612,16 +612,16 @@ package azblob
 //		BlobTagsMap: &modifiedBlobTags,
 //	}
 //	setTagResp, err = pbClient.SetTags(ctx, &setTagsBlobOptions2)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(setTagResp.RawResponse.StatusCode, chk.Equals, 204)
 //
 //	gpResp, err = pbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(gpResp, chk.NotNil)
 //	c.Assert(*gpResp.TagCount, chk.Equals, int64(len(modifiedBlobTags)))
 //
 //	blobGetTagsResponse, err = pbClient.GetTags(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
 //	blobTagsSet = blobGetTagsResponse.Tags.BlobTagSet
 //	c.Assert(blobTagsSet, chk.NotNil)
@@ -631,7 +631,7 @@ package azblob
 //	}
 //}
 //
-//func (s *azblobTestSuite) TestPageBlobSetBlobTagForSnapshot(c *chk.C) {
+//func (s *azblobTestSuite) TestPageBlobSetBlobTagForSnapshot() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -641,18 +641,18 @@ package azblob
 //		BlobTagsMap: &specialCharBlobTagsMap,
 //	}
 //	_, err := pbClient.SetTags(ctx, &setTagsBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	resp, err := pbClient.CreateSnapshot(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	snapshotURL := pbClient.WithSnapshot(*resp.Snapshot)
 //	resp2, err := snapshotURL.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*resp2.TagCount, chk.Equals, int64(len(specialCharBlobTagsMap)))
 //
 //	blobGetTagsResponse, err := pbClient.GetTags(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
 //	blobTagsSet := blobGetTagsResponse.Tags.BlobTagSet
 //	c.Assert(blobTagsSet, chk.NotNil)
@@ -662,7 +662,7 @@ package azblob
 //	}
 //}
 //
-//func (s *azblobTestSuite) TestCreateAppendBlobWithTags(c *chk.C) {
+//func (s *azblobTestSuite) TestCreateAppendBlobWithTags() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -672,14 +672,14 @@ package azblob
 //		BlobTagsMap: &specialCharBlobTagsMap,
 //	}
 //	createResp, err := abClient.Create(ctx, &createAppendBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(createResp.VersionID, chk.NotNil)
 //
 //	_, err = abClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	blobGetTagsResponse, err := abClient.GetTags(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
 //	blobTagsSet := blobGetTagsResponse.Tags.BlobTagSet
 //	c.Assert(blobTagsSet, chk.NotNil)
@@ -689,15 +689,15 @@ package azblob
 //	}
 //
 //	resp, err := abClient.CreateSnapshot(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	snapshotURL := abClient.WithSnapshot(*resp.Snapshot)
 //	resp2, err := snapshotURL.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*resp2.TagCount, chk.Equals, int64(len(specialCharBlobTagsMap)))
 //
 //	blobGetTagsResponse, err = abClient.GetTags(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blobGetTagsResponse.RawResponse.StatusCode, chk.Equals, 200)
 //	blobTagsSet = blobGetTagsResponse.Tags.BlobTagSet
 //	c.Assert(blobTagsSet, chk.NotNil)

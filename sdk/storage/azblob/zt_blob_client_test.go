@@ -10,6 +10,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"github.com/stretchr/testify/assert"
+	"io"
 	"io/ioutil"
 	"net/url"
 	"os"
@@ -20,8 +21,8 @@ import (
 func (s *azblobTestSuite) TestCreateBlobClient() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -43,8 +44,8 @@ func (s *azblobTestSuite) TestCreateBlobClient() {
 func (s *azblobTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, serviceClient)
@@ -55,7 +56,7 @@ func (s *azblobTestSuite) TestCreateBlobClientWithSnapshotAndSAS() {
 	currentTime, err := time.Parse(time.UnixDate, "Fri Jun 11 20:00:00 UTC 2049")
 	_assert.Nil(err)
 
-	credential, err := getGenericCredential(context.recording, testAccountDefault)
+	credential, err := getGenericCredential(_context.recording, testAccountDefault)
 	if err != nil {
 		s.Fail(err.Error())
 	}
@@ -99,8 +100,8 @@ func waitForCopy(_assert *assert.Assertions, copyBlobClient BlockBlobClient, blo
 func (s *azblobTestSuite) TestBlobStartCopyDestEmpty() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -129,14 +130,14 @@ func (s *azblobTestSuite) TestBlobStartCopyDestEmpty() {
 	data, err := ioutil.ReadAll(resp.RawResponse.Body)
 	_assert.Equal(*resp.ContentLength, int64(len(blockBlobDefaultData)))
 	_assert.Equal(string(data), blockBlobDefaultData)
-	resp.Body(RetryReaderOptions{}).Close()
+	_ = resp.Body(RetryReaderOptions{}).Close()
 }
 
 func (s *azblobTestSuite) TestBlobStartCopyMetadata() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -171,8 +172,8 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadata() {
 func (s *azblobTestSuite) TestBlobStartCopyMetadataNil() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -204,8 +205,8 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadataNil() {
 func (s *azblobTestSuite) TestBlobStartCopyMetadataEmpty() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -241,8 +242,8 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadataEmpty() {
 func (s *azblobTestSuite) TestBlobStartCopyMetadataInvalidField() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -270,8 +271,8 @@ func (s *azblobTestSuite) TestBlobStartCopyMetadataInvalidField() {
 func (s *azblobTestSuite) TestBlobStartCopySourceNonExistent() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -293,9 +294,9 @@ func (s *azblobTestSuite) TestBlobStartCopySourceNonExistent() {
 
 //func (s *azblobTestSuite) TestBlobStartCopySourcePrivate() {
 //	_assert := assert.New(s.T())
-//	context := getTestContext(testName)
+//	_context := getTestContext(testName)
 //	serviceClient := getServiceClient(&ClientOptions{
-//		HTTPClient: context.recording,
+//		HTTPClient: _context.recording,
 //		Retry: azcore.RetryOptions{MaxRetries: -1}})
 //
 //	containerClient, _ := createNewContainer(_assert, testName, serviceClient)
@@ -396,7 +397,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 	data, err := ioutil.ReadAll(resp2.RawResponse.Body)
 	_assert.Equal(*resp2.ContentLength, int64(len(blockBlobDefaultData)))
 	_assert.Equal(string(data), blockBlobDefaultData)
-	resp2.Body(RetryReaderOptions{}).Close()
+	_ = resp2.Body(RetryReaderOptions{}).Close()
 }
 
 //func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASDest() {
@@ -587,8 +588,8 @@ func (s *azblobUnrecordedTestSuite) TestBlobStartCopyUsingSASSrc() {
 func (s *azblobTestSuite) TestBlobStartCopySourceIfMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -621,8 +622,8 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobStartCopySourceIfMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -652,8 +653,8 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -686,8 +687,8 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -797,8 +798,8 @@ func (s *azblobTestSuite) TestBlobStartCopySourceIfNoneMatchFalse() {
 func (s *azblobTestSuite) TestBlobStartCopyDestIfMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -831,8 +832,8 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobStartCopyDestIfMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -867,8 +868,8 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -904,8 +905,8 @@ func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobStartCopyDestIfNoneMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -997,8 +998,8 @@ func (s *azblobUnrecordedTestSuite) TestBlobAbortCopyInProgress() {
 func (s *azblobTestSuite) TestBlobAbortCopyNoCopyStarted() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1018,8 +1019,8 @@ func (s *azblobTestSuite) TestBlobAbortCopyNoCopyStarted() {
 func (s *azblobTestSuite) TestBlobSnapshotMetadata() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1048,8 +1049,8 @@ func (s *azblobTestSuite) TestBlobSnapshotMetadata() {
 func (s *azblobTestSuite) TestBlobSnapshotMetadataEmpty() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1078,8 +1079,8 @@ func (s *azblobTestSuite) TestBlobSnapshotMetadataEmpty() {
 func (s *azblobTestSuite) TestBlobSnapshotMetadataNil() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1107,8 +1108,8 @@ func (s *azblobTestSuite) TestBlobSnapshotMetadataNil() {
 func (s *azblobTestSuite) TestBlobSnapshotMetadataInvalid() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1131,8 +1132,8 @@ func (s *azblobTestSuite) TestBlobSnapshotMetadataInvalid() {
 func (s *azblobTestSuite) TestBlobSnapshotBlobNotExist() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1151,8 +1152,8 @@ func (s *azblobTestSuite) TestBlobSnapshotBlobNotExist() {
 func (s *azblobTestSuite) TestBlobSnapshotOfSnapshot() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1195,8 +1196,8 @@ func (s *azblobTestSuite) TestBlobSnapshotOfSnapshot() {
 //func (s *azblobTestSuite) TestBlobSnapshotIfModifiedSinceFalse() {
 //	_assert := assert.New(s.T())
 //	testName := s.T().Name()
-//	context := getTestContext(testName)
-//	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+//	_context := getTestContext(testName)
+//	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -1257,8 +1258,8 @@ func (s *azblobTestSuite) TestBlobSnapshotOfSnapshot() {
 func (s *azblobTestSuite) TestBlobSnapshotIfMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1286,8 +1287,8 @@ func (s *azblobTestSuite) TestBlobSnapshotIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobSnapshotIfMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1313,8 +1314,8 @@ func (s *azblobTestSuite) TestBlobSnapshotIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobSnapshotIfNoneMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1341,8 +1342,8 @@ func (s *azblobTestSuite) TestBlobSnapshotIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobSnapshotIfNoneMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1369,8 +1370,8 @@ func (s *azblobTestSuite) TestBlobSnapshotIfNoneMatchFalse() {
 func (s *azblobTestSuite) TestBlobDownloadDataNonExistentBlob() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1389,8 +1390,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataNonExistentBlob() {
 func (s *azblobTestSuite) TestBlobDownloadDataNegativeOffset() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1412,8 +1413,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataNegativeOffset() {
 func (s *azblobTestSuite) TestBlobDownloadDataOffsetOutOfRange() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1436,8 +1437,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataOffsetOutOfRange() {
 func (s *azblobTestSuite) TestBlobDownloadDataCountNegative() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1459,8 +1460,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountNegative() {
 func (s *azblobTestSuite) TestBlobDownloadDataCountZero() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1487,8 +1488,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountZero() {
 func (s *azblobTestSuite) TestBlobDownloadDataCountExact() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1515,8 +1516,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountExact() {
 func (s *azblobTestSuite) TestBlobDownloadDataCountOutOfRange() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1542,8 +1543,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataCountOutOfRange() {
 func (s *azblobTestSuite) TestBlobDownloadDataEmptyRangeStruct() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1570,8 +1571,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataEmptyRangeStruct() {
 func (s *azblobTestSuite) TestBlobDownloadDataContentMD5() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1669,8 +1670,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataContentMD5() {
 func (s *azblobTestSuite) TestBlobDownloadDataIfMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1698,8 +1699,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobDownloadDataIfMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1730,8 +1731,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobDownloadDataIfNoneMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1763,8 +1764,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobDownloadDataIfNoneMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1791,8 +1792,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfNoneMatchFalse() {
 func (s *azblobTestSuite) TestBlobDeleteNonExistent() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1811,8 +1812,8 @@ func (s *azblobTestSuite) TestBlobDeleteNonExistent() {
 func (s *azblobTestSuite) TestBlobDeleteSnapshot() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1887,8 +1888,8 @@ func (s *azblobTestSuite) TestBlobDeleteSnapshot() {
 func (s *azblobTestSuite) TestBlobDeleteSnapshotsNoneWithSnapshots() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -1981,8 +1982,8 @@ func validateBlobDeleted(_assert *assert.Assertions, blobClient BlobClient) {
 func (s *azblobTestSuite) TestBlobDeleteIfMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2008,8 +2009,8 @@ func (s *azblobTestSuite) TestBlobDeleteIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobDeleteIfMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2038,8 +2039,8 @@ func (s *azblobTestSuite) TestBlobDeleteIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobDeleteIfNoneMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2068,8 +2069,8 @@ func (s *azblobTestSuite) TestBlobDeleteIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobDeleteIfNoneMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2155,8 +2156,8 @@ func (s *azblobTestSuite) TestBlobDeleteIfNoneMatchFalse() {
 //	// TODO: Not Working
 //	_assert := assert.New(s.T())
 //	testName := s.T().Name()
-//	context := getTestContext(testName)
-//	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+//	_context := getTestContext(testName)
+//	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
@@ -2189,8 +2190,8 @@ func (s *azblobTestSuite) TestBlobDeleteIfNoneMatchFalse() {
 func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2216,8 +2217,8 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobGetPropsOnMissingBlob() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2239,8 +2240,8 @@ func (s *azblobTestSuite) TestBlobGetPropsOnMissingBlob() {
 func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2266,9 +2267,9 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfNoneMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
+	_context := getTestContext(testName)
 
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2295,9 +2296,9 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfNoneMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
+	_context := getTestContext(testName)
 
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2325,8 +2326,8 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfNoneMatchFalse() {
 func (s *azblobTestSuite) TestBlobSetPropertiesBasic() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2349,8 +2350,8 @@ func (s *azblobTestSuite) TestBlobSetPropertiesBasic() {
 func (s *azblobTestSuite) TestBlobSetPropertiesEmptyValue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2444,8 +2445,8 @@ func validatePropertiesSet(_assert *assert.Assertions, blobClient BlockBlobClien
 func (s *azblobTestSuite) TestBlobSetPropertiesIfMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2470,8 +2471,8 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobSetPropertiesIfMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2491,8 +2492,8 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobSetPropertiesIfNoneMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2514,8 +2515,8 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobSetPropertiesIfNoneMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2538,8 +2539,8 @@ func (s *azblobTestSuite) TestBlobSetPropertiesIfNoneMatchFalse() {
 func (s *azblobTestSuite) TestBlobSetMetadataNil() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2565,8 +2566,8 @@ func (s *azblobTestSuite) TestBlobSetMetadataNil() {
 func (s *azblobTestSuite) TestBlobSetMetadataEmpty() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2592,8 +2593,8 @@ func (s *azblobTestSuite) TestBlobSetMetadataEmpty() {
 func (s *azblobTestSuite) TestBlobSetMetadataInvalidField() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2684,8 +2685,8 @@ func validateMetadataSet(_assert *assert.Assertions, blobClient BlockBlobClient)
 func (s *azblobTestSuite) TestBlobSetMetadataIfMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2712,8 +2713,8 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfMatchTrue() {
 func (s *azblobTestSuite) TestBlobSetMetadataIfMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2736,8 +2737,8 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfMatchFalse() {
 func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchTrue() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2762,8 +2763,8 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchTrue() {
 func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchFalse() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2809,8 +2810,8 @@ func testBloserviceClientndeleteImpl(_assert *assert.Assertions, serviceClient S
 func (s *azblobTestSuite) TestBlobServiceClientDelete() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2831,8 +2832,8 @@ func setAndCheckBlobTier(_assert *assert.Assertions, blobClient BlobClient, tier
 func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
-	context := getTestContext(testName)
-	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
+	_context := getTestContext(testName)
+	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2848,7 +2849,7 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 	setAndCheckBlobTier(_assert, blobClient.BlobClient, AccessTierCool)
 	setAndCheckBlobTier(_assert, blobClient.BlobClient, AccessTierArchive)
 
-	premiumServiceClient, err := getServiceClient(context.recording, testAccountPremium, nil)
+	premiumServiceClient, err := getServiceClient(_context.recording, testAccountPremium, nil)
 	if err != nil {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
@@ -2957,6 +2958,7 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 ////	validateStorageError(c, err, StorageErrorCodeInvalidHeaderValue)
 ////}
 ////
+
 func (s *azblobTestSuite) TestBlobClientPartsSASQueryTimes() {
 	_assert := assert.New(s.T())
 	StartTimesInputs := []string{
@@ -3009,40 +3011,38 @@ func (s *azblobTestSuite) TestBlobClientPartsSASQueryTimes() {
 	}
 }
 
-//func (s *azblobTestSuite) TestDownloadBlockBlobUnexpectedEOF() {
-//	// TODO: NotWorking
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	context := getTestContext(testName)
-//	serviceClient, err := getServiceClient(context.recording, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, serviceClient)
-//	defer deleteContainer(_assert, containerClient)
-//
-//	blockBlobName := generateBlobName(testName)
-//	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
-//
-//	resp, err := blobClient.Download(ctx, nil)
-//	_assert.Nil(err)
-//
-//	// Verify that we can inject errors first.
-//	reader := resp.Body(InjectErrorInRetryReaderOptions(errors.New("unrecoverable error")))
-//
-//	_, err = ioutil.ReadAll(reader)
-//	_assert.NotNil(err)
-//	_assert.Equal(err.Error(), "unrecoverable error")
-//
-//	// Then inject the retryable error.
-//	reader = resp.Body(InjectErrorInRetryReaderOptions(io.ErrUnexpectedEOF))
-//
-//	buf, err := ioutil.ReadAll(reader)
-//	_assert.Nil(err)
-//	_assert.EqualValues(buf, []byte(blockBlobDefaultData))
-//}
+func (s *azblobUnrecordedTestSuite) TestDownloadBlockBlobUnexpectedEOF() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	serviceClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	blobClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
+
+	resp, err := blobClient.Download(ctx, nil)
+	_assert.Nil(err)
+
+	// Verify that we can inject errors first.
+	reader := resp.Body(InjectErrorInRetryReaderOptions(errors.New("unrecoverable error")))
+
+	_, err = ioutil.ReadAll(reader)
+	_assert.NotNil(err)
+	_assert.Equal(err.Error(), "unrecoverable error")
+
+	// Then inject the retryable error.
+	reader = resp.Body(InjectErrorInRetryReaderOptions(io.ErrUnexpectedEOF))
+
+	buf, err := ioutil.ReadAll(reader)
+	_assert.Nil(err)
+	_assert.EqualValues(buf, []byte(blockBlobDefaultData))
+}
 
 func InjectErrorInRetryReaderOptions(err error) RetryReaderOptions {
 	return RetryReaderOptions{

@@ -11,15 +11,15 @@ package azblob
 //)
 //
 //// tests general functionality
-//func (s *azblobTestSuite) TestBlobListWrapper(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobListWrapper() {
 //	bsu, err := getGenericBSU("", nil)
 //
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	container, _ := getContainerClient(bsu)
 //
 //	_, err = container.Create(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	defer container.Delete(ctx, nil)
 //
 //	files := []string{"a", "b", "c"}
@@ -46,15 +46,15 @@ package azblob
 //}
 //
 //// tests that the buffer filling isn't a problem
-//func (s *azblobTestSuite) TestBlobListWrapperFullBuffer(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobListWrapperFullBuffer() {
 //	bsu, err := getGenericBSU("", nil)
 //
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	container, _ := getContainerClient(bsu)
 //
 //	_, err = container.Create(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	defer container.Delete(ctx, nil)
 //
 //	files := []string{"a", "b", "c"}
@@ -80,10 +80,10 @@ package azblob
 //	c.Assert(files, chk.DeepEquals, found)
 //}
 //
-//func (s *azblobTestSuite) TestBlobListWrapperListingError(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobListWrapperListingError() {
 //	bsu, err := getGenericBSU("", nil)
 //
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	container, _ := getContainerClient(bsu)
 //

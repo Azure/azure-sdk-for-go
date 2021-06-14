@@ -14,35 +14,35 @@ package azblob
 //	chk "gopkg.in/check.v1" // go get gopkg.in/check.v1
 //)
 //
-//func (s *azblobTestSuite) TestGetAccountInfo(c *chk.C) {
+//func (s *azblobTestSuite) TestGetAccountInfo() {
 //	sa := getServiceClient(nil)
 //
 //	// Ensure the call succeeded. Don't test for specific account properties because we can't/don't want to set account properties.
 //	sAccInfo, err := sa.GetAccountInfo(context.Background())
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(sAccInfo, chk.Not(chk.DeepEquals), ServiceGetAccountInfoResponse{})
 //
 //	//Test on a container
 //	containerClient := sa.NewContainerClient(generateContainerName())
 //	_, err = containerClient.Create(ctx, nil)
 //	defer containerClient.Delete(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	cAccInfo, err := containerClient.GetAccountInfo(ctx)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(cAccInfo, chk.Not(chk.DeepEquals), ContainerGetAccountInfoResponse{})
 //
 //	// test on a block blob URL. They all call the same thing on the base URL, so only one test is needed for that.
 //	blobClient := containerClient.NewBlockBlobClient(generateBlobName())
 //	_, err = blobClient.Upload(ctx, azcore.NopCloser(strings.NewReader("blah")), nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	bAccInfo, err := blobClient.GetAccountInfo(ctx)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(bAccInfo, chk.Not(chk.DeepEquals), BlobGetAccountInfoResponse{})
 //}
 //
-//func (s *azblobTestSuite) TestListContainersBasic(c *chk.C) {
+//func (s *azblobTestSuite) TestListContainersBasic() {
 //	sa, err := getGenericBSU("", nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	md := map[string]string{
 //		"foo": "foovalue",
@@ -52,7 +52,7 @@ package azblob
 //	container, name := getContainerClient(sa)
 //	_, err = container.Create(ctx, &CreateContainerOptions{Metadata: &md})
 //	defer container.Delete(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	prefix := containerPrefix
 //	listOptions := ListContainersSegmentOptions{Prefix: &prefix, Include: ListContainersDetail{Metadata: true}}
@@ -100,11 +100,11 @@ package azblob
 //	// }
 //	// err = <-errs
 //
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(count >= 0, chk.Equals, true)
 //}
 //
-//func (s *azblobTestSuite) TestListContainersPaged(c *chk.C) {
+//func (s *azblobTestSuite) TestListContainersPaged() {
 //	sa := getServiceClient(nil)
 //
 //	const numContainers = 6
@@ -163,7 +163,7 @@ package azblob
 //	}
 //}
 //
-//func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix(c *chk.C) {
+//func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
 //	bsu := getServiceClient(nil)
 //	containerClient1, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient1)
@@ -187,7 +187,7 @@ package azblob
 //}
 //
 //// TODO re-enable after fixing error handling
-////func (s *azblobTestSuite) TestAccountListContainersMaxResultsNegative(c *chk.C) {
+////func (s *azblobTestSuite) TestAccountListContainersMaxResultsNegative() {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient)
@@ -198,14 +198,14 @@ package azblob
 ////
 ////		// getting the pager should still work
 ////		pager, err := bsu.ListContainersSegment(context.Background(), 100, time.Hour, &options)
-////		c.Assert(err, chk.IsNil)
+////		_assert.Nil(err)
 ////
 ////		// getting the next page should fail
 ////
 ////	}
 ////}
 //
-////func (s *azblobTestSuite) TestAccountListContainersMaxResultsExact(c *chk.C) {
+////func (s *azblobTestSuite) TestAccountListContainersMaxResultsExact() {
 ////	// If this test fails, ensure there are no extra containers prefixed with go in the account. These may be left over if a test is interrupted.
 ////	bsu := getServiceClient()
 ////	containerClient1, containerName1 := createNewContainerWithSuffix(c, bsu, "abc")
@@ -217,94 +217,94 @@ package azblob
 ////	maxResults := int32(2)
 ////	options := ListContainersSegmentOptions{Prefix: &prefix, MaxResults: &maxResults}
 ////	pager, err := bsu.ListContainersSegment(&options)
-////	c.Assert(err, chk.IsNil)
+////	_assert.Nil(err)
 ////
 ////	// getting the next page should work
 ////	hasPage := pager.NextPage(context.Background())
 ////	c.Assert(hasPage, chk.Equals, true)
 ////
 ////	page := pager.PageResponse()
-////	c.Assert(err, chk.IsNil)
+////	_assert.Nil(err)
 ////	c.Assert(*page.EnumerationResults.ContainerItems, chk.HasLen, 2)
 ////	c.Assert(*(*page.EnumerationResults.ContainerItems)[0].Name, chk.DeepEquals, containerName1)
 ////	c.Assert(*(*page.EnumerationResults.ContainerItems)[1].Name, chk.DeepEquals, containerName2)
 ////}
 //
-//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicy(c *chk.C) {
+//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicy() {
 //	bsu := getServiceClient(nil)
 //
 //	days := int32(5)
 //	enabled := true
 //	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	// From FE, 30 seconds is guaranteed to be enough.
 //	time.Sleep(time.Second * 30)
 //
 //	resp, err := bsu.GetProperties(ctx)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, chk.DeepEquals, true)
 //	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, chk.DeepEquals, int32(5))
 //
 //	disabled := false
 //	_, err = bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &disabled}})
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	// From FE, 30 seconds is guaranteed to be enough.
 //	time.Sleep(time.Second * 30)
 //
 //	resp, err = bsu.GetProperties(ctx)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, chk.DeepEquals, false)
 //	c.Assert(resp.StorageServiceProperties.DeleteRetentionPolicy.Days, chk.IsNil)
 //}
 //
-//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyEmpty(c *chk.C) {
+//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyEmpty() {
 //	bsu := getServiceClient(nil)
 //
 //	days := int32(5)
 //	enabled := true
 //	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	// From FE, 30 seconds is guaranteed to be enough.
 //	time.Sleep(time.Second * 30)
 //
 //	resp, err := bsu.GetProperties(ctx)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, chk.DeepEquals, true)
 //	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, chk.DeepEquals, int32(5))
 //
 //	// Empty retention policy causes an error, this is different from track 1.5
 //	_, err = bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{}})
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //}
 //
-//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyNil(c *chk.C) {
+//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyNil() {
 //	bsu := getServiceClient(nil)
 //
 //	days := int32(5)
 //	enabled := true
 //	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	// From FE, 30 seconds is guaranteed to be enough.
 //	time.Sleep(time.Second * 30)
 //
 //	resp, err := bsu.GetProperties(ctx)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, chk.DeepEquals, true)
 //	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, chk.DeepEquals, int32(5))
 //
 //	_, err = bsu.SetProperties(ctx, StorageServiceProperties{})
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	// From FE, 30 seconds is guaranteed to be enough.
 //	time.Sleep(time.Second * 30)
 //
 //	// If an element of service properties is not passed, the service keeps the current settings.
 //	resp, err = bsu.GetProperties(ctx)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Enabled, chk.DeepEquals, true)
 //	c.Assert(*resp.StorageServiceProperties.DeleteRetentionPolicy.Days, chk.DeepEquals, int32(5))
 //
@@ -313,33 +313,33 @@ package azblob
 //	bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
 //}
 //
-//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysTooSmall(c *chk.C) {
+//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysTooSmall() {
 //	bsu := getServiceClient(nil)
 //
 //	days := int32(0) // Minimum days is 1. Validated on the client.
 //	enabled := true
 //	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //}
 //
-//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysTooLarge(c *chk.C) {
+//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysTooLarge() {
 //	bsu := getServiceClient(nil)
 //
 //	days := int32(366) // Max days is 365. Left to the service for validation.
 //	enabled := true
 //	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled, Days: &days}})
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeInvalidXMLDocument)
 //}
 //
-//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysOmitted(c *chk.C) {
+//func (s *azblobTestSuite) TestAccountDeleteRetentionPolicyDaysOmitted() {
 //	bsu := getServiceClient(nil)
 //
 //	// Days is required if enabled is true.
 //	enabled := true
 //	_, err := bsu.SetProperties(ctx, StorageServiceProperties{DeleteRetentionPolicy: &RetentionPolicy{Enabled: &enabled}})
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeInvalidXMLDocument)
 //}

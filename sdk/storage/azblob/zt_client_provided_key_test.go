@@ -66,7 +66,7 @@ package azblob
 //	return int(binary.LittleEndian.Uint32(blockIDBase64ToBinary(blockID)))
 //}
 //
-//func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -81,14 +81,14 @@ package azblob
 //			CpkInfo: &testCPKByValue,
 //		}
 //		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], strings.NewReader(word), &stageBlockOptions)
-//		c.Assert(err, chk.IsNil)
+//		_assert.Nil(err)
 //	}
 //
 //	commitBlockListOptions := CommitBlockListOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	resp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, &commitBlockListOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	c.Assert(resp.ETag, chk.NotNil)
 //	c.Assert(resp.LastModified, chk.NotNil)
@@ -97,14 +97,14 @@ package azblob
 //
 //	// Get blob content without encryption key should fail the request.
 //	_, err = bbClient.Download(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions := DownloadBlobOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	getResp, err := bbClient.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	b := bytes.Buffer{}
 //	reader := getResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue})
 //	_, _ = b.ReadFrom(reader)
@@ -114,7 +114,7 @@ package azblob
 //	c.Assert(*getResp.LastModified, chk.DeepEquals, *resp.LastModified)
 //}
 //
-//func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope(c *chk.C) {
+//func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -129,14 +129,14 @@ package azblob
 //			CpkScopeInfo: &testCPKByScope,
 //		}
 //		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], strings.NewReader(word), &stageBlockOptions)
-//		c.Assert(err, chk.IsNil)
+//		_assert.Nil(err)
 //	}
 //
 //	commitBlockListOptions := CommitBlockListOptions{
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	resp, err := bbClient.CommitBlockList(ctx, base64BlockIDs, &commitBlockListOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.ETag, chk.NotNil)
 //	c.Assert(resp.LastModified, chk.NotNil)
 //	c.Assert(*resp.IsServerEncrypted, chk.Equals, true)
@@ -146,7 +146,7 @@ package azblob
 //		CpkInfo: &testCPKByValue,
 //	}
 //	getResp, err := bbClient.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	//storageErr := err.(StorageError)
 //	//c.Assert(storageErr.RawResponse.StatusCode, chk.Equals, 409)
@@ -156,11 +156,11 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	getResp, err = bbClient.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	b := bytes.Buffer{}
 //	reader := getResp.Body(RetryReaderOptions{})
 //	_, err = b.ReadFrom(reader)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	_ = reader.Close() // The client must close the response body when finished with it
 //	c.Assert(b.String(), chk.Equals, "AAA BBB CCC ")
 //	c.Assert(*getResp.ETag, chk.DeepEquals, *resp.ETag)
@@ -169,7 +169,7 @@ package azblob
 //	c.Assert(*getResp.EncryptionScope, chk.DeepEquals, *testCPKByScope.EncryptionScope)
 //}
 //
-//func (s *azblobTestSuite) TestPutBlockFromURLAndCommitWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -182,7 +182,7 @@ package azblob
 //	srcBlob := containerClient.NewBlockBlobClient("srcblob")
 //	destBlob := containerClient.NewBlockBlobClient("destblob")
 //	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	// Get source blob url with SAS for StageFromURL.
@@ -210,7 +210,7 @@ package azblob
 //		CpkInfo: &testCPKByValue,
 //	}
 //	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(stageResp1.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(stageResp1.ContentMD5, chk.Not(chk.Equals), "")
 //	c.Assert(stageResp1.RequestID, chk.Not(chk.Equals), "")
@@ -225,7 +225,7 @@ package azblob
 //		CpkInfo: &testCPKByValue,
 //	}
 //	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(stageResp2.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(stageResp2.ContentMD5, chk.Not(chk.Equals), "")
 //	c.Assert(stageResp2.RequestID, chk.Not(chk.Equals), "")
@@ -234,7 +234,7 @@ package azblob
 //
 //	// Check block list.
 //	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 //	c.Assert(blockList.BlockList, chk.NotNil)
 //	c.Assert(blockList.BlockList.CommittedBlocks, chk.IsNil)
@@ -246,7 +246,7 @@ package azblob
 //		CpkInfo: &testCPKByValue,
 //	}
 //	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &commitBlockListOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(listResp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(listResp.LastModified, chk.NotNil)
 //	c.Assert((*listResp.LastModified).IsZero(), chk.Equals, false)
@@ -258,7 +258,7 @@ package azblob
 //
 //	// Check block list.
 //	blockList, err = destBlob.GetBlockList(context.Background(), BlockListAll, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 //	c.Assert(blockList.BlockList, chk.NotNil)
 //	c.Assert(blockList.BlockList.UncommittedBlocks, chk.IsNil)
@@ -267,20 +267,20 @@ package azblob
 //
 //	// Check data integrity through downloading.
 //	downloadResp, err := destBlob.BlobClient.Download(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	downloadBlobOptions := DownloadBlobOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	downloadResp, err = destBlob.BlobClient.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(destData, chk.DeepEquals, content)
 //	c.Assert(*downloadResp.EncryptionKeySHA256, chk.DeepEquals, *testCPKByValue.EncryptionKeySHA256)
 //}
 //
-//func (s *azblobTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope(c *chk.C) {
+//func (s *azblobTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -293,7 +293,7 @@ package azblob
 //	srcBlob := containerClient.NewBlockBlobClient("srcblob")
 //	destBlob := containerClient.NewBlockBlobClient("destblob")
 //	uploadSrcResp, err := srcBlob.Upload(ctx, rsc, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	// Get source blob url with SAS for StageFromURL.
@@ -321,7 +321,7 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	stageResp1, err := destBlob.StageBlockFromURL(ctx, blockID1, srcBlobURLWithSAS, 0, &options1)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(stageResp1.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(stageResp1.ContentMD5, chk.Not(chk.Equals), "")
 //	c.Assert(stageResp1.RequestID, chk.Not(chk.Equals), "")
@@ -336,7 +336,7 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	stageResp2, err := destBlob.StageBlockFromURL(ctx, blockID2, srcBlobURLWithSAS, 0, &options2)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(stageResp2.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(stageResp2.ContentMD5, chk.Not(chk.Equals), "")
 //	c.Assert(stageResp2.RequestID, chk.Not(chk.Equals), "")
@@ -345,7 +345,7 @@ package azblob
 //
 //	// Check block list.
 //	blockList, err := destBlob.GetBlockList(context.Background(), BlockListAll, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 //	c.Assert(blockList.BlockList, chk.NotNil)
 //	c.Assert(blockList.BlockList.CommittedBlocks, chk.IsNil)
@@ -357,7 +357,7 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	listResp, err := destBlob.CommitBlockList(context.Background(), []string{blockID1, blockID2}, &commitBlockListOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(listResp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(listResp.LastModified, chk.NotNil)
 //	c.Assert((*listResp.LastModified).IsZero(), chk.Equals, false)
@@ -369,7 +369,7 @@ package azblob
 //
 //	// Check block list.
 //	blockList, err = destBlob.GetBlockList(context.Background(), BlockListAll, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(blockList.RawResponse.StatusCode, chk.Equals, 200)
 //	c.Assert(blockList.BlockList, chk.NotNil)
 //	c.Assert(blockList.BlockList.UncommittedBlocks, chk.IsNil)
@@ -380,14 +380,14 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	downloadResp, err := destBlob.BlobClient.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(destData, chk.DeepEquals, content)
 //	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, *testCPKByScope.EncryptionScope)
 //}
 //
-//func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPK() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -401,35 +401,35 @@ package azblob
 //		CpkInfo: &testCPKByValue,
 //	}
 //	uploadSrcResp, err := bbClient.Upload(ctx, r, &uploadBlockBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(*uploadSrcResp.IsServerEncrypted, chk.Equals, true)
 //	c.Assert(uploadSrcResp.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySHA256)
 //
 //	// Get blob content without encryption key should fail the request.
 //	downloadResp, err := bbClient.Download(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	downloadBlobOptions := DownloadBlobOptions{
 //		CpkInfo: &testInvalidCPKByValue,
 //	}
 //	downloadResp, err = bbClient.Download(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions = DownloadBlobOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	downloadResp, err = bbClient.BlobClient.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*downloadResp.ContentMD5, chk.DeepEquals, md5Val[:])
 //	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(destData, chk.DeepEquals, srcData)
 //	c.Assert(downloadResp.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySHA256)
 //}
 //
-//func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadBlobWithMD5WithCPKScope() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -443,7 +443,7 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	uploadSrcResp, err := bbClient.Upload(ctx, r, &uploadBlockBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(uploadSrcResp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(*uploadSrcResp.IsServerEncrypted, chk.Equals, true)
 //	c.Assert(uploadSrcResp.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
@@ -453,15 +453,15 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	downloadResp, err := bbClient.BlobClient.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*downloadResp.ContentMD5, chk.DeepEquals, md5Val[:])
 //	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(destData, chk.DeepEquals, srcData)
 //	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, *testCPKByScope.EncryptionScope)
 //}
 //
-//func (s *azblobTestSuite) TestAppendBlockWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -472,7 +472,7 @@ package azblob
 //		CpkInfo: &testCPKByValue,
 //	}
 //	resp, err := appendBlobURL.Create(context.Background(), &createAppendBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	words := []string{"AAA ", "BBB ", "CCC "}
@@ -481,7 +481,7 @@ package azblob
 //			CpkInfo: &testCPKByValue,
 //		}
 //		resp, err := appendBlobURL.AppendBlock(context.Background(), strings.NewReader(word), &appendBlockOptions)
-//		c.Assert(err, chk.IsNil)
+//		_assert.Nil(err)
 //		c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
 //		c.Assert(*resp.BlobAppendOffset, chk.Equals, strconv.Itoa(index*4))
 //		c.Assert(*resp.BlobCommittedBlockCount, chk.Equals, int32(index+1))
@@ -499,22 +499,22 @@ package azblob
 //
 //	// Get blob content without encryption key should fail the request.
 //	_, err = appendBlobURL.Download(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions := DownloadBlobOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	downloadResp, err := appendBlobURL.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	data, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(string(data), chk.DeepEquals, "AAA BBB CCC ")
 //	c.Assert(*downloadResp.EncryptionKeySHA256, chk.DeepEquals, *testCPKByValue.EncryptionKeySHA256)
 //}
 //
-//func (s *azblobTestSuite) TestAppendBlockWithCPKScope(c *chk.C) {
+//func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -525,7 +525,7 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	resp, err := appendBlobURL.Create(context.Background(), &createAppendBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	words := []string{"AAA ", "BBB ", "CCC "}
@@ -534,7 +534,7 @@ package azblob
 //			CpkScopeInfo: &testCPKByScope,
 //		}
 //		resp, err := appendBlobURL.AppendBlock(context.Background(), strings.NewReader(word), &appendBlockOptions)
-//		c.Assert(err, chk.IsNil)
+//		_assert.Nil(err)
 //		c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
 //		c.Assert(*resp.BlobAppendOffset, chk.Equals, strconv.Itoa(index*4))
 //		c.Assert(*resp.BlobCommittedBlockCount, chk.Equals, int32(index+1))
@@ -555,15 +555,15 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	downloadResp, err := appendBlobURL.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	data, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(string(data), chk.DeepEquals, "AAA BBB CCC ")
 //	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, *testCPKByScope.EncryptionScope)
 //}
 //
-//func (s *azblobTestSuite) TestAppendBlockFromURLWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestAppendBlockFromURLWithCPK() {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -581,11 +581,11 @@ package azblob
 //	destBlob := containerClient.NewAppendBlobURL(generateName("dest"))
 //
 //	cResp1, err := srcClient.Create(context.Background(), nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(cResp1.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	resp, err := srcClient.AppendBlock(context.Background(), r, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(*resp.BlobAppendOffset, chk.Equals, "0")
 //	c.Assert(*resp.BlobCommittedBlockCount, chk.Equals, int32(1))
@@ -617,7 +617,7 @@ package azblob
 //		CpkInfo: &testCPKByValue,
 //	}
 //	cResp2, err := destBlob.Create(context.Background(), &createAppendBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(cResp2.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	offset := int64(0)
@@ -628,7 +628,7 @@ package azblob
 //		CpkInfo: &testCPKByValue,
 //	}
 //	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(appendFromURLResp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(*appendFromURLResp.BlobAppendOffset, chk.Equals, "0")
 //	c.Assert(*appendFromURLResp.BlobCommittedBlockCount, chk.Equals, int32(1))
@@ -645,31 +645,31 @@ package azblob
 //
 //	// Get blob content without encryption key should fail the request.
 //	downloadResp, err := destBlob.Download(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions := DownloadBlobOptions{
 //		CpkInfo: &testInvalidCPKByValue,
 //	}
 //	downloadResp, err = destBlob.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions = DownloadBlobOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	downloadResp, err = destBlob.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	c.Assert(*downloadResp.IsServerEncrypted, chk.Equals, true)
 //	c.Assert(*downloadResp.EncryptionKeySHA256, chk.DeepEquals, *testCPKByValue.EncryptionKeySHA256)
 //
 //	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(destData, chk.DeepEquals, srcData)
 //}
 //
-//func (s *azblobTestSuite) TestAppendBlockFromURLWithCPKScope(c *chk.C) {
+//func (s *azblobTestSuite) TestAppendBlockFromURLWithCPKScope() {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -687,11 +687,11 @@ package azblob
 //	destBlob := containerClient.NewAppendBlobURL(generateName("dest"))
 //
 //	cResp1, err := srcClient.Create(context.Background(), nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(cResp1.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	resp, err := srcClient.AppendBlock(context.Background(), r, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(*resp.BlobAppendOffset, chk.Equals, "0")
 //	c.Assert(*resp.BlobCommittedBlockCount, chk.Equals, int32(1))
@@ -723,7 +723,7 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	cResp2, err := destBlob.Create(context.Background(), &createAppendBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(cResp2.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	offset := int64(0)
@@ -734,7 +734,7 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	appendFromURLResp, err := destBlob.AppendBlockFromURL(ctx, srcBlobURLWithSAS, &appendBlockURLOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(appendFromURLResp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(*appendFromURLResp.BlobAppendOffset, chk.Equals, "0")
 //	c.Assert(*appendFromURLResp.BlobCommittedBlockCount, chk.Equals, int32(1))
@@ -753,12 +753,12 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*downloadResp.IsServerEncrypted, chk.Equals, true)
 //	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, *testCPKByScope.EncryptionScope)
 //
 //	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(destData, chk.DeepEquals, srcData)
 //}
 //
@@ -770,12 +770,12 @@ package azblob
 //		CpkScopeInfo: cpkScopeInfo,
 //	}
 //	resp, err := pbClient.Create(ctx, sizeInBytes, &createPageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
 //	return
 //}
 //
-//func (s *azblobTestSuite) TestPageBlockWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestPageBlockWithCPK() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -790,12 +790,12 @@ package azblob
 //		CpkInfo:   &testCPKByValue,
 //	}
 //	uploadResp, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(uploadResp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(uploadResp.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySHA256)
 //
 //	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, CountToEnd}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	pageListResp := resp.PageList.PageRange
 //	start, end := int64(0), int64(contentSize-1)
 //	rawStart, rawEnd := (*pageListResp)[0].Raw()
@@ -804,28 +804,28 @@ package azblob
 //
 //	// Get blob content without encryption key should fail the request.
 //	downloadResp, err := pbClient.Download(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	downloadBlobOptions := DownloadBlobOptions{
 //		CpkInfo: &testInvalidCPKByValue,
 //	}
 //	downloadResp, err = pbClient.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions = DownloadBlobOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	downloadResp, err = pbClient.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(destData, chk.DeepEquals, srcData)
 //	c.Assert(*downloadResp.EncryptionKeySHA256, chk.DeepEquals, *testCPKByValue.EncryptionKeySHA256)
 //}
 //
-//func (s *azblobTestSuite) TestPageBlockWithCPKScope(c *chk.C) {
+//func (s *azblobTestSuite) TestPageBlockWithCPKScope() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -840,12 +840,12 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	uploadResp, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(uploadResp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(uploadResp.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
 //
 //	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, CountToEnd}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	pageListResp := resp.PageList.PageRange
 //	start, end := int64(0), int64(contentSize-1)
 //	// c.Assert((*pageListResp)[0], chk.DeepEquals, PageRange{Start: &start, End: &end})
@@ -858,15 +858,15 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	downloadResp, err := pbClient.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(destData, chk.DeepEquals, srcData)
 //	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, *testCPKByScope.EncryptionScope)
 //}
 //
-//func (s *azblobTestSuite) TestPageBlockFromURLWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestPageBlockFromURLWithCPK() {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -888,7 +888,7 @@ package azblob
 //		PageRange: &HttpRange{offset, count},
 //	}
 //	uploadResp, err := bbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(uploadResp.RawResponse.StatusCode, chk.Equals, 201)
 //	srcBlobParts := NewBlobURLParts(bbClient.URL())
 //
@@ -909,7 +909,7 @@ package azblob
 //		CpkInfo:          &testCPKByValue,
 //	}
 //	resp, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(resp.ETag, chk.NotNil)
 //	c.Assert(resp.LastModified, chk.NotNil)
@@ -924,28 +924,28 @@ package azblob
 //	c.Assert(resp.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySHA256)
 //
 //	downloadResp, err := destBlob.Download(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	downloadBlobOptions := DownloadBlobOptions{
 //		CpkInfo: &testInvalidCPKByValue,
 //	}
 //	downloadResp, err = destBlob.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions = DownloadBlobOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	downloadResp, err = destBlob.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*downloadResp.EncryptionKeySHA256, chk.DeepEquals, *testCPKByValue.EncryptionKeySHA256)
 //
 //	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(destData, chk.DeepEquals, srcData)
 //}
 //
-//func (s *azblobTestSuite) TestPageBlockFromURLWithCPKScope(c *chk.C) {
+//func (s *azblobTestSuite) TestPageBlockFromURLWithCPKScope() {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -967,7 +967,7 @@ package azblob
 //		PageRange: &HttpRange{offset, count},
 //	}
 //	uploadResp, err := bbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(uploadResp.RawResponse.StatusCode, chk.Equals, 201)
 //	srcBlobParts := NewBlobURLParts(bbClient.URL())
 //
@@ -988,7 +988,7 @@ package azblob
 //		CpkScopeInfo:     &testCPKByScope,
 //	}
 //	resp, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(resp.ETag, chk.NotNil)
 //	c.Assert(resp.LastModified, chk.NotNil)
@@ -1007,15 +1007,15 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	downloadResp, err := destBlob.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*downloadResp.EncryptionScope, chk.DeepEquals, *testCPKByScope.EncryptionScope)
 //
 //	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(destData, chk.DeepEquals, srcData)
 //}
 //
-//func (s *azblobTestSuite) TestUploadPagesFromURLWithMD5WithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -1035,7 +1035,7 @@ package azblob
 //		PageRange: &HttpRange{offset, count},
 //	}
 //	uploadSrcResp1, err := srcBlob.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(uploadSrcResp1.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	srcBlobParts := NewBlobURLParts(srcBlob.URL())
@@ -1058,7 +1058,7 @@ package azblob
 //		CpkInfo:          &testCPKByValue,
 //	}
 //	resp, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(resp.ETag, chk.NotNil)
 //	c.Assert(resp.LastModified, chk.NotNil)
@@ -1073,24 +1073,24 @@ package azblob
 //	c.Assert(resp.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySHA256)
 //
 //	downloadResp, err := destBlob.Download(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	downloadBlobOptions := DownloadBlobOptions{
 //		CpkInfo: &testInvalidCPKByValue,
 //	}
 //	downloadResp, err = destBlob.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	// Download blob to do data integrity check.
 //	downloadBlobOptions = DownloadBlobOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	downloadResp, err = destBlob.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*downloadResp.EncryptionKeySHA256, chk.DeepEquals, *testCPKByValue.EncryptionKeySHA256)
 //
 //	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{CpkInfo: &testCPKByValue}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(destData, chk.DeepEquals, srcData)
 //
 //	_, badMD5 := getRandomDataAndReader(16)
@@ -1099,12 +1099,12 @@ package azblob
 //		SourceContentMD5: &badContentMD5,
 //	}
 //	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions1)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeMD5Mismatch)
 //}
 //
-//func (s *azblobTestSuite) TestClearDiffPagesWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestClearDiffPagesWithCPK() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1116,21 +1116,21 @@ package azblob
 //	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 //	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}, CpkInfo: &testCPKByValue}
 //	_, err := pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	createBlobSnapshotOptions := CreateBlobSnapshotOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	snapshotResp, err := pbClient.CreateSnapshot(context.Background(), &createBlobSnapshotOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	offset1, end1, count1 := int64(contentSize), int64(2*contentSize-1), int64(contentSize)
 //	uploadPagesOptions1 := UploadPagesOptions{PageRange: &HttpRange{offset1, count1}, CpkInfo: &testCPKByValue}
 //	_, err = pbClient.UploadPages(context.Background(), getReaderToRandomBytes(2048), &uploadPagesOptions1)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	pageListResp, err := pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4096}, *snapshotResp.Snapshot, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	pageRangeResp := pageListResp.PageList.PageRange
 //	c.Assert(pageRangeResp, chk.NotNil)
 //	c.Assert(*pageRangeResp, chk.HasLen, 1)
@@ -1142,15 +1142,15 @@ package azblob
 //		CpkInfo: &testCPKByValue,
 //	}
 //	clearResp, err := pbClient.ClearPages(context.Background(), HttpRange{2048, 2048}, &clearPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(clearResp.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	pageListResp, err = pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4095}, *snapshotResp.Snapshot, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(pageListResp.PageList.PageRange, chk.IsNil)
 //}
 //
-//func (s *azblobTestSuite) TestBlobResizeWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobResizeWithCPK() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1160,7 +1160,7 @@ package azblob
 //		CpkInfo: &testCPKByValue,
 //	}
 //	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	getBlobPropertiesOptions := GetBlobPropertiesOptions{
 //		CpkInfo: &testCPKByValue,
@@ -1177,7 +1177,7 @@ package azblob
 //		CpkScopeInfo: cpkScopeInfo,
 //	}
 //	cResp, err := bbClient.Upload(ctx, strings.NewReader(blockBlobDefaultData), &uploadBlockBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(*cResp.IsServerEncrypted, chk.Equals, true)
 //	if cpkInfo != nil {
@@ -1189,7 +1189,7 @@ package azblob
 //	return
 //}
 //
-//func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPK() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1197,37 +1197,37 @@ package azblob
 //
 //	// Set blob metadata without encryption key should fail the request.
 //	_, err := bbClient.SetMetadata(ctx, basicMetadata, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	setBlobMetadataOptions := SetBlobMetadataOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	resp, err := bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.EncryptionKeySHA256, chk.DeepEquals, testCPKByValue.EncryptionKeySHA256)
 //
 //	// Get blob properties without encryption key should fail the request.
 //	getResp, err := bbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	getBlobPropertiesOptions := GetBlobPropertiesOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	getResp, err = bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(getResp.Metadata, chk.NotNil)
 //	c.Assert(getResp.Metadata, chk.HasLen, len(basicMetadata))
 //	c.Assert(getResp.Metadata, chk.DeepEquals, basicMetadata)
 //
 //	_, err = bbClient.SetMetadata(ctx, map[string]string{}, &setBlobMetadataOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	getResp, err = bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(getResp.Metadata, chk.IsNil)
 //}
 //
-//func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPKScope(c *chk.C) {
+//func (s *azblobTestSuite) TestGetSetBlobMetadataWithCPKScope() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1235,30 +1235,30 @@ package azblob
 //
 //	// Set blob metadata without encryption key should fail the request.
 //	_, err := bbClient.SetMetadata(ctx, basicMetadata, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	setBlobMetadataOptions := SetBlobMetadataOptions{
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	resp, err := bbClient.SetMetadata(ctx, basicMetadata, &setBlobMetadataOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.EncryptionScope, chk.DeepEquals, testCPKByScope.EncryptionScope)
 //
 //	getResp, err := bbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(getResp.Metadata, chk.NotNil)
 //	c.Assert(getResp.Metadata, chk.HasLen, len(basicMetadata))
 //	c.Assert(getResp.Metadata, chk.DeepEquals, basicMetadata)
 //
 //	_, err = bbClient.SetMetadata(ctx, map[string]string{}, &setBlobMetadataOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	getResp, err = bbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(getResp.Metadata, chk.IsNil)
 //}
 //
-//func (s *azblobTestSuite) TestBlobSnapshotWithCPK(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSnapshotWithCPK() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1266,19 +1266,19 @@ package azblob
 //
 //	// Create Snapshot of an encrypted blob without encryption key should fail the request.
 //	resp, err := bbClient.CreateSnapshot(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	createBlobSnapshotOptions := CreateBlobSnapshotOptions{
 //		CpkInfo: &testInvalidCPKByValue,
 //	}
 //	resp, err = bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	createBlobSnapshotOptions1 := CreateBlobSnapshotOptions{
 //		CpkInfo: &testCPKByValue,
 //	}
 //	resp, err = bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions1)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*resp.IsServerEncrypted, chk.Equals, false)
 //
 //	snapshotURL := bbClient.WithSnapshot(*resp.Snapshot)
@@ -1286,20 +1286,20 @@ package azblob
 //		CpkInfo: &testCPKByValue,
 //	}
 //	dResp, err := snapshotURL.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*dResp.EncryptionKeySHA256, chk.DeepEquals, *testCPKByValue.EncryptionKeySHA256)
 //
 //	_, err = snapshotURL.Delete(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	// Get blob properties of snapshot without encryption key should fail the request.
 //	_, err = snapshotURL.GetProperties(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	//c.Assert(err.(StorageError).Response().StatusCode, chk.Equals, 404)
 //}
 //
-//func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSnapshotWithCPKScope() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1307,19 +1307,19 @@ package azblob
 //
 //	// Create Snapshot of an encrypted blob without encryption key should fail the request.
 //	resp, err := bbClient.CreateSnapshot(ctx, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	createBlobSnapshotOptions := CreateBlobSnapshotOptions{
 //		CpkScopeInfo: &testInvalidCPKByScope,
 //	}
 //	resp, err = bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	createBlobSnapshotOptions1 := CreateBlobSnapshotOptions{
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	resp, err = bbClient.CreateSnapshot(ctx, &createBlobSnapshotOptions1)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*resp.IsServerEncrypted, chk.Equals, false)
 //
 //	snapshotURL := bbClient.WithSnapshot(*resp.Snapshot)
@@ -1327,9 +1327,9 @@ package azblob
 //		CpkScopeInfo: &testCPKByScope,
 //	}
 //	dResp, err := snapshotURL.Download(ctx, &downloadBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*dResp.EncryptionScope, chk.DeepEquals, *testCPKByScope.EncryptionScope)
 //
 //	_, err = snapshotURL.Delete(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //}

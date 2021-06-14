@@ -10,7 +10,7 @@ package azblob
 //	chk "gopkg.in/check.v1"
 //)
 //
-//func (s *azblobTestSuite) TestBytesWriterWriteAt(c *chk.C) {
+//func (s *azblobTestSuite) TestBytesWriterWriteAt() {
 //	b := make([]byte, 10)
 //	buffer := newBytesWriter(b)
 //
@@ -28,7 +28,7 @@ package azblob
 //	c.Assert(bytes.Compare(b, []byte{0, 0, 0, 0, 0, 0, 0, 0, 0, 1}), chk.Equals, 0)
 //
 //	count, err = buffer.WriteAt([]byte{1, 2}, 8)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(count, chk.Equals, 2)
 //	c.Assert(bytes.Compare(b, []byte{0, 0, 0, 0, 0, 0, 0, 0, 1, 2}), chk.Equals, 0)
 //}

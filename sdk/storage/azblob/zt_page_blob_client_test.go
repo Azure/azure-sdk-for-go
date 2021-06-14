@@ -14,7 +14,7 @@ package azblob
 //	"time"
 //)
 //
-//func (s *azblobTestSuite) TestPutGetPages(c *chk.C) {
+//func (s *azblobTestSuite) TestPutGetPages() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -25,7 +25,7 @@ package azblob
 //	offset, end, count := int64(0), int64(contentSize-1), int64(contentSize)
 //	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 //	putResp, err := pbClient.UploadPages(context.Background(), getReaderToRandomBytes(1024), &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(putResp.LastModified, chk.NotNil)
 //	c.Assert((*putResp.LastModified).IsZero(), chk.Equals, false)
@@ -38,7 +38,7 @@ package azblob
 //	c.Assert((*putResp.Date).IsZero(), chk.Equals, false)
 //
 //	pageList, err := pbClient.GetPageRanges(context.Background(), HttpRange{0, 1023}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(pageList.RawResponse.StatusCode, chk.Equals, 200)
 //	c.Assert(pageList.LastModified, chk.NotNil)
 //	c.Assert((*pageList.LastModified).IsZero(), chk.Equals, false)
@@ -56,7 +56,7 @@ package azblob
 //	c.Assert(rawEnd, chk.Equals, end)
 //}
 //
-//func (s *azblobTestSuite) TestUploadPagesFromURL(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadPagesFromURL() {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -74,7 +74,7 @@ package azblob
 //	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 //	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 //	uploadSrcResp1, err := srcBlob.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(uploadSrcResp1.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(uploadSrcResp1.LastModified, chk.NotNil)
 //	c.Assert((*uploadSrcResp1.LastModified).IsZero(), chk.Equals, false)
@@ -104,7 +104,7 @@ package azblob
 //
 //	// Upload page from URL.
 //	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(pResp1.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(pResp1.ETag, chk.NotNil)
 //	c.Assert(pResp1.LastModified, chk.NotNil)
@@ -116,13 +116,13 @@ package azblob
 //
 //	// Check data integrity through downloading.
 //	downloadResp, err := destBlob.Download(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(destData, chk.DeepEquals, sourceData)
 //}
 //
-//func (s *azblobTestSuite) TestUploadPagesFromURLWithMD5(c *chk.C) {
+//func (s *azblobTestSuite) TestUploadPagesFromURLWithMD5() {
 //	bsu := getServiceClient(nil)
 //	credential, err := getGenericCredential("")
 //	if err != nil {
@@ -143,7 +143,7 @@ package azblob
 //	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 //	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 //	uploadSrcResp1, err := srcBlob.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(uploadSrcResp1.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	// Get source pbClient URL with SAS for UploadPagesFromURL.
@@ -167,7 +167,7 @@ package azblob
 //		SourceContentMD5: &contentMD5,
 //	}
 //	pResp1, err := destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(pResp1.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(pResp1.ETag, chk.NotNil)
 //	c.Assert(pResp1.LastModified, chk.NotNil)
@@ -181,9 +181,9 @@ package azblob
 //
 //	// Check data integrity through downloading.
 //	downloadResp, err := destBlob.Download(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	destData, err := ioutil.ReadAll(downloadResp.Body(RetryReaderOptions{}))
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(destData, chk.DeepEquals, sourceData)
 //
 //	// Upload page from URL with bad MD5
@@ -193,12 +193,12 @@ package azblob
 //		SourceContentMD5: &badContentMD5,
 //	}
 //	_, err = destBlob.UploadPagesFromURL(ctx, srcBlobURLWithSAS, 0, 0, int64(contentSize), &uploadPagesFromURLOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeMD5Mismatch)
 //}
 //
-//func (s *azblobTestSuite) TestClearDiffPages(c *chk.C) {
+//func (s *azblobTestSuite) TestClearDiffPages() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -210,18 +210,18 @@ package azblob
 //	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 //	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 //	_, err := pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	snapshotResp, err := pbClient.CreateSnapshot(context.Background(), nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	offset1, end1, count1 := int64(contentSize), int64(2*contentSize-1), int64(contentSize)
 //	uploadPagesOptions1 := UploadPagesOptions{PageRange: &HttpRange{offset1, count1}}
 //	_, err = pbClient.UploadPages(context.Background(), getReaderToRandomBytes(2048), &uploadPagesOptions1)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	pageListResp, err := pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4096}, *snapshotResp.Snapshot, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	pageRangeResp := pageListResp.PageList.PageRange
 //	c.Assert(pageRangeResp, chk.NotNil)
 //	c.Assert(*pageRangeResp, chk.HasLen, 1)
@@ -231,11 +231,11 @@ package azblob
 //	c.Assert(rawEnd, chk.Equals, end1)
 //
 //	clearResp, err := pbClient.ClearPages(context.Background(), HttpRange{2048, 2048}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(clearResp.RawResponse.StatusCode, chk.Equals, 201)
 //
 //	pageListResp, err = pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4095}, *snapshotResp.Snapshot, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(pageListResp.PageList.PageRange, chk.IsNil)
 //}
 //
@@ -255,7 +255,7 @@ package azblob
 //	return getPropertiesAndMetadataResult.DestinationSnapshot
 //}
 //
-//func (s *azblobTestSuite) TestIncrementalCopy(c *chk.C) {
+//func (s *azblobTestSuite) TestIncrementalCopy() {
 //	bsu := getServiceClient(nil)
 //
 //	containerClient, _ := createNewContainer(c, bsu)
@@ -265,7 +265,7 @@ package azblob
 //		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
 //	}
 //	_, err := containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	srcBlob, _ := createNewPageBlob(c, containerClient)
 //	contentSize := 1024
@@ -273,15 +273,15 @@ package azblob
 //	offset, _, count := int64(0), int64(0)+int64(contentSize-1), int64(contentSize)
 //	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 //	_, err = srcBlob.UploadPages(context.Background(), r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	snapshotResp, err := srcBlob.CreateSnapshot(context.Background(), nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	dstBlob := containerClient.NewPageBlobClient(generateBlobName())
 //
 //	resp, err := dstBlob.StartCopyIncremental(context.Background(), srcBlob.URL(), *snapshotResp.Snapshot, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 202)
 //	c.Assert(resp.LastModified, chk.NotNil)
 //	c.Assert((*resp.LastModified).IsZero(), chk.Equals, false)
@@ -296,26 +296,26 @@ package azblob
 //	waitForIncrementalCopy(c, dstBlob, &resp)
 //}
 //
-//func (s *azblobTestSuite) TestResizePageBlob(c *chk.C) {
+//func (s *azblobTestSuite) TestResizePageBlob() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //
 //	pbClient, _ := createNewPageBlob(c, containerClient)
 //	resp, err := pbClient.Resize(context.Background(), 2048, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
 //
 //	resp, err = pbClient.Resize(context.Background(), 8192, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
 //
 //	resp2, err := pbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*resp2.ContentLength, chk.Equals, int64(8192))
 //}
 //
-//func (s *azblobTestSuite) TestPageSequenceNumbers(c *chk.C) {
+//func (s *azblobTestSuite) TestPageSequenceNumbers() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -329,7 +329,7 @@ package azblob
 //		ActionType:         &actionType,
 //	}
 //	resp, err := pbClient.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
 //
 //	sequenceNumber = int64(7)
@@ -339,7 +339,7 @@ package azblob
 //		ActionType:         &actionType,
 //	}
 //	resp, err = pbClient.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
 //
 //	sequenceNumber = int64(11)
@@ -349,11 +349,11 @@ package azblob
 //		ActionType:         &actionType,
 //	}
 //	resp, err = pbClient.UpdateSequenceNumber(context.Background(), &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.RawResponse.StatusCode, chk.Equals, 200)
 //}
 //
-//func (s *azblobTestSuite) TestPutPagesWithMD5(c *chk.C) {
+//func (s *azblobTestSuite) TestPutPagesWithMD5() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -372,7 +372,7 @@ package azblob
 //	}
 //
 //	putResp, err := pbClient.UploadPages(context.Background(), readerToBody, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(putResp.LastModified, chk.NotNil)
 //	c.Assert((*putResp.LastModified).IsZero(), chk.Equals, false)
@@ -394,12 +394,12 @@ package azblob
 //		TransactionalContentMD5: &basContentMD5,
 //	}
 //	putResp, err = pbClient.UploadPages(context.Background(), readerToBody, &uploadPagesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeMD5Mismatch)
 //}
 //
-//func (s *azblobTestSuite) TestBlobCreatePageSizeInvalid(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobCreatePageSizeInvalid() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -410,12 +410,12 @@ package azblob
 //		BlobSequenceNumber: &sequenceNumber,
 //	}
 //	_, err := pbClient.Create(ctx, 1, &createPageBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeInvalidHeaderValue)
 //}
 //
-//func (s *azblobTestSuite) TestBlobCreatePageSequenceInvalid(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobCreatePageSequenceInvalid() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -426,10 +426,10 @@ package azblob
 //		BlobSequenceNumber: &sequenceNumber,
 //	}
 //	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobCreatePageMetadataNonEmpty(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobCreatePageMetadataNonEmpty() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -441,15 +441,15 @@ package azblob
 //		Metadata:           &basicMetadata,
 //	}
 //	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	resp, err := pbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.Metadata, chk.NotNil)
 //	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 //}
 //
-//func (s *azblobTestSuite) TestBlobCreatePageMetadataEmpty(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobCreatePageMetadataEmpty() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -463,11 +463,11 @@ package azblob
 //	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 //
 //	resp, err := pbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.Metadata, chk.IsNil)
 //}
 //
-//func (s *azblobTestSuite) TestBlobCreatePageMetadataInvalid(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobCreatePageMetadataInvalid() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -479,12 +479,12 @@ package azblob
 //		Metadata:           &map[string]string{"In valid1": "bar"},
 //	}
 //	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //	c.Assert(strings.Contains(err.Error(), invalidHeaderErrorSubstring), chk.Equals, true)
 //
 //}
 //
-//func (s *azblobTestSuite) TestBlobCreatePageHTTPHeaders(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobCreatePageHTTPHeaders() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -496,23 +496,23 @@ package azblob
 //		BlobHTTPHeaders:    &basicHeaders,
 //	}
 //	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	resp, err := pbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	h := resp.GetHTTPHeaders()
 //	c.Assert(h, chk.DeepEquals, basicHeaders)
 //}
 //
 //func validatePageBlobPut(c *chk.C, pbClient PageBlobClient) {
 //	resp, err := pbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.Metadata, chk.NotNil)
 //	c.Assert(resp.Metadata, chk.DeepEquals, basicMetadata)
 //	c.Assert(resp.GetHTTPHeaders(), chk.DeepEquals, basicHeaders)
 //}
 //
-//func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -532,12 +532,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validatePageBlobPut(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -557,12 +557,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -582,12 +582,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validatePageBlobPut(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -607,19 +607,19 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobCreatePageIfMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobCreatePageIfMatchTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient) // Originally created without metadata
 //
 //	resp, err := pbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	sequenceNumber := int64(0)
 //	createPageBlobOptions := CreatePageBlobOptions{
@@ -633,12 +633,12 @@ package azblob
 //		},
 //	}
 //	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validatePageBlobPut(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobCreatePageIfMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobCreatePageIfMatchFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -657,12 +657,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -681,12 +681,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validatePageBlobPut(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -706,12 +706,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesInvalidRange(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesInvalidRange() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -726,17 +726,17 @@ package azblob
 //}
 //
 //// Body cannot be nil check already added in the request preparer
-////func (s *azblobTestSuite) TestBlobPutPagesNilBody(c *chk.C) {
+////func (s *azblobTestSuite) TestBlobPutPagesNilBody() {
 ////	bsu := getServiceClient()
 ////	containerClient, _ := createNewContainer(c, bsu)
 ////	defer deleteContainer(containerClient)
 ////	pbClient, _ := createNewPageBlob(c, containerClient)
 ////
 ////	_, err := pbClient.UploadPages(ctx, nil, nil)
-////	c.Assert(err, chk.NotNil)
+////	_assert.NotNil(err)
 ////}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesEmptyBody(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesEmptyBody() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -746,10 +746,10 @@ package azblob
 //	offset, count := int64(0), int64(0)
 //	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesNonExistentBlob(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesNonExistentBlob() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -759,7 +759,7 @@ package azblob
 //	offset, count := int64(0), int64(PageBlobPageBytes)
 //	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeBlobNotFound)
 //}
@@ -767,7 +767,7 @@ package azblob
 //func validateUploadPages(c *chk.C, pbClient PageBlobClient) {
 //	// This will only validate a single put page at 0-PageBlobPageBytes-1
 //	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, CountToEnd}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	pageListResp := resp.PageList.PageRange
 //	start, end := int64(0), int64(PageBlobPageBytes-1)
 //	rawStart, rawEnd := (*pageListResp)[0].Raw()
@@ -775,7 +775,7 @@ package azblob
 //	c.Assert(rawEnd, chk.Equals, end)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -794,12 +794,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateUploadPages(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -817,12 +817,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -841,12 +841,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateUploadPages(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -865,12 +865,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfMatchTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -889,12 +889,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateUploadPages(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfMatchFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -912,12 +912,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -935,12 +935,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateUploadPages(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -959,12 +959,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -980,12 +980,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateUploadPages(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -998,7 +998,7 @@ package azblob
 //		ActionType:         &actionType,
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	r := getReaderToRandomBytes(PageBlobPageBytes)
 //	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1010,12 +1010,12 @@ package azblob
 //		},
 //	}
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeSequenceNumberConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLessThanNegOne() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1031,12 +1031,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeInvalidInput)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTETrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTETrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1049,7 +1049,7 @@ package azblob
 //		ActionType:         &actionType,
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	r := getReaderToRandomBytes(PageBlobPageBytes)
 //	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1061,12 +1061,12 @@ package azblob
 //		},
 //	}
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateUploadPages(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTEqualFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1079,7 +1079,7 @@ package azblob
 //		ActionType:         &actionType,
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	r := getReaderToRandomBytes(PageBlobPageBytes)
 //	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1091,12 +1091,12 @@ package azblob
 //		},
 //	}
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeSequenceNumberConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTENegOne(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberLTENegOne() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1112,12 +1112,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	//validateStorageError(c, err, )
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1130,7 +1130,7 @@ package azblob
 //		ActionType:         &actionType,
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	r := getReaderToRandomBytes(PageBlobPageBytes)
 //	offset, count := int64(0), int64(PageBlobPageBytes)
@@ -1142,12 +1142,12 @@ package azblob
 //		},
 //	}
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateUploadPages(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1163,12 +1163,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeSequenceNumberConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualNegOne(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobPutPagesIfSequenceNumberEqualNegOne() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -1184,12 +1184,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions) // This will cause the library to set the value of the header to 0
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	//validateStorageError(c, err, )
 //}
 //
-//func setupClearPagesTest(c *chk.C) (ContainerClient, PageBlobClient) {
+//func setupClearPagesTest() (ContainerClient, PageBlobClient) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
@@ -1200,19 +1200,19 @@ package azblob
 //		PageRange: &HttpRange{offset, count},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	return containerClient, pbClient
 //}
 //
 //func validateClearPagesTest(c *chk.C, pbClient PageBlobClient) {
 //	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	pageListResp := resp.PageList.PageRange
 //	c.Assert(pageListResp, chk.IsNil)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesInvalidRange(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesInvalidRange() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1220,7 +1220,7 @@ package azblob
 //	c.Assert(err, chk.Not(chk.IsNil))
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceTrue() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1234,12 +1234,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateClearPagesTest(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfModifiedSinceFalse() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1253,12 +1253,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceTrue() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1272,12 +1272,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateClearPagesTest(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfUnmodifiedSinceFalse() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1291,12 +1291,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfMatchTrue() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1310,12 +1310,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateClearPagesTest(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfMatchFalse() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1328,12 +1328,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchTrue() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1346,12 +1346,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateClearPagesTest(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfNoneMatchFalse() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1365,12 +1365,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanTrue() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1381,12 +1381,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateClearPagesTest(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanFalse() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1397,7 +1397,7 @@ package azblob
 //		ActionType:         &actionType,
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	ifSequenceNumberLessThan := int64(1)
 //	clearPageOptions := ClearPagesOptions{
@@ -1406,12 +1406,12 @@ package azblob
 //		},
 //	}
 //	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeSequenceNumberConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLessThanNegOne() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1422,12 +1422,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeInvalidInput)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTETrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTETrue() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1438,12 +1438,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateClearPagesTest(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTEFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTEFalse() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1454,7 +1454,7 @@ package azblob
 //		ActionType:         &actionType,
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	ifSequenceNumberLessThanOrEqualTo := int64(1)
 //	clearPageOptions := ClearPagesOptions{
@@ -1463,12 +1463,12 @@ package azblob
 //		},
 //	}
 //	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeSequenceNumberConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTENegOne(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberLTENegOne() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1479,12 +1479,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions) // This will cause the library to set the value of the header to 0
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeInvalidInput)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualTrue() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1495,7 +1495,7 @@ package azblob
 //		ActionType:         &actionType,
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	ifSequenceNumberEqualTo := int64(10)
 //	clearPageOptions := ClearPagesOptions{
@@ -1504,12 +1504,12 @@ package azblob
 //		},
 //	}
 //	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateClearPagesTest(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualFalse() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1520,7 +1520,7 @@ package azblob
 //		ActionType:         &actionType,
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	ifSequenceNumberEqualTo := int64(1)
 //	clearPageOptions := ClearPagesOptions{
@@ -1529,12 +1529,12 @@ package azblob
 //		},
 //	}
 //	_, err = pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeSequenceNumberConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobClearPagesIfSequenceNumberEqualNegOne() {
 //	containerClient, pbClient := setupClearPagesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1545,12 +1545,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.ClearPages(ctx, HttpRange{0, PageBlobPageBytes}, &clearPageOptions) // This will cause the library to set the value of the header to 0
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeInvalidInput)
 //}
 //
-//func setupGetPageRangesTest(c *chk.C) (containerClient ContainerClient, pbClient PageBlobClient) {
+//func setupGetPageRangesTest() (containerClient ContainerClient, pbClient PageBlobClient) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ = createNewContainer(c, bsu)
 //	pbClient, _ = createNewPageBlob(c, containerClient)
@@ -1561,13 +1561,13 @@ package azblob
 //		PageRange: &HttpRange{offset, count},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	return
 //}
 //
 //func validateBasicGetPageRanges(c *chk.C, resp *PageList, err error) {
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.PageRange, chk.NotNil)
 //	c.Assert(*resp.PageRange, chk.HasLen, 1)
 //	start, end := int64(0), int64(PageBlobPageBytes-1)
@@ -1576,35 +1576,35 @@ package azblob
 //	c.Assert(rawEnd, chk.Equals, end)
 //}
 //
-//func (s *azblobTestSuite) TestBlobGetPageRangesEmptyBlob(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobGetPageRangesEmptyBlob() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
 //
 //	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.PageList.PageRange, chk.IsNil)
 //}
 //
-//func (s *azblobTestSuite) TestBlobGetPageRangesEmptyRange(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobGetPageRangesEmptyRange() {
 //	containerClient, pbClient := setupGetPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
 //	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	validateBasicGetPageRanges(c, resp.PageList, err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobGetPageRangesInvalidRange(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobGetPageRangesInvalidRange() {
 //	containerClient, pbClient := setupGetPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
 //	_, err := pbClient.GetPageRanges(ctx, HttpRange{-2, 500}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobGetPageRangesNonContiguousRanges(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobGetPageRangesNonContiguousRanges() {
 //	containerClient, pbClient := setupGetPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1614,10 +1614,10 @@ package azblob
 //		PageRange: &HttpRange{offset, count},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	pageListResp := resp.PageList.PageRange
 //	c.Assert(pageListResp, chk.NotNil)
 //	c.Assert(*pageListResp, chk.HasLen, 2)
@@ -1633,30 +1633,30 @@ package azblob
 //	c.Assert(rawEnd, chk.Equals, end)
 //}
 //
-//func (s *azblobTestSuite) TestBlobGetPageRangesNotPageAligned(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobGetPageRangesNotPageAligned() {
 //	containerClient, pbClient := setupGetPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
 //	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 2000}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	validateBasicGetPageRanges(c, resp.PageList, err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobGetPageRangesSnapshot(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobGetPageRangesSnapshot() {
 //	containerClient, pbClient := setupGetPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
 //	resp, err := pbClient.CreateSnapshot(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(resp.Snapshot, chk.NotNil)
 //
 //	snapshotURL := pbClient.WithSnapshot(*resp.Snapshot)
 //	resp2, err := snapshotURL.GetPageRanges(ctx, HttpRange{0, 0}, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	validateBasicGetPageRanges(c, resp2.PageList, err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceTrue() {
 //	containerClient, pbClient := setupGetPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1670,11 +1670,11 @@ package azblob
 //		},
 //	}
 //	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	validateBasicGetPageRanges(c, resp.PageList, err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobGetPageRangesIfModifiedSinceFalse() {
 //	containerClient, pbClient := setupGetPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1688,13 +1688,13 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	//serr := err.(StorageError)
 //	//c.Assert(serr.RawResponse.StatusCode, chk.Equals, 304)
 //}
 //
-//func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceTrue() {
 //	containerClient, pbClient := setupGetPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1708,11 +1708,11 @@ package azblob
 //		},
 //	}
 //	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	validateBasicGetPageRanges(c, resp.PageList, err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobGetPageRangesIfUnmodifiedSinceFalse() {
 //	containerClient, pbClient := setupGetPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1726,17 +1726,17 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchTrue() {
 //	containerClient, pbClient := setupGetPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
 //	resp, err := pbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	getPageRangesOptions := GetPageRangesOptions{
 //		BlobAccessConditions: BlobAccessConditions{
@@ -1746,11 +1746,11 @@ package azblob
 //		},
 //	}
 //	resp2, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	validateBasicGetPageRanges(c, resp2.PageList, err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobGetPageRangesIfMatchFalse() {
 //	containerClient, pbClient := setupGetPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1763,12 +1763,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchTrue() {
 //	containerClient, pbClient := setupGetPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1781,11 +1781,11 @@ package azblob
 //		},
 //	}
 //	resp, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	validateBasicGetPageRanges(c, resp.PageList, err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobGetPageRangesIfNoneMatchFalse() {
 //	containerClient, pbClient := setupGetPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1799,12 +1799,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.GetPageRanges(ctx, HttpRange{0, 0}, &getPageRangesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //	//serr := err.(StorageError)
 //	//c.Assert(serr.RawResponse.StatusCode, chk.Equals, 304) // Service Code not returned in the body for a HEAD
 //}
 //
-//func setupDiffPageRangesTest(c *chk.C) (containerClient ContainerClient, pbClient PageBlobClient, snapshot string) {
+//func setupDiffPageRangesTest() (containerClient ContainerClient, pbClient PageBlobClient, snapshot string) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ = createNewContainer(c, bsu)
 //	pbClient, _ = createNewPageBlob(c, containerClient)
@@ -1815,10 +1815,10 @@ package azblob
 //		PageRange: &HttpRange{offset, count},
 //	}
 //	_, err := pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	resp, err := pbClient.CreateSnapshot(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	snapshot = *resp.Snapshot
 //
 //	r = getReaderToRandomBytes(PageBlobPageBytes)
@@ -1827,12 +1827,12 @@ package azblob
 //		PageRange: &HttpRange{offset, count},
 //	}
 //	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	return
 //}
 //
 //func validateDiffPageRanges(c *chk.C, resp *PageList, err error) {
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	pageListResp := resp.PageRange
 //	c.Assert(pageListResp, chk.NotNil)
 //	c.Assert(*resp.PageRange, chk.HasLen, 1)
@@ -1842,26 +1842,26 @@ package azblob
 //	c.Assert(rawEnd, chk.DeepEquals, end)
 //}
 //
-//func (s *azblobTestSuite) TestBlobDiffPageRangesNonExistentSnapshot(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobDiffPageRangesNonExistentSnapshot() {
 //	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
 //	snapshotTime, _ := time.Parse(SnapshotTimeFormat, snapshot)
 //	snapshotTime = snapshotTime.Add(time.Minute)
 //	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshotTime.Format(SnapshotTimeFormat), nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodePreviousSnapshotNotFound)
 //}
 //
-//func (s *azblobTestSuite) TestBlobDiffPageRangeInvalidRange(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobDiffPageRangeInvalidRange() {
 //	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{-22, 14}, snapshot, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobDiffPageRangeIfModifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobDiffPageRangeIfModifiedSinceTrue() {
 //	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1875,11 +1875,11 @@ package azblob
 //		},
 //	}
 //	resp, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	validateDiffPageRanges(c, resp.PageList, err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobDiffPageRangeIfModifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobDiffPageRangeIfModifiedSinceFalse() {
 //	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1893,13 +1893,13 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	//stgErr := err.(StorageError)
 //	//c.Assert(stgErr.Response().StatusCode, chk.Equals, 304)
 //}
 //
-//func (s *azblobTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceTrue() {
 //	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1913,11 +1913,11 @@ package azblob
 //		},
 //	}
 //	resp, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	validateDiffPageRanges(c, resp.PageList, err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobDiffPageRangeIfUnmodifiedSinceFalse() {
 //	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1931,12 +1931,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobDiffPageRangeIfMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobDiffPageRangeIfMatchTrue() {
 //	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1950,11 +1950,11 @@ package azblob
 //		},
 //	}
 //	resp2, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	validateDiffPageRanges(c, resp2.PageList, err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobDiffPageRangeIfMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobDiffPageRangeIfMatchFalse() {
 //	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1967,12 +1967,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobDiffPageRangeIfNoneMatchTrue() {
 //	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -1985,11 +1985,11 @@ package azblob
 //		},
 //	}
 //	resp, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	validateDiffPageRanges(c, resp.PageList, err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobDiffPageRangeIfNoneMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobDiffPageRangeIfNoneMatchFalse() {
 //	containerClient, pbClient, snapshot := setupDiffPageRangesTest(c)
 //	defer deleteContainer(containerClient)
 //
@@ -2003,13 +2003,13 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.GetPageRangesDiff(ctx, HttpRange{0, 0}, snapshot, &getPageRangesOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	//serr := err.(StorageError)
 //	//c.Assert(serr.Response().StatusCode, chk.Equals, 304)
 //}
 //
-//func (s *azblobTestSuite) TestBlobResizeZero(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobResizeZero() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2017,31 +2017,31 @@ package azblob
 //
 //	// The default pbClient is created with size > 0, so this should actually update
 //	_, err := pbClient.Resize(ctx, 0, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	resp, err := pbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*resp.ContentLength, chk.Equals, int64(0))
 //}
 //
-//func (s *azblobTestSuite) TestBlobResizeInvalidSizeNegative(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobResizeInvalidSizeNegative() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
 //
 //	_, err := pbClient.Resize(ctx, -4, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobResizeInvalidSizeMisaligned(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobResizeInvalidSizeMisaligned() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
 //	pbClient, _ := createNewPageBlob(c, containerClient)
 //
 //	_, err := pbClient.Resize(ctx, 12, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //}
 //
 //func validateResize(c *chk.C, pbClient PageBlobClient) {
@@ -2049,7 +2049,7 @@ package azblob
 //	c.Assert(*resp.ContentLength, chk.Equals, int64(PageBlobPageBytes))
 //}
 //
-//func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2065,12 +2065,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateResize(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobResizeIfModifiedSinceFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2086,12 +2086,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2107,12 +2107,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateResize(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobResizeIfUnmodifiedSinceFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2128,12 +2128,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobResizeIfMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobResizeIfMatchTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2149,12 +2149,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateResize(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobResizeIfMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobResizeIfMatchFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2169,12 +2169,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobResizeIfNoneMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobResizeIfNoneMatchTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2189,12 +2189,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateResize(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobResizeIfNoneMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobResizeIfNoneMatchFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2210,12 +2210,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.Resize(ctx, PageBlobPageBytes, &resizePageBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobSetSequenceNumberActionTypeInvalid(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSetSequenceNumberActionTypeInvalid() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2228,12 +2228,12 @@ package azblob
 //		ActionType:         &actionType,
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeInvalidHeaderValue)
 //}
 //
-//func (s *azblobTestSuite) TestBlobSetSequenceNumberSequenceNumberInvalid(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSetSequenceNumberSequenceNumberInvalid() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2251,18 +2251,18 @@ package azblob
 //	}
 //
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeInvalidHeaderValue)
 //}
 //
 //func validateSequenceNumberSet(c *chk.C, pbClient PageBlobClient) {
 //	resp, err := pbClient.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	c.Assert(*resp.BlobSequenceNumber, chk.Equals, int64(1))
 //}
 //
-//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2280,12 +2280,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateSequenceNumberSet(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfModifiedSinceFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2303,12 +2303,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2326,12 +2326,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateSequenceNumberSet(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfUnmodifiedSinceFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2349,12 +2349,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2372,12 +2372,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateSequenceNumberSet(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfMatchFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2394,12 +2394,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchTrue() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2416,12 +2416,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateSequenceNumberSet(c, pbClient)
 //}
 //
-//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobSetSequenceNumberIfNoneMatchFalse() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2439,12 +2439,12 @@ package azblob
 //		},
 //	}
 //	_, err := pbClient.UpdateSequenceNumber(ctx, &updateSequenceNumberPageBlob)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func setupStartIncrementalCopyTest(c *chk.C) (containerClient ContainerClient, pbClient PageBlobClient, copyPBClient PageBlobClient, snapshot string) {
+//func setupStartIncrementalCopyTest() (containerClient ContainerClient, pbClient PageBlobClient, copyPBClient PageBlobClient, snapshot string) {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ = createNewContainer(c, bsu)
 //
@@ -2453,7 +2453,7 @@ package azblob
 //		ContainerSetAccessPolicyOptions: ContainerSetAccessPolicyOptions{Access: &accessType},
 //	}
 //	_, err := containerClient.SetAccessPolicy(context.Background(), &setAccessPolicyOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	pbClient, _ = createNewPageBlob(c, containerClient)
 //	resp, _ := pbClient.CreateSnapshot(ctx, nil)
@@ -2461,7 +2461,7 @@ package azblob
 //
 //	// Must create the incremental copy pbClient so that the access conditions work on it
 //	resp2, err := copyPBClient.StartCopyIncremental(ctx, pbClient.URL(), *resp.Snapshot, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //	waitForIncrementalCopy(c, copyPBClient, &resp2)
 //
 //	resp, _ = pbClient.CreateSnapshot(ctx, nil) // Take a new snapshot so the next copy will succeed
@@ -2475,10 +2475,10 @@ package azblob
 //	// If we can access the snapshot without error, we are satisfied that it was created as a result of the copy
 //	copySnapshotURL := copyBlobURL.WithSnapshot(*t)
 //	_, err := copySnapshotURL.GetProperties(ctx, nil)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //}
 //
-//func (s *azblobTestSuite) TestBlobStartIncrementalCopySnapshotNotExist(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobStartIncrementalCopySnapshotNotExist() {
 //	bsu := getServiceClient(nil)
 //	containerClient, _ := createNewContainer(c, bsu)
 //	defer deleteContainer(containerClient)
@@ -2487,12 +2487,12 @@ package azblob
 //
 //	snapshot := time.Now().UTC().Format(SnapshotTimeFormat)
 //	_, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, nil)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeCannotVerifyCopySource)
 //}
 //
-//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfModifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfModifiedSinceTrue() {
 //	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 //
 //	defer deleteContainer(containerClient)
@@ -2505,12 +2505,12 @@ package azblob
 //		},
 //	}
 //	resp, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateIncrementalCopy(c, copyBlobURL, &resp)
 //}
 //
-//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfModifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfModifiedSinceFalse() {
 //	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 //
 //	defer deleteContainer(containerClient)
@@ -2523,12 +2523,12 @@ package azblob
 //		},
 //	}
 //	_, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceTrue() {
 //	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 //
 //	defer deleteContainer(containerClient)
@@ -2541,12 +2541,12 @@ package azblob
 //		},
 //	}
 //	resp, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateIncrementalCopy(c, copyBlobURL, &resp)
 //}
 //
-//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfUnmodifiedSinceFalse() {
 //	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 //
 //	defer deleteContainer(containerClient)
@@ -2559,12 +2559,12 @@ package azblob
 //		},
 //	}
 //	_, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfMatchTrue() {
 //	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 //
 //	defer deleteContainer(containerClient)
@@ -2577,12 +2577,12 @@ package azblob
 //		},
 //	}
 //	resp2, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateIncrementalCopy(c, copyBlobURL, &resp2)
 //}
 //
-//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfMatchFalse() {
 //	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 //
 //	defer deleteContainer(containerClient)
@@ -2594,12 +2594,12 @@ package azblob
 //		},
 //	}
 //	_, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeTargetConditionNotMet)
 //}
 //
-//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfNoneMatchTrue(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfNoneMatchTrue() {
 //	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 //
 //	defer deleteContainer(containerClient)
@@ -2611,12 +2611,12 @@ package azblob
 //		},
 //	}
 //	resp, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	validateIncrementalCopy(c, copyBlobURL, &resp)
 //}
 //
-//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfNoneMatchFalse(c *chk.C) {
+//func (s *azblobTestSuite) TestBlobStartIncrementalCopyIfNoneMatchFalse() {
 //	containerClient, pbClient, copyBlobURL, snapshot := setupStartIncrementalCopyTest(c)
 //
 //	defer deleteContainer(containerClient)
@@ -2629,7 +2629,7 @@ package azblob
 //		},
 //	}
 //	_, err := copyBlobURL.StartCopyIncremental(ctx, pbClient.URL(), snapshot, &copyIncrementalPageBlobOptions)
-//	c.Assert(err, chk.NotNil)
+//	_assert.NotNil(err)
 //
 //	validateStorageError(c, err, StorageErrorCodeConditionNotMet)
 //}

@@ -89,7 +89,7 @@ package azblob
 //
 //// Test normal retry succeed, note initial response not provided.
 //// Tests both with and without notification of failures
-//func (s *azblobTestSuite) TestRetryReaderReadWithRetry(c *chk.C) {
+//func (s *azblobTestSuite) TestRetryReaderReadWithRetry() {
 //	// Test twice, the second time using the optional "logging"/notification callback for failed tries
 //	// We must test both with and without the callback, since be testing without
 //	// we are testing that it is, indeed, optional to provide the callback
@@ -127,7 +127,7 @@ package azblob
 //
 //		httpGetterInfo := HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}
 //		initResponse, err := getter(context.Background(), httpGetterInfo)
-//		c.Assert(err, chk.IsNil)
+//		_assert.Nil(err)
 //
 //		rrOptions := RetryReaderOptions{MaxRetryRequests: 1}
 //		if logThisRun {
@@ -139,7 +139,7 @@ package azblob
 //		can := make([]byte, 1)
 //		n, err := retryReader.Read(can)
 //		c.Assert(n, chk.Equals, 1)
-//		c.Assert(err, chk.IsNil)
+//		_assert.Nil(err)
 //
 //		// check "logging", if it was enabled
 //		if logThisRun {
@@ -159,7 +159,7 @@ package azblob
 //
 //// Test normal retry succeed, note initial response not provided.
 //// Tests both with and without notification of failures
-//func (s *azblobTestSuite) TestRetryReaderWithRetryIoUnexpectedEOF(c *chk.C) {
+//func (s *azblobTestSuite) TestRetryReaderWithRetryIoUnexpectedEOF() {
 //	// Test twice, the second time using the optional "logging"/notification callback for failed tries
 //	// We must test both with and without the callback, since be testing without
 //	// we are testing that it is, indeed, optional to provide the callback
@@ -197,7 +197,7 @@ package azblob
 //
 //		httpGetterInfo := HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}
 //		initResponse, err := getter(context.Background(), httpGetterInfo)
-//		c.Assert(err, chk.IsNil)
+//		_assert.Nil(err)
 //
 //		rrOptions := RetryReaderOptions{MaxRetryRequests: 1}
 //		if logThisRun {
@@ -209,7 +209,7 @@ package azblob
 //		can := make([]byte, 1)
 //		n, err := retryReader.Read(can)
 //		c.Assert(n, chk.Equals, 1)
-//		c.Assert(err, chk.IsNil)
+//		_assert.Nil(err)
 //
 //		// check "logging", if it was enabled
 //		if logThisRun {
@@ -228,7 +228,7 @@ package azblob
 //}
 //
 //// Test normal retry fail as retry Count not enough.
-//func (s *azblobTestSuite) TestRetryReaderReadNegativeNormalFail(c *chk.C) {
+//func (s *azblobTestSuite) TestRetryReaderReadNegativeNormalFail() {
 //	// Extra setup for testing notification of failures (i.e. of unsuccessful tries)
 //	failureMethodNumCalls := 0
 //	failureWillRetryCount := 0
@@ -283,7 +283,7 @@ package azblob
 //}
 //
 //// Test boundary case when Count equals to 0 and fail.
-//func (s *azblobTestSuite) TestRetryReaderReadCount0(c *chk.C) {
+//func (s *azblobTestSuite) TestRetryReaderReadCount0() {
 //	byteCount := 1
 //	body := newPerByteReader(byteCount)
 //	body.doInjectError = true
@@ -308,7 +308,7 @@ package azblob
 //	can := make([]byte, 1)
 //	n, err := retryReader.Read(can)
 //	c.Assert(n, chk.Equals, 1)
-//	c.Assert(err, chk.IsNil)
+//	_assert.Nil(err)
 //
 //	// should not read when Count=0, and should return EOF
 //	n, err = retryReader.Read(can)
@@ -316,7 +316,7 @@ package azblob
 //	c.Assert(err, chk.Equals, io.EOF)
 //}
 //
-//func (s *azblobTestSuite) TestRetryReaderReadNegativeNonRetriableError(c *chk.C) {
+//func (s *azblobTestSuite) TestRetryReaderReadNegativeNonRetriableError() {
 //	byteCount := 1
 //	body := newPerByteReader(byteCount)
 //	body.doInjectError = true
@@ -347,7 +347,7 @@ package azblob
 //// purposes of unit testing, here we are testing the cancellation mechanism that is exposed to
 //// consumers of the API, to allow programmatic forcing of retries (e.g. if the consumer deems
 //// the read to be taking too long, they may force a retry in the hope of better performance next time).
-//func (s *azblobTestSuite) TestRetryReaderReadWithForcedRetry(c *chk.C) {
+//func (s *azblobTestSuite) TestRetryReaderReadWithForcedRetry() {
 //
 //	for _, enableRetryOnEarlyClose := range []bool{false, true} {
 //
@@ -374,7 +374,7 @@ package azblob
 //
 //		httpGetterInfo := HTTPGetterInfo{Offset: 0, Count: int64(byteCount)}
 //		initResponse, err := getter(context.Background(), httpGetterInfo)
-//		c.Assert(err, chk.IsNil)
+//		_assert.Nil(err)
 //
 //		rrOptions := RetryReaderOptions{MaxRetryRequests: 2, TreatEarlyCloseAsError: !enableRetryOnEarlyClose}
 //		rrOptions.NotifyFailedRead = failureMethod
@@ -391,11 +391,11 @@ package azblob
 //		n, err := io.ReadFull(retryReader, output)
 //		if enableRetryOnEarlyClose {
 //			c.Assert(n, chk.Equals, byteCount)
-//			c.Assert(err, chk.IsNil)
+//			_assert.Nil(err)
 //			c.Assert(output, chk.DeepEquals, randBytes)
 //			c.Assert(failureMethodNumCalls, chk.Equals, 1) // assert that the cancellation did indeed happen
 //		} else {
-//			c.Assert(err, chk.NotNil)
+//			_assert.NotNil(err)
 //		}
 //	}
 //}

@@ -1031,6 +1031,7 @@ func (s *azblobTestSuite) TestSetTierOnBlobUpload() {
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
 
 	for _, tier := range []AccessTier{AccessTierArchive, AccessTierCool, AccessTierHot} {
 		blobName := strings.ToLower(string(tier)) + generateBlobName(testName)
@@ -1058,8 +1059,9 @@ func (s *azblobTestSuite) TestBlobSetTierOnCommit() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 
-	containerName := generateContainerName(testName)
+	containerName := "test" + generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, serviceClient)
+	defer deleteContainer(_assert, containerClient)
 
 	for _, tier := range []AccessTier{AccessTierCool, AccessTierHot} {
 		blobName := strings.ToLower(string(tier)) + generateBlobName(testName)

@@ -356,7 +356,7 @@ const (
 	testAccountDefault     testAccountType = ""
 	testAccountSecondary   testAccountType = "SECONDARY_"
 	testAccountPremium     testAccountType = "PREMIUM_"
-	testAccountBlobStorage testAccountType = "BLOB_STORAGE_"
+	testAccountBlobStorage testAccountType = "BLOB_"
 )
 
 func getServiceClient(recording *testframework.Recording, accountType testAccountType, options *ClientOptions) (ServiceClient, error) {

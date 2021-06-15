@@ -1,237 +1,237 @@
 ---
 version: 1
 interactions:
-  - request:
-      body: ""
-      form: { }
-      headers:
-        Accept:
-          - application/xml
-        Authorization:
-          - sanitized
-        User-Agent:
-          - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
-            Windows_NT)
-        X-Ms-Date:
-          - Sat, 12 Jun 2021 19:17:05 GMT
-        X-Ms-Version:
-          - "2019-12-12"
-      url: https://azureblobstrgmohitcanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?restype=container
-      method: PUT
-    response:
-      body: ""
-      headers:
-        Content-Length:
-          - "0"
-        Date:
-          - Sat, 12 Jun 2021 19:17:05 GMT
-        Etag:
-          - '"0x8D92DD6AA96B2E4"'
-        Last-Modified:
-          - Sat, 12 Jun 2021 19:17:05 GMT
-        Server:
-          - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
-        X-Ms-Request-Id:
-          - 0f8edc8e-d01e-0012-30bf-5fea52000000
-        X-Ms-Version:
-          - "2019-12-12"
-      status: 201 Created
-      code: 201
-      duration: ""
-  - request:
-      body: <SignedIdentifiers><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2049-06-11T20:00:00Z</Expiry><Start>2021-06-11T20:00:00Z</Start></AccessPolicy><Id>0000</Id></SignedIdentifier><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2049-06-11T20:00:00Z</Expiry><Start>2021-06-11T20:00:00Z</Start></AccessPolicy><Id>0001</Id></SignedIdentifier></SignedIdentifiers>
-      form: { }
-      headers:
-        Accept:
-          - application/xml
-        Authorization:
-          - sanitized
-        Content-Length:
-          - "393"
-        Content-Type:
-          - application/xml
-        User-Agent:
-          - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
-            Windows_NT)
-        X-Ms-Blob-Public-Access:
-          - blob
-        X-Ms-Date:
-          - Sat, 12 Jun 2021 19:17:05 GMT
-        X-Ms-Version:
-          - "2019-12-12"
-      url: https://azureblobstrgmohitcanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?comp=acl&restype=container
-      method: PUT
-    response:
-      body: ""
-      headers:
-        Content-Length:
-          - "0"
-        Date:
-          - Sat, 12 Jun 2021 19:17:05 GMT
-        Etag:
-          - '"0x8D92DD6AABB678A"'
-        Last-Modified:
-          - Sat, 12 Jun 2021 19:17:06 GMT
-        Server:
-          - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
-        X-Ms-Request-Id:
-          - 0f8edcc6-d01e-0012-5dbf-5fea52000000
-        X-Ms-Version:
-          - "2019-12-12"
-      status: 200 OK
-      code: 200
-      duration: ""
-  - request:
-      body: ""
-      form: { }
-      headers:
-        Accept:
-          - application/xml
-        Authorization:
-          - sanitized
-        User-Agent:
-          - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
-            Windows_NT)
-        X-Ms-Date:
-          - Sat, 12 Jun 2021 19:17:05 GMT
-        X-Ms-Version:
-          - "2019-12-12"
-      url: https://azureblobstrgmohitcanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?comp=acl&restype=container
-      method: GET
-    response:
-      body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x73\x3E\x3C\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x3E\x3C\x49\x64\x3E\x30\x30\x30\x30\x3C\x2F\x49\x64\x3E\x3C\x41\x63\x63\x65\x73\x73\x50\x6F\x6C\x69\x63\x79\x3E\x3C\x53\x74\x61\x72\x74\x3E\x32\x30\x32\x31\x2D\x30\x36\x2D\x31\x31\x54\x32\x30\x3A\x30\x30\x3A\x30\x30\x2E\x30\x30\x30\x30\x30\x30\x30\x5A\x3C\x2F\x53\x74\x61\x72\x74\x3E\x3C\x45\x78\x70\x69\x72\x79\x3E\x32\x30\x34\x39\x2D\x30\x36\x2D\x31\x31\x54\x32\x30\x3A\x30\x30\x3A\x30\x30\x2E\x30\x30\x30\x30\x30\x30\x30\x5A\x3C\x2F\x45\x78\x70\x69\x72\x79\x3E\x3C\x50\x65\x72\x6D\x69\x73\x73\x69\x6F\x6E\x3E\x72\x3C\x2F\x50\x65\x72\x6D\x69\x73\x73\x69\x6F\x6E\x3E\x3C\x2F\x41\x63\x63\x65\x73\x73\x50\x6F\x6C\x69\x63\x79\x3E\x3C\x2F\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x3E\x3C\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x3E\x3C\x49\x64\x3E\x30\x30\x30\x31\x3C\x2F\x49\x64\x3E\x3C\x41\x63\x63\x65\x73\x73\x50\x6F\x6C\x69\x63\x79\x3E\x3C\x53\x74\x61\x72\x74\x3E\x32\x30\x32\x31\x2D\x30\x36\x2D\x31\x31\x54\x32\x30\x3A\x30\x30\x3A\x30\x30\x2E\x30\x30\x30\x30\x30\x30\x30\x5A\x3C\x2F\x53\x74\x61\x72\x74\x3E\x3C\x45\x78\x70\x69\x72\x79\x3E\x32\x30\x34\x39\x2D\x30\x36\x2D\x31\x31\x54\x32\x30\x3A\x30\x30\x3A\x30\x30\x2E\x30\x30\x30\x30\x30\x30\x30\x5A\x3C\x2F\x45\x78\x70\x69\x72\x79\x3E\x3C\x50\x65\x72\x6D\x69\x73\x73\x69\x6F\x6E\x3E\x72\x3C\x2F\x50\x65\x72\x6D\x69\x73\x73\x69\x6F\x6E\x3E\x3C\x2F\x41\x63\x63\x65\x73\x73\x50\x6F\x6C\x69\x63\x79\x3E\x3C\x2F\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x3E\x3C\x2F\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x73\x3E"
-      headers:
-        Content-Type:
-          - application/xml
-        Date:
-          - Sat, 12 Jun 2021 19:17:06 GMT
-        Etag:
-          - '"0x8D92DD6AABB678A"'
-        Last-Modified:
-          - Sat, 12 Jun 2021 19:17:06 GMT
-        Server:
-          - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
-        X-Ms-Blob-Public-Access:
-          - blob
-        X-Ms-Request-Id:
-          - 0f8edd40-d01e-0012-46bf-5fea52000000
-        X-Ms-Version:
-          - "2019-12-12"
-      status: 200 OK
-      code: 200
-      duration: ""
-  - request:
-      body: <SignedIdentifiers><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2049-06-11T20:00:00Z</Expiry><Start>2021-06-11T20:00:00Z</Start></AccessPolicy><Id>0004</Id></SignedIdentifier></SignedIdentifiers>
-      form: { }
-      headers:
-        Accept:
-          - application/xml
-        Authorization:
-          - sanitized
-        Content-Length:
-          - "216"
-        Content-Type:
-          - application/xml
-        User-Agent:
-          - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
-            Windows_NT)
-        X-Ms-Blob-Public-Access:
-          - blob
-        X-Ms-Date:
-          - Sat, 12 Jun 2021 19:17:06 GMT
-        X-Ms-Version:
-          - "2019-12-12"
-      url: https://azureblobstrgmohitcanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?comp=acl&restype=container
-      method: PUT
-    response:
-      body: ""
-      headers:
-        Content-Length:
-          - "0"
-        Date:
-          - Sat, 12 Jun 2021 19:17:06 GMT
-        Etag:
-          - '"0x8D92DD6AB0415EC"'
-        Last-Modified:
-          - Sat, 12 Jun 2021 19:17:06 GMT
-        Server:
-          - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
-        X-Ms-Request-Id:
-          - 0f8edd73-d01e-0012-72bf-5fea52000000
-        X-Ms-Version:
-          - "2019-12-12"
-      status: 200 OK
-      code: 200
-      duration: ""
-  - request:
-      body: ""
-      form: { }
-      headers:
-        Accept:
-          - application/xml
-        Authorization:
-          - sanitized
-        User-Agent:
-          - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
-            Windows_NT)
-        X-Ms-Date:
-          - Sat, 12 Jun 2021 19:17:06 GMT
-        X-Ms-Version:
-          - "2019-12-12"
-      url: https://azureblobstrgmohitcanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?comp=acl&restype=container
-      method: GET
-    response:
-      body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x73\x3E\x3C\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x3E\x3C\x49\x64\x3E\x30\x30\x30\x34\x3C\x2F\x49\x64\x3E\x3C\x41\x63\x63\x65\x73\x73\x50\x6F\x6C\x69\x63\x79\x3E\x3C\x53\x74\x61\x72\x74\x3E\x32\x30\x32\x31\x2D\x30\x36\x2D\x31\x31\x54\x32\x30\x3A\x30\x30\x3A\x30\x30\x2E\x30\x30\x30\x30\x30\x30\x30\x5A\x3C\x2F\x53\x74\x61\x72\x74\x3E\x3C\x45\x78\x70\x69\x72\x79\x3E\x32\x30\x34\x39\x2D\x30\x36\x2D\x31\x31\x54\x32\x30\x3A\x30\x30\x3A\x30\x30\x2E\x30\x30\x30\x30\x30\x30\x30\x5A\x3C\x2F\x45\x78\x70\x69\x72\x79\x3E\x3C\x50\x65\x72\x6D\x69\x73\x73\x69\x6F\x6E\x3E\x72\x3C\x2F\x50\x65\x72\x6D\x69\x73\x73\x69\x6F\x6E\x3E\x3C\x2F\x41\x63\x63\x65\x73\x73\x50\x6F\x6C\x69\x63\x79\x3E\x3C\x2F\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x3E\x3C\x2F\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x73\x3E"
-      headers:
-        Content-Type:
-          - application/xml
-        Date:
-          - Sat, 12 Jun 2021 19:17:06 GMT
-        Etag:
-          - '"0x8D92DD6AB0415EC"'
-        Last-Modified:
-          - Sat, 12 Jun 2021 19:17:06 GMT
-        Server:
-          - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
-        X-Ms-Blob-Public-Access:
-          - blob
-        X-Ms-Request-Id:
-          - 0f8eddb1-d01e-0012-25bf-5fea52000000
-        X-Ms-Version:
-          - "2019-12-12"
-      status: 200 OK
-      code: 200
-      duration: ""
-  - request:
-      body: ""
-      form: { }
-      headers:
-        Accept:
-          - application/xml
-        Authorization:
-          - sanitized
-        User-Agent:
-          - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
-            Windows_NT)
-        X-Ms-Date:
-          - Sat, 12 Jun 2021 19:17:06 GMT
-        X-Ms-Version:
-          - "2019-12-12"
-      url: https://azureblobstrgmohitcanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?restype=container
-      method: DELETE
-    response:
-      body: ""
-      headers:
-        Content-Length:
-          - "0"
-        Date:
-          - Sat, 12 Jun 2021 19:17:10 GMT
-        Server:
-          - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
-        X-Ms-Request-Id:
-          - 0f8ede05-d01e-0012-6ebf-5fea52000000
-        X-Ms-Version:
-          - "2019-12-12"
-      status: 202 Accepted
-      code: 202
-      duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 04:38:55 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 04:38:54 GMT
+      Etag:
+      - '"0x8D92FB77B787184"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 04:38:54 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 36c19551-d01e-000f-26a0-61db57000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: <SignedIdentifiers><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2049-06-11T20:00:00Z</Expiry><Start>2021-06-11T20:00:00Z</Start></AccessPolicy><Id>0000</Id></SignedIdentifier><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2049-06-11T20:00:00Z</Expiry><Start>2021-06-11T20:00:00Z</Start></AccessPolicy><Id>0001</Id></SignedIdentifier></SignedIdentifiers>
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "393"
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Blob-Public-Access:
+      - blob
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 04:38:55 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?comp=acl&restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 04:38:54 GMT
+      Etag:
+      - '"0x8D92FB77B9E6EC3"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 04:38:54 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 36c195ad-d01e-000f-74a0-61db57000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 04:38:55 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?comp=acl&restype=container
+    method: GET
+  response:
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x73\x3E\x3C\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x3E\x3C\x49\x64\x3E\x30\x30\x30\x30\x3C\x2F\x49\x64\x3E\x3C\x41\x63\x63\x65\x73\x73\x50\x6F\x6C\x69\x63\x79\x3E\x3C\x53\x74\x61\x72\x74\x3E\x32\x30\x32\x31\x2D\x30\x36\x2D\x31\x31\x54\x32\x30\x3A\x30\x30\x3A\x30\x30\x2E\x30\x30\x30\x30\x30\x30\x30\x5A\x3C\x2F\x53\x74\x61\x72\x74\x3E\x3C\x45\x78\x70\x69\x72\x79\x3E\x32\x30\x34\x39\x2D\x30\x36\x2D\x31\x31\x54\x32\x30\x3A\x30\x30\x3A\x30\x30\x2E\x30\x30\x30\x30\x30\x30\x30\x5A\x3C\x2F\x45\x78\x70\x69\x72\x79\x3E\x3C\x50\x65\x72\x6D\x69\x73\x73\x69\x6F\x6E\x3E\x72\x3C\x2F\x50\x65\x72\x6D\x69\x73\x73\x69\x6F\x6E\x3E\x3C\x2F\x41\x63\x63\x65\x73\x73\x50\x6F\x6C\x69\x63\x79\x3E\x3C\x2F\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x3E\x3C\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x3E\x3C\x49\x64\x3E\x30\x30\x30\x31\x3C\x2F\x49\x64\x3E\x3C\x41\x63\x63\x65\x73\x73\x50\x6F\x6C\x69\x63\x79\x3E\x3C\x53\x74\x61\x72\x74\x3E\x32\x30\x32\x31\x2D\x30\x36\x2D\x31\x31\x54\x32\x30\x3A\x30\x30\x3A\x30\x30\x2E\x30\x30\x30\x30\x30\x30\x30\x5A\x3C\x2F\x53\x74\x61\x72\x74\x3E\x3C\x45\x78\x70\x69\x72\x79\x3E\x32\x30\x34\x39\x2D\x30\x36\x2D\x31\x31\x54\x32\x30\x3A\x30\x30\x3A\x30\x30\x2E\x30\x30\x30\x30\x30\x30\x30\x5A\x3C\x2F\x45\x78\x70\x69\x72\x79\x3E\x3C\x50\x65\x72\x6D\x69\x73\x73\x69\x6F\x6E\x3E\x72\x3C\x2F\x50\x65\x72\x6D\x69\x73\x73\x69\x6F\x6E\x3E\x3C\x2F\x41\x63\x63\x65\x73\x73\x50\x6F\x6C\x69\x63\x79\x3E\x3C\x2F\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x3E\x3C\x2F\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x73\x3E"
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Tue, 15 Jun 2021 04:38:54 GMT
+      Etag:
+      - '"0x8D92FB77B9E6EC3"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 04:38:54 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Public-Access:
+      - blob
+      X-Ms-Request-Id:
+      - 36c195fe-d01e-000f-39a0-61db57000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: <SignedIdentifiers><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2049-06-11T20:00:00Z</Expiry><Start>2021-06-11T20:00:00Z</Start></AccessPolicy><Id>0004</Id></SignedIdentifier></SignedIdentifiers>
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "216"
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Blob-Public-Access:
+      - blob
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 04:38:55 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?comp=acl&restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 04:38:55 GMT
+      Etag:
+      - '"0x8D92FB77BE91C36"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 04:38:55 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 36c19659-d01e-000f-06a0-61db57000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 04:38:56 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?comp=acl&restype=container
+    method: GET
+  response:
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x73\x3E\x3C\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x3E\x3C\x49\x64\x3E\x30\x30\x30\x34\x3C\x2F\x49\x64\x3E\x3C\x41\x63\x63\x65\x73\x73\x50\x6F\x6C\x69\x63\x79\x3E\x3C\x53\x74\x61\x72\x74\x3E\x32\x30\x32\x31\x2D\x30\x36\x2D\x31\x31\x54\x32\x30\x3A\x30\x30\x3A\x30\x30\x2E\x30\x30\x30\x30\x30\x30\x30\x5A\x3C\x2F\x53\x74\x61\x72\x74\x3E\x3C\x45\x78\x70\x69\x72\x79\x3E\x32\x30\x34\x39\x2D\x30\x36\x2D\x31\x31\x54\x32\x30\x3A\x30\x30\x3A\x30\x30\x2E\x30\x30\x30\x30\x30\x30\x30\x5A\x3C\x2F\x45\x78\x70\x69\x72\x79\x3E\x3C\x50\x65\x72\x6D\x69\x73\x73\x69\x6F\x6E\x3E\x72\x3C\x2F\x50\x65\x72\x6D\x69\x73\x73\x69\x6F\x6E\x3E\x3C\x2F\x41\x63\x63\x65\x73\x73\x50\x6F\x6C\x69\x63\x79\x3E\x3C\x2F\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x3E\x3C\x2F\x53\x69\x67\x6E\x65\x64\x49\x64\x65\x6E\x74\x69\x66\x69\x65\x72\x73\x3E"
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Tue, 15 Jun 2021 04:38:55 GMT
+      Etag:
+      - '"0x8D92FB77BE91C36"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 04:38:55 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Public-Access:
+      - blob
+      X-Ms-Request-Id:
+      - 36c196c3-d01e-000f-66a0-61db57000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 04:38:56 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?restype=container
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 04:38:55 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - 36c1971c-d01e-000f-30a0-61db57000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 202 Accepted
+    code: 202
+    duration: ""

@@ -131,7 +131,7 @@ func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, startTim
 	return NewUserDelegationCredential(strings.Split(urlParts.Host, ".")[0], *udk.UserDelegationKey), nil
 }
 
-// The List Containers Segment operation returns a pager of the containers under the specified account.
+// The ListContainersSegment operation returns a pager of the containers under the specified account.
 // Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
 func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) ListContainersSegmentResponsePager {

@@ -13,10 +13,10 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Sun, 13 Jun 2021 09:23:11 GMT
+      - Tue, 15 Jun 2021 04:38:12 GMT
       X-Ms-Version:
       - "2019-12-12"
-    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobsnapshotmetadatanil?restype=container
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotmetadatanil?restype=container
     method: PUT
   response:
     body: ""
@@ -24,15 +24,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Sun, 13 Jun 2021 09:23:12 GMT
+      - Tue, 15 Jun 2021 04:38:11 GMT
       Etag:
-      - '"0x8D92E4CDE58B7E8"'
+      - '"0x8D92FB7622FA1E8"'
       Last-Modified:
-      - Sun, 13 Jun 2021 09:23:13 GMT
+      - Tue, 15 Jun 2021 04:38:12 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 9af2dcd8-b01e-0082-3935-60d03c000000
+      - 36c13af9-d01e-000f-7da0-61db57000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -56,10 +56,10 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Sun, 13 Jun 2021 09:23:13 GMT
+      - Tue, 15 Jun 2021 04:38:12 GMT
       X-Ms-Version:
       - "2019-12-12"
-    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobsnapshotmetadatanil/gotestblobblobsnapshotmetadatanil
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotmetadatanil/gotestblobblobsnapshotmetadatanil
     method: PUT
   response:
     body: ""
@@ -69,23 +69,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Sun, 13 Jun 2021 09:23:13 GMT
+      - Tue, 15 Jun 2021 04:38:12 GMT
       Etag:
-      - '"0x8D92E4CDE7F0D35"'
+      - '"0x8D92FB76255842A"'
       Last-Modified:
-      - Sun, 13 Jun 2021 09:23:13 GMT
+      - Tue, 15 Jun 2021 04:38:12 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - 9af2ddb8-b01e-0082-7235-60d03c000000
+      - 36c13b6a-d01e-000f-5ea0-61db57000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-13T09:23:13.4896437Z"
+      - "2021-06-15T04:38:12.4928042Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -101,12 +101,12 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Sun, 13 Jun 2021 09:23:13 GMT
+      - Tue, 15 Jun 2021 04:38:13 GMT
       X-Ms-Meta-Foo:
       - bar
       X-Ms-Version:
       - "2019-12-12"
-    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobsnapshotmetadatanil/gotestblobblobsnapshotmetadatanil?comp=metadata
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotmetadatanil/gotestblobblobsnapshotmetadatanil?comp=metadata
     method: PUT
   response:
     body: ""
@@ -114,21 +114,21 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Sun, 13 Jun 2021 09:23:13 GMT
+      - Tue, 15 Jun 2021 04:38:12 GMT
       Etag:
-      - '"0x8D92E4CDEA7D256"'
+      - '"0x8D92FB7627AEE66"'
       Last-Modified:
-      - Sun, 13 Jun 2021 09:23:13 GMT
+      - Tue, 15 Jun 2021 04:38:12 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 9af2de64-b01e-0082-0e35-60d03c000000
+      - 36c13c10-d01e-000f-77a0-61db57000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-13T09:23:13.7578342Z"
+      - "2021-06-15T04:38:12.7400078Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -144,10 +144,10 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Sun, 13 Jun 2021 09:23:13 GMT
+      - Tue, 15 Jun 2021 04:38:13 GMT
       X-Ms-Version:
       - "2019-12-12"
-    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobsnapshotmetadatanil/gotestblobblobsnapshotmetadatanil?comp=snapshot
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotmetadatanil/gotestblobblobsnapshotmetadatanil?comp=snapshot
     method: PUT
   response:
     body: ""
@@ -155,23 +155,23 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Sun, 13 Jun 2021 09:23:13 GMT
+      - Tue, 15 Jun 2021 04:38:12 GMT
       Etag:
-      - '"0x8D92E4CDEA7D256"'
+      - '"0x8D92FB7627AEE66"'
       Last-Modified:
-      - Sun, 13 Jun 2021 09:23:13 GMT
+      - Tue, 15 Jun 2021 04:38:12 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 9af2df34-b01e-0082-4c35-60d03c000000
+      - 36c13ca4-d01e-000f-7ca0-61db57000000
       X-Ms-Request-Server-Encrypted:
       - "false"
       X-Ms-Snapshot:
-      - "2021-06-13T09:23:14.0300298Z"
+      - "2021-06-15T04:38:12.9892140Z"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-13T09:23:14.0310298Z"
+      - "2021-06-15T04:38:12.9902140Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -187,10 +187,10 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Sun, 13 Jun 2021 09:23:14 GMT
+      - Tue, 15 Jun 2021 04:38:13 GMT
       X-Ms-Version:
       - "2019-12-12"
-    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobsnapshotmetadatanil/gotestblobblobsnapshotmetadatanil?snapshot=2021-06-13T09%3A23%3A14.0300298Z
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotmetadatanil/gotestblobblobsnapshotmetadatanil?snapshot=2021-06-15T04%3A38%3A12.9892140Z
     method: HEAD
   response:
     body: ""
@@ -204,11 +204,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Sun, 13 Jun 2021 09:23:13 GMT
+      - Tue, 15 Jun 2021 04:38:12 GMT
       Etag:
-      - '"0x8D92E4CDEA7D256"'
+      - '"0x8D92FB7627AEE66"'
       Last-Modified:
-      - Sun, 13 Jun 2021 09:23:13 GMT
+      - Tue, 15 Jun 2021 04:38:12 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -218,11 +218,11 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Sun, 13 Jun 2021 09:23:13 GMT
+      - Tue, 15 Jun 2021 04:38:12 GMT
       X-Ms-Meta-Foo:
       - bar
       X-Ms-Request-Id:
-      - 9af2e01f-b01e-0082-1d35-60d03c000000
+      - 36c13d32-d01e-000f-04a0-61db57000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -242,10 +242,10 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Sun, 13 Jun 2021 09:23:14 GMT
+      - Tue, 15 Jun 2021 04:38:13 GMT
       X-Ms-Version:
       - "2019-12-12"
-    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobsnapshotmetadatanil?restype=container
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsnapshotmetadatanil?restype=container
     method: DELETE
   response:
     body: ""
@@ -253,11 +253,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Sun, 13 Jun 2021 09:23:14 GMT
+      - Tue, 15 Jun 2021 04:38:13 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 9af2e13e-b01e-0082-2435-60d03c000000
+      - 36c13dc8-d01e-000f-0ca0-61db57000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

@@ -13,10 +13,10 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 14 Jun 2021 09:28:35 GMT
+      - Tue, 15 Jun 2021 04:37:31 GMT
       X-Ms-Version:
       - "2019-12-12"
-    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobputblocklistifmatchtrue?restype=container
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobputblocklistifmatchtrue?restype=container
     method: PUT
   response:
     body: ""
@@ -24,15 +24,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 14 Jun 2021 09:28:35 GMT
+      - Tue, 15 Jun 2021 04:37:30 GMT
       Etag:
-      - '"0x8D92F16C929E47B"'
+      - '"0x8D92FB74962FA7B"'
       Last-Modified:
-      - Mon, 14 Jun 2021 09:28:36 GMT
+      - Tue, 15 Jun 2021 04:37:30 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - e786686f-801e-001f-58ff-602286000000
+      - 36c0f04c-d01e-000f-7ba0-61db57000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -54,10 +54,10 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 14 Jun 2021 09:28:36 GMT
+      - Tue, 15 Jun 2021 04:37:31 GMT
       X-Ms-Version:
       - "2019-12-12"
-    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobputblocklistifmatchtrue/gotestblobblobputblocklistifmatchtrue?blockid=AAAAAA%3D%3D&comp=block
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobputblocklistifmatchtrue/gotestblobblobputblocklistifmatchtrue?blockid=AAAAAA%3D%3D&comp=block
     method: PUT
   response:
     body: ""
@@ -65,13 +65,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 14 Jun 2021 09:28:35 GMT
+      - Tue, 15 Jun 2021 04:37:30 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - e78669eb-801e-001f-29ff-602286000000
+      - 36c0f094-d01e-000f-39a0-61db57000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -95,10 +95,10 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 14 Jun 2021 09:28:37 GMT
+      - Tue, 15 Jun 2021 04:37:31 GMT
       X-Ms-Version:
       - "2019-12-12"
-    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobputblocklistifmatchtrue/gotestblobblobputblocklistifmatchtrue?comp=blocklist
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobputblocklistifmatchtrue/gotestblobblobputblocklistifmatchtrue?comp=blocklist
     method: PUT
   response:
     body: ""
@@ -106,23 +106,23 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 14 Jun 2021 09:28:35 GMT
+      - Tue, 15 Jun 2021 04:37:30 GMT
       Etag:
-      - '"0x8D92F16C9876E80"'
+      - '"0x8D92FB749AF5AB8"'
       Last-Modified:
-      - Mon, 14 Jun 2021 09:28:36 GMT
+      - Tue, 15 Jun 2021 04:37:31 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - Jl2XwpS4W0o=
       X-Ms-Request-Id:
-      - e7866af9-801e-001f-24ff-602286000000
+      - 36c0f115-d01e-000f-29a0-61db57000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-14T09:28:36.6517888Z"
+      - "2021-06-15T04:37:31.1385272Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -139,15 +139,15 @@ interactions:
       Content-Type:
       - application/xml
       If-Match:
-      - '"0x8D92F16C9876E80"'
+      - '"0x8D92FB749AF5AB8"'
       User-Agent:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 14 Jun 2021 09:28:37 GMT
+      - Tue, 15 Jun 2021 04:37:31 GMT
       X-Ms-Version:
       - "2019-12-12"
-    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobputblocklistifmatchtrue/gotestblobblobputblocklistifmatchtrue?comp=blocklist
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobputblocklistifmatchtrue/gotestblobblobputblocklistifmatchtrue?comp=blocklist
     method: PUT
   response:
     body: ""
@@ -155,23 +155,23 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 14 Jun 2021 09:28:36 GMT
+      - Tue, 15 Jun 2021 04:37:31 GMT
       Etag:
-      - '"0x8D92F16C9B64F44"'
+      - '"0x8D92FB749D56159"'
       Last-Modified:
-      - Mon, 14 Jun 2021 09:28:36 GMT
+      - Tue, 15 Jun 2021 04:37:31 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - Jl2XwpS4W0o=
       X-Ms-Request-Id:
-      - e7866c1e-801e-001f-36ff-602286000000
+      - 36c0f15d-d01e-000f-60a0-61db57000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-14T09:28:36.9600084Z"
+      - "2021-06-15T04:37:31.3897346Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -187,10 +187,10 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 14 Jun 2021 09:28:37 GMT
+      - Tue, 15 Jun 2021 04:37:32 GMT
       X-Ms-Version:
       - "2019-12-12"
-    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobputblocklistifmatchtrue/gotestblobblobputblocklistifmatchtrue?blocklisttype=all&comp=blocklist
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobputblocklistifmatchtrue/gotestblobblobputblocklistifmatchtrue?blocklisttype=all&comp=blocklist
     method: GET
   response:
     body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x42\x6C\x6F\x63\x6B\x4C\x69\x73\x74\x3E\x3C\x43\x6F\x6D\x6D\x69\x74\x74\x65\x64\x42\x6C\x6F\x63\x6B\x73\x3E\x3C\x42\x6C\x6F\x63\x6B\x3E\x3C\x4E\x61\x6D\x65\x3E\x41\x41\x41\x41\x41\x41\x3D\x3D\x3C\x2F\x4E\x61\x6D\x65\x3E\x3C\x53\x69\x7A\x65\x3E\x31\x35\x3C\x2F\x53\x69\x7A\x65\x3E\x3C\x2F\x42\x6C\x6F\x63\x6B\x3E\x3C\x2F\x43\x6F\x6D\x6D\x69\x74\x74\x65\x64\x42\x6C\x6F\x63\x6B\x73\x3E\x3C\x55\x6E\x63\x6F\x6D\x6D\x69\x74\x74\x65\x64\x42\x6C\x6F\x63\x6B\x73\x20\x2F\x3E\x3C\x2F\x42\x6C\x6F\x63\x6B\x4C\x69\x73\x74\x3E"
@@ -198,17 +198,17 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Mon, 14 Jun 2021 09:28:36 GMT
+      - Tue, 15 Jun 2021 04:37:31 GMT
       Etag:
-      - '"0x8D92F16C9B64F44"'
+      - '"0x8D92FB749D56159"'
       Last-Modified:
-      - Mon, 14 Jun 2021 09:28:36 GMT
+      - Tue, 15 Jun 2021 04:37:31 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Content-Length:
       - "15"
       X-Ms-Request-Id:
-      - e7866dbb-801e-001f-2aff-602286000000
+      - 36c0f1ab-d01e-000f-22a0-61db57000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -226,10 +226,10 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Mon, 14 Jun 2021 09:28:38 GMT
+      - Tue, 15 Jun 2021 04:37:32 GMT
       X-Ms-Version:
       - "2019-12-12"
-    url: https://azureblobstrgmohitcanada.blob.core.windows.net/gocblobputblocklistifmatchtrue?restype=container
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocblobputblocklistifmatchtrue?restype=container
     method: DELETE
   response:
     body: ""
@@ -237,11 +237,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Mon, 14 Jun 2021 09:28:37 GMT
+      - Tue, 15 Jun 2021 04:37:31 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - e7866ec1-801e-001f-17ff-602286000000
+      - 36c0f207-d01e-000f-70a0-61db57000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

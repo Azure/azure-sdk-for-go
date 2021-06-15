@@ -19,9 +19,13 @@ type RecordingSanitizer struct {
 	bodySanitizer     StringSanitizer
 }
 
+// StringSanitizer is a func that will modify the string pointed to by the parameter into a sanitized value.
 type StringSanitizer func(*string)
 
+// SanitizedValue is the default placeholder value to be used for sanitized strings.
 const SanitizedValue string = "sanitized"
+
+// SanitizedBase64Value is the default placeholder value to be used for sanitized base-64 encoded strings.
 const SanitizedBase64Value string = "Kg=="
 
 var sanitizedValueSlice = []string{SanitizedValue}

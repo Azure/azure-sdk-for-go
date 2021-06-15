@@ -39,7 +39,7 @@ func (s *recordingSanitizerTests) TestDefaultSanitizerSanitizesAuthHeader() {
 	rt := NewMockRoundTripper(server)
 	r, _ := recorder.NewAsMode(getTestFileName(s.T(), false), recorder.ModeRecording, rt)
 
-	DefaultSanitizer(r)
+	defaultSanitizer(r)
 
 	req, _ := http.NewRequest(http.MethodPost, server.URL(), nil)
 	req.Header.Add(authHeader, "superSecret")
@@ -65,7 +65,7 @@ func (s *recordingSanitizerTests) TestAddSanitizedHeadersSanitizes() {
 	rt := NewMockRoundTripper(server)
 	r, _ := recorder.NewAsMode(getTestFileName(s.T(), false), recorder.ModeRecording, rt)
 
-	target := DefaultSanitizer(r)
+	target := defaultSanitizer(r)
 	target.AddSanitizedHeaders(customHeader1, customHeader2)
 
 	req, _ := http.NewRequest(http.MethodPost, server.URL(), nil)
@@ -103,7 +103,7 @@ func (s *recordingSanitizerTests) TestAddUrlSanitizerSanitizes() {
 
 	baseUrl := server.URL() + "/"
 
-	target := DefaultSanitizer(r)
+	target := defaultSanitizer(r)
 	target.AddUrlSanitizer(func(url *string) {
 		*url = strings.Replace(*url, secret, SanitizedValue, -1)
 	})

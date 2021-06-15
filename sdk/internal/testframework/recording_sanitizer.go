@@ -26,7 +26,9 @@ const SanitizedBase64Value string = "Kg=="
 
 var sanitizedValueSlice = []string{SanitizedValue}
 
-func DefaultSanitizer(recorder *recorder.Recorder) *RecordingSanitizer {
+// defaultSanitizer returns a new RecordingSanitizer with the default sanitizing behavior.
+// To customize sanitization, call AddSanitizedHeaders, AddBodySanitizer, or AddUrlSanitizer.
+func defaultSanitizer(recorder *recorder.Recorder) *RecordingSanitizer {
 	// The default sanitizer sanitizes the Authorization header
 	s := &RecordingSanitizer{headersToSanitize: map[string]*string{"Authorization": nil}, recorder: recorder, urlSanitizer: DefaultStringSanitizer, bodySanitizer: DefaultStringSanitizer}
 	recorder.AddSaveFilter(s.applySaveFilter)

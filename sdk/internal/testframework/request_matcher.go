@@ -16,8 +16,10 @@ import (
 )
 
 type RequestMatcher struct {
-	context        TestContext
-	IgnoredHeaders map[string]*string
+	context TestContext
+	// IgnoredHeaders is a map acting as a hash set of the header names that will be ignored for matching.
+	// Modifying the keys in the map will affect how headers are matched for recordings.
+	IgnoredHeaders map[string]struct{}
 	bodyMatcher    StringMatcher
 	urlMatcher     StringMatcher
 	methodMatcher  StringMatcher
@@ -26,15 +28,15 @@ type RequestMatcher struct {
 type StringMatcher func(reqVal string, recVal string) bool
 type matcherWrapper func(matcher StringMatcher, testContext TestContext) bool
 
-var ignoredHeaders = map[string]*string{
-	"Date":                   nil,
-	"X-Ms-Date":              nil,
-	"x-ms-date":              nil,
-	"x-ms-client-request-id": nil,
-	"User-Agent":             nil,
-	"Request-Id":             nil,
-	"traceparent":            nil,
-	"Authorization":          nil,
+var ignoredHeaders = map[string]struct{}{
+	"Date":                   {},
+	"X-Ms-Date":              {},
+	"x-ms-date":              {},
+	"x-ms-client-request-id": {},
+	"User-Agent":             {},
+	"Request-Id":             {},
+	"traceparent":            {},
+	"Authorization":          {},
 }
 
 const (
@@ -46,25 +48,27 @@ const (
 	bodiesMismatch         = "Test recording bodies do not match.\nrequest: %s\nrecording: %s"
 )
 
-func DefaultMatcher(testContext TestContext) *RequestMatcher {
+// defaultMatcher returns a new RequestMatcher configured with the default matching behavior.
+func defaultMatcher(testContext TestContext) *RequestMatcher {
 	// The default sanitizer sanitizes the Authorization header
 	matcher := &RequestMatcher{
 		context:        testContext,
 		IgnoredHeaders: ignoredHeaders,
 	}
 	matcher.SetBodyMatcher(func(req string, rec string) bool {
-		return DefaultStringMatcher(req, rec)
+		return defaultStringMatcher(req, rec)
 	})
 	matcher.SetURLMatcher(func(req string, rec string) bool {
-		return DefaultStringMatcher(req, rec)
+		return defaultStringMatcher(req, rec)
 	})
 	matcher.SetMethodMatcher(func(req string, rec string) bool {
-		return DefaultStringMatcher(req, rec)
+		return defaultStringMatcher(req, rec)
 	})
 
 	return matcher
 }
 
+// SetBodyMatcher replaces the default matching behavior with a custom StringMatcher that compares the string value of the request body payload with the string value of the recorded body payload.
 func (m *RequestMatcher) SetBodyMatcher(matcher StringMatcher) {
 	m.bodyMatcher = func(reqVal string, recVal string) bool {
 		isMatch := matcher(reqVal, recVal)
@@ -75,6 +79,7 @@ func (m *RequestMatcher) SetBodyMatcher(matcher StringMatcher) {
 	}
 }
 
+// SetURLMatcher replaces the default matching behavior with a custom StringMatcher that compares the string value of the request URL with the string value of the recorded URL
 func (m *RequestMatcher) SetURLMatcher(matcher StringMatcher) {
 	m.urlMatcher = func(reqVal string, recVal string) bool {
 		isMatch := matcher(reqVal, recVal)
@@ -85,6 +90,7 @@ func (m *RequestMatcher) SetURLMatcher(matcher StringMatcher) {
 	}
 }
 
+// SetMethodMatcher replaces the default matching behavior with a custom StringMatcher that compares the string value of the request method with the string value of the recorded method
 func (m *RequestMatcher) SetMethodMatcher(matcher StringMatcher) {
 	m.methodMatcher = func(reqVal string, recVal string) bool {
 		isMatch := matcher(reqVal, recVal)
@@ -95,7 +101,7 @@ func (m *RequestMatcher) SetMethodMatcher(matcher StringMatcher) {
 	}
 }
 
-func DefaultStringMatcher(s1 string, s2 string) bool {
+func defaultStringMatcher(s1 string, s2 string) bool {
 	return s1 == s2
 }
 

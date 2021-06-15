@@ -21,8 +21,13 @@ or indicate that the test IsFailed.
 ***Note**: an instance of TestContext should be initialized for each test.*
 
 ```go
+type testState struct {
+    recording *testframework.Recording
+    client    *TableServiceClient
+    context   *testframework.TestContext
+}
 // a map to store our created test contexts
-var clientsMap map[string]*testContext = make(map[string]*testContext)
+var clientsMap map[string]*testState = make(map[string]*testState)
 
 // recordedTestSetup is called before each test execution by the test suite's BeforeTest method
 func recordedTestSetup(t *testing.T, testName string, mode testframework.RecordMode) {
@@ -80,11 +85,11 @@ The last step is to instrument your client by replacing its transport with your 
     assert.Nil(err)
 
     // either return your client instance, or store it somewhere that your test can use it for test execution.
-    clientsMap[testName] = &testContext{client: client, recording: recording, context: &context}
+    clientsMap[testName] = &testState{client: client, recording: recording, context: &context}
 }
 
 
-func getTestContext(key string) *testContext {
+func getTestState(key string) *testState {
     return clientsMap[key]
 }
 ```
@@ -132,7 +137,7 @@ type tableServiceClientLiveTests struct {
 
 // Hookup to the testing framework
 func TestServiceClient_Storage(t *testing.T) {
-    storage := tableServiceClientLiveTests{endpointType: StorageEndpoint, mode: testframework.Playback /* change to Record to re-record tests */}
+    storage := tableServiceClientLiveTests{mode: testframework.Playback /* change to Record to re-record tests */}
     suite.Run(t, &storage)
 }
 
@@ -151,7 +156,7 @@ func (s *tableServiceClientLiveTests) TestCreateTable() {
 
 func (s *tableServiceClientLiveTests) BeforeTest(suite string, test string) {
     // setup the test environment
-    recordedTestSetup(s.T(), s.T().Name(), s.endpointType, s.mode)
+    recordedTestSetup(s.T(), s.T().Name(), s.mode)
 }
 
 func (s *tableServiceClientLiveTests) AfterTest(suite string, test string) {

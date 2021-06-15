@@ -64,8 +64,11 @@ const (
 type VariableType string
 
 const (
-	Default             VariableType = "default"
-	Secret_String       VariableType = "secret_string"
+	// NoSanitization indicates that the recorded value should not be sanitized.
+	NoSanitization VariableType = "default"
+	// Secret_String indicates that the recorded value should be replaced with a sanitized value.
+	Secret_String VariableType = "secret_string"
+	// Secret_Base64String indicates that the recorded value should be replaced with a sanitized valid base-64 string value.
 	Secret_Base64String VariableType = "secret_base64String"
 )
 
@@ -102,18 +105,18 @@ func NewRecording(c TestContext, mode RecordMode) (*Recording, error) {
 	}
 
 	// set the recorder Matcher
-	recording.Matcher = DefaultMatcher(c)
+	recording.Matcher = defaultMatcher(c)
 	rec.SetMatcher(recording.matchRequest)
 
 	// wire up the sanitizer
-	recording.Sanitizer = DefaultSanitizer(rec)
+	recording.Sanitizer = defaultSanitizer(rec)
 
 	return recording, err
 }
 
-// GetRecordedVariable returns a recorded variable. If the variable is not found we return an error
-// variableType determines how the recorded variable will be saved. Default indicates that the value should be saved without any sanitation.
-func (r *Recording) GetRecordedVariable(name string, variableType VariableType) (string, error) {
+// GetEnvVar returns a recorded environment variable. If the variable is not found we return an error.
+// variableType determines how the recorded variable will be saved.
+func (r *Recording) GetEnvVar(name string, variableType VariableType) (string, error) {
 	var err error
 	result, ok := r.previousSessionVariables[name]
 	if !ok || r.Mode == Live {
@@ -128,9 +131,10 @@ func (r *Recording) GetRecordedVariable(name string, variableType VariableType) 
 	return *result, err
 }
 
-// GetOptionalRecordedVariable returns a recorded variable with a fallback default value
-// variableType determines how the recorded variable will be saved. Default indicates that the value should be saved without any sanitation.
-func (r *Recording) GetOptionalRecordedVariable(name string, defaultValue string, variableType VariableType) string {
+// GetOptionalEnvVar returns a recorded environment variable with a fallback default value.
+// default Value configures the fallback value to be returned if the environment variable is not set.
+// variableType determines how the recorded variable will be saved.
+func (r *Recording) GetOptionalEnvVar(name string, defaultValue string, variableType VariableType) string {
 	result, ok := r.previousSessionVariables[name]
 	if !ok || r.Mode == Live {
 		result = getOptionalEnv(name, defaultValue)

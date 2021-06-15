@@ -13,7 +13,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:02 GMT
+      - Tue, 15 Jun 2021 11:04:52 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddataifmatchtrue?restype=container
@@ -24,15 +24,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:00 GMT
+      - Tue, 15 Jun 2021 11:04:51 GMT
       Etag:
-      - '"0x8D92FD0814B7255"'
+      - '"0x8D92FED66840858"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:01 GMT
+      - Tue, 15 Jun 2021 11:04:52 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 690806b8-701e-0009-0bb9-612c2f000000
+      - 41a5b9c6-d01e-0004-5bd6-61c323000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -56,7 +56,7 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:02 GMT
+      - Tue, 15 Jun 2021 11:04:52 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddataifmatchtrue/gotestblobblobdownloaddataifmatchtrue
@@ -69,23 +69,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Tue, 15 Jun 2021 07:38:02 GMT
+      - Tue, 15 Jun 2021 11:04:51 GMT
       Etag:
-      - '"0x8D92FD081784F0F"'
+      - '"0x8D92FED66AB3C37"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:02 GMT
+      - Tue, 15 Jun 2021 11:04:52 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - 69080741-701e-0009-08b9-612c2f000000
+      - 41a5ba85-d01e-0004-80d6-61c323000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-15T07:38:02.1484303Z"
+      - "2021-06-15T11:04:52.5888567Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -101,7 +101,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:02 GMT
+      - Tue, 15 Jun 2021 11:04:53 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddataifmatchtrue/gotestblobblobdownloaddataifmatchtrue
@@ -118,11 +118,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Jun 2021 07:38:02 GMT
+      - Tue, 15 Jun 2021 11:04:52 GMT
       Etag:
-      - '"0x8D92FD081784F0F"'
+      - '"0x8D92FED66AB3C37"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:02 GMT
+      - Tue, 15 Jun 2021 11:04:52 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -132,7 +132,7 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Jun 2021 07:38:02 GMT
+      - Tue, 15 Jun 2021 11:04:52 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -140,13 +140,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 690807d6-701e-0009-0cb9-612c2f000000
+      - 41a5bb6e-d01e-0004-49d6-61c323000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-15T07:38:02.1484303Z"
+      - "2021-06-15T11:04:52.5888567Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -159,12 +159,12 @@ interactions:
       Authorization:
       - sanitized
       If-Match:
-      - '"0x8D92FD081784F0F"'
+      - '"0x8D92FED66AB3C37"'
       User-Agent:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:03 GMT
+      - Tue, 15 Jun 2021 11:04:53 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddataifmatchtrue/gotestblobblobdownloaddataifmatchtrue
@@ -181,17 +181,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Jun 2021 07:38:02 GMT
+      - Tue, 15 Jun 2021 11:04:52 GMT
       Etag:
-      - '"0x8D92FD081784F0F"'
+      - '"0x8D92FED66AB3C37"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:02 GMT
+      - Tue, 15 Jun 2021 11:04:52 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Jun 2021 07:38:02 GMT
+      - Tue, 15 Jun 2021 11:04:52 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -199,13 +199,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 690808c2-701e-0009-55b9-612c2f000000
+      - 41a5bc2b-d01e-0004-71d6-61c323000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-15T07:38:02.1484303Z"
+      - "2021-06-15T11:04:52.5888567Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -221,7 +221,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:03 GMT
+      - Tue, 15 Jun 2021 11:04:54 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdownloaddataifmatchtrue?restype=container
@@ -232,11 +232,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:03 GMT
+      - Tue, 15 Jun 2021 11:04:52 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 69080954-701e-0009-51b9-612c2f000000
+      - 41a5bd1d-d01e-0004-54d6-61c323000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

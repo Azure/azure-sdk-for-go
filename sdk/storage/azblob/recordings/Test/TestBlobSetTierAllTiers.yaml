@@ -13,7 +13,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:13 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers?restype=container
@@ -24,15 +24,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:52 GMT
+      - Tue, 15 Jun 2021 11:06:13 GMT
       Etag:
-      - '"0x8D92FD09FAC7440"'
+      - '"0x8D92FED96E1F25B"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:52 GMT
+      - Tue, 15 Jun 2021 11:06:13 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 69088cc5-701e-0009-64b9-612c2f000000
+      - 41a68e93-d01e-0004-16d6-61c323000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -56,7 +56,7 @@ interactions:
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:14 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers/gotestblobblobsettieralltiers
@@ -69,23 +69,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:13 GMT
       Etag:
-      - '"0x8D92FD09FD1CF67"'
+      - '"0x8D92FED971A6DAF"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:13 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - 69088d35-701e-0009-46b9-612c2f000000
+      - 41a68f60-d01e-0004-3fd6-61c323000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-15T07:38:53.0666343Z"
+      - "2021-06-15T11:06:13.8482095Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -103,7 +103,7 @@ interactions:
       X-Ms-Access-Tier:
       - Hot
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:14 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
@@ -114,11 +114,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:14 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 69088d7f-701e-0009-0bb9-612c2f000000
+      - 41a69055-d01e-0004-08d6-61c323000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -136,7 +136,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:14 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers/gotestblobblobsettieralltiers
@@ -153,21 +153,21 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:14 GMT
       Etag:
-      - '"0x8D92FD09FD1CF67"'
+      - '"0x8D92FED971A6DAF"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:13 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
       - Hot
       X-Ms-Access-Tier-Change-Time:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:14 GMT
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:13 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -175,13 +175,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 69088e11-701e-0009-10b9-612c2f000000
+      - 41a6917f-d01e-0004-0fd6-61c323000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-15T07:38:53.0666343Z"
+      - "2021-06-15T11:06:13.8482095Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -199,7 +199,7 @@ interactions:
       X-Ms-Access-Tier:
       - Cool
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:54 GMT
+      - Tue, 15 Jun 2021 11:06:15 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
@@ -210,11 +210,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:14 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 69088e8f-701e-0009-7ab9-612c2f000000
+      - 41a691fd-d01e-0004-7dd6-61c323000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -232,7 +232,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:54 GMT
+      - Tue, 15 Jun 2021 11:06:15 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers/gotestblobblobsettieralltiers
@@ -249,21 +249,21 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:14 GMT
       Etag:
-      - '"0x8D92FD09FD1CF67"'
+      - '"0x8D92FED971A6DAF"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:13 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
       - Cool
       X-Ms-Access-Tier-Change-Time:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:14 GMT
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:13 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -271,13 +271,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 69088ee5-701e-0009-48b9-612c2f000000
+      - 41a69294-d01e-0004-05d6-61c323000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-15T07:38:53.0666343Z"
+      - "2021-06-15T11:06:13.8482095Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -295,7 +295,7 @@ interactions:
       X-Ms-Access-Tier:
       - Archive
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:54 GMT
+      - Tue, 15 Jun 2021 11:06:15 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
@@ -306,11 +306,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:54 GMT
+      - Tue, 15 Jun 2021 11:06:15 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 69088f85-701e-0009-53b9-612c2f000000
+      - 41a693e0-d01e-0004-2cd6-61c323000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -328,7 +328,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:54 GMT
+      - Tue, 15 Jun 2021 11:06:16 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers/gotestblobblobsettieralltiers
@@ -345,21 +345,21 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Jun 2021 07:38:54 GMT
+      - Tue, 15 Jun 2021 11:06:15 GMT
       Etag:
-      - '"0x8D92FD09FD1CF67"'
+      - '"0x8D92FED971A6DAF"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:13 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
       - Archive
       X-Ms-Access-Tier-Change-Time:
-      - Tue, 15 Jun 2021 07:38:54 GMT
+      - Tue, 15 Jun 2021 11:06:15 GMT
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Jun 2021 07:38:53 GMT
+      - Tue, 15 Jun 2021 11:06:13 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -367,13 +367,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 69088fe0-701e-0009-29b9-612c2f000000
+      - 41a694a1-d01e-0004-5ad6-61c323000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-15T07:38:53.0666343Z"
+      - "2021-06-15T11:06:13.8482095Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -389,7 +389,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:16 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers?restype=container
@@ -400,15 +400,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:54 GMT
+      - Tue, 15 Jun 2021 11:06:16 GMT
       Etag:
-      - '"0x8D92FD0A15F5765"'
+      - '"0x8D92FED991B1811"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 46786d22-301c-0052-41b9-6142b0000000
+      - 08577e92-201c-00c5-59d6-612179000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -432,7 +432,7 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:56 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
@@ -443,15 +443,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:16 GMT
       Etag:
-      - '"0x8D92FD0A185887F"'
+      - '"0x8D92FED994133BE"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 46786d74-301c-0052-13b9-6142b0000000
+      - 08577ece-201c-00c5-15d6-612179000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -473,7 +473,7 @@ interactions:
       X-Ms-Access-Tier:
       - P4
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:56 GMT
+      - Tue, 15 Jun 2021 11:06:18 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
@@ -484,11 +484,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 46786dbb-301c-0052-5ab9-6142b0000000
+      - 08577f16-201c-00c5-5dd6-612179000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -506,7 +506,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:56 GMT
+      - Tue, 15 Jun 2021 11:06:18 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
@@ -521,11 +521,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       Etag:
-      - '"0x8D92FD0A185887F"'
+      - '"0x8D92FED994133BE"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -535,13 +535,13 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 46786df3-301c-0052-12b9-6142b0000000
+      - 08577f50-201c-00c5-17d6-612179000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -563,7 +563,7 @@ interactions:
       X-Ms-Access-Tier:
       - P6
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:57 GMT
+      - Tue, 15 Jun 2021 11:06:18 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
@@ -574,11 +574,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:18 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 46786e28-301c-0052-47b9-6142b0000000
+      - 08577f96-201c-00c5-5cd6-612179000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -596,7 +596,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:57 GMT
+      - Tue, 15 Jun 2021 11:06:19 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
@@ -611,11 +611,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Jun 2021 07:38:56 GMT
+      - Tue, 15 Jun 2021 11:06:18 GMT
       Etag:
-      - '"0x8D92FD0A185887F"'
+      - '"0x8D92FED994133BE"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -625,13 +625,13 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 46786e77-301c-0052-16b9-6142b0000000
+      - 08578017-201c-00c5-5dd6-612179000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -653,7 +653,7 @@ interactions:
       X-Ms-Access-Tier:
       - P10
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:57 GMT
+      - Tue, 15 Jun 2021 11:06:19 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
@@ -664,11 +664,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:56 GMT
+      - Tue, 15 Jun 2021 11:06:18 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 46786eb2-301c-0052-51b9-6142b0000000
+      - 0857808f-201c-00c5-55d6-612179000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -686,7 +686,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:57 GMT
+      - Tue, 15 Jun 2021 11:06:20 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
@@ -701,11 +701,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Jun 2021 07:38:56 GMT
+      - Tue, 15 Jun 2021 11:06:19 GMT
       Etag:
-      - '"0x8D92FD0A185887F"'
+      - '"0x8D92FED994133BE"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -715,13 +715,13 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 46786ef4-301c-0052-13b9-6142b0000000
+      - 085780e9-201c-00c5-2fd6-612179000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -743,7 +743,7 @@ interactions:
       X-Ms-Access-Tier:
       - P20
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:58 GMT
+      - Tue, 15 Jun 2021 11:06:20 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
@@ -754,11 +754,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:56 GMT
+      - Tue, 15 Jun 2021 11:06:19 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 46786f44-301c-0052-63b9-6142b0000000
+      - 08578150-201c-00c5-16d6-612179000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -776,7 +776,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:58 GMT
+      - Tue, 15 Jun 2021 11:06:21 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
@@ -791,11 +791,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Jun 2021 07:38:57 GMT
+      - Tue, 15 Jun 2021 11:06:20 GMT
       Etag:
-      - '"0x8D92FD0A185887F"'
+      - '"0x8D92FED994133BE"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -805,13 +805,13 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 46786f81-301c-0052-20b9-6142b0000000
+      - 085781c2-201c-00c5-08d6-612179000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -833,7 +833,7 @@ interactions:
       X-Ms-Access-Tier:
       - P30
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:58 GMT
+      - Tue, 15 Jun 2021 11:06:21 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
@@ -844,11 +844,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:57 GMT
+      - Tue, 15 Jun 2021 11:06:20 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 46786fbb-301c-0052-5ab9-6142b0000000
+      - 0857821d-201c-00c5-63d6-612179000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -866,7 +866,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:58 GMT
+      - Tue, 15 Jun 2021 11:06:21 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
@@ -881,11 +881,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Jun 2021 07:38:57 GMT
+      - Tue, 15 Jun 2021 11:06:20 GMT
       Etag:
-      - '"0x8D92FD0A185887F"'
+      - '"0x8D92FED994133BE"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -895,13 +895,13 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 46786ffe-301c-0052-1db9-6142b0000000
+      - 0857828d-201c-00c5-53d6-612179000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -923,7 +923,7 @@ interactions:
       X-Ms-Access-Tier:
       - P40
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:59 GMT
+      - Tue, 15 Jun 2021 11:06:22 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
@@ -934,11 +934,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:57 GMT
+      - Tue, 15 Jun 2021 11:06:21 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 4678702b-301c-0052-4ab9-6142b0000000
+      - 0857831d-201c-00c5-63d6-612179000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -956,7 +956,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:59 GMT
+      - Tue, 15 Jun 2021 11:06:22 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
@@ -971,11 +971,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Jun 2021 07:38:58 GMT
+      - Tue, 15 Jun 2021 11:06:21 GMT
       Etag:
-      - '"0x8D92FD0A185887F"'
+      - '"0x8D92FED994133BE"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -985,13 +985,13 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 46787065-301c-0052-04b9-6142b0000000
+      - 08578376-201c-00c5-3cd6-612179000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -1013,7 +1013,7 @@ interactions:
       X-Ms-Access-Tier:
       - P50
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:59 GMT
+      - Tue, 15 Jun 2021 11:06:22 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers?comp=tier
@@ -1024,11 +1024,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:58 GMT
+      - Tue, 15 Jun 2021 11:06:21 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 467870a6-301c-0052-45b9-6142b0000000
+      - 08578422-201c-00c5-68d6-612179000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -1046,7 +1046,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:38:59 GMT
+      - Tue, 15 Jun 2021 11:06:23 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers/gotestblobblobsettieralltiers
@@ -1061,11 +1061,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 15 Jun 2021 07:38:58 GMT
+      - Tue, 15 Jun 2021 11:06:22 GMT
       Etag:
-      - '"0x8D92FD0A185887F"'
+      - '"0x8D92FED994133BE"'
       Last-Modified:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Access-Tier:
@@ -1075,13 +1075,13 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Tue, 15 Jun 2021 07:38:55 GMT
+      - Tue, 15 Jun 2021 11:06:17 GMT
       X-Ms-Lease-State:
       - available
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 467870dd-301c-0052-7cb9-6142b0000000
+      - 085784ab-201c-00c5-71d6-612179000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -1101,7 +1101,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:39:00 GMT
+      - Tue, 15 Jun 2021 11:06:23 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://devopsciblobgopremium.blob.core.windows.net/premgocblobsettieralltiers?restype=container
@@ -1112,11 +1112,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:58 GMT
+      - Tue, 15 Jun 2021 11:06:22 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 46787119-301c-0052-38b9-6142b0000000
+      - 08578556-201c-00c5-1cd6-612179000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted
@@ -1134,7 +1134,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 07:39:00 GMT
+      - Tue, 15 Jun 2021 11:06:24 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsettieralltiers?restype=container
@@ -1145,11 +1145,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 07:38:59 GMT
+      - Tue, 15 Jun 2021 11:06:23 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 6908992c-701e-0009-65b9-612c2f000000
+      - 41a6a8e2-d01e-0004-7bd6-61c323000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

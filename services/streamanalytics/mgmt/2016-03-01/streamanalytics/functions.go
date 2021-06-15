@@ -466,7 +466,7 @@ func (client FunctionsClient) RetrieveDefaultDefinitionPreparer(ctx context.Cont
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions/{functionName}/RetrieveDefaultDefinition", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StreamAnalytics/streamingjobs/{jobName}/functions/{functionName}/retrieveDefaultDefinition", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	if functionRetrieveDefaultDefinitionParameters != nil {
 		preparer = autorest.DecoratePreparer(preparer,

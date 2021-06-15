@@ -1,0 +1,385 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:08:58 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocincrementalcopy?restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 14:08:57 GMT
+      Etag:
+      - '"0x8D930071E28A598"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 14:08:57 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - c3e41896-501e-001e-09ef-61ec4c000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Blob-Public-Access:
+      - blob
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:08:58 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocincrementalcopy?comp=acl&restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 14:08:57 GMT
+      Etag:
+      - '"0x8D930071E6F3375"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 14:08:58 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - c3e41a3a-501e-001e-1bef-61ec4c000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "0"
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Blob-Content-Length:
+      - "5120"
+      X-Ms-Blob-Type:
+      - PageBlob
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:08:58 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocincrementalcopy/srcgotestblobincrementalcopy
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 14:08:58 GMT
+      Etag:
+      - '"0x8D930071EADEE1B"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 14:08:58 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - c3e41b0d-501e-001e-61ef-61ec4c000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+      X-Ms-Version-Id:
+      - "2021-06-15T14:08:58.7255323Z"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: !!binary |
+      bcQUMZoFtqBQzeYNR8xhYrAw0asqBf8y9Fj9g66Nq3MNR3BY2Jv93vMq7M3aSfQ4gRa9Lk
+      cXMTdiYBHQOhNj1QqrDW0Nh5bxIKj8nb9oIHpymqlg9vZ3GrS7YmJ2Lzfs/wWzAV9+9Rao
+      Qy3Ejcp/H7ItR/t5GuxEmlCH68ESqOEePkrmfNkEnqy97lHcrRjQtPRl/ZVWUjKvSYaTDJ
+      C8iYoEie1KDfzLib88x+JqVkNMwe7MK01wBgZoxFmCz+lMZTx/zF6febf5LrqgFL4G8PqX
+      zpLxRCJZWkIfnJCzkwdl+43QBFOtHOYCsy5qsdrw5Rf61FhlJ91jbyBS/s746nqMvc0b8f
+      buQ1QnXx2denih21O4MtFkT8AaC8bdoQ65vya1rV7rl5ajEBRMNJ5/xUscMcFL7oYiW7k7
+      ktp+5vMbcjTvSatVAtmZwvom30Q4DFAN+4igw3MKuwj+NTY6K7w1J5yfOIK1U5fDaDQKYq
+      1rDuXJp0U+lv1fCj3FRXK9OBQTa/KyqF3PFVBcGq02QSXuMjR9oSHWpicUEt4x5B0JnhIP
+      hdBObNMnsLYILjjCVX5PRWAzlWM2UMwSLUu7rkemHAF4nYlYBL3zwenjMj2IHx0FcZvrMb
+      fUHq6Zm9GCOXu4Jvx3cj35EWSAVBpi7h1Y6IQ5c0udejrLg7u9q6hsMuNsam8ldbnKgQFN
+      QyFouNQu3zHlPzxxcGOY3tQ19606VuFinDDQVnk5a3YeI8MIvrE/BWy5H5pIhCSvAFD2XR
+      kQBErQ90IrYqdrRHpAvvIgXnXA7lzA+M9tRDTDZk/JvzkibPJzmu5h7Z4Cn3jaLxXRFn+V
+      SwdjRFuaW/Ka8W0uRVqo5+vD2t9/IABfLCoSzKXq9FQpY/0VN2PJid91XWr66B2e7BqdYe
+      LWZfKt+ZjT84EI+rX2/rbH+hmddquUqOWOfD5vNYpzdGPXzVstHDJ9R5sqtTVD4ntMRtfQ
+      UbIMPnKJ4L/BBOusiO75OPBKPQBUL0AcCZdV8thc10vekLjyO/VduxktpCpDOQN1HOfUGf
+      jrBJzbWsL+9V1u6OUM6WQjr/jJP3vC7JtBROm1EW6YUMRPKaSavPDa2cd4fcc1E/M6CJyK
+      OvFlEEsnagjpJav3MX3EHIzyxhc4qKWAN7vMj21ShftLN3+H8Pq5scpDj6NsL4ABARWRZE
+      BfNCpTpoZPgV/L1666SQDe12AVkB2BOecCcX7/bgrSekNoiYO0PHk8DWJ71isJU7GeO+HE
+      j9VK4AwyuJ42jkXc+I+ZkpWzZDb3MTz9a0RQoQ9jltp+/Ts88yhUDs0/Jm6ShYz+sszN9h
+      Q0pudlKr9x+oxOue6hAnxJBNo3ktcR2xExVw==
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "1024"
+      Content-Type:
+      - application/octet-stream
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:08:59 GMT
+      X-Ms-Page-Write:
+      - update
+      X-Ms-Range:
+      - bytes=0-1023
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocincrementalcopy/srcgotestblobincrementalcopy?comp=page
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 14:08:58 GMT
+      Etag:
+      - '"0x8D930071EEC8B04"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 14:08:59 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Sequence-Number:
+      - "0"
+      X-Ms-Content-Crc64:
+      - YvAE3rsf2q0=
+      X-Ms-Request-Id:
+      - c3e41bca-501e-001e-10ef-61ec4c000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:08:59 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocincrementalcopy/srcgotestblobincrementalcopy?comp=snapshot
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 14:08:58 GMT
+      Etag:
+      - '"0x8D930071EEC8B04"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 14:08:59 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - c3e41ca2-501e-001e-5cef-61ec4c000000
+      X-Ms-Request-Server-Encrypted:
+      - "false"
+      X-Ms-Snapshot:
+      - "2021-06-15T14:08:59.5492138Z"
+      X-Ms-Version:
+      - "2019-12-12"
+      X-Ms-Version-Id:
+      - "2021-06-15T14:08:59.5502138Z"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Copy-Source:
+      - https://azureblobstoragecanada.blob.core.windows.net/gocincrementalcopy/srcgotestblobincrementalcopy?snapshot=2021-06-15T14%3A08%3A59.5492138Z
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:09:00 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocincrementalcopy/dstgotestblobincrementalcopy?comp=incrementalcopy
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 14:08:59 GMT
+      Etag:
+      - '"0x8D930071F63D01F"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 14:08:59 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Copy-Id:
+      - 5db6795d-c8f1-437d-9fd3-4cb37f42b1a0
+      X-Ms-Copy-Status:
+      - pending
+      X-Ms-Request-Id:
+      - c3e41d6b-501e-001e-16ef-61ec4c000000
+      X-Ms-Version:
+      - "2019-12-12"
+      X-Ms-Version-Id:
+      - "2021-06-15T14:08:59.9175199Z"
+    status: 202 Accepted
+    code: 202
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:09:00 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocincrementalcopy/dstgotestblobincrementalcopy
+    method: HEAD
+  response:
+    body: ""
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - "5120"
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Tue, 15 Jun 2021 14:08:59 GMT
+      Etag:
+      - '"0x8D930071F6E0B87"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 14:08:59 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Sequence-Number:
+      - "0"
+      X-Ms-Blob-Type:
+      - PageBlob
+      X-Ms-Copy-Completion-Time:
+      - Tue, 15 Jun 2021 14:08:59 GMT
+      X-Ms-Copy-Destination-Snapshot:
+      - "2021-06-15T14:08:59.9905813Z"
+      X-Ms-Copy-Id:
+      - 5db6795d-c8f1-437d-9fd3-4cb37f42b1a0
+      X-Ms-Copy-Progress:
+      - 5120/5120
+      X-Ms-Copy-Source:
+      - https://azureblobstoragecanada.blob.core.windows.net/gocincrementalcopy/srcgotestblobincrementalcopy?snapshot=2021-06-15T14%3A08%3A59.5492138Z
+      X-Ms-Copy-Status:
+      - success
+      X-Ms-Creation-Time:
+      - Tue, 15 Jun 2021 14:08:59 GMT
+      X-Ms-Incremental-Copy:
+      - "true"
+      X-Ms-Lease-State:
+      - available
+      X-Ms-Lease-Status:
+      - unlocked
+      X-Ms-Request-Id:
+      - c3e41ea5-501e-001e-3bef-61ec4c000000
+      X-Ms-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:09:00 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/gocincrementalcopy?restype=container
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 14:09:00 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - c3e41fdd-501e-001e-60ef-61ec4c000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 202 Accepted
+    code: 202
+    duration: ""

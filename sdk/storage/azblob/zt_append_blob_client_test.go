@@ -3,6 +3,12 @@
 
 package azblob
 
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
+	"github.com/stretchr/testify/assert"
+	"strings"
+)
+
 //
 //import (
 //	"bytes"
@@ -344,7 +350,7 @@ package azblob
 //	c.Assert(h, chk.DeepEquals, basicHeaders)
 //}
 //
-//func validateAppendBlobPut(c *chk.C, abClient AppendBlobClient) {
+//func validateAppendBlobPut(, abClient AppendBlobClient) {
 //	resp, err := abClient.GetProperties(ctx, nil)
 //	_assert.Nil(err)
 //	c.Assert(resp.Metadata, chk.NotNil)
@@ -569,12 +575,13 @@ package azblob
 //
 //	validateStorageError(c, err, StorageErrorCodeBlobNotFound)
 //}
-//
-//func validateBlockAppended(c *chk.C, abClient AppendBlobClient, expectedSize int) {
-//	resp, err := abClient.GetProperties(ctx, nil)
-//	_assert.Nil(err)
-//	c.Assert(*resp.ContentLength, chk.Equals, int64(expectedSize))
-//}
+
+func validateBlockAppended(_assert *assert.Assertions, abClient AppendBlobClient, expectedSize int) {
+	resp, err := abClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(*resp.ContentLength, int64(expectedSize))
+}
+
 //
 //func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceTrue() {
 //	bsu := getServiceClient(nil)
@@ -781,99 +788,135 @@ package azblob
 ////
 ////	validateBlockAppended(c, abClient, 2*len(blockBlobDefaultData))
 ////}
-//
-//func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNonZero() {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	abClient, _ := createNewAppendBlob(c, containerClient)
-//
-//	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
-//	_assert.Nil(err)
-//
-//	appendPosition := int64(len(blockBlobDefaultData))
-//	appendBlockOptions := AppendBlockOptions{
-//		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-//			AppendPosition: &appendPosition,
-//		},
-//	}
-//	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-//	_assert.Nil(err)
-//
-//	validateBlockAppended(c, abClient, len(blockBlobDefaultData)*2)
-//}
-//
-//func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNegOne() {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	abClient, _ := createNewAppendBlob(c, containerClient)
-//
-//	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
-//	_assert.Nil(err)
-//
-//	appendPosition := int64(-1)
-//	appendBlockOptions := AppendBlockOptions{
-//		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-//			AppendPosition: &appendPosition,
-//		},
-//	}
-//	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-//	_assert.NotNil(err)
-//
-//	validateStorageError(c, err, StorageErrorCodeInvalidHeaderValue)
-//}
-//
-//func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero() {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	abClient, _ := createNewAppendBlob(c, containerClient)
-//
-//	appendPosition := int64(12)
-//	appendBlockOptions := AppendBlockOptions{
-//		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-//			AppendPosition: &appendPosition,
-//		},
-//	}
-//	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-//	_assert.NotNil(err)
-//
-//	// validateStorageError(c, err, StorageErrorCodeAppendPositionConditionNotMet)
-//}
-//
-//func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeTrue() {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	abClient, _ := createNewAppendBlob(c, containerClient)
-//
-//	maxSize := int64(len(blockBlobDefaultData) + 1)
-//	appendBlockOptions := AppendBlockOptions{
-//		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-//			MaxSize: &maxSize,
-//		},
-//	}
-//	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-//	_assert.Nil(err)
-//
-//	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
-//}
-//
-//func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeFalse() {
-//	bsu := getServiceClient(nil)
-//	containerClient, _ := createNewContainer(c, bsu)
-//	defer deleteContainer(containerClient)
-//	abClient, _ := createNewAppendBlob(c, containerClient)
-//
-//	maxSize := int64(len(blockBlobDefaultData) - 1)
-//	appendBlockOptions := AppendBlockOptions{
-//		AppendPositionAccessConditions: &AppendPositionAccessConditions{
-//			MaxSize: &maxSize,
-//		},
-//	}
-//	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
-//	_assert.NotNil(err)
-//
-//	validateStorageError(c, err, StorageErrorCodeMaxBlobSizeConditionNotMet)
-//}
+
+func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNonZero() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, blockBlobName, containerClient)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
+	_assert.Nil(err)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+			AppendPosition: to.Int64Ptr(int64(len(blockBlobDefaultData))),
+		},
+	})
+	_assert.Nil(err)
+
+	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData)*2)
+}
+
+func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNegOne() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, blockBlobName, containerClient)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
+	_assert.Nil(err)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+			AppendPosition: to.Int64Ptr(-1),
+		},
+	})
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeInvalidHeaderValue)
+}
+
+func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, blockBlobName, containerClient)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+			AppendPosition: to.Int64Ptr(12),
+		},
+	})
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeAppendPositionConditionNotMet)
+}
+
+func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, blockBlobName, containerClient)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+			MaxSize: to.Int64Ptr(int64(len(blockBlobDefaultData) + 1)),
+		},
+	})
+	_assert.Nil(err)
+	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData))
+}
+
+func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	abClient := createNewAppendBlob(_assert, blockBlobName, containerClient)
+
+	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+		AppendPositionAccessConditions: &AppendPositionAccessConditions{
+			MaxSize: to.Int64Ptr(int64(len(blockBlobDefaultData) - 1)),
+		},
+	})
+	_assert.NotNil(err)
+	validateStorageError(_assert, err, StorageErrorCodeMaxBlobSizeConditionNotMet)
+}

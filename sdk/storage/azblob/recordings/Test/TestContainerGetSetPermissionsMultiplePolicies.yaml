@@ -13,7 +13,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 04:38:43 GMT
+      - Tue, 15 Jun 2021 07:39:47 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainergetsetpermissionsmultiplepolicies?restype=container
@@ -24,15 +24,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 04:38:42 GMT
+      - Tue, 15 Jun 2021 07:39:46 GMT
       Etag:
-      - '"0x8D92FB7744F41B4"'
+      - '"0x8D92FD0BFF64D54"'
       Last-Modified:
-      - Tue, 15 Jun 2021 04:38:42 GMT
+      - Tue, 15 Jun 2021 07:39:46 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 36c180cb-d01e-000f-69a0-61db57000000
+      - 69090003-701e-0009-44b9-612c2f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -54,7 +54,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 04:38:43 GMT
+      - Tue, 15 Jun 2021 07:39:47 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainergetsetpermissionsmultiplepolicies?comp=acl&restype=container
@@ -65,15 +65,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 04:38:42 GMT
+      - Tue, 15 Jun 2021 07:39:47 GMT
       Etag:
-      - '"0x8D92FB774758D7E"'
+      - '"0x8D92FD0C01E89AC"'
       Last-Modified:
-      - Tue, 15 Jun 2021 04:38:42 GMT
+      - Tue, 15 Jun 2021 07:39:47 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 36c1813e-d01e-000f-4da0-61db57000000
+      - 690900bb-701e-0009-6cb9-612c2f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -91,7 +91,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 04:38:43 GMT
+      - Tue, 15 Jun 2021 07:39:48 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainergetsetpermissionsmultiplepolicies?comp=acl&restype=container
@@ -102,15 +102,15 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Tue, 15 Jun 2021 04:38:42 GMT
+      - Tue, 15 Jun 2021 07:39:47 GMT
       Etag:
-      - '"0x8D92FB774758D7E"'
+      - '"0x8D92FD0C01E89AC"'
       Last-Modified:
-      - Tue, 15 Jun 2021 04:38:42 GMT
+      - Tue, 15 Jun 2021 07:39:47 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 36c181e7-d01e-000f-6ba0-61db57000000
+      - 69090189-701e-0009-25b9-612c2f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -128,7 +128,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Tue, 15 Jun 2021 04:38:43 GMT
+      - Tue, 15 Jun 2021 07:39:48 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainergetsetpermissionsmultiplepolicies?restype=container
@@ -139,11 +139,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 15 Jun 2021 04:38:43 GMT
+      - Tue, 15 Jun 2021 07:39:47 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 36c18274-d01e-000f-6aa0-61db57000000
+      - 6909023a-701e-0009-43b9-612c2f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

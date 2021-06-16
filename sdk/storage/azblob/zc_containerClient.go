@@ -5,6 +5,7 @@ package azblob
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"time"
 
@@ -93,7 +94,7 @@ func (c ContainerClient) NewPageBlobClient(blobName string) PageBlobClient {
 func (c ContainerClient) NewContainerLeaseClient() ContainerLeaseClient {
 	return ContainerLeaseClient{
 		ContainerClient: c,
-		LeaseID:         to.StringPtr(newUUID().String()),
+		LeaseID:         to.StringPtr(uuid.New().String()),
 	}
 }
 
@@ -131,9 +132,8 @@ func (c ContainerClient) GetMetadata(ctx context.Context, gpo *GetPropertiesOpti
 	return resp.Metadata, nil
 }
 
-//
-//// GetProperties returns the container's properties.
-//// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-container-metadata.
+// GetProperties returns the container's properties.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-container-metadata.
 func (c ContainerClient) GetProperties(ctx context.Context, gpo *GetPropertiesOptionsContainer) (ContainerGetPropertiesResponse, error) {
 	// NOTE: GetMetadata actually calls GetProperties internally because GetProperties returns the metadata AND the properties.
 	// This allows us to not expose a GetProperties method at all simplifying the API.
@@ -145,8 +145,8 @@ func (c ContainerClient) GetProperties(ctx context.Context, gpo *GetPropertiesOp
 	return resp, handleError(err)
 }
 
-//// SetMetadata sets the container's metadata.
-//// For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-metadata.
+// SetMetadata sets the container's metadata.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-metadata.
 func (c ContainerClient) SetMetadata(ctx context.Context, options *SetMetadataContainerOptions) (ContainerSetMetadataResponse, error) {
 	// TODO: Ask Ze/Adele: Why we introduced this check. We should let service do this kind of validations.
 	//if ac != nil && ac.ModifiedAccessConditions != nil {

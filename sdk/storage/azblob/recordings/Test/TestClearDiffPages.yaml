@@ -1,0 +1,472 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:08:12 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpages?restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 14:08:12 GMT
+      Etag:
+      - '"0x8D93007033E9520"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 14:08:12 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - c3e3b6e2-501e-001e-7eef-61ec4c000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "0"
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Blob-Content-Length:
+      - "5120"
+      X-Ms-Blob-Type:
+      - PageBlob
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:08:13 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpages/gotestblobcleardiffpages
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 14:08:12 GMT
+      Etag:
+      - '"0x8D93007037606F6"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 14:08:13 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - c3e3b7a0-501e-001e-21ef-61ec4c000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+      X-Ms-Version-Id:
+      - "2021-06-15T14:08:13.0616838Z"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: !!binary |
+      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
+      c=
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "2048"
+      Content-Type:
+      - application/octet-stream
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:08:13 GMT
+      X-Ms-Page-Write:
+      - update
+      X-Ms-Range:
+      - bytes=0-2047
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpages/gotestblobcleardiffpages?comp=page
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 14:08:12 GMT
+      Etag:
+      - '"0x8D93007039EF461"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 14:08:13 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Sequence-Number:
+      - "0"
+      X-Ms-Content-Crc64:
+      - 7qMCYnF/U9E=
+      X-Ms-Request-Id:
+      - c3e3b809-501e-001e-79ef-61ec4c000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:08:13 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpages/gotestblobcleardiffpages?comp=snapshot
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 14:08:13 GMT
+      Etag:
+      - '"0x8D93007039EF461"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 14:08:13 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - c3e3b887-501e-001e-5def-61ec4c000000
+      X-Ms-Request-Server-Encrypted:
+      - "false"
+      X-Ms-Snapshot:
+      - "2021-06-15T14:08:13.6721894Z"
+      X-Ms-Version:
+      - "2019-12-12"
+      X-Ms-Version-Id:
+      - "2021-06-15T14:08:13.6731894Z"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: !!binary |
+      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
+      c=
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "2048"
+      Content-Type:
+      - application/octet-stream
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:08:14 GMT
+      X-Ms-Page-Write:
+      - update
+      X-Ms-Range:
+      - bytes=2048-4095
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpages/gotestblobcleardiffpages?comp=page
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 14:08:13 GMT
+      Etag:
+      - '"0x8D9300704115672"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 14:08:14 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Sequence-Number:
+      - "0"
+      X-Ms-Content-Crc64:
+      - accKvazii1M=
+      X-Ms-Request-Id:
+      - c3e3b928-501e-001e-69ef-61ec4c000000
+      X-Ms-Request-Server-Encrypted:
+      - "true"
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:08:14 GMT
+      X-Ms-Range:
+      - bytes=0-4095
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpages/gotestblobcleardiffpages?comp=pagelist&prevsnapshot=2021-06-15T14%3A08%3A13.6721894Z
+    method: GET
+  response:
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x50\x61\x67\x65\x4C\x69\x73\x74\x3E\x3C\x50\x61\x67\x65\x52\x61\x6E\x67\x65\x3E\x3C\x53\x74\x61\x72\x74\x3E\x32\x30\x34\x38\x3C\x2F\x53\x74\x61\x72\x74\x3E\x3C\x45\x6E\x64\x3E\x34\x30\x39\x35\x3C\x2F\x45\x6E\x64\x3E\x3C\x2F\x50\x61\x67\x65\x52\x61\x6E\x67\x65\x3E\x3C\x2F\x50\x61\x67\x65\x4C\x69\x73\x74\x3E"
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Tue, 15 Jun 2021 14:08:13 GMT
+      Etag:
+      - '"0x8D9300704115672"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 14:08:14 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Content-Length:
+      - "5120"
+      X-Ms-Request-Id:
+      - c3e3b9a3-501e-001e-4cef-61ec4c000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "0"
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:08:15 GMT
+      X-Ms-Page-Write:
+      - clear
+      X-Ms-Range:
+      - bytes=2048-4095
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpages/gotestblobcleardiffpages?comp=page
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 14:08:14 GMT
+      Etag:
+      - '"0x8D9300704827FC5"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 14:08:14 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Sequence-Number:
+      - "0"
+      X-Ms-Request-Id:
+      - c3e3ba14-501e-001e-20ef-61ec4c000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:08:15 GMT
+      X-Ms-Range:
+      - bytes=0-4094
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpages/gotestblobcleardiffpages?comp=pagelist&prevsnapshot=2021-06-15T14%3A08%3A13.6721894Z
+    method: GET
+  response:
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x50\x61\x67\x65\x4C\x69\x73\x74\x3E\x3C\x43\x6C\x65\x61\x72\x52\x61\x6E\x67\x65\x3E\x3C\x53\x74\x61\x72\x74\x3E\x32\x30\x34\x38\x3C\x2F\x53\x74\x61\x72\x74\x3E\x3C\x45\x6E\x64\x3E\x34\x30\x39\x35\x3C\x2F\x45\x6E\x64\x3E\x3C\x2F\x43\x6C\x65\x61\x72\x52\x61\x6E\x67\x65\x3E\x3C\x2F\x50\x61\x67\x65\x4C\x69\x73\x74\x3E"
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Tue, 15 Jun 2021 14:08:14 GMT
+      Etag:
+      - '"0x8D9300704827FC5"'
+      Last-Modified:
+      - Tue, 15 Jun 2021 14:08:14 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Blob-Content-Length:
+      - "5120"
+      X-Ms-Request-Id:
+      - c3e3ba78-501e-001e-75ef-61ec4c000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Tue, 15 Jun 2021 14:08:15 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccleardiffpages?restype=container
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Tue, 15 Jun 2021 14:08:14 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - c3e3bab9-501e-001e-2eef-61ec4c000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 202 Accepted
+    code: 202
+    duration: ""

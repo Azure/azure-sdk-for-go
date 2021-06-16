@@ -11,6 +11,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/uuid"
 	"io"
 	"log"
 	"net/http"
@@ -209,12 +210,16 @@ func ExampleSASConvenienceGenerators() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	serviceURL, err := NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), credential, nil)
-
+	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), credential, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 	// Provide the convenience function with relevant info (services, resource types, permissions, and duration)
 	// The SAS token will be valid from this moment onwards.
-	accountSAS, err := serviceURL.GetAccountSASToken(AccountSASServices{Blob: true}, AccountSASResourceTypes{Object: true, Service: true, Container: true}, AccountSASPermissions{Read: true, List: true}, time.Hour*48)
-
+	accountSAS, err := serviceClient.GetAccountSASToken(AccountSASServices{Blob: true}, AccountSASResourceTypes{Object: true, Service: true, Container: true}, AccountSASPermissions{Read: true, List: true}, time.Hour*48)
+	if err != nil {
+		log.Fatal(err)
+	}
 	qp := accountSAS.Encode()
 	urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, qp)
 	// You can hand off this URL to someone else via any mechanism you choose.
@@ -222,13 +227,13 @@ func ExampleSASConvenienceGenerators() {
 	// ******************************************
 
 	// When someone receives the URL, they can access the resource using it in code like this, or a tool of some variety.
-	serviceURL, err = NewServiceClient(urlToSend, azcore.AnonymousCredential(), nil)
+	serviceClient, err = NewServiceClient(urlToSend, azcore.AnonymousCredential(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// You can also break a blob URL up into it's constituent parts
-	blobURLParts := NewBlobURLParts(serviceURL.URL())
+	blobURLParts := NewBlobURLParts(serviceClient.URL())
 	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
 }
 
@@ -259,13 +264,13 @@ func ExampleAccountSASSignatureValues() {
 	// ******************************************
 
 	// When someone receives the URL, they can access the resource using it in code like this, or a tool of some variety.
-	serviceURL, err := NewServiceClient(urlToSend, azcore.AnonymousCredential(), nil)
+	serviceClient, err := NewServiceClient(urlToSend, azcore.AnonymousCredential(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// You can also break a blob URL up into it's constituent parts
-	blobURLParts := NewBlobURLParts(serviceURL.URL())
+	blobURLParts := NewBlobURLParts(serviceClient.URL())
 	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
 }
 
@@ -584,7 +589,7 @@ func ExampleBlobHTTPHeaders() {
 	fmt.Println(*get.BlobType, *get.ETag, *get.LastModified)
 
 	// Shows some of the blob's HTTP Headers
-	httpHeaders := get.NewHTTPHeaders()
+	httpHeaders := get.GetHTTPHeaders()
 	fmt.Println(httpHeaders.BlobContentType, httpHeaders.BlobContentDisposition)
 
 	// Update the blob's HTTP Headers and write them back to the blob
@@ -894,7 +899,7 @@ func Example_progressUploadDownload() {
 	// From the Azure portal, get your Storage account blob service URL endpoint.
 	cURL := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
 
-	// Create an ServiceURL object that wraps the service URL and a request pipeline to making requests.
+	// Create an serviceClient object that wraps the service URL and a request pipeline to making requests.
 	containerClient, err := NewContainerClient(cURL, credential, nil)
 
 	ctx := context.Background() // This example uses a never-expiring context
@@ -1127,7 +1132,7 @@ func ExampleLeaseContainer() {
 
 	// Create an containerClient object that wraps the container's URL and a default pipeline.
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
-	leaseID := to.StringPtr(newUUID().String())
+	leaseID := to.StringPtr(uuid.New().String())
 	containerLeaseClient, err := NewContainerLeaseClient(u, leaseID, credential, nil)
 	if err != nil {
 		log.Fatal(err)
@@ -1169,7 +1174,7 @@ func ExampleLeaseContainer() {
 
 	// We can change the ID of an existing lease.
 	// A lease ID can be any valid GUID string format.
-	newLeaseID := newUUID()
+	newLeaseID := uuid.New()
 	newLeaseID[0] = 1
 	changeLeaseResponse, err := containerLeaseClient.ChangeLease(ctx,
 		&ChangeLeaseContainerOptions{ProposedLeaseID: to.StringPtr(newLeaseID.String())})

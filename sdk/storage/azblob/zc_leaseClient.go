@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
@@ -25,7 +26,7 @@ func NewBlobLeaseClient(blobURL string, leaseID *string, cred azcore.Credential,
 	}
 
 	if leaseID == nil {
-		leaseID = to.StringPtr(newUUID().String())
+		leaseID = to.StringPtr(uuid.New().String())
 	}
 
 	return BlobLeaseClient{
@@ -113,7 +114,7 @@ func NewContainerLeaseClient(containerURL string, leaseID *string, cred azcore.C
 	}
 
 	if leaseID == nil {
-		leaseID = to.StringPtr(newUUID().String())
+		leaseID = to.StringPtr(uuid.New().String())
 	}
 
 	return ContainerLeaseClient{

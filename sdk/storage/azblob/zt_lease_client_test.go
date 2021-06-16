@@ -3,239 +3,241 @@
 
 package azblob
 
-import (
-	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
-	chk "gopkg.in/check.v1"
-)
-
-func (s *aztestsSuite) TestContainerAcquireLease(c *chk.C) {
-	bsu := getBSU()
-	containerClient, containerName := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-
-	containerLeaseClient := bsu.NewContainerLeaseClient(containerName, nil)
-
-	ctx := context.Background()
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
-	c.Assert(err, chk.IsNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, containerLeaseClient.LeaseID)
-
-	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
-	c.Assert(err, chk.IsNil)
-}
-
-func (s *aztestsSuite) TestContainerDeleteContainerWithoutLeaseId(c *chk.C) {
-	bsu := getBSU()
-	containerClient, containerName := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-
-	containerLeaseClient := bsu.NewContainerLeaseClient(containerName, nil)
-
-	ctx := context.Background()
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
-	c.Assert(err, chk.IsNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, containerLeaseClient.LeaseID)
-
-	_, err = containerClient.Delete(ctx, nil)
-	c.Assert(err, chk.NotNil)
-
-	leaseID := containerLeaseClient.LeaseID
-	_, err = containerClient.Delete(ctx, &DeleteContainerOptions{
-		LeaseAccessConditions: &LeaseAccessConditions{
-			LeaseID: leaseID,
-		},
-	})
-	c.Assert(err, chk.IsNil)
-}
-
-func (s *aztestsSuite) TestContainerReleaseLease(c *chk.C) {
-	bsu := getBSU()
-	containerClient, containerName := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-
-	containerLeaseClient := bsu.NewContainerLeaseClient(containerName, nil)
-
-	ctx := context.Background()
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
-	c.Assert(err, chk.IsNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, containerLeaseClient.LeaseID)
-
-	_, err = containerClient.Delete(ctx, nil)
-	c.Assert(err, chk.NotNil)
-
-	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
-	c.Assert(err, chk.IsNil)
-
-	_, err = containerClient.Delete(ctx, nil)
-	c.Assert(err, chk.IsNil)
-}
-
-func (s *aztestsSuite) TestContainerRenewLease(c *chk.C) {
-	bsu := getBSU()
-	containerClient, containerName := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-
-	containerLeaseClient := bsu.NewContainerLeaseClient(containerName, nil)
-
-	ctx := context.Background()
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(15)})
-	c.Assert(err, chk.IsNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, containerLeaseClient.LeaseID)
-
-	_, err = containerLeaseClient.RenewLease(ctx, nil)
-	c.Assert(err, chk.IsNil)
-
-	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
-	c.Assert(err, chk.IsNil)
-}
-
-func (s *aztestsSuite) TestContainerChangeLease(c *chk.C) {
-	bsu := getBSU()
-	containerClient, containerName := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-
-	containerLeaseClient := bsu.NewContainerLeaseClient(containerName, nil)
-
-	ctx := context.Background()
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(15)})
-	c.Assert(err, chk.IsNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, containerLeaseClient.LeaseID)
-
-	proposedLeaseID := to.StringPtr(newUUID().String())
-	changeLeaseResp, err := containerLeaseClient.ChangeLease(ctx, &ChangeLeaseContainerOptions{
-		ProposedLeaseID: proposedLeaseID,
-	})
-	c.Assert(err, chk.IsNil)
-	c.Assert(changeLeaseResp.LeaseID, chk.DeepEquals, proposedLeaseID)
-	c.Assert(containerLeaseClient.LeaseID, chk.DeepEquals, proposedLeaseID)
-
-	_, err = containerLeaseClient.RenewLease(ctx, nil)
-	c.Assert(err, chk.IsNil)
-
-	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
-	c.Assert(err, chk.IsNil)
-}
-
-func (s *aztestsSuite) TestBlobAcquireLease(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-
-	bbClient, _ := createNewBlockBlob(c, containerClient)
-	blobLeaseClient := bbClient.NewBlobLeaseClient(nil)
-
-	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
-	c.Assert(err, chk.IsNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, blobLeaseClient.LeaseID)
-
-	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
-	c.Assert(err, chk.IsNil)
-}
-
-func (s *aztestsSuite) TestDeleteBlobWithoutLeaseId(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-
-	bbClient, _ := createNewBlockBlob(c, containerClient)
-	blobLeaseClient := bbClient.NewBlobLeaseClient(nil)
-
-	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
-	c.Assert(err, chk.IsNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, blobLeaseClient.LeaseID)
-
-	_, err = blobLeaseClient.Delete(ctx, nil)
-	c.Assert(err, chk.NotNil)
-
-	leaseID := blobLeaseClient.LeaseID
-	_, err = blobLeaseClient.Delete(ctx, &DeleteBlobOptions{
-		LeaseAccessConditions: &LeaseAccessConditions{
-			LeaseID: leaseID,
-		},
-	})
-	c.Assert(err, chk.IsNil)
-}
-
-func (s *aztestsSuite) TestBlobReleaseLease(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-
-	bbClient, _ := createNewBlockBlob(c, containerClient)
-	blobLeaseClient := bbClient.NewBlobLeaseClient(nil)
-
-	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
-	c.Assert(err, chk.IsNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, blobLeaseClient.LeaseID)
-
-	_, err = blobLeaseClient.Delete(ctx, nil)
-	c.Assert(err, chk.NotNil)
-
-	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
-	c.Assert(err, chk.IsNil)
-
-	_, err = blobLeaseClient.Delete(ctx, nil)
-	c.Assert(err, chk.IsNil)
-}
-
-func (s *aztestsSuite) TestBlobRenewLease(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-
-	bbClient, _ := createNewBlockBlob(c, containerClient)
-	blobLeaseClient := bbClient.NewBlobLeaseClient(nil)
-
-	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(15)})
-	c.Assert(err, chk.IsNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, blobLeaseClient.LeaseID)
-
-	_, err = blobLeaseClient.RenewLease(ctx, nil)
-	c.Assert(err, chk.IsNil)
-
-	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
-	c.Assert(err, chk.IsNil)
-}
-
-func (s *aztestsSuite) TestBlobChangeLease(c *chk.C) {
-	bsu := getBSU()
-	containerClient, _ := createNewContainer(c, bsu)
-	defer deleteContainer(c, containerClient)
-
-	bbClient, _ := createNewBlockBlob(c, containerClient)
-	blobLeaseClient := bbClient.NewBlobLeaseClient(nil)
-
-	ctx := context.Background()
-	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(15)})
-	c.Assert(err, chk.IsNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
-	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, blobLeaseClient.LeaseID)
-
-	proposedLeaseID := to.StringPtr(newUUID().String())
-	changeLeaseResp, err := blobLeaseClient.ChangeLease(ctx, &ChangeLeaseBlobOptions{
-		ProposedLeaseID: proposedLeaseID,
-	})
-	c.Assert(err, chk.IsNil)
-	c.Assert(changeLeaseResp.LeaseID, chk.DeepEquals, proposedLeaseID)
-	c.Assert(blobLeaseClient.LeaseID, chk.DeepEquals, proposedLeaseID)
-
-	_, err = blobLeaseClient.RenewLease(ctx, nil)
-	c.Assert(err, chk.IsNil)
-
-	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
-	c.Assert(err, chk.IsNil)
-}
+//
+//import (
+//	"context"
+//	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/uuid"
+//	"github.com/Azure/azure-sdk-for-go/sdk/to"
+//	chk "gopkg.in/check.v1"
+//)
+//
+//func (s *azblobTestSuite) TestContainerAcquireLease() {
+//	bsu := getServiceClient(nil)
+//	containerClient, containerName := createNewContainer(c, bsu)
+//	defer deleteContainer(containerClient)
+//
+//	containerLeaseClient := bsu.NewContainerLeaseClient(containerName, nil)
+//
+//	ctx := context.Background()
+//	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
+//	_assert.Nil(err)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, containerLeaseClient.LeaseID)
+//
+//	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
+//	_assert.Nil(err)
+//}
+//
+//func (s *azblobTestSuite) TestContainerDeleteContainerWithoutLeaseId() {
+//	bsu := getServiceClient(nil)
+//	containerClient, containerName := createNewContainer(c, bsu)
+//	defer deleteContainer(containerClient)
+//
+//	containerLeaseClient := bsu.NewContainerLeaseClient(containerName, nil)
+//
+//	ctx := context.Background()
+//	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
+//	_assert.Nil(err)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, containerLeaseClient.LeaseID)
+//
+//	_, err = containerClient.Delete(ctx, nil)
+//	_assert.NotNil(err)
+//
+//	leaseID := containerLeaseClient.LeaseID
+//	_, err = containerClient.Delete(ctx, &DeleteContainerOptions{
+//		LeaseAccessConditions: &LeaseAccessConditions{
+//			LeaseID: leaseID,
+//		},
+//	})
+//	_assert.Nil(err)
+//}
+//
+//func (s *azblobTestSuite) TestContainerReleaseLease() {
+//	bsu := getServiceClient(nil)
+//	containerClient, containerName := createNewContainer(c, bsu)
+//	defer deleteContainer(containerClient)
+//
+//	containerLeaseClient := bsu.NewContainerLeaseClient(containerName, nil)
+//
+//	ctx := context.Background()
+//	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
+//	_assert.Nil(err)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, containerLeaseClient.LeaseID)
+//
+//	_, err = containerClient.Delete(ctx, nil)
+//	_assert.NotNil(err)
+//
+//	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
+//	_assert.Nil(err)
+//
+//	_, err = containerClient.Delete(ctx, nil)
+//	_assert.Nil(err)
+//}
+//
+//func (s *azblobTestSuite) TestContainerRenewLease() {
+//	bsu := getServiceClient(nil)
+//	containerClient, containerName := createNewContainer(c, bsu)
+//	defer deleteContainer(containerClient)
+//
+//	containerLeaseClient := bsu.NewContainerLeaseClient(containerName, nil)
+//
+//	ctx := context.Background()
+//	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(15)})
+//	_assert.Nil(err)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, containerLeaseClient.LeaseID)
+//
+//	_, err = containerLeaseClient.RenewLease(ctx, nil)
+//	_assert.Nil(err)
+//
+//	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
+//	_assert.Nil(err)
+//}
+//
+//func (s *azblobTestSuite) TestContainerChangeLease() {
+//	bsu := getServiceClient(nil)
+//	containerClient, containerName := createNewContainer(c, bsu)
+//	defer deleteContainer(containerClient)
+//
+//	containerLeaseClient := bsu.NewContainerLeaseClient(containerName, nil)
+//
+//	ctx := context.Background()
+//	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(15)})
+//	_assert.Nil(err)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, containerLeaseClient.LeaseID)
+//
+//	proposedLeaseID := to.StringPtr(uuid.New().String())
+//	changeLeaseResp, err := containerLeaseClient.ChangeLease(ctx, &ChangeLeaseContainerOptions{
+//		ProposedLeaseID: proposedLeaseID,
+//	})
+//	_assert.Nil(err)
+//	c.Assert(changeLeaseResp.LeaseID, chk.DeepEquals, proposedLeaseID)
+//	c.Assert(containerLeaseClient.LeaseID, chk.DeepEquals, proposedLeaseID)
+//
+//	_, err = containerLeaseClient.RenewLease(ctx, nil)
+//	_assert.Nil(err)
+//
+//	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
+//	_assert.Nil(err)
+//}
+//
+//func (s *azblobTestSuite) TestBlobAcquireLease() {
+//	bsu := getServiceClient(nil)
+//	containerClient, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(containerClient)
+//
+//	bbClient, _ := createNewBlockBlob(c, containerClient)
+//	blobLeaseClient := bbClient.NewBlobLeaseClient(nil)
+//
+//	ctx := context.Background()
+//	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
+//	_assert.Nil(err)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, blobLeaseClient.LeaseID)
+//
+//	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
+//	_assert.Nil(err)
+//}
+//
+//func (s *azblobTestSuite) TestDeleteBlobWithoutLeaseId() {
+//	bsu := getServiceClient(nil)
+//	containerClient, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(containerClient)
+//
+//	bbClient, _ := createNewBlockBlob(c, containerClient)
+//	blobLeaseClient := bbClient.NewBlobLeaseClient(nil)
+//
+//	ctx := context.Background()
+//	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
+//	_assert.Nil(err)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, blobLeaseClient.LeaseID)
+//
+//	_, err = blobLeaseClient.Delete(ctx, nil)
+//	_assert.NotNil(err)
+//
+//	leaseID := blobLeaseClient.LeaseID
+//	_, err = blobLeaseClient.Delete(ctx, &DeleteBlobOptions{
+//		LeaseAccessConditions: &LeaseAccessConditions{
+//			LeaseID: leaseID,
+//		},
+//	})
+//	_assert.Nil(err)
+//}
+//
+//func (s *azblobTestSuite) TestBlobReleaseLease() {
+//	bsu := getServiceClient(nil)
+//	containerClient, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(containerClient)
+//
+//	bbClient, _ := createNewBlockBlob(c, containerClient)
+//	blobLeaseClient := bbClient.NewBlobLeaseClient(nil)
+//
+//	ctx := context.Background()
+//	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
+//	_assert.Nil(err)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, blobLeaseClient.LeaseID)
+//
+//	_, err = blobLeaseClient.Delete(ctx, nil)
+//	_assert.NotNil(err)
+//
+//	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
+//	_assert.Nil(err)
+//
+//	_, err = blobLeaseClient.Delete(ctx, nil)
+//	_assert.Nil(err)
+//}
+//
+//func (s *azblobTestSuite) TestBlobRenewLease() {
+//	bsu := getServiceClient(nil)
+//	containerClient, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(containerClient)
+//
+//	bbClient, _ := createNewBlockBlob(c, containerClient)
+//	blobLeaseClient := bbClient.NewBlobLeaseClient(nil)
+//
+//	ctx := context.Background()
+//	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(15)})
+//	_assert.Nil(err)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, blobLeaseClient.LeaseID)
+//
+//	_, err = blobLeaseClient.RenewLease(ctx, nil)
+//	_assert.Nil(err)
+//
+//	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
+//	_assert.Nil(err)
+//}
+//
+//func (s *azblobTestSuite) TestBlobChangeLease() {
+//	bsu := getServiceClient(nil)
+//	containerClient, _ := createNewContainer(c, bsu)
+//	defer deleteContainer(containerClient)
+//
+//	bbClient, _ := createNewBlockBlob(c, containerClient)
+//	blobLeaseClient := bbClient.NewBlobLeaseClient(nil)
+//
+//	ctx := context.Background()
+//	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(15)})
+//	_assert.Nil(err)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.NotNil)
+//	c.Assert(acquireLeaseResponse.LeaseID, chk.DeepEquals, blobLeaseClient.LeaseID)
+//
+//	proposedLeaseID := to.StringPtr(uuid.New().String())
+//	changeLeaseResp, err := blobLeaseClient.ChangeLease(ctx, &ChangeLeaseBlobOptions{
+//		ProposedLeaseID: proposedLeaseID,
+//	})
+//	_assert.Nil(err)
+//	c.Assert(changeLeaseResp.LeaseID, chk.DeepEquals, proposedLeaseID)
+//	c.Assert(blobLeaseClient.LeaseID, chk.DeepEquals, proposedLeaseID)
+//
+//	_, err = blobLeaseClient.RenewLease(ctx, nil)
+//	_assert.Nil(err)
+//
+//	_, err = blobLeaseClient.ReleaseLease(ctx, nil)
+//	_assert.Nil(err)
+//}

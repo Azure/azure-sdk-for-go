@@ -6,6 +6,7 @@ package azblob
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/uuid"
 	"net/url"
 	"strings"
 	"time"
@@ -61,6 +62,7 @@ func (s ServiceClient) NewContainerClient(containerName string) ContainerClient 
 		client: &containerClient{
 			con: containerConnection,
 		},
+		cred: s.cred,
 	}
 }
 
@@ -69,7 +71,7 @@ func (s ServiceClient) NewContainerLeaseClient(containerName string, leaseID *st
 	containerConnection := &connection{containerURL, s.client.con.p}
 
 	if leaseID == nil {
-		leaseID = to.StringPtr(newUUID().String())
+		leaseID = to.StringPtr(uuid.New().String())
 	}
 
 	return ContainerLeaseClient{
@@ -129,7 +131,7 @@ func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, startTim
 	return NewUserDelegationCredential(strings.Split(urlParts.Host, ".")[0], *udk.UserDelegationKey), nil
 }
 
-// The List Containers Segment operation returns a pager of the containers under the specified account.
+// The ListContainersSegment operation returns a pager of the containers under the specified account.
 // Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
 func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) ListContainersSegmentResponsePager {

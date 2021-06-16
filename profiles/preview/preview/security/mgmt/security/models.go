@@ -43,6 +43,19 @@ const (
 	ActionTypeWorkspace        ActionType = original.ActionTypeWorkspace
 )
 
+type AdditionalWorkspaceDataType = original.AdditionalWorkspaceDataType
+
+const (
+	Alerts    AdditionalWorkspaceDataType = original.Alerts
+	RawEvents AdditionalWorkspaceDataType = original.RawEvents
+)
+
+type AdditionalWorkspaceType = original.AdditionalWorkspaceType
+
+const (
+	Sentinel AdditionalWorkspaceType = original.Sentinel
+)
+
 type AlertIntent = original.AlertIntent
 
 const (
@@ -153,14 +166,27 @@ const (
 	AutoProvisionOn  AutoProvision = original.AutoProvisionOn
 )
 
-type Category = original.Category
+type BundleType = original.BundleType
 
 const (
-	Compute           Category = original.Compute
-	Data              Category = original.Data
-	IdentityAndAccess Category = original.IdentityAndAccess
-	IoT               Category = original.IoT
-	Networking        Category = original.Networking
+	AppServices       BundleType = original.AppServices
+	DNS               BundleType = original.DNS
+	KeyVaults         BundleType = original.KeyVaults
+	KubernetesService BundleType = original.KubernetesService
+	ResourceManager   BundleType = original.ResourceManager
+	SQLServers        BundleType = original.SQLServers
+	StorageAccounts   BundleType = original.StorageAccounts
+	VirtualMachines   BundleType = original.VirtualMachines
+)
+
+type Categories = original.Categories
+
+const (
+	Compute           Categories = original.Compute
+	Data              Categories = original.Data
+	IdentityAndAccess Categories = original.IdentityAndAccess
+	IoT               Categories = original.IoT
+	Networking        Categories = original.Networking
 )
 
 type ConfigurationStatus = original.ConfigurationStatus
@@ -207,6 +233,15 @@ const (
 	ControlTypeCustom  ControlType = original.ControlTypeCustom
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
+)
+
 type DataSource = original.DataSource
 
 const (
@@ -234,12 +269,22 @@ const (
 	Outbound Direction = original.Outbound
 )
 
+type EndOfSupportStatus = original.EndOfSupportStatus
+
+const (
+	NoLongerSupported                EndOfSupportStatus = original.NoLongerSupported
+	None                             EndOfSupportStatus = original.None
+	UpcomingNoLongerSupported        EndOfSupportStatus = original.UpcomingNoLongerSupported
+	UpcomingVersionNoLongerSupported EndOfSupportStatus = original.UpcomingVersionNoLongerSupported
+	VersionNoLongerSupported         EndOfSupportStatus = original.VersionNoLongerSupported
+)
+
 type EnforcementMode = original.EnforcementMode
 
 const (
-	Audit   EnforcementMode = original.Audit
-	Enforce EnforcementMode = original.Enforce
-	None    EnforcementMode = original.None
+	EnforcementModeAudit   EnforcementMode = original.EnforcementModeAudit
+	EnforcementModeEnforce EnforcementMode = original.EnforcementModeEnforce
+	EnforcementModeNone    EnforcementMode = original.EnforcementModeNone
 )
 
 type EnforcementSupport = original.EnforcementSupport
@@ -253,11 +298,15 @@ const (
 type EventSource = original.EventSource
 
 const (
-	Alerts              EventSource = original.Alerts
-	Assessments         EventSource = original.Assessments
-	SecureScoreControls EventSource = original.SecureScoreControls
-	SecureScores        EventSource = original.SecureScores
-	SubAssessments      EventSource = original.SubAssessments
+	EventSourceAlerts                                 EventSource = original.EventSourceAlerts
+	EventSourceAssessments                            EventSource = original.EventSourceAssessments
+	EventSourceRegulatoryComplianceAssessment         EventSource = original.EventSourceRegulatoryComplianceAssessment
+	EventSourceRegulatoryComplianceAssessmentSnapshot EventSource = original.EventSourceRegulatoryComplianceAssessmentSnapshot
+	EventSourceSecureScoreControls                    EventSource = original.EventSourceSecureScoreControls
+	EventSourceSecureScoreControlsSnapshot            EventSource = original.EventSourceSecureScoreControlsSnapshot
+	EventSourceSecureScores                           EventSource = original.EventSourceSecureScores
+	EventSourceSecureScoresSnapshot                   EventSource = original.EventSourceSecureScoresSnapshot
+	EventSourceSubAssessments                         EventSource = original.EventSourceSubAssessments
 )
 
 type Exe = original.Exe
@@ -292,7 +341,7 @@ const (
 type ExportData = original.ExportData
 
 const (
-	RawEvents ExportData = original.RawEvents
+	ExportDataRawEvents ExportData = original.ExportDataRawEvents
 )
 
 type ExternalSecuritySolutionKind = original.ExternalSecuritySolutionKind
@@ -387,6 +436,13 @@ const (
 	KindExternalSecuritySolution KindEnum1 = original.KindExternalSecuritySolution
 )
 
+type KindEnum2 = original.KindEnum2
+
+const (
+	KindAlertSimulatorRequestProperties KindEnum2 = original.KindAlertSimulatorRequestProperties
+	KindBundles                         KindEnum2 = original.KindBundles
+)
+
 type MacSignificance = original.MacSignificance
 
 const (
@@ -407,6 +463,13 @@ const (
 	MsiAudit   Msi = original.MsiAudit
 	MsiEnforce Msi = original.MsiEnforce
 	MsiNone    Msi = original.MsiNone
+)
+
+type OnboardingKind = original.OnboardingKind
+
+const (
+	Default         OnboardingKind = original.Default
+	MigratedToAzure OnboardingKind = original.MigratedToAzure
 )
 
 type Operator = original.Operator
@@ -632,6 +695,7 @@ const (
 	RuleTypeAmqpC2DMessagesNotInAllowedRange         RuleTypeBasicCustomAlertRule = original.RuleTypeAmqpC2DMessagesNotInAllowedRange
 	RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange RuleTypeBasicCustomAlertRule = original.RuleTypeAmqpC2DRejectedMessagesNotInAllowedRange
 	RuleTypeAmqpD2CMessagesNotInAllowedRange         RuleTypeBasicCustomAlertRule = original.RuleTypeAmqpD2CMessagesNotInAllowedRange
+	RuleTypeConnectionFromIPNotAllowed               RuleTypeBasicCustomAlertRule = original.RuleTypeConnectionFromIPNotAllowed
 	RuleTypeConnectionToIPNotAllowed                 RuleTypeBasicCustomAlertRule = original.RuleTypeConnectionToIPNotAllowed
 	RuleTypeCustomAlertRule                          RuleTypeBasicCustomAlertRule = original.RuleTypeCustomAlertRule
 	RuleTypeDenylistCustomAlertRule                  RuleTypeBasicCustomAlertRule = original.RuleTypeDenylistCustomAlertRule
@@ -691,6 +755,13 @@ const (
 	Disconnected SensorStatus = original.Disconnected
 	Ok           SensorStatus = original.Ok
 	Unavailable  SensorStatus = original.Unavailable
+)
+
+type SensorType = original.SensorType
+
+const (
+	SensorTypeEnterprise SensorType = original.SensorTypeEnterprise
+	SensorTypeOt         SensorType = original.SensorTypeOt
 )
 
 type Severity = original.Severity
@@ -855,6 +926,7 @@ type AdaptiveNetworkHardeningsList = original.AdaptiveNetworkHardeningsList
 type AdaptiveNetworkHardeningsListIterator = original.AdaptiveNetworkHardeningsListIterator
 type AdaptiveNetworkHardeningsListPage = original.AdaptiveNetworkHardeningsListPage
 type AdditionalData = original.AdditionalData
+type AdditionalWorkspacesProperties = original.AdditionalWorkspacesProperties
 type AdvancedThreatProtectionClient = original.AdvancedThreatProtectionClient
 type AdvancedThreatProtectionProperties = original.AdvancedThreatProtectionProperties
 type AdvancedThreatProtectionSetting = original.AdvancedThreatProtectionSetting
@@ -864,7 +936,11 @@ type AlertList = original.AlertList
 type AlertListIterator = original.AlertListIterator
 type AlertListPage = original.AlertListPage
 type AlertProperties = original.AlertProperties
+type AlertSimulatorBundlesRequestProperties = original.AlertSimulatorBundlesRequestProperties
+type AlertSimulatorRequestBody = original.AlertSimulatorRequestBody
+type AlertSimulatorRequestProperties = original.AlertSimulatorRequestProperties
 type AlertsClient = original.AlertsClient
+type AlertsSimulateFuture = original.AlertsSimulateFuture
 type AlertsSuppressionRule = original.AlertsSuppressionRule
 type AlertsSuppressionRuleProperties = original.AlertsSuppressionRuleProperties
 type AlertsSuppressionRulesClient = original.AlertsSuppressionRulesClient
@@ -935,6 +1011,7 @@ type BaseClient = original.BaseClient
 type Baseline = original.Baseline
 type BaselineAdjustedResult = original.BaselineAdjustedResult
 type BasicAdditionalData = original.BasicAdditionalData
+type BasicAlertSimulatorRequestProperties = original.BasicAlertSimulatorRequestProperties
 type BasicAllowlistCustomAlertRule = original.BasicAllowlistCustomAlertRule
 type BasicAuthenticationDetailsProperties = original.BasicAuthenticationDetailsProperties
 type BasicAutomationAction = original.BasicAutomationAction
@@ -970,6 +1047,8 @@ type CompliancesClient = original.CompliancesClient
 type ConnectableResource = original.ConnectableResource
 type ConnectedResource = original.ConnectedResource
 type ConnectedWorkspace = original.ConnectedWorkspace
+type ConnectionFromIPNotAllowed = original.ConnectionFromIPNotAllowed
+type ConnectionStrings = original.ConnectionStrings
 type ConnectionToIPNotAllowed = original.ConnectionToIPNotAllowed
 type ConnectorSetting = original.ConnectorSetting
 type ConnectorSettingList = original.ConnectorSettingList
@@ -1011,6 +1090,7 @@ type DiscoveredSecuritySolutionProperties = original.DiscoveredSecuritySolutionP
 type DiscoveredSecuritySolutionsClient = original.DiscoveredSecuritySolutionsClient
 type ETag = original.ETag
 type EffectiveNetworkSecurityGroups = original.EffectiveNetworkSecurityGroups
+type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ExternalSecuritySolution = original.ExternalSecuritySolution
 type ExternalSecuritySolutionKind1 = original.ExternalSecuritySolutionKind1
 type ExternalSecuritySolutionList = original.ExternalSecuritySolutionList
@@ -1036,6 +1116,13 @@ type InformationProtectionPolicyListIterator = original.InformationProtectionPol
 type InformationProtectionPolicyListPage = original.InformationProtectionPolicyListPage
 type InformationProtectionPolicyProperties = original.InformationProtectionPolicyProperties
 type InformationType = original.InformationType
+type IngestionConnectionString = original.IngestionConnectionString
+type IngestionSetting = original.IngestionSetting
+type IngestionSettingList = original.IngestionSettingList
+type IngestionSettingListIterator = original.IngestionSettingListIterator
+type IngestionSettingListPage = original.IngestionSettingListPage
+type IngestionSettingToken = original.IngestionSettingToken
+type IngestionSettingsClient = original.IngestionSettingsClient
 type IoTSecurityAggregatedAlert = original.IoTSecurityAggregatedAlert
 type IoTSecurityAggregatedAlertList = original.IoTSecurityAggregatedAlertList
 type IoTSecurityAggregatedAlertListIterator = original.IoTSecurityAggregatedAlertListIterator
@@ -1060,15 +1147,10 @@ type IoTSecuritySolutionsList = original.IoTSecuritySolutionsList
 type IoTSecuritySolutionsListIterator = original.IoTSecuritySolutionsListIterator
 type IoTSecuritySolutionsListPage = original.IoTSecuritySolutionsListPage
 type IoTSeverityMetrics = original.IoTSeverityMetrics
-type IotAlert = original.IotAlert
-type IotAlertList = original.IotAlertList
-type IotAlertListIterator = original.IotAlertListIterator
 type IotAlertListModel = original.IotAlertListModel
 type IotAlertListModelIterator = original.IotAlertListModelIterator
 type IotAlertListModelPage = original.IotAlertListModelPage
-type IotAlertListPage = original.IotAlertListPage
 type IotAlertModel = original.IotAlertModel
-type IotAlertProperties = original.IotAlertProperties
 type IotAlertPropertiesModel = original.IotAlertPropertiesModel
 type IotAlertType = original.IotAlertType
 type IotAlertTypeList = original.IotAlertTypeList
@@ -1079,15 +1161,10 @@ type IotDefenderSettingsClient = original.IotDefenderSettingsClient
 type IotDefenderSettingsList = original.IotDefenderSettingsList
 type IotDefenderSettingsModel = original.IotDefenderSettingsModel
 type IotDefenderSettingsProperties = original.IotDefenderSettingsProperties
-type IotRecommendation = original.IotRecommendation
-type IotRecommendationList = original.IotRecommendationList
-type IotRecommendationListIterator = original.IotRecommendationListIterator
 type IotRecommendationListModel = original.IotRecommendationListModel
 type IotRecommendationListModelIterator = original.IotRecommendationListModelIterator
 type IotRecommendationListModelPage = original.IotRecommendationListModelPage
-type IotRecommendationListPage = original.IotRecommendationListPage
 type IotRecommendationModel = original.IotRecommendationModel
-type IotRecommendationProperties = original.IotRecommendationProperties
 type IotRecommendationPropertiesModel = original.IotRecommendationPropertiesModel
 type IotRecommendationType = original.IotRecommendationType
 type IotRecommendationTypeList = original.IotRecommendationTypeList
@@ -1229,6 +1306,7 @@ type SensitivityLabel = original.SensitivityLabel
 type Sensor = original.Sensor
 type ServerVulnerabilityAssessment = original.ServerVulnerabilityAssessment
 type ServerVulnerabilityAssessmentClient = original.ServerVulnerabilityAssessmentClient
+type ServerVulnerabilityAssessmentDeleteFuture = original.ServerVulnerabilityAssessmentDeleteFuture
 type ServerVulnerabilityAssessmentProperties = original.ServerVulnerabilityAssessmentProperties
 type ServerVulnerabilityAssessmentsList = original.ServerVulnerabilityAssessmentsList
 type ServerVulnerabilityProperties = original.ServerVulnerabilityProperties
@@ -1240,6 +1318,12 @@ type SettingsList = original.SettingsList
 type SettingsListIterator = original.SettingsListIterator
 type SettingsListPage = original.SettingsListPage
 type Site = original.Site
+type Software = original.Software
+type SoftwareInventoriesClient = original.SoftwareInventoriesClient
+type SoftwareProperties = original.SoftwareProperties
+type SoftwaresList = original.SoftwaresList
+type SoftwaresListIterator = original.SoftwaresListIterator
+type SoftwaresListPage = original.SoftwaresListPage
 type Solution = original.Solution
 type SolutionList = original.SolutionList
 type SolutionListIterator = original.SolutionListIterator
@@ -1258,6 +1342,7 @@ type SubAssessmentProperties = original.SubAssessmentProperties
 type SubAssessmentStatus = original.SubAssessmentStatus
 type SubAssessmentsClient = original.SubAssessmentsClient
 type SuppressionAlertsScope = original.SuppressionAlertsScope
+type SystemData = original.SystemData
 type Tags = original.Tags
 type TagsResource = original.TagsResource
 type Task = original.Task
@@ -1533,6 +1618,18 @@ func NewInformationProtectionPolicyListIterator(page InformationProtectionPolicy
 func NewInformationProtectionPolicyListPage(cur InformationProtectionPolicyList, getNextPage func(context.Context, InformationProtectionPolicyList) (InformationProtectionPolicyList, error)) InformationProtectionPolicyListPage {
 	return original.NewInformationProtectionPolicyListPage(cur, getNextPage)
 }
+func NewIngestionSettingListIterator(page IngestionSettingListPage) IngestionSettingListIterator {
+	return original.NewIngestionSettingListIterator(page)
+}
+func NewIngestionSettingListPage(cur IngestionSettingList, getNextPage func(context.Context, IngestionSettingList) (IngestionSettingList, error)) IngestionSettingListPage {
+	return original.NewIngestionSettingListPage(cur, getNextPage)
+}
+func NewIngestionSettingsClient(subscriptionID string, ascLocation string) IngestionSettingsClient {
+	return original.NewIngestionSettingsClient(subscriptionID, ascLocation)
+}
+func NewIngestionSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IngestionSettingsClient {
+	return original.NewIngestionSettingsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
 func NewIoTSecurityAggregatedAlertListIterator(page IoTSecurityAggregatedAlertListPage) IoTSecurityAggregatedAlertListIterator {
 	return original.NewIoTSecurityAggregatedAlertListIterator(page)
 }
@@ -1551,17 +1648,11 @@ func NewIoTSecuritySolutionsListIterator(page IoTSecuritySolutionsListPage) IoTS
 func NewIoTSecuritySolutionsListPage(cur IoTSecuritySolutionsList, getNextPage func(context.Context, IoTSecuritySolutionsList) (IoTSecuritySolutionsList, error)) IoTSecuritySolutionsListPage {
 	return original.NewIoTSecuritySolutionsListPage(cur, getNextPage)
 }
-func NewIotAlertListIterator(page IotAlertListPage) IotAlertListIterator {
-	return original.NewIotAlertListIterator(page)
-}
 func NewIotAlertListModelIterator(page IotAlertListModelPage) IotAlertListModelIterator {
 	return original.NewIotAlertListModelIterator(page)
 }
 func NewIotAlertListModelPage(cur IotAlertListModel, getNextPage func(context.Context, IotAlertListModel) (IotAlertListModel, error)) IotAlertListModelPage {
 	return original.NewIotAlertListModelPage(cur, getNextPage)
-}
-func NewIotAlertListPage(cur IotAlertList, getNextPage func(context.Context, IotAlertList) (IotAlertList, error)) IotAlertListPage {
-	return original.NewIotAlertListPage(cur, getNextPage)
 }
 func NewIotAlertTypesClient(subscriptionID string, ascLocation string) IotAlertTypesClient {
 	return original.NewIotAlertTypesClient(subscriptionID, ascLocation)
@@ -1581,17 +1672,11 @@ func NewIotDefenderSettingsClient(subscriptionID string, ascLocation string) Iot
 func NewIotDefenderSettingsClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) IotDefenderSettingsClient {
 	return original.NewIotDefenderSettingsClientWithBaseURI(baseURI, subscriptionID, ascLocation)
 }
-func NewIotRecommendationListIterator(page IotRecommendationListPage) IotRecommendationListIterator {
-	return original.NewIotRecommendationListIterator(page)
-}
 func NewIotRecommendationListModelIterator(page IotRecommendationListModelPage) IotRecommendationListModelIterator {
 	return original.NewIotRecommendationListModelIterator(page)
 }
 func NewIotRecommendationListModelPage(cur IotRecommendationListModel, getNextPage func(context.Context, IotRecommendationListModel) (IotRecommendationListModel, error)) IotRecommendationListModelPage {
 	return original.NewIotRecommendationListModelPage(cur, getNextPage)
-}
-func NewIotRecommendationListPage(cur IotRecommendationList, getNextPage func(context.Context, IotRecommendationList) (IotRecommendationList, error)) IotRecommendationListPage {
-	return original.NewIotRecommendationListPage(cur, getNextPage)
 }
 func NewIotRecommendationTypesClient(subscriptionID string, ascLocation string) IotRecommendationTypesClient {
 	return original.NewIotRecommendationTypesClient(subscriptionID, ascLocation)
@@ -1791,6 +1876,18 @@ func NewSettingsListIterator(page SettingsListPage) SettingsListIterator {
 func NewSettingsListPage(cur SettingsList, getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
 	return original.NewSettingsListPage(cur, getNextPage)
 }
+func NewSoftwareInventoriesClient(subscriptionID string, ascLocation string) SoftwareInventoriesClient {
+	return original.NewSoftwareInventoriesClient(subscriptionID, ascLocation)
+}
+func NewSoftwareInventoriesClientWithBaseURI(baseURI string, subscriptionID string, ascLocation string) SoftwareInventoriesClient {
+	return original.NewSoftwareInventoriesClientWithBaseURI(baseURI, subscriptionID, ascLocation)
+}
+func NewSoftwaresListIterator(page SoftwaresListPage) SoftwaresListIterator {
+	return original.NewSoftwaresListIterator(page)
+}
+func NewSoftwaresListPage(cur SoftwaresList, getNextPage func(context.Context, SoftwaresList) (SoftwaresList, error)) SoftwaresListPage {
+	return original.NewSoftwaresListPage(cur, getNextPage)
+}
 func NewSolutionListIterator(page SolutionListPage) SolutionListIterator {
 	return original.NewSolutionListIterator(page)
 }
@@ -1869,6 +1966,12 @@ func PossibleActionTypeValues() []ActionType {
 func PossibleActionValues() []Action {
 	return original.PossibleActionValues()
 }
+func PossibleAdditionalWorkspaceDataTypeValues() []AdditionalWorkspaceDataType {
+	return original.PossibleAdditionalWorkspaceDataTypeValues()
+}
+func PossibleAdditionalWorkspaceTypeValues() []AdditionalWorkspaceType {
+	return original.PossibleAdditionalWorkspaceTypeValues()
+}
 func PossibleAlertIntentValues() []AlertIntent {
 	return original.PossibleAlertIntentValues()
 }
@@ -1905,8 +2008,11 @@ func PossibleAuthorizationStateValues() []AuthorizationState {
 func PossibleAutoProvisionValues() []AutoProvision {
 	return original.PossibleAutoProvisionValues()
 }
-func PossibleCategoryValues() []Category {
-	return original.PossibleCategoryValues()
+func PossibleBundleTypeValues() []BundleType {
+	return original.PossibleBundleTypeValues()
+}
+func PossibleCategoriesValues() []Categories {
+	return original.PossibleCategoriesValues()
 }
 func PossibleConfigurationStatus1Values() []ConfigurationStatus1 {
 	return original.PossibleConfigurationStatus1Values()
@@ -1923,6 +2029,9 @@ func PossibleConnectionTypeValues() []ConnectionType {
 func PossibleControlTypeValues() []ControlType {
 	return original.PossibleControlTypeValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleDataSourceValues() []DataSource {
 	return original.PossibleDataSourceValues()
 }
@@ -1934,6 +2043,9 @@ func PossibleDeviceStatusValues() []DeviceStatus {
 }
 func PossibleDirectionValues() []Direction {
 	return original.PossibleDirectionValues()
+}
+func PossibleEndOfSupportStatusValues() []EndOfSupportStatus {
+	return original.PossibleEndOfSupportStatusValues()
 }
 func PossibleEnforcementModeValues() []EnforcementMode {
 	return original.PossibleEnforcementModeValues()
@@ -1983,6 +2095,9 @@ func PossibleIssueValues() []Issue {
 func PossibleKindEnum1Values() []KindEnum1 {
 	return original.PossibleKindEnum1Values()
 }
+func PossibleKindEnum2Values() []KindEnum2 {
+	return original.PossibleKindEnum2Values()
+}
 func PossibleKindEnumValues() []KindEnum {
 	return original.PossibleKindEnumValues()
 }
@@ -1994,6 +2109,9 @@ func PossibleManagementStateValues() []ManagementState {
 }
 func PossibleMsiValues() []Msi {
 	return original.PossibleMsiValues()
+}
+func PossibleOnboardingKindValues() []OnboardingKind {
+	return original.PossibleOnboardingKindValues()
 }
 func PossibleOperatorValues() []Operator {
 	return original.PossibleOperatorValues()
@@ -2081,6 +2199,9 @@ func PossibleScriptValues() []Script {
 }
 func PossibleSensorStatusValues() []SensorStatus {
 	return original.PossibleSensorStatusValues()
+}
+func PossibleSensorTypeValues() []SensorType {
+	return original.PossibleSensorTypeValues()
 }
 func PossibleSeverityValues() []Severity {
 	return original.PossibleSeverityValues()

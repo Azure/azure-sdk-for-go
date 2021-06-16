@@ -8,21 +8,30 @@
 
 package trafficmanager
 
-import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2018-04-01/trafficmanager"
+import original "github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2018-08-01/trafficmanager"
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type AllowedEndpointRecordType = original.AllowedEndpointRecordType
+
+const (
+	AllowedEndpointRecordTypeAny         AllowedEndpointRecordType = original.AllowedEndpointRecordTypeAny
+	AllowedEndpointRecordTypeDomainName  AllowedEndpointRecordType = original.AllowedEndpointRecordTypeDomainName
+	AllowedEndpointRecordTypeIPv4Address AllowedEndpointRecordType = original.AllowedEndpointRecordTypeIPv4Address
+	AllowedEndpointRecordTypeIPv6Address AllowedEndpointRecordType = original.AllowedEndpointRecordTypeIPv6Address
+)
+
 type EndpointMonitorStatus = original.EndpointMonitorStatus
 
 const (
-	CheckingEndpoint EndpointMonitorStatus = original.CheckingEndpoint
-	Degraded         EndpointMonitorStatus = original.Degraded
-	Disabled         EndpointMonitorStatus = original.Disabled
-	Inactive         EndpointMonitorStatus = original.Inactive
-	Online           EndpointMonitorStatus = original.Online
-	Stopped          EndpointMonitorStatus = original.Stopped
+	EndpointMonitorStatusCheckingEndpoint EndpointMonitorStatus = original.EndpointMonitorStatusCheckingEndpoint
+	EndpointMonitorStatusDegraded         EndpointMonitorStatus = original.EndpointMonitorStatusDegraded
+	EndpointMonitorStatusDisabled         EndpointMonitorStatus = original.EndpointMonitorStatusDisabled
+	EndpointMonitorStatusInactive         EndpointMonitorStatus = original.EndpointMonitorStatusInactive
+	EndpointMonitorStatusOnline           EndpointMonitorStatus = original.EndpointMonitorStatusOnline
+	EndpointMonitorStatusStopped          EndpointMonitorStatus = original.EndpointMonitorStatusStopped
 )
 
 type EndpointStatus = original.EndpointStatus
@@ -35,9 +44,9 @@ const (
 type MonitorProtocol = original.MonitorProtocol
 
 const (
-	HTTP  MonitorProtocol = original.HTTP
-	HTTPS MonitorProtocol = original.HTTPS
-	TCP   MonitorProtocol = original.TCP
+	MonitorProtocolHTTP  MonitorProtocol = original.MonitorProtocolHTTP
+	MonitorProtocolHTTPS MonitorProtocol = original.MonitorProtocolHTTPS
+	MonitorProtocolTCP   MonitorProtocol = original.MonitorProtocolTCP
 )
 
 type ProfileMonitorStatus = original.ProfileMonitorStatus
@@ -60,12 +69,12 @@ const (
 type TrafficRoutingMethod = original.TrafficRoutingMethod
 
 const (
-	Geographic  TrafficRoutingMethod = original.Geographic
-	MultiValue  TrafficRoutingMethod = original.MultiValue
-	Performance TrafficRoutingMethod = original.Performance
-	Priority    TrafficRoutingMethod = original.Priority
-	Subnet      TrafficRoutingMethod = original.Subnet
-	Weighted    TrafficRoutingMethod = original.Weighted
+	TrafficRoutingMethodGeographic  TrafficRoutingMethod = original.TrafficRoutingMethodGeographic
+	TrafficRoutingMethodMultiValue  TrafficRoutingMethod = original.TrafficRoutingMethodMultiValue
+	TrafficRoutingMethodPerformance TrafficRoutingMethod = original.TrafficRoutingMethodPerformance
+	TrafficRoutingMethodPriority    TrafficRoutingMethod = original.TrafficRoutingMethodPriority
+	TrafficRoutingMethodSubnet      TrafficRoutingMethod = original.TrafficRoutingMethodSubnet
+	TrafficRoutingMethodWeighted    TrafficRoutingMethod = original.TrafficRoutingMethodWeighted
 )
 
 type TrafficViewEnrollmentStatus = original.TrafficViewEnrollmentStatus
@@ -146,6 +155,9 @@ func NewUserMetricsKeysClientWithBaseURI(baseURI string, subscriptionID string) 
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAllowedEndpointRecordTypeValues() []AllowedEndpointRecordType {
+	return original.PossibleAllowedEndpointRecordTypeValues()
 }
 func PossibleEndpointMonitorStatusValues() []EndpointMonitorStatus {
 	return original.PossibleEndpointMonitorStatusValues()

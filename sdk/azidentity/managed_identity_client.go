@@ -112,7 +112,7 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 		Token        string        `json:"access_token,omitempty"`
 		RefreshToken string        `json:"refresh_token,omitempty"`
 		ExpiresIn    wrappedNumber `json:"expires_in,omitempty"` // this field should always return the number of seconds for which a token is valid
-		ExpiresOn    string        `json:"expires_on,omitempty"` // the value returned in this field varies between a number and a date string
+		ExpiresOn    interface{}   `json:"expires_on,omitempty"` // the value returned in this field varies between a number and a date string
 	}{}
 	if err := res.UnmarshalAsJSON(&value); err != nil {
 		return nil, fmt.Errorf("internal AccessToken: %w", err)
@@ -124,19 +124,30 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 		}
 		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Now().Add(time.Second * time.Duration(expiresIn)).UTC()}, nil
 	}
-	if expiresOn, err := strconv.Atoi(value.ExpiresOn); err == nil {
-		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Now().Add(time.Second * time.Duration(expiresOn)).UTC()}, nil
-	}
-	// this is the case when expires_on is a time string
-	// this is the format of the string coming from the service
-	if expiresOn, err := time.Parse("1/2/2006 15:04:05 PM +00:00", value.ExpiresOn); err == nil { // the date string specified is for Windows OS
-		eo := expiresOn.UTC()
-		return &azcore.AccessToken{Token: value.Token, ExpiresOn: eo}, nil
-	} else if expiresOn, err := time.Parse("1/2/2006 15:04:05 +00:00", value.ExpiresOn); err == nil { // the date string specified is for Linux OS
-		eo := expiresOn.UTC()
-		return &azcore.AccessToken{Token: value.Token, ExpiresOn: eo}, nil
-	} else {
-		return nil, err
+	switch v := value.ExpiresOn.(type) {
+	case int:
+		// service fabric is one of the MSI environments that returns an int
+		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Now().Add(time.Second * time.Duration(v)).UTC()}, nil
+	case float64:
+		fmt.Println(v)
+		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Now().Add(time.Second * time.Duration(v)).UTC()}, nil
+	case string:
+		if expiresOn, err := strconv.Atoi(v); err == nil {
+			return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Now().Add(time.Second * time.Duration(expiresOn)).UTC()}, nil
+		}
+		// this is the case when expires_on is a time string
+		// this is the format of the string coming from the service
+		if expiresOn, err := time.Parse("1/2/2006 15:04:05 PM +00:00", v); err == nil { // the date string specified is for Windows OS
+			eo := expiresOn.UTC()
+			return &azcore.AccessToken{Token: value.Token, ExpiresOn: eo}, nil
+		} else if expiresOn, err := time.Parse("1/2/2006 15:04:05 +00:00", v); err == nil { // the date string specified is for Linux OS
+			eo := expiresOn.UTC()
+			return &azcore.AccessToken{Token: value.Token, ExpiresOn: eo}, nil
+		} else {
+			return nil, err
+		}
+	default:
+		return nil, &AuthenticationFailedError{msg: fmt.Sprintf("unsupported type received in expires_on: %T, %v", v, v)}
 	}
 }
 
@@ -224,7 +235,8 @@ func (c *managedIdentityClient) createServiceFabricAuthRequest(ctx context.Conte
 		return nil, err
 	}
 	q := request.URL.Query()
-	request.Header.Set("secret", os.Getenv(identityHeader))
+	request.Header.Set("Accept", "application/json")
+	request.Header.Set("Secret", os.Getenv(identityHeader))
 	q.Add("api-version", serviceFabricAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
 	if id != "" {

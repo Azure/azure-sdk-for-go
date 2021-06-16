@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## `v55.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/databricks/mgmt/2021-04-01-preview/databricks`
+- `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2021-06-01-preview/eventgrid`
+- `github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2018-08-01/trafficmanager`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/security/mgmt/v3.0/security/CHANGELOG.md) |
+
 ## `v55.2.0`
 
 ### New Packages
@@ -12,8 +26,8 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/web/mgmt/2020-12-01/web/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.2.0/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.2.0/services/web/mgmt/2020-12-01/web/CHANGELOG.md) |
 
 ## `v55.1.0`
 

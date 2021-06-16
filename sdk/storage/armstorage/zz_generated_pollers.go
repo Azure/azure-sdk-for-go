@@ -25,8 +25,7 @@ type BlobRestoreStatusPoller interface {
 }
 
 type blobRestoreStatusPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *blobRestoreStatusPoller) Done() bool {
@@ -34,12 +33,12 @@ func (p *blobRestoreStatusPoller) Done() bool {
 }
 
 func (p *blobRestoreStatusPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *blobRestoreStatusPoller) FinalResponse(ctx context.Context) (BlobRestoreStatusResponse, error) {
 	respType := BlobRestoreStatusResponse{BlobRestoreStatus: &BlobRestoreStatus{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.BlobRestoreStatus)
+	resp, err := p.pt.FinalResponse(ctx, respType.BlobRestoreStatus)
 	if err != nil {
 		return BlobRestoreStatusResponse{}, err
 	}
@@ -53,7 +52,7 @@ func (p *blobRestoreStatusPoller) ResumeToken() (string, error) {
 
 func (p *blobRestoreStatusPoller) pollUntilDone(ctx context.Context, freq time.Duration) (BlobRestoreStatusResponse, error) {
 	respType := BlobRestoreStatusResponse{BlobRestoreStatus: &BlobRestoreStatus{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.BlobRestoreStatus)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.BlobRestoreStatus)
 	if err != nil {
 		return BlobRestoreStatusResponse{}, err
 	}
@@ -71,8 +70,7 @@ type HTTPPoller interface {
 }
 
 type httpPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *httpPoller) Done() bool {
@@ -80,11 +78,11 @@ func (p *httpPoller) Done() bool {
 }
 
 func (p *httpPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *httpPoller) FinalResponse(ctx context.Context) (*http.Response, error) {
-	return p.pt.FinalResponse(ctx, p.pipeline, nil)
+	return p.pt.FinalResponse(ctx, nil)
 }
 
 func (p *httpPoller) ResumeToken() (string, error) {
@@ -92,7 +90,7 @@ func (p *httpPoller) ResumeToken() (string, error) {
 }
 
 func (p *httpPoller) pollUntilDone(ctx context.Context, freq time.Duration) (*http.Response, error) {
-	return p.pt.PollUntilDone(ctx, freq, p.pipeline, nil)
+	return p.pt.PollUntilDone(ctx, freq, nil)
 }
 
 // StorageAccountPoller provides polling facilities until the operation reaches a terminal state.
@@ -105,8 +103,7 @@ type StorageAccountPoller interface {
 }
 
 type storageAccountPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *storageAccountPoller) Done() bool {
@@ -114,12 +111,12 @@ func (p *storageAccountPoller) Done() bool {
 }
 
 func (p *storageAccountPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *storageAccountPoller) FinalResponse(ctx context.Context) (StorageAccountResponse, error) {
 	respType := StorageAccountResponse{StorageAccount: &StorageAccount{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.StorageAccount)
+	resp, err := p.pt.FinalResponse(ctx, respType.StorageAccount)
 	if err != nil {
 		return StorageAccountResponse{}, err
 	}
@@ -133,7 +130,7 @@ func (p *storageAccountPoller) ResumeToken() (string, error) {
 
 func (p *storageAccountPoller) pollUntilDone(ctx context.Context, freq time.Duration) (StorageAccountResponse, error) {
 	respType := StorageAccountResponse{StorageAccount: &StorageAccount{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.StorageAccount)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.StorageAccount)
 	if err != nil {
 		return StorageAccountResponse{}, err
 	}

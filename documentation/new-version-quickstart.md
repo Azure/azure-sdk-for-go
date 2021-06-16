@@ -214,22 +214,65 @@ In this example, we will show to manage Network related resources.
 
 ***Import the packages***
 ```go
-// insert code
+import "github.com/Azure/azure-sdk-for-go/sdk/network/armnetwork"
 ```
 
 ***Creating a Virtual Network***
 ```go
-// insert code
+func createVirtualNetwork(connection *armcore.Connection) (armnetwork.VirtualNetworkResponse, error) {
+	vnetClient := armnetwork.NewVirtualNetworksClient(connection, subscriptionId)
+
+	param := armnetwork.VirtualNetwork{
+		Resource: armnetwork.Resource{
+			Location: to.StringPtr(location),
+		},
+		Properties: &armnetwork.VirtualNetworkPropertiesFormat{
+			AddressSpace: &armnetwork.AddressSpace{
+				AddressPrefixes: []*string{
+					to.StringPtr("10.0.0.0/16"),
+				},
+			},
+		},
+	}
+	poller, err := vnetClient.BeginCreateOrUpdate(ctx, resourceGroupName, vnetName, param, nil)
+	if err != nil {
+		return armnetwork.VirtualNetworkResponse{}, err
+	}
+	return poller.PollUntilDone(ctx, interval)
+}
 ```
 
-***Updating a Virtual Network***
+***Deleting a Virtual Network***
 ```go
-// insert code
+func deleteVirtualNetwork(connection *armcore.Connection) error {
+	vnetClient := armnetwork.NewVirtualNetworksClient(connection, subscriptionId)
+
+	poller, err := vnetClient.BeginDelete(ctx, resourceGroupName, vnetName, nil)
+	if err != nil {
+		return err
+	}
+	if _, err := poller.PollUntilDone(ctx, interval); err != nil {
+		return err
+	}
+	return nil
+}
 ```
 
-***List all Virtual Networks***
+***List all Virtual Networks in a Resource Group***
 ```go
-// insert code
+func listVirtualNetwork(connection *armcore.Connection) ([]*armnetwork.VirtualNetwork, error) {
+    vnetClient := armnetwork.NewVirtualNetworksClient(connection, subscriptionId)
+    
+    pager := vnetClient.List(resourceGroupName, nil)
+    
+    var virtualNetworks []*armnetwork.VirtualNetwork
+    for pager.NextPage(ctx) {
+        resp := pager.PageResponse()
+        virtualNetworks = append(virtualNetworks, resp.VirtualNetworkListResult.Value...)
+    }
+    
+    return virtualNetworks, pager.Err()
+}
 ```
 
 Example: Managing Virtual Machines

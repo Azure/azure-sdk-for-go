@@ -13,7 +13,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 17 Jun 2021 04:29:30 GMT
+      - Thu, 17 Jun 2021 17:52:06 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobresizeifunmodifiedsincefalse?restype=container
@@ -24,15 +24,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 17 Jun 2021 04:29:29 GMT
+      - Thu, 17 Jun 2021 17:52:05 GMT
       Etag:
-      - '"0x8D931487F9A5C2E"'
+      - '"0x8D931B89EABF153"'
       Last-Modified:
-      - Thu, 17 Jun 2021 04:29:29 GMT
+      - Thu, 17 Jun 2021 17:52:05 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d7552dec-701e-0009-6431-632c2f000000
+      - b54a06b9-f01e-0018-69a1-631b34000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -56,7 +56,7 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Date:
-      - Thu, 17 Jun 2021 04:29:30 GMT
+      - Thu, 17 Jun 2021 17:52:06 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobresizeifunmodifiedsincefalse/gotestblobblobresizeifunmodifiedsincefalse
@@ -67,21 +67,21 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 17 Jun 2021 04:29:29 GMT
+      - Thu, 17 Jun 2021 17:52:05 GMT
       Etag:
-      - '"0x8D931487FC2EB61"'
+      - '"0x8D931B89ED73136"'
       Last-Modified:
-      - Thu, 17 Jun 2021 04:29:30 GMT
+      - Thu, 17 Jun 2021 17:52:05 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d7552e36-701e-0009-2231-632c2f000000
+      - b54a07b0-f01e-0018-49a1-631b34000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-17T04:29:30.0522849Z"
+      - "2021-06-17T17:52:05.8282294Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -94,33 +94,33 @@ interactions:
       Authorization:
       - sanitized
       If-Unmodified-Since:
-      - Thu, 17 Jun 2021 04:29:19 GMT
+      - Thu, 17 Jun 2021 17:51:55 GMT
       User-Agent:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Blob-Content-Length:
       - "512"
       X-Ms-Date:
-      - Thu, 17 Jun 2021 04:29:30 GMT
+      - Thu, 17 Jun 2021 17:52:06 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobresizeifunmodifiedsincefalse/gotestblobblobresizeifunmodifiedsincefalse?comp=properties
     method: PUT
   response:
-    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x43\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x4E\x6F\x74\x4D\x65\x74\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x63\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x75\x73\x69\x6E\x67\x20\x48\x54\x54\x50\x20\x63\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x61\x6C\x20\x68\x65\x61\x64\x65\x72\x28\x73\x29\x20\x69\x73\x20\x6E\x6F\x74\x20\x6D\x65\x74\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x64\x37\x35\x35\x32\x65\x63\x31\x2D\x37\x30\x31\x65\x2D\x30\x30\x30\x39\x2D\x31\x35\x33\x31\x2D\x36\x33\x32\x63\x32\x66\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x31\x2D\x30\x36\x2D\x31\x37\x54\x30\x34\x3A\x32\x39\x3A\x33\x30\x2E\x33\x36\x30\x39\x35\x32\x38\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x43\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x4E\x6F\x74\x4D\x65\x74\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x65\x20\x63\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x20\x73\x70\x65\x63\x69\x66\x69\x65\x64\x20\x75\x73\x69\x6E\x67\x20\x48\x54\x54\x50\x20\x63\x6F\x6E\x64\x69\x74\x69\x6F\x6E\x61\x6C\x20\x68\x65\x61\x64\x65\x72\x28\x73\x29\x20\x69\x73\x20\x6E\x6F\x74\x20\x6D\x65\x74\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x62\x35\x34\x61\x30\x38\x33\x36\x2D\x66\x30\x31\x65\x2D\x30\x30\x31\x38\x2D\x34\x30\x61\x31\x2D\x36\x33\x31\x62\x33\x34\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x31\x2D\x30\x36\x2D\x31\x37\x54\x31\x37\x3A\x35\x32\x3A\x30\x36\x2E\x30\x37\x34\x32\x33\x31\x38\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
     headers:
       Content-Length:
       - "252"
       Content-Type:
       - application/xml
       Date:
-      - Thu, 17 Jun 2021 04:29:30 GMT
+      - Thu, 17 Jun 2021 17:52:05 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - ConditionNotMet
       X-Ms-Request-Id:
-      - d7552ec1-701e-0009-1531-632c2f000000
+      - b54a0836-f01e-0018-40a1-631b34000000
       X-Ms-Version:
       - "2019-12-12"
     status: 412 The condition specified using HTTP conditional header(s) is not met.
@@ -138,7 +138,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 17 Jun 2021 04:29:31 GMT
+      - Thu, 17 Jun 2021 17:52:06 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobresizeifunmodifiedsincefalse?restype=container
@@ -149,11 +149,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 17 Jun 2021 04:29:30 GMT
+      - Thu, 17 Jun 2021 17:52:06 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d7552f80-701e-0009-2c31-632c2f000000
+      - b54a08a5-f01e-0018-22a1-631b34000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

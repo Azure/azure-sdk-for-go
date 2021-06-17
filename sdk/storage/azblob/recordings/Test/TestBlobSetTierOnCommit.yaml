@@ -13,7 +13,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 17 Jun 2021 04:30:20 GMT
+      - Thu, 17 Jun 2021 17:52:56 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/testgocblobsettieroncommit?restype=container
@@ -24,15 +24,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 17 Jun 2021 04:30:19 GMT
+      - Thu, 17 Jun 2021 17:52:55 GMT
       Etag:
-      - '"0x8D931489D7F3D93"'
+      - '"0x8D931B8BC84999F"'
       Last-Modified:
-      - Thu, 17 Jun 2021 04:30:19 GMT
+      - Thu, 17 Jun 2021 17:52:55 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d755832a-701e-0009-3531-632c2f000000
+      - b54a8150-f01e-0018-42a1-631b34000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -54,7 +54,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 17 Jun 2021 04:30:20 GMT
+      - Thu, 17 Jun 2021 17:52:56 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/testgocblobsettieroncommit/coolgotestblobblobsettieroncommit?blockid=ICAgICAw&comp=block
@@ -65,13 +65,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 17 Jun 2021 04:30:20 GMT
+      - Thu, 17 Jun 2021 17:52:55 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - d75583b6-701e-0009-2931-632c2f000000
+      - b54a81ff-f01e-0018-5aa1-631b34000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -97,7 +97,7 @@ interactions:
       X-Ms-Access-Tier:
       - Cool
       X-Ms-Date:
-      - Thu, 17 Jun 2021 04:30:20 GMT
+      - Thu, 17 Jun 2021 17:52:56 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/testgocblobsettieroncommit/coolgotestblobblobsettieroncommit?comp=blocklist
@@ -108,23 +108,23 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 17 Jun 2021 04:30:20 GMT
+      - Thu, 17 Jun 2021 17:52:56 GMT
       Etag:
-      - '"0x8D931489DD32F9A"'
+      - '"0x8D931B8BCD85709"'
       Last-Modified:
-      - Thu, 17 Jun 2021 04:30:20 GMT
+      - Thu, 17 Jun 2021 17:52:56 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - hA9lUN6IDRk=
       X-Ms-Request-Id:
-      - d755843b-701e-0009-1831-632c2f000000
+      - b54a82bd-f01e-0018-7aa1-631b34000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-17T04:30:20.4905370Z"
+      - "2021-06-17T17:52:56.1673993Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -140,7 +140,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 17 Jun 2021 04:30:21 GMT
+      - Thu, 17 Jun 2021 17:52:57 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/testgocblobsettieroncommit/coolgotestblobblobsettieroncommit?blocklisttype=committed&comp=blocklist
@@ -151,17 +151,17 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Thu, 17 Jun 2021 04:30:20 GMT
+      - Thu, 17 Jun 2021 17:52:56 GMT
       Etag:
-      - '"0x8D931489DD32F9A"'
+      - '"0x8D931B8BCD85709"'
       Last-Modified:
-      - Thu, 17 Jun 2021 04:30:20 GMT
+      - Thu, 17 Jun 2021 17:52:56 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Content-Length:
       - "15"
       X-Ms-Request-Id:
-      - d75584d8-701e-0009-0531-632c2f000000
+      - b54a8328-f01e-0018-53a1-631b34000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -183,7 +183,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 17 Jun 2021 04:30:21 GMT
+      - Thu, 17 Jun 2021 17:52:57 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/testgocblobsettieroncommit/hotgotestblobblobsettieroncommit?blockid=ICAgICAw&comp=block
@@ -194,13 +194,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 17 Jun 2021 04:30:20 GMT
+      - Thu, 17 Jun 2021 17:52:56 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - d7558564-701e-0009-7b31-632c2f000000
+      - b54a8421-f01e-0018-1da1-631b34000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -226,7 +226,7 @@ interactions:
       X-Ms-Access-Tier:
       - Hot
       X-Ms-Date:
-      - Thu, 17 Jun 2021 04:30:21 GMT
+      - Thu, 17 Jun 2021 17:52:57 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/testgocblobsettieroncommit/hotgotestblobblobsettieroncommit?comp=blocklist
@@ -237,23 +237,23 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 17 Jun 2021 04:30:21 GMT
+      - Thu, 17 Jun 2021 17:52:57 GMT
       Etag:
-      - '"0x8D931489E668E89"'
+      - '"0x8D931B8BD77ED8F"'
       Last-Modified:
-      - Thu, 17 Jun 2021 04:30:21 GMT
+      - Thu, 17 Jun 2021 17:52:57 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - hA9lUN6IDRk=
       X-Ms-Request-Id:
-      - d75585ef-701e-0009-7831-632c2f000000
+      - b54a8509-f01e-0018-74a1-631b34000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-17T04:30:21.4563465Z"
+      - "2021-06-17T17:52:57.2132751Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -269,7 +269,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 17 Jun 2021 04:30:22 GMT
+      - Thu, 17 Jun 2021 17:52:58 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/testgocblobsettieroncommit/hotgotestblobblobsettieroncommit?blocklisttype=committed&comp=blocklist
@@ -280,17 +280,17 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Thu, 17 Jun 2021 04:30:21 GMT
+      - Thu, 17 Jun 2021 17:52:57 GMT
       Etag:
-      - '"0x8D931489E668E89"'
+      - '"0x8D931B8BD77ED8F"'
       Last-Modified:
-      - Thu, 17 Jun 2021 04:30:21 GMT
+      - Thu, 17 Jun 2021 17:52:57 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Content-Length:
       - "15"
       X-Ms-Request-Id:
-      - d7558660-701e-0009-5f31-632c2f000000
+      - b54a861e-f01e-0018-76a1-631b34000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -308,7 +308,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.13.4 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Thu, 17 Jun 2021 04:30:22 GMT
+      - Thu, 17 Jun 2021 17:52:58 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/testgocblobsettieroncommit?restype=container
@@ -319,11 +319,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 17 Jun 2021 04:30:21 GMT
+      - Thu, 17 Jun 2021 17:52:57 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d75586d6-701e-0009-4631-632c2f000000
+      - b54a86af-f01e-0018-74a1-631b34000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

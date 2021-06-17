@@ -521,129 +521,150 @@ func (s *azblobTestSuite) TestBlobPutBlobMetadataInvalid() {
 	_assert.Contains(err.Error(), invalidHeaderErrorSubstring)
 }
 
-//func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
-//
-//
-//	blockBlobName := generateBlobName(testName)
-//	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	content := make([]byte, 0)
-//	body := bytes.NewReader(content)
-//	_, err = bbClient.Upload(ctx, azcore.NopCloser(body), &UploadBlockBlobOptions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
-//			IfModifiedSince: &currentTime,
-//		},
-//	})
-//	_assert.Nil(err)
-//	validateUpload(_assert, bbClient.BlobClient)
-//}
+func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
 
-//func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
-//
-//	blockBlobName := generateBlobName(testName)
-//	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	content := make([]byte, 0)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
-//			IfModifiedSince: &currentTime,
-//		},
-//	}
-//
-//	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-//	_assert.NotNil(err)
-//
-//	//TODO: Fix issue with storage error interface
-//	//_assert.(strings.Contains(err.Error(), string(StorageErrorCodeConditionNotMet)), chk.Equals, true)
-//	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
-//}
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
-//func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
-//
-//	blockBlobName := generateBlobName(testName)
-//	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	content := make([]byte, 0)
-//	body := bytes.NewReader(content)
-//	rsc := azcore.NopCloser(body)
-//
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
-//			IfUnmodifiedSince: &currentTime,
-//		},
-//	}
-//	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
-//	_assert.Nil(err)
-//
-//	validateUpload(_assert, bbClient.BlobClient)
-//}
+	blockBlobName := generateBlobName(testName)
+	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
-//func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//
-//	containerName := generateContainerName(testName)
-//	containerClient := createNewContainer(_assert, containerName, svcClient)
-//	defer deleteContainer(_assert, containerClient)
-//
-//	blockBlobName := generateBlobName(testName)
-//	bbClient := createNewBlockBlob(_assert, blockBlobName, containerClient)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		ModifiedAccessConditions: &ModifiedAccessConditions{
-//			IfUnmodifiedSince: &currentTime,
-//		},
-//	}
-//	_, err = bbClient.Upload(ctx, bytes.NewReader(nil), &uploadBlockBlobOptions)
-//	_ = err
-//
-//	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
-//}
+	createResp, err := bbClient.Upload(ctx, azcore.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	_assert.Nil(err)
+	_assert.Equal(createResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(createResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(createResp.Date, -10)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	_, err = bbClient.Upload(ctx, azcore.NopCloser(body), &UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfModifiedSince: &currentTime,
+		},
+	})
+	_assert.Nil(err)
+	validateUpload(_assert, bbClient.BlobClient)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlobIfModifiedSinceFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	bbClient := getBlockBlobClient(blockBlobName, containerClient)
+
+	createResp, err := bbClient.Upload(ctx, azcore.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	_assert.Nil(err)
+	_assert.Equal(createResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(createResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(createResp.Date, 10)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfModifiedSince: &currentTime,
+		},
+	}
+
+	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
+	_assert.NotNil(err)
+
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	bbClient := getBlockBlobClient(blockBlobName, containerClient)
+
+	createResp, err := bbClient.Upload(ctx, azcore.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	_assert.Nil(err)
+	_assert.Equal(createResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(createResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(createResp.Date, 10)
+
+	content := make([]byte, 0)
+	body := bytes.NewReader(content)
+	rsc := azcore.NopCloser(body)
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfUnmodifiedSince: &currentTime,
+		},
+	}
+	_, err = bbClient.Upload(ctx, rsc, &uploadBlockBlobOptions)
+	_assert.Nil(err)
+
+	validateUpload(_assert, bbClient.BlobClient)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlobIfUnmodifiedSinceFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
+
+	blockBlobName := generateBlobName(testName)
+	bbClient := getBlockBlobClient(blockBlobName, containerClient)
+
+	createResp, err := bbClient.Upload(ctx, azcore.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	_assert.Nil(err)
+	_assert.Equal(createResp.RawResponse.StatusCode, 201)
+	_assert.NotNil(createResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(createResp.Date, -10)
+
+	uploadBlockBlobOptions := UploadBlockBlobOptions{
+		ModifiedAccessConditions: &ModifiedAccessConditions{
+			IfUnmodifiedSince: &currentTime,
+		},
+	}
+	_, err = bbClient.Upload(ctx, bytes.NewReader(nil), &uploadBlockBlobOptions)
+	_ = err
+
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+}
 
 func (s *azblobTestSuite) TestBlobPutBlobIfMatchTrue() {
 	_assert := assert.New(s.T())
@@ -825,86 +846,93 @@ func (s *azblobTestSuite) TestBlobPutBlockListHTTPHeadersEmpty() {
 	_assert.Nil(resp.ContentDisposition)
 }
 
-//func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceTrue() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
-//	defer deleteContainer(_assert, containerClient)
-//
-//	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-//	_assert.Nil(err)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	_, err = bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
-//		BlobAccessConditions: BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
-//	})
-//	_assert.Nil(err)
-//
-//	validateBlobCommitted(_assert, bbClient)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceFalse() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
-//	defer deleteContainer(_assert, containerClient)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	_, err := bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
-//		BlobAccessConditions: BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
-//	})
-//	_ = err
-//
-//	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
-//	defer deleteContainer(_assert, containerClient)
-//
-//	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-//	_assert.Nil(err)
-//
-//	currentTime := getRelativeTimeGMT(10)
-//
-//	commitBlockListOptions := CommitBlockListOptions{
-//		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
-//	}
-//	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
-//	_assert.Nil(err)
-//
-//	validateBlobCommitted(_assert, bbClient)
-//}
-//
-//func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	_context := getTestContext(testName)
-//	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
-//	defer deleteContainer(_assert, containerClient)
-//
-//	_, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
-//	_assert.Nil(err)
-//
-//	currentTime := getRelativeTimeGMT(-10)
-//
-//	commitBlockListOptions := CommitBlockListOptions{
-//		BlobAccessConditions: BlobAccessConditions{
-//			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
-//	}
-//	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
-//
-//	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
-//}
+func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
+
+	commitBlockListResp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
+	_assert.Nil(err)
+	_assert.NotNil(commitBlockListResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, -10)
+
+	_, err = bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
+	})
+	_assert.Nil(err)
+
+	validateBlobCommitted(_assert, bbClient)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlockListIfModifiedSinceFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
+
+	getPropertyResp, err := containerClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.NotNil(getPropertyResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(getPropertyResp.Date, 10)
+
+	_, err = bbClient.CommitBlockList(ctx, blockIDs, &CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime}},
+	})
+	_ = err
+
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceTrue() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
+
+	commitBlockListResp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
+	_assert.Nil(err)
+	_assert.NotNil(commitBlockListResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, 10)
+
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
+	}
+	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
+	_assert.Nil(err)
+
+	validateBlobCommitted(_assert, bbClient)
+}
+
+func (s *azblobTestSuite) TestBlobPutBlockListIfUnmodifiedSinceFalse() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	containerClient, bbClient, blockIDs := setupPutBlockListTest(_assert, _context, testName)
+	defer deleteContainer(_assert, containerClient)
+
+	commitBlockListResp, err := bbClient.CommitBlockList(ctx, blockIDs, nil) // The bbClient must actually exist to have a modifed time
+	_assert.Nil(err)
+	_assert.NotNil(commitBlockListResp.Date)
+
+	currentTime := getRelativeTimeFromAnchor(commitBlockListResp.Date, -10)
+
+	commitBlockListOptions := CommitBlockListOptions{
+		BlobAccessConditions: BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime}},
+	}
+	_, err = bbClient.CommitBlockList(ctx, blockIDs, &commitBlockListOptions)
+
+	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
+}
 
 func (s *azblobTestSuite) TestBlobPutBlockListIfMatchTrue() {
 	_assert := assert.New(s.T())

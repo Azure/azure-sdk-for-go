@@ -385,6 +385,10 @@ func getRelativeTimeGMT(amount time.Duration) time.Time {
 	return currentTime
 }
 
+func getRelativeTimeFromAnchor(anchorTime *time.Time, amount time.Duration) time.Time {
+	return anchorTime.Add(amount * time.Second)
+}
+
 func generateCurrentTimeWithModerateResolution() time.Time {
 	highResolutionTime := time.Now().UTC()
 	return time.Date(highResolutionTime.Year(), highResolutionTime.Month(), highResolutionTime.Day(), highResolutionTime.Hour(), highResolutionTime.Minute(),

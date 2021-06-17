@@ -232,6 +232,23 @@ func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 	return bytes.NewReader(data), data
 }
 
+const random64BString string = "2SDgZj6RkKYzJpu04sweQek4uWHO8ndPnYlZ0tnFS61hjnFZ5IkvIGGY44eKABov"
+
+func generateData(sizeInBytes int) *bytes.Reader {
+	data := make([]byte, sizeInBytes, sizeInBytes)
+	_len := len(random64BString)
+	if sizeInBytes > _len {
+		count := sizeInBytes / _len
+		if sizeInBytes%_len != 0 {
+			count = count + 1
+		}
+		copy(data[:], strings.Repeat(random64BString, count))
+	} else {
+		copy(data[:], random64BString)
+	}
+	return bytes.NewReader(data)
+}
+
 func createNewContainer(_assert *assert.Assertions, containerName string, serviceClient ServiceClient) ContainerClient {
 	containerClient := getContainerClient(containerName, serviceClient)
 
@@ -383,6 +400,10 @@ func getRelativeTimeGMT(amount time.Duration) time.Time {
 	currentTime := time.Now().In(time.FixedZone("GMT", 0))
 	currentTime = currentTime.Add(amount * time.Second)
 	return currentTime
+}
+
+func getRelativeTimeFromAnchor(anchorTime *time.Time, amount time.Duration) time.Time {
+	return anchorTime.Add(amount * time.Second)
 }
 
 func generateCurrentTimeWithModerateResolution() time.Time {

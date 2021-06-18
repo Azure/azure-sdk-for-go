@@ -38,7 +38,7 @@ func (a *AccessProfile) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "kubeConfig":
 			err = azcore.DecodeByteArray(string(val), &a.KubeConfig, azcore.Base64StdFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -280,27 +280,27 @@ func (c *CommandResultProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "exitCode":
-				err = unpopulate(val, &c.ExitCode)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.ExitCode)
+			delete(rawMsg, key)
 		case "finishedAt":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				c.FinishedAt = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			c.FinishedAt = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "logs":
-				err = unpopulate(val, &c.Logs)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Logs)
+			delete(rawMsg, key)
 		case "provisioningState":
-				err = unpopulate(val, &c.ProvisioningState)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.ProvisioningState)
+			delete(rawMsg, key)
 		case "reason":
-				err = unpopulate(val, &c.Reason)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Reason)
+			delete(rawMsg, key)
 		case "startedAt":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				c.StartedAt = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			c.StartedAt = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -359,11 +359,11 @@ type ContainerServiceMasterProfile struct {
 	FirstConsecutiveStaticIP *string `json:"firstConsecutiveStaticIP,omitempty"`
 
 	// OS Disk Size in GB to be used to specify the disk size for every machine in this master/agent pool. If you specify 0, it will apply the default osDisk
-// size according to the vmSize specified.
+	// size according to the vmSize specified.
 	OSDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
 
 	// Storage profile specifies what kind of storage used. Choose from StorageAccount and ManagedDisks. Leave it empty, we will choose for you based on the
-// orchestrator choice.
+	// orchestrator choice.
 	StorageProfile *ContainerServiceStorageProfileTypes `json:"storageProfile,omitempty"`
 
 	// VNet SubnetID specifies the VNet's subnet identifier.
@@ -461,11 +461,11 @@ func (c *CredentialResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "name":
-				err = unpopulate(val, &c.Name)
-				delete(rawMsg, key)
+			err = unpopulate(val, &c.Name)
+			delete(rawMsg, key)
 		case "value":
 			err = azcore.DecodeByteArray(string(val), &c.Value, azcore.Base64StdFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -801,8 +801,8 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	AvailabilityZones []*string `json:"availabilityZones,omitempty"`
 
 	// Number of agents (VMs) to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to
-// 1000 (inclusive) for system pools. The default
-// value is 1.
+	// 1000 (inclusive) for system pools. The default
+	// value is 1.
 	Count *int32 `json:"count,omitempty"`
 
 	// Whether to enable auto-scaler
@@ -827,8 +827,8 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	KubeletConfig *KubeletConfig `json:"kubeletConfig,omitempty"`
 
 	// KubeletDiskType determines the placement of emptyDir volumes, container runtime data root, and Kubelet ephemeral storage. Currently allows one value,
-// OS, resulting in Kubelet using the OS disk for
-// data.
+	// OS, resulting in Kubelet using the OS disk for
+	// data.
 	KubeletDiskType *KubeletDiskType `json:"kubeletDiskType,omitempty"`
 
 	// LinuxOSConfig specifies the OS configuration of linux agent nodes.
@@ -856,12 +856,12 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	NodeTaints []*string `json:"nodeTaints,omitempty"`
 
 	// OS Disk Size in GB to be used to specify the disk size for every machine in this master/agent pool. If you specify 0, it will apply the default osDisk
-// size according to the vmSize specified.
+	// size according to the vmSize specified.
 	OSDiskSizeGB *int32 `json:"osDiskSizeGB,omitempty"`
 
 	// OS disk type to be used for machines in a given agent pool. Allowed values are 'Ephemeral' and 'Managed'. If unspecified, defaults to 'Ephemeral' when
-// the VM supports ephemeral OS and has a cache disk
-// larger than the requested OSDiskSizeGB. Otherwise, defaults to 'Managed'. May not be changed after creation.
+	// the VM supports ephemeral OS and has a cache disk
+	// larger than the requested OSDiskSizeGB. Otherwise, defaults to 'Managed'. May not be changed after creation.
 	OSDiskType *OSDiskType `json:"osDiskType,omitempty"`
 
 	// OsSKU to be used to specify os sku. Choose from Ubuntu(default) and CBLMariner for Linux OSType. Not applicable to Windows OSType.
@@ -886,8 +886,8 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	ScaleSetPriority *ScaleSetPriority `json:"scaleSetPriority,omitempty"`
 
 	// SpotMaxPrice to be used to specify the maximum price you are willing to pay in US Dollars. Possible values are any decimal value greater than zero or
-// -1 which indicates default price to be up-to
-// on-demand.
+	// -1 which indicates default price to be up-to
+	// on-demand.
 	SpotMaxPrice *float32 `json:"spotMaxPrice,omitempty"`
 
 	// Agent pool tags to be persisted on the agent pool virtual machine scale set.
@@ -996,13 +996,13 @@ func (m ManagedClusterHTTPProxyConfig) MarshalJSON() ([]byte, error) {
 // ManagedClusterIdentity - Identity for the managed cluster.
 type ManagedClusterIdentity struct {
 	// The type of identity used for the managed cluster. Type 'SystemAssigned' will use an implicitly created identity in master components and an auto-created
-// user assigned identity in MC_ resource group
-// in agent nodes. Type 'None' will not use MSI for the managed cluster, service principal will be used instead.
+	// user assigned identity in MC_ resource group
+	// in agent nodes. Type 'None' will not use MSI for the managed cluster, service principal will be used instead.
 	Type *ResourceIdentityType `json:"type,omitempty"`
 
 	// The user identity associated with the managed cluster. This identity will be used in control plane and only one user assigned identity is allowed. The
-// user identity dictionary key references will be
-// ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	// user identity dictionary key references will be
+	// ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	UserAssignedIdentities map[string]*Components1Umhcm8SchemasManagedclusteridentityPropertiesUserassignedidentitiesAdditionalproperties `json:"userAssignedIdentities,omitempty"`
 
 	// READ-ONLY; The principal id of the system assigned identity which is used by master components.
@@ -1042,7 +1042,7 @@ func (m ManagedClusterListResult) MarshalJSON() ([]byte, error) {
 // ManagedClusterLoadBalancerProfile - Profile of the managed cluster load balancer.
 type ManagedClusterLoadBalancerProfile struct {
 	// Desired number of allocated SNAT ports per VM. Allowed values must be in the range of 0 to 64000 (inclusive). The default value is 0 which results in
-// Azure dynamically allocating ports.
+	// Azure dynamically allocating ports.
 	AllocatedOutboundPorts *int32 `json:"allocatedOutboundPorts,omitempty"`
 
 	// The effective outbound IP resources of the cluster load balancer.
@@ -1076,7 +1076,7 @@ func (m ManagedClusterLoadBalancerProfile) MarshalJSON() ([]byte, error) {
 // ManagedClusterLoadBalancerProfileManagedOutboundIPs - Desired managed outbound IPs for the cluster load balancer.
 type ManagedClusterLoadBalancerProfileManagedOutboundIPs struct {
 	// Desired number of outbound IP created/managed by Azure for the cluster load balancer. Allowed values must be in the range of 1 to 100 (inclusive). The
-// default value is 1.
+	// default value is 1.
 	Count *int32 `json:"count,omitempty"`
 }
 
@@ -1331,23 +1331,23 @@ func (m ManagedClusterProperties) MarshalJSON() ([]byte, error) {
 
 // ManagedClusterPropertiesAutoScalerProfile - Parameters to be applied to the cluster-autoscaler when enabled
 type ManagedClusterPropertiesAutoScalerProfile struct {
-	BalanceSimilarNodeGroups *string `json:"balance-similar-node-groups,omitempty"`
-	Expander *Expander `json:"expander,omitempty"`
-	MaxEmptyBulkDelete *string `json:"max-empty-bulk-delete,omitempty"`
-	MaxGracefulTerminationSec *string `json:"max-graceful-termination-sec,omitempty"`
-	MaxNodeProvisionTime *string `json:"max-node-provision-time,omitempty"`
-	MaxTotalUnreadyPercentage *string `json:"max-total-unready-percentage,omitempty"`
-	NewPodScaleUpDelay *string `json:"new-pod-scale-up-delay,omitempty"`
-	OkTotalUnreadyCount *string `json:"ok-total-unready-count,omitempty"`
-	ScaleDownDelayAfterAdd *string `json:"scale-down-delay-after-add,omitempty"`
-	ScaleDownDelayAfterDelete *string `json:"scale-down-delay-after-delete,omitempty"`
-	ScaleDownDelayAfterFailure *string `json:"scale-down-delay-after-failure,omitempty"`
-	ScaleDownUnneededTime *string `json:"scale-down-unneeded-time,omitempty"`
-	ScaleDownUnreadyTime *string `json:"scale-down-unready-time,omitempty"`
-	ScaleDownUtilizationThreshold *string `json:"scale-down-utilization-threshold,omitempty"`
-	ScanInterval *string `json:"scan-interval,omitempty"`
-	SkipNodesWithLocalStorage *string `json:"skip-nodes-with-local-storage,omitempty"`
-	SkipNodesWithSystemPods *string `json:"skip-nodes-with-system-pods,omitempty"`
+	BalanceSimilarNodeGroups      *string   `json:"balance-similar-node-groups,omitempty"`
+	Expander                      *Expander `json:"expander,omitempty"`
+	MaxEmptyBulkDelete            *string   `json:"max-empty-bulk-delete,omitempty"`
+	MaxGracefulTerminationSec     *string   `json:"max-graceful-termination-sec,omitempty"`
+	MaxNodeProvisionTime          *string   `json:"max-node-provision-time,omitempty"`
+	MaxTotalUnreadyPercentage     *string   `json:"max-total-unready-percentage,omitempty"`
+	NewPodScaleUpDelay            *string   `json:"new-pod-scale-up-delay,omitempty"`
+	OkTotalUnreadyCount           *string   `json:"ok-total-unready-count,omitempty"`
+	ScaleDownDelayAfterAdd        *string   `json:"scale-down-delay-after-add,omitempty"`
+	ScaleDownDelayAfterDelete     *string   `json:"scale-down-delay-after-delete,omitempty"`
+	ScaleDownDelayAfterFailure    *string   `json:"scale-down-delay-after-failure,omitempty"`
+	ScaleDownUnneededTime         *string   `json:"scale-down-unneeded-time,omitempty"`
+	ScaleDownUnreadyTime          *string   `json:"scale-down-unready-time,omitempty"`
+	ScaleDownUtilizationThreshold *string   `json:"scale-down-utilization-threshold,omitempty"`
+	ScanInterval                  *string   `json:"scan-interval,omitempty"`
+	SkipNodesWithLocalStorage     *string   `json:"skip-nodes-with-local-storage,omitempty"`
+	SkipNodesWithSystemPods       *string   `json:"skip-nodes-with-system-pods,omitempty"`
 }
 
 type ManagedClusterSKU struct {
@@ -1402,23 +1402,23 @@ func (m ManagedClusterUpgradeProfileProperties) MarshalJSON() ([]byte, error) {
 // ManagedClusterWindowsProfile - Profile for Windows VMs in the container service cluster.
 type ManagedClusterWindowsProfile struct {
 	// REQUIRED; Specifies the name of the administrator account.
-// restriction: Cannot end in "."
-// Disallowed values: "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2",
-// "aspnet", "backup", "console", "david", "guest",
-// "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5".
-// Minimum-length: 1 character
-// Max-length: 20 characters
+	// restriction: Cannot end in "."
+	// Disallowed values: "administrator", "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2",
+	// "aspnet", "backup", "console", "david", "guest",
+	// "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3", "user4", "user5".
+	// Minimum-length: 1 character
+	// Max-length: 20 characters
 	AdminUsername *string `json:"adminUsername,omitempty"`
 
 	// Specifies the password of the administrator account.
-// Minimum-length: 8 characters
-// Max-length: 123 characters
-// Complexity requirements: 3 out of 4 conditions below need to be fulfilled
-// Has lower characters
-// Has upper characters
-// Has a digit
-// Has a special character (Regex match [\W_])
-// Disallowed values: "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!"
+	// Minimum-length: 8 characters
+	// Max-length: 123 characters
+	// Complexity requirements: 3 out of 4 conditions below need to be fulfilled
+	// Has lower characters
+	// Has upper characters
+	// Has a digit
+	// Has a special character (Regex match [\W_])
+	// Disallowed values: "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!"
 	AdminPassword *string `json:"adminPassword,omitempty"`
 
 	// Whether to enable CSI proxy.
@@ -1990,27 +1990,27 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				s.CreatedAt = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			s.CreatedAt = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "createdBy":
-				err = unpopulate(val, &s.CreatedBy)
-				delete(rawMsg, key)
+			err = unpopulate(val, &s.CreatedBy)
+			delete(rawMsg, key)
 		case "createdByType":
-				err = unpopulate(val, &s.CreatedByType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &s.CreatedByType)
+			delete(rawMsg, key)
 		case "lastModifiedAt":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				s.LastModifiedAt = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			s.LastModifiedAt = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "lastModifiedBy":
-				err = unpopulate(val, &s.LastModifiedBy)
-				delete(rawMsg, key)
+			err = unpopulate(val, &s.LastModifiedBy)
+			delete(rawMsg, key)
 		case "lastModifiedByType":
-				err = unpopulate(val, &s.LastModifiedByType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &s.LastModifiedByType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -2076,15 +2076,15 @@ func (t *TimeSpan) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "end":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				t.End = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			t.End = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "start":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				t.Start = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			t.Start = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -2130,4 +2130,3 @@ func unpopulate(data json.RawMessage, v interface{}) error {
 	}
 	return json.Unmarshal(data, v)
 }
-

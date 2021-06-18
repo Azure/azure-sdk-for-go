@@ -21,7 +21,7 @@ import (
 // ResolvePrivateLinkServiceIDClient contains the methods for the ResolvePrivateLinkServiceID group.
 // Don't use this type directly, use NewResolvePrivateLinkServiceIDClient() instead.
 type ResolvePrivateLinkServiceIDClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -80,7 +80,7 @@ func (client *ResolvePrivateLinkServiceIDClient) postHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateLinkResourceResponse{}, err
 	}
-return PrivateLinkResourceResponse{RawResponse: resp.Response, PrivateLinkResource: val}, nil
+	return PrivateLinkResourceResponse{RawResponse: resp.Response, PrivateLinkResource: val}, nil
 }
 
 // postHandleError handles the POST error response.
@@ -89,10 +89,9 @@ func (client *ResolvePrivateLinkServiceIDClient) postHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

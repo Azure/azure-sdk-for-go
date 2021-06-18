@@ -231,4 +231,3 @@ type RunCommandResultResponse struct {
 	// run command result.
 	RunCommandResult *RunCommandResult
 }
-

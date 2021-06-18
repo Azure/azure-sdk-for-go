@@ -64,7 +64,7 @@ func (client *OperationsClient) listHandleResponse(resp *azcore.Response) (Opera
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return OperationListResultResponse{}, err
 	}
-return OperationListResultResponse{RawResponse: resp.Response, OperationListResult: val}, nil
+	return OperationListResultResponse{RawResponse: resp.Response, OperationListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -73,10 +73,9 @@ func (client *OperationsClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

@@ -182,4 +182,3 @@ func (p *runCommandResultPoller) pollUntilDone(ctx context.Context, freq time.Du
 	respType.RawResponse = resp
 	return respType, nil
 }
-

@@ -21,7 +21,7 @@ import (
 // MaintenanceConfigurationsClient contains the methods for the MaintenanceConfigurations group.
 // Don't use this type directly, use NewMaintenanceConfigurationsClient() instead.
 type MaintenanceConfigurationsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -84,7 +84,7 @@ func (client *MaintenanceConfigurationsClient) createOrUpdateHandleResponse(resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return MaintenanceConfigurationResponse{}, err
 	}
-return MaintenanceConfigurationResponse{RawResponse: resp.Response, MaintenanceConfiguration: val}, nil
+	return MaintenanceConfigurationResponse{RawResponse: resp.Response, MaintenanceConfiguration: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -93,7 +93,7 @@ func (client *MaintenanceConfigurationsClient) createOrUpdateHandleError(resp *a
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -154,7 +154,7 @@ func (client *MaintenanceConfigurationsClient) deleteHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -215,7 +215,7 @@ func (client *MaintenanceConfigurationsClient) getHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return MaintenanceConfigurationResponse{}, err
 	}
-return MaintenanceConfigurationResponse{RawResponse: resp.Response, MaintenanceConfiguration: val}, nil
+	return MaintenanceConfigurationResponse{RawResponse: resp.Response, MaintenanceConfiguration: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -224,7 +224,7 @@ func (client *MaintenanceConfigurationsClient) getHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -234,7 +234,7 @@ func (client *MaintenanceConfigurationsClient) getHandleError(resp *azcore.Respo
 // ListByManagedCluster - Gets a list of maintenance configurations in the specified managed cluster. The operation returns properties of each maintenance
 // configuration.
 // If the operation fails it returns the *CloudError error type.
-func (client *MaintenanceConfigurationsClient) ListByManagedCluster(resourceGroupName string, resourceName string, options *MaintenanceConfigurationsListByManagedClusterOptions) (MaintenanceConfigurationListResultPager) {
+func (client *MaintenanceConfigurationsClient) ListByManagedCluster(resourceGroupName string, resourceName string, options *MaintenanceConfigurationsListByManagedClusterOptions) MaintenanceConfigurationListResultPager {
 	return &maintenanceConfigurationListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -282,7 +282,7 @@ func (client *MaintenanceConfigurationsClient) listByManagedClusterHandleRespons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return MaintenanceConfigurationListResultResponse{}, err
 	}
-return MaintenanceConfigurationListResultResponse{RawResponse: resp.Response, MaintenanceConfigurationListResult: val}, nil
+	return MaintenanceConfigurationListResultResponse{RawResponse: resp.Response, MaintenanceConfigurationListResult: val}, nil
 }
 
 // listByManagedClusterHandleError handles the ListByManagedCluster error response.
@@ -291,10 +291,9 @@ func (client *MaintenanceConfigurationsClient) listByManagedClusterHandleError(r
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

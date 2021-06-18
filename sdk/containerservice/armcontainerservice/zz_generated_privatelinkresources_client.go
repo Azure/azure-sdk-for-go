@@ -21,7 +21,7 @@ import (
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -80,7 +80,7 @@ func (client *PrivateLinkResourcesClient) listHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateLinkResourcesListResultResponse{}, err
 	}
-return PrivateLinkResourcesListResultResponse{RawResponse: resp.Response, PrivateLinkResourcesListResult: val}, nil
+	return PrivateLinkResourcesListResultResponse{RawResponse: resp.Response, PrivateLinkResourcesListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -89,10 +89,9 @@ func (client *PrivateLinkResourcesClient) listHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

@@ -7,8 +7,6 @@
 
 package armcontainerservice
 
-
-
 import (
 	"regexp"
 	"strings"

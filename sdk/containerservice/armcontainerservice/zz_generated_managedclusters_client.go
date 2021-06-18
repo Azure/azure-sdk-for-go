@@ -22,7 +22,7 @@ import (
 // ManagedClustersClient contains the methods for the ManagedClusters group.
 // Don't use this type directly, use NewManagedClustersClient() instead.
 type ManagedClustersClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -93,7 +93,7 @@ func (client *ManagedClustersClient) createOrUpdate(ctx context.Context, resourc
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -129,7 +129,7 @@ func (client *ManagedClustersClient) createOrUpdateHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -198,7 +198,7 @@ func (client *ManagedClustersClient) deleteOperation(ctx context.Context, resour
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -234,7 +234,7 @@ func (client *ManagedClustersClient) deleteHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -291,7 +291,7 @@ func (client *ManagedClustersClient) getHandleResponse(resp *azcore.Response) (M
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ManagedClusterResponse{}, err
 	}
-return ManagedClusterResponse{RawResponse: resp.Response, ManagedCluster: val}, nil
+	return ManagedClusterResponse{RawResponse: resp.Response, ManagedCluster: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -300,7 +300,7 @@ func (client *ManagedClustersClient) getHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -364,7 +364,7 @@ func (client *ManagedClustersClient) getAccessProfileHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ManagedClusterAccessProfileResponse{}, err
 	}
-return ManagedClusterAccessProfileResponse{RawResponse: resp.Response, ManagedClusterAccessProfile: val}, nil
+	return ManagedClusterAccessProfileResponse{RawResponse: resp.Response, ManagedClusterAccessProfile: val}, nil
 }
 
 // getAccessProfileHandleError handles the GetAccessProfile error response.
@@ -373,7 +373,7 @@ func (client *ManagedClustersClient) getAccessProfileHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -434,7 +434,7 @@ func (client *ManagedClustersClient) getCommandResultHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RunCommandResultResponse{}, err
 	}
-return RunCommandResultResponse{RawResponse: resp.Response, RunCommandResult: val}, nil
+	return RunCommandResultResponse{RawResponse: resp.Response, RunCommandResult: val}, nil
 }
 
 // getCommandResultHandleError handles the GetCommandResult error response.
@@ -443,7 +443,7 @@ func (client *ManagedClustersClient) getCommandResultHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -499,7 +499,7 @@ func (client *ManagedClustersClient) getOSOptionsHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return OSOptionProfileResponse{}, err
 	}
-return OSOptionProfileResponse{RawResponse: resp.Response, OSOptionProfile: val}, nil
+	return OSOptionProfileResponse{RawResponse: resp.Response, OSOptionProfile: val}, nil
 }
 
 // getOSOptionsHandleError handles the GetOSOptions error response.
@@ -508,7 +508,7 @@ func (client *ManagedClustersClient) getOSOptionsHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -565,7 +565,7 @@ func (client *ManagedClustersClient) getUpgradeProfileHandleResponse(resp *azcor
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ManagedClusterUpgradeProfileResponse{}, err
 	}
-return ManagedClusterUpgradeProfileResponse{RawResponse: resp.Response, ManagedClusterUpgradeProfile: val}, nil
+	return ManagedClusterUpgradeProfileResponse{RawResponse: resp.Response, ManagedClusterUpgradeProfile: val}, nil
 }
 
 // getUpgradeProfileHandleError handles the GetUpgradeProfile error response.
@@ -574,7 +574,7 @@ func (client *ManagedClustersClient) getUpgradeProfileHandleError(resp *azcore.R
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -583,7 +583,7 @@ func (client *ManagedClustersClient) getUpgradeProfileHandleError(resp *azcore.R
 
 // List - Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) List(options *ManagedClustersListOptions) (ManagedClusterListResultPager) {
+func (client *ManagedClustersClient) List(options *ManagedClustersListOptions) ManagedClusterListResultPager {
 	return &managedClusterListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -623,7 +623,7 @@ func (client *ManagedClustersClient) listHandleResponse(resp *azcore.Response) (
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ManagedClusterListResultResponse{}, err
 	}
-return ManagedClusterListResultResponse{RawResponse: resp.Response, ManagedClusterListResult: val}, nil
+	return ManagedClusterListResultResponse{RawResponse: resp.Response, ManagedClusterListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -632,7 +632,7 @@ func (client *ManagedClustersClient) listHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -641,7 +641,7 @@ func (client *ManagedClustersClient) listHandleError(resp *azcore.Response) erro
 
 // ListByResourceGroup - Lists managed clusters in the specified subscription and resource group. The operation returns properties of each managed cluster.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) ListByResourceGroup(resourceGroupName string, options *ManagedClustersListByResourceGroupOptions) (ManagedClusterListResultPager) {
+func (client *ManagedClustersClient) ListByResourceGroup(resourceGroupName string, options *ManagedClustersListByResourceGroupOptions) ManagedClusterListResultPager {
 	return &managedClusterListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -685,7 +685,7 @@ func (client *ManagedClustersClient) listByResourceGroupHandleResponse(resp *azc
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ManagedClusterListResultResponse{}, err
 	}
-return ManagedClusterListResultResponse{RawResponse: resp.Response, ManagedClusterListResult: val}, nil
+	return ManagedClusterListResultResponse{RawResponse: resp.Response, ManagedClusterListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -694,7 +694,7 @@ func (client *ManagedClustersClient) listByResourceGroupHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -754,7 +754,7 @@ func (client *ManagedClustersClient) listClusterAdminCredentialsHandleResponse(r
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CredentialResultsResponse{}, err
 	}
-return CredentialResultsResponse{RawResponse: resp.Response, CredentialResults: val}, nil
+	return CredentialResultsResponse{RawResponse: resp.Response, CredentialResults: val}, nil
 }
 
 // listClusterAdminCredentialsHandleError handles the ListClusterAdminCredentials error response.
@@ -763,7 +763,7 @@ func (client *ManagedClustersClient) listClusterAdminCredentialsHandleError(resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -823,7 +823,7 @@ func (client *ManagedClustersClient) listClusterMonitoringUserCredentialsHandleR
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CredentialResultsResponse{}, err
 	}
-return CredentialResultsResponse{RawResponse: resp.Response, CredentialResults: val}, nil
+	return CredentialResultsResponse{RawResponse: resp.Response, CredentialResults: val}, nil
 }
 
 // listClusterMonitoringUserCredentialsHandleError handles the ListClusterMonitoringUserCredentials error response.
@@ -832,7 +832,7 @@ func (client *ManagedClustersClient) listClusterMonitoringUserCredentialsHandleE
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -892,7 +892,7 @@ func (client *ManagedClustersClient) listClusterUserCredentialsHandleResponse(re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CredentialResultsResponse{}, err
 	}
-return CredentialResultsResponse{RawResponse: resp.Response, CredentialResults: val}, nil
+	return CredentialResultsResponse{RawResponse: resp.Response, CredentialResults: val}, nil
 }
 
 // listClusterUserCredentialsHandleError handles the ListClusterUserCredentials error response.
@@ -901,7 +901,7 @@ func (client *ManagedClustersClient) listClusterUserCredentialsHandleError(resp 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -911,7 +911,7 @@ func (client *ManagedClustersClient) listClusterUserCredentialsHandleError(resp 
 // ListOutboundNetworkDependenciesEndpoints - Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified managed
 // cluster. The operation returns properties of each egress endpoint.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedClustersClient) ListOutboundNetworkDependenciesEndpoints(resourceGroupName string, resourceName string, options *ManagedClustersListOutboundNetworkDependenciesEndpointsOptions) (OutboundEnvironmentEndpointCollectionPager) {
+func (client *ManagedClustersClient) ListOutboundNetworkDependenciesEndpoints(resourceGroupName string, resourceName string, options *ManagedClustersListOutboundNetworkDependenciesEndpointsOptions) OutboundEnvironmentEndpointCollectionPager {
 	return &outboundEnvironmentEndpointCollectionPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -959,7 +959,7 @@ func (client *ManagedClustersClient) listOutboundNetworkDependenciesEndpointsHan
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return OutboundEnvironmentEndpointCollectionResponse{}, err
 	}
-return OutboundEnvironmentEndpointCollectionResponse{RawResponse: resp.Response, OutboundEnvironmentEndpointCollection: val}, nil
+	return OutboundEnvironmentEndpointCollectionResponse{RawResponse: resp.Response, OutboundEnvironmentEndpointCollection: val}, nil
 }
 
 // listOutboundNetworkDependenciesEndpointsHandleError handles the ListOutboundNetworkDependenciesEndpoints error response.
@@ -968,7 +968,7 @@ func (client *ManagedClustersClient) listOutboundNetworkDependenciesEndpointsHan
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1037,7 +1037,7 @@ func (client *ManagedClustersClient) resetAADProfile(ctx context.Context, resour
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.resetAADProfileHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // resetAADProfileCreateRequest creates the ResetAADProfile request.
@@ -1073,7 +1073,7 @@ func (client *ManagedClustersClient) resetAADProfileHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1142,7 +1142,7 @@ func (client *ManagedClustersClient) resetServicePrincipalProfile(ctx context.Co
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.resetServicePrincipalProfileHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // resetServicePrincipalProfileCreateRequest creates the ResetServicePrincipalProfile request.
@@ -1178,7 +1178,7 @@ func (client *ManagedClustersClient) resetServicePrincipalProfileHandleError(res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1247,7 +1247,7 @@ func (client *ManagedClustersClient) rotateClusterCertificates(ctx context.Conte
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.rotateClusterCertificatesHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // rotateClusterCertificatesCreateRequest creates the RotateClusterCertificates request.
@@ -1283,7 +1283,7 @@ func (client *ManagedClustersClient) rotateClusterCertificatesHandleError(resp *
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1352,7 +1352,7 @@ func (client *ManagedClustersClient) runCommand(ctx context.Context, resourceGro
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.runCommandHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // runCommandCreateRequest creates the RunCommand request.
@@ -1388,7 +1388,7 @@ func (client *ManagedClustersClient) runCommandHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1457,7 +1457,7 @@ func (client *ManagedClustersClient) start(ctx context.Context, resourceGroupNam
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.startHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
@@ -1493,7 +1493,7 @@ func (client *ManagedClustersClient) startHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1562,7 +1562,7 @@ func (client *ManagedClustersClient) stop(ctx context.Context, resourceGroupName
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.stopHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // stopCreateRequest creates the Stop request.
@@ -1598,7 +1598,7 @@ func (client *ManagedClustersClient) stopHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1667,7 +1667,7 @@ func (client *ManagedClustersClient) updateTags(ctx context.Context, resourceGro
 	if !resp.HasStatusCode(http.StatusOK) {
 		return nil, client.updateTagsHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -1703,10 +1703,9 @@ func (client *ManagedClustersClient) updateTagsHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

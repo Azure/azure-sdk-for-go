@@ -60,20 +60,20 @@ func (p *agentPoolListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -136,20 +136,20 @@ func (p *maintenanceConfigurationListResultPager) NextPage(ctx context.Context) 
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -212,20 +212,20 @@ func (p *managedClusterListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -288,20 +288,20 @@ func (p *outboundEnvironmentEndpointCollectionPager) NextPage(ctx context.Contex
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -316,4 +316,3 @@ func (p *outboundEnvironmentEndpointCollectionPager) NextPage(ctx context.Contex
 func (p *outboundEnvironmentEndpointCollectionPager) PageResponse() OutboundEnvironmentEndpointCollectionResponse {
 	return p.current
 }
-

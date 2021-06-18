@@ -22,7 +22,7 @@ import (
 // AgentPoolsClient contains the methods for the AgentPools group.
 // Don't use this type directly, use NewAgentPoolsClient() instead.
 type AgentPoolsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -93,7 +93,7 @@ func (client *AgentPoolsClient) createOrUpdate(ctx context.Context, resourceGrou
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -133,7 +133,7 @@ func (client *AgentPoolsClient) createOrUpdateHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -202,7 +202,7 @@ func (client *AgentPoolsClient) deleteOperation(ctx context.Context, resourceGro
 	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -242,7 +242,7 @@ func (client *AgentPoolsClient) deleteHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -303,7 +303,7 @@ func (client *AgentPoolsClient) getHandleResponse(resp *azcore.Response) (AgentP
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AgentPoolResponse{}, err
 	}
-return AgentPoolResponse{RawResponse: resp.Response, AgentPool: val}, nil
+	return AgentPoolResponse{RawResponse: resp.Response, AgentPool: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -312,7 +312,7 @@ func (client *AgentPoolsClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -369,7 +369,7 @@ func (client *AgentPoolsClient) getAvailableAgentPoolVersionsHandleResponse(resp
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AgentPoolAvailableVersionsResponse{}, err
 	}
-return AgentPoolAvailableVersionsResponse{RawResponse: resp.Response, AgentPoolAvailableVersions: val}, nil
+	return AgentPoolAvailableVersionsResponse{RawResponse: resp.Response, AgentPoolAvailableVersions: val}, nil
 }
 
 // getAvailableAgentPoolVersionsHandleError handles the GetAvailableAgentPoolVersions error response.
@@ -379,10 +379,10 @@ func (client *AgentPoolsClient) getAvailableAgentPoolVersionsHandleError(resp *a
 		return azcore.NewResponseError(err, resp.Response)
 	}
 	if len(body) == 0 {
-      return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-    }
-    return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-    }
+		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+	}
+	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+}
 
 // GetUpgradeProfile - Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster name.
 // If the operation fails it returns the *CloudError error type.
@@ -438,7 +438,7 @@ func (client *AgentPoolsClient) getUpgradeProfileHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AgentPoolUpgradeProfileResponse{}, err
 	}
-return AgentPoolUpgradeProfileResponse{RawResponse: resp.Response, AgentPoolUpgradeProfile: val}, nil
+	return AgentPoolUpgradeProfileResponse{RawResponse: resp.Response, AgentPoolUpgradeProfile: val}, nil
 }
 
 // getUpgradeProfileHandleError handles the GetUpgradeProfile error response.
@@ -447,7 +447,7 @@ func (client *AgentPoolsClient) getUpgradeProfileHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -456,7 +456,7 @@ func (client *AgentPoolsClient) getUpgradeProfileHandleError(resp *azcore.Respon
 
 // List - Gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent pool.
 // If the operation fails it returns the *CloudError error type.
-func (client *AgentPoolsClient) List(resourceGroupName string, resourceName string, options *AgentPoolsListOptions) (AgentPoolListResultPager) {
+func (client *AgentPoolsClient) List(resourceGroupName string, resourceName string, options *AgentPoolsListOptions) AgentPoolListResultPager {
 	return &agentPoolListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -504,7 +504,7 @@ func (client *AgentPoolsClient) listHandleResponse(resp *azcore.Response) (Agent
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AgentPoolListResultResponse{}, err
 	}
-return AgentPoolListResultResponse{RawResponse: resp.Response, AgentPoolListResult: val}, nil
+	return AgentPoolListResultResponse{RawResponse: resp.Response, AgentPoolListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -513,7 +513,7 @@ func (client *AgentPoolsClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -582,7 +582,7 @@ func (client *AgentPoolsClient) upgradeNodeImageVersion(ctx context.Context, res
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.upgradeNodeImageVersionHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // upgradeNodeImageVersionCreateRequest creates the UpgradeNodeImageVersion request.
@@ -622,10 +622,9 @@ func (client *AgentPoolsClient) upgradeNodeImageVersionHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

@@ -146,21 +146,21 @@ import "github.com/Azure/azure-sdk-for-go/sdk/resources/armresources"
 ***Create a resource group***
 
 ```go
-func createResourceGroup(connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
+func createResourceGroup(ctx context.Context, connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
 	rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
 
 	param := armresources.ResourceGroup{
 		Location: to.StringPtr(location),
 	}
 
-	return rgClient.CreateOrUpdate(ctx, resourceGroupName, param, nil)
+	return rgClient.CreateOrUpdate(context.Backgroud(), resourceGroupName, param, nil)
 }
 ```
 
 ***Update a resource group***
 
 ```go
-func updateResourceGroup(connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
+func updateResourceGroup(ctx context.Context, connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
     rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
     
     update := armresources.ResourceGroupPatchable{
@@ -175,7 +175,7 @@ func updateResourceGroup(connection *armcore.Connection) (armresources.ResourceG
 ***List all resource groups***
 
 ```go
-func listResourceGroups(connection *armcore.Connection) ([]*armresources.ResourceGroup, error) {
+func listResourceGroups(ctx context.Context, connection *armcore.Connection) ([]*armresources.ResourceGroup, error) {
     rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
     
     pager := rgClient.List(nil)
@@ -194,7 +194,7 @@ func listResourceGroups(connection *armcore.Connection) ([]*armresources.Resourc
 ***Delete a resource group***
 
 ```go
-func deleteResourceGroup(connection *armcore.Connection) error {
+func deleteResourceGroup(ctx context.Context, connection *armcore.Connection) error {
     rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
     
     poller, err := rgClient.BeginDelete(ctx, resourceGroupName, nil)
@@ -219,7 +219,7 @@ import "github.com/Azure/azure-sdk-for-go/sdk/network/armnetwork"
 
 ***Creating a Virtual Network***
 ```go
-func createVirtualNetwork(connection *armcore.Connection) (armnetwork.VirtualNetworkResponse, error) {
+func createVirtualNetwork(ctx context.Context, connection *armcore.Connection) (armnetwork.VirtualNetworkResponse, error) {
 	vnetClient := armnetwork.NewVirtualNetworksClient(connection, subscriptionId)
 
 	param := armnetwork.VirtualNetwork{
@@ -244,7 +244,7 @@ func createVirtualNetwork(connection *armcore.Connection) (armnetwork.VirtualNet
 
 ***Deleting a Virtual Network***
 ```go
-func deleteVirtualNetwork(connection *armcore.Connection) error {
+func deleteVirtualNetwork(ctx context.Context, connection *armcore.Connection) error {
 	vnetClient := armnetwork.NewVirtualNetworksClient(connection, subscriptionId)
 
 	poller, err := vnetClient.BeginDelete(ctx, resourceGroupName, vnetName, nil)
@@ -260,7 +260,7 @@ func deleteVirtualNetwork(connection *armcore.Connection) error {
 
 ***List all Virtual Networks in a Resource Group***
 ```go
-func listVirtualNetwork(connection *armcore.Connection) ([]*armnetwork.VirtualNetwork, error) {
+func listVirtualNetwork(ctx context.Context, connection *armcore.Connection) ([]*armnetwork.VirtualNetwork, error) {
     vnetClient := armnetwork.NewVirtualNetworksClient(connection, subscriptionId)
     
     pager := vnetClient.List(resourceGroupName, nil)

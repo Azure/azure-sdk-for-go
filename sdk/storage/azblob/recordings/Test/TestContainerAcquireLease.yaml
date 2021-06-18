@@ -1,0 +1,159 @@
+---
+version: 1
+interactions:
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Fri, 18 Jun 2021 06:13:26 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontaineracquirelease?restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Fri, 18 Jun 2021 06:13:27 GMT
+      Etag:
+      - '"0x8D932202FD3A056"'
+      Last-Modified:
+      - Fri, 18 Jun 2021 06:13:27 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - f8e066b7-d01e-0004-2309-64c323000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Fri, 18 Jun 2021 06:13:28 GMT
+      X-Ms-Lease-Action:
+      - acquire
+      X-Ms-Lease-Duration:
+      - "60"
+      X-Ms-Proposed-Lease-Id:
+      - c820a799-76d7-4ee2-6e15-546f19325c2c
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontaineracquirelease?comp=lease&restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Fri, 18 Jun 2021 06:13:27 GMT
+      Etag:
+      - '"0x8D932202FD3A056"'
+      Last-Modified:
+      - Fri, 18 Jun 2021 06:13:27 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Lease-Id:
+      - c820a799-76d7-4ee2-6e15-546f19325c2c
+      X-Ms-Request-Id:
+      - f8e06758-d01e-0004-3109-64c323000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Fri, 18 Jun 2021 06:13:28 GMT
+      X-Ms-Lease-Action:
+      - release
+      X-Ms-Lease-Id:
+      - c820a799-76d7-4ee2-6e15-546f19325c2c
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontaineracquirelease?comp=lease&restype=container
+    method: PUT
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Fri, 18 Jun 2021 06:13:27 GMT
+      Etag:
+      - '"0x8D932202FD3A056"'
+      Last-Modified:
+      - Fri, 18 Jun 2021 06:13:27 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - f8e067e9-d01e-0004-3309-64c323000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
+        Windows_NT)
+      X-Ms-Date:
+      - Fri, 18 Jun 2021 06:13:28 GMT
+      X-Ms-Version:
+      - "2019-12-12"
+    url: https://azureblobstoragecanada.blob.core.windows.net/goccontaineracquirelease?restype=container
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Content-Length:
+      - "0"
+      Date:
+      - Fri, 18 Jun 2021 06:13:27 GMT
+      Server:
+      - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Request-Id:
+      - f8e0687a-d01e-0004-4009-64c323000000
+      X-Ms-Version:
+      - "2019-12-12"
+    status: 202 Accepted
+    code: 202
+    duration: ""

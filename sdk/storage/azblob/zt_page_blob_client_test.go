@@ -933,7 +933,7 @@ func (s *azblobTestSuite) TestBlobPutPagesNonExistentBlob() {
 	blobName := generateBlobName(testName)
 	pbClient := getPageBlobClient(blobName, containerClient)
 
-	r := generateData(PageBlobPageBytes)
+	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
@@ -975,7 +975,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
-	r := generateData(PageBlobPageBytes)
+	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
@@ -1013,7 +1013,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfModifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
-	r := generateData(PageBlobPageBytes)
+	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
@@ -1051,7 +1051,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceTrue() {
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, 10)
 
-	r := generateData(PageBlobPageBytes)
+	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
@@ -1089,7 +1089,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfUnmodifiedSinceFalse() {
 
 	currentTime := getRelativeTimeFromAnchor(pageBlobCreateResponse.Date, -10)
 
-	r := generateData(PageBlobPageBytes)
+	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
@@ -1127,7 +1127,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchTrue() {
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
-	r := generateData(PageBlobPageBytes)
+	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
@@ -1163,7 +1163,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfMatchFalse() {
 	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 	_assert.NotNil(pageBlobCreateResponse.Date)
 
-	r := generateData(PageBlobPageBytes)
+	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	eTag := "garbage"
 	uploadPagesOptions := UploadPagesOptions{
@@ -1200,7 +1200,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchTrue() {
 	_assert.Equal(pageBlobCreateResponse.RawResponse.StatusCode, 201)
 	_assert.NotNil(pageBlobCreateResponse.Date)
 
-	r := generateData(PageBlobPageBytes)
+	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	eTag := "garbage"
 	uploadPagesOptions := UploadPagesOptions{
@@ -1239,7 +1239,7 @@ func (s *azblobTestSuite) TestBlobPutPagesIfNoneMatchFalse() {
 
 	resp, _ := pbClient.GetProperties(ctx, nil)
 
-	r := generateData(PageBlobPageBytes)
+	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},

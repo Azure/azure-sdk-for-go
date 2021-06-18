@@ -3,92 +3,103 @@
 
 package azblob
 
-//
-//import (
-//	"sort"
-//
-//	chk "gopkg.in/check.v1"
-//)
-//
-//// tests general functionality
-//func (s *azblobTestSuite) TestBlobListWrapper() {
-//	bsu, err := getGenericBSU("", nil)
-//
-//	_assert.Nil(err)
-//
-//	container, _ := getContainerClient(bsu)
-//
-//	_, err = container.Create(ctx, nil)
-//	_assert.Nil(err)
-//	defer container.Delete(ctx, nil)
-//
-//	files := []string{"a", "b", "c"}
-//
-//	createNewBlobs(c, container, files)
-//
-//	pager := container.ListBlobsFlatSegment(nil)
-//
-//	found := make([]string, 0)
-//
-//	for pager.NextPage(ctx) {
-//		resp := pager.PageResponse()
-//
-//		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
-//			found = append(found, *blob.Name)
-//		}
-//	}
-//	c.Assert(pager.Err(), chk.IsNil)
-//
-//	sort.Strings(files)
-//	sort.Strings(found)
-//
-//	c.Assert(found, chk.DeepEquals, files)
-//}
-//
-//// tests that the buffer filling isn't a problem
-//func (s *azblobTestSuite) TestBlobListWrapperFullBuffer() {
-//	bsu, err := getGenericBSU("", nil)
-//
-//	_assert.Nil(err)
-//
-//	container, _ := getContainerClient(bsu)
-//
-//	_, err = container.Create(ctx, nil)
-//	_assert.Nil(err)
-//	defer container.Delete(ctx, nil)
-//
-//	files := []string{"a", "b", "c"}
-//
-//	createNewBlobs(c, container, files)
-//
-//	pager := container.ListBlobsFlatSegment(nil)
-//
-//	found := make([]string, 0)
-//
-//	for pager.NextPage(ctx) {
-//		resp := pager.PageResponse()
-//
-//		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
-//			found = append(found, *blob.Name)
-//		}
-//	}
-//	c.Assert(pager.Err(), chk.IsNil)
-//
-//	sort.Strings(files)
-//	sort.Strings(found)
-//
-//	c.Assert(files, chk.DeepEquals, found)
-//}
-//
-//func (s *azblobTestSuite) TestBlobListWrapperListingError() {
-//	bsu, err := getGenericBSU("", nil)
-//
-//	_assert.Nil(err)
-//
-//	container, _ := getContainerClient(bsu)
-//
-//	pager := container.ListBlobsFlatSegment(nil)
-//
-//	c.Assert(pager.NextPage(ctx), chk.Equals, false)
-//	c.Assert(pager.Err(), chk.NotNil)
-//}
+import (
+	"github.com/stretchr/testify/assert"
+	"sort"
+)
+
+// tests general functionality
+func (s *azblobTestSuite) TestBlobListWrapper() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerName := generateContainerName(testName)
+	containerClient := getContainerClient(containerName, svcClient)
+
+	_, err = containerClient.Create(ctx, nil)
+	_assert.Nil(err)
+	defer containerClient.Delete(ctx, nil)
+
+	files := []string{"a123", "b234", "c345"}
+
+	createNewBlobs(_assert, files, containerClient)
+
+	pager := containerClient.ListBlobsFlatSegment(nil)
+
+	found := make([]string, 0)
+
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+
+		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+			found = append(found, *blob.Name)
+		}
+	}
+	_assert.Nil(pager.Err())
+
+	sort.Strings(files)
+	sort.Strings(found)
+
+	_assert.EqualValues(found, files)
+}
+
+// tests that the buffer filling isn't a problem
+func (s *azblobTestSuite) TestBlobListWrapperFullBuffer() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerClient := getContainerClient(generateContainerName(testName), svcClient)
+
+	_, err = containerClient.Create(ctx, nil)
+	_assert.Nil(err)
+	defer containerClient.Delete(ctx, nil)
+
+	files := []string{"a123", "b234", "c345"}
+
+	createNewBlobs(_assert, files, containerClient)
+
+	pager := containerClient.ListBlobsFlatSegment(nil)
+
+	found := make([]string, 0)
+
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+
+		for _, blob := range *resp.EnumerationResults.Segment.BlobItems {
+			found = append(found, *blob.Name)
+		}
+	}
+	_assert.Nil(pager.Err())
+
+	sort.Strings(files)
+	sort.Strings(found)
+
+	_assert.EqualValues(files, found)
+}
+
+func (s *azblobTestSuite) TestBlobListWrapperListingError() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	_context := getTestContext(testName)
+	svcClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+
+	containerClient := getContainerClient(generateContainerName(testName), svcClient)
+
+	pager := containerClient.ListBlobsFlatSegment(nil)
+
+	_assert.Equal(pager.NextPage(ctx), false)
+	_assert.NotNil(pager.Err())
+}

@@ -41,13 +41,12 @@ func (client *DiskEncryptionSetsClient) BeginCreateOrUpdate(ctx context.Context,
 	result := DiskEncryptionSetPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DiskEncryptionSetsClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("DiskEncryptionSetsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return DiskEncryptionSetPollerResponse{}, err
 	}
 	poller := &diskEncryptionSetPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetResponse, error) {
@@ -59,13 +58,12 @@ func (client *DiskEncryptionSetsClient) BeginCreateOrUpdate(ctx context.Context,
 // ResumeCreateOrUpdate creates a new DiskEncryptionSetPoller from the specified resume token.
 // token - The value must come from a previous call to DiskEncryptionSetPoller.ResumeToken().
 func (client *DiskEncryptionSetsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DiskEncryptionSetPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DiskEncryptionSetsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DiskEncryptionSetsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return DiskEncryptionSetPollerResponse{}, err
 	}
 	poller := &diskEncryptionSetPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -148,13 +146,12 @@ func (client *DiskEncryptionSetsClient) BeginDelete(ctx context.Context, resourc
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DiskEncryptionSetsClient.Delete", "", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("DiskEncryptionSetsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -166,13 +163,12 @@ func (client *DiskEncryptionSetsClient) BeginDelete(ctx context.Context, resourc
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *DiskEncryptionSetsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DiskEncryptionSetsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DiskEncryptionSetsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -507,13 +503,12 @@ func (client *DiskEncryptionSetsClient) BeginUpdate(ctx context.Context, resourc
 	result := DiskEncryptionSetPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("DiskEncryptionSetsClient.Update", "", resp, client.updateHandleError)
+	pt, err := armcore.NewLROPoller("DiskEncryptionSetsClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
 		return DiskEncryptionSetPollerResponse{}, err
 	}
 	poller := &diskEncryptionSetPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskEncryptionSetResponse, error) {
@@ -525,13 +520,12 @@ func (client *DiskEncryptionSetsClient) BeginUpdate(ctx context.Context, resourc
 // ResumeUpdate creates a new DiskEncryptionSetPoller from the specified resume token.
 // token - The value must come from a previous call to DiskEncryptionSetPoller.ResumeToken().
 func (client *DiskEncryptionSetsClient) ResumeUpdate(ctx context.Context, token string) (DiskEncryptionSetPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("DiskEncryptionSetsClient.Update", token, client.updateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("DiskEncryptionSetsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
 		return DiskEncryptionSetPollerResponse{}, err
 	}
 	poller := &diskEncryptionSetPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

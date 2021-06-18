@@ -41,13 +41,12 @@ func (client *RouteFiltersClient) BeginCreateOrUpdate(ctx context.Context, resou
 	result := RouteFilterPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("RouteFiltersClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("RouteFiltersClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return RouteFilterPollerResponse{}, err
 	}
 	poller := &routeFilterPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RouteFilterResponse, error) {
@@ -59,13 +58,12 @@ func (client *RouteFiltersClient) BeginCreateOrUpdate(ctx context.Context, resou
 // ResumeCreateOrUpdate creates a new RouteFilterPoller from the specified resume token.
 // token - The value must come from a previous call to RouteFilterPoller.ResumeToken().
 func (client *RouteFiltersClient) ResumeCreateOrUpdate(ctx context.Context, token string) (RouteFilterPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("RouteFiltersClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("RouteFiltersClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return RouteFilterPollerResponse{}, err
 	}
 	poller := &routeFilterPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -148,13 +146,12 @@ func (client *RouteFiltersClient) BeginDelete(ctx context.Context, resourceGroup
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("RouteFiltersClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("RouteFiltersClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -166,13 +163,12 @@ func (client *RouteFiltersClient) BeginDelete(ctx context.Context, resourceGroup
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *RouteFiltersClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("RouteFiltersClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("RouteFiltersClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

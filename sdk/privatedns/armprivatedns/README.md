@@ -48,7 +48,7 @@ For more information on ARM connections, please see the documentation for `armco
 Azure Private DNS modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
 
 ```go
-client := armagfood.NewPrivateZonesClient(con, "<subscription ID>")
+client := armprivatedns.NewPrivateZonesClient(con, "<subscription ID>")
 ```
 
 ## Provide Feedback

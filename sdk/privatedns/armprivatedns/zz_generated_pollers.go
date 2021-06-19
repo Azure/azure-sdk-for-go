@@ -137,4 +137,3 @@ func (p *virtualNetworkLinkPoller) pollUntilDone(ctx context.Context, freq time.
 	respType.RawResponse = resp
 	return respType, nil
 }
-

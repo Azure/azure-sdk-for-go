@@ -22,7 +22,7 @@ import (
 // RecordSetsClient contains the methods for the RecordSets group.
 // Don't use this type directly, use NewRecordSetsClient() instead.
 type RecordSetsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -95,7 +95,7 @@ func (client *RecordSetsClient) createOrUpdateHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RecordSetResponse{}, err
 	}
-return RecordSetResponse{RawResponse: resp.Response, RecordSet: val}, nil
+	return RecordSetResponse{RawResponse: resp.Response, RecordSet: val}, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
@@ -104,7 +104,7 @@ func (client *RecordSetsClient) createOrUpdateHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -172,7 +172,7 @@ func (client *RecordSetsClient) deleteHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -237,7 +237,7 @@ func (client *RecordSetsClient) getHandleResponse(resp *azcore.Response) (Record
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RecordSetResponse{}, err
 	}
-return RecordSetResponse{RawResponse: resp.Response, RecordSet: val}, nil
+	return RecordSetResponse{RawResponse: resp.Response, RecordSet: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -246,7 +246,7 @@ func (client *RecordSetsClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -255,7 +255,7 @@ func (client *RecordSetsClient) getHandleError(resp *azcore.Response) error {
 
 // List - Lists all record sets in a Private DNS zone.
 // If the operation fails it returns the *CloudError error type.
-func (client *RecordSetsClient) List(resourceGroupName string, privateZoneName string, options *RecordSetsListOptions) (RecordSetListResultPager) {
+func (client *RecordSetsClient) List(resourceGroupName string, privateZoneName string, options *RecordSetsListOptions) RecordSetListResultPager {
 	return &recordSetListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -309,7 +309,7 @@ func (client *RecordSetsClient) listHandleResponse(resp *azcore.Response) (Recor
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RecordSetListResultResponse{}, err
 	}
-return RecordSetListResultResponse{RawResponse: resp.Response, RecordSetListResult: val}, nil
+	return RecordSetListResultResponse{RawResponse: resp.Response, RecordSetListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -318,7 +318,7 @@ func (client *RecordSetsClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -327,7 +327,7 @@ func (client *RecordSetsClient) listHandleError(resp *azcore.Response) error {
 
 // ListByType - Lists the record sets of a specified type in a Private DNS zone.
 // If the operation fails it returns the *CloudError error type.
-func (client *RecordSetsClient) ListByType(resourceGroupName string, privateZoneName string, recordType RecordType, options *RecordSetsListByTypeOptions) (RecordSetListResultPager) {
+func (client *RecordSetsClient) ListByType(resourceGroupName string, privateZoneName string, recordType RecordType, options *RecordSetsListByTypeOptions) RecordSetListResultPager {
 	return &recordSetListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -385,7 +385,7 @@ func (client *RecordSetsClient) listByTypeHandleResponse(resp *azcore.Response) 
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RecordSetListResultResponse{}, err
 	}
-return RecordSetListResultResponse{RawResponse: resp.Response, RecordSetListResult: val}, nil
+	return RecordSetListResultResponse{RawResponse: resp.Response, RecordSetListResult: val}, nil
 }
 
 // listByTypeHandleError handles the ListByType error response.
@@ -394,7 +394,7 @@ func (client *RecordSetsClient) listByTypeHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -462,7 +462,7 @@ func (client *RecordSetsClient) updateHandleResponse(resp *azcore.Response) (Rec
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RecordSetResponse{}, err
 	}
-return RecordSetResponse{RawResponse: resp.Response, RecordSet: val}, nil
+	return RecordSetResponse{RawResponse: resp.Response, RecordSet: val}, nil
 }
 
 // updateHandleError handles the Update error response.
@@ -471,10 +471,9 @@ func (client *RecordSetsClient) updateHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

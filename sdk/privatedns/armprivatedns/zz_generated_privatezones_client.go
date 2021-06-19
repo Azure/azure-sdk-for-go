@@ -23,7 +23,7 @@ import (
 // PrivateZonesClient contains the methods for the PrivateZones group.
 // Don't use this type directly, use NewPrivateZonesClient() instead.
 type PrivateZonesClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -94,7 +94,7 @@ func (client *PrivateZonesClient) createOrUpdate(ctx context.Context, resourceGr
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +136,7 @@ func (client *PrivateZonesClient) createOrUpdateHandleError(resp *azcore.Respons
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -209,7 +209,7 @@ func (client *PrivateZonesClient) deleteOperation(ctx context.Context, resourceG
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -248,7 +248,7 @@ func (client *PrivateZonesClient) deleteHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -305,7 +305,7 @@ func (client *PrivateZonesClient) getHandleResponse(resp *azcore.Response) (Priv
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateZoneResponse{}, err
 	}
-return PrivateZoneResponse{RawResponse: resp.Response, PrivateZone: val}, nil
+	return PrivateZoneResponse{RawResponse: resp.Response, PrivateZone: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -314,7 +314,7 @@ func (client *PrivateZonesClient) getHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -323,7 +323,7 @@ func (client *PrivateZonesClient) getHandleError(resp *azcore.Response) error {
 
 // List - Lists the Private DNS zones in all resource groups in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateZonesClient) List(options *PrivateZonesListOptions) (PrivateZoneListResultPager) {
+func (client *PrivateZonesClient) List(options *PrivateZonesListOptions) PrivateZoneListResultPager {
 	return &privateZoneListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -366,7 +366,7 @@ func (client *PrivateZonesClient) listHandleResponse(resp *azcore.Response) (Pri
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateZoneListResultResponse{}, err
 	}
-return PrivateZoneListResultResponse{RawResponse: resp.Response, PrivateZoneListResult: val}, nil
+	return PrivateZoneListResultResponse{RawResponse: resp.Response, PrivateZoneListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -375,7 +375,7 @@ func (client *PrivateZonesClient) listHandleError(resp *azcore.Response) error {
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -384,7 +384,7 @@ func (client *PrivateZonesClient) listHandleError(resp *azcore.Response) error {
 
 // ListByResourceGroup - Lists the Private DNS zones within a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateZonesClient) ListByResourceGroup(resourceGroupName string, options *PrivateZonesListByResourceGroupOptions) (PrivateZoneListResultPager) {
+func (client *PrivateZonesClient) ListByResourceGroup(resourceGroupName string, options *PrivateZonesListByResourceGroupOptions) PrivateZoneListResultPager {
 	return &privateZoneListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -431,7 +431,7 @@ func (client *PrivateZonesClient) listByResourceGroupHandleResponse(resp *azcore
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PrivateZoneListResultResponse{}, err
 	}
-return PrivateZoneListResultResponse{RawResponse: resp.Response, PrivateZoneListResult: val}, nil
+	return PrivateZoneListResultResponse{RawResponse: resp.Response, PrivateZoneListResult: val}, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
@@ -440,7 +440,7 @@ func (client *PrivateZonesClient) listByResourceGroupHandleError(resp *azcore.Re
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -509,7 +509,7 @@ func (client *PrivateZonesClient) update(ctx context.Context, resourceGroupName 
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
@@ -548,10 +548,9 @@ func (client *PrivateZonesClient) updateHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

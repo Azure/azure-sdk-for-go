@@ -23,7 +23,7 @@ import (
 // VirtualNetworkLinksClient contains the methods for the VirtualNetworkLinks group.
 // Don't use this type directly, use NewVirtualNetworkLinksClient() instead.
 type VirtualNetworkLinksClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -94,7 +94,7 @@ func (client *VirtualNetworkLinksClient) createOrUpdate(ctx context.Context, res
 	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -140,7 +140,7 @@ func (client *VirtualNetworkLinksClient) createOrUpdateHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -213,7 +213,7 @@ func (client *VirtualNetworkLinksClient) deleteOperation(ctx context.Context, re
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -256,7 +256,7 @@ func (client *VirtualNetworkLinksClient) deleteHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -317,7 +317,7 @@ func (client *VirtualNetworkLinksClient) getHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkLinkResponse{}, err
 	}
-return VirtualNetworkLinkResponse{RawResponse: resp.Response, VirtualNetworkLink: val}, nil
+	return VirtualNetworkLinkResponse{RawResponse: resp.Response, VirtualNetworkLink: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -326,7 +326,7 @@ func (client *VirtualNetworkLinksClient) getHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -335,7 +335,7 @@ func (client *VirtualNetworkLinksClient) getHandleError(resp *azcore.Response) e
 
 // List - Lists the virtual network links to the specified Private DNS zone.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualNetworkLinksClient) List(resourceGroupName string, privateZoneName string, options *VirtualNetworkLinksListOptions) (VirtualNetworkLinkListResultPager) {
+func (client *VirtualNetworkLinksClient) List(resourceGroupName string, privateZoneName string, options *VirtualNetworkLinksListOptions) VirtualNetworkLinkListResultPager {
 	return &virtualNetworkLinkListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -386,7 +386,7 @@ func (client *VirtualNetworkLinksClient) listHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return VirtualNetworkLinkListResultResponse{}, err
 	}
-return VirtualNetworkLinkListResultResponse{RawResponse: resp.Response, VirtualNetworkLinkListResult: val}, nil
+	return VirtualNetworkLinkListResultResponse{RawResponse: resp.Response, VirtualNetworkLinkListResult: val}, nil
 }
 
 // listHandleError handles the List error response.
@@ -395,7 +395,7 @@ func (client *VirtualNetworkLinksClient) listHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -464,7 +464,7 @@ func (client *VirtualNetworkLinksClient) update(ctx context.Context, resourceGro
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
@@ -507,10 +507,9 @@ func (client *VirtualNetworkLinksClient) updateHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

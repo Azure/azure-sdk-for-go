@@ -8,21 +8,22 @@
 package armprivatedns
 
 const telemetryInfo = "azsdk-go-armprivatedns/v0.1.0"
+
 // ProvisioningState - The provisioning state of the resource. This is a read-only property and any attempt to set this value will be ignored.
 type ProvisioningState string
 
 const (
-	ProvisioningStateCanceled ProvisioningState = "Canceled"
-	ProvisioningStateCreating ProvisioningState = "Creating"
-	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	ProvisioningStateFailed ProvisioningState = "Failed"
+	ProvisioningStateCanceled  ProvisioningState = "Canceled"
+	ProvisioningStateCreating  ProvisioningState = "Creating"
+	ProvisioningStateDeleting  ProvisioningState = "Deleting"
+	ProvisioningStateFailed    ProvisioningState = "Failed"
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
-	ProvisioningStateUpdating ProvisioningState = "Updating"
+	ProvisioningStateUpdating  ProvisioningState = "Updating"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{	
+	return []ProvisioningState{
 		ProvisioningStateCanceled,
 		ProvisioningStateCreating,
 		ProvisioningStateDeleting,
@@ -40,19 +41,19 @@ func (c ProvisioningState) ToPtr() *ProvisioningState {
 type RecordType string
 
 const (
-	RecordTypeA RecordType = "A"
-	RecordTypeAAAA RecordType = "AAAA"
+	RecordTypeA     RecordType = "A"
+	RecordTypeAAAA  RecordType = "AAAA"
 	RecordTypeCNAME RecordType = "CNAME"
-	RecordTypeMX RecordType = "MX"
-	RecordTypePTR RecordType = "PTR"
-	RecordTypeSOA RecordType = "SOA"
-	RecordTypeSRV RecordType = "SRV"
-	RecordTypeTXT RecordType = "TXT"
+	RecordTypeMX    RecordType = "MX"
+	RecordTypePTR   RecordType = "PTR"
+	RecordTypeSOA   RecordType = "SOA"
+	RecordTypeSRV   RecordType = "SRV"
+	RecordTypeTXT   RecordType = "TXT"
 )
 
 // PossibleRecordTypeValues returns the possible values for the RecordType const type.
 func PossibleRecordTypeValues() []RecordType {
-	return []RecordType{	
+	return []RecordType{
 		RecordTypeA,
 		RecordTypeAAAA,
 		RecordTypeCNAME,
@@ -74,13 +75,13 @@ func (c RecordType) ToPtr() *RecordType {
 type VirtualNetworkLinkState string
 
 const (
-	VirtualNetworkLinkStateCompleted VirtualNetworkLinkState = "Completed"
+	VirtualNetworkLinkStateCompleted  VirtualNetworkLinkState = "Completed"
 	VirtualNetworkLinkStateInProgress VirtualNetworkLinkState = "InProgress"
 )
 
 // PossibleVirtualNetworkLinkStateValues returns the possible values for the VirtualNetworkLinkState const type.
 func PossibleVirtualNetworkLinkStateValues() []VirtualNetworkLinkState {
-	return []VirtualNetworkLinkState{	
+	return []VirtualNetworkLinkState{
 		VirtualNetworkLinkStateCompleted,
 		VirtualNetworkLinkStateInProgress,
 	}
@@ -90,4 +91,3 @@ func PossibleVirtualNetworkLinkStateValues() []VirtualNetworkLinkState {
 func (c VirtualNetworkLinkState) ToPtr() *VirtualNetworkLinkState {
 	return &c
 }
-

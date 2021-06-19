@@ -60,20 +60,20 @@ func (p *privateZoneListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -136,20 +136,20 @@ func (p *recordSetListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -212,20 +212,20 @@ func (p *virtualNetworkLinkListResultPager) NextPage(ctx context.Context) bool {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
-  } else {
+	} else {
 		req, err = p.requester(ctx)
-  }
+	}
 	if err != nil {
 		p.err = err
 		return false
 	}
-  	resp, err := p.pipeline.Do(req)
+	resp, err := p.pipeline.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
 	if !resp.HasStatusCode(p.statusCodes...) {
-	p.err = p.errorer(resp)
+		p.err = p.errorer(resp)
 		return false
 	}
 	result, err := p.responder(resp)
@@ -240,4 +240,3 @@ func (p *virtualNetworkLinkListResultPager) NextPage(ctx context.Context) bool {
 func (p *virtualNetworkLinkListResultPager) PageResponse() VirtualNetworkLinkListResultResponse {
 	return p.current
 }
-

@@ -120,26 +120,26 @@ type PrivateZoneProperties struct {
 	InternalID *string `json:"internalId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The maximum number of record sets that can be created in this Private DNS zone. This is a read-only property and any attempt to set this value
-// will be ignored.
+	// will be ignored.
 	MaxNumberOfRecordSets *int64 `json:"maxNumberOfRecordSets,omitempty" azure:"ro"`
 
 	// READ-ONLY; The maximum number of virtual networks that can be linked to this Private DNS zone. This is a read-only property and any attempt to set this
-// value will be ignored.
+	// value will be ignored.
 	MaxNumberOfVirtualNetworkLinks *int64 `json:"maxNumberOfVirtualNetworkLinks,omitempty" azure:"ro"`
 
 	// READ-ONLY; The maximum number of virtual networks that can be linked to this Private DNS zone with registration enabled. This is a read-only property
-// and any attempt to set this value will be ignored.
+	// and any attempt to set this value will be ignored.
 	MaxNumberOfVirtualNetworkLinksWithRegistration *int64 `json:"maxNumberOfVirtualNetworkLinksWithRegistration,omitempty" azure:"ro"`
 
 	// READ-ONLY; The current number of record sets in this Private DNS zone. This is a read-only property and any attempt to set this value will be ignored.
 	NumberOfRecordSets *int64 `json:"numberOfRecordSets,omitempty" azure:"ro"`
 
 	// READ-ONLY; The current number of virtual networks that are linked to this Private DNS zone. This is a read-only property and any attempt to set this
-// value will be ignored.
+	// value will be ignored.
 	NumberOfVirtualNetworkLinks *int64 `json:"numberOfVirtualNetworkLinks,omitempty" azure:"ro"`
 
 	// READ-ONLY; The current number of virtual networks that are linked to this Private DNS zone with registration enabled. This is a read-only property and
-// any attempt to set this value will be ignored.
+	// any attempt to set this value will be ignored.
 	NumberOfVirtualNetworkLinksWithRegistration *int64 `json:"numberOfVirtualNetworkLinksWithRegistration,omitempty" azure:"ro"`
 
 	// READ-ONLY; The provisioning state of the resource. This is a read-only property and any attempt to set this value will be ignored.
@@ -149,7 +149,7 @@ type PrivateZoneProperties struct {
 // PrivateZonesBeginCreateOrUpdateOptions contains the optional parameters for the PrivateZones.BeginCreateOrUpdate method.
 type PrivateZonesBeginCreateOrUpdateOptions struct {
 	// The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen ETag value to prevent accidentally overwriting
-// any concurrent changes.
+	// any concurrent changes.
 	IfMatch *string
 	// Set to '*' to allow a new Private DNS zone to be created, but to prevent updating an existing zone. Other values will be ignored.
 	IfNoneMatch *string
@@ -158,14 +158,14 @@ type PrivateZonesBeginCreateOrUpdateOptions struct {
 // PrivateZonesBeginDeleteOptions contains the optional parameters for the PrivateZones.BeginDelete method.
 type PrivateZonesBeginDeleteOptions struct {
 	// The ETag of the Private DNS zone. Omit this value to always delete the current zone. Specify the last-seen ETag value to prevent accidentally deleting
-// any concurrent changes.
+	// any concurrent changes.
 	IfMatch *string
 }
 
 // PrivateZonesBeginUpdateOptions contains the optional parameters for the PrivateZones.BeginUpdate method.
 type PrivateZonesBeginUpdateOptions struct {
 	// The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify the last-seen ETag value to prevent accidentally overwriting
-// any concurrent changes.
+	// any concurrent changes.
 	IfMatch *string
 }
 
@@ -297,7 +297,7 @@ func (r RecordSetProperties) MarshalJSON() ([]byte, error) {
 // RecordSetsCreateOrUpdateOptions contains the optional parameters for the RecordSets.CreateOrUpdate method.
 type RecordSetsCreateOrUpdateOptions struct {
 	// The ETag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen ETag value to prevent accidentally overwriting
-// any concurrent changes.
+	// any concurrent changes.
 	IfMatch *string
 	// Set to '*' to allow a new record set to be created, but to prevent updating an existing record set. Other values will be ignored.
 	IfNoneMatch *string
@@ -306,7 +306,7 @@ type RecordSetsCreateOrUpdateOptions struct {
 // RecordSetsDeleteOptions contains the optional parameters for the RecordSets.Delete method.
 type RecordSetsDeleteOptions struct {
 	// The ETag of the record set. Omit this value to always delete the current record set. Specify the last-seen ETag value to prevent accidentally deleting
-// any concurrent changes.
+	// any concurrent changes.
 	IfMatch *string
 }
 
@@ -318,7 +318,7 @@ type RecordSetsGetOptions struct {
 // RecordSetsListByTypeOptions contains the optional parameters for the RecordSets.ListByType method.
 type RecordSetsListByTypeOptions struct {
 	// The suffix label of the record set name to be used to filter the record set enumeration. If this parameter is specified, the returned enumeration will
-// only contain records that end with ".<recordsetnamesuffix>".
+	// only contain records that end with ".<recordsetnamesuffix>".
 	Recordsetnamesuffix *string
 	// The maximum number of record sets to return. If not specified, returns up to 100 record sets.
 	Top *int32
@@ -327,7 +327,7 @@ type RecordSetsListByTypeOptions struct {
 // RecordSetsListOptions contains the optional parameters for the RecordSets.List method.
 type RecordSetsListOptions struct {
 	// The suffix label of the record set name to be used to filter the record set enumeration. If this parameter is specified, the returned enumeration will
-// only contain records that end with ".<recordsetnamesuffix>".
+	// only contain records that end with ".<recordsetnamesuffix>".
 	Recordsetnamesuffix *string
 	// The maximum number of record sets to return. If not specified, returns up to 100 record sets.
 	Top *int32
@@ -336,7 +336,7 @@ type RecordSetsListOptions struct {
 // RecordSetsUpdateOptions contains the optional parameters for the RecordSets.Update method.
 type RecordSetsUpdateOptions struct {
 	// The ETag of the record set. Omit this value to always overwrite the current record set. Specify the last-seen ETag value to prevent accidentally overwriting
-// concurrent changes.
+	// concurrent changes.
 	IfMatch *string
 }
 
@@ -494,31 +494,31 @@ type VirtualNetworkLinkProperties struct {
 	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The status of the virtual network link to the Private DNS zone. Possible values are 'InProgress' and 'Done'. This is a read-only property
-// and any attempt to set this value will be ignored.
+	// and any attempt to set this value will be ignored.
 	VirtualNetworkLinkState *VirtualNetworkLinkState `json:"virtualNetworkLinkState,omitempty" azure:"ro"`
 }
 
 // VirtualNetworkLinksBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkLinks.BeginCreateOrUpdate method.
 type VirtualNetworkLinksBeginCreateOrUpdateOptions struct {
 	// The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite the current virtual network link. Specify the last-seen
-// ETag value to prevent accidentally overwriting any concurrent changes.
+	// ETag value to prevent accidentally overwriting any concurrent changes.
 	IfMatch *string
 	// Set to '*' to allow a new virtual network link to the Private DNS zone to be created, but to prevent updating an existing link. Other values will be
-// ignored.
+	// ignored.
 	IfNoneMatch *string
 }
 
 // VirtualNetworkLinksBeginDeleteOptions contains the optional parameters for the VirtualNetworkLinks.BeginDelete method.
 type VirtualNetworkLinksBeginDeleteOptions struct {
 	// The ETag of the virtual network link to the Private DNS zone. Omit this value to always delete the current zone. Specify the last-seen ETag value to
-// prevent accidentally deleting any concurrent changes.
+	// prevent accidentally deleting any concurrent changes.
 	IfMatch *string
 }
 
 // VirtualNetworkLinksBeginUpdateOptions contains the optional parameters for the VirtualNetworkLinks.BeginUpdate method.
 type VirtualNetworkLinksBeginUpdateOptions struct {
 	// The ETag of the virtual network link to the Private DNS zone. Omit this value to always overwrite the current virtual network link. Specify the last-seen
-// ETag value to prevent accidentally overwriting any concurrent changes.
+	// ETag value to prevent accidentally overwriting any concurrent changes.
 	IfMatch *string
 }
 
@@ -542,4 +542,3 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 		m[k] = v
 	}
 }
-

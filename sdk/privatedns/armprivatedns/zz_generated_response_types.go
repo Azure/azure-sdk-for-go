@@ -102,4 +102,3 @@ type VirtualNetworkLinkResponse struct {
 	// Describes a link to virtual network for a Private DNS zone.
 	VirtualNetworkLink *VirtualNetworkLink
 }
-

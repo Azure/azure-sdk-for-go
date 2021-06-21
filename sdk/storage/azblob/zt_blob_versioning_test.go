@@ -24,7 +24,7 @@ package azblob
 //		Metadata:                 &basicMetadata,
 //		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: blobProp.ETag},
 //	}
-//	uploadResp, err := blobClient.Upload(ctx, getReaderToRandomBytes(1024), &uploadBlockBlobOptions)
+//	uploadResp, err := blobClient.Upload(ctx, getReaderToGeneratedBytes(1024), &uploadBlockBlobOptions)
 //	_assert.Nil(err)
 //	c.Assert(uploadResp.VersionID, chk.NotNil)
 //	blobProp, _ = blobClient.GetProperties(ctx, nil)
@@ -399,7 +399,7 @@ package azblob
 //	blob, _ := createNewPageBlob(c, containerClient)
 //
 //	contentSize := 1 * 1024
-//	r := getReaderToRandomBytes(contentSize)
+//	r := getReaderToGeneratedBytes(contentSize)
 //	offset, count := int64(0), int64(contentSize)
 //	uploadPagesOptions := UploadPagesOptions{
 //		PageRange: &HttpRange{offset, count},

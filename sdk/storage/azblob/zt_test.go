@@ -229,8 +229,8 @@ func getPageBlobClient(pageBlobName string, containerClient ContainerClient) Pag
 	return containerClient.NewPageBlobClient(pageBlobName)
 }
 
-func getReaderToRandomBytes(n int) *bytes.Reader {
-	r, _ := getRandomDataAndReader(n)
+func getReaderToGeneratedBytes(n int) *bytes.Reader {
+	r, _ := generateData(n)
 	return r
 }
 

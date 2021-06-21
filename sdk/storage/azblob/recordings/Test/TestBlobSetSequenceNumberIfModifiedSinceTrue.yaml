@@ -13,7 +13,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 18 Jun 2021 04:31:58 GMT
+      - Mon, 21 Jun 2021 11:18:21 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetsequencenumberifmodifiedsincetrue?restype=container
@@ -24,15 +24,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 18 Jun 2021 04:31:56 GMT
+      - Mon, 21 Jun 2021 11:18:20 GMT
       Etag:
-      - '"0x8D9321201E7BB16"'
+      - '"0x8D934A6478412E8"'
       Last-Modified:
-      - Fri, 18 Jun 2021 04:31:57 GMT
+      - Mon, 21 Jun 2021 11:18:21 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 49443ae9-401e-0028-74fa-63411e000000
+      - 1f788497-001e-0006-728f-66c1d9000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -56,7 +56,7 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Date:
-      - Fri, 18 Jun 2021 04:31:58 GMT
+      - Mon, 21 Jun 2021 11:18:22 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetsequencenumberifmodifiedsincetrue/gotestblobblobsetsequencenumberifmodifiedsincetrue
@@ -67,21 +67,21 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 18 Jun 2021 04:31:57 GMT
+      - Mon, 21 Jun 2021 11:18:21 GMT
       Etag:
-      - '"0x8D9321202108A4C"'
+      - '"0x8D934A647A93D7D"'
       Last-Modified:
-      - Fri, 18 Jun 2021 04:31:57 GMT
+      - Mon, 21 Jun 2021 11:18:22 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 49443b6c-401e-0028-5bfa-63411e000000
+      - 1f78854a-001e-0006-128f-66c1d9000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-18T04:31:57.5074380Z"
+      - "2021-06-21T11:18:22.1124989Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -94,12 +94,12 @@ interactions:
       Authorization:
       - sanitized
       If-Modified-Since:
-      - Fri, 18 Jun 2021 04:31:47 GMT
+      - Mon, 21 Jun 2021 11:18:11 GMT
       User-Agent:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 18 Jun 2021 04:31:58 GMT
+      - Mon, 21 Jun 2021 11:18:22 GMT
       X-Ms-Sequence-Number-Action:
       - increment
       X-Ms-Version:
@@ -112,17 +112,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 18 Jun 2021 04:31:57 GMT
+      - Mon, 21 Jun 2021 11:18:21 GMT
       Etag:
-      - '"0x8D93212023F93A4"'
+      - '"0x8D934A647CEA7D1"'
       Last-Modified:
-      - Fri, 18 Jun 2021 04:31:57 GMT
+      - Mon, 21 Jun 2021 11:18:22 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Sequence-Number:
       - "1"
       X-Ms-Request-Id:
-      - 49443c13-401e-0028-73fa-63411e000000
+      - 1f7885dc-001e-0006-138f-66c1d9000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -140,7 +140,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 18 Jun 2021 04:31:58 GMT
+      - Mon, 21 Jun 2021 11:18:22 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetsequencenumberifmodifiedsincetrue/gotestblobblobsetsequencenumberifmodifiedsincetrue
@@ -155,11 +155,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Fri, 18 Jun 2021 04:31:57 GMT
+      - Mon, 21 Jun 2021 11:18:21 GMT
       Etag:
-      - '"0x8D93212023F93A4"'
+      - '"0x8D934A647CEA7D1"'
       Last-Modified:
-      - Fri, 18 Jun 2021 04:31:57 GMT
+      - Mon, 21 Jun 2021 11:18:22 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Sequence-Number:
@@ -167,7 +167,7 @@ interactions:
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Creation-Time:
-      - Fri, 18 Jun 2021 04:31:57 GMT
+      - Mon, 21 Jun 2021 11:18:22 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -175,13 +175,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - 49443d19-401e-0028-57fa-63411e000000
+      - 1f788634-001e-0006-658f-66c1d9000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-06-18T04:31:57.5074380Z"
+      - "2021-06-21T11:18:22.1124989Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -197,7 +197,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 18 Jun 2021 04:31:59 GMT
+      - Mon, 21 Jun 2021 11:18:22 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobsetsequencenumberifmodifiedsincetrue?restype=container
@@ -208,11 +208,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 18 Jun 2021 04:31:57 GMT
+      - Mon, 21 Jun 2021 11:18:21 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 49443df8-401e-0028-1dfa-63411e000000
+      - 1f7886ad-001e-0006-4d8f-66c1d9000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

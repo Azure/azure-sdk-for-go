@@ -13,7 +13,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 18 Jun 2021 04:33:22 GMT
+      - Mon, 21 Jun 2021 11:20:01 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsinvalidpolicytimes?restype=container
@@ -24,15 +24,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 18 Jun 2021 04:33:20 GMT
+      - Mon, 21 Jun 2021 11:20:01 GMT
       Etag:
-      - '"0x8D932123414381B"'
+      - '"0x8D934A682E39C0D"'
       Last-Modified:
-      - Fri, 18 Jun 2021 04:33:21 GMT
+      - Mon, 21 Jun 2021 11:20:01 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 4944f449-401e-0028-6afb-63411e000000
+      - 1f79857f-001e-0006-1c8f-66c1d9000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -56,7 +56,7 @@ interactions:
       X-Ms-Blob-Public-Access:
       - blob
       X-Ms-Date:
-      - Fri, 18 Jun 2021 04:33:22 GMT
+      - Mon, 21 Jun 2021 11:20:01 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsinvalidpolicytimes?comp=acl&restype=container
@@ -67,15 +67,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 18 Jun 2021 04:33:21 GMT
+      - Mon, 21 Jun 2021 11:20:01 GMT
       Etag:
-      - '"0x8D93212343CB350"'
+      - '"0x8D934A683088DA7"'
       Last-Modified:
-      - Fri, 18 Jun 2021 04:33:21 GMT
+      - Mon, 21 Jun 2021 11:20:01 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 4944f4f2-401e-0028-01fb-63411e000000
+      - 1f7985f0-001e-0006-808f-66c1d9000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -93,7 +93,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 18 Jun 2021 04:33:22 GMT
+      - Mon, 21 Jun 2021 11:20:02 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsinvalidpolicytimes?restype=container
@@ -104,11 +104,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 18 Jun 2021 04:33:21 GMT
+      - Mon, 21 Jun 2021 11:20:01 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 4944f588-401e-0028-06fb-63411e000000
+      - 1f79866f-001e-0006-6f8f-66c1d9000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

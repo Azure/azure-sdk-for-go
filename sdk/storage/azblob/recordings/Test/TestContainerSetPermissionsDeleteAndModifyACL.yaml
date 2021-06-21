@@ -13,7 +13,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 18 Jun 2021 04:33:20 GMT
+      - Mon, 21 Jun 2021 11:19:55 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?restype=container
@@ -24,15 +24,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 18 Jun 2021 04:33:18 GMT
+      - Mon, 21 Jun 2021 11:19:55 GMT
       Etag:
-      - '"0x8D9321232F5B91D"'
+      - '"0x8D934A67F8513C4"'
       Last-Modified:
-      - Fri, 18 Jun 2021 04:33:19 GMT
+      - Mon, 21 Jun 2021 11:19:55 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 4944efdc-401e-0028-7dfb-63411e000000
+      - 1f79778a-001e-0006-1b8f-66c1d9000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -56,7 +56,7 @@ interactions:
       X-Ms-Blob-Public-Access:
       - blob
       X-Ms-Date:
-      - Fri, 18 Jun 2021 04:33:20 GMT
+      - Mon, 21 Jun 2021 11:19:56 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?comp=acl&restype=container
@@ -67,15 +67,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 18 Jun 2021 04:33:19 GMT
+      - Mon, 21 Jun 2021 11:19:56 GMT
       Etag:
-      - '"0x8D9321233233ED5"'
+      - '"0x8D934A67FDB0AB8"'
       Last-Modified:
-      - Fri, 18 Jun 2021 04:33:19 GMT
+      - Mon, 21 Jun 2021 11:19:56 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 4944f04c-401e-0028-5afb-63411e000000
+      - 1f797870-001e-0006-658f-66c1d9000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -93,7 +93,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 18 Jun 2021 04:33:20 GMT
+      - Mon, 21 Jun 2021 11:19:56 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?comp=acl&restype=container
@@ -104,17 +104,17 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Fri, 18 Jun 2021 04:33:19 GMT
+      - Mon, 21 Jun 2021 11:19:56 GMT
       Etag:
-      - '"0x8D9321233233ED5"'
+      - '"0x8D934A67FDB0AB8"'
       Last-Modified:
-      - Fri, 18 Jun 2021 04:33:19 GMT
+      - Mon, 21 Jun 2021 11:19:56 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Public-Access:
       - blob
       X-Ms-Request-Id:
-      - 4944f109-401e-0028-7ffb-63411e000000
+      - 1f7978e2-001e-0006-498f-66c1d9000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -138,7 +138,7 @@ interactions:
       X-Ms-Blob-Public-Access:
       - blob
       X-Ms-Date:
-      - Fri, 18 Jun 2021 04:33:21 GMT
+      - Mon, 21 Jun 2021 11:19:56 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?comp=acl&restype=container
@@ -149,15 +149,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 18 Jun 2021 04:33:19 GMT
+      - Mon, 21 Jun 2021 11:19:56 GMT
       Etag:
-      - '"0x8D9321233812A60"'
+      - '"0x8D934A6802394C6"'
       Last-Modified:
-      - Fri, 18 Jun 2021 04:33:20 GMT
+      - Mon, 21 Jun 2021 11:19:56 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 4944f1c2-401e-0028-20fb-63411e000000
+      - 1f79795f-001e-0006-3b8f-66c1d9000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -175,7 +175,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 18 Jun 2021 04:33:21 GMT
+      - Mon, 21 Jun 2021 11:19:57 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?comp=acl&restype=container
@@ -186,17 +186,17 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Fri, 18 Jun 2021 04:33:20 GMT
+      - Mon, 21 Jun 2021 11:19:57 GMT
       Etag:
-      - '"0x8D9321233812A60"'
+      - '"0x8D934A6802394C6"'
       Last-Modified:
-      - Fri, 18 Jun 2021 04:33:20 GMT
+      - Mon, 21 Jun 2021 11:19:56 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Public-Access:
       - blob
       X-Ms-Request-Id:
-      - 4944f27b-401e-0028-4dfb-63411e000000
+      - 1f7979ec-001e-0006-378f-66c1d9000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -214,7 +214,7 @@ interactions:
       - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 18 Jun 2021 04:33:21 GMT
+      - Mon, 21 Jun 2021 11:19:57 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontainersetpermissionsdeleteandmodifyacl?restype=container
@@ -225,11 +225,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 18 Jun 2021 04:33:20 GMT
+      - Mon, 21 Jun 2021 11:19:57 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 4944f38b-401e-0028-43fb-63411e000000
+      - 1f797a54-001e-0006-0d8f-66c1d9000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

@@ -574,7 +574,7 @@ package azblob
 //	uploadPagesOptions := UploadPagesOptions{
 //		PageRange: &HttpRange{offset, count},
 //	}
-//	putResp, err := pbClient.UploadPages(ctx, getReaderToRandomBytes(1024), &uploadPagesOptions)
+//	putResp, err := pbClient.UploadPages(ctx, getReaderToGeneratedBytes(1024), &uploadPagesOptions)
 //	_assert.Nil(err)
 //	c.Assert(putResp.RawResponse.StatusCode, chk.Equals, 201)
 //	c.Assert(putResp.LastModified.IsZero(), chk.Equals, false)

@@ -1112,7 +1112,7 @@ package azblob
 //	pbClient, _ := createNewPageBlobWithCPK(c, containerClient, PageBlobPageBytes*10, &testCPKByValue, nil)
 //
 //	contentSize := 2 * 1024
-//	r := getReaderToRandomBytes(contentSize)
+//	r := getReaderToGeneratedBytes(contentSize)
 //	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 //	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}, CpkInfo: &testCPKByValue}
 //	_, err := pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
@@ -1126,7 +1126,7 @@ package azblob
 //
 //	offset1, end1, count1 := int64(contentSize), int64(2*contentSize-1), int64(contentSize)
 //	uploadPagesOptions1 := UploadPagesOptions{PageRange: &HttpRange{offset1, count1}, CpkInfo: &testCPKByValue}
-//	_, err = pbClient.UploadPages(context.Background(), getReaderToRandomBytes(2048), &uploadPagesOptions1)
+//	_, err = pbClient.UploadPages(context.Background(), getReaderToGeneratedBytes(2048), &uploadPagesOptions1)
 //	_assert.Nil(err)
 //
 //	pageListResp, err := pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4096}, *snapshotResp.Snapshot, nil)

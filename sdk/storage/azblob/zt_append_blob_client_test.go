@@ -33,7 +33,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 	_assert.Nil(err)
 	_assert.Equal(resp.RawResponse.StatusCode, 201)
 
-	appendResp, err := abClient.AppendBlock(context.Background(), getReaderToRandomBytes(1024), nil)
+	appendResp, err := abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	_assert.Nil(err)
 	_assert.Equal(appendResp.RawResponse.StatusCode, 201)
 	_assert.Equal(*appendResp.BlobAppendOffset, "0")
@@ -47,7 +47,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlock() {
 	_assert.NotNil(appendResp.Date)
 	_assert.Equal((*appendResp.Date).IsZero(), false)
 
-	appendResp, err = abClient.AppendBlock(context.Background(), getReaderToRandomBytes(1024), nil)
+	appendResp, err = abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	_assert.Nil(err)
 	_assert.Equal(*appendResp.BlobAppendOffset, "1024")
 	_assert.Equal(*appendResp.BlobCommittedBlockCount, int32(2))

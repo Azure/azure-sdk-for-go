@@ -233,7 +233,7 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
 
 	contentSize := 2 * 1024
-	r := getReaderToRandomBytes(contentSize)
+	r := getReaderToGeneratedBytes(contentSize)
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = pbClient.UploadPages(context.Background(), r, &uploadPagesOptions)
@@ -244,7 +244,7 @@ func (s *azblobUnrecordedTestSuite) TestClearDiffPages() {
 
 	offset1, end1, count1 := int64(contentSize), int64(2*contentSize-1), int64(contentSize)
 	uploadPagesOptions1 := UploadPagesOptions{PageRange: &HttpRange{offset1, count1}}
-	_, err = pbClient.UploadPages(context.Background(), getReaderToRandomBytes(2048), &uploadPagesOptions1)
+	_, err = pbClient.UploadPages(context.Background(), getReaderToGeneratedBytes(2048), &uploadPagesOptions1)
 	_assert.Nil(err)
 
 	pageListResp, err := pbClient.GetPageRangesDiff(context.Background(), HttpRange{0, 4096}, *snapshotResp.Snapshot, nil)
@@ -304,7 +304,7 @@ func (s *azblobUnrecordedTestSuite) TestIncrementalCopy() {
 	srcBlob := createNewPageBlob(_assert, "src"+generateBlobName(testName), containerClient)
 
 	contentSize := 1024
-	r := getReaderToRandomBytes(contentSize)
+	r := getReaderToGeneratedBytes(contentSize)
 	offset, count := int64(0), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = srcBlob.UploadPages(context.Background(), r, &uploadPagesOptions)
@@ -945,7 +945,7 @@ func (s *azblobUnrecordedTestSuite) TestBlobPutPagesInvalidRange() {
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
 
 	contentSize := 1024
-	r := getReaderToRandomBytes(contentSize)
+	r := getReaderToGeneratedBytes(contentSize)
 	offset, count := int64(0), int64(contentSize/2)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
 	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
@@ -2098,6 +2098,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesEmptyBlob() {
 
 	containerName := generateContainerName(testName)
 	containerClient := createNewContainer(_assert, containerName, svcClient)
+	defer deleteContainer(_assert, containerClient)
 
 	blobName := generateBlobName(testName)
 	pbClient := createNewPageBlob(_assert, blobName, containerClient)
@@ -2134,7 +2135,7 @@ func (s *azblobTestSuite) TestBlobGetPageRangesNonContiguousRanges() {
 	containerClient, pbClient := setupGetPageRangesTest(_assert, testName)
 	defer deleteContainer(_assert, containerClient)
 
-	r := getReaderToRandomBytes(PageBlobPageBytes)
+	r, _ := generateData(PageBlobPageBytes)
 	offset, count := int64(2*PageBlobPageBytes), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
@@ -2380,7 +2381,7 @@ func setupDiffPageRangesTest(_assert *assert.Assertions, testName string) (conta
 	blobName := generateName(testName)
 	pbClient = createNewPageBlob(_assert, blobName, containerClient)
 
-	r := getReaderToRandomBytes(PageBlobPageBytes)
+	r := getReaderToGeneratedBytes(PageBlobPageBytes)
 	offset, count := int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
@@ -2392,7 +2393,7 @@ func setupDiffPageRangesTest(_assert *assert.Assertions, testName string) (conta
 	_assert.Nil(err)
 	snapshot = *resp.Snapshot
 
-	r = getReaderToRandomBytes(PageBlobPageBytes)
+	r = getReaderToGeneratedBytes(PageBlobPageBytes)
 	offset, count = int64(0), int64(PageBlobPageBytes)
 	uploadPagesOptions = UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},

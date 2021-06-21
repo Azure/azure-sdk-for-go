@@ -53,7 +53,9 @@ func (client ActionGroupsClient) CreateOrUpdate(ctx context.Context, resourceGro
 				Chain: []validation.Constraint{{Target: "actionGroup.ActionGroup.GroupShortName", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "actionGroup.ActionGroup.GroupShortName", Name: validation.MaxLength, Rule: 12, Chain: nil}}},
 					{Target: "actionGroup.ActionGroup.Enabled", Name: validation.Null, Rule: true, Chain: nil},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.ActionGroupsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -135,6 +137,12 @@ func (client ActionGroupsClient) Delete(ctx context.Context, resourceGroupName s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.ActionGroupsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, actionGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "Delete", nil, "Failure preparing request")
@@ -214,7 +222,9 @@ func (client ActionGroupsClient) EnableReceiver(ctx context.Context, resourceGro
 	}
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: enableRequest,
-			Constraints: []validation.Constraint{{Target: "enableRequest.ReceiverName", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "enableRequest.ReceiverName", Name: validation.Null, Rule: true, Chain: nil}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.ActionGroupsClient", "EnableReceiver", err.Error())
 	}
 
@@ -295,6 +305,12 @@ func (client ActionGroupsClient) Get(ctx context.Context, resourceGroupName stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.ActionGroupsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, actionGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "Get", nil, "Failure preparing request")
@@ -370,6 +386,12 @@ func (client ActionGroupsClient) ListByResourceGroup(ctx context.Context, resour
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.ActionGroupsClient", "ListByResourceGroup", err.Error())
+	}
+
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -442,6 +464,12 @@ func (client ActionGroupsClient) ListBySubscriptionID(ctx context.Context) (resu
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.ActionGroupsClient", "ListBySubscriptionID", err.Error())
+	}
+
 	req, err := client.ListBySubscriptionIDPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "ListBySubscriptionID", nil, "Failure preparing request")
@@ -517,6 +545,12 @@ func (client ActionGroupsClient) Update(ctx context.Context, resourceGroupName s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.ActionGroupsClient", "Update", err.Error())
+	}
+
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, actionGroupName, actionGroupPatch)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.ActionGroupsClient", "Update", nil, "Failure preparing request")

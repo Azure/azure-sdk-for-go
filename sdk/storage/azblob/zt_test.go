@@ -105,6 +105,14 @@ func (s *azblobUnrecordedTestSuite) AfterTest(suite string, test string) {
 
 }
 
+// Note that this function is adding to the list of ignored headers not creating from scratch
+func ignoreHeaders(recording *testframework.Recording, headers []string) {
+	ignoredHeaders := recording.Matcher.IgnoredHeaders
+	for _, header := range headers {
+		ignoredHeaders[header] = nil
+	}
+}
+
 // Vars for
 const DefaultEndpointSuffix = "core.windows.net/"
 const DefaultBlobEndpointSuffix = "blob.core.windows.net/"
@@ -234,7 +242,7 @@ func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 
 const random64BString string = "2SDgZj6RkKYzJpu04sweQek4uWHO8ndPnYlZ0tnFS61hjnFZ5IkvIGGY44eKABov"
 
-func generateData(sizeInBytes int) *bytes.Reader {
+func generateData(sizeInBytes int) (*bytes.Reader, []byte) {
 	data := make([]byte, sizeInBytes, sizeInBytes)
 	_len := len(random64BString)
 	if sizeInBytes > _len {
@@ -246,7 +254,7 @@ func generateData(sizeInBytes int) *bytes.Reader {
 	} else {
 		copy(data[:], random64BString)
 	}
-	return bytes.NewReader(data)
+	return bytes.NewReader(data), data
 }
 
 func createNewContainer(_assert *assert.Assertions, containerName string, serviceClient ServiceClient) ContainerClient {

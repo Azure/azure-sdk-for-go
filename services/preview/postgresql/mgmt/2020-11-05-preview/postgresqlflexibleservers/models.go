@@ -1376,7 +1376,7 @@ type ResourceModelWithAllowedPropertySet struct {
 	Type *string `json:"type,omitempty"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ManagedBy - The  fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource.
+	// ManagedBy - The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource.
 	ManagedBy *string `json:"managedBy,omitempty"`
 	// Kind - Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
 	Kind *string `json:"kind,omitempty"`
@@ -1868,6 +1868,10 @@ type ServerProperties struct {
 	HaEnabled HAEnabledEnum `json:"haEnabled,omitempty"`
 	// SourceServerName - The source PostgreSQL server name to restore from.
 	SourceServerName *string `json:"sourceServerName,omitempty"`
+	// SourceSubscriptionID - The subscription id of source serve PostgreSQL server name to restore from.
+	SourceSubscriptionID *string `json:"sourceSubscriptionId,omitempty"`
+	// SourceResourceGroupName - The resource group name of source serve PostgreSQL server name to restore from.
+	SourceResourceGroupName *string `json:"sourceResourceGroupName,omitempty"`
 	// PointInTimeUTC - Restore point creation time (ISO8601 format), specifying the time to restore from.
 	PointInTimeUTC *date.Time `json:"pointInTimeUTC,omitempty"`
 	// AvailabilityZone - availability Zone information of the server.
@@ -1877,6 +1881,7 @@ type ServerProperties struct {
 	// ByokEnforcement - READ-ONLY; Status showing whether the data encryption is enabled with customer-managed keys.
 	ByokEnforcement          *string                                   `json:"byokEnforcement,omitempty"`
 	DelegatedSubnetArguments *ServerPropertiesDelegatedSubnetArguments `json:"delegatedSubnetArguments,omitempty"`
+	PrivateDNSZoneArguments  *ServerPropertiesPrivateDNSZoneArguments  `json:"privateDnsZoneArguments,omitempty"`
 	// CreateMode - The mode to create a new PostgreSQL server. Possible values include: 'Default', 'PointInTimeRestore'
 	CreateMode CreateMode `json:"createMode,omitempty"`
 	// Tags - Application-specific metadata in the form of key-value pairs.
@@ -1910,6 +1915,12 @@ func (sp ServerProperties) MarshalJSON() ([]byte, error) {
 	if sp.SourceServerName != nil {
 		objectMap["sourceServerName"] = sp.SourceServerName
 	}
+	if sp.SourceSubscriptionID != nil {
+		objectMap["sourceSubscriptionId"] = sp.SourceSubscriptionID
+	}
+	if sp.SourceResourceGroupName != nil {
+		objectMap["sourceResourceGroupName"] = sp.SourceResourceGroupName
+	}
 	if sp.PointInTimeUTC != nil {
 		objectMap["pointInTimeUTC"] = sp.PointInTimeUTC
 	}
@@ -1918,6 +1929,9 @@ func (sp ServerProperties) MarshalJSON() ([]byte, error) {
 	}
 	if sp.DelegatedSubnetArguments != nil {
 		objectMap["delegatedSubnetArguments"] = sp.DelegatedSubnetArguments
+	}
+	if sp.PrivateDNSZoneArguments != nil {
+		objectMap["privateDnsZoneArguments"] = sp.PrivateDNSZoneArguments
 	}
 	if sp.CreateMode != "" {
 		objectMap["createMode"] = sp.CreateMode
@@ -1944,6 +1958,12 @@ type ServerPropertiesForUpdate struct {
 	HaEnabled HAEnabledEnum `json:"haEnabled,omitempty"`
 	// MaintenanceWindow - Maintenance window of a server.
 	MaintenanceWindow *MaintenanceWindow `json:"maintenanceWindow,omitempty"`
+}
+
+// ServerPropertiesPrivateDNSZoneArguments ...
+type ServerPropertiesPrivateDNSZoneArguments struct {
+	// PrivateDNSZoneArmResourceID - private dns zone arm resource id.
+	PrivateDNSZoneArmResourceID *string `json:"privateDnsZoneArmResourceId,omitempty"`
 }
 
 // ServersCreateFuture an abstraction for monitoring and retrieving the results of a long-running

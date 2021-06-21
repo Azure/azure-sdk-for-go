@@ -93,7 +93,7 @@ func (client MetricBaselineClient) CalculateBaselinePreparer(ctx context.Context
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/calculatebaseline", pathParameters),
+		autorest.WithPathParameters("/{resourceUri}/providers/Microsoft.Insights/calculatebaseline", pathParameters),
 		autorest.WithJSON(timeSeriesInformation),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
@@ -193,7 +193,7 @@ func (client MetricBaselineClient) GetPreparer(ctx context.Context, resourceURI 
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/baseline/{metricName}", pathParameters),
+		autorest.WithPathParameters("/{resourceUri}/providers/Microsoft.Insights/baseline/{metricName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

@@ -112,31 +112,121 @@ func (at *AgreementTerms) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// AgreementTermsList represents the list of AgreementTerms objects
+type AgreementTermsList struct {
+	autorest.Response `json:"-"`
+	// Value - The value of the array.
+	Value *[]AgreementTerms `json:"value,omitempty"`
+}
+
 // ErrorResponse error response indicates Microsoft.MarketplaceOrdering service is not able to process the
 // incoming request. The reason is provided in the error message.
 type ErrorResponse struct {
 	// Error - The details of the error.
-	Error *ErrorResponseError `json:"error,omitempty"`
+	Error *ErrorResponseError `json:"Error,omitempty"`
 }
 
 // ErrorResponseError the details of the error.
 type ErrorResponseError struct {
 	// Code - READ-ONLY; Error code.
-	Code *string `json:"code,omitempty"`
+	Code *string `json:"Code,omitempty"`
 	// Message - READ-ONLY; Error message indicating why the operation failed.
-	Message *string `json:"message,omitempty"`
+	Message *string `json:"Message,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ErrorResponseError.
-func (er ErrorResponseError) MarshalJSON() ([]byte, error) {
+func (erE ErrorResponseError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
 
-// ListAgreementTerms ...
-type ListAgreementTerms struct {
+// OldAgreementProperties old Agreement Terms definition
+type OldAgreementProperties struct {
+	// ID - A unique identifier of the agreement.
+	ID *string `json:"id,omitempty"`
+	// Publisher - Publisher identifier string of image being deployed.
+	Publisher *string `json:"publisher,omitempty"`
+	// Offer - Offer identifier string of image being deployed.
+	Offer *string `json:"offer,omitempty"`
+	// SignDate - Date and time in UTC of when the terms were accepted. This is empty if state is cancelled.
+	SignDate *date.Time `json:"signDate,omitempty"`
+	// CancelDate - Date and time in UTC of when the terms were cancelled. This is empty if state is active.
+	CancelDate *date.Time `json:"cancelDate,omitempty"`
+	// State - Whether the agreement is active or cancelled. Possible values include: 'Active', 'Canceled'
+	State State `json:"state,omitempty"`
+}
+
+// OldAgreementTerms terms properties for provided Publisher/Offer/Plan tuple
+type OldAgreementTerms struct {
 	autorest.Response `json:"-"`
-	Value             *[]AgreementTerms `json:"value,omitempty"`
+	// OldAgreementProperties - Represents the properties of the resource.
+	*OldAgreementProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OldAgreementTerms.
+func (oat OldAgreementTerms) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if oat.OldAgreementProperties != nil {
+		objectMap["properties"] = oat.OldAgreementProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for OldAgreementTerms struct.
+func (oat *OldAgreementTerms) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var oldAgreementProperties OldAgreementProperties
+				err = json.Unmarshal(*v, &oldAgreementProperties)
+				if err != nil {
+					return err
+				}
+				oat.OldAgreementProperties = &oldAgreementProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				oat.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				oat.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				oat.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
 }
 
 // Operation microsoft.MarketplaceOrdering REST API operation
@@ -155,6 +245,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 	// Operation - Operation type: Get Agreement, Sign Agreement, Cancel Agreement etc.
 	Operation *string `json:"operation,omitempty"`
+	// Description - The description of the operation
+	Description *string `json:"description,omitempty"`
 }
 
 // OperationListResult result of the request to list MarketplaceOrdering operations. It contains a list of

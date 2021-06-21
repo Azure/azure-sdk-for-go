@@ -36,7 +36,7 @@ func NewMarketplaceAgreementsClientWithBaseURI(baseURI string, subscriptionID st
 // publisherID - publisher identifier string of image being deployed.
 // offerID - offer identifier string of image being deployed.
 // planID - plan identifier string of image being deployed.
-func (client MarketplaceAgreementsClient) Cancel(ctx context.Context, publisherID string, offerID string, planID string) (result AgreementTerms, err error) {
+func (client MarketplaceAgreementsClient) Cancel(ctx context.Context, publisherID string, offerID string, planID string) (result OldAgreementTerms, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/MarketplaceAgreementsClient.Cancel")
 		defer func() {
@@ -99,7 +99,7 @@ func (client MarketplaceAgreementsClient) CancelSender(req *http.Request) (*http
 
 // CancelResponder handles the response to the Cancel request. The method always
 // closes the http.Response Body.
-func (client MarketplaceAgreementsClient) CancelResponder(resp *http.Response) (result AgreementTerms, err error) {
+func (client MarketplaceAgreementsClient) CancelResponder(resp *http.Response) (result OldAgreementTerms, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -275,7 +275,7 @@ func (client MarketplaceAgreementsClient) GetResponder(resp *http.Response) (res
 // publisherID - publisher identifier string of image being deployed.
 // offerID - offer identifier string of image being deployed.
 // planID - plan identifier string of image being deployed.
-func (client MarketplaceAgreementsClient) GetAgreement(ctx context.Context, publisherID string, offerID string, planID string) (result AgreementTerms, err error) {
+func (client MarketplaceAgreementsClient) GetAgreement(ctx context.Context, publisherID string, offerID string, planID string) (result OldAgreementTerms, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/MarketplaceAgreementsClient.GetAgreement")
 		defer func() {
@@ -338,7 +338,7 @@ func (client MarketplaceAgreementsClient) GetAgreementSender(req *http.Request) 
 
 // GetAgreementResponder handles the response to the GetAgreement request. The method always
 // closes the http.Response Body.
-func (client MarketplaceAgreementsClient) GetAgreementResponder(resp *http.Response) (result AgreementTerms, err error) {
+func (client MarketplaceAgreementsClient) GetAgreementResponder(resp *http.Response) (result OldAgreementTerms, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -349,7 +349,7 @@ func (client MarketplaceAgreementsClient) GetAgreementResponder(resp *http.Respo
 }
 
 // List list marketplace agreements in the subscription.
-func (client MarketplaceAgreementsClient) List(ctx context.Context) (result ListAgreementTerms, err error) {
+func (client MarketplaceAgreementsClient) List(ctx context.Context) (result AgreementTermsList, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/MarketplaceAgreementsClient.List")
 		defer func() {
@@ -409,11 +409,11 @@ func (client MarketplaceAgreementsClient) ListSender(req *http.Request) (*http.R
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client MarketplaceAgreementsClient) ListResponder(resp *http.Response) (result ListAgreementTerms, err error) {
+func (client MarketplaceAgreementsClient) ListResponder(resp *http.Response) (result AgreementTermsList, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -424,7 +424,7 @@ func (client MarketplaceAgreementsClient) ListResponder(resp *http.Response) (re
 // publisherID - publisher identifier string of image being deployed.
 // offerID - offer identifier string of image being deployed.
 // planID - plan identifier string of image being deployed.
-func (client MarketplaceAgreementsClient) Sign(ctx context.Context, publisherID string, offerID string, planID string) (result AgreementTerms, err error) {
+func (client MarketplaceAgreementsClient) Sign(ctx context.Context, publisherID string, offerID string, planID string) (result OldAgreementTerms, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/MarketplaceAgreementsClient.Sign")
 		defer func() {
@@ -487,7 +487,7 @@ func (client MarketplaceAgreementsClient) SignSender(req *http.Request) (*http.R
 
 // SignResponder handles the response to the Sign request. The method always
 // closes the http.Response Body.
-func (client MarketplaceAgreementsClient) SignResponder(resp *http.Response) (result AgreementTerms, err error) {
+func (client MarketplaceAgreementsClient) SignResponder(resp *http.Response) (result OldAgreementTerms, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

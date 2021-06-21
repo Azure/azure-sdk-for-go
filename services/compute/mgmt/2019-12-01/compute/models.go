@@ -4312,11 +4312,10 @@ func (gavp GalleryApplicationVersionProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// GalleryApplicationVersionPublishingProfile the publishing profile of a gallery Image Version.
+// GalleryApplicationVersionPublishingProfile the publishing profile of a gallery image version.
 type GalleryApplicationVersionPublishingProfile struct {
-	Source *UserArtifactSource `json:"source,omitempty"`
-	// ContentType - Optional. May be used to help process this file. The type of file contained in the source, e.g. zip, json, etc.
-	ContentType *string `json:"contentType,omitempty"`
+	Source        *UserArtifactSource `json:"source,omitempty"`
+	ManageActions *UserArtifactManage `json:"manageActions,omitempty"`
 	// EnableHealthCheck - Optional. Whether or not this application reports health.
 	EnableHealthCheck *bool `json:"enableHealthCheck,omitempty"`
 	// TargetRegions - The target regions where the Image Version is going to be replicated to. This property is updatable.
@@ -4339,8 +4338,8 @@ func (gavpp GalleryApplicationVersionPublishingProfile) MarshalJSON() ([]byte, e
 	if gavpp.Source != nil {
 		objectMap["source"] = gavpp.Source
 	}
-	if gavpp.ContentType != nil {
-		objectMap["contentType"] = gavpp.ContentType
+	if gavpp.ManageActions != nil {
+		objectMap["manageActions"] = gavpp.ManageActions
 	}
 	if gavpp.EnableHealthCheck != nil {
 		objectMap["enableHealthCheck"] = gavpp.EnableHealthCheck
@@ -7207,15 +7206,15 @@ func (ovd OperationValueDisplay) MarshalJSON() ([]byte, error) {
 
 // OrchestrationServiceStateInput the input for OrchestrationServiceState
 type OrchestrationServiceStateInput struct {
-	// ServiceName - The name of the service. Possible values include: 'AutomaticRepairs'
-	ServiceName OrchestrationServiceNames `json:"serviceName,omitempty"`
+	// ServiceName - The name of the service.
+	ServiceName *string `json:"serviceName,omitempty"`
 	// Action - The action to be performed. Possible values include: 'Resume', 'Suspend'
 	Action OrchestrationServiceStateAction `json:"action,omitempty"`
 }
 
 // OrchestrationServiceSummary summary for an orchestration service of a virtual machine scale set.
 type OrchestrationServiceSummary struct {
-	// ServiceName - READ-ONLY; The name of the service. Possible values include: 'AutomaticRepairs', 'DummyOrchestrationServiceName'
+	// ServiceName - READ-ONLY; The name of the service. Possible values include: 'AutomaticRepairs'
 	ServiceName OrchestrationServiceNames `json:"serviceName,omitempty"`
 	// ServiceState - READ-ONLY; The current state of the service. Possible values include: 'NotRunning', 'Running', 'Suspended'
 	ServiceState OrchestrationServiceState `json:"serviceState,omitempty"`
@@ -9655,12 +9654,22 @@ type UsageName struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
+// UserArtifactManage ...
+type UserArtifactManage struct {
+	// Install - Required. The path and arguments to install the gallery application. This is limited to 4096 characters.
+	Install *string `json:"install,omitempty"`
+	// Remove - Required. The path and arguments to remove the gallery application. This is limited to 4096 characters.
+	Remove *string `json:"remove,omitempty"`
+	// Update - Optional. The path and arguments to update the gallery application. If not present, then update operation will invoke remove command on the previous version and install command on the current version of the gallery application. This is limited to 4096 characters.
+	Update *string `json:"update,omitempty"`
+}
+
 // UserArtifactSource the source image from which the Image Version is going to be created.
 type UserArtifactSource struct {
-	// FileName - Required. The fileName of the artifact.
-	FileName *string `json:"fileName,omitempty"`
-	// MediaLink - Required. The mediaLink of the artifact, must be a readable storage blob.
+	// MediaLink - Required. The mediaLink of the artifact, must be a readable storage page blob.
 	MediaLink *string `json:"mediaLink,omitempty"`
+	// DefaultConfigurationLink - Optional. The defaultConfigurationLink of the artifact, must be a readable storage page blob.
+	DefaultConfigurationLink *string `json:"defaultConfigurationLink,omitempty"`
 }
 
 // VaultCertificate describes a single certificate reference in a Key Vault, and where the certificate
@@ -12320,7 +12329,7 @@ func NewVirtualMachineScaleSetListWithLinkResultPage(cur VirtualMachineScaleSetL
 
 // VirtualMachineScaleSetManagedDiskParameters describes the parameters of a ScaleSet managed disk.
 type VirtualMachineScaleSetManagedDiskParameters struct {
-	// StorageAccountType - Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
+	// StorageAccountType - Specifies the storage account type for the managed disk. Managed OS disk storage account type can only be set when you create the scale set. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. Possible values include: 'StorageAccountTypesStandardLRS', 'StorageAccountTypesPremiumLRS', 'StorageAccountTypesStandardSSDLRS', 'StorageAccountTypesUltraSSDLRS'
 	StorageAccountType StorageAccountTypes `json:"storageAccountType,omitempty"`
 	// DiskEncryptionSet - Specifies the customer managed disk encryption set resource id for the managed disk.
 	DiskEncryptionSet *DiskEncryptionSetParameters `json:"diskEncryptionSet,omitempty"`

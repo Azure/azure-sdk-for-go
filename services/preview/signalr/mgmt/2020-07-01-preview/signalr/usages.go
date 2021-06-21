@@ -30,7 +30,7 @@ func NewUsagesClientWithBaseURI(baseURI string, subscriptionID string) UsagesCli
 	return UsagesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List list usage quotas for Azure SignalR service by location.
+// List list resource usage quotas by location.
 // Parameters:
 // location - the location like "eastus"
 func (client UsagesClient) List(ctx context.Context, location string) (result UsageListPage, err error) {

@@ -1,5 +1,5 @@
 {
-  "commit": "3c764635e7d442b3e74caf593029fcd440b3ef82",
+  "commit": "2273610521727c34f9549f3dce8f14eac97fd73d",
   "readme": "/_/azure-rest-api-specs/specification/hybridcompute/resource-manager/readme.md",
   "tag": "package-2020-08-02",
   "use": "@microsoft.azure/autorest.go@2.1.183",

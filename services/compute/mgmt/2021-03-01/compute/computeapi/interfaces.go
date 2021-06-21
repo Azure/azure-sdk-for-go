@@ -421,8 +421,10 @@ var _ DiskAccessesClientAPI = (*compute.DiskAccessesClient)(nil)
 // DiskRestorePointClientAPI contains the set of methods on the DiskRestorePointClient type.
 type DiskRestorePointClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, VMRestorePointName string, diskRestorePointName string) (result compute.DiskRestorePoint, err error)
+	GrantAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, VMRestorePointName string, diskRestorePointName string, grantAccessData compute.GrantAccessData) (result compute.DiskRestorePointGrantAccessFuture, err error)
 	ListByRestorePoint(ctx context.Context, resourceGroupName string, restorePointCollectionName string, VMRestorePointName string) (result compute.DiskRestorePointListPage, err error)
 	ListByRestorePointComplete(ctx context.Context, resourceGroupName string, restorePointCollectionName string, VMRestorePointName string) (result compute.DiskRestorePointListIterator, err error)
+	RevokeAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, VMRestorePointName string, diskRestorePointName string) (result compute.DiskRestorePointRevokeAccessFuture, err error)
 }
 
 var _ DiskRestorePointClientAPI = (*compute.DiskRestorePointClient)(nil)

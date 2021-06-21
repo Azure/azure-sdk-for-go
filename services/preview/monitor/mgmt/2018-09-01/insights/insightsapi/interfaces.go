@@ -184,9 +184,9 @@ type ScheduledQueryRulesClientAPI interface {
 
 var _ ScheduledQueryRulesClientAPI = (*insights.ScheduledQueryRulesClient)(nil)
 
-// MetricNamespacesClientAPI contains the set of methods on the MetricNamespacesClient type.
-type MetricNamespacesClientAPI interface {
-	List(ctx context.Context, resourceURI string, startTime string) (result insights.MetricNamespaceCollection, err error)
+// BaselinesClientAPI contains the set of methods on the BaselinesClient type.
+type BaselinesClientAPI interface {
+	List(ctx context.Context, resourceURI string, metricnames string, metricnamespace string, timespan string, interval *string, aggregation string, sensitivities string, filter string, resultType insights.ResultType) (result insights.MetricBaselinesResponse, err error)
 }
 
-var _ MetricNamespacesClientAPI = (*insights.MetricNamespacesClient)(nil)
+var _ BaselinesClientAPI = (*insights.BaselinesClient)(nil)

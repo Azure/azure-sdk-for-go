@@ -59,9 +59,11 @@ func (client GalleryApplicationVersionsClient) CreateOrUpdate(ctx context.Contex
 			Constraints: []validation.Constraint{{Target: "galleryApplicationVersion.GalleryApplicationVersionProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "galleryApplicationVersion.GalleryApplicationVersionProperties.PublishingProfile", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "galleryApplicationVersion.GalleryApplicationVersionProperties.PublishingProfile.Source", Name: validation.Null, Rule: true,
-						Chain: []validation.Constraint{{Target: "galleryApplicationVersion.GalleryApplicationVersionProperties.PublishingProfile.Source.FileName", Name: validation.Null, Rule: true, Chain: nil},
-							{Target: "galleryApplicationVersion.GalleryApplicationVersionProperties.PublishingProfile.Source.MediaLink", Name: validation.Null, Rule: true, Chain: nil},
-						}},
+						Chain: []validation.Constraint{{Target: "galleryApplicationVersion.GalleryApplicationVersionProperties.PublishingProfile.Source.MediaLink", Name: validation.Null, Rule: true, Chain: nil}}},
+						{Target: "galleryApplicationVersion.GalleryApplicationVersionProperties.PublishingProfile.ManageActions", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "galleryApplicationVersion.GalleryApplicationVersionProperties.PublishingProfile.ManageActions.Install", Name: validation.Null, Rule: true, Chain: nil},
+								{Target: "galleryApplicationVersion.GalleryApplicationVersionProperties.PublishingProfile.ManageActions.Remove", Name: validation.Null, Rule: true, Chain: nil},
+							}},
 					}},
 				}}}}}); err != nil {
 		return result, validation.NewError("compute.GalleryApplicationVersionsClient", "CreateOrUpdate", err.Error())

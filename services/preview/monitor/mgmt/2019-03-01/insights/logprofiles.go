@@ -56,7 +56,9 @@ func (client LogProfilesClient) CreateOrUpdate(ctx context.Context, logProfileNa
 							{Target: "parameters.LogProfileProperties.RetentionPolicy.Days", Name: validation.Null, Rule: true,
 								Chain: []validation.Constraint{{Target: "parameters.LogProfileProperties.RetentionPolicy.Days", Name: validation.InclusiveMinimum, Rule: int64(0), Chain: nil}}},
 						}},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.LogProfilesClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -136,6 +138,12 @@ func (client LogProfilesClient) Delete(ctx context.Context, logProfileName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.LogProfilesClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, logProfileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "Delete", nil, "Failure preparing request")
@@ -209,6 +217,12 @@ func (client LogProfilesClient) Get(ctx context.Context, logProfileName string) 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.LogProfilesClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, logProfileName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "Get", nil, "Failure preparing request")
@@ -281,6 +295,12 @@ func (client LogProfilesClient) List(ctx context.Context) (result LogProfileColl
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.LogProfilesClient", "List", err.Error())
+	}
+
 	req, err := client.ListPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "List", nil, "Failure preparing request")
@@ -355,6 +375,12 @@ func (client LogProfilesClient) Update(ctx context.Context, logProfileName strin
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.LogProfilesClient", "Update", err.Error())
+	}
+
 	req, err := client.UpdatePreparer(ctx, logProfileName, logProfilesResource)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.LogProfilesClient", "Update", nil, "Failure preparing request")

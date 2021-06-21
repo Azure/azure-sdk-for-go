@@ -48,11 +48,13 @@ func (client MetricAlertsClient) CreateOrUpdate(ctx context.Context, resourceGro
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.MetricAlertProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.MetricAlertProperties.Description", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.MetricAlertProperties.Severity", Name: validation.Null, Rule: true, Chain: nil},
+				Chain: []validation.Constraint{{Target: "parameters.MetricAlertProperties.Severity", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.MetricAlertProperties.Enabled", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.MetricAlertProperties.Scopes", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.MetricAlertProperties.EvaluationFrequency", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.MetricAlertProperties.WindowSize", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {
@@ -137,6 +139,12 @@ func (client MetricAlertsClient) Delete(ctx context.Context, resourceGroupName s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.MetricAlertsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, ruleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetricAlertsClient", "Delete", nil, "Failure preparing request")
@@ -212,6 +220,12 @@ func (client MetricAlertsClient) Get(ctx context.Context, resourceGroupName stri
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.MetricAlertsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, ruleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetricAlertsClient", "Get", nil, "Failure preparing request")
@@ -287,6 +301,12 @@ func (client MetricAlertsClient) ListByResourceGroup(ctx context.Context, resour
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.MetricAlertsClient", "ListByResourceGroup", err.Error())
+	}
+
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetricAlertsClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -359,6 +379,12 @@ func (client MetricAlertsClient) ListBySubscription(ctx context.Context) (result
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.MetricAlertsClient", "ListBySubscription", err.Error())
+	}
+
 	req, err := client.ListBySubscriptionPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetricAlertsClient", "ListBySubscription", nil, "Failure preparing request")
@@ -434,6 +460,12 @@ func (client MetricAlertsClient) Update(ctx context.Context, resourceGroupName s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.MetricAlertsClient", "Update", err.Error())
+	}
+
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, ruleName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetricAlertsClient", "Update", nil, "Failure preparing request")

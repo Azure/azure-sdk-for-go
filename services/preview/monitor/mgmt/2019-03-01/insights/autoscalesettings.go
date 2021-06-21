@@ -53,7 +53,9 @@ func (client AutoscaleSettingsClient) CreateOrUpdate(ctx context.Context, resour
 			Constraints: []validation.Constraint{{Target: "parameters.AutoscaleSetting", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.AutoscaleSetting.Profiles", Name: validation.Null, Rule: true,
 					Chain: []validation.Constraint{{Target: "parameters.AutoscaleSetting.Profiles", Name: validation.MaxItems, Rule: 20, Chain: nil}}},
-				}}}}}); err != nil {
+				}}}},
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("insights.AutoscaleSettingsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -135,6 +137,12 @@ func (client AutoscaleSettingsClient) Delete(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.AutoscaleSettingsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, autoscaleSettingName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "Delete", nil, "Failure preparing request")
@@ -210,6 +218,12 @@ func (client AutoscaleSettingsClient) Get(ctx context.Context, resourceGroupName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.AutoscaleSettingsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, autoscaleSettingName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "Get", nil, "Failure preparing request")
@@ -285,6 +299,12 @@ func (client AutoscaleSettingsClient) ListByResourceGroup(ctx context.Context, r
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.AutoscaleSettingsClient", "ListByResourceGroup", err.Error())
+	}
+
 	result.fn = client.listByResourceGroupNextResults
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName)
 	if err != nil {
@@ -399,6 +419,12 @@ func (client AutoscaleSettingsClient) ListBySubscription(ctx context.Context) (r
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.AutoscaleSettingsClient", "ListBySubscription", err.Error())
+	}
+
 	result.fn = client.listBySubscriptionNextResults
 	req, err := client.ListBySubscriptionPreparer(ctx)
 	if err != nil {
@@ -516,6 +542,12 @@ func (client AutoscaleSettingsClient) Update(ctx context.Context, resourceGroupN
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.AutoscaleSettingsClient", "Update", err.Error())
+	}
+
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, autoscaleSettingName, autoscaleSettingResource)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.AutoscaleSettingsClient", "Update", nil, "Failure preparing request")

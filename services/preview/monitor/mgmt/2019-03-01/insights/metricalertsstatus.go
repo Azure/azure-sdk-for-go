@@ -10,6 +10,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -46,6 +47,12 @@ func (client MetricAlertsStatusClient) List(ctx context.Context, resourceGroupNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.MetricAlertsStatusClient", "List", err.Error())
+	}
+
 	req, err := client.ListPreparer(ctx, resourceGroupName, ruleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetricAlertsStatusClient", "List", nil, "Failure preparing request")
@@ -123,6 +130,12 @@ func (client MetricAlertsStatusClient) ListByName(ctx context.Context, resourceG
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.MetricAlertsStatusClient", "ListByName", err.Error())
+	}
+
 	req, err := client.ListByNamePreparer(ctx, resourceGroupName, ruleName, statusName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.MetricAlertsStatusClient", "ListByName", nil, "Failure preparing request")

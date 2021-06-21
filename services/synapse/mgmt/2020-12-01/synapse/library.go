@@ -15,33 +15,30 @@ import (
 	"net/http"
 )
 
-// SQLPoolColumnsClient is the azure Synapse Analytics Management Client
-type SQLPoolColumnsClient struct {
+// LibraryClient is the azure Synapse Analytics Management Client
+type LibraryClient struct {
 	BaseClient
 }
 
-// NewSQLPoolColumnsClient creates an instance of the SQLPoolColumnsClient client.
-func NewSQLPoolColumnsClient(subscriptionID string) SQLPoolColumnsClient {
-	return NewSQLPoolColumnsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewLibraryClient creates an instance of the LibraryClient client.
+func NewLibraryClient(subscriptionID string) LibraryClient {
+	return NewLibraryClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewSQLPoolColumnsClientWithBaseURI creates an instance of the SQLPoolColumnsClient client using a custom endpoint.
-// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewSQLPoolColumnsClientWithBaseURI(baseURI string, subscriptionID string) SQLPoolColumnsClient {
-	return SQLPoolColumnsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewLibraryClientWithBaseURI creates an instance of the LibraryClient client using a custom endpoint.  Use this when
+// interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewLibraryClientWithBaseURI(baseURI string, subscriptionID string) LibraryClient {
+	return LibraryClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Get get Sql pool column
+// Get get library by name in a workspace.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
+// libraryName - library name
 // workspaceName - the name of the workspace
-// SQLPoolName - SQL pool name
-// schemaName - the name of the schema.
-// tableName - the name of the table.
-// columnName - the name of the column.
-func (client SQLPoolColumnsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string, tableName string, columnName string) (result SQLPoolColumn, err error) {
+func (client LibraryClient) Get(ctx context.Context, resourceGroupName string, libraryName string, workspaceName string) (result LibraryResource, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/SQLPoolColumnsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/LibraryClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -56,25 +53,25 @@ func (client SQLPoolColumnsClient) Get(ctx context.Context, resourceGroupName st
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("synapse.SQLPoolColumnsClient", "Get", err.Error())
+		return result, validation.NewError("synapse.LibraryClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, workspaceName, SQLPoolName, schemaName, tableName, columnName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, libraryName, workspaceName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolColumnsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "synapse.LibraryClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolColumnsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.LibraryClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolColumnsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "synapse.LibraryClient", "Get", resp, "Failure responding to request")
 		return
 	}
 
@@ -82,14 +79,11 @@ func (client SQLPoolColumnsClient) Get(ctx context.Context, resourceGroupName st
 }
 
 // GetPreparer prepares the Get request.
-func (client SQLPoolColumnsClient) GetPreparer(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, schemaName string, tableName string, columnName string) (*http.Request, error) {
+func (client LibraryClient) GetPreparer(ctx context.Context, resourceGroupName string, libraryName string, workspaceName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"columnName":        autorest.Encode("path", columnName),
+		"libraryName":       autorest.Encode("path", libraryName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"schemaName":        autorest.Encode("path", schemaName),
-		"sqlPoolName":       autorest.Encode("path", SQLPoolName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
-		"tableName":         autorest.Encode("path", tableName),
 		"workspaceName":     autorest.Encode("path", workspaceName),
 	}
 
@@ -101,20 +95,20 @@ func (client SQLPoolColumnsClient) GetPreparer(ctx context.Context, resourceGrou
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/libraries/{libraryName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client SQLPoolColumnsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client LibraryClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client SQLPoolColumnsClient) GetResponder(resp *http.Response) (result SQLPoolColumn, err error) {
+func (client LibraryClient) GetResponder(resp *http.Response) (result LibraryResource, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

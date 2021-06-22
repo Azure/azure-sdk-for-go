@@ -7,6 +7,8 @@
 
 package armresources
 
+const telemetryInfo = "azsdk-go-armresources/v0.2.0"
+
 // AliasPathAttributes - The attributes of the token that the alias path is referring to.
 type AliasPathAttributes string
 

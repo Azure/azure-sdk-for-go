@@ -40,7 +40,7 @@ type AadExternalSecuritySolution struct {
 	// Location - READ-ONLY; Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AadExternalSecuritySolution.
@@ -2551,7 +2551,7 @@ func (awg *AppWhitelistingGroup) UnmarshalJSON(body []byte) error {
 // AppWhitelistingGroupData represents a VM/server group and set of rules that are Recommended by Azure
 // Security Center to be allowed
 type AppWhitelistingGroupData struct {
-	// EnforcementMode - Possible values include: 'Audit', 'Enforce', 'None'
+	// EnforcementMode - Possible values include: 'EnforcementModeAudit', 'EnforcementModeEnforce', 'EnforcementModeNone'
 	EnforcementMode EnforcementMode `json:"enforcementMode,omitempty"`
 	ProtectionMode  *ProtectionMode `json:"protectionMode,omitempty"`
 	// ConfigurationStatus - Possible values include: 'ConfigurationStatus2Configured', 'ConfigurationStatus2NotConfigured', 'ConfigurationStatus2InProgress', 'ConfigurationStatus2Failed', 'ConfigurationStatus2NoStatus'
@@ -2788,7 +2788,7 @@ type AtaExternalSecuritySolution struct {
 	// Location - READ-ONLY; Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AtaExternalSecuritySolution.
@@ -3662,7 +3662,7 @@ type AutomationScope struct {
 // - security alerts and security assessments. To learn more about the supported security events data
 // models schemas - please visit https://aka.ms/ASCAutomationSchemas.
 type AutomationSource struct {
-	// EventSource - A valid event source type. Possible values include: 'Assessments', 'SubAssessments', 'Alerts', 'SecureScores', 'SecureScoreControls'
+	// EventSource - A valid event source type. Possible values include: 'EventSourceAssessments', 'EventSourceSubAssessments', 'EventSourceAlerts', 'EventSourceSecureScores', 'EventSourceSecureScoresSnapshot', 'EventSourceSecureScoreControls', 'EventSourceSecureScoreControlsSnapshot', 'EventSourceRegulatoryComplianceAssessment', 'EventSourceRegulatoryComplianceAssessmentSnapshot'
 	EventSource EventSource `json:"eventSource,omitempty"`
 	// RuleSets - A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical 'or').
 	RuleSets *[]AutomationRuleSet `json:"ruleSets,omitempty"`
@@ -4165,7 +4165,7 @@ type CefExternalSecuritySolution struct {
 	// Location - READ-ONLY; Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CefExternalSecuritySolution.
@@ -4326,9 +4326,10 @@ func (csp *CefSolutionProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CloudError error response structure.
+// CloudError common error response for all Azure Resource Manager APIs to return error details for failed
+// operations. (This also follows the OData error response format.).
 type CloudError struct {
-	// CloudErrorBody - Error data
+	// CloudErrorBody - The error object.
 	*CloudErrorBody `json:"error,omitempty"`
 }
 
@@ -4365,12 +4366,18 @@ func (ce *CloudError) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// CloudErrorBody error details.
+// CloudErrorBody the error detail.
 type CloudErrorBody struct {
-	// Code - READ-ONLY; An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
-	// Message - READ-ONLY; A message describing the error, intended to be suitable for display in a user interface.
+	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
+	// Target - READ-ONLY; The error target.
+	Target *string `json:"target,omitempty"`
+	// Details - READ-ONLY; The error details.
+	Details *[]CloudErrorBody `json:"details,omitempty"`
+	// AdditionalInfo - READ-ONLY; The error additional info.
+	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CloudErrorBody.
@@ -4688,6 +4695,13 @@ func (cr ConnectedResource) MarshalJSON() ([]byte, error) {
 type ConnectedWorkspace struct {
 	// ID - Azure resource ID of the connected OMS workspace
 	ID *string `json:"id,omitempty"`
+}
+
+// ConnectionStrings connection string for ingesting security data and logs
+type ConnectionStrings struct {
+	autorest.Response `json:"-"`
+	// Value - Connection strings
+	Value *[]IngestionConnectionString `json:"value,omitempty"`
 }
 
 // ConnectionToIPNotAllowed outbound connection to an ip that isn't allowed. Allow list consists of ipv4 or
@@ -5829,18 +5843,19 @@ func (c CVSS) MarshalJSON() ([]byte, error) {
 type DataExportSetting struct {
 	// DataExportSettingProperties - Data export setting data
 	*DataExportSettingProperties `json:"properties,omitempty"`
-	// Kind - the kind of the settings string (DataExportSetting). Possible values include: 'SettingKindDataExportSetting', 'SettingKindAlertSuppressionSetting'
-	Kind SettingKind `json:"kind,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type
 	Type *string `json:"type,omitempty"`
+	// Kind - Possible values include: 'KindSetting', 'KindDataExportSetting'
+	Kind KindEnum `json:"kind,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DataExportSetting.
 func (desVar DataExportSetting) MarshalJSON() ([]byte, error) {
+	desVar.Kind = KindDataExportSetting
 	objectMap := make(map[string]interface{})
 	if desVar.DataExportSettingProperties != nil {
 		objectMap["properties"] = desVar.DataExportSettingProperties
@@ -5849,6 +5864,21 @@ func (desVar DataExportSetting) MarshalJSON() ([]byte, error) {
 		objectMap["kind"] = desVar.Kind
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsDataExportSetting is the BasicSetting implementation for DataExportSetting.
+func (desVar DataExportSetting) AsDataExportSetting() (*DataExportSetting, bool) {
+	return &desVar, true
+}
+
+// AsSetting is the BasicSetting implementation for DataExportSetting.
+func (desVar DataExportSetting) AsSetting() (*Setting, bool) {
+	return nil, false
+}
+
+// AsBasicSetting is the BasicSetting implementation for DataExportSetting.
+func (desVar DataExportSetting) AsBasicSetting() (BasicSetting, bool) {
+	return &desVar, true
 }
 
 // UnmarshalJSON is the custom unmarshaler for DataExportSetting struct.
@@ -5871,7 +5901,7 @@ func (desVar *DataExportSetting) UnmarshalJSON(body []byte) error {
 			}
 		case "kind":
 			if v != nil {
-				var kind SettingKind
+				var kind KindEnum
 				err = json.Unmarshal(*v, &kind)
 				if err != nil {
 					return err
@@ -6862,6 +6892,20 @@ type EffectiveNetworkSecurityGroups struct {
 	NetworkSecurityGroups *[]string `json:"networkSecurityGroups,omitempty"`
 }
 
+// ErrorAdditionalInfo the resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// Type - READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty"`
+	// Info - READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ETag entity tag is used for comparing two or more entities from the same requested resource.
 type ETag struct {
 	// Etag - Entity tag is used for comparing two or more entities from the same requested resource.
@@ -6890,7 +6934,7 @@ type ExternalSecuritySolution struct {
 	// Location - READ-ONLY; Location where the resource is stored
 	Location *string `json:"location,omitempty"`
 	// Kind - Possible values include: 'KindExternalSecuritySolution', 'KindCEF', 'KindATA', 'KindAAD'
-	Kind KindEnum `json:"kind,omitempty"`
+	Kind KindEnum1 `json:"kind,omitempty"`
 }
 
 func unmarshalBasicExternalSecuritySolution(body []byte) (BasicExternalSecuritySolution, error) {
@@ -8662,6 +8706,222 @@ type InformationType struct {
 	Custom *bool `json:"custom,omitempty"`
 	// Keywords - The information type keywords.
 	Keywords *[]InformationProtectionKeyword `json:"keywords,omitempty"`
+}
+
+// IngestionConnectionString connection string for ingesting security data and logs
+type IngestionConnectionString struct {
+	// Location - READ-ONLY; The region where ingested logs and data resides
+	Location *string `json:"location,omitempty"`
+	// Value - READ-ONLY; Connection string value
+	Value *string `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IngestionConnectionString.
+func (ics IngestionConnectionString) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// IngestionSetting configures how to correlate scan data and logs with resources associated with the
+// subscription.
+type IngestionSetting struct {
+	autorest.Response `json:"-"`
+	// Properties - Ingestion setting data
+	Properties interface{} `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IngestionSetting.
+func (is IngestionSetting) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if is.Properties != nil {
+		objectMap["properties"] = is.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// IngestionSettingList list of ingestion settings
+type IngestionSettingList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of ingestion settings
+	Value *[]IngestionSetting `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IngestionSettingList.
+func (isl IngestionSettingList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// IngestionSettingListIterator provides access to a complete listing of IngestionSetting values.
+type IngestionSettingListIterator struct {
+	i    int
+	page IngestionSettingListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *IngestionSettingListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IngestionSettingListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *IngestionSettingListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter IngestionSettingListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter IngestionSettingListIterator) Response() IngestionSettingList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter IngestionSettingListIterator) Value() IngestionSetting {
+	if !iter.page.NotDone() {
+		return IngestionSetting{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the IngestionSettingListIterator type.
+func NewIngestionSettingListIterator(page IngestionSettingListPage) IngestionSettingListIterator {
+	return IngestionSettingListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (isl IngestionSettingList) IsEmpty() bool {
+	return isl.Value == nil || len(*isl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (isl IngestionSettingList) hasNextLink() bool {
+	return isl.NextLink != nil && len(*isl.NextLink) != 0
+}
+
+// ingestionSettingListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (isl IngestionSettingList) ingestionSettingListPreparer(ctx context.Context) (*http.Request, error) {
+	if !isl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(isl.NextLink)))
+}
+
+// IngestionSettingListPage contains a page of IngestionSetting values.
+type IngestionSettingListPage struct {
+	fn  func(context.Context, IngestionSettingList) (IngestionSettingList, error)
+	isl IngestionSettingList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *IngestionSettingListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/IngestionSettingListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.isl)
+		if err != nil {
+			return err
+		}
+		page.isl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *IngestionSettingListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page IngestionSettingListPage) NotDone() bool {
+	return !page.isl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page IngestionSettingListPage) Response() IngestionSettingList {
+	return page.isl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page IngestionSettingListPage) Values() []IngestionSetting {
+	if page.isl.IsEmpty() {
+		return nil
+	}
+	return *page.isl.Value
+}
+
+// Creates a new instance of the IngestionSettingListPage type.
+func NewIngestionSettingListPage(cur IngestionSettingList, getNextPage func(context.Context, IngestionSettingList) (IngestionSettingList, error)) IngestionSettingListPage {
+	return IngestionSettingListPage{
+		fn:  getNextPage,
+		isl: cur,
+	}
+}
+
+// IngestionSettingToken configures how to correlate scan data and logs with resources associated with the
+// subscription.
+type IngestionSettingToken struct {
+	autorest.Response `json:"-"`
+	// Token - READ-ONLY; The token is used for correlating security data and logs with the resources in the subscription.
+	Token *string `json:"token,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IngestionSettingToken.
+func (ist IngestionSettingToken) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // JitNetworkAccessPoliciesList ...
@@ -13297,11 +13557,17 @@ type ServicePrincipalProperties struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-// Setting represents a security setting in Azure Security Center.
+// BasicSetting the kind of the security setting
+type BasicSetting interface {
+	AsDataExportSetting() (*DataExportSetting, bool)
+	AsSetting() (*Setting, bool)
+}
+
+// Setting the kind of the security setting
 type Setting struct {
 	autorest.Response `json:"-"`
-	// Kind - the kind of the settings string (DataExportSetting). Possible values include: 'SettingKindDataExportSetting', 'SettingKindAlertSuppressionSetting'
-	Kind SettingKind `json:"kind,omitempty"`
+	// Kind - Possible values include: 'KindSetting', 'KindDataExportSetting'
+	Kind KindEnum `json:"kind,omitempty"`
 	// ID - READ-ONLY; Resource Id
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name
@@ -13310,8 +13576,46 @@ type Setting struct {
 	Type *string `json:"type,omitempty"`
 }
 
+func unmarshalBasicSetting(body []byte) (BasicSetting, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["kind"] {
+	case string(KindDataExportSetting):
+		var desVar DataExportSetting
+		err := json.Unmarshal(body, &desVar)
+		return desVar, err
+	default:
+		var s Setting
+		err := json.Unmarshal(body, &s)
+		return s, err
+	}
+}
+func unmarshalBasicSettingArray(body []byte) ([]BasicSetting, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	sArray := make([]BasicSetting, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		s, err := unmarshalBasicSetting(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		sArray[index] = s
+	}
+	return sArray, nil
+}
+
 // MarshalJSON is the custom marshaler for Setting.
 func (s Setting) MarshalJSON() ([]byte, error) {
+	s.Kind = KindSetting
 	objectMap := make(map[string]interface{})
 	if s.Kind != "" {
 		objectMap["kind"] = s.Kind
@@ -13319,32 +13623,43 @@ func (s Setting) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// SettingResource the kind of the security setting
-type SettingResource struct {
-	// Kind - the kind of the settings string (DataExportSetting). Possible values include: 'SettingKindDataExportSetting', 'SettingKindAlertSuppressionSetting'
-	Kind SettingKind `json:"kind,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
+// AsDataExportSetting is the BasicSetting implementation for Setting.
+func (s Setting) AsDataExportSetting() (*DataExportSetting, bool) {
+	return nil, false
 }
 
-// MarshalJSON is the custom marshaler for SettingResource.
-func (sr SettingResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if sr.Kind != "" {
-		objectMap["kind"] = sr.Kind
+// AsSetting is the BasicSetting implementation for Setting.
+func (s Setting) AsSetting() (*Setting, bool) {
+	return &s, true
+}
+
+// AsBasicSetting is the BasicSetting implementation for Setting.
+func (s Setting) AsBasicSetting() (BasicSetting, bool) {
+	return &s, true
+}
+
+// SettingModel ...
+type SettingModel struct {
+	autorest.Response `json:"-"`
+	Value             BasicSetting `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for SettingModel struct.
+func (sm *SettingModel) UnmarshalJSON(body []byte) error {
+	s, err := unmarshalBasicSetting(body)
+	if err != nil {
+		return err
 	}
-	return json.Marshal(objectMap)
+	sm.Value = s
+
+	return nil
 }
 
 // SettingsList subscription settings list.
 type SettingsList struct {
 	autorest.Response `json:"-"`
 	// Value - The settings list.
-	Value *[]Setting `json:"value,omitempty"`
+	Value *[]BasicSetting `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URI to fetch the next page.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -13356,6 +13671,38 @@ func (sl SettingsList) MarshalJSON() ([]byte, error) {
 		objectMap["value"] = sl.Value
 	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SettingsList struct.
+func (sl *SettingsList) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "value":
+			if v != nil {
+				value, err := unmarshalBasicSettingArray(*v)
+				if err != nil {
+					return err
+				}
+				sl.Value = &value
+			}
+		case "nextLink":
+			if v != nil {
+				var nextLink string
+				err = json.Unmarshal(*v, &nextLink)
+				if err != nil {
+					return err
+				}
+				sl.NextLink = &nextLink
+			}
+		}
+	}
+
+	return nil
 }
 
 // SettingsListIterator provides access to a complete listing of Setting values.
@@ -13409,7 +13756,7 @@ func (iter SettingsListIterator) Response() SettingsList {
 
 // Value returns the current value or a zero-initialized value if the
 // iterator has advanced beyond the end of the collection.
-func (iter SettingsListIterator) Value() Setting {
+func (iter SettingsListIterator) Value() BasicSetting {
 	if !iter.page.NotDone() {
 		return Setting{}
 	}
@@ -13443,7 +13790,7 @@ func (sl SettingsList) settingsListPreparer(ctx context.Context) (*http.Request,
 		autorest.WithBaseURL(to.String(sl.NextLink)))
 }
 
-// SettingsListPage contains a page of Setting values.
+// SettingsListPage contains a page of BasicSetting values.
 type SettingsListPage struct {
 	fn func(context.Context, SettingsList) (SettingsList, error)
 	sl SettingsList
@@ -13493,7 +13840,7 @@ func (page SettingsListPage) Response() SettingsList {
 }
 
 // Values returns the slice of values for the current page or nil if there are no values.
-func (page SettingsListPage) Values() []Setting {
+func (page SettingsListPage) Values() []BasicSetting {
 	if page.sl.IsEmpty() {
 		return nil
 	}
@@ -13503,6 +13850,268 @@ func (page SettingsListPage) Values() []Setting {
 // Creates a new instance of the SettingsListPage type.
 func NewSettingsListPage(cur SettingsList, getNextPage func(context.Context, SettingsList) (SettingsList, error)) SettingsListPage {
 	return SettingsListPage{
+		fn: getNextPage,
+		sl: cur,
+	}
+}
+
+// Software represents a software data
+type Software struct {
+	autorest.Response `json:"-"`
+	// SoftwareProperties - Properties of the Software Inventory resource
+	*SoftwareProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Software.
+func (s Software) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if s.SoftwareProperties != nil {
+		objectMap["properties"] = s.SoftwareProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Software struct.
+func (s *Software) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var softwareProperties SoftwareProperties
+				err = json.Unmarshal(*v, &softwareProperties)
+				if err != nil {
+					return err
+				}
+				s.SoftwareProperties = &softwareProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				s.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				s.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				s.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SoftwareProperties software Inventory resource properties
+type SoftwareProperties struct {
+	// DeviceID - Unique identifier for the virtual machine in the service.
+	DeviceID *string `json:"deviceId,omitempty"`
+	// OsPlatform - Platform of the operating system running on the device.
+	OsPlatform *string `json:"osPlatform,omitempty"`
+	// Vendor - Name of the software vendor.
+	Vendor *string `json:"vendor,omitempty"`
+	// SoftwareName - Name of the software product.
+	SoftwareName *string `json:"softwareName,omitempty"`
+	// Version - Version number of the software product.
+	Version *string `json:"version,omitempty"`
+	// EndOfSupportStatus - End of support status. Possible values include: 'None', 'NoLongerSupported', 'VersionNoLongerSupported', 'UpcomingNoLongerSupported', 'UpcomingVersionNoLongerSupported'
+	EndOfSupportStatus EndOfSupportStatus `json:"endOfSupportStatus,omitempty"`
+	// EndOfSupportDate - The end of support date in case the product is upcoming end of support.
+	EndOfSupportDate *string `json:"endOfSupportDate,omitempty"`
+	// NumberOfKnownVulnerabilities - Number of weaknesses.
+	NumberOfKnownVulnerabilities *int32 `json:"numberOfKnownVulnerabilities,omitempty"`
+	// FirstSeenAt - First time that the software was seen in the device.
+	FirstSeenAt *string `json:"firstSeenAt,omitempty"`
+}
+
+// SoftwaresList represents the software inventory of the virtual machine.
+type SoftwaresList struct {
+	autorest.Response `json:"-"`
+	Value             *[]Software `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URI to fetch the next page.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SoftwaresList.
+func (sl SoftwaresList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sl.Value != nil {
+		objectMap["value"] = sl.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// SoftwaresListIterator provides access to a complete listing of Software values.
+type SoftwaresListIterator struct {
+	i    int
+	page SoftwaresListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *SoftwaresListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SoftwaresListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *SoftwaresListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter SoftwaresListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter SoftwaresListIterator) Response() SoftwaresList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter SoftwaresListIterator) Value() Software {
+	if !iter.page.NotDone() {
+		return Software{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the SoftwaresListIterator type.
+func NewSoftwaresListIterator(page SoftwaresListPage) SoftwaresListIterator {
+	return SoftwaresListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (sl SoftwaresList) IsEmpty() bool {
+	return sl.Value == nil || len(*sl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (sl SoftwaresList) hasNextLink() bool {
+	return sl.NextLink != nil && len(*sl.NextLink) != 0
+}
+
+// softwaresListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (sl SoftwaresList) softwaresListPreparer(ctx context.Context) (*http.Request, error) {
+	if !sl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(sl.NextLink)))
+}
+
+// SoftwaresListPage contains a page of Software values.
+type SoftwaresListPage struct {
+	fn func(context.Context, SoftwaresList) (SoftwaresList, error)
+	sl SoftwaresList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *SoftwaresListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SoftwaresListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.sl)
+		if err != nil {
+			return err
+		}
+		page.sl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *SoftwaresListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page SoftwaresListPage) NotDone() bool {
+	return !page.sl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page SoftwaresListPage) Response() SoftwaresList {
+	return page.sl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page SoftwaresListPage) Values() []Software {
+	if page.sl.IsEmpty() {
+		return nil
+	}
+	return *page.sl.Value
+}
+
+// Creates a new instance of the SoftwaresListPage type.
+func NewSoftwaresListPage(cur SoftwaresList, getNextPage func(context.Context, SoftwaresList) (SoftwaresList, error)) SoftwaresListPage {
+	return SoftwaresListPage{
 		fn: getNextPage,
 		sl: cur,
 	}

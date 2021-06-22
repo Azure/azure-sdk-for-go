@@ -12,6 +12,17 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// SoftwareInventoriesClientAPI contains the set of methods on the SoftwareInventoriesClient type.
+type SoftwareInventoriesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string, softwareName string) (result security.Software, err error)
+	ListByExtendedResource(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result security.SoftwaresListPage, err error)
+	ListByExtendedResourceComplete(ctx context.Context, resourceGroupName string, resourceNamespace string, resourceType string, resourceName string) (result security.SoftwaresListIterator, err error)
+	ListBySubscription(ctx context.Context) (result security.SoftwaresListPage, err error)
+	ListBySubscriptionComplete(ctx context.Context) (result security.SoftwaresListIterator, err error)
+}
+
+var _ SoftwareInventoriesClientAPI = (*security.SoftwareInventoriesClient)(nil)
+
 // SQLVulnerabilityAssessmentScansClientAPI contains the set of methods on the SQLVulnerabilityAssessmentScansClient type.
 type SQLVulnerabilityAssessmentScansClientAPI interface {
 	Get(ctx context.Context, scanID string, workspaceID string, APIVersion string, resourceID string) (result security.Scan, err error)
@@ -204,10 +215,10 @@ var _ DeviceSecurityGroupsClientAPI = (*security.DeviceSecurityGroupsClient)(nil
 
 // SettingsClientAPI contains the set of methods on the SettingsClient type.
 type SettingsClientAPI interface {
-	Get(ctx context.Context, settingName string) (result security.Setting, err error)
+	Get(ctx context.Context, settingName string) (result security.SettingModel, err error)
 	List(ctx context.Context) (result security.SettingsListPage, err error)
 	ListComplete(ctx context.Context) (result security.SettingsListIterator, err error)
-	Update(ctx context.Context, settingName string, setting security.Setting) (result security.Setting, err error)
+	Update(ctx context.Context, settingName string, setting security.BasicSetting) (result security.SettingModel, err error)
 }
 
 var _ SettingsClientAPI = (*security.SettingsClient)(nil)
@@ -432,3 +443,16 @@ type AlertsSuppressionRulesClientAPI interface {
 }
 
 var _ AlertsSuppressionRulesClientAPI = (*security.AlertsSuppressionRulesClient)(nil)
+
+// IngestionSettingsClientAPI contains the set of methods on the IngestionSettingsClient type.
+type IngestionSettingsClientAPI interface {
+	Create(ctx context.Context, ingestionSettingName string, ingestionSetting security.IngestionSetting) (result security.IngestionSetting, err error)
+	Delete(ctx context.Context, ingestionSettingName string) (result autorest.Response, err error)
+	Get(ctx context.Context, ingestionSettingName string) (result security.IngestionSetting, err error)
+	List(ctx context.Context) (result security.IngestionSettingListPage, err error)
+	ListComplete(ctx context.Context) (result security.IngestionSettingListIterator, err error)
+	ListConnectionStrings(ctx context.Context, ingestionSettingName string) (result security.ConnectionStrings, err error)
+	ListTokens(ctx context.Context, ingestionSettingName string) (result security.IngestionSettingToken, err error)
+}
+
+var _ IngestionSettingsClientAPI = (*security.IngestionSettingsClient)(nil)

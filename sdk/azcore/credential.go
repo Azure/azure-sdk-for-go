@@ -50,4 +50,6 @@ type AccessToken struct {
 type TokenRequestOptions struct {
 	// Scopes contains the list of permission scopes required for the token.
 	Scopes []string
+	// TenantID contains the tenant ID to use in a multi-tenant authentication scenario.
+	TenantID string
 }

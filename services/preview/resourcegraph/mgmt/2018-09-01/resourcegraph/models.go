@@ -568,8 +568,8 @@ type GraphQueryResource struct {
 	Location *string `json:"location,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// ETag - This will be used to handle Optimistic Concurrency. If not present, it will always overwrite the existing resource without checking conflict.
-	ETag *string `json:"eTag,omitempty"`
+	// Etag - This will be used to handle Optimistic Concurrency. If not present, it will always overwrite the existing resource without checking conflict.
+	Etag *string `json:"etag,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
 }
@@ -583,8 +583,8 @@ func (gqr GraphQueryResource) MarshalJSON() ([]byte, error) {
 	if gqr.Location != nil {
 		objectMap["location"] = gqr.Location
 	}
-	if gqr.ETag != nil {
-		objectMap["eTag"] = gqr.ETag
+	if gqr.Etag != nil {
+		objectMap["etag"] = gqr.Etag
 	}
 	if gqr.Tags != nil {
 		objectMap["tags"] = gqr.Tags
@@ -646,14 +646,14 @@ func (gqr *GraphQueryResource) UnmarshalJSON(body []byte) error {
 				}
 				gqr.Type = &typeVar
 			}
-		case "eTag":
+		case "etag":
 			if v != nil {
-				var eTag string
-				err = json.Unmarshal(*v, &eTag)
+				var etag string
+				err = json.Unmarshal(*v, &etag)
 				if err != nil {
 					return err
 				}
-				gqr.ETag = &eTag
+				gqr.Etag = &etag
 			}
 		case "tags":
 			if v != nil {
@@ -675,8 +675,8 @@ func (gqr *GraphQueryResource) UnmarshalJSON(body []byte) error {
 type GraphQueryUpdateParameters struct {
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// ETag - This will be used to handle Optimistic Concurrency. If not present, it will always overwrite the existing resource without checking conflict.
-	ETag *string `json:"eTag,omitempty"`
+	// Etag - This will be used to handle Optimistic Concurrency. If not present, it will always overwrite the existing resource without checking conflict.
+	Etag *string `json:"etag,omitempty"`
 	// GraphQueryPropertiesUpdateParameters - Metadata describing a graph query for an Azure resource.
 	*GraphQueryPropertiesUpdateParameters `json:"properties,omitempty"`
 }
@@ -687,8 +687,8 @@ func (gqup GraphQueryUpdateParameters) MarshalJSON() ([]byte, error) {
 	if gqup.Tags != nil {
 		objectMap["tags"] = gqup.Tags
 	}
-	if gqup.ETag != nil {
-		objectMap["eTag"] = gqup.ETag
+	if gqup.Etag != nil {
+		objectMap["etag"] = gqup.Etag
 	}
 	if gqup.GraphQueryPropertiesUpdateParameters != nil {
 		objectMap["properties"] = gqup.GraphQueryPropertiesUpdateParameters
@@ -714,14 +714,14 @@ func (gqup *GraphQueryUpdateParameters) UnmarshalJSON(body []byte) error {
 				}
 				gqup.Tags = tags
 			}
-		case "eTag":
+		case "etag":
 			if v != nil {
-				var eTag string
-				err = json.Unmarshal(*v, &eTag)
+				var etag string
+				err = json.Unmarshal(*v, &etag)
 				if err != nil {
 					return err
 				}
-				gqup.ETag = &eTag
+				gqup.Etag = &etag
 			}
 		case "properties":
 			if v != nil {
@@ -1037,8 +1037,8 @@ type Resource struct {
 	Location *string `json:"location,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
-	// ETag - This will be used to handle Optimistic Concurrency. If not present, it will always overwrite the existing resource without checking conflict.
-	ETag *string `json:"eTag,omitempty"`
+	// Etag - This will be used to handle Optimistic Concurrency. If not present, it will always overwrite the existing resource without checking conflict.
+	Etag *string `json:"etag,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
 }
@@ -1049,8 +1049,8 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	if r.Location != nil {
 		objectMap["location"] = r.Location
 	}
-	if r.ETag != nil {
-		objectMap["eTag"] = r.ETag
+	if r.Etag != nil {
+		objectMap["etag"] = r.Etag
 	}
 	if r.Tags != nil {
 		objectMap["tags"] = r.Tags

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/config"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/config"
 	"github.com/ahmetb/go-linq/v3"
 )
 

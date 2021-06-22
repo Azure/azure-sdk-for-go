@@ -9,8 +9,8 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/delta"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/markdown"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 )
 
 // Package represents a per-package report that contains additive and breaking changes.

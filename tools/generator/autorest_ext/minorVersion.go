@@ -1,8 +1,8 @@
 package autorest_ext
 
 import (
-	"github.com/Azure/azure-sdk-for-go/tools/generator/sdk"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/sdk"
 )
 
 func CanIncludeInMinor(r autorest.ChangelogResult) bool {

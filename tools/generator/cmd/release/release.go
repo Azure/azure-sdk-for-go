@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest_ext"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest_ext/changelog_ext"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest_ext/model_ext"
@@ -16,7 +17,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/generator/repos"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/sdk"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/utils/flags"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -109,12 +109,12 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 type commandContext struct {
 	common.CommandContext
 
-	configPath string
-	flags      Flags
-	options    model.Options
+	configPath        string
+	flags             Flags
+	options           model.Options
 	additionalOptions []model.Option
-	sdkRef     *plumbing.Reference
-	specRef    *plumbing.Reference
+	sdkRef            *plumbing.Reference
+	specRef           *plumbing.Reference
 
 	repoContent changelog_ext.RepoContent
 }

@@ -9,10 +9,10 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/sdk"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/markdown"
 	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/sdk"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
 	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/track1"
 	"github.com/ahmetb/go-linq/v3"
@@ -309,7 +309,7 @@ func getExportsForPackages(pkgs []track1.Package, root string) (RepoContent, err
 }
 
 const (
-	sdkRoot = "github.com/Azure/azure-sdk-for-go"
+	sdkRoot            = "github.com/Azure/azure-sdk-for-go"
 	absoluteLinkPrefix = "https://github.com/Azure/azure-sdk-for-go/tree/master/"
 )
 

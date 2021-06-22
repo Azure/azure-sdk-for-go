@@ -7,6 +7,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest_ext"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/config"
@@ -14,8 +16,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/generator/sdk"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/utils/flags"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	sdkutils "github.com/Azure/azure-sdk-for-go/tools/internal/utils"
 	"github.com/ahmetb/go-linq/v3"
 	"github.com/go-git/go-git/v5/plumbing"

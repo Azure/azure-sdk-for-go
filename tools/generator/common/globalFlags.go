@@ -1,8 +1,8 @@
 package common
 
 import (
-	"github.com/Azure/azure-sdk-for-go/tools/generator/sdk"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/flags"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/sdk"
 	"github.com/spf13/pflag"
 )
 

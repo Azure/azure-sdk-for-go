@@ -70,17 +70,17 @@ func (s *recordingTests) TestRecordedVariables() {
 	assert.Nil(err)
 
 	// optional variables always succeed.
-	assert.Equal(expectedVariableValue, target.GetOptionalEnvVar(nonExistingEnvVar, expectedVariableValue, NoSanitization))
+	assert.Equal(expectedVariableValue, target.GetOptionalRecordedVariable(nonExistingEnvVar, expectedVariableValue, Default))
 
 	// non existent variables return an error
-	val, err := target.GetEnvVar(nonExistingEnvVar, NoSanitization)
+	val, err := target.GetRecordedVariable(nonExistingEnvVar, Default)
 	// mark test as succeeded
 	assert.Equal(envNotExistsError(nonExistingEnvVar), err.Error())
 
 	// now create the env variable and check that it can be fetched
 	os.Setenv(nonExistingEnvVar, expectedVariableValue)
 	defer os.Unsetenv(nonExistingEnvVar)
-	val, err = target.GetEnvVar(nonExistingEnvVar, NoSanitization)
+	val, err = target.GetRecordedVariable(nonExistingEnvVar, Default)
 	assert.Equal(expectedVariableValue, val)
 
 	err = target.Stop()
@@ -107,10 +107,10 @@ func (s *recordingTests) TestRecordedVariablesSanitized() {
 	assert.Nil(err)
 
 	// call GetOptionalRecordedVariable with the Secret_String VariableType arg
-	assert.Equal(secret, target.GetOptionalEnvVar(SanitizedStringVar, secret, Secret_String))
+	assert.Equal(secret, target.GetOptionalRecordedVariable(SanitizedStringVar, secret, Secret_String))
 
 	// call GetOptionalRecordedVariable with the Secret_Base64String VariableType arg
-	assert.Equal(secretBase64, target.GetOptionalEnvVar(SanitizedBase64StrigVar, secretBase64, Secret_Base64String))
+	assert.Equal(secretBase64, target.GetOptionalRecordedVariable(SanitizedBase64StrigVar, secretBase64, Secret_Base64String))
 
 	// Calling Stop will save the variables and apply the sanitization options
 	err = target.Stop()
@@ -143,7 +143,7 @@ func (s *recordingTests) TestStopSavesVariablesIfExistAndReadsPreviousVariables(
 	target, err := NewRecording(context, Playback)
 	assert.Nil(err)
 
-	target.GetOptionalEnvVar(expectedVariableName, expectedVariableValue, NoSanitization)
+	target.GetOptionalRecordedVariable(expectedVariableName, expectedVariableValue, Default)
 
 	err = target.Stop()
 	assert.Nil(err)
@@ -159,7 +159,7 @@ func (s *recordingTests) TestStopSavesVariablesIfExistAndReadsPreviousVariables(
 	assert.Nil(err)
 
 	// add a new variable to the existing batch
-	target2.GetOptionalEnvVar(addedVariableName, addedVariableValue, NoSanitization)
+	target2.GetOptionalRecordedVariable(addedVariableName, addedVariableValue, Default)
 
 	err = target2.Stop()
 	assert.Nil(err)

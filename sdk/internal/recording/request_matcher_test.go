@@ -33,19 +33,18 @@ const unMatchedBody string = "This body does not match."
 func (s *requestMatcherTests) TestCompareBodies() {
 	assert := assert.New(s.T())
 	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
-	matcher := defaultMatcher(context)
 
 	req := http.Request{Body: closerFromString(matchedBody)}
 	recReq := cassette.Request{Body: matchedBody}
 
-	isMatch := matcher.compareBodies(&req, recReq.Body)
+	isMatch := compareBodies(&req, recReq, context)
 
 	assert.Equal(true, isMatch)
 
 	// make the requests mis-match
 	req.Body = closerFromString((unMatchedBody))
 
-	isMatch = matcher.compareBodies(&req, recReq.Body)
+	isMatch = compareBodies(&req, recReq, context)
 
 	assert.False(isMatch)
 }
@@ -53,7 +52,6 @@ func (s *requestMatcherTests) TestCompareBodies() {
 func (s *requestMatcherTests) TestCompareHeadersIgnoresIgnoredHeaders() {
 	assert := assert.New(s.T())
 	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
-	matcher := defaultMatcher(context)
 
 	// populate only ignored headers that do not match
 	reqHeaders := make(http.Header)
@@ -67,13 +65,12 @@ func (s *requestMatcherTests) TestCompareHeadersIgnoresIgnoredHeaders() {
 	recReq := cassette.Request{Headers: recordedHeaders}
 
 	// All headers match
-	assert.True(matcher.compareHeaders(&req, recReq))
+	assert.True(compareHeaders(&req, recReq, context))
 }
 
 func (s *requestMatcherTests) TestCompareHeadersMatchesHeaders() {
 	assert := assert.New(s.T())
 	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
-	matcher := defaultMatcher(context)
 
 	// populate only ignored headers that do not match
 	reqHeaders := make(http.Header)
@@ -87,13 +84,12 @@ func (s *requestMatcherTests) TestCompareHeadersMatchesHeaders() {
 	req := http.Request{Header: reqHeaders}
 	recReq := cassette.Request{Headers: recordedHeaders}
 
-	assert.True(matcher.compareHeaders(&req, recReq))
+	assert.True(compareHeaders(&req, recReq, context))
 }
 
 func (s *requestMatcherTests) TestCompareHeadersFailsMissingRecHeader() {
 	assert := assert.New(s.T())
 	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
-	matcher := defaultMatcher(context)
 
 	// populate only ignored headers that do not match
 	reqHeaders := make(http.Header)
@@ -111,13 +107,12 @@ func (s *requestMatcherTests) TestCompareHeadersFailsMissingRecHeader() {
 	// add a new header to the just req
 	reqHeaders[header2] = headerValue
 
-	assert.False(matcher.compareHeaders(&req, recReq))
+	assert.False(compareHeaders(&req, recReq, context))
 }
 
 func (s *requestMatcherTests) TestCompareHeadersFailsMissingReqHeader() {
 	assert := assert.New(s.T())
 	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
-	matcher := defaultMatcher(context)
 
 	// populate only ignored headers that do not match
 	reqHeaders := make(http.Header)
@@ -135,13 +130,12 @@ func (s *requestMatcherTests) TestCompareHeadersFailsMissingReqHeader() {
 	// add a new header to just the recording
 	recordedHeaders[header2] = headerValue
 
-	assert.False(matcher.compareHeaders(&req, recReq))
+	assert.False(compareHeaders(&req, recReq, context))
 }
 
 func (s *requestMatcherTests) TestCompareHeadersFailsMismatchedValues() {
 	assert := assert.New(s.T())
 	context := NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { s.T().Log(msg) }, func() string { return s.T().Name() })
-	matcher := defaultMatcher(context)
 
 	// populate only ignored headers that do not match
 	reqHeaders := make(http.Header)
@@ -161,7 +155,7 @@ func (s *requestMatcherTests) TestCompareHeadersFailsMismatchedValues() {
 	recordedHeaders[header2] = headerValue
 	reqHeaders[header2] = mismatch
 
-	assert.False(matcher.compareHeaders(&req, recReq))
+	assert.False(compareHeaders(&req, recReq, context))
 }
 
 func (s *requestMatcherTests) TestCompareURLs() {
@@ -171,13 +165,12 @@ func (s *requestMatcherTests) TestCompareURLs() {
 	host := "foo.bar"
 	req := http.Request{URL: &url.URL{Scheme: scheme, Host: host}}
 	recReq := cassette.Request{URL: scheme + "://" + host}
-	matcher := defaultMatcher(context)
 
-	assert.True(matcher.compareURLs(&req, recReq.URL))
+	assert.True(compareURLs(&req, recReq, context))
 
 	req.URL.Path = "noMatch"
 
-	assert.False(matcher.compareURLs(&req, recReq.URL))
+	assert.False(compareURLs(&req, recReq, context))
 }
 
 func (s *requestMatcherTests) TestCompareMethods() {
@@ -187,13 +180,12 @@ func (s *requestMatcherTests) TestCompareMethods() {
 	methodPatch := "PATCH"
 	req := http.Request{Method: methodPost}
 	recReq := cassette.Request{Method: methodPost}
-	matcher := defaultMatcher(context)
 
-	assert.True(matcher.compareMethods(&req, recReq.Method))
+	assert.True(compareMethods(&req, recReq, context))
 
 	req.Method = methodPatch
 
-	assert.False(matcher.compareMethods(&req, recReq.Method))
+	assert.False(compareMethods(&req, recReq, context))
 }
 
 func closerFromString(content string) io.ReadCloser {

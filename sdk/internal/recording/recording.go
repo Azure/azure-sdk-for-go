@@ -34,7 +34,6 @@ type Recording struct {
 	src                      rand.Source
 	now                      *time.Time
 	Sanitizer                *Sanitizer
-	Matcher                  *RequestMatcher
 	c                        TestContext
 }
 
@@ -64,11 +63,8 @@ const (
 type VariableType string
 
 const (
-	// NoSanitization indicates that the recorded value should not be sanitized.
-	NoSanitization VariableType = "default"
-	// Secret_String indicates that the recorded value should be replaced with a sanitized value.
-	Secret_String VariableType = "secret_string"
-	// Secret_Base64String indicates that the recorded value should be replaced with a sanitized valid base-64 string value.
+	Default             VariableType = "default"
+	Secret_String       VariableType = "secret_string"
 	Secret_Base64String VariableType = "secret_base64String"
 )
 
@@ -105,18 +101,17 @@ func NewRecording(c TestContext, mode RecordMode) (*Recording, error) {
 	}
 
 	// set the recorder Matcher
-	recording.Matcher = defaultMatcher(c)
 	rec.SetMatcher(recording.matchRequest)
 
 	// wire up the sanitizer
-	recording.Sanitizer = defaultSanitizer(rec)
+	recording.Sanitizer = DefaultSanitizer(rec)
 
 	return recording, err
 }
 
-// GetEnvVar returns a recorded environment variable. If the variable is not found we return an error.
-// variableType determines how the recorded variable will be saved.
-func (r *Recording) GetEnvVar(name string, variableType VariableType) (string, error) {
+// GetRecordedVariable returns a recorded variable. If the variable is not found we return an error
+// variableType determines how the recorded variable will be saved. Default indicates that the value should be saved without any sanitation.
+func (r *Recording) GetRecordedVariable(name string, variableType VariableType) (string, error) {
 	var err error
 	result, ok := r.previousSessionVariables[name]
 	if !ok || r.Mode == Live {
@@ -131,10 +126,9 @@ func (r *Recording) GetEnvVar(name string, variableType VariableType) (string, e
 	return *result, err
 }
 
-// GetOptionalEnvVar returns a recorded environment variable with a fallback default value.
-// default Value configures the fallback value to be returned if the environment variable is not set.
-// variableType determines how the recorded variable will be saved.
-func (r *Recording) GetOptionalEnvVar(name string, defaultValue string, variableType VariableType) string {
+// GetOptionalRecordedVariable returns a recorded variable with a fallback default value
+// variableType determines how the recorded variable will be saved. Default indicates that the value should be saved without any sanitation.
+func (r *Recording) GetOptionalRecordedVariable(name string, defaultValue string, variableType VariableType) string {
 	result, ok := r.previousSessionVariables[name]
 	if !ok || r.Mode == Live {
 		result = getOptionalEnv(name, defaultValue)
@@ -269,10 +263,10 @@ func getOptionalEnv(name string, defaultValue string) *string {
 }
 
 func (r *Recording) matchRequest(req *http.Request, rec cassette.Request) bool {
-	isMatch := r.Matcher.compareMethods(req, rec.Method) &&
-		r.Matcher.compareURLs(req, rec.URL) &&
-		r.Matcher.compareHeaders(req, rec) &&
-		r.Matcher.compareBodies(req, rec.Body)
+	isMatch := compareMethods(req, rec, r.c) &&
+		compareURLs(req, rec, r.c) &&
+		compareHeaders(req, rec, r.c) &&
+		compareBodies(req, rec, r.c)
 
 	return isMatch
 }

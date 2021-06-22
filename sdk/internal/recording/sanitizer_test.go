@@ -3,7 +3,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package testframework
+package recording
 
 import (
 	"net/http"
@@ -18,7 +18,7 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-type recordingSanitizerTests struct {
+type sanitizerTests struct {
 	suite.Suite
 }
 
@@ -28,10 +28,10 @@ const customHeader2 string = "Barheader"
 const nonSanitizedHeader string = "notsanitized"
 
 func TestRecordingSanitizer(t *testing.T) {
-	suite.Run(t, new(recordingSanitizerTests))
+	suite.Run(t, new(sanitizerTests))
 }
 
-func (s *recordingSanitizerTests) TestDefaultSanitizerSanitizesAuthHeader() {
+func (s *sanitizerTests) TestDefaultSanitizerSanitizesAuthHeader() {
 	assert := assert.New(s.T())
 	server, cleanup := mock.NewServer()
 	server.SetResponse()
@@ -57,7 +57,7 @@ func (s *recordingSanitizerTests) TestDefaultSanitizerSanitizesAuthHeader() {
 	}
 }
 
-func (s *recordingSanitizerTests) TestAddSanitizedHeadersSanitizes() {
+func (s *sanitizerTests) TestAddSanitizedHeadersSanitizes() {
 	assert := assert.New(s.T())
 	server, cleanup := mock.NewServer()
 	server.SetResponse()
@@ -91,7 +91,7 @@ func (s *recordingSanitizerTests) TestAddSanitizedHeadersSanitizes() {
 	}
 }
 
-func (s *recordingSanitizerTests) TestAddUrlSanitizerSanitizes() {
+func (s *sanitizerTests) TestAddUrlSanitizerSanitizes() {
 	assert := assert.New(s.T())
 	secret := "secretvalue"
 	secretBody := "some body content that contains a " + secret
@@ -129,7 +129,7 @@ func (s *recordingSanitizerTests) TestAddUrlSanitizerSanitizes() {
 	}
 }
 
-func (s *recordingSanitizerTests) TearDownSuite() {
+func (s *sanitizerTests) TearDownSuite() {
 	assert := assert.New(s.T())
 	// cleanup test files
 	err := os.RemoveAll("testfiles")

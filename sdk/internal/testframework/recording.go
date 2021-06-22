@@ -3,7 +3,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package testframework
+package recording
 
 import (
 	"errors"
@@ -33,7 +33,7 @@ type Recording struct {
 	recorder                 *recorder.Recorder
 	src                      rand.Source
 	now                      *time.Time
-	Sanitizer                *RecordingSanitizer
+	Sanitizer                *Sanitizer
 	Matcher                  *RequestMatcher
 	c                        TestContext
 }

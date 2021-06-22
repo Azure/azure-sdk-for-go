@@ -1,0 +1,128 @@
+package release
+
+import (
+	"fmt"
+	"log"
+	"os"
+	"path/filepath"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest_ext"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/config"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/repos"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
+)
+
+type generateContext struct {
+	sdkRepo            repos.SDKRepository
+	specRepo           repos.SpecRepository
+	readme             string
+	specLastCommitHash string
+
+	defaultOptions    model.Options
+	additionalOptions []model.Option
+
+	repoContent map[string]exports.Content
+
+	skipProfiles bool
+}
+
+func (ctx generateContext) SDKRoot() string {
+	return ctx.sdkRepo.Root()
+}
+
+func (ctx generateContext) SpecRoot() string {
+	return ctx.specRepo.Root()
+}
+
+func (ctx generateContext) RepoContent() map[string]exports.Content {
+	return ctx.repoContent
+}
+
+func (ctx *generateContext) generate(tag string, infoList []config.ReleaseRequestInfo) (*GenerateResult, error) {
+	metadataOutputRoot := filepath.Join(os.TempDir(), fmt.Sprintf("release-metadata-%v", time.Now().Unix()))
+	defer os.RemoveAll(metadataOutputRoot)
+
+	var options model.Options
+	// determine whether this is a new package or not
+	if m, ok := common.ContainsPackage(ctx.SDKRoot(), ctx.readme, tag); ok {
+		log.Printf("Task (readme %s / tag %s) is an existing package, using the options in the metadata...", ctx.readme, tag)
+		options = ctx.defaultOptions.(model.Options).MergeOptions(autorest_ext.GetAdditionalOptions(m).Arguments()...)
+	} else {
+		log.Printf("Task (readme %s / tag %s) is a new package, appending the additional options to the default options...", ctx.readme, tag)
+		options = ctx.defaultOptions.(model.Options).MergeOptions(ctx.additionalOptions...)
+	}
+
+	log.Printf("Generating %s from %v...", tag, infoList)
+	// iterate over the tags in one request
+	// Generate code
+	input := autorest_ext.GenerateInput{
+		Readme:     ctx.readme,
+		Tag:        tag,
+		SDKRoot:    ctx.SDKRoot(),
+		CommitHash: ctx.specLastCommitHash,
+		Options:    options,
+	}
+	r, err := autorest_ext.GeneratePackage(ctx, input, autorest_ext.GenerateOptions{
+		MetadataOutputRoot: metadataOutputRoot,
+		Stderr:             os.Stderr,
+		Stdout:             os.Stderr, // we redirect all the output of autorest to stderr, so that the stdout will only contain the proper output
+	})
+	if err != nil {
+		return nil, fmt.Errorf("cannot generate readme '%s', tag '%s': %+v", ctx.readme, tag, err)
+	}
+
+	// regenerate the profiles
+	if err := ctx.regenerateProfiles(); err != nil {
+		return nil, err
+	}
+
+	// commit the content
+	if err := ctx.commit(tag); err != nil {
+		return nil, err
+	}
+
+	// get last commit
+	ref, err := ctx.sdkRepo.Head()
+	if err != nil {
+		return nil, err
+	}
+
+	return &GenerateResult{
+		Package:    r.Package,
+		Readme:     ctx.readme,
+		Tag:        tag,
+		CommitHash: ref.Hash().String(),
+		Info:       infoList,
+	}, nil
+}
+
+func (ctx *generateContext) regenerateProfiles() error {
+	if ctx.skipProfiles {
+		return nil
+	}
+	return autorest_ext.RegenerateProfiles(ctx.SDKRoot())
+}
+
+func (ctx *generateContext) commit(tag string) error {
+	if err := ctx.sdkRepo.Add("profiles"); err != nil {
+		return fmt.Errorf("failed to add 'profiles': %+v", err)
+	}
+
+	if err := ctx.sdkRepo.Add("services"); err != nil {
+		return fmt.Errorf("failed to add 'services': %+v", err)
+	}
+
+	message := fmt.Sprintf("Generated from %s tag %s (commit hash: %s)", ctx.readme, tag, ctx.specLastCommitHash)
+	if err := ctx.sdkRepo.Commit(message); err != nil {
+		if repos.IsNothingToCommit(err) {
+			log.Printf("There is nothing to commit. Message: %s", message)
+			return nil
+		}
+		return fmt.Errorf("failed to commit changes: %+v", err)
+	}
+
+	return nil
+}

@@ -1771,8 +1771,9 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfModifiedSinceTrue() {
 		IfModifiedSince: &currentTime,
 	}
 	options := DownloadBlobOptions{
-		ModifiedAccessConditions: &access,
+		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &access},
 	}
+
 	resp, err := bbClient.Download(ctx, &options)
 	_assert.Nil(err)
 	_assert.Equal(*resp.ContentLength, int64(len(blockBlobDefaultData)))
@@ -1804,7 +1805,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfModifiedSinceFalse() {
 		IfModifiedSince: &currentTime,
 	}
 	options := DownloadBlobOptions{
-		ModifiedAccessConditions: &access,
+		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &access},
 	}
 	_, err = bbClient.Download(ctx, &options)
 	_assert.NotNil(err)
@@ -1833,8 +1834,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfUnmodifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
 	options := DownloadBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfUnmodifiedSince: &currentTime,
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		},
 	}
 	resp, err := bbClient.Download(ctx, &options)
@@ -1867,7 +1868,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfUnmodifiedSinceFalse() {
 		IfUnmodifiedSince: &currentTime,
 	}
 	options := DownloadBlobOptions{
-		ModifiedAccessConditions: &access,
+		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &access},
 	}
 	_, err = bbClient.Download(ctx, &options)
 	_assert.NotNil(err)
@@ -1893,8 +1894,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfMatchTrue() {
 	_assert.Nil(err)
 
 	options := DownloadBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfMatch: resp.ETag,
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag},
 		},
 	}
 	resp2, err := bbClient.Download(ctx, &options)
@@ -1922,8 +1923,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfMatchFalse() {
 	_assert.Nil(err)
 
 	options := DownloadBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfMatch: resp.ETag,
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag},
 		},
 	}
 
@@ -1956,7 +1957,7 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfNoneMatchTrue() {
 		IfNoneMatch: resp.ETag,
 	}
 	options := DownloadBlobOptions{
-		ModifiedAccessConditions: &access,
+		BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &access},
 	}
 
 	_, err = bbClient.SetMetadata(ctx, nil, nil)
@@ -1986,8 +1987,8 @@ func (s *azblobTestSuite) TestBlobDownloadDataIfNoneMatchFalse() {
 	resp, err := bbClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
 	options := DownloadBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{
-			IfNoneMatch: resp.ETag,
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag},
 		},
 	}
 
@@ -2381,7 +2382,9 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfModifiedSinceTrue() {
 	_assert.Nil(err)
 
 	getBlobPropertiesOptions := GetBlobPropertiesOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
+		},
 	}
 	resp, err := bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	_assert.Nil(err)
@@ -2414,7 +2417,9 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfModifiedSinceFalse() {
 	_assert.Nil(err)
 
 	getBlobPropertiesOptions := GetBlobPropertiesOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
+		},
 	}
 	_, err = bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	_assert.NotNil(err)
@@ -2449,7 +2454,9 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfUnmodifiedSinceTrue() {
 	_assert.Nil(err)
 
 	getBlobPropertiesOptions := GetBlobPropertiesOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+		},
 	}
 	resp, err := bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	_assert.Nil(err)
@@ -2510,7 +2517,9 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfMatchTrue() {
 	_assert.Nil(err)
 
 	getBlobPropertiesOptions := GetBlobPropertiesOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag},
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag},
+		},
 	}
 	resp2, err := bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	_assert.Nil(err)
@@ -2558,7 +2567,9 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfMatchFalse() {
 
 	eTag := "garbage"
 	getBlobPropertiesOptions := GetBlobPropertiesOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag},
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &eTag},
+		},
 	}
 	_, err = bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	_assert.NotNil(err)
@@ -2589,7 +2600,9 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfNoneMatchTrue() {
 
 	eTag := "garbage"
 	getBlobPropertiesOptions := GetBlobPropertiesOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag},
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: &eTag},
+		},
 	}
 	resp, err := bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	_assert.Nil(err)
@@ -2617,7 +2630,9 @@ func (s *azblobTestSuite) TestBlobGetPropsAndMetadataIfNoneMatchFalse() {
 	_assert.Nil(err)
 
 	getBlobPropertiesOptions := GetBlobPropertiesOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag},
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: resp.ETag},
+		},
 	}
 	_, err = bbClient.GetProperties(ctx, &getBlobPropertiesOptions)
 	_assert.NotNil(err)

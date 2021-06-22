@@ -16,11 +16,10 @@ type UploadBlockBlobOptions struct {
 	// Specify the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 *[]byte
 
-	BlobHTTPHeaders          *BlobHTTPHeaders
-	LeaseAccessConditions    *LeaseAccessConditions
-	CpkInfo                  *CpkInfo
-	CpkScopeInfo             *CpkScopeInfo
-	ModifiedAccessConditions *ModifiedAccessConditions
+	BlobHTTPHeaders      *BlobHTTPHeaders
+	CpkInfo              *CpkInfo
+	CpkScopeInfo         *CpkScopeInfo
+	BlobAccessConditions *BlobAccessConditions
 }
 
 func (o *UploadBlockBlobOptions) pointers() (*BlockBlobUploadOptions, *BlobHTTPHeaders, *LeaseAccessConditions,
@@ -36,7 +35,8 @@ func (o *UploadBlockBlobOptions) pointers() (*BlockBlobUploadOptions, *BlobHTTPH
 		TransactionalContentMD5: o.TransactionalContentMD5,
 	}
 
-	return &basics, o.BlobHTTPHeaders, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return &basics, o.BlobHTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
 type StageBlockOptions struct {
@@ -62,7 +62,7 @@ type StageBlockFromURLOptions struct {
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
 	SourceContentMD5 *[]byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentcrc64 *[]byte
+	SourceContentCRC64 *[]byte
 
 	Offset *int64
 
@@ -82,7 +82,7 @@ func (o *StageBlockFromURLOptions) pointers() (*LeaseAccessConditions, *SourceMo
 	options := &BlockBlobStageBlockFromURLOptions{
 		RequestID:          o.RequestID,
 		SourceContentMD5:   o.SourceContentMD5,
-		SourceContentcrc64: o.SourceContentcrc64,
+		SourceContentCRC64: o.SourceContentCRC64,
 		SourceRange:        getSourceRange(o.Offset, o.Count),
 		Timeout:            o.Timeout,
 	}
@@ -101,7 +101,7 @@ type CommitBlockListOptions struct {
 	BlobHTTPHeaders           *BlobHTTPHeaders
 	CpkInfo                   *CpkInfo
 	CpkScopeInfo              *CpkScopeInfo
-	BlobAccessConditions
+	BlobAccessConditions      *BlobAccessConditions
 }
 
 func (o *CommitBlockListOptions) pointers() (*BlockBlobCommitBlockListOptions, *BlobHTTPHeaders, *CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions, *LeaseAccessConditions) {
@@ -118,13 +118,13 @@ func (o *CommitBlockListOptions) pointers() (*BlockBlobCommitBlockListOptions, *
 		TransactionalContentCRC64: o.TransactionalContentCRC64,
 		TransactionalContentMD5:   o.TransactionalContentMD5,
 	}
-
-	return options, o.BlobHTTPHeaders, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions, o.LeaseAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return options, o.BlobHTTPHeaders, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions, leaseAccessConditions
 }
 
 type GetBlockListOptions struct {
 	BlockBlobGetBlockListOptions *BlockBlobGetBlockListOptions
-	BlobAccessConditions
+	BlobAccessConditions         *BlobAccessConditions
 }
 
 func (o *GetBlockListOptions) pointers() (*BlockBlobGetBlockListOptions, *ModifiedAccessConditions, *LeaseAccessConditions) {
@@ -132,7 +132,8 @@ func (o *GetBlockListOptions) pointers() (*BlockBlobGetBlockListOptions, *Modifi
 		return nil, nil, nil
 	}
 
-	return o.BlockBlobGetBlockListOptions, o.ModifiedAccessConditions, o.LeaseAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return o.BlockBlobGetBlockListOptions, modifiedAccessConditions, leaseAccessConditions
 }
 
 type CopyBlockBlobFromURLOptions struct {
@@ -143,7 +144,7 @@ type CopyBlockBlobFromURLOptions struct {
 	Tier                           *AccessTier
 	Timeout                        *int32
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
-	BlobAccessConditions
+	BlobAccessConditions           *BlobAccessConditions
 }
 
 func (o *CopyBlockBlobFromURLOptions) pointers() (*BlobCopyFromURLOptions, *SourceModifiedAccessConditions, *ModifiedAccessConditions, *LeaseAccessConditions) {
@@ -160,5 +161,6 @@ func (o *CopyBlockBlobFromURLOptions) pointers() (*BlobCopyFromURLOptions, *Sour
 		Timeout:          o.Timeout,
 	}
 
-	return options, o.SourceModifiedAccessConditions, o.ModifiedAccessConditions, o.LeaseAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return options, o.SourceModifiedAccessConditions, modifiedAccessConditions, leaseAccessConditions
 }

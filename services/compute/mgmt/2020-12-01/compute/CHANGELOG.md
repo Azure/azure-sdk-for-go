@@ -1,53 +1,31 @@
-# Change History
+# Unreleased
+
+## Breaking Changes
+
+### Signature Changes
+
+#### Struct Fields
+
+1. OrchestrationServiceStateInput.ServiceName changed type from OrchestrationServiceNames to *string
 
 ## Additive Changes
 
 ### New Funcs
 
-1. AccessURI.MarshalJSON() ([]byte, error)
-1. AvailablePatchSummary.MarshalJSON() ([]byte, error)
-1. BootDiagnosticsInstanceView.MarshalJSON() ([]byte, error)
-1. DataDiskImage.MarshalJSON() ([]byte, error)
-1. DiskAccessProperties.MarshalJSON() ([]byte, error)
-1. GalleryIdentifier.MarshalJSON() ([]byte, error)
-1. LastPatchInstallationSummary.MarshalJSON() ([]byte, error)
-1. LogAnalyticsOperationResult.MarshalJSON() ([]byte, error)
-1. LogAnalyticsOutput.MarshalJSON() ([]byte, error)
-1. OperationListResult.MarshalJSON() ([]byte, error)
-1. OperationValueDisplay.MarshalJSON() ([]byte, error)
-1. OrchestrationServiceSummary.MarshalJSON() ([]byte, error)
-1. PatchInstallationDetail.MarshalJSON() ([]byte, error)
-1. PrivateEndpoint.MarshalJSON() ([]byte, error)
-1. ProxyOnlyResource.MarshalJSON() ([]byte, error)
-1. RecoveryWalkResponse.MarshalJSON() ([]byte, error)
-1. RegionalReplicationStatus.MarshalJSON() ([]byte, error)
-1. ReplicationStatus.MarshalJSON() ([]byte, error)
-1. ResourceSku.MarshalJSON() ([]byte, error)
-1. ResourceSkuCapabilities.MarshalJSON() ([]byte, error)
-1. ResourceSkuCapacity.MarshalJSON() ([]byte, error)
-1. ResourceSkuCosts.MarshalJSON() ([]byte, error)
-1. ResourceSkuLocationInfo.MarshalJSON() ([]byte, error)
-1. ResourceSkuRestrictionInfo.MarshalJSON() ([]byte, error)
-1. ResourceSkuRestrictions.MarshalJSON() ([]byte, error)
-1. ResourceSkuZoneDetails.MarshalJSON() ([]byte, error)
-1. RetrieveBootDiagnosticsDataResult.MarshalJSON() ([]byte, error)
-1. RollbackStatusInfo.MarshalJSON() ([]byte, error)
-1. RollingUpgradeProgressInfo.MarshalJSON() ([]byte, error)
-1. RollingUpgradeRunningStatus.MarshalJSON() ([]byte, error)
-1. RollingUpgradeStatusInfoProperties.MarshalJSON() ([]byte, error)
-1. ShareInfoElement.MarshalJSON() ([]byte, error)
-1. SubResourceReadOnly.MarshalJSON() ([]byte, error)
-1. UpgradeOperationHistoricalStatusInfo.MarshalJSON() ([]byte, error)
-1. UpgradeOperationHistoricalStatusInfoProperties.MarshalJSON() ([]byte, error)
-1. UpgradeOperationHistoryStatus.MarshalJSON() ([]byte, error)
-1. VirtualMachineAssessPatchesResult.MarshalJSON() ([]byte, error)
-1. VirtualMachineHealthStatus.MarshalJSON() ([]byte, error)
-1. VirtualMachineIdentityUserAssignedIdentitiesValue.MarshalJSON() ([]byte, error)
-1. VirtualMachineInstallPatchesResult.MarshalJSON() ([]byte, error)
-1. VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue.MarshalJSON() ([]byte, error)
-1. VirtualMachineScaleSetInstanceViewStatusesSummary.MarshalJSON() ([]byte, error)
-1. VirtualMachineScaleSetSku.MarshalJSON() ([]byte, error)
-1. VirtualMachineScaleSetSkuCapacity.MarshalJSON() ([]byte, error)
-1. VirtualMachineScaleSetVMExtensionsSummary.MarshalJSON() ([]byte, error)
-1. VirtualMachineSoftwarePatchProperties.MarshalJSON() ([]byte, error)
-1. VirtualMachineStatusCodeCount.MarshalJSON() ([]byte, error)
+1. *DiskRestorePointGrantAccessFuture.UnmarshalJSON([]byte) error
+1. *DiskRestorePointRevokeAccessFuture.UnmarshalJSON([]byte) error
+1. DiskRestorePointClient.GrantAccess(context.Context, string, string, string, string, GrantAccessData) (DiskRestorePointGrantAccessFuture, error)
+1. DiskRestorePointClient.GrantAccessPreparer(context.Context, string, string, string, string, GrantAccessData) (*http.Request, error)
+1. DiskRestorePointClient.GrantAccessResponder(*http.Response) (AccessURI, error)
+1. DiskRestorePointClient.GrantAccessSender(*http.Request) (DiskRestorePointGrantAccessFuture, error)
+1. DiskRestorePointClient.RevokeAccess(context.Context, string, string, string, string) (DiskRestorePointRevokeAccessFuture, error)
+1. DiskRestorePointClient.RevokeAccessPreparer(context.Context, string, string, string, string) (*http.Request, error)
+1. DiskRestorePointClient.RevokeAccessResponder(*http.Response) (autorest.Response, error)
+1. DiskRestorePointClient.RevokeAccessSender(*http.Request) (DiskRestorePointRevokeAccessFuture, error)
+
+### Struct Changes
+
+#### New Structs
+
+1. DiskRestorePointGrantAccessFuture
+1. DiskRestorePointRevokeAccessFuture

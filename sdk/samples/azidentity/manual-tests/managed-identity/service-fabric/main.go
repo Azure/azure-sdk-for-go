@@ -15,7 +15,8 @@ import (
 
 func main() {
 	// NOTE: the service fabric cluster used for testing uses a self-signed certificate,
-	// this configuration is only used in a development environment.
+	// this configuration is only used in a development environment. This is an insecure
+	// configuration.
 	cl := &http.Client{
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},

@@ -641,3 +641,24 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnInt(t *testing.T) {
 		t.Fatalf("Received an error when attempting to retrieve a token")
 	}
 }
+
+// adding an incorrect string value in expires_on
+func TestManagedIdentityCredential_CreateAccessTokenExpiresOnFail(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(`{"access_token": "new_token", "refresh_token": "", "expires_in": "", "expires_on": "15609740s28", "not_before": "1560970130", "resource": "https://vault.azure.net", "token_type": "Bearer"}`)))
+	_ = os.Setenv("MSI_ENDPOINT", srv.URL())
+	_ = os.Setenv("MSI_SECRET", "secret")
+	defer clearEnvVars("MSI_ENDPOINT", "MSI_SECRET")
+	options := ManagedIdentityCredentialOptions{}
+	options.HTTPClient = srv
+	msiCred, err := NewManagedIdentityCredential(clientID, &options)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	if err == nil {
+		t.Fatalf("expected to receive an error but received none")
+	}
+}

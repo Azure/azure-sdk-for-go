@@ -1,7 +1,2 @@
-# Change History
+# Unreleased
 
-## Additive Changes
-
-### New Funcs
-
-1. ApplicationTypeResourceProperties.MarshalJSON() ([]byte, error)

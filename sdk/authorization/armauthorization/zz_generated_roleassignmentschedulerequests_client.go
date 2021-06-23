@@ -75,7 +75,7 @@ func (client *RoleAssignmentScheduleRequestsClient) cancelHandleError(resp *azco
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -128,7 +128,7 @@ func (client *RoleAssignmentScheduleRequestsClient) createHandleResponse(resp *a
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleAssignmentScheduleRequestResponse{}, err
 	}
-return RoleAssignmentScheduleRequestResponse{RawResponse: resp.Response, RoleAssignmentScheduleRequest: val}, nil
+	return RoleAssignmentScheduleRequestResponse{RawResponse: resp.Response, RoleAssignmentScheduleRequest: val}, nil
 }
 
 // createHandleError handles the Create error response.
@@ -137,7 +137,7 @@ func (client *RoleAssignmentScheduleRequestsClient) createHandleError(resp *azco
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -190,7 +190,7 @@ func (client *RoleAssignmentScheduleRequestsClient) getHandleResponse(resp *azco
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleAssignmentScheduleRequestResponse{}, err
 	}
-return RoleAssignmentScheduleRequestResponse{RawResponse: resp.Response, RoleAssignmentScheduleRequest: val}, nil
+	return RoleAssignmentScheduleRequestResponse{RawResponse: resp.Response, RoleAssignmentScheduleRequest: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -199,7 +199,7 @@ func (client *RoleAssignmentScheduleRequestsClient) getHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -208,7 +208,7 @@ func (client *RoleAssignmentScheduleRequestsClient) getHandleError(resp *azcore.
 
 // ListForScope - Gets role assignment schedule requests for a scope.
 // If the operation fails it returns the *CloudError error type.
-func (client *RoleAssignmentScheduleRequestsClient) ListForScope(scope string, options *RoleAssignmentScheduleRequestsListForScopeOptions) (RoleAssignmentScheduleRequestListResultPager) {
+func (client *RoleAssignmentScheduleRequestsClient) ListForScope(scope string, options *RoleAssignmentScheduleRequestsListForScopeOptions) RoleAssignmentScheduleRequestListResultPager {
 	return &roleAssignmentScheduleRequestListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -251,7 +251,7 @@ func (client *RoleAssignmentScheduleRequestsClient) listForScopeHandleResponse(r
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleAssignmentScheduleRequestListResultResponse{}, err
 	}
-return RoleAssignmentScheduleRequestListResultResponse{RawResponse: resp.Response, RoleAssignmentScheduleRequestListResult: val}, nil
+	return RoleAssignmentScheduleRequestListResultResponse{RawResponse: resp.Response, RoleAssignmentScheduleRequestListResult: val}, nil
 }
 
 // listForScopeHandleError handles the ListForScope error response.
@@ -260,10 +260,9 @@ func (client *RoleAssignmentScheduleRequestsClient) listForScopeHandleError(resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

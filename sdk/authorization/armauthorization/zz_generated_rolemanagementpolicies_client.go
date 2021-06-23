@@ -75,7 +75,7 @@ func (client *RoleManagementPoliciesClient) deleteHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -128,7 +128,7 @@ func (client *RoleManagementPoliciesClient) getHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleManagementPolicyResponse{}, err
 	}
-return RoleManagementPolicyResponse{RawResponse: resp.Response, RoleManagementPolicy: val}, nil
+	return RoleManagementPolicyResponse{RawResponse: resp.Response, RoleManagementPolicy: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -137,7 +137,7 @@ func (client *RoleManagementPoliciesClient) getHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -146,7 +146,7 @@ func (client *RoleManagementPoliciesClient) getHandleError(resp *azcore.Response
 
 // ListForScope - Gets role management policies for a resource scope.
 // If the operation fails it returns the *CloudError error type.
-func (client *RoleManagementPoliciesClient) ListForScope(scope string, options *RoleManagementPoliciesListForScopeOptions) (RoleManagementPolicyListResultPager) {
+func (client *RoleManagementPoliciesClient) ListForScope(scope string, options *RoleManagementPoliciesListForScopeOptions) RoleManagementPolicyListResultPager {
 	return &roleManagementPolicyListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -186,7 +186,7 @@ func (client *RoleManagementPoliciesClient) listForScopeHandleResponse(resp *azc
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleManagementPolicyListResultResponse{}, err
 	}
-return RoleManagementPolicyListResultResponse{RawResponse: resp.Response, RoleManagementPolicyListResult: val}, nil
+	return RoleManagementPolicyListResultResponse{RawResponse: resp.Response, RoleManagementPolicyListResult: val}, nil
 }
 
 // listForScopeHandleError handles the ListForScope error response.
@@ -195,7 +195,7 @@ func (client *RoleManagementPoliciesClient) listForScopeHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -248,7 +248,7 @@ func (client *RoleManagementPoliciesClient) updateHandleResponse(resp *azcore.Re
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleManagementPolicyResponse{}, err
 	}
-return RoleManagementPolicyResponse{RawResponse: resp.Response, RoleManagementPolicy: val}, nil
+	return RoleManagementPolicyResponse{RawResponse: resp.Response, RoleManagementPolicy: val}, nil
 }
 
 // updateHandleError handles the Update error response.
@@ -257,10 +257,9 @@ func (client *RoleManagementPoliciesClient) updateHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

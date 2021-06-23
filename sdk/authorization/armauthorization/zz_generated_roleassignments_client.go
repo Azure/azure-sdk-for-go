@@ -21,7 +21,7 @@ import (
 // RoleAssignmentsClient contains the methods for the RoleAssignments group.
 // Don't use this type directly, use NewRoleAssignmentsClient() instead.
 type RoleAssignmentsClient struct {
-	con *armcore.Connection
+	con            *armcore.Connection
 	subscriptionID string
 }
 
@@ -76,7 +76,7 @@ func (client *RoleAssignmentsClient) createHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleAssignmentResponse{}, err
 	}
-return RoleAssignmentResponse{RawResponse: resp.Response, RoleAssignment: val}, nil
+	return RoleAssignmentResponse{RawResponse: resp.Response, RoleAssignment: val}, nil
 }
 
 // createHandleError handles the Create error response.
@@ -85,7 +85,7 @@ func (client *RoleAssignmentsClient) createHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -134,7 +134,7 @@ func (client *RoleAssignmentsClient) createByIDHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleAssignmentResponse{}, err
 	}
-return RoleAssignmentResponse{RawResponse: resp.Response, RoleAssignment: val}, nil
+	return RoleAssignmentResponse{RawResponse: resp.Response, RoleAssignment: val}, nil
 }
 
 // createByIDHandleError handles the CreateByID error response.
@@ -143,7 +143,7 @@ func (client *RoleAssignmentsClient) createByIDHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -199,7 +199,7 @@ func (client *RoleAssignmentsClient) deleteHandleResponse(resp *azcore.Response)
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleAssignmentResponse{}, err
 	}
-return RoleAssignmentResponse{RawResponse: resp.Response, RoleAssignment: val}, nil
+	return RoleAssignmentResponse{RawResponse: resp.Response, RoleAssignment: val}, nil
 }
 
 // deleteHandleError handles the Delete error response.
@@ -208,7 +208,7 @@ func (client *RoleAssignmentsClient) deleteHandleError(resp *azcore.Response) er
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -260,7 +260,7 @@ func (client *RoleAssignmentsClient) deleteByIDHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleAssignmentResponse{}, err
 	}
-return RoleAssignmentResponse{RawResponse: resp.Response, RoleAssignment: val}, nil
+	return RoleAssignmentResponse{RawResponse: resp.Response, RoleAssignment: val}, nil
 }
 
 // deleteByIDHandleError handles the DeleteByID error response.
@@ -269,7 +269,7 @@ func (client *RoleAssignmentsClient) deleteByIDHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -325,7 +325,7 @@ func (client *RoleAssignmentsClient) getHandleResponse(resp *azcore.Response) (R
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleAssignmentResponse{}, err
 	}
-return RoleAssignmentResponse{RawResponse: resp.Response, RoleAssignment: val}, nil
+	return RoleAssignmentResponse{RawResponse: resp.Response, RoleAssignment: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -334,7 +334,7 @@ func (client *RoleAssignmentsClient) getHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -386,7 +386,7 @@ func (client *RoleAssignmentsClient) getByIDHandleResponse(resp *azcore.Response
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleAssignmentResponse{}, err
 	}
-return RoleAssignmentResponse{RawResponse: resp.Response, RoleAssignment: val}, nil
+	return RoleAssignmentResponse{RawResponse: resp.Response, RoleAssignment: val}, nil
 }
 
 // getByIDHandleError handles the GetByID error response.
@@ -395,7 +395,7 @@ func (client *RoleAssignmentsClient) getByIDHandleError(resp *azcore.Response) e
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -404,7 +404,7 @@ func (client *RoleAssignmentsClient) getByIDHandleError(resp *azcore.Response) e
 
 // ListForResource - List all role assignments that apply to a resource.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, resourceType string, resourceName string, options *RoleAssignmentsListForResourceOptions) (RoleAssignmentListResultPager) {
+func (client *RoleAssignmentsClient) ListForResource(resourceGroupName string, resourceProviderNamespace string, resourceType string, resourceName string, options *RoleAssignmentsListForResourceOptions) RoleAssignmentListResultPager {
 	return &roleAssignmentListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -468,7 +468,7 @@ func (client *RoleAssignmentsClient) listForResourceHandleResponse(resp *azcore.
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleAssignmentListResultResponse{}, err
 	}
-return RoleAssignmentListResultResponse{RawResponse: resp.Response, RoleAssignmentListResult: val}, nil
+	return RoleAssignmentListResultResponse{RawResponse: resp.Response, RoleAssignmentListResult: val}, nil
 }
 
 // listForResourceHandleError handles the ListForResource error response.
@@ -477,7 +477,7 @@ func (client *RoleAssignmentsClient) listForResourceHandleError(resp *azcore.Res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -486,7 +486,7 @@ func (client *RoleAssignmentsClient) listForResourceHandleError(resp *azcore.Res
 
 // ListForResourceGroup - List all role assignments that apply to a resource group.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) ListForResourceGroup(resourceGroupName string, options *RoleAssignmentsListForResourceGroupOptions) (RoleAssignmentListResultPager) {
+func (client *RoleAssignmentsClient) ListForResourceGroup(resourceGroupName string, options *RoleAssignmentsListForResourceGroupOptions) RoleAssignmentListResultPager {
 	return &roleAssignmentListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -538,7 +538,7 @@ func (client *RoleAssignmentsClient) listForResourceGroupHandleResponse(resp *az
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleAssignmentListResultResponse{}, err
 	}
-return RoleAssignmentListResultResponse{RawResponse: resp.Response, RoleAssignmentListResult: val}, nil
+	return RoleAssignmentListResultResponse{RawResponse: resp.Response, RoleAssignmentListResult: val}, nil
 }
 
 // listForResourceGroupHandleError handles the ListForResourceGroup error response.
@@ -547,7 +547,7 @@ func (client *RoleAssignmentsClient) listForResourceGroupHandleError(resp *azcor
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -556,7 +556,7 @@ func (client *RoleAssignmentsClient) listForResourceGroupHandleError(resp *azcor
 
 // ListForScope - List all role assignments that apply to a scope.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) ListForScope(scope string, options *RoleAssignmentsListForScopeOptions) (RoleAssignmentListResultPager) {
+func (client *RoleAssignmentsClient) ListForScope(scope string, options *RoleAssignmentsListForScopeOptions) RoleAssignmentListResultPager {
 	return &roleAssignmentListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -604,7 +604,7 @@ func (client *RoleAssignmentsClient) listForScopeHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleAssignmentListResultResponse{}, err
 	}
-return RoleAssignmentListResultResponse{RawResponse: resp.Response, RoleAssignmentListResult: val}, nil
+	return RoleAssignmentListResultResponse{RawResponse: resp.Response, RoleAssignmentListResult: val}, nil
 }
 
 // listForScopeHandleError handles the ListForScope error response.
@@ -613,7 +613,7 @@ func (client *RoleAssignmentsClient) listForScopeHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -622,7 +622,7 @@ func (client *RoleAssignmentsClient) listForScopeHandleError(resp *azcore.Respon
 
 // ListForSubscription - List all role assignments that apply to a subscription.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *RoleAssignmentsClient) ListForSubscription(options *RoleAssignmentsListForSubscriptionOptions) (RoleAssignmentListResultPager) {
+func (client *RoleAssignmentsClient) ListForSubscription(options *RoleAssignmentsListForSubscriptionOptions) RoleAssignmentListResultPager {
 	return &roleAssignmentListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -670,7 +670,7 @@ func (client *RoleAssignmentsClient) listForSubscriptionHandleResponse(resp *azc
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleAssignmentListResultResponse{}, err
 	}
-return RoleAssignmentListResultResponse{RawResponse: resp.Response, RoleAssignmentListResult: val}, nil
+	return RoleAssignmentListResultResponse{RawResponse: resp.Response, RoleAssignmentListResult: val}, nil
 }
 
 // listForSubscriptionHandleError handles the ListForSubscription error response.
@@ -679,7 +679,7 @@ func (client *RoleAssignmentsClient) listForSubscriptionHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -732,7 +732,7 @@ func (client *RoleAssignmentsClient) validateHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ValidationResponseResponse{}, err
 	}
-return ValidationResponseResponse{RawResponse: resp.Response, ValidationResponse: val}, nil
+	return ValidationResponseResponse{RawResponse: resp.Response, ValidationResponse: val}, nil
 }
 
 // validateHandleError handles the Validate error response.
@@ -741,7 +741,7 @@ func (client *RoleAssignmentsClient) validateHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -790,7 +790,7 @@ func (client *RoleAssignmentsClient) validateByIDHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ValidationResponseResponse{}, err
 	}
-return ValidationResponseResponse{RawResponse: resp.Response, ValidationResponse: val}, nil
+	return ValidationResponseResponse{RawResponse: resp.Response, ValidationResponse: val}, nil
 }
 
 // validateByIDHandleError handles the ValidateByID error response.
@@ -799,10 +799,9 @@ func (client *RoleAssignmentsClient) validateByIDHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

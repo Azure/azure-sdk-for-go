@@ -75,7 +75,7 @@ func (client *RoleAssignmentScheduleInstancesClient) getHandleResponse(resp *azc
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleAssignmentScheduleInstanceResponse{}, err
 	}
-return RoleAssignmentScheduleInstanceResponse{RawResponse: resp.Response, RoleAssignmentScheduleInstance: val}, nil
+	return RoleAssignmentScheduleInstanceResponse{RawResponse: resp.Response, RoleAssignmentScheduleInstance: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -84,7 +84,7 @@ func (client *RoleAssignmentScheduleInstancesClient) getHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -93,7 +93,7 @@ func (client *RoleAssignmentScheduleInstancesClient) getHandleError(resp *azcore
 
 // ListForScope - Gets role assignment schedule instances of a role assignment schedule.
 // If the operation fails it returns the *CloudError error type.
-func (client *RoleAssignmentScheduleInstancesClient) ListForScope(scope string, options *RoleAssignmentScheduleInstancesListForScopeOptions) (RoleAssignmentScheduleInstanceListResultPager) {
+func (client *RoleAssignmentScheduleInstancesClient) ListForScope(scope string, options *RoleAssignmentScheduleInstancesListForScopeOptions) RoleAssignmentScheduleInstanceListResultPager {
 	return &roleAssignmentScheduleInstanceListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -136,7 +136,7 @@ func (client *RoleAssignmentScheduleInstancesClient) listForScopeHandleResponse(
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleAssignmentScheduleInstanceListResultResponse{}, err
 	}
-return RoleAssignmentScheduleInstanceListResultResponse{RawResponse: resp.Response, RoleAssignmentScheduleInstanceListResult: val}, nil
+	return RoleAssignmentScheduleInstanceListResultResponse{RawResponse: resp.Response, RoleAssignmentScheduleInstanceListResult: val}, nil
 }
 
 // listForScopeHandleError handles the ListForScope error response.
@@ -145,10 +145,9 @@ func (client *RoleAssignmentScheduleInstancesClient) listForScopeHandleError(res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

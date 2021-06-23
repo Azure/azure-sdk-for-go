@@ -30,7 +30,7 @@ func NewEligibleChildResourcesClient(con *armcore.Connection) *EligibleChildReso
 
 // Get - Get the child resources of a resource on which user has eligible access
 // If the operation fails it returns the *CloudError error type.
-func (client *EligibleChildResourcesClient) Get(scope string, options *EligibleChildResourcesGetOptions) (EligibleChildResourcesListResultPager) {
+func (client *EligibleChildResourcesClient) Get(scope string, options *EligibleChildResourcesGetOptions) EligibleChildResourcesListResultPager {
 	return &eligibleChildResourcesListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -73,7 +73,7 @@ func (client *EligibleChildResourcesClient) getHandleResponse(resp *azcore.Respo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return EligibleChildResourcesListResultResponse{}, err
 	}
-return EligibleChildResourcesListResultResponse{RawResponse: resp.Response, EligibleChildResourcesListResult: val}, nil
+	return EligibleChildResourcesListResultResponse{RawResponse: resp.Response, EligibleChildResourcesListResult: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -82,10 +82,9 @@ func (client *EligibleChildResourcesClient) getHandleError(resp *azcore.Response
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

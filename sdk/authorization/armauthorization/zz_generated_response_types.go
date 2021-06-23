@@ -188,4 +188,3 @@ type ValidationResponseResponse struct {
 	// Validation response
 	ValidationResponse *ValidationResponse
 }
-

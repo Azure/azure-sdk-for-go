@@ -75,7 +75,7 @@ func (client *RoleManagementPolicyAssignmentsClient) createHandleResponse(resp *
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleManagementPolicyAssignmentResponse{}, err
 	}
-return RoleManagementPolicyAssignmentResponse{RawResponse: resp.Response, RoleManagementPolicyAssignment: val}, nil
+	return RoleManagementPolicyAssignmentResponse{RawResponse: resp.Response, RoleManagementPolicyAssignment: val}, nil
 }
 
 // createHandleError handles the Create error response.
@@ -84,7 +84,7 @@ func (client *RoleManagementPolicyAssignmentsClient) createHandleError(resp *azc
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -137,7 +137,7 @@ func (client *RoleManagementPolicyAssignmentsClient) deleteHandleError(resp *azc
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -190,7 +190,7 @@ func (client *RoleManagementPolicyAssignmentsClient) getHandleResponse(resp *azc
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleManagementPolicyAssignmentResponse{}, err
 	}
-return RoleManagementPolicyAssignmentResponse{RawResponse: resp.Response, RoleManagementPolicyAssignment: val}, nil
+	return RoleManagementPolicyAssignmentResponse{RawResponse: resp.Response, RoleManagementPolicyAssignment: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -199,7 +199,7 @@ func (client *RoleManagementPolicyAssignmentsClient) getHandleError(resp *azcore
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -208,7 +208,7 @@ func (client *RoleManagementPolicyAssignmentsClient) getHandleError(resp *azcore
 
 // ListForScope - Gets role management assignment policies for a resource scope.
 // If the operation fails it returns the *CloudError error type.
-func (client *RoleManagementPolicyAssignmentsClient) ListForScope(scope string, options *RoleManagementPolicyAssignmentsListForScopeOptions) (RoleManagementPolicyAssignmentListResultPager) {
+func (client *RoleManagementPolicyAssignmentsClient) ListForScope(scope string, options *RoleManagementPolicyAssignmentsListForScopeOptions) RoleManagementPolicyAssignmentListResultPager {
 	return &roleManagementPolicyAssignmentListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -248,7 +248,7 @@ func (client *RoleManagementPolicyAssignmentsClient) listForScopeHandleResponse(
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleManagementPolicyAssignmentListResultResponse{}, err
 	}
-return RoleManagementPolicyAssignmentListResultResponse{RawResponse: resp.Response, RoleManagementPolicyAssignmentListResult: val}, nil
+	return RoleManagementPolicyAssignmentListResultResponse{RawResponse: resp.Response, RoleManagementPolicyAssignmentListResult: val}, nil
 }
 
 // listForScopeHandleError handles the ListForScope error response.
@@ -257,10 +257,9 @@ func (client *RoleManagementPolicyAssignmentsClient) listForScopeHandleError(res
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

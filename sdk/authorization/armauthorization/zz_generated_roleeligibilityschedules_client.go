@@ -75,7 +75,7 @@ func (client *RoleEligibilitySchedulesClient) getHandleResponse(resp *azcore.Res
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleEligibilityScheduleResponse{}, err
 	}
-return RoleEligibilityScheduleResponse{RawResponse: resp.Response, RoleEligibilitySchedule: val}, nil
+	return RoleEligibilityScheduleResponse{RawResponse: resp.Response, RoleEligibilitySchedule: val}, nil
 }
 
 // getHandleError handles the Get error response.
@@ -84,7 +84,7 @@ func (client *RoleEligibilitySchedulesClient) getHandleError(resp *azcore.Respon
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -93,7 +93,7 @@ func (client *RoleEligibilitySchedulesClient) getHandleError(resp *azcore.Respon
 
 // ListForScope - Gets role eligibility schedules for a resource scope.
 // If the operation fails it returns the *CloudError error type.
-func (client *RoleEligibilitySchedulesClient) ListForScope(scope string, options *RoleEligibilitySchedulesListForScopeOptions) (RoleEligibilityScheduleListResultPager) {
+func (client *RoleEligibilitySchedulesClient) ListForScope(scope string, options *RoleEligibilitySchedulesListForScopeOptions) RoleEligibilityScheduleListResultPager {
 	return &roleEligibilityScheduleListResultPager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -136,7 +136,7 @@ func (client *RoleEligibilitySchedulesClient) listForScopeHandleResponse(resp *a
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RoleEligibilityScheduleListResultResponse{}, err
 	}
-return RoleEligibilityScheduleListResultResponse{RawResponse: resp.Response, RoleEligibilityScheduleListResult: val}, nil
+	return RoleEligibilityScheduleListResultResponse{RawResponse: resp.Response, RoleEligibilityScheduleListResult: val}, nil
 }
 
 // listForScopeHandleError handles the ListForScope error response.
@@ -145,10 +145,9 @@ func (client *RoleEligibilitySchedulesClient) listForScopeHandleError(resp *azco
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := CloudError{raw: string(body)}
+	errType := CloudError{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

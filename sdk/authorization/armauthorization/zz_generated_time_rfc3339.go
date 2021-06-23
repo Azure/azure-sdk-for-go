@@ -7,8 +7,6 @@
 
 package armauthorization
 
-
-
 import (
 	"regexp"
 	"strings"

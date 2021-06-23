@@ -53,4 +53,3 @@ func unmarshalRoleManagementPolicyRuleClassificationArray(rawMsg json.RawMessage
 	}
 	return fArray, nil
 }
-

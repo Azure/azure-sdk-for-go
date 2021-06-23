@@ -13,15 +13,15 @@ const telemetryInfo = "azsdk-go-armauthorization/v0.1.0"
 type ApprovalMode string
 
 const (
-	ApprovalModeNoApproval ApprovalMode = "NoApproval"
-	ApprovalModeParallel ApprovalMode = "Parallel"
-	ApprovalModeSerial ApprovalMode = "Serial"
+	ApprovalModeNoApproval  ApprovalMode = "NoApproval"
+	ApprovalModeParallel    ApprovalMode = "Parallel"
+	ApprovalModeSerial      ApprovalMode = "Serial"
 	ApprovalModeSingleStage ApprovalMode = "SingleStage"
 )
 
 // PossibleApprovalModeValues returns the possible values for the ApprovalMode const type.
 func PossibleApprovalModeValues() []ApprovalMode {
-	return []ApprovalMode{	
+	return []ApprovalMode{
 		ApprovalModeNoApproval,
 		ApprovalModeParallel,
 		ApprovalModeSerial,
@@ -39,12 +39,12 @@ type AssignmentType string
 
 const (
 	AssignmentTypeActivated AssignmentType = "Activated"
-	AssignmentTypeAssigned AssignmentType = "Assigned"
+	AssignmentTypeAssigned  AssignmentType = "Assigned"
 )
 
 // PossibleAssignmentTypeValues returns the possible values for the AssignmentType const type.
 func PossibleAssignmentTypeValues() []AssignmentType {
-	return []AssignmentType{	
+	return []AssignmentType{
 		AssignmentTypeActivated,
 		AssignmentTypeAssigned,
 	}
@@ -59,14 +59,14 @@ func (c AssignmentType) ToPtr() *AssignmentType {
 type EnablementRules string
 
 const (
-	EnablementRulesJustification EnablementRules = "Justification"
+	EnablementRulesJustification             EnablementRules = "Justification"
 	EnablementRulesMultiFactorAuthentication EnablementRules = "MultiFactorAuthentication"
-	EnablementRulesTicketing EnablementRules = "Ticketing"
+	EnablementRulesTicketing                 EnablementRules = "Ticketing"
 )
 
 // PossibleEnablementRulesValues returns the possible values for the EnablementRules const type.
 func PossibleEnablementRulesValues() []EnablementRules {
-	return []EnablementRules{	
+	return []EnablementRules{
 		EnablementRulesJustification,
 		EnablementRulesMultiFactorAuthentication,
 		EnablementRulesTicketing,
@@ -82,14 +82,14 @@ func (c EnablementRules) ToPtr() *EnablementRules {
 type MemberType string
 
 const (
-	MemberTypeDirect MemberType = "Direct"
-	MemberTypeGroup MemberType = "Group"
+	MemberTypeDirect    MemberType = "Direct"
+	MemberTypeGroup     MemberType = "Group"
 	MemberTypeInherited MemberType = "Inherited"
 )
 
 // PossibleMemberTypeValues returns the possible values for the MemberType const type.
 func PossibleMemberTypeValues() []MemberType {
-	return []MemberType{	
+	return []MemberType{
 		MemberTypeDirect,
 		MemberTypeGroup,
 		MemberTypeInherited,
@@ -110,7 +110,7 @@ const (
 
 // PossibleNotificationDeliveryMechanismValues returns the possible values for the NotificationDeliveryMechanism const type.
 func PossibleNotificationDeliveryMechanismValues() []NotificationDeliveryMechanism {
-	return []NotificationDeliveryMechanism{	
+	return []NotificationDeliveryMechanism{
 		NotificationDeliveryMechanismEmail,
 	}
 }
@@ -124,14 +124,14 @@ func (c NotificationDeliveryMechanism) ToPtr() *NotificationDeliveryMechanism {
 type NotificationLevel string
 
 const (
-	NotificationLevelAll NotificationLevel = "All"
+	NotificationLevelAll      NotificationLevel = "All"
 	NotificationLevelCritical NotificationLevel = "Critical"
-	NotificationLevelNone NotificationLevel = "None"
+	NotificationLevelNone     NotificationLevel = "None"
 )
 
 // PossibleNotificationLevelValues returns the possible values for the NotificationLevel const type.
 func PossibleNotificationLevelValues() []NotificationLevel {
-	return []NotificationLevel{	
+	return []NotificationLevel{
 		NotificationLevelAll,
 		NotificationLevelCritical,
 		NotificationLevelNone,
@@ -147,22 +147,22 @@ func (c NotificationLevel) ToPtr() *NotificationLevel {
 type PrincipalType string
 
 const (
-	PrincipalTypeApplication PrincipalType = "Application"
-	PrincipalTypeDevice PrincipalType = "Device"
+	PrincipalTypeApplication            PrincipalType = "Application"
+	PrincipalTypeDevice                 PrincipalType = "Device"
 	PrincipalTypeDirectoryObjectOrGroup PrincipalType = "DirectoryObjectOrGroup"
-	PrincipalTypeDirectoryRoleTemplate PrincipalType = "DirectoryRoleTemplate"
-	PrincipalTypeEveryone PrincipalType = "Everyone"
-	PrincipalTypeForeignGroup PrincipalType = "ForeignGroup"
-	PrincipalTypeGroup PrincipalType = "Group"
-	PrincipalTypeMSI PrincipalType = "MSI"
-	PrincipalTypeServicePrincipal PrincipalType = "ServicePrincipal"
-	PrincipalTypeUnknown PrincipalType = "Unknown"
-	PrincipalTypeUser PrincipalType = "User"
+	PrincipalTypeDirectoryRoleTemplate  PrincipalType = "DirectoryRoleTemplate"
+	PrincipalTypeEveryone               PrincipalType = "Everyone"
+	PrincipalTypeForeignGroup           PrincipalType = "ForeignGroup"
+	PrincipalTypeGroup                  PrincipalType = "Group"
+	PrincipalTypeMSI                    PrincipalType = "MSI"
+	PrincipalTypeServicePrincipal       PrincipalType = "ServicePrincipal"
+	PrincipalTypeUnknown                PrincipalType = "Unknown"
+	PrincipalTypeUser                   PrincipalType = "User"
 )
 
 // PossiblePrincipalTypeValues returns the possible values for the PrincipalType const type.
 func PossiblePrincipalTypeValues() []PrincipalType {
-	return []PrincipalType{	
+	return []PrincipalType{
 		PrincipalTypeApplication,
 		PrincipalTypeDevice,
 		PrincipalTypeDirectoryObjectOrGroup,
@@ -186,14 +186,14 @@ func (c PrincipalType) ToPtr() *PrincipalType {
 type RecipientType string
 
 const (
-	RecipientTypeAdmin RecipientType = "Admin"
-	RecipientTypeApprover RecipientType = "Approver"
+	RecipientTypeAdmin     RecipientType = "Admin"
+	RecipientTypeApprover  RecipientType = "Approver"
 	RecipientTypeRequestor RecipientType = "Requestor"
 )
 
 // PossibleRecipientTypeValues returns the possible values for the RecipientType const type.
 func PossibleRecipientTypeValues() []RecipientType {
-	return []RecipientType{	
+	return []RecipientType{
 		RecipientTypeAdmin,
 		RecipientTypeApprover,
 		RecipientTypeRequestor,
@@ -209,20 +209,20 @@ func (c RecipientType) ToPtr() *RecipientType {
 type RequestType string
 
 const (
-	RequestTypeAdminAssign RequestType = "AdminAssign"
-	RequestTypeAdminExtend RequestType = "AdminExtend"
-	RequestTypeAdminRemove RequestType = "AdminRemove"
-	RequestTypeAdminRenew RequestType = "AdminRenew"
-	RequestTypeAdminUpdate RequestType = "AdminUpdate"
-	RequestTypeSelfActivate RequestType = "SelfActivate"
+	RequestTypeAdminAssign    RequestType = "AdminAssign"
+	RequestTypeAdminExtend    RequestType = "AdminExtend"
+	RequestTypeAdminRemove    RequestType = "AdminRemove"
+	RequestTypeAdminRenew     RequestType = "AdminRenew"
+	RequestTypeAdminUpdate    RequestType = "AdminUpdate"
+	RequestTypeSelfActivate   RequestType = "SelfActivate"
 	RequestTypeSelfDeactivate RequestType = "SelfDeactivate"
-	RequestTypeSelfExtend RequestType = "SelfExtend"
-	RequestTypeSelfRenew RequestType = "SelfRenew"
+	RequestTypeSelfExtend     RequestType = "SelfExtend"
+	RequestTypeSelfRenew      RequestType = "SelfRenew"
 )
 
 // PossibleRequestTypeValues returns the possible values for the RequestType const type.
 func PossibleRequestTypeValues() []RequestType {
-	return []RequestType{	
+	return []RequestType{
 		RequestTypeAdminAssign,
 		RequestTypeAdminExtend,
 		RequestTypeAdminRemove,
@@ -244,16 +244,16 @@ func (c RequestType) ToPtr() *RequestType {
 type RoleManagementPolicyRuleType string
 
 const (
-	RoleManagementPolicyRuleTypeRoleManagementPolicyApprovalRule RoleManagementPolicyRuleType = "RoleManagementPolicyApprovalRule"
+	RoleManagementPolicyRuleTypeRoleManagementPolicyApprovalRule              RoleManagementPolicyRuleType = "RoleManagementPolicyApprovalRule"
 	RoleManagementPolicyRuleTypeRoleManagementPolicyAuthenticationContextRule RoleManagementPolicyRuleType = "RoleManagementPolicyAuthenticationContextRule"
-	RoleManagementPolicyRuleTypeRoleManagementPolicyEnablementRule RoleManagementPolicyRuleType = "RoleManagementPolicyEnablementRule"
-	RoleManagementPolicyRuleTypeRoleManagementPolicyExpirationRule RoleManagementPolicyRuleType = "RoleManagementPolicyExpirationRule"
-	RoleManagementPolicyRuleTypeRoleManagementPolicyNotificationRule RoleManagementPolicyRuleType = "RoleManagementPolicyNotificationRule"
+	RoleManagementPolicyRuleTypeRoleManagementPolicyEnablementRule            RoleManagementPolicyRuleType = "RoleManagementPolicyEnablementRule"
+	RoleManagementPolicyRuleTypeRoleManagementPolicyExpirationRule            RoleManagementPolicyRuleType = "RoleManagementPolicyExpirationRule"
+	RoleManagementPolicyRuleTypeRoleManagementPolicyNotificationRule          RoleManagementPolicyRuleType = "RoleManagementPolicyNotificationRule"
 )
 
 // PossibleRoleManagementPolicyRuleTypeValues returns the possible values for the RoleManagementPolicyRuleType const type.
 func PossibleRoleManagementPolicyRuleTypeValues() []RoleManagementPolicyRuleType {
-	return []RoleManagementPolicyRuleType{	
+	return []RoleManagementPolicyRuleType{
 		RoleManagementPolicyRuleTypeRoleManagementPolicyApprovalRule,
 		RoleManagementPolicyRuleTypeRoleManagementPolicyAuthenticationContextRule,
 		RoleManagementPolicyRuleTypeRoleManagementPolicyEnablementRule,
@@ -271,33 +271,33 @@ func (c RoleManagementPolicyRuleType) ToPtr() *RoleManagementPolicyRuleType {
 type Status string
 
 const (
-	StatusAccepted Status = "Accepted"
-	StatusAdminApproved Status = "AdminApproved"
-	StatusAdminDenied Status = "AdminDenied"
-	StatusCanceled Status = "Canceled"
-	StatusDenied Status = "Denied"
-	StatusFailed Status = "Failed"
-	StatusFailedAsResourceIsLocked Status = "FailedAsResourceIsLocked"
-	StatusGranted Status = "Granted"
-	StatusInvalid Status = "Invalid"
-	StatusPendingAdminDecision Status = "PendingAdminDecision"
-	StatusPendingApproval Status = "PendingApproval"
+	StatusAccepted                    Status = "Accepted"
+	StatusAdminApproved               Status = "AdminApproved"
+	StatusAdminDenied                 Status = "AdminDenied"
+	StatusCanceled                    Status = "Canceled"
+	StatusDenied                      Status = "Denied"
+	StatusFailed                      Status = "Failed"
+	StatusFailedAsResourceIsLocked    Status = "FailedAsResourceIsLocked"
+	StatusGranted                     Status = "Granted"
+	StatusInvalid                     Status = "Invalid"
+	StatusPendingAdminDecision        Status = "PendingAdminDecision"
+	StatusPendingApproval             Status = "PendingApproval"
 	StatusPendingApprovalProvisioning Status = "PendingApprovalProvisioning"
-	StatusPendingEvaluation Status = "PendingEvaluation"
+	StatusPendingEvaluation           Status = "PendingEvaluation"
 	StatusPendingExternalProvisioning Status = "PendingExternalProvisioning"
-	StatusPendingProvisioning Status = "PendingProvisioning"
-	StatusPendingRevocation Status = "PendingRevocation"
-	StatusPendingScheduleCreation Status = "PendingScheduleCreation"
-	StatusProvisioned Status = "Provisioned"
-	StatusProvisioningStarted Status = "ProvisioningStarted"
-	StatusRevoked Status = "Revoked"
-	StatusScheduleCreated Status = "ScheduleCreated"
-	StatusTimedOut Status = "TimedOut"
+	StatusPendingProvisioning         Status = "PendingProvisioning"
+	StatusPendingRevocation           Status = "PendingRevocation"
+	StatusPendingScheduleCreation     Status = "PendingScheduleCreation"
+	StatusProvisioned                 Status = "Provisioned"
+	StatusProvisioningStarted         Status = "ProvisioningStarted"
+	StatusRevoked                     Status = "Revoked"
+	StatusScheduleCreated             Status = "ScheduleCreated"
+	StatusTimedOut                    Status = "TimedOut"
 )
 
 // PossibleStatusValues returns the possible values for the Status const type.
 func PossibleStatusValues() []Status {
-	return []Status{	
+	return []Status{
 		StatusAccepted,
 		StatusAdminApproved,
 		StatusAdminDenied,
@@ -334,12 +334,12 @@ type Type string
 const (
 	TypeAfterDateTime Type = "AfterDateTime"
 	TypeAfterDuration Type = "AfterDuration"
-	TypeNoExpiration Type = "NoExpiration"
+	TypeNoExpiration  Type = "NoExpiration"
 )
 
 // PossibleTypeValues returns the possible values for the Type const type.
 func PossibleTypeValues() []Type {
-	return []Type{	
+	return []Type{
 		TypeAfterDateTime,
 		TypeAfterDuration,
 		TypeNoExpiration,
@@ -356,12 +356,12 @@ type UserType string
 
 const (
 	UserTypeGroup UserType = "Group"
-	UserTypeUser UserType = "User"
+	UserTypeUser  UserType = "User"
 )
 
 // PossibleUserTypeValues returns the possible values for the UserType const type.
 func PossibleUserTypeValues() []UserType {
-	return []UserType{	
+	return []UserType{
 		UserTypeGroup,
 		UserTypeUser,
 	}
@@ -371,4 +371,3 @@ func PossibleUserTypeValues() []UserType {
 func (c UserType) ToPtr() *UserType {
 	return &c
 }
-

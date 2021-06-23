@@ -114,7 +114,7 @@ type EligibleChildResource struct {
 // EligibleChildResourcesGetOptions contains the optional parameters for the EligibleChildResources.Get method.
 type EligibleChildResourcesGetOptions struct {
 	// The filter to apply on the operation. Use $filter=resourceType+eq+'Subscription' to filter on only resource of type = 'Subscription'. Use $filter=resourceType+eq+'subscription'+or+resourceType+eq+'resourcegroup'
-// to filter on resource of type = 'Subscription' or 'ResourceGroup'
+	// to filter on resource of type = 'Subscription' or 'ResourceGroup'
 	Filter *string
 }
 
@@ -280,16 +280,16 @@ func (p *PolicyAssignmentPropertiesPolicy) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "id":
-				err = unpopulate(val, &p.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &p.ID)
+			delete(rawMsg, key)
 		case "lastModifiedBy":
-				err = unpopulate(val, &p.LastModifiedBy)
-				delete(rawMsg, key)
+			err = unpopulate(val, &p.LastModifiedBy)
+			delete(rawMsg, key)
 		case "lastModifiedDateTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				p.LastModifiedDateTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			p.LastModifiedDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -407,8 +407,8 @@ type RoleAssignmentProperties struct {
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 
 	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-// StringEqualsIgnoreCase
-// 'foostoragecontainer'
+	// StringEqualsIgnoreCase
+	// 'foostoragecontainer'
 	Condition *string `json:"condition,omitempty"`
 
 	// Version of the condition. Currently accepted value is '2.0'
@@ -467,45 +467,45 @@ func (r *RoleAssignmentProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "condition":
-				err = unpopulate(val, &r.Condition)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Condition)
+			delete(rawMsg, key)
 		case "conditionVersion":
-				err = unpopulate(val, &r.ConditionVersion)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ConditionVersion)
+			delete(rawMsg, key)
 		case "createdBy":
-				err = unpopulate(val, &r.CreatedBy)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.CreatedBy)
+			delete(rawMsg, key)
 		case "createdOn":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.CreatedOn = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.CreatedOn = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "delegatedManagedIdentityResourceId":
-				err = unpopulate(val, &r.DelegatedManagedIdentityResourceID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.DelegatedManagedIdentityResourceID)
+			delete(rawMsg, key)
 		case "description":
-				err = unpopulate(val, &r.Description)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Description)
+			delete(rawMsg, key)
 		case "principalId":
-				err = unpopulate(val, &r.PrincipalID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.PrincipalID)
+			delete(rawMsg, key)
 		case "principalType":
-				err = unpopulate(val, &r.PrincipalType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.PrincipalType)
+			delete(rawMsg, key)
 		case "roleDefinitionId":
-				err = unpopulate(val, &r.RoleDefinitionID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RoleDefinitionID)
+			delete(rawMsg, key)
 		case "scope":
-				err = unpopulate(val, &r.Scope)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Scope)
+			delete(rawMsg, key)
 		case "updatedBy":
-				err = unpopulate(val, &r.UpdatedBy)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.UpdatedBy)
+			delete(rawMsg, key)
 		case "updatedOn":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.UpdatedOn = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.UpdatedOn = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -594,8 +594,8 @@ type RoleAssignmentScheduleInstanceProperties struct {
 	AssignmentType *AssignmentType `json:"assignmentType,omitempty"`
 
 	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-// StringEqualsIgnoreCase
-// 'foostoragecontainer'
+	// StringEqualsIgnoreCase
+	// 'foostoragecontainer'
 	Condition *string `json:"condition,omitempty"`
 
 	// Version of the condition. Currently accepted value is '2.0'
@@ -677,62 +677,62 @@ func (r *RoleAssignmentScheduleInstanceProperties) UnmarshalJSON(data []byte) er
 		var err error
 		switch key {
 		case "assignmentType":
-				err = unpopulate(val, &r.AssignmentType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.AssignmentType)
+			delete(rawMsg, key)
 		case "condition":
-				err = unpopulate(val, &r.Condition)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Condition)
+			delete(rawMsg, key)
 		case "conditionVersion":
-				err = unpopulate(val, &r.ConditionVersion)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ConditionVersion)
+			delete(rawMsg, key)
 		case "createdOn":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.CreatedOn = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.CreatedOn = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "endDateTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.EndDateTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.EndDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "expandedProperties":
-				err = unpopulate(val, &r.ExpandedProperties)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ExpandedProperties)
+			delete(rawMsg, key)
 		case "linkedRoleEligibilityScheduleId":
-				err = unpopulate(val, &r.LinkedRoleEligibilityScheduleID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.LinkedRoleEligibilityScheduleID)
+			delete(rawMsg, key)
 		case "linkedRoleEligibilityScheduleInstanceId":
-				err = unpopulate(val, &r.LinkedRoleEligibilityScheduleInstanceID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.LinkedRoleEligibilityScheduleInstanceID)
+			delete(rawMsg, key)
 		case "memberType":
-				err = unpopulate(val, &r.MemberType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.MemberType)
+			delete(rawMsg, key)
 		case "originRoleAssignmentId":
-				err = unpopulate(val, &r.OriginRoleAssignmentID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.OriginRoleAssignmentID)
+			delete(rawMsg, key)
 		case "principalId":
-				err = unpopulate(val, &r.PrincipalID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.PrincipalID)
+			delete(rawMsg, key)
 		case "principalType":
-				err = unpopulate(val, &r.PrincipalType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.PrincipalType)
+			delete(rawMsg, key)
 		case "roleAssignmentScheduleId":
-				err = unpopulate(val, &r.RoleAssignmentScheduleID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RoleAssignmentScheduleID)
+			delete(rawMsg, key)
 		case "roleDefinitionId":
-				err = unpopulate(val, &r.RoleDefinitionID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RoleDefinitionID)
+			delete(rawMsg, key)
 		case "scope":
-				err = unpopulate(val, &r.Scope)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Scope)
+			delete(rawMsg, key)
 		case "startDateTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.StartDateTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.StartDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "status":
-				err = unpopulate(val, &r.Status)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Status)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -749,8 +749,8 @@ type RoleAssignmentScheduleInstancesGetOptions struct {
 // RoleAssignmentScheduleInstancesListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleInstances.ListForScope method.
 type RoleAssignmentScheduleInstancesListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope. Use $filter=principalId eq
-// {id} to return all role assignment schedules at, above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all
-// role assignment schedule instances for the user. Use $filter=asTarget() to return all role assignment schedule instances created for the current user.
+	// {id} to return all role assignment schedules at, above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all
+	// role assignment schedule instances for the user. Use $filter=asTarget() to return all role assignment schedule instances created for the current user.
 	Filter *string
 }
 
@@ -777,8 +777,8 @@ type RoleAssignmentScheduleProperties struct {
 	AssignmentType *AssignmentType `json:"assignmentType,omitempty"`
 
 	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-// StringEqualsIgnoreCase
-// 'foostoragecontainer'
+	// StringEqualsIgnoreCase
+	// 'foostoragecontainer'
 	Condition *string `json:"condition,omitempty"`
 
 	// Version of the condition. Currently accepted value is '2.0'
@@ -856,61 +856,61 @@ func (r *RoleAssignmentScheduleProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "assignmentType":
-				err = unpopulate(val, &r.AssignmentType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.AssignmentType)
+			delete(rawMsg, key)
 		case "condition":
-				err = unpopulate(val, &r.Condition)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Condition)
+			delete(rawMsg, key)
 		case "conditionVersion":
-				err = unpopulate(val, &r.ConditionVersion)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ConditionVersion)
+			delete(rawMsg, key)
 		case "createdOn":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.CreatedOn = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.CreatedOn = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "endDateTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.EndDateTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.EndDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "expandedProperties":
-				err = unpopulate(val, &r.ExpandedProperties)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ExpandedProperties)
+			delete(rawMsg, key)
 		case "linkedRoleEligibilityScheduleId":
-				err = unpopulate(val, &r.LinkedRoleEligibilityScheduleID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.LinkedRoleEligibilityScheduleID)
+			delete(rawMsg, key)
 		case "memberType":
-				err = unpopulate(val, &r.MemberType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.MemberType)
+			delete(rawMsg, key)
 		case "principalId":
-				err = unpopulate(val, &r.PrincipalID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.PrincipalID)
+			delete(rawMsg, key)
 		case "principalType":
-				err = unpopulate(val, &r.PrincipalType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.PrincipalType)
+			delete(rawMsg, key)
 		case "roleAssignmentScheduleRequestId":
-				err = unpopulate(val, &r.RoleAssignmentScheduleRequestID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RoleAssignmentScheduleRequestID)
+			delete(rawMsg, key)
 		case "roleDefinitionId":
-				err = unpopulate(val, &r.RoleDefinitionID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RoleDefinitionID)
+			delete(rawMsg, key)
 		case "scope":
-				err = unpopulate(val, &r.Scope)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Scope)
+			delete(rawMsg, key)
 		case "startDateTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.StartDateTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.StartDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "status":
-				err = unpopulate(val, &r.Status)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Status)
+			delete(rawMsg, key)
 		case "updatedOn":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.UpdatedOn = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.UpdatedOn = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -978,8 +978,8 @@ type RoleAssignmentScheduleRequestProperties struct {
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 
 	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-// StringEqualsIgnoreCase
-// 'foostoragecontainer'
+	// StringEqualsIgnoreCase
+	// 'foostoragecontainer'
 	Condition *string `json:"condition,omitempty"`
 
 	// Version of the condition. Currently accepted value is '2.0'
@@ -1059,61 +1059,61 @@ func (r *RoleAssignmentScheduleRequestProperties) UnmarshalJSON(data []byte) err
 		var err error
 		switch key {
 		case "approvalId":
-				err = unpopulate(val, &r.ApprovalID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ApprovalID)
+			delete(rawMsg, key)
 		case "condition":
-				err = unpopulate(val, &r.Condition)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Condition)
+			delete(rawMsg, key)
 		case "conditionVersion":
-				err = unpopulate(val, &r.ConditionVersion)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ConditionVersion)
+			delete(rawMsg, key)
 		case "createdOn":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.CreatedOn = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.CreatedOn = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "expandedProperties":
-				err = unpopulate(val, &r.ExpandedProperties)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ExpandedProperties)
+			delete(rawMsg, key)
 		case "justification":
-				err = unpopulate(val, &r.Justification)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Justification)
+			delete(rawMsg, key)
 		case "linkedRoleEligibilityScheduleId":
-				err = unpopulate(val, &r.LinkedRoleEligibilityScheduleID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.LinkedRoleEligibilityScheduleID)
+			delete(rawMsg, key)
 		case "principalId":
-				err = unpopulate(val, &r.PrincipalID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.PrincipalID)
+			delete(rawMsg, key)
 		case "principalType":
-				err = unpopulate(val, &r.PrincipalType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.PrincipalType)
+			delete(rawMsg, key)
 		case "requestType":
-				err = unpopulate(val, &r.RequestType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RequestType)
+			delete(rawMsg, key)
 		case "requestorId":
-				err = unpopulate(val, &r.RequestorID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RequestorID)
+			delete(rawMsg, key)
 		case "roleDefinitionId":
-				err = unpopulate(val, &r.RoleDefinitionID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RoleDefinitionID)
+			delete(rawMsg, key)
 		case "scheduleInfo":
-				err = unpopulate(val, &r.ScheduleInfo)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ScheduleInfo)
+			delete(rawMsg, key)
 		case "scope":
-				err = unpopulate(val, &r.Scope)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Scope)
+			delete(rawMsg, key)
 		case "status":
-				err = unpopulate(val, &r.Status)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Status)
+			delete(rawMsg, key)
 		case "targetRoleAssignmentScheduleId":
-				err = unpopulate(val, &r.TargetRoleAssignmentScheduleID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.TargetRoleAssignmentScheduleID)
+			delete(rawMsg, key)
 		case "targetRoleAssignmentScheduleInstanceId":
-				err = unpopulate(val, &r.TargetRoleAssignmentScheduleInstanceID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.TargetRoleAssignmentScheduleInstanceID)
+			delete(rawMsg, key)
 		case "ticketInfo":
-				err = unpopulate(val, &r.TicketInfo)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.TicketInfo)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1149,13 +1149,13 @@ func (r *RoleAssignmentScheduleRequestPropertiesScheduleInfo) UnmarshalJSON(data
 		var err error
 		switch key {
 		case "expiration":
-				err = unpopulate(val, &r.Expiration)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Expiration)
+			delete(rawMsg, key)
 		case "startDateTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.StartDateTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.StartDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1195,16 +1195,16 @@ func (r *RoleAssignmentScheduleRequestPropertiesScheduleInfoExpiration) Unmarsha
 		var err error
 		switch key {
 		case "duration":
-				err = unpopulate(val, &r.Duration)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Duration)
+			delete(rawMsg, key)
 		case "endDateTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.EndDateTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.EndDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "type":
-				err = unpopulate(val, &r.Type)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Type)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1240,9 +1240,9 @@ type RoleAssignmentScheduleRequestsGetOptions struct {
 // RoleAssignmentScheduleRequestsListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleRequests.ListForScope method.
 type RoleAssignmentScheduleRequestsListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedule requests at or above the scope. Use $filter=principalId
-// eq {id} to return all role assignment schedule requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return
-// all role assignment schedule requests requested by the current user. Use $filter=asTarget() to return all role assignment schedule requests created for
-// the current user. Use $filter=asApprover() to return all role assignment schedule requests where the current user is an approver.
+	// eq {id} to return all role assignment schedule requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return
+	// all role assignment schedule requests requested by the current user. Use $filter=asTarget() to return all role assignment schedule requests created for
+	// the current user. Use $filter=asApprover() to return all role assignment schedule requests where the current user is an approver.
 	Filter *string
 }
 
@@ -1254,8 +1254,8 @@ type RoleAssignmentSchedulesGetOptions struct {
 // RoleAssignmentSchedulesListForScopeOptions contains the optional parameters for the RoleAssignmentSchedules.ListForScope method.
 type RoleAssignmentSchedulesListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope. Use $filter=principalId eq
-// {id} to return all role assignment schedules at, above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all
-// role assignment schedules for the current user. Use $filter=asTarget() to return all role assignment schedules created for the current user.
+	// {id} to return all role assignment schedules at, above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all
+	// role assignment schedules for the current user. Use $filter=asTarget() to return all role assignment schedules created for the current user.
 	Filter *string
 }
 
@@ -1296,7 +1296,7 @@ type RoleAssignmentsGetOptions struct {
 // RoleAssignmentsListForResourceGroupOptions contains the optional parameters for the RoleAssignments.ListForResourceGroup method.
 type RoleAssignmentsListForResourceGroupOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to
-// return all role assignments at, above or below the scope for the specified principal.
+	// return all role assignments at, above or below the scope for the specified principal.
 	Filter *string
 	// Tenant ID for cross-tenant request
 	TenantID *string
@@ -1305,7 +1305,7 @@ type RoleAssignmentsListForResourceGroupOptions struct {
 // RoleAssignmentsListForResourceOptions contains the optional parameters for the RoleAssignments.ListForResource method.
 type RoleAssignmentsListForResourceOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to
-// return all role assignments at, above or below the scope for the specified principal.
+	// return all role assignments at, above or below the scope for the specified principal.
 	Filter *string
 	// Tenant ID for cross-tenant request
 	TenantID *string
@@ -1314,7 +1314,7 @@ type RoleAssignmentsListForResourceOptions struct {
 // RoleAssignmentsListForScopeOptions contains the optional parameters for the RoleAssignments.ListForScope method.
 type RoleAssignmentsListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to
-// return all role assignments at, above or below the scope for the specified principal.
+	// return all role assignments at, above or below the scope for the specified principal.
 	Filter *string
 	// Tenant ID for cross-tenant request
 	TenantID *string
@@ -1323,7 +1323,7 @@ type RoleAssignmentsListForScopeOptions struct {
 // RoleAssignmentsListForSubscriptionOptions contains the optional parameters for the RoleAssignments.ListForSubscription method.
 type RoleAssignmentsListForSubscriptionOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to
-// return all role assignments at, above or below the scope for the specified principal.
+	// return all role assignments at, above or below the scope for the specified principal.
 	Filter *string
 	// Tenant ID for cross-tenant request
 	TenantID *string
@@ -1416,8 +1416,8 @@ func (r RoleEligibilityScheduleInstanceListResult) MarshalJSON() ([]byte, error)
 // RoleEligibilityScheduleInstanceProperties - Role eligibility schedule properties with scope.
 type RoleEligibilityScheduleInstanceProperties struct {
 	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-// StringEqualsIgnoreCase
-// 'foostoragecontainer'
+	// StringEqualsIgnoreCase
+	// 'foostoragecontainer'
 	Condition *string `json:"condition,omitempty"`
 
 	// Version of the condition. Currently accepted value is '2.0'
@@ -1486,50 +1486,50 @@ func (r *RoleEligibilityScheduleInstanceProperties) UnmarshalJSON(data []byte) e
 		var err error
 		switch key {
 		case "condition":
-				err = unpopulate(val, &r.Condition)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Condition)
+			delete(rawMsg, key)
 		case "conditionVersion":
-				err = unpopulate(val, &r.ConditionVersion)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ConditionVersion)
+			delete(rawMsg, key)
 		case "createdOn":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.CreatedOn = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.CreatedOn = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "endDateTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.EndDateTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.EndDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "expandedProperties":
-				err = unpopulate(val, &r.ExpandedProperties)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ExpandedProperties)
+			delete(rawMsg, key)
 		case "memberType":
-				err = unpopulate(val, &r.MemberType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.MemberType)
+			delete(rawMsg, key)
 		case "principalId":
-				err = unpopulate(val, &r.PrincipalID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.PrincipalID)
+			delete(rawMsg, key)
 		case "principalType":
-				err = unpopulate(val, &r.PrincipalType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.PrincipalType)
+			delete(rawMsg, key)
 		case "roleDefinitionId":
-				err = unpopulate(val, &r.RoleDefinitionID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RoleDefinitionID)
+			delete(rawMsg, key)
 		case "roleEligibilityScheduleId":
-				err = unpopulate(val, &r.RoleEligibilityScheduleID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RoleEligibilityScheduleID)
+			delete(rawMsg, key)
 		case "scope":
-				err = unpopulate(val, &r.Scope)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Scope)
+			delete(rawMsg, key)
 		case "startDateTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.StartDateTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.StartDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "status":
-				err = unpopulate(val, &r.Status)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Status)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1546,8 +1546,8 @@ type RoleEligibilityScheduleInstancesGetOptions struct {
 // RoleEligibilityScheduleInstancesListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleInstances.ListForScope method.
 type RoleEligibilityScheduleInstancesListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignment schedules at or above the scope. Use $filter=principalId eq
-// {id} to return all role assignment schedules at, above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all
-// role eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created for the current user.
+	// {id} to return all role assignment schedules at, above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return all
+	// role eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created for the current user.
 	Filter *string
 }
 
@@ -1571,8 +1571,8 @@ func (r RoleEligibilityScheduleListResult) MarshalJSON() ([]byte, error) {
 // RoleEligibilityScheduleProperties - Role eligibility schedule properties with scope.
 type RoleEligibilityScheduleProperties struct {
 	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-// StringEqualsIgnoreCase
-// 'foostoragecontainer'
+	// StringEqualsIgnoreCase
+	// 'foostoragecontainer'
 	Condition *string `json:"condition,omitempty"`
 
 	// Version of the condition. Currently accepted value is '2.0'
@@ -1645,55 +1645,55 @@ func (r *RoleEligibilityScheduleProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "condition":
-				err = unpopulate(val, &r.Condition)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Condition)
+			delete(rawMsg, key)
 		case "conditionVersion":
-				err = unpopulate(val, &r.ConditionVersion)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ConditionVersion)
+			delete(rawMsg, key)
 		case "createdOn":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.CreatedOn = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.CreatedOn = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "endDateTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.EndDateTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.EndDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "expandedProperties":
-				err = unpopulate(val, &r.ExpandedProperties)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ExpandedProperties)
+			delete(rawMsg, key)
 		case "memberType":
-				err = unpopulate(val, &r.MemberType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.MemberType)
+			delete(rawMsg, key)
 		case "principalId":
-				err = unpopulate(val, &r.PrincipalID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.PrincipalID)
+			delete(rawMsg, key)
 		case "principalType":
-				err = unpopulate(val, &r.PrincipalType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.PrincipalType)
+			delete(rawMsg, key)
 		case "roleDefinitionId":
-				err = unpopulate(val, &r.RoleDefinitionID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RoleDefinitionID)
+			delete(rawMsg, key)
 		case "roleEligibilityScheduleRequestId":
-				err = unpopulate(val, &r.RoleEligibilityScheduleRequestID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RoleEligibilityScheduleRequestID)
+			delete(rawMsg, key)
 		case "scope":
-				err = unpopulate(val, &r.Scope)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Scope)
+			delete(rawMsg, key)
 		case "startDateTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.StartDateTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.StartDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "status":
-				err = unpopulate(val, &r.Status)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Status)
+			delete(rawMsg, key)
 		case "updatedOn":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.UpdatedOn = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.UpdatedOn = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1761,8 +1761,8 @@ type RoleEligibilityScheduleRequestProperties struct {
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 
 	// The conditions on the role assignment. This limits the resources it can be assigned to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-// StringEqualsIgnoreCase
-// 'foostoragecontainer'
+	// StringEqualsIgnoreCase
+	// 'foostoragecontainer'
 	Condition *string `json:"condition,omitempty"`
 
 	// Version of the condition. Currently accepted value is '2.0'
@@ -1838,58 +1838,58 @@ func (r *RoleEligibilityScheduleRequestProperties) UnmarshalJSON(data []byte) er
 		var err error
 		switch key {
 		case "approvalId":
-				err = unpopulate(val, &r.ApprovalID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ApprovalID)
+			delete(rawMsg, key)
 		case "condition":
-				err = unpopulate(val, &r.Condition)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Condition)
+			delete(rawMsg, key)
 		case "conditionVersion":
-				err = unpopulate(val, &r.ConditionVersion)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ConditionVersion)
+			delete(rawMsg, key)
 		case "createdOn":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.CreatedOn = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.CreatedOn = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "expandedProperties":
-				err = unpopulate(val, &r.ExpandedProperties)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ExpandedProperties)
+			delete(rawMsg, key)
 		case "justification":
-				err = unpopulate(val, &r.Justification)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Justification)
+			delete(rawMsg, key)
 		case "principalId":
-				err = unpopulate(val, &r.PrincipalID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.PrincipalID)
+			delete(rawMsg, key)
 		case "principalType":
-				err = unpopulate(val, &r.PrincipalType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.PrincipalType)
+			delete(rawMsg, key)
 		case "requestType":
-				err = unpopulate(val, &r.RequestType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RequestType)
+			delete(rawMsg, key)
 		case "requestorId":
-				err = unpopulate(val, &r.RequestorID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RequestorID)
+			delete(rawMsg, key)
 		case "roleDefinitionId":
-				err = unpopulate(val, &r.RoleDefinitionID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RoleDefinitionID)
+			delete(rawMsg, key)
 		case "scheduleInfo":
-				err = unpopulate(val, &r.ScheduleInfo)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ScheduleInfo)
+			delete(rawMsg, key)
 		case "scope":
-				err = unpopulate(val, &r.Scope)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Scope)
+			delete(rawMsg, key)
 		case "status":
-				err = unpopulate(val, &r.Status)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Status)
+			delete(rawMsg, key)
 		case "targetRoleEligibilityScheduleId":
-				err = unpopulate(val, &r.TargetRoleEligibilityScheduleID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.TargetRoleEligibilityScheduleID)
+			delete(rawMsg, key)
 		case "targetRoleEligibilityScheduleInstanceId":
-				err = unpopulate(val, &r.TargetRoleEligibilityScheduleInstanceID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.TargetRoleEligibilityScheduleInstanceID)
+			delete(rawMsg, key)
 		case "ticketInfo":
-				err = unpopulate(val, &r.TicketInfo)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.TicketInfo)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1925,13 +1925,13 @@ func (r *RoleEligibilityScheduleRequestPropertiesScheduleInfo) UnmarshalJSON(dat
 		var err error
 		switch key {
 		case "expiration":
-				err = unpopulate(val, &r.Expiration)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Expiration)
+			delete(rawMsg, key)
 		case "startDateTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.StartDateTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.StartDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1971,16 +1971,16 @@ func (r *RoleEligibilityScheduleRequestPropertiesScheduleInfoExpiration) Unmarsh
 		var err error
 		switch key {
 		case "duration":
-				err = unpopulate(val, &r.Duration)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Duration)
+			delete(rawMsg, key)
 		case "endDateTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.EndDateTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.EndDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "type":
-				err = unpopulate(val, &r.Type)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Type)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -2016,9 +2016,9 @@ type RoleEligibilityScheduleRequestsGetOptions struct {
 // RoleEligibilityScheduleRequestsListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleRequests.ListForScope method.
 type RoleEligibilityScheduleRequestsListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role eligibility schedule requests at or above the scope. Use $filter=principalId
-// eq {id} to return all role eligibility schedule requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return
-// all role eligibility schedule requests requested by the current user. Use $filter=asTarget() to return all role eligibility schedule requests created
-// for the current user. Use $filter=asApprover() to return all role eligibility schedule requests where the current user is an approver.
+	// eq {id} to return all role eligibility schedule requests at, above or below the scope for the specified principal. Use $filter=asRequestor() to return
+	// all role eligibility schedule requests requested by the current user. Use $filter=asTarget() to return all role eligibility schedule requests created
+	// for the current user. Use $filter=asApprover() to return all role eligibility schedule requests where the current user is an approver.
 	Filter *string
 }
 
@@ -2030,8 +2030,8 @@ type RoleEligibilitySchedulesGetOptions struct {
 // RoleEligibilitySchedulesListForScopeOptions contains the optional parameters for the RoleEligibilitySchedules.ListForScope method.
 type RoleEligibilitySchedulesListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role eligibility schedules at or above the scope. Use $filter=principalId eq
-// {id} to return all role eligibility schedules at, above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return
-// all role eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created for the current user.
+	// {id} to return all role eligibility schedules at, above or below the scope for the specified principal. Use $filter=assignedTo('{userId}') to return
+	// all role eligibility schedules for the user. Use $filter=asTarget() to return all role eligibility schedules created for the current user.
 	Filter *string
 }
 
@@ -2104,8 +2104,8 @@ func (r *RoleManagementPolicyApprovalRule) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "setting":
-				err = unpopulate(val, &r.Setting)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Setting)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -2209,11 +2209,11 @@ func (r *RoleManagementPolicyAuthenticationContextRule) UnmarshalJSON(data []byt
 		var err error
 		switch key {
 		case "claimValue":
-				err = unpopulate(val, &r.ClaimValue)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ClaimValue)
+			delete(rawMsg, key)
 		case "isEnabled":
-				err = unpopulate(val, &r.IsEnabled)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.IsEnabled)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -2246,8 +2246,8 @@ func (r *RoleManagementPolicyEnablementRule) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "enabledRules":
-				err = unpopulate(val, &r.EnabledRules)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.EnabledRules)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -2284,11 +2284,11 @@ func (r *RoleManagementPolicyExpirationRule) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "isExpirationRequired":
-				err = unpopulate(val, &r.IsExpirationRequired)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.IsExpirationRequired)
+			delete(rawMsg, key)
 		case "maximumDuration":
-				err = unpopulate(val, &r.MaximumDuration)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.MaximumDuration)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -2354,20 +2354,20 @@ func (r *RoleManagementPolicyNotificationRule) UnmarshalJSON(data []byte) error 
 		var err error
 		switch key {
 		case "isDefaultRecipientsEnabled":
-				err = unpopulate(val, &r.IsDefaultRecipientsEnabled)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.IsDefaultRecipientsEnabled)
+			delete(rawMsg, key)
 		case "notificationLevel":
-				err = unpopulate(val, &r.NotificationLevel)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.NotificationLevel)
+			delete(rawMsg, key)
 		case "notificationRecipients":
-				err = unpopulate(val, &r.NotificationRecipients)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.NotificationRecipients)
+			delete(rawMsg, key)
 		case "notificationType":
-				err = unpopulate(val, &r.NotificationType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.NotificationType)
+			delete(rawMsg, key)
 		case "recipientType":
-				err = unpopulate(val, &r.RecipientType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RecipientType)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -2431,34 +2431,34 @@ func (r *RoleManagementPolicyProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "description":
-				err = unpopulate(val, &r.Description)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Description)
+			delete(rawMsg, key)
 		case "displayName":
-				err = unpopulate(val, &r.DisplayName)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.DisplayName)
+			delete(rawMsg, key)
 		case "effectiveRules":
-				r.EffectiveRules, err = unmarshalRoleManagementPolicyRuleClassificationArray(val)
-				delete(rawMsg, key)
+			r.EffectiveRules, err = unmarshalRoleManagementPolicyRuleClassificationArray(val)
+			delete(rawMsg, key)
 		case "isOrganizationDefault":
-				err = unpopulate(val, &r.IsOrganizationDefault)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.IsOrganizationDefault)
+			delete(rawMsg, key)
 		case "lastModifiedBy":
-				err = unpopulate(val, &r.LastModifiedBy)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.LastModifiedBy)
+			delete(rawMsg, key)
 		case "lastModifiedDateTime":
-				var aux timeRFC3339
-				err = unpopulate(val, &aux)
-				r.LastModifiedDateTime = (*time.Time)(&aux)
-				delete(rawMsg, key)
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			r.LastModifiedDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
 		case "policyProperties":
-				err = unpopulate(val, &r.PolicyProperties)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.PolicyProperties)
+			delete(rawMsg, key)
 		case "rules":
-				r.Rules, err = unmarshalRoleManagementPolicyRuleClassificationArray(val)
-				delete(rawMsg, key)
+			r.Rules, err = unmarshalRoleManagementPolicyRuleClassificationArray(val)
+			delete(rawMsg, key)
 		case "scope":
-				err = unpopulate(val, &r.Scope)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Scope)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -2515,14 +2515,14 @@ func (r *RoleManagementPolicyRule) unmarshalInternal(rawMsg map[string]json.RawM
 		var err error
 		switch key {
 		case "id":
-				err = unpopulate(val, &r.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.ID)
+			delete(rawMsg, key)
 		case "ruleType":
-				err = unpopulate(val, &r.RuleType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.RuleType)
+			delete(rawMsg, key)
 		case "target":
-				err = unpopulate(val, &r.Target)
-				delete(rawMsg, key)
+			err = unpopulate(val, &r.Target)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -2613,4 +2613,3 @@ func unpopulate(data json.RawMessage, v interface{}) error {
 	}
 	return json.Unmarshal(data, v)
 }
-

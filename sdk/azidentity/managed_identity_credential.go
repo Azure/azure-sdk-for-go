@@ -106,5 +106,5 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.To
 // AuthenticationPolicy implements the azcore.Credential interface on ManagedIdentityCredential.
 // NOTE: The TokenRequestOptions included in AuthenticationPolicyOptions must be a slice of resources in this case and not scopes.
 func (c *ManagedIdentityCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return newBearerTokenPolicy(c, options)
+	return azcore.NewBearerTokenPolicy(c, options)
 }

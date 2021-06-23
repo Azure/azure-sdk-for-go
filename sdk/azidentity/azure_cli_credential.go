@@ -70,7 +70,7 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequ
 
 // AuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.
 func (c *AzureCLICredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return newBearerTokenPolicy(c, options)
+	return azcore.NewBearerTokenPolicy(c, options)
 }
 
 const timeoutCLIRequest = 10000 * time.Millisecond

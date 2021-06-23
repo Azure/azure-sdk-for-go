@@ -80,7 +80,7 @@ func (c *AuthorizationCodeCredential) GetToken(ctx context.Context, opts azcore.
 
 // AuthenticationPolicy implements the azcore.Credential interface on AuthorizationCodeCredential.
 func (c *AuthorizationCodeCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return newBearerTokenPolicy(c, options)
+	return azcore.NewBearerTokenPolicy(c, options)
 }
 
 var _ azcore.TokenCredential = (*AuthorizationCodeCredential)(nil)

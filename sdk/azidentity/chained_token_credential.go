@@ -70,7 +70,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 
 // AuthenticationPolicy implements the azcore.Credential interface on ChainedTokenCredential and sets the bearer token
 func (c *ChainedTokenCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return newBearerTokenPolicy(c, options)
+	return azcore.NewBearerTokenPolicy(c, options)
 }
 
 // helper function used to chain the error messages of the CredentialUnavailableError slice

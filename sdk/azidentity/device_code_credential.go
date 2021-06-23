@@ -169,7 +169,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts azcore.TokenRe
 
 // AuthenticationPolicy implements the azcore.Credential interface on DeviceCodeCredential.
 func (c *DeviceCodeCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return newBearerTokenPolicy(c, options)
+	return azcore.NewBearerTokenPolicy(c, options)
 }
 
 // deviceCodeResult is used to store device code related information to help the user login and allow the device code flow to continue

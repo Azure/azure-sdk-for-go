@@ -101,7 +101,7 @@ func (c *EnvironmentCredential) GetToken(ctx context.Context, opts azcore.TokenR
 
 // AuthenticationPolicy implements the azcore.Credential interface on EnvironmentCredential.
 func (c *EnvironmentCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return newBearerTokenPolicy(c.cred, options)
+	return azcore.NewBearerTokenPolicy(c.cred, options)
 }
 
 var _ azcore.TokenCredential = (*EnvironmentCredential)(nil)

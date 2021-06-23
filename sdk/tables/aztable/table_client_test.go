@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -22,18 +22,18 @@ import (
 type tableClientLiveTests struct {
 	suite.Suite
 	endpointType EndpointType
-	mode         testframework.RecordMode
+	mode         recording.RecordMode
 }
 
 // Hookup to the testing framework
 func TestTableClient_Storage(t *testing.T) {
-	storage := tableClientLiveTests{endpointType: StorageEndpoint, mode: testframework.Playback /* change to Record to re-record tests */}
+	storage := tableClientLiveTests{endpointType: StorageEndpoint, mode: recording.Playback /* change to Record to re-record tests */}
 	suite.Run(t, &storage)
 }
 
 // Hookup to the testing framework
 func TestTableClient_Cosmos(t *testing.T) {
-	cosmos := tableClientLiveTests{endpointType: CosmosEndpoint, mode: testframework.Playback /* change to Record to re-record tests */}
+	cosmos := tableClientLiveTests{endpointType: CosmosEndpoint, mode: recording.Playback /* change to Record to re-record tests */}
 	suite.Run(t, &cosmos)
 }
 

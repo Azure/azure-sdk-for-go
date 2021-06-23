@@ -11,16 +11,16 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/assert"
 )
 
 type tablesRecordedTests struct{}
 
 type testContext struct {
-	recording *testframework.Recording
+	recording *recording.Recording
 	client    *TableServiceClient
-	context   *testframework.TestContext
+	context   *recording.TestContext
 }
 
 const (
@@ -54,7 +54,7 @@ func cosmosURI(accountName string, endpointSuffix string) string {
 }
 
 // create the test specific TableClient and wire it up to recordings
-func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType, mode testframework.RecordMode) {
+func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType, mode recording.RecordMode) {
 	var accountName string
 	var suffix string
 	var cred *SharedKeyCredential
@@ -63,27 +63,27 @@ func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType,
 	assert := assert.New(t)
 
 	// init the test framework
-	context := testframework.NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { t.Log(msg) }, func() string { return testName })
-	recording, err := testframework.NewRecording(context, mode)
+	context := recording.NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { t.Log(msg) }, func() string { return testName })
+	recordingInstance, err := recording.NewRecording(context, mode)
 	assert.Nil(err)
 
 	if endpointType == StorageEndpoint {
-		accountName, err = recording.GetRecordedVariable(storageAccountNameEnvVar, testframework.Default)
-		suffix = recording.GetOptionalRecordedVariable(storageEndpointSuffixEnvVar, DefaultStorageSuffix, testframework.Default)
-		secret, err = recording.GetRecordedVariable(storageAccountKeyEnvVar, testframework.Secret_Base64String)
+		accountName, err = recordingInstance.GetRecordedVariable(storageAccountNameEnvVar, recording.Default)
+		suffix = recordingInstance.GetOptionalRecordedVariable(storageEndpointSuffixEnvVar, DefaultStorageSuffix, recording.Default)
+		secret, err = recordingInstance.GetRecordedVariable(storageAccountKeyEnvVar, recording.Secret_Base64String)
 		cred, _ = NewSharedKeyCredential(accountName, secret)
 		uri = storageURI(accountName, suffix)
 	} else {
-		accountName, err = recording.GetRecordedVariable(cosmosAccountNameEnnVar, testframework.Default)
-		suffix = recording.GetOptionalRecordedVariable(cosmosEndpointSuffixEnvVar, DefaultCosmosSuffix, testframework.Default)
-		secret, err = recording.GetRecordedVariable(cosmosAccountKeyEnvVar, testframework.Secret_Base64String)
+		accountName, err = recordingInstance.GetRecordedVariable(cosmosAccountNameEnnVar, recording.Default)
+		suffix = recordingInstance.GetOptionalRecordedVariable(cosmosEndpointSuffixEnvVar, DefaultCosmosSuffix, recording.Default)
+		secret, err = recordingInstance.GetRecordedVariable(cosmosAccountKeyEnvVar, recording.Secret_Base64String)
 		cred, _ = NewSharedKeyCredential(accountName, secret)
 		uri = cosmosURI(accountName, suffix)
 	}
 
-	client, err := NewTableServiceClient(uri, cred, &TableClientOptions{HTTPClient: recording, Retry: azcore.RetryOptions{MaxRetries: -1}})
+	client, err := NewTableServiceClient(uri, cred, &TableClientOptions{HTTPClient: recordingInstance, Retry: azcore.RetryOptions{MaxRetries: -1}})
 	assert.Nil(err)
-	clientsMap[testName] = &testContext{client: client, recording: recording, context: &context}
+	clientsMap[testName] = &testContext{client: client, recording: recordingInstance, context: &context}
 }
 
 func recordedTestTeardown(key string) {

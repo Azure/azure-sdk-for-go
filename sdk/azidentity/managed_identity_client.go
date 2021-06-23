@@ -125,9 +125,6 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Now().Add(time.Second * time.Duration(expiresIn)).UTC()}, nil
 	}
 	switch v := value.ExpiresOn.(type) {
-	case int:
-		// service fabric is one of the MSI environments that returns an int
-		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Unix(int64(v), 0).UTC()}, nil
 	case float64:
 		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Unix(int64(v), 0).UTC()}, nil
 	case string:

@@ -18,21 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hybridkubernetes/mgmt/2020-01-01-preview/hybridkubernetes"
-
-// AuthenticationDetails authentication details of the user
-type AuthenticationDetails struct {
-	// AuthenticationMethod - The mode of client authentication.
-	AuthenticationMethod *string `json:"authenticationMethod,omitempty"`
-	// Value - Authentication token value.
-	Value *AuthenticationDetailsValue `json:"value,omitempty"`
-}
-
-// AuthenticationDetailsValue authentication token value.
-type AuthenticationDetailsValue struct {
-	// Token - Authentication token.
-	Token *string `json:"token,omitempty"`
-}
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hybridkubernetes/mgmt/2021-04-01-preview/hybridkubernetes"
 
 // AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
@@ -59,6 +45,8 @@ type ConnectedCluster struct {
 	Identity *ConnectedClusterIdentity `json:"identity,omitempty"`
 	// ConnectedClusterProperties - Describes the connected cluster resource properties.
 	*ConnectedClusterProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
@@ -116,6 +104,15 @@ func (cc *ConnectedCluster) UnmarshalJSON(body []byte) error {
 				}
 				cc.ConnectedClusterProperties = &connectedClusterProperties
 			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				cc.SystemData = &systemData
+			}
 		case "tags":
 			if v != nil {
 				var tags map[string]*string
@@ -165,16 +162,6 @@ func (cc *ConnectedCluster) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
-}
-
-// ConnectedClusterAADProfile AAD profile of the connected cluster
-type ConnectedClusterAADProfile struct {
-	// TenantID - The aad tenant id which is configured on target K8s cluster
-	TenantID *string `json:"tenantId,omitempty"`
-	// ClientAppID - The client app id configured on target K8 cluster
-	ClientAppID *string `json:"clientAppId,omitempty"`
-	// ServerAppID - The server app id to access AD server
-	ServerAppID *string `json:"serverAppId,omitempty"`
 }
 
 // ConnectedClusterCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -490,16 +477,16 @@ func (ccp *ConnectedClusterPatch) UnmarshalJSON(body []byte) error {
 
 // ConnectedClusterPatchProperties properties which can be patched on the connected cluster resource.
 type ConnectedClusterPatchProperties struct {
-	// AgentPublicKeyCertificate - Base64 encoded public certificate used by the agent to do the initial handshake to the backend services in Azure.
-	AgentPublicKeyCertificate *string `json:"agentPublicKeyCertificate,omitempty"`
+	// PrivateLinkState - Property which describes the state of private link on a connected cluster resource. Possible values include: 'Enabled', 'Disabled'
+	PrivateLinkState PrivateLinkState `json:"privateLinkState,omitempty"`
+	// PrivateLinkScopeResourceID - The resource id of the private link scope this connected cluster is assigned to, if any.
+	PrivateLinkScopeResourceID *string `json:"privateLinkScopeResourceId,omitempty"`
 }
 
 // ConnectedClusterProperties properties of the connected cluster.
 type ConnectedClusterProperties struct {
 	// AgentPublicKeyCertificate - Base64 encoded public certificate used by the agent to do the initial handshake to the backend services in Azure.
 	AgentPublicKeyCertificate *string `json:"agentPublicKeyCertificate,omitempty"`
-	// AadProfile - AAD profile of the connected cluster.
-	AadProfile *ConnectedClusterAADProfile `json:"aadProfile,omitempty"`
 	// KubernetesVersion - READ-ONLY; The Kubernetes version of the connected cluster resource
 	KubernetesVersion *string `json:"kubernetesVersion,omitempty"`
 	// TotalNodeCount - READ-ONLY; Number of nodes present in the connected cluster resource
@@ -520,8 +507,12 @@ type ConnectedClusterProperties struct {
 	ManagedIdentityCertificateExpirationTime *date.Time `json:"managedIdentityCertificateExpirationTime,omitempty"`
 	// LastConnectivityTime - READ-ONLY; Time representing the last instance when heart beat was received from the cluster
 	LastConnectivityTime *date.Time `json:"lastConnectivityTime,omitempty"`
-	// ConnectivityStatus - Represents the connectivity status of the connected cluster. Possible values include: 'Connecting', 'Connected', 'Offline', 'Expired'
+	// ConnectivityStatus - READ-ONLY; Represents the connectivity status of the connected cluster. Possible values include: 'Connecting', 'Connected', 'Offline', 'Expired'
 	ConnectivityStatus ConnectivityStatus `json:"connectivityStatus,omitempty"`
+	// PrivateLinkState - Property which describes the state of private link on a connected cluster resource. Possible values include: 'Enabled', 'Disabled'
+	PrivateLinkState PrivateLinkState `json:"privateLinkState,omitempty"`
+	// PrivateLinkScopeResourceID - The resource id of the private link scope this connected cluster is assigned to, if any.
+	PrivateLinkScopeResourceID *string `json:"privateLinkScopeResourceId,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ConnectedClusterProperties.
@@ -529,9 +520,6 @@ func (ccp ConnectedClusterProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ccp.AgentPublicKeyCertificate != nil {
 		objectMap["agentPublicKeyCertificate"] = ccp.AgentPublicKeyCertificate
-	}
-	if ccp.AadProfile != nil {
-		objectMap["aadProfile"] = ccp.AadProfile
 	}
 	if ccp.ProvisioningState != "" {
 		objectMap["provisioningState"] = ccp.ProvisioningState
@@ -542,10 +530,56 @@ func (ccp ConnectedClusterProperties) MarshalJSON() ([]byte, error) {
 	if ccp.Infrastructure != nil {
 		objectMap["infrastructure"] = ccp.Infrastructure
 	}
-	if ccp.ConnectivityStatus != "" {
-		objectMap["connectivityStatus"] = ccp.ConnectivityStatus
+	if ccp.PrivateLinkState != "" {
+		objectMap["privateLinkState"] = ccp.PrivateLinkState
+	}
+	if ccp.PrivateLinkScopeResourceID != nil {
+		objectMap["privateLinkScopeResourceId"] = ccp.PrivateLinkScopeResourceID
 	}
 	return json.Marshal(objectMap)
+}
+
+// ConnectedClusterUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ConnectedClusterUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ConnectedClusterClient) (ConnectedCluster, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ConnectedClusterUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ConnectedClusterUpdateFuture.Result.
+func (future *ConnectedClusterUpdateFuture) result(client ConnectedClusterClient) (cc ConnectedCluster, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		cc.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("hybridkubernetes.ConnectedClusterUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if cc.Response.Response, err = future.GetResult(sender); err == nil && cc.Response.Response.StatusCode != http.StatusNoContent {
+		cc, err = client.UpdateResponder(cc.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterUpdateFuture", "Result", cc.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // CredentialResult the credential result response.
@@ -634,6 +668,14 @@ type HybridConnectionConfig struct {
 func (hcc HybridConnectionConfig) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// ListClusterUserCredentialsProperties ...
+type ListClusterUserCredentialsProperties struct {
+	// AuthenticationMethod - The mode of client authentication. Possible values include: 'Token', 'AAD'
+	AuthenticationMethod AuthenticationMethod `json:"authenticationMethod,omitempty"`
+	// ClientProxy - Boolean value to indicate whether the request is for client side proxy or not
+	ClientProxy *bool `json:"clientProxy,omitempty"`
 }
 
 // Operation the Connected cluster API operation
@@ -861,6 +903,22 @@ type Resource struct {
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'LastModifiedByTypeUser', 'LastModifiedByTypeApplication', 'LastModifiedByTypeManagedIdentity', 'LastModifiedByTypeKey'
+	LastModifiedByType LastModifiedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource modification (UTC).
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 
 // TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource

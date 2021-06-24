@@ -57,13 +57,7 @@ func (client ConnectedClusterClient) Create(ctx context.Context, resourceGroupNa
 		{TargetValue: connectedCluster,
 			Constraints: []validation.Constraint{{Target: "connectedCluster.Identity", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "connectedCluster.ConnectedClusterProperties", Name: validation.Null, Rule: true,
-					Chain: []validation.Constraint{{Target: "connectedCluster.ConnectedClusterProperties.AgentPublicKeyCertificate", Name: validation.Null, Rule: true, Chain: nil},
-						{Target: "connectedCluster.ConnectedClusterProperties.AadProfile", Name: validation.Null, Rule: true,
-							Chain: []validation.Constraint{{Target: "connectedCluster.ConnectedClusterProperties.AadProfile.TenantID", Name: validation.Null, Rule: true, Chain: nil},
-								{Target: "connectedCluster.ConnectedClusterProperties.AadProfile.ClientAppID", Name: validation.Null, Rule: true, Chain: nil},
-								{Target: "connectedCluster.ConnectedClusterProperties.AadProfile.ServerAppID", Name: validation.Null, Rule: true, Chain: nil},
-							}},
-					}}}}}); err != nil {
+					Chain: []validation.Constraint{{Target: "connectedCluster.ConnectedClusterProperties.AgentPublicKeyCertificate", Name: validation.Null, Rule: true, Chain: nil}}}}}}); err != nil {
 		return result, validation.NewError("hybridkubernetes.ConnectedClusterClient", "Create", err.Error())
 	}
 
@@ -90,11 +84,12 @@ func (client ConnectedClusterClient) CreatePreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-01-01-preview"
+	const APIVersion = "2021-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
+	connectedCluster.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -179,7 +174,7 @@ func (client ConnectedClusterClient) DeletePreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-01-01-preview"
+	const APIVersion = "2021-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -273,7 +268,7 @@ func (client ConnectedClusterClient) GetPreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-01-01-preview"
+	const APIVersion = "2021-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -361,7 +356,7 @@ func (client ConnectedClusterClient) ListByResourceGroupPreparer(ctx context.Con
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-01-01-preview"
+	const APIVersion = "2021-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -480,7 +475,7 @@ func (client ConnectedClusterClient) ListBySubscriptionPreparer(ctx context.Cont
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-01-01-preview"
+	const APIVersion = "2021-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -553,10 +548,8 @@ func (client ConnectedClusterClient) ListBySubscriptionComplete(ctx context.Cont
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // clusterName - the name of the Kubernetes cluster on which get is called.
-// clientProxy - parameter to indicate whether the request is for client side proxy or not
-// clientAuthenticationDetails - authentication parameters supplied by the user to fetch credentials for
-// accessing the cluster.
-func (client ConnectedClusterClient) ListClusterUserCredentials(ctx context.Context, resourceGroupName string, clusterName string, clientProxy *bool, clientAuthenticationDetails *AuthenticationDetails) (result CredentialResults, err error) {
+// properties - listClusterUserCredentials properties
+func (client ConnectedClusterClient) ListClusterUserCredentials(ctx context.Context, resourceGroupName string, clusterName string, properties ListClusterUserCredentialsProperties) (result CredentialResults, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectedClusterClient.ListClusterUserCredentials")
 		defer func() {
@@ -573,15 +566,12 @@ func (client ConnectedClusterClient) ListClusterUserCredentials(ctx context.Cont
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
-		{TargetValue: clientAuthenticationDetails,
-			Constraints: []validation.Constraint{{Target: "clientAuthenticationDetails", Name: validation.Null, Rule: false,
-				Chain: []validation.Constraint{{Target: "clientAuthenticationDetails.AuthenticationMethod", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "clientAuthenticationDetails.Value", Name: validation.Null, Rule: true, Chain: nil},
-				}}}}}); err != nil {
+		{TargetValue: properties,
+			Constraints: []validation.Constraint{{Target: "properties.ClientProxy", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("hybridkubernetes.ConnectedClusterClient", "ListClusterUserCredentials", err.Error())
 	}
 
-	req, err := client.ListClusterUserCredentialsPreparer(ctx, resourceGroupName, clusterName, clientProxy, clientAuthenticationDetails)
+	req, err := client.ListClusterUserCredentialsPreparer(ctx, resourceGroupName, clusterName, properties)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "ListClusterUserCredentials", nil, "Failure preparing request")
 		return
@@ -604,19 +594,16 @@ func (client ConnectedClusterClient) ListClusterUserCredentials(ctx context.Cont
 }
 
 // ListClusterUserCredentialsPreparer prepares the ListClusterUserCredentials request.
-func (client ConnectedClusterClient) ListClusterUserCredentialsPreparer(ctx context.Context, resourceGroupName string, clusterName string, clientProxy *bool, clientAuthenticationDetails *AuthenticationDetails) (*http.Request, error) {
+func (client ConnectedClusterClient) ListClusterUserCredentialsPreparer(ctx context.Context, resourceGroupName string, clusterName string, properties ListClusterUserCredentialsProperties) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"clusterName":       autorest.Encode("path", clusterName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-01-01-preview"
+	const APIVersion = "2021-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
-	}
-	if clientProxy != nil {
-		queryParameters["ClientProxy"] = autorest.Encode("query", *clientProxy)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -624,11 +611,8 @@ func (client ConnectedClusterClient) ListClusterUserCredentialsPreparer(ctx cont
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
 		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Kubernetes/connectedClusters/{clusterName}/listClusterUserCredentials", pathParameters),
+		autorest.WithJSON(properties),
 		autorest.WithQueryParameters(queryParameters))
-	if clientAuthenticationDetails != nil {
-		preparer = autorest.DecoratePreparer(preparer,
-			autorest.WithJSON(clientAuthenticationDetails))
-	}
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
@@ -655,13 +639,13 @@ func (client ConnectedClusterClient) ListClusterUserCredentialsResponder(resp *h
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // clusterName - the name of the Kubernetes cluster on which get is called.
 // connectedClusterPatch - parameters supplied to update Connected Cluster.
-func (client ConnectedClusterClient) Update(ctx context.Context, resourceGroupName string, clusterName string, connectedClusterPatch ConnectedClusterPatch) (result ConnectedCluster, err error) {
+func (client ConnectedClusterClient) Update(ctx context.Context, resourceGroupName string, clusterName string, connectedClusterPatch ConnectedClusterPatch) (result ConnectedClusterUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectedClusterClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -681,16 +665,9 @@ func (client ConnectedClusterClient) Update(ctx context.Context, resourceGroupNa
 		return
 	}
 
-	resp, err := client.UpdateSender(req)
+	result, err = client.UpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "Update", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -705,7 +682,7 @@ func (client ConnectedClusterClient) UpdatePreparer(ctx context.Context, resourc
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-01-01-preview"
+	const APIVersion = "2021-04-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -722,8 +699,17 @@ func (client ConnectedClusterClient) UpdatePreparer(ctx context.Context, resourc
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client ConnectedClusterClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client ConnectedClusterClient) UpdateSender(req *http.Request) (future ConnectedClusterUpdateFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
 }
 
 // UpdateResponder handles the response to the Update request. The method always
@@ -731,7 +717,7 @@ func (client ConnectedClusterClient) UpdateSender(req *http.Request) (*http.Resp
 func (client ConnectedClusterClient) UpdateResponder(resp *http.Response) (result ConnectedCluster, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

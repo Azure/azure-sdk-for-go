@@ -6,6 +6,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
 	"io/ioutil"
 
 	"github.com/spf13/cobra"
@@ -35,7 +36,7 @@ func diffCommand(basePath, targetPath string) error {
 	if err != nil {
 		return fmt.Errorf("failed to read target export file %s: %+v", targetPath, err)
 	}
-	var baseExport, targetExport RepoContent
+	var baseExport, targetExport repo.RepoContent
 	if err := json.Unmarshal(base, &baseExport); err != nil {
 		return fmt.Errorf("failed to unmarshal base export: %+v", err)
 	}
@@ -43,10 +44,10 @@ func diffCommand(basePath, targetPath string) error {
 		return fmt.Errorf("failed to unmarshal target export: %+v", err)
 	}
 
-	r := getPkgsReport(baseExport, targetExport)
+	r := GetPkgsReport(baseExport, targetExport)
 
 	if asMarkdown {
-		fmt.Println(r.ToMarkdown(""))
+		fmt.Println(r.ToMarkdown())
 	} else {
 		b, _ := json.Marshal(r)
 		fmt.Println(string(b))

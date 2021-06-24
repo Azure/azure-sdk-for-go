@@ -9,7 +9,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/refresh"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/config"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/repos"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
 	"github.com/go-git/go-git/v5/plumbing"
 )
 
@@ -29,7 +29,7 @@ func (c *commandContext) refresh(r *config.RefreshInfo) (*plumbing.Reference, er
 
 	// defer checkout back in azure-rest-api-specs
 	defer func() {
-		if err := c.Spec().Checkout(&repos.CheckoutOptions{
+		if err := c.Spec().Checkout(&repo.CheckoutOptions{
 			Branch: c.specRef.Name(),
 			Force:  true,
 		}); err != nil {

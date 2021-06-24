@@ -5,11 +5,10 @@ package report
 
 import (
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/markdown"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-
-	"github.com/Azure/azure-sdk-for-go/tools/internal/markdown"
 )
 
 const apiDirSuffix = "api"
@@ -136,59 +135,50 @@ func (c *CommitPkgsReport) UpdateAffectedPackages(commit string, r PkgsReport) {
 	}
 }
 
-// PkgsReport represents a complete report of added, removed, and modified packages
+// represents a complete report of added, removed, and modified packages
 type PkgsReport struct {
-	// AddedPackages stores the added packages in the report
+	// AddedPackages contains the relative package names that are added in this new version
 	AddedPackages PkgsList `json:"added,omitempty"`
-	// ModifiedPackages stores the details of all modified packages
+	// ModifiedPackages contains the modified packages map, using relative package names as keys
 	ModifiedPackages ModifiedPackages `json:"modified,omitempty"`
-	// RemovedPackages stores the removed packages in the report
-	RemovedPackages PkgsList `json:"removed,omitempty"`
+	// RemovedPackages contains the relative package names that are removed in this new version
+	RemovedPackages    PkgsList `json:"removed,omitempty"`
+	modPkgHasAdditions bool
+	modPkgHasBreaking  bool
 }
 
-// HasBreakingChanges returns true if the package report contains breaking changes
+// returns true if the package report contains breaking changes
 func (r PkgsReport) HasBreakingChanges() bool {
-	return len(r.RemovedPackages) > 0 || (r.ModifiedPackages != nil && r.ModifiedPackages.HasBreakingChanges())
+	return len(r.RemovedPackages) > 0 || r.modPkgHasBreaking
 }
 
-// HasAdditiveChanges returns true if the package report contains additive changes
+// returns true if the package report contains additive changes
 func (r PkgsReport) HasAdditiveChanges() bool {
-	return len(r.AddedPackages) > 0 || (r.ModifiedPackages != nil && r.ModifiedPackages.HasAdditiveChanges())
+	return len(r.AddedPackages) > 0 || r.modPkgHasAdditions
 }
 
-// IsEmpty returns true if the report contains no data
+// returns true if the report contains no data
 func (r PkgsReport) IsEmpty() bool {
 	return len(r.AddedPackages) == 0 && len(r.ModifiedPackages) == 0 && len(r.RemovedPackages) == 0
 }
 
-// ToMarkdown writes the report to string in the markdown form.
-// The version parameter if set will output the release history title
-// and the release version header one level beneath it with the value specified.
-// Leave the version parameter empty to output the diff without the release headers.
-func (r *PkgsReport) ToMarkdown(version string) string {
-	md := markdown.Writer{}
-	if len(version) > 0 {
-		r.writeHeader(&md, version)
-	}
+func (r PkgsReport) ToMarkdown() string {
 	if r.IsEmpty() {
-		return ""
+		return "No exports changed"
 	}
-	r.writeAddedPackages(&md)
-	r.writeRemovedPackages(&md)
-	r.writeModifiedPackages(&md)
-	return md.String()
-}
 
-func (r *PkgsReport) writeHeader(md *markdown.Writer, version string) {
-	md.WriteTitle("Release History")
-	md.WriteTopLevelHeader(fmt.Sprintf("%s (Released)", version))
+	md := &markdown.Writer{}
+	r.writeAddedPackages(md)
+	r.writeRemovedPackages(md)
+	r.writeModifiedPackages(md)
+	return md.String()
 }
 
 func (r *PkgsReport) writeAddedPackages(md *markdown.Writer) {
 	if len(r.AddedPackages) == 0 {
 		return
 	}
-	md.WriteHeader("New Packages")
+	md.WriteTopLevelHeader("New Packages")
 	// write list
 	for _, p := range r.AddedPackages {
 		md.WriteLine("- " + p)
@@ -199,14 +189,14 @@ func (r *PkgsReport) writeModifiedPackages(md *markdown.Writer) {
 	if len(r.ModifiedPackages) == 0 {
 		return
 	}
-	md.WriteHeader("Modified Packages")
+	md.WriteTopLevelHeader("Modified Packages")
 	// write list
 	for n := range r.ModifiedPackages {
 		md.WriteLine(fmt.Sprintf("- `%s`", n))
 	}
 	// write details
 	for n, p := range r.ModifiedPackages {
-		md.WriteHeader(fmt.Sprintf("Modified `%s`", n))
+		md.WriteTopLevelHeader(fmt.Sprintf("Modified `%s`", n))
 		md.WriteLine(p.ToMarkdown())
 	}
 }
@@ -215,10 +205,11 @@ func (r *PkgsReport) writeRemovedPackages(md *markdown.Writer) {
 	if len(r.RemovedPackages) == 0 {
 		return
 	}
-	md.WriteHeader("Removed Packages")
+	md.WriteTopLevelHeader("Removed Packages")
 	// write list
 	for _, p := range r.RemovedPackages {
 		md.WriteLine("- " + p)
 	}
 	md.EmptyLine()
 }
+

@@ -5,6 +5,7 @@ package release
 
 import (
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"log"
 	"os"
 	"path/filepath"
@@ -14,13 +15,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest_ext"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/config"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/repos"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
 )
 
 type generateContext struct {
-	sdkRepo            repos.SDKRepository
-	specRepo           repos.SpecRepository
+	sdkRepo            repo.SDKRepository
+	specRepo           repo.SpecRepository
 	readme             string
 	specLastCommitHash string
 
@@ -52,7 +53,7 @@ func (ctx *generateContext) generate(tag string, infoList []config.ReleaseReques
 	// determine whether this is a new package or not
 	if m, ok := common.ContainsPackage(ctx.SDKRoot(), ctx.readme, tag); ok {
 		log.Printf("Task (readme %s / tag %s) is an existing package, using the options in the metadata...", ctx.readme, tag)
-		options = ctx.defaultOptions.(model.Options).MergeOptions(autorest_ext.GetAdditionalOptions(m).Arguments()...)
+		options = ctx.defaultOptions.(model.Options).MergeOptions(autorest.GetAdditionalOptions(m).Arguments()...)
 	} else {
 		log.Printf("Task (readme %s / tag %s) is a new package, appending the additional options to the default options...", ctx.readme, tag)
 		options = ctx.defaultOptions.(model.Options).MergeOptions(ctx.additionalOptions...)
@@ -61,14 +62,14 @@ func (ctx *generateContext) generate(tag string, infoList []config.ReleaseReques
 	log.Printf("Generating %s from %v...", tag, infoList)
 	// iterate over the tags in one request
 	// Generate code
-	input := autorest_ext.GenerateInput{
-		Readme:     ctx.readme,
-		Tag:        tag,
-		SDKRoot:    ctx.SDKRoot(),
+	input := autorest.GenerateInput{
+		Readme: ctx.readme,
+		Tag:    tag,
+		//SDKRoot:    ctx.SDKRoot(),
 		CommitHash: ctx.specLastCommitHash,
 		Options:    options,
 	}
-	r, err := autorest_ext.GeneratePackage(ctx, input, autorest_ext.GenerateOptions{
+	r, err := autorest.GeneratePackage(ctx, input, autorest.GenerateOptions{
 		MetadataOutputRoot: metadataOutputRoot,
 		Stderr:             os.Stderr,
 		Stdout:             os.Stderr, // we redirect all the output of autorest to stderr, so that the stdout will only contain the proper output
@@ -120,7 +121,7 @@ func (ctx *generateContext) commit(tag string) error {
 
 	message := fmt.Sprintf("Generated from %s tag %s (commit hash: %s)", ctx.readme, tag, ctx.specLastCommitHash)
 	if err := ctx.sdkRepo.Commit(message); err != nil {
-		if repos.IsNothingToCommit(err) {
+		if repo.IsNothingToCommit(err) {
 			log.Printf("There is nothing to commit. Message: %s", message)
 			return nil
 		}

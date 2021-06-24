@@ -10,20 +10,20 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/repos"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
 	"github.com/go-git/go-git/v5/plumbing"
 )
 
 type CommandContext interface {
-	SDK() repos.SDKRepository
-	Spec() repos.SpecRepository
+	SDK() repo.SDKRepository
+	Spec() repo.SpecRepository
 	CreateReleaseBranch(version string) (string, error)
 	CheckExternalChanges()
 }
 
 type commandContext struct {
-	sdk  repos.SDKRepository
-	spec repos.SpecRepository
+	sdk  repo.SDKRepository
+	spec repo.SpecRepository
 
 	checkExternalChanges func(ref, newRef *plumbing.Reference, err error)
 }
@@ -59,7 +59,7 @@ func (c *commandContext) CreateReleaseBranch(version string) (string, error) {
 	releaseBranchName := fmt.Sprintf(releaseBranchNamePattern, version, time.Now().Unix())
 
 	log.Printf("Checking out to %s", plumbing.NewBranchReferenceName(releaseBranchName))
-	if err := c.SDK().Checkout(&repos.CheckoutOptions{
+	if err := c.SDK().Checkout(&repo.CheckoutOptions{
 		Branch: plumbing.NewBranchReferenceName(releaseBranchName),
 		Create: true,
 	}); err != nil {
@@ -70,20 +70,20 @@ func (c *commandContext) CreateReleaseBranch(version string) (string, error) {
 
 }
 
-func (c *commandContext) SDK() repos.SDKRepository {
+func (c *commandContext) SDK() repo.SDKRepository {
 	return c.sdk
 }
 
-func (c *commandContext) Spec() repos.SpecRepository {
+func (c *commandContext) Spec() repo.SpecRepository {
 	return c.spec
 }
 
 func NewCommandContext(sdkPath, specPath string, panicWhenDetectExternalChanges bool) (CommandContext, error) {
-	sdk, err := repos.OpenSDKRepository(sdkPath)
+	sdk, err := repo.OpenSDKRepository(sdkPath)
 	if err != nil {
 		return nil, err
 	}
-	spec, err := repos.OpenSpecRepository(specPath)
+	spec, err := repo.OpenSpecRepository(specPath)
 	if err != nil {
 		return nil, err
 	}

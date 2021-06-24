@@ -15,10 +15,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest_ext"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/config"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/repos"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/sdk"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/utils/flags"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
 	sdkutils "github.com/Azure/azure-sdk-for-go/tools/internal/utils"
 	"github.com/ahmetb/go-linq/v3"
 	"github.com/go-git/go-git/v5/plumbing"
@@ -132,7 +132,7 @@ func (c *CommandContext) execute() error {
 		return fmt.Errorf("failed to get HEAD ref of azure-rest-api-specs: %+v", err)
 	}
 	defer func() {
-		if err := c.Spec().Checkout(&repos.CheckoutOptions{
+		if err := c.Spec().Checkout(&repo.CheckoutOptions{
 			Branch: ref.Name(),
 			Force:  true,
 		}); err != nil {
@@ -244,7 +244,7 @@ func (c *CommandContext) generateOnCommit(commit string, infoList []GenerationIn
 	log.Printf("Regenerate on commit %s starts", commit)
 	// first we checkout the spec repo to that commit
 	log.Printf("Checking out to commit %s...", commit)
-	if err := c.Spec().Checkout(&repos.CheckoutOptions{
+	if err := c.Spec().Checkout(&repo.CheckoutOptions{
 		Hash: plumbing.NewHash(commit),
 	}); err != nil {
 		var messages []string
@@ -309,7 +309,7 @@ func (c *CommandContext) commitGeneratedContent() error {
 
 	message := "Regenerated packages from their original commit hash"
 	if err := c.SDK().Commit(message); err != nil {
-		if repos.IsNothingToCommit(err) {
+		if repo.IsNothingToCommit(err) {
 			log.Printf("There is nothing to commit. Message: %s", message)
 			return nil
 		}
@@ -325,7 +325,7 @@ func (c *CommandContext) commitProfiles() error {
 	}
 
 	if err := c.SDK().Commit("Refresh profiles"); err != nil {
-		if repos.IsNothingToCommit(err) {
+		if repo.IsNothingToCommit(err) {
 			return nil
 		}
 		return fmt.Errorf("failed to commit changes: %+v", err)

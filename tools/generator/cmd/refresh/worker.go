@@ -5,13 +5,13 @@ package refresh
 
 import (
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
 	"log"
 	"os"
 	"path/filepath"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest_ext"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 )
 
@@ -42,14 +42,14 @@ func (ctx *generateContext) generate(info GenerationInfo) (*GenerateResult, erro
 	defer os.RemoveAll(metadataOutputRoot)
 
 	// Generate code
-	input := autorest_ext.GenerateInput{
-		Readme:     info.RelativeReadme(),
-		Tag:        info.Tag,
-		SDKRoot:    ctx.SDKRoot(),
+	input := autorest.GenerateInput{
+		Readme: info.RelativeReadme(),
+		Tag:    info.Tag,
+		//SDKRoot:    ctx.SDKRoot(),
 		CommitHash: ctx.specCommitHash,
 		Options:    ctx.options,
 	}
-	r, err := autorest_ext.GeneratePackage(ctx, input, autorest_ext.GenerateOptions{
+	r, err := autorest.GeneratePackage(ctx, input, autorest.GenerateOptions{
 		MetadataOutputRoot: metadataOutputRoot,
 		Stderr:             os.Stderr,
 		Stdout:             os.Stderr,

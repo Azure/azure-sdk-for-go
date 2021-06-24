@@ -64,26 +64,26 @@ func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType,
 
 	// init the test framework
 	context := recording.NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { t.Log(msg) }, func() string { return testName })
-	recordingInstance, err := recording.NewRecording(context, mode)
+	r, err := recording.NewRecording(context, mode)
 	assert.Nil(err)
 
 	if endpointType == StorageEndpoint {
-		accountName, err = recordingInstance.GetRecordedVariable(storageAccountNameEnvVar, recording.Default)
-		suffix = recordingInstance.GetOptionalRecordedVariable(storageEndpointSuffixEnvVar, DefaultStorageSuffix, recording.Default)
-		secret, err = recordingInstance.GetRecordedVariable(storageAccountKeyEnvVar, recording.Secret_Base64String)
+		accountName, err = r.GetRecordedVariable(storageAccountNameEnvVar, recording.Default)
+		suffix = r.GetOptionalRecordedVariable(storageEndpointSuffixEnvVar, DefaultStorageSuffix, recording.Default)
+		secret, err = r.GetRecordedVariable(storageAccountKeyEnvVar, recording.Secret_Base64String)
 		cred, _ = NewSharedKeyCredential(accountName, secret)
 		uri = storageURI(accountName, suffix)
 	} else {
-		accountName, err = recordingInstance.GetRecordedVariable(cosmosAccountNameEnnVar, recording.Default)
-		suffix = recordingInstance.GetOptionalRecordedVariable(cosmosEndpointSuffixEnvVar, DefaultCosmosSuffix, recording.Default)
-		secret, err = recordingInstance.GetRecordedVariable(cosmosAccountKeyEnvVar, recording.Secret_Base64String)
+		accountName, err = r.GetRecordedVariable(cosmosAccountNameEnnVar, recording.Default)
+		suffix = r.GetOptionalRecordedVariable(cosmosEndpointSuffixEnvVar, DefaultCosmosSuffix, recording.Default)
+		secret, err = r.GetRecordedVariable(cosmosAccountKeyEnvVar, recording.Secret_Base64String)
 		cred, _ = NewSharedKeyCredential(accountName, secret)
 		uri = cosmosURI(accountName, suffix)
 	}
 
-	client, err := NewTableServiceClient(uri, cred, &TableClientOptions{HTTPClient: recordingInstance, Retry: azcore.RetryOptions{MaxRetries: -1}})
+	client, err := NewTableServiceClient(uri, cred, &TableClientOptions{HTTPClient: r, Retry: azcore.RetryOptions{MaxRetries: -1}})
 	assert.Nil(err)
-	clientsMap[testName] = &testContext{client: client, recording: recordingInstance, context: &context}
+	clientsMap[testName] = &testContext{client: client, recording: r, context: &context}
 }
 
 func recordedTestTeardown(key string) {

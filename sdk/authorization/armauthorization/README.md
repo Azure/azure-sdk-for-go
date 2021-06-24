@@ -4,7 +4,7 @@
 
 The `armauthorization` module provides operations for working with Azure Authorization.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/authorization/armauthorization)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/authorization/armauthorization)
 
 # Getting started
 

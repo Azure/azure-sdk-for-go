@@ -49,6 +49,8 @@ func (client ScheduledQueryRulesClient) CreateOrUpdate(ctx context.Context, reso
 		}()
 	}
 	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.LogSearchRule", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "parameters.LogSearchRule.Source", Name: validation.Null, Rule: true,
@@ -139,6 +141,12 @@ func (client ScheduledQueryRulesClient) Delete(ctx context.Context, resourceGrou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.ScheduledQueryRulesClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, ruleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.ScheduledQueryRulesClient", "Delete", nil, "Failure preparing request")
@@ -214,6 +222,12 @@ func (client ScheduledQueryRulesClient) Get(ctx context.Context, resourceGroupNa
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.ScheduledQueryRulesClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, ruleName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.ScheduledQueryRulesClient", "Get", nil, "Failure preparing request")
@@ -291,6 +305,12 @@ func (client ScheduledQueryRulesClient) ListByResourceGroup(ctx context.Context,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.ScheduledQueryRulesClient", "ListByResourceGroup", err.Error())
+	}
+
 	req, err := client.ListByResourceGroupPreparer(ctx, resourceGroupName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.ScheduledQueryRulesClient", "ListByResourceGroup", nil, "Failure preparing request")
@@ -369,6 +389,12 @@ func (client ScheduledQueryRulesClient) ListBySubscription(ctx context.Context, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.ScheduledQueryRulesClient", "ListBySubscription", err.Error())
+	}
+
 	req, err := client.ListBySubscriptionPreparer(ctx, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.ScheduledQueryRulesClient", "ListBySubscription", nil, "Failure preparing request")
@@ -447,6 +473,12 @@ func (client ScheduledQueryRulesClient) Update(ctx context.Context, resourceGrou
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("insights.ScheduledQueryRulesClient", "Update", err.Error())
+	}
+
 	req, err := client.UpdatePreparer(ctx, resourceGroupName, ruleName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "insights.ScheduledQueryRulesClient", "Update", nil, "Failure preparing request")

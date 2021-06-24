@@ -214,6 +214,10 @@ type ActionGroupResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// Kind - READ-ONLY; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
+	Kind *string `json:"kind,omitempty"`
+	// Etag - READ-ONLY; The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ActionGroupResource.
@@ -293,6 +297,24 @@ func (agr *ActionGroupResource) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				agr.Tags = tags
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				agr.Kind = &kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				agr.Etag = &etag
 			}
 		}
 	}
@@ -439,6 +461,10 @@ type ActivityLogAlertResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// Kind - READ-ONLY; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
+	Kind *string `json:"kind,omitempty"`
+	// Etag - READ-ONLY; The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ActivityLogAlertResource.
@@ -519,6 +545,24 @@ func (alar *ActivityLogAlertResource) UnmarshalJSON(body []byte) error {
 				}
 				alar.Tags = tags
 			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				alar.Kind = &kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				alar.Etag = &etag
+			}
 		}
 	}
 
@@ -587,10 +631,14 @@ type AlertRule struct {
 	Name *string `json:"name,omitempty"`
 	// Description - the description of the alert rule that will be included in the alert email.
 	Description *string `json:"description,omitempty"`
+	// ProvisioningState - the provisioning state.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// IsEnabled - the flag that indicates whether the alert rule is enabled.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// Condition - the condition that results in the alert rule being activated.
 	Condition BasicRuleCondition `json:"condition,omitempty"`
+	// Action - action that is performed when the alert rule becomes active, and when an alert condition is resolved.
+	Action BasicRuleAction `json:"action,omitempty"`
 	// Actions - the array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved.
 	Actions *[]BasicRuleAction `json:"actions,omitempty"`
 	// LastUpdatedTime - READ-ONLY; Last time the rule was updated in ISO8601 format.
@@ -606,10 +654,14 @@ func (ar AlertRule) MarshalJSON() ([]byte, error) {
 	if ar.Description != nil {
 		objectMap["description"] = ar.Description
 	}
+	if ar.ProvisioningState != nil {
+		objectMap["provisioningState"] = ar.ProvisioningState
+	}
 	if ar.IsEnabled != nil {
 		objectMap["isEnabled"] = ar.IsEnabled
 	}
 	objectMap["condition"] = ar.Condition
+	objectMap["action"] = ar.Action
 	if ar.Actions != nil {
 		objectMap["actions"] = ar.Actions
 	}
@@ -643,6 +695,15 @@ func (ar *AlertRule) UnmarshalJSON(body []byte) error {
 				}
 				ar.Description = &description
 			}
+		case "provisioningState":
+			if v != nil {
+				var provisioningState string
+				err = json.Unmarshal(*v, &provisioningState)
+				if err != nil {
+					return err
+				}
+				ar.ProvisioningState = &provisioningState
+			}
 		case "isEnabled":
 			if v != nil {
 				var isEnabled bool
@@ -659,6 +720,14 @@ func (ar *AlertRule) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ar.Condition = condition
+			}
+		case "action":
+			if v != nil {
+				action, err := unmarshalBasicRuleAction(*v)
+				if err != nil {
+					return err
+				}
+				ar.Action = action
 			}
 		case "actions":
 			if v != nil {
@@ -698,6 +767,10 @@ type AlertRuleResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// Kind - READ-ONLY; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
+	Kind *string `json:"kind,omitempty"`
+	// Etag - READ-ONLY; The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AlertRuleResource.
@@ -777,6 +850,24 @@ func (arr *AlertRuleResource) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				arr.Tags = tags
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				arr.Kind = &kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				arr.Etag = &etag
 			}
 		}
 	}
@@ -922,6 +1013,10 @@ type AutoscaleSettingResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// Kind - READ-ONLY; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
+	Kind *string `json:"kind,omitempty"`
+	// Etag - READ-ONLY; The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AutoscaleSettingResource.
@@ -1001,6 +1096,24 @@ func (asr *AutoscaleSettingResource) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				asr.Tags = tags
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				asr.Kind = &kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				asr.Etag = &etag
 			}
 		}
 	}
@@ -1259,6 +1372,8 @@ type Baseline struct {
 	LowThresholds *[]float64 `json:"lowThresholds,omitempty"`
 	// HighThresholds - The high thresholds of the baseline.
 	HighThresholds *[]float64 `json:"highThresholds,omitempty"`
+	// Timestamps - the array of timestamps of the baselines.
+	Timestamps *[]date.Time `json:"timestamps,omitempty"`
 }
 
 // BaselineMetadataValue represents a baseline metadata value.
@@ -1598,8 +1713,8 @@ type DynamicMetricCriteria struct {
 	MetricName *string `json:"metricName,omitempty"`
 	// MetricNamespace - Namespace of the metric.
 	MetricNamespace *string `json:"metricNamespace,omitempty"`
-	// TimeAggregation - the criteria time aggregation types.
-	TimeAggregation interface{} `json:"timeAggregation,omitempty"`
+	// TimeAggregation - the criteria time aggregation types. Possible values include: 'AggregationTypeEnumAverage', 'AggregationTypeEnumCount', 'AggregationTypeEnumMinimum', 'AggregationTypeEnumMaximum', 'AggregationTypeEnumTotal'
+	TimeAggregation AggregationTypeEnum `json:"timeAggregation,omitempty"`
 	// Dimensions - List of dimension conditions.
 	Dimensions *[]MetricDimension `json:"dimensions,omitempty"`
 	// SkipMetricValidation - Allows creating an alert rule on a custom metric that isn't yet emitted, by causing the metric validation to be skipped.
@@ -1633,7 +1748,7 @@ func (dmc DynamicMetricCriteria) MarshalJSON() ([]byte, error) {
 	if dmc.MetricNamespace != nil {
 		objectMap["metricNamespace"] = dmc.MetricNamespace
 	}
-	if dmc.TimeAggregation != nil {
+	if dmc.TimeAggregation != "" {
 		objectMap["timeAggregation"] = dmc.TimeAggregation
 	}
 	if dmc.Dimensions != nil {
@@ -1757,7 +1872,7 @@ func (dmc *DynamicMetricCriteria) UnmarshalJSON(body []byte) error {
 			}
 		case "timeAggregation":
 			if v != nil {
-				var timeAggregation interface{}
+				var timeAggregation AggregationTypeEnum
 				err = json.Unmarshal(*v, &timeAggregation)
 				if err != nil {
 					return err
@@ -1850,6 +1965,12 @@ type Error struct {
 	Code *string `json:"code,omitempty"`
 	// Message - Error message in the caller's locale.
 	Message *string `json:"message,omitempty"`
+}
+
+// ErrorContract describes the format of Error response.
+type ErrorContract struct {
+	// Error - The error details.
+	Error *ErrorResponse `json:"error,omitempty"`
 }
 
 // ErrorResponse describes the format of Error response.
@@ -2263,7 +2384,7 @@ type LogicAppReceiver struct {
 
 // LogMetricTrigger a log metrics trigger descriptor.
 type LogMetricTrigger struct {
-	// ThresholdOperator - Evaluation operation for Metric -'GreaterThan' or 'LessThan' or 'Equal'. Possible values include: 'ConditionalOperatorGreaterThan', 'ConditionalOperatorLessThan', 'ConditionalOperatorEqual'
+	// ThresholdOperator - Evaluation operation for Metric -'GreaterThan' or 'LessThan' or 'Equal'. Possible values include: 'ConditionalOperatorGreaterThanOrEqual', 'ConditionalOperatorLessThanOrEqual', 'ConditionalOperatorGreaterThan', 'ConditionalOperatorLessThan', 'ConditionalOperatorEqual'
 	ThresholdOperator ConditionalOperator `json:"thresholdOperator,omitempty"`
 	// Threshold - The threshold of the metric trigger.
 	Threshold *float64 `json:"threshold,omitempty"`
@@ -2309,6 +2430,10 @@ type LogProfileResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// Kind - READ-ONLY; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
+	Kind *string `json:"kind,omitempty"`
+	// Etag - READ-ONLY; The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for LogProfileResource.
@@ -2389,6 +2514,24 @@ func (lpr *LogProfileResource) UnmarshalJSON(body []byte) error {
 				}
 				lpr.Tags = tags
 			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				lpr.Kind = &kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				lpr.Etag = &etag
+			}
 		}
 	}
 
@@ -2450,8 +2593,16 @@ func (lprp *LogProfileResourcePatch) UnmarshalJSON(body []byte) error {
 
 // LogSearchRule log Search Rule Definition
 type LogSearchRule struct {
+	// CreatedWithAPIVersion - READ-ONLY; The api-version used when creating this alert rule
+	CreatedWithAPIVersion *string `json:"createdWithApiVersion,omitempty"`
+	// IsLegacyLogAnalyticsRule - READ-ONLY; True if alert rule is legacy Log Analytic rule
+	IsLegacyLogAnalyticsRule *bool `json:"isLegacyLogAnalyticsRule,omitempty"`
 	// Description - The description of the Log Search rule.
 	Description *string `json:"description,omitempty"`
+	// DisplayName - The display name of the alert rule
+	DisplayName *string `json:"displayName,omitempty"`
+	// AutoMitigate - The flag that indicates whether the alert should be automatically resolved or not. The default is false.
+	AutoMitigate *bool `json:"autoMitigate,omitempty"`
 	// Enabled - The flag which indicates whether the Log Search rule is enabled. Value should be true or false. Possible values include: 'True', 'False'
 	Enabled Enabled `json:"enabled,omitempty"`
 	// LastUpdatedTime - READ-ONLY; Last time the rule was updated in IS08601 format.
@@ -2471,6 +2622,12 @@ func (lsr LogSearchRule) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if lsr.Description != nil {
 		objectMap["description"] = lsr.Description
+	}
+	if lsr.DisplayName != nil {
+		objectMap["displayName"] = lsr.DisplayName
+	}
+	if lsr.AutoMitigate != nil {
+		objectMap["autoMitigate"] = lsr.AutoMitigate
 	}
 	if lsr.Enabled != "" {
 		objectMap["enabled"] = lsr.Enabled
@@ -2494,6 +2651,24 @@ func (lsr *LogSearchRule) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "createdWithApiVersion":
+			if v != nil {
+				var createdWithAPIVersion string
+				err = json.Unmarshal(*v, &createdWithAPIVersion)
+				if err != nil {
+					return err
+				}
+				lsr.CreatedWithAPIVersion = &createdWithAPIVersion
+			}
+		case "isLegacyLogAnalyticsRule":
+			if v != nil {
+				var isLegacyLogAnalyticsRule bool
+				err = json.Unmarshal(*v, &isLegacyLogAnalyticsRule)
+				if err != nil {
+					return err
+				}
+				lsr.IsLegacyLogAnalyticsRule = &isLegacyLogAnalyticsRule
+			}
 		case "description":
 			if v != nil {
 				var description string
@@ -2502,6 +2677,24 @@ func (lsr *LogSearchRule) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				lsr.Description = &description
+			}
+		case "displayName":
+			if v != nil {
+				var displayName string
+				err = json.Unmarshal(*v, &displayName)
+				if err != nil {
+					return err
+				}
+				lsr.DisplayName = &displayName
+			}
+		case "autoMitigate":
+			if v != nil {
+				var autoMitigate bool
+				err = json.Unmarshal(*v, &autoMitigate)
+				if err != nil {
+					return err
+				}
+				lsr.AutoMitigate = &autoMitigate
 			}
 		case "enabled":
 			if v != nil {
@@ -2583,6 +2776,10 @@ type LogSearchRuleResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// Kind - READ-ONLY; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
+	Kind *string `json:"kind,omitempty"`
+	// Etag - READ-ONLY; The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for LogSearchRuleResource.
@@ -2662,6 +2859,24 @@ func (lsrr *LogSearchRuleResource) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				lsrr.Tags = tags
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				lsrr.Kind = &kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				lsrr.Etag = &etag
 			}
 		}
 	}
@@ -2896,8 +3111,14 @@ type Metric struct {
 	Type *string `json:"type,omitempty"`
 	// Name - the name and the display name of the metric, i.e. it is localizable string.
 	Name *LocalizableString `json:"name,omitempty"`
-	// Unit - the unit of the metric. Possible values include: 'UnitCount', 'UnitBytes', 'UnitSeconds', 'UnitCountPerSecond', 'UnitBytesPerSecond', 'UnitPercent', 'UnitMilliSeconds', 'UnitByteSeconds', 'UnitUnspecified', 'UnitCores', 'UnitMilliCores', 'UnitNanoCores', 'UnitBitsPerSecond'
-	Unit Unit `json:"unit,omitempty"`
+	// DisplayDescription - Detailed description of this metric.
+	DisplayDescription *string `json:"displayDescription,omitempty"`
+	// ErrorCode - 'Success' or the error details on query failures for this metric.
+	ErrorCode *string `json:"errorCode,omitempty"`
+	// ErrorMessage - Error message encountered querying this specific metric.
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+	// Unit - The unit of the metric. Possible values include: 'MetricUnitCount', 'MetricUnitBytes', 'MetricUnitSeconds', 'MetricUnitCountPerSecond', 'MetricUnitBytesPerSecond', 'MetricUnitPercent', 'MetricUnitMilliSeconds', 'MetricUnitByteSeconds', 'MetricUnitUnspecified', 'MetricUnitCores', 'MetricUnitMilliCores', 'MetricUnitNanoCores', 'MetricUnitBitsPerSecond'
+	Unit MetricUnit `json:"unit,omitempty"`
 	// Timeseries - the time series returned when a data query is performed.
 	Timeseries *[]TimeSeriesElement `json:"timeseries,omitempty"`
 }
@@ -2906,7 +3127,7 @@ type Metric struct {
 type MetricAlertAction struct {
 	// ActionGroupID - the id of the action group to use.
 	ActionGroupID *string `json:"actionGroupId,omitempty"`
-	// WebHookProperties - The properties of a webhook object.
+	// WebHookProperties - This field allows specifying custom properties, which would be appended to the alert payload sent as input to the webhook.
 	WebHookProperties map[string]*string `json:"webHookProperties"`
 }
 
@@ -3167,9 +3388,9 @@ type MetricAlertProperties struct {
 	EvaluationFrequency *string `json:"evaluationFrequency,omitempty"`
 	// WindowSize - the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold.
 	WindowSize *string `json:"windowSize,omitempty"`
-	// TargetResourceType - the resource type of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
+	// TargetResourceType - the resource type of the target resource(s) on which the alert is created/updated. Mandatory if the scope contains a subscription, resource group, or more than one resource.
 	TargetResourceType *string `json:"targetResourceType,omitempty"`
-	// TargetResourceRegion - the region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
+	// TargetResourceRegion - the region of the target resource(s) on which the alert is created/updated. Mandatory if the scope contains a subscription, resource group, or more than one resource.
 	TargetResourceRegion *string `json:"targetResourceRegion,omitempty"`
 	// Criteria - defines the specific alert criteria information.
 	Criteria BasicMetricAlertCriteria `json:"criteria,omitempty"`
@@ -3179,6 +3400,8 @@ type MetricAlertProperties struct {
 	Actions *[]MetricAlertAction `json:"actions,omitempty"`
 	// LastUpdatedTime - READ-ONLY; Last time the rule was updated in ISO8601 format.
 	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
+	// IsMigrated - READ-ONLY; the value indicating whether this alert rule is migrated.
+	IsMigrated *bool `json:"isMigrated,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MetricAlertProperties.
@@ -3334,6 +3557,213 @@ func (mapVar *MetricAlertProperties) UnmarshalJSON(body []byte) error {
 				}
 				mapVar.LastUpdatedTime = &lastUpdatedTime
 			}
+		case "isMigrated":
+			if v != nil {
+				var isMigrated bool
+				err = json.Unmarshal(*v, &isMigrated)
+				if err != nil {
+					return err
+				}
+				mapVar.IsMigrated = &isMigrated
+			}
+		}
+	}
+
+	return nil
+}
+
+// MetricAlertPropertiesPatch an alert rule properties for patch.
+type MetricAlertPropertiesPatch struct {
+	// Description - the description of the metric alert that will be included in the alert email.
+	Description *string `json:"description,omitempty"`
+	// Severity - Alert severity {0, 1, 2, 3, 4}
+	Severity *int32 `json:"severity,omitempty"`
+	// Enabled - the flag that indicates whether the metric alert is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Scopes - the list of resource id's that this metric alert is scoped to.
+	Scopes *[]string `json:"scopes,omitempty"`
+	// EvaluationFrequency - how often the metric alert is evaluated represented in ISO 8601 duration format.
+	EvaluationFrequency *string `json:"evaluationFrequency,omitempty"`
+	// WindowSize - the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold.
+	WindowSize *string `json:"windowSize,omitempty"`
+	// TargetResourceType - the resource type of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
+	TargetResourceType *string `json:"targetResourceType,omitempty"`
+	// TargetResourceRegion - the region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
+	TargetResourceRegion *string `json:"targetResourceRegion,omitempty"`
+	// Criteria - defines the specific alert criteria information.
+	Criteria BasicMetricAlertCriteria `json:"criteria,omitempty"`
+	// AutoMitigate - the flag that indicates whether the alert should be auto resolved or not. The default is true.
+	AutoMitigate *bool `json:"autoMitigate,omitempty"`
+	// Actions - the array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved.
+	Actions *[]MetricAlertAction `json:"actions,omitempty"`
+	// LastUpdatedTime - READ-ONLY; Last time the rule was updated in ISO8601 format.
+	LastUpdatedTime *date.Time `json:"lastUpdatedTime,omitempty"`
+	// IsMigrated - READ-ONLY; the value indicating whether this alert rule is migrated.
+	IsMigrated *bool `json:"isMigrated,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MetricAlertPropertiesPatch.
+func (mapp MetricAlertPropertiesPatch) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if mapp.Description != nil {
+		objectMap["description"] = mapp.Description
+	}
+	if mapp.Severity != nil {
+		objectMap["severity"] = mapp.Severity
+	}
+	if mapp.Enabled != nil {
+		objectMap["enabled"] = mapp.Enabled
+	}
+	if mapp.Scopes != nil {
+		objectMap["scopes"] = mapp.Scopes
+	}
+	if mapp.EvaluationFrequency != nil {
+		objectMap["evaluationFrequency"] = mapp.EvaluationFrequency
+	}
+	if mapp.WindowSize != nil {
+		objectMap["windowSize"] = mapp.WindowSize
+	}
+	if mapp.TargetResourceType != nil {
+		objectMap["targetResourceType"] = mapp.TargetResourceType
+	}
+	if mapp.TargetResourceRegion != nil {
+		objectMap["targetResourceRegion"] = mapp.TargetResourceRegion
+	}
+	objectMap["criteria"] = mapp.Criteria
+	if mapp.AutoMitigate != nil {
+		objectMap["autoMitigate"] = mapp.AutoMitigate
+	}
+	if mapp.Actions != nil {
+		objectMap["actions"] = mapp.Actions
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for MetricAlertPropertiesPatch struct.
+func (mapp *MetricAlertPropertiesPatch) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "description":
+			if v != nil {
+				var description string
+				err = json.Unmarshal(*v, &description)
+				if err != nil {
+					return err
+				}
+				mapp.Description = &description
+			}
+		case "severity":
+			if v != nil {
+				var severity int32
+				err = json.Unmarshal(*v, &severity)
+				if err != nil {
+					return err
+				}
+				mapp.Severity = &severity
+			}
+		case "enabled":
+			if v != nil {
+				var enabled bool
+				err = json.Unmarshal(*v, &enabled)
+				if err != nil {
+					return err
+				}
+				mapp.Enabled = &enabled
+			}
+		case "scopes":
+			if v != nil {
+				var scopes []string
+				err = json.Unmarshal(*v, &scopes)
+				if err != nil {
+					return err
+				}
+				mapp.Scopes = &scopes
+			}
+		case "evaluationFrequency":
+			if v != nil {
+				var evaluationFrequency string
+				err = json.Unmarshal(*v, &evaluationFrequency)
+				if err != nil {
+					return err
+				}
+				mapp.EvaluationFrequency = &evaluationFrequency
+			}
+		case "windowSize":
+			if v != nil {
+				var windowSize string
+				err = json.Unmarshal(*v, &windowSize)
+				if err != nil {
+					return err
+				}
+				mapp.WindowSize = &windowSize
+			}
+		case "targetResourceType":
+			if v != nil {
+				var targetResourceType string
+				err = json.Unmarshal(*v, &targetResourceType)
+				if err != nil {
+					return err
+				}
+				mapp.TargetResourceType = &targetResourceType
+			}
+		case "targetResourceRegion":
+			if v != nil {
+				var targetResourceRegion string
+				err = json.Unmarshal(*v, &targetResourceRegion)
+				if err != nil {
+					return err
+				}
+				mapp.TargetResourceRegion = &targetResourceRegion
+			}
+		case "criteria":
+			if v != nil {
+				criteria, err := unmarshalBasicMetricAlertCriteria(*v)
+				if err != nil {
+					return err
+				}
+				mapp.Criteria = criteria
+			}
+		case "autoMitigate":
+			if v != nil {
+				var autoMitigate bool
+				err = json.Unmarshal(*v, &autoMitigate)
+				if err != nil {
+					return err
+				}
+				mapp.AutoMitigate = &autoMitigate
+			}
+		case "actions":
+			if v != nil {
+				var actions []MetricAlertAction
+				err = json.Unmarshal(*v, &actions)
+				if err != nil {
+					return err
+				}
+				mapp.Actions = &actions
+			}
+		case "lastUpdatedTime":
+			if v != nil {
+				var lastUpdatedTime date.Time
+				err = json.Unmarshal(*v, &lastUpdatedTime)
+				if err != nil {
+					return err
+				}
+				mapp.LastUpdatedTime = &lastUpdatedTime
+			}
+		case "isMigrated":
+			if v != nil {
+				var isMigrated bool
+				err = json.Unmarshal(*v, &isMigrated)
+				if err != nil {
+					return err
+				}
+				mapp.IsMigrated = &isMigrated
+			}
 		}
 	}
 
@@ -3355,6 +3785,10 @@ type MetricAlertResource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// Kind - READ-ONLY; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
+	Kind *string `json:"kind,omitempty"`
+	// Etag - READ-ONLY; The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MetricAlertResource.
@@ -3435,6 +3869,24 @@ func (mar *MetricAlertResource) UnmarshalJSON(body []byte) error {
 				}
 				mar.Tags = tags
 			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				mar.Kind = &kind
+			}
+		case "etag":
+			if v != nil {
+				var etag string
+				err = json.Unmarshal(*v, &etag)
+				if err != nil {
+					return err
+				}
+				mar.Etag = &etag
+			}
 		}
 	}
 
@@ -3452,8 +3904,8 @@ type MetricAlertResourceCollection struct {
 type MetricAlertResourcePatch struct {
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
-	// MetricAlertProperties - The alert rule properties of the resource.
-	*MetricAlertProperties `json:"properties,omitempty"`
+	// MetricAlertPropertiesPatch - The alert rule properties of the resource.
+	*MetricAlertPropertiesPatch `json:"properties,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MetricAlertResourcePatch.
@@ -3462,8 +3914,8 @@ func (marp MetricAlertResourcePatch) MarshalJSON() ([]byte, error) {
 	if marp.Tags != nil {
 		objectMap["tags"] = marp.Tags
 	}
-	if marp.MetricAlertProperties != nil {
-		objectMap["properties"] = marp.MetricAlertProperties
+	if marp.MetricAlertPropertiesPatch != nil {
+		objectMap["properties"] = marp.MetricAlertPropertiesPatch
 	}
 	return json.Marshal(objectMap)
 }
@@ -3488,12 +3940,12 @@ func (marp *MetricAlertResourcePatch) UnmarshalJSON(body []byte) error {
 			}
 		case "properties":
 			if v != nil {
-				var metricAlertProperties MetricAlertProperties
-				err = json.Unmarshal(*v, &metricAlertProperties)
+				var metricAlertPropertiesPatch MetricAlertPropertiesPatch
+				err = json.Unmarshal(*v, &metricAlertPropertiesPatch)
 				if err != nil {
 					return err
 				}
-				marp.MetricAlertProperties = &metricAlertProperties
+				marp.MetricAlertPropertiesPatch = &metricAlertPropertiesPatch
 			}
 		}
 	}
@@ -3665,8 +4117,8 @@ type MetricCriteria struct {
 	MetricName *string `json:"metricName,omitempty"`
 	// MetricNamespace - Namespace of the metric.
 	MetricNamespace *string `json:"metricNamespace,omitempty"`
-	// TimeAggregation - the criteria time aggregation types.
-	TimeAggregation interface{} `json:"timeAggregation,omitempty"`
+	// TimeAggregation - the criteria time aggregation types. Possible values include: 'AggregationTypeEnumAverage', 'AggregationTypeEnumCount', 'AggregationTypeEnumMinimum', 'AggregationTypeEnumMaximum', 'AggregationTypeEnumTotal'
+	TimeAggregation AggregationTypeEnum `json:"timeAggregation,omitempty"`
 	// Dimensions - List of dimension conditions.
 	Dimensions *[]MetricDimension `json:"dimensions,omitempty"`
 	// SkipMetricValidation - Allows creating an alert rule on a custom metric that isn't yet emitted, by causing the metric validation to be skipped.
@@ -3694,7 +4146,7 @@ func (mc MetricCriteria) MarshalJSON() ([]byte, error) {
 	if mc.MetricNamespace != nil {
 		objectMap["metricNamespace"] = mc.MetricNamespace
 	}
-	if mc.TimeAggregation != nil {
+	if mc.TimeAggregation != "" {
 		objectMap["timeAggregation"] = mc.TimeAggregation
 	}
 	if mc.Dimensions != nil {
@@ -3800,7 +4252,7 @@ func (mc *MetricCriteria) UnmarshalJSON(body []byte) error {
 			}
 		case "timeAggregation":
 			if v != nil {
-				var timeAggregation interface{}
+				var timeAggregation AggregationTypeEnum
 				err = json.Unmarshal(*v, &timeAggregation)
 				if err != nil {
 					return err
@@ -3850,8 +4302,14 @@ type MetricDefinition struct {
 	Namespace *string `json:"namespace,omitempty"`
 	// Name - the name and the display name of the metric, i.e. it is a localizable string.
 	Name *LocalizableString `json:"name,omitempty"`
-	// Unit - the unit of the metric. Possible values include: 'UnitCount', 'UnitBytes', 'UnitSeconds', 'UnitCountPerSecond', 'UnitBytesPerSecond', 'UnitPercent', 'UnitMilliSeconds', 'UnitByteSeconds', 'UnitUnspecified', 'UnitCores', 'UnitMilliCores', 'UnitNanoCores', 'UnitBitsPerSecond'
-	Unit Unit `json:"unit,omitempty"`
+	// DisplayDescription - Detailed description of this metric.
+	DisplayDescription *string `json:"displayDescription,omitempty"`
+	// Category - Custom category name for this metric.
+	Category *string `json:"category,omitempty"`
+	// MetricClass - The class of the metric. Possible values include: 'Availability', 'Transactions', 'Errors', 'Latency', 'Saturation'
+	MetricClass MetricClass `json:"metricClass,omitempty"`
+	// Unit - The unit of the metric. Possible values include: 'MetricUnitCount', 'MetricUnitBytes', 'MetricUnitSeconds', 'MetricUnitCountPerSecond', 'MetricUnitBytesPerSecond', 'MetricUnitPercent', 'MetricUnitMilliSeconds', 'MetricUnitByteSeconds', 'MetricUnitUnspecified', 'MetricUnitCores', 'MetricUnitMilliCores', 'MetricUnitNanoCores', 'MetricUnitBitsPerSecond'
+	Unit MetricUnit `json:"unit,omitempty"`
 	// PrimaryAggregationType - the primary aggregation type value defining how to use the values for display. Possible values include: 'None', 'Average', 'Count', 'Minimum', 'Maximum', 'Total'
 	PrimaryAggregationType AggregationType `json:"primaryAggregationType,omitempty"`
 	// SupportedAggregationTypes - the collection of what aggregation types are supported.
@@ -3883,12 +4341,14 @@ type MetricDimension struct {
 
 // MetricNamespace metric namespace class specifies the metadata for a metric namespace.
 type MetricNamespace struct {
-	// ID - The ID of the metricNamespace.
+	// ID - The ID of the metric namespace.
 	ID *string `json:"id,omitempty"`
 	// Type - The type of the namespace.
 	Type *string `json:"type,omitempty"`
-	// Name - The name of the namespace.
+	// Name - The escaped name of the namespace.
 	Name *string `json:"name,omitempty"`
+	// Classification - Kind of namespace. Possible values include: 'Platform', 'Custom', 'Qos'
+	Classification NamespaceClassification `json:"classification,omitempty"`
 	// Properties - Properties which include the fully qualified namespace name.
 	Properties *MetricNamespaceName `json:"properties,omitempty"`
 }
@@ -3940,6 +4400,8 @@ type MetricTrigger struct {
 	Threshold *float64 `json:"threshold,omitempty"`
 	// Dimensions - List of dimension conditions. For example: [{"DimensionName":"AppName","Operator":"Equals","Values":["App1"]},{"DimensionName":"Deployment","Operator":"Equals","Values":["default"]}].
 	Dimensions *[]ScaleRuleMetricDimension `json:"dimensions,omitempty"`
+	// DividePerInstance - a value indicating whether metric should divide per instance.
+	DividePerInstance *bool `json:"dividePerInstance,omitempty"`
 }
 
 // MetricValue represents a metric value.
@@ -3975,8 +4437,8 @@ type MultiMetricCriteria struct {
 	MetricName *string `json:"metricName,omitempty"`
 	// MetricNamespace - Namespace of the metric.
 	MetricNamespace *string `json:"metricNamespace,omitempty"`
-	// TimeAggregation - the criteria time aggregation types.
-	TimeAggregation interface{} `json:"timeAggregation,omitempty"`
+	// TimeAggregation - the criteria time aggregation types. Possible values include: 'AggregationTypeEnumAverage', 'AggregationTypeEnumCount', 'AggregationTypeEnumMinimum', 'AggregationTypeEnumMaximum', 'AggregationTypeEnumTotal'
+	TimeAggregation AggregationTypeEnum `json:"timeAggregation,omitempty"`
 	// Dimensions - List of dimension conditions.
 	Dimensions *[]MetricDimension `json:"dimensions,omitempty"`
 	// SkipMetricValidation - Allows creating an alert rule on a custom metric that isn't yet emitted, by causing the metric validation to be skipped.
@@ -4039,7 +4501,7 @@ func (mmc MultiMetricCriteria) MarshalJSON() ([]byte, error) {
 	if mmc.MetricNamespace != nil {
 		objectMap["metricNamespace"] = mmc.MetricNamespace
 	}
-	if mmc.TimeAggregation != nil {
+	if mmc.TimeAggregation != "" {
 		objectMap["timeAggregation"] = mmc.TimeAggregation
 	}
 	if mmc.Dimensions != nil {
@@ -4127,7 +4589,7 @@ func (mmc *MultiMetricCriteria) UnmarshalJSON(body []byte) error {
 			}
 		case "timeAggregation":
 			if v != nil {
-				var timeAggregation interface{}
+				var timeAggregation AggregationTypeEnum
 				err = json.Unmarshal(*v, &timeAggregation)
 				if err != nil {
 					return err
@@ -4260,6 +4722,10 @@ type Resource struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags
 	Tags map[string]*string `json:"tags"`
+	// Kind - READ-ONLY; Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
+	Kind *string `json:"kind,omitempty"`
+	// Etag - READ-ONLY; The etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal etag convention.  Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+	Etag *string `json:"etag,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Resource.
@@ -4277,15 +4743,15 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 // Response the response to a metrics query.
 type Response struct {
 	autorest.Response `json:"-"`
-	// Cost - The integer value representing the cost of the query, for data case.
+	// Cost - The integer value representing the relative cost of the query.
 	Cost *float64 `json:"cost,omitempty"`
 	// Timespan - The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by '/'.  This may be adjusted in the future and returned back from what was originally requested.
 	Timespan *string `json:"timespan,omitempty"`
 	// Interval - The interval (window size) for which the metric data was returned in.  This may be adjusted in the future and returned back from what was originally requested.  This is not present if a metadata request was made.
 	Interval *string `json:"interval,omitempty"`
-	// Namespace - The namespace of the metrics been queried
+	// Namespace - The namespace of the metrics being queried
 	Namespace *string `json:"namespace,omitempty"`
-	// Resourceregion - The region of the resource been queried for metrics.
+	// Resourceregion - The region of the resource being queried for metrics.
 	Resourceregion *string `json:"resourceregion,omitempty"`
 	// Value - the value of the collection.
 	Value *[]Metric `json:"value,omitempty"`
@@ -4531,6 +4997,12 @@ type BasicRuleDataSource interface {
 type RuleDataSource struct {
 	// ResourceURI - the resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an existing rule.
 	ResourceURI *string `json:"resourceUri,omitempty"`
+	// LegacyResourceID - the legacy resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an existing rule.
+	LegacyResourceID *string `json:"legacyResourceId,omitempty"`
+	// ResourceLocation - the location of the resource.
+	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	// MetricNamespace - the namespace of the metric.
+	MetricNamespace *string `json:"metricNamespace,omitempty"`
 	// OdataType - Possible values include: 'OdataTypeRuleDataSource', 'OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource', 'OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource'
 	OdataType OdataType `json:"odata.type,omitempty"`
 }
@@ -4582,6 +5054,15 @@ func (rds RuleDataSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rds.ResourceURI != nil {
 		objectMap["resourceUri"] = rds.ResourceURI
+	}
+	if rds.LegacyResourceID != nil {
+		objectMap["legacyResourceId"] = rds.LegacyResourceID
+	}
+	if rds.ResourceLocation != nil {
+		objectMap["resourceLocation"] = rds.ResourceLocation
+	}
+	if rds.MetricNamespace != nil {
+		objectMap["metricNamespace"] = rds.MetricNamespace
 	}
 	if rds.OdataType != "" {
 		objectMap["odata.type"] = rds.OdataType
@@ -4685,6 +5166,12 @@ type RuleManagementEventDataSource struct {
 	Claims *RuleManagementEventClaimsDataSource `json:"claims,omitempty"`
 	// ResourceURI - the resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an existing rule.
 	ResourceURI *string `json:"resourceUri,omitempty"`
+	// LegacyResourceID - the legacy resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an existing rule.
+	LegacyResourceID *string `json:"legacyResourceId,omitempty"`
+	// ResourceLocation - the location of the resource.
+	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	// MetricNamespace - the namespace of the metric.
+	MetricNamespace *string `json:"metricNamespace,omitempty"`
 	// OdataType - Possible values include: 'OdataTypeRuleDataSource', 'OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource', 'OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource'
 	OdataType OdataType `json:"odata.type,omitempty"`
 }
@@ -4723,6 +5210,15 @@ func (rmeds RuleManagementEventDataSource) MarshalJSON() ([]byte, error) {
 	if rmeds.ResourceURI != nil {
 		objectMap["resourceUri"] = rmeds.ResourceURI
 	}
+	if rmeds.LegacyResourceID != nil {
+		objectMap["legacyResourceId"] = rmeds.LegacyResourceID
+	}
+	if rmeds.ResourceLocation != nil {
+		objectMap["resourceLocation"] = rmeds.ResourceLocation
+	}
+	if rmeds.MetricNamespace != nil {
+		objectMap["metricNamespace"] = rmeds.MetricNamespace
+	}
 	if rmeds.OdataType != "" {
 		objectMap["odata.type"] = rmeds.OdataType
 	}
@@ -4756,6 +5252,12 @@ type RuleMetricDataSource struct {
 	MetricName *string `json:"metricName,omitempty"`
 	// ResourceURI - the resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an existing rule.
 	ResourceURI *string `json:"resourceUri,omitempty"`
+	// LegacyResourceID - the legacy resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an existing rule.
+	LegacyResourceID *string `json:"legacyResourceId,omitempty"`
+	// ResourceLocation - the location of the resource.
+	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	// MetricNamespace - the namespace of the metric.
+	MetricNamespace *string `json:"metricNamespace,omitempty"`
 	// OdataType - Possible values include: 'OdataTypeRuleDataSource', 'OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource', 'OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource'
 	OdataType OdataType `json:"odata.type,omitempty"`
 }
@@ -4769,6 +5271,15 @@ func (rmds RuleMetricDataSource) MarshalJSON() ([]byte, error) {
 	}
 	if rmds.ResourceURI != nil {
 		objectMap["resourceUri"] = rmds.ResourceURI
+	}
+	if rmds.LegacyResourceID != nil {
+		objectMap["legacyResourceId"] = rmds.LegacyResourceID
+	}
+	if rmds.ResourceLocation != nil {
+		objectMap["resourceLocation"] = rmds.ResourceLocation
+	}
+	if rmds.MetricNamespace != nil {
+		objectMap["metricNamespace"] = rmds.MetricNamespace
 	}
 	if rmds.OdataType != "" {
 		objectMap["odata.type"] = rmds.OdataType
@@ -5104,7 +5615,7 @@ type TimeWindow struct {
 
 // TriggerCondition the condition that results in the Log Search rule.
 type TriggerCondition struct {
-	// ThresholdOperator - Evaluation operation for rule - 'GreaterThan' or 'LessThan. Possible values include: 'ConditionalOperatorGreaterThan', 'ConditionalOperatorLessThan', 'ConditionalOperatorEqual'
+	// ThresholdOperator - Evaluation operation for rule - 'GreaterThan' or 'LessThan. Possible values include: 'ConditionalOperatorGreaterThanOrEqual', 'ConditionalOperatorLessThanOrEqual', 'ConditionalOperatorGreaterThan', 'ConditionalOperatorLessThan', 'ConditionalOperatorEqual'
 	ThresholdOperator ConditionalOperator `json:"thresholdOperator,omitempty"`
 	// Threshold - Result or count threshold based on which rule should be triggered.
 	Threshold *float64 `json:"threshold,omitempty"`

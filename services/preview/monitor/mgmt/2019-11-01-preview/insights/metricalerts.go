@@ -52,9 +52,9 @@ func (client MetricAlertsClient) CreateOrUpdate(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.MetricAlertProperties", Name: validation.Null, Rule: true,
-				Chain: []validation.Constraint{{Target: "parameters.MetricAlertProperties.Description", Name: validation.Null, Rule: true, Chain: nil},
-					{Target: "parameters.MetricAlertProperties.Severity", Name: validation.Null, Rule: true, Chain: nil},
+				Chain: []validation.Constraint{{Target: "parameters.MetricAlertProperties.Severity", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.MetricAlertProperties.Enabled", Name: validation.Null, Rule: true, Chain: nil},
+					{Target: "parameters.MetricAlertProperties.Scopes", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.MetricAlertProperties.EvaluationFrequency", Name: validation.Null, Rule: true, Chain: nil},
 					{Target: "parameters.MetricAlertProperties.WindowSize", Name: validation.Null, Rule: true, Chain: nil},
 				}}}}}); err != nil {

@@ -85,7 +85,7 @@ func (client MetricDefinitionsClient) ListPreparer(ctx context.Context, resource
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/{resourceUri}/providers/microsoft.insights/metricDefinitions", pathParameters),
+		autorest.WithPathParameters("/{resourceUri}/providers/Microsoft.Insights/metricDefinitions", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }

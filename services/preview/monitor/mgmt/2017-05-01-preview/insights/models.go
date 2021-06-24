@@ -447,10 +447,14 @@ type AlertRule struct {
 	Name *string `json:"name,omitempty"`
 	// Description - the description of the alert rule that will be included in the alert email.
 	Description *string `json:"description,omitempty"`
+	// ProvisioningState - the provisioning state.
+	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// IsEnabled - the flag that indicates whether the alert rule is enabled.
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 	// Condition - the condition that results in the alert rule being activated.
 	Condition BasicRuleCondition `json:"condition,omitempty"`
+	// Action - action that is performed when the alert rule becomes active, and when an alert condition is resolved.
+	Action BasicRuleAction `json:"action,omitempty"`
 	// Actions - the array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved.
 	Actions *[]BasicRuleAction `json:"actions,omitempty"`
 	// LastUpdatedTime - READ-ONLY; Last time the rule was updated in ISO8601 format.
@@ -466,10 +470,14 @@ func (ar AlertRule) MarshalJSON() ([]byte, error) {
 	if ar.Description != nil {
 		objectMap["description"] = ar.Description
 	}
+	if ar.ProvisioningState != nil {
+		objectMap["provisioningState"] = ar.ProvisioningState
+	}
 	if ar.IsEnabled != nil {
 		objectMap["isEnabled"] = ar.IsEnabled
 	}
 	objectMap["condition"] = ar.Condition
+	objectMap["action"] = ar.Action
 	if ar.Actions != nil {
 		objectMap["actions"] = ar.Actions
 	}
@@ -503,6 +511,15 @@ func (ar *AlertRule) UnmarshalJSON(body []byte) error {
 				}
 				ar.Description = &description
 			}
+		case "provisioningState":
+			if v != nil {
+				var provisioningState string
+				err = json.Unmarshal(*v, &provisioningState)
+				if err != nil {
+					return err
+				}
+				ar.ProvisioningState = &provisioningState
+			}
 		case "isEnabled":
 			if v != nil {
 				var isEnabled bool
@@ -519,6 +536,14 @@ func (ar *AlertRule) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ar.Condition = condition
+			}
+		case "action":
+			if v != nil {
+				action, err := unmarshalBasicRuleAction(*v)
+				if err != nil {
+					return err
+				}
+				ar.Action = action
 			}
 		case "actions":
 			if v != nil {
@@ -1109,6 +1134,8 @@ type Baseline struct {
 	LowThresholds *[]float64 `json:"lowThresholds,omitempty"`
 	// HighThresholds - The high thresholds of the baseline.
 	HighThresholds *[]float64 `json:"highThresholds,omitempty"`
+	// Timestamps - the array of timestamps of the baselines.
+	Timestamps *[]date.Time `json:"timestamps,omitempty"`
 }
 
 // BaselineMetadataValue represents a baseline metadata value.
@@ -2154,7 +2181,13 @@ type Metric struct {
 	Type *string `json:"type,omitempty"`
 	// Name - the name and the display name of the metric, i.e. it is localizable string.
 	Name *LocalizableString `json:"name,omitempty"`
-	// Unit - the unit of the metric. Possible values include: 'UnitCount', 'UnitBytes', 'UnitSeconds', 'UnitCountPerSecond', 'UnitBytesPerSecond', 'UnitPercent', 'UnitMilliSeconds', 'UnitByteSeconds', 'UnitUnspecified'
+	// DisplayDescription - Detailed description of this metric.
+	DisplayDescription *string `json:"displayDescription,omitempty"`
+	// ErrorCode - 'Success' or the error details on query failures for this metric.
+	ErrorCode *string `json:"errorCode,omitempty"`
+	// ErrorMessage - Error message encountered querying this specific metric.
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+	// Unit - the unit of the metric. Possible values include: 'UnitCount', 'UnitBytes', 'UnitSeconds', 'UnitCountPerSecond', 'UnitBytesPerSecond', 'UnitPercent', 'UnitMilliSeconds', 'UnitByteSeconds', 'UnitUnspecified', 'UnitCores', 'UnitMilliCores', 'UnitNanoCores', 'UnitBitsPerSecond'
 	Unit Unit `json:"unit,omitempty"`
 	// Timeseries - the time series returned when a data query is performed.
 	Timeseries *[]TimeSeriesElement `json:"timeseries,omitempty"`
@@ -2177,7 +2210,11 @@ type MetricDefinition struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 	// Name - the name and the display name of the metric, i.e. it is a localizable string.
 	Name *LocalizableString `json:"name,omitempty"`
-	// Unit - the unit of the metric. Possible values include: 'UnitCount', 'UnitBytes', 'UnitSeconds', 'UnitCountPerSecond', 'UnitBytesPerSecond', 'UnitPercent', 'UnitMilliSeconds', 'UnitByteSeconds', 'UnitUnspecified'
+	// DisplayDescription - Detailed description of this metric.
+	DisplayDescription *string `json:"displayDescription,omitempty"`
+	// Category - Custom category name for this metric.
+	Category *string `json:"category,omitempty"`
+	// Unit - the unit of the metric. Possible values include: 'UnitCount', 'UnitBytes', 'UnitSeconds', 'UnitCountPerSecond', 'UnitBytesPerSecond', 'UnitPercent', 'UnitMilliSeconds', 'UnitByteSeconds', 'UnitUnspecified', 'UnitCores', 'UnitMilliCores', 'UnitNanoCores', 'UnitBitsPerSecond'
 	Unit Unit `json:"unit,omitempty"`
 	// PrimaryAggregationType - the primary aggregation type value defining how to use the values for display. Possible values include: 'None', 'Average', 'Count', 'Minimum', 'Maximum', 'Total'
 	PrimaryAggregationType AggregationType `json:"primaryAggregationType,omitempty"`
@@ -2230,6 +2267,8 @@ type MetricTrigger struct {
 	Threshold *float64 `json:"threshold,omitempty"`
 	// Dimensions - List of dimension conditions. For example: [{"DimensionName":"AppName","Operator":"Equals","Values":["App1"]},{"DimensionName":"Deployment","Operator":"Equals","Values":["default"]}].
 	Dimensions *[]ScaleRuleMetricDimension `json:"dimensions,omitempty"`
+	// DividePerInstance - a value indicating whether metric should divide per instance.
+	DividePerInstance *bool `json:"dividePerInstance,omitempty"`
 }
 
 // MetricValue represents a metric value.
@@ -2342,7 +2381,7 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 // Response the response to a metrics query.
 type Response struct {
 	autorest.Response `json:"-"`
-	// Cost - The integer value representing the cost of the query, for data case.
+	// Cost - The integer value representing the relative cost of the query.
 	Cost *float64 `json:"cost,omitempty"`
 	// Timespan - The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by '/'.  This may be adjusted in the future and returned back from what was originally requested.
 	Timespan *string `json:"timespan,omitempty"`
@@ -2586,6 +2625,12 @@ type BasicRuleDataSource interface {
 type RuleDataSource struct {
 	// ResourceURI - the resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an existing rule.
 	ResourceURI *string `json:"resourceUri,omitempty"`
+	// LegacyResourceID - the legacy resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an existing rule.
+	LegacyResourceID *string `json:"legacyResourceId,omitempty"`
+	// ResourceLocation - the location of the resource.
+	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	// MetricNamespace - the namespace of the metric.
+	MetricNamespace *string `json:"metricNamespace,omitempty"`
 	// OdataType - Possible values include: 'OdataTypeRuleDataSource', 'OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource', 'OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource'
 	OdataType OdataType `json:"odata.type,omitempty"`
 }
@@ -2637,6 +2682,15 @@ func (rds RuleDataSource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rds.ResourceURI != nil {
 		objectMap["resourceUri"] = rds.ResourceURI
+	}
+	if rds.LegacyResourceID != nil {
+		objectMap["legacyResourceId"] = rds.LegacyResourceID
+	}
+	if rds.ResourceLocation != nil {
+		objectMap["resourceLocation"] = rds.ResourceLocation
+	}
+	if rds.MetricNamespace != nil {
+		objectMap["metricNamespace"] = rds.MetricNamespace
 	}
 	if rds.OdataType != "" {
 		objectMap["odata.type"] = rds.OdataType
@@ -2740,6 +2794,12 @@ type RuleManagementEventDataSource struct {
 	Claims *RuleManagementEventClaimsDataSource `json:"claims,omitempty"`
 	// ResourceURI - the resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an existing rule.
 	ResourceURI *string `json:"resourceUri,omitempty"`
+	// LegacyResourceID - the legacy resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an existing rule.
+	LegacyResourceID *string `json:"legacyResourceId,omitempty"`
+	// ResourceLocation - the location of the resource.
+	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	// MetricNamespace - the namespace of the metric.
+	MetricNamespace *string `json:"metricNamespace,omitempty"`
 	// OdataType - Possible values include: 'OdataTypeRuleDataSource', 'OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource', 'OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource'
 	OdataType OdataType `json:"odata.type,omitempty"`
 }
@@ -2778,6 +2838,15 @@ func (rmeds RuleManagementEventDataSource) MarshalJSON() ([]byte, error) {
 	if rmeds.ResourceURI != nil {
 		objectMap["resourceUri"] = rmeds.ResourceURI
 	}
+	if rmeds.LegacyResourceID != nil {
+		objectMap["legacyResourceId"] = rmeds.LegacyResourceID
+	}
+	if rmeds.ResourceLocation != nil {
+		objectMap["resourceLocation"] = rmeds.ResourceLocation
+	}
+	if rmeds.MetricNamespace != nil {
+		objectMap["metricNamespace"] = rmeds.MetricNamespace
+	}
 	if rmeds.OdataType != "" {
 		objectMap["odata.type"] = rmeds.OdataType
 	}
@@ -2811,6 +2880,12 @@ type RuleMetricDataSource struct {
 	MetricName *string `json:"metricName,omitempty"`
 	// ResourceURI - the resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an existing rule.
 	ResourceURI *string `json:"resourceUri,omitempty"`
+	// LegacyResourceID - the legacy resource identifier of the resource the rule monitors. **NOTE**: this property cannot be updated for an existing rule.
+	LegacyResourceID *string `json:"legacyResourceId,omitempty"`
+	// ResourceLocation - the location of the resource.
+	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	// MetricNamespace - the namespace of the metric.
+	MetricNamespace *string `json:"metricNamespace,omitempty"`
 	// OdataType - Possible values include: 'OdataTypeRuleDataSource', 'OdataTypeMicrosoftAzureManagementInsightsModelsRuleMetricDataSource', 'OdataTypeMicrosoftAzureManagementInsightsModelsRuleManagementEventDataSource'
 	OdataType OdataType `json:"odata.type,omitempty"`
 }
@@ -2824,6 +2899,15 @@ func (rmds RuleMetricDataSource) MarshalJSON() ([]byte, error) {
 	}
 	if rmds.ResourceURI != nil {
 		objectMap["resourceUri"] = rmds.ResourceURI
+	}
+	if rmds.LegacyResourceID != nil {
+		objectMap["legacyResourceId"] = rmds.LegacyResourceID
+	}
+	if rmds.ResourceLocation != nil {
+		objectMap["resourceLocation"] = rmds.ResourceLocation
+	}
+	if rmds.MetricNamespace != nil {
+		objectMap["metricNamespace"] = rmds.MetricNamespace
 	}
 	if rmds.OdataType != "" {
 		objectMap["odata.type"] = rmds.OdataType

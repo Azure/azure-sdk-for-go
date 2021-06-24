@@ -4,7 +4,7 @@
 
 The `armprivatedns` module provides operations for working with Azure agfood.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/privatedns/armprivatedns)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/privatedns/armprivatedns)
 
 # Getting started
 

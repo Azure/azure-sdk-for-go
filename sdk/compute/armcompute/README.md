@@ -4,7 +4,7 @@
 
 The `armcompute` module provides operations for working with Azure compute.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/compute/armcompute)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/compute/armcompute)
 
 # Getting started
 

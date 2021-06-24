@@ -12,7 +12,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/security/mgmt/v3.0/security/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/security/mgmt/v3.0/security/CHANGELOG.md) |
 
 ## `v55.2.0`
 

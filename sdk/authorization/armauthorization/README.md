@@ -25,7 +25,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/authorization/armauthorization
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure AgFood.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Authorization.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -48,13 +48,13 @@ For more information on ARM connections, please see the documentation for `armco
 Azure Authorization modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
 
 ```go
-client := armagfood.NewRoleAssignmentsClient(con, "<subscription ID>")
+client := armauthorization.NewRoleAssignmentsClient(con, "<subscription ID>")
 ```
 
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `AgFood` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Authorization` label.
 
 # Contributing
 

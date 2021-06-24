@@ -1,21 +1,15 @@
-# Change History
+# Unreleased
 
 ## Additive Changes
 
-### New Funcs
+### Struct Changes
 
-1. AzureEntityResource.MarshalJSON() ([]byte, error)
-1. CapabilitiesListResult.MarshalJSON() ([]byte, error)
-1. CapabilityProperties.MarshalJSON() ([]byte, error)
-1. DelegatedSubnetUsage.MarshalJSON() ([]byte, error)
-1. ErrorAdditionalInfo.MarshalJSON() ([]byte, error)
-1. ErrorResponse.MarshalJSON() ([]byte, error)
-1. OperationDisplay.MarshalJSON() ([]byte, error)
-1. ProxyResource.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
-1. ServerEditionCapability.MarshalJSON() ([]byte, error)
-1. ServerVersionCapability.MarshalJSON() ([]byte, error)
-1. StorageEditionCapability.MarshalJSON() ([]byte, error)
-1. StorageMBCapability.MarshalJSON() ([]byte, error)
-1. VcoreCapability.MarshalJSON() ([]byte, error)
-1. VirtualNetworkSubnetUsageResult.MarshalJSON() ([]byte, error)
+#### New Structs
+
+1. ServerPropertiesPrivateDNSZoneArguments
+
+#### New Struct Fields
+
+1. ServerProperties.PrivateDNSZoneArguments
+1. ServerProperties.SourceResourceGroupName
+1. ServerProperties.SourceSubscriptionID

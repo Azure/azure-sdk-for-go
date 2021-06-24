@@ -336,6 +336,10 @@ func (qs *QueueSession) ensureReceiver(ctx context.Context) error {
 	}
 
 	qs.receiver = r
+	if qs.sessionID == nil {
+		// propagate the acquired session ID from the receiver
+		qs.sessionID = qs.receiver.sessionID
+	}
 	return nil
 }
 
@@ -474,6 +478,10 @@ func (ss *SubscriptionSession) ensureReceiver(ctx context.Context) error {
 	}
 
 	ss.receiver = r
+	if ss.sessionID == nil {
+		// propagate the acquired session ID from the receiver
+		ss.sessionID = ss.receiver.sessionID
+	}
 	return nil
 }
 

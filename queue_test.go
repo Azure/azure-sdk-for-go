@@ -508,7 +508,6 @@ func testMessageProperties(ctx context.Context, t *testing.T, q *Queue) {
 			HandlerFunc(func(ctx context.Context, msg *Message) error {
 				sp := msg.SystemProperties
 				assert.NotNil(t, sp.LockedUntil, "LockedUntil")
-				assert.NotNil(t, sp.EnqueuedSequenceNumber, "EnqueuedSequenceNumber")
 				assert.NotNil(t, sp.EnqueuedTime, "EnqueuedTime")
 				assert.NotNil(t, sp.SequenceNumber, "SequenceNumber")
 				assert.NotNil(t, sp.PartitionID, "PartitionID")

@@ -24,6 +24,8 @@ package servicebus
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"sync"
 	"time"
 
@@ -32,6 +34,8 @@ import (
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
 )
+
+const sessionFilterName = "com.microsoft:session-filter"
 
 type (
 	// Receiver provides connection, session and link handling for a receiving to an entity path
@@ -408,8 +412,9 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 		opts = append(opts, amqp.LinkSenderSettle(amqp.ModeSettled))
 	}
 
-	if opt, ok := r.getSessionFilterLinkOption(); ok {
-		opts = append(opts, opt)
+	sessionOpt, useSessionOpt := r.getSessionFilterLinkOption()
+	if useSessionOpt {
+		opts = append(opts, sessionOpt)
 	}
 
 	amqpReceiver, err := amqpSession.NewReceiver(opts...)
@@ -417,13 +422,22 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 		tab.For(ctx).Error(err)
 		return err
 	}
-
 	r.receiver = amqpReceiver
+	if useSessionOpt {
+		rawsid := r.receiver.LinkSourceFilterValue(sessionFilterName)
+		if rawsid == nil && r.sessionID == nil {
+			return errors.New("failed to create a receiver.  no unlocked sessions available")
+		} else if rawsid != nil && r.sessionID != nil && rawsid != *r.sessionID {
+			return fmt.Errorf("failed to create a receiver for session %s, it may be locked by another receiver", rawsid)
+		} else if r.sessionID == nil {
+			sid := rawsid.(string)
+			r.sessionID = &sid
+		}
+	}
 	return nil
 }
 
 func (r *Receiver) getSessionFilterLinkOption() (amqp.LinkOption, bool) {
-	const name = "com.microsoft:session-filter"
 	const code = uint64(0x00000137000000C)
 
 	if !r.useSessions {
@@ -431,10 +445,10 @@ func (r *Receiver) getSessionFilterLinkOption() (amqp.LinkOption, bool) {
 	}
 
 	if r.sessionID == nil {
-		return amqp.LinkSourceFilter(name, code, nil), true
+		return amqp.LinkSourceFilter(sessionFilterName, code, nil), true
 	}
 
-	return amqp.LinkSourceFilter(name, code, r.sessionID), true
+	return amqp.LinkSourceFilter(sessionFilterName, code, r.sessionID), true
 }
 
 func messageID(msg *amqp.Message) interface{} {

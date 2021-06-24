@@ -281,6 +281,8 @@ type AccountProperties struct {
 	EnrollmentAccounts *[]EnrollmentAccount `json:"enrollmentAccounts,omitempty"`
 	// HasReadAccess - READ-ONLY; Indicates whether user has read access to the billing account.
 	HasReadAccess *bool `json:"hasReadAccess,omitempty"`
+	// NotificationEmailAddress - Notification email address, only for legacy accounts
+	NotificationEmailAddress *string `json:"notificationEmailAddress,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AccountProperties.
@@ -300,6 +302,9 @@ func (ap AccountProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ap.EnrollmentAccounts != nil {
 		objectMap["enrollmentAccounts"] = ap.EnrollmentAccounts
+	}
+	if ap.NotificationEmailAddress != nil {
+		objectMap["notificationEmailAddress"] = ap.NotificationEmailAddress
 	}
 	return json.Marshal(objectMap)
 }
@@ -390,6 +395,8 @@ func (aur *AccountUpdateRequest) UnmarshalJSON(body []byte) error {
 type AddressDetails struct {
 	// FirstName - First name.
 	FirstName *string `json:"firstName,omitempty"`
+	// MiddleName - Middle name.
+	MiddleName *string `json:"middleName,omitempty"`
 	// LastName - Last name.
 	LastName *string `json:"lastName,omitempty"`
 	// CompanyName - Company name.
@@ -877,6 +884,8 @@ type CustomerListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of customers.
 	Value *[]Customer `json:"value,omitempty"`
+	// TotalCount - READ-ONLY; Total number of records.
+	TotalCount *float64 `json:"totalCount,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -1551,6 +1560,8 @@ type EnrollmentAccountProperties struct {
 	CostCenter *string `json:"costCenter,omitempty"`
 	// AccountOwner - The owner of the enrollment account.
 	AccountOwner *string `json:"accountOwner,omitempty"`
+	// AccountOwnerEmail - The enrollment account owner email address.
+	AccountOwnerEmail *string `json:"accountOwnerEmail,omitempty"`
 	// Status - The status of the enrollment account.
 	Status *string `json:"status,omitempty"`
 	// StartDate - The start date of the enrollment account.
@@ -1652,8 +1663,8 @@ type EnrollmentPolicies struct {
 	AccountOwnerViewCharges *bool `json:"accountOwnerViewCharges,omitempty"`
 	// DepartmentAdminViewCharges - READ-ONLY; The policy that controls whether Department Administrators can view charges.
 	DepartmentAdminViewCharges *bool `json:"departmentAdminViewCharges,omitempty"`
-	// MarketplacesEnabled - READ-ONLY; The policy that controls whether Azure marketplace purchases are allowed in the enrollment.
-	MarketplacesEnabled *bool `json:"marketplacesEnabled,omitempty"`
+	// MarketplaceEnabled - READ-ONLY; The policy that controls whether Azure marketplace purchases are allowed in the enrollment.
+	MarketplaceEnabled *bool `json:"marketplaceEnabled,omitempty"`
 	// ReservedInstancesEnabled - READ-ONLY; The policy that controls whether Azure reservation purchases are allowed in the enrollment.
 	ReservedInstancesEnabled *bool `json:"reservedInstancesEnabled,omitempty"`
 }
@@ -2520,6 +2531,8 @@ type InvoiceSectionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of invoice sections.
 	Value *[]InvoiceSection `json:"value,omitempty"`
+	// TotalCount - READ-ONLY; Total number of records.
+	TotalCount *float64 `json:"totalCount,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -2975,6 +2988,8 @@ func (iswcsp InvoiceSectionWithCreateSubPermission) MarshalJSON() ([]byte, error
 type Operation struct {
 	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
 	Name *string `json:"name,omitempty"`
+	// IsDataAction - READ-ONLY; Identifies if the operation is a data operation.
+	IsDataAction *bool `json:"isDataAction,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
 }
@@ -2996,6 +3011,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 	// Operation - READ-ONLY; Operation type such as read, write and delete.
 	Operation *string `json:"operation,omitempty"`
+	// Description - READ-ONLY; Description of operation.
+	Description *string `json:"description,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for OperationDisplay.
@@ -4312,6 +4329,8 @@ type ProfileProperties struct {
 	SpendingLimit SpendingLimit `json:"spendingLimit,omitempty"`
 	// TargetClouds - READ-ONLY; Identifies the cloud environments that are associated with a billing profile. This is a system managed optional field and gets updated as the billing profile gets associated with accounts in various clouds.
 	TargetClouds *[]TargetCloud `json:"targetClouds,omitempty"`
+	// Tags - Tags of billing profiles.
+	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for ProfileProperties.
@@ -4334,6 +4353,9 @@ func (pp ProfileProperties) MarshalJSON() ([]byte, error) {
 	}
 	if pp.InvoiceSections != nil {
 		objectMap["invoiceSections"] = pp.InvoiceSections
+	}
+	if pp.Tags != nil {
+		objectMap["tags"] = pp.Tags
 	}
 	return json.Marshal(objectMap)
 }
@@ -4545,6 +4567,390 @@ type Reseller struct {
 
 // MarshalJSON is the custom marshaler for Reseller.
 func (r Reseller) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// Reservation the definition of the reservation.
+type Reservation struct {
+	// ID - READ-ONLY; The id of the reservation.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the reservation.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the reservation.
+	Type *string `json:"type,omitempty"`
+	// Location - READ-ONLY; The location of the reservation.
+	Location *string `json:"location,omitempty"`
+	// Sku - The sku information associated to this reservation
+	Sku *ReservationSkuProperty `json:"sku,omitempty"`
+	// ReservationProperty - The properties associated to this reservation
+	*ReservationProperty `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Reservation.
+func (r Reservation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if r.Sku != nil {
+		objectMap["sku"] = r.Sku
+	}
+	if r.ReservationProperty != nil {
+		objectMap["properties"] = r.ReservationProperty
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Reservation struct.
+func (r *Reservation) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				r.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				r.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				r.Type = &typeVar
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				r.Location = &location
+			}
+		case "sku":
+			if v != nil {
+				var sku ReservationSkuProperty
+				err = json.Unmarshal(*v, &sku)
+				if err != nil {
+					return err
+				}
+				r.Sku = &sku
+			}
+		case "properties":
+			if v != nil {
+				var reservationProperty ReservationProperty
+				err = json.Unmarshal(*v, &reservationProperty)
+				if err != nil {
+					return err
+				}
+				r.ReservationProperty = &reservationProperty
+			}
+		}
+	}
+
+	return nil
+}
+
+// ReservationProperty the property of reservation object.
+type ReservationProperty struct {
+	// AppliedScopes - The array of applied scopes of a reservation. Will be null if the reservation is in Shared scope
+	AppliedScopes *[]string `json:"appliedScopes,omitempty"`
+	// AppliedScopeType - READ-ONLY; The applied scope type of the reservation.
+	AppliedScopeType *string `json:"appliedScopeType,omitempty"`
+	// ReservedResourceType - READ-ONLY; The reserved source type of the reservation, e.g. virtual machine.
+	ReservedResourceType *string `json:"reservedResourceType,omitempty"`
+	// Quantity - READ-ONLY; The number of the reservation.
+	Quantity *float64 `json:"quantity,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state of the reservation, e.g. Succeeded
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// ExpiryDate - READ-ONLY; The expiry date of the reservation
+	ExpiryDate *string `json:"expiryDate,omitempty"`
+	// ProvisioningSubState - READ-ONLY; The provisioning state of the reservation, e.g. Succeeded
+	ProvisioningSubState *string `json:"provisioningSubState,omitempty"`
+	// DisplayName - READ-ONLY; The display name of the reservation
+	DisplayName *string `json:"displayName,omitempty"`
+	// DisplayProvisioningState - READ-ONLY; The provisioning state of the reservation for display, e.g. Succeeded
+	DisplayProvisioningState *string `json:"displayProvisioningState,omitempty"`
+	// UserFriendlyRenewState - READ-ONLY; The renew state of the reservation for display, e.g. On
+	UserFriendlyRenewState *string `json:"userFriendlyRenewState,omitempty"`
+	// UserFriendlyAppliedScopeType - READ-ONLY; The applied scope type of the reservation for display, e.g. Shared
+	UserFriendlyAppliedScopeType *string `json:"userFriendlyAppliedScopeType,omitempty"`
+	// EffectiveDateTime - READ-ONLY; The effective date time of the reservation
+	EffectiveDateTime *string `json:"effectiveDateTime,omitempty"`
+	// SkuDescription - READ-ONLY; The sku description of the reservation
+	SkuDescription *string `json:"skuDescription,omitempty"`
+	// Term - READ-ONLY; The term of the reservation, e.g. P1Y
+	Term *string `json:"term,omitempty"`
+	// Renew - READ-ONLY; The renew state of the reservation
+	Renew *bool `json:"renew,omitempty"`
+	// RenewSource - READ-ONLY; The renew source of the reservation
+	RenewSource *string `json:"renewSource,omitempty"`
+	// Utilization - READ-ONLY; Reservation utilization
+	Utilization *ReservationPropertyUtilization `json:"utilization,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReservationProperty.
+func (rp ReservationProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rp.AppliedScopes != nil {
+		objectMap["appliedScopes"] = rp.AppliedScopes
+	}
+	return json.Marshal(objectMap)
+}
+
+// ReservationPropertyUtilization reservation utilization
+type ReservationPropertyUtilization struct {
+	// Trend - READ-ONLY; The number of days trend for a reservation
+	Trend *string `json:"trend,omitempty"`
+	// Aggregates - The array of aggregates of a reservation's utilization
+	Aggregates *[]ReservationUtilizationAggregates `json:"aggregates,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReservationPropertyUtilization.
+func (rp ReservationPropertyUtilization) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rp.Aggregates != nil {
+		objectMap["aggregates"] = rp.Aggregates
+	}
+	return json.Marshal(objectMap)
+}
+
+// ReservationSkuProperty the property of reservation sku object.
+type ReservationSkuProperty struct {
+	// Name - READ-ONLY; The name of the reservation sku.
+	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReservationSkuProperty.
+func (rsp ReservationSkuProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ReservationsListResult the list of reservations and summary of roll out count of reservations in each
+// state.
+type ReservationsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The list of reservations.
+	Value *[]Reservation `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+	// Summary - The roll out count summary of the reservations
+	Summary *ReservationSummary `json:"summary,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReservationsListResult.
+func (rlr ReservationsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rlr.Summary != nil {
+		objectMap["summary"] = rlr.Summary
+	}
+	return json.Marshal(objectMap)
+}
+
+// ReservationsListResultIterator provides access to a complete listing of Reservation values.
+type ReservationsListResultIterator struct {
+	i    int
+	page ReservationsListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ReservationsListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReservationsListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ReservationsListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ReservationsListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ReservationsListResultIterator) Response() ReservationsListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ReservationsListResultIterator) Value() Reservation {
+	if !iter.page.NotDone() {
+		return Reservation{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ReservationsListResultIterator type.
+func NewReservationsListResultIterator(page ReservationsListResultPage) ReservationsListResultIterator {
+	return ReservationsListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (rlr ReservationsListResult) IsEmpty() bool {
+	return rlr.Value == nil || len(*rlr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (rlr ReservationsListResult) hasNextLink() bool {
+	return rlr.NextLink != nil && len(*rlr.NextLink) != 0
+}
+
+// reservationsListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (rlr ReservationsListResult) reservationsListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !rlr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(rlr.NextLink)))
+}
+
+// ReservationsListResultPage contains a page of Reservation values.
+type ReservationsListResultPage struct {
+	fn  func(context.Context, ReservationsListResult) (ReservationsListResult, error)
+	rlr ReservationsListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ReservationsListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ReservationsListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.rlr)
+		if err != nil {
+			return err
+		}
+		page.rlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ReservationsListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ReservationsListResultPage) NotDone() bool {
+	return !page.rlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ReservationsListResultPage) Response() ReservationsListResult {
+	return page.rlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ReservationsListResultPage) Values() []Reservation {
+	if page.rlr.IsEmpty() {
+		return nil
+	}
+	return *page.rlr.Value
+}
+
+// Creates a new instance of the ReservationsListResultPage type.
+func NewReservationsListResultPage(cur ReservationsListResult, getNextPage func(context.Context, ReservationsListResult) (ReservationsListResult, error)) ReservationsListResultPage {
+	return ReservationsListResultPage{
+		fn:  getNextPage,
+		rlr: cur,
+	}
+}
+
+// ReservationSummary the roll up count summary of reservations in each state
+type ReservationSummary struct {
+	// SucceededCount - READ-ONLY; The number of reservation in Succeeded state
+	SucceededCount *float64 `json:"succeededCount,omitempty"`
+	// FailedCount - READ-ONLY; The number of reservation in Failed state
+	FailedCount *float64 `json:"failedCount,omitempty"`
+	// ExpiringCount - READ-ONLY; The number of reservation in Expiring state
+	ExpiringCount *float64 `json:"expiringCount,omitempty"`
+	// ExpiredCount - READ-ONLY; The number of reservation in Expired state
+	ExpiredCount *float64 `json:"expiredCount,omitempty"`
+	// PendingCount - READ-ONLY; The number of reservation in Pending state
+	PendingCount *float64 `json:"pendingCount,omitempty"`
+	// CancelledCount - READ-ONLY; The number of reservation in Cancelled state
+	CancelledCount *float64 `json:"cancelledCount,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReservationSummary.
+func (rs ReservationSummary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ReservationUtilizationAggregates the aggregate values of reservation utilization
+type ReservationUtilizationAggregates struct {
+	// Grain - READ-ONLY; The grain of the aggregate
+	Grain *float64 `json:"grain,omitempty"`
+	// GrainUnit - READ-ONLY; The grain unit of the aggregate
+	GrainUnit *string `json:"grainUnit,omitempty"`
+	// Value - READ-ONLY; The aggregate value
+	Value *float64 `json:"value,omitempty"`
+	// ValueUnit - READ-ONLY; The aggregate value unit
+	ValueUnit *string `json:"valueUnit,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ReservationUtilizationAggregates.
+func (rua ReservationUtilizationAggregates) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
@@ -5231,6 +5637,8 @@ type SubscriptionsListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of billing subscriptions.
 	Value *[]Subscription `json:"value,omitempty"`
+	// TotalCount - READ-ONLY; Total number of records.
+	TotalCount *float64 `json:"totalCount,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -5510,6 +5918,8 @@ type TransactionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of transactions.
 	Value *[]Transaction `json:"value,omitempty"`
+	// TotalCount - READ-ONLY; Total number of records.
+	TotalCount *float64 `json:"totalCount,omitempty"`
 	// NextLink - READ-ONLY; The link (url) to the next page of results.
 	NextLink *string `json:"nextLink,omitempty"`
 }
@@ -5672,7 +6082,7 @@ func NewTransactionListResultPage(cur TransactionListResult, getNextPage func(co
 
 // TransactionProperties the properties of a transaction.
 type TransactionProperties struct {
-	// Kind - The kind of transaction. Options are all or reservation. Possible values include: 'All', 'Reservation'
+	// Kind - The kind of transaction. Options are all or reservation. Possible values include: 'TransactionTypeKindAll', 'TransactionTypeKindReservation'
 	Kind TransactionTypeKind `json:"kind,omitempty"`
 	// Date - READ-ONLY; The date of transaction.
 	Date *date.Time `json:"date,omitempty"`
@@ -5811,7 +6221,7 @@ func (vpter ValidateProductTransferEligibilityResult) MarshalJSON() ([]byte, err
 
 // ValidateSubscriptionTransferEligibilityError error details of the transfer eligibility validation
 type ValidateSubscriptionTransferEligibilityError struct {
-	// Code - Error code for the product transfer validation. Possible values include: 'SubscriptionTransferValidationErrorCodeInvalidSource', 'SubscriptionTransferValidationErrorCodeSubscriptionNotActive', 'SubscriptionTransferValidationErrorCodeInsufficientPermissionOnSource', 'SubscriptionTransferValidationErrorCodeInsufficientPermissionOnDestination', 'SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue', 'SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported', 'SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed', 'SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket'
+	// Code - Error code for the product transfer validation. Possible values include: 'SubscriptionTransferValidationErrorCodeBillingAccountInactive', 'SubscriptionTransferValidationErrorCodeCrossBillingAccountNotAllowed', 'SubscriptionTransferValidationErrorCodeDestinationBillingProfileInactive', 'SubscriptionTransferValidationErrorCodeDestinationBillingProfileNotFound', 'SubscriptionTransferValidationErrorCodeDestinationBillingProfilePastDue', 'SubscriptionTransferValidationErrorCodeDestinationInvoiceSectionInactive', 'SubscriptionTransferValidationErrorCodeDestinationInvoiceSectionNotFound', 'SubscriptionTransferValidationErrorCodeInsufficientPermissionOnDestination', 'SubscriptionTransferValidationErrorCodeInsufficientPermissionOnSource', 'SubscriptionTransferValidationErrorCodeInvalidDestination', 'SubscriptionTransferValidationErrorCodeInvalidSource', 'SubscriptionTransferValidationErrorCodeMarketplaceNotEnabledOnDestination', 'SubscriptionTransferValidationErrorCodeNotAvailableForDestinationMarket', 'SubscriptionTransferValidationErrorCodeProductInactive', 'SubscriptionTransferValidationErrorCodeProductNotFound', 'SubscriptionTransferValidationErrorCodeProductTypeNotSupported', 'SubscriptionTransferValidationErrorCodeSourceBillingProfilePastDue', 'SubscriptionTransferValidationErrorCodeSourceInvoiceSectionInactive', 'SubscriptionTransferValidationErrorCodeSubscriptionNotActive', 'SubscriptionTransferValidationErrorCodeSubscriptionTypeNotSupported'
 	Code SubscriptionTransferValidationErrorCode `json:"code,omitempty"`
 	// Message - The error message.
 	Message *string `json:"message,omitempty"`

@@ -307,6 +307,20 @@ type VariableClientAPI interface {
 
 var _ VariableClientAPI = (*automation.VariableClient)(nil)
 
+// WatcherClientAPI contains the set of methods on the WatcherClient type.
+type WatcherClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string, parameters automation.Watcher) (result automation.Watcher, err error)
+	Delete(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string) (result automation.Watcher, err error)
+	ListByAutomationAccount(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.WatcherListResultPage, err error)
+	ListByAutomationAccountComplete(ctx context.Context, resourceGroupName string, automationAccountName string, filter string) (result automation.WatcherListResultIterator, err error)
+	Start(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string) (result autorest.Response, err error)
+	Stop(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string) (result autorest.Response, err error)
+	Update(ctx context.Context, resourceGroupName string, automationAccountName string, watcherName string, parameters automation.WatcherUpdateParameters) (result automation.Watcher, err error)
+}
+
+var _ WatcherClientAPI = (*automation.WatcherClient)(nil)
+
 // WebhookClientAPI contains the set of methods on the WebhookClient type.
 type WebhookClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, webhookName string, parameters automation.WebhookCreateOrUpdateParameters) (result automation.Webhook, err error)

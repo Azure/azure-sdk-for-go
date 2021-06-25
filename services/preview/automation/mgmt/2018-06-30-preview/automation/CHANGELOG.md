@@ -1,13 +1,18 @@
-# Change History
+# Unreleased
 
 ## Additive Changes
 
 ### New Funcs
 
-1. JobNavigation.MarshalJSON() ([]byte, error)
-1. Key.MarshalJSON() ([]byte, error)
-1. LinkedWorkspace.MarshalJSON() ([]byte, error)
-1. ProxyResource.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
-1. Statistics.MarshalJSON() ([]byte, error)
-1. UpdateConfigurationNavigation.MarshalJSON() ([]byte, error)
+1. *PrivateEndpointConnection.UnmarshalJSON([]byte) error
+1. PrivateEndpointConnection.MarshalJSON() ([]byte, error)
+1. PrivateLinkServiceConnectionStateProperty.MarshalJSON() ([]byte, error)
+
+### Struct Changes
+
+#### New Structs
+
+1. PrivateEndpointConnection
+1. PrivateEndpointConnectionProperties
+1. PrivateEndpointProperty
+1. PrivateLinkServiceConnectionStateProperty

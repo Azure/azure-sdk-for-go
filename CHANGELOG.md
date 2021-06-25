@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## `v55.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-06-15/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers`
+- `github.com/Azure/azure-sdk-for-go/services/preview/azurestackhci/mgmt/2021-01-01-preview/azurestackhci`
+- `github.com/Azure/azure-sdk-for-go/services/preview/hybridkubernetes/mgmt/2021-04-01-preview/hybridkubernetes`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-04-01-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v5.0/sql`
+
 ## `v55.3.0`
 
 ### New Packages

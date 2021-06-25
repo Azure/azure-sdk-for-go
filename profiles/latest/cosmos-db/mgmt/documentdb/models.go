@@ -11,11 +11,22 @@ package documentdb
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-05-15/documentdb"
+	original "github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-06-15/documentdb"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type APIType = original.APIType
+
+const (
+	APITypeCassandra APIType = original.APITypeCassandra
+	APITypeGremlin   APIType = original.APITypeGremlin
+	APITypeGremlinV2 APIType = original.APITypeGremlinV2
+	APITypeMongoDB   APIType = original.APITypeMongoDB
+	APITypeSQL       APIType = original.APITypeSQL
+	APITypeTable     APIType = original.APITypeTable
 )
 
 type AnalyticalStorageSchemaType = original.AnalyticalStorageSchemaType
@@ -23,6 +34,15 @@ type AnalyticalStorageSchemaType = original.AnalyticalStorageSchemaType
 const (
 	AnalyticalStorageSchemaTypeFullFidelity AnalyticalStorageSchemaType = original.AnalyticalStorageSchemaTypeFullFidelity
 	AnalyticalStorageSchemaTypeWellDefined  AnalyticalStorageSchemaType = original.AnalyticalStorageSchemaTypeWellDefined
+)
+
+type BackupPolicyMigrationStatus = original.BackupPolicyMigrationStatus
+
+const (
+	BackupPolicyMigrationStatusCompleted  BackupPolicyMigrationStatus = original.BackupPolicyMigrationStatusCompleted
+	BackupPolicyMigrationStatusFailed     BackupPolicyMigrationStatus = original.BackupPolicyMigrationStatusFailed
+	BackupPolicyMigrationStatusInProgress BackupPolicyMigrationStatus = original.BackupPolicyMigrationStatusInProgress
+	BackupPolicyMigrationStatusInvalid    BackupPolicyMigrationStatus = original.BackupPolicyMigrationStatusInvalid
 )
 
 type BackupPolicyType = original.BackupPolicyType
@@ -50,6 +70,22 @@ type ConnectorOffer = original.ConnectorOffer
 
 const (
 	ConnectorOfferSmall ConnectorOffer = original.ConnectorOfferSmall
+)
+
+type CreateMode = original.CreateMode
+
+const (
+	CreateModeDefault CreateMode = original.CreateModeDefault
+	CreateModeRestore CreateMode = original.CreateModeRestore
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type DataType = original.DataType
@@ -119,6 +155,15 @@ const (
 	NetworkACLBypassNone          NetworkACLBypass = original.NetworkACLBypassNone
 )
 
+type OperationType = original.OperationType
+
+const (
+	OperationTypeCreate          OperationType = original.OperationTypeCreate
+	OperationTypeDelete          OperationType = original.OperationTypeDelete
+	OperationTypeReplace         OperationType = original.OperationTypeReplace
+	OperationTypeSystemOperation OperationType = original.OperationTypeSystemOperation
+)
+
 type PartitionKind = original.PartitionKind
 
 const (
@@ -152,6 +197,12 @@ const (
 	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
 	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
 	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
+)
+
+type RestoreMode = original.RestoreMode
+
+const (
+	RestoreModePointInTime RestoreMode = original.RestoreModePointInTime
 )
 
 type RoleDefinitionType = original.RoleDefinitionType
@@ -223,7 +274,9 @@ type AutoUpgradePolicyResource = original.AutoUpgradePolicyResource
 type AutoscaleSettings = original.AutoscaleSettings
 type AutoscaleSettingsResource = original.AutoscaleSettingsResource
 type AzureEntityResource = original.AzureEntityResource
+type BackupInformation = original.BackupInformation
 type BackupPolicy = original.BackupPolicy
+type BackupPolicyMigrationState = original.BackupPolicyMigrationState
 type BaseClient = original.BaseClient
 type BasicBackupPolicy = original.BasicBackupPolicy
 type Capability = original.Capability
@@ -267,6 +320,8 @@ type CompositePath = original.CompositePath
 type ConflictResolutionPolicy = original.ConflictResolutionPolicy
 type ConsistencyPolicy = original.ConsistencyPolicy
 type ContainerPartitionKey = original.ContainerPartitionKey
+type ContinuousBackupInformation = original.ContinuousBackupInformation
+type ContinuousBackupRestoreLocation = original.ContinuousBackupRestoreLocation
 type ContinuousModeBackupPolicy = original.ContinuousModeBackupPolicy
 type CorsPolicy = original.CorsPolicy
 type CreateUpdateOptions = original.CreateUpdateOptions
@@ -292,6 +347,7 @@ type DatabaseAccountsOnlineRegionFuture = original.DatabaseAccountsOnlineRegionF
 type DatabaseAccountsRegenerateKeyFuture = original.DatabaseAccountsRegenerateKeyFuture
 type DatabaseAccountsUpdateFuture = original.DatabaseAccountsUpdateFuture
 type DatabaseClient = original.DatabaseClient
+type DatabaseRestoreResource = original.DatabaseRestoreResource
 type ErrorResponse = original.ErrorResponse
 type ExcludedPath = original.ExcludedPath
 type ExtendedResourceProperties = original.ExtendedResourceProperties
@@ -415,6 +471,38 @@ type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConn
 type ProxyResource = original.ProxyResource
 type RegionForOnlineOffline = original.RegionForOnlineOffline
 type Resource = original.Resource
+type RestorableDatabaseAccountGetResult = original.RestorableDatabaseAccountGetResult
+type RestorableDatabaseAccountProperties = original.RestorableDatabaseAccountProperties
+type RestorableDatabaseAccountsClient = original.RestorableDatabaseAccountsClient
+type RestorableDatabaseAccountsListResult = original.RestorableDatabaseAccountsListResult
+type RestorableLocationResource = original.RestorableLocationResource
+type RestorableMongodbCollectionGetResult = original.RestorableMongodbCollectionGetResult
+type RestorableMongodbCollectionProperties = original.RestorableMongodbCollectionProperties
+type RestorableMongodbCollectionPropertiesResource = original.RestorableMongodbCollectionPropertiesResource
+type RestorableMongodbCollectionsClient = original.RestorableMongodbCollectionsClient
+type RestorableMongodbCollectionsListResult = original.RestorableMongodbCollectionsListResult
+type RestorableMongodbDatabaseGetResult = original.RestorableMongodbDatabaseGetResult
+type RestorableMongodbDatabaseProperties = original.RestorableMongodbDatabaseProperties
+type RestorableMongodbDatabasePropertiesResource = original.RestorableMongodbDatabasePropertiesResource
+type RestorableMongodbDatabasesClient = original.RestorableMongodbDatabasesClient
+type RestorableMongodbDatabasesListResult = original.RestorableMongodbDatabasesListResult
+type RestorableMongodbResourcesClient = original.RestorableMongodbResourcesClient
+type RestorableMongodbResourcesListResult = original.RestorableMongodbResourcesListResult
+type RestorableSQLContainerGetResult = original.RestorableSQLContainerGetResult
+type RestorableSQLContainerProperties = original.RestorableSQLContainerProperties
+type RestorableSQLContainerPropertiesResource = original.RestorableSQLContainerPropertiesResource
+type RestorableSQLContainerPropertiesResourceContainer = original.RestorableSQLContainerPropertiesResourceContainer
+type RestorableSQLContainersClient = original.RestorableSQLContainersClient
+type RestorableSQLContainersListResult = original.RestorableSQLContainersListResult
+type RestorableSQLDatabaseGetResult = original.RestorableSQLDatabaseGetResult
+type RestorableSQLDatabaseProperties = original.RestorableSQLDatabaseProperties
+type RestorableSQLDatabasePropertiesResource = original.RestorableSQLDatabasePropertiesResource
+type RestorableSQLDatabasePropertiesResourceDatabase = original.RestorableSQLDatabasePropertiesResourceDatabase
+type RestorableSQLDatabasesClient = original.RestorableSQLDatabasesClient
+type RestorableSQLDatabasesListResult = original.RestorableSQLDatabasesListResult
+type RestorableSQLResourcesClient = original.RestorableSQLResourcesClient
+type RestorableSQLResourcesListResult = original.RestorableSQLResourcesListResult
+type RestoreParameters = original.RestoreParameters
 type SQLContainerCreateUpdateParameters = original.SQLContainerCreateUpdateParameters
 type SQLContainerCreateUpdateProperties = original.SQLContainerCreateUpdateProperties
 type SQLContainerGetProperties = original.SQLContainerGetProperties
@@ -450,6 +538,7 @@ type SQLResourcesMigrateSQLContainerToAutoscaleFuture = original.SQLResourcesMig
 type SQLResourcesMigrateSQLContainerToManualThroughputFuture = original.SQLResourcesMigrateSQLContainerToManualThroughputFuture
 type SQLResourcesMigrateSQLDatabaseToAutoscaleFuture = original.SQLResourcesMigrateSQLDatabaseToAutoscaleFuture
 type SQLResourcesMigrateSQLDatabaseToManualThroughputFuture = original.SQLResourcesMigrateSQLDatabaseToManualThroughputFuture
+type SQLResourcesRetrieveContinuousBackupInformationFuture = original.SQLResourcesRetrieveContinuousBackupInformationFuture
 type SQLResourcesUpdateSQLContainerThroughputFuture = original.SQLResourcesUpdateSQLContainerThroughputFuture
 type SQLResourcesUpdateSQLDatabaseThroughputFuture = original.SQLResourcesUpdateSQLDatabaseThroughputFuture
 type SQLRoleAssignmentCreateUpdateParameters = original.SQLRoleAssignmentCreateUpdateParameters
@@ -482,6 +571,7 @@ type SQLUserDefinedFunctionGetResults = original.SQLUserDefinedFunctionGetResult
 type SQLUserDefinedFunctionListResult = original.SQLUserDefinedFunctionListResult
 type SQLUserDefinedFunctionResource = original.SQLUserDefinedFunctionResource
 type SpatialSpec = original.SpatialSpec
+type SystemData = original.SystemData
 type TableCreateUpdateParameters = original.TableCreateUpdateParameters
 type TableCreateUpdateProperties = original.TableCreateUpdateProperties
 type TableGetProperties = original.TableGetProperties
@@ -633,6 +723,48 @@ func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesCl
 func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
 	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewRestorableDatabaseAccountsClient(subscriptionID string) RestorableDatabaseAccountsClient {
+	return original.NewRestorableDatabaseAccountsClient(subscriptionID)
+}
+func NewRestorableDatabaseAccountsClientWithBaseURI(baseURI string, subscriptionID string) RestorableDatabaseAccountsClient {
+	return original.NewRestorableDatabaseAccountsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRestorableMongodbCollectionsClient(subscriptionID string) RestorableMongodbCollectionsClient {
+	return original.NewRestorableMongodbCollectionsClient(subscriptionID)
+}
+func NewRestorableMongodbCollectionsClientWithBaseURI(baseURI string, subscriptionID string) RestorableMongodbCollectionsClient {
+	return original.NewRestorableMongodbCollectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRestorableMongodbDatabasesClient(subscriptionID string) RestorableMongodbDatabasesClient {
+	return original.NewRestorableMongodbDatabasesClient(subscriptionID)
+}
+func NewRestorableMongodbDatabasesClientWithBaseURI(baseURI string, subscriptionID string) RestorableMongodbDatabasesClient {
+	return original.NewRestorableMongodbDatabasesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRestorableMongodbResourcesClient(subscriptionID string) RestorableMongodbResourcesClient {
+	return original.NewRestorableMongodbResourcesClient(subscriptionID)
+}
+func NewRestorableMongodbResourcesClientWithBaseURI(baseURI string, subscriptionID string) RestorableMongodbResourcesClient {
+	return original.NewRestorableMongodbResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRestorableSQLContainersClient(subscriptionID string) RestorableSQLContainersClient {
+	return original.NewRestorableSQLContainersClient(subscriptionID)
+}
+func NewRestorableSQLContainersClientWithBaseURI(baseURI string, subscriptionID string) RestorableSQLContainersClient {
+	return original.NewRestorableSQLContainersClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRestorableSQLDatabasesClient(subscriptionID string) RestorableSQLDatabasesClient {
+	return original.NewRestorableSQLDatabasesClient(subscriptionID)
+}
+func NewRestorableSQLDatabasesClientWithBaseURI(baseURI string, subscriptionID string) RestorableSQLDatabasesClient {
+	return original.NewRestorableSQLDatabasesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRestorableSQLResourcesClient(subscriptionID string) RestorableSQLResourcesClient {
+	return original.NewRestorableSQLResourcesClient(subscriptionID)
+}
+func NewRestorableSQLResourcesClientWithBaseURI(baseURI string, subscriptionID string) RestorableSQLResourcesClient {
+	return original.NewRestorableSQLResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewSQLResourcesClient(subscriptionID string) SQLResourcesClient {
 	return original.NewSQLResourcesClient(subscriptionID)
 }
@@ -648,8 +780,14 @@ func NewTableResourcesClientWithBaseURI(baseURI string, subscriptionID string) T
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleAPITypeValues() []APIType {
+	return original.PossibleAPITypeValues()
+}
 func PossibleAnalyticalStorageSchemaTypeValues() []AnalyticalStorageSchemaType {
 	return original.PossibleAnalyticalStorageSchemaTypeValues()
+}
+func PossibleBackupPolicyMigrationStatusValues() []BackupPolicyMigrationStatus {
+	return original.PossibleBackupPolicyMigrationStatusValues()
 }
 func PossibleBackupPolicyTypeValues() []BackupPolicyType {
 	return original.PossibleBackupPolicyTypeValues()
@@ -662,6 +800,12 @@ func PossibleConflictResolutionModeValues() []ConflictResolutionMode {
 }
 func PossibleConnectorOfferValues() []ConnectorOffer {
 	return original.PossibleConnectorOfferValues()
+}
+func PossibleCreateModeValues() []CreateMode {
+	return original.PossibleCreateModeValues()
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
 }
 func PossibleDataTypeValues() []DataType {
 	return original.PossibleDataTypeValues()
@@ -687,6 +831,9 @@ func PossibleKeyKindValues() []KeyKind {
 func PossibleNetworkACLBypassValues() []NetworkACLBypass {
 	return original.PossibleNetworkACLBypassValues()
 }
+func PossibleOperationTypeValues() []OperationType {
+	return original.PossibleOperationTypeValues()
+}
 func PossiblePartitionKindValues() []PartitionKind {
 	return original.PossiblePartitionKindValues()
 }
@@ -698,6 +845,9 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 }
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleRestoreModeValues() []RestoreMode {
+	return original.PossibleRestoreModeValues()
 }
 func PossibleRoleDefinitionTypeValues() []RoleDefinitionType {
 	return original.PossibleRoleDefinitionTypeValues()

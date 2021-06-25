@@ -55,16 +55,15 @@ func (client CassandraDataCentersClient) CreateUpdate(ctx context.Context, resou
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: clusterName,
 			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "clusterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}},
+				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: dataCenterName,
 			Constraints: []validation.Constraint{{Target: "dataCenterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "dataCenterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}}}); err != nil {
+				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("documentdb.CassandraDataCentersClient", "CreateUpdate", err.Error())
 	}
 
@@ -155,16 +154,15 @@ func (client CassandraDataCentersClient) Delete(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: clusterName,
 			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "clusterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}},
+				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: dataCenterName,
 			Constraints: []validation.Constraint{{Target: "dataCenterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "dataCenterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}}}); err != nil {
+				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("documentdb.CassandraDataCentersClient", "Delete", err.Error())
 	}
 
@@ -252,16 +250,15 @@ func (client CassandraDataCentersClient) Get(ctx context.Context, resourceGroupN
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: clusterName,
 			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "clusterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}},
+				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: dataCenterName,
 			Constraints: []validation.Constraint{{Target: "dataCenterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "dataCenterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}}}); err != nil {
+				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("documentdb.CassandraDataCentersClient", "Get", err.Error())
 	}
 
@@ -347,12 +344,11 @@ func (client CassandraDataCentersClient) List(ctx context.Context, resourceGroup
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: clusterName,
 			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "clusterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}}}); err != nil {
+				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("documentdb.CassandraDataCentersClient", "List", err.Error())
 	}
 
@@ -439,16 +435,15 @@ func (client CassandraDataCentersClient) Update(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: clusterName,
 			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "clusterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}},
+				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: dataCenterName,
 			Constraints: []validation.Constraint{{Target: "dataCenterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "dataCenterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}}}); err != nil {
+				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("documentdb.CassandraDataCentersClient", "Update", err.Error())
 	}
 

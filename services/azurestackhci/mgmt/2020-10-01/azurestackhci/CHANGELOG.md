@@ -1,13 +1,24 @@
-# Change History
+# Unreleased
 
 ## Additive Changes
 
+### New Constants
+
+1. CreatedByType.Application
+1. CreatedByType.Key
+1. CreatedByType.ManagedIdentity
+1. CreatedByType.User
+
 ### New Funcs
 
-1. AzureEntityResource.MarshalJSON() ([]byte, error)
-1. ClusterNode.MarshalJSON() ([]byte, error)
-1. ClusterReportedProperties.MarshalJSON() ([]byte, error)
-1. ErrorAdditionalInfo.MarshalJSON() ([]byte, error)
-1. ErrorDetail.MarshalJSON() ([]byte, error)
-1. ProxyResource.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
+1. PossibleCreatedByTypeValues() []CreatedByType
+
+### Struct Changes
+
+#### New Structs
+
+1. SystemData
+
+#### New Struct Fields
+
+1. Cluster.*SystemData

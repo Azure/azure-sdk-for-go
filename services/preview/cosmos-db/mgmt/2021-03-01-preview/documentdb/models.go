@@ -212,11 +212,11 @@ func (bp BackupPolicy) AsBasicBackupPolicy() (BasicBackupPolicy, bool) {
 type BackupResource struct {
 	autorest.Response `json:"-"`
 	Properties        *BackupResourceProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the resource
+	// Name - READ-ONLY; The name of the database account.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -3634,11 +3634,11 @@ type DataCenterResource struct {
 	autorest.Response `json:"-"`
 	// Properties - Properties of a managed Cassandra data center.
 	Properties *DataCenterResourceProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	// ID - READ-ONLY; The unique resource identifier of the database account.
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the resource
+	// Name - READ-ONLY; The name of the database account.
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	// Type - READ-ONLY; The type of Azure resource.
 	Type *string `json:"type,omitempty"`
 }
 
@@ -5230,6 +5230,59 @@ func (l Location) MarshalJSON() ([]byte, error) {
 	if l.IsZoneRedundant != nil {
 		objectMap["isZoneRedundant"] = l.IsZoneRedundant
 	}
+	return json.Marshal(objectMap)
+}
+
+// LocationGetResult cosmos DB location get result
+type LocationGetResult struct {
+	autorest.Response `json:"-"`
+	// Properties - Cosmos DB location metadata
+	Properties *LocationProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The unique resource identifier of the database account.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the database account.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LocationGetResult.
+func (lgr LocationGetResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if lgr.Properties != nil {
+		objectMap["properties"] = lgr.Properties
+	}
+	return json.Marshal(objectMap)
+}
+
+// LocationListResult the List operation response, that contains Cosmos DB locations and their properties.
+type LocationListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of Cosmos DB locations and their properties.
+	Value *[]LocationGetResult `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LocationListResult.
+func (llr LocationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// LocationProperties cosmos DB location metadata
+type LocationProperties struct {
+	// Status - READ-ONLY; The current status of location in Azure.
+	Status *string `json:"status,omitempty"`
+	// SupportsAvailabilityZone - READ-ONLY; Flag indicating whether the location supports availability zones or not.
+	SupportsAvailabilityZone *bool `json:"supportsAvailabilityZone,omitempty"`
+	// IsResidencyRestricted - READ-ONLY; Flag indicating whether the location is residency sensitive.
+	IsResidencyRestricted *bool `json:"isResidencyRestricted,omitempty"`
+	// BackupStorageRedundancies - READ-ONLY; The properties of available backup storage redundancies.
+	BackupStorageRedundancies *[]BackupStorageRedundancy `json:"backupStorageRedundancies,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LocationProperties.
+func (lp LocationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
 

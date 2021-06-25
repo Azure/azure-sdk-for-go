@@ -32,11 +32,13 @@ func NewRestorableSQLContainersClientWithBaseURI(baseURI string, subscriptionID 
 	return RestorableSQLContainersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List lists all the restorable Azure Cosmos DB SQL containers available for a specific database.
+// List show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database.
+// This helps in scenario where container was accidentally deleted.  This API requires
+// 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission
 // Parameters:
 // location - cosmos DB region, with spaces between words and each word capitalized.
 // instanceID - the instanceId GUID of a restorable database account.
-// restorableSQLDatabaseRid - the resource id of the restorable SQL database.
+// restorableSQLDatabaseRid - the resource ID of the SQL database.
 func (client RestorableSQLContainersClient) List(ctx context.Context, location string, instanceID string, restorableSQLDatabaseRid string) (result RestorableSQLContainersListResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RestorableSQLContainersClient.List")

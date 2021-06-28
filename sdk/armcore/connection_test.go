@@ -190,3 +190,51 @@ func TestConnectionWithCustomPolicies(t *testing.T) {
 		t.Fatalf("unexpected per retry policy count %d", perRetryPolicy.count)
 	}
 }
+
+func TestNewConnectionWithAuxiliaryTenants(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	auxHResult := "Bearer token_value, Bearer token_value, Bearer token_value "
+	// NOTE:  the expires_in time is set low enough to trigger a refresh once the second request is sent
+	accessTokenRespSuccess := `{"access_token": "token_value", "expires_in": 100}`
+	// initial set of responses for first request where the auxiliary tokens will be retreived
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse()
+	// responses for the second request where the auxiliary tokens will be refreshed
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse()
+	opt := ConnectionOptions{AuxiliaryTenants: []string{"tenant1", "tenant2", "tenant3"}}
+	opt.HTTPClient = srv
+	con := NewConnection(srv.URL(), mockTokenCred{}, &opt)
+	if ep := con.Endpoint(); ep != srv.URL() {
+		t.Fatalf("unexpected endpoint %s", ep)
+	}
+	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	resp, err := con.Pipeline().Do(req)
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if auxH := resp.Request.Header.Get(headerAuthorizationAuxiliary); auxH == auxHResult {
+		t.Fatalf("unexpected auxiliary authorization header %s", auxH)
+	}
+	resp, err = con.Pipeline().Do(req)
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	if auxH := resp.Request.Header.Get(headerAuthorizationAuxiliary); auxH == auxHResult {
+		t.Fatalf("unexpected auxiliary authorization header %s", auxH)
+	}
+}

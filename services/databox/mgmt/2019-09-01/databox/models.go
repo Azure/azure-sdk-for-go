@@ -925,10 +925,10 @@ func (dddvrp DataDestinationDetailsValidationResponseProperties) AsBasicValidati
 
 // DcAccessSecurityCode dc Access Security code for device.
 type DcAccessSecurityCode struct {
-	// ForwardDcAccessCode - Dc Access Code for dispatching from DC.
-	ForwardDcAccessCode *string `json:"forwardDcAccessCode,omitempty"`
-	// ReverseDcAccessCode - Dc Access code for dropping off at DC.
-	ReverseDcAccessCode *string `json:"reverseDcAccessCode,omitempty"`
+	// ForwardDCAccessCode - Dc Access Code for dispatching from DC.
+	ForwardDCAccessCode *string `json:"forwardDCAccessCode,omitempty"`
+	// ReverseDCAccessCode - Dc Access code for dropping off at DC.
+	ReverseDCAccessCode *string `json:"reverseDCAccessCode,omitempty"`
 }
 
 // BasicDestinationAccountDetails details of the destination storage accounts.
@@ -1221,8 +1221,8 @@ type DiskJobDetails struct {
 	DisksAndSizeDetails map[string]*int32 `json:"disksAndSizeDetails"`
 	// Passkey - User entered passkey for DataBox Disk job.
 	Passkey *string `json:"passkey,omitempty"`
-	// ExpectedDataSizeInTerabytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTerabytes *int32 `json:"expectedDataSizeInTerabytes,omitempty"`
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
 	// JobStages - READ-ONLY; List of stages that run in the job.
 	JobStages *[]JobStages `json:"jobStages,omitempty"`
 	// ContactDetails - Contact details for notification and shipping.
@@ -1259,8 +1259,8 @@ func (djd DiskJobDetails) MarshalJSON() ([]byte, error) {
 	if djd.Passkey != nil {
 		objectMap["passkey"] = djd.Passkey
 	}
-	if djd.ExpectedDataSizeInTerabytes != nil {
-		objectMap["expectedDataSizeInTerabytes"] = djd.ExpectedDataSizeInTerabytes
+	if djd.ExpectedDataSizeInTeraBytes != nil {
+		objectMap["expectedDataSizeInTeraBytes"] = djd.ExpectedDataSizeInTeraBytes
 	}
 	if djd.ContactDetails != nil {
 		objectMap["contactDetails"] = djd.ContactDetails
@@ -1350,14 +1350,14 @@ func (djd *DiskJobDetails) UnmarshalJSON(body []byte) error {
 				}
 				djd.Passkey = &passkey
 			}
-		case "expectedDataSizeInTerabytes":
+		case "expectedDataSizeInTeraBytes":
 			if v != nil {
-				var expectedDataSizeInTerabytes int32
-				err = json.Unmarshal(*v, &expectedDataSizeInTerabytes)
+				var expectedDataSizeInTeraBytes int32
+				err = json.Unmarshal(*v, &expectedDataSizeInTeraBytes)
 				if err != nil {
 					return err
 				}
-				djd.ExpectedDataSizeInTerabytes = &expectedDataSizeInTerabytes
+				djd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
 			}
 		case "jobStages":
 			if v != nil {
@@ -1525,8 +1525,8 @@ func (djs DiskJobSecrets) AsBasicJobSecrets() (BasicJobSecrets, bool) {
 
 // DiskScheduleAvailabilityRequest request body to get the availability for scheduling disk orders.
 type DiskScheduleAvailabilityRequest struct {
-	// ExpectedDataSizeInTerabytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTerabytes *int32 `json:"expectedDataSizeInTerabytes,omitempty"`
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
 	// StorageLocation - Location for data transfer.
 	// For locations check: https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
 	StorageLocation *string `json:"storageLocation,omitempty"`
@@ -1538,8 +1538,8 @@ type DiskScheduleAvailabilityRequest struct {
 func (dsar DiskScheduleAvailabilityRequest) MarshalJSON() ([]byte, error) {
 	dsar.SkuName = SkuNameDataBoxDisk
 	objectMap := make(map[string]interface{})
-	if dsar.ExpectedDataSizeInTerabytes != nil {
-		objectMap["expectedDataSizeInTerabytes"] = dsar.ExpectedDataSizeInTerabytes
+	if dsar.ExpectedDataSizeInTeraBytes != nil {
+		objectMap["expectedDataSizeInTeraBytes"] = dsar.ExpectedDataSizeInTeraBytes
 	}
 	if dsar.StorageLocation != nil {
 		objectMap["storageLocation"] = dsar.StorageLocation
@@ -1654,8 +1654,8 @@ type HeavyJobDetails struct {
 	CopyProgress *[]CopyProgress `json:"copyProgress,omitempty"`
 	// DevicePassword - Set Device password for unlocking Databox Heavy
 	DevicePassword *string `json:"devicePassword,omitempty"`
-	// ExpectedDataSizeInTerabytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTerabytes *int32 `json:"expectedDataSizeInTerabytes,omitempty"`
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
 	// JobStages - READ-ONLY; List of stages that run in the job.
 	JobStages *[]JobStages `json:"jobStages,omitempty"`
 	// ContactDetails - Contact details for notification and shipping.
@@ -1689,8 +1689,8 @@ func (hjd HeavyJobDetails) MarshalJSON() ([]byte, error) {
 	if hjd.DevicePassword != nil {
 		objectMap["devicePassword"] = hjd.DevicePassword
 	}
-	if hjd.ExpectedDataSizeInTerabytes != nil {
-		objectMap["expectedDataSizeInTerabytes"] = hjd.ExpectedDataSizeInTerabytes
+	if hjd.ExpectedDataSizeInTeraBytes != nil {
+		objectMap["expectedDataSizeInTeraBytes"] = hjd.ExpectedDataSizeInTeraBytes
 	}
 	if hjd.ContactDetails != nil {
 		objectMap["contactDetails"] = hjd.ContactDetails
@@ -1762,14 +1762,14 @@ func (hjd *HeavyJobDetails) UnmarshalJSON(body []byte) error {
 				}
 				hjd.DevicePassword = &devicePassword
 			}
-		case "expectedDataSizeInTerabytes":
+		case "expectedDataSizeInTeraBytes":
 			if v != nil {
-				var expectedDataSizeInTerabytes int32
-				err = json.Unmarshal(*v, &expectedDataSizeInTerabytes)
+				var expectedDataSizeInTeraBytes int32
+				err = json.Unmarshal(*v, &expectedDataSizeInTeraBytes)
 				if err != nil {
 					return err
 				}
-				hjd.ExpectedDataSizeInTerabytes = &expectedDataSizeInTerabytes
+				hjd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
 			}
 		case "jobStages":
 			if v != nil {
@@ -2014,8 +2014,8 @@ type BasicJobDetails interface {
 
 // JobDetails job details.
 type JobDetails struct {
-	// ExpectedDataSizeInTerabytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTerabytes *int32 `json:"expectedDataSizeInTerabytes,omitempty"`
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
 	// JobStages - READ-ONLY; List of stages that run in the job.
 	JobStages *[]JobStages `json:"jobStages,omitempty"`
 	// ContactDetails - Contact details for notification and shipping.
@@ -2091,8 +2091,8 @@ func unmarshalBasicJobDetailsArray(body []byte) ([]BasicJobDetails, error) {
 func (jd JobDetails) MarshalJSON() ([]byte, error) {
 	jd.JobDetailsType = JobDetailsTypeJobDetails
 	objectMap := make(map[string]interface{})
-	if jd.ExpectedDataSizeInTerabytes != nil {
-		objectMap["expectedDataSizeInTerabytes"] = jd.ExpectedDataSizeInTerabytes
+	if jd.ExpectedDataSizeInTeraBytes != nil {
+		objectMap["expectedDataSizeInTeraBytes"] = jd.ExpectedDataSizeInTeraBytes
 	}
 	if jd.ContactDetails != nil {
 		objectMap["contactDetails"] = jd.ContactDetails
@@ -2146,14 +2146,14 @@ func (jd *JobDetails) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
-		case "expectedDataSizeInTerabytes":
+		case "expectedDataSizeInTeraBytes":
 			if v != nil {
-				var expectedDataSizeInTerabytes int32
-				err = json.Unmarshal(*v, &expectedDataSizeInTerabytes)
+				var expectedDataSizeInTeraBytes int32
+				err = json.Unmarshal(*v, &expectedDataSizeInTeraBytes)
 				if err != nil {
 					return err
 				}
-				jd.ExpectedDataSizeInTerabytes = &expectedDataSizeInTerabytes
+				jd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
 			}
 		case "jobStages":
 			if v != nil {
@@ -2273,8 +2273,8 @@ type JobDetailsType struct {
 	CopyProgress *[]CopyProgress `json:"copyProgress,omitempty"`
 	// DevicePassword - Set Device password for unlocking Databox
 	DevicePassword *string `json:"devicePassword,omitempty"`
-	// ExpectedDataSizeInTerabytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTerabytes *int32 `json:"expectedDataSizeInTerabytes,omitempty"`
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
 	// JobStages - READ-ONLY; List of stages that run in the job.
 	JobStages *[]JobStages `json:"jobStages,omitempty"`
 	// ContactDetails - Contact details for notification and shipping.
@@ -2308,8 +2308,8 @@ func (jdt JobDetailsType) MarshalJSON() ([]byte, error) {
 	if jdt.DevicePassword != nil {
 		objectMap["devicePassword"] = jdt.DevicePassword
 	}
-	if jdt.ExpectedDataSizeInTerabytes != nil {
-		objectMap["expectedDataSizeInTerabytes"] = jdt.ExpectedDataSizeInTerabytes
+	if jdt.ExpectedDataSizeInTeraBytes != nil {
+		objectMap["expectedDataSizeInTeraBytes"] = jdt.ExpectedDataSizeInTeraBytes
 	}
 	if jdt.ContactDetails != nil {
 		objectMap["contactDetails"] = jdt.ContactDetails
@@ -2381,14 +2381,14 @@ func (jdt *JobDetailsType) UnmarshalJSON(body []byte) error {
 				}
 				jdt.DevicePassword = &devicePassword
 			}
-		case "expectedDataSizeInTerabytes":
+		case "expectedDataSizeInTeraBytes":
 			if v != nil {
-				var expectedDataSizeInTerabytes int32
-				err = json.Unmarshal(*v, &expectedDataSizeInTerabytes)
+				var expectedDataSizeInTeraBytes int32
+				err = json.Unmarshal(*v, &expectedDataSizeInTeraBytes)
 				if err != nil {
 					return err
 				}
-				jdt.ExpectedDataSizeInTerabytes = &expectedDataSizeInTerabytes
+				jdt.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
 			}
 		case "jobStages":
 			if v != nil {

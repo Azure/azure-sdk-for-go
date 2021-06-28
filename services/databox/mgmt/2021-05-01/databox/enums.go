@@ -107,6 +107,23 @@ func PossibleCopyStatusValues() []CopyStatus {
 	return []CopyStatus{Completed, CompletedWithErrors, DeviceFormatted, DeviceMetadataModified, Failed, HardwareError, InProgress, NotReturned, NotStarted, StorageAccountNotAccessible, UnsupportedData}
 }
 
+// CustomerResolutionCode enumerates the values for customer resolution code.
+type CustomerResolutionCode string
+
+const (
+	// CustomerResolutionCodeMoveToCleanUpDevice Clean the device
+	CustomerResolutionCodeMoveToCleanUpDevice CustomerResolutionCode = "MoveToCleanUpDevice"
+	// CustomerResolutionCodeNone No Resolution Yet
+	CustomerResolutionCodeNone CustomerResolutionCode = "None"
+	// CustomerResolutionCodeResume Resume the job to same stage
+	CustomerResolutionCodeResume CustomerResolutionCode = "Resume"
+)
+
+// PossibleCustomerResolutionCodeValues returns an array of possible values for the CustomerResolutionCode const type.
+func PossibleCustomerResolutionCodeValues() []CustomerResolutionCode {
+	return []CustomerResolutionCode{CustomerResolutionCodeMoveToCleanUpDevice, CustomerResolutionCodeNone, CustomerResolutionCodeResume}
+}
+
 // DataAccountType enumerates the values for data account type.
 type DataAccountType string
 
@@ -428,6 +445,8 @@ const (
 	StageStatusCancelled StageStatus = "Cancelled"
 	// StageStatusCancelling Stage is cancelling.
 	StageStatusCancelling StageStatus = "Cancelling"
+	// StageStatusCustomerActionPerformedForCleanUp Stage has performed customer action for clean up.
+	StageStatusCustomerActionPerformedForCleanUp StageStatus = "CustomerActionPerformedForCleanUp"
 	// StageStatusFailed Stage has failed.
 	StageStatusFailed StageStatus = "Failed"
 	// StageStatusInProgress Stage is in progress.
@@ -442,11 +461,15 @@ const (
 	StageStatusSucceededWithWarnings StageStatus = "SucceededWithWarnings"
 	// StageStatusWaitingForCustomerAction Stage is stuck until customer takes some action.
 	StageStatusWaitingForCustomerAction StageStatus = "WaitingForCustomerAction"
+	// StageStatusWaitingForCustomerActionForCleanUp Stage is waiting for customer action for clean up.
+	StageStatusWaitingForCustomerActionForCleanUp StageStatus = "WaitingForCustomerActionForCleanUp"
+	// StageStatusWaitingForCustomerActionForKek Stage is waiting for customer action for kek action items.
+	StageStatusWaitingForCustomerActionForKek StageStatus = "WaitingForCustomerActionForKek"
 )
 
 // PossibleStageStatusValues returns an array of possible values for the StageStatus const type.
 func PossibleStageStatusValues() []StageStatus {
-	return []StageStatus{StageStatusCancelled, StageStatusCancelling, StageStatusFailed, StageStatusInProgress, StageStatusNone, StageStatusSucceeded, StageStatusSucceededWithErrors, StageStatusSucceededWithWarnings, StageStatusWaitingForCustomerAction}
+	return []StageStatus{StageStatusCancelled, StageStatusCancelling, StageStatusCustomerActionPerformedForCleanUp, StageStatusFailed, StageStatusInProgress, StageStatusNone, StageStatusSucceeded, StageStatusSucceededWithErrors, StageStatusSucceededWithWarnings, StageStatusWaitingForCustomerAction, StageStatusWaitingForCustomerActionForCleanUp, StageStatusWaitingForCustomerActionForKek}
 }
 
 // TransferConfigurationType enumerates the values for transfer configuration type.

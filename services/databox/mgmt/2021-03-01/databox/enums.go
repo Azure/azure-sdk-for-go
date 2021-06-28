@@ -107,6 +107,23 @@ func PossibleCopyStatusValues() []CopyStatus {
 	return []CopyStatus{Completed, CompletedWithErrors, DeviceFormatted, DeviceMetadataModified, Failed, HardwareError, InProgress, NotReturned, NotStarted, StorageAccountNotAccessible, UnsupportedData}
 }
 
+// CustomerResolutionCode enumerates the values for customer resolution code.
+type CustomerResolutionCode string
+
+const (
+	// CustomerResolutionCodeMoveToCleanUpDevice Clean the device
+	CustomerResolutionCodeMoveToCleanUpDevice CustomerResolutionCode = "MoveToCleanUpDevice"
+	// CustomerResolutionCodeNone No Resolution Yet
+	CustomerResolutionCodeNone CustomerResolutionCode = "None"
+	// CustomerResolutionCodeResume Resume the job to same stage
+	CustomerResolutionCodeResume CustomerResolutionCode = "Resume"
+)
+
+// PossibleCustomerResolutionCodeValues returns an array of possible values for the CustomerResolutionCode const type.
+func PossibleCustomerResolutionCodeValues() []CustomerResolutionCode {
+	return []CustomerResolutionCode{CustomerResolutionCodeMoveToCleanUpDevice, CustomerResolutionCodeNone, CustomerResolutionCodeResume}
+}
+
 // DataAccountType enumerates the values for data account type.
 type DataAccountType string
 

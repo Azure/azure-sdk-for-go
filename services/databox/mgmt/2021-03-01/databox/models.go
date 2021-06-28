@@ -18,7 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2020-11-01/databox"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/databox/mgmt/2021-03-01/databox"
 
 // AccountCopyLogDetails copy log details for a storage account of a DataBox job
 type AccountCopyLogDetails struct {
@@ -1238,6 +1238,10 @@ type DiskJobDetails struct {
 	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
 	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+	// Actions - READ-ONLY; Available actions on the job.
+	Actions *[]CustomerResolutionCode `json:"actions,omitempty"`
+	// LastMitigationActionOnJob - READ-ONLY; Last mitigation action performed on the job.
+	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty"`
 	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
 }
@@ -1464,6 +1468,24 @@ func (djd *DiskJobDetails) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				djd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
+			}
+		case "actions":
+			if v != nil {
+				var actions []CustomerResolutionCode
+				err = json.Unmarshal(*v, &actions)
+				if err != nil {
+					return err
+				}
+				djd.Actions = &actions
+			}
+		case "lastMitigationActionOnJob":
+			if v != nil {
+				var lastMitigationActionOnJob LastMitigationActionOnJob
+				err = json.Unmarshal(*v, &lastMitigationActionOnJob)
+				if err != nil {
+					return err
+				}
+				djd.LastMitigationActionOnJob = &lastMitigationActionOnJob
 			}
 		case "jobDetailsType":
 			if v != nil {
@@ -1702,6 +1724,10 @@ type HeavyJobDetails struct {
 	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
 	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+	// Actions - READ-ONLY; Available actions on the job.
+	Actions *[]CustomerResolutionCode `json:"actions,omitempty"`
+	// LastMitigationActionOnJob - READ-ONLY; Last mitigation action performed on the job.
+	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty"`
 	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
 }
@@ -1908,6 +1934,24 @@ func (hjd *HeavyJobDetails) UnmarshalJSON(body []byte) error {
 				}
 				hjd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
 			}
+		case "actions":
+			if v != nil {
+				var actions []CustomerResolutionCode
+				err = json.Unmarshal(*v, &actions)
+				if err != nil {
+					return err
+				}
+				hjd.Actions = &actions
+			}
+		case "lastMitigationActionOnJob":
+			if v != nil {
+				var lastMitigationActionOnJob LastMitigationActionOnJob
+				err = json.Unmarshal(*v, &lastMitigationActionOnJob)
+				if err != nil {
+					return err
+				}
+				hjd.LastMitigationActionOnJob = &lastMitigationActionOnJob
+			}
 		case "jobDetailsType":
 			if v != nil {
 				var jobDetailsType JobDetailsTypeEnum
@@ -2091,6 +2135,10 @@ type JobDetails struct {
 	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
 	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+	// Actions - READ-ONLY; Available actions on the job.
+	Actions *[]CustomerResolutionCode `json:"actions,omitempty"`
+	// LastMitigationActionOnJob - READ-ONLY; Last mitigation action performed on the job.
+	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty"`
 	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
 }
@@ -2321,6 +2369,24 @@ func (jd *JobDetails) UnmarshalJSON(body []byte) error {
 				}
 				jd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
 			}
+		case "actions":
+			if v != nil {
+				var actions []CustomerResolutionCode
+				err = json.Unmarshal(*v, &actions)
+				if err != nil {
+					return err
+				}
+				jd.Actions = &actions
+			}
+		case "lastMitigationActionOnJob":
+			if v != nil {
+				var lastMitigationActionOnJob LastMitigationActionOnJob
+				err = json.Unmarshal(*v, &lastMitigationActionOnJob)
+				if err != nil {
+					return err
+				}
+				jd.LastMitigationActionOnJob = &lastMitigationActionOnJob
+			}
 		case "jobDetailsType":
 			if v != nil {
 				var jobDetailsType JobDetailsTypeEnum
@@ -2368,6 +2434,10 @@ type JobDetailsType struct {
 	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
 	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
 	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+	// Actions - READ-ONLY; Available actions on the job.
+	Actions *[]CustomerResolutionCode `json:"actions,omitempty"`
+	// LastMitigationActionOnJob - READ-ONLY; Last mitigation action performed on the job.
+	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty"`
 	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
 }
@@ -2573,6 +2643,24 @@ func (jdt *JobDetailsType) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				jdt.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
+			}
+		case "actions":
+			if v != nil {
+				var actions []CustomerResolutionCode
+				err = json.Unmarshal(*v, &actions)
+				if err != nil {
+					return err
+				}
+				jdt.Actions = &actions
+			}
+		case "lastMitigationActionOnJob":
+			if v != nil {
+				var lastMitigationActionOnJob LastMitigationActionOnJob
+				err = json.Unmarshal(*v, &lastMitigationActionOnJob)
+				if err != nil {
+					return err
+				}
+				jdt.LastMitigationActionOnJob = &lastMitigationActionOnJob
 			}
 		case "jobDetailsType":
 			if v != nil {
@@ -3432,6 +3520,17 @@ type KeyEncryptionKey struct {
 	KekVaultResourceID *string `json:"kekVaultResourceID,omitempty"`
 }
 
+// LastMitigationActionOnJob last Mitigation Action Performed On Job
+type LastMitigationActionOnJob struct {
+	// ActionDateTimeInUtc - Action performed date time
+	ActionDateTimeInUtc *date.Time `json:"actionDateTimeInUtc,omitempty"`
+	// IsPerformedByCustomer - Action performed by customer,
+	// possibility is that mitigation might happen by customer or service or by ops
+	IsPerformedByCustomer *bool `json:"isPerformedByCustomer,omitempty"`
+	// CustomerResolution - Resolution code provided by customer. Possible values include: 'CustomerResolutionCodeNone', 'CustomerResolutionCodeMoveToCleanUpDevice', 'CustomerResolutionCodeResume'
+	CustomerResolution CustomerResolutionCode `json:"customerResolution,omitempty"`
+}
+
 // ManagedDiskDetails details of the managed disks.
 type ManagedDiskDetails struct {
 	// ResourceGroupID - Resource Group Id of the compute disks.
@@ -3481,6 +3580,12 @@ func (mdd ManagedDiskDetails) AsDataAccountDetails() (*DataAccountDetails, bool)
 // AsBasicDataAccountDetails is the BasicDataAccountDetails implementation for ManagedDiskDetails.
 func (mdd ManagedDiskDetails) AsBasicDataAccountDetails() (BasicDataAccountDetails, bool) {
 	return &mdd, true
+}
+
+// MitigateJobRequest the Mitigate Job captured from request body for Mitigate API
+type MitigateJobRequest struct {
+	// CustomerResolutionCode - Resolution code for the job. Possible values include: 'CustomerResolutionCodeNone', 'CustomerResolutionCodeMoveToCleanUpDevice', 'CustomerResolutionCodeResume'
+	CustomerResolutionCode CustomerResolutionCode `json:"customerResolutionCode,omitempty"`
 }
 
 // NotificationPreference notification preference for a job stage.

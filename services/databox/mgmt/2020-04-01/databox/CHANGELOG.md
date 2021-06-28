@@ -1,28 +1,29 @@
-# Change History
+# Unreleased
+
+## Breaking Changes
+
+### Struct Changes
+
+#### Removed Struct Fields
+
+1. DcAccessSecurityCode.ForwardDcAccessCode
+1. DcAccessSecurityCode.ReverseDcAccessCode
+1. DiskJobDetails.ExpectedDataSizeInTerabytes
+1. DiskScheduleAvailabilityRequest.ExpectedDataSizeInTerabytes
+1. HeavyJobDetails.ExpectedDataSizeInTerabytes
+1. JobDetails.ExpectedDataSizeInTerabytes
+1. JobDetailsType.ExpectedDataSizeInTerabytes
 
 ## Additive Changes
 
-### New Funcs
+### Struct Changes
 
-1. AccountCredentialDetails.MarshalJSON() ([]byte, error)
-1. ApplianceNetworkConfiguration.MarshalJSON() ([]byte, error)
-1. ArmBaseObject.MarshalJSON() ([]byte, error)
-1. CopyProgress.MarshalJSON() ([]byte, error)
-1. DataLocationToServiceLocationMap.MarshalJSON() ([]byte, error)
-1. DiskCopyProgress.MarshalJSON() ([]byte, error)
-1. DiskSecret.MarshalJSON() ([]byte, error)
-1. HeavySecret.MarshalJSON() ([]byte, error)
-1. JobStages.MarshalJSON() ([]byte, error)
-1. PackageShippingDetails.MarshalJSON() ([]byte, error)
-1. RegionConfigurationResponse.MarshalJSON() ([]byte, error)
-1. ScheduleAvailabilityResponse.MarshalJSON() ([]byte, error)
-1. Secret.MarshalJSON() ([]byte, error)
-1. ShareCredentialDetails.MarshalJSON() ([]byte, error)
-1. ShipmentPickUpResponse.MarshalJSON() ([]byte, error)
-1. SkuCapacity.MarshalJSON() ([]byte, error)
-1. SkuCost.MarshalJSON() ([]byte, error)
-1. SkuProperties.MarshalJSON() ([]byte, error)
-1. TransportAvailabilityDetails.MarshalJSON() ([]byte, error)
-1. TransportAvailabilityResponse.MarshalJSON() ([]byte, error)
-1. UnencryptedCredentials.MarshalJSON() ([]byte, error)
-1. ValidationResponseProperties.MarshalJSON() ([]byte, error)
+#### New Struct Fields
+
+1. DcAccessSecurityCode.ForwardDCAccessCode
+1. DcAccessSecurityCode.ReverseDCAccessCode
+1. DiskJobDetails.ExpectedDataSizeInTeraBytes
+1. DiskScheduleAvailabilityRequest.ExpectedDataSizeInTeraBytes
+1. HeavyJobDetails.ExpectedDataSizeInTeraBytes
+1. JobDetails.ExpectedDataSizeInTeraBytes
+1. JobDetailsType.ExpectedDataSizeInTeraBytes

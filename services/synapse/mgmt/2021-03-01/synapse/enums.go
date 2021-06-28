@@ -510,6 +510,10 @@ func PossibleNodeSizeValues() []NodeSize {
 type NodeSizeFamily string
 
 const (
+	// NodeSizeFamilyHardwareAcceleratedFPGA ...
+	NodeSizeFamilyHardwareAcceleratedFPGA NodeSizeFamily = "HardwareAcceleratedFPGA"
+	// NodeSizeFamilyHardwareAcceleratedGPU ...
+	NodeSizeFamilyHardwareAcceleratedGPU NodeSizeFamily = "HardwareAcceleratedGPU"
 	// NodeSizeFamilyMemoryOptimized ...
 	NodeSizeFamilyMemoryOptimized NodeSizeFamily = "MemoryOptimized"
 	// NodeSizeFamilyNone ...
@@ -518,7 +522,7 @@ const (
 
 // PossibleNodeSizeFamilyValues returns an array of possible values for the NodeSizeFamily const type.
 func PossibleNodeSizeFamilyValues() []NodeSizeFamily {
-	return []NodeSizeFamily{NodeSizeFamilyMemoryOptimized, NodeSizeFamilyNone}
+	return []NodeSizeFamily{NodeSizeFamilyHardwareAcceleratedFPGA, NodeSizeFamilyHardwareAcceleratedGPU, NodeSizeFamilyMemoryOptimized, NodeSizeFamilyNone}
 }
 
 // OperationStatus enumerates the values for operation status.

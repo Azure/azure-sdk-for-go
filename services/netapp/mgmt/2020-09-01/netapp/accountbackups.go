@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// AccountBackupsClient is the microsoft NetApp Azure Resource Provider specification
+// AccountBackupsClient is the microsoft NetApp Files Azure Resource Provider specification
 type AccountBackupsClient struct {
 	BaseClient
 }

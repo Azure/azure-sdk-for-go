@@ -186,6 +186,108 @@ func (ar *AlertRule) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// AlertRulePatchObject the alert rule patch information
+type AlertRulePatchObject struct {
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Type - READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty"`
+	// Name - READ-ONLY; The resource name.
+	Name *string `json:"name,omitempty"`
+	// Tags - The resource tags.
+	Tags interface{} `json:"tags,omitempty"`
+	// AlertRulePatchProperties - The properties of the alert rule.
+	*AlertRulePatchProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AlertRulePatchObject.
+func (arpo AlertRulePatchObject) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if arpo.Tags != nil {
+		objectMap["tags"] = arpo.Tags
+	}
+	if arpo.AlertRulePatchProperties != nil {
+		objectMap["properties"] = arpo.AlertRulePatchProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for AlertRulePatchObject struct.
+func (arpo *AlertRulePatchObject) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				arpo.ID = &ID
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				arpo.Type = &typeVar
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				arpo.Name = &name
+			}
+		case "tags":
+			if v != nil {
+				var tags interface{}
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				arpo.Tags = tags
+			}
+		case "properties":
+			if v != nil {
+				var alertRulePatchProperties AlertRulePatchProperties
+				err = json.Unmarshal(*v, &alertRulePatchProperties)
+				if err != nil {
+					return err
+				}
+				arpo.AlertRulePatchProperties = &alertRulePatchProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// AlertRulePatchProperties the alert rule properties.
+type AlertRulePatchProperties struct {
+	// Description - The alert rule description.
+	Description *string `json:"description,omitempty"`
+	// State - The alert rule state. Possible values include: 'Enabled', 'Disabled'
+	State AlertRuleState `json:"state,omitempty"`
+	// Severity - The alert rule severity. Possible values include: 'Sev0', 'Sev1', 'Sev2', 'Sev3', 'Sev4'
+	Severity Severity `json:"severity,omitempty"`
+	// Frequency - The alert rule frequency in ISO8601 format. The time granularity must be in minutes and minimum value is 5 minutes.
+	Frequency *string `json:"frequency,omitempty"`
+	// ActionGroups - The alert rule actions.
+	ActionGroups *ActionGroupsInformation `json:"actionGroups,omitempty"`
+	// Throttling - The alert rule throttling information.
+	Throttling *ThrottlingInformation `json:"throttling,omitempty"`
+}
+
 // AlertRuleProperties the alert rule properties.
 type AlertRuleProperties struct {
 	// Description - The alert rule description.

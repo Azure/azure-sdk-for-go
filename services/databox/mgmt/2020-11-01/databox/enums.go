@@ -299,8 +299,6 @@ type ShareDestinationFormatType string
 const (
 	// ShareDestinationFormatTypeAzureFile Azure storage file format.
 	ShareDestinationFormatTypeAzureFile ShareDestinationFormatType = "AzureFile"
-	// ShareDestinationFormatTypeAzurePremiumFiles Azure storage Premium Files format
-	ShareDestinationFormatTypeAzurePremiumFiles ShareDestinationFormatType = "AzurePremiumFiles"
 	// ShareDestinationFormatTypeBlockBlob Azure storage block blob format.
 	ShareDestinationFormatTypeBlockBlob ShareDestinationFormatType = "BlockBlob"
 	// ShareDestinationFormatTypeHCS Storsimple data format.
@@ -315,7 +313,7 @@ const (
 
 // PossibleShareDestinationFormatTypeValues returns an array of possible values for the ShareDestinationFormatType const type.
 func PossibleShareDestinationFormatTypeValues() []ShareDestinationFormatType {
-	return []ShareDestinationFormatType{ShareDestinationFormatTypeAzureFile, ShareDestinationFormatTypeAzurePremiumFiles, ShareDestinationFormatTypeBlockBlob, ShareDestinationFormatTypeHCS, ShareDestinationFormatTypeManagedDisk, ShareDestinationFormatTypePageBlob, ShareDestinationFormatTypeUnknownType}
+	return []ShareDestinationFormatType{ShareDestinationFormatTypeAzureFile, ShareDestinationFormatTypeBlockBlob, ShareDestinationFormatTypeHCS, ShareDestinationFormatTypeManagedDisk, ShareDestinationFormatTypePageBlob, ShareDestinationFormatTypeUnknownType}
 }
 
 // SkuDisabledReason enumerates the values for sku disabled reason.

@@ -208,6 +208,31 @@ func PossibleDataMaskingStateValues() []DataMaskingState {
 	return []DataMaskingState{DataMaskingStateDisabled, DataMaskingStateEnabled}
 }
 
+// DayOfWeek enumerates the values for day of week.
+type DayOfWeek string
+
+const (
+	// Friday ...
+	Friday DayOfWeek = "Friday"
+	// Monday ...
+	Monday DayOfWeek = "Monday"
+	// Saturday ...
+	Saturday DayOfWeek = "Saturday"
+	// Sunday ...
+	Sunday DayOfWeek = "Sunday"
+	// Thursday ...
+	Thursday DayOfWeek = "Thursday"
+	// Tuesday ...
+	Tuesday DayOfWeek = "Tuesday"
+	// Wednesday ...
+	Wednesday DayOfWeek = "Wednesday"
+)
+
+// PossibleDayOfWeekValues returns an array of possible values for the DayOfWeek const type.
+func PossibleDayOfWeekValues() []DayOfWeek {
+	return []DayOfWeek{Friday, Monday, Saturday, Sunday, Thursday, Tuesday, Wednesday}
+}
+
 // DesiredState enumerates the values for desired state.
 type DesiredState string
 
@@ -614,6 +639,21 @@ func PossibleQueryObservedMetricTypeValues() []QueryObservedMetricType {
 	return []QueryObservedMetricType{CPU, Duration, ExecutionCount, Io, Logio}
 }
 
+// RecommendedSensitivityLabelUpdateKind enumerates the values for recommended sensitivity label update kind.
+type RecommendedSensitivityLabelUpdateKind string
+
+const (
+	// Disable ...
+	Disable RecommendedSensitivityLabelUpdateKind = "disable"
+	// Enable ...
+	Enable RecommendedSensitivityLabelUpdateKind = "enable"
+)
+
+// PossibleRecommendedSensitivityLabelUpdateKindValues returns an array of possible values for the RecommendedSensitivityLabelUpdateKind const type.
+func PossibleRecommendedSensitivityLabelUpdateKindValues() []RecommendedSensitivityLabelUpdateKind {
+	return []RecommendedSensitivityLabelUpdateKind{Disable, Enable}
+}
+
 // ReplicationRole enumerates the values for replication role.
 type ReplicationRole string
 
@@ -727,6 +767,27 @@ func PossibleSelfHostedIntegrationRuntimeNodeStatusValues() []SelfHostedIntegrat
 	return []SelfHostedIntegrationRuntimeNodeStatus{SelfHostedIntegrationRuntimeNodeStatusInitializeFailed, SelfHostedIntegrationRuntimeNodeStatusInitializing, SelfHostedIntegrationRuntimeNodeStatusLimited, SelfHostedIntegrationRuntimeNodeStatusNeedRegistration, SelfHostedIntegrationRuntimeNodeStatusOffline, SelfHostedIntegrationRuntimeNodeStatusOnline, SelfHostedIntegrationRuntimeNodeStatusUpgrading}
 }
 
+// SensitivityLabelRank enumerates the values for sensitivity label rank.
+type SensitivityLabelRank string
+
+const (
+	// SensitivityLabelRankCritical ...
+	SensitivityLabelRankCritical SensitivityLabelRank = "Critical"
+	// SensitivityLabelRankHigh ...
+	SensitivityLabelRankHigh SensitivityLabelRank = "High"
+	// SensitivityLabelRankLow ...
+	SensitivityLabelRankLow SensitivityLabelRank = "Low"
+	// SensitivityLabelRankMedium ...
+	SensitivityLabelRankMedium SensitivityLabelRank = "Medium"
+	// SensitivityLabelRankNone ...
+	SensitivityLabelRankNone SensitivityLabelRank = "None"
+)
+
+// PossibleSensitivityLabelRankValues returns an array of possible values for the SensitivityLabelRank const type.
+func PossibleSensitivityLabelRankValues() []SensitivityLabelRank {
+	return []SensitivityLabelRank{SensitivityLabelRankCritical, SensitivityLabelRankHigh, SensitivityLabelRankLow, SensitivityLabelRankMedium, SensitivityLabelRankNone}
+}
+
 // SensitivityLabelSource enumerates the values for sensitivity label source.
 type SensitivityLabelSource string
 
@@ -740,6 +801,21 @@ const (
 // PossibleSensitivityLabelSourceValues returns an array of possible values for the SensitivityLabelSource const type.
 func PossibleSensitivityLabelSourceValues() []SensitivityLabelSource {
 	return []SensitivityLabelSource{Current, Recommended}
+}
+
+// SensitivityLabelUpdateKind enumerates the values for sensitivity label update kind.
+type SensitivityLabelUpdateKind string
+
+const (
+	// Remove ...
+	Remove SensitivityLabelUpdateKind = "remove"
+	// Set ...
+	Set SensitivityLabelUpdateKind = "set"
+)
+
+// PossibleSensitivityLabelUpdateKindValues returns an array of possible values for the SensitivityLabelUpdateKind const type.
+func PossibleSensitivityLabelUpdateKindValues() []SensitivityLabelUpdateKind {
+	return []SensitivityLabelUpdateKind{Remove, Set}
 }
 
 // SsisObjectMetadataType enumerates the values for ssis object metadata type.

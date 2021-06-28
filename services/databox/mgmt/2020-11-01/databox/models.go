@@ -1125,10 +1125,10 @@ func (dtdvrp DataTransferDetailsValidationResponseProperties) AsBasicValidationI
 
 // DcAccessSecurityCode dc access security code
 type DcAccessSecurityCode struct {
-	// ReverseDcAccessCode - Reverse Dc access security code.
-	ReverseDcAccessCode *string `json:"reverseDcAccessCode,omitempty"`
-	// ForwardDcAccessCode - Forward Dc access security code.
-	ForwardDcAccessCode *string `json:"forwardDcAccessCode,omitempty"`
+	// ReverseDCAccessCode - Reverse Dc access security code.
+	ReverseDCAccessCode *string `json:"reverseDCAccessCode,omitempty"`
+	// ForwardDCAccessCode - Forward Dc access security code.
+	ForwardDCAccessCode *string `json:"forwardDCAccessCode,omitempty"`
 }
 
 // Details ...
@@ -1234,10 +1234,10 @@ type DiskJobDetails struct {
 	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty"`
 	// ChainOfCustodySasKey - READ-ONLY; Shared access key to download the chain of custody logs
 	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty"`
-	// KeyEncryptionKey - READ-ONLY; Details about which key encryption type is being used.
+	// KeyEncryptionKey - Details about which key encryption type is being used.
 	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
-	// ExpectedDataSizeInTerabytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTerabytes *int32 `json:"expectedDataSizeInTerabytes,omitempty"`
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
 	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
 }
@@ -1267,8 +1267,11 @@ func (djd DiskJobDetails) MarshalJSON() ([]byte, error) {
 	if djd.Preferences != nil {
 		objectMap["preferences"] = djd.Preferences
 	}
-	if djd.ExpectedDataSizeInTerabytes != nil {
-		objectMap["expectedDataSizeInTerabytes"] = djd.ExpectedDataSizeInTerabytes
+	if djd.KeyEncryptionKey != nil {
+		objectMap["keyEncryptionKey"] = djd.KeyEncryptionKey
+	}
+	if djd.ExpectedDataSizeInTeraBytes != nil {
+		objectMap["expectedDataSizeInTeraBytes"] = djd.ExpectedDataSizeInTeraBytes
 	}
 	if djd.JobDetailsType != "" {
 		objectMap["jobDetailsType"] = djd.JobDetailsType
@@ -1453,14 +1456,14 @@ func (djd *DiskJobDetails) UnmarshalJSON(body []byte) error {
 				}
 				djd.KeyEncryptionKey = &keyEncryptionKey
 			}
-		case "expectedDataSizeInTerabytes":
+		case "expectedDataSizeInTeraBytes":
 			if v != nil {
-				var expectedDataSizeInTerabytes int32
-				err = json.Unmarshal(*v, &expectedDataSizeInTerabytes)
+				var expectedDataSizeInTeraBytes int32
+				err = json.Unmarshal(*v, &expectedDataSizeInTeraBytes)
 				if err != nil {
 					return err
 				}
-				djd.ExpectedDataSizeInTerabytes = &expectedDataSizeInTerabytes
+				djd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
 			}
 		case "jobDetailsType":
 			if v != nil {
@@ -1530,8 +1533,8 @@ func (djs DiskJobSecrets) AsBasicJobSecrets() (BasicJobSecrets, bool) {
 
 // DiskScheduleAvailabilityRequest request body to get the availability for scheduling disk orders.
 type DiskScheduleAvailabilityRequest struct {
-	// ExpectedDataSizeInTerabytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTerabytes *int32 `json:"expectedDataSizeInTerabytes,omitempty"`
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
 	// StorageLocation - Location for data transfer. For locations check: https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
 	StorageLocation *string `json:"storageLocation,omitempty"`
 	// Country - Country in which storage location should be supported.
@@ -1544,8 +1547,8 @@ type DiskScheduleAvailabilityRequest struct {
 func (dsar DiskScheduleAvailabilityRequest) MarshalJSON() ([]byte, error) {
 	dsar.SkuName = SkuNameDataBoxDisk
 	objectMap := make(map[string]interface{})
-	if dsar.ExpectedDataSizeInTerabytes != nil {
-		objectMap["expectedDataSizeInTerabytes"] = dsar.ExpectedDataSizeInTerabytes
+	if dsar.ExpectedDataSizeInTeraBytes != nil {
+		objectMap["expectedDataSizeInTeraBytes"] = dsar.ExpectedDataSizeInTeraBytes
 	}
 	if dsar.StorageLocation != nil {
 		objectMap["storageLocation"] = dsar.StorageLocation
@@ -1695,10 +1698,10 @@ type HeavyJobDetails struct {
 	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty"`
 	// ChainOfCustodySasKey - READ-ONLY; Shared access key to download the chain of custody logs
 	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty"`
-	// KeyEncryptionKey - READ-ONLY; Details about which key encryption type is being used.
+	// KeyEncryptionKey - Details about which key encryption type is being used.
 	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
-	// ExpectedDataSizeInTerabytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTerabytes *int32 `json:"expectedDataSizeInTerabytes,omitempty"`
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
 	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
 }
@@ -1725,8 +1728,11 @@ func (hjd HeavyJobDetails) MarshalJSON() ([]byte, error) {
 	if hjd.Preferences != nil {
 		objectMap["preferences"] = hjd.Preferences
 	}
-	if hjd.ExpectedDataSizeInTerabytes != nil {
-		objectMap["expectedDataSizeInTerabytes"] = hjd.ExpectedDataSizeInTerabytes
+	if hjd.KeyEncryptionKey != nil {
+		objectMap["keyEncryptionKey"] = hjd.KeyEncryptionKey
+	}
+	if hjd.ExpectedDataSizeInTeraBytes != nil {
+		objectMap["expectedDataSizeInTeraBytes"] = hjd.ExpectedDataSizeInTeraBytes
 	}
 	if hjd.JobDetailsType != "" {
 		objectMap["jobDetailsType"] = hjd.JobDetailsType
@@ -1893,14 +1899,14 @@ func (hjd *HeavyJobDetails) UnmarshalJSON(body []byte) error {
 				}
 				hjd.KeyEncryptionKey = &keyEncryptionKey
 			}
-		case "expectedDataSizeInTerabytes":
+		case "expectedDataSizeInTeraBytes":
 			if v != nil {
-				var expectedDataSizeInTerabytes int32
-				err = json.Unmarshal(*v, &expectedDataSizeInTerabytes)
+				var expectedDataSizeInTeraBytes int32
+				err = json.Unmarshal(*v, &expectedDataSizeInTeraBytes)
 				if err != nil {
 					return err
 				}
-				hjd.ExpectedDataSizeInTerabytes = &expectedDataSizeInTerabytes
+				hjd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
 			}
 		case "jobDetailsType":
 			if v != nil {
@@ -2081,10 +2087,10 @@ type JobDetails struct {
 	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty"`
 	// ChainOfCustodySasKey - READ-ONLY; Shared access key to download the chain of custody logs
 	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty"`
-	// KeyEncryptionKey - READ-ONLY; Details about which key encryption type is being used.
+	// KeyEncryptionKey - Details about which key encryption type is being used.
 	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
-	// ExpectedDataSizeInTerabytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTerabytes *int32 `json:"expectedDataSizeInTerabytes,omitempty"`
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
 	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
 }
@@ -2153,8 +2159,11 @@ func (jd JobDetails) MarshalJSON() ([]byte, error) {
 	if jd.Preferences != nil {
 		objectMap["preferences"] = jd.Preferences
 	}
-	if jd.ExpectedDataSizeInTerabytes != nil {
-		objectMap["expectedDataSizeInTerabytes"] = jd.ExpectedDataSizeInTerabytes
+	if jd.KeyEncryptionKey != nil {
+		objectMap["keyEncryptionKey"] = jd.KeyEncryptionKey
+	}
+	if jd.ExpectedDataSizeInTeraBytes != nil {
+		objectMap["expectedDataSizeInTeraBytes"] = jd.ExpectedDataSizeInTeraBytes
 	}
 	if jd.JobDetailsType != "" {
 		objectMap["jobDetailsType"] = jd.JobDetailsType
@@ -2303,14 +2312,14 @@ func (jd *JobDetails) UnmarshalJSON(body []byte) error {
 				}
 				jd.KeyEncryptionKey = &keyEncryptionKey
 			}
-		case "expectedDataSizeInTerabytes":
+		case "expectedDataSizeInTeraBytes":
 			if v != nil {
-				var expectedDataSizeInTerabytes int32
-				err = json.Unmarshal(*v, &expectedDataSizeInTerabytes)
+				var expectedDataSizeInTeraBytes int32
+				err = json.Unmarshal(*v, &expectedDataSizeInTeraBytes)
 				if err != nil {
 					return err
 				}
-				jd.ExpectedDataSizeInTerabytes = &expectedDataSizeInTerabytes
+				jd.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
 			}
 		case "jobDetailsType":
 			if v != nil {
@@ -2355,10 +2364,10 @@ type JobDetailsType struct {
 	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty"`
 	// ChainOfCustodySasKey - READ-ONLY; Shared access key to download the chain of custody logs
 	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty"`
-	// KeyEncryptionKey - READ-ONLY; Details about which key encryption type is being used.
+	// KeyEncryptionKey - Details about which key encryption type is being used.
 	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
-	// ExpectedDataSizeInTerabytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTerabytes *int32 `json:"expectedDataSizeInTerabytes,omitempty"`
+	// ExpectedDataSizeInTeraBytes - The expected size of the data, which needs to be transferred in this job, in terabytes.
+	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
 	// JobDetailsType - Possible values include: 'JobDetailsTypeJobDetails', 'JobDetailsTypeDataBoxDisk', 'JobDetailsTypeDataBoxHeavy', 'JobDetailsTypeDataBox'
 	JobDetailsType JobDetailsTypeEnum `json:"jobDetailsType,omitempty"`
 }
@@ -2385,8 +2394,11 @@ func (jdt JobDetailsType) MarshalJSON() ([]byte, error) {
 	if jdt.Preferences != nil {
 		objectMap["preferences"] = jdt.Preferences
 	}
-	if jdt.ExpectedDataSizeInTerabytes != nil {
-		objectMap["expectedDataSizeInTerabytes"] = jdt.ExpectedDataSizeInTerabytes
+	if jdt.KeyEncryptionKey != nil {
+		objectMap["keyEncryptionKey"] = jdt.KeyEncryptionKey
+	}
+	if jdt.ExpectedDataSizeInTeraBytes != nil {
+		objectMap["expectedDataSizeInTeraBytes"] = jdt.ExpectedDataSizeInTeraBytes
 	}
 	if jdt.JobDetailsType != "" {
 		objectMap["jobDetailsType"] = jdt.JobDetailsType
@@ -2553,14 +2565,14 @@ func (jdt *JobDetailsType) UnmarshalJSON(body []byte) error {
 				}
 				jdt.KeyEncryptionKey = &keyEncryptionKey
 			}
-		case "expectedDataSizeInTerabytes":
+		case "expectedDataSizeInTeraBytes":
 			if v != nil {
-				var expectedDataSizeInTerabytes int32
-				err = json.Unmarshal(*v, &expectedDataSizeInTerabytes)
+				var expectedDataSizeInTeraBytes int32
+				err = json.Unmarshal(*v, &expectedDataSizeInTeraBytes)
 				if err != nil {
 					return err
 				}
-				jdt.ExpectedDataSizeInTerabytes = &expectedDataSizeInTerabytes
+				jdt.ExpectedDataSizeInTeraBytes = &expectedDataSizeInTeraBytes
 			}
 		case "jobDetailsType":
 			if v != nil {
@@ -2765,6 +2777,8 @@ type JobResource struct {
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Type of the object.
 	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - The location of the resource. This will be one of the supported and registered Azure Regions (e.g. West US, East US, Southeast Asia, etc.). The region of a resource cannot be changed once it is created, but if an identical region is specified on update the request will succeed.
 	Location *string `json:"location,omitempty"`
 	// Tags - The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups).
@@ -2840,6 +2854,15 @@ func (jr *JobResource) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				jr.Type = &typeVar
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				jr.SystemData = &systemData
 			}
 		case "location":
 			if v != nil {
@@ -4125,7 +4148,7 @@ func (s Secret) MarshalJSON() ([]byte, error) {
 type ShareCredentialDetails struct {
 	// ShareName - READ-ONLY; Name of the share.
 	ShareName *string `json:"shareName,omitempty"`
-	// ShareType - READ-ONLY; Type of the share. Possible values include: 'ShareDestinationFormatTypeUnknownType', 'ShareDestinationFormatTypeHCS', 'ShareDestinationFormatTypeBlockBlob', 'ShareDestinationFormatTypePageBlob', 'ShareDestinationFormatTypeAzureFile', 'ShareDestinationFormatTypeManagedDisk', 'ShareDestinationFormatTypeAzurePremiumFiles'
+	// ShareType - READ-ONLY; Type of the share. Possible values include: 'ShareDestinationFormatTypeUnknownType', 'ShareDestinationFormatTypeHCS', 'ShareDestinationFormatTypeBlockBlob', 'ShareDestinationFormatTypePageBlob', 'ShareDestinationFormatTypeAzureFile', 'ShareDestinationFormatTypeManagedDisk'
 	ShareType ShareDestinationFormatType `json:"shareType,omitempty"`
 	// UserName - READ-ONLY; User name for the share.
 	UserName *string `json:"userName,omitempty"`
@@ -4610,6 +4633,28 @@ func (siatcjvrp SubscriptionIsAllowedToCreateJobValidationResponseProperties) As
 // AsBasicValidationInputResponse is the BasicValidationInputResponse implementation for SubscriptionIsAllowedToCreateJobValidationResponseProperties.
 func (siatcjvrp SubscriptionIsAllowedToCreateJobValidationResponseProperties) AsBasicValidationInputResponse() (BasicValidationInputResponse, bool) {
 	return &siatcjvrp, true
+}
+
+// SystemData provides details about resource creation and update time
+type SystemData struct {
+	// CreatedBy - READ-ONLY; A string identifier for the identity that created the resource
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - READ-ONLY; The type of identity that created the resource: user, application, managedIdentity
+	CreatedByType *string `json:"createdByType,omitempty"`
+	// CreatedAt - READ-ONLY; The timestamp of resource creation (UTC)
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - READ-ONLY; A string identifier for the identity that last modified the resource
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - READ-ONLY; The type of identity that last modified the resource: user, application, managedIdentity
+	LastModifiedByType *string `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - READ-ONLY; The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SystemData.
+func (sd SystemData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TransferAllDetails details to transfer all data.

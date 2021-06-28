@@ -16,7 +16,7 @@ import (
 )
 
 // ProvidersClient is the various APIs for managing resources in attestation service. This primarily encompasses
-// per-tenant instance management.
+// per-provider management.
 type ProvidersClient struct {
 	BaseClient
 }
@@ -32,10 +32,10 @@ func NewProvidersClientWithBaseURI(baseURI string, subscriptionID string) Provid
 	return ProvidersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Create creates a new Attestation Provider instance.
+// Create creates a new Attestation Provider.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// providerName - name of the attestation service instance.
+// providerName - name of the attestation provider.
 // creationParams - client supplied parameters.
 func (client ProvidersClient) Create(ctx context.Context, resourceGroupName string, providerName string, creationParams ServiceCreationParams) (result Provider, err error) {
 	if tracing.IsEnabled() {
@@ -53,8 +53,7 @@ func (client ProvidersClient) Create(ctx context.Context, resourceGroupName stri
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: creationParams,
 			Constraints: []validation.Constraint{{Target: "creationParams.Location", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "creationParams.Properties", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
@@ -144,8 +143,7 @@ func (client ProvidersClient) Delete(ctx context.Context, resourceGroupName stri
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("attestation.ProvidersClient", "Delete", err.Error())
 	}
 
@@ -212,7 +210,7 @@ func (client ProvidersClient) DeleteResponder(resp *http.Response) (result autor
 // Get get the status of Attestation Provider.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// providerName - name of the attestation service instance
+// providerName - name of the attestation provider.
 func (client ProvidersClient) Get(ctx context.Context, resourceGroupName string, providerName string) (result Provider, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ProvidersClient.Get")
@@ -229,8 +227,7 @@ func (client ProvidersClient) Get(ctx context.Context, resourceGroupName string,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("attestation.ProvidersClient", "Get", err.Error())
 	}
 
@@ -471,8 +468,7 @@ func (client ProvidersClient) ListByResourceGroup(ctx context.Context, resourceG
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("attestation.ProvidersClient", "ListByResourceGroup", err.Error())
@@ -618,7 +614,7 @@ func (client ProvidersClient) ListDefaultResponder(resp *http.Response) (result 
 // Update updates the Attestation Provider.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// providerName - name of the attestation service instance.
+// providerName - name of the attestation provider.
 // updateParams - client supplied parameters.
 func (client ProvidersClient) Update(ctx context.Context, resourceGroupName string, providerName string, updateParams ServicePatchParams) (result Provider, err error) {
 	if tracing.IsEnabled() {
@@ -636,8 +632,7 @@ func (client ProvidersClient) Update(ctx context.Context, resourceGroupName stri
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("attestation.ProvidersClient", "Update", err.Error())
 	}
 

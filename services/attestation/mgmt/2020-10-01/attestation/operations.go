@@ -15,7 +15,7 @@ import (
 )
 
 // OperationsClient is the various APIs for managing resources in attestation service. This primarily encompasses
-// per-tenant instance management.
+// per-provider management.
 type OperationsClient struct {
 	BaseClient
 }

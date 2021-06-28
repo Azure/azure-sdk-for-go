@@ -157,6 +157,120 @@ type OperationsDisplayDefinition struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// PrivateEndpoint the Private Endpoint resource.
+type PrivateEndpoint struct {
+	// ID - READ-ONLY; The ARM identifier for Private Endpoint
+	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpoint.
+func (peVar PrivateEndpoint) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// PrivateEndpointConnection the Private Endpoint Connection resource.
+type PrivateEndpointConnection struct {
+	autorest.Response `json:"-"`
+	// PrivateEndpointConnectionProperties - Resource properties.
+	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpointConnection.
+func (pec PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pec.PrivateEndpointConnectionProperties != nil {
+		objectMap["properties"] = pec.PrivateEndpointConnectionProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PrivateEndpointConnection struct.
+func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var privateEndpointConnectionProperties PrivateEndpointConnectionProperties
+				err = json.Unmarshal(*v, &privateEndpointConnectionProperties)
+				if err != nil {
+					return err
+				}
+				pec.PrivateEndpointConnectionProperties = &privateEndpointConnectionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pec.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pec.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pec.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// PrivateEndpointConnectionListResult list of private endpoint connection associated with the specified
+// storage account
+type PrivateEndpointConnectionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of private endpoint connections
+	Value *[]PrivateEndpointConnection `json:"value,omitempty"`
+}
+
+// PrivateEndpointConnectionProperties properties of the PrivateEndpointConnectProperties.
+type PrivateEndpointConnectionProperties struct {
+	// PrivateEndpoint - The resource of private end point.
+	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer and provider.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	// ProvisioningState - The provisioning state of the private endpoint connection resource. Possible values include: 'Succeeded', 'Creating', 'Deleting', 'Failed'
+	ProvisioningState PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// PrivateLinkServiceConnectionState a collection of information about the state of the connection between
+// service consumer and provider.
+type PrivateLinkServiceConnectionState struct {
+	// Status - Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service. Possible values include: 'Pending', 'Approved', 'Rejected'
+	Status PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+	// Description - The reason for approval/rejection of the connection.
+	Description *string `json:"description,omitempty"`
+	// ActionsRequired - A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
+}
+
 // Provider attestation service response message.
 type Provider struct {
 	autorest.Response `json:"-"`
@@ -320,13 +434,13 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServiceCreationParams parameters for creating an attestation service instance
+// ServiceCreationParams parameters for creating an attestation provider
 type ServiceCreationParams struct {
-	// Location - The supported Azure location where the attestation service instance should be created.
+	// Location - The supported Azure location where the attestation provider should be created.
 	Location *string `json:"location,omitempty"`
-	// Tags - The tags that will be assigned to the attestation service instance.
+	// Tags - The tags that will be assigned to the attestation provider.
 	Tags map[string]*string `json:"tags"`
-	// Properties - Properties of the attestation service instance
+	// Properties - Properties of the attestation provider
 	Properties *ServiceCreationSpecificParams `json:"properties,omitempty"`
 }
 
@@ -345,16 +459,15 @@ func (scp ServiceCreationParams) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ServiceCreationSpecificParams client supplied parameters used to create a new attestation service
-// instance.
+// ServiceCreationSpecificParams client supplied parameters used to create a new attestation provider.
 type ServiceCreationSpecificParams struct {
 	// PolicySigningCertificates - JSON Web Key Set defining a set of X.509 Certificates that will represent the parent certificate for the signing certificate used for policy operations
 	PolicySigningCertificates *JSONWebKeySet `json:"policySigningCertificates,omitempty"`
 }
 
-// ServicePatchParams parameters for patching an attestation service instance
+// ServicePatchParams parameters for patching an attestation provider
 type ServicePatchParams struct {
-	// Tags - The tags that will be assigned to the attestation service instance.
+	// Tags - The tags that will be assigned to the attestation provider.
 	Tags map[string]*string `json:"tags"`
 }
 
@@ -369,12 +482,29 @@ func (spp ServicePatchParams) MarshalJSON() ([]byte, error) {
 
 // StatusResult status of attestation service.
 type StatusResult struct {
-	// TrustModel - Trust model for the attestation service instance.
+	// TrustModel - Trust model for the attestation provider.
 	TrustModel *string `json:"trustModel,omitempty"`
 	// Status - Status of attestation service. Possible values include: 'Ready', 'NotReady', 'Error'
 	Status ServiceStatus `json:"status,omitempty"`
 	// AttestURI - Gets the uri of attestation service
 	AttestURI *string `json:"attestUri,omitempty"`
+	// PrivateEndpointConnections - READ-ONLY; List of private endpoint connections associated with the attestation provider.
+	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StatusResult.
+func (sr StatusResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sr.TrustModel != nil {
+		objectMap["trustModel"] = sr.TrustModel
+	}
+	if sr.Status != "" {
+		objectMap["status"] = sr.Status
+	}
+	if sr.AttestURI != nil {
+		objectMap["attestUri"] = sr.AttestURI
+	}
+	return json.Marshal(objectMap)
 }
 
 // SystemData metadata pertaining to creation and last modification of the resource.
@@ -389,7 +519,7 @@ type SystemData struct {
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
 	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
 	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
-	// LastModifiedAt - The type of identity that last modified the resource.
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
 	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 

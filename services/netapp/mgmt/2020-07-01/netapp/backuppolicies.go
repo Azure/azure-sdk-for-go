@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// BackupPoliciesClient is the microsoft NetApp Azure Resource Provider specification
+// BackupPoliciesClient is the microsoft NetApp Files Azure Resource Provider specification
 type BackupPoliciesClient struct {
 	BaseClient
 }

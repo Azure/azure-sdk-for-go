@@ -1,7 +1,6 @@
 // Package attestation implements the Azure ARM Attestation service API version 2020-10-01.
 //
-// Various APIs for managing resources in attestation service. This primarily encompasses per-tenant instance
-// management.
+// Various APIs for managing resources in attestation service. This primarily encompasses per-provider management.
 package attestation
 
 // Copyright (c) Microsoft Corporation. All rights reserved.

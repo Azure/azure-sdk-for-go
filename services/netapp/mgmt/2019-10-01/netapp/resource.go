@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// ResourceClient is the microsoft NetApp Azure Resource Provider specification
+// ResourceClient is the microsoft NetApp Files Azure Resource Provider specification
 type ResourceClient struct {
 	BaseClient
 }

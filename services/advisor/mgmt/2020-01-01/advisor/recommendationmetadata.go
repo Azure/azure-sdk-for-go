@@ -34,7 +34,7 @@ func NewRecommendationMetadataClientWithBaseURI(baseURI string, subscriptionID s
 // Get sends the get request.
 // Parameters:
 // name - name of metadata entity.
-func (client RecommendationMetadataClient) Get(ctx context.Context, name string) (result SetObject, err error) {
+func (client RecommendationMetadataClient) Get(ctx context.Context, name string) (result MetadataEntity, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/RecommendationMetadataClient.Get")
 		defer func() {
@@ -94,11 +94,11 @@ func (client RecommendationMetadataClient) GetSender(req *http.Request) (*http.R
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client RecommendationMetadataClient) GetResponder(resp *http.Response) (result SetObject, err error) {
+func (client RecommendationMetadataClient) GetResponder(resp *http.Response) (result MetadataEntity, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusNotFound),
-		autorest.ByUnmarshallingJSON(&result.Value),
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

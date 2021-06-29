@@ -53,6 +53,59 @@ func PossibleChargeTypeValues() []ChargeType {
 	return []ChargeType{ChargeTypeActual, ChargeTypeForecast}
 }
 
+// CultureCode enumerates the values for culture code.
+type CultureCode string
+
+const (
+	// CsCz ...
+	CsCz CultureCode = "cs-cz"
+	// DaDk ...
+	DaDk CultureCode = "da-dk"
+	// DeDe ...
+	DeDe CultureCode = "de-de"
+	// EnGb ...
+	EnGb CultureCode = "en-gb"
+	// EnUs ...
+	EnUs CultureCode = "en-us"
+	// EsEs ...
+	EsEs CultureCode = "es-es"
+	// FrFr ...
+	FrFr CultureCode = "fr-fr"
+	// HuHu ...
+	HuHu CultureCode = "hu-hu"
+	// ItIt ...
+	ItIt CultureCode = "it-it"
+	// JaJp ...
+	JaJp CultureCode = "ja-jp"
+	// KoKr ...
+	KoKr CultureCode = "ko-kr"
+	// NbNo ...
+	NbNo CultureCode = "nb-no"
+	// NlNl ...
+	NlNl CultureCode = "nl-nl"
+	// PlPl ...
+	PlPl CultureCode = "pl-pl"
+	// PtBr ...
+	PtBr CultureCode = "pt-br"
+	// PtPt ...
+	PtPt CultureCode = "pt-pt"
+	// RuRu ...
+	RuRu CultureCode = "ru-ru"
+	// SvSe ...
+	SvSe CultureCode = "sv-se"
+	// TrTr ...
+	TrTr CultureCode = "tr-tr"
+	// ZhCn ...
+	ZhCn CultureCode = "zh-cn"
+	// ZhTw ...
+	ZhTw CultureCode = "zh-tw"
+)
+
+// PossibleCultureCodeValues returns an array of possible values for the CultureCode const type.
+func PossibleCultureCodeValues() []CultureCode {
+	return []CultureCode{CsCz, DaDk, DeDe, EnGb, EnUs, EsEs, FrFr, HuHu, ItIt, JaJp, KoKr, NbNo, NlNl, PlPl, PtBr, PtPt, RuRu, SvSe, TrTr, ZhCn, ZhTw}
+}
+
 // Datagrain enumerates the values for datagrain.
 type Datagrain string
 
@@ -227,34 +280,34 @@ func PossibleOperatorTypeValues() []OperatorType {
 	return []OperatorType{EqualTo, GreaterThan, GreaterThanOrEqualTo}
 }
 
-// Scope11 enumerates the values for scope 11.
-type Scope11 string
+// Scope12 enumerates the values for scope 12.
+type Scope12 string
 
 const (
 	// Shared ...
-	Shared Scope11 = "Shared"
+	Shared Scope12 = "Shared"
 	// Single ...
-	Single Scope11 = "Single"
+	Single Scope12 = "Single"
 )
 
-// PossibleScope11Values returns an array of possible values for the Scope11 const type.
-func PossibleScope11Values() []Scope11 {
-	return []Scope11{Shared, Single}
+// PossibleScope12Values returns an array of possible values for the Scope12 const type.
+func PossibleScope12Values() []Scope12 {
+	return []Scope12{Shared, Single}
 }
 
-// Scope9 enumerates the values for scope 9.
-type Scope9 string
+// Scope14 enumerates the values for scope 14.
+type Scope14 string
 
 const (
-	// Scope9Shared ...
-	Scope9Shared Scope9 = "Shared"
-	// Scope9Single ...
-	Scope9Single Scope9 = "Single"
+	// Scope14Shared ...
+	Scope14Shared Scope14 = "Shared"
+	// Scope14Single ...
+	Scope14Single Scope14 = "Single"
 )
 
-// PossibleScope9Values returns an array of possible values for the Scope9 const type.
-func PossibleScope9Values() []Scope9 {
-	return []Scope9{Scope9Shared, Scope9Single}
+// PossibleScope14Values returns an array of possible values for the Scope14 const type.
+func PossibleScope14Values() []Scope14 {
+	return []Scope14{Scope14Shared, Scope14Single}
 }
 
 // Term enumerates the values for term.

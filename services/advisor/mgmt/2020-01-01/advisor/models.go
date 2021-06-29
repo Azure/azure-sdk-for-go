@@ -293,6 +293,7 @@ type DigestConfig struct {
 
 // MetadataEntity the metadata entity contract.
 type MetadataEntity struct {
+	autorest.Response `json:"-"`
 	// ID - The resource Id of the metadata entity.
 	ID *string `json:"id,omitempty"`
 	// Type - The type of the metadata entity.
@@ -756,6 +757,20 @@ type RecommendationProperties struct {
 	ExtendedProperties map[string]*string `json:"extendedProperties"`
 	// ResourceMetadata - Metadata of resource that was assessed
 	ResourceMetadata *ResourceMetadata `json:"resourceMetadata,omitempty"`
+	// Description - The detailed description of recommendation.
+	Description *string `json:"description,omitempty"`
+	// Label - The label of recommendation.
+	Label *string `json:"label,omitempty"`
+	// LearnMoreLink - The link to learn more about recommendation and generation logic.
+	LearnMoreLink *string `json:"learnMoreLink,omitempty"`
+	// PotentialBenefits - The potential benefit of implementing recommendation.
+	PotentialBenefits *string `json:"potentialBenefits,omitempty"`
+	// Actions - The list of recommended actions to implement recommendation.
+	Actions *[]map[string]interface{} `json:"actions,omitempty"`
+	// Remediation - The automated way to apply recommendation.
+	Remediation map[string]interface{} `json:"remediation"`
+	// ExposedMetadataProperties - The recommendation metadata properties exposed to customer to provide additional information.
+	ExposedMetadataProperties map[string]interface{} `json:"exposedMetadataProperties"`
 }
 
 // MarshalJSON is the custom marshaler for RecommendationProperties.
@@ -797,6 +812,27 @@ func (rp RecommendationProperties) MarshalJSON() ([]byte, error) {
 	if rp.ResourceMetadata != nil {
 		objectMap["resourceMetadata"] = rp.ResourceMetadata
 	}
+	if rp.Description != nil {
+		objectMap["description"] = rp.Description
+	}
+	if rp.Label != nil {
+		objectMap["label"] = rp.Label
+	}
+	if rp.LearnMoreLink != nil {
+		objectMap["learnMoreLink"] = rp.LearnMoreLink
+	}
+	if rp.PotentialBenefits != nil {
+		objectMap["potentialBenefits"] = rp.PotentialBenefits
+	}
+	if rp.Actions != nil {
+		objectMap["actions"] = rp.Actions
+	}
+	if rp.Remediation != nil {
+		objectMap["remediation"] = rp.Remediation
+	}
+	if rp.ExposedMetadataProperties != nil {
+		objectMap["exposedMetadataProperties"] = rp.ExposedMetadataProperties
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -822,6 +858,33 @@ type ResourceMetadata struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 	// Source - Source from which recommendation is generated
 	Source *string `json:"source,omitempty"`
+	// Action - The action to view resource.
+	Action map[string]interface{} `json:"action"`
+	// Singular - The singular user friendly name of resource type. eg: virtual machine
+	Singular *string `json:"singular,omitempty"`
+	// Plural - The plural user friendly name of resource type. eg: virtual machines
+	Plural *string `json:"plural,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceMetadata.
+func (rm ResourceMetadata) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rm.ResourceID != nil {
+		objectMap["resourceId"] = rm.ResourceID
+	}
+	if rm.Source != nil {
+		objectMap["source"] = rm.Source
+	}
+	if rm.Action != nil {
+		objectMap["action"] = rm.Action
+	}
+	if rm.Singular != nil {
+		objectMap["singular"] = rm.Singular
+	}
+	if rm.Plural != nil {
+		objectMap["plural"] = rm.Plural
+	}
+	return json.Marshal(objectMap)
 }
 
 // ResourceRecommendationBase advisor Recommendation.
@@ -1055,12 +1118,6 @@ func NewResourceRecommendationBaseListResultPage(cur ResourceRecommendationBaseL
 		fn:    getNextPage,
 		rrblr: cur,
 	}
-}
-
-// SetObject ...
-type SetObject struct {
-	autorest.Response `json:"-"`
-	Value             interface{} `json:"value,omitempty"`
 }
 
 // ShortDescription a summary of the recommendation.

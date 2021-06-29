@@ -2,12 +2,12 @@
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/azidentity)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity)
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/go%20-%20azidentity?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=1846&branchName=master)
-[![Code Coverage](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1846/master)](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1846/master)
+[![Code Coverage](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1846/master)](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1846/main)
 
 The `azidentity` module provides a set of credential types for use with
 Azure SDK clients that support Azure Active Directory (AAD) token authentication.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/azidentity)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity)
 | [Azure Active Directory documentation](https://docs.microsoft.com/azure/active-directory/)
 
 # Getting started
@@ -67,7 +67,7 @@ The `DefaultAzureCredential` is appropriate for most scenarios where the applica
 > Note: `DefaultAzureCredential` is intended to simplify getting started with the SDK by handling common scenarios with reasonable default behaviors. Developers who want more control or whose scenario isn't served by the default settings should use other credential types.
 
  The `DefaultAzureCredential` will attempt to authenticate via the following mechanisms in order.
- 
+
 ![DefaultAzureCredential authentication flow](img/DAC_flow.PNG)
 
  - Environment - The `DefaultAzureCredential` will read account information specified via [environment variables](#environment-variables) and use it to authenticate.
@@ -76,10 +76,10 @@ The `DefaultAzureCredential` is appropriate for most scenarios where the applica
 
 
 ## Examples
-You can find more examples of using various credentials in [Azure Identity Examples Wiki page](https://github.com/Azure/azure-sdk-for-go/wiki/Azure-Identity-Examples). 
+You can find more examples of using various credentials in [Azure Identity Examples Wiki page](https://github.com/Azure/azure-sdk-for-go/wiki/Azure-Identity-Examples).
 
 ### Authenticating with `DefaultAzureCredential`
-This example demonstrates authenticating the `ResourcesClient` from the [armresources][armresources_library] module using `DefaultAzureCredential`. 
+This example demonstrates authenticating the `ResourcesClient` from the [armresources][armresources_library] module using `DefaultAzureCredential`.
 
 ```go
 // The default credential checks environment variables for configuration.
@@ -183,7 +183,7 @@ client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, nil
 
 ## Environment Variables
 
-DefaultAzureCredential] and 
+DefaultAzureCredential] and
 EnvironmentCredential can be configured with
 environment variables. Each type of authentication requires values for specific
 variables:
@@ -242,7 +242,7 @@ To obtain more detailed logging, including request/response bodies and header va
 azcore.Log().SetListener(func(cls LogClassification, s string) {
 		fmt.Println(s) // printing log out to the console
   })
-  
+
 // Include only azidentity credential logs
 azcore.Log().SetClassifications(azidentity.LogCredential)
 ```
@@ -279,7 +279,7 @@ or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[armresources_library]: https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/resources/armresources
-[azblob]: https://github.com/Azure/azure-sdk-for-go/tree/master/sdk
+[armresources_library]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resources/armresources
+[azblob]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fidentity%2Fazure-identity%2FREADME.png)

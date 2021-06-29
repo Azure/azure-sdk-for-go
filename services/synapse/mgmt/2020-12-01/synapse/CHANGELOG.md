@@ -1,59 +1,50 @@
-# Change History
+# Unreleased
 
 ## Additive Changes
 
+### New Constants
+
+1. NodeSizeFamily.NodeSizeFamilyHardwareAcceleratedFPGA
+1. NodeSizeFamily.NodeSizeFamilyHardwareAcceleratedGPU
+
 ### New Funcs
 
-1. AzureEntityResource.MarshalJSON() ([]byte, error)
-1. DataWarehouseUserActivitiesProperties.MarshalJSON() ([]byte, error)
-1. EncryptionProtectorListResult.MarshalJSON() ([]byte, error)
-1. ErrorAdditionalInfo.MarshalJSON() ([]byte, error)
-1. ErrorDetail.MarshalJSON() ([]byte, error)
-1. ExtendedSQLPoolBlobAuditingPolicyListResult.MarshalJSON() ([]byte, error)
-1. ExtendedServerBlobAuditingPolicyListResult.MarshalJSON() ([]byte, error)
-1. IntegrationRuntimeNodeIPAddress.MarshalJSON() ([]byte, error)
-1. LinkedIntegrationRuntime.MarshalJSON() ([]byte, error)
-1. ListSQLPoolSecurityAlertPolicies.MarshalJSON() ([]byte, error)
-1. ManagedIntegrationRuntimeError.MarshalJSON() ([]byte, error)
-1. ManagedIntegrationRuntimeOperationResult.MarshalJSON() ([]byte, error)
-1. ManagedIntegrationRuntimeStatusTypeProperties.MarshalJSON() ([]byte, error)
-1. PrivateEndpoint.MarshalJSON() ([]byte, error)
-1. PrivateEndpointConnectionList.MarshalJSON() ([]byte, error)
-1. PrivateLinkResource.MarshalJSON() ([]byte, error)
-1. PrivateLinkResourceListResult.MarshalJSON() ([]byte, error)
-1. PrivateLinkResourceProperties.MarshalJSON() ([]byte, error)
-1. ProxyResource.MarshalJSON() ([]byte, error)
-1. QueryInterval.MarshalJSON() ([]byte, error)
-1. QueryMetric.MarshalJSON() ([]byte, error)
-1. QueryStatistic.MarshalJSON() ([]byte, error)
-1. RecoverableSQLPoolListResult.MarshalJSON() ([]byte, error)
-1. RecoverableSQLPoolProperties.MarshalJSON() ([]byte, error)
-1. ReplicationLinkProperties.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
-1. RestorableDroppedSQLPoolProperties.MarshalJSON() ([]byte, error)
-1. RestorePointListResult.MarshalJSON() ([]byte, error)
-1. RestorePointProperties.MarshalJSON() ([]byte, error)
-1. SQLPoolBlobAuditingPolicyListResult.MarshalJSON() ([]byte, error)
-1. SQLPoolBlobAuditingPolicySQLPoolOperationListResult.MarshalJSON() ([]byte, error)
-1. SQLPoolColumnListResult.MarshalJSON() ([]byte, error)
-1. SQLPoolOperationProperties.MarshalJSON() ([]byte, error)
-1. SQLPoolSchema.MarshalJSON() ([]byte, error)
-1. SQLPoolSchemaListResult.MarshalJSON() ([]byte, error)
-1. SQLPoolTable.MarshalJSON() ([]byte, error)
-1. SQLPoolTableListResult.MarshalJSON() ([]byte, error)
-1. SQLPoolUsage.MarshalJSON() ([]byte, error)
-1. SQLPoolVulnerabilityAssessmentListResult.MarshalJSON() ([]byte, error)
-1. SQLPoolVulnerabilityAssessmentScanExportProperties.MarshalJSON() ([]byte, error)
-1. SensitivityLabelListResult.MarshalJSON() ([]byte, error)
-1. ServerBlobAuditingPolicyListResult.MarshalJSON() ([]byte, error)
-1. ServerSecurityAlertPolicyListResult.MarshalJSON() ([]byte, error)
-1. ServerUsage.MarshalJSON() ([]byte, error)
-1. ServerVulnerabilityAssessmentListResult.MarshalJSON() ([]byte, error)
-1. SubResource.MarshalJSON() ([]byte, error)
-1. TopQueries.MarshalJSON() ([]byte, error)
-1. TransparentDataEncryptionListResult.MarshalJSON() ([]byte, error)
-1. VulnerabilityAssessmentScanError.MarshalJSON() ([]byte, error)
-1. VulnerabilityAssessmentScanRecordListResult.MarshalJSON() ([]byte, error)
-1. VulnerabilityAssessmentScanRecordProperties.MarshalJSON() ([]byte, error)
-1. WorkloadClassifierListResult.MarshalJSON() ([]byte, error)
-1. WorkloadGroupListResult.MarshalJSON() ([]byte, error)
+1. *LibraryListResponseIterator.Next() error
+1. *LibraryListResponseIterator.NextWithContext(context.Context) error
+1. *LibraryListResponsePage.Next() error
+1. *LibraryListResponsePage.NextWithContext(context.Context) error
+1. *LibraryResource.UnmarshalJSON([]byte) error
+1. LibrariesClient.ListByWorkspace(context.Context, string, string) (LibraryListResponsePage, error)
+1. LibrariesClient.ListByWorkspaceComplete(context.Context, string, string) (LibraryListResponseIterator, error)
+1. LibrariesClient.ListByWorkspacePreparer(context.Context, string, string) (*http.Request, error)
+1. LibrariesClient.ListByWorkspaceResponder(*http.Response) (LibraryListResponse, error)
+1. LibrariesClient.ListByWorkspaceSender(*http.Request) (*http.Response, error)
+1. LibraryClient.Get(context.Context, string, string, string) (LibraryResource, error)
+1. LibraryClient.GetPreparer(context.Context, string, string, string) (*http.Request, error)
+1. LibraryClient.GetResponder(*http.Response) (LibraryResource, error)
+1. LibraryClient.GetSender(*http.Request) (*http.Response, error)
+1. LibraryListResponse.IsEmpty() bool
+1. LibraryListResponseIterator.NotDone() bool
+1. LibraryListResponseIterator.Response() LibraryListResponse
+1. LibraryListResponseIterator.Value() LibraryResource
+1. LibraryListResponsePage.NotDone() bool
+1. LibraryListResponsePage.Response() LibraryListResponse
+1. LibraryListResponsePage.Values() []LibraryResource
+1. LibraryResource.MarshalJSON() ([]byte, error)
+1. NewLibrariesClient(string) LibrariesClient
+1. NewLibrariesClientWithBaseURI(string, string) LibrariesClient
+1. NewLibraryClient(string) LibraryClient
+1. NewLibraryClientWithBaseURI(string, string) LibraryClient
+1. NewLibraryListResponseIterator(LibraryListResponsePage) LibraryListResponseIterator
+1. NewLibraryListResponsePage(LibraryListResponse, func(context.Context, LibraryListResponse) (LibraryListResponse, error)) LibraryListResponsePage
+
+### Struct Changes
+
+#### New Structs
+
+1. LibrariesClient
+1. LibraryClient
+1. LibraryListResponse
+1. LibraryListResponseIterator
+1. LibraryListResponsePage
+1. LibraryResource

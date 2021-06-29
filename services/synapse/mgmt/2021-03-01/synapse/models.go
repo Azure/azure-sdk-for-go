@@ -486,7 +486,7 @@ type BigDataPoolResourceProperties struct {
 	DefaultSparkLogFolder *string `json:"defaultSparkLogFolder,omitempty"`
 	// NodeSize - The level of compute power that each node in the Big Data pool has. Possible values include: 'NodeSizeNone', 'NodeSizeSmall', 'NodeSizeMedium', 'NodeSizeLarge', 'NodeSizeXLarge', 'NodeSizeXXLarge', 'NodeSizeXXXLarge'
 	NodeSize NodeSize `json:"nodeSize,omitempty"`
-	// NodeSizeFamily - The kind of nodes that the Big Data pool provides. Possible values include: 'NodeSizeFamilyNone', 'NodeSizeFamilyMemoryOptimized'
+	// NodeSizeFamily - The kind of nodes that the Big Data pool provides. Possible values include: 'NodeSizeFamilyNone', 'NodeSizeFamilyMemoryOptimized', 'NodeSizeFamilyHardwareAcceleratedFPGA', 'NodeSizeFamilyHardwareAcceleratedGPU'
 	NodeSizeFamily NodeSizeFamily `json:"nodeSizeFamily,omitempty"`
 	// LastSucceededTimestamp - READ-ONLY; The time when the Big Data pool was updated successfully.
 	LastSucceededTimestamp *date.Time `json:"lastSucceededTimestamp,omitempty"`
@@ -15947,7 +15947,7 @@ type WorkspacePatchProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 	// Encryption - The encryption details of the workspace
 	Encryption *EncryptionDetails `json:"encryption,omitempty"`
-	// PublicNetworkAccess - Enable or Disable pubic network access to workspace. Possible values include: 'WorkspacePublicNetworkAccessEnabled', 'WorkspacePublicNetworkAccessDisabled'
+	// PublicNetworkAccess - Enable or Disable public network access to workspace. Possible values include: 'WorkspacePublicNetworkAccessEnabled', 'WorkspacePublicNetworkAccessDisabled'
 	PublicNetworkAccess WorkspacePublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 }
 
@@ -16009,7 +16009,7 @@ type WorkspaceProperties struct {
 	PurviewConfiguration *PurviewConfiguration `json:"purviewConfiguration,omitempty"`
 	// AdlaResourceID - READ-ONLY; The ADLA resource ID.
 	AdlaResourceID *string `json:"adlaResourceId,omitempty"`
-	// PublicNetworkAccess - Enable or Disable pubic network access to workspace. Possible values include: 'WorkspacePublicNetworkAccessEnabled', 'WorkspacePublicNetworkAccessDisabled'
+	// PublicNetworkAccess - Enable or Disable public network access to workspace. Possible values include: 'WorkspacePublicNetworkAccessEnabled', 'WorkspacePublicNetworkAccessDisabled'
 	PublicNetworkAccess WorkspacePublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 }
 

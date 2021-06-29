@@ -77,6 +77,7 @@ var _ SQLPoolOperationResultsClientAPI = (*synapse.SQLPoolOperationResultsClient
 
 // SQLPoolGeoBackupPoliciesClientAPI contains the set of methods on the SQLPoolGeoBackupPoliciesClient type.
 type SQLPoolGeoBackupPoliciesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters synapse.GeoBackupPolicy) (result synapse.GeoBackupPolicy, err error)
 	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.GeoBackupPolicy, err error)
 	List(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.GeoBackupPolicyListResult, err error)
 }
@@ -109,6 +110,21 @@ type SQLPoolReplicationLinksClientAPI interface {
 }
 
 var _ SQLPoolReplicationLinksClientAPI = (*synapse.SQLPoolReplicationLinksClient)(nil)
+
+// SQLPoolMaintenanceWindowsClientAPI contains the set of methods on the SQLPoolMaintenanceWindowsClient type.
+type SQLPoolMaintenanceWindowsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, maintenanceWindowName string, parameters synapse.MaintenanceWindows) (result autorest.Response, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, maintenanceWindowName string) (result synapse.MaintenanceWindows, err error)
+}
+
+var _ SQLPoolMaintenanceWindowsClientAPI = (*synapse.SQLPoolMaintenanceWindowsClient)(nil)
+
+// SQLPoolMaintenanceWindowOptionsClientAPI contains the set of methods on the SQLPoolMaintenanceWindowOptionsClient type.
+type SQLPoolMaintenanceWindowOptionsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, maintenanceWindowOptionsName string) (result synapse.MaintenanceWindowOptions, err error)
+}
+
+var _ SQLPoolMaintenanceWindowOptionsClientAPI = (*synapse.SQLPoolMaintenanceWindowOptionsClient)(nil)
 
 // SQLPoolTransparentDataEncryptionsClientAPI contains the set of methods on the SQLPoolTransparentDataEncryptionsClient type.
 type SQLPoolTransparentDataEncryptionsClientAPI interface {
@@ -157,9 +173,17 @@ type SQLPoolSensitivityLabelsClientAPI interface {
 	ListCurrentComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, filter string) (result synapse.SensitivityLabelListResultIterator, err error)
 	ListRecommended(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, includeDisabledRecommendations *bool, skipToken string, filter string) (result synapse.SensitivityLabelListResultPage, err error)
 	ListRecommendedComplete(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, includeDisabledRecommendations *bool, skipToken string, filter string) (result synapse.SensitivityLabelListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters synapse.SensitivityLabelUpdateList) (result autorest.Response, err error)
 }
 
 var _ SQLPoolSensitivityLabelsClientAPI = (*synapse.SQLPoolSensitivityLabelsClient)(nil)
+
+// SQLPoolRecommendedSensitivityLabelsClientAPI contains the set of methods on the SQLPoolRecommendedSensitivityLabelsClient type.
+type SQLPoolRecommendedSensitivityLabelsClientAPI interface {
+	Update(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, parameters synapse.RecommendedSensitivityLabelUpdateList) (result autorest.Response, err error)
+}
+
+var _ SQLPoolRecommendedSensitivityLabelsClientAPI = (*synapse.SQLPoolRecommendedSensitivityLabelsClient)(nil)
 
 // SQLPoolSchemasClientAPI contains the set of methods on the SQLPoolSchemasClient type.
 type SQLPoolSchemasClientAPI interface {
@@ -256,6 +280,7 @@ var _ DataMaskingPoliciesClientAPI = (*synapse.DataMaskingPoliciesClient)(nil)
 // DataMaskingRulesClientAPI contains the set of methods on the DataMaskingRulesClient type.
 type DataMaskingRulesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, dataMaskingRuleName string, parameters synapse.DataMaskingRule) (result synapse.DataMaskingRule, err error)
+	Get(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string, dataMaskingRuleName string) (result synapse.DataMaskingRule, err error)
 	ListBySQLPool(ctx context.Context, resourceGroupName string, workspaceName string, SQLPoolName string) (result synapse.DataMaskingRuleListResult, err error)
 }
 
@@ -423,6 +448,15 @@ type PrivateLinkResourcesClientAPI interface {
 }
 
 var _ PrivateLinkResourcesClientAPI = (*synapse.PrivateLinkResourcesClient)(nil)
+
+// PrivateLinkHubPrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkHubPrivateLinkResourcesClient type.
+type PrivateLinkHubPrivateLinkResourcesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, privateLinkHubName string, privateLinkResourceName string) (result synapse.PrivateLinkResource, err error)
+	List(ctx context.Context, resourceGroupName string, privateLinkHubName string) (result synapse.PrivateLinkResourceListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, privateLinkHubName string) (result synapse.PrivateLinkResourceListResultIterator, err error)
+}
+
+var _ PrivateLinkHubPrivateLinkResourcesClientAPI = (*synapse.PrivateLinkHubPrivateLinkResourcesClient)(nil)
 
 // PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
 type PrivateEndpointConnectionsClientAPI interface {

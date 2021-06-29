@@ -129,6 +129,20 @@ type BookmarkClientAPI interface {
 
 var _ BookmarkClientAPI = (*securityinsight.BookmarkClient)(nil)
 
+// IPGeodataClientAPI contains the set of methods on the IPGeodataClient type.
+type IPGeodataClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, IPAddress string) (result securityinsight.EnrichmentIPGeodata, err error)
+}
+
+var _ IPGeodataClientAPI = (*securityinsight.IPGeodataClient)(nil)
+
+// DomainWhoisClientAPI contains the set of methods on the DomainWhoisClient type.
+type DomainWhoisClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, domain string) (result securityinsight.EnrichmentDomainWhois, err error)
+}
+
+var _ DomainWhoisClientAPI = (*securityinsight.DomainWhoisClient)(nil)
+
 // DataConnectorsClientAPI contains the set of methods on the DataConnectorsClient type.
 type DataConnectorsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, operationalInsightsResourceProvider string, workspaceName string, dataConnectorID string, dataConnector securityinsight.BasicDataConnector) (result securityinsight.DataConnectorModel, err error)

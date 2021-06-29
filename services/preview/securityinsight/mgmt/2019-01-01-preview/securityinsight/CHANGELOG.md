@@ -1,39 +1,31 @@
-# Change History
-
-## Breaking Changes
-
-### Removed Constants
-
-1. ActionType.ActionTypeActionTypeAutomationRuleAction
-1. ActionType.ActionTypeActionTypeModifyProperties
-1. ActionType.ActionTypeActionTypeRunPlaybook
-1. ConditionType.ConditionTypeConditionTypeAutomationRuleCondition
-1. ConditionType.ConditionTypeConditionTypeProperty
-1. Kind.KindKindAggregations
-1. Kind.KindKindCasesAggregation
+# Unreleased
 
 ## Additive Changes
 
-### New Constants
-
-1. ActionType.ActionTypeAutomationRuleAction
-1. ActionType.ActionTypeModifyProperties
-1. ActionType.ActionTypeRunPlaybook
-1. ConditionType.ConditionTypeAutomationRuleCondition
-1. ConditionType.ConditionTypeProperty
-1. Kind.KindAggregations
-1. Kind.KindCasesAggregation
-
 ### New Funcs
 
-1. CasesAggregationBySeverityProperties.MarshalJSON() ([]byte, error)
-1. CasesAggregationByStatusProperties.MarshalJSON() ([]byte, error)
-1. CloudErrorBody.MarshalJSON() ([]byte, error)
-1. EntityAnalyticsProperties.MarshalJSON() ([]byte, error)
-1. EyesOnSettingsProperties.MarshalJSON() ([]byte, error)
-1. GeoLocation.MarshalJSON() ([]byte, error)
-1. IPSyncerSettingsProperties.MarshalJSON() ([]byte, error)
-1. IncidentAdditionalData.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
-1. SecurityAlertPropertiesConfidenceReasonsItem.MarshalJSON() ([]byte, error)
-1. ThreatIntelligence.MarshalJSON() ([]byte, error)
+1. DomainWhoisClient.Get(context.Context, string, string) (EnrichmentDomainWhois, error)
+1. DomainWhoisClient.GetPreparer(context.Context, string, string) (*http.Request, error)
+1. DomainWhoisClient.GetResponder(*http.Response) (EnrichmentDomainWhois, error)
+1. DomainWhoisClient.GetSender(*http.Request) (*http.Response, error)
+1. IPGeodataClient.Get(context.Context, string, string) (EnrichmentIPGeodata, error)
+1. IPGeodataClient.GetPreparer(context.Context, string, string) (*http.Request, error)
+1. IPGeodataClient.GetResponder(*http.Response) (EnrichmentIPGeodata, error)
+1. IPGeodataClient.GetSender(*http.Request) (*http.Response, error)
+1. NewDomainWhoisClient(string) DomainWhoisClient
+1. NewDomainWhoisClientWithBaseURI(string, string) DomainWhoisClient
+1. NewIPGeodataClient(string) IPGeodataClient
+1. NewIPGeodataClientWithBaseURI(string, string) IPGeodataClient
+
+### Struct Changes
+
+#### New Structs
+
+1. DomainWhoisClient
+1. EnrichmentDomainWhois
+1. EnrichmentDomainWhoisContact
+1. EnrichmentDomainWhoisContacts
+1. EnrichmentDomainWhoisDetails
+1. EnrichmentDomainWhoisRegistrarDetails
+1. EnrichmentIPGeodata
+1. IPGeodataClient

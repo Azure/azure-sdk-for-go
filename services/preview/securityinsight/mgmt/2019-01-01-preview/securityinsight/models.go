@@ -6711,6 +6711,126 @@ type Dynamics365DataConnectorProperties struct {
 	TenantID *string `json:"tenantId,omitempty"`
 }
 
+// EnrichmentDomainWhois whois information for a given domain and associated metadata
+type EnrichmentDomainWhois struct {
+	autorest.Response `json:"-"`
+	// Domain - The domain for this whois record
+	Domain *string `json:"domain,omitempty"`
+	// Server - The hostname of this registrar's whois server
+	Server *string `json:"server,omitempty"`
+	// Created - The timestamp at which this record was created
+	Created *date.Time `json:"created,omitempty"`
+	// Updated - The timestamp at which this record was last updated
+	Updated *date.Time `json:"updated,omitempty"`
+	// Expires - The timestamp at which this record will expire
+	Expires *date.Time `json:"expires,omitempty"`
+	// ParsedWhois - The whois record for a given domain
+	ParsedWhois *EnrichmentDomainWhoisDetails `json:"parsedWhois,omitempty"`
+}
+
+// EnrichmentDomainWhoisContact an individual contact associated with this domain
+type EnrichmentDomainWhoisContact struct {
+	// Name - The name of this contact
+	Name *string `json:"name,omitempty"`
+	// Org - The organization for this contact
+	Org *string `json:"org,omitempty"`
+	// Street - A list describing the street address for this contact
+	Street *[]string `json:"street,omitempty"`
+	// City - The city for this contact
+	City *string `json:"city,omitempty"`
+	// State - The state for this contact
+	State *string `json:"state,omitempty"`
+	// Postal - The postal code for this contact
+	Postal *string `json:"postal,omitempty"`
+	// Country - The country for this contact
+	Country *string `json:"country,omitempty"`
+	// Phone - The phone number for this contact
+	Phone *string `json:"phone,omitempty"`
+	// Fax - The fax number for this contact
+	Fax *string `json:"fax,omitempty"`
+	// Email - The email address for this contact
+	Email *string `json:"email,omitempty"`
+}
+
+// EnrichmentDomainWhoisContacts the set of contacts associated with this domain
+type EnrichmentDomainWhoisContacts struct {
+	// Admin - The admin contact for this whois record
+	Admin *EnrichmentDomainWhoisContact `json:"admin,omitempty"`
+	// Billing - The billing contact for this whois record
+	Billing *EnrichmentDomainWhoisContact `json:"billing,omitempty"`
+	// Registrant - The registrant contact for this whois record
+	Registrant *EnrichmentDomainWhoisContact `json:"registrant,omitempty"`
+	// Tech - The technical contact for this whois record
+	Tech *EnrichmentDomainWhoisContact `json:"tech,omitempty"`
+}
+
+// EnrichmentDomainWhoisDetails the whois record for a given domain
+type EnrichmentDomainWhoisDetails struct {
+	// Registrar - The registrar associated with this domain
+	Registrar *EnrichmentDomainWhoisRegistrarDetails `json:"registrar,omitempty"`
+	// Contacts - The set of contacts associated with this domain
+	Contacts *EnrichmentDomainWhoisContacts `json:"contacts,omitempty"`
+	// NameServers - A list of name servers associated with this domain
+	NameServers *[]string `json:"nameServers,omitempty"`
+	// Statuses - The set of status flags for this whois record
+	Statuses *[]string `json:"statuses,omitempty"`
+}
+
+// EnrichmentDomainWhoisRegistrarDetails the registrar associated with this domain
+type EnrichmentDomainWhoisRegistrarDetails struct {
+	// Name - The name of this registrar
+	Name *string `json:"name,omitempty"`
+	// AbuseContactEmail - This registrar's abuse contact email
+	AbuseContactEmail *string `json:"abuseContactEmail,omitempty"`
+	// AbuseContactPhone - This registrar's abuse contact phone number
+	AbuseContactPhone *string `json:"abuseContactPhone,omitempty"`
+	// IanaID - This registrar's Internet Assigned Numbers Authority id
+	IanaID *string `json:"ianaId,omitempty"`
+	// URL - This registrar's URL
+	URL *string `json:"url,omitempty"`
+	// WhoisServer - The hostname of this registrar's whois server
+	WhoisServer *string `json:"whoisServer,omitempty"`
+}
+
+// EnrichmentIPGeodata geodata information for a given IP address
+type EnrichmentIPGeodata struct {
+	autorest.Response `json:"-"`
+	// Asn - The autonomous system number associated with this IP address
+	Asn *string `json:"asn,omitempty"`
+	// Carrier - The name of the carrier for this IP address
+	Carrier *string `json:"carrier,omitempty"`
+	// City - The city this IP address is located in
+	City *string `json:"city,omitempty"`
+	// CityCf - A numeric rating of confidence that the value in the 'city' field is correct, on a scale of 0-100
+	CityCf *int32 `json:"cityCf,omitempty"`
+	// Continent - The continent this IP address is located on
+	Continent *string `json:"continent,omitempty"`
+	// Country - The county this IP address is located in
+	Country *string `json:"country,omitempty"`
+	// CountryCf - A numeric rating of confidence that the value in the 'country' field is correct on a scale of 0-100
+	CountryCf *int32 `json:"countryCf,omitempty"`
+	// IPAddr - The dotted-decimal or colon-separated string representation of the IP address
+	IPAddr *string `json:"ipAddr,omitempty"`
+	// IPRoutingType - A description of the connection type of this IP address
+	IPRoutingType *string `json:"ipRoutingType,omitempty"`
+	// Latitude - The latitude of this IP address
+	Latitude *string `json:"latitude,omitempty"`
+	// Longitude - The longitude of this IP address
+	Longitude *string `json:"longitude,omitempty"`
+	// Organization - The name of the organization for this IP address
+	Organization *string `json:"organization,omitempty"`
+	// OrganizationType - The type of the organization for this IP address
+	OrganizationType *string `json:"organizationType,omitempty"`
+	// Region - The geographic region this IP address is located in
+	Region *string `json:"region,omitempty"`
+	// State - The state this IP address is located in
+	State *string `json:"state,omitempty"`
+	// StateCf - A numeric rating of confidence that the value in the 'state' field is correct on a scale of 0-100
+	StateCf *int32 `json:"stateCf,omitempty"`
+	// StateCode - The abbreviated name for the state this IP address is located in
+	StateCode *string `json:"stateCode,omitempty"`
+}
+
 // BasicEntity specific entity.
 type BasicEntity interface {
 	AsAccountEntity() (*AccountEntity, bool)

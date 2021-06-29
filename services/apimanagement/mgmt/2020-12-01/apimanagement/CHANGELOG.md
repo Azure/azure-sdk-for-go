@@ -1,27 +1,44 @@
-# Change History
+# Unreleased
+
+## Breaking Changes
+
+### Struct Changes
+
+#### Removed Struct Fields
+
+1. OperationResultContract.ActionLog
+1. OperationResultContract.Error
+1. OperationResultContract.ResultInfo
+1. OperationResultContract.Started
+1. OperationResultContract.Status
+1. OperationResultContract.Updated
+1. TenantConfigurationSyncStateContract.Branch
+1. TenantConfigurationSyncStateContract.CommitID
+1. TenantConfigurationSyncStateContract.ConfigurationChangeDate
+1. TenantConfigurationSyncStateContract.IsExport
+1. TenantConfigurationSyncStateContract.IsGitEnabled
+1. TenantConfigurationSyncStateContract.IsSynced
+1. TenantConfigurationSyncStateContract.SyncDate
 
 ## Additive Changes
 
 ### New Funcs
 
-1. APIRevisionContract.MarshalJSON() ([]byte, error)
-1. ContentItemCollection.MarshalJSON() ([]byte, error)
-1. ContentTypeCollection.MarshalJSON() ([]byte, error)
-1. DeletedServicesCollection.MarshalJSON() ([]byte, error)
-1. GatewayCertificateAuthorityCollection.MarshalJSON() ([]byte, error)
-1. GatewayHostnameConfigurationCollection.MarshalJSON() ([]byte, error)
-1. PolicyDescriptionContractProperties.MarshalJSON() ([]byte, error)
-1. PortalRevisionCollection.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
-1. ResourceSkuCapacity.MarshalJSON() ([]byte, error)
-1. ResourceSkuResult.MarshalJSON() ([]byte, error)
-1. ServiceGetDomainOwnershipIdentifierResult.MarshalJSON() ([]byte, error)
-1. Sku.MarshalJSON() ([]byte, error)
-1. SkuCapabilities.MarshalJSON() ([]byte, error)
-1. SkuCapacity.MarshalJSON() ([]byte, error)
-1. SkuCosts.MarshalJSON() ([]byte, error)
-1. SkuLocationInfo.MarshalJSON() ([]byte, error)
-1. SkuRestrictionInfo.MarshalJSON() ([]byte, error)
-1. SkuRestrictions.MarshalJSON() ([]byte, error)
-1. SkuZoneDetails.MarshalJSON() ([]byte, error)
-1. TenantSettingsCollection.MarshalJSON() ([]byte, error)
+1. *OperationResultContract.UnmarshalJSON([]byte) error
+1. *TenantConfigurationSyncStateContract.UnmarshalJSON([]byte) error
+1. OperationResultContractProperties.MarshalJSON() ([]byte, error)
+1. TenantConfigurationSyncStateContract.MarshalJSON() ([]byte, error)
+
+### Struct Changes
+
+#### New Structs
+
+1. OperationResultContractProperties
+1. TenantConfigurationSyncStateContractProperties
+
+#### New Struct Fields
+
+1. OperationResultContract.*OperationResultContractProperties
+1. OperationResultContract.Name
+1. OperationResultContract.Type
+1. TenantConfigurationSyncStateContract.*TenantConfigurationSyncStateContractProperties

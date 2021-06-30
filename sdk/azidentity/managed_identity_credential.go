@@ -72,7 +72,7 @@ func NewManagedIdentityCredential(id string, options *ManagedIdentityCredentialO
 	client.msiType = msiType
 	// check if no clientID is specified then check if it exists in an environment variable
 	if len(id) == 0 {
-		if options.ID == 1 {
+		if options.ID == ResourceID {
 			id = os.Getenv("AZURE_RESOURCE_ID")
 		} else {
 			id = os.Getenv("AZURE_CLIENT_ID")

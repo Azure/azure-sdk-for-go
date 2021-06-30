@@ -6637,7 +6637,7 @@ func (future *LiveEventsUpdateFuture) result(client LiveEventsClient) (le LiveEv
 // LiveEventTranscription describes the transcription tracks in the output of a Live Event, generated using
 // speech-to-text transcription.
 type LiveEventTranscription struct {
-	// Language - Specifies the language (locale) used for speech-to-text transcription � it should match the spoken language in the audio track. The value should be in BCP-47 format of 'language tag-region' (e.g: 'en-US'). The list of supported languages are 'en-US' and 'en-GB'.
+	// Language - Specifies the language (locale) used for speech-to-text transcription - it should match the spoken language in the audio track. The value should be in BCP-47 format of 'language tag-region' (e.g: 'en-US'). The list of supported languages are 'en-US' and 'en-GB'.
 	Language *string `json:"language,omitempty"`
 	// InputTrackSelection - Provides a mechanism to select the audio track in the input live feed, to which speech-to-text transcription is applied.
 	InputTrackSelection *[]LiveEventInputTrackSelection `json:"inputTrackSelection,omitempty"`

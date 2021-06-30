@@ -34,6 +34,12 @@ type AzureAsyncOperationResult struct {
 	Error *Error `json:"error,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureAsyncOperationResult.
+func (aaor AzureAsyncOperationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CreateFuture struct {
 	azure.FutureAPI
@@ -125,6 +131,12 @@ type DataLakeStoreAccountListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Count - READ-ONLY; the total count of results that are available, but might not be returned in the current page.
 	Count *int64 `json:"count,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataLakeStoreAccountListResult.
+func (dlsalr DataLakeStoreAccountListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DataLakeStoreAccountListResultIterator provides access to a complete listing of DataLakeStoreAccount
@@ -327,6 +339,12 @@ type DataLakeStoreFirewallRuleListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 	// Count - READ-ONLY; the total count of results that are available, but might not be returned in the current page.
 	Count *int64 `json:"count,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DataLakeStoreFirewallRuleListResult.
+func (dlsfrlr DataLakeStoreFirewallRuleListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DataLakeStoreFirewallRuleListResultIterator provides access to a complete listing of FirewallRule
@@ -557,6 +575,12 @@ type Error struct {
 	InnerError *InnerError `json:"innerError,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetails data Lake Store error details information
 type ErrorDetails struct {
 	// Code - READ-ONLY; the HTTP status code or error code associated with this error
@@ -565,6 +589,12 @@ type ErrorDetails struct {
 	Message *string `json:"message,omitempty"`
 	// Target - READ-ONLY; the target of the particular error (for example, the name of the property in error).
 	Target *string `json:"target,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // FirewallRule data Lake Store firewall rule information
@@ -614,6 +644,12 @@ type InnerError struct {
 	Trace *string `json:"trace,omitempty"`
 	// Context - READ-ONLY; the context for the error message
 	Context *string `json:"context,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for InnerError.
+func (ie InnerError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // KeyVaultMetaInfo ...

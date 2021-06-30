@@ -702,6 +702,13 @@ const (
 	Windows StackPreferredOs = original.Windows
 )
 
+type StagingEnvironmentPolicy = original.StagingEnvironmentPolicy
+
+const (
+	StagingEnvironmentPolicyDisabled StagingEnvironmentPolicy = original.StagingEnvironmentPolicyDisabled
+	StagingEnvironmentPolicyEnabled  StagingEnvironmentPolicy = original.StagingEnvironmentPolicyEnabled
+)
+
 type StatusOptions = original.StatusOptions
 
 const (
@@ -907,6 +914,7 @@ type AppsSwapSlotWithProductionFuture = original.AppsSwapSlotWithProductionFutur
 type AppserviceGithubToken = original.AppserviceGithubToken
 type AppserviceGithubTokenRequest = original.AppserviceGithubTokenRequest
 type ArmIDWrapper = original.ArmIDWrapper
+type ArmPlan = original.ArmPlan
 type AseV3NetworkingConfiguration = original.AseV3NetworkingConfiguration
 type AseV3NetworkingConfigurationProperties = original.AseV3NetworkingConfigurationProperties
 type AuthPlatform = original.AuthPlatform
@@ -1296,8 +1304,10 @@ type ReissueCertificateOrderRequest = original.ReissueCertificateOrderRequest
 type ReissueCertificateOrderRequestProperties = original.ReissueCertificateOrderRequestProperties
 type RelayServiceConnectionEntity = original.RelayServiceConnectionEntity
 type RelayServiceConnectionEntityProperties = original.RelayServiceConnectionEntityProperties
+type RemotePrivateEndpointConnection = original.RemotePrivateEndpointConnection
 type RemotePrivateEndpointConnectionARMResource = original.RemotePrivateEndpointConnectionARMResource
 type RemotePrivateEndpointConnectionARMResourceProperties = original.RemotePrivateEndpointConnectionARMResourceProperties
+type RemotePrivateEndpointConnectionProperties = original.RemotePrivateEndpointConnectionProperties
 type Rendering = original.Rendering
 type RenewCertificateOrderRequest = original.RenewCertificateOrderRequest
 type RenewCertificateOrderRequestProperties = original.RenewCertificateOrderRequestProperties
@@ -1320,6 +1330,7 @@ type ResourceMetricDefinitionCollectionPage = original.ResourceMetricDefinitionC
 type ResourceMetricDefinitionProperties = original.ResourceMetricDefinitionProperties
 type ResourceNameAvailability = original.ResourceNameAvailability
 type ResourceNameAvailabilityRequest = original.ResourceNameAvailabilityRequest
+type ResponseMessageEnvelopeRemotePrivateEndpointConnection = original.ResponseMessageEnvelopeRemotePrivateEndpointConnection
 type ResponseMetaData = original.ResponseMetaData
 type RestoreRequest = original.RestoreRequest
 type RestoreRequestProperties = original.RestoreRequestProperties
@@ -2234,6 +2245,9 @@ func PossibleSslStateValues() []SslState {
 }
 func PossibleStackPreferredOsValues() []StackPreferredOs {
 	return original.PossibleStackPreferredOsValues()
+}
+func PossibleStagingEnvironmentPolicyValues() []StagingEnvironmentPolicy {
+	return original.PossibleStagingEnvironmentPolicyValues()
 }
 func PossibleStatusOptionsValues() []StatusOptions {
 	return original.PossibleStatusOptionsValues()

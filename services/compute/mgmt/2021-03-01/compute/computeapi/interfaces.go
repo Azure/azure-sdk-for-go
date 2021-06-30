@@ -181,7 +181,7 @@ type VirtualMachineScaleSetsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, VMScaleSetName string, forceDeletion *bool) (result compute.VirtualMachineScaleSetsDeleteFuture, err error)
 	DeleteInstances(ctx context.Context, resourceGroupName string, VMScaleSetName string, VMInstanceIDs compute.VirtualMachineScaleSetVMInstanceRequiredIDs, forceDeletion *bool) (result compute.VirtualMachineScaleSetsDeleteInstancesFuture, err error)
 	ForceRecoveryServiceFabricPlatformUpdateDomainWalk(ctx context.Context, resourceGroupName string, VMScaleSetName string, platformUpdateDomain int32) (result compute.RecoveryWalkResponse, err error)
-	Get(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSet, err error)
+	Get(ctx context.Context, resourceGroupName string, VMScaleSetName string, expand compute.ExpandTypesForGetVMScaleSets) (result compute.VirtualMachineScaleSet, err error)
 	GetInstanceView(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSetInstanceView, err error)
 	GetOSUpgradeHistory(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSetListOSUpgradeHistoryPage, err error)
 	GetOSUpgradeHistoryComplete(ctx context.Context, resourceGroupName string, VMScaleSetName string) (result compute.VirtualMachineScaleSetListOSUpgradeHistoryIterator, err error)
@@ -227,6 +227,29 @@ type ImagesClientAPI interface {
 }
 
 var _ ImagesClientAPI = (*compute.ImagesClient)(nil)
+
+// RestorePointCollectionsClientAPI contains the set of methods on the RestorePointCollectionsClient type.
+type RestorePointCollectionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, restorePointCollectionName string, parameters compute.RestorePointCollection) (result compute.RestorePointCollection, err error)
+	Delete(ctx context.Context, resourceGroupName string, restorePointCollectionName string) (result compute.RestorePointCollectionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, expand compute.RestorePointCollectionExpandOptions) (result compute.RestorePointCollection, err error)
+	List(ctx context.Context, resourceGroupName string) (result compute.RestorePointCollectionListResultPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string) (result compute.RestorePointCollectionListResultIterator, err error)
+	ListAll(ctx context.Context) (result compute.RestorePointCollectionListResultPage, err error)
+	ListAllComplete(ctx context.Context) (result compute.RestorePointCollectionListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, restorePointCollectionName string, parameters compute.RestorePointCollectionUpdate) (result compute.RestorePointCollection, err error)
+}
+
+var _ RestorePointCollectionsClientAPI = (*compute.RestorePointCollectionsClient)(nil)
+
+// RestorePointsClientAPI contains the set of methods on the RestorePointsClient type.
+type RestorePointsClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string, parameters compute.RestorePoint) (result compute.RestorePointsCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string) (result compute.RestorePointsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, restorePointName string) (result compute.RestorePoint, err error)
+}
+
+var _ RestorePointsClientAPI = (*compute.RestorePointsClient)(nil)
 
 // VirtualMachineScaleSetExtensionsClientAPI contains the set of methods on the VirtualMachineScaleSetExtensionsClient type.
 type VirtualMachineScaleSetExtensionsClientAPI interface {
@@ -408,7 +431,7 @@ var _ DiskRestorePointClientAPI = (*compute.DiskRestorePointClient)(nil)
 type GalleriesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, gallery compute.Gallery) (result compute.GalleriesCreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, galleryName string) (result compute.GalleriesDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, galleryName string) (result compute.Gallery, err error)
+	Get(ctx context.Context, resourceGroupName string, galleryName string, selectParameter compute.SelectPermissions) (result compute.Gallery, err error)
 	List(ctx context.Context) (result compute.GalleryListPage, err error)
 	ListComplete(ctx context.Context) (result compute.GalleryListIterator, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result compute.GalleryListPage, err error)
@@ -465,6 +488,40 @@ type GalleryApplicationVersionsClientAPI interface {
 }
 
 var _ GalleryApplicationVersionsClientAPI = (*compute.GalleryApplicationVersionsClient)(nil)
+
+// GallerySharingProfileClientAPI contains the set of methods on the GallerySharingProfileClient type.
+type GallerySharingProfileClientAPI interface {
+	Update(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate compute.SharingUpdate) (result compute.GallerySharingProfileUpdateFuture, err error)
+}
+
+var _ GallerySharingProfileClientAPI = (*compute.GallerySharingProfileClient)(nil)
+
+// SharedGalleriesClientAPI contains the set of methods on the SharedGalleriesClient type.
+type SharedGalleriesClientAPI interface {
+	Get(ctx context.Context, location string, galleryUniqueName string) (result compute.SharedGallery, err error)
+	List(ctx context.Context, location string, sharedTo compute.SharedToValues) (result compute.SharedGalleryListPage, err error)
+	ListComplete(ctx context.Context, location string, sharedTo compute.SharedToValues) (result compute.SharedGalleryListIterator, err error)
+}
+
+var _ SharedGalleriesClientAPI = (*compute.SharedGalleriesClient)(nil)
+
+// SharedGalleryImagesClientAPI contains the set of methods on the SharedGalleryImagesClient type.
+type SharedGalleryImagesClientAPI interface {
+	Get(ctx context.Context, location string, galleryUniqueName string, galleryImageName string) (result compute.SharedGalleryImage, err error)
+	List(ctx context.Context, location string, galleryUniqueName string, sharedTo compute.SharedToValues) (result compute.SharedGalleryImageListPage, err error)
+	ListComplete(ctx context.Context, location string, galleryUniqueName string, sharedTo compute.SharedToValues) (result compute.SharedGalleryImageListIterator, err error)
+}
+
+var _ SharedGalleryImagesClientAPI = (*compute.SharedGalleryImagesClient)(nil)
+
+// SharedGalleryImageVersionsClientAPI contains the set of methods on the SharedGalleryImageVersionsClient type.
+type SharedGalleryImageVersionsClientAPI interface {
+	Get(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, galleryImageVersionName string) (result compute.SharedGalleryImageVersion, err error)
+	List(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, sharedTo compute.SharedToValues) (result compute.SharedGalleryImageVersionListPage, err error)
+	ListComplete(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, sharedTo compute.SharedToValues) (result compute.SharedGalleryImageVersionListIterator, err error)
+}
+
+var _ SharedGalleryImageVersionsClientAPI = (*compute.SharedGalleryImageVersionsClient)(nil)
 
 // CloudServiceRoleInstancesClientAPI contains the set of methods on the CloudServiceRoleInstancesClient type.
 type CloudServiceRoleInstancesClientAPI interface {

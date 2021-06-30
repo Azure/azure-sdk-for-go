@@ -105,6 +105,12 @@ type CheckSystemServicesUpdatesAvailableResponse struct {
 	UpdatesAvailable UpdatesAvailable `json:"updatesAvailable,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CheckSystemServicesUpdatesAvailableResponse.
+func (cssuar CheckSystemServicesUpdatesAvailableResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ContainerRegistryCredentials information about the Azure Container Registry which contains the images
 // deployed to the cluster.
 type ContainerRegistryCredentials struct {
@@ -116,6 +122,12 @@ type ContainerRegistryCredentials struct {
 	Password2 *string `json:"password2,omitempty"`
 	// Username - READ-ONLY; The ACR login username.
 	Username *string `json:"username,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerRegistryCredentials.
+func (crc ContainerRegistryCredentials) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ContainerRegistryProperties properties of Azure Container Registry.
@@ -133,6 +145,12 @@ type ContainerServiceCredentials struct {
 	ServicePrincipalConfiguration *ServicePrincipalProperties `json:"servicePrincipalConfiguration,omitempty"`
 	// ImagePullSecretName - READ-ONLY; The ACR image pull secret name which was created in Kubernetes.
 	ImagePullSecretName *string `json:"imagePullSecretName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerServiceCredentials.
+func (csc ContainerServiceCredentials) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorDetail error detail information.
@@ -821,6 +839,12 @@ type StorageAccountCredentials struct {
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StorageAccountCredentials.
+func (sac StorageAccountCredentials) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // StorageAccountProperties properties of Storage Account.
 type StorageAccountProperties struct {
 	// ResourceID - ARM resource ID of the Azure Storage Account to store CLI specific files. If not provided one will be created. This cannot be changed once the cluster is created.
@@ -855,4 +879,10 @@ type UpdateSystemServicesResponse struct {
 	UpdateStartedOn *date.Time `json:"updateStartedOn,omitempty"`
 	// UpdateCompletedOn - READ-ONLY; The date and time when the last system services update completed.
 	UpdateCompletedOn *date.Time `json:"updateCompletedOn,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UpdateSystemServicesResponse.
+func (ussr UpdateSystemServicesResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

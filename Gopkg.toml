@@ -19,6 +19,8 @@
 #  name = "github.com/x/y"
 #  version = "2.4.0"
 
+ignored = ["github.com/ahmetb/go-linq/*", "github.com/google/go-github/*"]
+
 [prune]
   unused-packages = true
   go-tests = true

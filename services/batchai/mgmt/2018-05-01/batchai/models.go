@@ -122,6 +122,12 @@ type CloudError struct {
 	Error *CloudErrorBody `json:"error,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CloudError.
+func (ce CloudError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CloudErrorBody an error response from the Batch AI service.
 type CloudErrorBody struct {
 	// Code - READ-ONLY; An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
@@ -132,6 +138,12 @@ type CloudErrorBody struct {
 	Target *string `json:"target,omitempty"`
 	// Details - READ-ONLY; A list of additional details about the error.
 	Details *[]CloudErrorBody `json:"details,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudErrorBody.
+func (ceb CloudErrorBody) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Cluster information about a Cluster.
@@ -271,6 +283,12 @@ type ClusterListResult struct {
 	Value *[]Cluster `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The continuation token.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ClusterListResult.
+func (clr ClusterListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ClusterListResultIterator provides access to a complete listing of Cluster values.
@@ -687,6 +705,12 @@ type Error struct {
 	Details *[]NameValuePair `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Experiment experiment information.
 type Experiment struct {
 	autorest.Response `json:"-"`
@@ -767,6 +791,12 @@ type ExperimentListResult struct {
 	Value *[]Experiment `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The continuation token.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ExperimentListResult.
+func (elr ExperimentListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ExperimentListResultIterator provides access to a complete listing of Experiment values.
@@ -927,6 +957,12 @@ type ExperimentProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ProvisioningStateTransitionTime - READ-ONLY; The time at which the experiment entered its current provisioning state.
 	ProvisioningStateTransitionTime *date.Time `json:"provisioningStateTransitionTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ExperimentProperties.
+func (ep ExperimentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ExperimentsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1090,6 +1126,12 @@ type FileListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for FileListResult.
+func (flr FileListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // FileListResultIterator provides access to a complete listing of File values.
 type FileListResultIterator struct {
 	i    int
@@ -1246,6 +1288,12 @@ type FileProperties struct {
 	LastModified *date.Time `json:"lastModified,omitempty"`
 	// ContentLength - READ-ONLY; The file of the size.
 	ContentLength *int64 `json:"contentLength,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FileProperties.
+func (fp FileProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // FileServer file Server information.
@@ -1887,6 +1935,12 @@ type JobListResult struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobListResult.
+func (jlr JobListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // JobListResultIterator provides access to a complete listing of Job values.
 type JobListResultIterator struct {
 	i    int
@@ -2189,6 +2243,12 @@ type JobPropertiesExecutionInfo struct {
 	Errors *[]Error `json:"errors,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobPropertiesExecutionInfo.
+func (jpI JobPropertiesExecutionInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // JobsCreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type JobsCreateFuture struct {
 	azure.FutureAPI
@@ -2319,6 +2379,12 @@ type ListUsagesResult struct {
 	Value *[]Usage `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The URI to fetch the next page of compute resource usage information. Call ListNext() with this to fetch the next page of compute resource usage information.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ListUsagesResult.
+func (lur ListUsagesResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ListUsagesResultIterator provides access to a complete listing of Usage values.
@@ -2533,6 +2599,12 @@ type NodeStateCounts struct {
 	LeavingNodeCount *int32 `json:"leavingNodeCount,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NodeStateCounts.
+func (nsc NodeStateCounts) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Operation details of a REST API operation
 type Operation struct {
 	// Name - READ-ONLY; This is of the format {provider}/{resource}/{operation}
@@ -2568,6 +2640,12 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult contains the list of all operations supported by BatchAI resource provider
 type OperationListResult struct {
 	autorest.Response `json:"-"`
@@ -2575,6 +2653,12 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -2763,6 +2847,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // PyTorchSettings pyTorch job settings.
 type PyTorchSettings struct {
 	// PythonScriptFilePath - The python script to execute.
@@ -2787,6 +2877,12 @@ type RemoteLoginInformation struct {
 	Port *float64 `json:"port,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RemoteLoginInformation.
+func (rli RemoteLoginInformation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RemoteLoginInformationListResult values returned by the List operation.
 type RemoteLoginInformationListResult struct {
 	autorest.Response `json:"-"`
@@ -2794,6 +2890,12 @@ type RemoteLoginInformationListResult struct {
 	Value *[]RemoteLoginInformation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The continuation token.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RemoteLoginInformationListResult.
+func (rlilr RemoteLoginInformationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RemoteLoginInformationListResultIterator provides access to a complete listing of RemoteLoginInformation
@@ -3061,12 +3163,24 @@ type Usage struct {
 	Name *UsageName `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Usage.
+func (u Usage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // UsageName the Usage Names.
 type UsageName struct {
 	// Value - READ-ONLY; The name of the resource.
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - READ-ONLY; The localized name of the resource.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageName.
+func (un UsageName) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UserAccountSettings settings for user account that gets created on each on the nodes of a cluster.
@@ -3207,6 +3321,12 @@ type WorkspaceListResult struct {
 	Value *[]Workspace `json:"value,omitempty"`
 	// NextLink - READ-ONLY; The continuation token.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkspaceListResult.
+func (wlr WorkspaceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WorkspaceListResultIterator provides access to a complete listing of Workspace values.
@@ -3367,6 +3487,12 @@ type WorkspaceProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// ProvisioningStateTransitionTime - READ-ONLY; The time at which the workspace entered its current provisioning state.
 	ProvisioningStateTransitionTime *date.Time `json:"provisioningStateTransitionTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkspaceProperties.
+func (wp WorkspaceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WorkspacesCreateFuture an abstraction for monitoring and retrieving the results of a long-running

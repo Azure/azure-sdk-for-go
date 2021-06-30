@@ -1303,6 +1303,12 @@ type ProvisionedResourceProperties struct {
 	ProvisioningState *string `json:"provisioningState,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProvisionedResourceProperties.
+func (prp ProvisionedResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ProxyResource the resource model definition for Azure Resource Manager proxy resource. It will have
 // everything other than required location and tags.
 type ProxyResource struct {

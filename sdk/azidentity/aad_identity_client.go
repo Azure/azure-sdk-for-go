@@ -31,6 +31,7 @@ const (
 	qpPassword            = "password"
 	qpRedirectURI         = "redirect_uri"
 	qpRefreshToken        = "refresh_token"
+	qpResID               = "mi_res_id"
 	qpResponseType        = "response_type"
 	qpScope               = "scope"
 	qpUsername            = "username"

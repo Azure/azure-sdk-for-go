@@ -1,0 +1,15 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+trigger:
+  paths:
+    include:
+    - sdk/resources/armresources/
+
+pr:
+  paths:
+    include:
+    - sdk/resources/armresources/
+
+stages:
+- template: ../../../eng/pipelines/templates/jobs/archetype-sdk-client-samples.yml
+  parameters:
+    ServiceDirectory: 'resources/armresources'

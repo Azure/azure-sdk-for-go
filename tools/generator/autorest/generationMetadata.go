@@ -13,7 +13,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/tools/pkgchk/track1"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/packages/track1"
 )
 
 // GenerationMetadata contains all the metadata that has been used when generating a track 1 package
@@ -47,7 +47,7 @@ func (meta *GenerationMetadata) RelativeReadme() string {
 }
 
 // CollectGenerationMetadata iterates every track 1 go sdk package under root, and collect all the GenerationMetadata into a map
-// using relative path of the package as keys
+// using the absolute path of the package as keys
 func CollectGenerationMetadata(root string) (map[string]GenerationMetadata, error) {
 	pkgs, err := track1.List(root)
 	if err != nil {

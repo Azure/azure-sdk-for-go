@@ -31,6 +31,12 @@ type DateRange struct {
 	To *date.Time `json:"to,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DateRange.
+func (dr DateRange) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Error the error object.
 type Error struct {
 	// Code - High level error code. Possible values include: 'BadRequest', 'ResourceNotFound', 'InternalServerError', 'InvalidServiceConfiguration', 'InvalidPolicyConfiguration', 'InvalidPolicyContract', 'InvalidEvaluationContract', 'InvalidRewardRequest', 'InvalidEventIDToActivate', 'InvalidRankRequest', 'InvalidExportLogsRequest', 'InvalidContainer', 'FrontEndNotFound', 'EvaluationNotFound', 'LogsPropertiesNotFound', 'RankNullResponse', 'UpdateConfigurationFailed', 'ModelResetFailed'
@@ -117,12 +123,24 @@ type LogsProperties struct {
 	DateRange *LogsPropertiesDateRange `json:"dateRange,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for LogsProperties.
+func (lp LogsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // LogsPropertiesDateRange ...
 type LogsPropertiesDateRange struct {
 	// From - READ-ONLY
 	From *date.Time `json:"from,omitempty"`
 	// To - READ-ONLY
 	To *date.Time `json:"to,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LogsPropertiesDateRange.
+func (lpR LogsPropertiesDateRange) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ModelProperties ...
@@ -132,6 +150,12 @@ type ModelProperties struct {
 	CreationTime *date.Time `json:"creationTime,omitempty"`
 	// LastModifiedTime - READ-ONLY
 	LastModifiedTime *date.Time `json:"lastModifiedTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ModelProperties.
+func (mp ModelProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PolicyContract learning settings specifying how to train the model.
@@ -153,6 +177,12 @@ type PolicyResult struct {
 	Summary *[]PolicyResultSummary `json:"summary,omitempty"`
 	// TotalSummary - READ-ONLY
 	TotalSummary *PolicyResultTotalSummary `json:"totalSummary,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PolicyResult.
+func (pr PolicyResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PolicyResultSummary ...
@@ -227,6 +257,12 @@ type RankedAction struct {
 	Probability *float64 `json:"probability,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RankedAction.
+func (ra RankedAction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RankRequest request a set of actions to be ranked by the Personalizer service.
 type RankRequest struct {
 	// ContextFeatures - Features of the context used for Personalizer as a
@@ -268,6 +304,12 @@ type RankResponse struct {
 	// RewardActionID - READ-ONLY; The action chosen by the Personalizer service. This is the action your application should display, and for which to report the reward. This might not be the
 	// first found in 'ranking' if an action in the request in first position was part of the excluded ids.
 	RewardActionID *string `json:"rewardActionId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RankResponse.
+func (rr RankResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ReadCloser ...

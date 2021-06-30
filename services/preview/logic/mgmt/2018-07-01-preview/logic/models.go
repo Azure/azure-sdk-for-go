@@ -3510,6 +3510,12 @@ type SubResource struct {
 	ID *string `json:"id,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SubResource.
+func (sr SubResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // TrackingEvent ...
 type TrackingEvent struct {
 	// EventLevel - Possible values include: 'LogAlways', 'Critical', 'Error', 'Warning', 'Informational', 'Verbose'
@@ -5228,6 +5234,12 @@ type WorkflowTriggerProperties struct {
 	Recurrence *WorkflowTriggerRecurrence `json:"recurrence,omitempty"`
 	// Workflow - READ-ONLY; Gets the reference to workflow.
 	Workflow *ResourceReference `json:"workflow,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkflowTriggerProperties.
+func (wtp WorkflowTriggerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WorkflowTriggerRecurrence the workflow trigger recurrence.

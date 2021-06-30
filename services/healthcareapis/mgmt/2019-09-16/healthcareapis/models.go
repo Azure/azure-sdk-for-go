@@ -43,6 +43,12 @@ type ErrorDetailsInternal struct {
 	Target *string `json:"target,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorDetailsInternal.
+func (edi ErrorDetailsInternal) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Operation service REST API operation.
 type Operation struct {
 	// Name - READ-ONLY; Operation name: {provider}/{resource}/{read | write | action | delete}
@@ -72,6 +78,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 	// Description - READ-ONLY; Friendly description for the operation,
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (od OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResult a list of service operations. It contains a list of operations and a URL link to get

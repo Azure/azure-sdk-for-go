@@ -347,6 +347,12 @@ type AnalysisDefinitionProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AnalysisDefinitionProperties.
+func (ad AnalysisDefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // APIDefinitionInfo information about the formal API definition for the app.
 type APIDefinitionInfo struct {
 	// URL - The URL of the API definition.
@@ -805,6 +811,12 @@ type AppInsightsWebAppStackSettings struct {
 	IsDefaultOff *bool `json:"isDefaultOff,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AppInsightsWebAppStackSettings.
+func (aiwass AppInsightsWebAppStackSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AppInstanceStatusCollection collection of app instances.
 type AppInstanceStatusCollection struct {
 	autorest.Response `json:"-"`
@@ -973,7 +985,7 @@ func NewAppInstanceStatusCollectionPage(cur AppInstanceStatusCollection, getNext
 	}
 }
 
-// Apple ...
+// Apple the configuration settings of the Apple provider.
 type Apple struct {
 	// AppleProperties - Apple resource specific properties
 	*AppleProperties `json:"properties,omitempty"`
@@ -1061,12 +1073,15 @@ func (a *Apple) UnmarshalJSON(body []byte) error {
 
 // AppleProperties apple resource specific properties
 type AppleProperties struct {
-	Enabled      *bool              `json:"enabled,omitempty"`
+	// Enabled - <code>false</code> if the Apple provider should not be enabled despite the set registration; otherwise, <code>true</code>.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Registration - The configuration settings of the Apple registration.
 	Registration *AppleRegistration `json:"registration,omitempty"`
-	Login        *LoginScopes       `json:"login,omitempty"`
+	// Login - The configuration settings of the login flow.
+	Login *LoginScopes `json:"login,omitempty"`
 }
 
-// AppleRegistration ...
+// AppleRegistration the configuration settings of the registration for the Apple provider
 type AppleRegistration struct {
 	// AppleRegistrationProperties - AppleRegistration resource specific properties
 	*AppleRegistrationProperties `json:"properties,omitempty"`
@@ -1154,7 +1169,9 @@ func (ar *AppleRegistration) UnmarshalJSON(body []byte) error {
 
 // AppleRegistrationProperties appleRegistration resource specific properties
 type AppleRegistrationProperties struct {
-	ClientID                *string `json:"clientId,omitempty"`
+	// ClientID - The Client ID of the app used for login.
+	ClientID *string `json:"clientId,omitempty"`
+	// ClientSecretSettingName - The app setting name that contains the client secret.
 	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
 }
 
@@ -1449,6 +1466,12 @@ type AppMajorVersion struct {
 	MinorVersions *[]AppMinorVersion `json:"minorVersions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AppMajorVersion.
+func (amv AppMajorVersion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AppMinorVersion web App stack minor version.
 type AppMinorVersion struct {
 	// DisplayText - READ-ONLY; Web App stack minor version (display only).
@@ -1459,7 +1482,14 @@ type AppMinorVersion struct {
 	StackSettings *AppRuntimes `json:"stackSettings,omitempty"`
 }
 
-// AppRegistration ...
+// MarshalJSON is the custom marshaler for AppMinorVersion.
+func (amv AppMinorVersion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// AppRegistration the configuration settings of the app registration for providers that have app ids and
+// app secrets
 type AppRegistration struct {
 	// AppRegistrationProperties - AppRegistration resource specific properties
 	*AppRegistrationProperties `json:"properties,omitempty"`
@@ -1547,7 +1577,9 @@ func (ar *AppRegistration) UnmarshalJSON(body []byte) error {
 
 // AppRegistrationProperties appRegistration resource specific properties
 type AppRegistrationProperties struct {
-	AppID                *string `json:"appId,omitempty"`
+	// AppID - The App ID of the app used for login.
+	AppID *string `json:"appId,omitempty"`
+	// AppSecretSettingName - The app setting name that contains the app secret.
 	AppSecretSettingName *string `json:"appSecretSettingName,omitempty"`
 }
 
@@ -1561,6 +1593,12 @@ type AppRuntimes struct {
 	LinuxContainerSettings *LinuxJavaContainerSettings `json:"linuxContainerSettings,omitempty"`
 	// WindowsContainerSettings - READ-ONLY; Windows-specific settings associated with the Java container minor version.
 	WindowsContainerSettings *WindowsJavaContainerSettings `json:"windowsContainerSettings,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AppRuntimes.
+func (ar AppRuntimes) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AppRuntimeSettings web App runtime settings.
@@ -1585,6 +1623,12 @@ type AppRuntimeSettings struct {
 	IsAutoUpdate *bool `json:"isAutoUpdate,omitempty"`
 	// IsEarlyAccess - READ-ONLY; <code>true</code> if the minor version is early-access; otherwise, <code>false</code>.
 	IsEarlyAccess *bool `json:"isEarlyAccess,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AppRuntimeSettings.
+func (ars AppRuntimeSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AppsApproveOrRejectPrivateEndpointConnectionFuture an abstraction for monitoring and retrieving the
@@ -5832,10 +5876,36 @@ type AppStackProperties struct {
 	PreferredOs StackPreferredOs `json:"preferredOs,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AppStackProperties.
+func (as AppStackProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ArmIDWrapper a wrapper for an ARM resource id
 type ArmIDWrapper struct {
 	// ID - READ-ONLY
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ArmIDWrapper.
+func (aiw ArmIDWrapper) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ArmPlan the plan object in Azure Resource Manager, represents a marketplace plan.
+type ArmPlan struct {
+	// Name - The name.
+	Name *string `json:"name,omitempty"`
+	// Publisher - The publisher.
+	Publisher *string `json:"publisher,omitempty"`
+	// Product - The product.
+	Product *string `json:"product,omitempty"`
+	// PromotionCode - The promotion code.
+	PromotionCode *string `json:"promotionCode,omitempty"`
+	// Version - Version of product.
+	Version *string `json:"version,omitempty"`
 }
 
 // AseV3NetworkingConfiguration full view of networking configuration for an ASE.
@@ -5944,7 +6014,7 @@ func (avnc AseV3NetworkingConfigurationProperties) MarshalJSON() ([]byte, error)
 	return json.Marshal(objectMap)
 }
 
-// AuthPlatform ...
+// AuthPlatform the configuration settings of the platform of App Service Authentication/Authorization.
 type AuthPlatform struct {
 	// AuthPlatformProperties - AuthPlatform resource specific properties
 	*AuthPlatformProperties `json:"properties,omitempty"`
@@ -6032,8 +6102,13 @@ func (ap *AuthPlatform) UnmarshalJSON(body []byte) error {
 
 // AuthPlatformProperties authPlatform resource specific properties
 type AuthPlatformProperties struct {
-	Enabled        *bool   `json:"enabled,omitempty"`
+	// Enabled - <code>true</code> if the Authentication / Authorization feature is enabled for the current app; otherwise, <code>false</code>.
+	Enabled *bool `json:"enabled,omitempty"`
+	// RuntimeVersion - The RuntimeVersion of the Authentication / Authorization feature in use for the current app.
+	// The setting in this value can control the behavior of certain features in the Authentication / Authorization module.
 	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	// ConfigFilePath - The path of the config file containing auth settings if they come from a file.
+	// If the path is relative, base will the site's root directory.
 	ConfigFilePath *string `json:"configFilePath,omitempty"`
 }
 
@@ -6073,15 +6148,15 @@ type AutoHealTriggers struct {
 	PrivateBytesInKB *int32 `json:"privateBytesInKB,omitempty"`
 	// StatusCodes - A rule based on status codes.
 	StatusCodes *[]StatusCodesBasedTrigger `json:"statusCodes,omitempty"`
-	// StatusCodesRange - A rule based on status codes ranges.
-	StatusCodesRange *[]StatusCodesRangeBasedTrigger `json:"statusCodesRange,omitempty"`
 	// SlowRequests - A rule based on request execution time.
 	SlowRequests *SlowRequestsBasedTrigger `json:"slowRequests,omitempty"`
 	// SlowRequestsWithPath - A rule based on multiple Slow Requests Rule with path
 	SlowRequestsWithPath *[]SlowRequestsBasedTrigger `json:"slowRequestsWithPath,omitempty"`
+	// StatusCodesRange - A rule based on status codes ranges.
+	StatusCodesRange *[]StatusCodesRangeBasedTrigger `json:"statusCodesRange,omitempty"`
 }
 
-// AzureActiveDirectory ...
+// AzureActiveDirectory the configuration settings of the Azure Active directory provider.
 type AzureActiveDirectory struct {
 	// AzureActiveDirectoryProperties - AzureActiveDirectory resource specific properties
 	*AzureActiveDirectoryProperties `json:"properties,omitempty"`
@@ -6167,7 +6242,7 @@ func (aad *AzureActiveDirectory) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// AzureActiveDirectoryLogin ...
+// AzureActiveDirectoryLogin the configuration settings of the Azure Active Directory login flow.
 type AzureActiveDirectoryLogin struct {
 	// AzureActiveDirectoryLoginProperties - AzureActiveDirectoryLogin resource specific properties
 	*AzureActiveDirectoryLoginProperties `json:"properties,omitempty"`
@@ -6255,20 +6330,30 @@ func (aadl *AzureActiveDirectoryLogin) UnmarshalJSON(body []byte) error {
 
 // AzureActiveDirectoryLoginProperties azureActiveDirectoryLogin resource specific properties
 type AzureActiveDirectoryLoginProperties struct {
-	DisableWWWAuthenticate *bool     `json:"disableWWWAuthenticate,omitempty"`
-	LoginParameters        *[]string `json:"loginParameters,omitempty"`
+	DisableWWWAuthenticate *bool `json:"disableWWWAuthenticate,omitempty"`
+	// LoginParameters - Login parameters to send to the OpenID Connect authorization endpoint when
+	// a user logs in. Each parameter must be in the form "key=value".
+	LoginParameters *[]string `json:"loginParameters,omitempty"`
 }
 
 // AzureActiveDirectoryProperties azureActiveDirectory resource specific properties
 type AzureActiveDirectoryProperties struct {
-	Enabled           *bool                             `json:"enabled,omitempty"`
-	Registration      *AzureActiveDirectoryRegistration `json:"registration,omitempty"`
-	Login             *AzureActiveDirectoryLogin        `json:"login,omitempty"`
-	Validation        *AzureActiveDirectoryValidation   `json:"validation,omitempty"`
-	IsAutoProvisioned *bool                             `json:"isAutoProvisioned,omitempty"`
+	// Enabled - <code>false</code> if the Azure Active Directory provider should not be enabled despite the set registration; otherwise, <code>true</code>.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Registration - The configuration settings of the Azure Active Directory app registration.
+	Registration *AzureActiveDirectoryRegistration `json:"registration,omitempty"`
+	// Login - The configuration settings of the Azure Active Directory login flow.
+	Login *AzureActiveDirectoryLogin `json:"login,omitempty"`
+	// Validation - The configuration settings of the Azure Active Directory token validation flow.
+	Validation *AzureActiveDirectoryValidation `json:"validation,omitempty"`
+	// IsAutoProvisioned - Gets a value indicating whether the Azure AD configuration was auto-provisioned using 1st party tooling.
+	// This is an internal flag primarily intended to support the Azure Management Portal. Users should not
+	// read or write to this property.
+	IsAutoProvisioned *bool `json:"isAutoProvisioned,omitempty"`
 }
 
-// AzureActiveDirectoryRegistration ...
+// AzureActiveDirectoryRegistration the configuration settings of the Azure Active Directory app
+// registration.
 type AzureActiveDirectoryRegistration struct {
 	// AzureActiveDirectoryRegistrationProperties - AzureActiveDirectoryRegistration resource specific properties
 	*AzureActiveDirectoryRegistrationProperties `json:"properties,omitempty"`
@@ -6356,13 +6441,25 @@ func (aadr *AzureActiveDirectoryRegistration) UnmarshalJSON(body []byte) error {
 
 // AzureActiveDirectoryRegistrationProperties azureActiveDirectoryRegistration resource specific properties
 type AzureActiveDirectoryRegistrationProperties struct {
-	OpenIDIssuer                      *string `json:"openIdIssuer,omitempty"`
-	ClientID                          *string `json:"clientId,omitempty"`
-	ClientSecretSettingName           *string `json:"clientSecretSettingName,omitempty"`
+	// OpenIDIssuer - The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application.
+	// When using Azure Active Directory, this value is the URI of the directory tenant, e.g. https://login.microsoftonline.com/v2.0/{tenant-guid}/.
+	// This URI is a case-sensitive identifier for the token issuer.
+	// More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html
+	OpenIDIssuer *string `json:"openIdIssuer,omitempty"`
+	// ClientID - The Client ID of this relying party application, known as the client_id.
+	// This setting is required for enabling OpenID Connection authentication with Azure Active Directory or
+	// other 3rd party OpenID Connect providers.
+	// More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html
+	ClientID *string `json:"clientId,omitempty"`
+	// ClientSecretSettingName - The app setting name that contains the client secret of the relying party application.
+	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
+	// ClientSecretCertificateThumbprint - An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts as
+	// a replacement for the Client Secret. It is also optional.
 	ClientSecretCertificateThumbprint *string `json:"clientSecretCertificateThumbprint,omitempty"`
 }
 
-// AzureActiveDirectoryValidation ...
+// AzureActiveDirectoryValidation the configuration settings of the Azure Active Directory token validation
+// flow.
 type AzureActiveDirectoryValidation struct {
 	// AzureActiveDirectoryValidationProperties - AzureActiveDirectoryValidation resource specific properties
 	*AzureActiveDirectoryValidationProperties `json:"properties,omitempty"`
@@ -6450,8 +6547,10 @@ func (aadv *AzureActiveDirectoryValidation) UnmarshalJSON(body []byte) error {
 
 // AzureActiveDirectoryValidationProperties azureActiveDirectoryValidation resource specific properties
 type AzureActiveDirectoryValidationProperties struct {
-	JwtClaimChecks   *JwtClaimChecks `json:"jwtClaimChecks,omitempty"`
-	AllowedAudiences *[]string       `json:"allowedAudiences,omitempty"`
+	// JwtClaimChecks - The configuration settings of the checks that should be made while validating the JWT Claims.
+	JwtClaimChecks *JwtClaimChecks `json:"jwtClaimChecks,omitempty"`
+	// AllowedAudiences - The list of audiences that can make successful authentication/authorization requests.
+	AllowedAudiences *[]string `json:"allowedAudiences,omitempty"`
 }
 
 // AzureBlobStorageApplicationLogsConfig application logs azure blob storage configuration.
@@ -6478,7 +6577,7 @@ type AzureBlobStorageHTTPLogsConfig struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// AzureStaticWebApps ...
+// AzureStaticWebApps the configuration settings of the Azure Static Web Apps provider.
 type AzureStaticWebApps struct {
 	// AzureStaticWebAppsProperties - AzureStaticWebApps resource specific properties
 	*AzureStaticWebAppsProperties `json:"properties,omitempty"`
@@ -6566,11 +6665,14 @@ func (aswa *AzureStaticWebApps) UnmarshalJSON(body []byte) error {
 
 // AzureStaticWebAppsProperties azureStaticWebApps resource specific properties
 type AzureStaticWebAppsProperties struct {
-	Enabled      *bool                           `json:"enabled,omitempty"`
+	// Enabled - <code>false</code> if the Azure Static Web Apps provider should not be enabled despite the set registration; otherwise, <code>true</code>.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Registration - The configuration settings of the Azure Static Web Apps registration.
 	Registration *AzureStaticWebAppsRegistration `json:"registration,omitempty"`
 }
 
-// AzureStaticWebAppsRegistration ...
+// AzureStaticWebAppsRegistration the configuration settings of the registration for the Azure Static Web
+// Apps provider
 type AzureStaticWebAppsRegistration struct {
 	// AzureStaticWebAppsRegistrationProperties - AzureStaticWebAppsRegistration resource specific properties
 	*AzureStaticWebAppsRegistrationProperties `json:"properties,omitempty"`
@@ -6658,6 +6760,7 @@ func (aswar *AzureStaticWebAppsRegistration) UnmarshalJSON(body []byte) error {
 
 // AzureStaticWebAppsRegistrationProperties azureStaticWebAppsRegistration resource specific properties
 type AzureStaticWebAppsRegistrationProperties struct {
+	// ClientID - The Client ID of the app used for login.
 	ClientID *string `json:"clientId,omitempty"`
 }
 
@@ -7018,6 +7121,12 @@ type BackupItemProperties struct {
 	CorrelationID *string `json:"correlationId,omitempty"`
 	// WebsiteSizeInBytes - READ-ONLY; Size of the original web app which has been backed up.
 	WebsiteSizeInBytes *int64 `json:"websiteSizeInBytes,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BackupItemProperties.
+func (bi BackupItemProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BackupRequest description of a backup which will be performed.
@@ -7432,7 +7541,7 @@ type BillingMeterProperties struct {
 	Multiplier *float64 `json:"multiplier,omitempty"`
 }
 
-// BlobStorageTokenStore ...
+// BlobStorageTokenStore the configuration settings of the storage of the tokens if blob storage is used.
 type BlobStorageTokenStore struct {
 	// BlobStorageTokenStoreProperties - BlobStorageTokenStore resource specific properties
 	*BlobStorageTokenStoreProperties `json:"properties,omitempty"`
@@ -7520,6 +7629,7 @@ func (bsts *BlobStorageTokenStore) UnmarshalJSON(body []byte) error {
 
 // BlobStorageTokenStoreProperties blobStorageTokenStore resource specific properties
 type BlobStorageTokenStoreProperties struct {
+	// SasURLSettingName - The name of the app setting containing the SAS URL of the blob storage containing the tokens.
 	SasURLSettingName *string `json:"sasUrlSettingName,omitempty"`
 }
 
@@ -7838,6 +7948,12 @@ type CertificateDetails struct {
 	RawData *string `json:"rawData,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CertificateDetails.
+func (cd CertificateDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CertificateEmail SSL certificate email.
 type CertificateEmail struct {
 	// CertificateEmailProperties - CertificateEmail resource specific properties
@@ -8026,6 +8142,12 @@ type CertificateOrderActionProperties struct {
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CertificateOrderActionProperties.
+func (coa CertificateOrderActionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CertificateOrderContact ...
 type CertificateOrderContact struct {
 	Email     *string `json:"email,omitempty"`
@@ -8122,6 +8244,8 @@ func (cpr *CertificatePatchResource) UnmarshalJSON(body []byte) error {
 
 // CertificatePatchResourceProperties certificatePatchResource resource specific properties
 type CertificatePatchResourceProperties struct {
+	// Password - Certificate password.
+	Password *string `json:"password,omitempty"`
 	// FriendlyName - READ-ONLY; Friendly name of the certificate.
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// SubjectName - READ-ONLY; Subject name of the certificate.
@@ -8140,8 +8264,6 @@ type CertificatePatchResourceProperties struct {
 	IssueDate *date.Time `json:"issueDate,omitempty"`
 	// ExpirationDate - READ-ONLY; Certificate expiration date.
 	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
-	// Password - Certificate password.
-	Password *string `json:"password,omitempty"`
 	// Thumbprint - READ-ONLY; Certificate thumbprint.
 	Thumbprint *string `json:"thumbprint,omitempty"`
 	// Valid - READ-ONLY; Is the certificate valid?.
@@ -8169,14 +8291,14 @@ type CertificatePatchResourceProperties struct {
 // MarshalJSON is the custom marshaler for CertificatePatchResourceProperties.
 func (cpr CertificatePatchResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if cpr.Password != nil {
+		objectMap["password"] = cpr.Password
+	}
 	if cpr.HostNames != nil {
 		objectMap["hostNames"] = cpr.HostNames
 	}
 	if cpr.PfxBlob != nil {
 		objectMap["pfxBlob"] = cpr.PfxBlob
-	}
-	if cpr.Password != nil {
-		objectMap["password"] = cpr.Password
 	}
 	if cpr.KeyVaultID != nil {
 		objectMap["keyVaultId"] = cpr.KeyVaultID
@@ -8198,6 +8320,8 @@ func (cpr CertificatePatchResourceProperties) MarshalJSON() ([]byte, error) {
 
 // CertificateProperties certificate resource specific properties
 type CertificateProperties struct {
+	// Password - Certificate password.
+	Password *string `json:"password,omitempty"`
 	// FriendlyName - READ-ONLY; Friendly name of the certificate.
 	FriendlyName *string `json:"friendlyName,omitempty"`
 	// SubjectName - READ-ONLY; Subject name of the certificate.
@@ -8216,8 +8340,6 @@ type CertificateProperties struct {
 	IssueDate *date.Time `json:"issueDate,omitempty"`
 	// ExpirationDate - READ-ONLY; Certificate expiration date.
 	ExpirationDate *date.Time `json:"expirationDate,omitempty"`
-	// Password - Certificate password.
-	Password *string `json:"password,omitempty"`
 	// Thumbprint - READ-ONLY; Certificate thumbprint.
 	Thumbprint *string `json:"thumbprint,omitempty"`
 	// Valid - READ-ONLY; Is the certificate valid?.
@@ -8245,14 +8367,14 @@ type CertificateProperties struct {
 // MarshalJSON is the custom marshaler for CertificateProperties.
 func (c CertificateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if c.Password != nil {
+		objectMap["password"] = c.Password
+	}
 	if c.HostNames != nil {
 		objectMap["hostNames"] = c.HostNames
 	}
 	if c.PfxBlob != nil {
 		objectMap["pfxBlob"] = c.PfxBlob
-	}
-	if c.Password != nil {
-		objectMap["password"] = c.Password
 	}
 	if c.KeyVaultID != nil {
 		objectMap["keyVaultId"] = c.KeyVaultID
@@ -8272,7 +8394,8 @@ func (c CertificateProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ClientRegistration ...
+// ClientRegistration the configuration settings of the app registration for providers that have client ids
+// and client secrets
 type ClientRegistration struct {
 	// ClientRegistrationProperties - ClientRegistration resource specific properties
 	*ClientRegistrationProperties `json:"properties,omitempty"`
@@ -8360,7 +8483,9 @@ func (cr *ClientRegistration) UnmarshalJSON(body []byte) error {
 
 // ClientRegistrationProperties clientRegistration resource specific properties
 type ClientRegistrationProperties struct {
-	ClientID                *string `json:"clientId,omitempty"`
+	// ClientID - The Client ID of the app used for login.
+	ClientID *string `json:"clientId,omitempty"`
+	// ClientSecretSettingName - The app setting name that contains the client secret.
 	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
 }
 
@@ -8872,7 +8997,7 @@ func (cwj ContinuousWebJobProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// CookieExpiration ...
+// CookieExpiration the configuration settings of the session cookie's expiration.
 type CookieExpiration struct {
 	// CookieExpirationProperties - CookieExpiration resource specific properties
 	*CookieExpirationProperties `json:"properties,omitempty"`
@@ -8960,9 +9085,10 @@ func (ce *CookieExpiration) UnmarshalJSON(body []byte) error {
 
 // CookieExpirationProperties cookieExpiration resource specific properties
 type CookieExpirationProperties struct {
-	// Convention - Possible values include: 'FixedTime', 'IdentityProviderDerived'
-	Convention       CookieExpirationConvention `json:"convention,omitempty"`
-	TimeToExpiration *string                    `json:"timeToExpiration,omitempty"`
+	// Convention - The convention used when determining the session cookie's expiration. Possible values include: 'FixedTime', 'IdentityProviderDerived'
+	Convention CookieExpirationConvention `json:"convention,omitempty"`
+	// TimeToExpiration - The time after the request is made when the session cookie should expire.
+	TimeToExpiration *string `json:"timeToExpiration,omitempty"`
 }
 
 // CorsSettings cross-Origin Resource Sharing (CORS) settings for the app.
@@ -9697,7 +9823,7 @@ func (char CustomHostnameAnalysisResultProperties) MarshalJSON() ([]byte, error)
 	return json.Marshal(objectMap)
 }
 
-// CustomOpenIDConnectProvider ...
+// CustomOpenIDConnectProvider the configuration settings of the custom Open ID Connect provider.
 type CustomOpenIDConnectProvider struct {
 	// CustomOpenIDConnectProviderProperties - CustomOpenIdConnectProvider resource specific properties
 	*CustomOpenIDConnectProviderProperties `json:"properties,omitempty"`
@@ -9785,9 +9911,12 @@ func (coicp *CustomOpenIDConnectProvider) UnmarshalJSON(body []byte) error {
 
 // CustomOpenIDConnectProviderProperties customOpenIdConnectProvider resource specific properties
 type CustomOpenIDConnectProviderProperties struct {
-	Enabled      *bool                      `json:"enabled,omitempty"`
+	// Enabled - <code>false</code> if the custom Open ID provider provider should not be enabled; otherwise, <code>true</code>.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Registration - The configuration settings of the app registration for the custom Open ID Connect provider.
 	Registration *OpenIDConnectRegistration `json:"registration,omitempty"`
-	Login        *OpenIDConnectLogin        `json:"login,omitempty"`
+	// Login - The configuration settings of the login flow of the custom Open ID Connect provider.
+	Login *OpenIDConnectLogin `json:"login,omitempty"`
 }
 
 // DatabaseBackupSetting database backup settings.
@@ -9852,6 +9981,12 @@ type DefaultErrorResponse struct {
 	Error *DefaultErrorResponseError `json:"error,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DefaultErrorResponse.
+func (der DefaultErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DefaultErrorResponseError error model.
 type DefaultErrorResponseError struct {
 	// Code - READ-ONLY; Standardized string to programmatically identify the error.
@@ -9882,6 +10017,12 @@ type DefaultErrorResponseErrorDetailsItem struct {
 	Message *string `json:"message,omitempty"`
 	// Target - READ-ONLY; Detailed error description and debugging information.
 	Target *string `json:"target,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DefaultErrorResponseErrorDetailsItem.
+func (derI DefaultErrorResponseErrorDetailsItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DeletedAppRestoreRequest details about restoring a deleted app.
@@ -10089,6 +10230,12 @@ type DeletedSiteProperties struct {
 	Kind *string `json:"kind,omitempty"`
 	// GeoRegionName - READ-ONLY; Geo Region of the deleted site
 	GeoRegionName *string `json:"geoRegionName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DeletedSiteProperties.
+func (ds DeletedSiteProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DeletedWebAppCollection collection of deleted apps.
@@ -10667,6 +10814,12 @@ type DetectorDefinitionProperties struct {
 	IsEnabled *bool `json:"isEnabled,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DetectorDefinitionProperties.
+func (dd DetectorDefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DetectorInfo definition of Detector
 type DetectorInfo struct {
 	// ID - READ-ONLY; Id of detector
@@ -10687,6 +10840,12 @@ type DetectorInfo struct {
 	Type DetectorType `json:"type,omitempty"`
 	// Score - READ-ONLY; Defines score of a detector to power ML based matching.
 	Score *float64 `json:"score,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DetectorInfo.
+func (di DetectorInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DetectorResponse class representing Response from Detector
@@ -11488,6 +11647,12 @@ type DiagnosticCategoryProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DiagnosticCategoryProperties.
+func (dc DiagnosticCategoryProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DiagnosticData set of data with rendering instructions
 type DiagnosticData struct {
 	// Table - Data in table form
@@ -12120,6 +12285,12 @@ type DomainControlCenterSsoRequest struct {
 	PostParameterValue *string `json:"postParameterValue,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DomainControlCenterSsoRequest.
+func (dccsr DomainControlCenterSsoRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DomainOwnershipIdentifier domain ownership Identifier.
 type DomainOwnershipIdentifier struct {
 	autorest.Response `json:"-"`
@@ -12746,7 +12917,7 @@ type Experiments struct {
 	RampUpRules *[]RampUpRule `json:"rampUpRules,omitempty"`
 }
 
-// Facebook ...
+// Facebook the configuration settings of the Facebook provider.
 type Facebook struct {
 	// FacebookProperties - Facebook resource specific properties
 	*FacebookProperties `json:"properties,omitempty"`
@@ -12834,10 +13005,14 @@ func (f *Facebook) UnmarshalJSON(body []byte) error {
 
 // FacebookProperties facebook resource specific properties
 type FacebookProperties struct {
-	Enabled         *bool            `json:"enabled,omitempty"`
-	Registration    *AppRegistration `json:"registration,omitempty"`
-	GraphAPIVersion *string          `json:"graphApiVersion,omitempty"`
-	Login           *LoginScopes     `json:"login,omitempty"`
+	// Enabled - <code>false</code> if the Facebook provider should not be enabled despite the set registration; otherwise, <code>true</code>.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Registration - The configuration settings of the app registration for the Facebook provider.
+	Registration *AppRegistration `json:"registration,omitempty"`
+	// GraphAPIVersion - The version of the Facebook api to be used while logging in.
+	GraphAPIVersion *string `json:"graphApiVersion,omitempty"`
+	// Login - The configuration settings of the login flow.
+	Login *LoginScopes `json:"login,omitempty"`
 }
 
 // FileSystemApplicationLogsConfig application logs to file system configuration.
@@ -12860,7 +13035,7 @@ type FileSystemHTTPLogsConfig struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// FileSystemTokenStore ...
+// FileSystemTokenStore the configuration settings of the storage of the tokens if a file system is used.
 type FileSystemTokenStore struct {
 	// FileSystemTokenStoreProperties - FileSystemTokenStore resource specific properties
 	*FileSystemTokenStoreProperties `json:"properties,omitempty"`
@@ -12948,10 +13123,11 @@ func (fsts *FileSystemTokenStore) UnmarshalJSON(body []byte) error {
 
 // FileSystemTokenStoreProperties fileSystemTokenStore resource specific properties
 type FileSystemTokenStoreProperties struct {
+	// Directory - The directory in which the tokens will be stored.
 	Directory *string `json:"directory,omitempty"`
 }
 
-// ForwardProxy ...
+// ForwardProxy the configuration settings of a forward proxy used to make the requests.
 type ForwardProxy struct {
 	// ForwardProxyProperties - ForwardProxy resource specific properties
 	*ForwardProxyProperties `json:"properties,omitempty"`
@@ -13039,10 +13215,12 @@ func (fp *ForwardProxy) UnmarshalJSON(body []byte) error {
 
 // ForwardProxyProperties forwardProxy resource specific properties
 type ForwardProxyProperties struct {
-	// Convention - Possible values include: 'ForwardProxyConventionNoProxy', 'ForwardProxyConventionStandard', 'ForwardProxyConventionCustom'
-	Convention            ForwardProxyConvention `json:"convention,omitempty"`
-	CustomHostHeaderName  *string                `json:"customHostHeaderName,omitempty"`
-	CustomProtoHeaderName *string                `json:"customProtoHeaderName,omitempty"`
+	// Convention - The convention used to determine the url of the request made. Possible values include: 'ForwardProxyConventionNoProxy', 'ForwardProxyConventionStandard', 'ForwardProxyConventionCustom'
+	Convention ForwardProxyConvention `json:"convention,omitempty"`
+	// CustomHostHeaderName - The name of the header containing the host of the request.
+	CustomHostHeaderName *string `json:"customHostHeaderName,omitempty"`
+	// CustomProtoHeaderName - The name of the header containing the scheme of the request.
+	CustomProtoHeaderName *string `json:"customProtoHeaderName,omitempty"`
 }
 
 // FunctionAppMajorVersion function App stack major version.
@@ -13055,6 +13233,12 @@ type FunctionAppMajorVersion struct {
 	MinorVersions *[]FunctionAppMinorVersion `json:"minorVersions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for FunctionAppMajorVersion.
+func (famv FunctionAppMajorVersion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // FunctionAppMinorVersion function App stack minor version.
 type FunctionAppMinorVersion struct {
 	// DisplayText - READ-ONLY; Function App stack (display only).
@@ -13065,12 +13249,24 @@ type FunctionAppMinorVersion struct {
 	StackSettings *FunctionAppRuntimes `json:"stackSettings,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for FunctionAppMinorVersion.
+func (famv FunctionAppMinorVersion) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // FunctionAppRuntimes function App stack runtimes.
 type FunctionAppRuntimes struct {
 	// LinuxRuntimeSettings - READ-ONLY; Linux-specific settings associated with the minor version.
 	LinuxRuntimeSettings *FunctionAppRuntimeSettings `json:"linuxRuntimeSettings,omitempty"`
 	// WindowsRuntimeSettings - READ-ONLY; Windows-specific settings associated with the minor version.
 	WindowsRuntimeSettings *FunctionAppRuntimeSettings `json:"windowsRuntimeSettings,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FunctionAppRuntimes.
+func (far FunctionAppRuntimes) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // FunctionAppRuntimeSettings function App runtime settings.
@@ -13386,6 +13582,12 @@ type FunctionAppStackProperties struct {
 	MajorVersions *[]FunctionAppMajorVersion `json:"majorVersions,omitempty"`
 	// PreferredOs - READ-ONLY; Function App stack preferred OS. Possible values include: 'Windows', 'Linux'
 	PreferredOs StackPreferredOs `json:"preferredOs,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for FunctionAppStackProperties.
+func (fas FunctionAppStackProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // FunctionEnvelope function information.
@@ -13991,7 +14193,13 @@ type GeoRegionProperties struct {
 	OrgDomain *string `json:"orgDomain,omitempty"`
 }
 
-// GitHub ...
+// MarshalJSON is the custom marshaler for GeoRegionProperties.
+func (gr GeoRegionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// GitHub the configuration settings of the GitHub provider.
 type GitHub struct {
 	// GitHubProperties - GitHub resource specific properties
 	*GitHubProperties `json:"properties,omitempty"`
@@ -14117,11 +14325,20 @@ type GitHubActionWebAppStackSettings struct {
 	SupportedVersion *string `json:"supportedVersion,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GitHubActionWebAppStackSettings.
+func (ghawass GitHubActionWebAppStackSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // GitHubProperties gitHub resource specific properties
 type GitHubProperties struct {
-	Enabled      *bool               `json:"enabled,omitempty"`
+	// Enabled - <code>false</code> if the GitHub provider should not be enabled despite the set registration; otherwise, <code>true</code>.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Registration - The configuration settings of the app registration for the GitHub provider.
 	Registration *ClientRegistration `json:"registration,omitempty"`
-	Login        *LoginScopes        `json:"login,omitempty"`
+	// Login - The configuration settings of the login flow.
+	Login *LoginScopes `json:"login,omitempty"`
 }
 
 // GlobalCsmSkuDescription a Global SKU Description.
@@ -14142,7 +14359,8 @@ type GlobalCsmSkuDescription struct {
 	Capabilities *[]Capability `json:"capabilities,omitempty"`
 }
 
-// GlobalValidation ...
+// GlobalValidation the configuration settings that determines the validation flow of users using App
+// Service Authentication/Authorization.
 type GlobalValidation struct {
 	// GlobalValidationProperties - GlobalValidation resource specific properties
 	*GlobalValidationProperties `json:"properties,omitempty"`
@@ -14230,14 +14448,19 @@ func (gv *GlobalValidation) UnmarshalJSON(body []byte) error {
 
 // GlobalValidationProperties globalValidation resource specific properties
 type GlobalValidationProperties struct {
+	// RequireAuthentication - <code>true</code> if the authentication flow is required any request is made; otherwise, <code>false</code>.
 	RequireAuthentication *bool `json:"requireAuthentication,omitempty"`
-	// UnauthenticatedClientAction - Possible values include: 'UnauthenticatedClientActionV2RedirectToLoginPage', 'UnauthenticatedClientActionV2AllowAnonymous', 'UnauthenticatedClientActionV2Return401', 'UnauthenticatedClientActionV2Return403'
+	// UnauthenticatedClientAction - The action to take when an unauthenticated client attempts to access the app. Possible values include: 'UnauthenticatedClientActionV2RedirectToLoginPage', 'UnauthenticatedClientActionV2AllowAnonymous', 'UnauthenticatedClientActionV2Return401', 'UnauthenticatedClientActionV2Return403'
 	UnauthenticatedClientAction UnauthenticatedClientActionV2 `json:"unauthenticatedClientAction,omitempty"`
-	RedirectToProvider          *string                       `json:"redirectToProvider,omitempty"`
-	ExcludedPaths               *[]string                     `json:"excludedPaths,omitempty"`
+	// RedirectToProvider - The default authentication provider to use when multiple providers are configured.
+	// This setting is only needed if multiple providers are configured and the unauthenticated client
+	// action is set to "RedirectToLoginPage".
+	RedirectToProvider *string `json:"redirectToProvider,omitempty"`
+	// ExcludedPaths - The paths for which unauthenticated flow would not be redirected to the login page.
+	ExcludedPaths *[]string `json:"excludedPaths,omitempty"`
 }
 
-// Google ...
+// Google the configuration settings of the Google provider.
 type Google struct {
 	// GoogleProperties - Google resource specific properties
 	*GoogleProperties `json:"properties,omitempty"`
@@ -14325,10 +14548,14 @@ func (g *Google) UnmarshalJSON(body []byte) error {
 
 // GoogleProperties google resource specific properties
 type GoogleProperties struct {
-	Enabled      *bool                       `json:"enabled,omitempty"`
-	Registration *ClientRegistration         `json:"registration,omitempty"`
-	Login        *LoginScopes                `json:"login,omitempty"`
-	Validation   *AllowedAudiencesValidation `json:"validation,omitempty"`
+	// Enabled - <code>false</code> if the Google provider should not be enabled despite the set registration; otherwise, <code>true</code>.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Registration - The configuration settings of the app registration for the Google provider.
+	Registration *ClientRegistration `json:"registration,omitempty"`
+	// Login - The configuration settings of the login flow.
+	Login *LoginScopes `json:"login,omitempty"`
+	// Validation - The configuration settings of the Azure Active Directory token validation flow.
+	Validation *AllowedAudiencesValidation `json:"validation,omitempty"`
 }
 
 // HandlerMapping the IIS handler mappings used to define which handler processes HTTP requests with
@@ -14753,7 +14980,8 @@ type HTTPLogsConfig struct {
 	AzureBlobStorage *AzureBlobStorageHTTPLogsConfig `json:"azureBlobStorage,omitempty"`
 }
 
-// HTTPSettings ...
+// HTTPSettings the configuration settings of the HTTP requests for authentication and authorization
+// requests made against App Service Authentication/Authorization.
 type HTTPSettings struct {
 	// HTTPSettingsProperties - HttpSettings resource specific properties
 	*HTTPSettingsProperties `json:"properties,omitempty"`
@@ -14841,12 +15069,15 @@ func (hs *HTTPSettings) UnmarshalJSON(body []byte) error {
 
 // HTTPSettingsProperties httpSettings resource specific properties
 type HTTPSettingsProperties struct {
-	RequireHTTPS *bool               `json:"requireHttps,omitempty"`
-	Routes       *HTTPSettingsRoutes `json:"routes,omitempty"`
-	ForwardProxy *ForwardProxy       `json:"forwardProxy,omitempty"`
+	// RequireHTTPS - <code>false</code> if the authentication/authorization responses not having the HTTPS scheme are permissible; otherwise, <code>true</code>.
+	RequireHTTPS *bool `json:"requireHttps,omitempty"`
+	// Routes - The configuration settings of the paths HTTP requests.
+	Routes *HTTPSettingsRoutes `json:"routes,omitempty"`
+	// ForwardProxy - The configuration settings of a forward proxy used to make the requests.
+	ForwardProxy *ForwardProxy `json:"forwardProxy,omitempty"`
 }
 
-// HTTPSettingsRoutes ...
+// HTTPSettingsRoutes the configuration settings of the paths HTTP requests.
 type HTTPSettingsRoutes struct {
 	// HTTPSettingsRoutesProperties - HttpSettingsRoutes resource specific properties
 	*HTTPSettingsRoutesProperties `json:"properties,omitempty"`
@@ -14934,6 +15165,7 @@ func (hsr *HTTPSettingsRoutes) UnmarshalJSON(body []byte) error {
 
 // HTTPSettingsRoutesProperties httpSettingsRoutes resource specific properties
 type HTTPSettingsRoutesProperties struct {
+	// APIPrefix - The prefix that should precede all the authentication/authorization paths.
 	APIPrefix *string `json:"apiPrefix,omitempty"`
 }
 
@@ -15288,6 +15520,12 @@ type HybridConnectionKeyProperties struct {
 	SendKeyValue *string `json:"sendKeyValue,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HybridConnectionKeyProperties.
+func (hck HybridConnectionKeyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // HybridConnectionLimits hybrid Connection limits contract. This is used to return the plan limits of
 // Hybrid Connections.
 type HybridConnectionLimits struct {
@@ -15382,6 +15620,12 @@ type HybridConnectionLimitsProperties struct {
 	Current *int32 `json:"current,omitempty"`
 	// Maximum - READ-ONLY; The maximum number of Hybrid Connections allowed.
 	Maximum *int32 `json:"maximum,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HybridConnectionLimitsProperties.
+func (hcl HybridConnectionLimitsProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // HybridConnectionProperties hybridConnection resource specific properties
@@ -15666,7 +15910,8 @@ type IdentifierProperties struct {
 	Value *string `json:"id,omitempty"`
 }
 
-// IdentityProviders ...
+// IdentityProviders the configuration settings of each of the identity providers used to configure App
+// Service Authentication/Authorization.
 type IdentityProviders struct {
 	// IdentityProvidersProperties - IdentityProviders resource specific properties
 	*IdentityProvidersProperties `json:"properties,omitempty"`
@@ -15754,15 +15999,25 @@ func (IP *IdentityProviders) UnmarshalJSON(body []byte) error {
 
 // IdentityProvidersProperties identityProviders resource specific properties
 type IdentityProvidersProperties struct {
-	AzureActiveDirectory         *AzureActiveDirectory                   `json:"azureActiveDirectory,omitempty"`
-	Facebook                     *Facebook                               `json:"facebook,omitempty"`
-	GitHub                       *GitHub                                 `json:"gitHub,omitempty"`
-	Google                       *Google                                 `json:"google,omitempty"`
-	LegacyMicrosoftAccount       *LegacyMicrosoftAccount                 `json:"legacyMicrosoftAccount,omitempty"`
-	Twitter                      *Twitter                                `json:"twitter,omitempty"`
-	Apple                        *Apple                                  `json:"apple,omitempty"`
-	AzureStaticWebApps           *AzureStaticWebApps                     `json:"azureStaticWebApps,omitempty"`
+	// AzureActiveDirectory - The configuration settings of the Azure Active directory provider.
+	AzureActiveDirectory *AzureActiveDirectory `json:"azureActiveDirectory,omitempty"`
+	// Facebook - The configuration settings of the Facebook provider.
+	Facebook *Facebook `json:"facebook,omitempty"`
+	// GitHub - The configuration settings of the GitHub provider.
+	GitHub *GitHub `json:"gitHub,omitempty"`
+	// Google - The configuration settings of the Google provider.
+	Google *Google `json:"google,omitempty"`
+	// Twitter - The configuration settings of the Twitter provider.
+	Twitter *Twitter `json:"twitter,omitempty"`
+	// CustomOpenIDConnectProviders - The map of the name of the alias of each custom Open ID Connect provider to the
+	// configuration settings of the custom Open ID Connect provider.
 	CustomOpenIDConnectProviders map[string]*CustomOpenIDConnectProvider `json:"customOpenIdConnectProviders"`
+	// LegacyMicrosoftAccount - The configuration settings of the legacy Microsoft Account provider.
+	LegacyMicrosoftAccount *LegacyMicrosoftAccount `json:"legacyMicrosoftAccount,omitempty"`
+	// Apple - The configuration settings of the Apple provider.
+	Apple *Apple `json:"apple,omitempty"`
+	// AzureStaticWebApps - The configuration settings of the Azure Static Web Apps provider.
+	AzureStaticWebApps *AzureStaticWebApps `json:"azureStaticWebApps,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for IdentityProvidersProperties.
@@ -15780,20 +16035,20 @@ func (IP IdentityProvidersProperties) MarshalJSON() ([]byte, error) {
 	if IP.Google != nil {
 		objectMap["google"] = IP.Google
 	}
-	if IP.LegacyMicrosoftAccount != nil {
-		objectMap["legacyMicrosoftAccount"] = IP.LegacyMicrosoftAccount
-	}
 	if IP.Twitter != nil {
 		objectMap["twitter"] = IP.Twitter
+	}
+	if IP.CustomOpenIDConnectProviders != nil {
+		objectMap["customOpenIdConnectProviders"] = IP.CustomOpenIDConnectProviders
+	}
+	if IP.LegacyMicrosoftAccount != nil {
+		objectMap["legacyMicrosoftAccount"] = IP.LegacyMicrosoftAccount
 	}
 	if IP.Apple != nil {
 		objectMap["apple"] = IP.Apple
 	}
 	if IP.AzureStaticWebApps != nil {
 		objectMap["azureStaticWebApps"] = IP.AzureStaticWebApps
-	}
-	if IP.CustomOpenIDConnectProviders != nil {
-		objectMap["customOpenIdConnectProviders"] = IP.CustomOpenIDConnectProviders
 	}
 	return json.Marshal(objectMap)
 }
@@ -16359,7 +16614,8 @@ func (j JobProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// JwtClaimChecks ...
+// JwtClaimChecks the configuration settings of the checks that should be made while validating the JWT
+// Claims.
 type JwtClaimChecks struct {
 	// JwtClaimChecksProperties - JwtClaimChecks resource specific properties
 	*JwtClaimChecksProperties `json:"properties,omitempty"`
@@ -16447,7 +16703,9 @@ func (jcc *JwtClaimChecks) UnmarshalJSON(body []byte) error {
 
 // JwtClaimChecksProperties jwtClaimChecks resource specific properties
 type JwtClaimChecksProperties struct {
-	AllowedGroups             *[]string `json:"allowedGroups,omitempty"`
+	// AllowedGroups - The list of the allowed groups.
+	AllowedGroups *[]string `json:"allowedGroups,omitempty"`
+	// AllowedClientApplications - The list of the allowed client applications.
 	AllowedClientApplications *[]string `json:"allowedClientApplications,omitempty"`
 }
 
@@ -16466,6 +16724,12 @@ type KeyValuePairStringObject struct {
 	Key *string `json:"key,omitempty"`
 	// Value - READ-ONLY
 	Value interface{} `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for KeyValuePairStringObject.
+func (kvpSo KeyValuePairStringObject) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // KubeEnvironmentProfile specification for a Kubernetes Environment to use for this resource.
@@ -16487,7 +16751,7 @@ func (kep KubeEnvironmentProfile) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// LegacyMicrosoftAccount ...
+// LegacyMicrosoftAccount the configuration settings of the legacy Microsoft Account provider.
 type LegacyMicrosoftAccount struct {
 	// LegacyMicrosoftAccountProperties - LegacyMicrosoftAccount resource specific properties
 	*LegacyMicrosoftAccountProperties `json:"properties,omitempty"`
@@ -16575,10 +16839,14 @@ func (lma *LegacyMicrosoftAccount) UnmarshalJSON(body []byte) error {
 
 // LegacyMicrosoftAccountProperties legacyMicrosoftAccount resource specific properties
 type LegacyMicrosoftAccountProperties struct {
-	Enabled      *bool                       `json:"enabled,omitempty"`
-	Registration *ClientRegistration         `json:"registration,omitempty"`
-	Login        *LoginScopes                `json:"login,omitempty"`
-	Validation   *AllowedAudiencesValidation `json:"validation,omitempty"`
+	// Enabled - <code>false</code> if the legacy Microsoft Account provider should not be enabled despite the set registration; otherwise, <code>true</code>.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Registration - The configuration settings of the app registration for the legacy Microsoft Account provider.
+	Registration *ClientRegistration `json:"registration,omitempty"`
+	// Login - The configuration settings of the login flow.
+	Login *LoginScopes `json:"login,omitempty"`
+	// Validation - The configuration settings of the legacy Microsoft Account provider token validation flow.
+	Validation *AllowedAudiencesValidation `json:"validation,omitempty"`
 }
 
 // LinuxJavaContainerSettings linux Java Container settings.
@@ -16599,6 +16867,12 @@ type LinuxJavaContainerSettings struct {
 	IsAutoUpdate *bool `json:"isAutoUpdate,omitempty"`
 	// IsEarlyAccess - READ-ONLY; <code>true</code> if the minor version is early-access; otherwise, <code>false</code>.
 	IsEarlyAccess *bool `json:"isEarlyAccess,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LinuxJavaContainerSettings.
+func (ljcs LinuxJavaContainerSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ListCapability ...
@@ -16663,7 +16937,8 @@ type LocalizableString struct {
 	LocalizedValue *string `json:"localizedValue,omitempty"`
 }
 
-// Login ...
+// Login the configuration settings of the login flow of users using App Service
+// Authentication/Authorization.
 type Login struct {
 	// LoginProperties - Login resource specific properties
 	*LoginProperties `json:"properties,omitempty"`
@@ -16751,15 +17026,23 @@ func (l *Login) UnmarshalJSON(body []byte) error {
 
 // LoginProperties login resource specific properties
 type LoginProperties struct {
-	Routes                        *LoginRoutes      `json:"routes,omitempty"`
-	TokenStore                    *TokenStore       `json:"tokenStore,omitempty"`
-	PreserveURLFragmentsForLogins *bool             `json:"preserveUrlFragmentsForLogins,omitempty"`
-	AllowedExternalRedirectUrls   *[]string         `json:"allowedExternalRedirectUrls,omitempty"`
-	CookieExpiration              *CookieExpiration `json:"cookieExpiration,omitempty"`
-	Nonce                         *Nonce            `json:"nonce,omitempty"`
+	// Routes - The routes that specify the endpoints used for login and logout requests.
+	Routes *LoginRoutes `json:"routes,omitempty"`
+	// TokenStore - The configuration settings of the token store.
+	TokenStore *TokenStore `json:"tokenStore,omitempty"`
+	// PreserveURLFragmentsForLogins - <code>true</code> if the fragments from the request are preserved after the login request is made; otherwise, <code>false</code>.
+	PreserveURLFragmentsForLogins *bool `json:"preserveUrlFragmentsForLogins,omitempty"`
+	// AllowedExternalRedirectUrls - External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part of the URL is ignored.
+	// This is an advanced setting typically only needed by Windows Store application backends.
+	// Note that URLs within the current domain are always implicitly allowed.
+	AllowedExternalRedirectUrls *[]string `json:"allowedExternalRedirectUrls,omitempty"`
+	// CookieExpiration - The configuration settings of the session cookie's expiration.
+	CookieExpiration *CookieExpiration `json:"cookieExpiration,omitempty"`
+	// Nonce - The configuration settings of the nonce used in the login flow.
+	Nonce *Nonce `json:"nonce,omitempty"`
 }
 
-// LoginRoutes ...
+// LoginRoutes the routes that specify the endpoints used for login and logout requests.
 type LoginRoutes struct {
 	// LoginRoutesProperties - LoginRoutes resource specific properties
 	*LoginRoutesProperties `json:"properties,omitempty"`
@@ -16847,10 +17130,11 @@ func (lr *LoginRoutes) UnmarshalJSON(body []byte) error {
 
 // LoginRoutesProperties loginRoutes resource specific properties
 type LoginRoutesProperties struct {
+	// LogoutEndpoint - The endpoint at which a logout request should be made.
 	LogoutEndpoint *string `json:"logoutEndpoint,omitempty"`
 }
 
-// LoginScopes ...
+// LoginScopes the configuration settings of the login flow, including the scopes that should be requested.
 type LoginScopes struct {
 	// LoginScopesProperties - LoginScopes resource specific properties
 	*LoginScopesProperties `json:"properties,omitempty"`
@@ -16938,6 +17222,7 @@ func (ls *LoginScopes) UnmarshalJSON(body []byte) error {
 
 // LoginScopesProperties loginScopes resource specific properties
 type LoginScopesProperties struct {
+	// Scopes - A list of the scopes that should be requested while authenticating.
 	Scopes *[]string `json:"scopes,omitempty"`
 }
 
@@ -16979,6 +17264,12 @@ type ManagedServiceIdentityUserAssignedIdentitiesValue struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// ClientID - READ-ONLY; Client Id of user assigned identity
 	ClientID *string `json:"clientId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ManagedServiceIdentityUserAssignedIdentitiesValue.
+func (msiAiv ManagedServiceIdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MetricAvailability retention policy of a resource metric.
@@ -17197,6 +17488,12 @@ type MigrateMySQLStatusProperties struct {
 	OperationID *string `json:"operationId,omitempty"`
 	// LocalMySQLEnabled - READ-ONLY; True if the web app has in app MySql enabled
 	LocalMySQLEnabled *bool `json:"localMySqlEnabled,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MigrateMySQLStatusProperties.
+func (mmss MigrateMySQLStatusProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MSDeploy mSDeploy ARM PUT information
@@ -17431,10 +17728,22 @@ type MSDeployLogEntry struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MSDeployLogEntry.
+func (mdle MSDeployLogEntry) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MSDeployLogProperties mSDeployLog resource specific properties
 type MSDeployLogProperties struct {
 	// Entries - READ-ONLY; List of log entry messages
 	Entries *[]MSDeployLogEntry `json:"entries,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MSDeployLogProperties.
+func (mdl MSDeployLogProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MSDeployStatus mSDeploy ARM response
@@ -17536,6 +17845,12 @@ type MSDeployStatusProperties struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// Complete - READ-ONLY; Whether the deployment operation has completed
 	Complete *bool `json:"complete,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MSDeployStatusProperties.
+func (mds MSDeployStatusProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // NameIdentifier identifies an object.
@@ -17820,6 +18135,12 @@ type NetworkFeaturesProperties struct {
 	HybridConnectionsV2 *[]HybridConnection `json:"hybridConnectionsV2,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for NetworkFeaturesProperties.
+func (nf NetworkFeaturesProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // NetworkTrace network trace
 type NetworkTrace struct {
 	// Path - Local file path for the captured network trace file.
@@ -17830,7 +18151,7 @@ type NetworkTrace struct {
 	Message *string `json:"message,omitempty"`
 }
 
-// Nonce ...
+// Nonce the configuration settings of the nonce used in the login flow.
 type Nonce struct {
 	// NonceProperties - Nonce resource specific properties
 	*NonceProperties `json:"properties,omitempty"`
@@ -17918,11 +18239,14 @@ func (n *Nonce) UnmarshalJSON(body []byte) error {
 
 // NonceProperties nonce resource specific properties
 type NonceProperties struct {
-	ValidateNonce           *bool   `json:"validateNonce,omitempty"`
+	// ValidateNonce - <code>false</code> if the nonce should not be validated while completing the login flow; otherwise, <code>true</code>.
+	ValidateNonce *bool `json:"validateNonce,omitempty"`
+	// NonceExpirationInterval - The time after the request is made when the nonce should expire.
 	NonceExpirationInterval *string `json:"nonceExpirationInterval,omitempty"`
 }
 
-// OpenIDConnectClientCredential ...
+// OpenIDConnectClientCredential the authentication client credentials of the custom Open ID Connect
+// provider.
 type OpenIDConnectClientCredential struct {
 	// OpenIDConnectClientCredentialProperties - OpenIdConnectClientCredential resource specific properties
 	*OpenIDConnectClientCredentialProperties `json:"properties,omitempty"`
@@ -18010,12 +18334,14 @@ func (oiccc *OpenIDConnectClientCredential) UnmarshalJSON(body []byte) error {
 
 // OpenIDConnectClientCredentialProperties openIdConnectClientCredential resource specific properties
 type OpenIDConnectClientCredentialProperties struct {
-	// Method - Possible values include: 'ClientSecretPost'
-	Method                  ClientCredentialMethod `json:"method,omitempty"`
-	ClientSecretSettingName *string                `json:"clientSecretSettingName,omitempty"`
+	// Method - The method that should be used to authenticate the user. Possible values include: 'ClientSecretPost'
+	Method ClientCredentialMethod `json:"method,omitempty"`
+	// ClientSecretSettingName - The app setting that contains the client secret for the custom Open ID Connect provider.
+	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
 }
 
-// OpenIDConnectConfig ...
+// OpenIDConnectConfig the configuration settings of the endpoints used for the custom Open ID Connect
+// provider.
 type OpenIDConnectConfig struct {
 	// OpenIDConnectConfigProperties - OpenIdConnectConfig resource specific properties
 	*OpenIDConnectConfigProperties `json:"properties,omitempty"`
@@ -18103,14 +18429,19 @@ func (oicc *OpenIDConnectConfig) UnmarshalJSON(body []byte) error {
 
 // OpenIDConnectConfigProperties openIdConnectConfig resource specific properties
 type OpenIDConnectConfigProperties struct {
-	AuthorizationEndpoint        *string `json:"authorizationEndpoint,omitempty"`
-	TokenEndpoint                *string `json:"tokenEndpoint,omitempty"`
-	Issuer                       *string `json:"issuer,omitempty"`
-	CertificationURI             *string `json:"certificationUri,omitempty"`
+	// AuthorizationEndpoint - The endpoint to be used to make an authorization request.
+	AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
+	// TokenEndpoint - The endpoint to be used to request a token.
+	TokenEndpoint *string `json:"tokenEndpoint,omitempty"`
+	// Issuer - The endpoint that issues the token.
+	Issuer *string `json:"issuer,omitempty"`
+	// CertificationURI - The endpoint that provides the keys necessary to validate the token.
+	CertificationURI *string `json:"certificationUri,omitempty"`
+	// WellKnownOpenIDConfiguration - The endpoint that contains all the configuration endpoints for the provider.
 	WellKnownOpenIDConfiguration *string `json:"wellKnownOpenIdConfiguration,omitempty"`
 }
 
-// OpenIDConnectLogin ...
+// OpenIDConnectLogin the configuration settings of the login flow of the custom Open ID Connect provider.
 type OpenIDConnectLogin struct {
 	// OpenIDConnectLoginProperties - OpenIdConnectLogin resource specific properties
 	*OpenIDConnectLoginProperties `json:"properties,omitempty"`
@@ -18198,11 +18529,14 @@ func (oicl *OpenIDConnectLogin) UnmarshalJSON(body []byte) error {
 
 // OpenIDConnectLoginProperties openIdConnectLogin resource specific properties
 type OpenIDConnectLoginProperties struct {
-	NameClaimType *string   `json:"nameClaimType,omitempty"`
-	Scopes        *[]string `json:"scopes,omitempty"`
+	// NameClaimType - The name of the claim that contains the users name.
+	NameClaimType *string `json:"nameClaimType,omitempty"`
+	// Scopes - A list of the scopes that should be requested while authenticating.
+	Scopes *[]string `json:"scopes,omitempty"`
 }
 
-// OpenIDConnectRegistration ...
+// OpenIDConnectRegistration the configuration settings of the app registration for the custom Open ID
+// Connect provider.
 type OpenIDConnectRegistration struct {
 	// OpenIDConnectRegistrationProperties - OpenIdConnectRegistration resource specific properties
 	*OpenIDConnectRegistrationProperties `json:"properties,omitempty"`
@@ -18290,9 +18624,12 @@ func (oicr *OpenIDConnectRegistration) UnmarshalJSON(body []byte) error {
 
 // OpenIDConnectRegistrationProperties openIdConnectRegistration resource specific properties
 type OpenIDConnectRegistrationProperties struct {
-	ClientID                   *string                        `json:"clientId,omitempty"`
-	ClientCredential           *OpenIDConnectClientCredential `json:"clientCredential,omitempty"`
-	OpenIDConnectConfiguration *OpenIDConnectConfig           `json:"openIdConnectConfiguration,omitempty"`
+	// ClientID - The client id of the custom Open ID Connect provider.
+	ClientID *string `json:"clientId,omitempty"`
+	// ClientCredential - The authentication credentials of the custom Open ID Connect provider.
+	ClientCredential *OpenIDConnectClientCredential `json:"clientCredential,omitempty"`
+	// OpenIDConnectConfiguration - The configuration settings of the endpoints used for the custom Open ID Connect provider.
+	OpenIDConnectConfiguration *OpenIDConnectConfig `json:"openIdConnectConfiguration,omitempty"`
 }
 
 // Operation an operation on a resource.
@@ -19607,6 +19944,12 @@ type PrivateLinkResourceProperties struct {
 	RequiredMembers *[]string `json:"requiredMembers,omitempty"`
 	// RequiredZoneNames - READ-ONLY; RequiredZoneNames of a private link resource
 	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateLinkResourceProperties.
+func (plrp PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PrivateLinkResourcesWrapper wrapper for a collection of private link resources
@@ -21837,6 +22180,92 @@ type RelayServiceConnectionEntityProperties struct {
 	BiztalkURI               *string `json:"biztalkUri,omitempty"`
 }
 
+// RemotePrivateEndpointConnection a remote private endpoint connection
+type RemotePrivateEndpointConnection struct {
+	// RemotePrivateEndpointConnectionProperties - RemotePrivateEndpointConnection resource specific properties
+	*RemotePrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource Id.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource Name.
+	Name *string `json:"name,omitempty"`
+	// Kind - Kind of resource.
+	Kind *string `json:"kind,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RemotePrivateEndpointConnection.
+func (rpec RemotePrivateEndpointConnection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rpec.RemotePrivateEndpointConnectionProperties != nil {
+		objectMap["properties"] = rpec.RemotePrivateEndpointConnectionProperties
+	}
+	if rpec.Kind != nil {
+		objectMap["kind"] = rpec.Kind
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for RemotePrivateEndpointConnection struct.
+func (rpec *RemotePrivateEndpointConnection) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var remotePrivateEndpointConnectionProperties RemotePrivateEndpointConnectionProperties
+				err = json.Unmarshal(*v, &remotePrivateEndpointConnectionProperties)
+				if err != nil {
+					return err
+				}
+				rpec.RemotePrivateEndpointConnectionProperties = &remotePrivateEndpointConnectionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rpec.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rpec.Name = &name
+			}
+		case "kind":
+			if v != nil {
+				var kind string
+				err = json.Unmarshal(*v, &kind)
+				if err != nil {
+					return err
+				}
+				rpec.Kind = &kind
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rpec.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // RemotePrivateEndpointConnectionARMResource remote Private Endpoint Connection ARM resource.
 type RemotePrivateEndpointConnectionARMResource struct {
 	autorest.Response `json:"-"`
@@ -21947,6 +22376,32 @@ func (rpecar RemotePrivateEndpointConnectionARMResourceProperties) MarshalJSON()
 	}
 	if rpecar.IPAddresses != nil {
 		objectMap["ipAddresses"] = rpecar.IPAddresses
+	}
+	return json.Marshal(objectMap)
+}
+
+// RemotePrivateEndpointConnectionProperties remotePrivateEndpointConnection resource specific properties
+type RemotePrivateEndpointConnectionProperties struct {
+	// ProvisioningState - READ-ONLY
+	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// PrivateEndpoint - PrivateEndpoint of a remote private endpoint connection
+	PrivateEndpoint                   *ArmIDWrapper               `json:"privateEndpoint,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	// IPAddresses - Private IPAddresses mapped to the remote private endpoint
+	IPAddresses *[]string `json:"ipAddresses,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RemotePrivateEndpointConnectionProperties.
+func (rpec RemotePrivateEndpointConnectionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rpec.PrivateEndpoint != nil {
+		objectMap["privateEndpoint"] = rpec.PrivateEndpoint
+	}
+	if rpec.PrivateLinkServiceConnectionState != nil {
+		objectMap["privateLinkServiceConnectionState"] = rpec.PrivateLinkServiceConnectionState
+	}
+	if rpec.IPAddresses != nil {
+		objectMap["ipAddresses"] = rpec.IPAddresses
 	}
 	return json.Marshal(objectMap)
 }
@@ -22536,6 +22991,12 @@ type ResourceMetricAvailability struct {
 	Retention *string `json:"retention,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceMetricAvailability.
+func (rma ResourceMetricAvailability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceMetricDefinition metadata for the metrics.
 type ResourceMetricDefinition struct {
 	// ResourceMetricDefinitionProperties - ResourceMetricDefinition resource specific properties
@@ -22830,6 +23291,79 @@ type ResourceNameAvailabilityRequest struct {
 	Type CheckNameResourceTypes `json:"type,omitempty"`
 	// IsFqdn - Is fully qualified domain name.
 	IsFqdn *bool `json:"isFqdn,omitempty"`
+}
+
+// ResponseMessageEnvelopeRemotePrivateEndpointConnection message envelope that contains the common Azure
+// resource manager properties and the resource provider specific content.
+type ResponseMessageEnvelopeRemotePrivateEndpointConnection struct {
+	// ID - Resource Id. Typically ID is populated only for responses to GET requests. Caller is responsible for passing in this
+	// value for GET requests only.
+	// For example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupId}/providers/Microsoft.Web/sites/{sitename}
+	ID *string `json:"id,omitempty"`
+	// Name - Name of resource.
+	Name *string `json:"name,omitempty"`
+	// Type - Type of resource e.g "Microsoft.Web/sites".
+	Type *string `json:"type,omitempty"`
+	// Location - Geographical region resource belongs to e.g. SouthCentralUS, SouthEastAsia.
+	Location *string `json:"location,omitempty"`
+	// Tags - Tags associated with resource.
+	Tags map[string]*string `json:"tags"`
+	// Plan - Azure resource manager plan.
+	Plan *ArmPlan `json:"plan,omitempty"`
+	// Properties - Resource specific properties.
+	Properties *RemotePrivateEndpointConnection `json:"properties,omitempty"`
+	// Sku - SKU description of the resource.
+	Sku *SkuDescription `json:"sku,omitempty"`
+	// Status - Azure-AsyncOperation Status info.
+	Status *string `json:"status,omitempty"`
+	// Error - Azure-AsyncOperation Error info.
+	Error *ErrorEntity `json:"error,omitempty"`
+	// Identity - MSI resource
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	// Zones - Logical Availability Zones the service is hosted in
+	Zones *[]string `json:"zones,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResponseMessageEnvelopeRemotePrivateEndpointConnection.
+func (rmeRpec ResponseMessageEnvelopeRemotePrivateEndpointConnection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rmeRpec.ID != nil {
+		objectMap["id"] = rmeRpec.ID
+	}
+	if rmeRpec.Name != nil {
+		objectMap["name"] = rmeRpec.Name
+	}
+	if rmeRpec.Type != nil {
+		objectMap["type"] = rmeRpec.Type
+	}
+	if rmeRpec.Location != nil {
+		objectMap["location"] = rmeRpec.Location
+	}
+	if rmeRpec.Tags != nil {
+		objectMap["tags"] = rmeRpec.Tags
+	}
+	if rmeRpec.Plan != nil {
+		objectMap["plan"] = rmeRpec.Plan
+	}
+	if rmeRpec.Properties != nil {
+		objectMap["properties"] = rmeRpec.Properties
+	}
+	if rmeRpec.Sku != nil {
+		objectMap["sku"] = rmeRpec.Sku
+	}
+	if rmeRpec.Status != nil {
+		objectMap["status"] = rmeRpec.Status
+	}
+	if rmeRpec.Error != nil {
+		objectMap["error"] = rmeRpec.Error
+	}
+	if rmeRpec.Identity != nil {
+		objectMap["identity"] = rmeRpec.Identity
+	}
+	if rmeRpec.Zones != nil {
+		objectMap["zones"] = rmeRpec.Zones
+	}
+	return json.Marshal(objectMap)
 }
 
 // ResponseMetaData ...
@@ -23197,9 +23731,6 @@ type SiteAuthSettingsProperties struct {
 	// RuntimeVersion - The RuntimeVersion of the Authentication / Authorization feature in use for the current app.
 	// The setting in this value can control the behavior of certain features in the Authentication / Authorization module.
 	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
-	// ConfigVersion - The ConfigVersion of the Authentication / Authorization feature in use for the current app.
-	// The setting in this value can control the behavior of the control plane for Authentication / Authorization.
-	ConfigVersion *string `json:"configVersion,omitempty"`
 	// UnauthenticatedClientAction - The action to take when an unauthenticated client attempts to access the app. Possible values include: 'RedirectToLoginPage', 'AllowAnonymous'
 	UnauthenticatedClientAction UnauthenticatedClientAction `json:"unauthenticatedClientAction,omitempty"`
 	// TokenStoreEnabled - <code>true</code> to durably store platform-specific security tokens that are obtained during login flows; otherwise, <code>false</code>.
@@ -23320,9 +23851,13 @@ type SiteAuthSettingsProperties struct {
 	// AuthFilePath - The path of the config file containing auth settings.
 	// If the path is relative, base will the site's root directory.
 	AuthFilePath *string `json:"authFilePath,omitempty"`
+	// ConfigVersion - The ConfigVersion of the Authentication / Authorization feature in use for the current app.
+	// The setting in this value can control the behavior of the control plane for Authentication / Authorization.
+	ConfigVersion *string `json:"configVersion,omitempty"`
 }
 
-// SiteAuthSettingsV2 ...
+// SiteAuthSettingsV2 configuration settings for the Azure App Service Authentication / Authorization V2
+// feature.
 type SiteAuthSettingsV2 struct {
 	autorest.Response `json:"-"`
 	// SiteAuthSettingsV2Properties - SiteAuthSettingsV2 resource specific properties
@@ -23411,11 +23946,16 @@ func (sasv *SiteAuthSettingsV2) UnmarshalJSON(body []byte) error {
 
 // SiteAuthSettingsV2Properties siteAuthSettingsV2 resource specific properties
 type SiteAuthSettingsV2Properties struct {
-	Platform          *AuthPlatform      `json:"platform,omitempty"`
-	GlobalValidation  *GlobalValidation  `json:"globalValidation,omitempty"`
+	// Platform - The configuration settings of the platform of App Service Authentication/Authorization.
+	Platform *AuthPlatform `json:"platform,omitempty"`
+	// GlobalValidation - The configuration settings that determines the validation flow of users using App Service Authentication/Authorization.
+	GlobalValidation *GlobalValidation `json:"globalValidation,omitempty"`
+	// IdentityProviders - The configuration settings of each of the identity providers used to configure App Service Authentication/Authorization.
 	IdentityProviders *IdentityProviders `json:"identityProviders,omitempty"`
-	Login             *Login             `json:"login,omitempty"`
-	HTTPSettings      *HTTPSettings      `json:"httpSettings,omitempty"`
+	// Login - The configuration settings of the login flow of users using App Service Authentication/Authorization.
+	Login *Login `json:"login,omitempty"`
+	// HTTPSettings - The configuration settings of the HTTP requests for authentication and authorization requests made against App Service Authentication/Authorization.
+	HTTPSettings *HTTPSettings `json:"httpSettings,omitempty"`
 }
 
 // SiteCloneability represents whether or not an app is cloneable.
@@ -23470,6 +24010,10 @@ type SiteConfig struct {
 	RemoteDebuggingVersion *string `json:"remoteDebuggingVersion,omitempty"`
 	// HTTPLoggingEnabled - <code>true</code> if HTTP logging is enabled; otherwise, <code>false</code>.
 	HTTPLoggingEnabled *bool `json:"httpLoggingEnabled,omitempty"`
+	// AcrUseManagedIdentityCreds - Flag to use Managed Identity Creds for ACR pull
+	AcrUseManagedIdentityCreds *bool `json:"acrUseManagedIdentityCreds,omitempty"`
+	// AcrUserManagedIdentityID - If using user managed identity, the user managed identity ClientId
+	AcrUserManagedIdentityID *string `json:"acrUserManagedIdentityID,omitempty"`
 	// LogsDirectorySizeLimit - HTTP logs directory size limit.
 	LogsDirectorySizeLimit *int32 `json:"logsDirectorySizeLimit,omitempty"`
 	// DetailedErrorLoggingEnabled - <code>true</code> if detailed error logging is enabled; otherwise, <code>false</code>.
@@ -23478,8 +24022,6 @@ type SiteConfig struct {
 	PublishingUsername *string `json:"publishingUsername,omitempty"`
 	// AppSettings - Application settings.
 	AppSettings *[]NameValuePair `json:"appSettings,omitempty"`
-	// AzureStorageAccounts - List of Azure Storage Accounts.
-	AzureStorageAccounts map[string]*AzureStorageInfoValue `json:"azureStorageAccounts"`
 	// ConnectionStrings - Connection strings.
 	ConnectionStrings *[]ConnStringInfo `json:"connectionStrings,omitempty"`
 	// MachineKey - READ-ONLY; Site MachineKey.
@@ -23575,6 +24117,10 @@ type SiteConfig struct {
 	// MinimumElasticInstanceCount - Number of minimum instance count for a site
 	// This setting only applies to the Elastic Plans
 	MinimumElasticInstanceCount *int32 `json:"minimumElasticInstanceCount,omitempty"`
+	// AzureStorageAccounts - List of Azure Storage Accounts.
+	AzureStorageAccounts map[string]*AzureStorageInfoValue `json:"azureStorageAccounts"`
+	// PublicNetworkAccess - Property to allow or block all public traffic.
+	PublicNetworkAccess *string `json:"publicNetworkAccess,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SiteConfig.
@@ -23622,6 +24168,12 @@ func (sc SiteConfig) MarshalJSON() ([]byte, error) {
 	if sc.HTTPLoggingEnabled != nil {
 		objectMap["httpLoggingEnabled"] = sc.HTTPLoggingEnabled
 	}
+	if sc.AcrUseManagedIdentityCreds != nil {
+		objectMap["acrUseManagedIdentityCreds"] = sc.AcrUseManagedIdentityCreds
+	}
+	if sc.AcrUserManagedIdentityID != nil {
+		objectMap["acrUserManagedIdentityID"] = sc.AcrUserManagedIdentityID
+	}
 	if sc.LogsDirectorySizeLimit != nil {
 		objectMap["logsDirectorySizeLimit"] = sc.LogsDirectorySizeLimit
 	}
@@ -23633,9 +24185,6 @@ func (sc SiteConfig) MarshalJSON() ([]byte, error) {
 	}
 	if sc.AppSettings != nil {
 		objectMap["appSettings"] = sc.AppSettings
-	}
-	if sc.AzureStorageAccounts != nil {
-		objectMap["azureStorageAccounts"] = sc.AzureStorageAccounts
 	}
 	if sc.ConnectionStrings != nil {
 		objectMap["connectionStrings"] = sc.ConnectionStrings
@@ -23769,6 +24318,12 @@ func (sc SiteConfig) MarshalJSON() ([]byte, error) {
 	if sc.MinimumElasticInstanceCount != nil {
 		objectMap["minimumElasticInstanceCount"] = sc.MinimumElasticInstanceCount
 	}
+	if sc.AzureStorageAccounts != nil {
+		objectMap["azureStorageAccounts"] = sc.AzureStorageAccounts
+	}
+	if sc.PublicNetworkAccess != nil {
+		objectMap["publicNetworkAccess"] = sc.PublicNetworkAccess
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -23782,6 +24337,12 @@ type SiteConfigPropertiesDictionary struct {
 	JavaVersion *string `json:"javaVersion,omitempty"`
 	// PowerShellVersion - READ-ONLY; PowerShellVersion configuration setting.
 	PowerShellVersion *string `json:"powerShellVersion,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SiteConfigPropertiesDictionary.
+func (scpd SiteConfigPropertiesDictionary) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SiteConfigResource web app configuration ARM resource.
@@ -24301,6 +24862,12 @@ type SiteConfigurationSnapshotInfoProperties struct {
 	Time *date.Time `json:"time,omitempty"`
 	// SnapshotID - READ-ONLY; The id of the snapshot
 	SnapshotID *int32 `json:"snapshotId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SiteConfigurationSnapshotInfoProperties.
+func (scsi SiteConfigurationSnapshotInfoProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SiteExtensionInfo site Extension Information.
@@ -25025,8 +25592,6 @@ type SitePatchResourceProperties struct {
 	DefaultHostName *string `json:"defaultHostName,omitempty"`
 	// SlotSwapStatus - READ-ONLY; Status of the last deployment slot swap operation.
 	SlotSwapStatus *SlotSwapStatus `json:"slotSwapStatus,omitempty"`
-	// KeyVaultReferenceIdentity - Identity to use for Key Vault Reference authentication.
-	KeyVaultReferenceIdentity *string `json:"keyVaultReferenceIdentity,omitempty"`
 	// HTTPSOnly - HttpsOnly: configures a web site to accept only https requests. Issues redirect for
 	// http requests
 	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
@@ -25036,6 +25601,11 @@ type SitePatchResourceProperties struct {
 	InProgressOperationID *uuid.UUID `json:"inProgressOperationId,omitempty"`
 	// StorageAccountRequired - Checks if Customer provided storage account is required
 	StorageAccountRequired *bool `json:"storageAccountRequired,omitempty"`
+	// KeyVaultReferenceIdentity - Identity to use for Key Vault Reference authentication.
+	KeyVaultReferenceIdentity *string `json:"keyVaultReferenceIdentity,omitempty"`
+	// VirtualNetworkSubnetID - Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration.
+	// This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}
+	VirtualNetworkSubnetID *string `json:"virtualNetworkSubnetId,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SitePatchResourceProperties.
@@ -25095,9 +25665,6 @@ func (spr SitePatchResourceProperties) MarshalJSON() ([]byte, error) {
 	if spr.CloningInfo != nil {
 		objectMap["cloningInfo"] = spr.CloningInfo
 	}
-	if spr.KeyVaultReferenceIdentity != nil {
-		objectMap["keyVaultReferenceIdentity"] = spr.KeyVaultReferenceIdentity
-	}
 	if spr.HTTPSOnly != nil {
 		objectMap["httpsOnly"] = spr.HTTPSOnly
 	}
@@ -25106,6 +25673,12 @@ func (spr SitePatchResourceProperties) MarshalJSON() ([]byte, error) {
 	}
 	if spr.StorageAccountRequired != nil {
 		objectMap["storageAccountRequired"] = spr.StorageAccountRequired
+	}
+	if spr.KeyVaultReferenceIdentity != nil {
+		objectMap["keyVaultReferenceIdentity"] = spr.KeyVaultReferenceIdentity
+	}
+	if spr.VirtualNetworkSubnetID != nil {
+		objectMap["virtualNetworkSubnetId"] = spr.VirtualNetworkSubnetID
 	}
 	return json.Marshal(objectMap)
 }
@@ -25287,8 +25860,6 @@ type SiteProperties struct {
 	DefaultHostName *string `json:"defaultHostName,omitempty"`
 	// SlotSwapStatus - READ-ONLY; Status of the last deployment slot swap operation.
 	SlotSwapStatus *SlotSwapStatus `json:"slotSwapStatus,omitempty"`
-	// KeyVaultReferenceIdentity - Identity to use for Key Vault Reference authentication.
-	KeyVaultReferenceIdentity *string `json:"keyVaultReferenceIdentity,omitempty"`
 	// HTTPSOnly - HttpsOnly: configures a web site to accept only https requests. Issues redirect for
 	// http requests
 	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
@@ -25298,6 +25869,11 @@ type SiteProperties struct {
 	InProgressOperationID *uuid.UUID `json:"inProgressOperationId,omitempty"`
 	// StorageAccountRequired - Checks if Customer provided storage account is required
 	StorageAccountRequired *bool `json:"storageAccountRequired,omitempty"`
+	// KeyVaultReferenceIdentity - Identity to use for Key Vault Reference authentication.
+	KeyVaultReferenceIdentity *string `json:"keyVaultReferenceIdentity,omitempty"`
+	// VirtualNetworkSubnetID - Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration.
+	// This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}
+	VirtualNetworkSubnetID *string `json:"virtualNetworkSubnetId,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for SiteProperties.
@@ -25357,9 +25933,6 @@ func (s SiteProperties) MarshalJSON() ([]byte, error) {
 	if s.CloningInfo != nil {
 		objectMap["cloningInfo"] = s.CloningInfo
 	}
-	if s.KeyVaultReferenceIdentity != nil {
-		objectMap["keyVaultReferenceIdentity"] = s.KeyVaultReferenceIdentity
-	}
 	if s.HTTPSOnly != nil {
 		objectMap["httpsOnly"] = s.HTTPSOnly
 	}
@@ -25368,6 +25941,12 @@ func (s SiteProperties) MarshalJSON() ([]byte, error) {
 	}
 	if s.StorageAccountRequired != nil {
 		objectMap["storageAccountRequired"] = s.StorageAccountRequired
+	}
+	if s.KeyVaultReferenceIdentity != nil {
+		objectMap["keyVaultReferenceIdentity"] = s.KeyVaultReferenceIdentity
+	}
+	if s.VirtualNetworkSubnetID != nil {
+		objectMap["virtualNetworkSubnetId"] = s.VirtualNetworkSubnetID
 	}
 	return json.Marshal(objectMap)
 }
@@ -26085,6 +26664,12 @@ type SlotDifferenceProperties struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SlotDifferenceProperties.
+func (sd SlotDifferenceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SlotSwapStatus the status of the last successful slot swap operation.
 type SlotSwapStatus struct {
 	// TimestampUtc - READ-ONLY; The time the last successful slot swap completed.
@@ -26093,6 +26678,12 @@ type SlotSwapStatus struct {
 	SourceSlotName *string `json:"sourceSlotName,omitempty"`
 	// DestinationSlotName - READ-ONLY; The destination slot of the last swap operation.
 	DestinationSlotName *string `json:"destinationSlotName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SlotSwapStatus.
+func (sss SlotSwapStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SlowRequestsBasedTrigger trigger based on request execution time.
@@ -26365,6 +26956,12 @@ func NewSnapshotCollectionPage(cur SnapshotCollection, getNextPage func(context.
 type SnapshotProperties struct {
 	// Time - READ-ONLY; The time the snapshot was taken.
 	Time *string `json:"time,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SnapshotProperties.
+func (s SnapshotProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SnapshotRecoverySource specifies the web app that snapshot contents will be retrieved from.
@@ -26778,6 +27375,12 @@ type StackMajorVersion struct {
 	MinorVersions *[]StackMinorVersion `json:"minorVersions,omitempty"`
 	// ApplicationInsights - <code>true</code> if this supports Application Insights; otherwise, <code>false</code>.
 	ApplicationInsights *bool `json:"applicationInsights,omitempty"`
+	// IsPreview - <code>true</code> if this stack is in Preview, otherwise <code>false</code>.
+	IsPreview *bool `json:"isPreview,omitempty"`
+	// IsDeprecated - <code>true</code> if this stack has been deprecated, otherwise <code>false</code>.
+	IsDeprecated *bool `json:"isDeprecated,omitempty"`
+	// IsHidden - <code>true</code> if this stack should be hidden for new customers on portal, otherwise <code>false</code>.
+	IsHidden *bool `json:"isHidden,omitempty"`
 	// AppSettingsDictionary - <appSettings>
 	//  <appSetting name="FUNCTIONS_WORKER_RUNTIME" value="dotnet" />
 	// </appSettings>
@@ -26788,12 +27391,6 @@ type StackMajorVersion struct {
 	// </siteConfigProperties>
 	//  Example: All Linux Function Apps, need Use32BitWorkerProcess to be set to 0
 	SiteConfigPropertiesDictionary map[string]interface{} `json:"siteConfigPropertiesDictionary"`
-	// IsPreview - <code>true</code> if this stack is in Preview, otherwise <code>false</code>.
-	IsPreview *bool `json:"isPreview,omitempty"`
-	// IsDeprecated - <code>true</code> if this stack has been deprecated, otherwise <code>false</code>.
-	IsDeprecated *bool `json:"isDeprecated,omitempty"`
-	// IsHidden - <code>true</code> if this stack should be hidden for new customers on portal, otherwise <code>false</code>.
-	IsHidden *bool `json:"isHidden,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for StackMajorVersion.
@@ -26814,12 +27411,6 @@ func (smv StackMajorVersion) MarshalJSON() ([]byte, error) {
 	if smv.ApplicationInsights != nil {
 		objectMap["applicationInsights"] = smv.ApplicationInsights
 	}
-	if smv.AppSettingsDictionary != nil {
-		objectMap["appSettingsDictionary"] = smv.AppSettingsDictionary
-	}
-	if smv.SiteConfigPropertiesDictionary != nil {
-		objectMap["siteConfigPropertiesDictionary"] = smv.SiteConfigPropertiesDictionary
-	}
 	if smv.IsPreview != nil {
 		objectMap["isPreview"] = smv.IsPreview
 	}
@@ -26828,6 +27419,12 @@ func (smv StackMajorVersion) MarshalJSON() ([]byte, error) {
 	}
 	if smv.IsHidden != nil {
 		objectMap["isHidden"] = smv.IsHidden
+	}
+	if smv.AppSettingsDictionary != nil {
+		objectMap["appSettingsDictionary"] = smv.AppSettingsDictionary
+	}
+	if smv.SiteConfigPropertiesDictionary != nil {
+		objectMap["siteConfigPropertiesDictionary"] = smv.SiteConfigPropertiesDictionary
 	}
 	return json.Marshal(objectMap)
 }
@@ -27050,14 +27647,18 @@ type StaticSite struct {
 	RepositoryURL *string `json:"repositoryUrl,omitempty"`
 	// Branch - The target branch in the repository.
 	Branch *string `json:"branch,omitempty"`
-	// Provider - READ-ONLY; The provider that submitted the last deployment to the primary environment of the static site.
-	Provider *string `json:"provider,omitempty"`
 	// CustomDomains - READ-ONLY; The custom domains associated with this static site.
 	CustomDomains *[]string `json:"customDomains,omitempty"`
 	// RepositoryToken - A user's github repository token. This is used to setup the Github Actions workflow file and API secrets.
 	RepositoryToken *string `json:"repositoryToken,omitempty"`
 	// BuildProperties - Build properties to configure on the repository.
 	BuildProperties *StaticSiteBuildProperties `json:"buildProperties,omitempty"`
+	// PrivateEndpointConnections - READ-ONLY; Private endpoint connections
+	PrivateEndpointConnections *[]ResponseMessageEnvelopeRemotePrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+	// StagingEnvironmentPolicy - State indicating whether staging environments are allowed or not allowed for a static web app. Possible values include: 'StagingEnvironmentPolicyEnabled', 'StagingEnvironmentPolicyDisabled'
+	StagingEnvironmentPolicy StagingEnvironmentPolicy `json:"stagingEnvironmentPolicy,omitempty"`
+	// AllowConfigFileUpdates - <code>false</code> if config file is locked for this static web app; otherwise, <code>true</code>.
+	AllowConfigFileUpdates *bool `json:"allowConfigFileUpdates,omitempty"`
 	// TemplateProperties - Template options for generating a new repository.
 	TemplateProperties *StaticSiteTemplateOptions `json:"templateProperties,omitempty"`
 	// ContentDistributionEndpoint - READ-ONLY; The content distribution endpoint for the static site.
@@ -27066,6 +27667,8 @@ type StaticSite struct {
 	KeyVaultReferenceIdentity *string `json:"keyVaultReferenceIdentity,omitempty"`
 	// UserProvidedFunctionApps - READ-ONLY; User provided function apps registered with the static site
 	UserProvidedFunctionApps *[]StaticSiteUserProvidedFunctionApp `json:"userProvidedFunctionApps,omitempty"`
+	// Provider - READ-ONLY; The provider that submitted the last deployment to the primary environment of the static site.
+	Provider *string `json:"provider,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for StaticSite.
@@ -27082,6 +27685,12 @@ func (ss StaticSite) MarshalJSON() ([]byte, error) {
 	}
 	if ss.BuildProperties != nil {
 		objectMap["buildProperties"] = ss.BuildProperties
+	}
+	if ss.StagingEnvironmentPolicy != "" {
+		objectMap["stagingEnvironmentPolicy"] = ss.StagingEnvironmentPolicy
+	}
+	if ss.AllowConfigFileUpdates != nil {
+		objectMap["allowConfigFileUpdates"] = ss.AllowConfigFileUpdates
 	}
 	if ss.TemplateProperties != nil {
 		objectMap["templateProperties"] = ss.TemplateProperties
@@ -27335,6 +27944,12 @@ type StaticSiteBuildARMResourceProperties struct {
 	Status BuildStatus `json:"status,omitempty"`
 	// UserProvidedFunctionApps - READ-ONLY; User provided function apps registered with the static site build
 	UserProvidedFunctionApps *[]StaticSiteUserProvidedFunctionApp `json:"userProvidedFunctionApps,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StaticSiteBuildARMResourceProperties.
+func (ssbar StaticSiteBuildARMResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StaticSiteBuildCollection collection of static site builds.
@@ -27796,6 +28411,12 @@ type StaticSiteCustomDomainOverviewARMResourceProperties struct {
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StaticSiteCustomDomainOverviewARMResourceProperties.
+func (sscdoar StaticSiteCustomDomainOverviewARMResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // StaticSiteCustomDomainOverviewCollection collection of static site custom domains.
 type StaticSiteCustomDomainOverviewCollection struct {
 	autorest.Response `json:"-"`
@@ -28153,6 +28774,12 @@ type StaticSiteFunctionOverviewARMResourceProperties struct {
 	FunctionName *string `json:"functionName,omitempty"`
 	// TriggerType - READ-ONLY; The trigger type of the function. Possible values include: 'TriggerTypesHTTPTrigger', 'TriggerTypesUnknown'
 	TriggerType TriggerTypes `json:"triggerType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StaticSiteFunctionOverviewARMResourceProperties.
+func (ssfoar StaticSiteFunctionOverviewARMResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StaticSiteFunctionOverviewCollection collection of static site functions.
@@ -29118,6 +29745,12 @@ type StaticSitesWorkflowPreviewProperties struct {
 	Contents *string `json:"contents,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StaticSitesWorkflowPreviewProperties.
+func (sswp StaticSitesWorkflowPreviewProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // StaticSitesWorkflowPreviewRequest request entity for previewing the Static Site workflow
 type StaticSitesWorkflowPreviewRequest struct {
 	// StaticSitesWorkflowPreviewRequestProperties - StaticSitesWorkflowPreviewRequest resource specific properties
@@ -29703,6 +30336,12 @@ type StaticSiteUserInvitationResponseResourceProperties struct {
 	InvitationURL *string `json:"invitationUrl,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StaticSiteUserInvitationResponseResourceProperties.
+func (ssuirr StaticSiteUserInvitationResponseResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // StaticSiteUserProvidedFunctionApp a static site user provided function.
 type StaticSiteUserProvidedFunctionApp struct {
 	// StaticSiteUserProvidedFunctionAppProperties - StaticSiteUserProvidedFunctionApp resource specific properties
@@ -30208,12 +30847,12 @@ type StatusCodesBasedTrigger struct {
 	SubStatus *int32 `json:"subStatus,omitempty"`
 	// Win32Status - Win32 error code.
 	Win32Status *int32 `json:"win32Status,omitempty"`
-	// Path - Request Path
-	Path *string `json:"path,omitempty"`
 	// Count - Request Count.
 	Count *int32 `json:"count,omitempty"`
 	// TimeInterval - Time interval.
 	TimeInterval *string `json:"timeInterval,omitempty"`
+	// Path - Request Path
+	Path *string `json:"path,omitempty"`
 }
 
 // StatusCodesRangeBasedTrigger trigger based on range of status codes.
@@ -30418,6 +31057,12 @@ type StorageMigrationResponseProperties struct {
 	OperationID *string `json:"operationId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for StorageMigrationResponseProperties.
+func (smr StorageMigrationResponseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // String ...
 type String struct {
 	autorest.Response `json:"-"`
@@ -30484,6 +31129,12 @@ type SupportTopic struct {
 	ID *string `json:"id,omitempty"`
 	// PesID - READ-ONLY; Unique resource Id
 	PesID *string `json:"pesId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SupportTopic.
+func (st SupportTopic) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SwiftVirtualNetwork swift Virtual Network Contract. This is used to enable the new Swift way of doing
@@ -30762,7 +31413,7 @@ func NewTldLegalAgreementCollectionPage(cur TldLegalAgreementCollection, getNext
 	}
 }
 
-// TokenStore ...
+// TokenStore the configuration settings of the token store.
 type TokenStore struct {
 	// TokenStoreProperties - TokenStore resource specific properties
 	*TokenStoreProperties `json:"properties,omitempty"`
@@ -30850,10 +31501,16 @@ func (ts *TokenStore) UnmarshalJSON(body []byte) error {
 
 // TokenStoreProperties tokenStore resource specific properties
 type TokenStoreProperties struct {
-	Enabled                    *bool                  `json:"enabled,omitempty"`
-	TokenRefreshExtensionHours *float64               `json:"tokenRefreshExtensionHours,omitempty"`
-	FileSystem                 *FileSystemTokenStore  `json:"fileSystem,omitempty"`
-	AzureBlobStorage           *BlobStorageTokenStore `json:"azureBlobStorage,omitempty"`
+	// Enabled - <code>true</code> to durably store platform-specific security tokens that are obtained during login flows; otherwise, <code>false</code>.
+	//  The default is <code>false</code>.
+	Enabled *bool `json:"enabled,omitempty"`
+	// TokenRefreshExtensionHours - The number of hours after session token expiration that a session token can be used to
+	// call the token refresh API. The default is 72 hours.
+	TokenRefreshExtensionHours *float64 `json:"tokenRefreshExtensionHours,omitempty"`
+	// FileSystem - The configuration settings of the storage of the tokens if a file system is used.
+	FileSystem *FileSystemTokenStore `json:"fileSystem,omitempty"`
+	// AzureBlobStorage - The configuration settings of the storage of the tokens if blob storage is used.
+	AzureBlobStorage *BlobStorageTokenStore `json:"azureBlobStorage,omitempty"`
 }
 
 // TopLevelDomain a top level domain object.
@@ -31814,7 +32471,7 @@ func (twj TriggeredWebJobProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Twitter ...
+// Twitter the configuration settings of the Twitter provider.
 type Twitter struct {
 	// TwitterProperties - Twitter resource specific properties
 	*TwitterProperties `json:"properties,omitempty"`
@@ -31902,11 +32559,13 @@ func (t *Twitter) UnmarshalJSON(body []byte) error {
 
 // TwitterProperties twitter resource specific properties
 type TwitterProperties struct {
-	Enabled      *bool                `json:"enabled,omitempty"`
+	// Enabled - <code>false</code> if the Twitter provider should not be enabled despite the set registration; otherwise, <code>true</code>.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Registration - The configuration settings of the app registration for the Twitter provider.
 	Registration *TwitterRegistration `json:"registration,omitempty"`
 }
 
-// TwitterRegistration ...
+// TwitterRegistration the configuration settings of the app registration for the Twitter provider.
 type TwitterRegistration struct {
 	// TwitterRegistrationProperties - TwitterRegistration resource specific properties
 	*TwitterRegistrationProperties `json:"properties,omitempty"`
@@ -31994,7 +32653,12 @@ func (tr *TwitterRegistration) UnmarshalJSON(body []byte) error {
 
 // TwitterRegistrationProperties twitterRegistration resource specific properties
 type TwitterRegistrationProperties struct {
-	ConsumerKey               *string `json:"consumerKey,omitempty"`
+	// ConsumerKey - The OAuth 1.0a consumer key of the Twitter application used for sign-in.
+	// This setting is required for enabling Twitter Sign-In.
+	// Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
+	ConsumerKey *string `json:"consumerKey,omitempty"`
+	// ConsumerSecretSettingName - The app setting name that contains the OAuth 1.0a consumer secret of the Twitter
+	// application used for sign-in.
 	ConsumerSecretSettingName *string `json:"consumerSecretSettingName,omitempty"`
 }
 
@@ -32270,6 +32934,12 @@ type UsageProperties struct {
 	ComputeMode ComputeModeOptions `json:"computeMode,omitempty"`
 	// SiteMode - READ-ONLY; Site mode used for this usage.
 	SiteMode *string `json:"siteMode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UsageProperties.
+func (u UsageProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // User user credentials used for publishing activity.
@@ -33191,6 +33861,12 @@ type WindowsJavaContainerSettings struct {
 	IsAutoUpdate *bool `json:"isAutoUpdate,omitempty"`
 	// IsEarlyAccess - READ-ONLY; <code>true</code> if the minor version is early-access; otherwise, <code>false</code>.
 	IsEarlyAccess *bool `json:"isEarlyAccess,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WindowsJavaContainerSettings.
+func (wjcs WindowsJavaContainerSettings) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WorkerPool worker pool of an App Service Environment.

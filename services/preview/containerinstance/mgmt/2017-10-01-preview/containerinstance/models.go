@@ -399,6 +399,12 @@ type ContainerGroupPropertiesInstanceView struct {
 	State *string `json:"state,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ContainerGroupPropertiesInstanceView.
+func (cgV ContainerGroupPropertiesInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ContainerPort the port exposed on the container instance.
 type ContainerPort struct {
 	// Protocol - The protocol associated with the port. Possible values include: 'ContainerNetworkProtocolTCP', 'ContainerNetworkProtocolUDP'
@@ -459,6 +465,12 @@ type ContainerPropertiesInstanceView struct {
 	PreviousState *ContainerState `json:"previousState,omitempty"`
 	// Events - READ-ONLY; The events of the container instance.
 	Events *[]Event `json:"events,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContainerPropertiesInstanceView.
+func (cpV ContainerPropertiesInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ContainerState the container instance state.

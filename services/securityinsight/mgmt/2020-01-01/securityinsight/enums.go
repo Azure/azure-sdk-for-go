@@ -233,19 +233,19 @@ func PossibleIncidentStatusValues() []IncidentStatus {
 type Kind string
 
 const (
-	// KindKindAlertRule ...
-	KindKindAlertRule Kind = "AlertRule"
-	// KindKindFusion ...
-	KindKindFusion Kind = "Fusion"
-	// KindKindMicrosoftSecurityIncidentCreation ...
-	KindKindMicrosoftSecurityIncidentCreation Kind = "MicrosoftSecurityIncidentCreation"
-	// KindKindScheduled ...
-	KindKindScheduled Kind = "Scheduled"
+	// KindAlertRule ...
+	KindAlertRule Kind = "AlertRule"
+	// KindFusion ...
+	KindFusion Kind = "Fusion"
+	// KindMicrosoftSecurityIncidentCreation ...
+	KindMicrosoftSecurityIncidentCreation Kind = "MicrosoftSecurityIncidentCreation"
+	// KindScheduled ...
+	KindScheduled Kind = "Scheduled"
 )
 
 // PossibleKindValues returns an array of possible values for the Kind const type.
 func PossibleKindValues() []Kind {
-	return []Kind{KindKindAlertRule, KindKindFusion, KindKindMicrosoftSecurityIncidentCreation, KindKindScheduled}
+	return []Kind{KindAlertRule, KindFusion, KindMicrosoftSecurityIncidentCreation, KindScheduled}
 }
 
 // KindBasicAlertRuleTemplate enumerates the values for kind basic alert rule template.

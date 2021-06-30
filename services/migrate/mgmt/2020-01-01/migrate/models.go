@@ -40,6 +40,12 @@ type Application struct {
 	Provider *string `json:"provider,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Application.
+func (a Application) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AppsAndRoles appsAndRoles in the guest virtual machine.
 type AppsAndRoles struct {
 	// Applications - READ-ONLY; Applications of the AppsAndRoles.
@@ -62,12 +68,24 @@ type AppsAndRoles struct {
 	OtherDatabases *[]OtherDatabase `json:"otherDatabases,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AppsAndRoles.
+func (aar AppsAndRoles) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BizTalkServer bizTalkServer in the guest virtual machine.
 type BizTalkServer struct {
 	// ProductName - READ-ONLY; ProductName of the BizTalkServer.
 	ProductName *string `json:"productName,omitempty"`
 	// Status - READ-ONLY; Status of the BizTalkServer.
 	Status *string `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BizTalkServer.
+func (bts BizTalkServer) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorDetails error contract returned when some exception occurs in Rest API.
@@ -94,6 +112,12 @@ type ErrorDetails struct {
 	AgentErrorRecommendedAction *string `json:"agentErrorRecommendedAction,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorDetails.
+func (ed ErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ExchangeServer exchangeServer in the guest virtual machine.
 type ExchangeServer struct {
 	// ProductName - READ-ONLY; ProductName of the ExchangeServer.
@@ -108,6 +132,12 @@ type ExchangeServer struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ExchangeServer.
+func (es ExchangeServer) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Feature feature in the guest virtual machine.
 type Feature struct {
 	// Name - READ-ONLY; Name of the Feature.
@@ -118,6 +148,12 @@ type Feature struct {
 	Parent *string `json:"parent,omitempty"`
 	// Status - READ-ONLY; Status of the Feature.
 	Status *string `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Feature.
+func (f Feature) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // GuestOSDetails data related to a machine's operating system. Serialized and stored as part of Machine
@@ -205,6 +241,12 @@ type HyperVClusterCollection struct {
 	Value *[]HyperVCluster `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Value of next link.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HyperVClusterCollection.
+func (hvcc HyperVClusterCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // HyperVClusterCollectionIterator provides access to a complete listing of HyperVCluster values.
@@ -410,6 +452,12 @@ type HyperVDisk struct {
 	Path *string `json:"path,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HyperVDisk.
+func (hvd HyperVDisk) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // HyperVHost host REST Resource.
 type HyperVHost struct {
 	autorest.Response `json:"-"`
@@ -442,6 +490,12 @@ type HyperVHostCollection struct {
 	Value *[]HyperVHost `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Value of next link.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HyperVHostCollection.
+func (hvhc HyperVHostCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // HyperVHostCollectionIterator provides access to a complete listing of HyperVHost values.
@@ -642,6 +696,12 @@ type HyperVJob struct {
 	Properties *JobProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HyperVJob.
+func (hvj HyperVJob) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // HyperVJobCollection collection of Hyper-V jobs.
 type HyperVJobCollection struct {
 	autorest.Response `json:"-"`
@@ -649,6 +709,12 @@ type HyperVJobCollection struct {
 	Value *[]HyperVJob `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Value of next link.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HyperVJobCollection.
+func (hvjc HyperVJobCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // HyperVJobCollectionIterator provides access to a complete listing of HyperVJob values.
@@ -814,6 +880,12 @@ type HyperVMachine struct {
 	Properties *HyperVMachineProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HyperVMachine.
+func (hvm HyperVMachine) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // HyperVMachineCollection collection of Hyper-V machines.
 type HyperVMachineCollection struct {
 	autorest.Response `json:"-"`
@@ -821,6 +893,12 @@ type HyperVMachineCollection struct {
 	Value *[]HyperVMachine `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Value of next link.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HyperVMachineCollection.
+func (hvmc HyperVMachineCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // HyperVMachineCollectionIterator provides access to a complete listing of HyperVMachine values.
@@ -1041,6 +1119,12 @@ type HyperVMachineProperties struct {
 	Errors *[]HealthErrorDetails `json:"errors,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HyperVMachineProperties.
+func (hvmp HyperVMachineProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // HyperVNetworkAdapter second level object represented in responses as part of Machine REST resource.
 type HyperVNetworkAdapter struct {
 	// NetworkID - READ-ONLY; Network Id.
@@ -1063,6 +1147,12 @@ type HyperVNetworkAdapter struct {
 	IPAddressType *string `json:"ipAddressType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HyperVNetworkAdapter.
+func (hvna HyperVNetworkAdapter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // HyperVRunAsAccount run as account REST Resource.
 type HyperVRunAsAccount struct {
 	autorest.Response `json:"-"`
@@ -1076,6 +1166,12 @@ type HyperVRunAsAccount struct {
 	Properties *RunAsAccountProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HyperVRunAsAccount.
+func (hvraa HyperVRunAsAccount) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // HyperVRunAsAccountCollection collection of Hyper-V run as accounts.
 type HyperVRunAsAccountCollection struct {
 	autorest.Response `json:"-"`
@@ -1083,6 +1179,12 @@ type HyperVRunAsAccountCollection struct {
 	Value *[]HyperVRunAsAccount `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Value of next link.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HyperVRunAsAccountCollection.
+func (hvraac HyperVRunAsAccountCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // HyperVRunAsAccountCollectionIterator provides access to a complete listing of HyperVRunAsAccount values.
@@ -1316,6 +1418,12 @@ type JobProperties struct {
 	Errors *[]ErrorDetails `json:"errors,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobProperties.
+func (jp JobProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Machine ...
 type Machine struct {
 	PropertiesTimestamp *date.Time `json:"properties.timestamp,omitempty"`
@@ -1371,6 +1479,12 @@ type OperatingSystem struct {
 	OsVersion *string `json:"osVersion,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperatingSystem.
+func (osVar OperatingSystem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperatingSystemConfiguration ...
 type OperatingSystemConfiguration struct {
 	// Family - Possible values include: 'Unknown', 'Windows', 'Linux', 'Solaris', 'Aix'
@@ -1411,6 +1525,12 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (od OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationResultList list of API operations.
 type OperationResultList struct {
 	autorest.Response `json:"-"`
@@ -1418,6 +1538,12 @@ type OperationResultList struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Value of next link.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationResultList.
+func (orl OperationResultList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationResultListIterator provides access to a complete listing of Operation values.
@@ -1589,12 +1715,24 @@ type OperationStatus struct {
 	Properties *OperationStatusProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationStatus.
+func (osVar OperationStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationStatusError class for operation status errors.
 type OperationStatusError struct {
 	// Code - READ-ONLY; Error code.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; Error message.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationStatusError.
+func (ose OperationStatusError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationStatusProperties class for operation result properties.
@@ -1613,6 +1751,12 @@ type OtherDatabase struct {
 	Version *string `json:"version,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OtherDatabase.
+func (od OtherDatabase) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RunAsAccountProperties class for run as account properties.
 type RunAsAccountProperties struct {
 	// DisplayName - READ-ONLY; Display name of the run as account.
@@ -1625,6 +1769,12 @@ type RunAsAccountProperties struct {
 	UpdatedTimestamp *string `json:"updatedTimestamp,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RunAsAccountProperties.
+func (raap RunAsAccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SharePointServer sharePointServer in the guest virtual machine.
 type SharePointServer struct {
 	// ProductName - READ-ONLY; ProductName of the SharePointServer.
@@ -1635,6 +1785,12 @@ type SharePointServer struct {
 	Status *string `json:"status,omitempty"`
 	// Version - READ-ONLY; Version of the SharePointServer.
 	Version *string `json:"version,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SharePointServer.
+func (sps SharePointServer) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SiteAgentProperties class for site agent properties.
@@ -1711,6 +1867,12 @@ type SiteHealthSummaryCollection struct {
 	Value *[]SiteHealthSummary `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Value of next link.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SiteHealthSummaryCollection.
+func (shsc SiteHealthSummaryCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SiteHealthSummaryCollectionIterator provides access to a complete listing of SiteHealthSummary values.
@@ -1927,6 +2089,12 @@ type SQLServer struct {
 	ClusterName *string `json:"clusterName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SQLServer.
+func (ss SQLServer) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SystemCenter systemCenter in the guest virtual machine.
 type SystemCenter struct {
 	// ProductName - READ-ONLY; ProductName of the SystemCenter.
@@ -1935,6 +2103,12 @@ type SystemCenter struct {
 	Status *string `json:"status,omitempty"`
 	// Version - READ-ONLY; Version of the SystemCenter.
 	Version *string `json:"version,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SystemCenter.
+func (sc SystemCenter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Timezone ...
@@ -1974,6 +2148,12 @@ type VCenterCollection struct {
 	Value *[]VCenter `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Value of next link.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VCenterCollection.
+func (vcc VCenterCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VCenterCollectionIterator provides access to a complete listing of VCenter values.
@@ -2196,6 +2376,12 @@ type VMwareDisk struct {
 	Path *string `json:"path,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VMwareDisk.
+func (vmd VMwareDisk) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VMwareJob job REST Resource.
 type VMwareJob struct {
 	autorest.Response `json:"-"`
@@ -2209,6 +2395,12 @@ type VMwareJob struct {
 	Properties *JobProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VMwareJob.
+func (vmj VMwareJob) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VMwareJobCollection collection of VMware jobs.
 type VMwareJobCollection struct {
 	autorest.Response `json:"-"`
@@ -2216,6 +2408,12 @@ type VMwareJobCollection struct {
 	Value *[]VMwareJob `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Value of next link.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VMwareJobCollection.
+func (vmjc VMwareJobCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VMwareJobCollectionIterator provides access to a complete listing of VMwareJob values.
@@ -2381,6 +2579,12 @@ type VMwareMachine struct {
 	Properties *VMwareMachineProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VMwareMachine.
+func (vmm VMwareMachine) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VMwareMachineCollection collection of VMware machines.
 type VMwareMachineCollection struct {
 	autorest.Response `json:"-"`
@@ -2388,6 +2592,12 @@ type VMwareMachineCollection struct {
 	Value *[]VMwareMachine `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Value of next link.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VMwareMachineCollection.
+func (vmmc VMwareMachineCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VMwareMachineCollectionIterator provides access to a complete listing of VMwareMachine values.
@@ -2616,6 +2826,12 @@ type VMwareMachineProperties struct {
 	Errors *[]HealthErrorDetails `json:"errors,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VMwareMachineProperties.
+func (vmmp VMwareMachineProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VMwareNetworkAdapter second level object represented in responses as part of Machine REST resource.
 type VMwareNetworkAdapter struct {
 	// Label - READ-ONLY; Label of the NIC.
@@ -2632,6 +2848,12 @@ type VMwareNetworkAdapter struct {
 	IPAddressType *string `json:"ipAddressType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VMwareNetworkAdapter.
+func (vmna VMwareNetworkAdapter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VMwareRunAsAccount run as account REST Resource.
 type VMwareRunAsAccount struct {
 	autorest.Response `json:"-"`
@@ -2645,6 +2867,12 @@ type VMwareRunAsAccount struct {
 	Properties *RunAsAccountProperties `json:"properties,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for VMwareRunAsAccount.
+func (vmraa VMwareRunAsAccount) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // VMwareRunAsAccountCollection collection of VMware run as accounts.
 type VMwareRunAsAccountCollection struct {
 	autorest.Response `json:"-"`
@@ -2652,6 +2880,12 @@ type VMwareRunAsAccountCollection struct {
 	Value *[]VMwareRunAsAccount `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Value of next link.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for VMwareRunAsAccountCollection.
+func (vmraac VMwareRunAsAccountCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // VMwareRunAsAccountCollectionIterator provides access to a complete listing of VMwareRunAsAccount values.
@@ -2868,4 +3102,10 @@ type WebApplication struct {
 	WebServer *string `json:"webServer,omitempty"`
 	// ApplicationPool - READ-ONLY; ApplicationPool of the WebApplication.
 	ApplicationPool *string `json:"applicationPool,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WebApplication.
+func (wa WebApplication) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

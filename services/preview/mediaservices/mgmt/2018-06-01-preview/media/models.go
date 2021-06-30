@@ -3937,12 +3937,24 @@ type JobError struct {
 	Details *[]JobErrorDetail `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobError.
+func (je JobError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // JobErrorDetail details of JobOutput errors.
 type JobErrorDetail struct {
 	// Code - READ-ONLY; Code describing the error detail.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; A human-readable representation of the error.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobErrorDetail.
+func (jed JobErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BasicJobInput base class for inputs to a Job.
@@ -6942,6 +6954,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Rectangle describes the properties of a rectangular window applied to the input media before processing
 // it.
 type Rectangle struct {
@@ -6963,6 +6981,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Service a Media Services account.

@@ -1446,12 +1446,24 @@ type MediaJobError struct {
 	Details *[]MediaJobErrorDetail `json:"details,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MediaJobError.
+func (mje MediaJobError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MediaJobErrorDetail details of JobOutput errors.
 type MediaJobErrorDetail struct {
 	// Code - READ-ONLY; Code describing the error detail.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; A human-readable representation of the error.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MediaJobErrorDetail.
+func (mjed MediaJobErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MediaJobErroredEventData job error state event data
@@ -2277,6 +2289,12 @@ type MediaLiveEventConnectionRejectedEventData struct {
 	ResultCode *string `json:"resultCode,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MediaLiveEventConnectionRejectedEventData.
+func (mlecred MediaLiveEventConnectionRejectedEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MediaLiveEventEncoderConnectedEventData encoder connect event data.
 type MediaLiveEventEncoderConnectedEventData struct {
 	// IngestURL - READ-ONLY; Gets the ingest URL provided by the live event.
@@ -2287,6 +2305,12 @@ type MediaLiveEventEncoderConnectedEventData struct {
 	EncoderIP *string `json:"encoderIp,omitempty"`
 	// EncoderPort - READ-ONLY; Gets the remote port.
 	EncoderPort *string `json:"encoderPort,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MediaLiveEventEncoderConnectedEventData.
+func (mleeced MediaLiveEventEncoderConnectedEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MediaLiveEventEncoderDisconnectedEventData encoder disconnected event data.
@@ -2303,6 +2327,12 @@ type MediaLiveEventEncoderDisconnectedEventData struct {
 	ResultCode *string `json:"resultCode,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MediaLiveEventEncoderDisconnectedEventData.
+func (mleeded MediaLiveEventEncoderDisconnectedEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MediaLiveEventIncomingDataChunkDroppedEventData ingest fragment dropped event data.
 type MediaLiveEventIncomingDataChunkDroppedEventData struct {
 	// Timestamp - READ-ONLY; Gets the timestamp of the data chunk dropped.
@@ -2317,6 +2347,12 @@ type MediaLiveEventIncomingDataChunkDroppedEventData struct {
 	ResultCode *string `json:"resultCode,omitempty"`
 	// TrackName - READ-ONLY; Gets the name of the track for which fragment is dropped.
 	TrackName *string `json:"trackName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MediaLiveEventIncomingDataChunkDroppedEventData.
+func (mleidcded MediaLiveEventIncomingDataChunkDroppedEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MediaLiveEventIncomingStreamReceivedEventData encoder connect event data.
@@ -2341,6 +2377,12 @@ type MediaLiveEventIncomingStreamReceivedEventData struct {
 	Timescale *string `json:"timescale,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MediaLiveEventIncomingStreamReceivedEventData.
+func (mleisred MediaLiveEventIncomingStreamReceivedEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MediaLiveEventIncomingStreamsOutOfSyncEventData incoming streams out of sync event data.
 type MediaLiveEventIncomingStreamsOutOfSyncEventData struct {
 	// MinLastTimestamp - READ-ONLY; Gets the minimum last timestamp received.
@@ -2357,6 +2399,12 @@ type MediaLiveEventIncomingStreamsOutOfSyncEventData struct {
 	TimescaleOfMaxLastTimestamp *string `json:"timescaleOfMaxLastTimestamp,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MediaLiveEventIncomingStreamsOutOfSyncEventData.
+func (mleisoosed MediaLiveEventIncomingStreamsOutOfSyncEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MediaLiveEventIncomingVideoStreamsOutOfSyncEventData incoming video stream out of synch event data.
 type MediaLiveEventIncomingVideoStreamsOutOfSyncEventData struct {
 	// FirstTimestamp - READ-ONLY; Gets the first timestamp received for one of the quality levels.
@@ -2369,6 +2417,12 @@ type MediaLiveEventIncomingVideoStreamsOutOfSyncEventData struct {
 	SecondDuration *string `json:"secondDuration,omitempty"`
 	// Timescale - READ-ONLY; Gets the timescale in which both the timestamps and durations are represented.
 	Timescale *string `json:"timescale,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MediaLiveEventIncomingVideoStreamsOutOfSyncEventData.
+func (mleivsoosed MediaLiveEventIncomingVideoStreamsOutOfSyncEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // MediaLiveEventIngestHeartbeatEventData ingest fragment dropped event data.
@@ -2399,6 +2453,12 @@ type MediaLiveEventIngestHeartbeatEventData struct {
 	Healthy *bool `json:"healthy,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for MediaLiveEventIngestHeartbeatEventData.
+func (mleihed MediaLiveEventIngestHeartbeatEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // MediaLiveEventTrackDiscontinuityDetectedEventData ingest track discontinuity detected event data.
 type MediaLiveEventTrackDiscontinuityDetectedEventData struct {
 	// TrackType - READ-ONLY; Gets the type of the track (Audio / Video).
@@ -2415,6 +2475,12 @@ type MediaLiveEventTrackDiscontinuityDetectedEventData struct {
 	Timescale *string `json:"timescale,omitempty"`
 	// DiscontinuityGap - READ-ONLY; Gets the discontinuity gap between PreviousTimestamp and NewTimestamp.
 	DiscontinuityGap *string `json:"discontinuityGap,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for MediaLiveEventTrackDiscontinuityDetectedEventData.
+func (mletdded MediaLiveEventTrackDiscontinuityDetectedEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RedisExportRDBCompletedEventData schema of the Data property of an EventGridEvent for an
@@ -2937,6 +3003,12 @@ type SubscriptionDeletedEventData struct {
 	EventSubscriptionID *string `json:"eventSubscriptionId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SubscriptionDeletedEventData.
+func (sded SubscriptionDeletedEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SubscriptionValidationEventData schema of the Data property of an EventGridEvent for a
 // Microsoft.EventGrid.SubscriptionValidationEvent.
 type SubscriptionValidationEventData struct {
@@ -2944,6 +3016,12 @@ type SubscriptionValidationEventData struct {
 	ValidationCode *string `json:"validationCode,omitempty"`
 	// ValidationURL - READ-ONLY; The validation URL sent by Azure Event Grid (available starting version 2018-05-01-preview). To complete the validation handshake, the subscriber must either respond with the validationCode as part of the validation response, or perform a GET request on the validationUrl (available starting version 2018-05-01-preview).
 	ValidationURL *string `json:"validationUrl,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SubscriptionValidationEventData.
+func (sved SubscriptionValidationEventData) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SubscriptionValidationResponse to complete an event subscription validation handshake, a subscriber can

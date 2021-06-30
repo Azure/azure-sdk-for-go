@@ -403,6 +403,12 @@ type ErrorAdditionalInfo struct {
 	Info interface{} `json:"info,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorDetail the error detail.
 type ErrorDetail struct {
 	// Code - READ-ONLY; The error code.
@@ -415,6 +421,12 @@ type ErrorDetail struct {
 	Details *[]ErrorDetail `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorDetail.
+func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
@@ -431,7 +443,7 @@ type FilteringTag struct {
 	Name *string `json:"name,omitempty"`
 	// Value - The value of the tag.
 	Value *string `json:"value,omitempty"`
-	// Action - Possible values include: 'Include', 'Exclude'
+	// Action - Possible values include: 'TagActionInclude', 'TagActionExclude'
 	Action TagAction `json:"action,omitempty"`
 }
 
@@ -619,7 +631,7 @@ type IdentityProperties struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// TenantID - READ-ONLY; The tenant ID of resource.
 	TenantID *string `json:"tenantId,omitempty"`
-	// Type - Possible values include: 'SystemAssigned', 'UserAssigned'
+	// Type - Possible values include: 'ManagedIdentityTypesSystemAssigned', 'ManagedIdentityTypesUserAssigned'
 	Type ManagedIdentityTypes `json:"type,omitempty"`
 }
 
@@ -1190,7 +1202,7 @@ func NewMonitoringTagRulesListResponsePage(cur MonitoringTagRulesListResponse, g
 
 // MonitoringTagRulesProperties definition of the properties for a TagRules resource.
 type MonitoringTagRulesProperties struct {
-	// ProvisioningState - Possible values include: 'Accepted', 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled', 'Deleted', 'NotSpecified'
+	// ProvisioningState - Possible values include: 'ProvisioningStateAccepted', 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateDeleted', 'ProvisioningStateNotSpecified'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	LogRules          *LogRules         `json:"logRules,omitempty"`
 	MetricRules       *MetricRules      `json:"metricRules,omitempty"`
@@ -1198,15 +1210,15 @@ type MonitoringTagRulesProperties struct {
 
 // MonitorProperties properties specific to the monitor resource.
 type MonitorProperties struct {
-	// ProvisioningState - Possible values include: 'Accepted', 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled', 'Deleted', 'NotSpecified'
+	// ProvisioningState - Possible values include: 'ProvisioningStateAccepted', 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateDeleted', 'ProvisioningStateNotSpecified'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// MonitoringStatus - Possible values include: 'Enabled', 'Disabled'
+	// MonitoringStatus - Possible values include: 'MonitoringStatusEnabled', 'MonitoringStatusDisabled'
 	MonitoringStatus MonitoringStatus `json:"monitoringStatus,omitempty"`
-	// MarketplaceSubscriptionStatus - Possible values include: 'Provisioning', 'Active', 'Suspended', 'Unsubscribed'
+	// MarketplaceSubscriptionStatus - Possible values include: 'MarketplaceSubscriptionStatusProvisioning', 'MarketplaceSubscriptionStatusActive', 'MarketplaceSubscriptionStatusSuspended', 'MarketplaceSubscriptionStatusUnsubscribed'
 	MarketplaceSubscriptionStatus MarketplaceSubscriptionStatus `json:"marketplaceSubscriptionStatus,omitempty"`
 	DatadogOrganizationProperties *OrganizationProperties       `json:"datadogOrganizationProperties,omitempty"`
 	UserInfo                      *UserInfo                     `json:"userInfo,omitempty"`
-	// LiftrResourceCategory - Possible values include: 'Unknown', 'MonitorLogs'
+	// LiftrResourceCategory - Possible values include: 'LiftrResourceCategoriesUnknown', 'LiftrResourceCategoriesMonitorLogs'
 	LiftrResourceCategory LiftrResourceCategories `json:"liftrResourceCategory,omitempty"`
 	// LiftrResourcePreference - READ-ONLY; The priority of the resource.
 	LiftrResourcePreference *int32 `json:"liftrResourcePreference,omitempty"`
@@ -1439,6 +1451,7 @@ type MonitorResourceUpdateParameters struct {
 	Properties *MonitorUpdateProperties `json:"properties,omitempty"`
 	// Tags - The new tags of the monitor resource.
 	Tags map[string]*string `json:"tags"`
+	Sku  *ResourceSku       `json:"sku,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for MonitorResourceUpdateParameters.
@@ -1449,6 +1462,9 @@ func (mrup MonitorResourceUpdateParameters) MarshalJSON() ([]byte, error) {
 	}
 	if mrup.Tags != nil {
 		objectMap["tags"] = mrup.Tags
+	}
+	if mrup.Sku != nil {
+		objectMap["sku"] = mrup.Sku
 	}
 	return json.Marshal(objectMap)
 }
@@ -1533,10 +1549,53 @@ func (future *MonitorsDeleteFuture) result(client MonitorsClient) (ar autorest.R
 	return
 }
 
+// MonitorsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type MonitorsUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(MonitorsClient) (MonitorResource, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *MonitorsUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for MonitorsUpdateFuture.Result.
+func (future *MonitorsUpdateFuture) result(client MonitorsClient) (mr MonitorResource, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		mr.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("datadog.MonitorsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if mr.Response.Response, err = future.GetResult(sender); err == nil && mr.Response.Response.StatusCode != http.StatusNoContent {
+		mr, err = client.UpdateResponder(mr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "datadog.MonitorsUpdateFuture", "Result", mr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // MonitorUpdateProperties the set of properties that can be update in a PATCH request to a monitor
 // resource.
 type MonitorUpdateProperties struct {
-	// MonitoringStatus - Possible values include: 'Enabled', 'Disabled'
+	// MonitoringStatus - Possible values include: 'MonitoringStatusEnabled', 'MonitoringStatusDisabled'
 	MonitoringStatus MonitoringStatus `json:"monitoringStatus,omitempty"`
 }
 
@@ -1821,9 +1880,9 @@ func (future *SingleSignOnConfigurationsCreateOrUpdateFuture) result(client Sing
 
 // SingleSignOnProperties ...
 type SingleSignOnProperties struct {
-	// ProvisioningState - Possible values include: 'Accepted', 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled', 'Deleted', 'NotSpecified'
+	// ProvisioningState - Possible values include: 'ProvisioningStateAccepted', 'ProvisioningStateCreating', 'ProvisioningStateUpdating', 'ProvisioningStateDeleting', 'ProvisioningStateSucceeded', 'ProvisioningStateFailed', 'ProvisioningStateCanceled', 'ProvisioningStateDeleted', 'ProvisioningStateNotSpecified'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// SingleSignOnState - Possible values include: 'Initial', 'Enable', 'Disable', 'Existing'
+	// SingleSignOnState - Possible values include: 'SingleSignOnStatesInitial', 'SingleSignOnStatesEnable', 'SingleSignOnStatesDisable', 'SingleSignOnStatesExisting'
 	SingleSignOnState SingleSignOnStates `json:"singleSignOnState,omitempty"`
 	// EnterpriseAppID - The Id of the Enterprise App used for Single sign-on.
 	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
@@ -2033,13 +2092,13 @@ func NewSingleSignOnResourceListResponsePage(cur SingleSignOnResourceListRespons
 type SystemData struct {
 	// CreatedBy - The identity that created the resource.
 	CreatedBy *string `json:"createdBy,omitempty"`
-	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'CreatedByTypeUser', 'CreatedByTypeApplication', 'CreatedByTypeManagedIdentity', 'CreatedByTypeKey'
 	CreatedByType CreatedByType `json:"createdByType,omitempty"`
 	// CreatedAt - The timestamp of resource creation (UTC).
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
 	// LastModifiedBy - The identity that last modified the resource.
 	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
-	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'CreatedByTypeUser', 'CreatedByTypeApplication', 'CreatedByTypeManagedIdentity', 'CreatedByTypeKey'
 	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
 	// LastModifiedAt - The timestamp of resource last modification (UTC)
 	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`

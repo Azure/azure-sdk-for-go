@@ -2112,6 +2112,12 @@ type Incident struct {
 	ResolvedTime *date.Time `json:"resolvedTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Incident.
+func (i Incident) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // IncidentListResult the List incidents operation response.
 type IncidentListResult struct {
 	autorest.Response `json:"-"`
@@ -4199,6 +4205,12 @@ type ProxyOnlyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyOnlyResource.
+func (por ProxyOnlyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ProxyResource an azure resource object
 type ProxyResource struct {
 	// ID - READ-ONLY; Azure resource Id
@@ -4207,6 +4219,12 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Azure resource type
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Recurrence the repeating times at which this profile begins. This element is not used if the FixedDate

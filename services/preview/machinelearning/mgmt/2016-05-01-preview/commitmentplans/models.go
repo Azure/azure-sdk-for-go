@@ -39,6 +39,12 @@ type CatalogSku struct {
 	Restrictions *[]SkuRestrictions `json:"restrictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for CatalogSku.
+func (cs CatalogSku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CommitmentAssociation represents the association between a commitment plan and some other resource, such
 // as a Machine Learning web service.
 type CommitmentAssociation struct {
@@ -245,6 +251,12 @@ type CommitmentAssociationProperties struct {
 	CommitmentPlanID *string `json:"commitmentPlanId,omitempty"`
 	// CreationDate - READ-ONLY; The date at which this commitment association was created, in ISO 8601 format.
 	CreationDate *date.Time `json:"creationDate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CommitmentAssociationProperties.
+func (capVar CommitmentAssociationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CommitmentPlan an Azure ML commitment plan resource.
@@ -464,6 +476,12 @@ type OperationDisplayInfo struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplayInfo.
+func (odi OperationDisplayInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationEntity an API operation.
 type OperationEntity struct {
 	// Name - READ-ONLY; Operation name: {provider}/{resource}/{operation}.
@@ -486,6 +504,12 @@ type OperationEntityListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of operations.
 	Value *[]OperationEntity `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationEntityListResult.
+func (oelr OperationEntityListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PatchPayload the properties of a commitment plan which may be updated via PATCH.
@@ -518,6 +542,12 @@ type PlanQuantity struct {
 	IncludedQuantityMeter *string `json:"includedQuantityMeter,omitempty"`
 	// OverageMeter - READ-ONLY; The Azure meter for usage which exceeds included quantities.
 	OverageMeter *string `json:"overageMeter,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PlanQuantity.
+func (pq PlanQuantity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PlanUsageHistory represents historical information about usage of the Azure resources associated with a
@@ -799,6 +829,12 @@ type SkuCapability struct {
 	Value *string `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SkuCapability.
+func (sc SkuCapability) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuCapacity describes scaling information of a SKU.
 type SkuCapacity struct {
 	// Minimum - READ-ONLY; The minimum capacity.
@@ -811,6 +847,12 @@ type SkuCapacity struct {
 	ScaleType SkuCapacityScaleType `json:"scaleType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SkuCapacity.
+func (sc SkuCapacity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuCost describes metadata for SKU cost info.
 type SkuCost struct {
 	// MeterID - READ-ONLY; The meter used for this part of a SKU's cost.
@@ -821,11 +863,23 @@ type SkuCost struct {
 	ExtendedUnit *string `json:"extendedUnit,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SkuCost.
+func (sc SkuCost) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuListResult the list of commitment plan SKUs.
 type SkuListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY
 	Value *[]CatalogSku `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuListResult.
+func (slr SkuListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SkuRestrictions describes restrictions which would prevent a SKU from being used.
@@ -836,4 +890,10 @@ type SkuRestrictions struct {
 	Values *[]string `json:"values,omitempty"`
 	// ReasonCode - READ-ONLY; The reason for restriction. Possible values include: 'QuotaID', 'NotAvailableForSubscription'
 	ReasonCode ResourceSkuRestrictionsReasonCode `json:"reasonCode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuRestrictions.
+func (sr SkuRestrictions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

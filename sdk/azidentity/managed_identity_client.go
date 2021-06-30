@@ -24,13 +24,15 @@ const (
 )
 
 const (
-	arcIMDSEndpoint    = "IMDS_ENDPOINT"
-	identityEndpoint   = "IDENTITY_ENDPOINT"
-	identityHeader     = "IDENTITY_HEADER"
-	msiEndpoint        = "MSI_ENDPOINT"
-	msiSecret          = "MSI_SECRET"
-	imdsAPIVersion     = "2018-02-01"
-	azureArcAPIVersion = "2019-08-15"
+	arcIMDSEndpoint          = "IMDS_ENDPOINT"
+	identityEndpoint         = "IDENTITY_ENDPOINT"
+	identityHeader           = "IDENTITY_HEADER"
+	identityServerThumbprint = "IDENTITY_SERVER_THUMBPRINT"
+	msiEndpoint              = "MSI_ENDPOINT"
+	msiSecret                = "MSI_SECRET"
+	imdsAPIVersion           = "2018-02-01"
+	azureArcAPIVersion       = "2019-08-15"
+	serviceFabricAPIVersion  = "2019-07-01-preview"
 )
 
 type msiType int
@@ -43,6 +45,7 @@ const (
 	msiTypeUnavailable         msiType = 4
 	msiTypeAppServiceV20190801 msiType = 5
 	msiTypeAzureArc            msiType = 6
+	msiTypeServiceFabric       msiType = 7
 )
 
 // managedIdentityClient provides the base for authenticating in managed identity environments
@@ -53,6 +56,7 @@ type managedIdentityClient struct {
 	imdsAvailableTimeoutMS time.Duration
 	msiType                msiType
 	endpoint               string
+	id                     ManagedIdentityIDKind
 }
 
 type wrappedNumber json.Number
@@ -72,6 +76,7 @@ func (n *wrappedNumber) UnmarshalJSON(b []byte) error {
 func newManagedIdentityClient(options *ManagedIdentityCredentialOptions) *managedIdentityClient {
 	logEnvVars()
 	return &managedIdentityClient{
+		id:                     options.ID,
 		pipeline:               newDefaultMSIPipeline(*options), // a pipeline that includes the specific requirements for MSI authentication, such as custom retry policy options
 		imdsAPIVersion:         imdsAPIVersion,                  // this field will be set to whatever value exists in the constant and is used when creating requests to IMDS
 		imdsAvailableTimeoutMS: 500,                             // we allow a timeout of 500 ms since the endpoint might be slow to respond
@@ -107,7 +112,7 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 		Token        string        `json:"access_token,omitempty"`
 		RefreshToken string        `json:"refresh_token,omitempty"`
 		ExpiresIn    wrappedNumber `json:"expires_in,omitempty"` // this field should always return the number of seconds for which a token is valid
-		ExpiresOn    string        `json:"expires_on,omitempty"` // the value returned in this field varies between a number and a date string
+		ExpiresOn    interface{}   `json:"expires_on,omitempty"` // the value returned in this field varies between a number and a date string
 	}{}
 	if err := res.UnmarshalAsJSON(&value); err != nil {
 		return nil, fmt.Errorf("internal AccessToken: %w", err)
@@ -119,19 +124,26 @@ func (c *managedIdentityClient) createAccessToken(res *azcore.Response) (*azcore
 		}
 		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Now().Add(time.Second * time.Duration(expiresIn)).UTC()}, nil
 	}
-	if expiresOn, err := strconv.Atoi(value.ExpiresOn); err == nil {
-		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Now().Add(time.Second * time.Duration(expiresOn)).UTC()}, nil
-	}
-	// this is the case when expires_on is a time string
-	// this is the format of the string coming from the service
-	if expiresOn, err := time.Parse("1/2/2006 15:04:05 PM +00:00", value.ExpiresOn); err == nil { // the date string specified is for Windows OS
-		eo := expiresOn.UTC()
-		return &azcore.AccessToken{Token: value.Token, ExpiresOn: eo}, nil
-	} else if expiresOn, err := time.Parse("1/2/2006 15:04:05 +00:00", value.ExpiresOn); err == nil { // the date string specified is for Linux OS
-		eo := expiresOn.UTC()
-		return &azcore.AccessToken{Token: value.Token, ExpiresOn: eo}, nil
-	} else {
-		return nil, err
+	switch v := value.ExpiresOn.(type) {
+	case float64:
+		return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Unix(int64(v), 0).UTC()}, nil
+	case string:
+		if expiresOn, err := strconv.Atoi(v); err == nil {
+			return &azcore.AccessToken{Token: value.Token, ExpiresOn: time.Unix(int64(expiresOn), 0).UTC()}, nil
+		}
+		// this is the case when expires_on is a time string
+		// this is the format of the string coming from the service
+		if expiresOn, err := time.Parse("1/2/2006 15:04:05 PM +00:00", v); err == nil { // the date string specified is for Windows OS
+			eo := expiresOn.UTC()
+			return &azcore.AccessToken{Token: value.Token, ExpiresOn: eo}, nil
+		} else if expiresOn, err := time.Parse("1/2/2006 15:04:05 +00:00", v); err == nil { // the date string specified is for Linux OS
+			eo := expiresOn.UTC()
+			return &azcore.AccessToken{Token: value.Token, ExpiresOn: eo}, nil
+		} else {
+			return nil, err
+		}
+	default:
+		return nil, &AuthenticationFailedError{msg: fmt.Sprintf("unsupported type received in expires_on: %T, %v", v, v)}
 	}
 }
 
@@ -148,6 +160,8 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID 
 			return nil, &AuthenticationFailedError{inner: err, msg: "Failed to retreive secret key from the identity endpoint."}
 		}
 		return c.createAzureArcAuthRequest(ctx, key, scopes)
+	case msiTypeServiceFabric:
+		return c.createServiceFabricAuthRequest(ctx, clientID, scopes)
 	case msiTypeCloudShell:
 		return c.createCloudShellAuthRequest(ctx, clientID, scopes)
 	default:
@@ -162,7 +176,7 @@ func (c *managedIdentityClient) createAuthRequest(ctx context.Context, clientID 
 	}
 }
 
-func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, clientID string, scopes []string) (*azcore.Request, error) {
+func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, id string, scopes []string) (*azcore.Request, error) {
 	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return nil, err
@@ -171,14 +185,16 @@ func (c *managedIdentityClient) createIMDSAuthRequest(ctx context.Context, clien
 	q := request.URL.Query()
 	q.Add("api-version", c.imdsAPIVersion)
 	q.Add("resource", strings.Join(scopes, " "))
-	if clientID != "" {
-		q.Add(qpClientID, clientID)
+	if c.id == ResourceID {
+		q.Add(qpResID, id)
+	} else if id != "" {
+		q.Add(qpClientID, id)
 	}
 	request.URL.RawQuery = q.Encode()
 	return request, nil
 }
 
-func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context, clientID string, scopes []string) (*azcore.Request, error) {
+func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context, id string, scopes []string) (*azcore.Request, error) {
 	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
 	if err != nil {
 		return nil, err
@@ -188,19 +204,40 @@ func (c *managedIdentityClient) createAppServiceAuthRequest(ctx context.Context,
 		request.Header.Set("secret", os.Getenv(msiSecret))
 		q.Add("api-version", "2017-09-01")
 		q.Add("resource", strings.Join(scopes, " "))
-		if clientID != "" {
+		if c.id == ResourceID {
+			q.Add(qpResID, id)
+		} else if id != "" {
 			// the legacy 2017 API version specifically specifies "clientid" and not "client_id" as a query param
-			q.Add("clientid", clientID)
+			q.Add("clientid", id)
 		}
 	} else if c.msiType == msiTypeAppServiceV20190801 {
 		request.Header.Set("X-IDENTITY-HEADER", os.Getenv(identityHeader))
 		q.Add("api-version", "2019-08-01")
 		q.Add("resource", scopes[0])
-		if clientID != "" {
-			q.Add(qpClientID, clientID)
+		if c.id == ResourceID {
+			q.Add(qpResID, id)
+		} else if id != "" {
+			q.Add(qpClientID, id)
 		}
 	}
 
+	request.URL.RawQuery = q.Encode()
+	return request, nil
+}
+
+func (c *managedIdentityClient) createServiceFabricAuthRequest(ctx context.Context, id string, scopes []string) (*azcore.Request, error) {
+	request, err := azcore.NewRequest(ctx, http.MethodGet, c.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	q := request.URL.Query()
+	request.Header.Set("Accept", "application/json")
+	request.Header.Set("Secret", os.Getenv(identityHeader))
+	q.Add("api-version", serviceFabricAPIVersion)
+	q.Add("resource", strings.Join(scopes, " "))
+	if id != "" {
+		q.Add(qpClientID, id)
+	}
 	request.URL.RawQuery = q.Encode()
 	return request, nil
 }
@@ -288,6 +325,9 @@ func (c *managedIdentityClient) getMSIType() (msiType, error) {
 			c.endpoint = endpointEnvVar
 			if header := os.Getenv(identityHeader); header != "" { // if BOTH the env vars IDENTITY_ENDPOINT and IDENTITY_HEADER are set the msiType is AppService
 				c.msiType = msiTypeAppServiceV20190801
+				if thumbprint := os.Getenv(identityServerThumbprint); thumbprint != "" { // if IDENTITY_SERVER_THUMBPRINT is set the environment is Service Fabric
+					c.msiType = msiTypeServiceFabric
+				}
 			} else if arcIMDS := os.Getenv(arcIMDSEndpoint); arcIMDS != "" {
 				c.msiType = msiTypeAzureArc
 			} else {

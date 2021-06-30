@@ -127,10 +127,10 @@ const (
 type Kind = original.Kind
 
 const (
-	KindKindAlertRule                         Kind = original.KindKindAlertRule
-	KindKindFusion                            Kind = original.KindKindFusion
-	KindKindMicrosoftSecurityIncidentCreation Kind = original.KindKindMicrosoftSecurityIncidentCreation
-	KindKindScheduled                         Kind = original.KindKindScheduled
+	KindAlertRule                         Kind = original.KindAlertRule
+	KindFusion                            Kind = original.KindFusion
+	KindMicrosoftSecurityIncidentCreation Kind = original.KindMicrosoftSecurityIncidentCreation
+	KindScheduled                         Kind = original.KindScheduled
 )
 
 type KindBasicAlertRuleTemplate = original.KindBasicAlertRuleTemplate

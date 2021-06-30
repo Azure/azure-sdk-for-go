@@ -318,9 +318,9 @@ const (
 type Type = original.Type
 
 const (
-	TypeTypeBackupPolicy Type = original.TypeTypeBackupPolicy
-	TypeTypeContinuous   Type = original.TypeTypeContinuous
-	TypeTypePeriodic     Type = original.TypeTypePeriodic
+	TypeBackupPolicy Type = original.TypeBackupPolicy
+	TypeContinuous   Type = original.TypeContinuous
+	TypePeriodic     Type = original.TypePeriodic
 )
 
 type UnitType = original.UnitType

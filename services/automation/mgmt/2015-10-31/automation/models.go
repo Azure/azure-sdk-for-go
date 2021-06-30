@@ -5222,6 +5222,12 @@ type Key struct {
 	Value *string `json:"Value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Key.
+func (kVar Key) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // KeyListResult ...
 type KeyListResult struct {
 	autorest.Response `json:"-"`
@@ -5234,6 +5240,12 @@ type LinkedWorkspace struct {
 	autorest.Response `json:"-"`
 	// ID - READ-ONLY; Gets the id of the linked workspace.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LinkedWorkspace.
+func (lw LinkedWorkspace) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Module definition of the module type.
@@ -5753,6 +5765,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ReadCloser ...
 type ReadCloser struct {
 	autorest.Response `json:"-"`
@@ -5767,6 +5785,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RunAsCredentialAssociationProperty definition of RunAs credential to use for hybrid worker.
@@ -6971,6 +6995,12 @@ type Statistics struct {
 	EndTime *date.Time `json:"endTime,omitempty"`
 	// ID - READ-ONLY; Gets the id.
 	ID *string `json:"id,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Statistics.
+func (s Statistics) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // StatisticsListResult the response model for the list statistics operation.

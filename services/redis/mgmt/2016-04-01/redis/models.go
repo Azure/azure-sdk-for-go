@@ -28,6 +28,12 @@ type AccessKeys struct {
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccessKeys.
+func (ak AccessKeys) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // CreateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type CreateFuture struct {
 	azure.FutureAPI
@@ -543,6 +549,12 @@ type ForceRebootResponse struct {
 	autorest.Response `json:"-"`
 	// Message - READ-ONLY; Status message
 	Message *string `json:"Message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ForceRebootResponse.
+func (frr ForceRebootResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ImportDataFuture an abstraction for monitoring and retrieving the results of a long-running operation.

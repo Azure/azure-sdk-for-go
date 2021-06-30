@@ -219,6 +219,12 @@ type Location struct {
 	Longitude *string `json:"longitude,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Location.
+func (l Location) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // LocationListResult location list operation response.
 type LocationListResult struct {
 	autorest.Response `json:"-"`
@@ -416,6 +422,12 @@ type Policies struct {
 	SpendingLimit SpendingLimit `json:"spendingLimit,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Policies.
+func (p Policies) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceName name and Type of the Resource
 type ResourceName struct {
 	// Name - Name of the resource
@@ -469,6 +481,12 @@ type TenantIDDescription struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// Domains - READ-ONLY; The list of domains for the tenant.
 	Domains *[]string `json:"domains,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TenantIDDescription.
+func (tid TenantIDDescription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TenantListResult tenant Ids information.

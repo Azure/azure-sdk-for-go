@@ -13,7 +13,6 @@ package model
 import (
 	"bytes"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 	"go/ast"
 	"go/parser"
 	"go/printer"
@@ -25,6 +24,8 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+
+	"github.com/Azure/azure-sdk-for-go/tools/internal/modinfo"
 
 	"golang.org/x/tools/imports"
 )

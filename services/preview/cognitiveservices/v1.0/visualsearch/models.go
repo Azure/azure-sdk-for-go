@@ -5412,10 +5412,22 @@ type ImagesImageMetadata struct {
 	AggregateOffer *AggregateOffer `json:"aggregateOffer,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ImagesImageMetadata.
+func (iim ImagesImageMetadata) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ImagesModule defines a list of images.
 type ImagesModule struct {
 	// Value - READ-ONLY; A list of images.
 	Value *[]ImageObject `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ImagesModule.
+func (im ImagesModule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ImageTag a visual search tag.
@@ -8351,10 +8363,22 @@ type RecipesModule struct {
 	Value *[]Recipe `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RecipesModule.
+func (rm RecipesModule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RelatedSearchesModule defines a list of related searches.
 type RelatedSearchesModule struct {
 	// Value - READ-ONLY; A list of related searches.
 	Value *[]Query `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RelatedSearchesModule.
+func (rsm RelatedSearchesModule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Request a JSON object that contains information about the image to get insights of. Specify this object

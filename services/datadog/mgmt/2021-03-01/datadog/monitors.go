@@ -1343,13 +1343,13 @@ func (client MonitorsClient) SetDefaultKeyResponder(resp *http.Response) (result
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // monitorName - monitor resource name
-func (client MonitorsClient) Update(ctx context.Context, resourceGroupName string, monitorName string, body *MonitorResourceUpdateParameters) (result MonitorResource, err error) {
+func (client MonitorsClient) Update(ctx context.Context, resourceGroupName string, monitorName string, body *MonitorResourceUpdateParameters) (result MonitorsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/MonitorsClient.Update")
 		defer func() {
 			sc := -1
-			if result.Response.Response != nil {
-				sc = result.Response.Response.StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -1370,16 +1370,9 @@ func (client MonitorsClient) Update(ctx context.Context, resourceGroupName strin
 		return
 	}
 
-	resp, err := client.UpdateSender(req)
+	result, err = client.UpdateSender(req)
 	if err != nil {
-		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "Update", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.UpdateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "Update", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "Update", nil, "Failure sending request")
 		return
 	}
 
@@ -1414,8 +1407,17 @@ func (client MonitorsClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 
 // UpdateSender sends the Update request. The method will close the
 // http.Response Body if it receives an error.
-func (client MonitorsClient) UpdateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client MonitorsClient) UpdateSender(req *http.Request) (future MonitorsUpdateFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
 }
 
 // UpdateResponder handles the response to the Update request. The method always
@@ -1423,7 +1425,7 @@ func (client MonitorsClient) UpdateSender(req *http.Request) (*http.Response, er
 func (client MonitorsClient) UpdateResponder(resp *http.Response) (result MonitorResource, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

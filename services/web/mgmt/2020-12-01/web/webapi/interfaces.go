@@ -288,6 +288,7 @@ type AppsClientAPI interface {
 	CreateOrUpdateSlot(ctx context.Context, resourceGroupName string, name string, siteEnvelope web.Site, slot string) (result web.AppsCreateOrUpdateSlotFuture, err error)
 	CreateOrUpdateSourceControl(ctx context.Context, resourceGroupName string, name string, siteSourceControl web.SiteSourceControl) (result web.AppsCreateOrUpdateSourceControlFuture, err error)
 	CreateOrUpdateSourceControlSlot(ctx context.Context, resourceGroupName string, name string, siteSourceControl web.SiteSourceControl, slot string) (result web.AppsCreateOrUpdateSourceControlSlotFuture, err error)
+	CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck(ctx context.Context, resourceGroupName string, name string, connectionEnvelope web.SwiftVirtualNetwork) (result web.SwiftVirtualNetwork, err error)
 	CreateOrUpdateVnetConnection(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope web.VnetInfo) (result web.VnetInfo, err error)
 	CreateOrUpdateVnetConnectionGateway(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope web.VnetGateway) (result web.VnetGateway, err error)
 	CreateOrUpdateVnetConnectionGatewaySlot(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope web.VnetGateway, slot string) (result web.VnetGateway, err error)

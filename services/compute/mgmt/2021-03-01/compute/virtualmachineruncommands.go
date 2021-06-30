@@ -73,7 +73,7 @@ func (client VirtualMachineRunCommandsClient) CreateOrUpdatePreparer(ctx context
 		"vmName":            autorest.Encode("path", VMName),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -155,7 +155,7 @@ func (client VirtualMachineRunCommandsClient) DeletePreparer(ctx context.Context
 		"vmName":            autorest.Encode("path", VMName),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -245,7 +245,7 @@ func (client VirtualMachineRunCommandsClient) GetPreparer(ctx context.Context, l
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -324,7 +324,7 @@ func (client VirtualMachineRunCommandsClient) GetByVirtualMachinePreparer(ctx co
 		"vmName":            autorest.Encode("path", VMName),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -412,7 +412,7 @@ func (client VirtualMachineRunCommandsClient) ListPreparer(ctx context.Context, 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -531,7 +531,7 @@ func (client VirtualMachineRunCommandsClient) ListByVirtualMachinePreparer(ctx c
 		"vmName":            autorest.Encode("path", VMName),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -643,7 +643,7 @@ func (client VirtualMachineRunCommandsClient) UpdatePreparer(ctx context.Context
 		"vmName":            autorest.Encode("path", VMName),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-03-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

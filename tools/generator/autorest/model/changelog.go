@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/delta"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/markdown"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/report"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/delta"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/markdown"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/report"
 )
 
 // Changelog describes the changelog generated for a package.
@@ -56,6 +56,11 @@ func (c Changelog) ToCompactMarkdown() string {
 
 // GetBreakingChangeItems returns an array of the breaking change items
 func (c Changelog) GetBreakingChangeItems() []string {
+	if c.RemovedPackage {
+		return []string{
+			fmt.Sprintf("Package was removed"),
+		}
+	}
 	if c.Modified == nil {
 		return []string{}
 	}

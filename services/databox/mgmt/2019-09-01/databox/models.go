@@ -77,6 +77,12 @@ type AccountCredentialDetails struct {
 	ShareCredentialDetails *[]ShareCredentialDetails `json:"shareCredentialDetails,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AccountCredentialDetails.
+func (acd AccountCredentialDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AddressValidationOutput output of the address validation api.
 type AddressValidationOutput struct {
 	autorest.Response `json:"-"`
@@ -184,6 +190,12 @@ type ApplianceNetworkConfiguration struct {
 	MacAddress *string `json:"macAddress,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ApplianceNetworkConfiguration.
+func (anc ApplianceNetworkConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ArmBaseObject base class for all objects under resource.
 type ArmBaseObject struct {
 	// Name - READ-ONLY; Name of the object.
@@ -192,6 +204,12 @@ type ArmBaseObject struct {
 	ID *string `json:"id,omitempty"`
 	// Type - READ-ONLY; Type of the object.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ArmBaseObject.
+func (abo ArmBaseObject) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // AvailableSkuRequest the filters for showing the available skus.
@@ -538,6 +556,12 @@ type CopyProgress struct {
 	RenamedContainerCount *int64 `json:"renamedContainerCount,omitempty"`
 	// FilesErroredOut - READ-ONLY; Number of files which could not be copied
 	FilesErroredOut *int64 `json:"filesErroredOut,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CopyProgress.
+func (cp CopyProgress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CreateJobValidations it does all pre-job creation validations.
@@ -1116,6 +1140,12 @@ type DestinationToServiceLocationMap struct {
 	ServiceLocation *string `json:"serviceLocation,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DestinationToServiceLocationMap.
+func (dtslm DestinationToServiceLocationMap) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DiskCopyLogDetails copy Log Details for a disk
 type DiskCopyLogDetails struct {
 	// DiskSerialNumber - READ-ONLY; Disk Serial Number.
@@ -1173,6 +1203,12 @@ type DiskCopyProgress struct {
 	PercentComplete *int32 `json:"percentComplete,omitempty"`
 	// Status - READ-ONLY; The Status of the copy. Possible values include: 'NotStarted', 'InProgress', 'Completed', 'CompletedWithErrors', 'Failed', 'NotReturned', 'HardwareError', 'DeviceFormatted', 'DeviceMetadataModified', 'StorageAccountNotAccessible', 'UnsupportedData'
 	Status CopyStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DiskCopyProgress.
+func (dcp DiskCopyProgress) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // DiskJobDetails dataBox Disk Job Details.
@@ -1547,12 +1583,24 @@ type DiskSecret struct {
 	BitLockerKey *string `json:"bitLockerKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DiskSecret.
+func (ds DiskSecret) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Error top level error for the job.
 type Error struct {
 	// Code - READ-ONLY; Error code that can be used to programmatically identify the error.
 	Code *string `json:"code,omitempty"`
 	// Message - READ-ONLY; Describes the error in detail and provides debugging information.
 	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Error.
+func (e Error) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // HeavyAccountCopyLogDetails copy log details for a storage account for Databox heavy
@@ -1942,6 +1990,12 @@ type HeavySecret struct {
 	EncodedValidationCertPubKey *string `json:"encodedValidationCertPubKey,omitempty"`
 	// AccountCredentialDetails - READ-ONLY; Per account level access credentials.
 	AccountCredentialDetails *[]AccountCredentialDetails `json:"accountCredentialDetails,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for HeavySecret.
+func (hs HeavySecret) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // JobDeliveryInfo additional delivery info.
@@ -2458,6 +2512,12 @@ type JobErrorDetails struct {
 	RecommendedAction *string `json:"recommendedAction,omitempty"`
 	// ExceptionMessage - READ-ONLY; Contains the non localized exception message
 	ExceptionMessage *string `json:"exceptionMessage,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for JobErrorDetails.
+func (jed JobErrorDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // JobProperties job Properties
@@ -3183,6 +3243,12 @@ type JobStages struct {
 	ErrorDetails *[]JobErrorDetails `json:"errorDetails,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for JobStages.
+func (js JobStages) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // JobsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type JobsUpdateFuture struct {
 	azure.FutureAPI
@@ -3243,6 +3309,12 @@ type Operation struct {
 	Properties interface{} `json:"properties,omitempty"`
 	// Origin - READ-ONLY; Origin of the operation. Can be : user|system|user,system
 	Origin *string `json:"origin,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Operation.
+func (o Operation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationDisplay operation display
@@ -3435,6 +3507,12 @@ type PackageShippingDetails struct {
 	TrackingURL *string `json:"trackingUrl,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PackageShippingDetails.
+func (psd PackageShippingDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Preferences preferences related to the order
 type Preferences struct {
 	// PreferredDataCenterRegion - Preferred Data Center Region.
@@ -3619,6 +3697,12 @@ type RegionConfigurationResponse struct {
 	TransportAvailabilityResponse *TransportAvailabilityResponse `json:"transportAvailabilityResponse,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RegionConfigurationResponse.
+func (rcr RegionConfigurationResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource model of the Resource.
 type Resource struct {
 	// Location - The location of the resource. This will be one of the supported and registered Azure Regions (e.g. West US, East US, Southeast Asia, etc.). The region of a resource cannot be changed once it is created, but if an identical region is specified on update the request will succeed.
@@ -3798,6 +3882,12 @@ type ScheduleAvailabilityResponse struct {
 	AvailableDates *[]date.Time `json:"availableDates,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ScheduleAvailabilityResponse.
+func (sar ScheduleAvailabilityResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Secret the secrets related to a DataBox.
 type Secret struct {
 	// DeviceSerialNumber - READ-ONLY; Serial number of the assigned device.
@@ -3812,6 +3902,12 @@ type Secret struct {
 	AccountCredentialDetails *[]AccountCredentialDetails `json:"accountCredentialDetails,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Secret.
+func (s Secret) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ShareCredentialDetails credential details of the shares in account.
 type ShareCredentialDetails struct {
 	// ShareName - READ-ONLY; Name of the share.
@@ -3824,6 +3920,12 @@ type ShareCredentialDetails struct {
 	Password *string `json:"password,omitempty"`
 	// SupportedAccessProtocols - READ-ONLY; Access protocols supported on the device.
 	SupportedAccessProtocols *[]AccessProtocol `json:"supportedAccessProtocols,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ShareCredentialDetails.
+func (scd ShareCredentialDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ShipmentPickUpRequest shipment pick up request details.
@@ -3843,6 +3945,12 @@ type ShipmentPickUpResponse struct {
 	ConfirmationNumber *string `json:"confirmationNumber,omitempty"`
 	// ReadyByTime - READ-ONLY; Time by which shipment should be ready for pick up, this is in local time of pick up area.
 	ReadyByTime *date.Time `json:"readyByTime,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ShipmentPickUpResponse.
+func (spur ShipmentPickUpResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ShippingAddress shipping address where customer wishes to receive the device.
@@ -4023,12 +4131,24 @@ type SkuCapacity struct {
 	Maximum *string `json:"maximum,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SkuCapacity.
+func (sc SkuCapacity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuCost describes metadata for retrieving price info.
 type SkuCost struct {
 	// MeterID - READ-ONLY; Meter id of the Sku.
 	MeterID *string `json:"meterId,omitempty"`
 	// MeterType - READ-ONLY; The type of the meter.
 	MeterType *string `json:"meterType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuCost.
+func (sc SkuCost) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SkuInformation information of the sku.
@@ -4105,6 +4225,12 @@ type SkuProperties struct {
 	DisabledReasonMessage *string `json:"disabledReasonMessage,omitempty"`
 	// RequiredFeature - READ-ONLY; Required feature to access the sku.
 	RequiredFeature *string `json:"requiredFeature,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuProperties.
+func (sp SkuProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SubscriptionIsAllowedToCreateJobValidationRequest request to validate subscription permission to create
@@ -4231,6 +4357,12 @@ type TransportAvailabilityDetails struct {
 	ShipmentType TransportShipmentTypes `json:"shipmentType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for TransportAvailabilityDetails.
+func (tad TransportAvailabilityDetails) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // TransportAvailabilityRequest request body to get the transport availability for given sku.
 type TransportAvailabilityRequest struct {
 	// SkuName - Type of the device. Possible values include: 'DataBox', 'DataBoxDisk', 'DataBoxHeavy'
@@ -4241,6 +4373,12 @@ type TransportAvailabilityRequest struct {
 type TransportAvailabilityResponse struct {
 	// TransportAvailabilityDetails - READ-ONLY; List of transport availability details for given region
 	TransportAvailabilityDetails *[]TransportAvailabilityDetails `json:"transportAvailabilityDetails,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TransportAvailabilityResponse.
+func (tarVar TransportAvailabilityResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TransportPreferences preferences related to the shipment logistics of the sku
@@ -4255,6 +4393,12 @@ type UnencryptedCredentials struct {
 	JobName *string `json:"jobName,omitempty"`
 	// JobSecrets - READ-ONLY; Secrets related to this job.
 	JobSecrets BasicJobSecrets `json:"jobSecrets,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UnencryptedCredentials.
+func (uc UnencryptedCredentials) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for UnencryptedCredentials struct.
@@ -4821,6 +4965,12 @@ type ValidationResponseProperties struct {
 	Status OverallValidationStatus `json:"status,omitempty"`
 	// IndividualResponseDetails - READ-ONLY; List of response details contain validationType and its response as key and value respectively.
 	IndividualResponseDetails *[]BasicValidationInputResponse `json:"individualResponseDetails,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ValidationResponseProperties.
+func (vrp ValidationResponseProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // UnmarshalJSON is the custom unmarshaler for ValidationResponseProperties struct.

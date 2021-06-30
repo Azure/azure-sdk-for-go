@@ -1096,6 +1096,12 @@ type DataSource struct {
 	DataSourceReferenceID *string `json:"dataSourceReferenceId,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DataSource.
+func (ds DataSource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // DataSourcePrecedence the data source precedence is a way to know the precedence of each data source.
 type DataSourcePrecedence struct {
 	*DataSource `json:"dataSource,omitempty"`
@@ -3160,6 +3166,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult result of the request to list Customer Insights operations. It contains a list of
 // operations and a URL link to get the next set of results.
 type OperationListResult struct {
@@ -3168,6 +3180,12 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -3893,6 +3911,12 @@ type PredictionTrainingResults struct {
 	PrimaryProfileInstanceCount *int64 `json:"primaryProfileInstanceCount,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for PredictionTrainingResults.
+func (ptr PredictionTrainingResults) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ProfileEnumValidValuesFormat valid enum values in case of an enum property.
 type ProfileEnumValidValuesFormat struct {
 	// Value - The integer value of the enum member.
@@ -4410,6 +4434,12 @@ type ProxyResource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // RelationshipDefinition the definition of Relationship.
@@ -5171,6 +5201,12 @@ type RelationshipsLookup struct {
 	ExistingRelationshipName *string `json:"existingRelationshipName,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RelationshipsLookup.
+func (rl RelationshipsLookup) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RelationshipTypeFieldMapping map a field of profile to its corresponding StrongId in Related Profile.
 type RelationshipTypeFieldMapping struct {
 	// ProfileFieldName - Specifies the fieldName in profile.
@@ -5898,6 +5934,12 @@ type SuggestRelationshipLinksResponse struct {
 	InteractionName *string `json:"interactionName,omitempty"`
 	// SuggestedRelationships - READ-ONLY; Suggested relationships for the type.
 	SuggestedRelationships *[]RelationshipsLookup `json:"suggestedRelationships,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SuggestRelationshipLinksResponse.
+func (srlr SuggestRelationshipLinksResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // TypePropertiesMapping metadata for a Link's property mapping.

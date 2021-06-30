@@ -43,6 +43,12 @@ type AzureEntityResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AzureResourceSku azure resource SKU definition.
 type AzureResourceSku struct {
 	// ResourceType - Resource Namespace and Type.
@@ -1961,6 +1967,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1969,6 +1981,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SkuDescription the Kusto SKU description of given resource type
@@ -1987,11 +2005,23 @@ type SkuDescription struct {
 	Restrictions *[]interface{} `json:"restrictions,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for SkuDescription.
+func (sd SkuDescription) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SkuDescriptionList the list of the EngagementFabric SKU descriptions
 type SkuDescriptionList struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; SKU descriptions
 	Value *[]SkuDescription `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuDescriptionList.
+func (sdl SkuDescriptionList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SkuLocationInfoItem the locations and zones info for SKU.

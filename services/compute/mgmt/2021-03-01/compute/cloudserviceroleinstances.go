@@ -111,7 +111,7 @@ func (client CloudServiceRoleInstancesClient) DeleteResponder(resp *http.Respons
 // Get gets a role instance from a cloud service.
 // Parameters:
 // roleInstanceName - name of the role instance.
-// expand - the expand expression to apply to the operation.
+// expand - the expand expression to apply to the operation. 'UserData' is not supported for cloud services.
 func (client CloudServiceRoleInstancesClient) Get(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string, expand InstanceViewTypes) (result RoleInstance, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/CloudServiceRoleInstancesClient.Get")
@@ -342,7 +342,7 @@ func (client CloudServiceRoleInstancesClient) GetRemoteDesktopFileResponder(resp
 // List gets the list of all role instances in a cloud service. Use nextLink property in the response to get the next
 // page of role instances. Do this till nextLink is null to fetch all the role instances.
 // Parameters:
-// expand - the expand expression to apply to the operation.
+// expand - the expand expression to apply to the operation. 'UserData' is not supported for cloud services.
 func (client CloudServiceRoleInstancesClient) List(ctx context.Context, resourceGroupName string, cloudServiceName string, expand InstanceViewTypes) (result RoleInstanceListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/CloudServiceRoleInstancesClient.List")

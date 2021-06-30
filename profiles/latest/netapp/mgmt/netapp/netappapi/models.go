@@ -8,7 +8,7 @@
 
 package netappapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-02-01/netapp/netappapi"
+import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-04-01/netapp/netappapi"
 
 type AccountBackupsClientAPI = original.AccountBackupsClientAPI
 type AccountsClientAPI = original.AccountsClientAPI

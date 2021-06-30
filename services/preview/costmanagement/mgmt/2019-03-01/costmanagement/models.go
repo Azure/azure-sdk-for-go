@@ -43,6 +43,12 @@ type ConnectorCollectionErrorInfo struct {
 	ErrorStartTime *date.Time `json:"errorStartTime,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ConnectorCollectionErrorInfo.
+func (ccei ConnectorCollectionErrorInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ConnectorCollectionInfo collection and ingestion information
 type ConnectorCollectionInfo struct {
 	// LastChecked - READ-ONLY; Last time the data acquisition process initiated connecting to the external provider
@@ -157,6 +163,12 @@ type ConnectorDefinitionListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of connector definitions.
 	Value *[]ConnectorDefinition `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectorDefinitionListResult.
+func (cdlr ConnectorDefinitionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ConnectorProperties the properties of a Connector
@@ -657,6 +669,12 @@ type DimensionsListResult struct {
 	Value *[]Dimension `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for DimensionsListResult.
+func (dlr DimensionsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorBase the details of the error.
 type ErrorBase struct {
 	// Code - READ-ONLY; A machine readable error code.
@@ -665,6 +683,12 @@ type ErrorBase struct {
 	Message *string `json:"message,omitempty"`
 	// Target - READ-ONLY; Indicates which property in the request is responsible for the error.
 	Target *string `json:"target,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorBase.
+func (eb ErrorBase) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorDetails the details of the error.
@@ -790,6 +814,12 @@ type ExternalBillingAccountDefinitionListResult struct {
 	Value *[]ExternalBillingAccountDefinition `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ExternalBillingAccountDefinitionListResult.
+func (ebadlr ExternalBillingAccountDefinitionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ExternalBillingAccountProperties the properties of a ExternalBillingAccount
 type ExternalBillingAccountProperties struct {
 	// DisplayName - READ-ONLY; ExternalBillingAccount DisplayName
@@ -800,6 +830,12 @@ type ExternalBillingAccountProperties struct {
 	ConnectorID *string `json:"connectorId,omitempty"`
 	// CollectionInfo - READ-ONLY; Collection information
 	CollectionInfo *ConnectorCollectionInfo `json:"collectionInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ExternalBillingAccountProperties.
+func (ebap ExternalBillingAccountProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ExternalSubscriptionDefinition the ExternalSubscription model definition
@@ -894,6 +930,12 @@ type ExternalSubscriptionDefinitionListResult struct {
 	Value *[]ExternalSubscriptionDefinition `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ExternalSubscriptionDefinitionListResult.
+func (esdlr ExternalSubscriptionDefinitionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ExternalSubscriptionIDListRequest the list of ExternalSubscriptionIds operation request.
 type ExternalSubscriptionIDListRequest struct {
 	// Value - The list of ExternalSubscriptionIds.
@@ -914,6 +956,12 @@ type ExternalSubscriptionProperties struct {
 	ExternalBillingAccountID *string `json:"externalBillingAccountId,omitempty"`
 	// CollectionInfo - READ-ONLY; Collection information
 	CollectionInfo *ConnectorCollectionInfo `json:"collectionInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ExternalSubscriptionProperties.
+func (esp ExternalSubscriptionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Markup the Markup model definition
@@ -948,6 +996,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationListResult result of listing cost management operations. It contains a list of operations and a
 // URL link to get the next set of results.
 type OperationListResult struct {
@@ -956,6 +1010,12 @@ type OperationListResult struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next set of operation list results if there are any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationListResult.
+func (olr OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListResultIterator provides access to a complete listing of Operation values.
@@ -1211,6 +1271,12 @@ type QueryResult struct {
 	Value *[]Query `json:"value,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for QueryResult.
+func (qr QueryResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ReportConfigAggregation the aggregation expression to be used in the report.
 type ReportConfigAggregation struct {
 	// Name - The name of the column to aggregate.
@@ -1430,6 +1496,12 @@ type ShowbackRuleListResult struct {
 	autorest.Response `json:"-"`
 	// Value - READ-ONLY; The list of showback rules.
 	Value *[]ShowbackRule `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ShowbackRuleListResult.
+func (srlr ShowbackRuleListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // BasicShowbackRuleProperties the properties of a showback rule.

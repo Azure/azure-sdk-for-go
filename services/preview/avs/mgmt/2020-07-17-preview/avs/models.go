@@ -32,6 +32,12 @@ type AdminCredentials struct {
 	VcenterPassword *string `json:"vcenterPassword,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for AdminCredentials.
+func (ac AdminCredentials) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AuthorizationsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type AuthorizationsCreateOrUpdateFuture struct {
@@ -122,6 +128,12 @@ type Circuit struct {
 	ExpressRouteID *string `json:"expressRouteID,omitempty"`
 	// ExpressRoutePrivatePeeringID - READ-ONLY; ExpressRoute Circuit private peering identifier
 	ExpressRoutePrivatePeeringID *string `json:"expressRoutePrivatePeeringID,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Circuit.
+func (c Circuit) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // CloudError API error response
@@ -224,6 +236,12 @@ type ClusterList struct {
 	Value *[]Cluster `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next page if any
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ClusterList.
+func (cl ClusterList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ClusterListIterator provides access to a complete listing of Cluster values.
@@ -596,12 +614,24 @@ type Endpoints struct {
 	HcxCloudManager *string `json:"hcxCloudManager,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Endpoints.
+func (e Endpoints) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ErrorAdditionalInfo the resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// Type - READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty"`
 	// Info - READ-ONLY; The additional info.
 	Info interface{} `json:"info,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
@@ -617,6 +647,12 @@ type ErrorResponse struct {
 	Details *[]ErrorResponse `json:"details,omitempty"`
 	// AdditionalInfo - READ-ONLY; The error additional info.
 	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ErrorResponse.
+func (er ErrorResponse) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ExpressRouteAuthorization expressRoute Circuit Authorization
@@ -696,6 +732,12 @@ type ExpressRouteAuthorizationList struct {
 	Value *[]ExpressRouteAuthorization `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next page if any
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ExpressRouteAuthorizationList.
+func (eral ExpressRouteAuthorizationList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ExpressRouteAuthorizationListIterator provides access to a complete listing of ExpressRouteAuthorization
@@ -859,6 +901,12 @@ type ExpressRouteAuthorizationProperties struct {
 	ExpressRouteAuthorizationKey *string `json:"expressRouteAuthorizationKey,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ExpressRouteAuthorizationProperties.
+func (erap ExpressRouteAuthorizationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // GlobalReachConnection a global reach connection resource
 type GlobalReachConnection struct {
 	autorest.Response `json:"-"`
@@ -939,6 +987,12 @@ type GlobalReachConnectionList struct {
 	Value *[]GlobalReachConnection `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next page if any
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GlobalReachConnectionList.
+func (grcl GlobalReachConnectionList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // GlobalReachConnectionListIterator provides access to a complete listing of GlobalReachConnection values.
@@ -1276,6 +1330,12 @@ type HcxEnterpriseSiteList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HcxEnterpriseSiteList.
+func (hesl HcxEnterpriseSiteList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // HcxEnterpriseSiteListIterator provides access to a complete listing of HcxEnterpriseSite values.
 type HcxEnterpriseSiteListIterator struct {
 	i    int
@@ -1434,6 +1494,12 @@ type HcxEnterpriseSiteProperties struct {
 	Status HcxEnterpriseSiteStatus `json:"status,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for HcxEnterpriseSiteProperties.
+func (hesp HcxEnterpriseSiteProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // IdentitySource vCenter Single Sign On Identity Source
 type IdentitySource struct {
 	// Name - The name of the identity source
@@ -1568,6 +1634,12 @@ type OperationDisplay struct {
 	Description *string `json:"description,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (o OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationList pageable list of operations
 type OperationList struct {
 	autorest.Response `json:"-"`
@@ -1575,6 +1647,12 @@ type OperationList struct {
 	Value *[]Operation `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next page if any
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationList.
+func (ol OperationList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationListIterator provides access to a complete listing of Operation values.
@@ -1855,6 +1933,12 @@ type PrivateCloudList struct {
 	Value *[]PrivateCloud `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next page if any
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateCloudList.
+func (pcl PrivateCloudList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PrivateCloudListIterator provides access to a complete listing of PrivateCloud values.
@@ -2266,6 +2350,12 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Quota subscription quotas
 type Quota struct {
 	autorest.Response `json:"-"`
@@ -2289,6 +2379,12 @@ type Resource struct {
 	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Resource type.
 	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServiceSpecification service specification payload
@@ -2338,6 +2434,12 @@ type Trial struct {
 	Status TrialStatus `json:"status,omitempty"`
 	// AvailableHosts - READ-ONLY; Number of trial hosts available
 	AvailableHosts *int32 `json:"availableHosts,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Trial.
+func (t Trial) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WorkloadNetworkDhcp NSX DHCP
@@ -2516,6 +2618,12 @@ type WorkloadNetworkDhcpList struct {
 	Value *[]WorkloadNetworkDhcp `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next page if any
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkloadNetworkDhcpList.
+func (wndl WorkloadNetworkDhcpList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WorkloadNetworkDhcpListIterator provides access to a complete listing of WorkloadNetworkDhcp values.
@@ -2865,6 +2973,12 @@ type WorkloadNetworkGatewayList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for WorkloadNetworkGatewayList.
+func (wngl WorkloadNetworkGatewayList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // WorkloadNetworkGatewayListIterator provides access to a complete listing of WorkloadNetworkGateway
 // values.
 type WorkloadNetworkGatewayListIterator struct {
@@ -3113,6 +3227,12 @@ type WorkloadNetworkPortMirroringList struct {
 	Value *[]WorkloadNetworkPortMirroring `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next page if any
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkloadNetworkPortMirroringList.
+func (wnpml WorkloadNetworkPortMirroringList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WorkloadNetworkPortMirroringListIterator provides access to a complete listing of
@@ -3749,6 +3869,12 @@ type WorkloadNetworkSegmentsList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for WorkloadNetworkSegmentsList.
+func (wnsl WorkloadNetworkSegmentsList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // WorkloadNetworkSegmentsListIterator provides access to a complete listing of WorkloadNetworkSegment
 // values.
 type WorkloadNetworkSegmentsListIterator struct {
@@ -4179,6 +4305,12 @@ type WorkloadNetworkVirtualMachinesList struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for WorkloadNetworkVirtualMachinesList.
+func (wnvml WorkloadNetworkVirtualMachinesList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // WorkloadNetworkVirtualMachinesListIterator provides access to a complete listing of
 // WorkloadNetworkVirtualMachine values.
 type WorkloadNetworkVirtualMachinesListIterator struct {
@@ -4439,6 +4571,12 @@ type WorkloadNetworkVMGroupsList struct {
 	Value *[]WorkloadNetworkVMGroup `json:"value,omitempty"`
 	// NextLink - READ-ONLY; URL to get the next page if any
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkloadNetworkVMGroupsList.
+func (wnvgl WorkloadNetworkVMGroupsList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // WorkloadNetworkVMGroupsListIterator provides access to a complete listing of WorkloadNetworkVMGroup

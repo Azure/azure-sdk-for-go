@@ -21,6 +21,12 @@ type ApplyClause struct {
 	Transformations *[]TransformationNode `json:"transformations,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ApplyClause.
+func (ac ApplyClause) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AssessmentDetails assessment properties that can be shared by various publishers.
 type AssessmentDetails struct {
 	// AssessmentID - Gets or sets the id of the assessment done on the machine.
@@ -652,6 +658,12 @@ type EdmReferentialConstraintPropertyPair struct {
 	PrincipalProperty *IEdmStructuralProperty `json:"principalProperty,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for EdmReferentialConstraintPropertyPair.
+func (ercpp EdmReferentialConstraintPropertyPair) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Event migrateEvent REST resource.
 type Event struct {
 	autorest.Response `json:"-"`
@@ -861,6 +873,12 @@ type FilterClause struct {
 	ItemType *IEdmTypeReference `json:"itemType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for FilterClause.
+func (fc FilterClause) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // FilterQueryOption ...
 type FilterQueryOption struct {
 	// Context - READ-ONLY
@@ -893,6 +911,12 @@ type IEdmEntityContainer struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IEdmEntityContainer.
+func (ieec IEdmEntityContainer) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // IEdmEntityContainerElement ...
 type IEdmEntityContainerElement struct {
 	// ContainerElementKind - READ-ONLY; Possible values include: 'ContainerElementKindNone', 'ContainerElementKindEntitySet', 'ContainerElementKindActionImport', 'ContainerElementKindFunctionImport', 'ContainerElementKindSingleton'
@@ -903,10 +927,22 @@ type IEdmEntityContainerElement struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IEdmEntityContainerElement.
+func (ieece IEdmEntityContainerElement) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // IEdmExpression ...
 type IEdmExpression struct {
 	// ExpressionKind - READ-ONLY; Possible values include: 'ExpressionKindNone', 'ExpressionKindBinaryConstant', 'ExpressionKindBooleanConstant', 'ExpressionKindDateTimeOffsetConstant', 'ExpressionKindDecimalConstant', 'ExpressionKindFloatingConstant', 'ExpressionKindGUIDConstant', 'ExpressionKindIntegerConstant', 'ExpressionKindStringConstant', 'ExpressionKindDurationConstant', 'ExpressionKindNull', 'ExpressionKindRecord', 'ExpressionKindCollection', 'ExpressionKindPath', 'ExpressionKindIf', 'ExpressionKindCast', 'ExpressionKindIsType', 'ExpressionKindFunctionApplication', 'ExpressionKindLabeledExpressionReference', 'ExpressionKindLabeled', 'ExpressionKindPropertyPath', 'ExpressionKindNavigationPropertyPath', 'ExpressionKindDateConstant', 'ExpressionKindTimeOfDayConstant', 'ExpressionKindEnumMember', 'ExpressionKindAnnotationPath'
 	ExpressionKind ExpressionKind `json:"expressionKind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IEdmExpression.
+func (iee IEdmExpression) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IEdmModel ...
@@ -923,6 +959,12 @@ type IEdmModel struct {
 	DirectValueAnnotationsManager interface{} `json:"directValueAnnotationsManager,omitempty"`
 	// EntityContainer - READ-ONLY
 	EntityContainer *IEdmEntityContainer `json:"entityContainer,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IEdmModel.
+func (iem IEdmModel) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IEdmNavigationProperty ...
@@ -945,6 +987,12 @@ type IEdmNavigationProperty struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IEdmNavigationProperty.
+func (ienp IEdmNavigationProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // IEdmNavigationPropertyBinding ...
 type IEdmNavigationPropertyBinding struct {
 	// NavigationProperty - READ-ONLY
@@ -953,6 +1001,12 @@ type IEdmNavigationPropertyBinding struct {
 	Target *IEdmNavigationSource `json:"target,omitempty"`
 	// Path - READ-ONLY
 	Path *IEdmPathExpression `json:"path,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IEdmNavigationPropertyBinding.
+func (ienpb IEdmNavigationPropertyBinding) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IEdmNavigationSource ...
@@ -967,6 +1021,12 @@ type IEdmNavigationSource struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IEdmNavigationSource.
+func (iens IEdmNavigationSource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // IEdmPathExpression ...
 type IEdmPathExpression struct {
 	// PathSegments - READ-ONLY
@@ -975,6 +1035,12 @@ type IEdmPathExpression struct {
 	Path *string `json:"path,omitempty"`
 	// ExpressionKind - READ-ONLY; Possible values include: 'ExpressionKind1None', 'ExpressionKind1BinaryConstant', 'ExpressionKind1BooleanConstant', 'ExpressionKind1DateTimeOffsetConstant', 'ExpressionKind1DecimalConstant', 'ExpressionKind1FloatingConstant', 'ExpressionKind1GUIDConstant', 'ExpressionKind1IntegerConstant', 'ExpressionKind1StringConstant', 'ExpressionKind1DurationConstant', 'ExpressionKind1Null', 'ExpressionKind1Record', 'ExpressionKind1Collection', 'ExpressionKind1Path', 'ExpressionKind1If', 'ExpressionKind1Cast', 'ExpressionKind1IsType', 'ExpressionKind1FunctionApplication', 'ExpressionKind1LabeledExpressionReference', 'ExpressionKind1Labeled', 'ExpressionKind1PropertyPath', 'ExpressionKind1NavigationPropertyPath', 'ExpressionKind1DateConstant', 'ExpressionKind1TimeOfDayConstant', 'ExpressionKind1EnumMember', 'ExpressionKind1AnnotationPath'
 	ExpressionKind ExpressionKind1 `json:"expressionKind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IEdmPathExpression.
+func (iepe IEdmPathExpression) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IEdmProperty ...
@@ -989,10 +1055,22 @@ type IEdmProperty struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IEdmProperty.
+func (iep IEdmProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // IEdmReferentialConstraint ...
 type IEdmReferentialConstraint struct {
 	// PropertyPairs - READ-ONLY
 	PropertyPairs *[]EdmReferentialConstraintPropertyPair `json:"propertyPairs,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IEdmReferentialConstraint.
+func (ierc IEdmReferentialConstraint) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IEdmSchemaElement ...
@@ -1003,6 +1081,12 @@ type IEdmSchemaElement struct {
 	Namespace *string `json:"namespace,omitempty"`
 	// Name - READ-ONLY
 	Name *string `json:"name,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IEdmSchemaElement.
+func (iese IEdmSchemaElement) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IEdmStructuralProperty ...
@@ -1019,6 +1103,12 @@ type IEdmStructuralProperty struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IEdmStructuralProperty.
+func (iesp IEdmStructuralProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // IEdmStructuredType ...
 type IEdmStructuredType struct {
 	// IsAbstract - READ-ONLY
@@ -1031,6 +1121,12 @@ type IEdmStructuredType struct {
 	DeclaredProperties *[]IEdmProperty `json:"declaredProperties,omitempty"`
 	// TypeKind - READ-ONLY; Possible values include: 'TypeKind1None', 'TypeKind1Primitive', 'TypeKind1Entity', 'TypeKind1Complex', 'TypeKind1Collection', 'TypeKind1EntityReference', 'TypeKind1Enum', 'TypeKind1TypeDefinition', 'TypeKind1Untyped', 'TypeKind1Path'
 	TypeKind TypeKind1 `json:"typeKind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IEdmStructuredType.
+func (iest IEdmStructuredType) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IEdmTerm ...
@@ -1049,10 +1145,22 @@ type IEdmTerm struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IEdmTerm.
+func (iet IEdmTerm) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // IEdmType ...
 type IEdmType struct {
 	// TypeKind - READ-ONLY; Possible values include: 'TypeKindNone', 'TypeKindPrimitive', 'TypeKindEntity', 'TypeKindComplex', 'TypeKindCollection', 'TypeKindEntityReference', 'TypeKindEnum', 'TypeKindTypeDefinition', 'TypeKindUntyped', 'TypeKindPath'
 	TypeKind TypeKind `json:"typeKind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IEdmType.
+func (iet IEdmType) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IEdmTypeReference ...
@@ -1061,6 +1169,12 @@ type IEdmTypeReference struct {
 	IsNullable *bool `json:"isNullable,omitempty"`
 	// Definition - READ-ONLY
 	Definition *IEdmType `json:"definition,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IEdmTypeReference.
+func (ietr IEdmTypeReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IEdmVocabularyAnnotation ...
@@ -1073,6 +1187,12 @@ type IEdmVocabularyAnnotation struct {
 	Target interface{} `json:"target,omitempty"`
 	// Value - READ-ONLY
 	Value *IEdmExpression `json:"value,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IEdmVocabularyAnnotation.
+func (ieva IEdmVocabularyAnnotation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Machine machine REST resource.
@@ -1299,6 +1419,12 @@ type ODataPath struct {
 	Path *[]ODataPathSegment `json:"path,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ODataPath.
+func (odp ODataPath) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ODataPathSegment ...
 type ODataPathSegment struct {
 	// EdmType - READ-ONLY
@@ -1333,16 +1459,34 @@ type ODataQueryContext struct {
 	RequestContainer interface{} `json:"requestContainer,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ODataQueryContext.
+func (odqc ODataQueryContext) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ODataQueryOptions1 ...
 type ODataQueryOptions1 struct {
 	// Filter - READ-ONLY
 	Filter *FilterQueryOption `json:"filter,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ODataQueryOptions1.
+func (odqo ODataQueryOptions1) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ODataRawQueryOptions ...
 type ODataRawQueryOptions struct {
 	// Filter - READ-ONLY
 	Filter *string `json:"filter,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ODataRawQueryOptions.
+func (odrqo ODataRawQueryOptions) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Operation a REST API operation supported by the provider.
@@ -1374,6 +1518,12 @@ type OperationDisplay struct {
 	Operation *string `json:"operation,omitempty"`
 	// Description - READ-ONLY; Description of the operation.
 	Description *string `json:"description,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for OperationDisplay.
+func (od OperationDisplay) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // OperationResultList list of API operations.
@@ -1560,6 +1710,12 @@ type RangeVariable struct {
 	Kind *int32 `json:"kind,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for RangeVariable.
+func (rv RangeVariable) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // RefreshSummaryInput class representing the refresh summary input.
 type RefreshSummaryInput struct {
 	// Goal - Gets or sets the goal for which summary needs to be refreshed. Possible values include: 'Servers', 'Databases'
@@ -1592,6 +1748,12 @@ type SelectExpandClause struct {
 	SelectedItems *[]interface{} `json:"selectedItems,omitempty"`
 	// AllSelected - READ-ONLY
 	AllSelected *bool `json:"allSelected,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SelectExpandClause.
+func (sec SelectExpandClause) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ServersProjectSummary class representing the servers project summary.
@@ -1737,6 +1899,12 @@ type SingleValueNode struct {
 	TypeReference *IEdmTypeReference `json:"typeReference,omitempty"`
 	// Kind - READ-ONLY; Possible values include: 'KindNone', 'KindConstant', 'KindConvert', 'KindNonResourceRangeVariableReference', 'KindBinaryOperator', 'KindUnaryOperator', 'KindSingleValuePropertyAccess', 'KindCollectionPropertyAccess', 'KindSingleValueFunctionCall', 'KindAny', 'KindCollectionNavigationNode', 'KindSingleNavigationNode', 'KindSingleValueOpenPropertyAccess', 'KindSingleResourceCast', 'KindAll', 'KindCollectionResourceCast', 'KindResourceRangeVariableReference', 'KindSingleResourceFunctionCall', 'KindCollectionFunctionCall', 'KindCollectionResourceFunctionCall', 'KindNamedFunctionParameter', 'KindParameterAlias', 'KindEntitySet', 'KindKeyLookup', 'KindSearchTerm', 'KindCollectionOpenPropertyAccess', 'KindCollectionComplexNode', 'KindSingleComplexNode', 'KindCount', 'KindSingleValueCast', 'KindCollectionPropertyNode', 'KindAggregatedCollectionPropertyNode', 'KindIn', 'KindCollectionConstant'
 	Kind Kind `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SingleValueNode.
+func (svn SingleValueNode) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // Solution solution REST Resource.
@@ -1990,4 +2158,10 @@ func (ss SolutionSummary) AsBasicSolutionSummary() (BasicSolutionSummary, bool) 
 type TransformationNode struct {
 	// Kind - READ-ONLY; Possible values include: 'Aggregate', 'GroupBy', 'Filter', 'Compute'
 	Kind Kind1 `json:"kind,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TransformationNode.
+func (tn TransformationNode) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }

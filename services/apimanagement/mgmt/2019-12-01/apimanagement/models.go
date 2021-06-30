@@ -125,6 +125,12 @@ type APICollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for APICollection.
+func (ac APICollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // APICollectionIterator provides access to a complete listing of APIContract values.
 type APICollectionIterator struct {
 	i    int
@@ -855,6 +861,12 @@ type APIReleaseCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for APIReleaseCollection.
+func (arc APIReleaseCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // APIReleaseCollectionIterator provides access to a complete listing of APIReleaseContract values.
 type APIReleaseCollectionIterator struct {
 	i    int
@@ -1111,6 +1123,12 @@ type APIRevisionCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for APIRevisionCollection.
+func (arc APIRevisionCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // APIRevisionCollectionIterator provides access to a complete listing of APIRevisionContract values.
 type APIRevisionCollectionIterator struct {
 	i    int
@@ -1279,6 +1297,12 @@ type APIRevisionContract struct {
 	IsOnline *bool `json:"isOnline,omitempty"`
 	// IsCurrent - READ-ONLY; Indicates if API revision is accessible via the gateway.
 	IsCurrent *bool `json:"isCurrent,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for APIRevisionContract.
+func (arc APIRevisionContract) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // APIRevisionInfoContract object used to create an API Revision or Version based on an existing API
@@ -3416,6 +3440,12 @@ type ContentItemCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ContentItemCollection.
+func (cic ContentItemCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ContentItemCollectionIterator provides access to a complete listing of ContentItemContract values.
 type ContentItemCollectionIterator struct {
 	i    int
@@ -3595,6 +3625,12 @@ type ContentTypeCollection struct {
 	Value *[]ContentTypeContract `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Next page link, if any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ContentTypeCollection.
+func (ctc ContentTypeCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ContentTypeCollectionIterator provides access to a complete listing of ContentTypeContract values.
@@ -4533,6 +4569,12 @@ type GatewayCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for GatewayCollection.
+func (gc GatewayCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // GatewayCollectionIterator provides access to a complete listing of GatewayContract values.
 type GatewayCollectionIterator struct {
 	i    int
@@ -4771,6 +4813,12 @@ type GatewayHostnameConfigurationCollection struct {
 	Value *[]GatewayHostnameConfigurationContract `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for GatewayHostnameConfigurationCollection.
+func (ghcc GatewayHostnameConfigurationCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // GatewayHostnameConfigurationCollectionIterator provides access to a complete listing of
@@ -5887,6 +5935,12 @@ type IssueAttachmentCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IssueAttachmentCollection.
+func (iac IssueAttachmentCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // IssueAttachmentCollectionIterator provides access to a complete listing of IssueAttachmentContract
 // values.
 type IssueAttachmentCollectionIterator struct {
@@ -6130,6 +6184,12 @@ type IssueCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for IssueCollection.
+func (ic IssueCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // IssueCollectionIterator provides access to a complete listing of IssueContract values.
 type IssueCollectionIterator struct {
 	i    int
@@ -6287,6 +6347,12 @@ type IssueCommentCollection struct {
 	Value *[]IssueCommentContract `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IssueCommentCollection.
+func (icc IssueCommentCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // IssueCommentCollectionIterator provides access to a complete listing of IssueCommentContract values.
@@ -8093,6 +8159,12 @@ type OperationCollection struct {
 	NextLink *string `json:"nextLink,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for OperationCollection.
+func (oc OperationCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // OperationCollectionIterator provides access to a complete listing of OperationContract values.
 type OperationCollectionIterator struct {
 	i    int
@@ -8864,6 +8936,12 @@ type PolicyDescriptionContractProperties struct {
 	Description *string `json:"description,omitempty"`
 	// Scope - READ-ONLY; Binary OR value of the Snippet scope.
 	Scope *int32 `json:"scope,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PolicyDescriptionContractProperties.
+func (pdcp PolicyDescriptionContractProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // PortalDelegationSettings delegation settings for a developer portal.
@@ -10387,6 +10465,12 @@ type Resource struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceLocationDataContract resource location data properties.
 type ResourceLocationDataContract struct {
 	// Name - A canonical name for the geographic or physical location.
@@ -10417,6 +10501,12 @@ type ResourceSkuCapacity struct {
 	ScaleType ResourceSkuCapacityScaleType `json:"scaleType,omitempty"`
 }
 
+// MarshalJSON is the custom marshaler for ResourceSkuCapacity.
+func (rsc ResourceSkuCapacity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // ResourceSkuResult describes an available API Management service SKU.
 type ResourceSkuResult struct {
 	// ResourceType - READ-ONLY; The type of resource the SKU applies to.
@@ -10425,6 +10515,12 @@ type ResourceSkuResult struct {
 	Sku *ResourceSku `json:"sku,omitempty"`
 	// Capacity - READ-ONLY; Specifies the number of API Management units.
 	Capacity *ResourceSkuCapacity `json:"capacity,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceSkuResult.
+func (rsr ResourceSkuResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceSkuResults the API Management service SKUs operation response.
@@ -10660,6 +10756,12 @@ type SchemaCollection struct {
 	Value *[]SchemaContract `json:"value,omitempty"`
 	// NextLink - READ-ONLY; Next page link if any.
 	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SchemaCollection.
+func (sc SchemaCollection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // SchemaCollectionIterator provides access to a complete listing of SchemaContract values.

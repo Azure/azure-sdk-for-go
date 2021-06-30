@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## `v55.5.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2020-02-02-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/signalr/mgmt/2021-06-01-preview/signalr`
+- `github.com/Azure/azure-sdk-for-go/services/preview/webpubsub/mgmt/2021-06-01-preview/webpubsub`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2021-03-01-preview/appconfiguration` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/appconfiguration/mgmt/2021-03-01-preview/appconfiguration/CHANGELOG.md) |
+
 ## `v55.4.0`
 
 ### New Packages

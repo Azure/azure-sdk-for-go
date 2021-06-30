@@ -11,7 +11,7 @@ package webpubsub
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/webpubsub/mgmt/2021-04-01-preview/webpubsub"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/webpubsub/mgmt/2021-06-01-preview/webpubsub"
 )
 
 const (
@@ -32,14 +32,6 @@ const (
 	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
 	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
 	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
-)
-
-type FeatureFlags = original.FeatureFlags
-
-const (
-	FeatureFlagsEnableConnectivityLogs FeatureFlags = original.FeatureFlagsEnableConnectivityLogs
-	FeatureFlagsEnableLiveTrace        FeatureFlags = original.FeatureFlagsEnableLiveTrace
-	FeatureFlagsEnableMessagingLogs    FeatureFlags = original.FeatureFlagsEnableMessagingLogs
 )
 
 type KeyType = original.KeyType
@@ -119,13 +111,13 @@ type BaseClient = original.BaseClient
 type Client = original.Client
 type CreateOrUpdateFuture = original.CreateOrUpdateFuture
 type DeleteFuture = original.DeleteFuture
+type DiagnosticConfiguration = original.DiagnosticConfiguration
 type Dimension = original.Dimension
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
 type EventHandlerSettings = original.EventHandlerSettings
 type EventHandlerTemplate = original.EventHandlerTemplate
-type Feature = original.Feature
 type Keys = original.Keys
 type LogSpecification = original.LogSpecification
 type ManagedIdentity = original.ManagedIdentity
@@ -276,9 +268,6 @@ func PossibleACLActionValues() []ACLAction {
 }
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
-}
-func PossibleFeatureFlagsValues() []FeatureFlags {
-	return original.PossibleFeatureFlagsValues()
 }
 func PossibleKeyTypeValues() []KeyType {
 	return original.PossibleKeyTypeValues()

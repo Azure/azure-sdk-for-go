@@ -1,5 +1,5 @@
 {
-  "commit": "c2ea3a3ccd14293b4bd1d17e684ef9129f0dc604",
+  "commit": "eee9cbba738edde2ea48ea0c826f84619e2561df",
   "readme": "/_/azure-rest-api-specs/specification/elastic/resource-manager/readme.md",
   "tag": "package-2020-07-01-preview",
   "use": "@microsoft.azure/autorest.go@2.1.183",

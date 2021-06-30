@@ -6,12 +6,12 @@ package ioext
 import (
 	"errors"
 	"fmt"
+	"github.com/ahmetb/go-linq/v3"
 	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
-	"github.com/ahmetb/go-linq/v3"
 )
 
 // CopyDir recursively copies the specified source directory tree to the

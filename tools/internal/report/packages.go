@@ -212,4 +212,3 @@ func (r *PkgsReport) writeRemovedPackages(md *markdown.Writer) {
 	}
 	md.EmptyLine()
 }
-

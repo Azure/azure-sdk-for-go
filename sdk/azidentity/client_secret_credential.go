@@ -76,7 +76,7 @@ func (c *ClientSecretCredential) GetToken(ctx context.Context, opts azcore.Token
 // AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential and calls the Bearer Token policy
 // to get the bearer token.
 func (c *ClientSecretCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return azcore.NewBearerTokenPolicy(c, options)
+	return azcore.NewTokenRefreshPolicy(c, &defaultTokenProcessor{}, options)
 }
 
 var _ azcore.TokenCredential = (*ClientSecretCredential)(nil)

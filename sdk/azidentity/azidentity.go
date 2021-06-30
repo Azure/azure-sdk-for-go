@@ -4,6 +4,7 @@
 package azidentity
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"net/url"
@@ -222,4 +223,41 @@ func oauthPath(tenantID string) string {
 		return "/oauth2"
 	}
 	return "/oauth2/v2.0"
+}
+
+// defaultTokenProcessor is used in the TokenRefreshPolicy for the common bearer token case where
+// only one token is requested directly from the credential
+type defaultTokenProcessor struct{}
+
+func (t *defaultTokenProcessor) IsZeroOrExpired(eo map[string]time.Time) (bool, []string) {
+	// the default case will only provide one token
+	// check if the token's expieration time has passed or is uninitialized
+	for _, t := range eo {
+		return t.IsZero() || t.Before(time.Now()), nil
+	}
+	// if a nil or empty map is passed then return true to perform the initial token request
+	return true, nil
+}
+
+func (t *defaultTokenProcessor) ShouldRefresh(eo map[string]time.Time) (bool, []string) {
+	// the default case will check that the token's expiration time is within two minutes
+	// if it is it will signal a refresh for the token.
+	const window = 2 * time.Minute
+	for _, t := range eo {
+		return t.Add(-window).Before(time.Now()), nil
+	}
+	// TODO check if this should instead return an error?
+	return false, nil
+}
+
+func (t *defaultTokenProcessor) GetToken(ctx context.Context, cred azcore.TokenCredential, tenants []string, opts azcore.TokenRequestOptions) (string, error) {
+	tk, err := cred.GetToken(ctx, opts)
+	if err != nil {
+		return "", err
+	}
+	return bearerTokenPrefix + tk.Token, nil
+}
+
+func (t *defaultTokenProcessor) Header() string {
+	return azcore.HeaderAuthorization
 }

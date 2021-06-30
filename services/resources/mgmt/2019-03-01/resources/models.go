@@ -2103,7 +2103,8 @@ type ProviderResourceType struct {
 	// Aliases - The aliases that are supported by this resource type.
 	Aliases *[]AliasType `json:"aliases,omitempty"`
 	// APIVersions - The API version.
-	APIVersions *[]string `json:"apiVersions,omitempty"`
+	APIVersions  *[]string      `json:"apiVersions,omitempty"`
+	ZoneMappings *[]ZoneMapping `json:"zoneMappings,omitempty"`
 	// Capabilities - The additional capabilities offered by this resource type.
 	Capabilities *string `json:"capabilities,omitempty"`
 	// Properties - The properties.
@@ -2124,6 +2125,9 @@ func (prt ProviderResourceType) MarshalJSON() ([]byte, error) {
 	}
 	if prt.APIVersions != nil {
 		objectMap["apiVersions"] = prt.APIVersions
+	}
+	if prt.ZoneMappings != nil {
+		objectMap["zoneMappings"] = prt.ZoneMappings
 	}
 	if prt.Capabilities != nil {
 		objectMap["capabilities"] = prt.Capabilities
@@ -2556,4 +2560,11 @@ func (future *ValidateMoveResourcesFuture) result(client Client) (ar autorest.Re
 	}
 	ar.Response = future.Response()
 	return
+}
+
+// ZoneMapping ...
+type ZoneMapping struct {
+	// Location - The location of the zone mapping.
+	Location *string   `json:"location,omitempty"`
+	Zones    *[]string `json:"zones,omitempty"`
 }

@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/automation"
@@ -27,6 +28,9 @@ func Command() *cobra.Command {
 		},
 		Hidden: true,
 	}
+
+	// bind global flags
+	common.BindGlobalFlags(rootCmd.PersistentFlags())
 
 	rootCmd.AddCommand(
 		automation.Command(),

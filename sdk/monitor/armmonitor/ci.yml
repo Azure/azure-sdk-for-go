@@ -2,14 +2,14 @@
 trigger:
   paths:
     include:
-    - sdk/monitor/arminsights
+    - sdk/monitor/armmonitor
 
 pr:
   paths:
     include:
-    - sdk/monitor/arminsights
+    - sdk/monitor/armmonitor
 
 stages:
 - template: ../../../eng/pipelines/templates/jobs/archetype-sdk-client-samples.yml
   parameters:
-    ServiceDirectory: 'monitor/arminsights'
+    ServiceDirectory: 'monitor/armmonitor'

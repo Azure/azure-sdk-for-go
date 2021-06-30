@@ -89,7 +89,7 @@ func (client ComponentsClient) CreateOrUpdatePreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-05-01"
+	const APIVersion = "2020-02-02"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -176,7 +176,7 @@ func (client ComponentsClient) DeletePreparer(ctx context.Context, resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-05-01"
+	const APIVersion = "2020-02-02"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -260,7 +260,7 @@ func (client ComponentsClient) GetPreparer(ctx context.Context, resourceGroupNam
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-05-01"
+	const APIVersion = "2020-02-02"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -347,7 +347,7 @@ func (client ComponentsClient) GetPurgeStatusPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-05-01"
+	const APIVersion = "2020-02-02"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -429,7 +429,7 @@ func (client ComponentsClient) ListPreparer(ctx context.Context) (*http.Request,
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-05-01"
+	const APIVersion = "2020-02-02"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -554,7 +554,7 @@ func (client ComponentsClient) ListByResourceGroupPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-05-01"
+	const APIVersion = "2020-02-02"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -685,7 +685,7 @@ func (client ComponentsClient) PurgePreparer(ctx context.Context, resourceGroupN
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-05-01"
+	const APIVersion = "2020-02-02"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -773,7 +773,7 @@ func (client ComponentsClient) UpdateTagsPreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2015-05-01"
+	const APIVersion = "2020-02-02"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

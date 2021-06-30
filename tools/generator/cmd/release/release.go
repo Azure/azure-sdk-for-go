@@ -97,7 +97,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
 	return Flags{
-		GlobalFlags:    common.ParseGlobalFlags(flagSet),
+		//GlobalFlags:    common.ParseGlobalFlags(flagSet),
 		SkipDep:        flags.GetBool(flagSet, "skip-dep-ensure"),
 		SkipValidate:   flags.GetBool(flagSet, "skip-validate"),
 		SkipProfile:    flags.GetBool(flagSet, "skip-profile"),

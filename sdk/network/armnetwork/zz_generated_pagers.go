@@ -17,7 +17,7 @@ import (
 type ApplicationGatewayAvailableSSLPredefinedPoliciesPager interface {
 	azcore.Pager
 
-	// Page returns the current ApplicationGatewayAvailableSSLPredefinedPoliciesResponse.
+	// PageResponse returns the current ApplicationGatewayAvailableSSLPredefinedPoliciesResponse.
 	PageResponse() ApplicationGatewayAvailableSSLPredefinedPoliciesResponse
 }
 
@@ -93,7 +93,7 @@ func (p *applicationGatewayAvailableSSLPredefinedPoliciesPager) PageResponse() A
 type ApplicationGatewayListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ApplicationGatewayListResultResponse.
+	// PageResponse returns the current ApplicationGatewayListResultResponse.
 	PageResponse() ApplicationGatewayListResultResponse
 }
 
@@ -169,7 +169,7 @@ func (p *applicationGatewayListResultPager) PageResponse() ApplicationGatewayLis
 type ApplicationGatewayPrivateEndpointConnectionListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ApplicationGatewayPrivateEndpointConnectionListResultResponse.
+	// PageResponse returns the current ApplicationGatewayPrivateEndpointConnectionListResultResponse.
 	PageResponse() ApplicationGatewayPrivateEndpointConnectionListResultResponse
 }
 
@@ -245,7 +245,7 @@ func (p *applicationGatewayPrivateEndpointConnectionListResultPager) PageRespons
 type ApplicationGatewayPrivateLinkResourceListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ApplicationGatewayPrivateLinkResourceListResultResponse.
+	// PageResponse returns the current ApplicationGatewayPrivateLinkResourceListResultResponse.
 	PageResponse() ApplicationGatewayPrivateLinkResourceListResultResponse
 }
 
@@ -321,7 +321,7 @@ func (p *applicationGatewayPrivateLinkResourceListResultPager) PageResponse() Ap
 type ApplicationSecurityGroupListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ApplicationSecurityGroupListResultResponse.
+	// PageResponse returns the current ApplicationSecurityGroupListResultResponse.
 	PageResponse() ApplicationSecurityGroupListResultResponse
 }
 
@@ -397,7 +397,7 @@ func (p *applicationSecurityGroupListResultPager) PageResponse() ApplicationSecu
 type AuthorizationListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current AuthorizationListResultResponse.
+	// PageResponse returns the current AuthorizationListResultResponse.
 	PageResponse() AuthorizationListResultResponse
 }
 
@@ -473,7 +473,7 @@ func (p *authorizationListResultPager) PageResponse() AuthorizationListResultRes
 type AutoApprovedPrivateLinkServicesResultPager interface {
 	azcore.Pager
 
-	// Page returns the current AutoApprovedPrivateLinkServicesResultResponse.
+	// PageResponse returns the current AutoApprovedPrivateLinkServicesResultResponse.
 	PageResponse() AutoApprovedPrivateLinkServicesResultResponse
 }
 
@@ -549,7 +549,7 @@ func (p *autoApprovedPrivateLinkServicesResultPager) PageResponse() AutoApproved
 type AvailableDelegationsResultPager interface {
 	azcore.Pager
 
-	// Page returns the current AvailableDelegationsResultResponse.
+	// PageResponse returns the current AvailableDelegationsResultResponse.
 	PageResponse() AvailableDelegationsResultResponse
 }
 
@@ -625,7 +625,7 @@ func (p *availableDelegationsResultPager) PageResponse() AvailableDelegationsRes
 type AvailablePrivateEndpointTypesResultPager interface {
 	azcore.Pager
 
-	// Page returns the current AvailablePrivateEndpointTypesResultResponse.
+	// PageResponse returns the current AvailablePrivateEndpointTypesResultResponse.
 	PageResponse() AvailablePrivateEndpointTypesResultResponse
 }
 
@@ -701,7 +701,7 @@ func (p *availablePrivateEndpointTypesResultPager) PageResponse() AvailablePriva
 type AvailableServiceAliasesResultPager interface {
 	azcore.Pager
 
-	// Page returns the current AvailableServiceAliasesResultResponse.
+	// PageResponse returns the current AvailableServiceAliasesResultResponse.
 	PageResponse() AvailableServiceAliasesResultResponse
 }
 
@@ -777,7 +777,7 @@ func (p *availableServiceAliasesResultPager) PageResponse() AvailableServiceAlia
 type AzureFirewallFqdnTagListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current AzureFirewallFqdnTagListResultResponse.
+	// PageResponse returns the current AzureFirewallFqdnTagListResultResponse.
 	PageResponse() AzureFirewallFqdnTagListResultResponse
 }
 
@@ -853,7 +853,7 @@ func (p *azureFirewallFqdnTagListResultPager) PageResponse() AzureFirewallFqdnTa
 type AzureFirewallListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current AzureFirewallListResultResponse.
+	// PageResponse returns the current AzureFirewallListResultResponse.
 	PageResponse() AzureFirewallListResultResponse
 }
 
@@ -929,7 +929,7 @@ func (p *azureFirewallListResultPager) PageResponse() AzureFirewallListResultRes
 type AzureWebCategoryListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current AzureWebCategoryListResultResponse.
+	// PageResponse returns the current AzureWebCategoryListResultResponse.
 	PageResponse() AzureWebCategoryListResultResponse
 }
 
@@ -1005,7 +1005,7 @@ func (p *azureWebCategoryListResultPager) PageResponse() AzureWebCategoryListRes
 type BastionActiveSessionListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current BastionActiveSessionListResultResponse.
+	// PageResponse returns the current BastionActiveSessionListResultResponse.
 	PageResponse() BastionActiveSessionListResultResponse
 }
 
@@ -1088,7 +1088,7 @@ func (p *bastionActiveSessionListResultPager) PageResponse() BastionActiveSessio
 type BastionHostListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current BastionHostListResultResponse.
+	// PageResponse returns the current BastionHostListResultResponse.
 	PageResponse() BastionHostListResultResponse
 }
 
@@ -1164,7 +1164,7 @@ func (p *bastionHostListResultPager) PageResponse() BastionHostListResultRespons
 type BastionSessionDeleteResultPager interface {
 	azcore.Pager
 
-	// Page returns the current BastionSessionDeleteResultResponse.
+	// PageResponse returns the current BastionSessionDeleteResultResponse.
 	PageResponse() BastionSessionDeleteResultResponse
 }
 
@@ -1240,7 +1240,7 @@ func (p *bastionSessionDeleteResultPager) PageResponse() BastionSessionDeleteRes
 type BastionShareableLinkListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current BastionShareableLinkListResultResponse.
+	// PageResponse returns the current BastionShareableLinkListResultResponse.
 	PageResponse() BastionShareableLinkListResultResponse
 }
 
@@ -1323,7 +1323,7 @@ func (p *bastionShareableLinkListResultPager) PageResponse() BastionShareableLin
 type BgpServiceCommunityListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current BgpServiceCommunityListResultResponse.
+	// PageResponse returns the current BgpServiceCommunityListResultResponse.
 	PageResponse() BgpServiceCommunityListResultResponse
 }
 
@@ -1399,7 +1399,7 @@ func (p *bgpServiceCommunityListResultPager) PageResponse() BgpServiceCommunityL
 type CustomIPPrefixListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current CustomIPPrefixListResultResponse.
+	// PageResponse returns the current CustomIPPrefixListResultResponse.
 	PageResponse() CustomIPPrefixListResultResponse
 }
 
@@ -1475,7 +1475,7 @@ func (p *customIPPrefixListResultPager) PageResponse() CustomIPPrefixListResultR
 type DdosProtectionPlanListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current DdosProtectionPlanListResultResponse.
+	// PageResponse returns the current DdosProtectionPlanListResultResponse.
 	PageResponse() DdosProtectionPlanListResultResponse
 }
 
@@ -1551,7 +1551,7 @@ func (p *ddosProtectionPlanListResultPager) PageResponse() DdosProtectionPlanLis
 type DscpConfigurationListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current DscpConfigurationListResultResponse.
+	// PageResponse returns the current DscpConfigurationListResultResponse.
 	PageResponse() DscpConfigurationListResultResponse
 }
 
@@ -1627,7 +1627,7 @@ func (p *dscpConfigurationListResultPager) PageResponse() DscpConfigurationListR
 type EndpointServicesListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current EndpointServicesListResultResponse.
+	// PageResponse returns the current EndpointServicesListResultResponse.
 	PageResponse() EndpointServicesListResultResponse
 }
 
@@ -1703,7 +1703,7 @@ func (p *endpointServicesListResultPager) PageResponse() EndpointServicesListRes
 type ExpressRouteCircuitConnectionListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ExpressRouteCircuitConnectionListResultResponse.
+	// PageResponse returns the current ExpressRouteCircuitConnectionListResultResponse.
 	PageResponse() ExpressRouteCircuitConnectionListResultResponse
 }
 
@@ -1779,7 +1779,7 @@ func (p *expressRouteCircuitConnectionListResultPager) PageResponse() ExpressRou
 type ExpressRouteCircuitListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ExpressRouteCircuitListResultResponse.
+	// PageResponse returns the current ExpressRouteCircuitListResultResponse.
 	PageResponse() ExpressRouteCircuitListResultResponse
 }
 
@@ -1855,7 +1855,7 @@ func (p *expressRouteCircuitListResultPager) PageResponse() ExpressRouteCircuitL
 type ExpressRouteCircuitPeeringListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ExpressRouteCircuitPeeringListResultResponse.
+	// PageResponse returns the current ExpressRouteCircuitPeeringListResultResponse.
 	PageResponse() ExpressRouteCircuitPeeringListResultResponse
 }
 
@@ -1931,7 +1931,7 @@ func (p *expressRouteCircuitPeeringListResultPager) PageResponse() ExpressRouteC
 type ExpressRouteCrossConnectionListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ExpressRouteCrossConnectionListResultResponse.
+	// PageResponse returns the current ExpressRouteCrossConnectionListResultResponse.
 	PageResponse() ExpressRouteCrossConnectionListResultResponse
 }
 
@@ -2007,7 +2007,7 @@ func (p *expressRouteCrossConnectionListResultPager) PageResponse() ExpressRoute
 type ExpressRouteCrossConnectionPeeringListPager interface {
 	azcore.Pager
 
-	// Page returns the current ExpressRouteCrossConnectionPeeringListResponse.
+	// PageResponse returns the current ExpressRouteCrossConnectionPeeringListResponse.
 	PageResponse() ExpressRouteCrossConnectionPeeringListResponse
 }
 
@@ -2083,7 +2083,7 @@ func (p *expressRouteCrossConnectionPeeringListPager) PageResponse() ExpressRout
 type ExpressRouteLinkListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ExpressRouteLinkListResultResponse.
+	// PageResponse returns the current ExpressRouteLinkListResultResponse.
 	PageResponse() ExpressRouteLinkListResultResponse
 }
 
@@ -2159,7 +2159,7 @@ func (p *expressRouteLinkListResultPager) PageResponse() ExpressRouteLinkListRes
 type ExpressRoutePortListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ExpressRoutePortListResultResponse.
+	// PageResponse returns the current ExpressRoutePortListResultResponse.
 	PageResponse() ExpressRoutePortListResultResponse
 }
 
@@ -2235,7 +2235,7 @@ func (p *expressRoutePortListResultPager) PageResponse() ExpressRoutePortListRes
 type ExpressRoutePortsLocationListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ExpressRoutePortsLocationListResultResponse.
+	// PageResponse returns the current ExpressRoutePortsLocationListResultResponse.
 	PageResponse() ExpressRoutePortsLocationListResultResponse
 }
 
@@ -2311,7 +2311,7 @@ func (p *expressRoutePortsLocationListResultPager) PageResponse() ExpressRoutePo
 type ExpressRouteServiceProviderListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ExpressRouteServiceProviderListResultResponse.
+	// PageResponse returns the current ExpressRouteServiceProviderListResultResponse.
 	PageResponse() ExpressRouteServiceProviderListResultResponse
 }
 
@@ -2387,7 +2387,7 @@ func (p *expressRouteServiceProviderListResultPager) PageResponse() ExpressRoute
 type FirewallPolicyListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current FirewallPolicyListResultResponse.
+	// PageResponse returns the current FirewallPolicyListResultResponse.
 	PageResponse() FirewallPolicyListResultResponse
 }
 
@@ -2463,7 +2463,7 @@ func (p *firewallPolicyListResultPager) PageResponse() FirewallPolicyListResultR
 type FirewallPolicyRuleCollectionGroupListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current FirewallPolicyRuleCollectionGroupListResultResponse.
+	// PageResponse returns the current FirewallPolicyRuleCollectionGroupListResultResponse.
 	PageResponse() FirewallPolicyRuleCollectionGroupListResultResponse
 }
 
@@ -2539,7 +2539,7 @@ func (p *firewallPolicyRuleCollectionGroupListResultPager) PageResponse() Firewa
 type FlowLogListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current FlowLogListResultResponse.
+	// PageResponse returns the current FlowLogListResultResponse.
 	PageResponse() FlowLogListResultResponse
 }
 
@@ -2615,7 +2615,7 @@ func (p *flowLogListResultPager) PageResponse() FlowLogListResultResponse {
 type IPAllocationListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current IPAllocationListResultResponse.
+	// PageResponse returns the current IPAllocationListResultResponse.
 	PageResponse() IPAllocationListResultResponse
 }
 
@@ -2691,7 +2691,7 @@ func (p *ipAllocationListResultPager) PageResponse() IPAllocationListResultRespo
 type IPGroupListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current IPGroupListResultResponse.
+	// PageResponse returns the current IPGroupListResultResponse.
 	PageResponse() IPGroupListResultResponse
 }
 
@@ -2767,7 +2767,7 @@ func (p *ipGroupListResultPager) PageResponse() IPGroupListResultResponse {
 type InboundNatRuleListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current InboundNatRuleListResultResponse.
+	// PageResponse returns the current InboundNatRuleListResultResponse.
 	PageResponse() InboundNatRuleListResultResponse
 }
 
@@ -2843,7 +2843,7 @@ func (p *inboundNatRuleListResultPager) PageResponse() InboundNatRuleListResultR
 type ListHubRouteTablesResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ListHubRouteTablesResultResponse.
+	// PageResponse returns the current ListHubRouteTablesResultResponse.
 	PageResponse() ListHubRouteTablesResultResponse
 }
 
@@ -2919,7 +2919,7 @@ func (p *listHubRouteTablesResultPager) PageResponse() ListHubRouteTablesResultR
 type ListHubVirtualNetworkConnectionsResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ListHubVirtualNetworkConnectionsResultResponse.
+	// PageResponse returns the current ListHubVirtualNetworkConnectionsResultResponse.
 	PageResponse() ListHubVirtualNetworkConnectionsResultResponse
 }
 
@@ -2995,7 +2995,7 @@ func (p *listHubVirtualNetworkConnectionsResultPager) PageResponse() ListHubVirt
 type ListP2SVPNGatewaysResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ListP2SVPNGatewaysResultResponse.
+	// PageResponse returns the current ListP2SVPNGatewaysResultResponse.
 	PageResponse() ListP2SVPNGatewaysResultResponse
 }
 
@@ -3071,7 +3071,7 @@ func (p *listP2SVPNGatewaysResultPager) PageResponse() ListP2SVPNGatewaysResultR
 type ListVPNConnectionsResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ListVPNConnectionsResultResponse.
+	// PageResponse returns the current ListVPNConnectionsResultResponse.
 	PageResponse() ListVPNConnectionsResultResponse
 }
 
@@ -3147,7 +3147,7 @@ func (p *listVPNConnectionsResultPager) PageResponse() ListVPNConnectionsResultR
 type ListVPNGatewayNatRulesResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ListVPNGatewayNatRulesResultResponse.
+	// PageResponse returns the current ListVPNGatewayNatRulesResultResponse.
 	PageResponse() ListVPNGatewayNatRulesResultResponse
 }
 
@@ -3223,7 +3223,7 @@ func (p *listVPNGatewayNatRulesResultPager) PageResponse() ListVPNGatewayNatRule
 type ListVPNGatewaysResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ListVPNGatewaysResultResponse.
+	// PageResponse returns the current ListVPNGatewaysResultResponse.
 	PageResponse() ListVPNGatewaysResultResponse
 }
 
@@ -3299,7 +3299,7 @@ func (p *listVPNGatewaysResultPager) PageResponse() ListVPNGatewaysResultRespons
 type ListVPNServerConfigurationsResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ListVPNServerConfigurationsResultResponse.
+	// PageResponse returns the current ListVPNServerConfigurationsResultResponse.
 	PageResponse() ListVPNServerConfigurationsResultResponse
 }
 
@@ -3375,7 +3375,7 @@ func (p *listVPNServerConfigurationsResultPager) PageResponse() ListVPNServerCon
 type ListVPNSiteLinkConnectionsResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ListVPNSiteLinkConnectionsResultResponse.
+	// PageResponse returns the current ListVPNSiteLinkConnectionsResultResponse.
 	PageResponse() ListVPNSiteLinkConnectionsResultResponse
 }
 
@@ -3451,7 +3451,7 @@ func (p *listVPNSiteLinkConnectionsResultPager) PageResponse() ListVPNSiteLinkCo
 type ListVPNSiteLinksResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ListVPNSiteLinksResultResponse.
+	// PageResponse returns the current ListVPNSiteLinksResultResponse.
 	PageResponse() ListVPNSiteLinksResultResponse
 }
 
@@ -3527,7 +3527,7 @@ func (p *listVPNSiteLinksResultPager) PageResponse() ListVPNSiteLinksResultRespo
 type ListVPNSitesResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ListVPNSitesResultResponse.
+	// PageResponse returns the current ListVPNSitesResultResponse.
 	PageResponse() ListVPNSitesResultResponse
 }
 
@@ -3603,7 +3603,7 @@ func (p *listVPNSitesResultPager) PageResponse() ListVPNSitesResultResponse {
 type ListVirtualHubBgpConnectionResultsPager interface {
 	azcore.Pager
 
-	// Page returns the current ListVirtualHubBgpConnectionResultsResponse.
+	// PageResponse returns the current ListVirtualHubBgpConnectionResultsResponse.
 	PageResponse() ListVirtualHubBgpConnectionResultsResponse
 }
 
@@ -3679,7 +3679,7 @@ func (p *listVirtualHubBgpConnectionResultsPager) PageResponse() ListVirtualHubB
 type ListVirtualHubIPConfigurationResultsPager interface {
 	azcore.Pager
 
-	// Page returns the current ListVirtualHubIPConfigurationResultsResponse.
+	// PageResponse returns the current ListVirtualHubIPConfigurationResultsResponse.
 	PageResponse() ListVirtualHubIPConfigurationResultsResponse
 }
 
@@ -3755,7 +3755,7 @@ func (p *listVirtualHubIPConfigurationResultsPager) PageResponse() ListVirtualHu
 type ListVirtualHubRouteTableV2SResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ListVirtualHubRouteTableV2SResultResponse.
+	// PageResponse returns the current ListVirtualHubRouteTableV2SResultResponse.
 	PageResponse() ListVirtualHubRouteTableV2SResultResponse
 }
 
@@ -3831,7 +3831,7 @@ func (p *listVirtualHubRouteTableV2SResultPager) PageResponse() ListVirtualHubRo
 type ListVirtualHubsResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ListVirtualHubsResultResponse.
+	// PageResponse returns the current ListVirtualHubsResultResponse.
 	PageResponse() ListVirtualHubsResultResponse
 }
 
@@ -3907,7 +3907,7 @@ func (p *listVirtualHubsResultPager) PageResponse() ListVirtualHubsResultRespons
 type ListVirtualNetworkGatewayNatRulesResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ListVirtualNetworkGatewayNatRulesResultResponse.
+	// PageResponse returns the current ListVirtualNetworkGatewayNatRulesResultResponse.
 	PageResponse() ListVirtualNetworkGatewayNatRulesResultResponse
 }
 
@@ -3983,7 +3983,7 @@ func (p *listVirtualNetworkGatewayNatRulesResultPager) PageResponse() ListVirtua
 type ListVirtualWANsResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ListVirtualWANsResultResponse.
+	// PageResponse returns the current ListVirtualWANsResultResponse.
 	PageResponse() ListVirtualWANsResultResponse
 }
 
@@ -4059,7 +4059,7 @@ func (p *listVirtualWANsResultPager) PageResponse() ListVirtualWANsResultRespons
 type LoadBalancerBackendAddressPoolListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current LoadBalancerBackendAddressPoolListResultResponse.
+	// PageResponse returns the current LoadBalancerBackendAddressPoolListResultResponse.
 	PageResponse() LoadBalancerBackendAddressPoolListResultResponse
 }
 
@@ -4135,7 +4135,7 @@ func (p *loadBalancerBackendAddressPoolListResultPager) PageResponse() LoadBalan
 type LoadBalancerFrontendIPConfigurationListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current LoadBalancerFrontendIPConfigurationListResultResponse.
+	// PageResponse returns the current LoadBalancerFrontendIPConfigurationListResultResponse.
 	PageResponse() LoadBalancerFrontendIPConfigurationListResultResponse
 }
 
@@ -4211,7 +4211,7 @@ func (p *loadBalancerFrontendIPConfigurationListResultPager) PageResponse() Load
 type LoadBalancerListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current LoadBalancerListResultResponse.
+	// PageResponse returns the current LoadBalancerListResultResponse.
 	PageResponse() LoadBalancerListResultResponse
 }
 
@@ -4287,7 +4287,7 @@ func (p *loadBalancerListResultPager) PageResponse() LoadBalancerListResultRespo
 type LoadBalancerLoadBalancingRuleListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current LoadBalancerLoadBalancingRuleListResultResponse.
+	// PageResponse returns the current LoadBalancerLoadBalancingRuleListResultResponse.
 	PageResponse() LoadBalancerLoadBalancingRuleListResultResponse
 }
 
@@ -4363,7 +4363,7 @@ func (p *loadBalancerLoadBalancingRuleListResultPager) PageResponse() LoadBalanc
 type LoadBalancerOutboundRuleListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current LoadBalancerOutboundRuleListResultResponse.
+	// PageResponse returns the current LoadBalancerOutboundRuleListResultResponse.
 	PageResponse() LoadBalancerOutboundRuleListResultResponse
 }
 
@@ -4439,7 +4439,7 @@ func (p *loadBalancerOutboundRuleListResultPager) PageResponse() LoadBalancerOut
 type LoadBalancerProbeListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current LoadBalancerProbeListResultResponse.
+	// PageResponse returns the current LoadBalancerProbeListResultResponse.
 	PageResponse() LoadBalancerProbeListResultResponse
 }
 
@@ -4515,7 +4515,7 @@ func (p *loadBalancerProbeListResultPager) PageResponse() LoadBalancerProbeListR
 type LocalNetworkGatewayListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current LocalNetworkGatewayListResultResponse.
+	// PageResponse returns the current LocalNetworkGatewayListResultResponse.
 	PageResponse() LocalNetworkGatewayListResultResponse
 }
 
@@ -4591,7 +4591,7 @@ func (p *localNetworkGatewayListResultPager) PageResponse() LocalNetworkGatewayL
 type NatGatewayListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current NatGatewayListResultResponse.
+	// PageResponse returns the current NatGatewayListResultResponse.
 	PageResponse() NatGatewayListResultResponse
 }
 
@@ -4667,7 +4667,7 @@ func (p *natGatewayListResultPager) PageResponse() NatGatewayListResultResponse 
 type NetworkInterfaceIPConfigurationListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current NetworkInterfaceIPConfigurationListResultResponse.
+	// PageResponse returns the current NetworkInterfaceIPConfigurationListResultResponse.
 	PageResponse() NetworkInterfaceIPConfigurationListResultResponse
 }
 
@@ -4743,7 +4743,7 @@ func (p *networkInterfaceIPConfigurationListResultPager) PageResponse() NetworkI
 type NetworkInterfaceListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current NetworkInterfaceListResultResponse.
+	// PageResponse returns the current NetworkInterfaceListResultResponse.
 	PageResponse() NetworkInterfaceListResultResponse
 }
 
@@ -4819,7 +4819,7 @@ func (p *networkInterfaceListResultPager) PageResponse() NetworkInterfaceListRes
 type NetworkInterfaceLoadBalancerListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current NetworkInterfaceLoadBalancerListResultResponse.
+	// PageResponse returns the current NetworkInterfaceLoadBalancerListResultResponse.
 	PageResponse() NetworkInterfaceLoadBalancerListResultResponse
 }
 
@@ -4895,7 +4895,7 @@ func (p *networkInterfaceLoadBalancerListResultPager) PageResponse() NetworkInte
 type NetworkInterfaceTapConfigurationListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current NetworkInterfaceTapConfigurationListResultResponse.
+	// PageResponse returns the current NetworkInterfaceTapConfigurationListResultResponse.
 	PageResponse() NetworkInterfaceTapConfigurationListResultResponse
 }
 
@@ -4971,7 +4971,7 @@ func (p *networkInterfaceTapConfigurationListResultPager) PageResponse() Network
 type NetworkProfileListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current NetworkProfileListResultResponse.
+	// PageResponse returns the current NetworkProfileListResultResponse.
 	PageResponse() NetworkProfileListResultResponse
 }
 
@@ -5047,7 +5047,7 @@ func (p *networkProfileListResultPager) PageResponse() NetworkProfileListResultR
 type NetworkSecurityGroupListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current NetworkSecurityGroupListResultResponse.
+	// PageResponse returns the current NetworkSecurityGroupListResultResponse.
 	PageResponse() NetworkSecurityGroupListResultResponse
 }
 
@@ -5123,7 +5123,7 @@ func (p *networkSecurityGroupListResultPager) PageResponse() NetworkSecurityGrou
 type NetworkVirtualApplianceListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current NetworkVirtualApplianceListResultResponse.
+	// PageResponse returns the current NetworkVirtualApplianceListResultResponse.
 	PageResponse() NetworkVirtualApplianceListResultResponse
 }
 
@@ -5199,7 +5199,7 @@ func (p *networkVirtualApplianceListResultPager) PageResponse() NetworkVirtualAp
 type NetworkVirtualApplianceSKUListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current NetworkVirtualApplianceSKUListResultResponse.
+	// PageResponse returns the current NetworkVirtualApplianceSKUListResultResponse.
 	PageResponse() NetworkVirtualApplianceSKUListResultResponse
 }
 
@@ -5275,7 +5275,7 @@ func (p *networkVirtualApplianceSKUListResultPager) PageResponse() NetworkVirtua
 type NetworkVirtualApplianceSiteListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current NetworkVirtualApplianceSiteListResultResponse.
+	// PageResponse returns the current NetworkVirtualApplianceSiteListResultResponse.
 	PageResponse() NetworkVirtualApplianceSiteListResultResponse
 }
 
@@ -5351,7 +5351,7 @@ func (p *networkVirtualApplianceSiteListResultPager) PageResponse() NetworkVirtu
 type OperationListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current OperationListResultResponse.
+	// PageResponse returns the current OperationListResultResponse.
 	PageResponse() OperationListResultResponse
 }
 
@@ -5427,7 +5427,7 @@ func (p *operationListResultPager) PageResponse() OperationListResultResponse {
 type PeerExpressRouteCircuitConnectionListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current PeerExpressRouteCircuitConnectionListResultResponse.
+	// PageResponse returns the current PeerExpressRouteCircuitConnectionListResultResponse.
 	PageResponse() PeerExpressRouteCircuitConnectionListResultResponse
 }
 
@@ -5503,7 +5503,7 @@ func (p *peerExpressRouteCircuitConnectionListResultPager) PageResponse() PeerEx
 type PrivateDNSZoneGroupListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current PrivateDNSZoneGroupListResultResponse.
+	// PageResponse returns the current PrivateDNSZoneGroupListResultResponse.
 	PageResponse() PrivateDNSZoneGroupListResultResponse
 }
 
@@ -5579,7 +5579,7 @@ func (p *privateDNSZoneGroupListResultPager) PageResponse() PrivateDNSZoneGroupL
 type PrivateEndpointConnectionListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current PrivateEndpointConnectionListResultResponse.
+	// PageResponse returns the current PrivateEndpointConnectionListResultResponse.
 	PageResponse() PrivateEndpointConnectionListResultResponse
 }
 
@@ -5655,7 +5655,7 @@ func (p *privateEndpointConnectionListResultPager) PageResponse() PrivateEndpoin
 type PrivateEndpointListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current PrivateEndpointListResultResponse.
+	// PageResponse returns the current PrivateEndpointListResultResponse.
 	PageResponse() PrivateEndpointListResultResponse
 }
 
@@ -5731,7 +5731,7 @@ func (p *privateEndpointListResultPager) PageResponse() PrivateEndpointListResul
 type PrivateLinkServiceListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current PrivateLinkServiceListResultResponse.
+	// PageResponse returns the current PrivateLinkServiceListResultResponse.
 	PageResponse() PrivateLinkServiceListResultResponse
 }
 
@@ -5807,7 +5807,7 @@ func (p *privateLinkServiceListResultPager) PageResponse() PrivateLinkServiceLis
 type PublicIPAddressListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current PublicIPAddressListResultResponse.
+	// PageResponse returns the current PublicIPAddressListResultResponse.
 	PageResponse() PublicIPAddressListResultResponse
 }
 
@@ -5883,7 +5883,7 @@ func (p *publicIPAddressListResultPager) PageResponse() PublicIPAddressListResul
 type PublicIPPrefixListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current PublicIPPrefixListResultResponse.
+	// PageResponse returns the current PublicIPPrefixListResultResponse.
 	PageResponse() PublicIPPrefixListResultResponse
 }
 
@@ -5959,7 +5959,7 @@ func (p *publicIPPrefixListResultPager) PageResponse() PublicIPPrefixListResultR
 type RouteFilterListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current RouteFilterListResultResponse.
+	// PageResponse returns the current RouteFilterListResultResponse.
 	PageResponse() RouteFilterListResultResponse
 }
 
@@ -6035,7 +6035,7 @@ func (p *routeFilterListResultPager) PageResponse() RouteFilterListResultRespons
 type RouteFilterRuleListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current RouteFilterRuleListResultResponse.
+	// PageResponse returns the current RouteFilterRuleListResultResponse.
 	PageResponse() RouteFilterRuleListResultResponse
 }
 
@@ -6111,7 +6111,7 @@ func (p *routeFilterRuleListResultPager) PageResponse() RouteFilterRuleListResul
 type RouteListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current RouteListResultResponse.
+	// PageResponse returns the current RouteListResultResponse.
 	PageResponse() RouteListResultResponse
 }
 
@@ -6187,7 +6187,7 @@ func (p *routeListResultPager) PageResponse() RouteListResultResponse {
 type RouteTableListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current RouteTableListResultResponse.
+	// PageResponse returns the current RouteTableListResultResponse.
 	PageResponse() RouteTableListResultResponse
 }
 
@@ -6263,7 +6263,7 @@ func (p *routeTableListResultPager) PageResponse() RouteTableListResultResponse 
 type SecurityPartnerProviderListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current SecurityPartnerProviderListResultResponse.
+	// PageResponse returns the current SecurityPartnerProviderListResultResponse.
 	PageResponse() SecurityPartnerProviderListResultResponse
 }
 
@@ -6339,7 +6339,7 @@ func (p *securityPartnerProviderListResultPager) PageResponse() SecurityPartnerP
 type SecurityRuleListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current SecurityRuleListResultResponse.
+	// PageResponse returns the current SecurityRuleListResultResponse.
 	PageResponse() SecurityRuleListResultResponse
 }
 
@@ -6415,7 +6415,7 @@ func (p *securityRuleListResultPager) PageResponse() SecurityRuleListResultRespo
 type ServiceEndpointPolicyDefinitionListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ServiceEndpointPolicyDefinitionListResultResponse.
+	// PageResponse returns the current ServiceEndpointPolicyDefinitionListResultResponse.
 	PageResponse() ServiceEndpointPolicyDefinitionListResultResponse
 }
 
@@ -6491,7 +6491,7 @@ func (p *serviceEndpointPolicyDefinitionListResultPager) PageResponse() ServiceE
 type ServiceEndpointPolicyListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ServiceEndpointPolicyListResultResponse.
+	// PageResponse returns the current ServiceEndpointPolicyListResultResponse.
 	PageResponse() ServiceEndpointPolicyListResultResponse
 }
 
@@ -6567,7 +6567,7 @@ func (p *serviceEndpointPolicyListResultPager) PageResponse() ServiceEndpointPol
 type SubnetListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current SubnetListResultResponse.
+	// PageResponse returns the current SubnetListResultResponse.
 	PageResponse() SubnetListResultResponse
 }
 
@@ -6643,7 +6643,7 @@ func (p *subnetListResultPager) PageResponse() SubnetListResultResponse {
 type UsagesListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current UsagesListResultResponse.
+	// PageResponse returns the current UsagesListResultResponse.
 	PageResponse() UsagesListResultResponse
 }
 
@@ -6719,7 +6719,7 @@ func (p *usagesListResultPager) PageResponse() UsagesListResultResponse {
 type VirtualNetworkGatewayConnectionListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualNetworkGatewayConnectionListResultResponse.
+	// PageResponse returns the current VirtualNetworkGatewayConnectionListResultResponse.
 	PageResponse() VirtualNetworkGatewayConnectionListResultResponse
 }
 
@@ -6795,7 +6795,7 @@ func (p *virtualNetworkGatewayConnectionListResultPager) PageResponse() VirtualN
 type VirtualNetworkGatewayListConnectionsResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualNetworkGatewayListConnectionsResultResponse.
+	// PageResponse returns the current VirtualNetworkGatewayListConnectionsResultResponse.
 	PageResponse() VirtualNetworkGatewayListConnectionsResultResponse
 }
 
@@ -6871,7 +6871,7 @@ func (p *virtualNetworkGatewayListConnectionsResultPager) PageResponse() Virtual
 type VirtualNetworkGatewayListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualNetworkGatewayListResultResponse.
+	// PageResponse returns the current VirtualNetworkGatewayListResultResponse.
 	PageResponse() VirtualNetworkGatewayListResultResponse
 }
 
@@ -6947,7 +6947,7 @@ func (p *virtualNetworkGatewayListResultPager) PageResponse() VirtualNetworkGate
 type VirtualNetworkListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualNetworkListResultResponse.
+	// PageResponse returns the current VirtualNetworkListResultResponse.
 	PageResponse() VirtualNetworkListResultResponse
 }
 
@@ -7023,7 +7023,7 @@ func (p *virtualNetworkListResultPager) PageResponse() VirtualNetworkListResultR
 type VirtualNetworkListUsageResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualNetworkListUsageResultResponse.
+	// PageResponse returns the current VirtualNetworkListUsageResultResponse.
 	PageResponse() VirtualNetworkListUsageResultResponse
 }
 
@@ -7099,7 +7099,7 @@ func (p *virtualNetworkListUsageResultPager) PageResponse() VirtualNetworkListUs
 type VirtualNetworkPeeringListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualNetworkPeeringListResultResponse.
+	// PageResponse returns the current VirtualNetworkPeeringListResultResponse.
 	PageResponse() VirtualNetworkPeeringListResultResponse
 }
 
@@ -7175,7 +7175,7 @@ func (p *virtualNetworkPeeringListResultPager) PageResponse() VirtualNetworkPeer
 type VirtualNetworkTapListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualNetworkTapListResultResponse.
+	// PageResponse returns the current VirtualNetworkTapListResultResponse.
 	PageResponse() VirtualNetworkTapListResultResponse
 }
 
@@ -7251,7 +7251,7 @@ func (p *virtualNetworkTapListResultPager) PageResponse() VirtualNetworkTapListR
 type VirtualRouterListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualRouterListResultResponse.
+	// PageResponse returns the current VirtualRouterListResultResponse.
 	PageResponse() VirtualRouterListResultResponse
 }
 
@@ -7327,7 +7327,7 @@ func (p *virtualRouterListResultPager) PageResponse() VirtualRouterListResultRes
 type VirtualRouterPeeringListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VirtualRouterPeeringListResultResponse.
+	// PageResponse returns the current VirtualRouterPeeringListResultResponse.
 	PageResponse() VirtualRouterPeeringListResultResponse
 }
 
@@ -7403,7 +7403,7 @@ func (p *virtualRouterPeeringListResultPager) PageResponse() VirtualRouterPeerin
 type WebApplicationFirewallPolicyListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current WebApplicationFirewallPolicyListResultResponse.
+	// PageResponse returns the current WebApplicationFirewallPolicyListResultResponse.
 	PageResponse() WebApplicationFirewallPolicyListResultResponse
 }
 

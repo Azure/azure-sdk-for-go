@@ -25,8 +25,7 @@ type DeploymentExtendedPoller interface {
 }
 
 type deploymentExtendedPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *deploymentExtendedPoller) Done() bool {
@@ -34,12 +33,12 @@ func (p *deploymentExtendedPoller) Done() bool {
 }
 
 func (p *deploymentExtendedPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *deploymentExtendedPoller) FinalResponse(ctx context.Context) (DeploymentExtendedResponse, error) {
 	respType := DeploymentExtendedResponse{DeploymentExtended: &DeploymentExtended{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.DeploymentExtended)
+	resp, err := p.pt.FinalResponse(ctx, respType.DeploymentExtended)
 	if err != nil {
 		return DeploymentExtendedResponse{}, err
 	}
@@ -53,7 +52,7 @@ func (p *deploymentExtendedPoller) ResumeToken() (string, error) {
 
 func (p *deploymentExtendedPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DeploymentExtendedResponse, error) {
 	respType := DeploymentExtendedResponse{DeploymentExtended: &DeploymentExtended{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.DeploymentExtended)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.DeploymentExtended)
 	if err != nil {
 		return DeploymentExtendedResponse{}, err
 	}
@@ -71,8 +70,7 @@ type DeploymentValidateResultPoller interface {
 }
 
 type deploymentValidateResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *deploymentValidateResultPoller) Done() bool {
@@ -80,12 +78,12 @@ func (p *deploymentValidateResultPoller) Done() bool {
 }
 
 func (p *deploymentValidateResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *deploymentValidateResultPoller) FinalResponse(ctx context.Context) (DeploymentValidateResultResponse, error) {
 	respType := DeploymentValidateResultResponse{DeploymentValidateResult: &DeploymentValidateResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.DeploymentValidateResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.DeploymentValidateResult)
 	if err != nil {
 		return DeploymentValidateResultResponse{}, err
 	}
@@ -99,7 +97,7 @@ func (p *deploymentValidateResultPoller) ResumeToken() (string, error) {
 
 func (p *deploymentValidateResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DeploymentValidateResultResponse, error) {
 	respType := DeploymentValidateResultResponse{DeploymentValidateResult: &DeploymentValidateResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.DeploymentValidateResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.DeploymentValidateResult)
 	if err != nil {
 		return DeploymentValidateResultResponse{}, err
 	}
@@ -117,8 +115,7 @@ type GenericResourcePoller interface {
 }
 
 type genericResourcePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *genericResourcePoller) Done() bool {
@@ -126,12 +123,12 @@ func (p *genericResourcePoller) Done() bool {
 }
 
 func (p *genericResourcePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *genericResourcePoller) FinalResponse(ctx context.Context) (GenericResourceResponse, error) {
 	respType := GenericResourceResponse{GenericResource: &GenericResource{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.GenericResource)
+	resp, err := p.pt.FinalResponse(ctx, respType.GenericResource)
 	if err != nil {
 		return GenericResourceResponse{}, err
 	}
@@ -145,7 +142,7 @@ func (p *genericResourcePoller) ResumeToken() (string, error) {
 
 func (p *genericResourcePoller) pollUntilDone(ctx context.Context, freq time.Duration) (GenericResourceResponse, error) {
 	respType := GenericResourceResponse{GenericResource: &GenericResource{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.GenericResource)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.GenericResource)
 	if err != nil {
 		return GenericResourceResponse{}, err
 	}
@@ -163,8 +160,7 @@ type HTTPPoller interface {
 }
 
 type httpPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *httpPoller) Done() bool {
@@ -172,11 +168,11 @@ func (p *httpPoller) Done() bool {
 }
 
 func (p *httpPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *httpPoller) FinalResponse(ctx context.Context) (*http.Response, error) {
-	return p.pt.FinalResponse(ctx, p.pipeline, nil)
+	return p.pt.FinalResponse(ctx, nil)
 }
 
 func (p *httpPoller) ResumeToken() (string, error) {
@@ -184,7 +180,7 @@ func (p *httpPoller) ResumeToken() (string, error) {
 }
 
 func (p *httpPoller) pollUntilDone(ctx context.Context, freq time.Duration) (*http.Response, error) {
-	return p.pt.PollUntilDone(ctx, freq, p.pipeline, nil)
+	return p.pt.PollUntilDone(ctx, freq, nil)
 }
 
 // ResourceGroupExportResultPoller provides polling facilities until the operation reaches a terminal state.
@@ -197,8 +193,7 @@ type ResourceGroupExportResultPoller interface {
 }
 
 type resourceGroupExportResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *resourceGroupExportResultPoller) Done() bool {
@@ -206,12 +201,12 @@ func (p *resourceGroupExportResultPoller) Done() bool {
 }
 
 func (p *resourceGroupExportResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *resourceGroupExportResultPoller) FinalResponse(ctx context.Context) (ResourceGroupExportResultResponse, error) {
 	respType := ResourceGroupExportResultResponse{ResourceGroupExportResult: &ResourceGroupExportResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ResourceGroupExportResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.ResourceGroupExportResult)
 	if err != nil {
 		return ResourceGroupExportResultResponse{}, err
 	}
@@ -225,7 +220,7 @@ func (p *resourceGroupExportResultPoller) ResumeToken() (string, error) {
 
 func (p *resourceGroupExportResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ResourceGroupExportResultResponse, error) {
 	respType := ResourceGroupExportResultResponse{ResourceGroupExportResult: &ResourceGroupExportResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ResourceGroupExportResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ResourceGroupExportResult)
 	if err != nil {
 		return ResourceGroupExportResultResponse{}, err
 	}
@@ -243,8 +238,7 @@ type WhatIfOperationResultPoller interface {
 }
 
 type whatIfOperationResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *whatIfOperationResultPoller) Done() bool {
@@ -252,12 +246,12 @@ func (p *whatIfOperationResultPoller) Done() bool {
 }
 
 func (p *whatIfOperationResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *whatIfOperationResultPoller) FinalResponse(ctx context.Context) (WhatIfOperationResultResponse, error) {
 	respType := WhatIfOperationResultResponse{WhatIfOperationResult: &WhatIfOperationResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.WhatIfOperationResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.WhatIfOperationResult)
 	if err != nil {
 		return WhatIfOperationResultResponse{}, err
 	}
@@ -271,7 +265,7 @@ func (p *whatIfOperationResultPoller) ResumeToken() (string, error) {
 
 func (p *whatIfOperationResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (WhatIfOperationResultResponse, error) {
 	respType := WhatIfOperationResultResponse{WhatIfOperationResult: &WhatIfOperationResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.WhatIfOperationResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.WhatIfOperationResult)
 	if err != nil {
 		return WhatIfOperationResultResponse{}, err
 	}

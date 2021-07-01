@@ -11,7 +11,7 @@ package eventgrid
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2020-10-15-preview/eventgrid"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2021-06-01-preview/eventgrid"
 )
 
 const (
@@ -21,21 +21,21 @@ const (
 type CreatedByType = original.CreatedByType
 
 const (
-	Application     CreatedByType = original.Application
-	Key             CreatedByType = original.Key
-	ManagedIdentity CreatedByType = original.ManagedIdentity
-	User            CreatedByType = original.User
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type DomainProvisioningState = original.DomainProvisioningState
 
 const (
-	Canceled  DomainProvisioningState = original.Canceled
-	Creating  DomainProvisioningState = original.Creating
-	Deleting  DomainProvisioningState = original.Deleting
-	Failed    DomainProvisioningState = original.Failed
-	Succeeded DomainProvisioningState = original.Succeeded
-	Updating  DomainProvisioningState = original.Updating
+	DomainProvisioningStateCanceled  DomainProvisioningState = original.DomainProvisioningStateCanceled
+	DomainProvisioningStateCreating  DomainProvisioningState = original.DomainProvisioningStateCreating
+	DomainProvisioningStateDeleting  DomainProvisioningState = original.DomainProvisioningStateDeleting
+	DomainProvisioningStateFailed    DomainProvisioningState = original.DomainProvisioningStateFailed
+	DomainProvisioningStateSucceeded DomainProvisioningState = original.DomainProvisioningStateSucceeded
+	DomainProvisioningStateUpdating  DomainProvisioningState = original.DomainProvisioningStateUpdating
 )
 
 type DomainTopicProvisioningState = original.DomainTopicProvisioningState
@@ -65,8 +65,8 @@ const (
 type EndpointTypeBasicDeadLetterDestination = original.EndpointTypeBasicDeadLetterDestination
 
 const (
-	EndpointTypeDeadLetterDestination EndpointTypeBasicDeadLetterDestination = original.EndpointTypeDeadLetterDestination
-	EndpointTypeStorageBlob           EndpointTypeBasicDeadLetterDestination = original.EndpointTypeStorageBlob
+	EndpointTypeBasicDeadLetterDestinationEndpointTypeDeadLetterDestination EndpointTypeBasicDeadLetterDestination = original.EndpointTypeBasicDeadLetterDestinationEndpointTypeDeadLetterDestination
+	EndpointTypeBasicDeadLetterDestinationEndpointTypeStorageBlob           EndpointTypeBasicDeadLetterDestination = original.EndpointTypeBasicDeadLetterDestinationEndpointTypeStorageBlob
 )
 
 type EventChannelProvisioningState = original.EventChannelProvisioningState
@@ -83,16 +83,16 @@ const (
 type EventDeliverySchema = original.EventDeliverySchema
 
 const (
-	CloudEventSchemaV10 EventDeliverySchema = original.CloudEventSchemaV10
-	CustomInputSchema   EventDeliverySchema = original.CustomInputSchema
-	EventGridSchema     EventDeliverySchema = original.EventGridSchema
+	EventDeliverySchemaCloudEventSchemaV10 EventDeliverySchema = original.EventDeliverySchemaCloudEventSchemaV10
+	EventDeliverySchemaCustomInputSchema   EventDeliverySchema = original.EventDeliverySchemaCustomInputSchema
+	EventDeliverySchemaEventGridSchema     EventDeliverySchema = original.EventDeliverySchemaEventGridSchema
 )
 
 type EventSubscriptionIdentityType = original.EventSubscriptionIdentityType
 
 const (
-	SystemAssigned EventSubscriptionIdentityType = original.SystemAssigned
-	UserAssigned   EventSubscriptionIdentityType = original.UserAssigned
+	EventSubscriptionIdentityTypeSystemAssigned EventSubscriptionIdentityType = original.EventSubscriptionIdentityTypeSystemAssigned
+	EventSubscriptionIdentityTypeUserAssigned   EventSubscriptionIdentityType = original.EventSubscriptionIdentityTypeUserAssigned
 )
 
 type EventSubscriptionProvisioningState = original.EventSubscriptionProvisioningState
@@ -110,7 +110,7 @@ const (
 type IPActionType = original.IPActionType
 
 const (
-	Allow IPActionType = original.Allow
+	IPActionTypeAllow IPActionType = original.IPActionTypeAllow
 )
 
 type IdentityType = original.IdentityType
@@ -187,17 +187,17 @@ const (
 type PartnerRegistrationVisibilityState = original.PartnerRegistrationVisibilityState
 
 const (
-	GenerallyAvailable PartnerRegistrationVisibilityState = original.GenerallyAvailable
-	Hidden             PartnerRegistrationVisibilityState = original.Hidden
-	PublicPreview      PartnerRegistrationVisibilityState = original.PublicPreview
+	PartnerRegistrationVisibilityStateGenerallyAvailable PartnerRegistrationVisibilityState = original.PartnerRegistrationVisibilityStateGenerallyAvailable
+	PartnerRegistrationVisibilityStateHidden             PartnerRegistrationVisibilityState = original.PartnerRegistrationVisibilityStateHidden
+	PartnerRegistrationVisibilityStatePublicPreview      PartnerRegistrationVisibilityState = original.PartnerRegistrationVisibilityStatePublicPreview
 )
 
 type PartnerTopicActivationState = original.PartnerTopicActivationState
 
 const (
-	Activated      PartnerTopicActivationState = original.Activated
-	Deactivated    PartnerTopicActivationState = original.Deactivated
-	NeverActivated PartnerTopicActivationState = original.NeverActivated
+	PartnerTopicActivationStateActivated      PartnerTopicActivationState = original.PartnerTopicActivationStateActivated
+	PartnerTopicActivationStateDeactivated    PartnerTopicActivationState = original.PartnerTopicActivationStateDeactivated
+	PartnerTopicActivationStateNeverActivated PartnerTopicActivationState = original.PartnerTopicActivationStateNeverActivated
 )
 
 type PartnerTopicProvisioningState = original.PartnerTopicProvisioningState
@@ -214,41 +214,33 @@ const (
 type PartnerTopicReadinessState = original.PartnerTopicReadinessState
 
 const (
-	ActivatedByUser       PartnerTopicReadinessState = original.ActivatedByUser
-	DeactivatedByUser     PartnerTopicReadinessState = original.DeactivatedByUser
-	DeletedByUser         PartnerTopicReadinessState = original.DeletedByUser
-	NotActivatedByUserYet PartnerTopicReadinessState = original.NotActivatedByUserYet
-)
-
-type PartnerTopicTypeAuthorizationState = original.PartnerTopicTypeAuthorizationState
-
-const (
-	Authorized    PartnerTopicTypeAuthorizationState = original.Authorized
-	NotApplicable PartnerTopicTypeAuthorizationState = original.NotApplicable
-	NotAuthorized PartnerTopicTypeAuthorizationState = original.NotAuthorized
+	PartnerTopicReadinessStateActivatedByUser       PartnerTopicReadinessState = original.PartnerTopicReadinessStateActivatedByUser
+	PartnerTopicReadinessStateDeactivatedByUser     PartnerTopicReadinessState = original.PartnerTopicReadinessStateDeactivatedByUser
+	PartnerTopicReadinessStateDeletedByUser         PartnerTopicReadinessState = original.PartnerTopicReadinessStateDeletedByUser
+	PartnerTopicReadinessStateNotActivatedByUserYet PartnerTopicReadinessState = original.PartnerTopicReadinessStateNotActivatedByUserYet
 )
 
 type PersistedConnectionStatus = original.PersistedConnectionStatus
 
 const (
-	Approved     PersistedConnectionStatus = original.Approved
-	Disconnected PersistedConnectionStatus = original.Disconnected
-	Pending      PersistedConnectionStatus = original.Pending
-	Rejected     PersistedConnectionStatus = original.Rejected
+	PersistedConnectionStatusApproved     PersistedConnectionStatus = original.PersistedConnectionStatusApproved
+	PersistedConnectionStatusDisconnected PersistedConnectionStatus = original.PersistedConnectionStatusDisconnected
+	PersistedConnectionStatusPending      PersistedConnectionStatus = original.PersistedConnectionStatusPending
+	PersistedConnectionStatusRejected     PersistedConnectionStatus = original.PersistedConnectionStatusRejected
 )
 
 type PublicNetworkAccess = original.PublicNetworkAccess
 
 const (
-	Disabled PublicNetworkAccess = original.Disabled
-	Enabled  PublicNetworkAccess = original.Enabled
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
 )
 
 type ResourceKind = original.ResourceKind
 
 const (
-	Azure    ResourceKind = original.Azure
-	AzureArc ResourceKind = original.AzureArc
+	ResourceKindAzure    ResourceKind = original.ResourceKindAzure
+	ResourceKindAzureArc ResourceKind = original.ResourceKindAzureArc
 )
 
 type ResourceProvisioningState = original.ResourceProvisioningState
@@ -265,15 +257,15 @@ const (
 type ResourceRegionType = original.ResourceRegionType
 
 const (
-	GlobalResource   ResourceRegionType = original.GlobalResource
-	RegionalResource ResourceRegionType = original.RegionalResource
+	ResourceRegionTypeGlobalResource   ResourceRegionType = original.ResourceRegionTypeGlobalResource
+	ResourceRegionTypeRegionalResource ResourceRegionType = original.ResourceRegionTypeRegionalResource
 )
 
 type Sku = original.Sku
 
 const (
-	Basic   Sku = original.Basic
-	Premium Sku = original.Premium
+	SkuBasic   Sku = original.SkuBasic
+	SkuPremium Sku = original.SkuPremium
 )
 
 type TopicProvisioningState = original.TopicProvisioningState
@@ -405,6 +397,7 @@ type PartnerNamespace = original.PartnerNamespace
 type PartnerNamespaceProperties = original.PartnerNamespaceProperties
 type PartnerNamespaceRegenerateKeyRequest = original.PartnerNamespaceRegenerateKeyRequest
 type PartnerNamespaceSharedAccessKeys = original.PartnerNamespaceSharedAccessKeys
+type PartnerNamespaceUpdateParameterProperties = original.PartnerNamespaceUpdateParameterProperties
 type PartnerNamespaceUpdateParameters = original.PartnerNamespaceUpdateParameters
 type PartnerNamespacesClient = original.PartnerNamespacesClient
 type PartnerNamespacesCreateOrUpdateFuture = original.PartnerNamespacesCreateOrUpdateFuture
@@ -414,7 +407,6 @@ type PartnerNamespacesListResultIterator = original.PartnerNamespacesListResultI
 type PartnerNamespacesListResultPage = original.PartnerNamespacesListResultPage
 type PartnerNamespacesUpdateFuture = original.PartnerNamespacesUpdateFuture
 type PartnerRegistration = original.PartnerRegistration
-type PartnerRegistrationEventTypesListResult = original.PartnerRegistrationEventTypesListResult
 type PartnerRegistrationProperties = original.PartnerRegistrationProperties
 type PartnerRegistrationUpdateParameters = original.PartnerRegistrationUpdateParameters
 type PartnerRegistrationsClient = original.PartnerRegistrationsClient
@@ -427,9 +419,6 @@ type PartnerTopicEventSubscriptionsCreateOrUpdateFuture = original.PartnerTopicE
 type PartnerTopicEventSubscriptionsDeleteFuture = original.PartnerTopicEventSubscriptionsDeleteFuture
 type PartnerTopicEventSubscriptionsUpdateFuture = original.PartnerTopicEventSubscriptionsUpdateFuture
 type PartnerTopicProperties = original.PartnerTopicProperties
-type PartnerTopicType = original.PartnerTopicType
-type PartnerTopicTypeProperties = original.PartnerTopicTypeProperties
-type PartnerTopicTypesListResult = original.PartnerTopicTypesListResult
 type PartnerTopicUpdateParameters = original.PartnerTopicUpdateParameters
 type PartnerTopicsClient = original.PartnerTopicsClient
 type PartnerTopicsDeleteFuture = original.PartnerTopicsDeleteFuture
@@ -737,9 +726,6 @@ func PossiblePartnerTopicProvisioningStateValues() []PartnerTopicProvisioningSta
 }
 func PossiblePartnerTopicReadinessStateValues() []PartnerTopicReadinessState {
 	return original.PossiblePartnerTopicReadinessStateValues()
-}
-func PossiblePartnerTopicTypeAuthorizationStateValues() []PartnerTopicTypeAuthorizationState {
-	return original.PossiblePartnerTopicTypeAuthorizationStateValues()
 }
 func PossiblePersistedConnectionStatusValues() []PersistedConnectionStatus {
 	return original.PossiblePersistedConnectionStatusValues()

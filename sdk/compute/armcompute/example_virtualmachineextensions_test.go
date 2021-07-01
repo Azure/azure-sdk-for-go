@@ -34,12 +34,12 @@ func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate() {
 			},
 			Properties: &armcompute.VirtualMachineExtensionProperties{
 				AutoUpgradeMinorVersion: to.BoolPtr(true),
-				ProtectedSettings: &map[string]interface{}{
+				ProtectedSettings: map[string]interface{}{
 					"AADClientSecret": "<client secret>",
 					"Passphrase":      "yourPassPhrase",
 				},
 				Publisher: to.StringPtr("Microsoft.Azure.Security"),
-				Settings: &map[string]interface{}{
+				Settings: map[string]interface{}{
 					"AADClientID":               "<client ID>",
 					"EncryptionOperation":       "EnableEncryption",
 					"KeyEncryptionAlgorithm":    "RSA-OAEP",

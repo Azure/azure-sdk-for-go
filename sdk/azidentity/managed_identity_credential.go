@@ -11,9 +11,25 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
+// ManagedIdentityIDKind is used to specify the type of identifier that is passed in for a user-assigned managed identity.
+type ManagedIdentityIDKind int
+
+const (
+	// ClientID is the default identifier for a user-assigned managed identity.
+	ClientID ManagedIdentityIDKind = 0
+	// ResourceID is set when the resource ID of the user-assigned managed identity is to be used.
+	ResourceID ManagedIdentityIDKind = 1
+)
+
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure the pipeline used with Managed Identity Credential.
 // All zero-value fields will be initialized with their default values.
 type ManagedIdentityCredentialOptions struct {
+	// ID is used to configure an alternate identifier for a user-assigned identity. The default is client ID.
+	// Select the identifier to be used and pass the corresponding ID value in the string param in
+	// NewManagedIdentityCredential().
+	// Hint: Choose from the list of allowed ManagedIdentityIDKind values.
+	ID ManagedIdentityIDKind
+
 	// HTTPClient sets the transport for making HTTP requests.
 	// Leave this as nil to use the default HTTP transport.
 	HTTPClient azcore.Transport
@@ -29,16 +45,17 @@ type ManagedIdentityCredentialOptions struct {
 // managed identity environments such as Azure VMs, App Service, Azure Functions, Azure CloudShell, among others. More information about configuring managed identities can be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview
 type ManagedIdentityCredential struct {
-	clientID string
-	client   *managedIdentityClient
+	id     string
+	client *managedIdentityClient
 }
 
 // NewManagedIdentityCredential creates an instance of the ManagedIdentityCredential capable of authenticating a resource that has a managed identity.
-// clientID: The client ID to authenticate for a user assigned managed identity.
+// id: The ID that corresponds to the user assigned managed identity. Defaults to the identity's client ID. To use another identifier,
+// pass in the value for the identifier here AND choose the correct ID kind to be used in the request by setting ManagedIdentityIDKind in the options.
 // options: ManagedIdentityCredentialOptions that configure the pipeline for requests sent to Azure Active Directory.
 // More information on user assigned managed identities cam be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview#how-a-user-assigned-managed-identity-works-with-an-azure-vm
-func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
+func NewManagedIdentityCredential(id string, options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
 	// Create a new Managed Identity Client with default options
 	if options == nil {
 		options = &ManagedIdentityCredentialOptions{}
@@ -54,10 +71,10 @@ func NewManagedIdentityCredential(clientID string, options *ManagedIdentityCrede
 	// Assign the msiType discovered onto the client
 	client.msiType = msiType
 	// check if no clientID is specified then check if it exists in an environment variable
-	if len(clientID) == 0 {
-		clientID = os.Getenv("AZURE_CLIENT_ID")
+	if len(id) == 0 {
+		id = os.Getenv("AZURE_CLIENT_ID")
 	}
-	return &ManagedIdentityCredential{clientID: clientID, client: client}, nil
+	return &ManagedIdentityCredential{id: id, client: client}, nil
 }
 
 // GetToken obtains an AccessToken from the Managed Identity service if available.
@@ -76,7 +93,7 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.To
 	}
 	// The following code will remove the /.default suffix from any scopes passed into the method since ManagedIdentityCredentials expect a resource string instead of a scope string
 	opts.Scopes[0] = strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
-	tk, err := c.client.authenticate(ctx, c.clientID, opts.Scopes)
+	tk, err := c.client.authenticate(ctx, c.id, opts.Scopes)
 	if err != nil {
 		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err

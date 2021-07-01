@@ -468,12 +468,12 @@ func (s *tableClientLiveTests) AfterTest(suite string, test string) {
 	recordedTestTeardown(s.T().Name())
 }
 
-func (s *tableClientLiveTests) init(doCreate bool) (*TableClient, func()) {
+func (s *tableClientLiveTests) init(createTable bool) (*TableClient, func()) {
 	assert := assert.New(s.T())
 	context := getTestContext(s.T().Name())
 	tableName, _ := getTableName(context)
 	client := context.client.NewTableClient(tableName)
-	if doCreate {
+	if createTable {
 		_, err := client.Create(ctx)
 		if err != nil {
 			var svcErr *runtime.ResponseError

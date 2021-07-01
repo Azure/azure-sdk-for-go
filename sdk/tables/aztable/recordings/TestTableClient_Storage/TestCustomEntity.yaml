@@ -1,0 +1,47 @@
+---
+version: 1
+interactions:
+- request:
+    body: '{"TableName":"gotable2ei5mqk4hyt5a"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "36"
+      Content-Type:
+      - application/json
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Thu, 01 Jul 2021 16:10:10 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables
+    method: POST
+  response:
+    body: '{"odata.error":{"code":"AuthenticationFailed","message":{"lang":"en-US","value":"Server
+      failed to authenticate the request. Make sure the value of Authorization header
+      is formed correctly including the signature.\nRequestId:caee54f9-d002-009d-5e93-6e1acf000000\nTime:2021-07-01T16:10:12.2634012Z"}}}'
+    headers:
+      Content-Length:
+      - "299"
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 01 Jul 2021 16:10:12 GMT
+      Server:
+      - Microsoft-HTTPAPI/2.0
+      X-Ms-Error-Code:
+      - AuthenticationFailed
+      X-Ms-Request-Id:
+      - caee54f9-d002-009d-5e93-6e1acf000000
+    status: 403 Server failed to authenticate the request. Make sure the value of
+      Authorization header is formed correctly including the signature.
+    code: 403
+    duration: ""

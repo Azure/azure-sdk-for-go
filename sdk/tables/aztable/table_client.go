@@ -92,19 +92,6 @@ func (t *TableClient) AddEntity(ctx context.Context, entity interface{}) (TableI
 	}
 }
 
-func checkEntityForPkRk(entity *map[string]interface{}, err error) error {
-
-	if _, ok := (*entity)["PartitionKey"]; !ok {
-		return errors.New("Entity must have a PartitionKey and RowKey")
-	}
-
-	if _, ok := (*entity)["RowKey"]; !ok {
-		return errors.New("Entity must have a PartitionKey and RowKey")
-	}
-
-	return err
-}
-
 // DeleteEntity deletes the entity with the specified partitionKey and rowKey from the table.
 func (t *TableClient) DeleteEntity(ctx context.Context, partitionKey string, rowKey string, etag string) (TableDeleteEntityResponse, error) {
 	return t.client.DeleteEntity(ctx, t.Name, partitionKey, rowKey, etag, nil, &QueryOptions{})

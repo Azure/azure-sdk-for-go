@@ -69,7 +69,10 @@ func thePackagesCmd(args []string) (rpt report.CommitPkgsReport, err error) {
 		if err != nil {
 			return err
 		}
-		r := GetPkgsReport(lhs, rhs)
+		r := report.GetPkgsReport(lhs, rhs, &report.GenerationOption{
+			OnlyAdditiveChanges: onlyAdditiveChangesFlag,
+			OnlyBreakingChanges: onlyBreakingChangesFlag,
+		})
 		rpt.UpdateAffectedPackages(targetCommit, r)
 		if r.HasBreakingChanges() {
 			rpt.BreakingChanges = append(rpt.BreakingChanges, targetCommit)
@@ -136,46 +139,4 @@ func getExportsForPackages(root string, pkgDirs []string) (repo.RepoContent, err
 		exps[pkgPath] = exp
 	}
 	return exps, nil
-}
-
-// generates a PkgsReport based on the delta between lhs and rhs
-func GetPkgsReport(lhs, rhs repo.RepoContent) report.PkgsReport {
-	rpt := report.PkgsReport{}
-
-	if !onlyBreakingChangesFlag {
-		rpt.AddedPackages = getDiffPkgs(lhs, rhs)
-	}
-	if !onlyAdditiveChangesFlag {
-		rpt.RemovedPackages = getDiffPkgs(rhs, lhs)
-	}
-
-	// diff packages
-	for rhsPkg, rhsCnt := range rhs {
-		if _, ok := lhs[rhsPkg]; !ok {
-			continue
-		}
-		if r := report.Generate(lhs[rhsPkg], rhsCnt, &report.GenerationOption{
-			OnlyBreakingChanges: onlyBreakingChangesFlag,
-			OnlyAdditiveChanges: onlyAdditiveChangesFlag,
-		}); !r.IsEmpty() {
-			// only add an entry if the report contains data
-			if rpt.ModifiedPackages == nil {
-				rpt.ModifiedPackages = report.ModifiedPackages{}
-			}
-			rpt.ModifiedPackages[rhsPkg] = r
-		}
-	}
-
-	return rpt
-}
-
-// returns a list of packages in rhs that aren't in lhs
-func getDiffPkgs(lhs, rhs repo.RepoContent) report.PkgsList {
-	list := report.PkgsList{}
-	for rhsPkg := range rhs {
-		if _, ok := lhs[rhsPkg]; !ok {
-			list = append(list, rhsPkg)
-		}
-	}
-	return list
 }

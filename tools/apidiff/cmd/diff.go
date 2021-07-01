@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
+	"github.com/Azure/azure-sdk-for-go/tools/internal/report"
 	"io/ioutil"
 
 	"github.com/spf13/cobra"
@@ -44,7 +45,10 @@ func diffCommand(basePath, targetPath string) error {
 		return fmt.Errorf("failed to unmarshal target export: %+v", err)
 	}
 
-	r := GetPkgsReport(baseExport, targetExport)
+	r := report.GetPkgsReport(baseExport, targetExport, &report.GenerationOption{
+		OnlyAdditiveChanges: onlyAdditiveChangesFlag,
+		OnlyBreakingChanges: onlyBreakingChangesFlag,
+	})
 
 	if asMarkdown {
 		fmt.Println(r.ToMarkdown())

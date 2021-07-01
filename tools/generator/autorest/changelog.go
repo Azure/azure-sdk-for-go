@@ -5,7 +5,6 @@ package autorest
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/tools/apidiff/cmd"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/sdk"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
@@ -13,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/internal/repo"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/report"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
-	"github.com/ahmetalpbalkan/go-linq"
+	"github.com/ahmetb/go-linq/v3"
 	"io"
 	"io/ioutil"
 	"os"
@@ -430,7 +429,7 @@ func GetPackagesReportFromContent(lhs repo.RepoContent, targetRoot string) (*rep
 	if err != nil {
 		return nil, err
 	}
-	r := cmd.GetPkgsReport(lhs, rhs)
+	r := report.GetPkgsReport(lhs, rhs, nil)
 	return &r, nil
 }
 

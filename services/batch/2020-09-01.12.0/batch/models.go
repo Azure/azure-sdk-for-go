@@ -2703,6 +2703,7 @@ type NodeReimageParameter struct {
 
 // NodeRemoveParameter ...
 type NodeRemoveParameter struct {
+	// NodeList - A maximum of 100 nodes may be removed per request.
 	NodeList *[]string `json:"nodeList,omitempty"`
 	// ResizeTimeout - The default value is 15 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
 	ResizeTimeout *string `json:"resizeTimeout,omitempty"`

@@ -1498,7 +1498,7 @@ func (client PoolClient) PatchResponder(resp *http.Response) (result autorest.Re
 }
 
 // RemoveNodes this operation can only run when the allocation state of the Pool is steady. When this operation runs,
-// the allocation state changes from steady to resizing.
+// the allocation state changes from steady to resizing. Each request may remove up to 100 nodes.
 // Parameters:
 // poolID - the ID of the Pool from which you want to remove Compute Nodes.
 // nodeRemoveParameter - the parameters for the request.

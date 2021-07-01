@@ -258,7 +258,7 @@ func (client ManagedHsmsClient) GetSender(req *http.Request) (*http.Response, er
 func (client ManagedHsmsClient) GetResponder(resp *http.Response) (result ManagedHsm, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

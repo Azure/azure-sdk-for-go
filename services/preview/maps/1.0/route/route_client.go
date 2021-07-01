@@ -11,16 +11,17 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 type routeClient struct {
-	con *connection
+	con         *connection
 	xmsClientID *string
 }
 
@@ -137,9 +138,9 @@ func (client *routeClient) getRouteDirectionsCreateRequest(ctx context.Context, 
 		reqQP.Set("travelMode", string(*options.TravelMode))
 	}
 	if options != nil && options.Avoid != nil {
-			for _, qv := range options.Avoid {
-		reqQP.Add("avoid", qv)
-	}
+		for _, qv := range options.Avoid {
+			reqQP.Add("avoid", (string)(qv))
+		}
 	}
 	if options != nil && options.Traffic != nil {
 		reqQP.Set("traffic", strconv.FormatBool(*options.Traffic))
@@ -203,7 +204,7 @@ func (client *routeClient) getRouteDirectionsHandleResponse(resp *azcore.Respons
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteDirectionsResponseResponse{}, err
 	}
-return RouteDirectionsResponseResponse{RawResponse: resp.Response, RouteDirectionsResponse: val}, nil
+	return RouteDirectionsResponseResponse{RawResponse: resp.Response, RouteDirectionsResponse: val}, nil
 }
 
 // getRouteDirectionsHandleError handles the GetRouteDirections error response.
@@ -212,7 +213,7 @@ func (client *routeClient) getRouteDirectionsHandleError(resp *azcore.Response) 
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -271,7 +272,7 @@ func (client *routeClient) BeginGetRouteDirectionsBatch(ctx context.Context, for
 	result := RouteDirectionsBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("routeClient.GetRouteDirectionsBatch",resp, client.con.Pipeline(), client.getRouteDirectionsBatchHandleError)
+	pt, err := azcore.NewLROPoller("routeClient.GetRouteDirectionsBatch", resp, client.con.Pipeline(), client.getRouteDirectionsBatchHandleError)
 	if err != nil {
 		return RouteDirectionsBatchResponsePollerResponse{}, err
 	}
@@ -288,7 +289,7 @@ func (client *routeClient) BeginGetRouteDirectionsBatch(ctx context.Context, for
 // ResumeGetRouteDirectionsBatch creates a new RouteDirectionsBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to RouteDirectionsBatchResponsePoller.ResumeToken().
 func (client *routeClient) ResumeGetRouteDirectionsBatch(ctx context.Context, token string) (RouteDirectionsBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("routeClient.GetRouteDirectionsBatch",token, client.con.Pipeline(), client.getRouteDirectionsBatchHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("routeClient.GetRouteDirectionsBatch", token, client.con.Pipeline(), client.getRouteDirectionsBatchHandleError)
 	if err != nil {
 		return RouteDirectionsBatchResponsePollerResponse{}, err
 	}
@@ -365,7 +366,7 @@ func (client *routeClient) getRouteDirectionsBatch(ctx context.Context, formatPa
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getRouteDirectionsBatchHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getRouteDirectionsBatchCreateRequest creates the GetRouteDirectionsBatch request.
@@ -396,7 +397,7 @@ func (client *routeClient) getRouteDirectionsBatchHandleError(resp *azcore.Respo
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -426,7 +427,7 @@ func (client *routeClient) BeginGetRouteMatrix(ctx context.Context, formatParam 
 	result := RouteMatrixResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("routeClient.GetRouteMatrix",resp, client.con.Pipeline(), client.getRouteMatrixHandleError)
+	pt, err := azcore.NewLROPoller("routeClient.GetRouteMatrix", resp, client.con.Pipeline(), client.getRouteMatrixHandleError)
 	if err != nil {
 		return RouteMatrixResponsePollerResponse{}, err
 	}
@@ -443,7 +444,7 @@ func (client *routeClient) BeginGetRouteMatrix(ctx context.Context, formatParam 
 // ResumeGetRouteMatrix creates a new RouteMatrixResponsePoller from the specified resume token.
 // token - The value must come from a previous call to RouteMatrixResponsePoller.ResumeToken().
 func (client *routeClient) ResumeGetRouteMatrix(ctx context.Context, token string) (RouteMatrixResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("routeClient.GetRouteMatrix",token, client.con.Pipeline(), client.getRouteMatrixHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("routeClient.GetRouteMatrix", token, client.con.Pipeline(), client.getRouteMatrixHandleError)
 	if err != nil {
 		return RouteMatrixResponsePollerResponse{}, err
 	}
@@ -491,7 +492,7 @@ func (client *routeClient) getRouteMatrix(ctx context.Context, formatParam strin
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.getRouteMatrixHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // getRouteMatrixCreateRequest creates the GetRouteMatrix request.
@@ -522,7 +523,7 @@ func (client *routeClient) getRouteMatrixHandleError(resp *azcore.Response) erro
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -590,9 +591,9 @@ func (client *routeClient) getRouteRangeCreateRequest(ctx context.Context, forma
 		reqQP.Set("traffic", strconv.FormatBool(*options.Traffic))
 	}
 	if options != nil && options.Avoid != nil {
-			for _, qv := range options.Avoid {
-		reqQP.Add("avoid", qv)
-	}
+		for _, qv := range options.Avoid {
+			reqQP.Add("avoid", (string)(qv))
+		}
 	}
 	if options != nil && options.TravelMode != nil {
 		reqQP.Set("travelMode", string(*options.TravelMode))
@@ -680,7 +681,7 @@ func (client *routeClient) getRouteRangeHandleResponse(resp *azcore.Response) (G
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GetRouteRangeResponseResponse{}, err
 	}
-return GetRouteRangeResponseResponse{RawResponse: resp.Response, GetRouteRangeResponse: val}, nil
+	return GetRouteRangeResponseResponse{RawResponse: resp.Response, GetRouteRangeResponse: val}, nil
 }
 
 // getRouteRangeHandleError handles the GetRouteRange error response.
@@ -689,7 +690,7 @@ func (client *routeClient) getRouteRangeHandleError(resp *azcore.Response) error
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -809,9 +810,9 @@ func (client *routeClient) postRouteDirectionsCreateRequest(ctx context.Context,
 		reqQP.Set("travelMode", string(*options.TravelMode))
 	}
 	if options != nil && options.Avoid != nil {
-			for _, qv := range options.Avoid {
-		reqQP.Add("avoid", qv)
-	}
+		for _, qv := range options.Avoid {
+			reqQP.Add("avoid", (string)(qv))
+		}
 	}
 	if options != nil && options.Traffic != nil {
 		reqQP.Set("traffic", strconv.FormatBool(*options.Traffic))
@@ -875,7 +876,7 @@ func (client *routeClient) postRouteDirectionsHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteDirectionsResponseResponse{}, err
 	}
-return RouteDirectionsResponseResponse{RawResponse: resp.Response, RouteDirectionsResponse: val}, nil
+	return RouteDirectionsResponseResponse{RawResponse: resp.Response, RouteDirectionsResponse: val}, nil
 }
 
 // postRouteDirectionsHandleError handles the PostRouteDirections error response.
@@ -884,7 +885,7 @@ func (client *routeClient) postRouteDirectionsHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -994,7 +995,7 @@ func (client *routeClient) BeginPostRouteDirectionsBatch(ctx context.Context, fo
 	result := RouteDirectionsBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("routeClient.PostRouteDirectionsBatch",resp, client.con.Pipeline(), client.postRouteDirectionsBatchHandleError)
+	pt, err := azcore.NewLROPoller("routeClient.PostRouteDirectionsBatch", resp, client.con.Pipeline(), client.postRouteDirectionsBatchHandleError)
 	if err != nil {
 		return RouteDirectionsBatchResponsePollerResponse{}, err
 	}
@@ -1011,7 +1012,7 @@ func (client *routeClient) BeginPostRouteDirectionsBatch(ctx context.Context, fo
 // ResumePostRouteDirectionsBatch creates a new RouteDirectionsBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to RouteDirectionsBatchResponsePoller.ResumeToken().
 func (client *routeClient) ResumePostRouteDirectionsBatch(ctx context.Context, token string) (RouteDirectionsBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("routeClient.PostRouteDirectionsBatch",token, client.con.Pipeline(), client.postRouteDirectionsBatchHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("routeClient.PostRouteDirectionsBatch", token, client.con.Pipeline(), client.postRouteDirectionsBatchHandleError)
 	if err != nil {
 		return RouteDirectionsBatchResponsePollerResponse{}, err
 	}
@@ -1139,7 +1140,7 @@ func (client *routeClient) postRouteDirectionsBatch(ctx context.Context, formatP
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.postRouteDirectionsBatchHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // postRouteDirectionsBatchCreateRequest creates the PostRouteDirectionsBatch request.
@@ -1170,7 +1171,7 @@ func (client *routeClient) postRouteDirectionsBatchHandleError(resp *azcore.Resp
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1316,7 +1317,7 @@ func (client *routeClient) postRouteDirectionsBatchSyncHandleResponse(resp *azco
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteDirectionsBatchResponseResponse{}, err
 	}
-return RouteDirectionsBatchResponseResponse{RawResponse: resp.Response, RouteDirectionsBatchResponse: val}, nil
+	return RouteDirectionsBatchResponseResponse{RawResponse: resp.Response, RouteDirectionsBatchResponse: val}, nil
 }
 
 // postRouteDirectionsBatchSyncHandleError handles the PostRouteDirectionsBatchSync error response.
@@ -1325,7 +1326,7 @@ func (client *routeClient) postRouteDirectionsBatchSyncHandleError(resp *azcore.
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1399,7 +1400,7 @@ func (client *routeClient) BeginPostRouteMatrix(ctx context.Context, formatParam
 	result := RouteMatrixResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("routeClient.PostRouteMatrix",resp, client.con.Pipeline(), client.postRouteMatrixHandleError)
+	pt, err := azcore.NewLROPoller("routeClient.PostRouteMatrix", resp, client.con.Pipeline(), client.postRouteMatrixHandleError)
 	if err != nil {
 		return RouteMatrixResponsePollerResponse{}, err
 	}
@@ -1416,7 +1417,7 @@ func (client *routeClient) BeginPostRouteMatrix(ctx context.Context, formatParam
 // ResumePostRouteMatrix creates a new RouteMatrixResponsePoller from the specified resume token.
 // token - The value must come from a previous call to RouteMatrixResponsePoller.ResumeToken().
 func (client *routeClient) ResumePostRouteMatrix(ctx context.Context, token string) (RouteMatrixResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("routeClient.PostRouteMatrix",token, client.con.Pipeline(), client.postRouteMatrixHandleError)
+	pt, err := azcore.NewLROPollerFromResumeToken("routeClient.PostRouteMatrix", token, client.con.Pipeline(), client.postRouteMatrixHandleError)
 	if err != nil {
 		return RouteMatrixResponsePollerResponse{}, err
 	}
@@ -1508,7 +1509,7 @@ func (client *routeClient) postRouteMatrix(ctx context.Context, formatParam Resp
 	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
 		return nil, client.postRouteMatrixHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // postRouteMatrixCreateRequest creates the PostRouteMatrix request.
@@ -1568,9 +1569,9 @@ func (client *routeClient) postRouteMatrixCreateRequest(ctx context.Context, for
 		reqQP.Set("travelMode", string(*options.TravelMode))
 	}
 	if options != nil && options.Avoid != nil {
-			for _, qv := range options.Avoid {
-		reqQP.Add("avoid", qv)
-	}
+		for _, qv := range options.Avoid {
+			reqQP.Add("avoid", (string)(qv))
+		}
 	}
 	if options != nil && options.Traffic != nil {
 		reqQP.Set("traffic", strconv.FormatBool(*options.Traffic))
@@ -1595,7 +1596,7 @@ func (client *routeClient) postRouteMatrixHandleError(resp *azcore.Response) err
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
@@ -1734,9 +1735,9 @@ func (client *routeClient) postRouteMatrixSyncCreateRequest(ctx context.Context,
 		reqQP.Set("travelMode", string(*options.TravelMode))
 	}
 	if options != nil && options.Avoid != nil {
-			for _, qv := range options.Avoid {
-		reqQP.Add("avoid", qv)
-	}
+		for _, qv := range options.Avoid {
+			reqQP.Add("avoid", (string)(qv))
+		}
 	}
 	if options != nil && options.Traffic != nil {
 		reqQP.Set("traffic", strconv.FormatBool(*options.Traffic))
@@ -1761,7 +1762,7 @@ func (client *routeClient) postRouteMatrixSyncHandleResponse(resp *azcore.Respon
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteMatrixResponseResponse{}, err
 	}
-return RouteMatrixResponseResponse{RawResponse: resp.Response, RouteMatrixResponse: val}, nil
+	return RouteMatrixResponseResponse{RawResponse: resp.Response, RouteMatrixResponse: val}, nil
 }
 
 // postRouteMatrixSyncHandleError handles the PostRouteMatrixSync error response.
@@ -1770,10 +1771,9 @@ func (client *routeClient) postRouteMatrixSyncHandleError(resp *azcore.Response)
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
 	}
-		errType := ErrorResponse{raw: string(body)}
+	errType := ErrorResponse{raw: string(body)}
 	if err := resp.UnmarshalAsJSON(&errType); err != nil {
 		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
 	}
 	return azcore.NewResponseError(&errType, resp.Response)
 }
-

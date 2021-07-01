@@ -9,9 +9,10 @@ package route
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // BatchItem - An item returned from Batch API. Extend with 'response' property.
@@ -136,7 +137,7 @@ type GeoJSONFeature struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONFeature.
 func (g GeoJSONFeature) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONFeatureData.marshalInternal(GeoJSONObjectTypeGeoJSONFeature)
+	objectMap := g.GeoJSONFeatureData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -149,7 +150,7 @@ type GeoJSONFeatureCollection struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONFeatureCollection.
 func (g GeoJSONFeatureCollection) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONFeatureCollectionData.marshalInternal(GeoJSONObjectTypeGeoJSONFeatureCollection)
+	objectMap := g.GeoJSONFeatureCollectionData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -184,8 +185,8 @@ func (g *GeoJSONFeatureCollectionData) unmarshalInternal(rawMsg map[string]json.
 		var err error
 		switch key {
 		case "features":
-				err = unpopulate(val, &g.Features)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Features)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -196,8 +197,8 @@ func (g *GeoJSONFeatureCollectionData) unmarshalInternal(rawMsg map[string]json.
 
 type GeoJSONFeatureData struct {
 	// REQUIRED; A valid GeoJSON geometry object. The type must be one of the seven valid GeoJSON geometry types - Point, MultiPoint, LineString, MultiLineString,
-// Polygon, MultiPolygon and GeometryCollection. Please
-// refer to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3.1] for details.
+	// Polygon, MultiPolygon and GeometryCollection. Please
+	// refer to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3.1] for details.
 	Geometry GeoJSONGeometryClassification `json:"geometry,omitempty"`
 
 	// The type of the feature. The value depends on the data model the current feature is part of. Some data models may have an empty value.
@@ -239,17 +240,17 @@ func (g *GeoJSONFeatureData) unmarshalInternal(rawMsg map[string]json.RawMessage
 		var err error
 		switch key {
 		case "featureType":
-				err = unpopulate(val, &g.FeatureType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.FeatureType)
+			delete(rawMsg, key)
 		case "geometry":
-				g.Geometry, err = unmarshalGeoJSONGeometryClassification(val)
-				delete(rawMsg, key)
+			g.Geometry, err = unmarshalGeoJSONGeometryClassification(val)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, &g.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.ID)
+			delete(rawMsg, key)
 		case "properties":
-				err = unpopulate(val, &g.Properties)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Properties)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -303,7 +304,7 @@ type GeoJSONGeometryCollection struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONGeometryCollection.
 func (g GeoJSONGeometryCollection) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONGeometryCollectionData.marshalInternal(GeoJSONObjectTypeGeoJSONGeometryCollection)
+	objectMap := g.GeoJSONGeometryCollectionData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -338,8 +339,8 @@ func (g *GeoJSONGeometryCollectionData) unmarshalInternal(rawMsg map[string]json
 		var err error
 		switch key {
 		case "geometries":
-				g.Geometries, err = unmarshalGeoJSONGeometryClassificationArray(val)
-				delete(rawMsg, key)
+			g.Geometries, err = unmarshalGeoJSONGeometryClassificationArray(val)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -356,7 +357,7 @@ type GeoJSONLineString struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONLineString.
 func (g GeoJSONLineString) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONLineStringData.marshalInternal(GeoJSONObjectTypeGeoJSONLineString)
+	objectMap := g.GeoJSONLineStringData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -391,8 +392,8 @@ func (g *GeoJSONLineStringData) unmarshalInternal(rawMsg map[string]json.RawMess
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -410,7 +411,7 @@ type GeoJSONMultiLineString struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONMultiLineString.
 func (g GeoJSONMultiLineString) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONMultiLineStringData.marshalInternal(GeoJSONObjectTypeGeoJSONMultiLineString)
+	objectMap := g.GeoJSONMultiLineStringData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -445,8 +446,8 @@ func (g *GeoJSONMultiLineStringData) unmarshalInternal(rawMsg map[string]json.Ra
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -463,7 +464,7 @@ type GeoJSONMultiPoint struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONMultiPoint.
 func (g GeoJSONMultiPoint) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONMultiPointData.marshalInternal(GeoJSONObjectTypeGeoJSONMultiPoint)
+	objectMap := g.GeoJSONMultiPointData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -499,8 +500,8 @@ func (g *GeoJSONMultiPointData) unmarshalInternal(rawMsg map[string]json.RawMess
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -517,7 +518,7 @@ type GeoJSONMultiPolygon struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONMultiPolygon.
 func (g GeoJSONMultiPolygon) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONMultiPolygonData.marshalInternal(GeoJSONObjectTypeGeoJSONMultiPolygon)
+	objectMap := g.GeoJSONMultiPolygonData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -552,8 +553,8 @@ func (g *GeoJSONMultiPolygonData) unmarshalInternal(rawMsg map[string]json.RawMe
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -575,8 +576,8 @@ type GeoJSONObjectClassification interface {
 // GeoJSONObject - A valid GeoJSON object. Please refer to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3] for details.
 type GeoJSONObject struct {
 	// REQUIRED; Specifies the GeoJSON type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon,
-// GeometryCollection, Feature and
-// FeatureCollection.
+	// GeometryCollection, Feature and
+	// FeatureCollection.
 	Type *GeoJSONObjectType `json:"type,omitempty"`
 }
 
@@ -604,8 +605,8 @@ func (g *GeoJSONObject) unmarshalInternal(rawMsg map[string]json.RawMessage) err
 		var err error
 		switch key {
 		case "type":
-				err = unpopulate(val, &g.Type)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Type)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -622,15 +623,15 @@ type GeoJSONPoint struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONPoint.
 func (g GeoJSONPoint) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONPointData.marshalInternal(GeoJSONObjectTypeGeoJSONPoint)
+	objectMap := g.GeoJSONPointData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
 // GeoJSONPointData - Data contained by a GeoJson Point.
 type GeoJSONPointData struct {
 	// REQUIRED; A Position is an array of numbers with two or more elements. The first two elements are longitude and latitude, precisely in that order. Altitude/Elevation
-// is an optional third element. Please refer
-// to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3.1.1] for details.
+	// is an optional third element. Please refer
+	// to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3.1.1] for details.
 	Coordinates []*float64 `json:"coordinates,omitempty"`
 }
 
@@ -660,8 +661,8 @@ func (g *GeoJSONPointData) unmarshalInternal(rawMsg map[string]json.RawMessage) 
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -678,7 +679,7 @@ type GeoJSONPolygon struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONPolygon.
 func (g GeoJSONPolygon) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONPolygonData.marshalInternal(GeoJSONObjectTypeGeoJSONPolygon)
+	objectMap := g.GeoJSONPolygonData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -713,8 +714,8 @@ func (g *GeoJSONPolygonData) unmarshalInternal(rawMsg map[string]json.RawMessage
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -738,32 +739,32 @@ type GetRouteRangeResponse struct {
 // PostRouteDirectionsRequestBody - Post body parameters for Route directions.
 type PostRouteDirectionsRequestBody struct {
 	// This is a list of 3-character, ISO 3166-1, alpha-3 country codes of countries in which toll roads with vignettes are allowed, e.g. "AUS,CHE". Specifying
-// allowVignette with some countries X is
-// equivalent to specifying avoidVignette with all countries but X. Specifying allowVignette with an empty list is the same as avoiding all toll roads with
-// vignettes. Note: It is an error to specify both
-// avoidVignette and allowVignette.
+	// allowVignette with some countries X is
+	// equivalent to specifying avoidVignette with all countries but X. Specifying allowVignette with an empty list is the same as avoiding all toll roads with
+	// vignettes. Note: It is an error to specify both
+	// avoidVignette and allowVignette.
 	AllowVignette []*string `json:"allowVignette,omitempty"`
 
 	// A GeoJSON MultiPolygon representing list of areas to avoid. Only rectangle polygons are supported. The maximum size of a rectangle is about 160x160 km.
-// Maximum number of avoided areas is 10. It cannot
-// cross the 180th meridian. It must be between -80 and +80 degrees of latitude.
+	// Maximum number of avoided areas is 10. It cannot
+	// cross the 180th meridian. It must be between -80 and +80 degrees of latitude.
 	AvoidAreas *GeoJSONMultiPolygon `json:"avoidAreas,omitempty"`
 
 	// This is a list of 3-character, ISO 3166-1, alpha-3 country codes of countries in which all toll roads with vignettes are to be avoided, e.g. "AUS,CHE".
-// Toll roads with vignettes in countries not in
-// the list are unaffected. Note: It is an error to specify both avoidVignette and allowVignette.
+	// Toll roads with vignettes in countries not in
+	// the list are unaffected. Note: It is an error to specify both avoidVignette and allowVignette.
 	AvoidVignette []*string `json:"avoidVignette,omitempty"`
 
 	// A GeoJSON Geometry collection representing sequence of coordinates used as input for route reconstruction and for calculating zero or more alternative
-// routes to this reference route.
-// * The provided sequence of supporting points is used as input for route reconstruction.
-// * The alternative routes are calculated between the origin and destination points specified in the base path parameter locations.
-// * If both minDeviationDistance and minDeviationTime are set to zero, then these origin and destination points are expected to be at (or very near) the
-// beginning and end of the reference route,
-// respectively.
-// * Intermediate locations (waypoints) are not supported when using .
-// * The reference route may contain traffic incidents of type ROADCLOSURE_, which are ignored for the calculation of the reference route's travel time
-// and traffic delay.
+	// routes to this reference route.
+	// * The provided sequence of supporting points is used as input for route reconstruction.
+	// * The alternative routes are calculated between the origin and destination points specified in the base path parameter locations.
+	// * If both minDeviationDistance and minDeviationTime are set to zero, then these origin and destination points are expected to be at (or very near) the
+	// beginning and end of the reference route,
+	// respectively.
+	// * Intermediate locations (waypoints) are not supported when using .
+	// * The reference route may contain traffic incidents of type ROADCLOSURE_, which are ignored for the calculation of the reference route's travel time
+	// and traffic delay.
 	SupportingPoints *GeoJSONGeometryCollection `json:"supportingPoints,omitempty"`
 }
 
@@ -804,35 +805,35 @@ type RouteBeginPostRouteDirectionsBatchOptions struct {
 // RouteBeginPostRouteMatrixOptions contains the optional parameters for the Route.BeginPostRouteMatrix method.
 type RouteBeginPostRouteMatrixOptions struct {
 	// The date and time of arrival at the destination point. It must be specified as a dateTime. When a time zone offset is not specified it will be assumed
-// to be that of the destination point. The arriveAt value must be in the future. The arriveAt parameter cannot be used in conjunction with departAt, minDeviationDistance
-// or minDeviationTime.
+	// to be that of the destination point. The arriveAt value must be in the future. The arriveAt parameter cannot be used in conjunction with departAt, minDeviationDistance
+	// or minDeviationTime.
 	ArriveAt *time.Time
 	// Specifies something that the route calculation should try to avoid when determining the route. Can be specified multiple times in one request, for example,
-// '&avoid=motorways&avoid=tollRoads&avoid=ferries'. In calculateReachableRange requests, the value alreadyUsedRoads must not be used.
+	// '&avoid=motorways&avoid=tollRoads&avoid=ferries'. In calculateReachableRange requests, the value alreadyUsedRoads must not be used.
 	Avoid []RouteAvoidType
 	// Specifies whether to return additional travel times using different types of traffic information (none, historic, live) as well as the default best-estimate
-// travel time.
+	// travel time.
 	ComputeTravelTimeFor *ComputeTravelTimeFor
 	// The date and time of departure from the origin point. Departure times apart from now must be specified as a dateTime. When a time zone offset is not
-// specified, it will be assumed to be that of the origin point. The departAt value must be in the future in the date-time format (1996-12-19T16:39:57-08:00).
+	// specified, it will be assumed to be that of the origin point. The departAt value must be in the future in the date-time format (1996-12-19T16:39:57-08:00).
 	DepartAt *time.Time
 	// Degree of hilliness for thrilling route. This parameter can only be used in conjunction with `routeType`=thrilling.
 	Hilliness *HillinessDegree
 	// The type of route requested.
 	RouteType *RouteType
 	// Specifies which of the section types is reported in the route response. <br><br>For example if sectionType = pedestrian the sections which are suited
-// for pedestrians only are returned. Multiple types can be used. The default sectionType refers to the travelMode input. By default travelMode is set to
-// car
+	// for pedestrians only are returned. Multiple types can be used. The default sectionType refers to the travelMode input. By default travelMode is set to
+	// car
 	SectionType *SectionType
 	// Possible values:
-// * true - Do consider all available traffic information during routing
-// * false - Ignore current traffic data during routing. Note that although the current traffic data is ignored
-// during routing, the effect of historic traffic on effective road speeds is still incorporated.
+	// * true - Do consider all available traffic information during routing
+	// * false - Ignore current traffic data during routing. Note that although the current traffic data is ignored
+	// during routing, the effect of historic traffic on effective road speeds is still incorporated.
 	Traffic *bool
 	// The mode of travel for the requested route. If not defined, default is 'car'. Note that the requested travelMode may not be available for the entire
-// route. Where the requested travelMode is not available for a particular section, the travelMode element of the response for that section will be "other".
-// Note that travel modes bus, motorcycle, taxi and van are BETA functionality. Full restriction data is not available in all areas. In **calculateReachableRange**
-// requests, the values bicycle and pedestrian must not be used.
+	// route. Where the requested travelMode is not available for a particular section, the travelMode element of the response for that section will be "other".
+	// Note that travel modes bus, motorcycle, taxi and van are BETA functionality. Full restriction data is not available in all areas. In **calculateReachableRange**
+	// requests, the values bicycle and pedestrian must not be used.
 	TravelMode *TravelMode
 	// Weight per axle of the vehicle in kg. A value of 0 means that weight restrictions per axle are not considered.
 	VehicleAxleWeight *int32
@@ -841,22 +842,22 @@ type RouteBeginPostRouteMatrixOptions struct {
 	// Length of the vehicle in meters. A value of 0 means that length restrictions are not considered.
 	VehicleLength *float32
 	// Types of cargo that may be classified as hazardous materials and restricted from some roads. Available vehicleLoadType values are US Hazmat classes 1
-// through 9, plus generic classifications for use in other countries. Values beginning with USHazmat are for US routing while otherHazmat should be used
-// for all other countries. vehicleLoadType can be specified multiple times. This parameter is currently only considered for travelMode=truck.
+	// through 9, plus generic classifications for use in other countries. Values beginning with USHazmat are for US routing while otherHazmat should be used
+	// for all other countries. vehicleLoadType can be specified multiple times. This parameter is currently only considered for travelMode=truck.
 	VehicleLoadType *VehicleLoadType
 	// Maximum speed of the vehicle in km/hour. The max speed in the vehicle profile is used to check whether a vehicle is allowed on motorways.
-// * A value of 0 means that an appropriate value for the vehicle will be determined and applied during route planning.
-// * A non-zero value may be overridden during route planning. For example, the current traffic flow is 60 km/hour. If the vehicle maximum speed is set
-// to 50 km/hour, the routing engine will consider 60 km/hour as this is the current situation. If the maximum speed of the vehicle is provided as 80 km/hour
-// but the current traffic flow is 60 km/hour, then routing engine will again use 60 km/hour.
+	// * A value of 0 means that an appropriate value for the vehicle will be determined and applied during route planning.
+	// * A non-zero value may be overridden during route planning. For example, the current traffic flow is 60 km/hour. If the vehicle maximum speed is set
+	// to 50 km/hour, the routing engine will consider 60 km/hour as this is the current situation. If the maximum speed of the vehicle is provided as 80 km/hour
+	// but the current traffic flow is 60 km/hour, then routing engine will again use 60 km/hour.
 	VehicleMaxSpeed *int32
 	// Weight of the vehicle in kilograms.
 	VehicleWeight *int32
 	// Width of the vehicle in meters. A value of 0 means that width restrictions are not considered.
 	VehicleWidth *float32
 	// Boolean to indicate whether to execute the request synchronously. If set to true, user will get a 200 response if the request is finished under 120 seconds.
-// Otherwise, user will get a 202 response right away. Please refer to the API description for more details on 202 response. **Supported only for async
-// request**.
+	// Otherwise, user will get a 202 response right away. Please refer to the API description for more details on 202 response. **Supported only for async
+	// request**.
 	WaitForResults *bool
 	// Level of turns for thrilling route. This parameter can only be used in conjunction with `routeType`=thrilling.
 	Windingness *WindingnessLevel
@@ -898,14 +899,14 @@ type RouteDirectionsResponse struct {
 	FormatVersion *string `json:"formatVersion,omitempty" azure:"ro"`
 
 	// READ-ONLY; Optimized sequence of waypoints. It shows the index from the user provided waypoint sequence for the original and optimized list. For instance,
-// a response:
-// <optimizedWaypoints>
-// <waypoint providedIndex="0" optimizedIndex="1"/>
-// <waypoint providedIndex="1" optimizedIndex="2"/>
-// <waypoint providedIndex="2" optimizedIndex="0"/>
-// </optimizedWaypoints>
-// means that the original sequence is [0, 1, 2] and optimized sequence is [1, 2, 0]. Since the index starts by 0 the original is "first, second, third"
-// while the optimized is "second, third, first".
+	// a response:
+	// <optimizedWaypoints>
+	// <waypoint providedIndex="0" optimizedIndex="1"/>
+	// <waypoint providedIndex="1" optimizedIndex="2"/>
+	// <waypoint providedIndex="2" optimizedIndex="0"/>
+	// </optimizedWaypoints>
+	// means that the original sequence is [0, 1, 2] and optimized sequence is [1, 2, 0]. Since the index starts by 0 the original is "first, second, third"
+	// while the optimized is "second, third, first".
 	OptimizedWaypoints []*RouteOptimizedWaypoint `json:"optimizedWaypoints,omitempty" azure:"ro"`
 
 	// READ-ONLY; Routes array
@@ -963,170 +964,170 @@ type RouteDirectionsSummary struct {
 	LengthInMeters *int32 `json:"lengthInMeters,omitempty" azure:"ro"`
 
 	// READ-ONLY; Estimated delay in seconds caused by the real-time incident(s) according to traffic information. For routes planned with departure time in
-// the future, delays is always 0. To return additional travel
-// times using different types of traffic information, parameter computeTravelTimeFor=all needs to be added.
+	// the future, delays is always 0. To return additional travel
+	// times using different types of traffic information, parameter computeTravelTimeFor=all needs to be added.
 	TrafficDelayInSeconds *int32 `json:"trafficDelayInSeconds,omitempty" azure:"ro"`
 
 	// READ-ONLY; Estimated travel time in seconds property that includes the delay due to real-time traffic. Note that even when traffic=false travelTimeInSeconds
-// still includes the delay due to traffic. If DepartAt
-// is in the future, travel time is calculated using time-dependent historic traffic data.
+	// still includes the delay due to traffic. If DepartAt
+	// is in the future, travel time is calculated using time-dependent historic traffic data.
 	TravelTimeInSeconds *int32 `json:"travelTimeInSeconds,omitempty" azure:"ro"`
 }
 
 // RouteGetRouteDirectionsOptions contains the optional parameters for the Route.GetRouteDirections method.
 type RouteGetRouteDirectionsOptions struct {
 	// Specifies the efficiency of converting chemical energy stored in fuel to kinetic energy when the vehicle accelerates _(i.e. KineticEnergyGained/ChemicalEnergyConsumed).
-// ChemicalEnergyConsumed_ is obtained by converting consumed fuel to chemical energy using **fuelEnergyDensityInMJoulesPerLiter**.
-// Must be paired with **decelerationEfficiency**.
-// The range of values allowed are 0.0 to 1/**decelerationEfficiency**.
-// Sensible Values : for **Combustion Model** : 0.33, for **Electric Model** : 0.66
+	// ChemicalEnergyConsumed_ is obtained by converting consumed fuel to chemical energy using **fuelEnergyDensityInMJoulesPerLiter**.
+	// Must be paired with **decelerationEfficiency**.
+	// The range of values allowed are 0.0 to 1/**decelerationEfficiency**.
+	// Sensible Values : for **Combustion Model** : 0.33, for **Electric Model** : 0.66
 	AccelerationEfficiency *float32
 	// Controls the optimality, with respect to the given planning criteria, of the calculated alternatives compared to the reference route.
 	AlternativeType *AlternativeRouteType
 	// The date and time of arrival at the destination point. It must be specified as a dateTime. When a time zone offset is not specified it will be assumed
-// to be that of the destination point. The arriveAt value must be in the future. The arriveAt parameter cannot be used in conjunction with departAt, minDeviationDistance
-// or minDeviationTime.
+	// to be that of the destination point. The arriveAt value must be in the future. The arriveAt parameter cannot be used in conjunction with departAt, minDeviationDistance
+	// or minDeviationTime.
 	ArriveAt *time.Time
 	// Specifies the amount of fuel consumed for sustaining auxiliary systems of the vehicle, in liters per hour.
-// It can be used to specify consumption due to devices and systems such as AC systems, radio, heating, etc.
-// Sensible Values : 0.2
+	// It can be used to specify consumption due to devices and systems such as AC systems, radio, heating, etc.
+	// Sensible Values : 0.2
 	AuxiliaryPowerInLitersPerHour *float32
 	// Specifies the amount of power consumed for sustaining auxiliary systems, in kilowatts (kW).
-// It can be used to specify consumption due to devices and systems such as AC systems, radio, heating, etc.
-// Sensible Values : 1.7
+	// It can be used to specify consumption due to devices and systems such as AC systems, radio, heating, etc.
+	// Sensible Values : 1.7
 	AuxiliaryPowerInkW *string
 	// Specifies something that the route calculation should try to avoid when determining the route. Can be specified multiple times in one request, for example,
-// '&avoid=motorways&avoid=tollRoads&avoid=ferries'. In calculateReachableRange requests, the value alreadyUsedRoads must not be used.
+	// '&avoid=motorways&avoid=tollRoads&avoid=ferries'. In calculateReachableRange requests, the value alreadyUsedRoads must not be used.
 	Avoid []RouteAvoidType
 	// Re-order the route waypoints using a fast heuristic algorithm to reduce the route length. Yields best results when used in conjunction with routeType
-// _shortest_. Notice that origin and destination are excluded from the optimized waypoint indices. To include origin and destination in the response, please
-// increase all the indices by 1 to account for the origin, and then add the destination as the final index. Possible values are true or false. True computes
-// a better order if possible, but is not allowed to be used in conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints.
-// False will use the locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
+	// _shortest_. Notice that origin and destination are excluded from the optimized waypoint indices. To include origin and destination in the response, please
+	// increase all the indices by 1 to account for the origin, and then add the destination as the final index. Possible values are true or false. True computes
+	// a better order if possible, but is not allowed to be used in conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints.
+	// False will use the locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
 	ComputeBestOrder *bool
 	// Specifies whether to return additional travel times using different types of traffic information (none, historic, live) as well as the default best-estimate
-// travel time.
+	// travel time.
 	ComputeTravelTimeFor *ComputeTravelTimeFor
 	// Specifies the speed-dependent component of consumption.
-// Provided as an unordered list of colon-delimited speed & consumption-rate pairs. The list defines points on a consumption curve. Consumption rates for
-// speeds not in the list are found as follows:
-// * by linear interpolation, if the given speed lies in between two speeds in the list
-// * by linear extrapolation otherwise, assuming a constant (ΔConsumption/ΔSpeed) determined by the nearest two points in the list
-// The list must contain between 1 and 25 points (inclusive), and may not contain duplicate points for the same speed. If it only contains a single point,
-// then the consumption rate of that point is used without further processing.
-// Consumption specified for the largest speed must be greater than or equal to that of the penultimate largest speed. This ensures that extrapolation does
-// not lead to negative consumption rates.
-// Similarly, consumption values specified for the two smallest speeds in the list cannot lead to a negative consumption rate for any smaller speed.
-// The valid range for the consumption values(expressed in l/100km) is between 0.01 and 100000.0.
-// Sensible Values : 50,6.3:130,11.5
-// **Note** : This parameter is required for **The Combustion Consumption Model**.
+	// Provided as an unordered list of colon-delimited speed & consumption-rate pairs. The list defines points on a consumption curve. Consumption rates for
+	// speeds not in the list are found as follows:
+	// * by linear interpolation, if the given speed lies in between two speeds in the list
+	// * by linear extrapolation otherwise, assuming a constant (ΔConsumption/ΔSpeed) determined by the nearest two points in the list
+	// The list must contain between 1 and 25 points (inclusive), and may not contain duplicate points for the same speed. If it only contains a single point,
+	// then the consumption rate of that point is used without further processing.
+	// Consumption specified for the largest speed must be greater than or equal to that of the penultimate largest speed. This ensures that extrapolation does
+	// not lead to negative consumption rates.
+	// Similarly, consumption values specified for the two smallest speeds in the list cannot lead to a negative consumption rate for any smaller speed.
+	// The valid range for the consumption values(expressed in l/100km) is between 0.01 and 100000.0.
+	// Sensible Values : 50,6.3:130,11.5
+	// **Note** : This parameter is required for **The Combustion Consumption Model**.
 	ConstantSpeedConsumptionInLitersPerHundredkm *float32
 	// Specifies the speed-dependent component of consumption.
-// Provided as an unordered list of speed/consumption-rate pairs. The list defines points on a consumption curve. Consumption rates for speeds not in the
-// list are found as follows:
-// * by linear interpolation, if the given speed lies in between two speeds in the list
-// * by linear extrapolation otherwise, assuming a constant (ΔConsumption/ΔSpeed) determined by the nearest two points in the list
-// The list must contain between 1 and 25 points (inclusive), and may not contain duplicate points for the same speed. If it only contains a single point,
-// then the consumption rate of that point is used without further processing.
-// Consumption specified for the largest speed must be greater than or equal to that of the penultimate largest speed. This ensures that extrapolation does
-// not lead to negative consumption rates.
-// Similarly, consumption values specified for the two smallest speeds in the list cannot lead to a negative consumption rate for any smaller speed.
-// The valid range for the consumption values(expressed in kWh/100km) is between 0.01 and 100000.0.
-// Sensible Values : 50,8.2:130,21.3
-// This parameter is required for **Electric consumption model**.
+	// Provided as an unordered list of speed/consumption-rate pairs. The list defines points on a consumption curve. Consumption rates for speeds not in the
+	// list are found as follows:
+	// * by linear interpolation, if the given speed lies in between two speeds in the list
+	// * by linear extrapolation otherwise, assuming a constant (ΔConsumption/ΔSpeed) determined by the nearest two points in the list
+	// The list must contain between 1 and 25 points (inclusive), and may not contain duplicate points for the same speed. If it only contains a single point,
+	// then the consumption rate of that point is used without further processing.
+	// Consumption specified for the largest speed must be greater than or equal to that of the penultimate largest speed. This ensures that extrapolation does
+	// not lead to negative consumption rates.
+	// Similarly, consumption values specified for the two smallest speeds in the list cannot lead to a negative consumption rate for any smaller speed.
+	// The valid range for the consumption values(expressed in kWh/100km) is between 0.01 and 100000.0.
+	// Sensible Values : 50,8.2:130,21.3
+	// This parameter is required for **Electric consumption model**.
 	ConstantSpeedConsumptionInkWhPerHundredkm *string
 	// Specifies the current electric energy supply in kilowatt hours (kWh).
-// This parameter co-exists with **maxChargeInkWh** parameter.
-// The range of values allowed are 0.0 to **maxChargeInkWh**.
-// Sensible Values : 43
+	// This parameter co-exists with **maxChargeInkWh** parameter.
+	// The range of values allowed are 0.0 to **maxChargeInkWh**.
+	// Sensible Values : 43
 	CurrentChargeInkWh *string
 	// Specifies the current supply of fuel in liters.
-// Sensible Values : 55
+	// Sensible Values : 55
 	CurrentFuelInLiters *float32
 	// Specifies the efficiency of converting kinetic energy to saved (not consumed) fuel when the vehicle decelerates _(i.e. ChemicalEnergySaved/KineticEnergyLost).
-// ChemicalEnergySaved_ is obtained by converting saved (not consumed) fuel to energy using **fuelEnergyDensityInMJoulesPerLiter**.
-// Must be paired with **accelerationEfficiency**.
-// The range of values allowed are 0.0 to 1/**accelerationEfficiency**.
-// Sensible Values : for **Combustion Model** : 0.83, for **Electric Model** : 0.91
+	// ChemicalEnergySaved_ is obtained by converting saved (not consumed) fuel to energy using **fuelEnergyDensityInMJoulesPerLiter**.
+	// Must be paired with **accelerationEfficiency**.
+	// The range of values allowed are 0.0 to 1/**accelerationEfficiency**.
+	// Sensible Values : for **Combustion Model** : 0.83, for **Electric Model** : 0.91
 	DecelerationEfficiency *float32
 	// The date and time of departure from the origin point. Departure times apart from now must be specified as a dateTime. When a time zone offset is not
-// specified, it will be assumed to be that of the origin point. The departAt value must be in the future in the date-time format (1996-12-19T16:39:57-08:00).
+	// specified, it will be assumed to be that of the origin point. The departAt value must be in the future in the date-time format (1996-12-19T16:39:57-08:00).
 	DepartAt *time.Time
 	// Specifies the efficiency of converting potential energy to saved (not consumed) fuel when the vehicle loses elevation _(i.e. ChemicalEnergySaved/PotentialEnergyLost).
-// ChemicalEnergySaved_ is obtained by converting saved (not consumed) fuel to energy using **fuelEnergyDensityInMJoulesPerLiter**.
-// Must be paired with **uphillEfficiency**.
-// The range of values allowed are 0.0 to 1/**uphillEfficiency**.
-// Sensible Values : for **Combustion Model** : 0.51, for **Electric Model** : 0.73
+	// ChemicalEnergySaved_ is obtained by converting saved (not consumed) fuel to energy using **fuelEnergyDensityInMJoulesPerLiter**.
+	// Must be paired with **uphillEfficiency**.
+	// The range of values allowed are 0.0 to 1/**uphillEfficiency**.
+	// Sensible Values : for **Combustion Model** : 0.51, for **Electric Model** : 0.73
 	DownhillEfficiency *float32
 	// Specifies the amount of chemical energy stored in one liter of fuel in megajoules (MJ). It is used in conjunction with the ***Efficiency** parameters
-// for conversions between saved or consumed energy and fuel. For example, energy density is 34.2 MJ/l for gasoline, and 35.8 MJ/l for Diesel fuel.
-// This parameter is required if any ***Efficiency** parameter is set.
-// Sensible Values : 34.2
+	// for conversions between saved or consumed energy and fuel. For example, energy density is 34.2 MJ/l for gasoline, and 35.8 MJ/l for Diesel fuel.
+	// This parameter is required if any ***Efficiency** parameter is set.
+	// Sensible Values : 34.2
 	FuelEnergyDensityInMJoulesPerLiter *float32
 	// Degree of hilliness for thrilling route. This parameter can only be used in conjunction with `routeType`=thrilling.
 	Hilliness *HillinessDegree
 	// If specified, guidance instructions will be returned. Note that the instructionsType parameter cannot be used in conjunction with routeRepresentation=none
 	InstructionsType *RouteInstructionsType
 	// The language parameter determines the language of the guidance messages. Proper nouns (the names of streets, plazas, etc.) are returned in the specified
-// language, or if that is not available, they are returned in an available language that is close to it. Allowed values are (a subset of) the IETF language
-// tags. The currently supported languages are listed in the [Supported languages section](https://docs.microsoft.com/azure/azure-maps/supported-languages).
-// Default value: en-GB
+	// language, or if that is not available, they are returned in an available language that is close to it. Allowed values are (a subset of) the IETF language
+	// tags. The currently supported languages are listed in the [Supported languages section](https://docs.microsoft.com/azure/azure-maps/supported-languages).
+	// Default value: en-GB
 	Language *string
 	// Number of desired alternative routes to be calculated. Default: 0, minimum: 0 and maximum: 5
 	MaxAlternatives *int32
 	// Specifies the maximum electric energy supply in kilowatt hours (kWh) that may be stored in the vehicle's battery.
-// This parameter co-exists with **currentChargeInkWh** parameter.
-// Minimum value has to be greater than or equal to **currentChargeInkWh**.
-// Sensible Values : 85
+	// This parameter co-exists with **currentChargeInkWh** parameter.
+	// Minimum value has to be greater than or equal to **currentChargeInkWh**.
+	// Sensible Values : 85
 	MaxChargeInkWh *string
 	// All alternative routes returned will follow the reference route (see section POST Requests) from the origin point of the calculateRoute request for at
-// least this number of meters. Can only be used when reconstructing a route. The minDeviationDistance parameter cannot be used in conjunction with arriveAt
+	// least this number of meters. Can only be used when reconstructing a route. The minDeviationDistance parameter cannot be used in conjunction with arriveAt
 	MinDeviationDistance *int32
 	// All alternative routes returned will follow the reference route (see section POST Requests) from the origin point of the calculateRoute request for at
-// least this number of seconds. Can only be used when reconstructing a route. The minDeviationTime parameter cannot be used in conjunction with arriveAt.
-// Default value is 0. Setting )minDeviationTime_ to a value greater than zero has the following consequences:
-// - The origin point of the _calculateRoute_ Request must be on
-// (or very near) the input reference route.
-// - If this is not the case, an error is returned.
-// - However, the origin point does not need to be at the beginning
-// of the input reference route (it can be thought of as the current
-// vehicle position on the reference route).
-// - The reference route, returned as the first route in the _calculateRoute_
-// Response, will start at the origin point specified in the _calculateRoute_
-// Request. The initial part of the input reference route up until the origin
-// point will be excluded from the Response.
-// - The values of _minDeviationDistance_ and _minDeviationTime_ determine
-// how far alternative routes will be guaranteed to follow the reference
-// route from the origin point onwards.
-// - The route must use _departAt_.
-// - The _vehicleHeading_ is ignored.
+	// least this number of seconds. Can only be used when reconstructing a route. The minDeviationTime parameter cannot be used in conjunction with arriveAt.
+	// Default value is 0. Setting )minDeviationTime_ to a value greater than zero has the following consequences:
+	// - The origin point of the _calculateRoute_ Request must be on
+	// (or very near) the input reference route.
+	// - If this is not the case, an error is returned.
+	// - However, the origin point does not need to be at the beginning
+	// of the input reference route (it can be thought of as the current
+	// vehicle position on the reference route).
+	// - The reference route, returned as the first route in the _calculateRoute_
+	// Response, will start at the origin point specified in the _calculateRoute_
+	// Request. The initial part of the input reference route up until the origin
+	// point will be excluded from the Response.
+	// - The values of _minDeviationDistance_ and _minDeviationTime_ determine
+	// how far alternative routes will be guaranteed to follow the reference
+	// route from the origin point onwards.
+	// - The route must use _departAt_.
+	// - The _vehicleHeading_ is ignored.
 	MinDeviationTime *int32
 	// Specifies which data should be reported for diagnosis purposes. The only possible value is _effectiveSettings_. Reports the effective parameters or data
-// used when calling the API. In the case of defaulted parameters the default will be reflected where the parameter was not specified by the caller.
+	// used when calling the API. In the case of defaulted parameters the default will be reflected where the parameter was not specified by the caller.
 	Report *string
 	// Specifies the representation of the set of routes provided as response. This parameter value can only be used in conjunction with computeBestOrder=true.
 	RouteRepresentation *RouteRepresentation
 	// The type of route requested.
 	RouteType *RouteType
 	// Specifies which of the section types is reported in the route response. <br><br>For example if sectionType = pedestrian the sections which are suited
-// for pedestrians only are returned. Multiple types can be used. The default sectionType refers to the travelMode input. By default travelMode is set to
-// car
+	// for pedestrians only are returned. Multiple types can be used. The default sectionType refers to the travelMode input. By default travelMode is set to
+	// car
 	SectionType *SectionType
 	// Possible values:
-// * true - Do consider all available traffic information during routing
-// * false - Ignore current traffic data during routing. Note that although the current traffic data is ignored
-// during routing, the effect of historic traffic on effective road speeds is still incorporated.
+	// * true - Do consider all available traffic information during routing
+	// * false - Ignore current traffic data during routing. Note that although the current traffic data is ignored
+	// during routing, the effect of historic traffic on effective road speeds is still incorporated.
 	Traffic *bool
 	// The mode of travel for the requested route. If not defined, default is 'car'. Note that the requested travelMode may not be available for the entire
-// route. Where the requested travelMode is not available for a particular section, the travelMode element of the response for that section will be "other".
-// Note that travel modes bus, motorcycle, taxi and van are BETA functionality. Full restriction data is not available in all areas. In **calculateReachableRange**
-// requests, the values bicycle and pedestrian must not be used.
+	// route. Where the requested travelMode is not available for a particular section, the travelMode element of the response for that section will be "other".
+	// Note that travel modes bus, motorcycle, taxi and van are BETA functionality. Full restriction data is not available in all areas. In **calculateReachableRange**
+	// requests, the values bicycle and pedestrian must not be used.
 	TravelMode *TravelMode
 	// Specifies the efficiency of converting chemical energy stored in fuel to potential energy when the vehicle gains elevation _(i.e. PotentialEnergyGained/ChemicalEnergyConsumed).
-// ChemicalEnergyConsumed_ is obtained by converting consumed fuel to chemical energy using **fuelEnergyDensityInMJoulesPerLiter**.
-// Must be paired with **downhillEfficiency**.
-// The range of values allowed are 0.0 to 1/**downhillEfficiency**.
-// Sensible Values : for **Combustion Model** : 0.27, for **Electric Model** : 0.74
+	// ChemicalEnergyConsumed_ is obtained by converting consumed fuel to chemical energy using **fuelEnergyDensityInMJoulesPerLiter**.
+	// Must be paired with **downhillEfficiency**.
+	// The range of values allowed are 0.0 to 1/**downhillEfficiency**.
+	// Sensible Values : for **Combustion Model** : 0.27, for **Electric Model** : 0.74
 	UphillEfficiency *float32
 	// Weight per axle of the vehicle in kg. A value of 0 means that weight restrictions per axle are not considered.
 	VehicleAxleWeight *int32
@@ -1135,28 +1136,28 @@ type RouteGetRouteDirectionsOptions struct {
 	// Engine type of the vehicle. When a detailed Consumption Model is specified, it must be consistent with the value of **vehicleEngineType**.
 	VehicleEngineType *VehicleEngineType
 	// The directional heading of the vehicle in degrees starting at true North and continuing in clockwise direction. North is 0 degrees, east is 90 degrees,
-// south is 180 degrees, west is 270 degrees. Possible values 0-359
+	// south is 180 degrees, west is 270 degrees. Possible values 0-359
 	VehicleHeading *int32
 	// Height of the vehicle in meters. A value of 0 means that height restrictions are not considered.
 	VehicleHeight *float32
 	// Length of the vehicle in meters. A value of 0 means that length restrictions are not considered.
 	VehicleLength *float32
 	// Types of cargo that may be classified as hazardous materials and restricted from some roads. Available vehicleLoadType values are US Hazmat classes 1
-// through 9, plus generic classifications for use in other countries. Values beginning with USHazmat are for US routing while otherHazmat should be used
-// for all other countries. vehicleLoadType can be specified multiple times. This parameter is currently only considered for travelMode=truck.
+	// through 9, plus generic classifications for use in other countries. Values beginning with USHazmat are for US routing while otherHazmat should be used
+	// for all other countries. vehicleLoadType can be specified multiple times. This parameter is currently only considered for travelMode=truck.
 	VehicleLoadType *VehicleLoadType
 	// Maximum speed of the vehicle in km/hour. The max speed in the vehicle profile is used to check whether a vehicle is allowed on motorways.
-// * A value of 0 means that an appropriate value for the vehicle will be determined and applied during route planning.
-// * A non-zero value may be overridden during route planning. For example, the current traffic flow is 60 km/hour. If the vehicle maximum speed is set
-// to 50 km/hour, the routing engine will consider 60 km/hour as this is the current situation. If the maximum speed of the vehicle is provided as 80 km/hour
-// but the current traffic flow is 60 km/hour, then routing engine will again use 60 km/hour.
+	// * A value of 0 means that an appropriate value for the vehicle will be determined and applied during route planning.
+	// * A non-zero value may be overridden during route planning. For example, the current traffic flow is 60 km/hour. If the vehicle maximum speed is set
+	// to 50 km/hour, the routing engine will consider 60 km/hour as this is the current situation. If the maximum speed of the vehicle is provided as 80 km/hour
+	// but the current traffic flow is 60 km/hour, then routing engine will again use 60 km/hour.
 	VehicleMaxSpeed *int32
 	// Weight of the vehicle in kilograms.
-// * It is mandatory if any of the *Efficiency parameters are set.
-// * It must be strictly positive when used in the context of the Consumption Model. Weight restrictions are considered.
-// * If no detailed **Consumption Model** is specified and the value of **vehicleWeight** is non-zero, then weight restrictions are considered.
-// * In all other cases, this parameter is ignored.
-// Sensible Values : for **Combustion Model** : 1600, for **Electric Model** : 1900
+	// * It is mandatory if any of the *Efficiency parameters are set.
+	// * It must be strictly positive when used in the context of the Consumption Model. Weight restrictions are considered.
+	// * If no detailed **Consumption Model** is specified and the value of **vehicleWeight** is non-zero, then weight restrictions are considered.
+	// * In all other cases, this parameter is ignored.
+	// Sensible Values : for **Combustion Model** : 1600, for **Electric Model** : 1900
 	VehicleWeight *int32
 	// Width of the vehicle in meters. A value of 0 means that width restrictions are not considered.
 	VehicleWidth *float32
@@ -1167,116 +1168,116 @@ type RouteGetRouteDirectionsOptions struct {
 // RouteGetRouteRangeOptions contains the optional parameters for the Route.GetRouteRange method.
 type RouteGetRouteRangeOptions struct {
 	// Specifies the efficiency of converting chemical energy stored in fuel to kinetic energy when the vehicle accelerates _(i.e. KineticEnergyGained/ChemicalEnergyConsumed).
-// ChemicalEnergyConsumed_ is obtained by converting consumed fuel to chemical energy using **fuelEnergyDensityInMJoulesPerLiter**.
-// Must be paired with **decelerationEfficiency**.
-// The range of values allowed are 0.0 to 1/**decelerationEfficiency**.
-// Sensible Values : for **Combustion Model** : 0.33, for **Electric Model** : 0.66
+	// ChemicalEnergyConsumed_ is obtained by converting consumed fuel to chemical energy using **fuelEnergyDensityInMJoulesPerLiter**.
+	// Must be paired with **decelerationEfficiency**.
+	// The range of values allowed are 0.0 to 1/**decelerationEfficiency**.
+	// Sensible Values : for **Combustion Model** : 0.33, for **Electric Model** : 0.66
 	AccelerationEfficiency *float32
 	// Specifies the amount of fuel consumed for sustaining auxiliary systems of the vehicle, in liters per hour.
-// It can be used to specify consumption due to devices and systems such as AC systems, radio, heating, etc.
-// Sensible Values : 0.2
+	// It can be used to specify consumption due to devices and systems such as AC systems, radio, heating, etc.
+	// Sensible Values : 0.2
 	AuxiliaryPowerInLitersPerHour *float32
 	// Specifies the amount of power consumed for sustaining auxiliary systems, in kilowatts (kW).
-// It can be used to specify consumption due to devices and systems such as AC systems, radio, heating, etc.
-// Sensible Values : 1.7
+	// It can be used to specify consumption due to devices and systems such as AC systems, radio, heating, etc.
+	// Sensible Values : 1.7
 	AuxiliaryPowerInkW *string
 	// Specifies something that the route calculation should try to avoid when determining the route. Can be specified multiple times in one request, for example,
-// '&avoid=motorways&avoid=tollRoads&avoid=ferries'. In calculateReachableRange requests, the value alreadyUsedRoads must not be used.
+	// '&avoid=motorways&avoid=tollRoads&avoid=ferries'. In calculateReachableRange requests, the value alreadyUsedRoads must not be used.
 	Avoid []RouteAvoidType
 	// Specifies the speed-dependent component of consumption.
-// Provided as an unordered list of colon-delimited speed & consumption-rate pairs. The list defines points on a consumption curve. Consumption rates for
-// speeds not in the list are found as follows:
-// * by linear interpolation, if the given speed lies in between two speeds in the list
-// * by linear extrapolation otherwise, assuming a constant (ΔConsumption/ΔSpeed) determined by the nearest two points in the list
-// The list must contain between 1 and 25 points (inclusive), and may not contain duplicate points for the same speed. If it only contains a single point,
-// then the consumption rate of that point is used without further processing.
-// Consumption specified for the largest speed must be greater than or equal to that of the penultimate largest speed. This ensures that extrapolation does
-// not lead to negative consumption rates.
-// Similarly, consumption values specified for the two smallest speeds in the list cannot lead to a negative consumption rate for any smaller speed.
-// The valid range for the consumption values(expressed in l/100km) is between 0.01 and 100000.0.
-// Sensible Values : 50,6.3:130,11.5
-// **Note** : This parameter is required for **The Combustion Consumption Model**.
+	// Provided as an unordered list of colon-delimited speed & consumption-rate pairs. The list defines points on a consumption curve. Consumption rates for
+	// speeds not in the list are found as follows:
+	// * by linear interpolation, if the given speed lies in between two speeds in the list
+	// * by linear extrapolation otherwise, assuming a constant (ΔConsumption/ΔSpeed) determined by the nearest two points in the list
+	// The list must contain between 1 and 25 points (inclusive), and may not contain duplicate points for the same speed. If it only contains a single point,
+	// then the consumption rate of that point is used without further processing.
+	// Consumption specified for the largest speed must be greater than or equal to that of the penultimate largest speed. This ensures that extrapolation does
+	// not lead to negative consumption rates.
+	// Similarly, consumption values specified for the two smallest speeds in the list cannot lead to a negative consumption rate for any smaller speed.
+	// The valid range for the consumption values(expressed in l/100km) is between 0.01 and 100000.0.
+	// Sensible Values : 50,6.3:130,11.5
+	// **Note** : This parameter is required for **The Combustion Consumption Model**.
 	ConstantSpeedConsumptionInLitersPerHundredkm *float32
 	// Specifies the speed-dependent component of consumption.
-// Provided as an unordered list of speed/consumption-rate pairs. The list defines points on a consumption curve. Consumption rates for speeds not in the
-// list are found as follows:
-// * by linear interpolation, if the given speed lies in between two speeds in the list
-// * by linear extrapolation otherwise, assuming a constant (ΔConsumption/ΔSpeed) determined by the nearest two points in the list
-// The list must contain between 1 and 25 points (inclusive), and may not contain duplicate points for the same speed. If it only contains a single point,
-// then the consumption rate of that point is used without further processing.
-// Consumption specified for the largest speed must be greater than or equal to that of the penultimate largest speed. This ensures that extrapolation does
-// not lead to negative consumption rates.
-// Similarly, consumption values specified for the two smallest speeds in the list cannot lead to a negative consumption rate for any smaller speed.
-// The valid range for the consumption values(expressed in kWh/100km) is between 0.01 and 100000.0.
-// Sensible Values : 50,8.2:130,21.3
-// This parameter is required for **Electric consumption model**.
+	// Provided as an unordered list of speed/consumption-rate pairs. The list defines points on a consumption curve. Consumption rates for speeds not in the
+	// list are found as follows:
+	// * by linear interpolation, if the given speed lies in between two speeds in the list
+	// * by linear extrapolation otherwise, assuming a constant (ΔConsumption/ΔSpeed) determined by the nearest two points in the list
+	// The list must contain between 1 and 25 points (inclusive), and may not contain duplicate points for the same speed. If it only contains a single point,
+	// then the consumption rate of that point is used without further processing.
+	// Consumption specified for the largest speed must be greater than or equal to that of the penultimate largest speed. This ensures that extrapolation does
+	// not lead to negative consumption rates.
+	// Similarly, consumption values specified for the two smallest speeds in the list cannot lead to a negative consumption rate for any smaller speed.
+	// The valid range for the consumption values(expressed in kWh/100km) is between 0.01 and 100000.0.
+	// Sensible Values : 50,8.2:130,21.3
+	// This parameter is required for **Electric consumption model**.
 	ConstantSpeedConsumptionInkWhPerHundredkm *string
 	// Specifies the current electric energy supply in kilowatt hours (kWh).
-// This parameter co-exists with **maxChargeInkWh** parameter.
-// The range of values allowed are 0.0 to **maxChargeInkWh**.
-// Sensible Values : 43
+	// This parameter co-exists with **maxChargeInkWh** parameter.
+	// The range of values allowed are 0.0 to **maxChargeInkWh**.
+	// Sensible Values : 43
 	CurrentChargeInkWh *string
 	// Specifies the current supply of fuel in liters.
-// Sensible Values : 55
+	// Sensible Values : 55
 	CurrentFuelInLiters *float32
 	// Specifies the efficiency of converting kinetic energy to saved (not consumed) fuel when the vehicle decelerates _(i.e. ChemicalEnergySaved/KineticEnergyLost).
-// ChemicalEnergySaved_ is obtained by converting saved (not consumed) fuel to energy using **fuelEnergyDensityInMJoulesPerLiter**.
-// Must be paired with **accelerationEfficiency**.
-// The range of values allowed are 0.0 to 1/**accelerationEfficiency**.
-// Sensible Values : for **Combustion Model** : 0.83, for **Electric Model** : 0.91
+	// ChemicalEnergySaved_ is obtained by converting saved (not consumed) fuel to energy using **fuelEnergyDensityInMJoulesPerLiter**.
+	// Must be paired with **accelerationEfficiency**.
+	// The range of values allowed are 0.0 to 1/**accelerationEfficiency**.
+	// Sensible Values : for **Combustion Model** : 0.83, for **Electric Model** : 0.91
 	DecelerationEfficiency *float32
 	// The date and time of departure from the origin point. Departure times apart from now must be specified as a dateTime. When a time zone offset is not
-// specified, it will be assumed to be that of the origin point. The departAt value must be in the future in the date-time format (1996-12-19T16:39:57-08:00).
+	// specified, it will be assumed to be that of the origin point. The departAt value must be in the future in the date-time format (1996-12-19T16:39:57-08:00).
 	DepartAt *time.Time
 	// Distance budget in meters that determines maximal range which can be travelled using driving distance. The Consumption Model will only affect the range
-// when routeType is eco.<br> Exactly one budget (fuelBudgetInLiters, energyBudgetInkWh, timeBudgetInSec, or distanceBudgetInMeters) must be used.
+	// when routeType is eco.<br> Exactly one budget (fuelBudgetInLiters, energyBudgetInkWh, timeBudgetInSec, or distanceBudgetInMeters) must be used.
 	DistanceBudgetInMeters *float32
 	// Specifies the efficiency of converting potential energy to saved (not consumed) fuel when the vehicle loses elevation _(i.e. ChemicalEnergySaved/PotentialEnergyLost).
-// ChemicalEnergySaved_ is obtained by converting saved (not consumed) fuel to energy using **fuelEnergyDensityInMJoulesPerLiter**.
-// Must be paired with **uphillEfficiency**.
-// The range of values allowed are 0.0 to 1/**uphillEfficiency**.
-// Sensible Values : for **Combustion Model** : 0.51, for **Electric Model** : 0.73
+	// ChemicalEnergySaved_ is obtained by converting saved (not consumed) fuel to energy using **fuelEnergyDensityInMJoulesPerLiter**.
+	// Must be paired with **uphillEfficiency**.
+	// The range of values allowed are 0.0 to 1/**uphillEfficiency**.
+	// Sensible Values : for **Combustion Model** : 0.51, for **Electric Model** : 0.73
 	DownhillEfficiency *float32
 	// Electric energy budget in kilowatt hours (kWh) that determines maximal range which can be travelled using the specified Electric Consumption Model.<br>
-// When energyBudgetInkWh is used, it is mandatory to specify a detailed Electric Consumption Model.<br> Exactly one budget (fuelBudgetInLiters, energyBudgetInkWh,
-// timeBudgetInSec, or distanceBudgetInMeters) must be used.
+	// When energyBudgetInkWh is used, it is mandatory to specify a detailed Electric Consumption Model.<br> Exactly one budget (fuelBudgetInLiters, energyBudgetInkWh,
+	// timeBudgetInSec, or distanceBudgetInMeters) must be used.
 	EnergyBudgetInkWh *float32
 	// Fuel budget in liters that determines maximal range which can be travelled using the specified Combustion Consumption Model.<br> When fuelBudgetInLiters
-// is used, it is mandatory to specify a detailed Combustion Consumption Model.<br> Exactly one budget (fuelBudgetInLiters, energyBudgetInkWh, timeBudgetInSec,
-// or distanceBudgetInMeters) must be used.
+	// is used, it is mandatory to specify a detailed Combustion Consumption Model.<br> Exactly one budget (fuelBudgetInLiters, energyBudgetInkWh, timeBudgetInSec,
+	// or distanceBudgetInMeters) must be used.
 	FuelBudgetInLiters *float32
 	// Specifies the amount of chemical energy stored in one liter of fuel in megajoules (MJ). It is used in conjunction with the ***Efficiency** parameters
-// for conversions between saved or consumed energy and fuel. For example, energy density is 34.2 MJ/l for gasoline, and 35.8 MJ/l for Diesel fuel.
-// This parameter is required if any ***Efficiency** parameter is set.
-// Sensible Values : 34.2
+	// for conversions between saved or consumed energy and fuel. For example, energy density is 34.2 MJ/l for gasoline, and 35.8 MJ/l for Diesel fuel.
+	// This parameter is required if any ***Efficiency** parameter is set.
+	// Sensible Values : 34.2
 	FuelEnergyDensityInMJoulesPerLiter *float32
 	// Degree of hilliness for thrilling route. This parameter can only be used in conjunction with `routeType`=thrilling.
 	Hilliness *HillinessDegree
 	// Specifies the maximum electric energy supply in kilowatt hours (kWh) that may be stored in the vehicle's battery.
-// This parameter co-exists with **currentChargeInkWh** parameter.
-// Minimum value has to be greater than or equal to **currentChargeInkWh**.
-// Sensible Values : 85
+	// This parameter co-exists with **currentChargeInkWh** parameter.
+	// Minimum value has to be greater than or equal to **currentChargeInkWh**.
+	// Sensible Values : 85
 	MaxChargeInkWh *string
 	// The type of route requested.
 	RouteType *RouteType
 	// Time budget in seconds that determines maximal range which can be travelled using driving time. The Consumption Model will only affect the range when
-// routeType is eco.<br> Exactly one budget (fuelBudgetInLiters, energyBudgetInkWh, timeBudgetInSec, or distanceBudgetInMeters) must be used.
+	// routeType is eco.<br> Exactly one budget (fuelBudgetInLiters, energyBudgetInkWh, timeBudgetInSec, or distanceBudgetInMeters) must be used.
 	TimeBudgetInSec *float32
 	// Possible values:
-// * true - Do consider all available traffic information during routing
-// * false - Ignore current traffic data during routing. Note that although the current traffic data is ignored
-// during routing, the effect of historic traffic on effective road speeds is still incorporated.
+	// * true - Do consider all available traffic information during routing
+	// * false - Ignore current traffic data during routing. Note that although the current traffic data is ignored
+	// during routing, the effect of historic traffic on effective road speeds is still incorporated.
 	Traffic *bool
 	// The mode of travel for the requested route. If not defined, default is 'car'. Note that the requested travelMode may not be available for the entire
-// route. Where the requested travelMode is not available for a particular section, the travelMode element of the response for that section will be "other".
-// Note that travel modes bus, motorcycle, taxi and van are BETA functionality. Full restriction data is not available in all areas. In **calculateReachableRange**
-// requests, the values bicycle and pedestrian must not be used.
+	// route. Where the requested travelMode is not available for a particular section, the travelMode element of the response for that section will be "other".
+	// Note that travel modes bus, motorcycle, taxi and van are BETA functionality. Full restriction data is not available in all areas. In **calculateReachableRange**
+	// requests, the values bicycle and pedestrian must not be used.
 	TravelMode *TravelMode
 	// Specifies the efficiency of converting chemical energy stored in fuel to potential energy when the vehicle gains elevation _(i.e. PotentialEnergyGained/ChemicalEnergyConsumed).
-// ChemicalEnergyConsumed_ is obtained by converting consumed fuel to chemical energy using **fuelEnergyDensityInMJoulesPerLiter**.
-// Must be paired with **downhillEfficiency**.
-// The range of values allowed are 0.0 to 1/**downhillEfficiency**.
-// Sensible Values : for **Combustion Model** : 0.27, for **Electric Model** : 0.74
+	// ChemicalEnergyConsumed_ is obtained by converting consumed fuel to chemical energy using **fuelEnergyDensityInMJoulesPerLiter**.
+	// Must be paired with **downhillEfficiency**.
+	// The range of values allowed are 0.0 to 1/**downhillEfficiency**.
+	// Sensible Values : for **Combustion Model** : 0.27, for **Electric Model** : 0.74
 	UphillEfficiency *float32
 	// Weight per axle of the vehicle in kg. A value of 0 means that weight restrictions per axle are not considered.
 	VehicleAxleWeight *int32
@@ -1289,21 +1290,21 @@ type RouteGetRouteRangeOptions struct {
 	// Length of the vehicle in meters. A value of 0 means that length restrictions are not considered.
 	VehicleLength *float32
 	// Types of cargo that may be classified as hazardous materials and restricted from some roads. Available vehicleLoadType values are US Hazmat classes 1
-// through 9, plus generic classifications for use in other countries. Values beginning with USHazmat are for US routing while otherHazmat should be used
-// for all other countries. vehicleLoadType can be specified multiple times. This parameter is currently only considered for travelMode=truck.
+	// through 9, plus generic classifications for use in other countries. Values beginning with USHazmat are for US routing while otherHazmat should be used
+	// for all other countries. vehicleLoadType can be specified multiple times. This parameter is currently only considered for travelMode=truck.
 	VehicleLoadType *VehicleLoadType
 	// Maximum speed of the vehicle in km/hour. The max speed in the vehicle profile is used to check whether a vehicle is allowed on motorways.
-// * A value of 0 means that an appropriate value for the vehicle will be determined and applied during route planning.
-// * A non-zero value may be overridden during route planning. For example, the current traffic flow is 60 km/hour. If the vehicle maximum speed is set
-// to 50 km/hour, the routing engine will consider 60 km/hour as this is the current situation. If the maximum speed of the vehicle is provided as 80 km/hour
-// but the current traffic flow is 60 km/hour, then routing engine will again use 60 km/hour.
+	// * A value of 0 means that an appropriate value for the vehicle will be determined and applied during route planning.
+	// * A non-zero value may be overridden during route planning. For example, the current traffic flow is 60 km/hour. If the vehicle maximum speed is set
+	// to 50 km/hour, the routing engine will consider 60 km/hour as this is the current situation. If the maximum speed of the vehicle is provided as 80 km/hour
+	// but the current traffic flow is 60 km/hour, then routing engine will again use 60 km/hour.
 	VehicleMaxSpeed *int32
 	// Weight of the vehicle in kilograms.
-// * It is mandatory if any of the *Efficiency parameters are set.
-// * It must be strictly positive when used in the context of the Consumption Model. Weight restrictions are considered.
-// * If no detailed **Consumption Model** is specified and the value of **vehicleWeight** is non-zero, then weight restrictions are considered.
-// * In all other cases, this parameter is ignored.
-// Sensible Values : for **Combustion Model** : 1600, for **Electric Model** : 1900
+	// * It is mandatory if any of the *Efficiency parameters are set.
+	// * It must be strictly positive when used in the context of the Consumption Model. Weight restrictions are considered.
+	// * If no detailed **Consumption Model** is specified and the value of **vehicleWeight** is non-zero, then weight restrictions are considered.
+	// * In all other cases, this parameter is ignored.
+	// Sensible Values : for **Combustion Model** : 1600, for **Electric Model** : 1900
 	VehicleWeight *int32
 	// Width of the vehicle in meters. A value of 0 means that width restrictions are not considered.
 	VehicleWidth *float32
@@ -1375,155 +1376,155 @@ type RoutePostRouteDirectionsBatchSyncOptions struct {
 // RoutePostRouteDirectionsOptions contains the optional parameters for the Route.PostRouteDirections method.
 type RoutePostRouteDirectionsOptions struct {
 	// Specifies the efficiency of converting chemical energy stored in fuel to kinetic energy when the vehicle accelerates _(i.e. KineticEnergyGained/ChemicalEnergyConsumed).
-// ChemicalEnergyConsumed_ is obtained by converting consumed fuel to chemical energy using **fuelEnergyDensityInMJoulesPerLiter**.
-// Must be paired with **decelerationEfficiency**.
-// The range of values allowed are 0.0 to 1/**decelerationEfficiency**.
-// Sensible Values : for **Combustion Model** : 0.33, for **Electric Model** : 0.66
+	// ChemicalEnergyConsumed_ is obtained by converting consumed fuel to chemical energy using **fuelEnergyDensityInMJoulesPerLiter**.
+	// Must be paired with **decelerationEfficiency**.
+	// The range of values allowed are 0.0 to 1/**decelerationEfficiency**.
+	// Sensible Values : for **Combustion Model** : 0.33, for **Electric Model** : 0.66
 	AccelerationEfficiency *float32
 	// Controls the optimality, with respect to the given planning criteria, of the calculated alternatives compared to the reference route.
 	AlternativeType *AlternativeRouteType
 	// The date and time of arrival at the destination point. It must be specified as a dateTime. When a time zone offset is not specified it will be assumed
-// to be that of the destination point. The arriveAt value must be in the future. The arriveAt parameter cannot be used in conjunction with departAt, minDeviationDistance
-// or minDeviationTime.
+	// to be that of the destination point. The arriveAt value must be in the future. The arriveAt parameter cannot be used in conjunction with departAt, minDeviationDistance
+	// or minDeviationTime.
 	ArriveAt *time.Time
 	// Specifies the amount of fuel consumed for sustaining auxiliary systems of the vehicle, in liters per hour.
-// It can be used to specify consumption due to devices and systems such as AC systems, radio, heating, etc.
-// Sensible Values : 0.2
+	// It can be used to specify consumption due to devices and systems such as AC systems, radio, heating, etc.
+	// Sensible Values : 0.2
 	AuxiliaryPowerInLitersPerHour *float32
 	// Specifies the amount of power consumed for sustaining auxiliary systems, in kilowatts (kW).
-// It can be used to specify consumption due to devices and systems such as AC systems, radio, heating, etc.
-// Sensible Values : 1.7
+	// It can be used to specify consumption due to devices and systems such as AC systems, radio, heating, etc.
+	// Sensible Values : 1.7
 	AuxiliaryPowerInkW *string
 	// Specifies something that the route calculation should try to avoid when determining the route. Can be specified multiple times in one request, for example,
-// '&avoid=motorways&avoid=tollRoads&avoid=ferries'. In calculateReachableRange requests, the value alreadyUsedRoads must not be used.
+	// '&avoid=motorways&avoid=tollRoads&avoid=ferries'. In calculateReachableRange requests, the value alreadyUsedRoads must not be used.
 	Avoid []RouteAvoidType
 	// Re-order the route waypoints using a fast heuristic algorithm to reduce the route length. Yields best results when used in conjunction with routeType
-// _shortest_. Notice that origin and destination are excluded from the optimized waypoint indices. To include origin and destination in the response, please
-// increase all the indices by 1 to account for the origin, and then add the destination as the final index. Possible values are true or false. True computes
-// a better order if possible, but is not allowed to be used in conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints.
-// False will use the locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
+	// _shortest_. Notice that origin and destination are excluded from the optimized waypoint indices. To include origin and destination in the response, please
+	// increase all the indices by 1 to account for the origin, and then add the destination as the final index. Possible values are true or false. True computes
+	// a better order if possible, but is not allowed to be used in conjunction with maxAlternatives value greater than 0 or in conjunction with circle waypoints.
+	// False will use the locations in the given order and not allowed to be used in conjunction with routeRepresentation _none_.
 	ComputeBestOrder *bool
 	// Specifies whether to return additional travel times using different types of traffic information (none, historic, live) as well as the default best-estimate
-// travel time.
+	// travel time.
 	ComputeTravelTimeFor *ComputeTravelTimeFor
 	// Specifies the speed-dependent component of consumption.
-// Provided as an unordered list of colon-delimited speed & consumption-rate pairs. The list defines points on a consumption curve. Consumption rates for
-// speeds not in the list are found as follows:
-// * by linear interpolation, if the given speed lies in between two speeds in the list
-// * by linear extrapolation otherwise, assuming a constant (ΔConsumption/ΔSpeed) determined by the nearest two points in the list
-// The list must contain between 1 and 25 points (inclusive), and may not contain duplicate points for the same speed. If it only contains a single point,
-// then the consumption rate of that point is used without further processing.
-// Consumption specified for the largest speed must be greater than or equal to that of the penultimate largest speed. This ensures that extrapolation does
-// not lead to negative consumption rates.
-// Similarly, consumption values specified for the two smallest speeds in the list cannot lead to a negative consumption rate for any smaller speed.
-// The valid range for the consumption values(expressed in l/100km) is between 0.01 and 100000.0.
-// Sensible Values : 50,6.3:130,11.5
-// **Note** : This parameter is required for **The Combustion Consumption Model**.
+	// Provided as an unordered list of colon-delimited speed & consumption-rate pairs. The list defines points on a consumption curve. Consumption rates for
+	// speeds not in the list are found as follows:
+	// * by linear interpolation, if the given speed lies in between two speeds in the list
+	// * by linear extrapolation otherwise, assuming a constant (ΔConsumption/ΔSpeed) determined by the nearest two points in the list
+	// The list must contain between 1 and 25 points (inclusive), and may not contain duplicate points for the same speed. If it only contains a single point,
+	// then the consumption rate of that point is used without further processing.
+	// Consumption specified for the largest speed must be greater than or equal to that of the penultimate largest speed. This ensures that extrapolation does
+	// not lead to negative consumption rates.
+	// Similarly, consumption values specified for the two smallest speeds in the list cannot lead to a negative consumption rate for any smaller speed.
+	// The valid range for the consumption values(expressed in l/100km) is between 0.01 and 100000.0.
+	// Sensible Values : 50,6.3:130,11.5
+	// **Note** : This parameter is required for **The Combustion Consumption Model**.
 	ConstantSpeedConsumptionInLitersPerHundredkm *float32
 	// Specifies the speed-dependent component of consumption.
-// Provided as an unordered list of speed/consumption-rate pairs. The list defines points on a consumption curve. Consumption rates for speeds not in the
-// list are found as follows:
-// * by linear interpolation, if the given speed lies in between two speeds in the list
-// * by linear extrapolation otherwise, assuming a constant (ΔConsumption/ΔSpeed) determined by the nearest two points in the list
-// The list must contain between 1 and 25 points (inclusive), and may not contain duplicate points for the same speed. If it only contains a single point,
-// then the consumption rate of that point is used without further processing.
-// Consumption specified for the largest speed must be greater than or equal to that of the penultimate largest speed. This ensures that extrapolation does
-// not lead to negative consumption rates.
-// Similarly, consumption values specified for the two smallest speeds in the list cannot lead to a negative consumption rate for any smaller speed.
-// The valid range for the consumption values(expressed in kWh/100km) is between 0.01 and 100000.0.
-// Sensible Values : 50,8.2:130,21.3
-// This parameter is required for **Electric consumption model**.
+	// Provided as an unordered list of speed/consumption-rate pairs. The list defines points on a consumption curve. Consumption rates for speeds not in the
+	// list are found as follows:
+	// * by linear interpolation, if the given speed lies in between two speeds in the list
+	// * by linear extrapolation otherwise, assuming a constant (ΔConsumption/ΔSpeed) determined by the nearest two points in the list
+	// The list must contain between 1 and 25 points (inclusive), and may not contain duplicate points for the same speed. If it only contains a single point,
+	// then the consumption rate of that point is used without further processing.
+	// Consumption specified for the largest speed must be greater than or equal to that of the penultimate largest speed. This ensures that extrapolation does
+	// not lead to negative consumption rates.
+	// Similarly, consumption values specified for the two smallest speeds in the list cannot lead to a negative consumption rate for any smaller speed.
+	// The valid range for the consumption values(expressed in kWh/100km) is between 0.01 and 100000.0.
+	// Sensible Values : 50,8.2:130,21.3
+	// This parameter is required for **Electric consumption model**.
 	ConstantSpeedConsumptionInkWhPerHundredkm *string
 	// Specifies the current electric energy supply in kilowatt hours (kWh).
-// This parameter co-exists with **maxChargeInkWh** parameter.
-// The range of values allowed are 0.0 to **maxChargeInkWh**.
-// Sensible Values : 43
+	// This parameter co-exists with **maxChargeInkWh** parameter.
+	// The range of values allowed are 0.0 to **maxChargeInkWh**.
+	// Sensible Values : 43
 	CurrentChargeInkWh *string
 	// Specifies the current supply of fuel in liters.
-// Sensible Values : 55
+	// Sensible Values : 55
 	CurrentFuelInLiters *float32
 	// Specifies the efficiency of converting kinetic energy to saved (not consumed) fuel when the vehicle decelerates _(i.e. ChemicalEnergySaved/KineticEnergyLost).
-// ChemicalEnergySaved_ is obtained by converting saved (not consumed) fuel to energy using **fuelEnergyDensityInMJoulesPerLiter**.
-// Must be paired with **accelerationEfficiency**.
-// The range of values allowed are 0.0 to 1/**accelerationEfficiency**.
-// Sensible Values : for **Combustion Model** : 0.83, for **Electric Model** : 0.91
+	// ChemicalEnergySaved_ is obtained by converting saved (not consumed) fuel to energy using **fuelEnergyDensityInMJoulesPerLiter**.
+	// Must be paired with **accelerationEfficiency**.
+	// The range of values allowed are 0.0 to 1/**accelerationEfficiency**.
+	// Sensible Values : for **Combustion Model** : 0.83, for **Electric Model** : 0.91
 	DecelerationEfficiency *float32
 	// The date and time of departure from the origin point. Departure times apart from now must be specified as a dateTime. When a time zone offset is not
-// specified, it will be assumed to be that of the origin point. The departAt value must be in the future in the date-time format (1996-12-19T16:39:57-08:00).
+	// specified, it will be assumed to be that of the origin point. The departAt value must be in the future in the date-time format (1996-12-19T16:39:57-08:00).
 	DepartAt *time.Time
 	// Specifies the efficiency of converting potential energy to saved (not consumed) fuel when the vehicle loses elevation _(i.e. ChemicalEnergySaved/PotentialEnergyLost).
-// ChemicalEnergySaved_ is obtained by converting saved (not consumed) fuel to energy using **fuelEnergyDensityInMJoulesPerLiter**.
-// Must be paired with **uphillEfficiency**.
-// The range of values allowed are 0.0 to 1/**uphillEfficiency**.
-// Sensible Values : for **Combustion Model** : 0.51, for **Electric Model** : 0.73
+	// ChemicalEnergySaved_ is obtained by converting saved (not consumed) fuel to energy using **fuelEnergyDensityInMJoulesPerLiter**.
+	// Must be paired with **uphillEfficiency**.
+	// The range of values allowed are 0.0 to 1/**uphillEfficiency**.
+	// Sensible Values : for **Combustion Model** : 0.51, for **Electric Model** : 0.73
 	DownhillEfficiency *float32
 	// Specifies the amount of chemical energy stored in one liter of fuel in megajoules (MJ). It is used in conjunction with the ***Efficiency** parameters
-// for conversions between saved or consumed energy and fuel. For example, energy density is 34.2 MJ/l for gasoline, and 35.8 MJ/l for Diesel fuel.
-// This parameter is required if any ***Efficiency** parameter is set.
-// Sensible Values : 34.2
+	// for conversions between saved or consumed energy and fuel. For example, energy density is 34.2 MJ/l for gasoline, and 35.8 MJ/l for Diesel fuel.
+	// This parameter is required if any ***Efficiency** parameter is set.
+	// Sensible Values : 34.2
 	FuelEnergyDensityInMJoulesPerLiter *float32
 	// Degree of hilliness for thrilling route. This parameter can only be used in conjunction with `routeType`=thrilling.
 	Hilliness *HillinessDegree
 	// If specified, guidance instructions will be returned. Note that the instructionsType parameter cannot be used in conjunction with routeRepresentation=none
 	InstructionsType *RouteInstructionsType
 	// The language parameter determines the language of the guidance messages. It does not affect proper nouns (the names of streets, plazas, etc.) It has
-// no effect when instructionsType=coded. Allowed values are (a subset of) the IETF language tags described
+	// no effect when instructionsType=coded. Allowed values are (a subset of) the IETF language tags described
 	Language *string
 	// Number of desired alternative routes to be calculated. Default: 0, minimum: 0 and maximum: 5
 	MaxAlternatives *int32
 	// Specifies the maximum electric energy supply in kilowatt hours (kWh) that may be stored in the vehicle's battery.
-// This parameter co-exists with **currentChargeInkWh** parameter.
-// Minimum value has to be greater than or equal to **currentChargeInkWh**.
-// Sensible Values : 85
+	// This parameter co-exists with **currentChargeInkWh** parameter.
+	// Minimum value has to be greater than or equal to **currentChargeInkWh**.
+	// Sensible Values : 85
 	MaxChargeInkWh *string
 	// All alternative routes returned will follow the reference route (see section POST Requests) from the origin point of the calculateRoute request for at
-// least this number of meters. Can only be used when reconstructing a route. The minDeviationDistance parameter cannot be used in conjunction with arriveAt
+	// least this number of meters. Can only be used when reconstructing a route. The minDeviationDistance parameter cannot be used in conjunction with arriveAt
 	MinDeviationDistance *int32
 	// All alternative routes returned will follow the reference route (see section POST Requests) from the origin point of the calculateRoute request for at
-// least this number of seconds. Can only be used when reconstructing a route. The minDeviationTime parameter cannot be used in conjunction with arriveAt.
-// Default value is 0. Setting )minDeviationTime_ to a value greater than zero has the following consequences:
-// - The origin point of the _calculateRoute_ Request must be on
-// (or very near) the input reference route.
-// - If this is not the case, an error is returned.
-// - However, the origin point does not need to be at the beginning
-// of the input reference route (it can be thought of as the current
-// vehicle position on the reference route).
-// - The reference route, returned as the first route in the _calculateRoute_
-// Response, will start at the origin point specified in the _calculateRoute_
-// Request. The initial part of the input reference route up until the origin
-// point will be excluded from the Response.
-// - The values of _minDeviationDistance_ and _minDeviationTime_ determine
-// how far alternative routes will be guaranteed to follow the reference
-// route from the origin point onwards.
-// - The route must use _departAt_.
-// - The _vehicleHeading_ is ignored.
+	// least this number of seconds. Can only be used when reconstructing a route. The minDeviationTime parameter cannot be used in conjunction with arriveAt.
+	// Default value is 0. Setting )minDeviationTime_ to a value greater than zero has the following consequences:
+	// - The origin point of the _calculateRoute_ Request must be on
+	// (or very near) the input reference route.
+	// - If this is not the case, an error is returned.
+	// - However, the origin point does not need to be at the beginning
+	// of the input reference route (it can be thought of as the current
+	// vehicle position on the reference route).
+	// - The reference route, returned as the first route in the _calculateRoute_
+	// Response, will start at the origin point specified in the _calculateRoute_
+	// Request. The initial part of the input reference route up until the origin
+	// point will be excluded from the Response.
+	// - The values of _minDeviationDistance_ and _minDeviationTime_ determine
+	// how far alternative routes will be guaranteed to follow the reference
+	// route from the origin point onwards.
+	// - The route must use _departAt_.
+	// - The _vehicleHeading_ is ignored.
 	MinDeviationTime *int32
 	// Specifies which data should be reported for diagnosis purposes. The only possible value is _effectiveSettings_. Reports the effective parameters or data
-// used when calling the API. In the case of defaulted parameters the default will be reflected where the parameter was not specified by the caller.
+	// used when calling the API. In the case of defaulted parameters the default will be reflected where the parameter was not specified by the caller.
 	Report *string
 	// Specifies the representation of the set of routes provided as response. This parameter value can only be used in conjunction with computeBestOrder=true.
 	RouteRepresentation *RouteRepresentation
 	// The type of route requested.
 	RouteType *RouteType
 	// Specifies which of the section types is reported in the route response. <br><br>For example if sectionType = pedestrian the sections which are suited
-// for pedestrians only are returned. Multiple types can be used. The default sectionType refers to the travelMode input. By default travelMode is set to
-// car
+	// for pedestrians only are returned. Multiple types can be used. The default sectionType refers to the travelMode input. By default travelMode is set to
+	// car
 	SectionType *SectionType
 	// Possible values:
-// * true - Do consider all available traffic information during routing
-// * false - Ignore current traffic data during routing. Note that although the current traffic data is ignored
-// during routing, the effect of historic traffic on effective road speeds is still incorporated.
+	// * true - Do consider all available traffic information during routing
+	// * false - Ignore current traffic data during routing. Note that although the current traffic data is ignored
+	// during routing, the effect of historic traffic on effective road speeds is still incorporated.
 	Traffic *bool
 	// The mode of travel for the requested route. If not defined, default is 'car'. Note that the requested travelMode may not be available for the entire
-// route. Where the requested travelMode is not available for a particular section, the travelMode element of the response for that section will be "other".
-// Note that travel modes bus, motorcycle, taxi and van are BETA functionality. Full restriction data is not available in all areas. In **calculateReachableRange**
-// requests, the values bicycle and pedestrian must not be used.
+	// route. Where the requested travelMode is not available for a particular section, the travelMode element of the response for that section will be "other".
+	// Note that travel modes bus, motorcycle, taxi and van are BETA functionality. Full restriction data is not available in all areas. In **calculateReachableRange**
+	// requests, the values bicycle and pedestrian must not be used.
 	TravelMode *TravelMode
 	// Specifies the efficiency of converting chemical energy stored in fuel to potential energy when the vehicle gains elevation _(i.e. PotentialEnergyGained/ChemicalEnergyConsumed).
-// ChemicalEnergyConsumed_ is obtained by converting consumed fuel to chemical energy using **fuelEnergyDensityInMJoulesPerLiter**.
-// Must be paired with **downhillEfficiency**.
-// The range of values allowed are 0.0 to 1/**downhillEfficiency**.
-// Sensible Values : for **Combustion Model** : 0.27, for **Electric Model** : 0.74
+	// ChemicalEnergyConsumed_ is obtained by converting consumed fuel to chemical energy using **fuelEnergyDensityInMJoulesPerLiter**.
+	// Must be paired with **downhillEfficiency**.
+	// The range of values allowed are 0.0 to 1/**downhillEfficiency**.
+	// Sensible Values : for **Combustion Model** : 0.27, for **Electric Model** : 0.74
 	UphillEfficiency *float32
 	// Weight per axle of the vehicle in kg. A value of 0 means that weight restrictions per axle are not considered.
 	VehicleAxleWeight *int32
@@ -1532,28 +1533,28 @@ type RoutePostRouteDirectionsOptions struct {
 	// Engine type of the vehicle. When a detailed Consumption Model is specified, it must be consistent with the value of **vehicleEngineType**.
 	VehicleEngineType *VehicleEngineType
 	// The directional heading of the vehicle in degrees starting at true North and continuing in clockwise direction. North is 0 degrees, east is 90 degrees,
-// south is 180 degrees, west is 270 degrees. Possible values 0-359
+	// south is 180 degrees, west is 270 degrees. Possible values 0-359
 	VehicleHeading *int32
 	// Height of the vehicle in meters. A value of 0 means that height restrictions are not considered.
 	VehicleHeight *float32
 	// Length of the vehicle in meters. A value of 0 means that length restrictions are not considered.
 	VehicleLength *float32
 	// Types of cargo that may be classified as hazardous materials and restricted from some roads. Available vehicleLoadType values are US Hazmat classes 1
-// through 9, plus generic classifications for use in other countries. Values beginning with USHazmat are for US routing while otherHazmat should be used
-// for all other countries. vehicleLoadType can be specified multiple times. This parameter is currently only considered for travelMode=truck.
+	// through 9, plus generic classifications for use in other countries. Values beginning with USHazmat are for US routing while otherHazmat should be used
+	// for all other countries. vehicleLoadType can be specified multiple times. This parameter is currently only considered for travelMode=truck.
 	VehicleLoadType *VehicleLoadType
 	// Maximum speed of the vehicle in km/hour. The max speed in the vehicle profile is used to check whether a vehicle is allowed on motorways.
-// * A value of 0 means that an appropriate value for the vehicle will be determined and applied during route planning.
-// * A non-zero value may be overridden during route planning. For example, the current traffic flow is 60 km/hour. If the vehicle maximum speed is set
-// to 50 km/hour, the routing engine will consider 60 km/hour as this is the current situation. If the maximum speed of the vehicle is provided as 80 km/hour
-// but the current traffic flow is 60 km/hour, then routing engine will again use 60 km/hour.
+	// * A value of 0 means that an appropriate value for the vehicle will be determined and applied during route planning.
+	// * A non-zero value may be overridden during route planning. For example, the current traffic flow is 60 km/hour. If the vehicle maximum speed is set
+	// to 50 km/hour, the routing engine will consider 60 km/hour as this is the current situation. If the maximum speed of the vehicle is provided as 80 km/hour
+	// but the current traffic flow is 60 km/hour, then routing engine will again use 60 km/hour.
 	VehicleMaxSpeed *int32
 	// Weight of the vehicle in kilograms.
-// * It is mandatory if any of the *Efficiency parameters are set.
-// * It must be strictly positive when used in the context of the Consumption Model. Weight restrictions are considered.
-// * If no detailed **Consumption Model** is specified and the value of **vehicleWeight** is non-zero, then weight restrictions are considered.
-// * In all other cases, this parameter is ignored.
-// Sensible Values : for **Combustion Model** : 1600, for **Electric Model** : 1900
+	// * It is mandatory if any of the *Efficiency parameters are set.
+	// * It must be strictly positive when used in the context of the Consumption Model. Weight restrictions are considered.
+	// * If no detailed **Consumption Model** is specified and the value of **vehicleWeight** is non-zero, then weight restrictions are considered.
+	// * In all other cases, this parameter is ignored.
+	// Sensible Values : for **Combustion Model** : 1600, for **Electric Model** : 1900
 	VehicleWeight *int32
 	// Width of the vehicle in meters. A value of 0 means that width restrictions are not considered.
 	VehicleWidth *float32
@@ -1564,35 +1565,35 @@ type RoutePostRouteDirectionsOptions struct {
 // RoutePostRouteMatrixSyncOptions contains the optional parameters for the Route.PostRouteMatrixSync method.
 type RoutePostRouteMatrixSyncOptions struct {
 	// The date and time of arrival at the destination point. It must be specified as a dateTime. When a time zone offset is not specified it will be assumed
-// to be that of the destination point. The arriveAt value must be in the future. The arriveAt parameter cannot be used in conjunction with departAt, minDeviationDistance
-// or minDeviationTime.
+	// to be that of the destination point. The arriveAt value must be in the future. The arriveAt parameter cannot be used in conjunction with departAt, minDeviationDistance
+	// or minDeviationTime.
 	ArriveAt *time.Time
 	// Specifies something that the route calculation should try to avoid when determining the route. Can be specified multiple times in one request, for example,
-// '&avoid=motorways&avoid=tollRoads&avoid=ferries'. In calculateReachableRange requests, the value alreadyUsedRoads must not be used.
+	// '&avoid=motorways&avoid=tollRoads&avoid=ferries'. In calculateReachableRange requests, the value alreadyUsedRoads must not be used.
 	Avoid []RouteAvoidType
 	// Specifies whether to return additional travel times using different types of traffic information (none, historic, live) as well as the default best-estimate
-// travel time.
+	// travel time.
 	ComputeTravelTimeFor *ComputeTravelTimeFor
 	// The date and time of departure from the origin point. Departure times apart from now must be specified as a dateTime. When a time zone offset is not
-// specified, it will be assumed to be that of the origin point. The departAt value must be in the future in the date-time format (1996-12-19T16:39:57-08:00).
+	// specified, it will be assumed to be that of the origin point. The departAt value must be in the future in the date-time format (1996-12-19T16:39:57-08:00).
 	DepartAt *time.Time
 	// Degree of hilliness for thrilling route. This parameter can only be used in conjunction with `routeType`=thrilling.
 	Hilliness *HillinessDegree
 	// The type of route requested.
 	RouteType *RouteType
 	// Specifies which of the section types is reported in the route response. <br><br>For example if sectionType = pedestrian the sections which are suited
-// for pedestrians only are returned. Multiple types can be used. The default sectionType refers to the travelMode input. By default travelMode is set to
-// car
+	// for pedestrians only are returned. Multiple types can be used. The default sectionType refers to the travelMode input. By default travelMode is set to
+	// car
 	SectionType *SectionType
 	// Possible values:
-// * true - Do consider all available traffic information during routing
-// * false - Ignore current traffic data during routing. Note that although the current traffic data is ignored
-// during routing, the effect of historic traffic on effective road speeds is still incorporated.
+	// * true - Do consider all available traffic information during routing
+	// * false - Ignore current traffic data during routing. Note that although the current traffic data is ignored
+	// during routing, the effect of historic traffic on effective road speeds is still incorporated.
 	Traffic *bool
 	// The mode of travel for the requested route. If not defined, default is 'car'. Note that the requested travelMode may not be available for the entire
-// route. Where the requested travelMode is not available for a particular section, the travelMode element of the response for that section will be "other".
-// Note that travel modes bus, motorcycle, taxi and van are BETA functionality. Full restriction data is not available in all areas. In **calculateReachableRange**
-// requests, the values bicycle and pedestrian must not be used.
+	// route. Where the requested travelMode is not available for a particular section, the travelMode element of the response for that section will be "other".
+	// Note that travel modes bus, motorcycle, taxi and van are BETA functionality. Full restriction data is not available in all areas. In **calculateReachableRange**
+	// requests, the values bicycle and pedestrian must not be used.
 	TravelMode *TravelMode
 	// Weight per axle of the vehicle in kg. A value of 0 means that weight restrictions per axle are not considered.
 	VehicleAxleWeight *int32
@@ -1601,22 +1602,22 @@ type RoutePostRouteMatrixSyncOptions struct {
 	// Length of the vehicle in meters. A value of 0 means that length restrictions are not considered.
 	VehicleLength *float32
 	// Types of cargo that may be classified as hazardous materials and restricted from some roads. Available vehicleLoadType values are US Hazmat classes 1
-// through 9, plus generic classifications for use in other countries. Values beginning with USHazmat are for US routing while otherHazmat should be used
-// for all other countries. vehicleLoadType can be specified multiple times. This parameter is currently only considered for travelMode=truck.
+	// through 9, plus generic classifications for use in other countries. Values beginning with USHazmat are for US routing while otherHazmat should be used
+	// for all other countries. vehicleLoadType can be specified multiple times. This parameter is currently only considered for travelMode=truck.
 	VehicleLoadType *VehicleLoadType
 	// Maximum speed of the vehicle in km/hour. The max speed in the vehicle profile is used to check whether a vehicle is allowed on motorways.
-// * A value of 0 means that an appropriate value for the vehicle will be determined and applied during route planning.
-// * A non-zero value may be overridden during route planning. For example, the current traffic flow is 60 km/hour. If the vehicle maximum speed is set
-// to 50 km/hour, the routing engine will consider 60 km/hour as this is the current situation. If the maximum speed of the vehicle is provided as 80 km/hour
-// but the current traffic flow is 60 km/hour, then routing engine will again use 60 km/hour.
+	// * A value of 0 means that an appropriate value for the vehicle will be determined and applied during route planning.
+	// * A non-zero value may be overridden during route planning. For example, the current traffic flow is 60 km/hour. If the vehicle maximum speed is set
+	// to 50 km/hour, the routing engine will consider 60 km/hour as this is the current situation. If the maximum speed of the vehicle is provided as 80 km/hour
+	// but the current traffic flow is 60 km/hour, then routing engine will again use 60 km/hour.
 	VehicleMaxSpeed *int32
 	// Weight of the vehicle in kilograms.
 	VehicleWeight *int32
 	// Width of the vehicle in meters. A value of 0 means that width restrictions are not considered.
 	VehicleWidth *float32
 	// Boolean to indicate whether to execute the request synchronously. If set to true, user will get a 200 response if the request is finished under 120 seconds.
-// Otherwise, user will get a 202 response right away. Please refer to the API description for more details on 202 response. **Supported only for async
-// request**.
+	// Otherwise, user will get a 202 response right away. Please refer to the API description for more details on 202 response. **Supported only for async
+	// request**.
 	WaitForResults *bool
 	// Level of turns for thrilling route. This parameter can only be used in conjunction with `routeType`=thrilling.
 	Windingness *WindingnessLevel
@@ -1687,15 +1688,15 @@ type RouteResultInstruction struct {
 	Point *CoordinatesPair `json:"point,omitempty"`
 
 	// READ-ONLY; A human-readable message for the maneuver combined with the message from the next instruction. Sometimes it is possible to combine two successive
-// instructions into a single instruction making it
-// easier to follow. When this is the case the possibleCombineWithNext flag will be true. For example:
-// 10. Turn left onto Einsteinweg/A10/E22 towards Ring Amsterdam
-// 11. Follow Einsteinweg/A10/E22 towards Ring Amsterdam
-// The possibleCombineWithNext flag on instruction 10 is true. This indicates to the clients of coded guidance that it can be combined with instruction
-// 11. The instructions will be combined automatically
-// for clients requesting human-readable guidance. The combinedMessage field contains the combined message:
-// Turn left onto Einsteinweg/A10/E22 towards Ring Amsterdam
-// then follow Einsteinweg/A10/E22 towards Ring Amsterdam.
+	// instructions into a single instruction making it
+	// easier to follow. When this is the case the possibleCombineWithNext flag will be true. For example:
+	// 10. Turn left onto Einsteinweg/A10/E22 towards Ring Amsterdam
+	// 11. Follow Einsteinweg/A10/E22 towards Ring Amsterdam
+	// The possibleCombineWithNext flag on instruction 10 is true. This indicates to the clients of coded guidance that it can be combined with instruction
+	// 11. The instructions will be combined automatically
+	// for clients requesting human-readable guidance. The combinedMessage field contains the combined message:
+	// Turn left onto Einsteinweg/A10/E22 towards Ring Amsterdam
+	// then follow Einsteinweg/A10/E22 towards Ring Amsterdam.
 	CombinedMessage *string `json:"combinedMessage,omitempty" azure:"ro"`
 
 	// READ-ONLY; 3-character ISO 3166-1 [https://www.iso.org/iso-3166-country-codes.html] alpha-3 country code. E.g. USA.
@@ -1705,11 +1706,11 @@ type RouteResultInstruction struct {
 	DrivingSide *DrivingSide `json:"drivingSide,omitempty" azure:"ro"`
 
 	// READ-ONLY; The number(s) of a highway exit taken by the current maneuver. If an exit has multiple exit numbers, they will be separated by "," and possibly
-// aggregated by "-", e.g., "10, 13-15".
+	// aggregated by "-", e.g., "10, 13-15".
 	ExitNumber *string `json:"exitNumber,omitempty" azure:"ro"`
 
 	// READ-ONLY; The type of the junction where the maneuver takes place. For larger roundabouts, two separate instructions are generated for entering and
-// leaving the roundabout.
+	// leaving the roundabout.
 	JunctionType *JunctionType `json:"junctionType,omitempty" azure:"ro"`
 
 	// READ-ONLY; A code identifying the maneuver.
@@ -1737,8 +1738,8 @@ type RouteResultInstruction struct {
 	SignpostText *string `json:"signpostText,omitempty" azure:"ro"`
 
 	// READ-ONLY; A subdivision (e.g., state) of the country, represented by the second part of an ISO 3166-2 [https://www.iso.org/standard/63546.html] code.
-// This is only available for some countries like the US,
-// Canada, and Mexico.
+	// This is only available for some countries like the US,
+	// Canada, and Mexico.
 	StateCode *string `json:"stateCode,omitempty" azure:"ro"`
 
 	// READ-ONLY; Street name of the next significant road segment after the maneuver, or of the street that should be followed.
@@ -1748,13 +1749,13 @@ type RouteResultInstruction struct {
 	TravelTimeInSeconds *int32 `json:"travelTimeInSeconds,omitempty" azure:"ro"`
 
 	// READ-ONLY; Indicates the direction of an instruction. If junctionType indicates a turn instruction:
-// * 180 = U-turn
-// * [-179, -1] = Left turn
-// * 0 = Straight on (a '0 degree' turn)
-// * [1, 179] = Right turn
-// If junctionType indicates a bifurcation instruction:
-// * <0 - keep left
-// * >0 - keep right
+	// * 180 = U-turn
+	// * [-179, -1] = Left turn
+	// * 0 = Straight on (a '0 degree' turn)
+	// * [1, 179] = Right turn
+	// If junctionType indicates a bifurcation instruction:
+	// * <0 - keep left
+	// * >0 - keep right
 	TurnAngleInDecimalDegrees *int32 `json:"turnAngleInDecimalDegrees,omitempty" azure:"ro"`
 }
 
@@ -1822,20 +1823,20 @@ type RouteResultLegSummary struct {
 	ArrivalTime *string `json:"arrivalTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; Estimated electric energy consumption in kilowatt hours (kWh) using the Electric Consumption Model. Included if vehicleEngineType is set to
-// electric and constantSpeedConsumptionInkWhPerHundredkm is
-// specified. The value of batteryConsumptionInkWh includes the recuperated electric energy and can therefore be negative (which indicates gaining energy).
-// If both maxChargeInkWh and currentChargeInkWh
-// are specified, recuperation will be capped to ensure that the battery charge level never exceeds maxChargeInkWh. If neither maxChargeInkWh nor currentChargeInkWh
-// are specified, unconstrained
-// recuperation is assumed in the consumption calculation.
+	// electric and constantSpeedConsumptionInkWhPerHundredkm is
+	// specified. The value of batteryConsumptionInkWh includes the recuperated electric energy and can therefore be negative (which indicates gaining energy).
+	// If both maxChargeInkWh and currentChargeInkWh
+	// are specified, recuperation will be capped to ensure that the battery charge level never exceeds maxChargeInkWh. If neither maxChargeInkWh nor currentChargeInkWh
+	// are specified, unconstrained
+	// recuperation is assumed in the consumption calculation.
 	BatteryConsumptionInkWh *float32 `json:"batteryConsumptionInkWh,omitempty" azure:"ro"`
 
 	// READ-ONLY; Departure Time property
 	DepartureTime *string `json:"departureTime,omitempty" azure:"ro"`
 
 	// READ-ONLY; Estimated fuel consumption in liters using the Combustion Consumption Model. Included if vehicleEngineType is set to combustion and constantSpeedConsumptionInLitersPerHundredkm
-// is specified. The value
-// will be non-negative.
+	// is specified. The value
+	// will be non-negative.
 	FuelConsumptionInLiters *float32 `json:"fuelConsumptionInLiters,omitempty" azure:"ro"`
 
 	// READ-ONLY; Estimated travel time calculated using time-dependent historic traffic data. Included only if computeTravelTimeFor = all is used in the query.
@@ -1848,23 +1849,23 @@ type RouteResultLegSummary struct {
 	LiveTrafficIncidentsTravelTimeInSeconds *int32 `json:"liveTrafficIncidentsTravelTimeInSeconds,omitempty" azure:"ro"`
 
 	// READ-ONLY; Estimated travel time calculated as if there are no delays on the route due to traffic conditions (e.g. congestion). Included only if computeTravelTimeFor
-// = all is used in the query.
+	// = all is used in the query.
 	NoTrafficTravelTimeInSeconds *int32 `json:"noTrafficTravelTimeInSeconds,omitempty" azure:"ro"`
 
 	// READ-ONLY; Estimated delay in seconds caused by the real-time incident(s) according to traffic information. For routes planned with departure time in
-// the future, delays is always 0. To return additional travel
-// times using different types of traffic information, parameter computeTravelTimeFor=all needs to be added.
+	// the future, delays is always 0. To return additional travel
+	// times using different types of traffic information, parameter computeTravelTimeFor=all needs to be added.
 	TrafficDelayInSeconds *int32 `json:"trafficDelayInSeconds,omitempty" azure:"ro"`
 
 	// READ-ONLY; Estimated travel time in seconds property that includes the delay due to real-time traffic. Note that even when traffic=false travelTimeInSeconds
-// still includes the delay due to traffic. If DepartAt
-// is in the future, travel time is calculated using time-dependent historic traffic data.
+	// still includes the delay due to traffic. If DepartAt
+	// is in the future, travel time is calculated using time-dependent historic traffic data.
 	TravelTimeInSeconds *int32 `json:"travelTimeInSeconds,omitempty" azure:"ro"`
 }
 
 type RouteResultSection struct {
 	// Details of the traffic event, using definitions in the TPEG2-TEC [https://www.iso.org/standard/63116.html] standard. Can contain effectCode and causes
-// elements.
+	// elements.
 	Tec *RouteResultSectionTec `json:"tec,omitempty"`
 
 	// READ-ONLY; Delay in seconds caused by the incident.
@@ -1877,8 +1878,8 @@ type RouteResultSection struct {
 	EndPointIndex *int32 `json:"endPointIndex,omitempty" azure:"ro"`
 
 	// READ-ONLY; The magnitude of delay caused by the incident. These values correspond to the values of the response field ty of the Get Traffic Incident
-// Detail API
-// [https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentdetail].
+	// Detail API
+	// [https://docs.microsoft.com/rest/api/maps/traffic/gettrafficincidentdetail].
 	MagnitudeOfDelay *MagnitudeOfDelay `json:"magnitudeOfDelay,omitempty" azure:"ro"`
 
 	// READ-ONLY; Section Type property
@@ -1901,8 +1902,8 @@ type RouteResultSectionTec struct {
 	Causes []*RouteResultSectionTecCause `json:"causes,omitempty"`
 
 	// READ-ONLY; The effect on the traffic flow. Contains a value in the tec001:EffectCode table, as defined in the TPEG2-TEC [https://www.iso.org/standard/63116.html]
-// standard. Can be used to color-code traffic
-// events according to severity.
+	// standard. Can be used to color-code traffic
+	// events according to severity.
 	EffectCode *int32 `json:"effectCode,omitempty" azure:"ro"`
 }
 
@@ -1918,11 +1919,11 @@ func (r RouteResultSectionTec) MarshalJSON() ([]byte, error) {
 // descriptions.
 type RouteResultSectionTecCause struct {
 	// READ-ONLY; The main cause of the traffic event. Contains a value in the tec002:CauseCode table, as defined in the TPEG2-TEC [https://www.iso.org/standard/63116.html]
-// standard.
+	// standard.
 	MainCauseCode *int32 `json:"mainCauseCode,omitempty" azure:"ro"`
 
 	// READ-ONLY; The subcause of the traffic event. Contains a value in the sub cause table defined by the mainCauseCode, as defined in the TPEG2-TEC [https://www.iso.org/standard/63116.html]
-// standard.
+	// standard.
 	SubCauseCode *int32 `json:"subCauseCode,omitempty" azure:"ro"`
 }
 
@@ -1942,4 +1943,3 @@ func unpopulate(data json.RawMessage, v interface{}) error {
 	}
 	return json.Unmarshal(data, v)
 }
-

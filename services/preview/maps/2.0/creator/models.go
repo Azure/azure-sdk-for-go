@@ -9,9 +9,10 @@ package creator
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AliasAssignOptions contains the optional parameters for the Alias.Assign method.
@@ -90,13 +91,13 @@ type AliasesCreateResponse struct {
 // BooleanRuleObject - The boolean rule. The color is selected based on the logic value of the key.
 type BooleanRuleObject struct {
 	// The color when value is false. Color is a JSON string in a variety of permitted formats, HTML-style hex values, RGB ("#ff0", "#ffff00", "rgb(255, 255,
-// 0)"), RGBA ("rgba(255, 255, 0, 1)"),
-// HSL("hsl(100, 50%, 50%)"), and HSLA("hsla(100, 50%, 50%, 1)"). Predefined HTML colors names, like yellow and blue, are also permitted.
+	// 0)"), RGBA ("rgba(255, 255, 0, 1)"),
+	// HSL("hsl(100, 50%, 50%)"), and HSLA("hsla(100, 50%, 50%, 1)"). Predefined HTML colors names, like yellow and blue, are also permitted.
 	False *string `json:"false,omitempty"`
 
 	// The color when value is true. Color is a JSON string in a variety of permitted formats, HTML-style hex values, RGB ("#ff0", "#ffff00", "rgb(255, 255,
-// 0)"), RGBA ("rgba(255, 255, 0, 1)"), HSL("hsl(100,
-// 50%, 50%)"), and HSLA("hsla(100, 50%, 50%, 1)"). Predefined HTML colors names, like yellow and blue, are also permitted.
+	// 0)"), RGBA ("rgba(255, 255, 0, 1)"), HSL("hsl(100,
+	// 50%, 50%)"), and HSLA("hsla(100, 50%, 50%, 1)"). Predefined HTML colors names, like yellow and blue, are also permitted.
 	True *string `json:"true,omitempty"`
 }
 
@@ -124,8 +125,8 @@ func (b *BooleanTypeStyleRule) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "rules":
-				err = unpopulate(val, &b.Rules)
-				delete(rawMsg, key)
+			err = unpopulate(val, &b.Rules)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -141,7 +142,7 @@ type BufferRequestBody struct {
 	Distances []*float32 `json:"distances,omitempty"`
 
 	// A valid GeoJSON FeatureCollection object type. Please refer to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3.3] for details.
-	Geometries GeoJSONFeatureCollectionClassification `json:"geometries,omitempty"`
+	Geometries GeoJSONObjectClassification `json:"geometries,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type BufferRequestBody.
@@ -162,11 +163,11 @@ func (b *BufferRequestBody) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "distances":
-				err = unpopulate(val, &b.Distances)
-				delete(rawMsg, key)
+			err = unpopulate(val, &b.Distances)
+			delete(rawMsg, key)
 		case "geometries":
-				b.Geometries, err = unmarshalGeoJSONFeatureCollectionClassification(val)
-				delete(rawMsg, key)
+			b.Geometries, err = unmarshalGeoJSONObjectClassification(val)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -178,7 +179,7 @@ func (b *BufferRequestBody) UnmarshalJSON(data []byte) error {
 // BufferResponse - This object is returned from a successful Spatial Buffer call.
 type BufferResponse struct {
 	// The FeatureCollection of buffers for the input.
-	Result GeoJSONFeatureCollectionClassification `json:"result,omitempty"`
+	Result GeoJSONObjectClassification `json:"result,omitempty"`
 
 	// READ-ONLY; Summary of the call.
 	Summary *BufferResponseSummary `json:"summary,omitempty" azure:"ro"`
@@ -202,11 +203,11 @@ func (b *BufferResponse) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "result":
-				b.Result, err = unmarshalGeoJSONFeatureCollectionClassification(val)
-				delete(rawMsg, key)
+			b.Result, err = unmarshalGeoJSONObjectClassification(val)
+			delete(rawMsg, key)
 		case "summary":
-				err = unpopulate(val, &b.Summary)
-				delete(rawMsg, key)
+			err = unpopulate(val, &b.Summary)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -627,7 +628,7 @@ type ExtendedGeoJSONFeatureCollection struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ExtendedGeoJSONFeatureCollection.
 func (e ExtendedGeoJSONFeatureCollection) MarshalJSON() ([]byte, error) {
-	objectMap := e.ExtendedGeoJSONFeatureCollectionData.marshalInternal(GeoJSONObjectTypeGeoJSONFeatureCollection)
+	objectMap := e.ExtendedGeoJSONFeatureCollectionData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -670,14 +671,14 @@ func (e *ExtendedGeoJSONFeatureCollectionData) unmarshalInternal(rawMsg map[stri
 		var err error
 		switch key {
 		case "links":
-				err = unpopulate(val, &e.Links)
-				delete(rawMsg, key)
+			err = unpopulate(val, &e.Links)
+			delete(rawMsg, key)
 		case "numberReturned":
-				err = unpopulate(val, &e.NumberReturned)
-				delete(rawMsg, key)
+			err = unpopulate(val, &e.NumberReturned)
+			delete(rawMsg, key)
 		case "ontology":
-				err = unpopulate(val, &e.Ontology)
-				delete(rawMsg, key)
+			err = unpopulate(val, &e.Ontology)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -780,7 +781,7 @@ type GeoJSONFeature struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONFeature.
 func (g GeoJSONFeature) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONFeatureData.marshalInternal(GeoJSONObjectTypeGeoJSONFeature)
+	objectMap := g.GeoJSONFeatureData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -850,8 +851,8 @@ func (g *GeoJSONFeatureCollectionData) unmarshalInternal(rawMsg map[string]json.
 		var err error
 		switch key {
 		case "features":
-				err = unpopulate(val, &g.Features)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Features)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -862,8 +863,8 @@ func (g *GeoJSONFeatureCollectionData) unmarshalInternal(rawMsg map[string]json.
 
 type GeoJSONFeatureData struct {
 	// REQUIRED; A valid GeoJSON geometry object. The type must be one of the seven valid GeoJSON geometry types - Point, MultiPoint, LineString, MultiLineString,
-// Polygon, MultiPolygon and GeometryCollection. Please
-// refer to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3.1] for details.
+	// Polygon, MultiPolygon and GeometryCollection. Please
+	// refer to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3.1] for details.
 	Geometry GeoJSONGeometryClassification `json:"geometry,omitempty"`
 
 	// The type of the feature. The value depends on the data model the current feature is part of. Some data models may have an empty value.
@@ -905,17 +906,17 @@ func (g *GeoJSONFeatureData) unmarshalInternal(rawMsg map[string]json.RawMessage
 		var err error
 		switch key {
 		case "featureType":
-				err = unpopulate(val, &g.FeatureType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.FeatureType)
+			delete(rawMsg, key)
 		case "geometry":
-				g.Geometry, err = unmarshalGeoJSONGeometryClassification(val)
-				delete(rawMsg, key)
+			g.Geometry, err = unmarshalGeoJSONGeometryClassification(val)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, &g.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.ID)
+			delete(rawMsg, key)
 		case "properties":
-				err = unpopulate(val, &g.Properties)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Properties)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -969,7 +970,7 @@ type GeoJSONGeometryCollection struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONGeometryCollection.
 func (g GeoJSONGeometryCollection) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONGeometryCollectionData.marshalInternal(GeoJSONObjectTypeGeoJSONGeometryCollection)
+	objectMap := g.GeoJSONGeometryCollectionData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -1004,8 +1005,8 @@ func (g *GeoJSONGeometryCollectionData) unmarshalInternal(rawMsg map[string]json
 		var err error
 		switch key {
 		case "geometries":
-				g.Geometries, err = unmarshalGeoJSONGeometryClassificationArray(val)
-				delete(rawMsg, key)
+			g.Geometries, err = unmarshalGeoJSONGeometryClassificationArray(val)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1022,7 +1023,7 @@ type GeoJSONLineString struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONLineString.
 func (g GeoJSONLineString) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONLineStringData.marshalInternal(GeoJSONObjectTypeGeoJSONLineString)
+	objectMap := g.GeoJSONLineStringData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -1057,8 +1058,8 @@ func (g *GeoJSONLineStringData) unmarshalInternal(rawMsg map[string]json.RawMess
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1076,7 +1077,7 @@ type GeoJSONMultiLineString struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONMultiLineString.
 func (g GeoJSONMultiLineString) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONMultiLineStringData.marshalInternal(GeoJSONObjectTypeGeoJSONMultiLineString)
+	objectMap := g.GeoJSONMultiLineStringData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -1111,8 +1112,8 @@ func (g *GeoJSONMultiLineStringData) unmarshalInternal(rawMsg map[string]json.Ra
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1129,7 +1130,7 @@ type GeoJSONMultiPoint struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONMultiPoint.
 func (g GeoJSONMultiPoint) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONMultiPointData.marshalInternal(GeoJSONObjectTypeGeoJSONMultiPoint)
+	objectMap := g.GeoJSONMultiPointData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -1165,8 +1166,8 @@ func (g *GeoJSONMultiPointData) unmarshalInternal(rawMsg map[string]json.RawMess
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1183,7 +1184,7 @@ type GeoJSONMultiPolygon struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONMultiPolygon.
 func (g GeoJSONMultiPolygon) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONMultiPolygonData.marshalInternal(GeoJSONObjectTypeGeoJSONMultiPolygon)
+	objectMap := g.GeoJSONMultiPolygonData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -1218,8 +1219,8 @@ func (g *GeoJSONMultiPolygonData) unmarshalInternal(rawMsg map[string]json.RawMe
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1241,8 +1242,8 @@ type GeoJSONObjectClassification interface {
 // GeoJSONObject - A valid GeoJSON object. Please refer to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3] for details.
 type GeoJSONObject struct {
 	// REQUIRED; Specifies the GeoJSON type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon,
-// GeometryCollection, Feature and
-// FeatureCollection.
+	// GeometryCollection, Feature and
+	// FeatureCollection.
 	Type *GeoJSONObjectType `json:"type,omitempty"`
 }
 
@@ -1270,8 +1271,8 @@ func (g *GeoJSONObject) unmarshalInternal(rawMsg map[string]json.RawMessage) err
 		var err error
 		switch key {
 		case "type":
-				err = unpopulate(val, &g.Type)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Type)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1288,15 +1289,15 @@ type GeoJSONPoint struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONPoint.
 func (g GeoJSONPoint) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONPointData.marshalInternal(GeoJSONObjectTypeGeoJSONPoint)
+	objectMap := g.GeoJSONPointData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
 // GeoJSONPointData - Data contained by a GeoJson Point.
 type GeoJSONPointData struct {
 	// REQUIRED; A Position is an array of numbers with two or more elements. The first two elements are longitude and latitude, precisely in that order. Altitude/Elevation
-// is an optional third element. Please refer
-// to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3.1.1] for details.
+	// is an optional third element. Please refer
+	// to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3.1.1] for details.
 	Coordinates []*float64 `json:"coordinates,omitempty"`
 }
 
@@ -1326,8 +1327,8 @@ func (g *GeoJSONPointData) unmarshalInternal(rawMsg map[string]json.RawMessage) 
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1344,7 +1345,7 @@ type GeoJSONPolygon struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONPolygon.
 func (g GeoJSONPolygon) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONPolygonData.marshalInternal(GeoJSONObjectTypeGeoJSONPolygon)
+	objectMap := g.GeoJSONPolygonData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -1379,8 +1380,8 @@ func (g *GeoJSONPolygonData) unmarshalInternal(rawMsg map[string]json.RawMessage
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1395,12 +1396,12 @@ type GeofenceGeometry struct {
 	DeviceID *string `json:"deviceId,omitempty" azure:"ro"`
 
 	// READ-ONLY; Distance from the coordinate to the closest border of the geofence. Positive means the coordinate is outside of the geofence. If the coordinate
-// is outside of the geofence, but more than the value of
-// searchBuffer away from the closest geofence border, then the value is 999. Negative means the coordinate is inside of the geofence. If the coordinate
-// is inside the polygon, but more than the value of
-// searchBuffer away from the closest geofencing border, then the value is -999. A value of 999 means that there is great confidence the coordinate is well
-// outside the geofence. A value of -999 means
-// that there is great confidence the coordinate is well within the geofence.
+	// is outside of the geofence, but more than the value of
+	// searchBuffer away from the closest geofence border, then the value is 999. Negative means the coordinate is inside of the geofence. If the coordinate
+	// is inside the polygon, but more than the value of
+	// searchBuffer away from the closest geofencing border, then the value is -999. A value of 999 means that there is great confidence the coordinate is well
+	// outside the geofence. A value of -999 means
+	// that there is great confidence the coordinate is well within the geofence.
 	Distance *float32 `json:"distance,omitempty" azure:"ro"`
 
 	// READ-ONLY; The unique id identifies a geometry.
@@ -1413,13 +1414,13 @@ type GeofenceGeometry struct {
 	NearestLon *float32 `json:"nearestLon,omitempty" azure:"ro"`
 
 	// READ-ONLY; Sea level in meter of the nearest point on the 2D extrusion geometry. This will only be presented in response when value is provided for 'zInMeter'
-// in the request.
+	// in the request.
 	NearestZ *float32 `json:"nearestZ,omitempty" azure:"ro"`
 
 	// READ-ONLY; The unique id returned from Data Upload API [https://docs.microsoft.com/en-us/rest/api/maps/data/uploadPreview] after uploading a valid GeoJSON
-// FeatureCollection object. Please refer to RFC 7946
-// [https://tools.ietf.org/html/rfc7946#section-3.3] for details. All the feature's properties should contain geometryId, which is used for identifying
-// the geometry and is case-sensitive.
+	// FeatureCollection object. Please refer to RFC 7946
+	// [https://tools.ietf.org/html/rfc7946#section-3.3] for details. All the feature's properties should contain geometryId, which is used for identifying
+	// the geometry and is case-sensitive.
 	UdID *string `json:"udId,omitempty" azure:"ro"`
 }
 
@@ -1435,8 +1436,8 @@ type GeofenceResponse struct {
 	InvalidPeriodGeofenceGeometryID []*string `json:"invalidPeriodGeofenceGeometryId,omitempty" azure:"ro"`
 
 	// READ-ONLY; True if at least one event is published to the Azure Maps event subscriber, false if no event is published to the Azure Maps event subscriber.
-// This will only be presented in response when 'isAsync'
-// query parameter is set to true.
+	// This will only be presented in response when 'isAsync'
+	// query parameter is set to true.
 	IsEventPublished *bool `json:"isEventPublished,omitempty" azure:"ro"`
 }
 
@@ -1545,8 +1546,8 @@ func (m MapDataListResponse) MarshalJSON() ([]byte, error) {
 // NumberRuleObject - The numeric rule. The color is selected from the first range it falls into.
 type NumberRuleObject struct {
 	// The color when value is within the range. Color is a JSON string in a variety of permitted formats, HTML-style hex values, RGB ("#ff0", "#ffff00", "rgb(255,
-// 255, 0)"), RGBA ("rgba(255, 255, 0, 1)"),
-// HSL("hsl(100, 50%, 50%)"), and HSLA("hsla(100, 50%, 50%, 1)"). Predefined HTML colors names, like yellow and blue, are also permitted.
+	// 255, 0)"), RGBA ("rgba(255, 255, 0, 1)"),
+	// HSL("hsl(100, 50%, 50%)"), and HSLA("hsla(100, 50%, 50%, 1)"). Predefined HTML colors names, like yellow and blue, are also permitted.
 	Color *string `json:"color,omitempty"`
 
 	// The numeric value range for this style rule. If the value is in the range, all the conditions must hold true.
@@ -1577,8 +1578,8 @@ func (n *NumberTypeStyleRule) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "rules":
-				err = unpopulate(val, &n.Rules)
-				delete(rawMsg, key)
+			err = unpopulate(val, &n.Rules)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1667,7 +1668,7 @@ type SpatialGetGeofenceOptions struct {
 	// Mode of the geofencing async event mechanism.
 	Mode *GeofenceMode
 	// The radius of the buffer around the geofence in meters that defines how far to search inside and outside the border of the fence against the coordinate
-// that was provided when calculating the result. The minimum value is 0, and the maximum is 500. The default value is 50.
+	// that was provided when calculating the result. The minimum value is 0, and the maximum is 500. The default value is 50.
 	SearchBuffer *float32
 	// The user request time. If not presented in the request, the default value is DateTime.Now.
 	UserTime *time.Time
@@ -1703,7 +1704,7 @@ type SpatialPostGeofenceOptions struct {
 	// Mode of the geofencing async event mechanism.
 	Mode *GeofenceMode
 	// The radius of the buffer around the geofence in meters that defines how far to search inside and outside the border of the fence against the coordinate
-// that was provided when calculating the result. The minimum value is 0, and the maximum is 500. The default value is 50.
+	// that was provided when calculating the result. The minimum value is 0, and the maximum is 500. The default value is 50.
 	SearchBuffer *float32
 	// The user request time. If not presented in the request, the default value is DateTime.UtcNow.
 	UserTime *time.Time
@@ -1809,8 +1810,8 @@ func (s *StringTypeStyleRule) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "rules":
-				err = unpopulate(val, &s.Rules)
-				delete(rawMsg, key)
+			err = unpopulate(val, &s.Rules)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1864,11 +1865,11 @@ func (s *StyleObject) unmarshalInternal(rawMsg map[string]json.RawMessage) error
 		var err error
 		switch key {
 		case "keyName":
-				err = unpopulate(val, &s.KeyName)
-				delete(rawMsg, key)
+			err = unpopulate(val, &s.KeyName)
+			delete(rawMsg, key)
 		case "type":
-				err = unpopulate(val, &s.Type)
-				delete(rawMsg, key)
+			err = unpopulate(val, &s.Type)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1880,8 +1881,8 @@ func (s *StyleObject) unmarshalInternal(rawMsg map[string]json.RawMessage) error
 // StylesObject - The styles model.
 type StylesObject struct {
 	// An array of stateset styles. The style rule could be a numeric or string or a boolean type style rule. Refer to NumberRuleObject, StringRuleObject and
-// BooleanRuleObject definitions here
-// [https://aka.ms/AzureMapsStatesetStylesObject].
+	// BooleanRuleObject definitions here
+	// [https://aka.ms/AzureMapsStatesetStylesObject].
 	Styles []StyleObjectClassification `json:"styles,omitempty"`
 }
 
@@ -1902,8 +1903,8 @@ func (s *StylesObject) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "styles":
-				s.Styles, err = unmarshalStyleObjectClassificationArray(val)
-				delete(rawMsg, key)
+			s.Styles, err = unmarshalStyleObjectClassificationArray(val)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -2025,25 +2026,25 @@ type WFSGetFeatureOptions struct {
 // WFSGetFeaturesOptions contains the optional parameters for the WFS.GetFeatures method.
 type WFSGetFeaturesOptions struct {
 	// Only features that have a geometry that intersects the supplied bounding box are selected.
-// * Lower left corner, coordinate axis 1 * Lower left corner, coordinate axis 2 * Upper right corner, coordinate axis 1 * Upper right corner, coordinate
-// axis 2
-// The coordinate reference system of the values is WGS84 longitude/latitude (http://www.opengis.net/def/crs/OGC/1.3/CRS84) unless a different coordinate
-// reference system is specified in the parameter `bbox-crs`.
-// For WGS84 longitude/latitude the values are in most cases the sequence of minimum longitude, minimum latitude, maximum longitude and maximum latitude.
-// However, in cases where the box spans the antimeridian the first value (west-most box edge) is larger than the third value (east-most box edge).
+	// * Lower left corner, coordinate axis 1 * Lower left corner, coordinate axis 2 * Upper right corner, coordinate axis 1 * Upper right corner, coordinate
+	// axis 2
+	// The coordinate reference system of the values is WGS84 longitude/latitude (http://www.opengis.net/def/crs/OGC/1.3/CRS84) unless a different coordinate
+	// reference system is specified in the parameter `bbox-crs`.
+	// For WGS84 longitude/latitude the values are in most cases the sequence of minimum longitude, minimum latitude, maximum longitude and maximum latitude.
+	// However, in cases where the box spans the antimeridian the first value (west-most box edge) is larger than the third value (east-most box edge).
 	Bbox *string
 	// Filter expression to search for features with specific property values in a given collection. Only feature properties of scalar type and equals operator
-// are supported.
-// This is a special parameter where the parameter name is a case sensitive property name. The scheme for this parameter is {property name}={property value}.
-// Unless "filter" is one of the property names in the collection, "filter" should not be used as a parameter name. To search for features with "name" property
-// value "21N13", use "name=21N13".
-// Multiple filters are supported and should be represented as multiple query parameters. E.g., <property1>=<value1>&<property2>=<value2> String values
-// are case sensitive.
+	// are supported.
+	// This is a special parameter where the parameter name is a case sensitive property name. The scheme for this parameter is {property name}={property value}.
+	// Unless "filter" is one of the property names in the collection, "filter" should not be used as a parameter name. To search for features with "name" property
+	// value "21N13", use "name=21N13".
+	// Multiple filters are supported and should be represented as multiple query parameters. E.g., <property1>=<value1>&<property2>=<value2> String values
+	// are case sensitive.
 	Filter *string
 	// The optional limit parameter limits the number of features that are presented in the response document.
-// Only features that are on the first level of the collection in the response document are counted. Nested objects contained within the explicitly requested
-// features shall not be counted.
-// * Minimum = 1 * Maximum = 50 * Default = 10
+	// Only features that are on the first level of the collection in the response document are counted. Nested objects contained within the explicitly requested
+	// features shall not be counted.
+	// * Minimum = 1 * Maximum = 50 * Default = 10
 	Limit *int32
 }
 
@@ -2063,7 +2064,7 @@ type WfsEndpointLink struct {
 	Rel *string `json:"rel,omitempty"`
 
 	// Used to label the destination of a link such that it can be used as a human-readable identifier (e.g., a menu entry) in the language indicated by the
-// Content-Language header field (if present).
+	// Content-Language header field (if present).
 	Title *string `json:"title,omitempty"`
 
 	// A hint indicating what the media type of the result of dereferencing the link should be.
@@ -2086,4 +2087,3 @@ func unpopulate(data json.RawMessage, v interface{}) error {
 	}
 	return json.Unmarshal(data, v)
 }
-

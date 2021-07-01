@@ -9,8 +9,9 @@ package search
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // BatchItem - An item returned from Batch API. Extend with 'response' property.
@@ -84,7 +85,7 @@ type DataSources struct {
 // DataSourcesGeometry - Information about the geometric shape of the result. Only present if type == Geography.
 type DataSourcesGeometry struct {
 	// READ-ONLY; Pass this as geometryId to the Get Search Polygon [https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon] API to fetch geometry
-// information for this result.
+	// information for this result.
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
@@ -149,7 +150,7 @@ type GeoJSONFeature struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONFeature.
 func (g GeoJSONFeature) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONFeatureData.marshalInternal(GeoJSONObjectTypeGeoJSONFeature)
+	objectMap := g.GeoJSONFeatureData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -162,7 +163,7 @@ type GeoJSONFeatureCollection struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONFeatureCollection.
 func (g GeoJSONFeatureCollection) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONFeatureCollectionData.marshalInternal(GeoJSONObjectTypeGeoJSONFeatureCollection)
+	objectMap := g.GeoJSONFeatureCollectionData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -197,8 +198,8 @@ func (g *GeoJSONFeatureCollectionData) unmarshalInternal(rawMsg map[string]json.
 		var err error
 		switch key {
 		case "features":
-				err = unpopulate(val, &g.Features)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Features)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -209,8 +210,8 @@ func (g *GeoJSONFeatureCollectionData) unmarshalInternal(rawMsg map[string]json.
 
 type GeoJSONFeatureData struct {
 	// REQUIRED; A valid GeoJSON geometry object. The type must be one of the seven valid GeoJSON geometry types - Point, MultiPoint, LineString, MultiLineString,
-// Polygon, MultiPolygon and GeometryCollection. Please
-// refer to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3.1] for details.
+	// Polygon, MultiPolygon and GeometryCollection. Please
+	// refer to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3.1] for details.
 	Geometry GeoJSONGeometryClassification `json:"geometry,omitempty"`
 
 	// The type of the feature. The value depends on the data model the current feature is part of. Some data models may have an empty value.
@@ -252,17 +253,17 @@ func (g *GeoJSONFeatureData) unmarshalInternal(rawMsg map[string]json.RawMessage
 		var err error
 		switch key {
 		case "featureType":
-				err = unpopulate(val, &g.FeatureType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.FeatureType)
+			delete(rawMsg, key)
 		case "geometry":
-				g.Geometry, err = unmarshalGeoJSONGeometryClassification(val)
-				delete(rawMsg, key)
+			g.Geometry, err = unmarshalGeoJSONGeometryClassification(val)
+			delete(rawMsg, key)
 		case "id":
-				err = unpopulate(val, &g.ID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.ID)
+			delete(rawMsg, key)
 		case "properties":
-				err = unpopulate(val, &g.Properties)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Properties)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -316,7 +317,7 @@ type GeoJSONGeometryCollection struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONGeometryCollection.
 func (g GeoJSONGeometryCollection) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONGeometryCollectionData.marshalInternal(GeoJSONObjectTypeGeoJSONGeometryCollection)
+	objectMap := g.GeoJSONGeometryCollectionData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -351,8 +352,8 @@ func (g *GeoJSONGeometryCollectionData) unmarshalInternal(rawMsg map[string]json
 		var err error
 		switch key {
 		case "geometries":
-				g.Geometries, err = unmarshalGeoJSONGeometryClassificationArray(val)
-				delete(rawMsg, key)
+			g.Geometries, err = unmarshalGeoJSONGeometryClassificationArray(val)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -369,7 +370,7 @@ type GeoJSONLineString struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONLineString.
 func (g GeoJSONLineString) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONLineStringData.marshalInternal(GeoJSONObjectTypeGeoJSONLineString)
+	objectMap := g.GeoJSONLineStringData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -404,8 +405,8 @@ func (g *GeoJSONLineStringData) unmarshalInternal(rawMsg map[string]json.RawMess
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -423,7 +424,7 @@ type GeoJSONMultiLineString struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONMultiLineString.
 func (g GeoJSONMultiLineString) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONMultiLineStringData.marshalInternal(GeoJSONObjectTypeGeoJSONMultiLineString)
+	objectMap := g.GeoJSONMultiLineStringData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -458,8 +459,8 @@ func (g *GeoJSONMultiLineStringData) unmarshalInternal(rawMsg map[string]json.Ra
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -476,7 +477,7 @@ type GeoJSONMultiPoint struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONMultiPoint.
 func (g GeoJSONMultiPoint) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONMultiPointData.marshalInternal(GeoJSONObjectTypeGeoJSONMultiPoint)
+	objectMap := g.GeoJSONMultiPointData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -512,8 +513,8 @@ func (g *GeoJSONMultiPointData) unmarshalInternal(rawMsg map[string]json.RawMess
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -530,7 +531,7 @@ type GeoJSONMultiPolygon struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONMultiPolygon.
 func (g GeoJSONMultiPolygon) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONMultiPolygonData.marshalInternal(GeoJSONObjectTypeGeoJSONMultiPolygon)
+	objectMap := g.GeoJSONMultiPolygonData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -565,8 +566,8 @@ func (g *GeoJSONMultiPolygonData) unmarshalInternal(rawMsg map[string]json.RawMe
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -588,8 +589,8 @@ type GeoJSONObjectClassification interface {
 // GeoJSONObject - A valid GeoJSON object. Please refer to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3] for details.
 type GeoJSONObject struct {
 	// REQUIRED; Specifies the GeoJSON type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon,
-// GeometryCollection, Feature and
-// FeatureCollection.
+	// GeometryCollection, Feature and
+	// FeatureCollection.
 	Type *GeoJSONObjectType `json:"type,omitempty"`
 }
 
@@ -617,8 +618,8 @@ func (g *GeoJSONObject) unmarshalInternal(rawMsg map[string]json.RawMessage) err
 		var err error
 		switch key {
 		case "type":
-				err = unpopulate(val, &g.Type)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Type)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -635,15 +636,15 @@ type GeoJSONPoint struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONPoint.
 func (g GeoJSONPoint) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONPointData.marshalInternal(GeoJSONObjectTypeGeoJSONPoint)
+	objectMap := g.GeoJSONPointData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
 // GeoJSONPointData - Data contained by a GeoJson Point.
 type GeoJSONPointData struct {
 	// REQUIRED; A Position is an array of numbers with two or more elements. The first two elements are longitude and latitude, precisely in that order. Altitude/Elevation
-// is an optional third element. Please refer
-// to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3.1.1] for details.
+	// is an optional third element. Please refer
+	// to RFC 7946 [https://tools.ietf.org/html/rfc7946#section-3.1.1] for details.
 	Coordinates []*float64 `json:"coordinates,omitempty"`
 }
 
@@ -673,8 +674,8 @@ func (g *GeoJSONPointData) unmarshalInternal(rawMsg map[string]json.RawMessage) 
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -691,7 +692,7 @@ type GeoJSONPolygon struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GeoJSONPolygon.
 func (g GeoJSONPolygon) MarshalJSON() ([]byte, error) {
-	objectMap := g.GeoJSONPolygonData.marshalInternal(GeoJSONObjectTypeGeoJSONPolygon)
+	objectMap := g.GeoJSONPolygonData.marshalInternal()
 	return json.Marshal(objectMap)
 }
 
@@ -726,8 +727,8 @@ func (g *GeoJSONPolygonData) unmarshalInternal(rawMsg map[string]json.RawMessage
 		var err error
 		switch key {
 		case "coordinates":
-				err = unpopulate(val, &g.Coordinates)
-				delete(rawMsg, key)
+			err = unpopulate(val, &g.Coordinates)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -742,8 +743,8 @@ type PoiCategoryResult struct {
 	ChildCategoryIDs []*int32 `json:"childCategoryIds,omitempty" azure:"ro"`
 
 	// READ-ONLY; Unique ID for the category. ID can be used to restrict search results to specific categories through other Search Service APIs, like Get Search
-// POI
-// [https://docs.microsoft.com/rest/api/maps/search/getsearchpoi].
+	// POI
+	// [https://docs.microsoft.com/rest/api/maps/search/getsearchpoi].
 	ID *int32 `json:"id,omitempty" azure:"ro"`
 
 	// READ-ONLY; Name of the category
@@ -871,10 +872,10 @@ type SearchAddressReverseResult struct {
 	Address *SearchResultAddress `json:"address,omitempty" azure:"ro"`
 
 	// READ-ONLY; Information on the type of match.
-// One of:
-// * AddressPoint
-// * HouseNumberRange
-// * Street
+	// One of:
+	// * AddressPoint
+	// * HouseNumberRange
+	// * Street
 	MatchType *string `json:"matchType,omitempty" azure:"ro"`
 
 	// READ-ONLY; Position property in the form of "{latitude},{longitude}"
@@ -951,7 +952,7 @@ type SearchCommonResult struct {
 	Address *SearchResultAddress `json:"address,omitempty" azure:"ro"`
 
 	// READ-ONLY; Describes the address range on both sides of the street for a search result. Coordinates for the start and end locations of the address range
-// are included.
+	// are included.
 	AddressRanges *SearchResultAddressRanges `json:"addressRanges,omitempty" azure:"ro"`
 
 	// READ-ONLY; Optional section. Reference ids for use with the Get Search Polygon [https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon] API.
@@ -973,27 +974,27 @@ type SearchCommonResult struct {
 	Info *string `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; Information on the type of match.
-// One of:
-// * AddressPoint
-// * HouseNumberRange
-// * Street
+	// One of:
+	// * AddressPoint
+	// * HouseNumberRange
+	// * Street
 	MatchType *string `json:"matchType,omitempty" azure:"ro"`
 
 	// READ-ONLY; Details of the returned POI including information such as the name, phone, url address, and classifications.
 	Poi *SearchResultPoi `json:"poi,omitempty" azure:"ro"`
 
 	// READ-ONLY; The value within a result set to indicate the relative matching score between results. You can use this to determine that result x is twice
-// as likely to be as relevant as result y if the value of x is
-// 2x the value of y. The values vary between queries and is only meant as a relative value for one result set.
+	// as likely to be as relevant as result y if the value of x is
+	// 2x the value of y. The values vary between queries and is only meant as a relative value for one result set.
 	Score *float32 `json:"score,omitempty" azure:"ro"`
 
 	// READ-ONLY; One of:
-// * POI
-// * Street
-// * Geography
-// * Point Address
-// * Address Range
-// * Cross Street
+	// * POI
+	// * Street
+	// * Geography
+	// * Point Address
+	// * Address Range
+	// * Cross Street
 	Type *string `json:"type,omitempty" azure:"ro"`
 
 	// READ-ONLY; The viewport that covers the result represented by the top-left and bottom-right coordinates of the viewport.
@@ -1027,8 +1028,8 @@ type SearchCommonSummary struct {
 	FuzzyLevel *int32 `json:"fuzzyLevel,omitempty" azure:"ro"`
 
 	// READ-ONLY; Indication when the internal search engine has applied a geospatial bias to improve the ranking of results. In some methods, this can be affected
-// by setting the lat and lon parameters where available.
-// In other cases it is purely internal.
+	// by setting the lat and lon parameters where available.
+	// In other cases it is purely internal.
 	GeoBias *SearchCommonSummaryGeoBias `json:"geoBias,omitempty" azure:"ro"`
 
 	// READ-ONLY; Maximum number of responses that will be returned
@@ -1094,25 +1095,25 @@ type SearchGetSearchAddressOptions struct {
 	// Comma separated string of country codes, e.g. FR,ES. This will limit the search to the specified countries
 	CountrySet []string
 	// Indexes for which extended postal codes should be included in the results.
-// Available indexes are:
-// **Addr** = Address ranges
-// **Geo** = Geographies
-// **PAD** = Point Addresses
-// **POI** = Points of Interest
-// **Str** = Streets
-// **XStr** = Cross Streets (intersections)
-// Value should be a comma separated list of index types (in any order) or **None** for no indexes.
-// By default extended postal codes are included for all indexes except Geo. Extended postal code lists for geographies can be quite long so they have to
-// be explicitly requested when needed.
-// Usage examples:
-// extendedPostalCodesFor=POI
-// extendedPostalCodesFor=PAD,Addr,POI
-// extendedPostalCodesFor=None
-// Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is region-dependent.
+	// Available indexes are:
+	// **Addr** = Address ranges
+	// **Geo** = Geographies
+	// **PAD** = Point Addresses
+	// **POI** = Points of Interest
+	// **Str** = Streets
+	// **XStr** = Cross Streets (intersections)
+	// Value should be a comma separated list of index types (in any order) or **None** for no indexes.
+	// By default extended postal codes are included for all indexes except Geo. Extended postal code lists for geographies can be quite long so they have to
+	// be explicitly requested when needed.
+	// Usage examples:
+	// extendedPostalCodesFor=POI
+	// extendedPostalCodesFor=PAD,Addr,POI
+	// extendedPostalCodesFor=None
+	// Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is region-dependent.
 	ExtendedPostalCodesFor *string
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used.
-// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used.
+	// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
 	Language *string
 	// Latitude where results should be biased. E.g. 37.337
 	Lat *float32
@@ -1129,61 +1130,61 @@ type SearchGetSearchAddressOptions struct {
 	// Boolean. If the typeahead flag is set, the query will be interpreted as a partial input and the search will enter predictive mode
 	Typeahead *bool
 	// The View parameter specifies which set of geopolitically disputed content is returned via Azure Maps services, including borders and labels displayed
-// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
-// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
-// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
-// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
-// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
-// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
+	// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
+	// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
+	// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
+	// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
+	// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
+	// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
 	View *string
 }
 
 // SearchGetSearchAddressReverseCrossStreetOptions contains the optional parameters for the Search.GetSearchAddressReverseCrossStreet method.
 type SearchGetSearchAddressReverseCrossStreetOptions struct {
 	// The directional heading of the vehicle in degrees, for travel along a segment of roadway. 0 is North, 90 is East and so on, values range from -360 to
-// 360. The precision can include upto one decimal place
+	// 360. The precision can include upto one decimal place
 	Heading *float32
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used.
-// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used.
+	// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
 	Language *string
 	// Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100
 	Limit *int32
 	// The radius in meters to for the results to be constrained to the defined area
 	Radius *float32
 	// The View parameter specifies which set of geopolitically disputed content is returned via Azure Maps services, including borders and labels displayed
-// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
-// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
-// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
-// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
-// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
-// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
+	// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
+	// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
+	// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
+	// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
+	// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
+	// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
 	View *string
 }
 
 // SearchGetSearchAddressReverseOptions contains the optional parameters for the Search.GetSearchAddressReverse method.
 type SearchGetSearchAddressReverseOptions struct {
 	// Format of newlines in the formatted address.
-// If true, the address will contain newlines.
-// If false, newlines will be converted to commas.
+	// If true, the address will contain newlines.
+	// If false, newlines will be converted to commas.
 	AllowFreeformNewline *bool
 	// Specifies the level of filtering performed on geographies. Narrows the search for specified geography entity types, e.g. return only municipality. The
-// resulting response will contain the geography ID as well as the entity type matched. If you provide more than one entity as a comma separated list, endpoint
-// will return the 'smallest entity available'. Returned Geometry ID can be used to get the geometry of that geography via [Get Search Polygon](https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon)
-// API. The following parameters are ignored when entityType is set:
-// * heading
-// * number
-// * returnRoadUse
-// * returnSpeedLimit
-// * roadUse
-// * returnMatchType
+	// resulting response will contain the geography ID as well as the entity type matched. If you provide more than one entity as a comma separated list, endpoint
+	// will return the 'smallest entity available'. Returned Geometry ID can be used to get the geometry of that geography via [Get Search Polygon](https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon)
+	// API. The following parameters are ignored when entityType is set:
+	// * heading
+	// * number
+	// * returnRoadUse
+	// * returnSpeedLimit
+	// * roadUse
+	// * returnMatchType
 	EntityType *EntityType
 	// The directional heading of the vehicle in degrees, for travel along a segment of roadway. 0 is North, 90 is East and so on, values range from -360 to
-// 360. The precision can include upto one decimal place
+	// 360. The precision can include upto one decimal place
 	Heading *float32
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used.
-// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used.
+	// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
 	Language *string
 	// If a number is sent in along with the request, the response may include the side of the street (Left/Right) and also an offset position for that number
 	Number *string
@@ -1196,15 +1197,15 @@ type SearchGetSearchAddressReverseOptions struct {
 	// Boolean. To enable return of the posted speed limit
 	ReturnSpeedLimit *bool
 	// To restrict reverse geocodes to a certain type of road use. The road use array for reverse geocodes can be one or more of LimitedAccess, Arterial, Terminal,
-// Ramp, Rotary, LocalStreet
+	// Ramp, Rotary, LocalStreet
 	RoadUse *string
 	// The View parameter specifies which set of geopolitically disputed content is returned via Azure Maps services, including borders and labels displayed
-// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
-// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
-// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
-// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
-// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
-// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
+	// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
+	// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
+	// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
+	// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
+	// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
+	// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
 	View *string
 }
 
@@ -1221,25 +1222,25 @@ type SearchGetSearchAddressStructuredOptions struct {
 	// The cross street name for the structured address
 	CrossStreet *string
 	// Indexes for which extended postal codes should be included in the results.
-// Available indexes are:
-// **Addr** = Address ranges
-// **Geo** = Geographies
-// **PAD** = Point Addresses
-// **POI** = Points of Interest
-// **Str** = Streets
-// **XStr** = Cross Streets (intersections)
-// Value should be a comma separated list of index types (in any order) or **None** for no indexes.
-// By default extended postal codes are included for all indexes except Geo. Extended postal code lists for geographies can be quite long so they have to
-// be explicitly requested when needed.
-// Usage examples:
-// extendedPostalCodesFor=POI
-// extendedPostalCodesFor=PAD,Addr,POI
-// extendedPostalCodesFor=None
-// Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is region-dependent.
+	// Available indexes are:
+	// **Addr** = Address ranges
+	// **Geo** = Geographies
+	// **PAD** = Point Addresses
+	// **POI** = Points of Interest
+	// **Str** = Streets
+	// **XStr** = Cross Streets (intersections)
+	// Value should be a comma separated list of index types (in any order) or **None** for no indexes.
+	// By default extended postal codes are included for all indexes except Geo. Extended postal code lists for geographies can be quite long so they have to
+	// be explicitly requested when needed.
+	// Usage examples:
+	// extendedPostalCodesFor=POI
+	// extendedPostalCodesFor=PAD,Addr,POI
+	// extendedPostalCodesFor=None
+	// Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is region-dependent.
 	ExtendedPostalCodesFor *string
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used.
-// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used.
+	// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
 	Language *string
 	// Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100
 	Limit *int32
@@ -1256,84 +1257,84 @@ type SearchGetSearchAddressStructuredOptions struct {
 	// The street number portion of an address
 	StreetNumber *string
 	// The View parameter specifies which set of geopolitically disputed content is returned via Azure Maps services, including borders and labels displayed
-// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
-// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
-// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
-// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
-// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
-// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
+	// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
+	// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
+	// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
+	// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
+	// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
+	// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
 	View *string
 }
 
 // SearchGetSearchFuzzyOptions contains the optional parameters for the Search.GetSearchFuzzy method.
 type SearchGetSearchFuzzyOptions struct {
 	// A comma-separated list of brand names which could be used to restrict the result to specific brands. Item order does not matter. When multiple brands
-// are provided, only results that belong to (at least) one of the provided list will be returned. Brands that contain a "," in their name should be put
-// into quotes.
-// Usage examples:
-// brandSet=Foo
-// brandSet=Foo,Bar
-// brandSet="A,B,C Comma",Bar
+	// are provided, only results that belong to (at least) one of the provided list will be returned. Brands that contain a "," in their name should be put
+	// into quotes.
+	// Usage examples:
+	// brandSet=Foo
+	// brandSet=Foo,Bar
+	// brandSet="A,B,C Comma",Bar
 	BrandSet []string
 	// Bottom right position of the bounding box. E.g. 37.553,-122.453
 	BtmRight *string
 	// A comma-separated list of category set IDs which could be used to restrict the result to specific Points of Interest categories. ID order does not matter.
-// When multiple category identifiers are provided, only POIs that belong to (at least) one of the categories from the provided list will be returned. The
-// list of supported categories can be discovered using [POI Categories API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
-// * **categorySet=7315** (Search Points of Interest from category Restaurant)
-// * **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French Restaurant)
+	// When multiple category identifiers are provided, only POIs that belong to (at least) one of the categories from the provided list will be returned. The
+	// list of supported categories can be discovered using [POI Categories API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
+	// * **categorySet=7315** (Search Points of Interest from category Restaurant)
+	// * **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French Restaurant)
 	CategorySet []int32
 	// A comma-separated list of connector types which could be used to restrict the result to Electric Vehicle Station supporting specific connector types.
-// Item order does not matter. When multiple connector types are provided, only results that belong to (at least) one of the provided list will be returned.
-// Available connector types are:
-// * `StandardHouseholdCountrySpecific` - These are the standard household connectors for a certain region. They are all AC single phase and the standard
-// Voltage and standard Amperage. See also: [Plug & socket types - World Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets).
-// * `IEC62196Type1` - Type 1 connector as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after the
-// standard that first published it. Mostly used in combination with 120V single phase or up to 240V single phase infrastructure.
-// * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 1 connector – as defined
-// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
-// * `IEC62196Type2CableAttached` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging point.
-// * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a socket set into the charging point.
-// * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 2 connector – as defined
-// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
-// * `IEC62196Type3` - Type 3 connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly used in combination
-// with up to 240V single phase or up to 420V three phase infrastructure.
-// * `Chademo` - CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial partners. Because of this is is
-// also known as the TEPCO's connector. It supports fast DC charging.
-// * `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is sometime referred to as by some combination
-// of the standard, the color and the fact that is a single phase connector. The connector usually has the "P+N+E, 6h" configuration.
-// * `IEC60309DCWhite` - Industrial White connector is a DC connector defined in the IEC 60309 standard.
-// * `Tesla` - The Tesla connector is the regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector, sometimes
-// referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2) in Europe.
-// Usage examples:
-// connectorSet=IEC62196Type2CableAttached
-// connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached
+	// Item order does not matter. When multiple connector types are provided, only results that belong to (at least) one of the provided list will be returned.
+	// Available connector types are:
+	// * `StandardHouseholdCountrySpecific` - These are the standard household connectors for a certain region. They are all AC single phase and the standard
+	// Voltage and standard Amperage. See also: [Plug & socket types - World Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets).
+	// * `IEC62196Type1` - Type 1 connector as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after the
+	// standard that first published it. Mostly used in combination with 120V single phase or up to 240V single phase infrastructure.
+	// * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 1 connector – as defined
+	// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
+	// * `IEC62196Type2CableAttached` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging point.
+	// * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a socket set into the charging point.
+	// * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 2 connector – as defined
+	// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
+	// * `IEC62196Type3` - Type 3 connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly used in combination
+	// with up to 240V single phase or up to 420V three phase infrastructure.
+	// * `Chademo` - CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial partners. Because of this is is
+	// also known as the TEPCO's connector. It supports fast DC charging.
+	// * `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is sometime referred to as by some combination
+	// of the standard, the color and the fact that is a single phase connector. The connector usually has the "P+N+E, 6h" configuration.
+	// * `IEC60309DCWhite` - Industrial White connector is a DC connector defined in the IEC 60309 standard.
+	// * `Tesla` - The Tesla connector is the regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector, sometimes
+	// referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2) in Europe.
+	// Usage examples:
+	// connectorSet=IEC62196Type2CableAttached
+	// connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached
 	ConnectorSet []ConnectorSet
 	// Comma separated string of country codes, e.g. FR,ES. This will limit the search to the specified countries
 	CountrySet []string
 	// Indexes for which extended postal codes should be included in the results.
-// Available indexes are:
-// **Addr** = Address ranges
-// **Geo** = Geographies
-// **PAD** = Point Addresses
-// **POI** = Points of Interest
-// **Str** = Streets
-// **XStr** = Cross Streets (intersections)
-// Value should be a comma separated list of index types (in any order) or **None** for no indexes.
-// By default extended postal codes are included for all indexes except Geo. Extended postal code lists for geographies can be quite long so they have to
-// be explicitly requested when needed.
-// Usage examples:
-// extendedPostalCodesFor=POI
-// extendedPostalCodesFor=PAD,Addr,POI
-// extendedPostalCodesFor=None
-// Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is region-dependent.
+	// Available indexes are:
+	// **Addr** = Address ranges
+	// **Geo** = Geographies
+	// **PAD** = Point Addresses
+	// **POI** = Points of Interest
+	// **Str** = Streets
+	// **XStr** = Cross Streets (intersections)
+	// Value should be a comma separated list of index types (in any order) or **None** for no indexes.
+	// By default extended postal codes are included for all indexes except Geo. Extended postal code lists for geographies can be quite long so they have to
+	// be explicitly requested when needed.
+	// Usage examples:
+	// extendedPostalCodesFor=POI
+	// extendedPostalCodesFor=PAD,Addr,POI
+	// extendedPostalCodesFor=None
+	// Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is region-dependent.
 	ExtendedPostalCodesFor *string
 	// A comma separated list of indexes which should be utilized for the search. Item order does not matter. Available indexes are: Addr = Address range interpolation,
-// Geo = Geographies, PAD = Point Addresses, POI = Points of interest, Str = Streets, Xstr = Cross Streets (intersections)
+	// Geo = Geographies, PAD = Point Addresses, POI = Points of interest, Str = Streets, Xstr = Cross Streets (intersections)
 	IdxSet []SearchIndexSet
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used.
-// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used.
+	// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
 	Language *string
 	// Latitude where results should be biased. E.g. 37.337
 	Lat *float32
@@ -1342,25 +1343,25 @@ type SearchGetSearchFuzzyOptions struct {
 	// Longitude where results should be biased. E.g. -121.89
 	Lon *float32
 	// Maximum fuzziness level to be used. Default: 2, minimum: 1 and maximum: 4
-// * Level 1 has no spell checking.
-// * Level 2 uses normal n-gram spell checking. For example, query "restrant" can be matched to "restaurant."
-// * Level 3 uses sound-like spell checking, and shingle spell checking. Sound-like spell checking is for "rstrnt" to "restaurant" matching. Shingle spell
-// checking is for "mountainview" to "mountain view" matching.
-// * Level 4 doesn’t add any more spell checking functions.
-// The search engine will start looking for a match on the level defined by minFuzzyLevel, and will stop searching at the level specified by maxFuzzyLevel.
+	// * Level 1 has no spell checking.
+	// * Level 2 uses normal n-gram spell checking. For example, query "restrant" can be matched to "restaurant."
+	// * Level 3 uses sound-like spell checking, and shingle spell checking. Sound-like spell checking is for "rstrnt" to "restaurant" matching. Shingle spell
+	// checking is for "mountainview" to "mountain view" matching.
+	// * Level 4 doesn’t add any more spell checking functions.
+	// The search engine will start looking for a match on the level defined by minFuzzyLevel, and will stop searching at the level specified by maxFuzzyLevel.
 	MaxFuzzyLevel *int32
 	// Minimum fuzziness level to be used. Default: 1, minimum: 1 and maximum: 4
-// * Level 1 has no spell checking.
-// * Level 2 uses normal n-gram spell checking. For example, query "restrant" can be matched to "restaurant."
-// * Level 3 uses sound-like spell checking, and shingle spell checking. Sound-like spell checking is for "rstrnt" to "restaurant" matching. Shingle spell
-// checking is for "mountainview" to "mountain view" matching.
-// * Level 4 doesn’t add any more spell checking functions.
-// The search engine will start looking for a match on the level defined by minFuzzyLevel, and will stop searching at the level specified by maxFuzzyLevel.
+	// * Level 1 has no spell checking.
+	// * Level 2 uses normal n-gram spell checking. For example, query "restrant" can be matched to "restaurant."
+	// * Level 3 uses sound-like spell checking, and shingle spell checking. Sound-like spell checking is for "rstrnt" to "restaurant" matching. Shingle spell
+	// checking is for "mountainview" to "mountain view" matching.
+	// * Level 4 doesn’t add any more spell checking functions.
+	// The search engine will start looking for a match on the level defined by minFuzzyLevel, and will stop searching at the level specified by maxFuzzyLevel.
 	MinFuzzyLevel *int32
 	// Starting offset of the returned results within the full result set. Default: 0, minimum: 0 and maximum: 1900
 	Ofs *int32
 	// Hours of operation for a POI (Points of Interest). The availability of hours of operation will vary based on the data available.
-// Supported value: nextSevenDays
+	// Supported value: nextSevenDays
 	OpeningHours *OpeningHours
 	// The radius in meters to for the results to be constrained to the defined area
 	Radius *float32
@@ -1369,79 +1370,79 @@ type SearchGetSearchFuzzyOptions struct {
 	// Boolean. If the typeahead flag is set, the query will be interpreted as a partial input and the search will enter predictive mode
 	Typeahead *bool
 	// The View parameter specifies which set of geopolitically disputed content is returned via Azure Maps services, including borders and labels displayed
-// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
-// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
-// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
-// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
-// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
-// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
+	// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
+	// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
+	// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
+	// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
+	// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
+	// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
 	View *string
 }
 
 // SearchGetSearchNearbyOptions contains the optional parameters for the Search.GetSearchNearby method.
 type SearchGetSearchNearbyOptions struct {
 	// A comma-separated list of brand names which could be used to restrict the result to specific brands. Item order does not matter. When multiple brands
-// are provided, only results that belong to (at least) one of the provided list will be returned. Brands that contain a "," in their name should be put
-// into quotes.
-// Usage examples:
-// brandSet=Foo
-// brandSet=Foo,Bar
-// brandSet="A,B,C Comma",Bar
+	// are provided, only results that belong to (at least) one of the provided list will be returned. Brands that contain a "," in their name should be put
+	// into quotes.
+	// Usage examples:
+	// brandSet=Foo
+	// brandSet=Foo,Bar
+	// brandSet="A,B,C Comma",Bar
 	BrandSet []string
 	// A comma-separated list of category set IDs which could be used to restrict the result to specific Points of Interest categories. ID order does not matter.
-// When multiple category identifiers are provided, only POIs that belong to (at least) one of the categories from the provided list will be returned. The
-// list of supported categories can be discovered using [POI Categories API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
-// * **categorySet=7315** (Search Points of Interest from category Restaurant)
-// * **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French Restaurant)
+	// When multiple category identifiers are provided, only POIs that belong to (at least) one of the categories from the provided list will be returned. The
+	// list of supported categories can be discovered using [POI Categories API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
+	// * **categorySet=7315** (Search Points of Interest from category Restaurant)
+	// * **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French Restaurant)
 	CategorySet []int32
 	// A comma-separated list of connector types which could be used to restrict the result to Electric Vehicle Station supporting specific connector types.
-// Item order does not matter. When multiple connector types are provided, only results that belong to (at least) one of the provided list will be returned.
-// Available connector types are:
-// * `StandardHouseholdCountrySpecific` - These are the standard household connectors for a certain region. They are all AC single phase and the standard
-// Voltage and standard Amperage. See also: [Plug & socket types - World Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets).
-// * `IEC62196Type1` - Type 1 connector as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after the
-// standard that first published it. Mostly used in combination with 120V single phase or up to 240V single phase infrastructure.
-// * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 1 connector – as defined
-// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
-// * `IEC62196Type2CableAttached` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging point.
-// * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a socket set into the charging point.
-// * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 2 connector – as defined
-// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
-// * `IEC62196Type3` - Type 3 connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly used in combination
-// with up to 240V single phase or up to 420V three phase infrastructure.
-// * `Chademo` - CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial partners. Because of this is is
-// also known as the TEPCO's connector. It supports fast DC charging.
-// * `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is sometime referred to as by some combination
-// of the standard, the color and the fact that is a single phase connector. The connector usually has the "P+N+E, 6h" configuration.
-// * `IEC60309DCWhite` - Industrial White connector is a DC connector defined in the IEC 60309 standard.
-// * `Tesla` - The Tesla connector is the regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector, sometimes
-// referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2) in Europe.
-// Usage examples:
-// connectorSet=IEC62196Type2CableAttached
-// connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached
+	// Item order does not matter. When multiple connector types are provided, only results that belong to (at least) one of the provided list will be returned.
+	// Available connector types are:
+	// * `StandardHouseholdCountrySpecific` - These are the standard household connectors for a certain region. They are all AC single phase and the standard
+	// Voltage and standard Amperage. See also: [Plug & socket types - World Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets).
+	// * `IEC62196Type1` - Type 1 connector as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after the
+	// standard that first published it. Mostly used in combination with 120V single phase or up to 240V single phase infrastructure.
+	// * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 1 connector – as defined
+	// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
+	// * `IEC62196Type2CableAttached` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging point.
+	// * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a socket set into the charging point.
+	// * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 2 connector – as defined
+	// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
+	// * `IEC62196Type3` - Type 3 connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly used in combination
+	// with up to 240V single phase or up to 420V three phase infrastructure.
+	// * `Chademo` - CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial partners. Because of this is is
+	// also known as the TEPCO's connector. It supports fast DC charging.
+	// * `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is sometime referred to as by some combination
+	// of the standard, the color and the fact that is a single phase connector. The connector usually has the "P+N+E, 6h" configuration.
+	// * `IEC60309DCWhite` - Industrial White connector is a DC connector defined in the IEC 60309 standard.
+	// * `Tesla` - The Tesla connector is the regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector, sometimes
+	// referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2) in Europe.
+	// Usage examples:
+	// connectorSet=IEC62196Type2CableAttached
+	// connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached
 	ConnectorSet []ConnectorSet
 	// Comma separated string of country codes, e.g. FR,ES. This will limit the search to the specified countries
 	CountrySet []string
 	// Indexes for which extended postal codes should be included in the results.
-// Available indexes are:
-// **Addr** = Address ranges
-// **Geo** = Geographies
-// **PAD** = Point Addresses
-// **POI** = Points of Interest
-// **Str** = Streets
-// **XStr** = Cross Streets (intersections)
-// Value should be a comma separated list of index types (in any order) or **None** for no indexes.
-// By default extended postal codes are included for all indexes except Geo. Extended postal code lists for geographies can be quite long so they have to
-// be explicitly requested when needed.
-// Usage examples:
-// extendedPostalCodesFor=POI
-// extendedPostalCodesFor=PAD,Addr,POI
-// extendedPostalCodesFor=None
-// Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is region-dependent.
+	// Available indexes are:
+	// **Addr** = Address ranges
+	// **Geo** = Geographies
+	// **PAD** = Point Addresses
+	// **POI** = Points of Interest
+	// **Str** = Streets
+	// **XStr** = Cross Streets (intersections)
+	// Value should be a comma separated list of index types (in any order) or **None** for no indexes.
+	// By default extended postal codes are included for all indexes except Geo. Extended postal code lists for geographies can be quite long so they have to
+	// be explicitly requested when needed.
+	// Usage examples:
+	// extendedPostalCodesFor=POI
+	// extendedPostalCodesFor=PAD,Addr,POI
+	// extendedPostalCodesFor=None
+	// Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is region-dependent.
 	ExtendedPostalCodesFor *string
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used.
-// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used.
+	// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
 	Language *string
 	// Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100
 	Limit *int32
@@ -1450,81 +1451,81 @@ type SearchGetSearchNearbyOptions struct {
 	// The radius in meters to for the results to be constrained to the defined area, Min value is 1, Max Value is 50000.
 	Radius *float32
 	// The View parameter specifies which set of geopolitically disputed content is returned via Azure Maps services, including borders and labels displayed
-// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
-// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
-// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
-// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
-// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
-// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
+	// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
+	// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
+	// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
+	// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
+	// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
+	// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
 	View *string
 }
 
 // SearchGetSearchPOICategoryOptions contains the optional parameters for the Search.GetSearchPOICategory method.
 type SearchGetSearchPOICategoryOptions struct {
 	// A comma-separated list of brand names which could be used to restrict the result to specific brands. Item order does not matter. When multiple brands
-// are provided, only results that belong to (at least) one of the provided list will be returned. Brands that contain a "," in their name should be put
-// into quotes.
-// Usage examples:
-// brandSet=Foo
-// brandSet=Foo,Bar
-// brandSet="A,B,C Comma",Bar
+	// are provided, only results that belong to (at least) one of the provided list will be returned. Brands that contain a "," in their name should be put
+	// into quotes.
+	// Usage examples:
+	// brandSet=Foo
+	// brandSet=Foo,Bar
+	// brandSet="A,B,C Comma",Bar
 	BrandSet []string
 	// Bottom right position of the bounding box. E.g. 37.553,-122.453
 	BtmRight *string
 	// A comma-separated list of category set IDs which could be used to restrict the result to specific Points of Interest categories. ID order does not matter.
-// When multiple category identifiers are provided, only POIs that belong to (at least) one of the categories from the provided list will be returned. The
-// list of supported categories can be discovered using [POI Categories API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
-// * **categorySet=7315** (Search Points of Interest from category Restaurant)
-// * **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French Restaurant)
+	// When multiple category identifiers are provided, only POIs that belong to (at least) one of the categories from the provided list will be returned. The
+	// list of supported categories can be discovered using [POI Categories API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
+	// * **categorySet=7315** (Search Points of Interest from category Restaurant)
+	// * **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French Restaurant)
 	CategorySet []int32
 	// A comma-separated list of connector types which could be used to restrict the result to Electric Vehicle Station supporting specific connector types.
-// Item order does not matter. When multiple connector types are provided, only results that belong to (at least) one of the provided list will be returned.
-// Available connector types are:
-// * `StandardHouseholdCountrySpecific` - These are the standard household connectors for a certain region. They are all AC single phase and the standard
-// Voltage and standard Amperage. See also: [Plug & socket types - World Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets).
-// * `IEC62196Type1` - Type 1 connector as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after the
-// standard that first published it. Mostly used in combination with 120V single phase or up to 240V single phase infrastructure.
-// * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 1 connector – as defined
-// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
-// * `IEC62196Type2CableAttached` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging point.
-// * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a socket set into the charging point.
-// * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 2 connector – as defined
-// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
-// * `IEC62196Type3` - Type 3 connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly used in combination
-// with up to 240V single phase or up to 420V three phase infrastructure.
-// * `Chademo` - CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial partners. Because of this is is
-// also known as the TEPCO's connector. It supports fast DC charging.
-// * `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is sometime referred to as by some combination
-// of the standard, the color and the fact that is a single phase connector. The connector usually has the "P+N+E, 6h" configuration.
-// * `IEC60309DCWhite` - Industrial White connector is a DC connector defined in the IEC 60309 standard.
-// * `Tesla` - The Tesla connector is the regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector, sometimes
-// referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2) in Europe.
-// Usage examples:
-// connectorSet=IEC62196Type2CableAttached
-// connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached
+	// Item order does not matter. When multiple connector types are provided, only results that belong to (at least) one of the provided list will be returned.
+	// Available connector types are:
+	// * `StandardHouseholdCountrySpecific` - These are the standard household connectors for a certain region. They are all AC single phase and the standard
+	// Voltage and standard Amperage. See also: [Plug & socket types - World Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets).
+	// * `IEC62196Type1` - Type 1 connector as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after the
+	// standard that first published it. Mostly used in combination with 120V single phase or up to 240V single phase infrastructure.
+	// * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 1 connector – as defined
+	// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
+	// * `IEC62196Type2CableAttached` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging point.
+	// * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a socket set into the charging point.
+	// * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 2 connector – as defined
+	// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
+	// * `IEC62196Type3` - Type 3 connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly used in combination
+	// with up to 240V single phase or up to 420V three phase infrastructure.
+	// * `Chademo` - CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial partners. Because of this is is
+	// also known as the TEPCO's connector. It supports fast DC charging.
+	// * `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is sometime referred to as by some combination
+	// of the standard, the color and the fact that is a single phase connector. The connector usually has the "P+N+E, 6h" configuration.
+	// * `IEC60309DCWhite` - Industrial White connector is a DC connector defined in the IEC 60309 standard.
+	// * `Tesla` - The Tesla connector is the regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector, sometimes
+	// referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2) in Europe.
+	// Usage examples:
+	// connectorSet=IEC62196Type2CableAttached
+	// connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached
 	ConnectorSet []ConnectorSet
 	// Comma separated string of country codes, e.g. FR,ES. This will limit the search to the specified countries
 	CountrySet []string
 	// Indexes for which extended postal codes should be included in the results.
-// Available indexes are:
-// **Addr** = Address ranges
-// **Geo** = Geographies
-// **PAD** = Point Addresses
-// **POI** = Points of Interest
-// **Str** = Streets
-// **XStr** = Cross Streets (intersections)
-// Value should be a comma separated list of index types (in any order) or **None** for no indexes.
-// By default extended postal codes are included for all indexes except Geo. Extended postal code lists for geographies can be quite long so they have to
-// be explicitly requested when needed.
-// Usage examples:
-// extendedPostalCodesFor=POI
-// extendedPostalCodesFor=PAD,Addr,POI
-// extendedPostalCodesFor=None
-// Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is region-dependent.
+	// Available indexes are:
+	// **Addr** = Address ranges
+	// **Geo** = Geographies
+	// **PAD** = Point Addresses
+	// **POI** = Points of Interest
+	// **Str** = Streets
+	// **XStr** = Cross Streets (intersections)
+	// Value should be a comma separated list of index types (in any order) or **None** for no indexes.
+	// By default extended postal codes are included for all indexes except Geo. Extended postal code lists for geographies can be quite long so they have to
+	// be explicitly requested when needed.
+	// Usage examples:
+	// extendedPostalCodesFor=POI
+	// extendedPostalCodesFor=PAD,Addr,POI
+	// extendedPostalCodesFor=None
+	// Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is region-dependent.
 	ExtendedPostalCodesFor *string
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used.
-// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used.
+	// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
 	Language *string
 	// Latitude where results should be biased. E.g. 37.337
 	Lat *float32
@@ -1535,7 +1536,7 @@ type SearchGetSearchPOICategoryOptions struct {
 	// Starting offset of the returned results within the full result set. Default: 0, minimum: 0 and maximum: 1900
 	Ofs *int32
 	// Hours of operation for a POI (Points of Interest). The availability of hours of operation will vary based on the data available.
-// Supported value: nextSevenDays
+	// Supported value: nextSevenDays
 	OpeningHours *OpeningHours
 	// The radius in meters to for the results to be constrained to the defined area
 	Radius *float32
@@ -1544,82 +1545,82 @@ type SearchGetSearchPOICategoryOptions struct {
 	// Boolean. If the typeahead flag is set, the query will be interpreted as a partial input and the search will enter predictive mode
 	Typeahead *bool
 	// The View parameter specifies which set of geopolitically disputed content is returned via Azure Maps services, including borders and labels displayed
-// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
-// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
-// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
-// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
-// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
-// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
+	// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
+	// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
+	// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
+	// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
+	// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
+	// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
 	View *string
 }
 
 // SearchGetSearchPOICategoryTreePreviewOptions contains the optional parameters for the Search.GetSearchPOICategoryTreePreview method.
 type SearchGetSearchPOICategoryTreePreviewOptions struct {
 	// Language in which search results should be returned. Should be one of supported IETF language tags, except NGT and NGT-Latn. Language tag is case insensitive.
-// When data in specified language is not available for a specific field, default language is used (English).
-// Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
+	// When data in specified language is not available for a specific field, default language is used (English).
+	// Please refer to [Supported Languages](https://docs.microsoft.com/azure/azure-maps/supported-languages) for details.
 	Language *string
 }
 
 // SearchGetSearchPOIOptions contains the optional parameters for the Search.GetSearchPOI method.
 type SearchGetSearchPOIOptions struct {
 	// A comma-separated list of brand names which could be used to restrict the result to specific brands. Item order does not matter. When multiple brands
-// are provided, only results that belong to (at least) one of the provided list will be returned. Brands that contain a "," in their name should be put
-// into quotes.
-// Usage examples:
-// brandSet=Foo
-// brandSet=Foo,Bar
-// brandSet="A,B,C Comma",Bar
+	// are provided, only results that belong to (at least) one of the provided list will be returned. Brands that contain a "," in their name should be put
+	// into quotes.
+	// Usage examples:
+	// brandSet=Foo
+	// brandSet=Foo,Bar
+	// brandSet="A,B,C Comma",Bar
 	BrandSet []string
 	// Bottom right position of the bounding box. E.g. 37.553,-122.453
 	BtmRight *string
 	// A comma-separated list of category set IDs which could be used to restrict the result to specific Points of Interest categories. ID order does not matter.
-// When multiple category identifiers are provided, only POIs that belong to (at least) one of the categories from the provided list will be returned. The
-// list of supported categories can be discovered using [POI Categories API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
-// * **categorySet=7315** (Search Points of Interest from category Restaurant)
-// * **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French Restaurant)
+	// When multiple category identifiers are provided, only POIs that belong to (at least) one of the categories from the provided list will be returned. The
+	// list of supported categories can be discovered using [POI Categories API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
+	// * **categorySet=7315** (Search Points of Interest from category Restaurant)
+	// * **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French Restaurant)
 	CategorySet []int32
 	// A comma-separated list of connector types which could be used to restrict the result to Electric Vehicle Station supporting specific connector types.
-// Item order does not matter. When multiple connector types are provided, only results that belong to (at least) one of the provided list will be returned.
-// Available connector types are:
-// * `StandardHouseholdCountrySpecific` - These are the standard household connectors for a certain region. They are all AC single phase and the standard
-// Voltage and standard Amperage. See also: [Plug & socket types - World Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets).
-// * `IEC62196Type1` - Type 1 connector as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after the
-// standard that first published it. Mostly used in combination with 120V single phase or up to 240V single phase infrastructure.
-// * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 1 connector – as defined
-// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
-// * `IEC62196Type2CableAttached` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging point.
-// * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a socket set into the charging point.
-// * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 2 connector – as defined
-// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
-// * `IEC62196Type3` - Type 3 connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly used in combination
-// with up to 240V single phase or up to 420V three phase infrastructure.
-// * `Chademo` - CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial partners. Because of this is is
-// also known as the TEPCO's connector. It supports fast DC charging.
-// * `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is sometime referred to as by some combination
-// of the standard, the color and the fact that is a single phase connector. The connector usually has the "P+N+E, 6h" configuration.
-// * `IEC60309DCWhite` - Industrial White connector is a DC connector defined in the IEC 60309 standard.
-// * `Tesla` - The Tesla connector is the regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector, sometimes
-// referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2) in Europe.
-// Usage examples:
-// connectorSet=IEC62196Type2CableAttached
-// connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached
+	// Item order does not matter. When multiple connector types are provided, only results that belong to (at least) one of the provided list will be returned.
+	// Available connector types are:
+	// * `StandardHouseholdCountrySpecific` - These are the standard household connectors for a certain region. They are all AC single phase and the standard
+	// Voltage and standard Amperage. See also: [Plug & socket types - World Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets).
+	// * `IEC62196Type1` - Type 1 connector as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after the
+	// standard that first published it. Mostly used in combination with 120V single phase or up to 240V single phase infrastructure.
+	// * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 1 connector – as defined
+	// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
+	// * `IEC62196Type2CableAttached` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging point.
+	// * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a socket set into the charging point.
+	// * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 2 connector – as defined
+	// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
+	// * `IEC62196Type3` - Type 3 connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly used in combination
+	// with up to 240V single phase or up to 420V three phase infrastructure.
+	// * `Chademo` - CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial partners. Because of this is is
+	// also known as the TEPCO's connector. It supports fast DC charging.
+	// * `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is sometime referred to as by some combination
+	// of the standard, the color and the fact that is a single phase connector. The connector usually has the "P+N+E, 6h" configuration.
+	// * `IEC60309DCWhite` - Industrial White connector is a DC connector defined in the IEC 60309 standard.
+	// * `Tesla` - The Tesla connector is the regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector, sometimes
+	// referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2) in Europe.
+	// Usage examples:
+	// connectorSet=IEC62196Type2CableAttached
+	// connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached
 	ConnectorSet []ConnectorSet
 	// Comma separated string of country codes, e.g. FR,ES. This will limit the search to the specified countries
 	CountrySet []string
 	// Indexes for which extended postal codes should be included in the results.
-// Available indexes are:
-// **POI** = Points of Interest
-// Value should be **POI** or **None** to disable extended postal codes.
-// By default extended postal codes are included.
-// Usage examples:
-// extendedPostalCodesFor=POI
-// extendedPostalCodesFor=None
-// Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is region-dependent.
+	// Available indexes are:
+	// **POI** = Points of Interest
+	// Value should be **POI** or **None** to disable extended postal codes.
+	// By default extended postal codes are included.
+	// Usage examples:
+	// extendedPostalCodesFor=POI
+	// extendedPostalCodesFor=None
+	// Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is region-dependent.
 	ExtendedPostalCodesFor *string
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used.
-// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used.
+	// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
 	Language *string
 	// Latitude where results should be biased. E.g. 37.337
 	Lat *float32
@@ -1630,7 +1631,7 @@ type SearchGetSearchPOIOptions struct {
 	// Starting offset of the returned results within the full result set. Default: 0, minimum: 0 and maximum: 1900
 	Ofs *int32
 	// Hours of operation for a POI (Points of Interest). The availability of hours of operation will vary based on the data available.
-// Supported value: nextSevenDays
+	// Supported value: nextSevenDays
 	OpeningHours *OpeningHours
 	// The radius in meters to for the results to be constrained to the defined area
 	Radius *float32
@@ -1639,12 +1640,12 @@ type SearchGetSearchPOIOptions struct {
 	// Boolean. If the typeahead flag is set, the query will be interpreted as a partial input and the search will enter predictive mode
 	Typeahead *bool
 	// The View parameter specifies which set of geopolitically disputed content is returned via Azure Maps services, including borders and labels displayed
-// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
-// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
-// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
-// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
-// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
-// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
+	// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
+	// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
+	// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
+	// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
+	// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
+	// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
 	View *string
 }
 
@@ -1675,8 +1676,8 @@ func (s *SearchInsideGeometryRequestBody) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "geometry":
-				s.Geometry, err = unmarshalGeoJSONObjectClassification(val)
-				delete(rawMsg, key)
+			s.Geometry, err = unmarshalGeoJSONObjectClassification(val)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1741,14 +1742,14 @@ func (s *SearchPolygonResult) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "error":
-				err = unpopulate(val, &s.Error)
-				delete(rawMsg, key)
+			err = unpopulate(val, &s.Error)
+			delete(rawMsg, key)
 		case "geometryData":
-				s.GeometryData, err = unmarshalGeoJSONObjectClassification(val)
-				delete(rawMsg, key)
+			s.GeometryData, err = unmarshalGeoJSONObjectClassification(val)
+			delete(rawMsg, key)
 		case "providerID":
-				err = unpopulate(val, &s.ProviderID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &s.ProviderID)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1770,57 +1771,57 @@ type SearchPostSearchAddressReverseBatchSyncOptions struct {
 // SearchPostSearchAlongRouteOptions contains the optional parameters for the Search.PostSearchAlongRoute method.
 type SearchPostSearchAlongRouteOptions struct {
 	// A comma-separated list of brand names which could be used to restrict the result to specific brands. Item order does not matter. When multiple brands
-// are provided, only results that belong to (at least) one of the provided list will be returned. Brands that contain a "," in their name should be put
-// into quotes.
-// Usage examples:
-// brandSet=Foo
-// brandSet=Foo,Bar
-// brandSet="A,B,C Comma",Bar
+	// are provided, only results that belong to (at least) one of the provided list will be returned. Brands that contain a "," in their name should be put
+	// into quotes.
+	// Usage examples:
+	// brandSet=Foo
+	// brandSet=Foo,Bar
+	// brandSet="A,B,C Comma",Bar
 	BrandSet []string
 	// A comma-separated list of category set IDs which could be used to restrict the result to specific Points of Interest categories. ID order does not matter.
-// When multiple category identifiers are provided, only POIs that belong to (at least) one of the categories from the provided list will be returned. The
-// list of supported categories can be discovered using [POI Categories API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
-// * **categorySet=7315** (Search Points of Interest from category Restaurant)
-// * **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French Restaurant)
+	// When multiple category identifiers are provided, only POIs that belong to (at least) one of the categories from the provided list will be returned. The
+	// list of supported categories can be discovered using [POI Categories API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
+	// * **categorySet=7315** (Search Points of Interest from category Restaurant)
+	// * **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French Restaurant)
 	CategorySet []int32
 	// A comma-separated list of connector types which could be used to restrict the result to Electric Vehicle Station supporting specific connector types.
-// Item order does not matter. When multiple connector types are provided, only results that belong to (at least) one of the provided list will be returned.
-// Available connector types are:
-// * `StandardHouseholdCountrySpecific` - These are the standard household connectors for a certain region. They are all AC single phase and the standard
-// Voltage and standard Amperage. See also: [Plug & socket types - World Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets).
-// * `IEC62196Type1` - Type 1 connector as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after the
-// standard that first published it. Mostly used in combination with 120V single phase or up to 240V single phase infrastructure.
-// * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 1 connector – as defined
-// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
-// * `IEC62196Type2CableAttached` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging point.
-// * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a socket set into the charging point.
-// * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 2 connector – as defined
-// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
-// * `IEC62196Type3` - Type 3 connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly used in combination
-// with up to 240V single phase or up to 420V three phase infrastructure.
-// * `Chademo` - CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial partners. Because of this is is
-// also known as the TEPCO's connector. It supports fast DC charging.
-// * `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is sometime referred to as by some combination
-// of the standard, the color and the fact that is a single phase connector. The connector usually has the "P+N+E, 6h" configuration.
-// * `IEC60309DCWhite` - Industrial White connector is a DC connector defined in the IEC 60309 standard.
-// * `Tesla` - The Tesla connector is the regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector, sometimes
-// referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2) in Europe.
-// Usage examples:
-// connectorSet=IEC62196Type2CableAttached
-// connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached
+	// Item order does not matter. When multiple connector types are provided, only results that belong to (at least) one of the provided list will be returned.
+	// Available connector types are:
+	// * `StandardHouseholdCountrySpecific` - These are the standard household connectors for a certain region. They are all AC single phase and the standard
+	// Voltage and standard Amperage. See also: [Plug & socket types - World Standards](https://www.worldstandards.eu/electricity/plugs-and-sockets).
+	// * `IEC62196Type1` - Type 1 connector as defined in the IEC 62196-2 standard. Also called Yazaki after the original manufacturer or SAE J1772 after the
+	// standard that first published it. Mostly used in combination with 120V single phase or up to 240V single phase infrastructure.
+	// * `IEC62196Type1CCS` - Type 1 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 1 connector – as defined
+	// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
+	// * `IEC62196Type2CableAttached` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a cable and plug attached to the charging point.
+	// * `IEC62196Type2Outlet` - Type 2 connector as defined in the IEC 62196-2 standard. Provided as a socket set into the charging point.
+	// * `IEC62196Type2CCS` - Type 2 based combo connector as defined in the IEC 62196-3 standard. The connector is based on the Type 2 connector – as defined
+	// in the IEC 62196-2 standard – with two additional direct current (DC) contacts to allow DC fast charging.
+	// * `IEC62196Type3` - Type 3 connector as defined in the IEC 62196-2 standard. Also called Scame after the original manufacturer. Mostly used in combination
+	// with up to 240V single phase or up to 420V three phase infrastructure.
+	// * `Chademo` - CHAdeMO connector named after an association formed by the Tokyo Electric Power Company and industrial partners. Because of this is is
+	// also known as the TEPCO's connector. It supports fast DC charging.
+	// * `IEC60309AC1PhaseBlue` - Industrial Blue connector is a connector defined in the IEC 60309 standard. It is sometime referred to as by some combination
+	// of the standard, the color and the fact that is a single phase connector. The connector usually has the "P+N+E, 6h" configuration.
+	// * `IEC60309DCWhite` - Industrial White connector is a DC connector defined in the IEC 60309 standard.
+	// * `Tesla` - The Tesla connector is the regionally specific Tesla Supercharger connector. I.e. it refers to either Tesla's proprietary connector, sometimes
+	// referred to as Tesla Port mostly limited to North America or the modified Type 2 (DC over Type 2) in Europe.
+	// Usage examples:
+	// connectorSet=IEC62196Type2CableAttached
+	// connectorSet=IEC62196Type2Outlet,IEC62196Type2CableAttached
 	ConnectorSet []ConnectorSet
 	// Maximum number of responses that will be returned. Default value is 10. Max value is 20
 	Limit *int32
 	// Hours of operation for a POI (Points of Interest). The availability of hours of operation will vary based on the data available.
-// Supported value: nextSevenDays
+	// Supported value: nextSevenDays
 	OpeningHours *OpeningHours
 	// The View parameter specifies which set of geopolitically disputed content is returned via Azure Maps services, including borders and labels displayed
-// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
-// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
-// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
-// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
-// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
-// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
+	// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
+	// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
+	// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
+	// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
+	// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
+	// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
 	View *string
 }
 
@@ -1832,47 +1833,47 @@ type SearchPostSearchFuzzyBatchSyncOptions struct {
 // SearchPostSearchInsideGeometryOptions contains the optional parameters for the Search.PostSearchInsideGeometry method.
 type SearchPostSearchInsideGeometryOptions struct {
 	// A comma-separated list of category set IDs which could be used to restrict the result to specific Points of Interest categories. ID order does not matter.
-// When multiple category identifiers are provided, only POIs that belong to (at least) one of the categories from the provided list will be returned. The
-// list of supported categories can be discovered using [POI Categories API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
-// * **categorySet=7315** (Search Points of Interest from category Restaurant)
-// * **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French Restaurant)
+	// When multiple category identifiers are provided, only POIs that belong to (at least) one of the categories from the provided list will be returned. The
+	// list of supported categories can be discovered using [POI Categories API](https://aka.ms/AzureMapsPOICategoryTree). Usage examples:
+	// * **categorySet=7315** (Search Points of Interest from category Restaurant)
+	// * **categorySet=7315025,7315017** (Search Points of Interest of category either Italian or French Restaurant)
 	CategorySet []int32
 	// Indexes for which extended postal codes should be included in the results.
-// Available indexes are:
-// **Addr** = Address ranges
-// **Geo** = Geographies
-// **PAD** = Point Addresses
-// **POI** = Points of Interest
-// **Str** = Streets
-// **XStr** = Cross Streets (intersections)
-// Value should be a comma separated list of index types (in any order) or **None** for no indexes.
-// By default extended postal codes are included for all indexes except Geo. Extended postal code lists for geographies can be quite long so they have to
-// be explicitly requested when needed.
-// Usage examples:
-// extendedPostalCodesFor=POI
-// extendedPostalCodesFor=PAD,Addr,POI
-// extendedPostalCodesFor=None
-// Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is region-dependent.
+	// Available indexes are:
+	// **Addr** = Address ranges
+	// **Geo** = Geographies
+	// **PAD** = Point Addresses
+	// **POI** = Points of Interest
+	// **Str** = Streets
+	// **XStr** = Cross Streets (intersections)
+	// Value should be a comma separated list of index types (in any order) or **None** for no indexes.
+	// By default extended postal codes are included for all indexes except Geo. Extended postal code lists for geographies can be quite long so they have to
+	// be explicitly requested when needed.
+	// Usage examples:
+	// extendedPostalCodesFor=POI
+	// extendedPostalCodesFor=PAD,Addr,POI
+	// extendedPostalCodesFor=None
+	// Extended postal code is returned as an **extendedPostalCode** property of an address. Availability is region-dependent.
 	ExtendedPostalCodesFor *string
 	// A comma separated list of indexes which should be utilized for the search. Item order does not matter. Available indexes are: Addr = Address range interpolation,
-// Geo = Geographies, PAD = Point Addresses, POI = Points of interest, Str = Streets, Xstr = Cross Streets (intersections)
+	// Geo = Geographies, PAD = Point Addresses, POI = Points of interest, Str = Streets, Xstr = Cross Streets (intersections)
 	IdxSet []SearchIndexSet
 	// Language in which search results should be returned. Should be one of supported IETF language tags, case insensitive. When data in specified language
-// is not available for a specific field, default language is used.
-// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
+	// is not available for a specific field, default language is used.
+	// Please refer to [Supported Languages](https://docs.microsoft.com/en-us/azure/azure-maps/supported-languages) for details.
 	Language *string
 	// Maximum number of responses that will be returned. Default: 10, minimum: 1 and maximum: 100
 	Limit *int32
 	// Hours of operation for a POI (Points of Interest). The availability of hours of operation will vary based on the data available.
-// Supported value: nextSevenDays
+	// Supported value: nextSevenDays
 	OpeningHours *OpeningHours
 	// The View parameter specifies which set of geopolitically disputed content is returned via Azure Maps services, including borders and labels displayed
-// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
-// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
-// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
-// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
-// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
-// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
+	// on the map. The View parameter (also referred to as “user region parameter”) will show the correct maps for that country/region. By default, the View
+	// parameter is set to “Unified” even if you haven’t defined it in the request. It is your responsibility to determine the location of your users, and then
+	// set the View parameter correctly for that location. Alternatively, you have the option to set ‘View=Auto’, which will return the map data based on the
+	// IP address of the request. The View parameter in Azure Maps must be used in compliance with applicable laws, including those regarding mapping, of the
+	// country where maps, images and other data and third party content that you are authorized to access via Azure Maps is made available. Example: view=IN.
+	// Please refer to [Supported Views](https://aka.ms/AzureMapsLocalizationViews) for details and to see the available Views.
 	View *string
 }
 
@@ -1915,8 +1916,8 @@ type SearchResultAddress struct {
 	FreeformAddress *string `json:"freeformAddress,omitempty" azure:"ro"`
 
 	// READ-ONLY; An address component which represents the name of a geographic area or locality that groups a number of addressable objects for addressing
-// purposes, without being an administrative unit. This field is
-// used to build the freeformAddress property.
+	// purposes, without being an administrative unit. This field is
+	// used to build the freeformAddress property.
 	LocalName *string `json:"localName,omitempty" azure:"ro"`
 
 	// READ-ONLY; Municipality property
@@ -2149,4 +2150,3 @@ func unpopulate(data json.RawMessage, v interface{}) error {
 	}
 	return json.Unmarshal(data, v)
 }
-

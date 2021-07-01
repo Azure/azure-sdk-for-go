@@ -9,11 +9,13 @@ package weather
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 var scopes = []string{"https://atlas.microsoft.com/.default"}
+
 // connectionOptions contains configuration settings for the connection's pipeline.
 // All zero-value fields will be initialized with their default values.
 type connectionOptions struct {
@@ -60,14 +62,14 @@ func newConnection(geography *Geography, cred azcore.Credential, options *connec
 	policies = append(policies, options.PerCallPolicies...)
 	policies = append(policies, azcore.NewRetryPolicy(&options.Retry))
 	policies = append(policies, options.PerRetryPolicies...)
-		policies = append(policies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: scopes}}))
+	policies = append(policies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: scopes}}))
 	policies = append(policies, azcore.NewLogPolicy(&options.Logging))
 	hostURL := "https://{geography}.atlas.microsoft.com"
 	if geography == nil {
 		defaultValue := "us"
-		geography = &defaultValue
+		geography = ((*Geography)(&defaultValue))
 	}
-	hostURL = strings.ReplaceAll(hostURL, "{geography}", *geography)
+	hostURL = strings.ReplaceAll(hostURL, "{geography}", (string)(*geography))
 	return &connection{u: hostURL, p: azcore.NewPipeline(options.HTTPClient, policies...)}
 }
 
@@ -77,7 +79,6 @@ func (c *connection) Endpoint() string {
 }
 
 // Pipeline returns the connection's pipeline.
-func (c *connection) Pipeline() (azcore.Pipeline) {
+func (c *connection) Pipeline() azcore.Pipeline {
 	return c.p
 }
-

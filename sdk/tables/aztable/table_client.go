@@ -55,14 +55,14 @@ func (t *TableClient) Delete(ctx context.Context) (TableDeleteResponse, error) {
 //
 // Query returns a Pager, which allows iteration through each page of results. Example:
 //
-// pager := client.Query(QueryOptions{})
+// pager := client.Query(&QueryOptions{})
 // for pager.NextPage(ctx) {
 //     resp = pager.PageResponse()
 //     fmt.sprintf("The page contains %i results", len(resp.TableEntityQueryResponse.Value))
 // }
 // err := pager.Err()
-func (t *TableClient) Query(queryOptions QueryOptions) TableEntityQueryResponsePager {
-	return &tableEntityQueryResponsePager{tableClient: t, queryOptions: &queryOptions, tableQueryOptions: &TableQueryEntitiesOptions{}}
+func (t *TableClient) Query(queryOptions *QueryOptions) TableEntityQueryResponsePager {
+	return &tableEntityQueryResponsePager{tableClient: t, queryOptions: queryOptions, tableQueryOptions: &TableQueryEntitiesOptions{}}
 }
 
 // GetEntity retrieves a specific entity from the service using the specified partitionKey and rowKey values.

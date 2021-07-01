@@ -18,14 +18,21 @@ type TestEntity struct {
 	DateTimeValue time.Time
 }
 
+func failOnError(err error, s *tableClientLiveTests) {
+	if err != nil {
+		assert.FailNow(s.T(), err.Error())
+	}
+}
+
 func (s *tableClientLiveTests) TestCustomEntity() {
 	client, delete := s.init(true)
 	defer delete()
 
 	// Create a TestEntity
 	testEntity := TestEntity{Entity: Entity{PartitionKey: "pk001", RowKey: "rk001"}, BasicInt: 10, LargeInt: int64(math.Pow(2, 34)), StringValue: "basicString", DateTimeValue: time.Now()}
-	client.AddEntity(ctx, testEntity)
-	assert.Equal(s.T(), int32(10), testEntity.BasicInt)
+
+	_, err := client.AddEntity(ctx, testEntity)
+	failOnError(err, s)
 
 	receivedEntity, err := client.GetEntity(ctx, "pk001", "rk001")
 	assert.Nil(s.T(), err)

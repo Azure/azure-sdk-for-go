@@ -76,7 +76,7 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 }
 
 // AddEntity adds an entity from an arbitrary interface value to the table.
-// An entity must have at least a PartionKey and RowKey property.
+// An entity must have at least a PartitionKey and RowKey property.
 func (t *TableClient) AddEntity(ctx context.Context, entity interface{}) (TableInsertEntityResponse, error) {
 	entmap, err := toMap(entity)
 	if err != nil {
@@ -87,8 +87,22 @@ func (t *TableClient) AddEntity(ctx context.Context, entity interface{}) (TableI
 		insertResp := resp.(TableInsertEntityResponse)
 		return insertResp, nil
 	} else {
+		err = checkEntityForPkRk(entmap, err)
 		return TableInsertEntityResponse{}, err
 	}
+}
+
+func checkEntityForPkRk(entity *map[string]interface{}, err error) error {
+
+	if _, ok := (*entity)["PartitionKey"]; !ok {
+		return errors.New("Entity must have a PartitionKey and RowKey")
+	}
+
+	if _, ok := (*entity)["RowKey"]; !ok {
+		return errors.New("Entity must have a PartitionKey and RowKey")
+	}
+
+	return err
 }
 
 // DeleteEntity deletes the entity with the specified partitionKey and rowKey from the table.

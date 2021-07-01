@@ -27,14 +27,14 @@ func (ac *ContainerAccessConditions) pointers() (*ModifiedAccessConditions, *Lea
 
 // BlobAccessConditions identifies blob-specific access conditions which you optionally set.
 type BlobAccessConditions struct {
-	ModifiedAccessConditions *ModifiedAccessConditions
 	LeaseAccessConditions    *LeaseAccessConditions
+	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (ac *BlobAccessConditions) pointers() (*ModifiedAccessConditions, *LeaseAccessConditions) {
+func (ac *BlobAccessConditions) pointers() (*LeaseAccessConditions, *ModifiedAccessConditions) {
 	if ac == nil {
 		return nil, nil
 	}
 
-	return ac.ModifiedAccessConditions, ac.LeaseAccessConditions
+	return ac.LeaseAccessConditions, ac.ModifiedAccessConditions
 }

@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-// An Access policy
+// AccessPolicy defines access policy
 type AccessPolicy struct {
 	// the date-time the policy expires
 	Expiry *time.Time `xml:"Expiry"`
@@ -66,7 +66,7 @@ type AppendBlobAppendBlockFromURLOptions struct {
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
 	SourceContentMD5 *[]byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentcrc64 *[]byte
+	SourceContentCRC64 *[]byte
 	// Bytes of source data in the specified range.
 	SourceRange *string
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
@@ -989,7 +989,7 @@ type BlobHierarchyListSegment struct {
 	BlobPrefixes *[]*BlobPrefix       `xml:"BlobPrefix"`
 }
 
-// An Azure Storage blob
+// BlobItemInternal :An Azure Storage blob
 type BlobItemInternal struct {
 	// Blob tags
 	BlobTags         *BlobTags     `xml:"Tags"`
@@ -1033,7 +1033,7 @@ type BlobPrefix struct {
 	Name *string `xml:"Name"`
 }
 
-// Properties of a blob
+// BlobPropertiesInternal defines properties of a blob
 type BlobPropertiesInternal struct {
 	AccessTier           *AccessTier    `xml:"AccessTier"`
 	AccessTierChangeTime *time.Time     `xml:"AccessTierChangeTime"`
@@ -1658,7 +1658,7 @@ type BlobTag struct {
 	Value *string `xml:"Value"`
 }
 
-// Blob tags
+// BlobTags is a collection of Blob tags
 type BlobTags struct {
 	BlobTagSet *[]*BlobTag `xml:"TagSet>Tag"`
 }
@@ -1816,7 +1816,7 @@ type BlockBlobStageBlockFromURLOptions struct {
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
 	SourceContentMD5 *[]byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentcrc64 *[]byte
+	SourceContentCRC64 *[]byte
 	// Bytes of source data in the specified range.
 	SourceRange *string
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
@@ -2313,7 +2313,7 @@ type ContainerGetPropertiesResponse struct {
 	Version *string
 }
 
-// An Azure Storage container
+// ContainerItem defines an Azure Storage container
 type ContainerItem struct {
 	Deleted *bool `xml:"Deleted"`
 
@@ -3449,7 +3449,7 @@ type PageBlobUploadPagesFromURLOptions struct {
 	// Specify the md5 calculated for the range of bytes that must be read from the copy source.
 	SourceContentMD5 *[]byte
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentcrc64 *[]byte
+	SourceContentCRC64 *[]byte
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
 	// Timeouts for Blob Service Operations.</a>
 	Timeout *int32

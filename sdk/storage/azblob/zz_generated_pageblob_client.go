@@ -1085,8 +1085,8 @@ func (client *pageBlobClient) uploadPagesFromURLCreateRequest(ctx context.Contex
 	if pageBlobUploadPagesFromURLOptions != nil && pageBlobUploadPagesFromURLOptions.SourceContentMD5 != nil {
 		req.Header.Set("x-ms-source-content-md5", base64.StdEncoding.EncodeToString(*pageBlobUploadPagesFromURLOptions.SourceContentMD5))
 	}
-	if pageBlobUploadPagesFromURLOptions != nil && pageBlobUploadPagesFromURLOptions.SourceContentcrc64 != nil {
-		req.Header.Set("x-ms-source-content-crc64", base64.StdEncoding.EncodeToString(*pageBlobUploadPagesFromURLOptions.SourceContentcrc64))
+	if pageBlobUploadPagesFromURLOptions != nil && pageBlobUploadPagesFromURLOptions.SourceContentCRC64 != nil {
+		req.Header.Set("x-ms-source-content-crc64", base64.StdEncoding.EncodeToString(*pageBlobUploadPagesFromURLOptions.SourceContentCRC64))
 	}
 	req.Header.Set("Content-Length", strconv.FormatInt(contentLength, 10))
 	req.Header.Set("x-ms-range", rangeParam)

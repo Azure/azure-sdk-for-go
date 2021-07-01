@@ -19,23 +19,8 @@ import (
 	//"github.com/Azure/azure-pipeline-go/pipeline"
 )
 
-//// CommonResponse returns the headers common to all blob REST API responses.
+// CommonResponse returns the headers common to all blob REST API responses.
 type CommonResponse interface {
-	//// ETag returns the value for header ETag.
-	//ETag() *string
-	//
-	//// LastModified returns the value for header Last-Modified.
-	//LastModified() time.Time
-	//
-	//// RequestID returns the value for header x-ms-request-id.
-	//RequestID() string
-
-	//// Date returns the value for header Date.
-	//Date() time.Time
-	//
-	//// Version returns the value for header x-ms-version.
-	//Version() string
-
 	// Response returns the raw HTTP response object.
 	Response() *http.Response
 }
@@ -55,9 +40,8 @@ type HighLevelUploadToBlockBlobOption struct {
 	// Metadata indicates the metadata to be associated with the blob when PutBlockList is called.
 	Metadata *map[string]string
 
-	// AccessConditions indicates the access conditions for the block blob.
-	ModifiedAccessCondition *ModifiedAccessConditions
-	LeaseAccessCondition    *LeaseAccessConditions
+	// BlobAccessConditions indicates the access conditions for the block blob.
+	BlobAccessConditions *BlobAccessConditions
 
 	// BlobAccessTier indicates the tier of blob
 	BlobAccessTier *AccessTier
@@ -78,30 +62,23 @@ type HighLevelUploadToBlockBlobOption struct {
 }
 
 func (o HighLevelUploadToBlockBlobOption) getStageBlockOptions() *StageBlockOptions {
+	leaseAccessConditions, _ := o.BlobAccessConditions.pointers()
 	return &StageBlockOptions{
 		CpkInfo:               o.CpkInfo,
 		CpkScopeInfo:          o.CpkScopeInfo,
-		LeaseAccessConditions: o.LeaseAccessCondition,
-		//BlockBlobStageBlockOptions: &BlockBlobStageBlockOptions{
-		//	RequestID: nil,
-		//	Timeout: nil,
-		//	TransactionalContentMD5: nil,
-		//	TransactionalContentCRC64: nil,
-		//},
+		LeaseAccessConditions: leaseAccessConditions,
 	}
 }
 
 func (o HighLevelUploadToBlockBlobOption) getUploadBlockBlobOptions() *UploadBlockBlobOptions {
 	return &UploadBlockBlobOptions{
-		BlobTagsMap: o.BlobTagsMap,
-		Metadata:    o.Metadata,
-		Tier:        o.BlobAccessTier,
-		//TransactionalContentMD5:
-		BlobHTTPHeaders:          o.BlobHTTPHeaders,
-		LeaseAccessConditions:    o.LeaseAccessCondition,
-		ModifiedAccessConditions: o.ModifiedAccessCondition,
-		CpkInfo:                  o.CpkInfo,
-		CpkScopeInfo:             o.CpkScopeInfo,
+		BlobTagsMap:          o.BlobTagsMap,
+		Metadata:             o.Metadata,
+		Tier:                 o.BlobAccessTier,
+		BlobHTTPHeaders:      o.BlobHTTPHeaders,
+		BlobAccessConditions: o.BlobAccessConditions,
+		CpkInfo:              o.CpkInfo,
+		CpkScopeInfo:         o.CpkScopeInfo,
 	}
 }
 
@@ -226,9 +203,8 @@ type HighLevelDownloadFromBlobOptions struct {
 	// Progress is a function that is invoked periodically as bytes are received.
 	Progress azcore.ProgressReceiver
 
-	// AccessConditions indicates the access conditions used when making HTTP GET requests against the blob.
-	ModifiedAccessConditions *ModifiedAccessConditions
-	LeaseAccessConditions    *LeaseAccessConditions
+	// BlobAccessConditions indicates the access conditions used when making HTTP GET requests against the blob.
+	BlobAccessConditions *BlobAccessConditions
 
 	// ClientProvidedKeyOptions indicates the client provided key by name and/or by value to encrypt/decrypt data.
 	CpkInfo      *CpkInfo
@@ -243,21 +219,19 @@ type HighLevelDownloadFromBlobOptions struct {
 
 func (o *HighLevelDownloadFromBlobOptions) getBlobPropertiesOptions() *GetBlobPropertiesOptions {
 	return &GetBlobPropertiesOptions{
-		LeaseAccessConditions:    o.LeaseAccessConditions,
-		ModifiedAccessConditions: o.ModifiedAccessConditions,
-		CpkInfo:                  o.CpkInfo,
+		BlobAccessConditions: o.BlobAccessConditions,
+		CpkInfo:              o.CpkInfo,
 	}
 }
 
 func (o *HighLevelDownloadFromBlobOptions) getDownloadBlobOptions(offSet, count int64, rangeGetContentMD5 *bool) *DownloadBlobOptions {
 	return &DownloadBlobOptions{
-		LeaseAccessConditions:    o.LeaseAccessConditions,
-		ModifiedAccessConditions: o.ModifiedAccessConditions,
-		CpkInfo:                  o.CpkInfo,
-		CpkScopeInfo:             o.CpkScopeInfo,
-		Offset:                   &offSet,
-		Count:                    &count,
-		RangeGetContentMD5:       rangeGetContentMD5,
+		BlobAccessConditions: o.BlobAccessConditions,
+		CpkInfo:              o.CpkInfo,
+		CpkScopeInfo:         o.CpkScopeInfo,
+		Offset:               &offSet,
+		Count:                &count,
+		RangeGetContentMD5:   rangeGetContentMD5,
 	}
 }
 
@@ -455,7 +429,7 @@ type TransferManager interface {
 	// Run will use a goroutine pool entry to run a function. This blocks until a pool
 	// goroutine becomes available.
 	Run(func())
-	// Closes shuts down all internal goroutines. This must be called when the TransferManager
+	// Close shuts down all internal goroutines. This must be called when the TransferManager
 	// will no longer be used. Not closing it will cause a goroutine leak.
 	Close()
 }
@@ -587,14 +561,14 @@ type UploadStreamToBlockBlobOptions struct {
 	// BufferSize sizes the buffer used to read data from source. If < 1 MiB, defaults to 1 MiB.
 	BufferSize int
 	// MaxBuffers defines the number of simultaneous uploads will be performed to upload the file.
-	MaxBuffers       int
-	BlobHTTPHeaders  *BlobHTTPHeaders
-	Metadata         *map[string]string
-	AccessConditions *BlobAccessConditions
-	BlobAccessTier   *AccessTier
-	BlobTagsMap      *map[string]string
-	CpkInfo          *CpkInfo
-	CpkScopeInfo     *CpkScopeInfo
+	MaxBuffers           int
+	BlobHTTPHeaders      *BlobHTTPHeaders
+	Metadata             *map[string]string
+	BlobAccessConditions *BlobAccessConditions
+	BlobAccessTier       *AccessTier
+	BlobTagsMap          *map[string]string
+	CpkInfo              *CpkInfo
+	CpkScopeInfo         *CpkScopeInfo
 }
 
 func (u *UploadStreamToBlockBlobOptions) defaults() error {

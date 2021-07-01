@@ -44,7 +44,7 @@ package azblob
 //
 //	createAppendBlobOptions := CreateAppendBlobOptions{
 //		Metadata: &basicMetadata,
-//		BlobAccessConditions: BlobAccessConditions{
+//		BlobAccessConditions: &BlobAccessConditions{
 //			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: blobProp.ETag},
 //		},
 //	}

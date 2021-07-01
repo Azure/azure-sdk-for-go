@@ -457,8 +457,8 @@ func (client *blockBlobClient) stageBlockFromURLCreateRequest(ctx context.Contex
 	if blockBlobStageBlockFromURLOptions != nil && blockBlobStageBlockFromURLOptions.SourceContentMD5 != nil {
 		req.Header.Set("x-ms-source-content-md5", base64.StdEncoding.EncodeToString(*blockBlobStageBlockFromURLOptions.SourceContentMD5))
 	}
-	if blockBlobStageBlockFromURLOptions != nil && blockBlobStageBlockFromURLOptions.SourceContentcrc64 != nil {
-		req.Header.Set("x-ms-source-content-crc64", base64.StdEncoding.EncodeToString(*blockBlobStageBlockFromURLOptions.SourceContentcrc64))
+	if blockBlobStageBlockFromURLOptions != nil && blockBlobStageBlockFromURLOptions.SourceContentCRC64 != nil {
+		req.Header.Set("x-ms-source-content-crc64", base64.StdEncoding.EncodeToString(*blockBlobStageBlockFromURLOptions.SourceContentCRC64))
 	}
 	if cpkInfo != nil && cpkInfo.EncryptionKey != nil {
 		req.Header.Set("x-ms-encryption-key", *cpkInfo.EncryptionKey)

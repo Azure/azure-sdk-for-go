@@ -55,12 +55,14 @@ func (r *DownloadResponse) Body(o RetryReaderOptions) io.ReadCloser {
 	}
 	return NewRetryReader(r.ctx, r.RawResponse, r.getInfo, o,
 		func(ctx context.Context, getInfo HTTPGetterInfo) (*http.Response, error) {
-			accessConditions := ModifiedAccessConditions{IfMatch: &getInfo.ETag}
+			accessConditions := &BlobAccessConditions{
+				ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &getInfo.ETag},
+			}
 			options := DownloadBlobOptions{
-				Offset:                   &getInfo.Offset,
-				Count:                    &getInfo.Count,
-				ModifiedAccessConditions: &accessConditions,
-				CpkInfo:                  o.CpkInfo,
+				Offset:               &getInfo.Offset,
+				Count:                &getInfo.Count,
+				BlobAccessConditions: accessConditions,
+				CpkInfo:              o.CpkInfo,
 				//CpkScopeInfo: 			  o.CpkScopeInfo,
 			}
 			resp, err := r.b.Download(ctx, &options)

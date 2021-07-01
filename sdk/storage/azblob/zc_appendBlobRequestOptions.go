@@ -4,7 +4,7 @@
 package azblob
 
 type CreateAppendBlobOptions struct {
-	BlobAccessConditions
+	BlobAccessConditions *BlobAccessConditions
 
 	BlobHTTPHeaders *BlobHTTPHeaders
 
@@ -36,7 +36,9 @@ func (o *CreateAppendBlobOptions) pointers() (*AppendBlobCreateOptions, *BlobHTT
 		RequestID:      o.RequestID,
 		Timeout:        o.Timeout,
 	}
-	return &options, o.BlobHTTPHeaders, o.LeaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions
+
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return &options, o.BlobHTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
 type AppendBlockOptions struct {
@@ -48,7 +50,7 @@ type AppendBlockOptions struct {
 	AppendPositionAccessConditions *AppendPositionAccessConditions
 	CpkInfo                        *CpkInfo
 	CpkScopeInfo                   *CpkScopeInfo
-	BlobAccessConditions
+	BlobAccessConditions           *BlobAccessConditions
 }
 
 func (o *AppendBlockOptions) pointers() (*AppendBlobAppendBlockOptions, *AppendPositionAccessConditions, *CpkInfo, *CpkScopeInfo, *ModifiedAccessConditions, *LeaseAccessConditions) {
@@ -60,8 +62,8 @@ func (o *AppendBlockOptions) pointers() (*AppendBlobAppendBlockOptions, *AppendP
 		TransactionalContentCRC64: o.TransactionalContentCRC64,
 		TransactionalContentMD5:   o.TransactionalContentMD5,
 	}
-
-	return options, o.AppendPositionAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions, o.LeaseAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return options, o.AppendPositionAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions, leaseAccessConditions
 }
 
 type AppendBlockURLOptions struct {
@@ -76,7 +78,7 @@ type AppendBlockURLOptions struct {
 	CpkInfo                        *CpkInfo
 	CpkScopeInfo                   *CpkScopeInfo
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
-	BlobAccessConditions
+	BlobAccessConditions           *BlobAccessConditions
 	// Optional, you can specify whether a particular range of the blob is read
 	Offset *int64
 	Count  *int64
@@ -90,9 +92,11 @@ func (o *AppendBlockURLOptions) pointers() (*AppendBlobAppendBlockFromURLOptions
 	options := &AppendBlobAppendBlockFromURLOptions{
 		SourceRange:             getSourceRange(o.Offset, o.Count),
 		SourceContentMD5:        o.SourceContentMD5,
-		SourceContentcrc64:      o.SourceContentCRC64,
+		SourceContentCRC64:      o.SourceContentCRC64,
 		TransactionalContentMD5: o.TransactionalContentMD5,
 	}
 
-	return options, o.AppendPositionAccessConditions, o.CpkInfo, o.CpkScopeInfo, o.ModifiedAccessConditions, o.LeaseAccessConditions, o.SourceModifiedAccessConditions
+	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
+	return options, o.AppendPositionAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions,
+		leaseAccessConditions, o.SourceModifiedAccessConditions
 }

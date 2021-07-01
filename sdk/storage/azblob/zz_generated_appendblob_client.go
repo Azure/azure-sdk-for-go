@@ -219,8 +219,8 @@ func (client *appendBlobClient) appendBlockFromURLCreateRequest(ctx context.Cont
 	if appendBlobAppendBlockFromURLOptions != nil && appendBlobAppendBlockFromURLOptions.SourceContentMD5 != nil {
 		req.Header.Set("x-ms-source-content-md5", base64.StdEncoding.EncodeToString(*appendBlobAppendBlockFromURLOptions.SourceContentMD5))
 	}
-	if appendBlobAppendBlockFromURLOptions != nil && appendBlobAppendBlockFromURLOptions.SourceContentcrc64 != nil {
-		req.Header.Set("x-ms-source-content-crc64", base64.StdEncoding.EncodeToString(*appendBlobAppendBlockFromURLOptions.SourceContentcrc64))
+	if appendBlobAppendBlockFromURLOptions != nil && appendBlobAppendBlockFromURLOptions.SourceContentCRC64 != nil {
+		req.Header.Set("x-ms-source-content-crc64", base64.StdEncoding.EncodeToString(*appendBlobAppendBlockFromURLOptions.SourceContentCRC64))
 	}
 	req.Header.Set("Content-Length", strconv.FormatInt(contentLength, 10))
 	if appendBlobAppendBlockFromURLOptions != nil && appendBlobAppendBlockFromURLOptions.TransactionalContentMD5 != nil {

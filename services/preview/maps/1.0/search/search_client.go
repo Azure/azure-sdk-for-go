@@ -19,9 +19,16 @@ import (
 	"time"
 )
 
-type searchClient struct {
-	con *connection
+// SearchClient contains the methods for the Search group.
+// Don't use this type directly, use NewSearchClient() instead.
+type SearchClient struct {
+	con *Connection
 	xmsClientID *string
+}
+
+// NewSearchClient creates a new instance of SearchClient with the specified values.
+func NewSearchClient(con *Connection, xmsClientID *string) *SearchClient {
+	return &SearchClient{con: con, xmsClientID: xmsClientID}
 }
 
 // GetSearchAddress - Address Geocoding
@@ -34,7 +41,7 @@ type searchClient struct {
 // or street or intersections as well as
 // higher level geographies such as city centers, counties, states etc.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) GetSearchAddress(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchAddressOptions) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) GetSearchAddress(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchAddressOptions) (SearchCommonResponseResponse, error) {
 	req, err := client.getSearchAddressCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -50,7 +57,7 @@ func (client *searchClient) GetSearchAddress(ctx context.Context, formatParam Te
 }
 
 // getSearchAddressCreateRequest creates the GetSearchAddress request.
-func (client *searchClient) getSearchAddressCreateRequest(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchAddressOptions) (*azcore.Request, error) {
+func (client *SearchClient) getSearchAddressCreateRequest(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchAddressOptions) (*azcore.Request, error) {
 	urlPath := "/search/address/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -109,7 +116,7 @@ func (client *searchClient) getSearchAddressCreateRequest(ctx context.Context, f
 }
 
 // getSearchAddressHandleResponse handles the GetSearchAddress response.
-func (client *searchClient) getSearchAddressHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) getSearchAddressHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
 	var val *SearchCommonResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -118,7 +125,7 @@ return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResp
 }
 
 // getSearchAddressHandleError handles the GetSearchAddress error response.
-func (client *searchClient) getSearchAddressHandleError(resp *azcore.Response) error {
+func (client *SearchClient) getSearchAddressHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -223,7 +230,7 @@ func (client *searchClient) getSearchAddressHandleError(resp *azcore.Response) e
 // specified or are mutually exclusive." } }
 // } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) BeginGetSearchAddressBatch(ctx context.Context, formatParam string, options *SearchBeginGetSearchAddressBatchOptions) (SearchAddressBatchResponsePollerResponse, error) {
+func (client *SearchClient) BeginGetSearchAddressBatch(ctx context.Context, formatParam string, options *SearchBeginGetSearchAddressBatchOptions) (SearchAddressBatchResponsePollerResponse, error) {
 	resp, err := client.getSearchAddressBatch(ctx, formatParam, options)
 	if err != nil {
 		return SearchAddressBatchResponsePollerResponse{}, err
@@ -231,7 +238,7 @@ func (client *searchClient) BeginGetSearchAddressBatch(ctx context.Context, form
 	result := SearchAddressBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("searchClient.GetSearchAddressBatch",resp, client.con.Pipeline(), client.getSearchAddressBatchHandleError)
+	pt, err := azcore.NewLROPoller("SearchClient.GetSearchAddressBatch",resp, client.con.Pipeline(), client.getSearchAddressBatchHandleError)
 	if err != nil {
 		return SearchAddressBatchResponsePollerResponse{}, err
 	}
@@ -247,8 +254,8 @@ func (client *searchClient) BeginGetSearchAddressBatch(ctx context.Context, form
 
 // ResumeGetSearchAddressBatch creates a new SearchAddressBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to SearchAddressBatchResponsePoller.ResumeToken().
-func (client *searchClient) ResumeGetSearchAddressBatch(ctx context.Context, token string) (SearchAddressBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("searchClient.GetSearchAddressBatch",token, client.con.Pipeline(), client.getSearchAddressBatchHandleError)
+func (client *SearchClient) ResumeGetSearchAddressBatch(ctx context.Context, token string) (SearchAddressBatchResponsePollerResponse, error) {
+	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.GetSearchAddressBatch",token, client.con.Pipeline(), client.getSearchAddressBatchHandleError)
 	if err != nil {
 		return SearchAddressBatchResponsePollerResponse{}, err
 	}
@@ -362,7 +369,7 @@ func (client *searchClient) ResumeGetSearchAddressBatch(ctx context.Context, tok
 // specified or are mutually exclusive." } }
 // } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) getSearchAddressBatch(ctx context.Context, formatParam string, options *SearchBeginGetSearchAddressBatchOptions) (*azcore.Response, error) {
+func (client *SearchClient) getSearchAddressBatch(ctx context.Context, formatParam string, options *SearchBeginGetSearchAddressBatchOptions) (*azcore.Response, error) {
 	req, err := client.getSearchAddressBatchCreateRequest(ctx, formatParam, options)
 	if err != nil {
 		return nil, err
@@ -378,7 +385,7 @@ func (client *searchClient) getSearchAddressBatch(ctx context.Context, formatPar
 }
 
 // getSearchAddressBatchCreateRequest creates the GetSearchAddressBatch request.
-func (client *searchClient) getSearchAddressBatchCreateRequest(ctx context.Context, formatParam string, options *SearchBeginGetSearchAddressBatchOptions) (*azcore.Request, error) {
+func (client *SearchClient) getSearchAddressBatchCreateRequest(ctx context.Context, formatParam string, options *SearchBeginGetSearchAddressBatchOptions) (*azcore.Request, error) {
 	urlPath := "/search/address/batch/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -400,7 +407,7 @@ func (client *searchClient) getSearchAddressBatchCreateRequest(ctx context.Conte
 }
 
 // getSearchAddressBatchHandleError handles the GetSearchAddressBatch error response.
-func (client *searchClient) getSearchAddressBatchHandleError(resp *azcore.Response) error {
+func (client *SearchClient) getSearchAddressBatchHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -419,7 +426,7 @@ func (client *searchClient) getSearchAddressBatchHandleError(resp *azcore.Respon
 // receive a GPS feed from the device or asset and wish to know what address where the coordinate is located. This endpoint will return address information
 // for a given coordinate.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) GetSearchAddressReverse(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchAddressReverseOptions) (SearchAddressReverseResponseResponse, error) {
+func (client *SearchClient) GetSearchAddressReverse(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchAddressReverseOptions) (SearchAddressReverseResponseResponse, error) {
 	req, err := client.getSearchAddressReverseCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return SearchAddressReverseResponseResponse{}, err
@@ -435,7 +442,7 @@ func (client *searchClient) GetSearchAddressReverse(ctx context.Context, formatP
 }
 
 // getSearchAddressReverseCreateRequest creates the GetSearchAddressReverse request.
-func (client *searchClient) getSearchAddressReverseCreateRequest(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchAddressReverseOptions) (*azcore.Request, error) {
+func (client *SearchClient) getSearchAddressReverseCreateRequest(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchAddressReverseOptions) (*azcore.Request, error) {
 	urlPath := "/search/address/reverse/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -491,7 +498,7 @@ func (client *searchClient) getSearchAddressReverseCreateRequest(ctx context.Con
 }
 
 // getSearchAddressReverseHandleResponse handles the GetSearchAddressReverse response.
-func (client *searchClient) getSearchAddressReverseHandleResponse(resp *azcore.Response) (SearchAddressReverseResponseResponse, error) {
+func (client *SearchClient) getSearchAddressReverseHandleResponse(resp *azcore.Response) (SearchAddressReverseResponseResponse, error) {
 	var val *SearchAddressReverseResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchAddressReverseResponseResponse{}, err
@@ -500,7 +507,7 @@ return SearchAddressReverseResponseResponse{RawResponse: resp.Response, SearchAd
 }
 
 // getSearchAddressReverseHandleError handles the GetSearchAddressReverse error response.
-func (client *searchClient) getSearchAddressReverseHandleError(resp *azcore.Response) error {
+func (client *SearchClient) getSearchAddressReverseHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -605,7 +612,7 @@ func (client *searchClient) getSearchAddressReverseHandleError(resp *azcore.Resp
 // 400, "response": { "error": { "code": "400
 // BadRequest", "message": "Bad request: one or more parameters were incorrectly specified or are mutually exclusive." } } } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) BeginGetSearchAddressReverseBatch(ctx context.Context, formatParam string, options *SearchBeginGetSearchAddressReverseBatchOptions) (SearchAddressReverseBatchResponsePollerResponse, error) {
+func (client *SearchClient) BeginGetSearchAddressReverseBatch(ctx context.Context, formatParam string, options *SearchBeginGetSearchAddressReverseBatchOptions) (SearchAddressReverseBatchResponsePollerResponse, error) {
 	resp, err := client.getSearchAddressReverseBatch(ctx, formatParam, options)
 	if err != nil {
 		return SearchAddressReverseBatchResponsePollerResponse{}, err
@@ -613,7 +620,7 @@ func (client *searchClient) BeginGetSearchAddressReverseBatch(ctx context.Contex
 	result := SearchAddressReverseBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("searchClient.GetSearchAddressReverseBatch",resp, client.con.Pipeline(), client.getSearchAddressReverseBatchHandleError)
+	pt, err := azcore.NewLROPoller("SearchClient.GetSearchAddressReverseBatch",resp, client.con.Pipeline(), client.getSearchAddressReverseBatchHandleError)
 	if err != nil {
 		return SearchAddressReverseBatchResponsePollerResponse{}, err
 	}
@@ -629,8 +636,8 @@ func (client *searchClient) BeginGetSearchAddressReverseBatch(ctx context.Contex
 
 // ResumeGetSearchAddressReverseBatch creates a new SearchAddressReverseBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to SearchAddressReverseBatchResponsePoller.ResumeToken().
-func (client *searchClient) ResumeGetSearchAddressReverseBatch(ctx context.Context, token string) (SearchAddressReverseBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("searchClient.GetSearchAddressReverseBatch",token, client.con.Pipeline(), client.getSearchAddressReverseBatchHandleError)
+func (client *SearchClient) ResumeGetSearchAddressReverseBatch(ctx context.Context, token string) (SearchAddressReverseBatchResponsePollerResponse, error) {
+	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.GetSearchAddressReverseBatch",token, client.con.Pipeline(), client.getSearchAddressReverseBatchHandleError)
 	if err != nil {
 		return SearchAddressReverseBatchResponsePollerResponse{}, err
 	}
@@ -744,7 +751,7 @@ func (client *searchClient) ResumeGetSearchAddressReverseBatch(ctx context.Conte
 // 400, "response": { "error": { "code": "400
 // BadRequest", "message": "Bad request: one or more parameters were incorrectly specified or are mutually exclusive." } } } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) getSearchAddressReverseBatch(ctx context.Context, formatParam string, options *SearchBeginGetSearchAddressReverseBatchOptions) (*azcore.Response, error) {
+func (client *SearchClient) getSearchAddressReverseBatch(ctx context.Context, formatParam string, options *SearchBeginGetSearchAddressReverseBatchOptions) (*azcore.Response, error) {
 	req, err := client.getSearchAddressReverseBatchCreateRequest(ctx, formatParam, options)
 	if err != nil {
 		return nil, err
@@ -760,7 +767,7 @@ func (client *searchClient) getSearchAddressReverseBatch(ctx context.Context, fo
 }
 
 // getSearchAddressReverseBatchCreateRequest creates the GetSearchAddressReverseBatch request.
-func (client *searchClient) getSearchAddressReverseBatchCreateRequest(ctx context.Context, formatParam string, options *SearchBeginGetSearchAddressReverseBatchOptions) (*azcore.Request, error) {
+func (client *SearchClient) getSearchAddressReverseBatchCreateRequest(ctx context.Context, formatParam string, options *SearchBeginGetSearchAddressReverseBatchOptions) (*azcore.Request, error) {
 	urlPath := "/search/address/reverse/batch/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -782,7 +789,7 @@ func (client *searchClient) getSearchAddressReverseBatchCreateRequest(ctx contex
 }
 
 // getSearchAddressReverseBatchHandleError handles the GetSearchAddressReverseBatch error response.
-func (client *searchClient) getSearchAddressReverseBatchHandleError(resp *azcore.Response) error {
+func (client *SearchClient) getSearchAddressReverseBatchHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -801,7 +808,7 @@ func (client *searchClient) getSearchAddressReverseBatchHandleError(resp *azcore
 // receive a GPS feed from the device or asset and wish to know what address where the coordinate is located. This endpoint will return cross street information
 // for a given coordinate.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) GetSearchAddressReverseCrossStreet(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchAddressReverseCrossStreetOptions) (SearchAddressReverseCrossStreetResponseResponse, error) {
+func (client *SearchClient) GetSearchAddressReverseCrossStreet(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchAddressReverseCrossStreetOptions) (SearchAddressReverseCrossStreetResponseResponse, error) {
 	req, err := client.getSearchAddressReverseCrossStreetCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return SearchAddressReverseCrossStreetResponseResponse{}, err
@@ -817,7 +824,7 @@ func (client *searchClient) GetSearchAddressReverseCrossStreet(ctx context.Conte
 }
 
 // getSearchAddressReverseCrossStreetCreateRequest creates the GetSearchAddressReverseCrossStreet request.
-func (client *searchClient) getSearchAddressReverseCrossStreetCreateRequest(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchAddressReverseCrossStreetOptions) (*azcore.Request, error) {
+func (client *SearchClient) getSearchAddressReverseCrossStreetCreateRequest(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchAddressReverseCrossStreetOptions) (*azcore.Request, error) {
 	urlPath := "/search/address/reverse/crossStreet/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -855,7 +862,7 @@ func (client *searchClient) getSearchAddressReverseCrossStreetCreateRequest(ctx 
 }
 
 // getSearchAddressReverseCrossStreetHandleResponse handles the GetSearchAddressReverseCrossStreet response.
-func (client *searchClient) getSearchAddressReverseCrossStreetHandleResponse(resp *azcore.Response) (SearchAddressReverseCrossStreetResponseResponse, error) {
+func (client *SearchClient) getSearchAddressReverseCrossStreetHandleResponse(resp *azcore.Response) (SearchAddressReverseCrossStreetResponseResponse, error) {
 	var val *SearchAddressReverseCrossStreetResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchAddressReverseCrossStreetResponseResponse{}, err
@@ -864,7 +871,7 @@ return SearchAddressReverseCrossStreetResponseResponse{RawResponse: resp.Respons
 }
 
 // getSearchAddressReverseCrossStreetHandleError handles the GetSearchAddressReverseCrossStreet error response.
-func (client *searchClient) getSearchAddressReverseCrossStreetHandleError(resp *azcore.Response) error {
+func (client *SearchClient) getSearchAddressReverseCrossStreetHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -884,7 +891,7 @@ func (client *searchClient) getSearchAddressReverseCrossStreetHandleError(resp *
 // or intersections as well as higher level
 // geographies such as city centers, counties, states etc.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) GetSearchAddressStructured(ctx context.Context, formatParam TextFormat, options *SearchGetSearchAddressStructuredOptions) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) GetSearchAddressStructured(ctx context.Context, formatParam TextFormat, options *SearchGetSearchAddressStructuredOptions) (SearchCommonResponseResponse, error) {
 	req, err := client.getSearchAddressStructuredCreateRequest(ctx, formatParam, options)
 	if err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -900,7 +907,7 @@ func (client *searchClient) GetSearchAddressStructured(ctx context.Context, form
 }
 
 // getSearchAddressStructuredCreateRequest creates the GetSearchAddressStructured request.
-func (client *searchClient) getSearchAddressStructuredCreateRequest(ctx context.Context, formatParam TextFormat, options *SearchGetSearchAddressStructuredOptions) (*azcore.Request, error) {
+func (client *SearchClient) getSearchAddressStructuredCreateRequest(ctx context.Context, formatParam TextFormat, options *SearchGetSearchAddressStructuredOptions) (*azcore.Request, error) {
 	urlPath := "/search/address/structured/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -967,7 +974,7 @@ func (client *searchClient) getSearchAddressStructuredCreateRequest(ctx context.
 }
 
 // getSearchAddressStructuredHandleResponse handles the GetSearchAddressStructured response.
-func (client *searchClient) getSearchAddressStructuredHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) getSearchAddressStructuredHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
 	var val *SearchCommonResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -976,7 +983,7 @@ return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResp
 }
 
 // getSearchAddressStructuredHandleError handles the GetSearchAddressStructured error response.
-func (client *searchClient) getSearchAddressStructuredHandleError(resp *azcore.Response) error {
+func (client *SearchClient) getSearchAddressStructuredHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -1004,7 +1011,7 @@ func (client *searchClient) getSearchAddressStructuredHandleError(resp *azcore.R
 // request by passing in the query param maxFuzzyLevel
 // =3 or 4.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) GetSearchFuzzy(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchFuzzyOptions) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) GetSearchFuzzy(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchFuzzyOptions) (SearchCommonResponseResponse, error) {
 	req, err := client.getSearchFuzzyCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -1020,7 +1027,7 @@ func (client *searchClient) GetSearchFuzzy(ctx context.Context, formatParam Text
 }
 
 // getSearchFuzzyCreateRequest creates the GetSearchFuzzy request.
-func (client *searchClient) getSearchFuzzyCreateRequest(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchFuzzyOptions) (*azcore.Request, error) {
+func (client *SearchClient) getSearchFuzzyCreateRequest(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchFuzzyOptions) (*azcore.Request, error) {
 	urlPath := "/search/fuzzy/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -1100,7 +1107,7 @@ func (client *searchClient) getSearchFuzzyCreateRequest(ctx context.Context, for
 }
 
 // getSearchFuzzyHandleResponse handles the GetSearchFuzzy response.
-func (client *searchClient) getSearchFuzzyHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) getSearchFuzzyHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
 	var val *SearchCommonResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -1109,7 +1116,7 @@ return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResp
 }
 
 // getSearchFuzzyHandleError handles the GetSearchFuzzy error response.
-func (client *searchClient) getSearchFuzzyHandleError(resp *azcore.Response) error {
+func (client *SearchClient) getSearchFuzzyHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -1213,7 +1220,7 @@ func (client *searchClient) getSearchFuzzyHandleError(resp *azcore.Response) err
 // "statusCode": 400, "response": { "error": { "code": "400 BadRequest", "message": "Bad request: one or more parameters were incorrectly specified or are
 // mutually exclusive." } } } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) BeginGetSearchFuzzyBatch(ctx context.Context, formatParam string, options *SearchBeginGetSearchFuzzyBatchOptions) (SearchFuzzyBatchResponsePollerResponse, error) {
+func (client *SearchClient) BeginGetSearchFuzzyBatch(ctx context.Context, formatParam string, options *SearchBeginGetSearchFuzzyBatchOptions) (SearchFuzzyBatchResponsePollerResponse, error) {
 	resp, err := client.getSearchFuzzyBatch(ctx, formatParam, options)
 	if err != nil {
 		return SearchFuzzyBatchResponsePollerResponse{}, err
@@ -1221,7 +1228,7 @@ func (client *searchClient) BeginGetSearchFuzzyBatch(ctx context.Context, format
 	result := SearchFuzzyBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("searchClient.GetSearchFuzzyBatch",resp, client.con.Pipeline(), client.getSearchFuzzyBatchHandleError)
+	pt, err := azcore.NewLROPoller("SearchClient.GetSearchFuzzyBatch",resp, client.con.Pipeline(), client.getSearchFuzzyBatchHandleError)
 	if err != nil {
 		return SearchFuzzyBatchResponsePollerResponse{}, err
 	}
@@ -1237,8 +1244,8 @@ func (client *searchClient) BeginGetSearchFuzzyBatch(ctx context.Context, format
 
 // ResumeGetSearchFuzzyBatch creates a new SearchFuzzyBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to SearchFuzzyBatchResponsePoller.ResumeToken().
-func (client *searchClient) ResumeGetSearchFuzzyBatch(ctx context.Context, token string) (SearchFuzzyBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("searchClient.GetSearchFuzzyBatch",token, client.con.Pipeline(), client.getSearchFuzzyBatchHandleError)
+func (client *SearchClient) ResumeGetSearchFuzzyBatch(ctx context.Context, token string) (SearchFuzzyBatchResponsePollerResponse, error) {
+	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.GetSearchFuzzyBatch",token, client.con.Pipeline(), client.getSearchFuzzyBatchHandleError)
 	if err != nil {
 		return SearchFuzzyBatchResponsePollerResponse{}, err
 	}
@@ -1351,7 +1358,7 @@ func (client *searchClient) ResumeGetSearchFuzzyBatch(ctx context.Context, token
 // "statusCode": 400, "response": { "error": { "code": "400 BadRequest", "message": "Bad request: one or more parameters were incorrectly specified or are
 // mutually exclusive." } } } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) getSearchFuzzyBatch(ctx context.Context, formatParam string, options *SearchBeginGetSearchFuzzyBatchOptions) (*azcore.Response, error) {
+func (client *SearchClient) getSearchFuzzyBatch(ctx context.Context, formatParam string, options *SearchBeginGetSearchFuzzyBatchOptions) (*azcore.Response, error) {
 	req, err := client.getSearchFuzzyBatchCreateRequest(ctx, formatParam, options)
 	if err != nil {
 		return nil, err
@@ -1367,7 +1374,7 @@ func (client *searchClient) getSearchFuzzyBatch(ctx context.Context, formatParam
 }
 
 // getSearchFuzzyBatchCreateRequest creates the GetSearchFuzzyBatch request.
-func (client *searchClient) getSearchFuzzyBatchCreateRequest(ctx context.Context, formatParam string, options *SearchBeginGetSearchFuzzyBatchOptions) (*azcore.Request, error) {
+func (client *SearchClient) getSearchFuzzyBatchCreateRequest(ctx context.Context, formatParam string, options *SearchBeginGetSearchFuzzyBatchOptions) (*azcore.Request, error) {
 	urlPath := "/search/fuzzy/batch/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -1389,7 +1396,7 @@ func (client *searchClient) getSearchFuzzyBatchCreateRequest(ctx context.Context
 }
 
 // getSearchFuzzyBatchHandleError handles the GetSearchFuzzyBatch error response.
-func (client *searchClient) getSearchFuzzyBatchHandleError(resp *azcore.Response) error {
+func (client *SearchClient) getSearchFuzzyBatchHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -1407,7 +1414,7 @@ func (client *searchClient) getSearchFuzzyBatchHandleError(resp *azcore.Response
 // only return POI results, and does not take in a
 // search query parameter.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) GetSearchNearby(ctx context.Context, formatParam TextFormat, lat float32, lon float32, options *SearchGetSearchNearbyOptions) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) GetSearchNearby(ctx context.Context, formatParam TextFormat, lat float32, lon float32, options *SearchGetSearchNearbyOptions) (SearchCommonResponseResponse, error) {
 	req, err := client.getSearchNearbyCreateRequest(ctx, formatParam, lat, lon, options)
 	if err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -1423,7 +1430,7 @@ func (client *searchClient) GetSearchNearby(ctx context.Context, formatParam Tex
 }
 
 // getSearchNearbyCreateRequest creates the GetSearchNearby request.
-func (client *searchClient) getSearchNearbyCreateRequest(ctx context.Context, formatParam TextFormat, lat float32, lon float32, options *SearchGetSearchNearbyOptions) (*azcore.Request, error) {
+func (client *SearchClient) getSearchNearbyCreateRequest(ctx context.Context, formatParam TextFormat, lat float32, lon float32, options *SearchGetSearchNearbyOptions) (*azcore.Request, error) {
 	urlPath := "/search/nearby/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -1477,7 +1484,7 @@ func (client *searchClient) getSearchNearbyCreateRequest(ctx context.Context, fo
 }
 
 // getSearchNearbyHandleResponse handles the GetSearchNearby response.
-func (client *searchClient) getSearchNearbyHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) getSearchNearbyHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
 	var val *SearchCommonResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -1486,7 +1493,7 @@ return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResp
 }
 
 // getSearchNearbyHandleError handles the GetSearchNearby error response.
-func (client *searchClient) getSearchNearbyHandleError(resp *azcore.Response) error {
+func (client *SearchClient) getSearchNearbyHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -1505,7 +1512,7 @@ func (client *searchClient) getSearchNearbyHandleError(resp *azcore.Response) er
 // bounding box. Endpoint will return only POI results matching the query string. Response includes POI details such as address, coordinate location and
 // category.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) GetSearchPOI(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchPOIOptions) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) GetSearchPOI(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchPOIOptions) (SearchCommonResponseResponse, error) {
 	req, err := client.getSearchPOICreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -1521,7 +1528,7 @@ func (client *searchClient) GetSearchPOI(ctx context.Context, formatParam TextFo
 }
 
 // getSearchPOICreateRequest creates the GetSearchPOI request.
-func (client *searchClient) getSearchPOICreateRequest(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchPOIOptions) (*azcore.Request, error) {
+func (client *SearchClient) getSearchPOICreateRequest(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchPOIOptions) (*azcore.Request, error) {
 	urlPath := "/search/poi/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -1592,7 +1599,7 @@ func (client *searchClient) getSearchPOICreateRequest(ctx context.Context, forma
 }
 
 // getSearchPOIHandleResponse handles the GetSearchPOI response.
-func (client *searchClient) getSearchPOIHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) getSearchPOIHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
 	var val *SearchCommonResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -1601,7 +1608,7 @@ return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResp
 }
 
 // getSearchPOIHandleError handles the GetSearchPOI error response.
-func (client *searchClient) getSearchPOIHandleError(resp *azcore.Response) error {
+func (client *SearchClient) getSearchPOIHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -1619,7 +1626,7 @@ func (client *searchClient) getSearchPOIHandleError(resp *azcore.Response) error
 // Endpoint will only return POI results which are
 // categorized as specified. Response includes POI details such as address, coordinate location and classification.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) GetSearchPOICategory(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchPOICategoryOptions) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) GetSearchPOICategory(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchPOICategoryOptions) (SearchCommonResponseResponse, error) {
 	req, err := client.getSearchPOICategoryCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -1635,7 +1642,7 @@ func (client *searchClient) GetSearchPOICategory(ctx context.Context, formatPara
 }
 
 // getSearchPOICategoryCreateRequest creates the GetSearchPOICategory request.
-func (client *searchClient) getSearchPOICategoryCreateRequest(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchPOICategoryOptions) (*azcore.Request, error) {
+func (client *SearchClient) getSearchPOICategoryCreateRequest(ctx context.Context, formatParam TextFormat, query string, options *SearchGetSearchPOICategoryOptions) (*azcore.Request, error) {
 	urlPath := "/search/poi/category/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -1706,7 +1713,7 @@ func (client *searchClient) getSearchPOICategoryCreateRequest(ctx context.Contex
 }
 
 // getSearchPOICategoryHandleResponse handles the GetSearchPOICategory response.
-func (client *searchClient) getSearchPOICategoryHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) getSearchPOICategoryHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
 	var val *SearchCommonResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -1715,7 +1722,7 @@ return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResp
 }
 
 // getSearchPOICategoryHandleError handles the GetSearchPOICategory error response.
-func (client *searchClient) getSearchPOICategoryHandleError(resp *azcore.Response) error {
+func (client *SearchClient) getSearchPOICategoryHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -1733,7 +1740,7 @@ func (client *searchClient) getSearchPOICategoryHandleError(resp *azcore.Respons
 // The returned content can be used to provide more
 // meaningful results through other Search Service APIs, like Get Search POI [https://docs.microsoft.com/rest/api/maps/search/getsearchpoi].
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) GetSearchPOICategoryTreePreview(ctx context.Context, formatParam ResponseFormat, options *SearchGetSearchPOICategoryTreePreviewOptions) (SearchPoiCategoryTreeResponseResponse, error) {
+func (client *SearchClient) GetSearchPOICategoryTreePreview(ctx context.Context, formatParam ResponseFormat, options *SearchGetSearchPOICategoryTreePreviewOptions) (SearchPoiCategoryTreeResponseResponse, error) {
 	req, err := client.getSearchPOICategoryTreePreviewCreateRequest(ctx, formatParam, options)
 	if err != nil {
 		return SearchPoiCategoryTreeResponseResponse{}, err
@@ -1749,7 +1756,7 @@ func (client *searchClient) GetSearchPOICategoryTreePreview(ctx context.Context,
 }
 
 // getSearchPOICategoryTreePreviewCreateRequest creates the GetSearchPOICategoryTreePreview request.
-func (client *searchClient) getSearchPOICategoryTreePreviewCreateRequest(ctx context.Context, formatParam ResponseFormat, options *SearchGetSearchPOICategoryTreePreviewOptions) (*azcore.Request, error) {
+func (client *SearchClient) getSearchPOICategoryTreePreviewCreateRequest(ctx context.Context, formatParam ResponseFormat, options *SearchGetSearchPOICategoryTreePreviewOptions) (*azcore.Request, error) {
 	urlPath := "/search/poi/category/tree/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -1774,7 +1781,7 @@ func (client *searchClient) getSearchPOICategoryTreePreviewCreateRequest(ctx con
 }
 
 // getSearchPOICategoryTreePreviewHandleResponse handles the GetSearchPOICategoryTreePreview response.
-func (client *searchClient) getSearchPOICategoryTreePreviewHandleResponse(resp *azcore.Response) (SearchPoiCategoryTreeResponseResponse, error) {
+func (client *SearchClient) getSearchPOICategoryTreePreviewHandleResponse(resp *azcore.Response) (SearchPoiCategoryTreeResponseResponse, error) {
 	var val *SearchPoiCategoryTreeResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchPoiCategoryTreeResponseResponse{}, err
@@ -1783,7 +1790,7 @@ return SearchPoiCategoryTreeResponseResponse{RawResponse: resp.Response, SearchP
 }
 
 // getSearchPOICategoryTreePreviewHandleError handles the GetSearchPOICategoryTreePreview error response.
-func (client *searchClient) getSearchPOICategoryTreePreviewHandleError(resp *azcore.Response) error {
+func (client *SearchClient) getSearchPOICategoryTreePreviewHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -1806,7 +1813,7 @@ func (client *searchClient) getSearchPOICategoryTreePreviewHandleError(resp *azc
 // request to the Online Search method that provided
 // the ID. The service allows for batch requests up to 20 identifiers.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) GetSearchPolygon(ctx context.Context, formatParam ResponseFormat, geometries []string, options *SearchGetSearchPolygonOptions) (SearchPolygonResponseResponse, error) {
+func (client *SearchClient) GetSearchPolygon(ctx context.Context, formatParam ResponseFormat, geometries []string, options *SearchGetSearchPolygonOptions) (SearchPolygonResponseResponse, error) {
 	req, err := client.getSearchPolygonCreateRequest(ctx, formatParam, geometries, options)
 	if err != nil {
 		return SearchPolygonResponseResponse{}, err
@@ -1822,7 +1829,7 @@ func (client *searchClient) GetSearchPolygon(ctx context.Context, formatParam Re
 }
 
 // getSearchPolygonCreateRequest creates the GetSearchPolygon request.
-func (client *searchClient) getSearchPolygonCreateRequest(ctx context.Context, formatParam ResponseFormat, geometries []string, options *SearchGetSearchPolygonOptions) (*azcore.Request, error) {
+func (client *SearchClient) getSearchPolygonCreateRequest(ctx context.Context, formatParam ResponseFormat, geometries []string, options *SearchGetSearchPolygonOptions) (*azcore.Request, error) {
 	urlPath := "/search/polygon/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -1845,7 +1852,7 @@ func (client *searchClient) getSearchPolygonCreateRequest(ctx context.Context, f
 }
 
 // getSearchPolygonHandleResponse handles the GetSearchPolygon response.
-func (client *searchClient) getSearchPolygonHandleResponse(resp *azcore.Response) (SearchPolygonResponseResponse, error) {
+func (client *SearchClient) getSearchPolygonHandleResponse(resp *azcore.Response) (SearchPolygonResponseResponse, error) {
 	var val *SearchPolygonResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchPolygonResponseResponse{}, err
@@ -1854,7 +1861,7 @@ return SearchPolygonResponseResponse{RawResponse: resp.Response, SearchPolygonRe
 }
 
 // getSearchPolygonHandleError handles the GetSearchPolygon error response.
-func (client *searchClient) getSearchPolygonHandleError(resp *azcore.Response) error {
+func (client *SearchClient) getSearchPolygonHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -1959,7 +1966,7 @@ func (client *searchClient) getSearchPolygonHandleError(resp *azcore.Response) e
 // specified or are mutually exclusive." } }
 // } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) BeginPostSearchAddressBatch(ctx context.Context, formatParam ResponseFormat, searchAddressBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchAddressBatchOptions) (SearchAddressBatchResponsePollerResponse, error) {
+func (client *SearchClient) BeginPostSearchAddressBatch(ctx context.Context, formatParam ResponseFormat, searchAddressBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchAddressBatchOptions) (SearchAddressBatchResponsePollerResponse, error) {
 	resp, err := client.postSearchAddressBatch(ctx, formatParam, searchAddressBatchRequestBody, options)
 	if err != nil {
 		return SearchAddressBatchResponsePollerResponse{}, err
@@ -1967,7 +1974,7 @@ func (client *searchClient) BeginPostSearchAddressBatch(ctx context.Context, for
 	result := SearchAddressBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("searchClient.PostSearchAddressBatch",resp, client.con.Pipeline(), client.postSearchAddressBatchHandleError)
+	pt, err := azcore.NewLROPoller("SearchClient.PostSearchAddressBatch",resp, client.con.Pipeline(), client.postSearchAddressBatchHandleError)
 	if err != nil {
 		return SearchAddressBatchResponsePollerResponse{}, err
 	}
@@ -1983,8 +1990,8 @@ func (client *searchClient) BeginPostSearchAddressBatch(ctx context.Context, for
 
 // ResumePostSearchAddressBatch creates a new SearchAddressBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to SearchAddressBatchResponsePoller.ResumeToken().
-func (client *searchClient) ResumePostSearchAddressBatch(ctx context.Context, token string) (SearchAddressBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("searchClient.PostSearchAddressBatch",token, client.con.Pipeline(), client.postSearchAddressBatchHandleError)
+func (client *SearchClient) ResumePostSearchAddressBatch(ctx context.Context, token string) (SearchAddressBatchResponsePollerResponse, error) {
+	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.PostSearchAddressBatch",token, client.con.Pipeline(), client.postSearchAddressBatchHandleError)
 	if err != nil {
 		return SearchAddressBatchResponsePollerResponse{}, err
 	}
@@ -2098,7 +2105,7 @@ func (client *searchClient) ResumePostSearchAddressBatch(ctx context.Context, to
 // specified or are mutually exclusive." } }
 // } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) postSearchAddressBatch(ctx context.Context, formatParam ResponseFormat, searchAddressBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchAddressBatchOptions) (*azcore.Response, error) {
+func (client *SearchClient) postSearchAddressBatch(ctx context.Context, formatParam ResponseFormat, searchAddressBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchAddressBatchOptions) (*azcore.Response, error) {
 	req, err := client.postSearchAddressBatchCreateRequest(ctx, formatParam, searchAddressBatchRequestBody, options)
 	if err != nil {
 		return nil, err
@@ -2114,7 +2121,7 @@ func (client *searchClient) postSearchAddressBatch(ctx context.Context, formatPa
 }
 
 // postSearchAddressBatchCreateRequest creates the PostSearchAddressBatch request.
-func (client *searchClient) postSearchAddressBatchCreateRequest(ctx context.Context, formatParam ResponseFormat, searchAddressBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchAddressBatchOptions) (*azcore.Request, error) {
+func (client *SearchClient) postSearchAddressBatchCreateRequest(ctx context.Context, formatParam ResponseFormat, searchAddressBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchAddressBatchOptions) (*azcore.Request, error) {
 	urlPath := "/search/address/batch/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -2136,7 +2143,7 @@ func (client *searchClient) postSearchAddressBatchCreateRequest(ctx context.Cont
 }
 
 // postSearchAddressBatchHandleError handles the PostSearchAddressBatch error response.
-func (client *searchClient) postSearchAddressBatchHandleError(resp *azcore.Response) error {
+func (client *SearchClient) postSearchAddressBatchHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -2242,7 +2249,7 @@ func (client *searchClient) postSearchAddressBatchHandleError(resp *azcore.Respo
 // } ] }
 // If the operation fails it returns one of the following error types.
 // - *ErrorResponse, *ErrorResponse
-func (client *searchClient) PostSearchAddressBatchSync(ctx context.Context, formatParam ResponseFormat, searchAddressBatchRequestBody BatchRequestBody, options *SearchPostSearchAddressBatchSyncOptions) (SearchAddressBatchResponseResponse, error) {
+func (client *SearchClient) PostSearchAddressBatchSync(ctx context.Context, formatParam ResponseFormat, searchAddressBatchRequestBody BatchRequestBody, options *SearchPostSearchAddressBatchSyncOptions) (SearchAddressBatchResponseResponse, error) {
 	req, err := client.postSearchAddressBatchSyncCreateRequest(ctx, formatParam, searchAddressBatchRequestBody, options)
 	if err != nil {
 		return SearchAddressBatchResponseResponse{}, err
@@ -2258,7 +2265,7 @@ func (client *searchClient) PostSearchAddressBatchSync(ctx context.Context, form
 }
 
 // postSearchAddressBatchSyncCreateRequest creates the PostSearchAddressBatchSync request.
-func (client *searchClient) postSearchAddressBatchSyncCreateRequest(ctx context.Context, formatParam ResponseFormat, searchAddressBatchRequestBody BatchRequestBody, options *SearchPostSearchAddressBatchSyncOptions) (*azcore.Request, error) {
+func (client *SearchClient) postSearchAddressBatchSyncCreateRequest(ctx context.Context, formatParam ResponseFormat, searchAddressBatchRequestBody BatchRequestBody, options *SearchPostSearchAddressBatchSyncOptions) (*azcore.Request, error) {
 	urlPath := "/search/address/batch/sync/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -2280,7 +2287,7 @@ func (client *searchClient) postSearchAddressBatchSyncCreateRequest(ctx context.
 }
 
 // postSearchAddressBatchSyncHandleResponse handles the PostSearchAddressBatchSync response.
-func (client *searchClient) postSearchAddressBatchSyncHandleResponse(resp *azcore.Response) (SearchAddressBatchResponseResponse, error) {
+func (client *SearchClient) postSearchAddressBatchSyncHandleResponse(resp *azcore.Response) (SearchAddressBatchResponseResponse, error) {
 	var val *SearchAddressBatchResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchAddressBatchResponseResponse{}, err
@@ -2289,7 +2296,7 @@ return SearchAddressBatchResponseResponse{RawResponse: resp.Response, SearchAddr
 }
 
 // postSearchAddressBatchSyncHandleError handles the PostSearchAddressBatchSync error response.
-func (client *searchClient) postSearchAddressBatchSyncHandleError(resp *azcore.Response) error {
+func (client *SearchClient) postSearchAddressBatchSyncHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -2394,7 +2401,7 @@ func (client *searchClient) postSearchAddressBatchSyncHandleError(resp *azcore.R
 // 400, "response": { "error": { "code": "400
 // BadRequest", "message": "Bad request: one or more parameters were incorrectly specified or are mutually exclusive." } } } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) BeginPostSearchAddressReverseBatch(ctx context.Context, formatParam ResponseFormat, searchAddressReverseBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchAddressReverseBatchOptions) (SearchAddressReverseBatchResponsePollerResponse, error) {
+func (client *SearchClient) BeginPostSearchAddressReverseBatch(ctx context.Context, formatParam ResponseFormat, searchAddressReverseBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchAddressReverseBatchOptions) (SearchAddressReverseBatchResponsePollerResponse, error) {
 	resp, err := client.postSearchAddressReverseBatch(ctx, formatParam, searchAddressReverseBatchRequestBody, options)
 	if err != nil {
 		return SearchAddressReverseBatchResponsePollerResponse{}, err
@@ -2402,7 +2409,7 @@ func (client *searchClient) BeginPostSearchAddressReverseBatch(ctx context.Conte
 	result := SearchAddressReverseBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("searchClient.PostSearchAddressReverseBatch",resp, client.con.Pipeline(), client.postSearchAddressReverseBatchHandleError)
+	pt, err := azcore.NewLROPoller("SearchClient.PostSearchAddressReverseBatch",resp, client.con.Pipeline(), client.postSearchAddressReverseBatchHandleError)
 	if err != nil {
 		return SearchAddressReverseBatchResponsePollerResponse{}, err
 	}
@@ -2418,8 +2425,8 @@ func (client *searchClient) BeginPostSearchAddressReverseBatch(ctx context.Conte
 
 // ResumePostSearchAddressReverseBatch creates a new SearchAddressReverseBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to SearchAddressReverseBatchResponsePoller.ResumeToken().
-func (client *searchClient) ResumePostSearchAddressReverseBatch(ctx context.Context, token string) (SearchAddressReverseBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("searchClient.PostSearchAddressReverseBatch",token, client.con.Pipeline(), client.postSearchAddressReverseBatchHandleError)
+func (client *SearchClient) ResumePostSearchAddressReverseBatch(ctx context.Context, token string) (SearchAddressReverseBatchResponsePollerResponse, error) {
+	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.PostSearchAddressReverseBatch",token, client.con.Pipeline(), client.postSearchAddressReverseBatchHandleError)
 	if err != nil {
 		return SearchAddressReverseBatchResponsePollerResponse{}, err
 	}
@@ -2533,7 +2540,7 @@ func (client *searchClient) ResumePostSearchAddressReverseBatch(ctx context.Cont
 // 400, "response": { "error": { "code": "400
 // BadRequest", "message": "Bad request: one or more parameters were incorrectly specified or are mutually exclusive." } } } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) postSearchAddressReverseBatch(ctx context.Context, formatParam ResponseFormat, searchAddressReverseBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchAddressReverseBatchOptions) (*azcore.Response, error) {
+func (client *SearchClient) postSearchAddressReverseBatch(ctx context.Context, formatParam ResponseFormat, searchAddressReverseBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchAddressReverseBatchOptions) (*azcore.Response, error) {
 	req, err := client.postSearchAddressReverseBatchCreateRequest(ctx, formatParam, searchAddressReverseBatchRequestBody, options)
 	if err != nil {
 		return nil, err
@@ -2549,7 +2556,7 @@ func (client *searchClient) postSearchAddressReverseBatch(ctx context.Context, f
 }
 
 // postSearchAddressReverseBatchCreateRequest creates the PostSearchAddressReverseBatch request.
-func (client *searchClient) postSearchAddressReverseBatchCreateRequest(ctx context.Context, formatParam ResponseFormat, searchAddressReverseBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchAddressReverseBatchOptions) (*azcore.Request, error) {
+func (client *SearchClient) postSearchAddressReverseBatchCreateRequest(ctx context.Context, formatParam ResponseFormat, searchAddressReverseBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchAddressReverseBatchOptions) (*azcore.Request, error) {
 	urlPath := "/search/address/reverse/batch/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -2571,7 +2578,7 @@ func (client *searchClient) postSearchAddressReverseBatchCreateRequest(ctx conte
 }
 
 // postSearchAddressReverseBatchHandleError handles the PostSearchAddressReverseBatch error response.
-func (client *searchClient) postSearchAddressReverseBatchHandleError(resp *azcore.Response) error {
+func (client *SearchClient) postSearchAddressReverseBatchHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -2677,7 +2684,7 @@ func (client *searchClient) postSearchAddressReverseBatchHandleError(resp *azcor
 // BadRequest", "message": "Bad request: one or more parameters were incorrectly specified or are mutually exclusive." } } } ] }
 // If the operation fails it returns one of the following error types.
 // - *ErrorResponse, *ErrorResponse
-func (client *searchClient) PostSearchAddressReverseBatchSync(ctx context.Context, formatParam ResponseFormat, searchAddressReverseBatchRequestBody BatchRequestBody, options *SearchPostSearchAddressReverseBatchSyncOptions) (SearchAddressReverseBatchResponseResponse, error) {
+func (client *SearchClient) PostSearchAddressReverseBatchSync(ctx context.Context, formatParam ResponseFormat, searchAddressReverseBatchRequestBody BatchRequestBody, options *SearchPostSearchAddressReverseBatchSyncOptions) (SearchAddressReverseBatchResponseResponse, error) {
 	req, err := client.postSearchAddressReverseBatchSyncCreateRequest(ctx, formatParam, searchAddressReverseBatchRequestBody, options)
 	if err != nil {
 		return SearchAddressReverseBatchResponseResponse{}, err
@@ -2693,7 +2700,7 @@ func (client *searchClient) PostSearchAddressReverseBatchSync(ctx context.Contex
 }
 
 // postSearchAddressReverseBatchSyncCreateRequest creates the PostSearchAddressReverseBatchSync request.
-func (client *searchClient) postSearchAddressReverseBatchSyncCreateRequest(ctx context.Context, formatParam ResponseFormat, searchAddressReverseBatchRequestBody BatchRequestBody, options *SearchPostSearchAddressReverseBatchSyncOptions) (*azcore.Request, error) {
+func (client *SearchClient) postSearchAddressReverseBatchSyncCreateRequest(ctx context.Context, formatParam ResponseFormat, searchAddressReverseBatchRequestBody BatchRequestBody, options *SearchPostSearchAddressReverseBatchSyncOptions) (*azcore.Request, error) {
 	urlPath := "/search/address/reverse/batch/sync/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -2715,7 +2722,7 @@ func (client *searchClient) postSearchAddressReverseBatchSyncCreateRequest(ctx c
 }
 
 // postSearchAddressReverseBatchSyncHandleResponse handles the PostSearchAddressReverseBatchSync response.
-func (client *searchClient) postSearchAddressReverseBatchSyncHandleResponse(resp *azcore.Response) (SearchAddressReverseBatchResponseResponse, error) {
+func (client *SearchClient) postSearchAddressReverseBatchSyncHandleResponse(resp *azcore.Response) (SearchAddressReverseBatchResponseResponse, error) {
 	var val *SearchAddressReverseBatchResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchAddressReverseBatchResponseResponse{}, err
@@ -2724,7 +2731,7 @@ return SearchAddressReverseBatchResponseResponse{RawResponse: resp.Response, Sea
 }
 
 // postSearchAddressReverseBatchSyncHandleError handles the PostSearchAddressReverseBatchSync error response.
-func (client *searchClient) postSearchAddressReverseBatchSyncHandleError(resp *azcore.Response) error {
+func (client *SearchClient) postSearchAddressReverseBatchSyncHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -2748,7 +2755,7 @@ func (client *searchClient) postSearchAddressReverseBatchSyncHandleError(resp *a
 // the original one, the detourTime value in the
 // response is negative.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) PostSearchAlongRoute(ctx context.Context, formatParam TextFormat, query string, maxDetourTime int32, searchAlongRouteRequestBody SearchAlongRouteRequestBody, options *SearchPostSearchAlongRouteOptions) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) PostSearchAlongRoute(ctx context.Context, formatParam TextFormat, query string, maxDetourTime int32, searchAlongRouteRequestBody SearchAlongRouteRequestBody, options *SearchPostSearchAlongRouteOptions) (SearchCommonResponseResponse, error) {
 	req, err := client.postSearchAlongRouteCreateRequest(ctx, formatParam, query, maxDetourTime, searchAlongRouteRequestBody, options)
 	if err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -2764,7 +2771,7 @@ func (client *searchClient) PostSearchAlongRoute(ctx context.Context, formatPara
 }
 
 // postSearchAlongRouteCreateRequest creates the PostSearchAlongRoute request.
-func (client *searchClient) postSearchAlongRouteCreateRequest(ctx context.Context, formatParam TextFormat, query string, maxDetourTime int32, searchAlongRouteRequestBody SearchAlongRouteRequestBody, options *SearchPostSearchAlongRouteOptions) (*azcore.Request, error) {
+func (client *SearchClient) postSearchAlongRouteCreateRequest(ctx context.Context, formatParam TextFormat, query string, maxDetourTime int32, searchAlongRouteRequestBody SearchAlongRouteRequestBody, options *SearchPostSearchAlongRouteOptions) (*azcore.Request, error) {
 	urlPath := "/search/alongRoute/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -2806,7 +2813,7 @@ func (client *searchClient) postSearchAlongRouteCreateRequest(ctx context.Contex
 }
 
 // postSearchAlongRouteHandleResponse handles the PostSearchAlongRoute response.
-func (client *searchClient) postSearchAlongRouteHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) postSearchAlongRouteHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
 	var val *SearchCommonResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -2815,7 +2822,7 @@ return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResp
 }
 
 // postSearchAlongRouteHandleError handles the PostSearchAlongRoute error response.
-func (client *searchClient) postSearchAlongRouteHandleError(resp *azcore.Response) error {
+func (client *SearchClient) postSearchAlongRouteHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -2919,7 +2926,7 @@ func (client *searchClient) postSearchAlongRouteHandleError(resp *azcore.Respons
 // "statusCode": 400, "response": { "error": { "code": "400 BadRequest", "message": "Bad request: one or more parameters were incorrectly specified or are
 // mutually exclusive." } } } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) BeginPostSearchFuzzyBatch(ctx context.Context, formatParam ResponseFormat, searchFuzzyBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchFuzzyBatchOptions) (SearchFuzzyBatchResponsePollerResponse, error) {
+func (client *SearchClient) BeginPostSearchFuzzyBatch(ctx context.Context, formatParam ResponseFormat, searchFuzzyBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchFuzzyBatchOptions) (SearchFuzzyBatchResponsePollerResponse, error) {
 	resp, err := client.postSearchFuzzyBatch(ctx, formatParam, searchFuzzyBatchRequestBody, options)
 	if err != nil {
 		return SearchFuzzyBatchResponsePollerResponse{}, err
@@ -2927,7 +2934,7 @@ func (client *searchClient) BeginPostSearchFuzzyBatch(ctx context.Context, forma
 	result := SearchFuzzyBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("searchClient.PostSearchFuzzyBatch",resp, client.con.Pipeline(), client.postSearchFuzzyBatchHandleError)
+	pt, err := azcore.NewLROPoller("SearchClient.PostSearchFuzzyBatch",resp, client.con.Pipeline(), client.postSearchFuzzyBatchHandleError)
 	if err != nil {
 		return SearchFuzzyBatchResponsePollerResponse{}, err
 	}
@@ -2943,8 +2950,8 @@ func (client *searchClient) BeginPostSearchFuzzyBatch(ctx context.Context, forma
 
 // ResumePostSearchFuzzyBatch creates a new SearchFuzzyBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to SearchFuzzyBatchResponsePoller.ResumeToken().
-func (client *searchClient) ResumePostSearchFuzzyBatch(ctx context.Context, token string) (SearchFuzzyBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("searchClient.PostSearchFuzzyBatch",token, client.con.Pipeline(), client.postSearchFuzzyBatchHandleError)
+func (client *SearchClient) ResumePostSearchFuzzyBatch(ctx context.Context, token string) (SearchFuzzyBatchResponsePollerResponse, error) {
+	pt, err := azcore.NewLROPollerFromResumeToken("SearchClient.PostSearchFuzzyBatch",token, client.con.Pipeline(), client.postSearchFuzzyBatchHandleError)
 	if err != nil {
 		return SearchFuzzyBatchResponsePollerResponse{}, err
 	}
@@ -3057,7 +3064,7 @@ func (client *searchClient) ResumePostSearchFuzzyBatch(ctx context.Context, toke
 // "statusCode": 400, "response": { "error": { "code": "400 BadRequest", "message": "Bad request: one or more parameters were incorrectly specified or are
 // mutually exclusive." } } } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) postSearchFuzzyBatch(ctx context.Context, formatParam ResponseFormat, searchFuzzyBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchFuzzyBatchOptions) (*azcore.Response, error) {
+func (client *SearchClient) postSearchFuzzyBatch(ctx context.Context, formatParam ResponseFormat, searchFuzzyBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchFuzzyBatchOptions) (*azcore.Response, error) {
 	req, err := client.postSearchFuzzyBatchCreateRequest(ctx, formatParam, searchFuzzyBatchRequestBody, options)
 	if err != nil {
 		return nil, err
@@ -3073,7 +3080,7 @@ func (client *searchClient) postSearchFuzzyBatch(ctx context.Context, formatPara
 }
 
 // postSearchFuzzyBatchCreateRequest creates the PostSearchFuzzyBatch request.
-func (client *searchClient) postSearchFuzzyBatchCreateRequest(ctx context.Context, formatParam ResponseFormat, searchFuzzyBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchFuzzyBatchOptions) (*azcore.Request, error) {
+func (client *SearchClient) postSearchFuzzyBatchCreateRequest(ctx context.Context, formatParam ResponseFormat, searchFuzzyBatchRequestBody BatchRequestBody, options *SearchBeginPostSearchFuzzyBatchOptions) (*azcore.Request, error) {
 	urlPath := "/search/fuzzy/batch/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -3095,7 +3102,7 @@ func (client *searchClient) postSearchFuzzyBatchCreateRequest(ctx context.Contex
 }
 
 // postSearchFuzzyBatchHandleError handles the PostSearchFuzzyBatch error response.
-func (client *searchClient) postSearchFuzzyBatchHandleError(resp *azcore.Response) error {
+func (client *SearchClient) postSearchFuzzyBatchHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -3200,7 +3207,7 @@ func (client *searchClient) postSearchFuzzyBatchHandleError(resp *azcore.Respons
 // mutually exclusive." } } } ] }
 // If the operation fails it returns one of the following error types.
 // - *ErrorResponse, *ErrorResponse
-func (client *searchClient) PostSearchFuzzyBatchSync(ctx context.Context, formatParam ResponseFormat, searchFuzzyBatchRequestBody BatchRequestBody, options *SearchPostSearchFuzzyBatchSyncOptions) (SearchFuzzyBatchResponseResponse, error) {
+func (client *SearchClient) PostSearchFuzzyBatchSync(ctx context.Context, formatParam ResponseFormat, searchFuzzyBatchRequestBody BatchRequestBody, options *SearchPostSearchFuzzyBatchSyncOptions) (SearchFuzzyBatchResponseResponse, error) {
 	req, err := client.postSearchFuzzyBatchSyncCreateRequest(ctx, formatParam, searchFuzzyBatchRequestBody, options)
 	if err != nil {
 		return SearchFuzzyBatchResponseResponse{}, err
@@ -3216,7 +3223,7 @@ func (client *searchClient) PostSearchFuzzyBatchSync(ctx context.Context, format
 }
 
 // postSearchFuzzyBatchSyncCreateRequest creates the PostSearchFuzzyBatchSync request.
-func (client *searchClient) postSearchFuzzyBatchSyncCreateRequest(ctx context.Context, formatParam ResponseFormat, searchFuzzyBatchRequestBody BatchRequestBody, options *SearchPostSearchFuzzyBatchSyncOptions) (*azcore.Request, error) {
+func (client *SearchClient) postSearchFuzzyBatchSyncCreateRequest(ctx context.Context, formatParam ResponseFormat, searchFuzzyBatchRequestBody BatchRequestBody, options *SearchPostSearchFuzzyBatchSyncOptions) (*azcore.Request, error) {
 	urlPath := "/search/fuzzy/batch/sync/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -3238,7 +3245,7 @@ func (client *searchClient) postSearchFuzzyBatchSyncCreateRequest(ctx context.Co
 }
 
 // postSearchFuzzyBatchSyncHandleResponse handles the PostSearchFuzzyBatchSync response.
-func (client *searchClient) postSearchFuzzyBatchSyncHandleResponse(resp *azcore.Response) (SearchFuzzyBatchResponseResponse, error) {
+func (client *SearchClient) postSearchFuzzyBatchSyncHandleResponse(resp *azcore.Response) (SearchFuzzyBatchResponseResponse, error) {
 	var val *SearchFuzzyBatchResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchFuzzyBatchResponseResponse{}, err
@@ -3247,7 +3254,7 @@ return SearchFuzzyBatchResponseResponse{RawResponse: resp.Response, SearchFuzzyB
 }
 
 // postSearchFuzzyBatchSyncHandleError handles the PostSearchFuzzyBatchSync error response.
-func (client *searchClient) postSearchFuzzyBatchSyncHandleError(resp *azcore.Response) error {
+func (client *SearchClient) postSearchFuzzyBatchSyncHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -3288,7 +3295,7 @@ func (client *searchClient) postSearchFuzzyBatchSyncHandleError(resp *azcore.Res
 //
 // .
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *searchClient) PostSearchInsideGeometry(ctx context.Context, formatParam TextFormat, query string, searchInsideGeometryRequestBody SearchInsideGeometryRequestBody, options *SearchPostSearchInsideGeometryOptions) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) PostSearchInsideGeometry(ctx context.Context, formatParam TextFormat, query string, searchInsideGeometryRequestBody SearchInsideGeometryRequestBody, options *SearchPostSearchInsideGeometryOptions) (SearchCommonResponseResponse, error) {
 	req, err := client.postSearchInsideGeometryCreateRequest(ctx, formatParam, query, searchInsideGeometryRequestBody, options)
 	if err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -3304,7 +3311,7 @@ func (client *searchClient) PostSearchInsideGeometry(ctx context.Context, format
 }
 
 // postSearchInsideGeometryCreateRequest creates the PostSearchInsideGeometry request.
-func (client *searchClient) postSearchInsideGeometryCreateRequest(ctx context.Context, formatParam TextFormat, query string, searchInsideGeometryRequestBody SearchInsideGeometryRequestBody, options *SearchPostSearchInsideGeometryOptions) (*azcore.Request, error) {
+func (client *SearchClient) postSearchInsideGeometryCreateRequest(ctx context.Context, formatParam TextFormat, query string, searchInsideGeometryRequestBody SearchInsideGeometryRequestBody, options *SearchPostSearchInsideGeometryOptions) (*azcore.Request, error) {
 	urlPath := "/search/geometry/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -3348,7 +3355,7 @@ func (client *searchClient) postSearchInsideGeometryCreateRequest(ctx context.Co
 }
 
 // postSearchInsideGeometryHandleResponse handles the PostSearchInsideGeometry response.
-func (client *searchClient) postSearchInsideGeometryHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
+func (client *SearchClient) postSearchInsideGeometryHandleResponse(resp *azcore.Response) (SearchCommonResponseResponse, error) {
 	var val *SearchCommonResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SearchCommonResponseResponse{}, err
@@ -3357,7 +3364,7 @@ return SearchCommonResponseResponse{RawResponse: resp.Response, SearchCommonResp
 }
 
 // postSearchInsideGeometryHandleError handles the PostSearchInsideGeometry error response.
-func (client *searchClient) postSearchInsideGeometryHandleError(resp *azcore.Response) error {
+func (client *SearchClient) postSearchInsideGeometryHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

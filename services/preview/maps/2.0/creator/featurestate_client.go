@@ -17,8 +17,15 @@ import (
 	"strings"
 )
 
-type featureStateClient struct {
-	con *connection
+// FeatureStateClient contains the methods for the FeatureState group.
+// Don't use this type directly, use NewFeatureStateClient() instead.
+type FeatureStateClient struct {
+	con *Connection
+}
+
+// NewFeatureStateClient creates a new instance of FeatureStateClient with the specified values.
+func NewFeatureStateClient(con *Connection) *FeatureStateClient {
+	return &FeatureStateClient{con: con}
 }
 
 // CreateStateset - Applies to: see pricing tiers [https://aka.ms/AzureMapsPricingTier].
@@ -39,7 +46,7 @@ type featureStateClient struct {
 // than the stored timestamp.
 // Azure Maps MapControl provides a way to use these feature states to style the features. Please refer to the State Tile documentation for more information.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *featureStateClient) CreateStateset(ctx context.Context, datasetID string, statesetCreateRequestBody StylesObject, options *FeatureStateCreateStatesetOptions) (StatesetCreatedResponseResponse, error) {
+func (client *FeatureStateClient) CreateStateset(ctx context.Context, datasetID string, statesetCreateRequestBody StylesObject, options *FeatureStateCreateStatesetOptions) (StatesetCreatedResponseResponse, error) {
 	req, err := client.createStatesetCreateRequest(ctx, datasetID, statesetCreateRequestBody, options)
 	if err != nil {
 		return StatesetCreatedResponseResponse{}, err
@@ -55,7 +62,7 @@ func (client *featureStateClient) CreateStateset(ctx context.Context, datasetID 
 }
 
 // createStatesetCreateRequest creates the CreateStateset request.
-func (client *featureStateClient) createStatesetCreateRequest(ctx context.Context, datasetID string, statesetCreateRequestBody StylesObject, options *FeatureStateCreateStatesetOptions) (*azcore.Request, error) {
+func (client *FeatureStateClient) createStatesetCreateRequest(ctx context.Context, datasetID string, statesetCreateRequestBody StylesObject, options *FeatureStateCreateStatesetOptions) (*azcore.Request, error) {
 	urlPath := "/featureStateSets"
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -74,7 +81,7 @@ func (client *featureStateClient) createStatesetCreateRequest(ctx context.Contex
 }
 
 // createStatesetHandleResponse handles the CreateStateset response.
-func (client *featureStateClient) createStatesetHandleResponse(resp *azcore.Response) (StatesetCreatedResponseResponse, error) {
+func (client *FeatureStateClient) createStatesetHandleResponse(resp *azcore.Response) (StatesetCreatedResponseResponse, error) {
 	var val *StatesetCreatedResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return StatesetCreatedResponseResponse{}, err
@@ -83,7 +90,7 @@ return StatesetCreatedResponseResponse{RawResponse: resp.Response, StatesetCreat
 }
 
 // createStatesetHandleError handles the CreateStateset error response.
-func (client *featureStateClient) createStatesetHandleError(resp *azcore.Response) error {
+func (client *FeatureStateClient) createStatesetHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -101,7 +108,7 @@ func (client *featureStateClient) createStatesetHandleError(resp *azcore.Respons
 // introduces concepts and tools that apply to Azure Maps Creator.
 // This API deletes the state information identified by the StateKeyName parameter for the feature identified by the FeatureId parameter in the the stateset.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *featureStateClient) DeleteState(ctx context.Context, statesetID string, featureID string, stateKeyName string, options *FeatureStateDeleteStateOptions) (*http.Response, error) {
+func (client *FeatureStateClient) DeleteState(ctx context.Context, statesetID string, featureID string, stateKeyName string, options *FeatureStateDeleteStateOptions) (*http.Response, error) {
 	req, err := client.deleteStateCreateRequest(ctx, statesetID, featureID, stateKeyName, options)
 	if err != nil {
 		return nil, err
@@ -117,7 +124,7 @@ func (client *featureStateClient) DeleteState(ctx context.Context, statesetID st
 }
 
 // deleteStateCreateRequest creates the DeleteState request.
-func (client *featureStateClient) deleteStateCreateRequest(ctx context.Context, statesetID string, featureID string, stateKeyName string, options *FeatureStateDeleteStateOptions) (*azcore.Request, error) {
+func (client *FeatureStateClient) deleteStateCreateRequest(ctx context.Context, statesetID string, featureID string, stateKeyName string, options *FeatureStateDeleteStateOptions) (*azcore.Request, error) {
 	urlPath := "/featureStateSets/{statesetId}/featureStates/{featureId}"
 	if statesetID == "" {
 		return nil, errors.New("parameter statesetID cannot be empty")
@@ -141,7 +148,7 @@ func (client *featureStateClient) deleteStateCreateRequest(ctx context.Context, 
 }
 
 // deleteStateHandleError handles the DeleteState error response.
-func (client *featureStateClient) deleteStateHandleError(resp *azcore.Response) error {
+func (client *FeatureStateClient) deleteStateHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -159,7 +166,7 @@ func (client *featureStateClient) deleteStateHandleError(resp *azcore.Response) 
 // introduces concepts and tools that apply to Azure Maps Creator.
 // This DELETE API allows the user to delete the stateset and the associated data.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *featureStateClient) DeleteStateset(ctx context.Context, statesetID string, options *FeatureStateDeleteStatesetOptions) (*http.Response, error) {
+func (client *FeatureStateClient) DeleteStateset(ctx context.Context, statesetID string, options *FeatureStateDeleteStatesetOptions) (*http.Response, error) {
 	req, err := client.deleteStatesetCreateRequest(ctx, statesetID, options)
 	if err != nil {
 		return nil, err
@@ -175,7 +182,7 @@ func (client *featureStateClient) DeleteStateset(ctx context.Context, statesetID
 }
 
 // deleteStatesetCreateRequest creates the DeleteStateset request.
-func (client *featureStateClient) deleteStatesetCreateRequest(ctx context.Context, statesetID string, options *FeatureStateDeleteStatesetOptions) (*azcore.Request, error) {
+func (client *FeatureStateClient) deleteStatesetCreateRequest(ctx context.Context, statesetID string, options *FeatureStateDeleteStatesetOptions) (*azcore.Request, error) {
 	urlPath := "/featureStateSets/{statesetId}"
 	if statesetID == "" {
 		return nil, errors.New("parameter statesetID cannot be empty")
@@ -194,7 +201,7 @@ func (client *featureStateClient) deleteStatesetCreateRequest(ctx context.Contex
 }
 
 // deleteStatesetHandleError handles the DeleteStateset error response.
-func (client *featureStateClient) deleteStatesetHandleError(resp *azcore.Response) error {
+func (client *FeatureStateClient) deleteStatesetHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -212,7 +219,7 @@ func (client *featureStateClient) deleteStatesetHandleError(resp *azcore.Respons
 // introduces concepts and tools that apply to Azure Maps Creator.
 // This API returns the current state information associated with the given feature in the given stateset.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *featureStateClient) GetStates(ctx context.Context, statesetID string, featureID string, options *FeatureStateGetStatesOptions) (FeatureStatesStructureResponse, error) {
+func (client *FeatureStateClient) GetStates(ctx context.Context, statesetID string, featureID string, options *FeatureStateGetStatesOptions) (FeatureStatesStructureResponse, error) {
 	req, err := client.getStatesCreateRequest(ctx, statesetID, featureID, options)
 	if err != nil {
 		return FeatureStatesStructureResponse{}, err
@@ -228,7 +235,7 @@ func (client *featureStateClient) GetStates(ctx context.Context, statesetID stri
 }
 
 // getStatesCreateRequest creates the GetStates request.
-func (client *featureStateClient) getStatesCreateRequest(ctx context.Context, statesetID string, featureID string, options *FeatureStateGetStatesOptions) (*azcore.Request, error) {
+func (client *FeatureStateClient) getStatesCreateRequest(ctx context.Context, statesetID string, featureID string, options *FeatureStateGetStatesOptions) (*azcore.Request, error) {
 	urlPath := "/featureStateSets/{statesetId}/featureStates/{featureId}"
 	if statesetID == "" {
 		return nil, errors.New("parameter statesetID cannot be empty")
@@ -251,7 +258,7 @@ func (client *featureStateClient) getStatesCreateRequest(ctx context.Context, st
 }
 
 // getStatesHandleResponse handles the GetStates response.
-func (client *featureStateClient) getStatesHandleResponse(resp *azcore.Response) (FeatureStatesStructureResponse, error) {
+func (client *FeatureStateClient) getStatesHandleResponse(resp *azcore.Response) (FeatureStatesStructureResponse, error) {
 	var val *FeatureStatesStructure
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return FeatureStatesStructureResponse{}, err
@@ -260,7 +267,7 @@ return FeatureStatesStructureResponse{RawResponse: resp.Response, FeatureStatesS
 }
 
 // getStatesHandleError handles the GetStates error response.
-func (client *featureStateClient) getStatesHandleError(resp *azcore.Response) error {
+func (client *FeatureStateClient) getStatesHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -279,7 +286,7 @@ func (client *featureStateClient) getStatesHandleError(resp *azcore.Response) er
 // This GET API allows the user to get the stateset Information.
 // The stateset Information includes the datasetId associated to the stateset, and the styles of that stateset.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *featureStateClient) GetStateset(ctx context.Context, statesetID string, options *FeatureStateGetStatesetOptions) (StatesetGetResponseResponse, error) {
+func (client *FeatureStateClient) GetStateset(ctx context.Context, statesetID string, options *FeatureStateGetStatesetOptions) (StatesetGetResponseResponse, error) {
 	req, err := client.getStatesetCreateRequest(ctx, statesetID, options)
 	if err != nil {
 		return StatesetGetResponseResponse{}, err
@@ -295,7 +302,7 @@ func (client *featureStateClient) GetStateset(ctx context.Context, statesetID st
 }
 
 // getStatesetCreateRequest creates the GetStateset request.
-func (client *featureStateClient) getStatesetCreateRequest(ctx context.Context, statesetID string, options *FeatureStateGetStatesetOptions) (*azcore.Request, error) {
+func (client *FeatureStateClient) getStatesetCreateRequest(ctx context.Context, statesetID string, options *FeatureStateGetStatesetOptions) (*azcore.Request, error) {
 	urlPath := "/featureStateSets/{statesetId}"
 	if statesetID == "" {
 		return nil, errors.New("parameter statesetID cannot be empty")
@@ -314,7 +321,7 @@ func (client *featureStateClient) getStatesetCreateRequest(ctx context.Context, 
 }
 
 // getStatesetHandleResponse handles the GetStateset response.
-func (client *featureStateClient) getStatesetHandleResponse(resp *azcore.Response) (StatesetGetResponseResponse, error) {
+func (client *FeatureStateClient) getStatesetHandleResponse(resp *azcore.Response) (StatesetGetResponseResponse, error) {
 	var val *StatesetGetResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return StatesetGetResponseResponse{}, err
@@ -323,7 +330,7 @@ return StatesetGetResponseResponse{RawResponse: resp.Response, StatesetGetRespon
 }
 
 // getStatesetHandleError handles the GetStateset error response.
-func (client *featureStateClient) getStatesetHandleError(resp *azcore.Response) error {
+func (client *FeatureStateClient) getStatesetHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -341,7 +348,7 @@ func (client *featureStateClient) getStatesetHandleError(resp *azcore.Response) 
 // introduces concepts and tools that apply to Azure Maps Creator.
 // This API allows the caller to fetch a list of all previously successfully created statesets.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *featureStateClient) ListStateset(options *FeatureStateListStatesetOptions) (StatesetListResponsePager) {
+func (client *FeatureStateClient) ListStateset(options *FeatureStateListStatesetOptions) (StatesetListResponsePager) {
 	return &statesetListResponsePager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -357,7 +364,7 @@ func (client *featureStateClient) ListStateset(options *FeatureStateListStateset
 }
 
 // listStatesetCreateRequest creates the ListStateset request.
-func (client *featureStateClient) listStatesetCreateRequest(ctx context.Context, options *FeatureStateListStatesetOptions) (*azcore.Request, error) {
+func (client *FeatureStateClient) listStatesetCreateRequest(ctx context.Context, options *FeatureStateListStatesetOptions) (*azcore.Request, error) {
 	urlPath := "/featureStateSets"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -372,7 +379,7 @@ func (client *featureStateClient) listStatesetCreateRequest(ctx context.Context,
 }
 
 // listStatesetHandleResponse handles the ListStateset response.
-func (client *featureStateClient) listStatesetHandleResponse(resp *azcore.Response) (StatesetListResponseResponse, error) {
+func (client *FeatureStateClient) listStatesetHandleResponse(resp *azcore.Response) (StatesetListResponseResponse, error) {
 	var val *StatesetListResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return StatesetListResponseResponse{}, err
@@ -381,7 +388,7 @@ return StatesetListResponseResponse{RawResponse: resp.Response, StatesetListResp
 }
 
 // listStatesetHandleError handles the ListStateset error response.
-func (client *featureStateClient) listStatesetHandleError(resp *azcore.Response) error {
+func (client *FeatureStateClient) listStatesetHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -399,7 +406,7 @@ func (client *featureStateClient) listStatesetHandleError(resp *azcore.Response)
 // introduces concepts and tools that apply to Azure Maps Creator.
 // This PUT API allows the user to update the stateset style rules.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *featureStateClient) PutStateset(ctx context.Context, statesetID string, statesetStyleUpdateRequestBody StylesObject, options *FeatureStatePutStatesetOptions) (*http.Response, error) {
+func (client *FeatureStateClient) PutStateset(ctx context.Context, statesetID string, statesetStyleUpdateRequestBody StylesObject, options *FeatureStatePutStatesetOptions) (*http.Response, error) {
 	req, err := client.putStatesetCreateRequest(ctx, statesetID, statesetStyleUpdateRequestBody, options)
 	if err != nil {
 		return nil, err
@@ -415,7 +422,7 @@ func (client *featureStateClient) PutStateset(ctx context.Context, statesetID st
 }
 
 // putStatesetCreateRequest creates the PutStateset request.
-func (client *featureStateClient) putStatesetCreateRequest(ctx context.Context, statesetID string, statesetStyleUpdateRequestBody StylesObject, options *FeatureStatePutStatesetOptions) (*azcore.Request, error) {
+func (client *FeatureStateClient) putStatesetCreateRequest(ctx context.Context, statesetID string, statesetStyleUpdateRequestBody StylesObject, options *FeatureStatePutStatesetOptions) (*azcore.Request, error) {
 	urlPath := "/featureStateSets/{statesetId}"
 	if statesetID == "" {
 		return nil, errors.New("parameter statesetID cannot be empty")
@@ -434,7 +441,7 @@ func (client *featureStateClient) putStatesetCreateRequest(ctx context.Context, 
 }
 
 // putStatesetHandleError handles the PutStateset error response.
-func (client *featureStateClient) putStatesetHandleError(resp *azcore.Response) error {
+func (client *FeatureStateClient) putStatesetHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -452,7 +459,7 @@ func (client *featureStateClient) putStatesetHandleError(resp *azcore.Response) 
 // introduces concepts and tools that apply to Azure Maps Creator.
 // This PUT API allows the user to update the state of the given feature in the given stateset.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *featureStateClient) UpdateStates(ctx context.Context, statesetID string, featureID string, featureStateUpdateRequestBody FeatureStatesStructure, options *FeatureStateUpdateStatesOptions) (*http.Response, error) {
+func (client *FeatureStateClient) UpdateStates(ctx context.Context, statesetID string, featureID string, featureStateUpdateRequestBody FeatureStatesStructure, options *FeatureStateUpdateStatesOptions) (*http.Response, error) {
 	req, err := client.updateStatesCreateRequest(ctx, statesetID, featureID, featureStateUpdateRequestBody, options)
 	if err != nil {
 		return nil, err
@@ -468,7 +475,7 @@ func (client *featureStateClient) UpdateStates(ctx context.Context, statesetID s
 }
 
 // updateStatesCreateRequest creates the UpdateStates request.
-func (client *featureStateClient) updateStatesCreateRequest(ctx context.Context, statesetID string, featureID string, featureStateUpdateRequestBody FeatureStatesStructure, options *FeatureStateUpdateStatesOptions) (*azcore.Request, error) {
+func (client *FeatureStateClient) updateStatesCreateRequest(ctx context.Context, statesetID string, featureID string, featureStateUpdateRequestBody FeatureStatesStructure, options *FeatureStateUpdateStatesOptions) (*azcore.Request, error) {
 	urlPath := "/featureStateSets/{statesetId}/featureStates/{featureId}"
 	if statesetID == "" {
 		return nil, errors.New("parameter statesetID cannot be empty")
@@ -491,7 +498,7 @@ func (client *featureStateClient) updateStatesCreateRequest(ctx context.Context,
 }
 
 // updateStatesHandleError handles the UpdateStates error response.
-func (client *featureStateClient) updateStatesHandleError(resp *azcore.Response) error {
+func (client *FeatureStateClient) updateStatesHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

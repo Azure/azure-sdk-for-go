@@ -18,9 +18,16 @@ import (
 	"strings"
 )
 
-type elevationClient struct {
-	con *connection
+// ElevationClient contains the methods for the Elevation group.
+// Don't use this type directly, use NewElevationClient() instead.
+type ElevationClient struct {
+	con *Connection
 	xmsClientID *string
+}
+
+// NewElevationClient creates a new instance of ElevationClient with the specified values.
+func NewElevationClient(con *Connection, xmsClientID *string) *ElevationClient {
+	return &ElevationClient{con: con, xmsClientID: xmsClientID}
 }
 
 // GetDataForBoundingBox - Applies to: S1 pricing tier.
@@ -32,7 +39,7 @@ type elevationClient struct {
 // the southwest corner, and then proceeding west to east along the row. At the end of the row, it moves north to the next row, and repeats the process
 // until it reaches the far northeast corner.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *elevationClient) GetDataForBoundingBox(ctx context.Context, formatParam ResponseFormat, bounds []string, rows int32, columns int32, options *ElevationGetDataForBoundingBoxOptions) (BoundingBoxResultResponse, error) {
+func (client *ElevationClient) GetDataForBoundingBox(ctx context.Context, formatParam ResponseFormat, bounds []string, rows int32, columns int32, options *ElevationGetDataForBoundingBoxOptions) (BoundingBoxResultResponse, error) {
 	req, err := client.getDataForBoundingBoxCreateRequest(ctx, formatParam, bounds, rows, columns, options)
 	if err != nil {
 		return BoundingBoxResultResponse{}, err
@@ -48,7 +55,7 @@ func (client *elevationClient) GetDataForBoundingBox(ctx context.Context, format
 }
 
 // getDataForBoundingBoxCreateRequest creates the GetDataForBoundingBox request.
-func (client *elevationClient) getDataForBoundingBoxCreateRequest(ctx context.Context, formatParam ResponseFormat, bounds []string, rows int32, columns int32, options *ElevationGetDataForBoundingBoxOptions) (*azcore.Request, error) {
+func (client *ElevationClient) getDataForBoundingBoxCreateRequest(ctx context.Context, formatParam ResponseFormat, bounds []string, rows int32, columns int32, options *ElevationGetDataForBoundingBoxOptions) (*azcore.Request, error) {
 	urlPath := "/elevation/lattice/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -73,7 +80,7 @@ func (client *elevationClient) getDataForBoundingBoxCreateRequest(ctx context.Co
 }
 
 // getDataForBoundingBoxHandleResponse handles the GetDataForBoundingBox response.
-func (client *elevationClient) getDataForBoundingBoxHandleResponse(resp *azcore.Response) (BoundingBoxResultResponse, error) {
+func (client *ElevationClient) getDataForBoundingBoxHandleResponse(resp *azcore.Response) (BoundingBoxResultResponse, error) {
 	var val *BoundingBoxResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BoundingBoxResultResponse{}, err
@@ -82,7 +89,7 @@ return BoundingBoxResultResponse{RawResponse: resp.Response, BoundingBoxResult: 
 }
 
 // getDataForBoundingBoxHandleError handles the GetDataForBoundingBox error response.
-func (client *elevationClient) getDataForBoundingBoxHandleError(resp *azcore.Response) error {
+func (client *ElevationClient) getDataForBoundingBoxHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -100,7 +107,7 @@ func (client *elevationClient) getDataForBoundingBoxHandleError(resp *azcore.Res
 // If you intend to pass more than 100 coordinates
 // as a pipeline delimited string, use the POST Data For Points [https://docs.microsoft.com/en-us/rest/api/maps/elevation/postdataforpoints].
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *elevationClient) GetDataForPoints(ctx context.Context, formatParam ResponseFormat, points []string, options *ElevationGetDataForPointsOptions) (PointsResultResponse, error) {
+func (client *ElevationClient) GetDataForPoints(ctx context.Context, formatParam ResponseFormat, points []string, options *ElevationGetDataForPointsOptions) (PointsResultResponse, error) {
 	req, err := client.getDataForPointsCreateRequest(ctx, formatParam, points, options)
 	if err != nil {
 		return PointsResultResponse{}, err
@@ -116,7 +123,7 @@ func (client *elevationClient) GetDataForPoints(ctx context.Context, formatParam
 }
 
 // getDataForPointsCreateRequest creates the GetDataForPoints request.
-func (client *elevationClient) getDataForPointsCreateRequest(ctx context.Context, formatParam ResponseFormat, points []string, options *ElevationGetDataForPointsOptions) (*azcore.Request, error) {
+func (client *ElevationClient) getDataForPointsCreateRequest(ctx context.Context, formatParam ResponseFormat, points []string, options *ElevationGetDataForPointsOptions) (*azcore.Request, error) {
 	urlPath := "/elevation/point/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -141,7 +148,7 @@ func (client *elevationClient) getDataForPointsCreateRequest(ctx context.Context
 }
 
 // getDataForPointsHandleResponse handles the GetDataForPoints response.
-func (client *elevationClient) getDataForPointsHandleResponse(resp *azcore.Response) (PointsResultResponse, error) {
+func (client *ElevationClient) getDataForPointsHandleResponse(resp *azcore.Response) (PointsResultResponse, error) {
 	var val *PointsResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PointsResultResponse{}, err
@@ -150,7 +157,7 @@ return PointsResultResponse{RawResponse: resp.Response, PointsResult: val}, nil
 }
 
 // getDataForPointsHandleError handles the GetDataForPoints error response.
-func (client *elevationClient) getDataForPointsHandleError(resp *azcore.Response) error {
+func (client *ElevationClient) getDataForPointsHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -172,7 +179,7 @@ func (client *elevationClient) getDataForPointsHandleError(resp *azcore.Response
 // point is chosen based on Euclidean distance and
 // may markedly differ from the geodesic path along the curved surface of the reference ellipsoid.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *elevationClient) GetDataForPolyline(ctx context.Context, formatParam ResponseFormat, lines []string, options *ElevationGetDataForPolylineOptions) (LinesResultResponse, error) {
+func (client *ElevationClient) GetDataForPolyline(ctx context.Context, formatParam ResponseFormat, lines []string, options *ElevationGetDataForPolylineOptions) (LinesResultResponse, error) {
 	req, err := client.getDataForPolylineCreateRequest(ctx, formatParam, lines, options)
 	if err != nil {
 		return LinesResultResponse{}, err
@@ -188,7 +195,7 @@ func (client *elevationClient) GetDataForPolyline(ctx context.Context, formatPar
 }
 
 // getDataForPolylineCreateRequest creates the GetDataForPolyline request.
-func (client *elevationClient) getDataForPolylineCreateRequest(ctx context.Context, formatParam ResponseFormat, lines []string, options *ElevationGetDataForPolylineOptions) (*azcore.Request, error) {
+func (client *ElevationClient) getDataForPolylineCreateRequest(ctx context.Context, formatParam ResponseFormat, lines []string, options *ElevationGetDataForPolylineOptions) (*azcore.Request, error) {
 	urlPath := "/elevation/line/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -216,7 +223,7 @@ func (client *elevationClient) getDataForPolylineCreateRequest(ctx context.Conte
 }
 
 // getDataForPolylineHandleResponse handles the GetDataForPolyline response.
-func (client *elevationClient) getDataForPolylineHandleResponse(resp *azcore.Response) (LinesResultResponse, error) {
+func (client *ElevationClient) getDataForPolylineHandleResponse(resp *azcore.Response) (LinesResultResponse, error) {
 	var val *LinesResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LinesResultResponse{}, err
@@ -225,7 +232,7 @@ return LinesResultResponse{RawResponse: resp.Response, LinesResult: val}, nil
 }
 
 // getDataForPolylineHandleError handles the GetDataForPolyline error response.
-func (client *elevationClient) getDataForPolylineHandleError(resp *azcore.Response) error {
+func (client *ElevationClient) getDataForPolylineHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -242,7 +249,7 @@ func (client *elevationClient) getDataForPolylineHandleError(resp *azcore.Respon
 // you intend to pass multiple points in the request.
 // If you intend to pass a single coordinate into the API, use the GET Data For Points API [https://docs.microsoft.com/en-us/rest/api/maps/elevation/getdataforpoints].
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *elevationClient) PostDataForPoints(ctx context.Context, formatParam ResponseFormat, pointsRequestBody []*CoordinatesPairAbbreviated, options *ElevationPostDataForPointsOptions) (PointsResultResponse, error) {
+func (client *ElevationClient) PostDataForPoints(ctx context.Context, formatParam ResponseFormat, pointsRequestBody []*CoordinatesPairAbbreviated, options *ElevationPostDataForPointsOptions) (PointsResultResponse, error) {
 	req, err := client.postDataForPointsCreateRequest(ctx, formatParam, pointsRequestBody, options)
 	if err != nil {
 		return PointsResultResponse{}, err
@@ -258,7 +265,7 @@ func (client *elevationClient) PostDataForPoints(ctx context.Context, formatPara
 }
 
 // postDataForPointsCreateRequest creates the PostDataForPoints request.
-func (client *elevationClient) postDataForPointsCreateRequest(ctx context.Context, formatParam ResponseFormat, pointsRequestBody []*CoordinatesPairAbbreviated, options *ElevationPostDataForPointsOptions) (*azcore.Request, error) {
+func (client *ElevationClient) postDataForPointsCreateRequest(ctx context.Context, formatParam ResponseFormat, pointsRequestBody []*CoordinatesPairAbbreviated, options *ElevationPostDataForPointsOptions) (*azcore.Request, error) {
 	urlPath := "/elevation/point/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -280,7 +287,7 @@ func (client *elevationClient) postDataForPointsCreateRequest(ctx context.Contex
 }
 
 // postDataForPointsHandleResponse handles the PostDataForPoints response.
-func (client *elevationClient) postDataForPointsHandleResponse(resp *azcore.Response) (PointsResultResponse, error) {
+func (client *ElevationClient) postDataForPointsHandleResponse(resp *azcore.Response) (PointsResultResponse, error) {
 	var val *PointsResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PointsResultResponse{}, err
@@ -289,7 +296,7 @@ return PointsResultResponse{RawResponse: resp.Response, PointsResult: val}, nil
 }
 
 // postDataForPointsHandleError handles the PostDataForPoints error response.
-func (client *elevationClient) postDataForPointsHandleError(resp *azcore.Response) error {
+func (client *ElevationClient) postDataForPointsHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -311,7 +318,7 @@ func (client *elevationClient) postDataForPointsHandleError(resp *azcore.Respons
 // along the curved surface of the reference
 // ellipsoid.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *elevationClient) PostDataForPolyline(ctx context.Context, formatParam ResponseFormat, linesRequestBody []*CoordinatesPairAbbreviated, options *ElevationPostDataForPolylineOptions) (LinesResultResponse, error) {
+func (client *ElevationClient) PostDataForPolyline(ctx context.Context, formatParam ResponseFormat, linesRequestBody []*CoordinatesPairAbbreviated, options *ElevationPostDataForPolylineOptions) (LinesResultResponse, error) {
 	req, err := client.postDataForPolylineCreateRequest(ctx, formatParam, linesRequestBody, options)
 	if err != nil {
 		return LinesResultResponse{}, err
@@ -327,7 +334,7 @@ func (client *elevationClient) PostDataForPolyline(ctx context.Context, formatPa
 }
 
 // postDataForPolylineCreateRequest creates the PostDataForPolyline request.
-func (client *elevationClient) postDataForPolylineCreateRequest(ctx context.Context, formatParam ResponseFormat, linesRequestBody []*CoordinatesPairAbbreviated, options *ElevationPostDataForPolylineOptions) (*azcore.Request, error) {
+func (client *ElevationClient) postDataForPolylineCreateRequest(ctx context.Context, formatParam ResponseFormat, linesRequestBody []*CoordinatesPairAbbreviated, options *ElevationPostDataForPolylineOptions) (*azcore.Request, error) {
 	urlPath := "/elevation/line/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -352,7 +359,7 @@ func (client *elevationClient) postDataForPolylineCreateRequest(ctx context.Cont
 }
 
 // postDataForPolylineHandleResponse handles the PostDataForPolyline response.
-func (client *elevationClient) postDataForPolylineHandleResponse(resp *azcore.Response) (LinesResultResponse, error) {
+func (client *ElevationClient) postDataForPolylineHandleResponse(resp *azcore.Response) (LinesResultResponse, error) {
 	var val *LinesResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LinesResultResponse{}, err
@@ -361,7 +368,7 @@ return LinesResultResponse{RawResponse: resp.Response, LinesResult: val}, nil
 }
 
 // postDataForPolylineHandleError handles the PostDataForPolyline error response.
-func (client *elevationClient) postDataForPolylineHandleError(resp *azcore.Response) error {
+func (client *ElevationClient) postDataForPolylineHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

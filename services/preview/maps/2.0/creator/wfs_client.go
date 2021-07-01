@@ -18,9 +18,16 @@ import (
 	"strings"
 )
 
-type wfsClient struct {
-	con *connection
+// WFSClient contains the methods for the WFS group.
+// Don't use this type directly, use NewWFSClient() instead.
+type WFSClient struct {
+	con *Connection
 	xmsClientID *string
+}
+
+// NewWFSClient creates a new instance of WFSClient with the specified values.
+func NewWFSClient(con *Connection, xmsClientID *string) *WFSClient {
+	return &WFSClient{con: con, xmsClientID: xmsClientID}
 }
 
 // DeleteFeature - Applies to: see pricing tiers [https://aka.ms/AzureMapsPricingTier].
@@ -35,7 +42,7 @@ type wfsClient struct {
 // only facility features. Deleting a facility
 // feature deletes all the child features of that facility recursively.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *wfsClient) DeleteFeature(ctx context.Context, datasetID string, collectionID string, featureID string, options *WFSDeleteFeatureOptions) (*http.Response, error) {
+func (client *WFSClient) DeleteFeature(ctx context.Context, datasetID string, collectionID string, featureID string, options *WFSDeleteFeatureOptions) (*http.Response, error) {
 	req, err := client.deleteFeatureCreateRequest(ctx, datasetID, collectionID, featureID, options)
 	if err != nil {
 		return nil, err
@@ -51,7 +58,7 @@ func (client *wfsClient) DeleteFeature(ctx context.Context, datasetID string, co
 }
 
 // deleteFeatureCreateRequest creates the DeleteFeature request.
-func (client *wfsClient) deleteFeatureCreateRequest(ctx context.Context, datasetID string, collectionID string, featureID string, options *WFSDeleteFeatureOptions) (*azcore.Request, error) {
+func (client *WFSClient) deleteFeatureCreateRequest(ctx context.Context, datasetID string, collectionID string, featureID string, options *WFSDeleteFeatureOptions) (*azcore.Request, error) {
 	urlPath := "/wfs/datasets/{datasetId}/collections/{collectionId}/items/{featureId}"
 	if datasetID == "" {
 		return nil, errors.New("parameter datasetID cannot be empty")
@@ -78,7 +85,7 @@ func (client *wfsClient) deleteFeatureCreateRequest(ctx context.Context, dataset
 }
 
 // deleteFeatureHandleError handles the DeleteFeature error response.
-func (client *wfsClient) deleteFeatureHandleError(resp *azcore.Response) error {
+func (client *WFSClient) deleteFeatureHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -101,7 +108,7 @@ func (client *wfsClient) deleteFeatureHandleError(resp *azcore.Response) error {
 // based on a common schema.
 // The Collection Description API provides the description of a given collection. It includes the links to the operations that can be performed on the collection.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *wfsClient) GetCollection(ctx context.Context, datasetID string, collectionID string, options *WFSGetCollectionOptions) (CollectionInfoResponse, error) {
+func (client *WFSClient) GetCollection(ctx context.Context, datasetID string, collectionID string, options *WFSGetCollectionOptions) (CollectionInfoResponse, error) {
 	req, err := client.getCollectionCreateRequest(ctx, datasetID, collectionID, options)
 	if err != nil {
 		return CollectionInfoResponse{}, err
@@ -117,7 +124,7 @@ func (client *wfsClient) GetCollection(ctx context.Context, datasetID string, co
 }
 
 // getCollectionCreateRequest creates the GetCollection request.
-func (client *wfsClient) getCollectionCreateRequest(ctx context.Context, datasetID string, collectionID string, options *WFSGetCollectionOptions) (*azcore.Request, error) {
+func (client *WFSClient) getCollectionCreateRequest(ctx context.Context, datasetID string, collectionID string, options *WFSGetCollectionOptions) (*azcore.Request, error) {
 	urlPath := "/wfs/datasets/{datasetId}/collections/{collectionId}"
 	if datasetID == "" {
 		return nil, errors.New("parameter datasetID cannot be empty")
@@ -143,7 +150,7 @@ func (client *wfsClient) getCollectionCreateRequest(ctx context.Context, dataset
 }
 
 // getCollectionHandleResponse handles the GetCollection response.
-func (client *wfsClient) getCollectionHandleResponse(resp *azcore.Response) (CollectionInfoResponse, error) {
+func (client *WFSClient) getCollectionHandleResponse(resp *azcore.Response) (CollectionInfoResponse, error) {
 	var val *CollectionInfo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CollectionInfoResponse{}, err
@@ -152,7 +159,7 @@ return CollectionInfoResponse{RawResponse: resp.Response, CollectionInfo: val}, 
 }
 
 // getCollectionHandleError handles the GetCollection error response.
-func (client *wfsClient) getCollectionHandleError(resp *azcore.Response) error {
+func (client *WFSClient) getCollectionHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -175,7 +182,7 @@ func (client *wfsClient) getCollectionHandleError(resp *azcore.Response) error {
 // multiple feature collections. A feature collection is a collection of features of a similar type, based on a common schema.
 // The Collection Definition API provides the detailed data model of a given collection.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *wfsClient) GetCollectionDefinition(ctx context.Context, datasetID string, collectionID string, options *WFSGetCollectionDefinitionOptions) (CollectionDefinitionResponseResponse, error) {
+func (client *WFSClient) GetCollectionDefinition(ctx context.Context, datasetID string, collectionID string, options *WFSGetCollectionDefinitionOptions) (CollectionDefinitionResponseResponse, error) {
 	req, err := client.getCollectionDefinitionCreateRequest(ctx, datasetID, collectionID, options)
 	if err != nil {
 		return CollectionDefinitionResponseResponse{}, err
@@ -191,7 +198,7 @@ func (client *wfsClient) GetCollectionDefinition(ctx context.Context, datasetID 
 }
 
 // getCollectionDefinitionCreateRequest creates the GetCollectionDefinition request.
-func (client *wfsClient) getCollectionDefinitionCreateRequest(ctx context.Context, datasetID string, collectionID string, options *WFSGetCollectionDefinitionOptions) (*azcore.Request, error) {
+func (client *WFSClient) getCollectionDefinitionCreateRequest(ctx context.Context, datasetID string, collectionID string, options *WFSGetCollectionDefinitionOptions) (*azcore.Request, error) {
 	urlPath := "/wfs/datasets/{datasetId}/collections/{collectionId}/definition"
 	if datasetID == "" {
 		return nil, errors.New("parameter datasetID cannot be empty")
@@ -217,7 +224,7 @@ func (client *wfsClient) getCollectionDefinitionCreateRequest(ctx context.Contex
 }
 
 // getCollectionDefinitionHandleResponse handles the GetCollectionDefinition response.
-func (client *wfsClient) getCollectionDefinitionHandleResponse(resp *azcore.Response) (CollectionDefinitionResponseResponse, error) {
+func (client *WFSClient) getCollectionDefinitionHandleResponse(resp *azcore.Response) (CollectionDefinitionResponseResponse, error) {
 	var val *CollectionDefinitionResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CollectionDefinitionResponseResponse{}, err
@@ -226,7 +233,7 @@ return CollectionDefinitionResponseResponse{RawResponse: resp.Response, Collecti
 }
 
 // getCollectionDefinitionHandleError handles the GetCollectionDefinition error response.
-func (client *wfsClient) getCollectionDefinitionHandleError(resp *azcore.Response) error {
+func (client *WFSClient) getCollectionDefinitionHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -248,7 +255,7 @@ func (client *wfsClient) getCollectionDefinitionHandleError(resp *azcore.Respons
 // is a collection of features of a similar type,
 // based on a common schema. The Collections Description API provides descriptions of all the collections in a given dataset.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *wfsClient) GetCollections(ctx context.Context, datasetID string, options *WFSGetCollectionsOptions) (CollectionsResponseResponse, error) {
+func (client *WFSClient) GetCollections(ctx context.Context, datasetID string, options *WFSGetCollectionsOptions) (CollectionsResponseResponse, error) {
 	req, err := client.getCollectionsCreateRequest(ctx, datasetID, options)
 	if err != nil {
 		return CollectionsResponseResponse{}, err
@@ -264,7 +271,7 @@ func (client *wfsClient) GetCollections(ctx context.Context, datasetID string, o
 }
 
 // getCollectionsCreateRequest creates the GetCollections request.
-func (client *wfsClient) getCollectionsCreateRequest(ctx context.Context, datasetID string, options *WFSGetCollectionsOptions) (*azcore.Request, error) {
+func (client *WFSClient) getCollectionsCreateRequest(ctx context.Context, datasetID string, options *WFSGetCollectionsOptions) (*azcore.Request, error) {
 	urlPath := "/wfs/datasets/{datasetId}/collections"
 	if datasetID == "" {
 		return nil, errors.New("parameter datasetID cannot be empty")
@@ -286,7 +293,7 @@ func (client *wfsClient) getCollectionsCreateRequest(ctx context.Context, datase
 }
 
 // getCollectionsHandleResponse handles the GetCollections response.
-func (client *wfsClient) getCollectionsHandleResponse(resp *azcore.Response) (CollectionsResponseResponse, error) {
+func (client *WFSClient) getCollectionsHandleResponse(resp *azcore.Response) (CollectionsResponseResponse, error) {
 	var val *CollectionsResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CollectionsResponseResponse{}, err
@@ -295,7 +302,7 @@ return CollectionsResponseResponse{RawResponse: resp.Response, CollectionsRespon
 }
 
 // getCollectionsHandleError handles the GetCollections error response.
-func (client *wfsClient) getCollectionsHandleError(resp *azcore.Response) error {
+func (client *WFSClient) getCollectionsHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -317,7 +324,7 @@ func (client *wfsClient) getCollectionsHandleError(resp *azcore.Response) error 
 // is a collection of features of a similar type,
 // based on a common schema. The Get Requirements Classes lists all requirements classes specified in the standard that the server conforms to.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *wfsClient) GetConformance(ctx context.Context, datasetID string, options *WFSGetConformanceOptions) (ConformanceResponseResponse, error) {
+func (client *WFSClient) GetConformance(ctx context.Context, datasetID string, options *WFSGetConformanceOptions) (ConformanceResponseResponse, error) {
 	req, err := client.getConformanceCreateRequest(ctx, datasetID, options)
 	if err != nil {
 		return ConformanceResponseResponse{}, err
@@ -333,7 +340,7 @@ func (client *wfsClient) GetConformance(ctx context.Context, datasetID string, o
 }
 
 // getConformanceCreateRequest creates the GetConformance request.
-func (client *wfsClient) getConformanceCreateRequest(ctx context.Context, datasetID string, options *WFSGetConformanceOptions) (*azcore.Request, error) {
+func (client *WFSClient) getConformanceCreateRequest(ctx context.Context, datasetID string, options *WFSGetConformanceOptions) (*azcore.Request, error) {
 	urlPath := "/wfs/datasets/{datasetId}/conformance"
 	if datasetID == "" {
 		return nil, errors.New("parameter datasetID cannot be empty")
@@ -355,7 +362,7 @@ func (client *wfsClient) getConformanceCreateRequest(ctx context.Context, datase
 }
 
 // getConformanceHandleResponse handles the GetConformance response.
-func (client *wfsClient) getConformanceHandleResponse(resp *azcore.Response) (ConformanceResponseResponse, error) {
+func (client *WFSClient) getConformanceHandleResponse(resp *azcore.Response) (ConformanceResponseResponse, error) {
 	var val *ConformanceResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ConformanceResponseResponse{}, err
@@ -364,7 +371,7 @@ return ConformanceResponseResponse{RawResponse: resp.Response, ConformanceRespon
 }
 
 // getConformanceHandleError handles the GetConformance error response.
-func (client *wfsClient) getConformanceHandleError(resp *azcore.Response) error {
+func (client *WFSClient) getConformanceHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -386,7 +393,7 @@ func (client *wfsClient) getConformanceHandleError(resp *azcore.Response) error 
 // is a collection of features of a similar type,
 // based on a common schema. The Get Feature API returns the feature identified by the provided id in the given collection.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *wfsClient) GetFeature(ctx context.Context, datasetID string, collectionID string, featureID string, options *WFSGetFeatureOptions) (FeatureResponseResponse, error) {
+func (client *WFSClient) GetFeature(ctx context.Context, datasetID string, collectionID string, featureID string, options *WFSGetFeatureOptions) (FeatureResponseResponse, error) {
 	req, err := client.getFeatureCreateRequest(ctx, datasetID, collectionID, featureID, options)
 	if err != nil {
 		return FeatureResponseResponse{}, err
@@ -402,7 +409,7 @@ func (client *wfsClient) GetFeature(ctx context.Context, datasetID string, colle
 }
 
 // getFeatureCreateRequest creates the GetFeature request.
-func (client *wfsClient) getFeatureCreateRequest(ctx context.Context, datasetID string, collectionID string, featureID string, options *WFSGetFeatureOptions) (*azcore.Request, error) {
+func (client *WFSClient) getFeatureCreateRequest(ctx context.Context, datasetID string, collectionID string, featureID string, options *WFSGetFeatureOptions) (*azcore.Request, error) {
 	urlPath := "/wfs/datasets/{datasetId}/collections/{collectionId}/items/{featureId}"
 	if datasetID == "" {
 		return nil, errors.New("parameter datasetID cannot be empty")
@@ -429,7 +436,7 @@ func (client *wfsClient) getFeatureCreateRequest(ctx context.Context, datasetID 
 }
 
 // getFeatureHandleResponse handles the GetFeature response.
-func (client *wfsClient) getFeatureHandleResponse(resp *azcore.Response) (FeatureResponseResponse, error) {
+func (client *WFSClient) getFeatureHandleResponse(resp *azcore.Response) (FeatureResponseResponse, error) {
 	var val *FeatureResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return FeatureResponseResponse{}, err
@@ -438,7 +445,7 @@ return FeatureResponseResponse{RawResponse: resp.Response, FeatureResponse: val}
 }
 
 // getFeatureHandleError handles the GetFeature error response.
-func (client *wfsClient) getFeatureHandleError(resp *azcore.Response) error {
+func (client *WFSClient) getFeatureHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -460,7 +467,7 @@ func (client *wfsClient) getFeatureHandleError(resp *azcore.Response) error {
 // is a collection of features of a similar type,
 // based on a common schema. The Get Features API returns the list of features in the given collection.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *wfsClient) GetFeatures(ctx context.Context, datasetID string, collectionID string, options *WFSGetFeaturesOptions) (ExtendedGeoJSONFeatureCollectionResponse, error) {
+func (client *WFSClient) GetFeatures(ctx context.Context, datasetID string, collectionID string, options *WFSGetFeaturesOptions) (ExtendedGeoJSONFeatureCollectionResponse, error) {
 	req, err := client.getFeaturesCreateRequest(ctx, datasetID, collectionID, options)
 	if err != nil {
 		return ExtendedGeoJSONFeatureCollectionResponse{}, err
@@ -476,7 +483,7 @@ func (client *wfsClient) GetFeatures(ctx context.Context, datasetID string, coll
 }
 
 // getFeaturesCreateRequest creates the GetFeatures request.
-func (client *wfsClient) getFeaturesCreateRequest(ctx context.Context, datasetID string, collectionID string, options *WFSGetFeaturesOptions) (*azcore.Request, error) {
+func (client *WFSClient) getFeaturesCreateRequest(ctx context.Context, datasetID string, collectionID string, options *WFSGetFeaturesOptions) (*azcore.Request, error) {
 	urlPath := "/wfs/datasets/{datasetId}/collections/{collectionId}/items"
 	if datasetID == "" {
 		return nil, errors.New("parameter datasetID cannot be empty")
@@ -511,7 +518,7 @@ func (client *wfsClient) getFeaturesCreateRequest(ctx context.Context, datasetID
 }
 
 // getFeaturesHandleResponse handles the GetFeatures response.
-func (client *wfsClient) getFeaturesHandleResponse(resp *azcore.Response) (ExtendedGeoJSONFeatureCollectionResponse, error) {
+func (client *WFSClient) getFeaturesHandleResponse(resp *azcore.Response) (ExtendedGeoJSONFeatureCollectionResponse, error) {
 	var val *ExtendedGeoJSONFeatureCollection
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ExtendedGeoJSONFeatureCollectionResponse{}, err
@@ -520,7 +527,7 @@ return ExtendedGeoJSONFeatureCollectionResponse{RawResponse: resp.Response, Exte
 }
 
 // getFeaturesHandleError handles the GetFeatures error response.
-func (client *wfsClient) getFeaturesHandleError(resp *azcore.Response) error {
+func (client *WFSClient) getFeaturesHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -543,7 +550,7 @@ func (client *wfsClient) getFeaturesHandleError(resp *azcore.Response) error {
 // based on a common schema. The Get Landing Page API provides links to the API definition, the Conformance statements and the metadata about the feature
 // data in this dataset.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *wfsClient) GetLandingPage(ctx context.Context, datasetID string, options *WFSGetLandingPageOptions) (LandingPageResponseResponse, error) {
+func (client *WFSClient) GetLandingPage(ctx context.Context, datasetID string, options *WFSGetLandingPageOptions) (LandingPageResponseResponse, error) {
 	req, err := client.getLandingPageCreateRequest(ctx, datasetID, options)
 	if err != nil {
 		return LandingPageResponseResponse{}, err
@@ -559,7 +566,7 @@ func (client *wfsClient) GetLandingPage(ctx context.Context, datasetID string, o
 }
 
 // getLandingPageCreateRequest creates the GetLandingPage request.
-func (client *wfsClient) getLandingPageCreateRequest(ctx context.Context, datasetID string, options *WFSGetLandingPageOptions) (*azcore.Request, error) {
+func (client *WFSClient) getLandingPageCreateRequest(ctx context.Context, datasetID string, options *WFSGetLandingPageOptions) (*azcore.Request, error) {
 	urlPath := "/wfs/datasets/{datasetId}/"
 	if datasetID == "" {
 		return nil, errors.New("parameter datasetID cannot be empty")
@@ -581,7 +588,7 @@ func (client *wfsClient) getLandingPageCreateRequest(ctx context.Context, datase
 }
 
 // getLandingPageHandleResponse handles the GetLandingPage response.
-func (client *wfsClient) getLandingPageHandleResponse(resp *azcore.Response) (LandingPageResponseResponse, error) {
+func (client *WFSClient) getLandingPageHandleResponse(resp *azcore.Response) (LandingPageResponseResponse, error) {
 	var val *LandingPageResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LandingPageResponseResponse{}, err
@@ -590,7 +597,7 @@ return LandingPageResponseResponse{RawResponse: resp.Response, LandingPageRespon
 }
 
 // getLandingPageHandleError handles the GetLandingPage error response.
-func (client *wfsClient) getLandingPageHandleError(resp *azcore.Response) error {
+func (client *WFSClient) getLandingPageHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

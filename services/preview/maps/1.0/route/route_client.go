@@ -20,9 +20,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-type routeClient struct {
-	con         *connection
+// RouteClient contains the methods for the Route group.
+// Don't use this type directly, use NewRouteClient() instead.
+type RouteClient struct {
+	con         *Connection
 	xmsClientID *string
+}
+
+// NewRouteClient creates a new instance of RouteClient with the specified values.
+func NewRouteClient(con *Connection, xmsClientID *string) *RouteClient {
+	return &RouteClient{con: con, xmsClientID: xmsClientID}
 }
 
 // GetRouteDirections - Applies to: S0 and S1 pricing tiers.
@@ -35,7 +42,7 @@ type routeClient struct {
 // Routing service provides a set of parameters for a detailed description of vehicle-specific Consumption Model. Please check Consumption Model
 // [https://docs.microsoft.com/azure/azure-maps/consumption-model] for detailed explanation of the concepts and parameters involved.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *routeClient) GetRouteDirections(ctx context.Context, formatParam TextFormat, query string, options *RouteGetRouteDirectionsOptions) (RouteDirectionsResponseResponse, error) {
+func (client *RouteClient) GetRouteDirections(ctx context.Context, formatParam TextFormat, query string, options *RouteGetRouteDirectionsOptions) (RouteDirectionsResponseResponse, error) {
 	req, err := client.getRouteDirectionsCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return RouteDirectionsResponseResponse{}, err
@@ -51,7 +58,7 @@ func (client *routeClient) GetRouteDirections(ctx context.Context, formatParam T
 }
 
 // getRouteDirectionsCreateRequest creates the GetRouteDirections request.
-func (client *routeClient) getRouteDirectionsCreateRequest(ctx context.Context, formatParam TextFormat, query string, options *RouteGetRouteDirectionsOptions) (*azcore.Request, error) {
+func (client *RouteClient) getRouteDirectionsCreateRequest(ctx context.Context, formatParam TextFormat, query string, options *RouteGetRouteDirectionsOptions) (*azcore.Request, error) {
 	urlPath := "/route/directions/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -199,7 +206,7 @@ func (client *routeClient) getRouteDirectionsCreateRequest(ctx context.Context, 
 }
 
 // getRouteDirectionsHandleResponse handles the GetRouteDirections response.
-func (client *routeClient) getRouteDirectionsHandleResponse(resp *azcore.Response) (RouteDirectionsResponseResponse, error) {
+func (client *RouteClient) getRouteDirectionsHandleResponse(resp *azcore.Response) (RouteDirectionsResponseResponse, error) {
 	var val *RouteDirectionsResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteDirectionsResponseResponse{}, err
@@ -208,7 +215,7 @@ func (client *routeClient) getRouteDirectionsHandleResponse(resp *azcore.Respons
 }
 
 // getRouteDirectionsHandleError handles the GetRouteDirections error response.
-func (client *routeClient) getRouteDirectionsHandleError(resp *azcore.Response) error {
+func (client *RouteClient) getRouteDirectionsHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -264,7 +271,7 @@ func (client *routeClient) getRouteDirectionsHandleError(resp *azcore.Response) 
 // specified or are mutually exclusive." }
 // } } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *routeClient) BeginGetRouteDirectionsBatch(ctx context.Context, formatParam string, options *RouteBeginGetRouteDirectionsBatchOptions) (RouteDirectionsBatchResponsePollerResponse, error) {
+func (client *RouteClient) BeginGetRouteDirectionsBatch(ctx context.Context, formatParam string, options *RouteBeginGetRouteDirectionsBatchOptions) (RouteDirectionsBatchResponsePollerResponse, error) {
 	resp, err := client.getRouteDirectionsBatch(ctx, formatParam, options)
 	if err != nil {
 		return RouteDirectionsBatchResponsePollerResponse{}, err
@@ -272,7 +279,7 @@ func (client *routeClient) BeginGetRouteDirectionsBatch(ctx context.Context, for
 	result := RouteDirectionsBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("routeClient.GetRouteDirectionsBatch", resp, client.con.Pipeline(), client.getRouteDirectionsBatchHandleError)
+	pt, err := azcore.NewLROPoller("RouteClient.GetRouteDirectionsBatch", resp, client.con.Pipeline(), client.getRouteDirectionsBatchHandleError)
 	if err != nil {
 		return RouteDirectionsBatchResponsePollerResponse{}, err
 	}
@@ -288,8 +295,8 @@ func (client *routeClient) BeginGetRouteDirectionsBatch(ctx context.Context, for
 
 // ResumeGetRouteDirectionsBatch creates a new RouteDirectionsBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to RouteDirectionsBatchResponsePoller.ResumeToken().
-func (client *routeClient) ResumeGetRouteDirectionsBatch(ctx context.Context, token string) (RouteDirectionsBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("routeClient.GetRouteDirectionsBatch", token, client.con.Pipeline(), client.getRouteDirectionsBatchHandleError)
+func (client *RouteClient) ResumeGetRouteDirectionsBatch(ctx context.Context, token string) (RouteDirectionsBatchResponsePollerResponse, error) {
+	pt, err := azcore.NewLROPollerFromResumeToken("RouteClient.GetRouteDirectionsBatch", token, client.con.Pipeline(), client.getRouteDirectionsBatchHandleError)
 	if err != nil {
 		return RouteDirectionsBatchResponsePollerResponse{}, err
 	}
@@ -354,7 +361,7 @@ func (client *routeClient) ResumeGetRouteDirectionsBatch(ctx context.Context, to
 // specified or are mutually exclusive." }
 // } } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *routeClient) getRouteDirectionsBatch(ctx context.Context, formatParam string, options *RouteBeginGetRouteDirectionsBatchOptions) (*azcore.Response, error) {
+func (client *RouteClient) getRouteDirectionsBatch(ctx context.Context, formatParam string, options *RouteBeginGetRouteDirectionsBatchOptions) (*azcore.Response, error) {
 	req, err := client.getRouteDirectionsBatchCreateRequest(ctx, formatParam, options)
 	if err != nil {
 		return nil, err
@@ -370,7 +377,7 @@ func (client *routeClient) getRouteDirectionsBatch(ctx context.Context, formatPa
 }
 
 // getRouteDirectionsBatchCreateRequest creates the GetRouteDirectionsBatch request.
-func (client *routeClient) getRouteDirectionsBatchCreateRequest(ctx context.Context, formatParam string, options *RouteBeginGetRouteDirectionsBatchOptions) (*azcore.Request, error) {
+func (client *RouteClient) getRouteDirectionsBatchCreateRequest(ctx context.Context, formatParam string, options *RouteBeginGetRouteDirectionsBatchOptions) (*azcore.Request, error) {
 	urlPath := "/route/directions/batch/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -392,7 +399,7 @@ func (client *routeClient) getRouteDirectionsBatchCreateRequest(ctx context.Cont
 }
 
 // getRouteDirectionsBatchHandleError handles the GetRouteDirectionsBatch error response.
-func (client *routeClient) getRouteDirectionsBatchHandleError(resp *azcore.Response) error {
+func (client *RouteClient) getRouteDirectionsBatchHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -419,7 +426,7 @@ func (client *routeClient) getRouteDirectionsBatchHandleError(resp *azcore.Respo
 // > HTTP 202 Accepted - Matrix request was accepted but is still being processed. Please try again in some time.
 // HTTP 200 OK - Matrix request successfully processed. The response body contains all of the results.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *routeClient) BeginGetRouteMatrix(ctx context.Context, formatParam string, options *RouteBeginGetRouteMatrixOptions) (RouteMatrixResponsePollerResponse, error) {
+func (client *RouteClient) BeginGetRouteMatrix(ctx context.Context, formatParam string, options *RouteBeginGetRouteMatrixOptions) (RouteMatrixResponsePollerResponse, error) {
 	resp, err := client.getRouteMatrix(ctx, formatParam, options)
 	if err != nil {
 		return RouteMatrixResponsePollerResponse{}, err
@@ -427,7 +434,7 @@ func (client *routeClient) BeginGetRouteMatrix(ctx context.Context, formatParam 
 	result := RouteMatrixResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("routeClient.GetRouteMatrix", resp, client.con.Pipeline(), client.getRouteMatrixHandleError)
+	pt, err := azcore.NewLROPoller("RouteClient.GetRouteMatrix", resp, client.con.Pipeline(), client.getRouteMatrixHandleError)
 	if err != nil {
 		return RouteMatrixResponsePollerResponse{}, err
 	}
@@ -443,8 +450,8 @@ func (client *routeClient) BeginGetRouteMatrix(ctx context.Context, formatParam 
 
 // ResumeGetRouteMatrix creates a new RouteMatrixResponsePoller from the specified resume token.
 // token - The value must come from a previous call to RouteMatrixResponsePoller.ResumeToken().
-func (client *routeClient) ResumeGetRouteMatrix(ctx context.Context, token string) (RouteMatrixResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("routeClient.GetRouteMatrix", token, client.con.Pipeline(), client.getRouteMatrixHandleError)
+func (client *RouteClient) ResumeGetRouteMatrix(ctx context.Context, token string) (RouteMatrixResponsePollerResponse, error) {
+	pt, err := azcore.NewLROPollerFromResumeToken("RouteClient.GetRouteMatrix", token, client.con.Pipeline(), client.getRouteMatrixHandleError)
 	if err != nil {
 		return RouteMatrixResponsePollerResponse{}, err
 	}
@@ -480,7 +487,7 @@ func (client *routeClient) ResumeGetRouteMatrix(ctx context.Context, token strin
 // > HTTP 202 Accepted - Matrix request was accepted but is still being processed. Please try again in some time.
 // HTTP 200 OK - Matrix request successfully processed. The response body contains all of the results.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *routeClient) getRouteMatrix(ctx context.Context, formatParam string, options *RouteBeginGetRouteMatrixOptions) (*azcore.Response, error) {
+func (client *RouteClient) getRouteMatrix(ctx context.Context, formatParam string, options *RouteBeginGetRouteMatrixOptions) (*azcore.Response, error) {
 	req, err := client.getRouteMatrixCreateRequest(ctx, formatParam, options)
 	if err != nil {
 		return nil, err
@@ -496,7 +503,7 @@ func (client *routeClient) getRouteMatrix(ctx context.Context, formatParam strin
 }
 
 // getRouteMatrixCreateRequest creates the GetRouteMatrix request.
-func (client *routeClient) getRouteMatrixCreateRequest(ctx context.Context, formatParam string, options *RouteBeginGetRouteMatrixOptions) (*azcore.Request, error) {
+func (client *RouteClient) getRouteMatrixCreateRequest(ctx context.Context, formatParam string, options *RouteBeginGetRouteMatrixOptions) (*azcore.Request, error) {
 	urlPath := "/route/matrix/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -518,7 +525,7 @@ func (client *routeClient) getRouteMatrixCreateRequest(ctx context.Context, form
 }
 
 // getRouteMatrixHandleError handles the GetRouteMatrix error response.
-func (client *routeClient) getRouteMatrixHandleError(resp *azcore.Response) error {
+func (client *RouteClient) getRouteMatrixHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -539,7 +546,7 @@ func (client *routeClient) getRouteMatrixHandleError(resp *azcore.Response) erro
 // to search for POIs within the provided
 // Isochrone.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *routeClient) GetRouteRange(ctx context.Context, formatParam TextFormat, query string, options *RouteGetRouteRangeOptions) (GetRouteRangeResponseResponse, error) {
+func (client *RouteClient) GetRouteRange(ctx context.Context, formatParam TextFormat, query string, options *RouteGetRouteRangeOptions) (GetRouteRangeResponseResponse, error) {
 	req, err := client.getRouteRangeCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return GetRouteRangeResponseResponse{}, err
@@ -555,7 +562,7 @@ func (client *routeClient) GetRouteRange(ctx context.Context, formatParam TextFo
 }
 
 // getRouteRangeCreateRequest creates the GetRouteRange request.
-func (client *routeClient) getRouteRangeCreateRequest(ctx context.Context, formatParam TextFormat, query string, options *RouteGetRouteRangeOptions) (*azcore.Request, error) {
+func (client *RouteClient) getRouteRangeCreateRequest(ctx context.Context, formatParam TextFormat, query string, options *RouteGetRouteRangeOptions) (*azcore.Request, error) {
 	urlPath := "/route/range/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -676,7 +683,7 @@ func (client *routeClient) getRouteRangeCreateRequest(ctx context.Context, forma
 }
 
 // getRouteRangeHandleResponse handles the GetRouteRange response.
-func (client *routeClient) getRouteRangeHandleResponse(resp *azcore.Response) (GetRouteRangeResponseResponse, error) {
+func (client *RouteClient) getRouteRangeHandleResponse(resp *azcore.Response) (GetRouteRangeResponseResponse, error) {
 	var val *GetRouteRangeResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GetRouteRangeResponseResponse{}, err
@@ -685,7 +692,7 @@ func (client *routeClient) getRouteRangeHandleResponse(resp *azcore.Response) (G
 }
 
 // getRouteRangeHandleError handles the GetRouteRange error response.
-func (client *routeClient) getRouteRangeHandleError(resp *azcore.Response) error {
+func (client *RouteClient) getRouteRangeHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -707,7 +714,7 @@ func (client *routeClient) getRouteRangeHandleError(resp *azcore.Response) error
 // Routing service provides a set of parameters for a detailed description of a vehicle-specific Consumption Model. Please check Consumption Model
 // [https://docs.microsoft.com/azure/azure-maps/consumption-model] for detailed explanation of the concepts and parameters involved.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *routeClient) PostRouteDirections(ctx context.Context, formatParam TextFormat, query string, postRouteDirectionsRequestBody PostRouteDirectionsRequestBody, options *RoutePostRouteDirectionsOptions) (RouteDirectionsResponseResponse, error) {
+func (client *RouteClient) PostRouteDirections(ctx context.Context, formatParam TextFormat, query string, postRouteDirectionsRequestBody PostRouteDirectionsRequestBody, options *RoutePostRouteDirectionsOptions) (RouteDirectionsResponseResponse, error) {
 	req, err := client.postRouteDirectionsCreateRequest(ctx, formatParam, query, postRouteDirectionsRequestBody, options)
 	if err != nil {
 		return RouteDirectionsResponseResponse{}, err
@@ -723,7 +730,7 @@ func (client *routeClient) PostRouteDirections(ctx context.Context, formatParam 
 }
 
 // postRouteDirectionsCreateRequest creates the PostRouteDirections request.
-func (client *routeClient) postRouteDirectionsCreateRequest(ctx context.Context, formatParam TextFormat, query string, postRouteDirectionsRequestBody PostRouteDirectionsRequestBody, options *RoutePostRouteDirectionsOptions) (*azcore.Request, error) {
+func (client *RouteClient) postRouteDirectionsCreateRequest(ctx context.Context, formatParam TextFormat, query string, postRouteDirectionsRequestBody PostRouteDirectionsRequestBody, options *RoutePostRouteDirectionsOptions) (*azcore.Request, error) {
 	urlPath := "/route/directions/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -871,7 +878,7 @@ func (client *routeClient) postRouteDirectionsCreateRequest(ctx context.Context,
 }
 
 // postRouteDirectionsHandleResponse handles the PostRouteDirections response.
-func (client *routeClient) postRouteDirectionsHandleResponse(resp *azcore.Response) (RouteDirectionsResponseResponse, error) {
+func (client *RouteClient) postRouteDirectionsHandleResponse(resp *azcore.Response) (RouteDirectionsResponseResponse, error) {
 	var val *RouteDirectionsResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteDirectionsResponseResponse{}, err
@@ -880,7 +887,7 @@ func (client *routeClient) postRouteDirectionsHandleResponse(resp *azcore.Respon
 }
 
 // postRouteDirectionsHandleError handles the PostRouteDirections error response.
-func (client *routeClient) postRouteDirectionsHandleError(resp *azcore.Response) error {
+func (client *RouteClient) postRouteDirectionsHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -987,7 +994,7 @@ func (client *routeClient) postRouteDirectionsHandleError(resp *azcore.Response)
 // specified or are mutually exclusive." }
 // } } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *routeClient) BeginPostRouteDirectionsBatch(ctx context.Context, formatParam ResponseFormat, postRouteDirectionsBatchRequestBody BatchRequestBody, options *RouteBeginPostRouteDirectionsBatchOptions) (RouteDirectionsBatchResponsePollerResponse, error) {
+func (client *RouteClient) BeginPostRouteDirectionsBatch(ctx context.Context, formatParam ResponseFormat, postRouteDirectionsBatchRequestBody BatchRequestBody, options *RouteBeginPostRouteDirectionsBatchOptions) (RouteDirectionsBatchResponsePollerResponse, error) {
 	resp, err := client.postRouteDirectionsBatch(ctx, formatParam, postRouteDirectionsBatchRequestBody, options)
 	if err != nil {
 		return RouteDirectionsBatchResponsePollerResponse{}, err
@@ -995,7 +1002,7 @@ func (client *routeClient) BeginPostRouteDirectionsBatch(ctx context.Context, fo
 	result := RouteDirectionsBatchResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("routeClient.PostRouteDirectionsBatch", resp, client.con.Pipeline(), client.postRouteDirectionsBatchHandleError)
+	pt, err := azcore.NewLROPoller("RouteClient.PostRouteDirectionsBatch", resp, client.con.Pipeline(), client.postRouteDirectionsBatchHandleError)
 	if err != nil {
 		return RouteDirectionsBatchResponsePollerResponse{}, err
 	}
@@ -1011,8 +1018,8 @@ func (client *routeClient) BeginPostRouteDirectionsBatch(ctx context.Context, fo
 
 // ResumePostRouteDirectionsBatch creates a new RouteDirectionsBatchResponsePoller from the specified resume token.
 // token - The value must come from a previous call to RouteDirectionsBatchResponsePoller.ResumeToken().
-func (client *routeClient) ResumePostRouteDirectionsBatch(ctx context.Context, token string) (RouteDirectionsBatchResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("routeClient.PostRouteDirectionsBatch", token, client.con.Pipeline(), client.postRouteDirectionsBatchHandleError)
+func (client *RouteClient) ResumePostRouteDirectionsBatch(ctx context.Context, token string) (RouteDirectionsBatchResponsePollerResponse, error) {
+	pt, err := azcore.NewLROPollerFromResumeToken("RouteClient.PostRouteDirectionsBatch", token, client.con.Pipeline(), client.postRouteDirectionsBatchHandleError)
 	if err != nil {
 		return RouteDirectionsBatchResponsePollerResponse{}, err
 	}
@@ -1128,7 +1135,7 @@ func (client *routeClient) ResumePostRouteDirectionsBatch(ctx context.Context, t
 // specified or are mutually exclusive." }
 // } } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *routeClient) postRouteDirectionsBatch(ctx context.Context, formatParam ResponseFormat, postRouteDirectionsBatchRequestBody BatchRequestBody, options *RouteBeginPostRouteDirectionsBatchOptions) (*azcore.Response, error) {
+func (client *RouteClient) postRouteDirectionsBatch(ctx context.Context, formatParam ResponseFormat, postRouteDirectionsBatchRequestBody BatchRequestBody, options *RouteBeginPostRouteDirectionsBatchOptions) (*azcore.Response, error) {
 	req, err := client.postRouteDirectionsBatchCreateRequest(ctx, formatParam, postRouteDirectionsBatchRequestBody, options)
 	if err != nil {
 		return nil, err
@@ -1144,7 +1151,7 @@ func (client *routeClient) postRouteDirectionsBatch(ctx context.Context, formatP
 }
 
 // postRouteDirectionsBatchCreateRequest creates the PostRouteDirectionsBatch request.
-func (client *routeClient) postRouteDirectionsBatchCreateRequest(ctx context.Context, formatParam ResponseFormat, postRouteDirectionsBatchRequestBody BatchRequestBody, options *RouteBeginPostRouteDirectionsBatchOptions) (*azcore.Request, error) {
+func (client *RouteClient) postRouteDirectionsBatchCreateRequest(ctx context.Context, formatParam ResponseFormat, postRouteDirectionsBatchRequestBody BatchRequestBody, options *RouteBeginPostRouteDirectionsBatchOptions) (*azcore.Request, error) {
 	urlPath := "/route/directions/batch/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -1166,7 +1173,7 @@ func (client *routeClient) postRouteDirectionsBatchCreateRequest(ctx context.Con
 }
 
 // postRouteDirectionsBatchHandleError handles the PostRouteDirectionsBatch error response.
-func (client *routeClient) postRouteDirectionsBatchHandleError(resp *azcore.Response) error {
+func (client *RouteClient) postRouteDirectionsBatchHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -1274,7 +1281,7 @@ func (client *routeClient) postRouteDirectionsBatchHandleError(resp *azcore.Resp
 // } } ] }
 // If the operation fails it returns one of the following error types.
 // - *ErrorResponse, *ErrorResponse
-func (client *routeClient) PostRouteDirectionsBatchSync(ctx context.Context, formatParam ResponseFormat, postRouteDirectionsBatchRequestBody BatchRequestBody, options *RoutePostRouteDirectionsBatchSyncOptions) (RouteDirectionsBatchResponseResponse, error) {
+func (client *RouteClient) PostRouteDirectionsBatchSync(ctx context.Context, formatParam ResponseFormat, postRouteDirectionsBatchRequestBody BatchRequestBody, options *RoutePostRouteDirectionsBatchSyncOptions) (RouteDirectionsBatchResponseResponse, error) {
 	req, err := client.postRouteDirectionsBatchSyncCreateRequest(ctx, formatParam, postRouteDirectionsBatchRequestBody, options)
 	if err != nil {
 		return RouteDirectionsBatchResponseResponse{}, err
@@ -1290,7 +1297,7 @@ func (client *routeClient) PostRouteDirectionsBatchSync(ctx context.Context, for
 }
 
 // postRouteDirectionsBatchSyncCreateRequest creates the PostRouteDirectionsBatchSync request.
-func (client *routeClient) postRouteDirectionsBatchSyncCreateRequest(ctx context.Context, formatParam ResponseFormat, postRouteDirectionsBatchRequestBody BatchRequestBody, options *RoutePostRouteDirectionsBatchSyncOptions) (*azcore.Request, error) {
+func (client *RouteClient) postRouteDirectionsBatchSyncCreateRequest(ctx context.Context, formatParam ResponseFormat, postRouteDirectionsBatchRequestBody BatchRequestBody, options *RoutePostRouteDirectionsBatchSyncOptions) (*azcore.Request, error) {
 	urlPath := "/route/directions/batch/sync/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -1312,7 +1319,7 @@ func (client *routeClient) postRouteDirectionsBatchSyncCreateRequest(ctx context
 }
 
 // postRouteDirectionsBatchSyncHandleResponse handles the PostRouteDirectionsBatchSync response.
-func (client *routeClient) postRouteDirectionsBatchSyncHandleResponse(resp *azcore.Response) (RouteDirectionsBatchResponseResponse, error) {
+func (client *RouteClient) postRouteDirectionsBatchSyncHandleResponse(resp *azcore.Response) (RouteDirectionsBatchResponseResponse, error) {
 	var val *RouteDirectionsBatchResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteDirectionsBatchResponseResponse{}, err
@@ -1321,7 +1328,7 @@ func (client *routeClient) postRouteDirectionsBatchSyncHandleResponse(resp *azco
 }
 
 // postRouteDirectionsBatchSyncHandleError handles the PostRouteDirectionsBatchSync error response.
-func (client *routeClient) postRouteDirectionsBatchSyncHandleError(resp *azcore.Response) error {
+func (client *RouteClient) postRouteDirectionsBatchSyncHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -1392,7 +1399,7 @@ func (client *routeClient) postRouteDirectionsBatchSyncHandleError(resp *azcore.
 // > HTTP 202 Accepted - Matrix request was accepted but is still being processed. Please try again in some time.
 // HTTP 200 OK - Matrix request successfully processed. The response body contains all of the results.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *routeClient) BeginPostRouteMatrix(ctx context.Context, formatParam ResponseFormat, postRouteMatrixRequestBody PostRouteMatrixRequestBody, options *RouteBeginPostRouteMatrixOptions) (RouteMatrixResponsePollerResponse, error) {
+func (client *RouteClient) BeginPostRouteMatrix(ctx context.Context, formatParam ResponseFormat, postRouteMatrixRequestBody PostRouteMatrixRequestBody, options *RouteBeginPostRouteMatrixOptions) (RouteMatrixResponsePollerResponse, error) {
 	resp, err := client.postRouteMatrix(ctx, formatParam, postRouteMatrixRequestBody, options)
 	if err != nil {
 		return RouteMatrixResponsePollerResponse{}, err
@@ -1400,7 +1407,7 @@ func (client *routeClient) BeginPostRouteMatrix(ctx context.Context, formatParam
 	result := RouteMatrixResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("routeClient.PostRouteMatrix", resp, client.con.Pipeline(), client.postRouteMatrixHandleError)
+	pt, err := azcore.NewLROPoller("RouteClient.PostRouteMatrix", resp, client.con.Pipeline(), client.postRouteMatrixHandleError)
 	if err != nil {
 		return RouteMatrixResponsePollerResponse{}, err
 	}
@@ -1416,8 +1423,8 @@ func (client *routeClient) BeginPostRouteMatrix(ctx context.Context, formatParam
 
 // ResumePostRouteMatrix creates a new RouteMatrixResponsePoller from the specified resume token.
 // token - The value must come from a previous call to RouteMatrixResponsePoller.ResumeToken().
-func (client *routeClient) ResumePostRouteMatrix(ctx context.Context, token string) (RouteMatrixResponsePollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("routeClient.PostRouteMatrix", token, client.con.Pipeline(), client.postRouteMatrixHandleError)
+func (client *RouteClient) ResumePostRouteMatrix(ctx context.Context, token string) (RouteMatrixResponsePollerResponse, error) {
+	pt, err := azcore.NewLROPollerFromResumeToken("RouteClient.PostRouteMatrix", token, client.con.Pipeline(), client.postRouteMatrixHandleError)
 	if err != nil {
 		return RouteMatrixResponsePollerResponse{}, err
 	}
@@ -1497,7 +1504,7 @@ func (client *routeClient) ResumePostRouteMatrix(ctx context.Context, token stri
 // > HTTP 202 Accepted - Matrix request was accepted but is still being processed. Please try again in some time.
 // HTTP 200 OK - Matrix request successfully processed. The response body contains all of the results.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *routeClient) postRouteMatrix(ctx context.Context, formatParam ResponseFormat, postRouteMatrixRequestBody PostRouteMatrixRequestBody, options *RouteBeginPostRouteMatrixOptions) (*azcore.Response, error) {
+func (client *RouteClient) postRouteMatrix(ctx context.Context, formatParam ResponseFormat, postRouteMatrixRequestBody PostRouteMatrixRequestBody, options *RouteBeginPostRouteMatrixOptions) (*azcore.Response, error) {
 	req, err := client.postRouteMatrixCreateRequest(ctx, formatParam, postRouteMatrixRequestBody, options)
 	if err != nil {
 		return nil, err
@@ -1513,7 +1520,7 @@ func (client *routeClient) postRouteMatrix(ctx context.Context, formatParam Resp
 }
 
 // postRouteMatrixCreateRequest creates the PostRouteMatrix request.
-func (client *routeClient) postRouteMatrixCreateRequest(ctx context.Context, formatParam ResponseFormat, postRouteMatrixRequestBody PostRouteMatrixRequestBody, options *RouteBeginPostRouteMatrixOptions) (*azcore.Request, error) {
+func (client *RouteClient) postRouteMatrixCreateRequest(ctx context.Context, formatParam ResponseFormat, postRouteMatrixRequestBody PostRouteMatrixRequestBody, options *RouteBeginPostRouteMatrixOptions) (*azcore.Request, error) {
 	urlPath := "/route/matrix/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -1591,7 +1598,7 @@ func (client *routeClient) postRouteMatrixCreateRequest(ctx context.Context, for
 }
 
 // postRouteMatrixHandleError handles the PostRouteMatrix error response.
-func (client *routeClient) postRouteMatrixHandleError(resp *azcore.Response) error {
+func (client *RouteClient) postRouteMatrixHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -1663,7 +1670,7 @@ func (client *routeClient) postRouteMatrixHandleError(resp *azcore.Response) err
 // HTTP 200 OK - Matrix request successfully processed. The response body contains all of the results.
 // If the operation fails it returns one of the following error types.
 // - *ErrorResponse, *ErrorResponse
-func (client *routeClient) PostRouteMatrixSync(ctx context.Context, formatParam ResponseFormat, postRouteMatrixRequestBody PostRouteMatrixRequestBody, options *RoutePostRouteMatrixSyncOptions) (RouteMatrixResponseResponse, error) {
+func (client *RouteClient) PostRouteMatrixSync(ctx context.Context, formatParam ResponseFormat, postRouteMatrixRequestBody PostRouteMatrixRequestBody, options *RoutePostRouteMatrixSyncOptions) (RouteMatrixResponseResponse, error) {
 	req, err := client.postRouteMatrixSyncCreateRequest(ctx, formatParam, postRouteMatrixRequestBody, options)
 	if err != nil {
 		return RouteMatrixResponseResponse{}, err
@@ -1679,7 +1686,7 @@ func (client *routeClient) PostRouteMatrixSync(ctx context.Context, formatParam 
 }
 
 // postRouteMatrixSyncCreateRequest creates the PostRouteMatrixSync request.
-func (client *routeClient) postRouteMatrixSyncCreateRequest(ctx context.Context, formatParam ResponseFormat, postRouteMatrixRequestBody PostRouteMatrixRequestBody, options *RoutePostRouteMatrixSyncOptions) (*azcore.Request, error) {
+func (client *RouteClient) postRouteMatrixSyncCreateRequest(ctx context.Context, formatParam ResponseFormat, postRouteMatrixRequestBody PostRouteMatrixRequestBody, options *RoutePostRouteMatrixSyncOptions) (*azcore.Request, error) {
 	urlPath := "/route/matrix/sync/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -1757,7 +1764,7 @@ func (client *routeClient) postRouteMatrixSyncCreateRequest(ctx context.Context,
 }
 
 // postRouteMatrixSyncHandleResponse handles the PostRouteMatrixSync response.
-func (client *routeClient) postRouteMatrixSyncHandleResponse(resp *azcore.Response) (RouteMatrixResponseResponse, error) {
+func (client *RouteClient) postRouteMatrixSyncHandleResponse(resp *azcore.Response) (RouteMatrixResponseResponse, error) {
 	var val *RouteMatrixResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return RouteMatrixResponseResponse{}, err
@@ -1766,7 +1773,7 @@ func (client *routeClient) postRouteMatrixSyncHandleResponse(resp *azcore.Respon
 }
 
 // postRouteMatrixSyncHandleError handles the PostRouteMatrixSync error response.
-func (client *routeClient) postRouteMatrixSyncHandleError(resp *azcore.Response) error {
+func (client *RouteClient) postRouteMatrixSyncHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

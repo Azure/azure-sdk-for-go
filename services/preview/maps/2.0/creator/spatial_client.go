@@ -19,9 +19,16 @@ import (
 	"time"
 )
 
-type spatialClient struct {
-	con *connection
+// SpatialClient contains the methods for the Spatial group.
+// Don't use this type directly, use NewSpatialClient() instead.
+type SpatialClient struct {
+	con *Connection
 	xmsClientID *string
+}
+
+// NewSpatialClient creates a new instance of SpatialClient with the specified values.
+func NewSpatialClient(con *Connection, xmsClientID *string) *SpatialClient {
+	return &SpatialClient{con: con, xmsClientID: xmsClientID}
 }
 
 // GetBuffer - Applies to: S1 pricing tier.
@@ -41,7 +48,7 @@ type spatialClient struct {
 // Data Upload API [https://docs.microsoft.com/en-us/rest/api/maps/data/uploadPreview] and replace the [udid] from the sample request below
 // [https://docs.microsoft.com/en-us/rest/api/maps/spatial/getbuffer#examples] with the udid returned by Data Upload API.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *spatialClient) GetBuffer(ctx context.Context, formatParam ResponseFormat, udid string, distances string, options *SpatialGetBufferOptions) (BufferResponseResponse, error) {
+func (client *SpatialClient) GetBuffer(ctx context.Context, formatParam ResponseFormat, udid string, distances string, options *SpatialGetBufferOptions) (BufferResponseResponse, error) {
 	req, err := client.getBufferCreateRequest(ctx, formatParam, udid, distances, options)
 	if err != nil {
 		return BufferResponseResponse{}, err
@@ -57,7 +64,7 @@ func (client *spatialClient) GetBuffer(ctx context.Context, formatParam Response
 }
 
 // getBufferCreateRequest creates the GetBuffer request.
-func (client *spatialClient) getBufferCreateRequest(ctx context.Context, formatParam ResponseFormat, udid string, distances string, options *SpatialGetBufferOptions) (*azcore.Request, error) {
+func (client *SpatialClient) getBufferCreateRequest(ctx context.Context, formatParam ResponseFormat, udid string, distances string, options *SpatialGetBufferOptions) (*azcore.Request, error) {
 	urlPath := "/spatial/buffer/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -81,7 +88,7 @@ func (client *spatialClient) getBufferCreateRequest(ctx context.Context, formatP
 }
 
 // getBufferHandleResponse handles the GetBuffer response.
-func (client *spatialClient) getBufferHandleResponse(resp *azcore.Response) (BufferResponseResponse, error) {
+func (client *SpatialClient) getBufferHandleResponse(resp *azcore.Response) (BufferResponseResponse, error) {
 	var val *BufferResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BufferResponseResponse{}, err
@@ -90,7 +97,7 @@ return BufferResponseResponse{RawResponse: resp.Response, BufferResponse: val}, 
 }
 
 // getBufferHandleError handles the GetBuffer error response.
-func (client *spatialClient) getBufferHandleError(resp *azcore.Response) error {
+func (client *SpatialClient) getBufferHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -115,7 +122,7 @@ func (client *spatialClient) getBufferHandleError(resp *azcore.Response) error {
 // API [https://docs.microsoft.com/en-us/rest/api/maps/data/uploadPreview] and replace the [udid] from the sample request below
 // [https://docs.microsoft.com/en-us/rest/api/maps/spatial/getclosestpoint#examples] with the udid returned by Data Upload API.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *spatialClient) GetClosestPoint(ctx context.Context, formatParam ResponseFormat, udid string, latitude float32, longitude float32, options *SpatialGetClosestPointOptions) (ClosestPointResponseResponse, error) {
+func (client *SpatialClient) GetClosestPoint(ctx context.Context, formatParam ResponseFormat, udid string, latitude float32, longitude float32, options *SpatialGetClosestPointOptions) (ClosestPointResponseResponse, error) {
 	req, err := client.getClosestPointCreateRequest(ctx, formatParam, udid, latitude, longitude, options)
 	if err != nil {
 		return ClosestPointResponseResponse{}, err
@@ -131,7 +138,7 @@ func (client *spatialClient) GetClosestPoint(ctx context.Context, formatParam Re
 }
 
 // getClosestPointCreateRequest creates the GetClosestPoint request.
-func (client *spatialClient) getClosestPointCreateRequest(ctx context.Context, formatParam ResponseFormat, udid string, latitude float32, longitude float32, options *SpatialGetClosestPointOptions) (*azcore.Request, error) {
+func (client *SpatialClient) getClosestPointCreateRequest(ctx context.Context, formatParam ResponseFormat, udid string, latitude float32, longitude float32, options *SpatialGetClosestPointOptions) (*azcore.Request, error) {
 	urlPath := "/spatial/closestPoint/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -159,7 +166,7 @@ func (client *spatialClient) getClosestPointCreateRequest(ctx context.Context, f
 }
 
 // getClosestPointHandleResponse handles the GetClosestPoint response.
-func (client *spatialClient) getClosestPointHandleResponse(resp *azcore.Response) (ClosestPointResponseResponse, error) {
+func (client *SpatialClient) getClosestPointHandleResponse(resp *azcore.Response) (ClosestPointResponseResponse, error) {
 	var val *ClosestPointResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ClosestPointResponseResponse{}, err
@@ -168,7 +175,7 @@ return ClosestPointResponseResponse{RawResponse: resp.Response, ClosestPointResp
 }
 
 // getClosestPointHandleError handles the GetClosestPoint error response.
-func (client *spatialClient) getClosestPointHandleError(resp *azcore.Response) error {
+func (client *SpatialClient) getClosestPointHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -216,7 +223,7 @@ func (client *spatialClient) getClosestPointHandleError(resp *azcore.Response) e
 // NoUserDataWithAccountOrSubscription Can't find user geofencing data with provided account-id and/or subscription-id.
 // NoUserDataWithUdid Can't find user geofencing data with provided udid.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *spatialClient) GetGeofence(ctx context.Context, formatParam ResponseFormat, deviceID string, udid string, latitude float32, longitude float32, options *SpatialGetGeofenceOptions) (GeofenceResponseResponse, error) {
+func (client *SpatialClient) GetGeofence(ctx context.Context, formatParam ResponseFormat, deviceID string, udid string, latitude float32, longitude float32, options *SpatialGetGeofenceOptions) (GeofenceResponseResponse, error) {
 	req, err := client.getGeofenceCreateRequest(ctx, formatParam, deviceID, udid, latitude, longitude, options)
 	if err != nil {
 		return GeofenceResponseResponse{}, err
@@ -232,7 +239,7 @@ func (client *spatialClient) GetGeofence(ctx context.Context, formatParam Respon
 }
 
 // getGeofenceCreateRequest creates the GetGeofence request.
-func (client *spatialClient) getGeofenceCreateRequest(ctx context.Context, formatParam ResponseFormat, deviceID string, udid string, latitude float32, longitude float32, options *SpatialGetGeofenceOptions) (*azcore.Request, error) {
+func (client *SpatialClient) getGeofenceCreateRequest(ctx context.Context, formatParam ResponseFormat, deviceID string, udid string, latitude float32, longitude float32, options *SpatialGetGeofenceOptions) (*azcore.Request, error) {
 	urlPath := "/spatial/geofence/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -273,7 +280,7 @@ func (client *spatialClient) getGeofenceCreateRequest(ctx context.Context, forma
 }
 
 // getGeofenceHandleResponse handles the GetGeofence response.
-func (client *spatialClient) getGeofenceHandleResponse(resp *azcore.Response) (GeofenceResponseResponse, error) {
+func (client *SpatialClient) getGeofenceHandleResponse(resp *azcore.Response) (GeofenceResponseResponse, error) {
 	var val *GeofenceResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GeofenceResponseResponse{}, err
@@ -286,7 +293,7 @@ func (client *spatialClient) getGeofenceHandleResponse(resp *azcore.Response) (G
 }
 
 // getGeofenceHandleError handles the GetGeofence error response.
-func (client *spatialClient) getGeofenceHandleError(resp *azcore.Response) error {
+func (client *SpatialClient) getGeofenceHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -303,7 +310,7 @@ func (client *spatialClient) getGeofenceHandleError(resp *azcore.Response) error
 // differs from calculating a straight line
 // through the sphere's interior. This method is helpful for estimating travel distances for airplanes by calculating the shortest distance between airports.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *spatialClient) GetGreatCircleDistance(ctx context.Context, formatParam ResponseFormat, query string, options *SpatialGetGreatCircleDistanceOptions) (GreatCircleDistanceResponseResponse, error) {
+func (client *SpatialClient) GetGreatCircleDistance(ctx context.Context, formatParam ResponseFormat, query string, options *SpatialGetGreatCircleDistanceOptions) (GreatCircleDistanceResponseResponse, error) {
 	req, err := client.getGreatCircleDistanceCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return GreatCircleDistanceResponseResponse{}, err
@@ -319,7 +326,7 @@ func (client *spatialClient) GetGreatCircleDistance(ctx context.Context, formatP
 }
 
 // getGreatCircleDistanceCreateRequest creates the GetGreatCircleDistance request.
-func (client *spatialClient) getGreatCircleDistanceCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *SpatialGetGreatCircleDistanceOptions) (*azcore.Request, error) {
+func (client *SpatialClient) getGreatCircleDistanceCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *SpatialGetGreatCircleDistanceOptions) (*azcore.Request, error) {
 	urlPath := "/spatial/greatCircleDistance/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -342,7 +349,7 @@ func (client *spatialClient) getGreatCircleDistanceCreateRequest(ctx context.Con
 }
 
 // getGreatCircleDistanceHandleResponse handles the GetGreatCircleDistance response.
-func (client *spatialClient) getGreatCircleDistanceHandleResponse(resp *azcore.Response) (GreatCircleDistanceResponseResponse, error) {
+func (client *SpatialClient) getGreatCircleDistanceHandleResponse(resp *azcore.Response) (GreatCircleDistanceResponseResponse, error) {
 	var val *GreatCircleDistanceResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GreatCircleDistanceResponseResponse{}, err
@@ -351,7 +358,7 @@ return GreatCircleDistanceResponseResponse{RawResponse: resp.Response, GreatCirc
 }
 
 // getGreatCircleDistanceHandleError handles the GetGreatCircleDistance error response.
-func (client *spatialClient) getGreatCircleDistanceHandleError(resp *azcore.Response) error {
+func (client *SpatialClient) getGreatCircleDistanceHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -377,7 +384,7 @@ func (client *spatialClient) getGreatCircleDistanceHandleError(resp *azcore.Resp
 // Upload API [https://docs.microsoft.com/en-us/rest/api/maps/data/uploadPreview] and replace the [udid] from the sample request below
 // [https://docs.microsoft.com/en-us/rest/api/maps/spatial/getpointinpolygon#examples] with the udid returned by Data Upload API.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *spatialClient) GetPointInPolygon(ctx context.Context, formatParam ResponseFormat, udid string, latitude float32, longitude float32, options *SpatialGetPointInPolygonOptions) (PointInPolygonResponseResponse, error) {
+func (client *SpatialClient) GetPointInPolygon(ctx context.Context, formatParam ResponseFormat, udid string, latitude float32, longitude float32, options *SpatialGetPointInPolygonOptions) (PointInPolygonResponseResponse, error) {
 	req, err := client.getPointInPolygonCreateRequest(ctx, formatParam, udid, latitude, longitude, options)
 	if err != nil {
 		return PointInPolygonResponseResponse{}, err
@@ -393,7 +400,7 @@ func (client *spatialClient) GetPointInPolygon(ctx context.Context, formatParam 
 }
 
 // getPointInPolygonCreateRequest creates the GetPointInPolygon request.
-func (client *spatialClient) getPointInPolygonCreateRequest(ctx context.Context, formatParam ResponseFormat, udid string, latitude float32, longitude float32, options *SpatialGetPointInPolygonOptions) (*azcore.Request, error) {
+func (client *SpatialClient) getPointInPolygonCreateRequest(ctx context.Context, formatParam ResponseFormat, udid string, latitude float32, longitude float32, options *SpatialGetPointInPolygonOptions) (*azcore.Request, error) {
 	urlPath := "/spatial/pointInPolygon/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -418,7 +425,7 @@ func (client *spatialClient) getPointInPolygonCreateRequest(ctx context.Context,
 }
 
 // getPointInPolygonHandleResponse handles the GetPointInPolygon response.
-func (client *spatialClient) getPointInPolygonHandleResponse(resp *azcore.Response) (PointInPolygonResponseResponse, error) {
+func (client *SpatialClient) getPointInPolygonHandleResponse(resp *azcore.Response) (PointInPolygonResponseResponse, error) {
 	var val *PointInPolygonResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PointInPolygonResponseResponse{}, err
@@ -427,7 +434,7 @@ return PointInPolygonResponseResponse{RawResponse: resp.Response, PointInPolygon
 }
 
 // getPointInPolygonHandleError handles the GetPointInPolygon error response.
-func (client *spatialClient) getPointInPolygonHandleError(resp *azcore.Response) error {
+func (client *SpatialClient) getPointInPolygonHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -450,7 +457,7 @@ func (client *spatialClient) getPointInPolygonHandleError(resp *azcore.Response)
 // always an empty polygon. The input may contain a
 // collection of Point, MultiPoint, Polygon, MultiPolygon, LineString and MultiLineString. GeometryCollection will be ignored if provided.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *spatialClient) PostBuffer(ctx context.Context, formatParam ResponseFormat, bufferRequestBody BufferRequestBody, options *SpatialPostBufferOptions) (BufferResponseResponse, error) {
+func (client *SpatialClient) PostBuffer(ctx context.Context, formatParam ResponseFormat, bufferRequestBody BufferRequestBody, options *SpatialPostBufferOptions) (BufferResponseResponse, error) {
 	req, err := client.postBufferCreateRequest(ctx, formatParam, bufferRequestBody, options)
 	if err != nil {
 		return BufferResponseResponse{}, err
@@ -466,7 +473,7 @@ func (client *spatialClient) PostBuffer(ctx context.Context, formatParam Respons
 }
 
 // postBufferCreateRequest creates the PostBuffer request.
-func (client *spatialClient) postBufferCreateRequest(ctx context.Context, formatParam ResponseFormat, bufferRequestBody BufferRequestBody, options *SpatialPostBufferOptions) (*azcore.Request, error) {
+func (client *SpatialClient) postBufferCreateRequest(ctx context.Context, formatParam ResponseFormat, bufferRequestBody BufferRequestBody, options *SpatialPostBufferOptions) (*azcore.Request, error) {
 	urlPath := "/spatial/buffer/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -488,7 +495,7 @@ func (client *spatialClient) postBufferCreateRequest(ctx context.Context, format
 }
 
 // postBufferHandleResponse handles the PostBuffer response.
-func (client *spatialClient) postBufferHandleResponse(resp *azcore.Response) (BufferResponseResponse, error) {
+func (client *SpatialClient) postBufferHandleResponse(resp *azcore.Response) (BufferResponseResponse, error) {
 	var val *BufferResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return BufferResponseResponse{}, err
@@ -497,7 +504,7 @@ return BufferResponseResponse{RawResponse: resp.Response, BufferResponse: val}, 
 }
 
 // postBufferHandleError handles the PostBuffer error response.
-func (client *spatialClient) postBufferHandleError(resp *azcore.Response) error {
+func (client *SpatialClient) postBufferHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -516,7 +523,7 @@ func (client *spatialClient) postBufferHandleError(resp *azcore.Response) error 
 // The maximum number of points accepted is 100,000.
 // Information returned includes closest point latitude, longitude, and distance in meters from the closest point.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *spatialClient) PostClosestPoint(ctx context.Context, formatParam ResponseFormat, latitude float32, longitude float32, closestPointRequestBody GeoJSONFeatureCollectionClassification, options *SpatialPostClosestPointOptions) (ClosestPointResponseResponse, error) {
+func (client *SpatialClient) PostClosestPoint(ctx context.Context, formatParam ResponseFormat, latitude float32, longitude float32, closestPointRequestBody GeoJSONFeatureCollectionClassification, options *SpatialPostClosestPointOptions) (ClosestPointResponseResponse, error) {
 	req, err := client.postClosestPointCreateRequest(ctx, formatParam, latitude, longitude, closestPointRequestBody, options)
 	if err != nil {
 		return ClosestPointResponseResponse{}, err
@@ -532,7 +539,7 @@ func (client *spatialClient) PostClosestPoint(ctx context.Context, formatParam R
 }
 
 // postClosestPointCreateRequest creates the PostClosestPoint request.
-func (client *spatialClient) postClosestPointCreateRequest(ctx context.Context, formatParam ResponseFormat, latitude float32, longitude float32, closestPointRequestBody GeoJSONFeatureCollectionClassification, options *SpatialPostClosestPointOptions) (*azcore.Request, error) {
+func (client *SpatialClient) postClosestPointCreateRequest(ctx context.Context, formatParam ResponseFormat, latitude float32, longitude float32, closestPointRequestBody GeoJSONFeatureCollectionClassification, options *SpatialPostClosestPointOptions) (*azcore.Request, error) {
 	urlPath := "/spatial/closestPoint/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -559,7 +566,7 @@ func (client *spatialClient) postClosestPointCreateRequest(ctx context.Context, 
 }
 
 // postClosestPointHandleResponse handles the PostClosestPoint response.
-func (client *spatialClient) postClosestPointHandleResponse(resp *azcore.Response) (ClosestPointResponseResponse, error) {
+func (client *SpatialClient) postClosestPointHandleResponse(resp *azcore.Response) (ClosestPointResponseResponse, error) {
 	var val *ClosestPointResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ClosestPointResponseResponse{}, err
@@ -568,7 +575,7 @@ return ClosestPointResponseResponse{RawResponse: resp.Response, ClosestPointResp
 }
 
 // postClosestPointHandleError handles the PostClosestPoint error response.
-func (client *spatialClient) postClosestPointHandleError(resp *azcore.Response) error {
+func (client *SpatialClient) postClosestPointHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -592,7 +599,7 @@ func (client *spatialClient) postClosestPointHandleError(resp *azcore.Response) 
 // used to enable integration with Event Grid
 // (disabled by default).
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *spatialClient) PostGeofence(ctx context.Context, formatParam ResponseFormat, deviceID string, latitude float32, longitude float32, searchGeofenceRequestBody GeoJSONFeatureCollectionClassification, options *SpatialPostGeofenceOptions) (GeofenceResponseResponse, error) {
+func (client *SpatialClient) PostGeofence(ctx context.Context, formatParam ResponseFormat, deviceID string, latitude float32, longitude float32, searchGeofenceRequestBody GeoJSONFeatureCollectionClassification, options *SpatialPostGeofenceOptions) (GeofenceResponseResponse, error) {
 	req, err := client.postGeofenceCreateRequest(ctx, formatParam, deviceID, latitude, longitude, searchGeofenceRequestBody, options)
 	if err != nil {
 		return GeofenceResponseResponse{}, err
@@ -608,7 +615,7 @@ func (client *spatialClient) PostGeofence(ctx context.Context, formatParam Respo
 }
 
 // postGeofenceCreateRequest creates the PostGeofence request.
-func (client *spatialClient) postGeofenceCreateRequest(ctx context.Context, formatParam ResponseFormat, deviceID string, latitude float32, longitude float32, searchGeofenceRequestBody GeoJSONFeatureCollectionClassification, options *SpatialPostGeofenceOptions) (*azcore.Request, error) {
+func (client *SpatialClient) postGeofenceCreateRequest(ctx context.Context, formatParam ResponseFormat, deviceID string, latitude float32, longitude float32, searchGeofenceRequestBody GeoJSONFeatureCollectionClassification, options *SpatialPostGeofenceOptions) (*azcore.Request, error) {
 	urlPath := "/spatial/geofence/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -648,7 +655,7 @@ func (client *spatialClient) postGeofenceCreateRequest(ctx context.Context, form
 }
 
 // postGeofenceHandleResponse handles the PostGeofence response.
-func (client *spatialClient) postGeofenceHandleResponse(resp *azcore.Response) (GeofenceResponseResponse, error) {
+func (client *SpatialClient) postGeofenceHandleResponse(resp *azcore.Response) (GeofenceResponseResponse, error) {
 	var val *GeofenceResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GeofenceResponseResponse{}, err
@@ -661,7 +668,7 @@ func (client *spatialClient) postGeofenceHandleResponse(resp *azcore.Response) (
 }
 
 // postGeofenceHandleError handles the PostGeofence error response.
-func (client *spatialClient) postGeofenceHandleError(resp *azcore.Response) error {
+func (client *SpatialClient) postGeofenceHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -681,7 +688,7 @@ func (client *spatialClient) postGeofenceHandleError(resp *azcore.Response) erro
 // will give intersecting geometries section to show all valid geometries (referenced by geometryId) in user data. The maximum number of vertices accepted
 // to form a Polygon is 10,000.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *spatialClient) PostPointInPolygon(ctx context.Context, formatParam ResponseFormat, latitude float32, longitude float32, pointInPolygonRequestBody GeoJSONFeatureCollectionClassification, options *SpatialPostPointInPolygonOptions) (PointInPolygonResponseResponse, error) {
+func (client *SpatialClient) PostPointInPolygon(ctx context.Context, formatParam ResponseFormat, latitude float32, longitude float32, pointInPolygonRequestBody GeoJSONFeatureCollectionClassification, options *SpatialPostPointInPolygonOptions) (PointInPolygonResponseResponse, error) {
 	req, err := client.postPointInPolygonCreateRequest(ctx, formatParam, latitude, longitude, pointInPolygonRequestBody, options)
 	if err != nil {
 		return PointInPolygonResponseResponse{}, err
@@ -697,7 +704,7 @@ func (client *spatialClient) PostPointInPolygon(ctx context.Context, formatParam
 }
 
 // postPointInPolygonCreateRequest creates the PostPointInPolygon request.
-func (client *spatialClient) postPointInPolygonCreateRequest(ctx context.Context, formatParam ResponseFormat, latitude float32, longitude float32, pointInPolygonRequestBody GeoJSONFeatureCollectionClassification, options *SpatialPostPointInPolygonOptions) (*azcore.Request, error) {
+func (client *SpatialClient) postPointInPolygonCreateRequest(ctx context.Context, formatParam ResponseFormat, latitude float32, longitude float32, pointInPolygonRequestBody GeoJSONFeatureCollectionClassification, options *SpatialPostPointInPolygonOptions) (*azcore.Request, error) {
 	urlPath := "/spatial/pointInPolygon/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -721,7 +728,7 @@ func (client *spatialClient) postPointInPolygonCreateRequest(ctx context.Context
 }
 
 // postPointInPolygonHandleResponse handles the PostPointInPolygon response.
-func (client *spatialClient) postPointInPolygonHandleResponse(resp *azcore.Response) (PointInPolygonResponseResponse, error) {
+func (client *SpatialClient) postPointInPolygonHandleResponse(resp *azcore.Response) (PointInPolygonResponseResponse, error) {
 	var val *PointInPolygonResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return PointInPolygonResponseResponse{}, err
@@ -730,7 +737,7 @@ return PointInPolygonResponseResponse{RawResponse: resp.Response, PointInPolygon
 }
 
 // postPointInPolygonHandleError handles the PostPointInPolygon error response.
-func (client *spatialClient) postPointInPolygonHandleError(resp *azcore.Response) error {
+func (client *SpatialClient) postPointInPolygonHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

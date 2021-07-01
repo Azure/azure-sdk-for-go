@@ -17,8 +17,15 @@ import (
 	"strings"
 )
 
-type aliasClient struct {
-	con *connection
+// AliasClient contains the methods for the Alias group.
+// Don't use this type directly, use NewAliasClient() instead.
+type AliasClient struct {
+	con *Connection
+}
+
+// NewAliasClient creates a new instance of AliasClient with the specified values.
+func NewAliasClient(con *Connection) *AliasClient {
+	return &AliasClient{con: con}
 }
 
 // Assign - Applies to: see pricing tiers [https://aka.ms/AzureMapsPricingTier].
@@ -34,7 +41,7 @@ type aliasClient struct {
 // "lastUpdatedTimestamp":
 // "2020-02-13T21:19:22.123Z" }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *aliasClient) Assign(ctx context.Context, aliasID string, creatorDataItemID string, options *AliasAssignOptions) (AliasListItemResponse, error) {
+func (client *AliasClient) Assign(ctx context.Context, aliasID string, creatorDataItemID string, options *AliasAssignOptions) (AliasListItemResponse, error) {
 	req, err := client.assignCreateRequest(ctx, aliasID, creatorDataItemID, options)
 	if err != nil {
 		return AliasListItemResponse{}, err
@@ -50,7 +57,7 @@ func (client *aliasClient) Assign(ctx context.Context, aliasID string, creatorDa
 }
 
 // assignCreateRequest creates the Assign request.
-func (client *aliasClient) assignCreateRequest(ctx context.Context, aliasID string, creatorDataItemID string, options *AliasAssignOptions) (*azcore.Request, error) {
+func (client *AliasClient) assignCreateRequest(ctx context.Context, aliasID string, creatorDataItemID string, options *AliasAssignOptions) (*azcore.Request, error) {
 	urlPath := "/aliases/{aliasId}"
 	if aliasID == "" {
 		return nil, errors.New("parameter aliasID cannot be empty")
@@ -70,7 +77,7 @@ func (client *aliasClient) assignCreateRequest(ctx context.Context, aliasID stri
 }
 
 // assignHandleResponse handles the Assign response.
-func (client *aliasClient) assignHandleResponse(resp *azcore.Response) (AliasListItemResponse, error) {
+func (client *AliasClient) assignHandleResponse(resp *azcore.Response) (AliasListItemResponse, error) {
 	var val *AliasListItem
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AliasListItemResponse{}, err
@@ -79,7 +86,7 @@ return AliasListItemResponse{RawResponse: resp.Response, AliasListItem: val}, ni
 }
 
 // assignHandleError handles the Assign error response.
-func (client *aliasClient) assignHandleError(resp *azcore.Response) error {
+func (client *AliasClient) assignHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -106,7 +113,7 @@ func (client *aliasClient) assignHandleError(resp *azcore.Response) error {
 // "lastUpdatedTimestamp":
 // "2020-02-13T21:19:22.123Z" }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *aliasClient) Create(ctx context.Context, options *AliasCreateOptions) (AliasesCreateResponseResponse, error) {
+func (client *AliasClient) Create(ctx context.Context, options *AliasCreateOptions) (AliasesCreateResponseResponse, error) {
 	req, err := client.createCreateRequest(ctx, options)
 	if err != nil {
 		return AliasesCreateResponseResponse{}, err
@@ -122,7 +129,7 @@ func (client *aliasClient) Create(ctx context.Context, options *AliasCreateOptio
 }
 
 // createCreateRequest creates the Create request.
-func (client *aliasClient) createCreateRequest(ctx context.Context, options *AliasCreateOptions) (*azcore.Request, error) {
+func (client *AliasClient) createCreateRequest(ctx context.Context, options *AliasCreateOptions) (*azcore.Request, error) {
 	urlPath := "/aliases"
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -140,7 +147,7 @@ func (client *aliasClient) createCreateRequest(ctx context.Context, options *Ali
 }
 
 // createHandleResponse handles the Create response.
-func (client *aliasClient) createHandleResponse(resp *azcore.Response) (AliasesCreateResponseResponse, error) {
+func (client *AliasClient) createHandleResponse(resp *azcore.Response) (AliasesCreateResponseResponse, error) {
 	var val *AliasesCreateResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AliasesCreateResponseResponse{}, err
@@ -153,7 +160,7 @@ func (client *aliasClient) createHandleResponse(resp *azcore.Response) (AliasesC
 }
 
 // createHandleError handles the Create error response.
-func (client *aliasClient) createHandleError(resp *azcore.Response) error {
+func (client *AliasClient) createHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -175,7 +182,7 @@ func (client *aliasClient) createHandleError(resp *azcore.Response) error {
 // SUBMIT DELETE REQUEST To delete your alias you will issue a DELETE request where the path will contain the aliasId of the alias to delete.
 // DELETE ALIAS RESPONSE The Delete API returns a HTTP 204 No Content response with an empty body, if the alias was deleted successfully.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *aliasClient) Delete(ctx context.Context, aliasID string, options *AliasDeleteOptions) (*http.Response, error) {
+func (client *AliasClient) Delete(ctx context.Context, aliasID string, options *AliasDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, aliasID, options)
 	if err != nil {
 		return nil, err
@@ -191,7 +198,7 @@ func (client *aliasClient) Delete(ctx context.Context, aliasID string, options *
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *aliasClient) deleteCreateRequest(ctx context.Context, aliasID string, options *AliasDeleteOptions) (*azcore.Request, error) {
+func (client *AliasClient) deleteCreateRequest(ctx context.Context, aliasID string, options *AliasDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/aliases/{aliasId}"
 	if aliasID == "" {
 		return nil, errors.New("parameter aliasID cannot be empty")
@@ -210,7 +217,7 @@ func (client *aliasClient) deleteCreateRequest(ctx context.Context, aliasID stri
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *aliasClient) deleteHandleError(resp *azcore.Response) error {
+func (client *AliasClient) deleteHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -238,7 +245,7 @@ func (client *aliasClient) deleteHandleError(resp *azcore.Response) error {
 // "lastUpdatedTimestamp":
 // "2020-02-13T21:19:22.123Z" }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *aliasClient) GetDetails(ctx context.Context, aliasID string, options *AliasGetDetailsOptions) (AliasListItemResponse, error) {
+func (client *AliasClient) GetDetails(ctx context.Context, aliasID string, options *AliasGetDetailsOptions) (AliasListItemResponse, error) {
 	req, err := client.getDetailsCreateRequest(ctx, aliasID, options)
 	if err != nil {
 		return AliasListItemResponse{}, err
@@ -254,7 +261,7 @@ func (client *aliasClient) GetDetails(ctx context.Context, aliasID string, optio
 }
 
 // getDetailsCreateRequest creates the GetDetails request.
-func (client *aliasClient) getDetailsCreateRequest(ctx context.Context, aliasID string, options *AliasGetDetailsOptions) (*azcore.Request, error) {
+func (client *AliasClient) getDetailsCreateRequest(ctx context.Context, aliasID string, options *AliasGetDetailsOptions) (*azcore.Request, error) {
 	urlPath := "/aliases/{aliasId}"
 	if aliasID == "" {
 		return nil, errors.New("parameter aliasID cannot be empty")
@@ -273,7 +280,7 @@ func (client *aliasClient) getDetailsCreateRequest(ctx context.Context, aliasID 
 }
 
 // getDetailsHandleResponse handles the GetDetails response.
-func (client *aliasClient) getDetailsHandleResponse(resp *azcore.Response) (AliasListItemResponse, error) {
+func (client *AliasClient) getDetailsHandleResponse(resp *azcore.Response) (AliasListItemResponse, error) {
 	var val *AliasListItem
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AliasListItemResponse{}, err
@@ -282,7 +289,7 @@ return AliasListItemResponse{RawResponse: resp.Response, AliasListItem: val}, ni
 }
 
 // getDetailsHandleError handles the GetDetails error response.
-func (client *aliasClient) getDetailsHandleError(resp *azcore.Response) error {
+func (client *AliasClient) getDetailsHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -311,7 +318,7 @@ func (client *aliasClient) getDetailsHandleError(resp *azcore.Response) error {
 // null, "lastUpdatedTimestamp":
 // "2020-02-18T19:53:33.123Z" } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *aliasClient) List(options *AliasListOptions) (AliasListResponsePager) {
+func (client *AliasClient) List(options *AliasListOptions) (AliasListResponsePager) {
 	return &aliasListResponsePager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -327,7 +334,7 @@ func (client *aliasClient) List(options *AliasListOptions) (AliasListResponsePag
 }
 
 // listCreateRequest creates the List request.
-func (client *aliasClient) listCreateRequest(ctx context.Context, options *AliasListOptions) (*azcore.Request, error) {
+func (client *AliasClient) listCreateRequest(ctx context.Context, options *AliasListOptions) (*azcore.Request, error) {
 	urlPath := "/aliases"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -342,7 +349,7 @@ func (client *aliasClient) listCreateRequest(ctx context.Context, options *Alias
 }
 
 // listHandleResponse handles the List response.
-func (client *aliasClient) listHandleResponse(resp *azcore.Response) (AliasListResponseResponse, error) {
+func (client *AliasClient) listHandleResponse(resp *azcore.Response) (AliasListResponseResponse, error) {
 	var val *AliasListResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return AliasListResponseResponse{}, err
@@ -351,7 +358,7 @@ return AliasListResponseResponse{RawResponse: resp.Response, AliasListResponse: 
 }
 
 // listHandleError handles the List error response.
-func (client *aliasClient) listHandleError(resp *azcore.Response) error {
+func (client *AliasClient) listHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

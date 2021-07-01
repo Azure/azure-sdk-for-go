@@ -15,9 +15,16 @@ import (
 	"strconv"
 )
 
-type renderV2Client struct {
-	con *connection
+// RenderV2Client contains the methods for the RenderV2 group.
+// Don't use this type directly, use NewRenderV2Client() instead.
+type RenderV2Client struct {
+	con *Connection
 	xmsClientID *string
+}
+
+// NewRenderV2Client creates a new instance of RenderV2Client with the specified values.
+func NewRenderV2Client(con *Connection, xmsClientID *string) *RenderV2Client {
+	return &RenderV2Client{con: con, xmsClientID: xmsClientID}
 }
 
 // GetMapTilePreview - Applies to: S0 and S1 pricing tiers.
@@ -27,7 +34,7 @@ type renderV2Client struct {
 // tiles for its web map control (Web SDK) and
 // Android SDK.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *renderV2Client) GetMapTilePreview(ctx context.Context, tilesetID TilesetID, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderV2GetMapTilePreviewOptions) (RenderV2GetMapTilePreviewResponse, error) {
+func (client *RenderV2Client) GetMapTilePreview(ctx context.Context, tilesetID TilesetID, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderV2GetMapTilePreviewOptions) (RenderV2GetMapTilePreviewResponse, error) {
 	req, err := client.getMapTilePreviewCreateRequest(ctx, tilesetID, zoom, xTileIndex, yTileIndex, options)
 	if err != nil {
 		return RenderV2GetMapTilePreviewResponse{}, err
@@ -43,7 +50,7 @@ func (client *renderV2Client) GetMapTilePreview(ctx context.Context, tilesetID T
 }
 
 // getMapTilePreviewCreateRequest creates the GetMapTilePreview request.
-func (client *renderV2Client) getMapTilePreviewCreateRequest(ctx context.Context, tilesetID TilesetID, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderV2GetMapTilePreviewOptions) (*azcore.Request, error) {
+func (client *RenderV2Client) getMapTilePreviewCreateRequest(ctx context.Context, tilesetID TilesetID, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderV2GetMapTilePreviewOptions) (*azcore.Request, error) {
 	urlPath := "/map/tile"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -78,7 +85,7 @@ func (client *renderV2Client) getMapTilePreviewCreateRequest(ctx context.Context
 }
 
 // getMapTilePreviewHandleResponse handles the GetMapTilePreview response.
-func (client *renderV2Client) getMapTilePreviewHandleResponse(resp *azcore.Response) (RenderV2GetMapTilePreviewResponse, error) {
+func (client *RenderV2Client) getMapTilePreviewHandleResponse(resp *azcore.Response) (RenderV2GetMapTilePreviewResponse, error) {
 	result := RenderV2GetMapTilePreviewResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
@@ -87,7 +94,7 @@ func (client *renderV2Client) getMapTilePreviewHandleResponse(resp *azcore.Respo
 }
 
 // getMapTilePreviewHandleError handles the GetMapTilePreview error response.
-func (client *renderV2Client) getMapTilePreviewHandleError(resp *azcore.Response) error {
+func (client *RenderV2Client) getMapTilePreviewHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

@@ -18,9 +18,16 @@ import (
 	"time"
 )
 
-type dataClient struct {
-	con *connection
+// DataClient contains the methods for the Data group.
+// Don't use this type directly, use NewDataClient() instead.
+type DataClient struct {
+	con *Connection
 	xmsClientID *string
+}
+
+// NewDataClient creates a new instance of DataClient with the specified values.
+func NewDataClient(con *Connection, xmsClientID *string) *DataClient {
+	return &DataClient{con: con, xmsClientID: xmsClientID}
 }
 
 // DeletePreview - Applies to: see pricing tiers [https://aka.ms/AzureMapsPricingTier].
@@ -35,7 +42,7 @@ type dataClient struct {
 // DELETE DATA RESPONSE The Data Delete API returns a HTTP 204 No Content response with an empty body, if the data resource was deleted successfully.
 // A HTTP 400 Bad Request error response will be returned if the data resource with the passed-in udid is not found.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *dataClient) DeletePreview(ctx context.Context, uniqueDataID string, options *DataDeletePreviewOptions) (*http.Response, error) {
+func (client *DataClient) DeletePreview(ctx context.Context, uniqueDataID string, options *DataDeletePreviewOptions) (*http.Response, error) {
 	req, err := client.deletePreviewCreateRequest(ctx, uniqueDataID, options)
 	if err != nil {
 		return nil, err
@@ -51,7 +58,7 @@ func (client *dataClient) DeletePreview(ctx context.Context, uniqueDataID string
 }
 
 // deletePreviewCreateRequest creates the DeletePreview request.
-func (client *dataClient) deletePreviewCreateRequest(ctx context.Context, uniqueDataID string, options *DataDeletePreviewOptions) (*azcore.Request, error) {
+func (client *DataClient) deletePreviewCreateRequest(ctx context.Context, uniqueDataID string, options *DataDeletePreviewOptions) (*azcore.Request, error) {
 	urlPath := "/mapData/{udid}"
 	if uniqueDataID == "" {
 		return nil, errors.New("parameter uniqueDataID cannot be empty")
@@ -73,7 +80,7 @@ func (client *dataClient) deletePreviewCreateRequest(ctx context.Context, unique
 }
 
 // deletePreviewHandleError handles the DeletePreview error response.
-func (client *dataClient) deletePreviewHandleError(resp *azcore.Response) error {
+func (client *DataClient) deletePreviewHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -104,7 +111,7 @@ func (client *dataClient) deletePreviewHandleError(resp *azcore.Response) error 
 // { "type": "FeatureCollection", "features": [{ "type": "Feature", "geometry": { "type": "Point", "coordinates": [-122.126986, 47.639754] }, "properties":
 // { "geometryId": "001", "radius": 500 } }] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *dataClient) DownloadPreview(ctx context.Context, uniqueDataID string, options *DataDownloadPreviewOptions) (DataDownloadPreviewResponse, error) {
+func (client *DataClient) DownloadPreview(ctx context.Context, uniqueDataID string, options *DataDownloadPreviewOptions) (DataDownloadPreviewResponse, error) {
 	req, err := client.downloadPreviewCreateRequest(ctx, uniqueDataID, options)
 	if err != nil {
 		return DataDownloadPreviewResponse{}, err
@@ -120,7 +127,7 @@ func (client *dataClient) DownloadPreview(ctx context.Context, uniqueDataID stri
 }
 
 // downloadPreviewCreateRequest creates the DownloadPreview request.
-func (client *dataClient) downloadPreviewCreateRequest(ctx context.Context, uniqueDataID string, options *DataDownloadPreviewOptions) (*azcore.Request, error) {
+func (client *DataClient) downloadPreviewCreateRequest(ctx context.Context, uniqueDataID string, options *DataDownloadPreviewOptions) (*azcore.Request, error) {
 	urlPath := "/mapData/{udid}"
 	if uniqueDataID == "" {
 		return nil, errors.New("parameter uniqueDataID cannot be empty")
@@ -143,7 +150,7 @@ func (client *dataClient) downloadPreviewCreateRequest(ctx context.Context, uniq
 }
 
 // downloadPreviewHandleResponse handles the DownloadPreview response.
-func (client *dataClient) downloadPreviewHandleResponse(resp *azcore.Response) (DataDownloadPreviewResponse, error) {
+func (client *DataClient) downloadPreviewHandleResponse(resp *azcore.Response) (DataDownloadPreviewResponse, error) {
 	result := DataDownloadPreviewResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
@@ -152,7 +159,7 @@ func (client *dataClient) downloadPreviewHandleResponse(resp *azcore.Response) (
 }
 
 // downloadPreviewHandleError handles the DownloadPreview error response.
-func (client *dataClient) downloadPreviewHandleError(resp *azcore.Response) error {
+func (client *DataClient) downloadPreviewHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -167,7 +174,7 @@ func (client *dataClient) downloadPreviewHandleError(resp *azcore.Response) erro
 // GetOperationPreview - This path will be obtained from a call to POST /mapData. While in progress, an http200 will be returned with no extra headers -
 // followed by an http200 with Resource-Location header once completed.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *dataClient) GetOperationPreview(ctx context.Context, operationID string, options *DataGetOperationPreviewOptions) (LongRunningOperationResultResponse, error) {
+func (client *DataClient) GetOperationPreview(ctx context.Context, operationID string, options *DataGetOperationPreviewOptions) (LongRunningOperationResultResponse, error) {
 	req, err := client.getOperationPreviewCreateRequest(ctx, operationID, options)
 	if err != nil {
 		return LongRunningOperationResultResponse{}, err
@@ -183,7 +190,7 @@ func (client *dataClient) GetOperationPreview(ctx context.Context, operationID s
 }
 
 // getOperationPreviewCreateRequest creates the GetOperationPreview request.
-func (client *dataClient) getOperationPreviewCreateRequest(ctx context.Context, operationID string, options *DataGetOperationPreviewOptions) (*azcore.Request, error) {
+func (client *DataClient) getOperationPreviewCreateRequest(ctx context.Context, operationID string, options *DataGetOperationPreviewOptions) (*azcore.Request, error) {
 	urlPath := "/mapData/operations/{operationId}"
 	if operationID == "" {
 		return nil, errors.New("parameter operationID cannot be empty")
@@ -202,7 +209,7 @@ func (client *dataClient) getOperationPreviewCreateRequest(ctx context.Context, 
 }
 
 // getOperationPreviewHandleResponse handles the GetOperationPreview response.
-func (client *dataClient) getOperationPreviewHandleResponse(resp *azcore.Response) (LongRunningOperationResultResponse, error) {
+func (client *DataClient) getOperationPreviewHandleResponse(resp *azcore.Response) (LongRunningOperationResultResponse, error) {
 	var val *LongRunningOperationResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LongRunningOperationResultResponse{}, err
@@ -215,7 +222,7 @@ func (client *dataClient) getOperationPreviewHandleResponse(resp *azcore.Respons
 }
 
 // getOperationPreviewHandleError handles the GetOperationPreview error response.
-func (client *dataClient) getOperationPreviewHandleError(resp *azcore.Response) error {
+func (client *DataClient) getOperationPreviewHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -241,7 +248,7 @@ func (client *dataClient) getOperationPreviewHandleError(resp *azcore.Response) 
 // "sizeInBytes": 1339, "uploadStatus": "Completed" }, { "udid": "7c1288fa-2058-4a1b-b68f-13a6h5af7d7c", "location":
 // "https://us.atlas.microsoft.com/mapData/7c1288fa-2058-4a1b-b68f-13a6h5af7d7c?api-version=1.0", "sizeInBytes": 1650, "uploadStatus": "Pending" }] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *dataClient) ListPreview(ctx context.Context, options *DataListPreviewOptions) (MapDataListResponseResponse, error) {
+func (client *DataClient) ListPreview(ctx context.Context, options *DataListPreviewOptions) (MapDataListResponseResponse, error) {
 	req, err := client.listPreviewCreateRequest(ctx, options)
 	if err != nil {
 		return MapDataListResponseResponse{}, err
@@ -257,7 +264,7 @@ func (client *dataClient) ListPreview(ctx context.Context, options *DataListPrev
 }
 
 // listPreviewCreateRequest creates the ListPreview request.
-func (client *dataClient) listPreviewCreateRequest(ctx context.Context, options *DataListPreviewOptions) (*azcore.Request, error) {
+func (client *DataClient) listPreviewCreateRequest(ctx context.Context, options *DataListPreviewOptions) (*azcore.Request, error) {
 	urlPath := "/mapData"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -275,7 +282,7 @@ func (client *dataClient) listPreviewCreateRequest(ctx context.Context, options 
 }
 
 // listPreviewHandleResponse handles the ListPreview response.
-func (client *dataClient) listPreviewHandleResponse(resp *azcore.Response) (MapDataListResponseResponse, error) {
+func (client *DataClient) listPreviewHandleResponse(resp *azcore.Response) (MapDataListResponseResponse, error) {
 	var val *MapDataListResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return MapDataListResponseResponse{}, err
@@ -284,7 +291,7 @@ return MapDataListResponseResponse{RawResponse: resp.Response, MapDataListRespon
 }
 
 // listPreviewHandleError handles the ListPreview error response.
-func (client *dataClient) listPreviewHandleError(resp *azcore.Response) error {
+func (client *DataClient) listPreviewHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -325,7 +332,7 @@ func (client *dataClient) listPreviewHandleError(resp *azcore.Response) error {
 // new uploads.
 // If the operation fails it returns one of the following error types.
 // - *ErrorResponse, *ErrorResponse
-func (client *dataClient) BeginUpdatePreview(ctx context.Context, uniqueDataID string, updateContent map[string]interface{}, options *DataBeginUpdatePreviewOptions) (LongRunningOperationResultPollerResponse, error) {
+func (client *DataClient) BeginUpdatePreview(ctx context.Context, uniqueDataID string, updateContent map[string]interface{}, options *DataBeginUpdatePreviewOptions) (LongRunningOperationResultPollerResponse, error) {
 	resp, err := client.updatePreview(ctx, uniqueDataID, updateContent, options)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
@@ -333,7 +340,7 @@ func (client *dataClient) BeginUpdatePreview(ctx context.Context, uniqueDataID s
 	result := LongRunningOperationResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("dataClient.UpdatePreview",resp, client.con.Pipeline(), client.updatePreviewHandleError)
+	pt, err := azcore.NewLROPoller("DataClient.UpdatePreview",resp, client.con.Pipeline(), client.updatePreviewHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -349,8 +356,8 @@ func (client *dataClient) BeginUpdatePreview(ctx context.Context, uniqueDataID s
 
 // ResumeUpdatePreview creates a new LongRunningOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to LongRunningOperationResultPoller.ResumeToken().
-func (client *dataClient) ResumeUpdatePreview(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("dataClient.UpdatePreview",token, client.con.Pipeline(), client.updatePreviewHandleError)
+func (client *DataClient) ResumeUpdatePreview(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
+	pt, err := azcore.NewLROPollerFromResumeToken("DataClient.UpdatePreview",token, client.con.Pipeline(), client.updatePreviewHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -400,7 +407,7 @@ func (client *dataClient) ResumeUpdatePreview(ctx context.Context, token string)
 // new uploads.
 // If the operation fails it returns one of the following error types.
 // - *ErrorResponse, *ErrorResponse
-func (client *dataClient) updatePreview(ctx context.Context, uniqueDataID string, updateContent map[string]interface{}, options *DataBeginUpdatePreviewOptions) (*azcore.Response, error) {
+func (client *DataClient) updatePreview(ctx context.Context, uniqueDataID string, updateContent map[string]interface{}, options *DataBeginUpdatePreviewOptions) (*azcore.Response, error) {
 	req, err := client.updatePreviewCreateRequest(ctx, uniqueDataID, updateContent, options)
 	if err != nil {
 		return nil, err
@@ -416,7 +423,7 @@ func (client *dataClient) updatePreview(ctx context.Context, uniqueDataID string
 }
 
 // updatePreviewCreateRequest creates the UpdatePreview request.
-func (client *dataClient) updatePreviewCreateRequest(ctx context.Context, uniqueDataID string, updateContent map[string]interface{}, options *DataBeginUpdatePreviewOptions) (*azcore.Request, error) {
+func (client *DataClient) updatePreviewCreateRequest(ctx context.Context, uniqueDataID string, updateContent map[string]interface{}, options *DataBeginUpdatePreviewOptions) (*azcore.Request, error) {
 	urlPath := "/mapData/{udid}"
 	if uniqueDataID == "" {
 		return nil, errors.New("parameter uniqueDataID cannot be empty")
@@ -441,7 +448,7 @@ func (client *dataClient) updatePreviewCreateRequest(ctx context.Context, unique
 }
 
 // updatePreviewHandleError handles the UpdatePreview error response.
-func (client *dataClient) updatePreviewHandleError(resp *azcore.Response) error {
+func (client *DataClient) updatePreviewHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -479,7 +486,7 @@ func (client *dataClient) updatePreviewHandleError(resp *azcore.Response) error 
 // new uploads.
 // If the operation fails it returns one of the following error types.
 // - *ErrorResponse, *ErrorResponse
-func (client *dataClient) BeginUploadPreview(ctx context.Context, uploadDataFormat UploadDataFormat, uploadContent azcore.ReadSeekCloser, options *DataBeginUploadPreviewOptions) (LongRunningOperationResultPollerResponse, error) {
+func (client *DataClient) BeginUploadPreview(ctx context.Context, uploadDataFormat UploadDataFormat, uploadContent azcore.ReadSeekCloser, options *DataBeginUploadPreviewOptions) (LongRunningOperationResultPollerResponse, error) {
 	resp, err := client.uploadPreview(ctx, uploadDataFormat, uploadContent, options)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
@@ -487,7 +494,7 @@ func (client *dataClient) BeginUploadPreview(ctx context.Context, uploadDataForm
 	result := LongRunningOperationResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("dataClient.UploadPreview",resp, client.con.Pipeline(), client.uploadPreviewHandleError)
+	pt, err := azcore.NewLROPoller("DataClient.UploadPreview",resp, client.con.Pipeline(), client.uploadPreviewHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -503,8 +510,8 @@ func (client *dataClient) BeginUploadPreview(ctx context.Context, uploadDataForm
 
 // ResumeUploadPreview creates a new LongRunningOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to LongRunningOperationResultPoller.ResumeToken().
-func (client *dataClient) ResumeUploadPreview(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("dataClient.UploadPreview",token, client.con.Pipeline(), client.uploadPreviewHandleError)
+func (client *DataClient) ResumeUploadPreview(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
+	pt, err := azcore.NewLROPollerFromResumeToken("DataClient.UploadPreview",token, client.con.Pipeline(), client.uploadPreviewHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -551,7 +558,7 @@ func (client *dataClient) ResumeUploadPreview(ctx context.Context, token string)
 // new uploads.
 // If the operation fails it returns one of the following error types.
 // - *ErrorResponse, *ErrorResponse
-func (client *dataClient) uploadPreview(ctx context.Context, uploadDataFormat UploadDataFormat, uploadContent azcore.ReadSeekCloser, options *DataBeginUploadPreviewOptions) (*azcore.Response, error) {
+func (client *DataClient) uploadPreview(ctx context.Context, uploadDataFormat UploadDataFormat, uploadContent azcore.ReadSeekCloser, options *DataBeginUploadPreviewOptions) (*azcore.Response, error) {
 	req, err := client.uploadPreviewCreateRequest(ctx, uploadDataFormat, uploadContent, options)
 	if err != nil {
 		return nil, err
@@ -567,7 +574,7 @@ func (client *dataClient) uploadPreview(ctx context.Context, uploadDataFormat Up
 }
 
 // uploadPreviewCreateRequest creates the UploadPreview request.
-func (client *dataClient) uploadPreviewCreateRequest(ctx context.Context, uploadDataFormat UploadDataFormat, uploadContent azcore.ReadSeekCloser, options *DataBeginUploadPreviewOptions) (*azcore.Request, error) {
+func (client *DataClient) uploadPreviewCreateRequest(ctx context.Context, uploadDataFormat UploadDataFormat, uploadContent azcore.ReadSeekCloser, options *DataBeginUploadPreviewOptions) (*azcore.Request, error) {
 	urlPath := "/mapData"
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -589,7 +596,7 @@ func (client *dataClient) uploadPreviewCreateRequest(ctx context.Context, upload
 }
 
 // uploadPreviewHandleError handles the UploadPreview error response.
-func (client *dataClient) uploadPreviewHandleError(resp *azcore.Response) error {
+func (client *DataClient) uploadPreviewHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -627,7 +634,7 @@ func (client *dataClient) uploadPreviewHandleError(resp *azcore.Response) error 
 // new uploads.
 // If the operation fails it returns one of the following error types.
 // - *ErrorResponse, *ErrorResponse
-func (client *dataClient) BeginUploadPreviewWithAnyObject(ctx context.Context, uploadDataFormat UploadDataFormat, uploadContent map[string]interface{}, options *DataBeginUploadPreviewWithAnyObjectOptions) (LongRunningOperationResultPollerResponse, error) {
+func (client *DataClient) BeginUploadPreviewWithAnyObject(ctx context.Context, uploadDataFormat UploadDataFormat, uploadContent map[string]interface{}, options *DataBeginUploadPreviewWithAnyObjectOptions) (LongRunningOperationResultPollerResponse, error) {
 	resp, err := client.uploadPreviewWithAnyObject(ctx, uploadDataFormat, uploadContent, options)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
@@ -635,7 +642,7 @@ func (client *dataClient) BeginUploadPreviewWithAnyObject(ctx context.Context, u
 	result := LongRunningOperationResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("dataClient.UploadPreviewWithAnyObject",resp, client.con.Pipeline(), client.uploadPreviewWithAnyObjectHandleError)
+	pt, err := azcore.NewLROPoller("DataClient.UploadPreviewWithAnyObject",resp, client.con.Pipeline(), client.uploadPreviewWithAnyObjectHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -651,8 +658,8 @@ func (client *dataClient) BeginUploadPreviewWithAnyObject(ctx context.Context, u
 
 // ResumeUploadPreviewWithAnyObject creates a new LongRunningOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to LongRunningOperationResultPoller.ResumeToken().
-func (client *dataClient) ResumeUploadPreviewWithAnyObject(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("dataClient.UploadPreviewWithAnyObject",token, client.con.Pipeline(), client.uploadPreviewWithAnyObjectHandleError)
+func (client *DataClient) ResumeUploadPreviewWithAnyObject(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
+	pt, err := azcore.NewLROPollerFromResumeToken("DataClient.UploadPreviewWithAnyObject",token, client.con.Pipeline(), client.uploadPreviewWithAnyObjectHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -699,7 +706,7 @@ func (client *dataClient) ResumeUploadPreviewWithAnyObject(ctx context.Context, 
 // new uploads.
 // If the operation fails it returns one of the following error types.
 // - *ErrorResponse, *ErrorResponse
-func (client *dataClient) uploadPreviewWithAnyObject(ctx context.Context, uploadDataFormat UploadDataFormat, uploadContent map[string]interface{}, options *DataBeginUploadPreviewWithAnyObjectOptions) (*azcore.Response, error) {
+func (client *DataClient) uploadPreviewWithAnyObject(ctx context.Context, uploadDataFormat UploadDataFormat, uploadContent map[string]interface{}, options *DataBeginUploadPreviewWithAnyObjectOptions) (*azcore.Response, error) {
 	req, err := client.uploadPreviewWithAnyObjectCreateRequest(ctx, uploadDataFormat, uploadContent, options)
 	if err != nil {
 		return nil, err
@@ -715,7 +722,7 @@ func (client *dataClient) uploadPreviewWithAnyObject(ctx context.Context, upload
 }
 
 // uploadPreviewWithAnyObjectCreateRequest creates the UploadPreviewWithAnyObject request.
-func (client *dataClient) uploadPreviewWithAnyObjectCreateRequest(ctx context.Context, uploadDataFormat UploadDataFormat, uploadContent map[string]interface{}, options *DataBeginUploadPreviewWithAnyObjectOptions) (*azcore.Request, error) {
+func (client *DataClient) uploadPreviewWithAnyObjectCreateRequest(ctx context.Context, uploadDataFormat UploadDataFormat, uploadContent map[string]interface{}, options *DataBeginUploadPreviewWithAnyObjectOptions) (*azcore.Request, error) {
 	urlPath := "/mapData"
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -737,7 +744,7 @@ func (client *dataClient) uploadPreviewWithAnyObjectCreateRequest(ctx context.Co
 }
 
 // uploadPreviewWithAnyObjectHandleError handles the UploadPreviewWithAnyObject error response.
-func (client *dataClient) uploadPreviewWithAnyObjectHandleError(resp *azcore.Response) error {
+func (client *DataClient) uploadPreviewWithAnyObjectHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

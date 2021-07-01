@@ -18,9 +18,16 @@ import (
 	"strings"
 )
 
-type renderClient struct {
-	con *connection
+// RenderClient contains the methods for the Render group.
+// Don't use this type directly, use NewRenderClient() instead.
+type RenderClient struct {
+	con *Connection
 	xmsClientID *string
+}
+
+// NewRenderClient creates a new instance of RenderClient with the specified values.
+func NewRenderClient(con *Connection, xmsClientID *string) *RenderClient {
+	return &RenderClient{con: con, xmsClientID: xmsClientID}
 }
 
 // GetCopyrightCaption - Applies to: S0 and S1 pricing tiers.
@@ -28,7 +35,7 @@ type renderClient struct {
 // groups of copyrights for some countries.
 // As an alternative to copyrights for map request, one can receive captions for displaying the map provider information on the map.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *renderClient) GetCopyrightCaption(ctx context.Context, formatParam TextFormat, options *RenderGetCopyrightCaptionOptions) (GetCopyrightCaptionResultResponse, error) {
+func (client *RenderClient) GetCopyrightCaption(ctx context.Context, formatParam TextFormat, options *RenderGetCopyrightCaptionOptions) (GetCopyrightCaptionResultResponse, error) {
 	req, err := client.getCopyrightCaptionCreateRequest(ctx, formatParam, options)
 	if err != nil {
 		return GetCopyrightCaptionResultResponse{}, err
@@ -44,7 +51,7 @@ func (client *renderClient) GetCopyrightCaption(ctx context.Context, formatParam
 }
 
 // getCopyrightCaptionCreateRequest creates the GetCopyrightCaption request.
-func (client *renderClient) getCopyrightCaptionCreateRequest(ctx context.Context, formatParam TextFormat, options *RenderGetCopyrightCaptionOptions) (*azcore.Request, error) {
+func (client *RenderClient) getCopyrightCaptionCreateRequest(ctx context.Context, formatParam TextFormat, options *RenderGetCopyrightCaptionOptions) (*azcore.Request, error) {
 	urlPath := "/map/copyright/caption/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -66,7 +73,7 @@ func (client *renderClient) getCopyrightCaptionCreateRequest(ctx context.Context
 }
 
 // getCopyrightCaptionHandleResponse handles the GetCopyrightCaption response.
-func (client *renderClient) getCopyrightCaptionHandleResponse(resp *azcore.Response) (GetCopyrightCaptionResultResponse, error) {
+func (client *RenderClient) getCopyrightCaptionHandleResponse(resp *azcore.Response) (GetCopyrightCaptionResultResponse, error) {
 	var val *GetCopyrightCaptionResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GetCopyrightCaptionResultResponse{}, err
@@ -75,7 +82,7 @@ return GetCopyrightCaptionResultResponse{RawResponse: resp.Response, GetCopyrigh
 }
 
 // getCopyrightCaptionHandleError handles the GetCopyrightCaption error response.
-func (client *renderClient) getCopyrightCaptionHandleError(resp *azcore.Response) error {
+func (client *RenderClient) getCopyrightCaptionHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -94,7 +101,7 @@ func (client *renderClient) getCopyrightCaptionHandleError(resp *azcore.Response
 // zoom level and x and y coordinates (see: Zoom
 // Levels and Tile Grid).
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *renderClient) GetCopyrightForTile(ctx context.Context, formatParam TextFormat, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderGetCopyrightForTileOptions) (GetCopyrightForTileResultResponse, error) {
+func (client *RenderClient) GetCopyrightForTile(ctx context.Context, formatParam TextFormat, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderGetCopyrightForTileOptions) (GetCopyrightForTileResultResponse, error) {
 	req, err := client.getCopyrightForTileCreateRequest(ctx, formatParam, zoom, xTileIndex, yTileIndex, options)
 	if err != nil {
 		return GetCopyrightForTileResultResponse{}, err
@@ -110,7 +117,7 @@ func (client *renderClient) GetCopyrightForTile(ctx context.Context, formatParam
 }
 
 // getCopyrightForTileCreateRequest creates the GetCopyrightForTile request.
-func (client *renderClient) getCopyrightForTileCreateRequest(ctx context.Context, formatParam TextFormat, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderGetCopyrightForTileOptions) (*azcore.Request, error) {
+func (client *RenderClient) getCopyrightForTileCreateRequest(ctx context.Context, formatParam TextFormat, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderGetCopyrightForTileOptions) (*azcore.Request, error) {
 	urlPath := "/map/copyright/tile/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -138,7 +145,7 @@ func (client *renderClient) getCopyrightForTileCreateRequest(ctx context.Context
 }
 
 // getCopyrightForTileHandleResponse handles the GetCopyrightForTile response.
-func (client *renderClient) getCopyrightForTileHandleResponse(resp *azcore.Response) (GetCopyrightForTileResultResponse, error) {
+func (client *RenderClient) getCopyrightForTileHandleResponse(resp *azcore.Response) (GetCopyrightForTileResultResponse, error) {
 	var val *GetCopyrightForTileResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GetCopyrightForTileResultResponse{}, err
@@ -147,7 +154,7 @@ return GetCopyrightForTileResultResponse{RawResponse: resp.Response, GetCopyrigh
 }
 
 // getCopyrightForTileHandleError handles the GetCopyrightForTile error response.
-func (client *renderClient) getCopyrightForTileHandleError(resp *azcore.Response) error {
+func (client *RenderClient) getCopyrightForTileHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -164,7 +171,7 @@ func (client *renderClient) getCopyrightForTileHandleError(resp *azcore.Response
 // groups of copyrights for some countries.
 // Returns the copyright information for the world. To obtain the default copyright information for the whole world, do not specify a tile or bounding box.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *renderClient) GetCopyrightForWorld(ctx context.Context, formatParam TextFormat, options *RenderGetCopyrightForWorldOptions) (GetCopyrightForWorldResultResponse, error) {
+func (client *RenderClient) GetCopyrightForWorld(ctx context.Context, formatParam TextFormat, options *RenderGetCopyrightForWorldOptions) (GetCopyrightForWorldResultResponse, error) {
 	req, err := client.getCopyrightForWorldCreateRequest(ctx, formatParam, options)
 	if err != nil {
 		return GetCopyrightForWorldResultResponse{}, err
@@ -180,7 +187,7 @@ func (client *renderClient) GetCopyrightForWorld(ctx context.Context, formatPara
 }
 
 // getCopyrightForWorldCreateRequest creates the GetCopyrightForWorld request.
-func (client *renderClient) getCopyrightForWorldCreateRequest(ctx context.Context, formatParam TextFormat, options *RenderGetCopyrightForWorldOptions) (*azcore.Request, error) {
+func (client *RenderClient) getCopyrightForWorldCreateRequest(ctx context.Context, formatParam TextFormat, options *RenderGetCopyrightForWorldOptions) (*azcore.Request, error) {
 	urlPath := "/map/copyright/world/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -205,7 +212,7 @@ func (client *renderClient) getCopyrightForWorldCreateRequest(ctx context.Contex
 }
 
 // getCopyrightForWorldHandleResponse handles the GetCopyrightForWorld response.
-func (client *renderClient) getCopyrightForWorldHandleResponse(resp *azcore.Response) (GetCopyrightForWorldResultResponse, error) {
+func (client *RenderClient) getCopyrightForWorldHandleResponse(resp *azcore.Response) (GetCopyrightForWorldResultResponse, error) {
 	var val *GetCopyrightForWorldResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GetCopyrightForWorldResultResponse{}, err
@@ -214,7 +221,7 @@ return GetCopyrightForWorldResultResponse{RawResponse: resp.Response, GetCopyrig
 }
 
 // getCopyrightForWorldHandleError handles the GetCopyrightForWorld error response.
-func (client *renderClient) getCopyrightForWorldHandleError(resp *azcore.Response) error {
+func (client *RenderClient) getCopyrightForWorldHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -230,7 +237,7 @@ func (client *renderClient) getCopyrightForWorldHandleError(resp *azcore.Respons
 // Returns copyright information for a given bounding box. Bounding-box requests should specify the minimum and maximum longitude and latitude (EPSG-3857)
 // coordinates
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *renderClient) GetCopyrightFromBoundingBox(ctx context.Context, formatParam TextFormat, mincoordinates string, maxcoordinates string, options *RenderGetCopyrightFromBoundingBoxOptions) (GetCopyrightFromBoundingBoxResultResponse, error) {
+func (client *RenderClient) GetCopyrightFromBoundingBox(ctx context.Context, formatParam TextFormat, mincoordinates string, maxcoordinates string, options *RenderGetCopyrightFromBoundingBoxOptions) (GetCopyrightFromBoundingBoxResultResponse, error) {
 	req, err := client.getCopyrightFromBoundingBoxCreateRequest(ctx, formatParam, mincoordinates, maxcoordinates, options)
 	if err != nil {
 		return GetCopyrightFromBoundingBoxResultResponse{}, err
@@ -246,7 +253,7 @@ func (client *renderClient) GetCopyrightFromBoundingBox(ctx context.Context, for
 }
 
 // getCopyrightFromBoundingBoxCreateRequest creates the GetCopyrightFromBoundingBox request.
-func (client *renderClient) getCopyrightFromBoundingBoxCreateRequest(ctx context.Context, formatParam TextFormat, mincoordinates string, maxcoordinates string, options *RenderGetCopyrightFromBoundingBoxOptions) (*azcore.Request, error) {
+func (client *RenderClient) getCopyrightFromBoundingBoxCreateRequest(ctx context.Context, formatParam TextFormat, mincoordinates string, maxcoordinates string, options *RenderGetCopyrightFromBoundingBoxOptions) (*azcore.Request, error) {
 	urlPath := "/map/copyright/bounding/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -273,7 +280,7 @@ func (client *renderClient) getCopyrightFromBoundingBoxCreateRequest(ctx context
 }
 
 // getCopyrightFromBoundingBoxHandleResponse handles the GetCopyrightFromBoundingBox response.
-func (client *renderClient) getCopyrightFromBoundingBoxHandleResponse(resp *azcore.Response) (GetCopyrightFromBoundingBoxResultResponse, error) {
+func (client *RenderClient) getCopyrightFromBoundingBoxHandleResponse(resp *azcore.Response) (GetCopyrightFromBoundingBoxResultResponse, error) {
 	var val *GetCopyrightFromBoundingBoxResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return GetCopyrightFromBoundingBoxResultResponse{}, err
@@ -282,7 +289,7 @@ return GetCopyrightFromBoundingBoxResultResponse{RawResponse: resp.Response, Get
 }
 
 // getCopyrightFromBoundingBoxHandleError handles the GetCopyrightFromBoundingBox error response.
-func (client *renderClient) getCopyrightFromBoundingBoxHandleError(resp *azcore.Response) error {
+func (client *RenderClient) getCopyrightFromBoundingBoxHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -300,7 +307,7 @@ func (client *renderClient) getCopyrightFromBoundingBoxHandleError(resp *azcore.
 // satellite imagery alone.
 // Note: We recommend to start to use the new Get Map Tile V2 API [https://aka.ms/GetMapTileV2].
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *renderClient) GetMapImageryTile(ctx context.Context, formatParam RasterTileFormat, style MapImageryStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderGetMapImageryTileOptions) (RenderGetMapImageryTileResponse, error) {
+func (client *RenderClient) GetMapImageryTile(ctx context.Context, formatParam RasterTileFormat, style MapImageryStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderGetMapImageryTileOptions) (RenderGetMapImageryTileResponse, error) {
 	req, err := client.getMapImageryTileCreateRequest(ctx, formatParam, style, zoom, xTileIndex, yTileIndex, options)
 	if err != nil {
 		return RenderGetMapImageryTileResponse{}, err
@@ -316,7 +323,7 @@ func (client *renderClient) GetMapImageryTile(ctx context.Context, formatParam R
 }
 
 // getMapImageryTileCreateRequest creates the GetMapImageryTile request.
-func (client *renderClient) getMapImageryTileCreateRequest(ctx context.Context, formatParam RasterTileFormat, style MapImageryStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderGetMapImageryTileOptions) (*azcore.Request, error) {
+func (client *RenderClient) getMapImageryTileCreateRequest(ctx context.Context, formatParam RasterTileFormat, style MapImageryStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderGetMapImageryTileOptions) (*azcore.Request, error) {
 	urlPath := "/map/imagery/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -343,7 +350,7 @@ func (client *renderClient) getMapImageryTileCreateRequest(ctx context.Context, 
 }
 
 // getMapImageryTileHandleResponse handles the GetMapImageryTile response.
-func (client *renderClient) getMapImageryTileHandleResponse(resp *azcore.Response) (RenderGetMapImageryTileResponse, error) {
+func (client *RenderClient) getMapImageryTileHandleResponse(resp *azcore.Response) (RenderGetMapImageryTileResponse, error) {
 	result := RenderGetMapImageryTileResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
@@ -352,7 +359,7 @@ func (client *renderClient) getMapImageryTileHandleResponse(resp *azcore.Respons
 }
 
 // getMapImageryTileHandleError handles the GetMapImageryTile error response.
-func (client *renderClient) getMapImageryTileHandleError(resp *azcore.Response) error {
+func (client *RenderClient) getMapImageryTileHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -369,7 +376,7 @@ func (client *renderClient) getMapImageryTileHandleError(resp *azcore.Response) 
 // user turns on dynamic styling (see Zoom Levels
 // and Tile Grid [https://docs.microsoft.com/en-us/azure/location-based-services/zoom-levels-and-tile-grid])
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *renderClient) GetMapStateTilePreview(ctx context.Context, zoom int32, xTileIndex int32, yTileIndex int32, statesetID string, options *RenderGetMapStateTilePreviewOptions) (RenderGetMapStateTilePreviewResponse, error) {
+func (client *RenderClient) GetMapStateTilePreview(ctx context.Context, zoom int32, xTileIndex int32, yTileIndex int32, statesetID string, options *RenderGetMapStateTilePreviewOptions) (RenderGetMapStateTilePreviewResponse, error) {
 	req, err := client.getMapStateTilePreviewCreateRequest(ctx, zoom, xTileIndex, yTileIndex, statesetID, options)
 	if err != nil {
 		return RenderGetMapStateTilePreviewResponse{}, err
@@ -385,7 +392,7 @@ func (client *renderClient) GetMapStateTilePreview(ctx context.Context, zoom int
 }
 
 // getMapStateTilePreviewCreateRequest creates the GetMapStateTilePreview request.
-func (client *renderClient) getMapStateTilePreviewCreateRequest(ctx context.Context, zoom int32, xTileIndex int32, yTileIndex int32, statesetID string, options *RenderGetMapStateTilePreviewOptions) (*azcore.Request, error) {
+func (client *RenderClient) getMapStateTilePreviewCreateRequest(ctx context.Context, zoom int32, xTileIndex int32, yTileIndex int32, statesetID string, options *RenderGetMapStateTilePreviewOptions) (*azcore.Request, error) {
 	urlPath := "/map/statetile"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -408,7 +415,7 @@ func (client *renderClient) getMapStateTilePreviewCreateRequest(ctx context.Cont
 }
 
 // getMapStateTilePreviewHandleResponse handles the GetMapStateTilePreview response.
-func (client *renderClient) getMapStateTilePreviewHandleResponse(resp *azcore.Response) (RenderGetMapStateTilePreviewResponse, error) {
+func (client *RenderClient) getMapStateTilePreviewHandleResponse(resp *azcore.Response) (RenderGetMapStateTilePreviewResponse, error) {
 	result := RenderGetMapStateTilePreviewResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
@@ -417,7 +424,7 @@ func (client *renderClient) getMapStateTilePreviewHandleResponse(resp *azcore.Re
 }
 
 // getMapStateTilePreviewHandleError handles the GetMapStateTilePreview error response.
-func (client *renderClient) getMapStateTilePreviewHandleError(resp *azcore.Response) error {
+func (client *RenderClient) getMapStateTilePreviewHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -475,7 +482,7 @@ func (client *renderClient) getMapStateTilePreviewHandleError(resp *azcore.Respo
 // 19 0.0109863281 0.0051879883
 // 20 0.0054931641 0.0025939941
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *renderClient) GetMapStaticImage(ctx context.Context, formatParam RasterTileFormat, options *RenderGetMapStaticImageOptions) (RenderGetMapStaticImageResponse, error) {
+func (client *RenderClient) GetMapStaticImage(ctx context.Context, formatParam RasterTileFormat, options *RenderGetMapStaticImageOptions) (RenderGetMapStaticImageResponse, error) {
 	req, err := client.getMapStaticImageCreateRequest(ctx, formatParam, options)
 	if err != nil {
 		return RenderGetMapStaticImageResponse{}, err
@@ -491,7 +498,7 @@ func (client *renderClient) GetMapStaticImage(ctx context.Context, formatParam R
 }
 
 // getMapStaticImageCreateRequest creates the GetMapStaticImage request.
-func (client *renderClient) getMapStaticImageCreateRequest(ctx context.Context, formatParam RasterTileFormat, options *RenderGetMapStaticImageOptions) (*azcore.Request, error) {
+func (client *RenderClient) getMapStaticImageCreateRequest(ctx context.Context, formatParam RasterTileFormat, options *RenderGetMapStaticImageOptions) (*azcore.Request, error) {
 	urlPath := "/map/static/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -551,7 +558,7 @@ func (client *renderClient) getMapStaticImageCreateRequest(ctx context.Context, 
 }
 
 // getMapStaticImageHandleResponse handles the GetMapStaticImage response.
-func (client *renderClient) getMapStaticImageHandleResponse(resp *azcore.Response) (RenderGetMapStaticImageResponse, error) {
+func (client *RenderClient) getMapStaticImageHandleResponse(resp *azcore.Response) (RenderGetMapStaticImageResponse, error) {
 	result := RenderGetMapStaticImageResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
@@ -560,7 +567,7 @@ func (client *renderClient) getMapStaticImageHandleResponse(resp *azcore.Respons
 }
 
 // getMapStaticImageHandleError handles the GetMapStaticImage error response.
-func (client *renderClient) getMapStaticImageHandleError(resp *azcore.Response) error {
+func (client *RenderClient) getMapStaticImageHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -579,7 +586,7 @@ func (client *renderClient) getMapStaticImageHandleError(resp *azcore.Response) 
 // Note: Weather tiles are only available via Get Map Tile V2 API [https://aka.ms/AzureMapsWeatherTiles]. We recommend to start to use the new Get Map Tile
 // V2 API [https://aka.ms/GetMapTileV2].
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *renderClient) GetMapTile(ctx context.Context, formatParam TileFormat, layer MapTileLayer, style MapTileStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderGetMapTileOptions) (RenderGetMapTileResponse, error) {
+func (client *RenderClient) GetMapTile(ctx context.Context, formatParam TileFormat, layer MapTileLayer, style MapTileStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderGetMapTileOptions) (RenderGetMapTileResponse, error) {
 	req, err := client.getMapTileCreateRequest(ctx, formatParam, layer, style, zoom, xTileIndex, yTileIndex, options)
 	if err != nil {
 		return RenderGetMapTileResponse{}, err
@@ -595,7 +602,7 @@ func (client *renderClient) GetMapTile(ctx context.Context, formatParam TileForm
 }
 
 // getMapTileCreateRequest creates the GetMapTile request.
-func (client *renderClient) getMapTileCreateRequest(ctx context.Context, formatParam TileFormat, layer MapTileLayer, style MapTileStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderGetMapTileOptions) (*azcore.Request, error) {
+func (client *RenderClient) getMapTileCreateRequest(ctx context.Context, formatParam TileFormat, layer MapTileLayer, style MapTileStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *RenderGetMapTileOptions) (*azcore.Request, error) {
 	urlPath := "/map/tile/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -632,7 +639,7 @@ func (client *renderClient) getMapTileCreateRequest(ctx context.Context, formatP
 }
 
 // getMapTileHandleResponse handles the GetMapTile response.
-func (client *renderClient) getMapTileHandleResponse(resp *azcore.Response) (RenderGetMapTileResponse, error) {
+func (client *RenderClient) getMapTileHandleResponse(resp *azcore.Response) (RenderGetMapTileResponse, error) {
 	result := RenderGetMapTileResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
@@ -641,7 +648,7 @@ func (client *renderClient) getMapTileHandleResponse(resp *azcore.Response) (Ren
 }
 
 // getMapTileHandleError handles the GetMapTile error response.
-func (client *renderClient) getMapTileHandleError(resp *azcore.Response) error {
+func (client *RenderClient) getMapTileHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

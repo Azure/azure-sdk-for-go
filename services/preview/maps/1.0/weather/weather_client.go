@@ -18,9 +18,16 @@ import (
 	"strings"
 )
 
-type weatherClient struct {
-	con *connection
+// WeatherClient contains the methods for the Weather group.
+// Don't use this type directly, use NewWeatherClient() instead.
+type WeatherClient struct {
+	con *Connection
 	xmsClientID *string
+}
+
+// NewWeatherClient creates a new instance of WeatherClient with the specified values.
+func NewWeatherClient(con *Connection, xmsClientID *string) *WeatherClient {
+	return &WeatherClient{con: con, xmsClientID: xmsClientID}
 }
 
 // GetCurrentConditions - Get Current Conditions
@@ -31,7 +38,7 @@ type weatherClient struct {
 // description of the weather conditions, weather
 // icon, precipitation indicator flags, and temperature. Additional details such as RealFeel™ Temperature and UV index are also returned.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *weatherClient) GetCurrentConditions(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetCurrentConditionsOptions) (CurrentConditionsResponseResponse, error) {
+func (client *WeatherClient) GetCurrentConditions(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetCurrentConditionsOptions) (CurrentConditionsResponseResponse, error) {
 	req, err := client.getCurrentConditionsCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return CurrentConditionsResponseResponse{}, err
@@ -47,7 +54,7 @@ func (client *weatherClient) GetCurrentConditions(ctx context.Context, formatPar
 }
 
 // getCurrentConditionsCreateRequest creates the GetCurrentConditions request.
-func (client *weatherClient) getCurrentConditionsCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetCurrentConditionsOptions) (*azcore.Request, error) {
+func (client *WeatherClient) getCurrentConditionsCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetCurrentConditionsOptions) (*azcore.Request, error) {
 	urlPath := "/weather/currentConditions/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -82,7 +89,7 @@ func (client *weatherClient) getCurrentConditionsCreateRequest(ctx context.Conte
 }
 
 // getCurrentConditionsHandleResponse handles the GetCurrentConditions response.
-func (client *weatherClient) getCurrentConditionsHandleResponse(resp *azcore.Response) (CurrentConditionsResponseResponse, error) {
+func (client *WeatherClient) getCurrentConditionsHandleResponse(resp *azcore.Response) (CurrentConditionsResponseResponse, error) {
 	var val *CurrentConditionsResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return CurrentConditionsResponseResponse{}, err
@@ -91,7 +98,7 @@ return CurrentConditionsResponseResponse{RawResponse: resp.Response, CurrentCond
 }
 
 // getCurrentConditionsHandleError handles the GetCurrentConditions error response.
-func (client *weatherClient) getCurrentConditionsHandleError(resp *azcore.Response) error {
+func (client *WeatherClient) getCurrentConditionsHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -110,7 +117,7 @@ func (client *weatherClient) getCurrentConditionsHandleError(resp *azcore.Respon
 // temperature, wind, precipitation, air quality, and UV index.
 // In S0 you can request daily forecast for the next 1, 5, 10, and 15 days. In S1 you can also request daily forecast for the next 25 days, and 45 days.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *weatherClient) GetDailyForecast(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetDailyForecastOptions) (DailyForecastResponseResponse, error) {
+func (client *WeatherClient) GetDailyForecast(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetDailyForecastOptions) (DailyForecastResponseResponse, error) {
 	req, err := client.getDailyForecastCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return DailyForecastResponseResponse{}, err
@@ -126,7 +133,7 @@ func (client *weatherClient) GetDailyForecast(ctx context.Context, formatParam R
 }
 
 // getDailyForecastCreateRequest creates the GetDailyForecast request.
-func (client *weatherClient) getDailyForecastCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetDailyForecastOptions) (*azcore.Request, error) {
+func (client *WeatherClient) getDailyForecastCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetDailyForecastOptions) (*azcore.Request, error) {
 	urlPath := "/weather/forecast/daily/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -158,7 +165,7 @@ func (client *weatherClient) getDailyForecastCreateRequest(ctx context.Context, 
 }
 
 // getDailyForecastHandleResponse handles the GetDailyForecast response.
-func (client *weatherClient) getDailyForecastHandleResponse(resp *azcore.Response) (DailyForecastResponseResponse, error) {
+func (client *WeatherClient) getDailyForecastHandleResponse(resp *azcore.Response) (DailyForecastResponseResponse, error) {
 	var val *DailyForecastResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DailyForecastResponseResponse{}, err
@@ -167,7 +174,7 @@ return DailyForecastResponseResponse{RawResponse: resp.Response, DailyForecastRe
 }
 
 // getDailyForecastHandleError handles the GetDailyForecast error response.
-func (client *weatherClient) getDailyForecastHandleError(resp *azcore.Response) error {
+func (client *WeatherClient) getDailyForecastHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -189,7 +196,7 @@ func (client *weatherClient) getDailyForecastHandleError(resp *azcore.Response) 
 // predicted index values. The service returns in
 // daily indices values for current and next 5, 10 and 15 days starting from current day.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *weatherClient) GetDailyIndices(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetDailyIndicesOptions) (DailyIndicesResponseResponse, error) {
+func (client *WeatherClient) GetDailyIndices(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetDailyIndicesOptions) (DailyIndicesResponseResponse, error) {
 	req, err := client.getDailyIndicesCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return DailyIndicesResponseResponse{}, err
@@ -205,7 +212,7 @@ func (client *weatherClient) GetDailyIndices(ctx context.Context, formatParam Re
 }
 
 // getDailyIndicesCreateRequest creates the GetDailyIndices request.
-func (client *weatherClient) getDailyIndicesCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetDailyIndicesOptions) (*azcore.Request, error) {
+func (client *WeatherClient) getDailyIndicesCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetDailyIndicesOptions) (*azcore.Request, error) {
 	urlPath := "/weather/indices/daily/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -240,7 +247,7 @@ func (client *weatherClient) getDailyIndicesCreateRequest(ctx context.Context, f
 }
 
 // getDailyIndicesHandleResponse handles the GetDailyIndices response.
-func (client *weatherClient) getDailyIndicesHandleResponse(resp *azcore.Response) (DailyIndicesResponseResponse, error) {
+func (client *WeatherClient) getDailyIndicesHandleResponse(resp *azcore.Response) (DailyIndicesResponseResponse, error) {
 	var val *DailyIndicesResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return DailyIndicesResponseResponse{}, err
@@ -249,7 +256,7 @@ return DailyIndicesResponseResponse{RawResponse: resp.Response, DailyIndicesResp
 }
 
 // getDailyIndicesHandleError handles the GetDailyIndices error response.
-func (client *weatherClient) getDailyIndicesHandleError(resp *azcore.Response) error {
+func (client *WeatherClient) getDailyIndicesHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -269,7 +276,7 @@ func (client *weatherClient) getDailyIndicesHandleError(resp *azcore.Response) e
 // In S0 you can request hourly forecast for the next 1, 12, 24 hours (1 day), and 72 hours (3 days). In S1 you can also request hourly forecast for the
 // next 120 (5 days) and 240 hours (10 days).
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *weatherClient) GetHourlyForecast(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetHourlyForecastOptions) (HourlyForecastResponseResponse, error) {
+func (client *WeatherClient) GetHourlyForecast(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetHourlyForecastOptions) (HourlyForecastResponseResponse, error) {
 	req, err := client.getHourlyForecastCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return HourlyForecastResponseResponse{}, err
@@ -285,7 +292,7 @@ func (client *weatherClient) GetHourlyForecast(ctx context.Context, formatParam 
 }
 
 // getHourlyForecastCreateRequest creates the GetHourlyForecast request.
-func (client *weatherClient) getHourlyForecastCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetHourlyForecastOptions) (*azcore.Request, error) {
+func (client *WeatherClient) getHourlyForecastCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetHourlyForecastOptions) (*azcore.Request, error) {
 	urlPath := "/weather/forecast/hourly/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -317,7 +324,7 @@ func (client *weatherClient) getHourlyForecastCreateRequest(ctx context.Context,
 }
 
 // getHourlyForecastHandleResponse handles the GetHourlyForecast response.
-func (client *weatherClient) getHourlyForecastHandleResponse(resp *azcore.Response) (HourlyForecastResponseResponse, error) {
+func (client *WeatherClient) getHourlyForecastHandleResponse(resp *azcore.Response) (HourlyForecastResponseResponse, error) {
 	var val *HourlyForecastResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return HourlyForecastResponseResponse{}, err
@@ -326,7 +333,7 @@ return HourlyForecastResponseResponse{RawResponse: resp.Response, HourlyForecast
 }
 
 // getHourlyForecastHandleError handles the GetHourlyForecast error response.
-func (client *weatherClient) getHourlyForecastHandleError(resp *azcore.Response) error {
+func (client *WeatherClient) getHourlyForecastHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -344,7 +351,7 @@ func (client *weatherClient) getHourlyForecastHandleError(resp *azcore.Response)
 // the interval of 1, 5 and 15 minutes. The response
 // will include details such as the type of precipitation (including rain, snow, or a mixture of both), start time, and precipitation intensity value (dBZ).
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *weatherClient) GetMinuteForecast(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetMinuteForecastOptions) (MinuteForecastResponseResponse, error) {
+func (client *WeatherClient) GetMinuteForecast(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetMinuteForecastOptions) (MinuteForecastResponseResponse, error) {
 	req, err := client.getMinuteForecastCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return MinuteForecastResponseResponse{}, err
@@ -360,7 +367,7 @@ func (client *weatherClient) GetMinuteForecast(ctx context.Context, formatParam 
 }
 
 // getMinuteForecastCreateRequest creates the GetMinuteForecast request.
-func (client *weatherClient) getMinuteForecastCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetMinuteForecastOptions) (*azcore.Request, error) {
+func (client *WeatherClient) getMinuteForecastCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetMinuteForecastOptions) (*azcore.Request, error) {
 	urlPath := "/weather/forecast/minute/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -389,7 +396,7 @@ func (client *weatherClient) getMinuteForecastCreateRequest(ctx context.Context,
 }
 
 // getMinuteForecastHandleResponse handles the GetMinuteForecast response.
-func (client *weatherClient) getMinuteForecastHandleResponse(resp *azcore.Response) (MinuteForecastResponseResponse, error) {
+func (client *WeatherClient) getMinuteForecastHandleResponse(resp *azcore.Response) (MinuteForecastResponseResponse, error) {
 	var val *MinuteForecastResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return MinuteForecastResponseResponse{}, err
@@ -398,7 +405,7 @@ return MinuteForecastResponseResponse{RawResponse: resp.Response, MinuteForecast
 }
 
 // getMinuteForecastHandleError handles the GetMinuteForecast error response.
-func (client *weatherClient) getMinuteForecastHandleError(resp *azcore.Response) error {
+func (client *WeatherClient) getMinuteForecastHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -416,7 +423,7 @@ func (client *weatherClient) getMinuteForecastHandleError(resp *azcore.Response)
 // of the day - morning, afternoon, evening, and
 // overnight. Details such as temperature, humidity, wind, precipitation, and UV index are returned.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *weatherClient) GetQuarterDayForecast(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetQuarterDayForecastOptions) (QuarterDayForecastResponseResponse, error) {
+func (client *WeatherClient) GetQuarterDayForecast(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetQuarterDayForecastOptions) (QuarterDayForecastResponseResponse, error) {
 	req, err := client.getQuarterDayForecastCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return QuarterDayForecastResponseResponse{}, err
@@ -432,7 +439,7 @@ func (client *weatherClient) GetQuarterDayForecast(ctx context.Context, formatPa
 }
 
 // getQuarterDayForecastCreateRequest creates the GetQuarterDayForecast request.
-func (client *weatherClient) getQuarterDayForecastCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetQuarterDayForecastOptions) (*azcore.Request, error) {
+func (client *WeatherClient) getQuarterDayForecastCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetQuarterDayForecastOptions) (*azcore.Request, error) {
 	urlPath := "/weather/forecast/quarterDay/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -464,7 +471,7 @@ func (client *weatherClient) getQuarterDayForecastCreateRequest(ctx context.Cont
 }
 
 // getQuarterDayForecastHandleResponse handles the GetQuarterDayForecast response.
-func (client *weatherClient) getQuarterDayForecastHandleResponse(resp *azcore.Response) (QuarterDayForecastResponseResponse, error) {
+func (client *WeatherClient) getQuarterDayForecastHandleResponse(resp *azcore.Response) (QuarterDayForecastResponseResponse, error) {
 	var val *QuarterDayForecastResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return QuarterDayForecastResponseResponse{}, err
@@ -473,7 +480,7 @@ return QuarterDayForecastResponseResponse{RawResponse: resp.Response, QuarterDay
 }
 
 // getQuarterDayForecastHandleError handles the GetQuarterDayForecast error response.
-func (client *weatherClient) getQuarterDayForecastHandleError(resp *azcore.Response) error {
+func (client *WeatherClient) getQuarterDayForecastHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -496,7 +503,7 @@ func (client *weatherClient) getQuarterDayForecastHandleError(resp *azcore.Respo
 // alert type, category, level and detailed description about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning,
 // heat waves or forest fires.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *weatherClient) GetSevereWeatherAlerts(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetSevereWeatherAlertsOptions) (SevereWeatherAlertsResponseResponse, error) {
+func (client *WeatherClient) GetSevereWeatherAlerts(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetSevereWeatherAlertsOptions) (SevereWeatherAlertsResponseResponse, error) {
 	req, err := client.getSevereWeatherAlertsCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return SevereWeatherAlertsResponseResponse{}, err
@@ -512,7 +519,7 @@ func (client *weatherClient) GetSevereWeatherAlerts(ctx context.Context, formatP
 }
 
 // getSevereWeatherAlertsCreateRequest creates the GetSevereWeatherAlerts request.
-func (client *weatherClient) getSevereWeatherAlertsCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetSevereWeatherAlertsOptions) (*azcore.Request, error) {
+func (client *WeatherClient) getSevereWeatherAlertsCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetSevereWeatherAlertsOptions) (*azcore.Request, error) {
 	urlPath := "/weather/severe/alerts/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -541,7 +548,7 @@ func (client *weatherClient) getSevereWeatherAlertsCreateRequest(ctx context.Con
 }
 
 // getSevereWeatherAlertsHandleResponse handles the GetSevereWeatherAlerts response.
-func (client *weatherClient) getSevereWeatherAlertsHandleResponse(resp *azcore.Response) (SevereWeatherAlertsResponseResponse, error) {
+func (client *WeatherClient) getSevereWeatherAlertsHandleResponse(resp *azcore.Response) (SevereWeatherAlertsResponseResponse, error) {
 	var val *SevereWeatherAlertsResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return SevereWeatherAlertsResponseResponse{}, err
@@ -550,7 +557,7 @@ return SevereWeatherAlertsResponseResponse{RawResponse: resp.Response, SevereWea
 }
 
 // getSevereWeatherAlertsHandleError handles the GetSevereWeatherAlerts error response.
-func (client *weatherClient) getSevereWeatherAlertsHandleError(resp *azcore.Response) error {
+func (client *WeatherClient) getSevereWeatherAlertsHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -582,7 +589,7 @@ func (client *weatherClient) getSevereWeatherAlertsHandleError(resp *azcore.Resp
 // [https://docs.microsoft.com/azure/azure-maps/tutorial-iot-hub-maps], or selectable distance to the waypoint.
 // The API covers all regions of the planet except latitudes above Greenland and Antarctica.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *weatherClient) GetWeatherAlongRoute(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetWeatherAlongRouteOptions) (WeatherAlongRouteResponseResponse, error) {
+func (client *WeatherClient) GetWeatherAlongRoute(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetWeatherAlongRouteOptions) (WeatherAlongRouteResponseResponse, error) {
 	req, err := client.getWeatherAlongRouteCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return WeatherAlongRouteResponseResponse{}, err
@@ -598,7 +605,7 @@ func (client *weatherClient) GetWeatherAlongRoute(ctx context.Context, formatPar
 }
 
 // getWeatherAlongRouteCreateRequest creates the GetWeatherAlongRoute request.
-func (client *weatherClient) getWeatherAlongRouteCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetWeatherAlongRouteOptions) (*azcore.Request, error) {
+func (client *WeatherClient) getWeatherAlongRouteCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *WeatherGetWeatherAlongRouteOptions) (*azcore.Request, error) {
 	urlPath := "/weather/route/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -624,7 +631,7 @@ func (client *weatherClient) getWeatherAlongRouteCreateRequest(ctx context.Conte
 }
 
 // getWeatherAlongRouteHandleResponse handles the GetWeatherAlongRoute response.
-func (client *weatherClient) getWeatherAlongRouteHandleResponse(resp *azcore.Response) (WeatherAlongRouteResponseResponse, error) {
+func (client *WeatherClient) getWeatherAlongRouteHandleResponse(resp *azcore.Response) (WeatherAlongRouteResponseResponse, error) {
 	var val *WeatherAlongRouteResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return WeatherAlongRouteResponseResponse{}, err
@@ -633,7 +640,7 @@ return WeatherAlongRouteResponseResponse{RawResponse: resp.Response, WeatherAlon
 }
 
 // getWeatherAlongRouteHandleError handles the GetWeatherAlongRoute error response.
-func (client *weatherClient) getWeatherAlongRouteHandleError(resp *azcore.Response) error {
+func (client *WeatherClient) getWeatherAlongRouteHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

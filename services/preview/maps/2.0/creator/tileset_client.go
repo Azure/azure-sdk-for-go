@@ -18,9 +18,16 @@ import (
 	"time"
 )
 
-type tilesetClient struct {
-	con *connection
+// TilesetClient contains the methods for the Tileset group.
+// Don't use this type directly, use NewTilesetClient() instead.
+type TilesetClient struct {
+	con *Connection
 	xmsClientID *string
+}
+
+// NewTilesetClient creates a new instance of TilesetClient with the specified values.
+func NewTilesetClient(con *Connection, xmsClientID *string) *TilesetClient {
+	return &TilesetClient{con: con, xmsClientID: xmsClientID}
 }
 
 // BeginCreate - Applies to: see pricing tiers [https://aka.ms/AzureMapsPricingTier].
@@ -35,7 +42,7 @@ type tilesetClient struct {
 // of the tileset data.
 // The Create Tileset API is along-running request [https://aka.ms/am-creator-lrt-v2].
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *tilesetClient) BeginCreate(ctx context.Context, datasetID string, options *TilesetBeginCreateOptions) (LongRunningOperationResultPollerResponse, error) {
+func (client *TilesetClient) BeginCreate(ctx context.Context, datasetID string, options *TilesetBeginCreateOptions) (LongRunningOperationResultPollerResponse, error) {
 	resp, err := client.create(ctx, datasetID, options)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
@@ -43,7 +50,7 @@ func (client *tilesetClient) BeginCreate(ctx context.Context, datasetID string, 
 	result := LongRunningOperationResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("tilesetClient.Create",resp, client.con.Pipeline(), client.createHandleError)
+	pt, err := azcore.NewLROPoller("TilesetClient.Create",resp, client.con.Pipeline(), client.createHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -59,8 +66,8 @@ func (client *tilesetClient) BeginCreate(ctx context.Context, datasetID string, 
 
 // ResumeCreate creates a new LongRunningOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to LongRunningOperationResultPoller.ResumeToken().
-func (client *tilesetClient) ResumeCreate(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("tilesetClient.Create",token, client.con.Pipeline(), client.createHandleError)
+func (client *TilesetClient) ResumeCreate(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
+	pt, err := azcore.NewLROPollerFromResumeToken("TilesetClient.Create",token, client.con.Pipeline(), client.createHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -93,7 +100,7 @@ func (client *tilesetClient) ResumeCreate(ctx context.Context, token string) (Lo
 // of the tileset data.
 // The Create Tileset API is along-running request [https://aka.ms/am-creator-lrt-v2].
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *tilesetClient) create(ctx context.Context, datasetID string, options *TilesetBeginCreateOptions) (*azcore.Response, error) {
+func (client *TilesetClient) create(ctx context.Context, datasetID string, options *TilesetBeginCreateOptions) (*azcore.Response, error) {
 	req, err := client.createCreateRequest(ctx, datasetID, options)
 	if err != nil {
 		return nil, err
@@ -109,7 +116,7 @@ func (client *tilesetClient) create(ctx context.Context, datasetID string, optio
 }
 
 // createCreateRequest creates the Create request.
-func (client *tilesetClient) createCreateRequest(ctx context.Context, datasetID string, options *TilesetBeginCreateOptions) (*azcore.Request, error) {
+func (client *TilesetClient) createCreateRequest(ctx context.Context, datasetID string, options *TilesetBeginCreateOptions) (*azcore.Request, error) {
 	urlPath := "/tilesets"
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -131,7 +138,7 @@ func (client *tilesetClient) createCreateRequest(ctx context.Context, datasetID 
 }
 
 // createHandleError handles the Create error response.
-func (client *tilesetClient) createHandleError(resp *azcore.Response) error {
+func (client *TilesetClient) createHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -155,7 +162,7 @@ func (client *tilesetClient) createHandleError(resp *azcore.Response) error {
 // Here is a sample error response:
 // { "error": { "code": "400 BadRequest", "message": "Bad request - Tileset Id: d85b5b27-5fc4-4599-8b50-47160e90f8ce does not exist." } }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *tilesetClient) Delete(ctx context.Context, tilesetID string, options *TilesetDeleteOptions) (*http.Response, error) {
+func (client *TilesetClient) Delete(ctx context.Context, tilesetID string, options *TilesetDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, tilesetID, options)
 	if err != nil {
 		return nil, err
@@ -171,7 +178,7 @@ func (client *tilesetClient) Delete(ctx context.Context, tilesetID string, optio
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *tilesetClient) deleteCreateRequest(ctx context.Context, tilesetID string, options *TilesetDeleteOptions) (*azcore.Request, error) {
+func (client *TilesetClient) deleteCreateRequest(ctx context.Context, tilesetID string, options *TilesetDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/tilesets/{tilesetId}"
 	if tilesetID == "" {
 		return nil, errors.New("parameter tilesetID cannot be empty")
@@ -193,7 +200,7 @@ func (client *tilesetClient) deleteCreateRequest(ctx context.Context, tilesetID 
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *tilesetClient) deleteHandleError(resp *azcore.Response) error {
+func (client *TilesetClient) deleteHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -211,7 +218,7 @@ func (client *tilesetClient) deleteHandleError(resp *azcore.Response) error {
 // introduces concepts and tools that apply to Azure Maps Creator.
 // This API allows the caller to fetch a tileset.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *tilesetClient) Get(ctx context.Context, tilesetID string, options *TilesetGetOptions) (TilesetDetailInfoResponse, error) {
+func (client *TilesetClient) Get(ctx context.Context, tilesetID string, options *TilesetGetOptions) (TilesetDetailInfoResponse, error) {
 	req, err := client.getCreateRequest(ctx, tilesetID, options)
 	if err != nil {
 		return TilesetDetailInfoResponse{}, err
@@ -227,7 +234,7 @@ func (client *tilesetClient) Get(ctx context.Context, tilesetID string, options 
 }
 
 // getCreateRequest creates the Get request.
-func (client *tilesetClient) getCreateRequest(ctx context.Context, tilesetID string, options *TilesetGetOptions) (*azcore.Request, error) {
+func (client *TilesetClient) getCreateRequest(ctx context.Context, tilesetID string, options *TilesetGetOptions) (*azcore.Request, error) {
 	urlPath := "/tilesets/{tilesetId}"
 	if tilesetID == "" {
 		return nil, errors.New("parameter tilesetID cannot be empty")
@@ -249,7 +256,7 @@ func (client *tilesetClient) getCreateRequest(ctx context.Context, tilesetID str
 }
 
 // getHandleResponse handles the Get response.
-func (client *tilesetClient) getHandleResponse(resp *azcore.Response) (TilesetDetailInfoResponse, error) {
+func (client *TilesetClient) getHandleResponse(resp *azcore.Response) (TilesetDetailInfoResponse, error) {
 	var val *TilesetDetailInfo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TilesetDetailInfoResponse{}, err
@@ -258,7 +265,7 @@ return TilesetDetailInfoResponse{RawResponse: resp.Response, TilesetDetailInfo: 
 }
 
 // getHandleError handles the Get error response.
-func (client *tilesetClient) getHandleError(resp *azcore.Response) error {
+func (client *TilesetClient) getHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -274,7 +281,7 @@ func (client *tilesetClient) getHandleError(resp *azcore.Response) error {
 // by an http200 with Resource-Location header once
 // successfully completed.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *tilesetClient) GetOperation(ctx context.Context, operationID string, options *TilesetGetOperationOptions) (LongRunningOperationResultResponse, error) {
+func (client *TilesetClient) GetOperation(ctx context.Context, operationID string, options *TilesetGetOperationOptions) (LongRunningOperationResultResponse, error) {
 	req, err := client.getOperationCreateRequest(ctx, operationID, options)
 	if err != nil {
 		return LongRunningOperationResultResponse{}, err
@@ -290,7 +297,7 @@ func (client *tilesetClient) GetOperation(ctx context.Context, operationID strin
 }
 
 // getOperationCreateRequest creates the GetOperation request.
-func (client *tilesetClient) getOperationCreateRequest(ctx context.Context, operationID string, options *TilesetGetOperationOptions) (*azcore.Request, error) {
+func (client *TilesetClient) getOperationCreateRequest(ctx context.Context, operationID string, options *TilesetGetOperationOptions) (*azcore.Request, error) {
 	urlPath := "/tilesets/operations/{operationId}"
 	if operationID == "" {
 		return nil, errors.New("parameter operationID cannot be empty")
@@ -309,7 +316,7 @@ func (client *tilesetClient) getOperationCreateRequest(ctx context.Context, oper
 }
 
 // getOperationHandleResponse handles the GetOperation response.
-func (client *tilesetClient) getOperationHandleResponse(resp *azcore.Response) (LongRunningOperationResultResponse, error) {
+func (client *TilesetClient) getOperationHandleResponse(resp *azcore.Response) (LongRunningOperationResultResponse, error) {
 	var val *LongRunningOperationResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LongRunningOperationResultResponse{}, err
@@ -322,7 +329,7 @@ func (client *tilesetClient) getOperationHandleResponse(resp *azcore.Response) (
 }
 
 // getOperationHandleError handles the GetOperation error response.
-func (client *tilesetClient) getOperationHandleError(resp *azcore.Response) error {
+func (client *TilesetClient) getOperationHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -340,7 +347,7 @@ func (client *tilesetClient) getOperationHandleError(resp *azcore.Response) erro
 // introduces concepts and tools that apply to Azure Maps Creator.
 // This API allows the caller to fetch a list of all tilesets created.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *tilesetClient) List(options *TilesetListOptions) (TilesetListResponsePager) {
+func (client *TilesetClient) List(options *TilesetListOptions) (TilesetListResponsePager) {
 	return &tilesetListResponsePager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -356,7 +363,7 @@ func (client *tilesetClient) List(options *TilesetListOptions) (TilesetListRespo
 }
 
 // listCreateRequest creates the List request.
-func (client *tilesetClient) listCreateRequest(ctx context.Context, options *TilesetListOptions) (*azcore.Request, error) {
+func (client *TilesetClient) listCreateRequest(ctx context.Context, options *TilesetListOptions) (*azcore.Request, error) {
 	urlPath := "/tilesets"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -374,7 +381,7 @@ func (client *tilesetClient) listCreateRequest(ctx context.Context, options *Til
 }
 
 // listHandleResponse handles the List response.
-func (client *tilesetClient) listHandleResponse(resp *azcore.Response) (TilesetListResponseResponse, error) {
+func (client *TilesetClient) listHandleResponse(resp *azcore.Response) (TilesetListResponseResponse, error) {
 	var val *TilesetListResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TilesetListResponseResponse{}, err
@@ -383,7 +390,7 @@ return TilesetListResponseResponse{RawResponse: resp.Response, TilesetListRespon
 }
 
 // listHandleError handles the List error response.
-func (client *tilesetClient) listHandleError(resp *azcore.Response) error {
+func (client *TilesetClient) listHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

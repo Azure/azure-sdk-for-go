@@ -19,9 +19,16 @@ import (
 	"time"
 )
 
-type timezoneClient struct {
-	con *connection
+// TimezoneClient contains the methods for the Timezone group.
+// Don't use this type directly, use NewTimezoneClient() instead.
+type TimezoneClient struct {
+	con *Connection
 	xmsClientID *string
+}
+
+// NewTimezoneClient creates a new instance of TimezoneClient with the specified values.
+func NewTimezoneClient(con *Connection, xmsClientID *string) *TimezoneClient {
+	return &TimezoneClient{con: con, xmsClientID: xmsClientID}
 }
 
 // GetTimezoneByCoordinates - Time Zone by Coordinates
@@ -29,7 +36,7 @@ type timezoneClient struct {
 // This API returns current, historical, and future time zone information for a specified latitude-longitude pair. In addition, the API provides sunset
 // and sunrise times for a given location.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *timezoneClient) GetTimezoneByCoordinates(ctx context.Context, formatParam ResponseFormat, query string, options *TimezoneGetTimezoneByCoordinatesOptions) (TimezoneByCoordinatesResultResponse, error) {
+func (client *TimezoneClient) GetTimezoneByCoordinates(ctx context.Context, formatParam ResponseFormat, query string, options *TimezoneGetTimezoneByCoordinatesOptions) (TimezoneByCoordinatesResultResponse, error) {
 	req, err := client.getTimezoneByCoordinatesCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return TimezoneByCoordinatesResultResponse{}, err
@@ -45,7 +52,7 @@ func (client *timezoneClient) GetTimezoneByCoordinates(ctx context.Context, form
 }
 
 // getTimezoneByCoordinatesCreateRequest creates the GetTimezoneByCoordinates request.
-func (client *timezoneClient) getTimezoneByCoordinatesCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *TimezoneGetTimezoneByCoordinatesOptions) (*azcore.Request, error) {
+func (client *TimezoneClient) getTimezoneByCoordinatesCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *TimezoneGetTimezoneByCoordinatesOptions) (*azcore.Request, error) {
 	urlPath := "/timezone/byCoordinates/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -83,7 +90,7 @@ func (client *timezoneClient) getTimezoneByCoordinatesCreateRequest(ctx context.
 }
 
 // getTimezoneByCoordinatesHandleResponse handles the GetTimezoneByCoordinates response.
-func (client *timezoneClient) getTimezoneByCoordinatesHandleResponse(resp *azcore.Response) (TimezoneByCoordinatesResultResponse, error) {
+func (client *TimezoneClient) getTimezoneByCoordinatesHandleResponse(resp *azcore.Response) (TimezoneByCoordinatesResultResponse, error) {
 	var val *TimezoneByCoordinatesResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TimezoneByCoordinatesResultResponse{}, err
@@ -92,7 +99,7 @@ return TimezoneByCoordinatesResultResponse{RawResponse: resp.Response, TimezoneB
 }
 
 // getTimezoneByCoordinatesHandleError handles the GetTimezoneByCoordinates error response.
-func (client *timezoneClient) getTimezoneByCoordinatesHandleError(resp *azcore.Response) error {
+func (client *TimezoneClient) getTimezoneByCoordinatesHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -108,7 +115,7 @@ func (client *timezoneClient) getTimezoneByCoordinatesHandleError(resp *azcore.R
 // Applies to: S0 and S1 pricing tiers.
 // This API returns current, historical, and future time zone information for the specified IANA time zone ID.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *timezoneClient) GetTimezoneByID(ctx context.Context, formatParam ResponseFormat, query string, options *TimezoneGetTimezoneByIDOptions) (TimezoneByIDResultResponse, error) {
+func (client *TimezoneClient) GetTimezoneByID(ctx context.Context, formatParam ResponseFormat, query string, options *TimezoneGetTimezoneByIDOptions) (TimezoneByIDResultResponse, error) {
 	req, err := client.getTimezoneByIDCreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return TimezoneByIDResultResponse{}, err
@@ -124,7 +131,7 @@ func (client *timezoneClient) GetTimezoneByID(ctx context.Context, formatParam R
 }
 
 // getTimezoneByIDCreateRequest creates the GetTimezoneByID request.
-func (client *timezoneClient) getTimezoneByIDCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *TimezoneGetTimezoneByIDOptions) (*azcore.Request, error) {
+func (client *TimezoneClient) getTimezoneByIDCreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *TimezoneGetTimezoneByIDOptions) (*azcore.Request, error) {
 	urlPath := "/timezone/byId/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -162,7 +169,7 @@ func (client *timezoneClient) getTimezoneByIDCreateRequest(ctx context.Context, 
 }
 
 // getTimezoneByIDHandleResponse handles the GetTimezoneByID response.
-func (client *timezoneClient) getTimezoneByIDHandleResponse(resp *azcore.Response) (TimezoneByIDResultResponse, error) {
+func (client *TimezoneClient) getTimezoneByIDHandleResponse(resp *azcore.Response) (TimezoneByIDResultResponse, error) {
 	var val *TimezoneByIDResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TimezoneByIDResultResponse{}, err
@@ -171,7 +178,7 @@ return TimezoneByIDResultResponse{RawResponse: resp.Response, TimezoneByIDResult
 }
 
 // getTimezoneByIDHandleError handles the GetTimezoneByID error response.
-func (client *timezoneClient) getTimezoneByIDHandleError(resp *azcore.Response) error {
+func (client *TimezoneClient) getTimezoneByIDHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -187,7 +194,7 @@ func (client *timezoneClient) getTimezoneByIDHandleError(resp *azcore.Response) 
 // Applies to: S0 and S1 pricing tiers.
 // This API returns a full list of IANA time zone IDs. Updates to the IANA service will be reflected in the system within one day.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *timezoneClient) GetTimezoneEnumIANA(ctx context.Context, formatParam ResponseFormat, options *TimezoneGetTimezoneEnumIANAOptions) (IanaIDArrayResponse, error) {
+func (client *TimezoneClient) GetTimezoneEnumIANA(ctx context.Context, formatParam ResponseFormat, options *TimezoneGetTimezoneEnumIANAOptions) (IanaIDArrayResponse, error) {
 	req, err := client.getTimezoneEnumIANACreateRequest(ctx, formatParam, options)
 	if err != nil {
 		return IanaIDArrayResponse{}, err
@@ -203,7 +210,7 @@ func (client *timezoneClient) GetTimezoneEnumIANA(ctx context.Context, formatPar
 }
 
 // getTimezoneEnumIANACreateRequest creates the GetTimezoneEnumIANA request.
-func (client *timezoneClient) getTimezoneEnumIANACreateRequest(ctx context.Context, formatParam ResponseFormat, options *TimezoneGetTimezoneEnumIANAOptions) (*azcore.Request, error) {
+func (client *TimezoneClient) getTimezoneEnumIANACreateRequest(ctx context.Context, formatParam ResponseFormat, options *TimezoneGetTimezoneEnumIANAOptions) (*azcore.Request, error) {
 	urlPath := "/timezone/enumIana/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -225,7 +232,7 @@ func (client *timezoneClient) getTimezoneEnumIANACreateRequest(ctx context.Conte
 }
 
 // getTimezoneEnumIANAHandleResponse handles the GetTimezoneEnumIANA response.
-func (client *timezoneClient) getTimezoneEnumIANAHandleResponse(resp *azcore.Response) (IanaIDArrayResponse, error) {
+func (client *TimezoneClient) getTimezoneEnumIANAHandleResponse(resp *azcore.Response) (IanaIDArrayResponse, error) {
 	var val []*IanaID
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return IanaIDArrayResponse{}, err
@@ -234,7 +241,7 @@ return IanaIDArrayResponse{RawResponse: resp.Response, IanaIDArray: val}, nil
 }
 
 // getTimezoneEnumIANAHandleError handles the GetTimezoneEnumIANA error response.
-func (client *timezoneClient) getTimezoneEnumIANAHandleError(resp *azcore.Response) error {
+func (client *TimezoneClient) getTimezoneEnumIANAHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -250,7 +257,7 @@ func (client *timezoneClient) getTimezoneEnumIANAHandleError(resp *azcore.Respon
 // Applies to: S0 and S1 pricing tiers.
 // This API returns a full list of Windows Time Zone IDs.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *timezoneClient) GetTimezoneEnumWindows(ctx context.Context, formatParam ResponseFormat, options *TimezoneGetTimezoneEnumWindowsOptions) (TimezoneEnumWindowArrayResponse, error) {
+func (client *TimezoneClient) GetTimezoneEnumWindows(ctx context.Context, formatParam ResponseFormat, options *TimezoneGetTimezoneEnumWindowsOptions) (TimezoneEnumWindowArrayResponse, error) {
 	req, err := client.getTimezoneEnumWindowsCreateRequest(ctx, formatParam, options)
 	if err != nil {
 		return TimezoneEnumWindowArrayResponse{}, err
@@ -266,7 +273,7 @@ func (client *timezoneClient) GetTimezoneEnumWindows(ctx context.Context, format
 }
 
 // getTimezoneEnumWindowsCreateRequest creates the GetTimezoneEnumWindows request.
-func (client *timezoneClient) getTimezoneEnumWindowsCreateRequest(ctx context.Context, formatParam ResponseFormat, options *TimezoneGetTimezoneEnumWindowsOptions) (*azcore.Request, error) {
+func (client *TimezoneClient) getTimezoneEnumWindowsCreateRequest(ctx context.Context, formatParam ResponseFormat, options *TimezoneGetTimezoneEnumWindowsOptions) (*azcore.Request, error) {
 	urlPath := "/timezone/enumWindows/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -288,7 +295,7 @@ func (client *timezoneClient) getTimezoneEnumWindowsCreateRequest(ctx context.Co
 }
 
 // getTimezoneEnumWindowsHandleResponse handles the GetTimezoneEnumWindows response.
-func (client *timezoneClient) getTimezoneEnumWindowsHandleResponse(resp *azcore.Response) (TimezoneEnumWindowArrayResponse, error) {
+func (client *TimezoneClient) getTimezoneEnumWindowsHandleResponse(resp *azcore.Response) (TimezoneEnumWindowArrayResponse, error) {
 	var val []*TimezoneEnumWindow
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TimezoneEnumWindowArrayResponse{}, err
@@ -297,7 +304,7 @@ return TimezoneEnumWindowArrayResponse{RawResponse: resp.Response, TimezoneEnumW
 }
 
 // getTimezoneEnumWindowsHandleError handles the GetTimezoneEnumWindows error response.
-func (client *timezoneClient) getTimezoneEnumWindowsHandleError(resp *azcore.Response) error {
+func (client *TimezoneClient) getTimezoneEnumWindowsHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -313,7 +320,7 @@ func (client *timezoneClient) getTimezoneEnumWindowsHandleError(resp *azcore.Res
 // Applies to: S0 and S1 pricing tiers.
 // This API returns the current IANA version number.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *timezoneClient) GetTimezoneIANAVersion(ctx context.Context, formatParam ResponseFormat, options *TimezoneGetTimezoneIANAVersionOptions) (TimezoneIanaVersionResultResponse, error) {
+func (client *TimezoneClient) GetTimezoneIANAVersion(ctx context.Context, formatParam ResponseFormat, options *TimezoneGetTimezoneIANAVersionOptions) (TimezoneIanaVersionResultResponse, error) {
 	req, err := client.getTimezoneIANAVersionCreateRequest(ctx, formatParam, options)
 	if err != nil {
 		return TimezoneIanaVersionResultResponse{}, err
@@ -329,7 +336,7 @@ func (client *timezoneClient) GetTimezoneIANAVersion(ctx context.Context, format
 }
 
 // getTimezoneIANAVersionCreateRequest creates the GetTimezoneIANAVersion request.
-func (client *timezoneClient) getTimezoneIANAVersionCreateRequest(ctx context.Context, formatParam ResponseFormat, options *TimezoneGetTimezoneIANAVersionOptions) (*azcore.Request, error) {
+func (client *TimezoneClient) getTimezoneIANAVersionCreateRequest(ctx context.Context, formatParam ResponseFormat, options *TimezoneGetTimezoneIANAVersionOptions) (*azcore.Request, error) {
 	urlPath := "/timezone/ianaVersion/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -351,7 +358,7 @@ func (client *timezoneClient) getTimezoneIANAVersionCreateRequest(ctx context.Co
 }
 
 // getTimezoneIANAVersionHandleResponse handles the GetTimezoneIANAVersion response.
-func (client *timezoneClient) getTimezoneIANAVersionHandleResponse(resp *azcore.Response) (TimezoneIanaVersionResultResponse, error) {
+func (client *TimezoneClient) getTimezoneIANAVersionHandleResponse(resp *azcore.Response) (TimezoneIanaVersionResultResponse, error) {
 	var val *TimezoneIanaVersionResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TimezoneIanaVersionResultResponse{}, err
@@ -360,7 +367,7 @@ return TimezoneIanaVersionResultResponse{RawResponse: resp.Response, TimezoneIan
 }
 
 // getTimezoneIANAVersionHandleError handles the GetTimezoneIANAVersion error response.
-func (client *timezoneClient) getTimezoneIANAVersionHandleError(resp *azcore.Response) error {
+func (client *TimezoneClient) getTimezoneIANAVersionHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -378,7 +385,7 @@ func (client *timezoneClient) getTimezoneIANAVersionHandleError(resp *azcore.Res
 // to narrow these results by adding an optional
 // territory parameter.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *timezoneClient) GetTimezoneWindowsToIANA(ctx context.Context, formatParam ResponseFormat, query string, options *TimezoneGetTimezoneWindowsToIANAOptions) (IanaIDArrayResponse, error) {
+func (client *TimezoneClient) GetTimezoneWindowsToIANA(ctx context.Context, formatParam ResponseFormat, query string, options *TimezoneGetTimezoneWindowsToIANAOptions) (IanaIDArrayResponse, error) {
 	req, err := client.getTimezoneWindowsToIANACreateRequest(ctx, formatParam, query, options)
 	if err != nil {
 		return IanaIDArrayResponse{}, err
@@ -394,7 +401,7 @@ func (client *timezoneClient) GetTimezoneWindowsToIANA(ctx context.Context, form
 }
 
 // getTimezoneWindowsToIANACreateRequest creates the GetTimezoneWindowsToIANA request.
-func (client *timezoneClient) getTimezoneWindowsToIANACreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *TimezoneGetTimezoneWindowsToIANAOptions) (*azcore.Request, error) {
+func (client *TimezoneClient) getTimezoneWindowsToIANACreateRequest(ctx context.Context, formatParam ResponseFormat, query string, options *TimezoneGetTimezoneWindowsToIANAOptions) (*azcore.Request, error) {
 	urlPath := "/timezone/windowsToIana/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -420,7 +427,7 @@ func (client *timezoneClient) getTimezoneWindowsToIANACreateRequest(ctx context.
 }
 
 // getTimezoneWindowsToIANAHandleResponse handles the GetTimezoneWindowsToIANA response.
-func (client *timezoneClient) getTimezoneWindowsToIANAHandleResponse(resp *azcore.Response) (IanaIDArrayResponse, error) {
+func (client *TimezoneClient) getTimezoneWindowsToIANAHandleResponse(resp *azcore.Response) (IanaIDArrayResponse, error) {
 	var val []*IanaID
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return IanaIDArrayResponse{}, err
@@ -429,7 +436,7 @@ return IanaIDArrayResponse{RawResponse: resp.Response, IanaIDArray: val}, nil
 }
 
 // getTimezoneWindowsToIANAHandleError handles the GetTimezoneWindowsToIANA error response.
-func (client *timezoneClient) getTimezoneWindowsToIANAHandleError(resp *azcore.Response) error {
+func (client *TimezoneClient) getTimezoneWindowsToIANAHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

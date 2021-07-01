@@ -18,9 +18,16 @@ import (
 	"strings"
 )
 
-type trafficClient struct {
-	con *connection
+// TrafficClient contains the methods for the Traffic group.
+// Don't use this type directly, use NewTrafficClient() instead.
+type TrafficClient struct {
+	con *Connection
 	xmsClientID *string
+}
+
+// NewTrafficClient creates a new instance of TrafficClient with the specified values.
+func NewTrafficClient(con *Connection, xmsClientID *string) *TrafficClient {
+	return &TrafficClient{con: con, xmsClientID: xmsClientID}
 }
 
 // GetTrafficFlowSegment - Traffic Flow Segment
@@ -30,7 +37,7 @@ type trafficClient struct {
 // support clickable flow data visualizations. With this API, the client side can connect any place in the map with flow data on the closest road and present
 // it to the user.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *trafficClient) GetTrafficFlowSegment(ctx context.Context, formatParam TextFormat, style TrafficFlowSegmentStyle, zoom int32, query string, options *TrafficGetTrafficFlowSegmentOptions) (TrafficFlowSegmentResultResponse, error) {
+func (client *TrafficClient) GetTrafficFlowSegment(ctx context.Context, formatParam TextFormat, style TrafficFlowSegmentStyle, zoom int32, query string, options *TrafficGetTrafficFlowSegmentOptions) (TrafficFlowSegmentResultResponse, error) {
 	req, err := client.getTrafficFlowSegmentCreateRequest(ctx, formatParam, style, zoom, query, options)
 	if err != nil {
 		return TrafficFlowSegmentResultResponse{}, err
@@ -46,7 +53,7 @@ func (client *trafficClient) GetTrafficFlowSegment(ctx context.Context, formatPa
 }
 
 // getTrafficFlowSegmentCreateRequest creates the GetTrafficFlowSegment request.
-func (client *trafficClient) getTrafficFlowSegmentCreateRequest(ctx context.Context, formatParam TextFormat, style TrafficFlowSegmentStyle, zoom int32, query string, options *TrafficGetTrafficFlowSegmentOptions) (*azcore.Request, error) {
+func (client *TrafficClient) getTrafficFlowSegmentCreateRequest(ctx context.Context, formatParam TextFormat, style TrafficFlowSegmentStyle, zoom int32, query string, options *TrafficGetTrafficFlowSegmentOptions) (*azcore.Request, error) {
 	urlPath := "/traffic/flow/segment/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -80,7 +87,7 @@ func (client *trafficClient) getTrafficFlowSegmentCreateRequest(ctx context.Cont
 }
 
 // getTrafficFlowSegmentHandleResponse handles the GetTrafficFlowSegment response.
-func (client *trafficClient) getTrafficFlowSegmentHandleResponse(resp *azcore.Response) (TrafficFlowSegmentResultResponse, error) {
+func (client *TrafficClient) getTrafficFlowSegmentHandleResponse(resp *azcore.Response) (TrafficFlowSegmentResultResponse, error) {
 	var val *TrafficFlowSegmentResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TrafficFlowSegmentResultResponse{}, err
@@ -89,7 +96,7 @@ return TrafficFlowSegmentResultResponse{RawResponse: resp.Response, TrafficFlowS
 }
 
 // getTrafficFlowSegmentHandleError handles the GetTrafficFlowSegment error response.
-func (client *trafficClient) getTrafficFlowSegmentHandleError(resp *azcore.Response) error {
+func (client *TrafficClient) getTrafficFlowSegmentHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -109,7 +116,7 @@ func (client *trafficClient) getTrafficFlowSegmentHandleError(resp *azcore.Respo
 // that speed and the free-flow speed on the road
 // segment in question.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *trafficClient) GetTrafficFlowTile(ctx context.Context, formatParam TileFormat, style TrafficFlowTileStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *TrafficGetTrafficFlowTileOptions) (TrafficGetTrafficFlowTileResponse, error) {
+func (client *TrafficClient) GetTrafficFlowTile(ctx context.Context, formatParam TileFormat, style TrafficFlowTileStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *TrafficGetTrafficFlowTileOptions) (TrafficGetTrafficFlowTileResponse, error) {
 	req, err := client.getTrafficFlowTileCreateRequest(ctx, formatParam, style, zoom, xTileIndex, yTileIndex, options)
 	if err != nil {
 		return TrafficGetTrafficFlowTileResponse{}, err
@@ -125,7 +132,7 @@ func (client *trafficClient) GetTrafficFlowTile(ctx context.Context, formatParam
 }
 
 // getTrafficFlowTileCreateRequest creates the GetTrafficFlowTile request.
-func (client *trafficClient) getTrafficFlowTileCreateRequest(ctx context.Context, formatParam TileFormat, style TrafficFlowTileStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *TrafficGetTrafficFlowTileOptions) (*azcore.Request, error) {
+func (client *TrafficClient) getTrafficFlowTileCreateRequest(ctx context.Context, formatParam TileFormat, style TrafficFlowTileStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *TrafficGetTrafficFlowTileOptions) (*azcore.Request, error) {
 	urlPath := "/traffic/flow/tile/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -155,7 +162,7 @@ func (client *trafficClient) getTrafficFlowTileCreateRequest(ctx context.Context
 }
 
 // getTrafficFlowTileHandleResponse handles the GetTrafficFlowTile response.
-func (client *trafficClient) getTrafficFlowTileHandleResponse(resp *azcore.Response) (TrafficGetTrafficFlowTileResponse, error) {
+func (client *TrafficClient) getTrafficFlowTileHandleResponse(resp *azcore.Response) (TrafficGetTrafficFlowTileResponse, error) {
 	result := TrafficGetTrafficFlowTileResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
@@ -164,7 +171,7 @@ func (client *trafficClient) getTrafficFlowTileHandleResponse(resp *azcore.Respo
 }
 
 // getTrafficFlowTileHandleError handles the GetTrafficFlowTile error response.
-func (client *trafficClient) getTrafficFlowTileHandleError(resp *azcore.Response) error {
+func (client *TrafficClient) getTrafficFlowTileHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -185,7 +192,7 @@ func (client *trafficClient) getTrafficFlowTileHandleError(resp *azcore.Response
 // incident tiles [https://docs.microsoft.com/en-us/rest/api/maps/traffic/gettrafficincidenttile]. It can be obtained from the Viewport API
 // [https://docs.microsoft.com/en-us/rest/api/maps/traffic/gettrafficincidentviewport].
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *trafficClient) GetTrafficIncidentDetail(ctx context.Context, formatParam TextFormat, style TrafficIncidentDetailStyle, boundingbox string, boundingZoom int32, trafficmodelid string, options *TrafficGetTrafficIncidentDetailOptions) (TrafficIncidentDetailResultResponse, error) {
+func (client *TrafficClient) GetTrafficIncidentDetail(ctx context.Context, formatParam TextFormat, style TrafficIncidentDetailStyle, boundingbox string, boundingZoom int32, trafficmodelid string, options *TrafficGetTrafficIncidentDetailOptions) (TrafficIncidentDetailResultResponse, error) {
 	req, err := client.getTrafficIncidentDetailCreateRequest(ctx, formatParam, style, boundingbox, boundingZoom, trafficmodelid, options)
 	if err != nil {
 		return TrafficIncidentDetailResultResponse{}, err
@@ -201,7 +208,7 @@ func (client *trafficClient) GetTrafficIncidentDetail(ctx context.Context, forma
 }
 
 // getTrafficIncidentDetailCreateRequest creates the GetTrafficIncidentDetail request.
-func (client *trafficClient) getTrafficIncidentDetailCreateRequest(ctx context.Context, formatParam TextFormat, style TrafficIncidentDetailStyle, boundingbox string, boundingZoom int32, trafficmodelid string, options *TrafficGetTrafficIncidentDetailOptions) (*azcore.Request, error) {
+func (client *TrafficClient) getTrafficIncidentDetailCreateRequest(ctx context.Context, formatParam TextFormat, style TrafficIncidentDetailStyle, boundingbox string, boundingZoom int32, trafficmodelid string, options *TrafficGetTrafficIncidentDetailOptions) (*azcore.Request, error) {
 	urlPath := "/traffic/incident/detail/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -242,7 +249,7 @@ func (client *trafficClient) getTrafficIncidentDetailCreateRequest(ctx context.C
 }
 
 // getTrafficIncidentDetailHandleResponse handles the GetTrafficIncidentDetail response.
-func (client *trafficClient) getTrafficIncidentDetailHandleResponse(resp *azcore.Response) (TrafficIncidentDetailResultResponse, error) {
+func (client *TrafficClient) getTrafficIncidentDetailHandleResponse(resp *azcore.Response) (TrafficIncidentDetailResultResponse, error) {
 	var val *TrafficIncidentDetailResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TrafficIncidentDetailResultResponse{}, err
@@ -251,7 +258,7 @@ return TrafficIncidentDetailResultResponse{RawResponse: resp.Response, TrafficIn
 }
 
 // getTrafficIncidentDetailHandleError handles the GetTrafficIncidentDetail error response.
-func (client *trafficClient) getTrafficIncidentDetailHandleError(resp *azcore.Response) error {
+func (client *TrafficClient) getTrafficIncidentDetailHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -269,7 +276,7 @@ func (client *trafficClient) getTrafficIncidentDetailHandleError(resp *azcore.Re
 // they can be layered on top of map tiles to
 // create a compound display. Traffic tiles render graphics to indicate traffic on the roads in the specified area.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *trafficClient) GetTrafficIncidentTile(ctx context.Context, formatParam TileFormat, style TrafficIncidentTileStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *TrafficGetTrafficIncidentTileOptions) (TrafficGetTrafficIncidentTileResponse, error) {
+func (client *TrafficClient) GetTrafficIncidentTile(ctx context.Context, formatParam TileFormat, style TrafficIncidentTileStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *TrafficGetTrafficIncidentTileOptions) (TrafficGetTrafficIncidentTileResponse, error) {
 	req, err := client.getTrafficIncidentTileCreateRequest(ctx, formatParam, style, zoom, xTileIndex, yTileIndex, options)
 	if err != nil {
 		return TrafficGetTrafficIncidentTileResponse{}, err
@@ -285,7 +292,7 @@ func (client *trafficClient) GetTrafficIncidentTile(ctx context.Context, formatP
 }
 
 // getTrafficIncidentTileCreateRequest creates the GetTrafficIncidentTile request.
-func (client *trafficClient) getTrafficIncidentTileCreateRequest(ctx context.Context, formatParam TileFormat, style TrafficIncidentTileStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *TrafficGetTrafficIncidentTileOptions) (*azcore.Request, error) {
+func (client *TrafficClient) getTrafficIncidentTileCreateRequest(ctx context.Context, formatParam TileFormat, style TrafficIncidentTileStyle, zoom int32, xTileIndex int32, yTileIndex int32, options *TrafficGetTrafficIncidentTileOptions) (*azcore.Request, error) {
 	urlPath := "/traffic/incident/tile/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -315,7 +322,7 @@ func (client *trafficClient) getTrafficIncidentTileCreateRequest(ctx context.Con
 }
 
 // getTrafficIncidentTileHandleResponse handles the GetTrafficIncidentTile response.
-func (client *trafficClient) getTrafficIncidentTileHandleResponse(resp *azcore.Response) (TrafficGetTrafficIncidentTileResponse, error) {
+func (client *TrafficClient) getTrafficIncidentTileHandleResponse(resp *azcore.Response) (TrafficGetTrafficIncidentTileResponse, error) {
 	result := TrafficGetTrafficIncidentTileResponse{RawResponse: resp.Response}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
@@ -324,7 +331,7 @@ func (client *trafficClient) getTrafficIncidentTileHandleResponse(resp *azcore.R
 }
 
 // getTrafficIncidentTileHandleError handles the GetTrafficIncidentTile error response.
-func (client *trafficClient) getTrafficIncidentTileHandleError(resp *azcore.Response) error {
+func (client *TrafficClient) getTrafficIncidentTileHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -346,7 +353,7 @@ func (client *trafficClient) getTrafficIncidentTileHandleError(resp *azcore.Resp
 // to retrieve last traffic information for further
 // processing.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *trafficClient) GetTrafficIncidentViewport(ctx context.Context, formatParam TextFormat, boundingbox string, boundingzoom int32, overviewbox string, overviewzoom int32, options *TrafficGetTrafficIncidentViewportOptions) (TrafficIncidentViewportResultResponse, error) {
+func (client *TrafficClient) GetTrafficIncidentViewport(ctx context.Context, formatParam TextFormat, boundingbox string, boundingzoom int32, overviewbox string, overviewzoom int32, options *TrafficGetTrafficIncidentViewportOptions) (TrafficIncidentViewportResultResponse, error) {
 	req, err := client.getTrafficIncidentViewportCreateRequest(ctx, formatParam, boundingbox, boundingzoom, overviewbox, overviewzoom, options)
 	if err != nil {
 		return TrafficIncidentViewportResultResponse{}, err
@@ -362,7 +369,7 @@ func (client *trafficClient) GetTrafficIncidentViewport(ctx context.Context, for
 }
 
 // getTrafficIncidentViewportCreateRequest creates the GetTrafficIncidentViewport request.
-func (client *trafficClient) getTrafficIncidentViewportCreateRequest(ctx context.Context, formatParam TextFormat, boundingbox string, boundingzoom int32, overviewbox string, overviewzoom int32, options *TrafficGetTrafficIncidentViewportOptions) (*azcore.Request, error) {
+func (client *TrafficClient) getTrafficIncidentViewportCreateRequest(ctx context.Context, formatParam TextFormat, boundingbox string, boundingzoom int32, overviewbox string, overviewzoom int32, options *TrafficGetTrafficIncidentViewportOptions) (*azcore.Request, error) {
 	urlPath := "/traffic/incident/viewport/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -391,7 +398,7 @@ func (client *trafficClient) getTrafficIncidentViewportCreateRequest(ctx context
 }
 
 // getTrafficIncidentViewportHandleResponse handles the GetTrafficIncidentViewport response.
-func (client *trafficClient) getTrafficIncidentViewportHandleResponse(resp *azcore.Response) (TrafficIncidentViewportResultResponse, error) {
+func (client *TrafficClient) getTrafficIncidentViewportHandleResponse(resp *azcore.Response) (TrafficIncidentViewportResultResponse, error) {
 	var val *TrafficIncidentViewportResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return TrafficIncidentViewportResultResponse{}, err
@@ -400,7 +407,7 @@ return TrafficIncidentViewportResultResponse{RawResponse: resp.Response, Traffic
 }
 
 // getTrafficIncidentViewportHandleError handles the GetTrafficIncidentViewport error response.
-func (client *trafficClient) getTrafficIncidentViewportHandleError(resp *azcore.Response) error {
+func (client *TrafficClient) getTrafficIncidentViewportHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

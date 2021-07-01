@@ -16,9 +16,9 @@ import (
 
 var scopes = []string{"https://atlas.microsoft.com/.default"}
 
-// connectionOptions contains configuration settings for the connection's pipeline.
+// ConnectionOptions contains configuration settings for the connection's pipeline.
 // All zero-value fields will be initialized with their default values.
-type connectionOptions struct {
+type ConnectionOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient azcore.Transport
 	// Retry configures the built-in retry policy behavior.
@@ -35,7 +35,7 @@ type connectionOptions struct {
 	PerRetryPolicies []azcore.Policy
 }
 
-func (c *connectionOptions) telemetryOptions() *azcore.TelemetryOptions {
+func (c *ConnectionOptions) telemetryOptions() *azcore.TelemetryOptions {
 	to := c.Telemetry
 	if to.Value == "" {
 		to.Value = telemetryInfo
@@ -45,16 +45,16 @@ func (c *connectionOptions) telemetryOptions() *azcore.TelemetryOptions {
 	return &to
 }
 
-type connection struct {
+type Connection struct {
 	u string
 	p azcore.Pipeline
 }
 
-// newConnection creates an instance of the connection type with the specified endpoint.
+// NewConnection creates an instance of the Connection type with the specified endpoint.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
-func newConnection(geography *Geography, cred azcore.Credential, options *connectionOptions) *connection {
+func NewConnection(geography *Geography, cred azcore.Credential, options *ConnectionOptions) *Connection {
 	if options == nil {
-		options = &connectionOptions{}
+		options = &ConnectionOptions{}
 	}
 	policies := []azcore.Policy{
 		azcore.NewTelemetryPolicy(options.telemetryOptions()),
@@ -70,15 +70,15 @@ func newConnection(geography *Geography, cred azcore.Credential, options *connec
 		geography = ((*Geography)(&defaultValue))
 	}
 	hostURL = strings.ReplaceAll(hostURL, "{geography}", (string)(*geography))
-	return &connection{u: hostURL, p: azcore.NewPipeline(options.HTTPClient, policies...)}
+	return &Connection{u: hostURL, p: azcore.NewPipeline(options.HTTPClient, policies...)}
 }
 
 // Endpoint returns the connection's endpoint.
-func (c *connection) Endpoint() string {
+func (c *Connection) Endpoint() string {
 	return c.u
 }
 
 // Pipeline returns the connection's pipeline.
-func (c *connection) Pipeline() azcore.Pipeline {
+func (c *Connection) Pipeline() azcore.Pipeline {
 	return c.p
 }

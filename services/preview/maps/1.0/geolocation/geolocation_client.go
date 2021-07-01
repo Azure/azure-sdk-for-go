@@ -17,9 +17,16 @@ import (
 	"strings"
 )
 
-type geolocationClient struct {
-	con *connection
+// GeolocationClient contains the methods for the Geolocation group.
+// Don't use this type directly, use NewGeolocationClient() instead.
+type GeolocationClient struct {
+	con *Connection
 	xmsClientID *string
+}
+
+// NewGeolocationClient creates a new instance of GeolocationClient with the specified values.
+func NewGeolocationClient(con *Connection, xmsClientID *string) *GeolocationClient {
+	return &GeolocationClient{con: con, xmsClientID: xmsClientID}
 }
 
 // GetIPToLocationPreview - Applies to: S0 and S1 pricing tiers.
@@ -28,7 +35,7 @@ type geolocationClient struct {
 // is being viewed from.
 // Note: This service returns results from IANA and does not necessarily reflect the views of Microsoft Corporation.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *geolocationClient) GetIPToLocationPreview(ctx context.Context, formatParam ResponseFormat, ip string, options *GeolocationGetIPToLocationPreviewOptions) (IPAddressToLocationResultResponse, error) {
+func (client *GeolocationClient) GetIPToLocationPreview(ctx context.Context, formatParam ResponseFormat, ip string, options *GeolocationGetIPToLocationPreviewOptions) (IPAddressToLocationResultResponse, error) {
 	req, err := client.getIPToLocationPreviewCreateRequest(ctx, formatParam, ip, options)
 	if err != nil {
 		return IPAddressToLocationResultResponse{}, err
@@ -44,7 +51,7 @@ func (client *geolocationClient) GetIPToLocationPreview(ctx context.Context, for
 }
 
 // getIPToLocationPreviewCreateRequest creates the GetIPToLocationPreview request.
-func (client *geolocationClient) getIPToLocationPreviewCreateRequest(ctx context.Context, formatParam ResponseFormat, ip string, options *GeolocationGetIPToLocationPreviewOptions) (*azcore.Request, error) {
+func (client *GeolocationClient) getIPToLocationPreviewCreateRequest(ctx context.Context, formatParam ResponseFormat, ip string, options *GeolocationGetIPToLocationPreviewOptions) (*azcore.Request, error) {
 	urlPath := "/geolocation/ip/{format}"
 	if formatParam == "" {
 		return nil, errors.New("parameter formatParam cannot be empty")
@@ -67,7 +74,7 @@ func (client *geolocationClient) getIPToLocationPreviewCreateRequest(ctx context
 }
 
 // getIPToLocationPreviewHandleResponse handles the GetIPToLocationPreview response.
-func (client *geolocationClient) getIPToLocationPreviewHandleResponse(resp *azcore.Response) (IPAddressToLocationResultResponse, error) {
+func (client *GeolocationClient) getIPToLocationPreviewHandleResponse(resp *azcore.Response) (IPAddressToLocationResultResponse, error) {
 	var val *IPAddressToLocationResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return IPAddressToLocationResultResponse{}, err
@@ -76,7 +83,7 @@ return IPAddressToLocationResultResponse{RawResponse: resp.Response, IPAddressTo
 }
 
 // getIPToLocationPreviewHandleError handles the GetIPToLocationPreview error response.
-func (client *geolocationClient) getIPToLocationPreviewHandleError(resp *azcore.Response) error {
+func (client *GeolocationClient) getIPToLocationPreviewHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

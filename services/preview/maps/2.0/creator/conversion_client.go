@@ -18,9 +18,16 @@ import (
 	"time"
 )
 
-type conversionClient struct {
-	con *connection
+// ConversionClient contains the methods for the Conversion group.
+// Don't use this type directly, use NewConversionClient() instead.
+type ConversionClient struct {
+	con *Connection
 	xmsClientID *string
+}
+
+// NewConversionClient creates a new instance of ConversionClient with the specified values.
+func NewConversionClient(con *Connection, xmsClientID *string) *ConversionClient {
+	return &ConversionClient{con: con, xmsClientID: xmsClientID}
 }
 
 // BeginConvert - Applies to: see pricing tiers [https://aka.ms/AzureMapsPricingTier].
@@ -48,7 +55,7 @@ type conversionClient struct {
 // see Drawing Error Visualizer [https://aka.ms/am-drawing-errors-visualizer].
 // A conversion operation will be marked as success if there are zero or more warnings but will be marked as failed if any errors are encountered.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *conversionClient) BeginConvert(ctx context.Context, udid string, outputOntology string, options *ConversionBeginConvertOptions) (LongRunningOperationResultPollerResponse, error) {
+func (client *ConversionClient) BeginConvert(ctx context.Context, udid string, outputOntology string, options *ConversionBeginConvertOptions) (LongRunningOperationResultPollerResponse, error) {
 	resp, err := client.convert(ctx, udid, outputOntology, options)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
@@ -56,7 +63,7 @@ func (client *conversionClient) BeginConvert(ctx context.Context, udid string, o
 	result := LongRunningOperationResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := azcore.NewLROPoller("conversionClient.Convert",resp, client.con.Pipeline(), client.convertHandleError)
+	pt, err := azcore.NewLROPoller("ConversionClient.Convert",resp, client.con.Pipeline(), client.convertHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -72,8 +79,8 @@ func (client *conversionClient) BeginConvert(ctx context.Context, udid string, o
 
 // ResumeConvert creates a new LongRunningOperationResultPoller from the specified resume token.
 // token - The value must come from a previous call to LongRunningOperationResultPoller.ResumeToken().
-func (client *conversionClient) ResumeConvert(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
-	pt, err := azcore.NewLROPollerFromResumeToken("conversionClient.Convert",token, client.con.Pipeline(), client.convertHandleError)
+func (client *ConversionClient) ResumeConvert(ctx context.Context, token string) (LongRunningOperationResultPollerResponse, error) {
+	pt, err := azcore.NewLROPollerFromResumeToken("ConversionClient.Convert",token, client.con.Pipeline(), client.convertHandleError)
 	if err != nil {
 		return LongRunningOperationResultPollerResponse{}, err
 	}
@@ -119,7 +126,7 @@ func (client *conversionClient) ResumeConvert(ctx context.Context, token string)
 // see Drawing Error Visualizer [https://aka.ms/am-drawing-errors-visualizer].
 // A conversion operation will be marked as success if there are zero or more warnings but will be marked as failed if any errors are encountered.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *conversionClient) convert(ctx context.Context, udid string, outputOntology string, options *ConversionBeginConvertOptions) (*azcore.Response, error) {
+func (client *ConversionClient) convert(ctx context.Context, udid string, outputOntology string, options *ConversionBeginConvertOptions) (*azcore.Response, error) {
 	req, err := client.convertCreateRequest(ctx, udid, outputOntology, options)
 	if err != nil {
 		return nil, err
@@ -135,7 +142,7 @@ func (client *conversionClient) convert(ctx context.Context, udid string, output
 }
 
 // convertCreateRequest creates the Convert request.
-func (client *conversionClient) convertCreateRequest(ctx context.Context, udid string, outputOntology string, options *ConversionBeginConvertOptions) (*azcore.Request, error) {
+func (client *ConversionClient) convertCreateRequest(ctx context.Context, udid string, outputOntology string, options *ConversionBeginConvertOptions) (*azcore.Request, error) {
 	urlPath := "/conversions"
 	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -158,7 +165,7 @@ func (client *conversionClient) convertCreateRequest(ctx context.Context, udid s
 }
 
 // convertHandleError handles the Convert error response.
-func (client *conversionClient) convertHandleError(resp *azcore.Response) error {
+func (client *ConversionClient) convertHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -180,7 +187,7 @@ func (client *conversionClient) convertHandleError(resp *azcore.Response) error 
 // deleted successfully.
 // A HTTP 400 Bad Request error response will be returned if no resource associated with the passed-in conversionId is found.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *conversionClient) Delete(ctx context.Context, conversionID string, options *ConversionDeleteOptions) (*http.Response, error) {
+func (client *ConversionClient) Delete(ctx context.Context, conversionID string, options *ConversionDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, conversionID, options)
 	if err != nil {
 		return nil, err
@@ -196,7 +203,7 @@ func (client *conversionClient) Delete(ctx context.Context, conversionID string,
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *conversionClient) deleteCreateRequest(ctx context.Context, conversionID string, options *ConversionDeleteOptions) (*azcore.Request, error) {
+func (client *ConversionClient) deleteCreateRequest(ctx context.Context, conversionID string, options *ConversionDeleteOptions) (*azcore.Request, error) {
 	urlPath := "/conversions/{conversionId}"
 	if conversionID == "" {
 		return nil, errors.New("parameter conversionID cannot be empty")
@@ -218,7 +225,7 @@ func (client *conversionClient) deleteCreateRequest(ctx context.Context, convers
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *conversionClient) deleteHandleError(resp *azcore.Response) error {
+func (client *ConversionClient) deleteHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -236,7 +243,7 @@ func (client *conversionClient) deleteHandleError(resp *azcore.Response) error {
 // introduces concepts and tools that apply to Azure Maps Creator.
 // This API allows the caller to fetch a successful data conversion submitted previously using the Conversion API [https://docs.microsoft.com/en-us/rest/api/maps/conversion/convertpreview].
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *conversionClient) Get(ctx context.Context, conversionID string, options *ConversionGetOptions) (ConversionListDetailInfoResponse, error) {
+func (client *ConversionClient) Get(ctx context.Context, conversionID string, options *ConversionGetOptions) (ConversionListDetailInfoResponse, error) {
 	req, err := client.getCreateRequest(ctx, conversionID, options)
 	if err != nil {
 		return ConversionListDetailInfoResponse{}, err
@@ -252,7 +259,7 @@ func (client *conversionClient) Get(ctx context.Context, conversionID string, op
 }
 
 // getCreateRequest creates the Get request.
-func (client *conversionClient) getCreateRequest(ctx context.Context, conversionID string, options *ConversionGetOptions) (*azcore.Request, error) {
+func (client *ConversionClient) getCreateRequest(ctx context.Context, conversionID string, options *ConversionGetOptions) (*azcore.Request, error) {
 	urlPath := "/conversions/{conversionId}"
 	if conversionID == "" {
 		return nil, errors.New("parameter conversionID cannot be empty")
@@ -274,7 +281,7 @@ func (client *conversionClient) getCreateRequest(ctx context.Context, conversion
 }
 
 // getHandleResponse handles the Get response.
-func (client *conversionClient) getHandleResponse(resp *azcore.Response) (ConversionListDetailInfoResponse, error) {
+func (client *ConversionClient) getHandleResponse(resp *azcore.Response) (ConversionListDetailInfoResponse, error) {
 	var val *ConversionListDetailInfo
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ConversionListDetailInfoResponse{}, err
@@ -283,7 +290,7 @@ return ConversionListDetailInfoResponse{RawResponse: resp.Response, ConversionLi
 }
 
 // getHandleError handles the Get error response.
-func (client *conversionClient) getHandleError(resp *azcore.Response) error {
+func (client *ConversionClient) getHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -299,7 +306,7 @@ func (client *conversionClient) getHandleError(resp *azcore.Response) error {
 // by an http200 with Resource-Location header once
 // successfully completed.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *conversionClient) GetOperation(ctx context.Context, operationID string, options *ConversionGetOperationOptions) (LongRunningOperationResultResponse, error) {
+func (client *ConversionClient) GetOperation(ctx context.Context, operationID string, options *ConversionGetOperationOptions) (LongRunningOperationResultResponse, error) {
 	req, err := client.getOperationCreateRequest(ctx, operationID, options)
 	if err != nil {
 		return LongRunningOperationResultResponse{}, err
@@ -315,7 +322,7 @@ func (client *conversionClient) GetOperation(ctx context.Context, operationID st
 }
 
 // getOperationCreateRequest creates the GetOperation request.
-func (client *conversionClient) getOperationCreateRequest(ctx context.Context, operationID string, options *ConversionGetOperationOptions) (*azcore.Request, error) {
+func (client *ConversionClient) getOperationCreateRequest(ctx context.Context, operationID string, options *ConversionGetOperationOptions) (*azcore.Request, error) {
 	urlPath := "/conversions/operations/{operationId}"
 	if operationID == "" {
 		return nil, errors.New("parameter operationID cannot be empty")
@@ -334,7 +341,7 @@ func (client *conversionClient) getOperationCreateRequest(ctx context.Context, o
 }
 
 // getOperationHandleResponse handles the GetOperation response.
-func (client *conversionClient) getOperationHandleResponse(resp *azcore.Response) (LongRunningOperationResultResponse, error) {
+func (client *ConversionClient) getOperationHandleResponse(resp *azcore.Response) (LongRunningOperationResultResponse, error) {
 	var val *LongRunningOperationResult
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return LongRunningOperationResultResponse{}, err
@@ -347,7 +354,7 @@ func (client *conversionClient) getOperationHandleResponse(resp *azcore.Response
 }
 
 // getOperationHandleError handles the GetOperation error response.
-func (client *conversionClient) getOperationHandleError(resp *azcore.Response) error {
+func (client *ConversionClient) getOperationHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)
@@ -375,7 +382,7 @@ func (client *conversionClient) getOperationHandleError(resp *azcore.Response) e
 // 1, "LVL": 3, "FCL": 1, "UNIT": 150, "CTG": 8,
 // "AEL": 0, "OPN": 10 } } ] }
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *conversionClient) List(options *ConversionListOptions) (ConversionListResponsePager) {
+func (client *ConversionClient) List(options *ConversionListOptions) (ConversionListResponsePager) {
 	return &conversionListResponsePager{
 		pipeline: client.con.Pipeline(),
 		requester: func(ctx context.Context) (*azcore.Request, error) {
@@ -391,7 +398,7 @@ func (client *conversionClient) List(options *ConversionListOptions) (Conversion
 }
 
 // listCreateRequest creates the List request.
-func (client *conversionClient) listCreateRequest(ctx context.Context, options *ConversionListOptions) (*azcore.Request, error) {
+func (client *ConversionClient) listCreateRequest(ctx context.Context, options *ConversionListOptions) (*azcore.Request, error) {
 	urlPath := "/conversions"
 	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
@@ -409,7 +416,7 @@ func (client *conversionClient) listCreateRequest(ctx context.Context, options *
 }
 
 // listHandleResponse handles the List response.
-func (client *conversionClient) listHandleResponse(resp *azcore.Response) (ConversionListResponseResponse, error) {
+func (client *ConversionClient) listHandleResponse(resp *azcore.Response) (ConversionListResponseResponse, error) {
 	var val *ConversionListResponse
 	if err := resp.UnmarshalAsJSON(&val); err != nil {
 		return ConversionListResponseResponse{}, err
@@ -418,7 +425,7 @@ return ConversionListResponseResponse{RawResponse: resp.Response, ConversionList
 }
 
 // listHandleError handles the List error response.
-func (client *conversionClient) listHandleError(resp *azcore.Response) error {
+func (client *ConversionClient) listHandleError(resp *azcore.Response) error {
 	body, err := resp.Payload()
 	if err != nil {
 		return azcore.NewResponseError(err, resp.Response)

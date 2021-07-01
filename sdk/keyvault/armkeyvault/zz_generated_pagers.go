@@ -17,7 +17,7 @@ import (
 type DeletedManagedHsmListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current DeletedManagedHsmListResultResponse.
+	// PageResponse returns the current DeletedManagedHsmListResultResponse.
 	PageResponse() DeletedManagedHsmListResultResponse
 }
 
@@ -93,7 +93,7 @@ func (p *deletedManagedHsmListResultPager) PageResponse() DeletedManagedHsmListR
 type DeletedVaultListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current DeletedVaultListResultResponse.
+	// PageResponse returns the current DeletedVaultListResultResponse.
 	PageResponse() DeletedVaultListResultResponse
 }
 
@@ -169,7 +169,7 @@ func (p *deletedVaultListResultPager) PageResponse() DeletedVaultListResultRespo
 type MHSMPrivateEndpointConnectionsListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current MHSMPrivateEndpointConnectionsListResultResponse.
+	// PageResponse returns the current MHSMPrivateEndpointConnectionsListResultResponse.
 	PageResponse() MHSMPrivateEndpointConnectionsListResultResponse
 }
 
@@ -245,7 +245,7 @@ func (p *mhsmPrivateEndpointConnectionsListResultPager) PageResponse() MHSMPriva
 type ManagedHsmListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ManagedHsmListResultResponse.
+	// PageResponse returns the current ManagedHsmListResultResponse.
 	PageResponse() ManagedHsmListResultResponse
 }
 
@@ -321,7 +321,7 @@ func (p *managedHsmListResultPager) PageResponse() ManagedHsmListResultResponse 
 type OperationListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current OperationListResultResponse.
+	// PageResponse returns the current OperationListResultResponse.
 	PageResponse() OperationListResultResponse
 }
 
@@ -397,7 +397,7 @@ func (p *operationListResultPager) PageResponse() OperationListResultResponse {
 type PrivateEndpointConnectionListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current PrivateEndpointConnectionListResultResponse.
+	// PageResponse returns the current PrivateEndpointConnectionListResultResponse.
 	PageResponse() PrivateEndpointConnectionListResultResponse
 }
 
@@ -473,7 +473,7 @@ func (p *privateEndpointConnectionListResultPager) PageResponse() PrivateEndpoin
 type ResourceListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current ResourceListResultResponse.
+	// PageResponse returns the current ResourceListResultResponse.
 	PageResponse() ResourceListResultResponse
 }
 
@@ -549,7 +549,7 @@ func (p *resourceListResultPager) PageResponse() ResourceListResultResponse {
 type SecretListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current SecretListResultResponse.
+	// PageResponse returns the current SecretListResultResponse.
 	PageResponse() SecretListResultResponse
 }
 
@@ -625,7 +625,7 @@ func (p *secretListResultPager) PageResponse() SecretListResultResponse {
 type VaultListResultPager interface {
 	azcore.Pager
 
-	// Page returns the current VaultListResultResponse.
+	// PageResponse returns the current VaultListResultResponse.
 	PageResponse() VaultListResultResponse
 }
 

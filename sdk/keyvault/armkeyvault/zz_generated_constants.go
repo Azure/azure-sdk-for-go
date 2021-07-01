@@ -7,6 +7,8 @@
 
 package armkeyvault
 
+const telemetryInfo = "azsdk-go-armkeyvault/v0.1.1"
+
 type AccessPolicyUpdateKind string
 
 const (

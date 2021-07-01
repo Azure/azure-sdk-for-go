@@ -41,13 +41,12 @@ func (client *VirtualRoutersClient) BeginCreateOrUpdate(ctx context.Context, res
 	result := VirtualRouterPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VirtualRoutersClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("VirtualRoutersClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return VirtualRouterPollerResponse{}, err
 	}
 	poller := &virtualRouterPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualRouterResponse, error) {
@@ -59,13 +58,12 @@ func (client *VirtualRoutersClient) BeginCreateOrUpdate(ctx context.Context, res
 // ResumeCreateOrUpdate creates a new VirtualRouterPoller from the specified resume token.
 // token - The value must come from a previous call to VirtualRouterPoller.ResumeToken().
 func (client *VirtualRoutersClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VirtualRouterPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VirtualRoutersClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("VirtualRoutersClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return VirtualRouterPollerResponse{}, err
 	}
 	poller := &virtualRouterPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -148,13 +146,12 @@ func (client *VirtualRoutersClient) BeginDelete(ctx context.Context, resourceGro
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VirtualRoutersClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("VirtualRoutersClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -166,13 +163,12 @@ func (client *VirtualRoutersClient) BeginDelete(ctx context.Context, resourceGro
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *VirtualRoutersClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VirtualRoutersClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("VirtualRoutersClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

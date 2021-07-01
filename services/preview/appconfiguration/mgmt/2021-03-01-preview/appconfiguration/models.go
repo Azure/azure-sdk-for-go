@@ -570,6 +570,8 @@ type ConfigurationStorePropertiesUpdateParameters struct {
 	Encryption *EncryptionProperties `json:"encryption,omitempty"`
 	// DisableLocalAuth - Disables all authentication methods other than AAD authentication.
 	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	// PublicNetworkAccess - Control permission for data plane traffic coming from public networks while private endpoint is enabled. Possible values include: 'PublicNetworkAccessEnabled', 'PublicNetworkAccessDisabled'
+	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 }
 
 // ConfigurationStoresCreateFuture an abstraction for monitoring and retrieving the results of a

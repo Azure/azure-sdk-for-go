@@ -41,13 +41,12 @@ func (client *P2SVPNGatewaysClient) BeginCreateOrUpdate(ctx context.Context, res
 	result := P2SVPNGatewayPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("P2SVPNGatewaysClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("P2SVPNGatewaysClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return P2SVPNGatewayPollerResponse{}, err
 	}
 	poller := &p2SVPNGatewayPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (P2SVPNGatewayResponse, error) {
@@ -59,13 +58,12 @@ func (client *P2SVPNGatewaysClient) BeginCreateOrUpdate(ctx context.Context, res
 // ResumeCreateOrUpdate creates a new P2SVPNGatewayPoller from the specified resume token.
 // token - The value must come from a previous call to P2SVPNGatewayPoller.ResumeToken().
 func (client *P2SVPNGatewaysClient) ResumeCreateOrUpdate(ctx context.Context, token string) (P2SVPNGatewayPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("P2SVPNGatewaysClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("P2SVPNGatewaysClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return P2SVPNGatewayPollerResponse{}, err
 	}
 	poller := &p2SVPNGatewayPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -148,13 +146,12 @@ func (client *P2SVPNGatewaysClient) BeginDelete(ctx context.Context, resourceGro
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("P2SVPNGatewaysClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("P2SVPNGatewaysClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -166,13 +163,12 @@ func (client *P2SVPNGatewaysClient) BeginDelete(ctx context.Context, resourceGro
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *P2SVPNGatewaysClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("P2SVPNGatewaysClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("P2SVPNGatewaysClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -255,13 +251,12 @@ func (client *P2SVPNGatewaysClient) BeginDisconnectP2SVPNConnections(ctx context
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("P2SVPNGatewaysClient.DisconnectP2SVPNConnections", "location", resp, client.disconnectP2SVPNConnectionsHandleError)
+	pt, err := armcore.NewLROPoller("P2SVPNGatewaysClient.DisconnectP2SVPNConnections", "location", resp, client.con.Pipeline(), client.disconnectP2SVPNConnectionsHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -273,13 +268,12 @@ func (client *P2SVPNGatewaysClient) BeginDisconnectP2SVPNConnections(ctx context
 // ResumeDisconnectP2SVPNConnections creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *P2SVPNGatewaysClient) ResumeDisconnectP2SVPNConnections(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("P2SVPNGatewaysClient.DisconnectP2SVPNConnections", token, client.disconnectP2SVPNConnectionsHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("P2SVPNGatewaysClient.DisconnectP2SVPNConnections", token, client.con.Pipeline(), client.disconnectP2SVPNConnectionsHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -362,13 +356,12 @@ func (client *P2SVPNGatewaysClient) BeginGenerateVPNProfile(ctx context.Context,
 	result := VPNProfileResponsePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("P2SVPNGatewaysClient.GenerateVPNProfile", "location", resp, client.generateVPNProfileHandleError)
+	pt, err := armcore.NewLROPoller("P2SVPNGatewaysClient.GenerateVPNProfile", "location", resp, client.con.Pipeline(), client.generateVPNProfileHandleError)
 	if err != nil {
 		return VPNProfileResponsePollerResponse{}, err
 	}
 	poller := &vpnProfileResponsePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VPNProfileResponseResponse, error) {
@@ -380,13 +373,12 @@ func (client *P2SVPNGatewaysClient) BeginGenerateVPNProfile(ctx context.Context,
 // ResumeGenerateVPNProfile creates a new VPNProfileResponsePoller from the specified resume token.
 // token - The value must come from a previous call to VPNProfileResponsePoller.ResumeToken().
 func (client *P2SVPNGatewaysClient) ResumeGenerateVPNProfile(ctx context.Context, token string) (VPNProfileResponsePollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("P2SVPNGatewaysClient.GenerateVPNProfile", token, client.generateVPNProfileHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("P2SVPNGatewaysClient.GenerateVPNProfile", token, client.con.Pipeline(), client.generateVPNProfileHandleError)
 	if err != nil {
 		return VPNProfileResponsePollerResponse{}, err
 	}
 	poller := &vpnProfileResponsePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -535,13 +527,12 @@ func (client *P2SVPNGatewaysClient) BeginGetP2SVPNConnectionHealth(ctx context.C
 	result := P2SVPNGatewayPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("P2SVPNGatewaysClient.GetP2SVPNConnectionHealth", "location", resp, client.getP2SVPNConnectionHealthHandleError)
+	pt, err := armcore.NewLROPoller("P2SVPNGatewaysClient.GetP2SVPNConnectionHealth", "location", resp, client.con.Pipeline(), client.getP2SVPNConnectionHealthHandleError)
 	if err != nil {
 		return P2SVPNGatewayPollerResponse{}, err
 	}
 	poller := &p2SVPNGatewayPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (P2SVPNGatewayResponse, error) {
@@ -553,13 +544,12 @@ func (client *P2SVPNGatewaysClient) BeginGetP2SVPNConnectionHealth(ctx context.C
 // ResumeGetP2SVPNConnectionHealth creates a new P2SVPNGatewayPoller from the specified resume token.
 // token - The value must come from a previous call to P2SVPNGatewayPoller.ResumeToken().
 func (client *P2SVPNGatewaysClient) ResumeGetP2SVPNConnectionHealth(ctx context.Context, token string) (P2SVPNGatewayPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("P2SVPNGatewaysClient.GetP2SVPNConnectionHealth", token, client.getP2SVPNConnectionHealthHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("P2SVPNGatewaysClient.GetP2SVPNConnectionHealth", token, client.con.Pipeline(), client.getP2SVPNConnectionHealthHandleError)
 	if err != nil {
 		return P2SVPNGatewayPollerResponse{}, err
 	}
 	poller := &p2SVPNGatewayPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -643,13 +633,12 @@ func (client *P2SVPNGatewaysClient) BeginGetP2SVPNConnectionHealthDetailed(ctx c
 	result := P2SVPNConnectionHealthPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("P2SVPNGatewaysClient.GetP2SVPNConnectionHealthDetailed", "location", resp, client.getP2SVPNConnectionHealthDetailedHandleError)
+	pt, err := armcore.NewLROPoller("P2SVPNGatewaysClient.GetP2SVPNConnectionHealthDetailed", "location", resp, client.con.Pipeline(), client.getP2SVPNConnectionHealthDetailedHandleError)
 	if err != nil {
 		return P2SVPNConnectionHealthPollerResponse{}, err
 	}
 	poller := &p2SVPNConnectionHealthPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (P2SVPNConnectionHealthResponse, error) {
@@ -661,13 +650,12 @@ func (client *P2SVPNGatewaysClient) BeginGetP2SVPNConnectionHealthDetailed(ctx c
 // ResumeGetP2SVPNConnectionHealthDetailed creates a new P2SVPNConnectionHealthPoller from the specified resume token.
 // token - The value must come from a previous call to P2SVPNConnectionHealthPoller.ResumeToken().
 func (client *P2SVPNGatewaysClient) ResumeGetP2SVPNConnectionHealthDetailed(ctx context.Context, token string) (P2SVPNConnectionHealthPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("P2SVPNGatewaysClient.GetP2SVPNConnectionHealthDetailed", token, client.getP2SVPNConnectionHealthDetailedHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("P2SVPNGatewaysClient.GetP2SVPNConnectionHealthDetailed", token, client.con.Pipeline(), client.getP2SVPNConnectionHealthDetailedHandleError)
 	if err != nil {
 		return P2SVPNConnectionHealthPollerResponse{}, err
 	}
 	poller := &p2SVPNConnectionHealthPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -871,13 +859,12 @@ func (client *P2SVPNGatewaysClient) BeginReset(ctx context.Context, resourceGrou
 	result := P2SVPNGatewayPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("P2SVPNGatewaysClient.Reset", "location", resp, client.resetHandleError)
+	pt, err := armcore.NewLROPoller("P2SVPNGatewaysClient.Reset", "location", resp, client.con.Pipeline(), client.resetHandleError)
 	if err != nil {
 		return P2SVPNGatewayPollerResponse{}, err
 	}
 	poller := &p2SVPNGatewayPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (P2SVPNGatewayResponse, error) {
@@ -889,13 +876,12 @@ func (client *P2SVPNGatewaysClient) BeginReset(ctx context.Context, resourceGrou
 // ResumeReset creates a new P2SVPNGatewayPoller from the specified resume token.
 // token - The value must come from a previous call to P2SVPNGatewayPoller.ResumeToken().
 func (client *P2SVPNGatewaysClient) ResumeReset(ctx context.Context, token string) (P2SVPNGatewayPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("P2SVPNGatewaysClient.Reset", token, client.resetHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("P2SVPNGatewaysClient.Reset", token, client.con.Pipeline(), client.resetHandleError)
 	if err != nil {
 		return P2SVPNGatewayPollerResponse{}, err
 	}
 	poller := &p2SVPNGatewayPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -978,13 +964,12 @@ func (client *P2SVPNGatewaysClient) BeginUpdateTags(ctx context.Context, resourc
 	result := P2SVPNGatewayPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("P2SVPNGatewaysClient.UpdateTags", "azure-async-operation", resp, client.updateTagsHandleError)
+	pt, err := armcore.NewLROPoller("P2SVPNGatewaysClient.UpdateTags", "azure-async-operation", resp, client.con.Pipeline(), client.updateTagsHandleError)
 	if err != nil {
 		return P2SVPNGatewayPollerResponse{}, err
 	}
 	poller := &p2SVPNGatewayPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (P2SVPNGatewayResponse, error) {
@@ -996,13 +981,12 @@ func (client *P2SVPNGatewaysClient) BeginUpdateTags(ctx context.Context, resourc
 // ResumeUpdateTags creates a new P2SVPNGatewayPoller from the specified resume token.
 // token - The value must come from a previous call to P2SVPNGatewayPoller.ResumeToken().
 func (client *P2SVPNGatewaysClient) ResumeUpdateTags(ctx context.Context, token string) (P2SVPNGatewayPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("P2SVPNGatewaysClient.UpdateTags", token, client.updateTagsHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("P2SVPNGatewaysClient.UpdateTags", token, client.con.Pipeline(), client.updateTagsHandleError)
 	if err != nil {
 		return P2SVPNGatewayPollerResponse{}, err
 	}
 	poller := &p2SVPNGatewayPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

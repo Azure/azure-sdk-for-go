@@ -41,13 +41,12 @@ func (client *BastionHostsClient) BeginCreateOrUpdate(ctx context.Context, resou
 	result := BastionHostPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("BastionHostsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("BastionHostsClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return BastionHostPollerResponse{}, err
 	}
 	poller := &bastionHostPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (BastionHostResponse, error) {
@@ -59,13 +58,12 @@ func (client *BastionHostsClient) BeginCreateOrUpdate(ctx context.Context, resou
 // ResumeCreateOrUpdate creates a new BastionHostPoller from the specified resume token.
 // token - The value must come from a previous call to BastionHostPoller.ResumeToken().
 func (client *BastionHostsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (BastionHostPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("BastionHostsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("BastionHostsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return BastionHostPollerResponse{}, err
 	}
 	poller := &bastionHostPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -148,13 +146,12 @@ func (client *BastionHostsClient) BeginDelete(ctx context.Context, resourceGroup
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("BastionHostsClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("BastionHostsClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -166,13 +163,12 @@ func (client *BastionHostsClient) BeginDelete(ctx context.Context, resourceGroup
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *BastionHostsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("BastionHostsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("BastionHostsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

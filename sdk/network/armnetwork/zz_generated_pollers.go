@@ -25,8 +25,7 @@ type ApplicationGatewayBackendHealthOnDemandPoller interface {
 }
 
 type applicationGatewayBackendHealthOnDemandPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *applicationGatewayBackendHealthOnDemandPoller) Done() bool {
@@ -34,12 +33,12 @@ func (p *applicationGatewayBackendHealthOnDemandPoller) Done() bool {
 }
 
 func (p *applicationGatewayBackendHealthOnDemandPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *applicationGatewayBackendHealthOnDemandPoller) FinalResponse(ctx context.Context) (ApplicationGatewayBackendHealthOnDemandResponse, error) {
 	respType := ApplicationGatewayBackendHealthOnDemandResponse{ApplicationGatewayBackendHealthOnDemand: &ApplicationGatewayBackendHealthOnDemand{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ApplicationGatewayBackendHealthOnDemand)
+	resp, err := p.pt.FinalResponse(ctx, respType.ApplicationGatewayBackendHealthOnDemand)
 	if err != nil {
 		return ApplicationGatewayBackendHealthOnDemandResponse{}, err
 	}
@@ -53,7 +52,7 @@ func (p *applicationGatewayBackendHealthOnDemandPoller) ResumeToken() (string, e
 
 func (p *applicationGatewayBackendHealthOnDemandPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ApplicationGatewayBackendHealthOnDemandResponse, error) {
 	respType := ApplicationGatewayBackendHealthOnDemandResponse{ApplicationGatewayBackendHealthOnDemand: &ApplicationGatewayBackendHealthOnDemand{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ApplicationGatewayBackendHealthOnDemand)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ApplicationGatewayBackendHealthOnDemand)
 	if err != nil {
 		return ApplicationGatewayBackendHealthOnDemandResponse{}, err
 	}
@@ -71,8 +70,7 @@ type ApplicationGatewayBackendHealthPoller interface {
 }
 
 type applicationGatewayBackendHealthPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *applicationGatewayBackendHealthPoller) Done() bool {
@@ -80,12 +78,12 @@ func (p *applicationGatewayBackendHealthPoller) Done() bool {
 }
 
 func (p *applicationGatewayBackendHealthPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *applicationGatewayBackendHealthPoller) FinalResponse(ctx context.Context) (ApplicationGatewayBackendHealthResponse, error) {
 	respType := ApplicationGatewayBackendHealthResponse{ApplicationGatewayBackendHealth: &ApplicationGatewayBackendHealth{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ApplicationGatewayBackendHealth)
+	resp, err := p.pt.FinalResponse(ctx, respType.ApplicationGatewayBackendHealth)
 	if err != nil {
 		return ApplicationGatewayBackendHealthResponse{}, err
 	}
@@ -99,7 +97,7 @@ func (p *applicationGatewayBackendHealthPoller) ResumeToken() (string, error) {
 
 func (p *applicationGatewayBackendHealthPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ApplicationGatewayBackendHealthResponse, error) {
 	respType := ApplicationGatewayBackendHealthResponse{ApplicationGatewayBackendHealth: &ApplicationGatewayBackendHealth{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ApplicationGatewayBackendHealth)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ApplicationGatewayBackendHealth)
 	if err != nil {
 		return ApplicationGatewayBackendHealthResponse{}, err
 	}
@@ -117,8 +115,7 @@ type ApplicationGatewayPoller interface {
 }
 
 type applicationGatewayPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *applicationGatewayPoller) Done() bool {
@@ -126,12 +123,12 @@ func (p *applicationGatewayPoller) Done() bool {
 }
 
 func (p *applicationGatewayPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *applicationGatewayPoller) FinalResponse(ctx context.Context) (ApplicationGatewayResponse, error) {
 	respType := ApplicationGatewayResponse{ApplicationGateway: &ApplicationGateway{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ApplicationGateway)
+	resp, err := p.pt.FinalResponse(ctx, respType.ApplicationGateway)
 	if err != nil {
 		return ApplicationGatewayResponse{}, err
 	}
@@ -145,7 +142,7 @@ func (p *applicationGatewayPoller) ResumeToken() (string, error) {
 
 func (p *applicationGatewayPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ApplicationGatewayResponse, error) {
 	respType := ApplicationGatewayResponse{ApplicationGateway: &ApplicationGateway{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ApplicationGateway)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ApplicationGateway)
 	if err != nil {
 		return ApplicationGatewayResponse{}, err
 	}
@@ -163,8 +160,7 @@ type ApplicationGatewayPrivateEndpointConnectionPoller interface {
 }
 
 type applicationGatewayPrivateEndpointConnectionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *applicationGatewayPrivateEndpointConnectionPoller) Done() bool {
@@ -172,12 +168,12 @@ func (p *applicationGatewayPrivateEndpointConnectionPoller) Done() bool {
 }
 
 func (p *applicationGatewayPrivateEndpointConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *applicationGatewayPrivateEndpointConnectionPoller) FinalResponse(ctx context.Context) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
 	respType := ApplicationGatewayPrivateEndpointConnectionResponse{ApplicationGatewayPrivateEndpointConnection: &ApplicationGatewayPrivateEndpointConnection{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ApplicationGatewayPrivateEndpointConnection)
+	resp, err := p.pt.FinalResponse(ctx, respType.ApplicationGatewayPrivateEndpointConnection)
 	if err != nil {
 		return ApplicationGatewayPrivateEndpointConnectionResponse{}, err
 	}
@@ -191,7 +187,7 @@ func (p *applicationGatewayPrivateEndpointConnectionPoller) ResumeToken() (strin
 
 func (p *applicationGatewayPrivateEndpointConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ApplicationGatewayPrivateEndpointConnectionResponse, error) {
 	respType := ApplicationGatewayPrivateEndpointConnectionResponse{ApplicationGatewayPrivateEndpointConnection: &ApplicationGatewayPrivateEndpointConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ApplicationGatewayPrivateEndpointConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ApplicationGatewayPrivateEndpointConnection)
 	if err != nil {
 		return ApplicationGatewayPrivateEndpointConnectionResponse{}, err
 	}
@@ -209,8 +205,7 @@ type ApplicationSecurityGroupPoller interface {
 }
 
 type applicationSecurityGroupPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *applicationSecurityGroupPoller) Done() bool {
@@ -218,12 +213,12 @@ func (p *applicationSecurityGroupPoller) Done() bool {
 }
 
 func (p *applicationSecurityGroupPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *applicationSecurityGroupPoller) FinalResponse(ctx context.Context) (ApplicationSecurityGroupResponse, error) {
 	respType := ApplicationSecurityGroupResponse{ApplicationSecurityGroup: &ApplicationSecurityGroup{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ApplicationSecurityGroup)
+	resp, err := p.pt.FinalResponse(ctx, respType.ApplicationSecurityGroup)
 	if err != nil {
 		return ApplicationSecurityGroupResponse{}, err
 	}
@@ -237,7 +232,7 @@ func (p *applicationSecurityGroupPoller) ResumeToken() (string, error) {
 
 func (p *applicationSecurityGroupPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ApplicationSecurityGroupResponse, error) {
 	respType := ApplicationSecurityGroupResponse{ApplicationSecurityGroup: &ApplicationSecurityGroup{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ApplicationSecurityGroup)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ApplicationSecurityGroup)
 	if err != nil {
 		return ApplicationSecurityGroupResponse{}, err
 	}
@@ -255,8 +250,7 @@ type AvailableProvidersListPoller interface {
 }
 
 type availableProvidersListPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *availableProvidersListPoller) Done() bool {
@@ -264,12 +258,12 @@ func (p *availableProvidersListPoller) Done() bool {
 }
 
 func (p *availableProvidersListPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *availableProvidersListPoller) FinalResponse(ctx context.Context) (AvailableProvidersListResponse, error) {
 	respType := AvailableProvidersListResponse{AvailableProvidersList: &AvailableProvidersList{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.AvailableProvidersList)
+	resp, err := p.pt.FinalResponse(ctx, respType.AvailableProvidersList)
 	if err != nil {
 		return AvailableProvidersListResponse{}, err
 	}
@@ -283,7 +277,7 @@ func (p *availableProvidersListPoller) ResumeToken() (string, error) {
 
 func (p *availableProvidersListPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AvailableProvidersListResponse, error) {
 	respType := AvailableProvidersListResponse{AvailableProvidersList: &AvailableProvidersList{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.AvailableProvidersList)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.AvailableProvidersList)
 	if err != nil {
 		return AvailableProvidersListResponse{}, err
 	}
@@ -301,8 +295,7 @@ type AzureFirewallPoller interface {
 }
 
 type azureFirewallPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *azureFirewallPoller) Done() bool {
@@ -310,12 +303,12 @@ func (p *azureFirewallPoller) Done() bool {
 }
 
 func (p *azureFirewallPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *azureFirewallPoller) FinalResponse(ctx context.Context) (AzureFirewallResponse, error) {
 	respType := AzureFirewallResponse{AzureFirewall: &AzureFirewall{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.AzureFirewall)
+	resp, err := p.pt.FinalResponse(ctx, respType.AzureFirewall)
 	if err != nil {
 		return AzureFirewallResponse{}, err
 	}
@@ -329,7 +322,7 @@ func (p *azureFirewallPoller) ResumeToken() (string, error) {
 
 func (p *azureFirewallPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AzureFirewallResponse, error) {
 	respType := AzureFirewallResponse{AzureFirewall: &AzureFirewall{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.AzureFirewall)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.AzureFirewall)
 	if err != nil {
 		return AzureFirewallResponse{}, err
 	}
@@ -347,8 +340,7 @@ type AzureReachabilityReportPoller interface {
 }
 
 type azureReachabilityReportPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *azureReachabilityReportPoller) Done() bool {
@@ -356,12 +348,12 @@ func (p *azureReachabilityReportPoller) Done() bool {
 }
 
 func (p *azureReachabilityReportPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *azureReachabilityReportPoller) FinalResponse(ctx context.Context) (AzureReachabilityReportResponse, error) {
 	respType := AzureReachabilityReportResponse{AzureReachabilityReport: &AzureReachabilityReport{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.AzureReachabilityReport)
+	resp, err := p.pt.FinalResponse(ctx, respType.AzureReachabilityReport)
 	if err != nil {
 		return AzureReachabilityReportResponse{}, err
 	}
@@ -375,7 +367,7 @@ func (p *azureReachabilityReportPoller) ResumeToken() (string, error) {
 
 func (p *azureReachabilityReportPoller) pollUntilDone(ctx context.Context, freq time.Duration) (AzureReachabilityReportResponse, error) {
 	respType := AzureReachabilityReportResponse{AzureReachabilityReport: &AzureReachabilityReport{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.AzureReachabilityReport)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.AzureReachabilityReport)
 	if err != nil {
 		return AzureReachabilityReportResponse{}, err
 	}
@@ -393,8 +385,7 @@ type BackendAddressPoolPoller interface {
 }
 
 type backendAddressPoolPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *backendAddressPoolPoller) Done() bool {
@@ -402,12 +393,12 @@ func (p *backendAddressPoolPoller) Done() bool {
 }
 
 func (p *backendAddressPoolPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *backendAddressPoolPoller) FinalResponse(ctx context.Context) (BackendAddressPoolResponse, error) {
 	respType := BackendAddressPoolResponse{BackendAddressPool: &BackendAddressPool{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.BackendAddressPool)
+	resp, err := p.pt.FinalResponse(ctx, respType.BackendAddressPool)
 	if err != nil {
 		return BackendAddressPoolResponse{}, err
 	}
@@ -421,7 +412,7 @@ func (p *backendAddressPoolPoller) ResumeToken() (string, error) {
 
 func (p *backendAddressPoolPoller) pollUntilDone(ctx context.Context, freq time.Duration) (BackendAddressPoolResponse, error) {
 	respType := BackendAddressPoolResponse{BackendAddressPool: &BackendAddressPool{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.BackendAddressPool)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.BackendAddressPool)
 	if err != nil {
 		return BackendAddressPoolResponse{}, err
 	}
@@ -439,8 +430,7 @@ type BastionActiveSessionListResultPagerPoller interface {
 }
 
 type bastionActiveSessionListResultPagerPoller struct {
-	pipeline    azcore.Pipeline
-	pt          armcore.Poller
+	pt          *armcore.LROPoller
 	errHandler  bastionActiveSessionListResultHandleError
 	respHandler bastionActiveSessionListResultHandleResponse
 	statusCodes []int
@@ -451,12 +441,12 @@ func (p *bastionActiveSessionListResultPagerPoller) Done() bool {
 }
 
 func (p *bastionActiveSessionListResultPagerPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *bastionActiveSessionListResultPagerPoller) FinalResponse(ctx context.Context) (BastionActiveSessionListResultPager, error) {
 	respType := &bastionActiveSessionListResultPager{}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType)
+	resp, err := p.pt.FinalResponse(ctx, respType)
 	if err != nil {
 		return nil, err
 	}
@@ -469,7 +459,7 @@ func (p *bastionActiveSessionListResultPagerPoller) ResumeToken() (string, error
 
 func (p *bastionActiveSessionListResultPagerPoller) pollUntilDone(ctx context.Context, freq time.Duration) (BastionActiveSessionListResultPager, error) {
 	respType := &bastionActiveSessionListResultPager{}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType)
 	if err != nil {
 		return nil, err
 	}
@@ -478,7 +468,7 @@ func (p *bastionActiveSessionListResultPagerPoller) pollUntilDone(ctx context.Co
 
 func (p *bastionActiveSessionListResultPagerPoller) handleResponse(resp *azcore.Response) (BastionActiveSessionListResultPager, error) {
 	return &bastionActiveSessionListResultPager{
-		pipeline:  p.pipeline,
+		pipeline:  p.pt.Pipeline,
 		resp:      resp,
 		errorer:   p.errHandler,
 		responder: p.respHandler,
@@ -499,8 +489,7 @@ type BastionHostPoller interface {
 }
 
 type bastionHostPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *bastionHostPoller) Done() bool {
@@ -508,12 +497,12 @@ func (p *bastionHostPoller) Done() bool {
 }
 
 func (p *bastionHostPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *bastionHostPoller) FinalResponse(ctx context.Context) (BastionHostResponse, error) {
 	respType := BastionHostResponse{BastionHost: &BastionHost{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.BastionHost)
+	resp, err := p.pt.FinalResponse(ctx, respType.BastionHost)
 	if err != nil {
 		return BastionHostResponse{}, err
 	}
@@ -527,7 +516,7 @@ func (p *bastionHostPoller) ResumeToken() (string, error) {
 
 func (p *bastionHostPoller) pollUntilDone(ctx context.Context, freq time.Duration) (BastionHostResponse, error) {
 	respType := BastionHostResponse{BastionHost: &BastionHost{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.BastionHost)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.BastionHost)
 	if err != nil {
 		return BastionHostResponse{}, err
 	}
@@ -545,8 +534,7 @@ type BastionShareableLinkListResultPagerPoller interface {
 }
 
 type bastionShareableLinkListResultPagerPoller struct {
-	pipeline    azcore.Pipeline
-	pt          armcore.Poller
+	pt          *armcore.LROPoller
 	errHandler  bastionShareableLinkListResultHandleError
 	respHandler bastionShareableLinkListResultHandleResponse
 	statusCodes []int
@@ -557,12 +545,12 @@ func (p *bastionShareableLinkListResultPagerPoller) Done() bool {
 }
 
 func (p *bastionShareableLinkListResultPagerPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *bastionShareableLinkListResultPagerPoller) FinalResponse(ctx context.Context) (BastionShareableLinkListResultPager, error) {
 	respType := &bastionShareableLinkListResultPager{}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType)
+	resp, err := p.pt.FinalResponse(ctx, respType)
 	if err != nil {
 		return nil, err
 	}
@@ -575,7 +563,7 @@ func (p *bastionShareableLinkListResultPagerPoller) ResumeToken() (string, error
 
 func (p *bastionShareableLinkListResultPagerPoller) pollUntilDone(ctx context.Context, freq time.Duration) (BastionShareableLinkListResultPager, error) {
 	respType := &bastionShareableLinkListResultPager{}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType)
 	if err != nil {
 		return nil, err
 	}
@@ -584,7 +572,7 @@ func (p *bastionShareableLinkListResultPagerPoller) pollUntilDone(ctx context.Co
 
 func (p *bastionShareableLinkListResultPagerPoller) handleResponse(resp *azcore.Response) (BastionShareableLinkListResultPager, error) {
 	return &bastionShareableLinkListResultPager{
-		pipeline:  p.pipeline,
+		pipeline:  p.pt.Pipeline,
 		resp:      resp,
 		errorer:   p.errHandler,
 		responder: p.respHandler,
@@ -605,8 +593,7 @@ type BgpConnectionPoller interface {
 }
 
 type bgpConnectionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *bgpConnectionPoller) Done() bool {
@@ -614,12 +601,12 @@ func (p *bgpConnectionPoller) Done() bool {
 }
 
 func (p *bgpConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *bgpConnectionPoller) FinalResponse(ctx context.Context) (BgpConnectionResponse, error) {
 	respType := BgpConnectionResponse{BgpConnection: &BgpConnection{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.BgpConnection)
+	resp, err := p.pt.FinalResponse(ctx, respType.BgpConnection)
 	if err != nil {
 		return BgpConnectionResponse{}, err
 	}
@@ -633,7 +620,7 @@ func (p *bgpConnectionPoller) ResumeToken() (string, error) {
 
 func (p *bgpConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (BgpConnectionResponse, error) {
 	respType := BgpConnectionResponse{BgpConnection: &BgpConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.BgpConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.BgpConnection)
 	if err != nil {
 		return BgpConnectionResponse{}, err
 	}
@@ -651,8 +638,7 @@ type BgpPeerStatusListResultPoller interface {
 }
 
 type bgpPeerStatusListResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *bgpPeerStatusListResultPoller) Done() bool {
@@ -660,12 +646,12 @@ func (p *bgpPeerStatusListResultPoller) Done() bool {
 }
 
 func (p *bgpPeerStatusListResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *bgpPeerStatusListResultPoller) FinalResponse(ctx context.Context) (BgpPeerStatusListResultResponse, error) {
 	respType := BgpPeerStatusListResultResponse{BgpPeerStatusListResult: &BgpPeerStatusListResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.BgpPeerStatusListResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.BgpPeerStatusListResult)
 	if err != nil {
 		return BgpPeerStatusListResultResponse{}, err
 	}
@@ -679,7 +665,7 @@ func (p *bgpPeerStatusListResultPoller) ResumeToken() (string, error) {
 
 func (p *bgpPeerStatusListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (BgpPeerStatusListResultResponse, error) {
 	respType := BgpPeerStatusListResultResponse{BgpPeerStatusListResult: &BgpPeerStatusListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.BgpPeerStatusListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.BgpPeerStatusListResult)
 	if err != nil {
 		return BgpPeerStatusListResultResponse{}, err
 	}
@@ -697,8 +683,7 @@ type ConnectionMonitorQueryResultPoller interface {
 }
 
 type connectionMonitorQueryResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *connectionMonitorQueryResultPoller) Done() bool {
@@ -706,12 +691,12 @@ func (p *connectionMonitorQueryResultPoller) Done() bool {
 }
 
 func (p *connectionMonitorQueryResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *connectionMonitorQueryResultPoller) FinalResponse(ctx context.Context) (ConnectionMonitorQueryResultResponse, error) {
 	respType := ConnectionMonitorQueryResultResponse{ConnectionMonitorQueryResult: &ConnectionMonitorQueryResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ConnectionMonitorQueryResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.ConnectionMonitorQueryResult)
 	if err != nil {
 		return ConnectionMonitorQueryResultResponse{}, err
 	}
@@ -725,7 +710,7 @@ func (p *connectionMonitorQueryResultPoller) ResumeToken() (string, error) {
 
 func (p *connectionMonitorQueryResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ConnectionMonitorQueryResultResponse, error) {
 	respType := ConnectionMonitorQueryResultResponse{ConnectionMonitorQueryResult: &ConnectionMonitorQueryResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ConnectionMonitorQueryResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ConnectionMonitorQueryResult)
 	if err != nil {
 		return ConnectionMonitorQueryResultResponse{}, err
 	}
@@ -743,8 +728,7 @@ type ConnectionMonitorResultPoller interface {
 }
 
 type connectionMonitorResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *connectionMonitorResultPoller) Done() bool {
@@ -752,12 +736,12 @@ func (p *connectionMonitorResultPoller) Done() bool {
 }
 
 func (p *connectionMonitorResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *connectionMonitorResultPoller) FinalResponse(ctx context.Context) (ConnectionMonitorResultResponse, error) {
 	respType := ConnectionMonitorResultResponse{ConnectionMonitorResult: &ConnectionMonitorResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ConnectionMonitorResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.ConnectionMonitorResult)
 	if err != nil {
 		return ConnectionMonitorResultResponse{}, err
 	}
@@ -771,7 +755,7 @@ func (p *connectionMonitorResultPoller) ResumeToken() (string, error) {
 
 func (p *connectionMonitorResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ConnectionMonitorResultResponse, error) {
 	respType := ConnectionMonitorResultResponse{ConnectionMonitorResult: &ConnectionMonitorResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ConnectionMonitorResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ConnectionMonitorResult)
 	if err != nil {
 		return ConnectionMonitorResultResponse{}, err
 	}
@@ -789,8 +773,7 @@ type ConnectionResetSharedKeyPoller interface {
 }
 
 type connectionResetSharedKeyPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *connectionResetSharedKeyPoller) Done() bool {
@@ -798,12 +781,12 @@ func (p *connectionResetSharedKeyPoller) Done() bool {
 }
 
 func (p *connectionResetSharedKeyPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *connectionResetSharedKeyPoller) FinalResponse(ctx context.Context) (ConnectionResetSharedKeyResponse, error) {
 	respType := ConnectionResetSharedKeyResponse{ConnectionResetSharedKey: &ConnectionResetSharedKey{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ConnectionResetSharedKey)
+	resp, err := p.pt.FinalResponse(ctx, respType.ConnectionResetSharedKey)
 	if err != nil {
 		return ConnectionResetSharedKeyResponse{}, err
 	}
@@ -817,7 +800,7 @@ func (p *connectionResetSharedKeyPoller) ResumeToken() (string, error) {
 
 func (p *connectionResetSharedKeyPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ConnectionResetSharedKeyResponse, error) {
 	respType := ConnectionResetSharedKeyResponse{ConnectionResetSharedKey: &ConnectionResetSharedKey{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ConnectionResetSharedKey)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ConnectionResetSharedKey)
 	if err != nil {
 		return ConnectionResetSharedKeyResponse{}, err
 	}
@@ -835,8 +818,7 @@ type ConnectionSharedKeyPoller interface {
 }
 
 type connectionSharedKeyPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *connectionSharedKeyPoller) Done() bool {
@@ -844,12 +826,12 @@ func (p *connectionSharedKeyPoller) Done() bool {
 }
 
 func (p *connectionSharedKeyPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *connectionSharedKeyPoller) FinalResponse(ctx context.Context) (ConnectionSharedKeyResponse, error) {
 	respType := ConnectionSharedKeyResponse{ConnectionSharedKey: &ConnectionSharedKey{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ConnectionSharedKey)
+	resp, err := p.pt.FinalResponse(ctx, respType.ConnectionSharedKey)
 	if err != nil {
 		return ConnectionSharedKeyResponse{}, err
 	}
@@ -863,7 +845,7 @@ func (p *connectionSharedKeyPoller) ResumeToken() (string, error) {
 
 func (p *connectionSharedKeyPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ConnectionSharedKeyResponse, error) {
 	respType := ConnectionSharedKeyResponse{ConnectionSharedKey: &ConnectionSharedKey{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ConnectionSharedKey)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ConnectionSharedKey)
 	if err != nil {
 		return ConnectionSharedKeyResponse{}, err
 	}
@@ -881,8 +863,7 @@ type ConnectivityInformationPoller interface {
 }
 
 type connectivityInformationPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *connectivityInformationPoller) Done() bool {
@@ -890,12 +871,12 @@ func (p *connectivityInformationPoller) Done() bool {
 }
 
 func (p *connectivityInformationPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *connectivityInformationPoller) FinalResponse(ctx context.Context) (ConnectivityInformationResponse, error) {
 	respType := ConnectivityInformationResponse{ConnectivityInformation: &ConnectivityInformation{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ConnectivityInformation)
+	resp, err := p.pt.FinalResponse(ctx, respType.ConnectivityInformation)
 	if err != nil {
 		return ConnectivityInformationResponse{}, err
 	}
@@ -909,7 +890,7 @@ func (p *connectivityInformationPoller) ResumeToken() (string, error) {
 
 func (p *connectivityInformationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ConnectivityInformationResponse, error) {
 	respType := ConnectivityInformationResponse{ConnectivityInformation: &ConnectivityInformation{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ConnectivityInformation)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ConnectivityInformation)
 	if err != nil {
 		return ConnectivityInformationResponse{}, err
 	}
@@ -927,8 +908,7 @@ type CustomIPPrefixPoller interface {
 }
 
 type customIPPrefixPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *customIPPrefixPoller) Done() bool {
@@ -936,12 +916,12 @@ func (p *customIPPrefixPoller) Done() bool {
 }
 
 func (p *customIPPrefixPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *customIPPrefixPoller) FinalResponse(ctx context.Context) (CustomIPPrefixResponse, error) {
 	respType := CustomIPPrefixResponse{CustomIPPrefix: &CustomIPPrefix{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.CustomIPPrefix)
+	resp, err := p.pt.FinalResponse(ctx, respType.CustomIPPrefix)
 	if err != nil {
 		return CustomIPPrefixResponse{}, err
 	}
@@ -955,7 +935,7 @@ func (p *customIPPrefixPoller) ResumeToken() (string, error) {
 
 func (p *customIPPrefixPoller) pollUntilDone(ctx context.Context, freq time.Duration) (CustomIPPrefixResponse, error) {
 	respType := CustomIPPrefixResponse{CustomIPPrefix: &CustomIPPrefix{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.CustomIPPrefix)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.CustomIPPrefix)
 	if err != nil {
 		return CustomIPPrefixResponse{}, err
 	}
@@ -973,8 +953,7 @@ type DdosCustomPolicyPoller interface {
 }
 
 type ddosCustomPolicyPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *ddosCustomPolicyPoller) Done() bool {
@@ -982,12 +961,12 @@ func (p *ddosCustomPolicyPoller) Done() bool {
 }
 
 func (p *ddosCustomPolicyPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *ddosCustomPolicyPoller) FinalResponse(ctx context.Context) (DdosCustomPolicyResponse, error) {
 	respType := DdosCustomPolicyResponse{DdosCustomPolicy: &DdosCustomPolicy{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.DdosCustomPolicy)
+	resp, err := p.pt.FinalResponse(ctx, respType.DdosCustomPolicy)
 	if err != nil {
 		return DdosCustomPolicyResponse{}, err
 	}
@@ -1001,7 +980,7 @@ func (p *ddosCustomPolicyPoller) ResumeToken() (string, error) {
 
 func (p *ddosCustomPolicyPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DdosCustomPolicyResponse, error) {
 	respType := DdosCustomPolicyResponse{DdosCustomPolicy: &DdosCustomPolicy{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.DdosCustomPolicy)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.DdosCustomPolicy)
 	if err != nil {
 		return DdosCustomPolicyResponse{}, err
 	}
@@ -1019,8 +998,7 @@ type DdosProtectionPlanPoller interface {
 }
 
 type ddosProtectionPlanPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *ddosProtectionPlanPoller) Done() bool {
@@ -1028,12 +1006,12 @@ func (p *ddosProtectionPlanPoller) Done() bool {
 }
 
 func (p *ddosProtectionPlanPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *ddosProtectionPlanPoller) FinalResponse(ctx context.Context) (DdosProtectionPlanResponse, error) {
 	respType := DdosProtectionPlanResponse{DdosProtectionPlan: &DdosProtectionPlan{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.DdosProtectionPlan)
+	resp, err := p.pt.FinalResponse(ctx, respType.DdosProtectionPlan)
 	if err != nil {
 		return DdosProtectionPlanResponse{}, err
 	}
@@ -1047,7 +1025,7 @@ func (p *ddosProtectionPlanPoller) ResumeToken() (string, error) {
 
 func (p *ddosProtectionPlanPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DdosProtectionPlanResponse, error) {
 	respType := DdosProtectionPlanResponse{DdosProtectionPlan: &DdosProtectionPlan{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.DdosProtectionPlan)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.DdosProtectionPlan)
 	if err != nil {
 		return DdosProtectionPlanResponse{}, err
 	}
@@ -1065,8 +1043,7 @@ type DscpConfigurationPoller interface {
 }
 
 type dscpConfigurationPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *dscpConfigurationPoller) Done() bool {
@@ -1074,12 +1051,12 @@ func (p *dscpConfigurationPoller) Done() bool {
 }
 
 func (p *dscpConfigurationPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *dscpConfigurationPoller) FinalResponse(ctx context.Context) (DscpConfigurationResponse, error) {
 	respType := DscpConfigurationResponse{DscpConfiguration: &DscpConfiguration{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.DscpConfiguration)
+	resp, err := p.pt.FinalResponse(ctx, respType.DscpConfiguration)
 	if err != nil {
 		return DscpConfigurationResponse{}, err
 	}
@@ -1093,7 +1070,7 @@ func (p *dscpConfigurationPoller) ResumeToken() (string, error) {
 
 func (p *dscpConfigurationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (DscpConfigurationResponse, error) {
 	respType := DscpConfigurationResponse{DscpConfiguration: &DscpConfiguration{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.DscpConfiguration)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.DscpConfiguration)
 	if err != nil {
 		return DscpConfigurationResponse{}, err
 	}
@@ -1111,8 +1088,7 @@ type EffectiveNetworkSecurityGroupListResultPoller interface {
 }
 
 type effectiveNetworkSecurityGroupListResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *effectiveNetworkSecurityGroupListResultPoller) Done() bool {
@@ -1120,12 +1096,12 @@ func (p *effectiveNetworkSecurityGroupListResultPoller) Done() bool {
 }
 
 func (p *effectiveNetworkSecurityGroupListResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *effectiveNetworkSecurityGroupListResultPoller) FinalResponse(ctx context.Context) (EffectiveNetworkSecurityGroupListResultResponse, error) {
 	respType := EffectiveNetworkSecurityGroupListResultResponse{EffectiveNetworkSecurityGroupListResult: &EffectiveNetworkSecurityGroupListResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.EffectiveNetworkSecurityGroupListResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.EffectiveNetworkSecurityGroupListResult)
 	if err != nil {
 		return EffectiveNetworkSecurityGroupListResultResponse{}, err
 	}
@@ -1139,7 +1115,7 @@ func (p *effectiveNetworkSecurityGroupListResultPoller) ResumeToken() (string, e
 
 func (p *effectiveNetworkSecurityGroupListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (EffectiveNetworkSecurityGroupListResultResponse, error) {
 	respType := EffectiveNetworkSecurityGroupListResultResponse{EffectiveNetworkSecurityGroupListResult: &EffectiveNetworkSecurityGroupListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.EffectiveNetworkSecurityGroupListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.EffectiveNetworkSecurityGroupListResult)
 	if err != nil {
 		return EffectiveNetworkSecurityGroupListResultResponse{}, err
 	}
@@ -1157,8 +1133,7 @@ type EffectiveRouteListResultPoller interface {
 }
 
 type effectiveRouteListResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *effectiveRouteListResultPoller) Done() bool {
@@ -1166,12 +1141,12 @@ func (p *effectiveRouteListResultPoller) Done() bool {
 }
 
 func (p *effectiveRouteListResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *effectiveRouteListResultPoller) FinalResponse(ctx context.Context) (EffectiveRouteListResultResponse, error) {
 	respType := EffectiveRouteListResultResponse{EffectiveRouteListResult: &EffectiveRouteListResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.EffectiveRouteListResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.EffectiveRouteListResult)
 	if err != nil {
 		return EffectiveRouteListResultResponse{}, err
 	}
@@ -1185,7 +1160,7 @@ func (p *effectiveRouteListResultPoller) ResumeToken() (string, error) {
 
 func (p *effectiveRouteListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (EffectiveRouteListResultResponse, error) {
 	respType := EffectiveRouteListResultResponse{EffectiveRouteListResult: &EffectiveRouteListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.EffectiveRouteListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.EffectiveRouteListResult)
 	if err != nil {
 		return EffectiveRouteListResultResponse{}, err
 	}
@@ -1203,8 +1178,7 @@ type ExpressRouteCircuitAuthorizationPoller interface {
 }
 
 type expressRouteCircuitAuthorizationPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *expressRouteCircuitAuthorizationPoller) Done() bool {
@@ -1212,12 +1186,12 @@ func (p *expressRouteCircuitAuthorizationPoller) Done() bool {
 }
 
 func (p *expressRouteCircuitAuthorizationPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *expressRouteCircuitAuthorizationPoller) FinalResponse(ctx context.Context) (ExpressRouteCircuitAuthorizationResponse, error) {
 	respType := ExpressRouteCircuitAuthorizationResponse{ExpressRouteCircuitAuthorization: &ExpressRouteCircuitAuthorization{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ExpressRouteCircuitAuthorization)
+	resp, err := p.pt.FinalResponse(ctx, respType.ExpressRouteCircuitAuthorization)
 	if err != nil {
 		return ExpressRouteCircuitAuthorizationResponse{}, err
 	}
@@ -1231,7 +1205,7 @@ func (p *expressRouteCircuitAuthorizationPoller) ResumeToken() (string, error) {
 
 func (p *expressRouteCircuitAuthorizationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCircuitAuthorizationResponse, error) {
 	respType := ExpressRouteCircuitAuthorizationResponse{ExpressRouteCircuitAuthorization: &ExpressRouteCircuitAuthorization{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCircuitAuthorization)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ExpressRouteCircuitAuthorization)
 	if err != nil {
 		return ExpressRouteCircuitAuthorizationResponse{}, err
 	}
@@ -1249,8 +1223,7 @@ type ExpressRouteCircuitConnectionPoller interface {
 }
 
 type expressRouteCircuitConnectionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *expressRouteCircuitConnectionPoller) Done() bool {
@@ -1258,12 +1231,12 @@ func (p *expressRouteCircuitConnectionPoller) Done() bool {
 }
 
 func (p *expressRouteCircuitConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *expressRouteCircuitConnectionPoller) FinalResponse(ctx context.Context) (ExpressRouteCircuitConnectionResponse, error) {
 	respType := ExpressRouteCircuitConnectionResponse{ExpressRouteCircuitConnection: &ExpressRouteCircuitConnection{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ExpressRouteCircuitConnection)
+	resp, err := p.pt.FinalResponse(ctx, respType.ExpressRouteCircuitConnection)
 	if err != nil {
 		return ExpressRouteCircuitConnectionResponse{}, err
 	}
@@ -1277,7 +1250,7 @@ func (p *expressRouteCircuitConnectionPoller) ResumeToken() (string, error) {
 
 func (p *expressRouteCircuitConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCircuitConnectionResponse, error) {
 	respType := ExpressRouteCircuitConnectionResponse{ExpressRouteCircuitConnection: &ExpressRouteCircuitConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCircuitConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ExpressRouteCircuitConnection)
 	if err != nil {
 		return ExpressRouteCircuitConnectionResponse{}, err
 	}
@@ -1295,8 +1268,7 @@ type ExpressRouteCircuitPeeringPoller interface {
 }
 
 type expressRouteCircuitPeeringPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *expressRouteCircuitPeeringPoller) Done() bool {
@@ -1304,12 +1276,12 @@ func (p *expressRouteCircuitPeeringPoller) Done() bool {
 }
 
 func (p *expressRouteCircuitPeeringPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *expressRouteCircuitPeeringPoller) FinalResponse(ctx context.Context) (ExpressRouteCircuitPeeringResponse, error) {
 	respType := ExpressRouteCircuitPeeringResponse{ExpressRouteCircuitPeering: &ExpressRouteCircuitPeering{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ExpressRouteCircuitPeering)
+	resp, err := p.pt.FinalResponse(ctx, respType.ExpressRouteCircuitPeering)
 	if err != nil {
 		return ExpressRouteCircuitPeeringResponse{}, err
 	}
@@ -1323,7 +1295,7 @@ func (p *expressRouteCircuitPeeringPoller) ResumeToken() (string, error) {
 
 func (p *expressRouteCircuitPeeringPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCircuitPeeringResponse, error) {
 	respType := ExpressRouteCircuitPeeringResponse{ExpressRouteCircuitPeering: &ExpressRouteCircuitPeering{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCircuitPeering)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ExpressRouteCircuitPeering)
 	if err != nil {
 		return ExpressRouteCircuitPeeringResponse{}, err
 	}
@@ -1341,8 +1313,7 @@ type ExpressRouteCircuitPoller interface {
 }
 
 type expressRouteCircuitPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *expressRouteCircuitPoller) Done() bool {
@@ -1350,12 +1321,12 @@ func (p *expressRouteCircuitPoller) Done() bool {
 }
 
 func (p *expressRouteCircuitPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *expressRouteCircuitPoller) FinalResponse(ctx context.Context) (ExpressRouteCircuitResponse, error) {
 	respType := ExpressRouteCircuitResponse{ExpressRouteCircuit: &ExpressRouteCircuit{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ExpressRouteCircuit)
+	resp, err := p.pt.FinalResponse(ctx, respType.ExpressRouteCircuit)
 	if err != nil {
 		return ExpressRouteCircuitResponse{}, err
 	}
@@ -1369,7 +1340,7 @@ func (p *expressRouteCircuitPoller) ResumeToken() (string, error) {
 
 func (p *expressRouteCircuitPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCircuitResponse, error) {
 	respType := ExpressRouteCircuitResponse{ExpressRouteCircuit: &ExpressRouteCircuit{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCircuit)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ExpressRouteCircuit)
 	if err != nil {
 		return ExpressRouteCircuitResponse{}, err
 	}
@@ -1387,8 +1358,7 @@ type ExpressRouteCircuitsArpTableListResultPoller interface {
 }
 
 type expressRouteCircuitsArpTableListResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *expressRouteCircuitsArpTableListResultPoller) Done() bool {
@@ -1396,12 +1366,12 @@ func (p *expressRouteCircuitsArpTableListResultPoller) Done() bool {
 }
 
 func (p *expressRouteCircuitsArpTableListResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *expressRouteCircuitsArpTableListResultPoller) FinalResponse(ctx context.Context) (ExpressRouteCircuitsArpTableListResultResponse, error) {
 	respType := ExpressRouteCircuitsArpTableListResultResponse{ExpressRouteCircuitsArpTableListResult: &ExpressRouteCircuitsArpTableListResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ExpressRouteCircuitsArpTableListResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.ExpressRouteCircuitsArpTableListResult)
 	if err != nil {
 		return ExpressRouteCircuitsArpTableListResultResponse{}, err
 	}
@@ -1415,7 +1385,7 @@ func (p *expressRouteCircuitsArpTableListResultPoller) ResumeToken() (string, er
 
 func (p *expressRouteCircuitsArpTableListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCircuitsArpTableListResultResponse, error) {
 	respType := ExpressRouteCircuitsArpTableListResultResponse{ExpressRouteCircuitsArpTableListResult: &ExpressRouteCircuitsArpTableListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCircuitsArpTableListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ExpressRouteCircuitsArpTableListResult)
 	if err != nil {
 		return ExpressRouteCircuitsArpTableListResultResponse{}, err
 	}
@@ -1433,8 +1403,7 @@ type ExpressRouteCircuitsRoutesTableListResultPoller interface {
 }
 
 type expressRouteCircuitsRoutesTableListResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *expressRouteCircuitsRoutesTableListResultPoller) Done() bool {
@@ -1442,12 +1411,12 @@ func (p *expressRouteCircuitsRoutesTableListResultPoller) Done() bool {
 }
 
 func (p *expressRouteCircuitsRoutesTableListResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *expressRouteCircuitsRoutesTableListResultPoller) FinalResponse(ctx context.Context) (ExpressRouteCircuitsRoutesTableListResultResponse, error) {
 	respType := ExpressRouteCircuitsRoutesTableListResultResponse{ExpressRouteCircuitsRoutesTableListResult: &ExpressRouteCircuitsRoutesTableListResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ExpressRouteCircuitsRoutesTableListResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.ExpressRouteCircuitsRoutesTableListResult)
 	if err != nil {
 		return ExpressRouteCircuitsRoutesTableListResultResponse{}, err
 	}
@@ -1461,7 +1430,7 @@ func (p *expressRouteCircuitsRoutesTableListResultPoller) ResumeToken() (string,
 
 func (p *expressRouteCircuitsRoutesTableListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCircuitsRoutesTableListResultResponse, error) {
 	respType := ExpressRouteCircuitsRoutesTableListResultResponse{ExpressRouteCircuitsRoutesTableListResult: &ExpressRouteCircuitsRoutesTableListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCircuitsRoutesTableListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ExpressRouteCircuitsRoutesTableListResult)
 	if err != nil {
 		return ExpressRouteCircuitsRoutesTableListResultResponse{}, err
 	}
@@ -1479,8 +1448,7 @@ type ExpressRouteCircuitsRoutesTableSummaryListResultPoller interface {
 }
 
 type expressRouteCircuitsRoutesTableSummaryListResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *expressRouteCircuitsRoutesTableSummaryListResultPoller) Done() bool {
@@ -1488,12 +1456,12 @@ func (p *expressRouteCircuitsRoutesTableSummaryListResultPoller) Done() bool {
 }
 
 func (p *expressRouteCircuitsRoutesTableSummaryListResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *expressRouteCircuitsRoutesTableSummaryListResultPoller) FinalResponse(ctx context.Context) (ExpressRouteCircuitsRoutesTableSummaryListResultResponse, error) {
 	respType := ExpressRouteCircuitsRoutesTableSummaryListResultResponse{ExpressRouteCircuitsRoutesTableSummaryListResult: &ExpressRouteCircuitsRoutesTableSummaryListResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ExpressRouteCircuitsRoutesTableSummaryListResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.ExpressRouteCircuitsRoutesTableSummaryListResult)
 	if err != nil {
 		return ExpressRouteCircuitsRoutesTableSummaryListResultResponse{}, err
 	}
@@ -1507,7 +1475,7 @@ func (p *expressRouteCircuitsRoutesTableSummaryListResultPoller) ResumeToken() (
 
 func (p *expressRouteCircuitsRoutesTableSummaryListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCircuitsRoutesTableSummaryListResultResponse, error) {
 	respType := ExpressRouteCircuitsRoutesTableSummaryListResultResponse{ExpressRouteCircuitsRoutesTableSummaryListResult: &ExpressRouteCircuitsRoutesTableSummaryListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCircuitsRoutesTableSummaryListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ExpressRouteCircuitsRoutesTableSummaryListResult)
 	if err != nil {
 		return ExpressRouteCircuitsRoutesTableSummaryListResultResponse{}, err
 	}
@@ -1525,8 +1493,7 @@ type ExpressRouteConnectionPoller interface {
 }
 
 type expressRouteConnectionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *expressRouteConnectionPoller) Done() bool {
@@ -1534,12 +1501,12 @@ func (p *expressRouteConnectionPoller) Done() bool {
 }
 
 func (p *expressRouteConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *expressRouteConnectionPoller) FinalResponse(ctx context.Context) (ExpressRouteConnectionResponse, error) {
 	respType := ExpressRouteConnectionResponse{ExpressRouteConnection: &ExpressRouteConnection{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ExpressRouteConnection)
+	resp, err := p.pt.FinalResponse(ctx, respType.ExpressRouteConnection)
 	if err != nil {
 		return ExpressRouteConnectionResponse{}, err
 	}
@@ -1553,7 +1520,7 @@ func (p *expressRouteConnectionPoller) ResumeToken() (string, error) {
 
 func (p *expressRouteConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteConnectionResponse, error) {
 	respType := ExpressRouteConnectionResponse{ExpressRouteConnection: &ExpressRouteConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ExpressRouteConnection)
 	if err != nil {
 		return ExpressRouteConnectionResponse{}, err
 	}
@@ -1571,8 +1538,7 @@ type ExpressRouteCrossConnectionPeeringPoller interface {
 }
 
 type expressRouteCrossConnectionPeeringPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *expressRouteCrossConnectionPeeringPoller) Done() bool {
@@ -1580,12 +1546,12 @@ func (p *expressRouteCrossConnectionPeeringPoller) Done() bool {
 }
 
 func (p *expressRouteCrossConnectionPeeringPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *expressRouteCrossConnectionPeeringPoller) FinalResponse(ctx context.Context) (ExpressRouteCrossConnectionPeeringResponse, error) {
 	respType := ExpressRouteCrossConnectionPeeringResponse{ExpressRouteCrossConnectionPeering: &ExpressRouteCrossConnectionPeering{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ExpressRouteCrossConnectionPeering)
+	resp, err := p.pt.FinalResponse(ctx, respType.ExpressRouteCrossConnectionPeering)
 	if err != nil {
 		return ExpressRouteCrossConnectionPeeringResponse{}, err
 	}
@@ -1599,7 +1565,7 @@ func (p *expressRouteCrossConnectionPeeringPoller) ResumeToken() (string, error)
 
 func (p *expressRouteCrossConnectionPeeringPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCrossConnectionPeeringResponse, error) {
 	respType := ExpressRouteCrossConnectionPeeringResponse{ExpressRouteCrossConnectionPeering: &ExpressRouteCrossConnectionPeering{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCrossConnectionPeering)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ExpressRouteCrossConnectionPeering)
 	if err != nil {
 		return ExpressRouteCrossConnectionPeeringResponse{}, err
 	}
@@ -1617,8 +1583,7 @@ type ExpressRouteCrossConnectionPoller interface {
 }
 
 type expressRouteCrossConnectionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *expressRouteCrossConnectionPoller) Done() bool {
@@ -1626,12 +1591,12 @@ func (p *expressRouteCrossConnectionPoller) Done() bool {
 }
 
 func (p *expressRouteCrossConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *expressRouteCrossConnectionPoller) FinalResponse(ctx context.Context) (ExpressRouteCrossConnectionResponse, error) {
 	respType := ExpressRouteCrossConnectionResponse{ExpressRouteCrossConnection: &ExpressRouteCrossConnection{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ExpressRouteCrossConnection)
+	resp, err := p.pt.FinalResponse(ctx, respType.ExpressRouteCrossConnection)
 	if err != nil {
 		return ExpressRouteCrossConnectionResponse{}, err
 	}
@@ -1645,7 +1610,7 @@ func (p *expressRouteCrossConnectionPoller) ResumeToken() (string, error) {
 
 func (p *expressRouteCrossConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCrossConnectionResponse, error) {
 	respType := ExpressRouteCrossConnectionResponse{ExpressRouteCrossConnection: &ExpressRouteCrossConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCrossConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ExpressRouteCrossConnection)
 	if err != nil {
 		return ExpressRouteCrossConnectionResponse{}, err
 	}
@@ -1663,8 +1628,7 @@ type ExpressRouteCrossConnectionsRoutesTableSummaryListResultPoller interface {
 }
 
 type expressRouteCrossConnectionsRoutesTableSummaryListResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *expressRouteCrossConnectionsRoutesTableSummaryListResultPoller) Done() bool {
@@ -1672,12 +1636,12 @@ func (p *expressRouteCrossConnectionsRoutesTableSummaryListResultPoller) Done() 
 }
 
 func (p *expressRouteCrossConnectionsRoutesTableSummaryListResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *expressRouteCrossConnectionsRoutesTableSummaryListResultPoller) FinalResponse(ctx context.Context) (ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse, error) {
 	respType := ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse{ExpressRouteCrossConnectionsRoutesTableSummaryListResult: &ExpressRouteCrossConnectionsRoutesTableSummaryListResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ExpressRouteCrossConnectionsRoutesTableSummaryListResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.ExpressRouteCrossConnectionsRoutesTableSummaryListResult)
 	if err != nil {
 		return ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse{}, err
 	}
@@ -1691,7 +1655,7 @@ func (p *expressRouteCrossConnectionsRoutesTableSummaryListResultPoller) ResumeT
 
 func (p *expressRouteCrossConnectionsRoutesTableSummaryListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse, error) {
 	respType := ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse{ExpressRouteCrossConnectionsRoutesTableSummaryListResult: &ExpressRouteCrossConnectionsRoutesTableSummaryListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteCrossConnectionsRoutesTableSummaryListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ExpressRouteCrossConnectionsRoutesTableSummaryListResult)
 	if err != nil {
 		return ExpressRouteCrossConnectionsRoutesTableSummaryListResultResponse{}, err
 	}
@@ -1709,8 +1673,7 @@ type ExpressRouteGatewayPoller interface {
 }
 
 type expressRouteGatewayPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *expressRouteGatewayPoller) Done() bool {
@@ -1718,12 +1681,12 @@ func (p *expressRouteGatewayPoller) Done() bool {
 }
 
 func (p *expressRouteGatewayPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *expressRouteGatewayPoller) FinalResponse(ctx context.Context) (ExpressRouteGatewayResponse, error) {
 	respType := ExpressRouteGatewayResponse{ExpressRouteGateway: &ExpressRouteGateway{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ExpressRouteGateway)
+	resp, err := p.pt.FinalResponse(ctx, respType.ExpressRouteGateway)
 	if err != nil {
 		return ExpressRouteGatewayResponse{}, err
 	}
@@ -1737,7 +1700,7 @@ func (p *expressRouteGatewayPoller) ResumeToken() (string, error) {
 
 func (p *expressRouteGatewayPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRouteGatewayResponse, error) {
 	respType := ExpressRouteGatewayResponse{ExpressRouteGateway: &ExpressRouteGateway{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRouteGateway)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ExpressRouteGateway)
 	if err != nil {
 		return ExpressRouteGatewayResponse{}, err
 	}
@@ -1755,8 +1718,7 @@ type ExpressRoutePortPoller interface {
 }
 
 type expressRoutePortPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *expressRoutePortPoller) Done() bool {
@@ -1764,12 +1726,12 @@ func (p *expressRoutePortPoller) Done() bool {
 }
 
 func (p *expressRoutePortPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *expressRoutePortPoller) FinalResponse(ctx context.Context) (ExpressRoutePortResponse, error) {
 	respType := ExpressRoutePortResponse{ExpressRoutePort: &ExpressRoutePort{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ExpressRoutePort)
+	resp, err := p.pt.FinalResponse(ctx, respType.ExpressRoutePort)
 	if err != nil {
 		return ExpressRoutePortResponse{}, err
 	}
@@ -1783,7 +1745,7 @@ func (p *expressRoutePortPoller) ResumeToken() (string, error) {
 
 func (p *expressRoutePortPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ExpressRoutePortResponse, error) {
 	respType := ExpressRoutePortResponse{ExpressRoutePort: &ExpressRoutePort{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ExpressRoutePort)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ExpressRoutePort)
 	if err != nil {
 		return ExpressRoutePortResponse{}, err
 	}
@@ -1801,8 +1763,7 @@ type FirewallPolicyPoller interface {
 }
 
 type firewallPolicyPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *firewallPolicyPoller) Done() bool {
@@ -1810,12 +1771,12 @@ func (p *firewallPolicyPoller) Done() bool {
 }
 
 func (p *firewallPolicyPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *firewallPolicyPoller) FinalResponse(ctx context.Context) (FirewallPolicyResponse, error) {
 	respType := FirewallPolicyResponse{FirewallPolicy: &FirewallPolicy{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.FirewallPolicy)
+	resp, err := p.pt.FinalResponse(ctx, respType.FirewallPolicy)
 	if err != nil {
 		return FirewallPolicyResponse{}, err
 	}
@@ -1829,7 +1790,7 @@ func (p *firewallPolicyPoller) ResumeToken() (string, error) {
 
 func (p *firewallPolicyPoller) pollUntilDone(ctx context.Context, freq time.Duration) (FirewallPolicyResponse, error) {
 	respType := FirewallPolicyResponse{FirewallPolicy: &FirewallPolicy{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.FirewallPolicy)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.FirewallPolicy)
 	if err != nil {
 		return FirewallPolicyResponse{}, err
 	}
@@ -1847,8 +1808,7 @@ type FirewallPolicyRuleCollectionGroupPoller interface {
 }
 
 type firewallPolicyRuleCollectionGroupPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *firewallPolicyRuleCollectionGroupPoller) Done() bool {
@@ -1856,12 +1816,12 @@ func (p *firewallPolicyRuleCollectionGroupPoller) Done() bool {
 }
 
 func (p *firewallPolicyRuleCollectionGroupPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *firewallPolicyRuleCollectionGroupPoller) FinalResponse(ctx context.Context) (FirewallPolicyRuleCollectionGroupResponse, error) {
 	respType := FirewallPolicyRuleCollectionGroupResponse{FirewallPolicyRuleCollectionGroup: &FirewallPolicyRuleCollectionGroup{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.FirewallPolicyRuleCollectionGroup)
+	resp, err := p.pt.FinalResponse(ctx, respType.FirewallPolicyRuleCollectionGroup)
 	if err != nil {
 		return FirewallPolicyRuleCollectionGroupResponse{}, err
 	}
@@ -1875,7 +1835,7 @@ func (p *firewallPolicyRuleCollectionGroupPoller) ResumeToken() (string, error) 
 
 func (p *firewallPolicyRuleCollectionGroupPoller) pollUntilDone(ctx context.Context, freq time.Duration) (FirewallPolicyRuleCollectionGroupResponse, error) {
 	respType := FirewallPolicyRuleCollectionGroupResponse{FirewallPolicyRuleCollectionGroup: &FirewallPolicyRuleCollectionGroup{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.FirewallPolicyRuleCollectionGroup)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.FirewallPolicyRuleCollectionGroup)
 	if err != nil {
 		return FirewallPolicyRuleCollectionGroupResponse{}, err
 	}
@@ -1893,8 +1853,7 @@ type FlowLogInformationPoller interface {
 }
 
 type flowLogInformationPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *flowLogInformationPoller) Done() bool {
@@ -1902,12 +1861,12 @@ func (p *flowLogInformationPoller) Done() bool {
 }
 
 func (p *flowLogInformationPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *flowLogInformationPoller) FinalResponse(ctx context.Context) (FlowLogInformationResponse, error) {
 	respType := FlowLogInformationResponse{FlowLogInformation: &FlowLogInformation{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.FlowLogInformation)
+	resp, err := p.pt.FinalResponse(ctx, respType.FlowLogInformation)
 	if err != nil {
 		return FlowLogInformationResponse{}, err
 	}
@@ -1921,7 +1880,7 @@ func (p *flowLogInformationPoller) ResumeToken() (string, error) {
 
 func (p *flowLogInformationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (FlowLogInformationResponse, error) {
 	respType := FlowLogInformationResponse{FlowLogInformation: &FlowLogInformation{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.FlowLogInformation)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.FlowLogInformation)
 	if err != nil {
 		return FlowLogInformationResponse{}, err
 	}
@@ -1939,8 +1898,7 @@ type FlowLogPoller interface {
 }
 
 type flowLogPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *flowLogPoller) Done() bool {
@@ -1948,12 +1906,12 @@ func (p *flowLogPoller) Done() bool {
 }
 
 func (p *flowLogPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *flowLogPoller) FinalResponse(ctx context.Context) (FlowLogResponse, error) {
 	respType := FlowLogResponse{FlowLog: &FlowLog{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.FlowLog)
+	resp, err := p.pt.FinalResponse(ctx, respType.FlowLog)
 	if err != nil {
 		return FlowLogResponse{}, err
 	}
@@ -1967,7 +1925,7 @@ func (p *flowLogPoller) ResumeToken() (string, error) {
 
 func (p *flowLogPoller) pollUntilDone(ctx context.Context, freq time.Duration) (FlowLogResponse, error) {
 	respType := FlowLogResponse{FlowLog: &FlowLog{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.FlowLog)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.FlowLog)
 	if err != nil {
 		return FlowLogResponse{}, err
 	}
@@ -1985,8 +1943,7 @@ type GatewayRouteListResultPoller interface {
 }
 
 type gatewayRouteListResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *gatewayRouteListResultPoller) Done() bool {
@@ -1994,12 +1951,12 @@ func (p *gatewayRouteListResultPoller) Done() bool {
 }
 
 func (p *gatewayRouteListResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *gatewayRouteListResultPoller) FinalResponse(ctx context.Context) (GatewayRouteListResultResponse, error) {
 	respType := GatewayRouteListResultResponse{GatewayRouteListResult: &GatewayRouteListResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.GatewayRouteListResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.GatewayRouteListResult)
 	if err != nil {
 		return GatewayRouteListResultResponse{}, err
 	}
@@ -2013,7 +1970,7 @@ func (p *gatewayRouteListResultPoller) ResumeToken() (string, error) {
 
 func (p *gatewayRouteListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (GatewayRouteListResultResponse, error) {
 	respType := GatewayRouteListResultResponse{GatewayRouteListResult: &GatewayRouteListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.GatewayRouteListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.GatewayRouteListResult)
 	if err != nil {
 		return GatewayRouteListResultResponse{}, err
 	}
@@ -2031,8 +1988,7 @@ type HTTPPoller interface {
 }
 
 type httpPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *httpPoller) Done() bool {
@@ -2040,11 +1996,11 @@ func (p *httpPoller) Done() bool {
 }
 
 func (p *httpPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *httpPoller) FinalResponse(ctx context.Context) (*http.Response, error) {
-	return p.pt.FinalResponse(ctx, p.pipeline, nil)
+	return p.pt.FinalResponse(ctx, nil)
 }
 
 func (p *httpPoller) ResumeToken() (string, error) {
@@ -2052,7 +2008,7 @@ func (p *httpPoller) ResumeToken() (string, error) {
 }
 
 func (p *httpPoller) pollUntilDone(ctx context.Context, freq time.Duration) (*http.Response, error) {
-	return p.pt.PollUntilDone(ctx, freq, p.pipeline, nil)
+	return p.pt.PollUntilDone(ctx, freq, nil)
 }
 
 // HubIPConfigurationPoller provides polling facilities until the operation reaches a terminal state.
@@ -2065,8 +2021,7 @@ type HubIPConfigurationPoller interface {
 }
 
 type hubIPConfigurationPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *hubIPConfigurationPoller) Done() bool {
@@ -2074,12 +2029,12 @@ func (p *hubIPConfigurationPoller) Done() bool {
 }
 
 func (p *hubIPConfigurationPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *hubIPConfigurationPoller) FinalResponse(ctx context.Context) (HubIPConfigurationResponse, error) {
 	respType := HubIPConfigurationResponse{HubIPConfiguration: &HubIPConfiguration{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.HubIPConfiguration)
+	resp, err := p.pt.FinalResponse(ctx, respType.HubIPConfiguration)
 	if err != nil {
 		return HubIPConfigurationResponse{}, err
 	}
@@ -2093,7 +2048,7 @@ func (p *hubIPConfigurationPoller) ResumeToken() (string, error) {
 
 func (p *hubIPConfigurationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (HubIPConfigurationResponse, error) {
 	respType := HubIPConfigurationResponse{HubIPConfiguration: &HubIPConfiguration{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.HubIPConfiguration)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.HubIPConfiguration)
 	if err != nil {
 		return HubIPConfigurationResponse{}, err
 	}
@@ -2111,8 +2066,7 @@ type HubRouteTablePoller interface {
 }
 
 type hubRouteTablePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *hubRouteTablePoller) Done() bool {
@@ -2120,12 +2074,12 @@ func (p *hubRouteTablePoller) Done() bool {
 }
 
 func (p *hubRouteTablePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *hubRouteTablePoller) FinalResponse(ctx context.Context) (HubRouteTableResponse, error) {
 	respType := HubRouteTableResponse{HubRouteTable: &HubRouteTable{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.HubRouteTable)
+	resp, err := p.pt.FinalResponse(ctx, respType.HubRouteTable)
 	if err != nil {
 		return HubRouteTableResponse{}, err
 	}
@@ -2139,7 +2093,7 @@ func (p *hubRouteTablePoller) ResumeToken() (string, error) {
 
 func (p *hubRouteTablePoller) pollUntilDone(ctx context.Context, freq time.Duration) (HubRouteTableResponse, error) {
 	respType := HubRouteTableResponse{HubRouteTable: &HubRouteTable{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.HubRouteTable)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.HubRouteTable)
 	if err != nil {
 		return HubRouteTableResponse{}, err
 	}
@@ -2157,8 +2111,7 @@ type HubVirtualNetworkConnectionPoller interface {
 }
 
 type hubVirtualNetworkConnectionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *hubVirtualNetworkConnectionPoller) Done() bool {
@@ -2166,12 +2119,12 @@ func (p *hubVirtualNetworkConnectionPoller) Done() bool {
 }
 
 func (p *hubVirtualNetworkConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *hubVirtualNetworkConnectionPoller) FinalResponse(ctx context.Context) (HubVirtualNetworkConnectionResponse, error) {
 	respType := HubVirtualNetworkConnectionResponse{HubVirtualNetworkConnection: &HubVirtualNetworkConnection{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.HubVirtualNetworkConnection)
+	resp, err := p.pt.FinalResponse(ctx, respType.HubVirtualNetworkConnection)
 	if err != nil {
 		return HubVirtualNetworkConnectionResponse{}, err
 	}
@@ -2185,7 +2138,7 @@ func (p *hubVirtualNetworkConnectionPoller) ResumeToken() (string, error) {
 
 func (p *hubVirtualNetworkConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (HubVirtualNetworkConnectionResponse, error) {
 	respType := HubVirtualNetworkConnectionResponse{HubVirtualNetworkConnection: &HubVirtualNetworkConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.HubVirtualNetworkConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.HubVirtualNetworkConnection)
 	if err != nil {
 		return HubVirtualNetworkConnectionResponse{}, err
 	}
@@ -2203,8 +2156,7 @@ type IPAllocationPoller interface {
 }
 
 type ipAllocationPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *ipAllocationPoller) Done() bool {
@@ -2212,12 +2164,12 @@ func (p *ipAllocationPoller) Done() bool {
 }
 
 func (p *ipAllocationPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *ipAllocationPoller) FinalResponse(ctx context.Context) (IPAllocationResponse, error) {
 	respType := IPAllocationResponse{IPAllocation: &IPAllocation{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.IPAllocation)
+	resp, err := p.pt.FinalResponse(ctx, respType.IPAllocation)
 	if err != nil {
 		return IPAllocationResponse{}, err
 	}
@@ -2231,7 +2183,7 @@ func (p *ipAllocationPoller) ResumeToken() (string, error) {
 
 func (p *ipAllocationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (IPAllocationResponse, error) {
 	respType := IPAllocationResponse{IPAllocation: &IPAllocation{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.IPAllocation)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.IPAllocation)
 	if err != nil {
 		return IPAllocationResponse{}, err
 	}
@@ -2249,8 +2201,7 @@ type IPGroupPoller interface {
 }
 
 type ipGroupPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *ipGroupPoller) Done() bool {
@@ -2258,12 +2209,12 @@ func (p *ipGroupPoller) Done() bool {
 }
 
 func (p *ipGroupPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *ipGroupPoller) FinalResponse(ctx context.Context) (IPGroupResponse, error) {
 	respType := IPGroupResponse{IPGroup: &IPGroup{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.IPGroup)
+	resp, err := p.pt.FinalResponse(ctx, respType.IPGroup)
 	if err != nil {
 		return IPGroupResponse{}, err
 	}
@@ -2277,7 +2228,7 @@ func (p *ipGroupPoller) ResumeToken() (string, error) {
 
 func (p *ipGroupPoller) pollUntilDone(ctx context.Context, freq time.Duration) (IPGroupResponse, error) {
 	respType := IPGroupResponse{IPGroup: &IPGroup{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.IPGroup)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.IPGroup)
 	if err != nil {
 		return IPGroupResponse{}, err
 	}
@@ -2295,8 +2246,7 @@ type InboundNatRulePoller interface {
 }
 
 type inboundNatRulePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *inboundNatRulePoller) Done() bool {
@@ -2304,12 +2254,12 @@ func (p *inboundNatRulePoller) Done() bool {
 }
 
 func (p *inboundNatRulePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *inboundNatRulePoller) FinalResponse(ctx context.Context) (InboundNatRuleResponse, error) {
 	respType := InboundNatRuleResponse{InboundNatRule: &InboundNatRule{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.InboundNatRule)
+	resp, err := p.pt.FinalResponse(ctx, respType.InboundNatRule)
 	if err != nil {
 		return InboundNatRuleResponse{}, err
 	}
@@ -2323,7 +2273,7 @@ func (p *inboundNatRulePoller) ResumeToken() (string, error) {
 
 func (p *inboundNatRulePoller) pollUntilDone(ctx context.Context, freq time.Duration) (InboundNatRuleResponse, error) {
 	respType := InboundNatRuleResponse{InboundNatRule: &InboundNatRule{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.InboundNatRule)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.InboundNatRule)
 	if err != nil {
 		return InboundNatRuleResponse{}, err
 	}
@@ -2341,8 +2291,7 @@ type InboundSecurityRulePoller interface {
 }
 
 type inboundSecurityRulePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *inboundSecurityRulePoller) Done() bool {
@@ -2350,12 +2299,12 @@ func (p *inboundSecurityRulePoller) Done() bool {
 }
 
 func (p *inboundSecurityRulePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *inboundSecurityRulePoller) FinalResponse(ctx context.Context) (InboundSecurityRuleResponse, error) {
 	respType := InboundSecurityRuleResponse{InboundSecurityRule: &InboundSecurityRule{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.InboundSecurityRule)
+	resp, err := p.pt.FinalResponse(ctx, respType.InboundSecurityRule)
 	if err != nil {
 		return InboundSecurityRuleResponse{}, err
 	}
@@ -2369,7 +2318,7 @@ func (p *inboundSecurityRulePoller) ResumeToken() (string, error) {
 
 func (p *inboundSecurityRulePoller) pollUntilDone(ctx context.Context, freq time.Duration) (InboundSecurityRuleResponse, error) {
 	respType := InboundSecurityRuleResponse{InboundSecurityRule: &InboundSecurityRule{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.InboundSecurityRule)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.InboundSecurityRule)
 	if err != nil {
 		return InboundSecurityRuleResponse{}, err
 	}
@@ -2387,8 +2336,7 @@ type LoadBalancerPoller interface {
 }
 
 type loadBalancerPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *loadBalancerPoller) Done() bool {
@@ -2396,12 +2344,12 @@ func (p *loadBalancerPoller) Done() bool {
 }
 
 func (p *loadBalancerPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *loadBalancerPoller) FinalResponse(ctx context.Context) (LoadBalancerResponse, error) {
 	respType := LoadBalancerResponse{LoadBalancer: &LoadBalancer{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.LoadBalancer)
+	resp, err := p.pt.FinalResponse(ctx, respType.LoadBalancer)
 	if err != nil {
 		return LoadBalancerResponse{}, err
 	}
@@ -2415,7 +2363,7 @@ func (p *loadBalancerPoller) ResumeToken() (string, error) {
 
 func (p *loadBalancerPoller) pollUntilDone(ctx context.Context, freq time.Duration) (LoadBalancerResponse, error) {
 	respType := LoadBalancerResponse{LoadBalancer: &LoadBalancer{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.LoadBalancer)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.LoadBalancer)
 	if err != nil {
 		return LoadBalancerResponse{}, err
 	}
@@ -2433,8 +2381,7 @@ type LocalNetworkGatewayPoller interface {
 }
 
 type localNetworkGatewayPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *localNetworkGatewayPoller) Done() bool {
@@ -2442,12 +2389,12 @@ func (p *localNetworkGatewayPoller) Done() bool {
 }
 
 func (p *localNetworkGatewayPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *localNetworkGatewayPoller) FinalResponse(ctx context.Context) (LocalNetworkGatewayResponse, error) {
 	respType := LocalNetworkGatewayResponse{LocalNetworkGateway: &LocalNetworkGateway{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.LocalNetworkGateway)
+	resp, err := p.pt.FinalResponse(ctx, respType.LocalNetworkGateway)
 	if err != nil {
 		return LocalNetworkGatewayResponse{}, err
 	}
@@ -2461,7 +2408,7 @@ func (p *localNetworkGatewayPoller) ResumeToken() (string, error) {
 
 func (p *localNetworkGatewayPoller) pollUntilDone(ctx context.Context, freq time.Duration) (LocalNetworkGatewayResponse, error) {
 	respType := LocalNetworkGatewayResponse{LocalNetworkGateway: &LocalNetworkGateway{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.LocalNetworkGateway)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.LocalNetworkGateway)
 	if err != nil {
 		return LocalNetworkGatewayResponse{}, err
 	}
@@ -2479,8 +2426,7 @@ type NatGatewayPoller interface {
 }
 
 type natGatewayPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *natGatewayPoller) Done() bool {
@@ -2488,12 +2434,12 @@ func (p *natGatewayPoller) Done() bool {
 }
 
 func (p *natGatewayPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *natGatewayPoller) FinalResponse(ctx context.Context) (NatGatewayResponse, error) {
 	respType := NatGatewayResponse{NatGateway: &NatGateway{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.NatGateway)
+	resp, err := p.pt.FinalResponse(ctx, respType.NatGateway)
 	if err != nil {
 		return NatGatewayResponse{}, err
 	}
@@ -2507,7 +2453,7 @@ func (p *natGatewayPoller) ResumeToken() (string, error) {
 
 func (p *natGatewayPoller) pollUntilDone(ctx context.Context, freq time.Duration) (NatGatewayResponse, error) {
 	respType := NatGatewayResponse{NatGateway: &NatGateway{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.NatGateway)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.NatGateway)
 	if err != nil {
 		return NatGatewayResponse{}, err
 	}
@@ -2525,8 +2471,7 @@ type NetworkConfigurationDiagnosticResponsePoller interface {
 }
 
 type networkConfigurationDiagnosticResponsePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *networkConfigurationDiagnosticResponsePoller) Done() bool {
@@ -2534,12 +2479,12 @@ func (p *networkConfigurationDiagnosticResponsePoller) Done() bool {
 }
 
 func (p *networkConfigurationDiagnosticResponsePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *networkConfigurationDiagnosticResponsePoller) FinalResponse(ctx context.Context) (NetworkConfigurationDiagnosticResponseResponse, error) {
 	respType := NetworkConfigurationDiagnosticResponseResponse{NetworkConfigurationDiagnosticResponse: &NetworkConfigurationDiagnosticResponse{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.NetworkConfigurationDiagnosticResponse)
+	resp, err := p.pt.FinalResponse(ctx, respType.NetworkConfigurationDiagnosticResponse)
 	if err != nil {
 		return NetworkConfigurationDiagnosticResponseResponse{}, err
 	}
@@ -2553,7 +2498,7 @@ func (p *networkConfigurationDiagnosticResponsePoller) ResumeToken() (string, er
 
 func (p *networkConfigurationDiagnosticResponsePoller) pollUntilDone(ctx context.Context, freq time.Duration) (NetworkConfigurationDiagnosticResponseResponse, error) {
 	respType := NetworkConfigurationDiagnosticResponseResponse{NetworkConfigurationDiagnosticResponse: &NetworkConfigurationDiagnosticResponse{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.NetworkConfigurationDiagnosticResponse)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.NetworkConfigurationDiagnosticResponse)
 	if err != nil {
 		return NetworkConfigurationDiagnosticResponseResponse{}, err
 	}
@@ -2571,8 +2516,7 @@ type NetworkInterfacePoller interface {
 }
 
 type networkInterfacePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *networkInterfacePoller) Done() bool {
@@ -2580,12 +2524,12 @@ func (p *networkInterfacePoller) Done() bool {
 }
 
 func (p *networkInterfacePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *networkInterfacePoller) FinalResponse(ctx context.Context) (NetworkInterfaceResponse, error) {
 	respType := NetworkInterfaceResponse{NetworkInterface: &NetworkInterface{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.NetworkInterface)
+	resp, err := p.pt.FinalResponse(ctx, respType.NetworkInterface)
 	if err != nil {
 		return NetworkInterfaceResponse{}, err
 	}
@@ -2599,7 +2543,7 @@ func (p *networkInterfacePoller) ResumeToken() (string, error) {
 
 func (p *networkInterfacePoller) pollUntilDone(ctx context.Context, freq time.Duration) (NetworkInterfaceResponse, error) {
 	respType := NetworkInterfaceResponse{NetworkInterface: &NetworkInterface{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.NetworkInterface)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.NetworkInterface)
 	if err != nil {
 		return NetworkInterfaceResponse{}, err
 	}
@@ -2617,8 +2561,7 @@ type NetworkInterfaceTapConfigurationPoller interface {
 }
 
 type networkInterfaceTapConfigurationPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *networkInterfaceTapConfigurationPoller) Done() bool {
@@ -2626,12 +2569,12 @@ func (p *networkInterfaceTapConfigurationPoller) Done() bool {
 }
 
 func (p *networkInterfaceTapConfigurationPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *networkInterfaceTapConfigurationPoller) FinalResponse(ctx context.Context) (NetworkInterfaceTapConfigurationResponse, error) {
 	respType := NetworkInterfaceTapConfigurationResponse{NetworkInterfaceTapConfiguration: &NetworkInterfaceTapConfiguration{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.NetworkInterfaceTapConfiguration)
+	resp, err := p.pt.FinalResponse(ctx, respType.NetworkInterfaceTapConfiguration)
 	if err != nil {
 		return NetworkInterfaceTapConfigurationResponse{}, err
 	}
@@ -2645,7 +2588,7 @@ func (p *networkInterfaceTapConfigurationPoller) ResumeToken() (string, error) {
 
 func (p *networkInterfaceTapConfigurationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (NetworkInterfaceTapConfigurationResponse, error) {
 	respType := NetworkInterfaceTapConfigurationResponse{NetworkInterfaceTapConfiguration: &NetworkInterfaceTapConfiguration{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.NetworkInterfaceTapConfiguration)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.NetworkInterfaceTapConfiguration)
 	if err != nil {
 		return NetworkInterfaceTapConfigurationResponse{}, err
 	}
@@ -2663,8 +2606,7 @@ type NetworkSecurityGroupPoller interface {
 }
 
 type networkSecurityGroupPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *networkSecurityGroupPoller) Done() bool {
@@ -2672,12 +2614,12 @@ func (p *networkSecurityGroupPoller) Done() bool {
 }
 
 func (p *networkSecurityGroupPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *networkSecurityGroupPoller) FinalResponse(ctx context.Context) (NetworkSecurityGroupResponse, error) {
 	respType := NetworkSecurityGroupResponse{NetworkSecurityGroup: &NetworkSecurityGroup{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.NetworkSecurityGroup)
+	resp, err := p.pt.FinalResponse(ctx, respType.NetworkSecurityGroup)
 	if err != nil {
 		return NetworkSecurityGroupResponse{}, err
 	}
@@ -2691,7 +2633,7 @@ func (p *networkSecurityGroupPoller) ResumeToken() (string, error) {
 
 func (p *networkSecurityGroupPoller) pollUntilDone(ctx context.Context, freq time.Duration) (NetworkSecurityGroupResponse, error) {
 	respType := NetworkSecurityGroupResponse{NetworkSecurityGroup: &NetworkSecurityGroup{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.NetworkSecurityGroup)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.NetworkSecurityGroup)
 	if err != nil {
 		return NetworkSecurityGroupResponse{}, err
 	}
@@ -2709,8 +2651,7 @@ type NetworkVirtualAppliancePoller interface {
 }
 
 type networkVirtualAppliancePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *networkVirtualAppliancePoller) Done() bool {
@@ -2718,12 +2659,12 @@ func (p *networkVirtualAppliancePoller) Done() bool {
 }
 
 func (p *networkVirtualAppliancePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *networkVirtualAppliancePoller) FinalResponse(ctx context.Context) (NetworkVirtualApplianceResponse, error) {
 	respType := NetworkVirtualApplianceResponse{NetworkVirtualAppliance: &NetworkVirtualAppliance{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.NetworkVirtualAppliance)
+	resp, err := p.pt.FinalResponse(ctx, respType.NetworkVirtualAppliance)
 	if err != nil {
 		return NetworkVirtualApplianceResponse{}, err
 	}
@@ -2737,7 +2678,7 @@ func (p *networkVirtualAppliancePoller) ResumeToken() (string, error) {
 
 func (p *networkVirtualAppliancePoller) pollUntilDone(ctx context.Context, freq time.Duration) (NetworkVirtualApplianceResponse, error) {
 	respType := NetworkVirtualApplianceResponse{NetworkVirtualAppliance: &NetworkVirtualAppliance{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.NetworkVirtualAppliance)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.NetworkVirtualAppliance)
 	if err != nil {
 		return NetworkVirtualApplianceResponse{}, err
 	}
@@ -2755,8 +2696,7 @@ type NextHopResultPoller interface {
 }
 
 type nextHopResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *nextHopResultPoller) Done() bool {
@@ -2764,12 +2704,12 @@ func (p *nextHopResultPoller) Done() bool {
 }
 
 func (p *nextHopResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *nextHopResultPoller) FinalResponse(ctx context.Context) (NextHopResultResponse, error) {
 	respType := NextHopResultResponse{NextHopResult: &NextHopResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.NextHopResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.NextHopResult)
 	if err != nil {
 		return NextHopResultResponse{}, err
 	}
@@ -2783,7 +2723,7 @@ func (p *nextHopResultPoller) ResumeToken() (string, error) {
 
 func (p *nextHopResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (NextHopResultResponse, error) {
 	respType := NextHopResultResponse{NextHopResult: &NextHopResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.NextHopResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.NextHopResult)
 	if err != nil {
 		return NextHopResultResponse{}, err
 	}
@@ -2801,8 +2741,7 @@ type P2SVPNConnectionHealthPoller interface {
 }
 
 type p2SVPNConnectionHealthPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *p2SVPNConnectionHealthPoller) Done() bool {
@@ -2810,12 +2749,12 @@ func (p *p2SVPNConnectionHealthPoller) Done() bool {
 }
 
 func (p *p2SVPNConnectionHealthPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *p2SVPNConnectionHealthPoller) FinalResponse(ctx context.Context) (P2SVPNConnectionHealthResponse, error) {
 	respType := P2SVPNConnectionHealthResponse{P2SVPNConnectionHealth: &P2SVPNConnectionHealth{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.P2SVPNConnectionHealth)
+	resp, err := p.pt.FinalResponse(ctx, respType.P2SVPNConnectionHealth)
 	if err != nil {
 		return P2SVPNConnectionHealthResponse{}, err
 	}
@@ -2829,7 +2768,7 @@ func (p *p2SVPNConnectionHealthPoller) ResumeToken() (string, error) {
 
 func (p *p2SVPNConnectionHealthPoller) pollUntilDone(ctx context.Context, freq time.Duration) (P2SVPNConnectionHealthResponse, error) {
 	respType := P2SVPNConnectionHealthResponse{P2SVPNConnectionHealth: &P2SVPNConnectionHealth{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.P2SVPNConnectionHealth)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.P2SVPNConnectionHealth)
 	if err != nil {
 		return P2SVPNConnectionHealthResponse{}, err
 	}
@@ -2847,8 +2786,7 @@ type P2SVPNGatewayPoller interface {
 }
 
 type p2SVPNGatewayPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *p2SVPNGatewayPoller) Done() bool {
@@ -2856,12 +2794,12 @@ func (p *p2SVPNGatewayPoller) Done() bool {
 }
 
 func (p *p2SVPNGatewayPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *p2SVPNGatewayPoller) FinalResponse(ctx context.Context) (P2SVPNGatewayResponse, error) {
 	respType := P2SVPNGatewayResponse{P2SVPNGateway: &P2SVPNGateway{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.P2SVPNGateway)
+	resp, err := p.pt.FinalResponse(ctx, respType.P2SVPNGateway)
 	if err != nil {
 		return P2SVPNGatewayResponse{}, err
 	}
@@ -2875,7 +2813,7 @@ func (p *p2SVPNGatewayPoller) ResumeToken() (string, error) {
 
 func (p *p2SVPNGatewayPoller) pollUntilDone(ctx context.Context, freq time.Duration) (P2SVPNGatewayResponse, error) {
 	respType := P2SVPNGatewayResponse{P2SVPNGateway: &P2SVPNGateway{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.P2SVPNGateway)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.P2SVPNGateway)
 	if err != nil {
 		return P2SVPNGatewayResponse{}, err
 	}
@@ -2893,8 +2831,7 @@ type PacketCaptureQueryStatusResultPoller interface {
 }
 
 type packetCaptureQueryStatusResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *packetCaptureQueryStatusResultPoller) Done() bool {
@@ -2902,12 +2839,12 @@ func (p *packetCaptureQueryStatusResultPoller) Done() bool {
 }
 
 func (p *packetCaptureQueryStatusResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *packetCaptureQueryStatusResultPoller) FinalResponse(ctx context.Context) (PacketCaptureQueryStatusResultResponse, error) {
 	respType := PacketCaptureQueryStatusResultResponse{PacketCaptureQueryStatusResult: &PacketCaptureQueryStatusResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.PacketCaptureQueryStatusResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.PacketCaptureQueryStatusResult)
 	if err != nil {
 		return PacketCaptureQueryStatusResultResponse{}, err
 	}
@@ -2921,7 +2858,7 @@ func (p *packetCaptureQueryStatusResultPoller) ResumeToken() (string, error) {
 
 func (p *packetCaptureQueryStatusResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PacketCaptureQueryStatusResultResponse, error) {
 	respType := PacketCaptureQueryStatusResultResponse{PacketCaptureQueryStatusResult: &PacketCaptureQueryStatusResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PacketCaptureQueryStatusResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.PacketCaptureQueryStatusResult)
 	if err != nil {
 		return PacketCaptureQueryStatusResultResponse{}, err
 	}
@@ -2939,8 +2876,7 @@ type PacketCaptureResultPoller interface {
 }
 
 type packetCaptureResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *packetCaptureResultPoller) Done() bool {
@@ -2948,12 +2884,12 @@ func (p *packetCaptureResultPoller) Done() bool {
 }
 
 func (p *packetCaptureResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *packetCaptureResultPoller) FinalResponse(ctx context.Context) (PacketCaptureResultResponse, error) {
 	respType := PacketCaptureResultResponse{PacketCaptureResult: &PacketCaptureResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.PacketCaptureResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.PacketCaptureResult)
 	if err != nil {
 		return PacketCaptureResultResponse{}, err
 	}
@@ -2967,7 +2903,7 @@ func (p *packetCaptureResultPoller) ResumeToken() (string, error) {
 
 func (p *packetCaptureResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PacketCaptureResultResponse, error) {
 	respType := PacketCaptureResultResponse{PacketCaptureResult: &PacketCaptureResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PacketCaptureResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.PacketCaptureResult)
 	if err != nil {
 		return PacketCaptureResultResponse{}, err
 	}
@@ -2985,8 +2921,7 @@ type PeerRouteListPoller interface {
 }
 
 type peerRouteListPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *peerRouteListPoller) Done() bool {
@@ -2994,12 +2929,12 @@ func (p *peerRouteListPoller) Done() bool {
 }
 
 func (p *peerRouteListPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *peerRouteListPoller) FinalResponse(ctx context.Context) (PeerRouteListResponse, error) {
 	respType := PeerRouteListResponse{PeerRouteList: &PeerRouteList{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.PeerRouteList)
+	resp, err := p.pt.FinalResponse(ctx, respType.PeerRouteList)
 	if err != nil {
 		return PeerRouteListResponse{}, err
 	}
@@ -3013,7 +2948,7 @@ func (p *peerRouteListPoller) ResumeToken() (string, error) {
 
 func (p *peerRouteListPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PeerRouteListResponse, error) {
 	respType := PeerRouteListResponse{PeerRouteList: &PeerRouteList{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PeerRouteList)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.PeerRouteList)
 	if err != nil {
 		return PeerRouteListResponse{}, err
 	}
@@ -3031,8 +2966,7 @@ type PrivateDNSZoneGroupPoller interface {
 }
 
 type privateDNSZoneGroupPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *privateDNSZoneGroupPoller) Done() bool {
@@ -3040,12 +2974,12 @@ func (p *privateDNSZoneGroupPoller) Done() bool {
 }
 
 func (p *privateDNSZoneGroupPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *privateDNSZoneGroupPoller) FinalResponse(ctx context.Context) (PrivateDNSZoneGroupResponse, error) {
 	respType := PrivateDNSZoneGroupResponse{PrivateDNSZoneGroup: &PrivateDNSZoneGroup{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.PrivateDNSZoneGroup)
+	resp, err := p.pt.FinalResponse(ctx, respType.PrivateDNSZoneGroup)
 	if err != nil {
 		return PrivateDNSZoneGroupResponse{}, err
 	}
@@ -3059,7 +2993,7 @@ func (p *privateDNSZoneGroupPoller) ResumeToken() (string, error) {
 
 func (p *privateDNSZoneGroupPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PrivateDNSZoneGroupResponse, error) {
 	respType := PrivateDNSZoneGroupResponse{PrivateDNSZoneGroup: &PrivateDNSZoneGroup{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PrivateDNSZoneGroup)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.PrivateDNSZoneGroup)
 	if err != nil {
 		return PrivateDNSZoneGroupResponse{}, err
 	}
@@ -3077,8 +3011,7 @@ type PrivateEndpointPoller interface {
 }
 
 type privateEndpointPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *privateEndpointPoller) Done() bool {
@@ -3086,12 +3019,12 @@ func (p *privateEndpointPoller) Done() bool {
 }
 
 func (p *privateEndpointPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *privateEndpointPoller) FinalResponse(ctx context.Context) (PrivateEndpointResponse, error) {
 	respType := PrivateEndpointResponse{PrivateEndpoint: &PrivateEndpoint{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.PrivateEndpoint)
+	resp, err := p.pt.FinalResponse(ctx, respType.PrivateEndpoint)
 	if err != nil {
 		return PrivateEndpointResponse{}, err
 	}
@@ -3105,7 +3038,7 @@ func (p *privateEndpointPoller) ResumeToken() (string, error) {
 
 func (p *privateEndpointPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointResponse, error) {
 	respType := PrivateEndpointResponse{PrivateEndpoint: &PrivateEndpoint{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PrivateEndpoint)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.PrivateEndpoint)
 	if err != nil {
 		return PrivateEndpointResponse{}, err
 	}
@@ -3123,8 +3056,7 @@ type PrivateLinkServicePoller interface {
 }
 
 type privateLinkServicePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *privateLinkServicePoller) Done() bool {
@@ -3132,12 +3064,12 @@ func (p *privateLinkServicePoller) Done() bool {
 }
 
 func (p *privateLinkServicePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *privateLinkServicePoller) FinalResponse(ctx context.Context) (PrivateLinkServiceResponse, error) {
 	respType := PrivateLinkServiceResponse{PrivateLinkService: &PrivateLinkService{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.PrivateLinkService)
+	resp, err := p.pt.FinalResponse(ctx, respType.PrivateLinkService)
 	if err != nil {
 		return PrivateLinkServiceResponse{}, err
 	}
@@ -3151,7 +3083,7 @@ func (p *privateLinkServicePoller) ResumeToken() (string, error) {
 
 func (p *privateLinkServicePoller) pollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServiceResponse, error) {
 	respType := PrivateLinkServiceResponse{PrivateLinkService: &PrivateLinkService{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PrivateLinkService)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.PrivateLinkService)
 	if err != nil {
 		return PrivateLinkServiceResponse{}, err
 	}
@@ -3169,8 +3101,7 @@ type PrivateLinkServiceVisibilityPoller interface {
 }
 
 type privateLinkServiceVisibilityPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *privateLinkServiceVisibilityPoller) Done() bool {
@@ -3178,12 +3109,12 @@ func (p *privateLinkServiceVisibilityPoller) Done() bool {
 }
 
 func (p *privateLinkServiceVisibilityPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *privateLinkServiceVisibilityPoller) FinalResponse(ctx context.Context) (PrivateLinkServiceVisibilityResponse, error) {
 	respType := PrivateLinkServiceVisibilityResponse{PrivateLinkServiceVisibility: &PrivateLinkServiceVisibility{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.PrivateLinkServiceVisibility)
+	resp, err := p.pt.FinalResponse(ctx, respType.PrivateLinkServiceVisibility)
 	if err != nil {
 		return PrivateLinkServiceVisibilityResponse{}, err
 	}
@@ -3197,7 +3128,7 @@ func (p *privateLinkServiceVisibilityPoller) ResumeToken() (string, error) {
 
 func (p *privateLinkServiceVisibilityPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PrivateLinkServiceVisibilityResponse, error) {
 	respType := PrivateLinkServiceVisibilityResponse{PrivateLinkServiceVisibility: &PrivateLinkServiceVisibility{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PrivateLinkServiceVisibility)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.PrivateLinkServiceVisibility)
 	if err != nil {
 		return PrivateLinkServiceVisibilityResponse{}, err
 	}
@@ -3215,8 +3146,7 @@ type PublicIPAddressPoller interface {
 }
 
 type publicIPAddressPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *publicIPAddressPoller) Done() bool {
@@ -3224,12 +3154,12 @@ func (p *publicIPAddressPoller) Done() bool {
 }
 
 func (p *publicIPAddressPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *publicIPAddressPoller) FinalResponse(ctx context.Context) (PublicIPAddressResponse, error) {
 	respType := PublicIPAddressResponse{PublicIPAddress: &PublicIPAddress{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.PublicIPAddress)
+	resp, err := p.pt.FinalResponse(ctx, respType.PublicIPAddress)
 	if err != nil {
 		return PublicIPAddressResponse{}, err
 	}
@@ -3243,7 +3173,7 @@ func (p *publicIPAddressPoller) ResumeToken() (string, error) {
 
 func (p *publicIPAddressPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PublicIPAddressResponse, error) {
 	respType := PublicIPAddressResponse{PublicIPAddress: &PublicIPAddress{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PublicIPAddress)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.PublicIPAddress)
 	if err != nil {
 		return PublicIPAddressResponse{}, err
 	}
@@ -3261,8 +3191,7 @@ type PublicIPPrefixPoller interface {
 }
 
 type publicIPPrefixPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *publicIPPrefixPoller) Done() bool {
@@ -3270,12 +3199,12 @@ func (p *publicIPPrefixPoller) Done() bool {
 }
 
 func (p *publicIPPrefixPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *publicIPPrefixPoller) FinalResponse(ctx context.Context) (PublicIPPrefixResponse, error) {
 	respType := PublicIPPrefixResponse{PublicIPPrefix: &PublicIPPrefix{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.PublicIPPrefix)
+	resp, err := p.pt.FinalResponse(ctx, respType.PublicIPPrefix)
 	if err != nil {
 		return PublicIPPrefixResponse{}, err
 	}
@@ -3289,7 +3218,7 @@ func (p *publicIPPrefixPoller) ResumeToken() (string, error) {
 
 func (p *publicIPPrefixPoller) pollUntilDone(ctx context.Context, freq time.Duration) (PublicIPPrefixResponse, error) {
 	respType := PublicIPPrefixResponse{PublicIPPrefix: &PublicIPPrefix{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.PublicIPPrefix)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.PublicIPPrefix)
 	if err != nil {
 		return PublicIPPrefixResponse{}, err
 	}
@@ -3307,8 +3236,7 @@ type RouteFilterPoller interface {
 }
 
 type routeFilterPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *routeFilterPoller) Done() bool {
@@ -3316,12 +3244,12 @@ func (p *routeFilterPoller) Done() bool {
 }
 
 func (p *routeFilterPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *routeFilterPoller) FinalResponse(ctx context.Context) (RouteFilterResponse, error) {
 	respType := RouteFilterResponse{RouteFilter: &RouteFilter{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.RouteFilter)
+	resp, err := p.pt.FinalResponse(ctx, respType.RouteFilter)
 	if err != nil {
 		return RouteFilterResponse{}, err
 	}
@@ -3335,7 +3263,7 @@ func (p *routeFilterPoller) ResumeToken() (string, error) {
 
 func (p *routeFilterPoller) pollUntilDone(ctx context.Context, freq time.Duration) (RouteFilterResponse, error) {
 	respType := RouteFilterResponse{RouteFilter: &RouteFilter{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.RouteFilter)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.RouteFilter)
 	if err != nil {
 		return RouteFilterResponse{}, err
 	}
@@ -3353,8 +3281,7 @@ type RouteFilterRulePoller interface {
 }
 
 type routeFilterRulePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *routeFilterRulePoller) Done() bool {
@@ -3362,12 +3289,12 @@ func (p *routeFilterRulePoller) Done() bool {
 }
 
 func (p *routeFilterRulePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *routeFilterRulePoller) FinalResponse(ctx context.Context) (RouteFilterRuleResponse, error) {
 	respType := RouteFilterRuleResponse{RouteFilterRule: &RouteFilterRule{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.RouteFilterRule)
+	resp, err := p.pt.FinalResponse(ctx, respType.RouteFilterRule)
 	if err != nil {
 		return RouteFilterRuleResponse{}, err
 	}
@@ -3381,7 +3308,7 @@ func (p *routeFilterRulePoller) ResumeToken() (string, error) {
 
 func (p *routeFilterRulePoller) pollUntilDone(ctx context.Context, freq time.Duration) (RouteFilterRuleResponse, error) {
 	respType := RouteFilterRuleResponse{RouteFilterRule: &RouteFilterRule{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.RouteFilterRule)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.RouteFilterRule)
 	if err != nil {
 		return RouteFilterRuleResponse{}, err
 	}
@@ -3399,8 +3326,7 @@ type RoutePoller interface {
 }
 
 type routePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *routePoller) Done() bool {
@@ -3408,12 +3334,12 @@ func (p *routePoller) Done() bool {
 }
 
 func (p *routePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *routePoller) FinalResponse(ctx context.Context) (RouteResponse, error) {
 	respType := RouteResponse{Route: &Route{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.Route)
+	resp, err := p.pt.FinalResponse(ctx, respType.Route)
 	if err != nil {
 		return RouteResponse{}, err
 	}
@@ -3427,7 +3353,7 @@ func (p *routePoller) ResumeToken() (string, error) {
 
 func (p *routePoller) pollUntilDone(ctx context.Context, freq time.Duration) (RouteResponse, error) {
 	respType := RouteResponse{Route: &Route{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.Route)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.Route)
 	if err != nil {
 		return RouteResponse{}, err
 	}
@@ -3445,8 +3371,7 @@ type RouteTablePoller interface {
 }
 
 type routeTablePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *routeTablePoller) Done() bool {
@@ -3454,12 +3379,12 @@ func (p *routeTablePoller) Done() bool {
 }
 
 func (p *routeTablePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *routeTablePoller) FinalResponse(ctx context.Context) (RouteTableResponse, error) {
 	respType := RouteTableResponse{RouteTable: &RouteTable{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.RouteTable)
+	resp, err := p.pt.FinalResponse(ctx, respType.RouteTable)
 	if err != nil {
 		return RouteTableResponse{}, err
 	}
@@ -3473,7 +3398,7 @@ func (p *routeTablePoller) ResumeToken() (string, error) {
 
 func (p *routeTablePoller) pollUntilDone(ctx context.Context, freq time.Duration) (RouteTableResponse, error) {
 	respType := RouteTableResponse{RouteTable: &RouteTable{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.RouteTable)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.RouteTable)
 	if err != nil {
 		return RouteTableResponse{}, err
 	}
@@ -3491,8 +3416,7 @@ type SecurityGroupViewResultPoller interface {
 }
 
 type securityGroupViewResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *securityGroupViewResultPoller) Done() bool {
@@ -3500,12 +3424,12 @@ func (p *securityGroupViewResultPoller) Done() bool {
 }
 
 func (p *securityGroupViewResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *securityGroupViewResultPoller) FinalResponse(ctx context.Context) (SecurityGroupViewResultResponse, error) {
 	respType := SecurityGroupViewResultResponse{SecurityGroupViewResult: &SecurityGroupViewResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.SecurityGroupViewResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.SecurityGroupViewResult)
 	if err != nil {
 		return SecurityGroupViewResultResponse{}, err
 	}
@@ -3519,7 +3443,7 @@ func (p *securityGroupViewResultPoller) ResumeToken() (string, error) {
 
 func (p *securityGroupViewResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (SecurityGroupViewResultResponse, error) {
 	respType := SecurityGroupViewResultResponse{SecurityGroupViewResult: &SecurityGroupViewResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.SecurityGroupViewResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.SecurityGroupViewResult)
 	if err != nil {
 		return SecurityGroupViewResultResponse{}, err
 	}
@@ -3537,8 +3461,7 @@ type SecurityPartnerProviderPoller interface {
 }
 
 type securityPartnerProviderPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *securityPartnerProviderPoller) Done() bool {
@@ -3546,12 +3469,12 @@ func (p *securityPartnerProviderPoller) Done() bool {
 }
 
 func (p *securityPartnerProviderPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *securityPartnerProviderPoller) FinalResponse(ctx context.Context) (SecurityPartnerProviderResponse, error) {
 	respType := SecurityPartnerProviderResponse{SecurityPartnerProvider: &SecurityPartnerProvider{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.SecurityPartnerProvider)
+	resp, err := p.pt.FinalResponse(ctx, respType.SecurityPartnerProvider)
 	if err != nil {
 		return SecurityPartnerProviderResponse{}, err
 	}
@@ -3565,7 +3488,7 @@ func (p *securityPartnerProviderPoller) ResumeToken() (string, error) {
 
 func (p *securityPartnerProviderPoller) pollUntilDone(ctx context.Context, freq time.Duration) (SecurityPartnerProviderResponse, error) {
 	respType := SecurityPartnerProviderResponse{SecurityPartnerProvider: &SecurityPartnerProvider{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.SecurityPartnerProvider)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.SecurityPartnerProvider)
 	if err != nil {
 		return SecurityPartnerProviderResponse{}, err
 	}
@@ -3583,8 +3506,7 @@ type SecurityRulePoller interface {
 }
 
 type securityRulePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *securityRulePoller) Done() bool {
@@ -3592,12 +3514,12 @@ func (p *securityRulePoller) Done() bool {
 }
 
 func (p *securityRulePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *securityRulePoller) FinalResponse(ctx context.Context) (SecurityRuleResponse, error) {
 	respType := SecurityRuleResponse{SecurityRule: &SecurityRule{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.SecurityRule)
+	resp, err := p.pt.FinalResponse(ctx, respType.SecurityRule)
 	if err != nil {
 		return SecurityRuleResponse{}, err
 	}
@@ -3611,7 +3533,7 @@ func (p *securityRulePoller) ResumeToken() (string, error) {
 
 func (p *securityRulePoller) pollUntilDone(ctx context.Context, freq time.Duration) (SecurityRuleResponse, error) {
 	respType := SecurityRuleResponse{SecurityRule: &SecurityRule{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.SecurityRule)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.SecurityRule)
 	if err != nil {
 		return SecurityRuleResponse{}, err
 	}
@@ -3629,8 +3551,7 @@ type ServiceEndpointPolicyDefinitionPoller interface {
 }
 
 type serviceEndpointPolicyDefinitionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *serviceEndpointPolicyDefinitionPoller) Done() bool {
@@ -3638,12 +3559,12 @@ func (p *serviceEndpointPolicyDefinitionPoller) Done() bool {
 }
 
 func (p *serviceEndpointPolicyDefinitionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *serviceEndpointPolicyDefinitionPoller) FinalResponse(ctx context.Context) (ServiceEndpointPolicyDefinitionResponse, error) {
 	respType := ServiceEndpointPolicyDefinitionResponse{ServiceEndpointPolicyDefinition: &ServiceEndpointPolicyDefinition{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ServiceEndpointPolicyDefinition)
+	resp, err := p.pt.FinalResponse(ctx, respType.ServiceEndpointPolicyDefinition)
 	if err != nil {
 		return ServiceEndpointPolicyDefinitionResponse{}, err
 	}
@@ -3657,7 +3578,7 @@ func (p *serviceEndpointPolicyDefinitionPoller) ResumeToken() (string, error) {
 
 func (p *serviceEndpointPolicyDefinitionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ServiceEndpointPolicyDefinitionResponse, error) {
 	respType := ServiceEndpointPolicyDefinitionResponse{ServiceEndpointPolicyDefinition: &ServiceEndpointPolicyDefinition{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ServiceEndpointPolicyDefinition)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ServiceEndpointPolicyDefinition)
 	if err != nil {
 		return ServiceEndpointPolicyDefinitionResponse{}, err
 	}
@@ -3675,8 +3596,7 @@ type ServiceEndpointPolicyPoller interface {
 }
 
 type serviceEndpointPolicyPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *serviceEndpointPolicyPoller) Done() bool {
@@ -3684,12 +3604,12 @@ func (p *serviceEndpointPolicyPoller) Done() bool {
 }
 
 func (p *serviceEndpointPolicyPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *serviceEndpointPolicyPoller) FinalResponse(ctx context.Context) (ServiceEndpointPolicyResponse, error) {
 	respType := ServiceEndpointPolicyResponse{ServiceEndpointPolicy: &ServiceEndpointPolicy{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.ServiceEndpointPolicy)
+	resp, err := p.pt.FinalResponse(ctx, respType.ServiceEndpointPolicy)
 	if err != nil {
 		return ServiceEndpointPolicyResponse{}, err
 	}
@@ -3703,7 +3623,7 @@ func (p *serviceEndpointPolicyPoller) ResumeToken() (string, error) {
 
 func (p *serviceEndpointPolicyPoller) pollUntilDone(ctx context.Context, freq time.Duration) (ServiceEndpointPolicyResponse, error) {
 	respType := ServiceEndpointPolicyResponse{ServiceEndpointPolicy: &ServiceEndpointPolicy{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.ServiceEndpointPolicy)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.ServiceEndpointPolicy)
 	if err != nil {
 		return ServiceEndpointPolicyResponse{}, err
 	}
@@ -3721,8 +3641,7 @@ type StringPoller interface {
 }
 
 type stringPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *stringPoller) Done() bool {
@@ -3730,12 +3649,12 @@ func (p *stringPoller) Done() bool {
 }
 
 func (p *stringPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *stringPoller) FinalResponse(ctx context.Context) (StringResponse, error) {
 	respType := StringResponse{}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, &respType.Value)
+	resp, err := p.pt.FinalResponse(ctx, &respType.Value)
 	if err != nil {
 		return StringResponse{}, err
 	}
@@ -3749,7 +3668,7 @@ func (p *stringPoller) ResumeToken() (string, error) {
 
 func (p *stringPoller) pollUntilDone(ctx context.Context, freq time.Duration) (StringResponse, error) {
 	respType := StringResponse{}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, &respType.Value)
+	resp, err := p.pt.PollUntilDone(ctx, freq, &respType.Value)
 	if err != nil {
 		return StringResponse{}, err
 	}
@@ -3767,8 +3686,7 @@ type SubnetPoller interface {
 }
 
 type subnetPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *subnetPoller) Done() bool {
@@ -3776,12 +3694,12 @@ func (p *subnetPoller) Done() bool {
 }
 
 func (p *subnetPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *subnetPoller) FinalResponse(ctx context.Context) (SubnetResponse, error) {
 	respType := SubnetResponse{Subnet: &Subnet{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.Subnet)
+	resp, err := p.pt.FinalResponse(ctx, respType.Subnet)
 	if err != nil {
 		return SubnetResponse{}, err
 	}
@@ -3795,7 +3713,7 @@ func (p *subnetPoller) ResumeToken() (string, error) {
 
 func (p *subnetPoller) pollUntilDone(ctx context.Context, freq time.Duration) (SubnetResponse, error) {
 	respType := SubnetResponse{Subnet: &Subnet{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.Subnet)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.Subnet)
 	if err != nil {
 		return SubnetResponse{}, err
 	}
@@ -3813,8 +3731,7 @@ type TroubleshootingResultPoller interface {
 }
 
 type troubleshootingResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *troubleshootingResultPoller) Done() bool {
@@ -3822,12 +3739,12 @@ func (p *troubleshootingResultPoller) Done() bool {
 }
 
 func (p *troubleshootingResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *troubleshootingResultPoller) FinalResponse(ctx context.Context) (TroubleshootingResultResponse, error) {
 	respType := TroubleshootingResultResponse{TroubleshootingResult: &TroubleshootingResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.TroubleshootingResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.TroubleshootingResult)
 	if err != nil {
 		return TroubleshootingResultResponse{}, err
 	}
@@ -3841,7 +3758,7 @@ func (p *troubleshootingResultPoller) ResumeToken() (string, error) {
 
 func (p *troubleshootingResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (TroubleshootingResultResponse, error) {
 	respType := TroubleshootingResultResponse{TroubleshootingResult: &TroubleshootingResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.TroubleshootingResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.TroubleshootingResult)
 	if err != nil {
 		return TroubleshootingResultResponse{}, err
 	}
@@ -3859,8 +3776,7 @@ type VPNClientConnectionHealthDetailListResultPoller interface {
 }
 
 type vpnClientConnectionHealthDetailListResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *vpnClientConnectionHealthDetailListResultPoller) Done() bool {
@@ -3868,12 +3784,12 @@ func (p *vpnClientConnectionHealthDetailListResultPoller) Done() bool {
 }
 
 func (p *vpnClientConnectionHealthDetailListResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *vpnClientConnectionHealthDetailListResultPoller) FinalResponse(ctx context.Context) (VPNClientConnectionHealthDetailListResultResponse, error) {
 	respType := VPNClientConnectionHealthDetailListResultResponse{VPNClientConnectionHealthDetailListResult: &VPNClientConnectionHealthDetailListResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VPNClientConnectionHealthDetailListResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.VPNClientConnectionHealthDetailListResult)
 	if err != nil {
 		return VPNClientConnectionHealthDetailListResultResponse{}, err
 	}
@@ -3887,7 +3803,7 @@ func (p *vpnClientConnectionHealthDetailListResultPoller) ResumeToken() (string,
 
 func (p *vpnClientConnectionHealthDetailListResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNClientConnectionHealthDetailListResultResponse, error) {
 	respType := VPNClientConnectionHealthDetailListResultResponse{VPNClientConnectionHealthDetailListResult: &VPNClientConnectionHealthDetailListResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNClientConnectionHealthDetailListResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VPNClientConnectionHealthDetailListResult)
 	if err != nil {
 		return VPNClientConnectionHealthDetailListResultResponse{}, err
 	}
@@ -3905,8 +3821,7 @@ type VPNClientIPsecParametersPoller interface {
 }
 
 type vpnClientIPSecParametersPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *vpnClientIPSecParametersPoller) Done() bool {
@@ -3914,12 +3829,12 @@ func (p *vpnClientIPSecParametersPoller) Done() bool {
 }
 
 func (p *vpnClientIPSecParametersPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *vpnClientIPSecParametersPoller) FinalResponse(ctx context.Context) (VPNClientIPsecParametersResponse, error) {
 	respType := VPNClientIPsecParametersResponse{VPNClientIPsecParameters: &VPNClientIPsecParameters{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VPNClientIPsecParameters)
+	resp, err := p.pt.FinalResponse(ctx, respType.VPNClientIPsecParameters)
 	if err != nil {
 		return VPNClientIPsecParametersResponse{}, err
 	}
@@ -3933,7 +3848,7 @@ func (p *vpnClientIPSecParametersPoller) ResumeToken() (string, error) {
 
 func (p *vpnClientIPSecParametersPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNClientIPsecParametersResponse, error) {
 	respType := VPNClientIPsecParametersResponse{VPNClientIPsecParameters: &VPNClientIPsecParameters{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNClientIPsecParameters)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VPNClientIPsecParameters)
 	if err != nil {
 		return VPNClientIPsecParametersResponse{}, err
 	}
@@ -3951,8 +3866,7 @@ type VPNConnectionPoller interface {
 }
 
 type vpnConnectionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *vpnConnectionPoller) Done() bool {
@@ -3960,12 +3874,12 @@ func (p *vpnConnectionPoller) Done() bool {
 }
 
 func (p *vpnConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *vpnConnectionPoller) FinalResponse(ctx context.Context) (VPNConnectionResponse, error) {
 	respType := VPNConnectionResponse{VPNConnection: &VPNConnection{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VPNConnection)
+	resp, err := p.pt.FinalResponse(ctx, respType.VPNConnection)
 	if err != nil {
 		return VPNConnectionResponse{}, err
 	}
@@ -3979,7 +3893,7 @@ func (p *vpnConnectionPoller) ResumeToken() (string, error) {
 
 func (p *vpnConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNConnectionResponse, error) {
 	respType := VPNConnectionResponse{VPNConnection: &VPNConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VPNConnection)
 	if err != nil {
 		return VPNConnectionResponse{}, err
 	}
@@ -3997,8 +3911,7 @@ type VPNGatewayNatRulePoller interface {
 }
 
 type vpnGatewayNatRulePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *vpnGatewayNatRulePoller) Done() bool {
@@ -4006,12 +3919,12 @@ func (p *vpnGatewayNatRulePoller) Done() bool {
 }
 
 func (p *vpnGatewayNatRulePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *vpnGatewayNatRulePoller) FinalResponse(ctx context.Context) (VPNGatewayNatRuleResponse, error) {
 	respType := VPNGatewayNatRuleResponse{VPNGatewayNatRule: &VPNGatewayNatRule{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VPNGatewayNatRule)
+	resp, err := p.pt.FinalResponse(ctx, respType.VPNGatewayNatRule)
 	if err != nil {
 		return VPNGatewayNatRuleResponse{}, err
 	}
@@ -4025,7 +3938,7 @@ func (p *vpnGatewayNatRulePoller) ResumeToken() (string, error) {
 
 func (p *vpnGatewayNatRulePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNGatewayNatRuleResponse, error) {
 	respType := VPNGatewayNatRuleResponse{VPNGatewayNatRule: &VPNGatewayNatRule{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNGatewayNatRule)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VPNGatewayNatRule)
 	if err != nil {
 		return VPNGatewayNatRuleResponse{}, err
 	}
@@ -4043,8 +3956,7 @@ type VPNGatewayPoller interface {
 }
 
 type vpnGatewayPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *vpnGatewayPoller) Done() bool {
@@ -4052,12 +3964,12 @@ func (p *vpnGatewayPoller) Done() bool {
 }
 
 func (p *vpnGatewayPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *vpnGatewayPoller) FinalResponse(ctx context.Context) (VPNGatewayResponse, error) {
 	respType := VPNGatewayResponse{VPNGateway: &VPNGateway{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VPNGateway)
+	resp, err := p.pt.FinalResponse(ctx, respType.VPNGateway)
 	if err != nil {
 		return VPNGatewayResponse{}, err
 	}
@@ -4071,7 +3983,7 @@ func (p *vpnGatewayPoller) ResumeToken() (string, error) {
 
 func (p *vpnGatewayPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNGatewayResponse, error) {
 	respType := VPNGatewayResponse{VPNGateway: &VPNGateway{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNGateway)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VPNGateway)
 	if err != nil {
 		return VPNGatewayResponse{}, err
 	}
@@ -4089,8 +4001,7 @@ type VPNProfileResponsePoller interface {
 }
 
 type vpnProfileResponsePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *vpnProfileResponsePoller) Done() bool {
@@ -4098,12 +4009,12 @@ func (p *vpnProfileResponsePoller) Done() bool {
 }
 
 func (p *vpnProfileResponsePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *vpnProfileResponsePoller) FinalResponse(ctx context.Context) (VPNProfileResponseResponse, error) {
 	respType := VPNProfileResponseResponse{VPNProfileResponse: &VPNProfileResponse{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VPNProfileResponse)
+	resp, err := p.pt.FinalResponse(ctx, respType.VPNProfileResponse)
 	if err != nil {
 		return VPNProfileResponseResponse{}, err
 	}
@@ -4117,7 +4028,7 @@ func (p *vpnProfileResponsePoller) ResumeToken() (string, error) {
 
 func (p *vpnProfileResponsePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNProfileResponseResponse, error) {
 	respType := VPNProfileResponseResponse{VPNProfileResponse: &VPNProfileResponse{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNProfileResponse)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VPNProfileResponse)
 	if err != nil {
 		return VPNProfileResponseResponse{}, err
 	}
@@ -4135,8 +4046,7 @@ type VPNServerConfigurationPoller interface {
 }
 
 type vpnServerConfigurationPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *vpnServerConfigurationPoller) Done() bool {
@@ -4144,12 +4054,12 @@ func (p *vpnServerConfigurationPoller) Done() bool {
 }
 
 func (p *vpnServerConfigurationPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *vpnServerConfigurationPoller) FinalResponse(ctx context.Context) (VPNServerConfigurationResponse, error) {
 	respType := VPNServerConfigurationResponse{VPNServerConfiguration: &VPNServerConfiguration{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VPNServerConfiguration)
+	resp, err := p.pt.FinalResponse(ctx, respType.VPNServerConfiguration)
 	if err != nil {
 		return VPNServerConfigurationResponse{}, err
 	}
@@ -4163,7 +4073,7 @@ func (p *vpnServerConfigurationPoller) ResumeToken() (string, error) {
 
 func (p *vpnServerConfigurationPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNServerConfigurationResponse, error) {
 	respType := VPNServerConfigurationResponse{VPNServerConfiguration: &VPNServerConfiguration{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNServerConfiguration)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VPNServerConfiguration)
 	if err != nil {
 		return VPNServerConfigurationResponse{}, err
 	}
@@ -4181,8 +4091,7 @@ type VPNServerConfigurationsResponsePoller interface {
 }
 
 type vpnServerConfigurationsResponsePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *vpnServerConfigurationsResponsePoller) Done() bool {
@@ -4190,12 +4099,12 @@ func (p *vpnServerConfigurationsResponsePoller) Done() bool {
 }
 
 func (p *vpnServerConfigurationsResponsePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *vpnServerConfigurationsResponsePoller) FinalResponse(ctx context.Context) (VPNServerConfigurationsResponseResponse, error) {
 	respType := VPNServerConfigurationsResponseResponse{VPNServerConfigurationsResponse: &VPNServerConfigurationsResponse{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VPNServerConfigurationsResponse)
+	resp, err := p.pt.FinalResponse(ctx, respType.VPNServerConfigurationsResponse)
 	if err != nil {
 		return VPNServerConfigurationsResponseResponse{}, err
 	}
@@ -4209,7 +4118,7 @@ func (p *vpnServerConfigurationsResponsePoller) ResumeToken() (string, error) {
 
 func (p *vpnServerConfigurationsResponsePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNServerConfigurationsResponseResponse, error) {
 	respType := VPNServerConfigurationsResponseResponse{VPNServerConfigurationsResponse: &VPNServerConfigurationsResponse{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNServerConfigurationsResponse)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VPNServerConfigurationsResponse)
 	if err != nil {
 		return VPNServerConfigurationsResponseResponse{}, err
 	}
@@ -4227,8 +4136,7 @@ type VPNSitePoller interface {
 }
 
 type vpnSitePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *vpnSitePoller) Done() bool {
@@ -4236,12 +4144,12 @@ func (p *vpnSitePoller) Done() bool {
 }
 
 func (p *vpnSitePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *vpnSitePoller) FinalResponse(ctx context.Context) (VPNSiteResponse, error) {
 	respType := VPNSiteResponse{VPNSite: &VPNSite{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VPNSite)
+	resp, err := p.pt.FinalResponse(ctx, respType.VPNSite)
 	if err != nil {
 		return VPNSiteResponse{}, err
 	}
@@ -4255,7 +4163,7 @@ func (p *vpnSitePoller) ResumeToken() (string, error) {
 
 func (p *vpnSitePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VPNSiteResponse, error) {
 	respType := VPNSiteResponse{VPNSite: &VPNSite{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VPNSite)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VPNSite)
 	if err != nil {
 		return VPNSiteResponse{}, err
 	}
@@ -4273,8 +4181,7 @@ type VerificationIPFlowResultPoller interface {
 }
 
 type verificationIPFlowResultPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *verificationIPFlowResultPoller) Done() bool {
@@ -4282,12 +4189,12 @@ func (p *verificationIPFlowResultPoller) Done() bool {
 }
 
 func (p *verificationIPFlowResultPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *verificationIPFlowResultPoller) FinalResponse(ctx context.Context) (VerificationIPFlowResultResponse, error) {
 	respType := VerificationIPFlowResultResponse{VerificationIPFlowResult: &VerificationIPFlowResult{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VerificationIPFlowResult)
+	resp, err := p.pt.FinalResponse(ctx, respType.VerificationIPFlowResult)
 	if err != nil {
 		return VerificationIPFlowResultResponse{}, err
 	}
@@ -4301,7 +4208,7 @@ func (p *verificationIPFlowResultPoller) ResumeToken() (string, error) {
 
 func (p *verificationIPFlowResultPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VerificationIPFlowResultResponse, error) {
 	respType := VerificationIPFlowResultResponse{VerificationIPFlowResult: &VerificationIPFlowResult{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VerificationIPFlowResult)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VerificationIPFlowResult)
 	if err != nil {
 		return VerificationIPFlowResultResponse{}, err
 	}
@@ -4319,8 +4226,7 @@ type VirtualApplianceSitePoller interface {
 }
 
 type virtualApplianceSitePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualApplianceSitePoller) Done() bool {
@@ -4328,12 +4234,12 @@ func (p *virtualApplianceSitePoller) Done() bool {
 }
 
 func (p *virtualApplianceSitePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualApplianceSitePoller) FinalResponse(ctx context.Context) (VirtualApplianceSiteResponse, error) {
 	respType := VirtualApplianceSiteResponse{VirtualApplianceSite: &VirtualApplianceSite{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualApplianceSite)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualApplianceSite)
 	if err != nil {
 		return VirtualApplianceSiteResponse{}, err
 	}
@@ -4347,7 +4253,7 @@ func (p *virtualApplianceSitePoller) ResumeToken() (string, error) {
 
 func (p *virtualApplianceSitePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualApplianceSiteResponse, error) {
 	respType := VirtualApplianceSiteResponse{VirtualApplianceSite: &VirtualApplianceSite{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualApplianceSite)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualApplianceSite)
 	if err != nil {
 		return VirtualApplianceSiteResponse{}, err
 	}
@@ -4365,8 +4271,7 @@ type VirtualHubPoller interface {
 }
 
 type virtualHubPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualHubPoller) Done() bool {
@@ -4374,12 +4279,12 @@ func (p *virtualHubPoller) Done() bool {
 }
 
 func (p *virtualHubPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualHubPoller) FinalResponse(ctx context.Context) (VirtualHubResponse, error) {
 	respType := VirtualHubResponse{VirtualHub: &VirtualHub{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualHub)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualHub)
 	if err != nil {
 		return VirtualHubResponse{}, err
 	}
@@ -4393,7 +4298,7 @@ func (p *virtualHubPoller) ResumeToken() (string, error) {
 
 func (p *virtualHubPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualHubResponse, error) {
 	respType := VirtualHubResponse{VirtualHub: &VirtualHub{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualHub)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualHub)
 	if err != nil {
 		return VirtualHubResponse{}, err
 	}
@@ -4411,8 +4316,7 @@ type VirtualHubRouteTableV2Poller interface {
 }
 
 type virtualHubRouteTableV2Poller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualHubRouteTableV2Poller) Done() bool {
@@ -4420,12 +4324,12 @@ func (p *virtualHubRouteTableV2Poller) Done() bool {
 }
 
 func (p *virtualHubRouteTableV2Poller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualHubRouteTableV2Poller) FinalResponse(ctx context.Context) (VirtualHubRouteTableV2Response, error) {
 	respType := VirtualHubRouteTableV2Response{VirtualHubRouteTableV2: &VirtualHubRouteTableV2{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualHubRouteTableV2)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualHubRouteTableV2)
 	if err != nil {
 		return VirtualHubRouteTableV2Response{}, err
 	}
@@ -4439,7 +4343,7 @@ func (p *virtualHubRouteTableV2Poller) ResumeToken() (string, error) {
 
 func (p *virtualHubRouteTableV2Poller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualHubRouteTableV2Response, error) {
 	respType := VirtualHubRouteTableV2Response{VirtualHubRouteTableV2: &VirtualHubRouteTableV2{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualHubRouteTableV2)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualHubRouteTableV2)
 	if err != nil {
 		return VirtualHubRouteTableV2Response{}, err
 	}
@@ -4457,8 +4361,7 @@ type VirtualNetworkGatewayConnectionPoller interface {
 }
 
 type virtualNetworkGatewayConnectionPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualNetworkGatewayConnectionPoller) Done() bool {
@@ -4466,12 +4369,12 @@ func (p *virtualNetworkGatewayConnectionPoller) Done() bool {
 }
 
 func (p *virtualNetworkGatewayConnectionPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualNetworkGatewayConnectionPoller) FinalResponse(ctx context.Context) (VirtualNetworkGatewayConnectionResponse, error) {
 	respType := VirtualNetworkGatewayConnectionResponse{VirtualNetworkGatewayConnection: &VirtualNetworkGatewayConnection{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualNetworkGatewayConnection)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualNetworkGatewayConnection)
 	if err != nil {
 		return VirtualNetworkGatewayConnectionResponse{}, err
 	}
@@ -4485,7 +4388,7 @@ func (p *virtualNetworkGatewayConnectionPoller) ResumeToken() (string, error) {
 
 func (p *virtualNetworkGatewayConnectionPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkGatewayConnectionResponse, error) {
 	respType := VirtualNetworkGatewayConnectionResponse{VirtualNetworkGatewayConnection: &VirtualNetworkGatewayConnection{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualNetworkGatewayConnection)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualNetworkGatewayConnection)
 	if err != nil {
 		return VirtualNetworkGatewayConnectionResponse{}, err
 	}
@@ -4503,8 +4406,7 @@ type VirtualNetworkGatewayNatRulePoller interface {
 }
 
 type virtualNetworkGatewayNatRulePoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualNetworkGatewayNatRulePoller) Done() bool {
@@ -4512,12 +4414,12 @@ func (p *virtualNetworkGatewayNatRulePoller) Done() bool {
 }
 
 func (p *virtualNetworkGatewayNatRulePoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualNetworkGatewayNatRulePoller) FinalResponse(ctx context.Context) (VirtualNetworkGatewayNatRuleResponse, error) {
 	respType := VirtualNetworkGatewayNatRuleResponse{VirtualNetworkGatewayNatRule: &VirtualNetworkGatewayNatRule{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualNetworkGatewayNatRule)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualNetworkGatewayNatRule)
 	if err != nil {
 		return VirtualNetworkGatewayNatRuleResponse{}, err
 	}
@@ -4531,7 +4433,7 @@ func (p *virtualNetworkGatewayNatRulePoller) ResumeToken() (string, error) {
 
 func (p *virtualNetworkGatewayNatRulePoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkGatewayNatRuleResponse, error) {
 	respType := VirtualNetworkGatewayNatRuleResponse{VirtualNetworkGatewayNatRule: &VirtualNetworkGatewayNatRule{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualNetworkGatewayNatRule)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualNetworkGatewayNatRule)
 	if err != nil {
 		return VirtualNetworkGatewayNatRuleResponse{}, err
 	}
@@ -4549,8 +4451,7 @@ type VirtualNetworkGatewayPoller interface {
 }
 
 type virtualNetworkGatewayPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualNetworkGatewayPoller) Done() bool {
@@ -4558,12 +4459,12 @@ func (p *virtualNetworkGatewayPoller) Done() bool {
 }
 
 func (p *virtualNetworkGatewayPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualNetworkGatewayPoller) FinalResponse(ctx context.Context) (VirtualNetworkGatewayResponse, error) {
 	respType := VirtualNetworkGatewayResponse{VirtualNetworkGateway: &VirtualNetworkGateway{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualNetworkGateway)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualNetworkGateway)
 	if err != nil {
 		return VirtualNetworkGatewayResponse{}, err
 	}
@@ -4577,7 +4478,7 @@ func (p *virtualNetworkGatewayPoller) ResumeToken() (string, error) {
 
 func (p *virtualNetworkGatewayPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkGatewayResponse, error) {
 	respType := VirtualNetworkGatewayResponse{VirtualNetworkGateway: &VirtualNetworkGateway{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualNetworkGateway)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualNetworkGateway)
 	if err != nil {
 		return VirtualNetworkGatewayResponse{}, err
 	}
@@ -4595,8 +4496,7 @@ type VirtualNetworkPeeringPoller interface {
 }
 
 type virtualNetworkPeeringPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualNetworkPeeringPoller) Done() bool {
@@ -4604,12 +4504,12 @@ func (p *virtualNetworkPeeringPoller) Done() bool {
 }
 
 func (p *virtualNetworkPeeringPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualNetworkPeeringPoller) FinalResponse(ctx context.Context) (VirtualNetworkPeeringResponse, error) {
 	respType := VirtualNetworkPeeringResponse{VirtualNetworkPeering: &VirtualNetworkPeering{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualNetworkPeering)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualNetworkPeering)
 	if err != nil {
 		return VirtualNetworkPeeringResponse{}, err
 	}
@@ -4623,7 +4523,7 @@ func (p *virtualNetworkPeeringPoller) ResumeToken() (string, error) {
 
 func (p *virtualNetworkPeeringPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkPeeringResponse, error) {
 	respType := VirtualNetworkPeeringResponse{VirtualNetworkPeering: &VirtualNetworkPeering{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualNetworkPeering)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualNetworkPeering)
 	if err != nil {
 		return VirtualNetworkPeeringResponse{}, err
 	}
@@ -4641,8 +4541,7 @@ type VirtualNetworkPoller interface {
 }
 
 type virtualNetworkPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualNetworkPoller) Done() bool {
@@ -4650,12 +4549,12 @@ func (p *virtualNetworkPoller) Done() bool {
 }
 
 func (p *virtualNetworkPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualNetworkPoller) FinalResponse(ctx context.Context) (VirtualNetworkResponse, error) {
 	respType := VirtualNetworkResponse{VirtualNetwork: &VirtualNetwork{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualNetwork)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualNetwork)
 	if err != nil {
 		return VirtualNetworkResponse{}, err
 	}
@@ -4669,7 +4568,7 @@ func (p *virtualNetworkPoller) ResumeToken() (string, error) {
 
 func (p *virtualNetworkPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkResponse, error) {
 	respType := VirtualNetworkResponse{VirtualNetwork: &VirtualNetwork{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualNetwork)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualNetwork)
 	if err != nil {
 		return VirtualNetworkResponse{}, err
 	}
@@ -4687,8 +4586,7 @@ type VirtualNetworkTapPoller interface {
 }
 
 type virtualNetworkTapPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualNetworkTapPoller) Done() bool {
@@ -4696,12 +4594,12 @@ func (p *virtualNetworkTapPoller) Done() bool {
 }
 
 func (p *virtualNetworkTapPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualNetworkTapPoller) FinalResponse(ctx context.Context) (VirtualNetworkTapResponse, error) {
 	respType := VirtualNetworkTapResponse{VirtualNetworkTap: &VirtualNetworkTap{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualNetworkTap)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualNetworkTap)
 	if err != nil {
 		return VirtualNetworkTapResponse{}, err
 	}
@@ -4715,7 +4613,7 @@ func (p *virtualNetworkTapPoller) ResumeToken() (string, error) {
 
 func (p *virtualNetworkTapPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualNetworkTapResponse, error) {
 	respType := VirtualNetworkTapResponse{VirtualNetworkTap: &VirtualNetworkTap{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualNetworkTap)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualNetworkTap)
 	if err != nil {
 		return VirtualNetworkTapResponse{}, err
 	}
@@ -4733,8 +4631,7 @@ type VirtualRouterPeeringPoller interface {
 }
 
 type virtualRouterPeeringPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualRouterPeeringPoller) Done() bool {
@@ -4742,12 +4639,12 @@ func (p *virtualRouterPeeringPoller) Done() bool {
 }
 
 func (p *virtualRouterPeeringPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualRouterPeeringPoller) FinalResponse(ctx context.Context) (VirtualRouterPeeringResponse, error) {
 	respType := VirtualRouterPeeringResponse{VirtualRouterPeering: &VirtualRouterPeering{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualRouterPeering)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualRouterPeering)
 	if err != nil {
 		return VirtualRouterPeeringResponse{}, err
 	}
@@ -4761,7 +4658,7 @@ func (p *virtualRouterPeeringPoller) ResumeToken() (string, error) {
 
 func (p *virtualRouterPeeringPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualRouterPeeringResponse, error) {
 	respType := VirtualRouterPeeringResponse{VirtualRouterPeering: &VirtualRouterPeering{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualRouterPeering)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualRouterPeering)
 	if err != nil {
 		return VirtualRouterPeeringResponse{}, err
 	}
@@ -4779,8 +4676,7 @@ type VirtualRouterPoller interface {
 }
 
 type virtualRouterPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualRouterPoller) Done() bool {
@@ -4788,12 +4684,12 @@ func (p *virtualRouterPoller) Done() bool {
 }
 
 func (p *virtualRouterPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualRouterPoller) FinalResponse(ctx context.Context) (VirtualRouterResponse, error) {
 	respType := VirtualRouterResponse{VirtualRouter: &VirtualRouter{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualRouter)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualRouter)
 	if err != nil {
 		return VirtualRouterResponse{}, err
 	}
@@ -4807,7 +4703,7 @@ func (p *virtualRouterPoller) ResumeToken() (string, error) {
 
 func (p *virtualRouterPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualRouterResponse, error) {
 	respType := VirtualRouterResponse{VirtualRouter: &VirtualRouter{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualRouter)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualRouter)
 	if err != nil {
 		return VirtualRouterResponse{}, err
 	}
@@ -4825,8 +4721,7 @@ type VirtualWANPoller interface {
 }
 
 type virtualWANPoller struct {
-	pipeline azcore.Pipeline
-	pt       armcore.Poller
+	pt *armcore.LROPoller
 }
 
 func (p *virtualWANPoller) Done() bool {
@@ -4834,12 +4729,12 @@ func (p *virtualWANPoller) Done() bool {
 }
 
 func (p *virtualWANPoller) Poll(ctx context.Context) (*http.Response, error) {
-	return p.pt.Poll(ctx, p.pipeline)
+	return p.pt.Poll(ctx)
 }
 
 func (p *virtualWANPoller) FinalResponse(ctx context.Context) (VirtualWANResponse, error) {
 	respType := VirtualWANResponse{VirtualWAN: &VirtualWAN{}}
-	resp, err := p.pt.FinalResponse(ctx, p.pipeline, respType.VirtualWAN)
+	resp, err := p.pt.FinalResponse(ctx, respType.VirtualWAN)
 	if err != nil {
 		return VirtualWANResponse{}, err
 	}
@@ -4853,7 +4748,7 @@ func (p *virtualWANPoller) ResumeToken() (string, error) {
 
 func (p *virtualWANPoller) pollUntilDone(ctx context.Context, freq time.Duration) (VirtualWANResponse, error) {
 	respType := VirtualWANResponse{VirtualWAN: &VirtualWAN{}}
-	resp, err := p.pt.PollUntilDone(ctx, freq, p.pipeline, respType.VirtualWAN)
+	resp, err := p.pt.PollUntilDone(ctx, freq, respType.VirtualWAN)
 	if err != nil {
 		return VirtualWANResponse{}, err
 	}

@@ -11,7 +11,7 @@ package insights
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2019-11-01-preview/insights"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-04-01-preview/insights"
 )
 
 const (
@@ -21,48 +21,58 @@ const (
 type AggregationType = original.AggregationType
 
 const (
-	Average AggregationType = original.Average
-	Count   AggregationType = original.Count
-	Maximum AggregationType = original.Maximum
-	Minimum AggregationType = original.Minimum
-	None    AggregationType = original.None
-	Total   AggregationType = original.Total
+	AggregationTypeAverage AggregationType = original.AggregationTypeAverage
+	AggregationTypeCount   AggregationType = original.AggregationTypeCount
+	AggregationTypeMaximum AggregationType = original.AggregationTypeMaximum
+	AggregationTypeMinimum AggregationType = original.AggregationTypeMinimum
+	AggregationTypeNone    AggregationType = original.AggregationTypeNone
+	AggregationTypeTotal   AggregationType = original.AggregationTypeTotal
+)
+
+type AggregationTypeEnum = original.AggregationTypeEnum
+
+const (
+	AggregationTypeEnumAverage AggregationTypeEnum = original.AggregationTypeEnumAverage
+	AggregationTypeEnumCount   AggregationTypeEnum = original.AggregationTypeEnumCount
+	AggregationTypeEnumMaximum AggregationTypeEnum = original.AggregationTypeEnumMaximum
+	AggregationTypeEnumMinimum AggregationTypeEnum = original.AggregationTypeEnumMinimum
+	AggregationTypeEnumTotal   AggregationTypeEnum = original.AggregationTypeEnumTotal
 )
 
 type AlertSeverity = original.AlertSeverity
 
 const (
-	Four  AlertSeverity = original.Four
-	One   AlertSeverity = original.One
-	Three AlertSeverity = original.Three
-	Two   AlertSeverity = original.Two
-	Zero  AlertSeverity = original.Zero
+	AlertSeverityFour  AlertSeverity = original.AlertSeverityFour
+	AlertSeverityOne   AlertSeverity = original.AlertSeverityOne
+	AlertSeverityThree AlertSeverity = original.AlertSeverityThree
+	AlertSeverityTwo   AlertSeverity = original.AlertSeverityTwo
+	AlertSeverityZero  AlertSeverity = original.AlertSeverityZero
 )
 
 type BaselineSensitivity = original.BaselineSensitivity
 
 const (
-	High   BaselineSensitivity = original.High
-	Low    BaselineSensitivity = original.Low
-	Medium BaselineSensitivity = original.Medium
+	BaselineSensitivityHigh   BaselineSensitivity = original.BaselineSensitivityHigh
+	BaselineSensitivityLow    BaselineSensitivity = original.BaselineSensitivityLow
+	BaselineSensitivityMedium BaselineSensitivity = original.BaselineSensitivityMedium
 )
 
 type CategoryType = original.CategoryType
 
 const (
-	Logs    CategoryType = original.Logs
-	Metrics CategoryType = original.Metrics
+	CategoryTypeLogs    CategoryType = original.CategoryTypeLogs
+	CategoryTypeMetrics CategoryType = original.CategoryTypeMetrics
 )
 
 type ComparisonOperationType = original.ComparisonOperationType
 
 const (
-	Equals             ComparisonOperationType = original.Equals
-	GreaterThan        ComparisonOperationType = original.GreaterThan
-	GreaterThanOrEqual ComparisonOperationType = original.GreaterThanOrEqual
-	LessThan           ComparisonOperationType = original.LessThan
-	LessThanOrEqual    ComparisonOperationType = original.LessThanOrEqual
-	NotEquals          ComparisonOperationType = original.NotEquals
+	ComparisonOperationTypeEquals             ComparisonOperationType = original.ComparisonOperationTypeEquals
+	ComparisonOperationTypeGreaterThan        ComparisonOperationType = original.ComparisonOperationTypeGreaterThan
+	ComparisonOperationTypeGreaterThanOrEqual ComparisonOperationType = original.ComparisonOperationTypeGreaterThanOrEqual
+	ComparisonOperationTypeLessThan           ComparisonOperationType = original.ComparisonOperationTypeLessThan
+	ComparisonOperationTypeLessThanOrEqual    ComparisonOperationType = original.ComparisonOperationTypeLessThanOrEqual
+	ComparisonOperationTypeNotEquals          ComparisonOperationType = original.ComparisonOperationTypeNotEquals
 )
 
 type ConditionOperator = original.ConditionOperator
@@ -77,9 +87,20 @@ const (
 type ConditionalOperator = original.ConditionalOperator
 
 const (
-	ConditionalOperatorEqual       ConditionalOperator = original.ConditionalOperatorEqual
-	ConditionalOperatorGreaterThan ConditionalOperator = original.ConditionalOperatorGreaterThan
-	ConditionalOperatorLessThan    ConditionalOperator = original.ConditionalOperatorLessThan
+	ConditionalOperatorEqual              ConditionalOperator = original.ConditionalOperatorEqual
+	ConditionalOperatorGreaterThan        ConditionalOperator = original.ConditionalOperatorGreaterThan
+	ConditionalOperatorGreaterThanOrEqual ConditionalOperator = original.ConditionalOperatorGreaterThanOrEqual
+	ConditionalOperatorLessThan           ConditionalOperator = original.ConditionalOperatorLessThan
+	ConditionalOperatorLessThanOrEqual    ConditionalOperator = original.ConditionalOperatorLessThanOrEqual
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type CriterionType = original.CriterionType
@@ -93,8 +114,8 @@ const (
 type DataStatus = original.DataStatus
 
 const (
-	NotPresent DataStatus = original.NotPresent
-	Present    DataStatus = original.Present
+	DataStatusNotPresent DataStatus = original.DataStatusNotPresent
+	DataStatusPresent    DataStatus = original.DataStatusPresent
 )
 
 type DynamicThresholdOperator = original.DynamicThresholdOperator
@@ -116,8 +137,8 @@ const (
 type Enabled = original.Enabled
 
 const (
-	False Enabled = original.False
-	True  Enabled = original.True
+	EnabledFalse Enabled = original.EnabledFalse
+	EnabledTrue  Enabled = original.EnabledTrue
 )
 
 type EventLevel = original.EventLevel
@@ -128,6 +149,147 @@ const (
 	EventLevelInformational EventLevel = original.EventLevelInformational
 	EventLevelVerbose       EventLevel = original.EventLevelVerbose
 	EventLevelWarning       EventLevel = original.EventLevelWarning
+)
+
+type KnownDataCollectionEndpointProvisioningState = original.KnownDataCollectionEndpointProvisioningState
+
+const (
+	KnownDataCollectionEndpointProvisioningStateCreating  KnownDataCollectionEndpointProvisioningState = original.KnownDataCollectionEndpointProvisioningStateCreating
+	KnownDataCollectionEndpointProvisioningStateDeleting  KnownDataCollectionEndpointProvisioningState = original.KnownDataCollectionEndpointProvisioningStateDeleting
+	KnownDataCollectionEndpointProvisioningStateFailed    KnownDataCollectionEndpointProvisioningState = original.KnownDataCollectionEndpointProvisioningStateFailed
+	KnownDataCollectionEndpointProvisioningStateSucceeded KnownDataCollectionEndpointProvisioningState = original.KnownDataCollectionEndpointProvisioningStateSucceeded
+	KnownDataCollectionEndpointProvisioningStateUpdating  KnownDataCollectionEndpointProvisioningState = original.KnownDataCollectionEndpointProvisioningStateUpdating
+)
+
+type KnownDataCollectionEndpointResourceKind = original.KnownDataCollectionEndpointResourceKind
+
+const (
+	KnownDataCollectionEndpointResourceKindLinux   KnownDataCollectionEndpointResourceKind = original.KnownDataCollectionEndpointResourceKindLinux
+	KnownDataCollectionEndpointResourceKindWindows KnownDataCollectionEndpointResourceKind = original.KnownDataCollectionEndpointResourceKindWindows
+)
+
+type KnownDataCollectionRuleAssociationProvisioningState = original.KnownDataCollectionRuleAssociationProvisioningState
+
+const (
+	KnownDataCollectionRuleAssociationProvisioningStateCreating  KnownDataCollectionRuleAssociationProvisioningState = original.KnownDataCollectionRuleAssociationProvisioningStateCreating
+	KnownDataCollectionRuleAssociationProvisioningStateDeleting  KnownDataCollectionRuleAssociationProvisioningState = original.KnownDataCollectionRuleAssociationProvisioningStateDeleting
+	KnownDataCollectionRuleAssociationProvisioningStateFailed    KnownDataCollectionRuleAssociationProvisioningState = original.KnownDataCollectionRuleAssociationProvisioningStateFailed
+	KnownDataCollectionRuleAssociationProvisioningStateSucceeded KnownDataCollectionRuleAssociationProvisioningState = original.KnownDataCollectionRuleAssociationProvisioningStateSucceeded
+	KnownDataCollectionRuleAssociationProvisioningStateUpdating  KnownDataCollectionRuleAssociationProvisioningState = original.KnownDataCollectionRuleAssociationProvisioningStateUpdating
+)
+
+type KnownDataCollectionRuleProvisioningState = original.KnownDataCollectionRuleProvisioningState
+
+const (
+	KnownDataCollectionRuleProvisioningStateCreating  KnownDataCollectionRuleProvisioningState = original.KnownDataCollectionRuleProvisioningStateCreating
+	KnownDataCollectionRuleProvisioningStateDeleting  KnownDataCollectionRuleProvisioningState = original.KnownDataCollectionRuleProvisioningStateDeleting
+	KnownDataCollectionRuleProvisioningStateFailed    KnownDataCollectionRuleProvisioningState = original.KnownDataCollectionRuleProvisioningStateFailed
+	KnownDataCollectionRuleProvisioningStateSucceeded KnownDataCollectionRuleProvisioningState = original.KnownDataCollectionRuleProvisioningStateSucceeded
+	KnownDataCollectionRuleProvisioningStateUpdating  KnownDataCollectionRuleProvisioningState = original.KnownDataCollectionRuleProvisioningStateUpdating
+)
+
+type KnownDataCollectionRuleResourceKind = original.KnownDataCollectionRuleResourceKind
+
+const (
+	KnownDataCollectionRuleResourceKindLinux   KnownDataCollectionRuleResourceKind = original.KnownDataCollectionRuleResourceKindLinux
+	KnownDataCollectionRuleResourceKindWindows KnownDataCollectionRuleResourceKind = original.KnownDataCollectionRuleResourceKindWindows
+)
+
+type KnownDataFlowStreams = original.KnownDataFlowStreams
+
+const (
+	KnownDataFlowStreamsMicrosoftEvent           KnownDataFlowStreams = original.KnownDataFlowStreamsMicrosoftEvent
+	KnownDataFlowStreamsMicrosoftInsightsMetrics KnownDataFlowStreams = original.KnownDataFlowStreamsMicrosoftInsightsMetrics
+	KnownDataFlowStreamsMicrosoftPerf            KnownDataFlowStreams = original.KnownDataFlowStreamsMicrosoftPerf
+	KnownDataFlowStreamsMicrosoftSyslog          KnownDataFlowStreams = original.KnownDataFlowStreamsMicrosoftSyslog
+	KnownDataFlowStreamsMicrosoftWindowsEvent    KnownDataFlowStreams = original.KnownDataFlowStreamsMicrosoftWindowsEvent
+)
+
+type KnownExtensionDataSourceStreams = original.KnownExtensionDataSourceStreams
+
+const (
+	KnownExtensionDataSourceStreamsMicrosoftEvent           KnownExtensionDataSourceStreams = original.KnownExtensionDataSourceStreamsMicrosoftEvent
+	KnownExtensionDataSourceStreamsMicrosoftInsightsMetrics KnownExtensionDataSourceStreams = original.KnownExtensionDataSourceStreamsMicrosoftInsightsMetrics
+	KnownExtensionDataSourceStreamsMicrosoftPerf            KnownExtensionDataSourceStreams = original.KnownExtensionDataSourceStreamsMicrosoftPerf
+	KnownExtensionDataSourceStreamsMicrosoftSyslog          KnownExtensionDataSourceStreams = original.KnownExtensionDataSourceStreamsMicrosoftSyslog
+	KnownExtensionDataSourceStreamsMicrosoftWindowsEvent    KnownExtensionDataSourceStreams = original.KnownExtensionDataSourceStreamsMicrosoftWindowsEvent
+)
+
+type KnownPerfCounterDataSourceStreams = original.KnownPerfCounterDataSourceStreams
+
+const (
+	KnownPerfCounterDataSourceStreamsMicrosoftInsightsMetrics KnownPerfCounterDataSourceStreams = original.KnownPerfCounterDataSourceStreamsMicrosoftInsightsMetrics
+	KnownPerfCounterDataSourceStreamsMicrosoftPerf            KnownPerfCounterDataSourceStreams = original.KnownPerfCounterDataSourceStreamsMicrosoftPerf
+)
+
+type KnownPublicNetworkAccessOptions = original.KnownPublicNetworkAccessOptions
+
+const (
+	KnownPublicNetworkAccessOptionsDisabled KnownPublicNetworkAccessOptions = original.KnownPublicNetworkAccessOptionsDisabled
+	KnownPublicNetworkAccessOptionsEnabled  KnownPublicNetworkAccessOptions = original.KnownPublicNetworkAccessOptionsEnabled
+)
+
+type KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNames
+
+const (
+	KnownSyslogDataSourceFacilityNamesAsterisk KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesAsterisk
+	KnownSyslogDataSourceFacilityNamesAuth     KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesAuth
+	KnownSyslogDataSourceFacilityNamesAuthpriv KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesAuthpriv
+	KnownSyslogDataSourceFacilityNamesCron     KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesCron
+	KnownSyslogDataSourceFacilityNamesDaemon   KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesDaemon
+	KnownSyslogDataSourceFacilityNamesKern     KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesKern
+	KnownSyslogDataSourceFacilityNamesLocal0   KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesLocal0
+	KnownSyslogDataSourceFacilityNamesLocal1   KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesLocal1
+	KnownSyslogDataSourceFacilityNamesLocal2   KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesLocal2
+	KnownSyslogDataSourceFacilityNamesLocal3   KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesLocal3
+	KnownSyslogDataSourceFacilityNamesLocal4   KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesLocal4
+	KnownSyslogDataSourceFacilityNamesLocal5   KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesLocal5
+	KnownSyslogDataSourceFacilityNamesLocal6   KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesLocal6
+	KnownSyslogDataSourceFacilityNamesLocal7   KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesLocal7
+	KnownSyslogDataSourceFacilityNamesLpr      KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesLpr
+	KnownSyslogDataSourceFacilityNamesMail     KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesMail
+	KnownSyslogDataSourceFacilityNamesMark     KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesMark
+	KnownSyslogDataSourceFacilityNamesNews     KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesNews
+	KnownSyslogDataSourceFacilityNamesSyslog   KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesSyslog
+	KnownSyslogDataSourceFacilityNamesUser     KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesUser
+	KnownSyslogDataSourceFacilityNamesUucp     KnownSyslogDataSourceFacilityNames = original.KnownSyslogDataSourceFacilityNamesUucp
+)
+
+type KnownSyslogDataSourceLogLevels = original.KnownSyslogDataSourceLogLevels
+
+const (
+	KnownSyslogDataSourceLogLevelsAlert     KnownSyslogDataSourceLogLevels = original.KnownSyslogDataSourceLogLevelsAlert
+	KnownSyslogDataSourceLogLevelsAsterisk  KnownSyslogDataSourceLogLevels = original.KnownSyslogDataSourceLogLevelsAsterisk
+	KnownSyslogDataSourceLogLevelsCritical  KnownSyslogDataSourceLogLevels = original.KnownSyslogDataSourceLogLevelsCritical
+	KnownSyslogDataSourceLogLevelsDebug     KnownSyslogDataSourceLogLevels = original.KnownSyslogDataSourceLogLevelsDebug
+	KnownSyslogDataSourceLogLevelsEmergency KnownSyslogDataSourceLogLevels = original.KnownSyslogDataSourceLogLevelsEmergency
+	KnownSyslogDataSourceLogLevelsError     KnownSyslogDataSourceLogLevels = original.KnownSyslogDataSourceLogLevelsError
+	KnownSyslogDataSourceLogLevelsInfo      KnownSyslogDataSourceLogLevels = original.KnownSyslogDataSourceLogLevelsInfo
+	KnownSyslogDataSourceLogLevelsNotice    KnownSyslogDataSourceLogLevels = original.KnownSyslogDataSourceLogLevelsNotice
+	KnownSyslogDataSourceLogLevelsWarning   KnownSyslogDataSourceLogLevels = original.KnownSyslogDataSourceLogLevelsWarning
+)
+
+type KnownSyslogDataSourceStreams = original.KnownSyslogDataSourceStreams
+
+const (
+	KnownSyslogDataSourceStreamsMicrosoftSyslog KnownSyslogDataSourceStreams = original.KnownSyslogDataSourceStreamsMicrosoftSyslog
+)
+
+type KnownWindowsEventLogDataSourceStreams = original.KnownWindowsEventLogDataSourceStreams
+
+const (
+	KnownWindowsEventLogDataSourceStreamsMicrosoftEvent        KnownWindowsEventLogDataSourceStreams = original.KnownWindowsEventLogDataSourceStreamsMicrosoftEvent
+	KnownWindowsEventLogDataSourceStreamsMicrosoftWindowsEvent KnownWindowsEventLogDataSourceStreams = original.KnownWindowsEventLogDataSourceStreamsMicrosoftWindowsEvent
+)
+
+type MetricClass = original.MetricClass
+
+const (
+	MetricClassAvailability MetricClass = original.MetricClassAvailability
+	MetricClassErrors       MetricClass = original.MetricClassErrors
+	MetricClassLatency      MetricClass = original.MetricClassLatency
+	MetricClassSaturation   MetricClass = original.MetricClassSaturation
+	MetricClassTransactions MetricClass = original.MetricClassTransactions
 )
 
 type MetricStatisticType = original.MetricStatisticType
@@ -146,6 +308,32 @@ const (
 	MetricTriggerTypeTotal       MetricTriggerType = original.MetricTriggerTypeTotal
 )
 
+type MetricUnit = original.MetricUnit
+
+const (
+	MetricUnitBitsPerSecond  MetricUnit = original.MetricUnitBitsPerSecond
+	MetricUnitBytes          MetricUnit = original.MetricUnitBytes
+	MetricUnitByteSeconds    MetricUnit = original.MetricUnitByteSeconds
+	MetricUnitBytesPerSecond MetricUnit = original.MetricUnitBytesPerSecond
+	MetricUnitCores          MetricUnit = original.MetricUnitCores
+	MetricUnitCount          MetricUnit = original.MetricUnitCount
+	MetricUnitCountPerSecond MetricUnit = original.MetricUnitCountPerSecond
+	MetricUnitMilliCores     MetricUnit = original.MetricUnitMilliCores
+	MetricUnitMilliSeconds   MetricUnit = original.MetricUnitMilliSeconds
+	MetricUnitNanoCores      MetricUnit = original.MetricUnitNanoCores
+	MetricUnitPercent        MetricUnit = original.MetricUnitPercent
+	MetricUnitSeconds        MetricUnit = original.MetricUnitSeconds
+	MetricUnitUnspecified    MetricUnit = original.MetricUnitUnspecified
+)
+
+type NamespaceClassification = original.NamespaceClassification
+
+const (
+	NamespaceClassificationCustom   NamespaceClassification = original.NamespaceClassificationCustom
+	NamespaceClassificationPlatform NamespaceClassification = original.NamespaceClassificationPlatform
+	NamespaceClassificationQos      NamespaceClassification = original.NamespaceClassificationQos
+)
+
 type OdataType = original.OdataType
 
 const (
@@ -157,43 +345,43 @@ const (
 type OdataTypeBasicAction = original.OdataTypeBasicAction
 
 const (
-	OdataTypeAction                                                                                                                                   OdataTypeBasicAction = original.OdataTypeAction
-	OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction    OdataTypeBasicAction = original.OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction
-	OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction OdataTypeBasicAction = original.OdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction
+	OdataTypeBasicActionOdataTypeAction                                                                                                                                   OdataTypeBasicAction = original.OdataTypeBasicActionOdataTypeAction
+	OdataTypeBasicActionOdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction    OdataTypeBasicAction = original.OdataTypeBasicActionOdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesAlertingAction
+	OdataTypeBasicActionOdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction OdataTypeBasicAction = original.OdataTypeBasicActionOdataTypeMicrosoftWindowsAzureManagementMonitoringAlertsModelsMicrosoftAppInsightsNexusDataContractsResourcesScheduledQueryRulesLogToMetricAction
 )
 
 type OdataTypeBasicMetricAlertCriteria = original.OdataTypeBasicMetricAlertCriteria
 
 const (
-	OdataTypeMetricAlertCriteria                                         OdataTypeBasicMetricAlertCriteria = original.OdataTypeMetricAlertCriteria
-	OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria OdataTypeBasicMetricAlertCriteria = original.OdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria
-	OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria   OdataTypeBasicMetricAlertCriteria = original.OdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria
-	OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria    OdataTypeBasicMetricAlertCriteria = original.OdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria
+	OdataTypeBasicMetricAlertCriteriaOdataTypeMetricAlertCriteria                                         OdataTypeBasicMetricAlertCriteria = original.OdataTypeBasicMetricAlertCriteriaOdataTypeMetricAlertCriteria
+	OdataTypeBasicMetricAlertCriteriaOdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria OdataTypeBasicMetricAlertCriteria = original.OdataTypeBasicMetricAlertCriteriaOdataTypeMicrosoftAzureMonitorMultipleResourceMultipleMetricCriteria
+	OdataTypeBasicMetricAlertCriteriaOdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria   OdataTypeBasicMetricAlertCriteria = original.OdataTypeBasicMetricAlertCriteriaOdataTypeMicrosoftAzureMonitorSingleResourceMultipleMetricCriteria
+	OdataTypeBasicMetricAlertCriteriaOdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria    OdataTypeBasicMetricAlertCriteria = original.OdataTypeBasicMetricAlertCriteriaOdataTypeMicrosoftAzureMonitorWebtestLocationAvailabilityCriteria
 )
 
 type OdataTypeBasicRuleAction = original.OdataTypeBasicRuleAction
 
 const (
-	OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction   OdataTypeBasicRuleAction = original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction
-	OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction OdataTypeBasicRuleAction = original.OdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction
-	OdataTypeRuleAction                                              OdataTypeBasicRuleAction = original.OdataTypeRuleAction
+	OdataTypeBasicRuleActionOdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction   OdataTypeBasicRuleAction = original.OdataTypeBasicRuleActionOdataTypeMicrosoftAzureManagementInsightsModelsRuleEmailAction
+	OdataTypeBasicRuleActionOdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction OdataTypeBasicRuleAction = original.OdataTypeBasicRuleActionOdataTypeMicrosoftAzureManagementInsightsModelsRuleWebhookAction
+	OdataTypeBasicRuleActionOdataTypeRuleAction                                              OdataTypeBasicRuleAction = original.OdataTypeBasicRuleActionOdataTypeRuleAction
 )
 
 type OdataTypeBasicRuleCondition = original.OdataTypeBasicRuleCondition
 
 const (
-	OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition OdataTypeBasicRuleCondition = original.OdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition
-	OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition   OdataTypeBasicRuleCondition = original.OdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition
-	OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition         OdataTypeBasicRuleCondition = original.OdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition
-	OdataTypeRuleCondition                                                        OdataTypeBasicRuleCondition = original.OdataTypeRuleCondition
+	OdataTypeBasicRuleConditionOdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition OdataTypeBasicRuleCondition = original.OdataTypeBasicRuleConditionOdataTypeMicrosoftAzureManagementInsightsModelsLocationThresholdRuleCondition
+	OdataTypeBasicRuleConditionOdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition   OdataTypeBasicRuleCondition = original.OdataTypeBasicRuleConditionOdataTypeMicrosoftAzureManagementInsightsModelsManagementEventRuleCondition
+	OdataTypeBasicRuleConditionOdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition         OdataTypeBasicRuleCondition = original.OdataTypeBasicRuleConditionOdataTypeMicrosoftAzureManagementInsightsModelsThresholdRuleCondition
+	OdataTypeBasicRuleConditionOdataTypeRuleCondition                                                        OdataTypeBasicRuleCondition = original.OdataTypeBasicRuleConditionOdataTypeRuleCondition
 )
 
 type OnboardingStatus = original.OnboardingStatus
 
 const (
-	NotOnboarded OnboardingStatus = original.NotOnboarded
-	Onboarded    OnboardingStatus = original.Onboarded
-	Unknown      OnboardingStatus = original.Unknown
+	OnboardingStatusNotOnboarded OnboardingStatus = original.OnboardingStatusNotOnboarded
+	OnboardingStatusOnboarded    OnboardingStatus = original.OnboardingStatusOnboarded
+	OnboardingStatusUnknown      OnboardingStatus = original.OnboardingStatusUnknown
 )
 
 type Operator = original.Operator
@@ -210,16 +398,16 @@ const (
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Canceled  ProvisioningState = original.Canceled
-	Deploying ProvisioningState = original.Deploying
-	Failed    ProvisioningState = original.Failed
-	Succeeded ProvisioningState = original.Succeeded
+	ProvisioningStateCanceled  ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateDeploying ProvisioningState = original.ProvisioningStateDeploying
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
 )
 
 type QueryType = original.QueryType
 
 const (
-	ResultCount QueryType = original.ResultCount
+	QueryTypeResultCount QueryType = original.QueryTypeResultCount
 )
 
 type ReceiverStatus = original.ReceiverStatus
@@ -246,8 +434,8 @@ const (
 type ResultType = original.ResultType
 
 const (
-	Data     ResultType = original.Data
-	Metadata ResultType = original.Metadata
+	ResultTypeData     ResultType = original.ResultTypeData
+	ResultTypeMetadata ResultType = original.ResultTypeMetadata
 )
 
 type ScaleDirection = original.ScaleDirection
@@ -268,17 +456,9 @@ const (
 type ScaleType = original.ScaleType
 
 const (
-	ChangeCount        ScaleType = original.ChangeCount
-	ExactCount         ScaleType = original.ExactCount
-	PercentChangeCount ScaleType = original.PercentChangeCount
-)
-
-type Sensitivity = original.Sensitivity
-
-const (
-	SensitivityHigh   Sensitivity = original.SensitivityHigh
-	SensitivityLow    Sensitivity = original.SensitivityLow
-	SensitivityMedium Sensitivity = original.SensitivityMedium
+	ScaleTypeChangeCount        ScaleType = original.ScaleTypeChangeCount
+	ScaleTypeExactCount         ScaleType = original.ScaleTypeExactCount
+	ScaleTypePercentChangeCount ScaleType = original.ScaleTypePercentChangeCount
 )
 
 type TimeAggregationOperator = original.TimeAggregationOperator
@@ -300,24 +480,6 @@ const (
 	TimeAggregationTypeMaximum TimeAggregationType = original.TimeAggregationTypeMaximum
 	TimeAggregationTypeMinimum TimeAggregationType = original.TimeAggregationTypeMinimum
 	TimeAggregationTypeTotal   TimeAggregationType = original.TimeAggregationTypeTotal
-)
-
-type Unit = original.Unit
-
-const (
-	UnitBitsPerSecond  Unit = original.UnitBitsPerSecond
-	UnitBytes          Unit = original.UnitBytes
-	UnitByteSeconds    Unit = original.UnitByteSeconds
-	UnitBytesPerSecond Unit = original.UnitBytesPerSecond
-	UnitCores          Unit = original.UnitCores
-	UnitCount          Unit = original.UnitCount
-	UnitCountPerSecond Unit = original.UnitCountPerSecond
-	UnitMilliCores     Unit = original.UnitMilliCores
-	UnitMilliSeconds   Unit = original.UnitMilliSeconds
-	UnitNanoCores      Unit = original.UnitNanoCores
-	UnitPercent        Unit = original.UnitPercent
-	UnitSeconds        Unit = original.UnitSeconds
-	UnitUnspecified    Unit = original.UnitUnspecified
 )
 
 type Action = original.Action
@@ -359,17 +521,15 @@ type AutoscaleSettingsClient = original.AutoscaleSettingsClient
 type AzNsActionGroup = original.AzNsActionGroup
 type AzureAppPushReceiver = original.AzureAppPushReceiver
 type AzureFunctionReceiver = original.AzureFunctionReceiver
+type AzureMonitorMetricsDestination = original.AzureMonitorMetricsDestination
 type AzureMonitorPrivateLinkScope = original.AzureMonitorPrivateLinkScope
 type AzureMonitorPrivateLinkScopeListResult = original.AzureMonitorPrivateLinkScopeListResult
 type AzureMonitorPrivateLinkScopeListResultIterator = original.AzureMonitorPrivateLinkScopeListResultIterator
 type AzureMonitorPrivateLinkScopeListResultPage = original.AzureMonitorPrivateLinkScopeListResultPage
 type AzureMonitorPrivateLinkScopeProperties = original.AzureMonitorPrivateLinkScopeProperties
+type AzureResource = original.AzureResource
 type BaseClient = original.BaseClient
-type Baseline = original.Baseline
 type BaselineMetadata = original.BaselineMetadata
-type BaselineMetadataValue = original.BaselineMetadataValue
-type BaselineProperties = original.BaselineProperties
-type BaselineResponse = original.BaselineResponse
 type BaselinesClient = original.BaselinesClient
 type BasicAction = original.BasicAction
 type BasicMetricAlertCriteria = original.BasicMetricAlertCriteria
@@ -377,9 +537,42 @@ type BasicMultiMetricCriteria = original.BasicMultiMetricCriteria
 type BasicRuleAction = original.BasicRuleAction
 type BasicRuleCondition = original.BasicRuleCondition
 type BasicRuleDataSource = original.BasicRuleDataSource
-type CalculateBaselineResponse = original.CalculateBaselineResponse
+type ConfigurationAccessEndpointSpec = original.ConfigurationAccessEndpointSpec
 type Criteria = original.Criteria
+type DataCollectionEndpoint = original.DataCollectionEndpoint
+type DataCollectionEndpointConfigurationAccess = original.DataCollectionEndpointConfigurationAccess
+type DataCollectionEndpointLogsIngestion = original.DataCollectionEndpointLogsIngestion
+type DataCollectionEndpointNetworkAcls = original.DataCollectionEndpointNetworkAcls
+type DataCollectionEndpointResource = original.DataCollectionEndpointResource
+type DataCollectionEndpointResourceListResult = original.DataCollectionEndpointResourceListResult
+type DataCollectionEndpointResourceListResultIterator = original.DataCollectionEndpointResourceListResultIterator
+type DataCollectionEndpointResourceListResultPage = original.DataCollectionEndpointResourceListResultPage
+type DataCollectionEndpointResourceProperties = original.DataCollectionEndpointResourceProperties
+type DataCollectionEndpointResourceSystemData = original.DataCollectionEndpointResourceSystemData
+type DataCollectionEndpointsClient = original.DataCollectionEndpointsClient
+type DataCollectionRule = original.DataCollectionRule
+type DataCollectionRuleAssociation = original.DataCollectionRuleAssociation
+type DataCollectionRuleAssociationProxyOnlyResource = original.DataCollectionRuleAssociationProxyOnlyResource
+type DataCollectionRuleAssociationProxyOnlyResourceListResult = original.DataCollectionRuleAssociationProxyOnlyResourceListResult
+type DataCollectionRuleAssociationProxyOnlyResourceListResultIterator = original.DataCollectionRuleAssociationProxyOnlyResourceListResultIterator
+type DataCollectionRuleAssociationProxyOnlyResourceListResultPage = original.DataCollectionRuleAssociationProxyOnlyResourceListResultPage
+type DataCollectionRuleAssociationProxyOnlyResourceProperties = original.DataCollectionRuleAssociationProxyOnlyResourceProperties
+type DataCollectionRuleAssociationProxyOnlyResourceSystemData = original.DataCollectionRuleAssociationProxyOnlyResourceSystemData
+type DataCollectionRuleAssociationsClient = original.DataCollectionRuleAssociationsClient
+type DataCollectionRuleDataSources = original.DataCollectionRuleDataSources
+type DataCollectionRuleDestinations = original.DataCollectionRuleDestinations
+type DataCollectionRuleResource = original.DataCollectionRuleResource
+type DataCollectionRuleResourceListResult = original.DataCollectionRuleResourceListResult
+type DataCollectionRuleResourceListResultIterator = original.DataCollectionRuleResourceListResultIterator
+type DataCollectionRuleResourceListResultPage = original.DataCollectionRuleResourceListResultPage
+type DataCollectionRuleResourceProperties = original.DataCollectionRuleResourceProperties
+type DataCollectionRuleResourceSystemData = original.DataCollectionRuleResourceSystemData
+type DataCollectionRulesClient = original.DataCollectionRulesClient
 type DataContainer = original.DataContainer
+type DataFlow = original.DataFlow
+type DataSourcesSpec = original.DataSourcesSpec
+type DestinationsSpec = original.DestinationsSpec
+type DestinationsSpecAzureMonitorMetrics = original.DestinationsSpecAzureMonitorMetrics
 type DiagnosticSettings = original.DiagnosticSettings
 type DiagnosticSettingsCategory = original.DiagnosticSettingsCategory
 type DiagnosticSettingsCategoryClient = original.DiagnosticSettingsCategoryClient
@@ -396,20 +589,25 @@ type EmailReceiver = original.EmailReceiver
 type EnableRequest = original.EnableRequest
 type Error = original.Error
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
+type ErrorContract = original.ErrorContract
+type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
 type ErrorResponseCommon = original.ErrorResponseCommon
+type ErrorResponseCommonV2 = original.ErrorResponseCommonV2
 type EventCategoriesClient = original.EventCategoriesClient
 type EventCategoryCollection = original.EventCategoryCollection
 type EventData = original.EventData
 type EventDataCollection = original.EventDataCollection
 type EventDataCollectionIterator = original.EventDataCollectionIterator
 type EventDataCollectionPage = original.EventDataCollectionPage
+type ExtensionDataSource = original.ExtensionDataSource
 type HTTPRequestInfo = original.HTTPRequestInfo
 type Incident = original.Incident
 type IncidentListResult = original.IncidentListResult
 type ItsmReceiver = original.ItsmReceiver
 type LocalizableString = original.LocalizableString
 type LocationThresholdRuleCondition = original.LocationThresholdRuleCondition
+type LogAnalyticsDestination = original.LogAnalyticsDestination
 type LogMetricTrigger = original.LogMetricTrigger
 type LogProfileCollection = original.LogProfileCollection
 type LogProfileProperties = original.LogProfileProperties
@@ -424,6 +622,7 @@ type LogSearchRuleResourcePatch = original.LogSearchRuleResourcePatch
 type LogSettings = original.LogSettings
 type LogToMetricAction = original.LogToMetricAction
 type LogicAppReceiver = original.LogicAppReceiver
+type LogsIngestionEndpointSpec = original.LogsIngestionEndpointSpec
 type ManagementEventAggregationCondition = original.ManagementEventAggregationCondition
 type ManagementEventRuleCondition = original.ManagementEventRuleCondition
 type MetadataValue = original.MetadataValue
@@ -443,7 +642,6 @@ type MetricAlertStatusProperties = original.MetricAlertStatusProperties
 type MetricAlertsClient = original.MetricAlertsClient
 type MetricAlertsStatusClient = original.MetricAlertsStatusClient
 type MetricAvailability = original.MetricAvailability
-type MetricBaselineClient = original.MetricBaselineClient
 type MetricBaselinesProperties = original.MetricBaselinesProperties
 type MetricBaselinesResponse = original.MetricBaselinesResponse
 type MetricCriteria = original.MetricCriteria
@@ -461,11 +659,13 @@ type MetricTrigger = original.MetricTrigger
 type MetricValue = original.MetricValue
 type MetricsClient = original.MetricsClient
 type MultiMetricCriteria = original.MultiMetricCriteria
+type NetworkRuleSet = original.NetworkRuleSet
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationStatus = original.OperationStatus
 type OperationsClient = original.OperationsClient
+type PerfCounterDataSource = original.PerfCounterDataSource
 type PrivateEndpointConnection = original.PrivateEndpointConnection
 type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
 type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
@@ -494,6 +694,7 @@ type ProxyResource = original.ProxyResource
 type Recurrence = original.Recurrence
 type RecurrentSchedule = original.RecurrentSchedule
 type Resource = original.Resource
+type ResourceForUpdate = original.ResourceForUpdate
 type Response = original.Response
 type ResponseWithError = original.ResponseWithError
 type RetentionPolicy = original.RetentionPolicy
@@ -521,18 +722,13 @@ type SingleBaseline = original.SingleBaseline
 type SingleMetricBaseline = original.SingleMetricBaseline
 type SmsReceiver = original.SmsReceiver
 type Source = original.Source
-type SubscriptionDiagnosticSettings = original.SubscriptionDiagnosticSettings
-type SubscriptionDiagnosticSettingsClient = original.SubscriptionDiagnosticSettingsClient
-type SubscriptionDiagnosticSettingsResource = original.SubscriptionDiagnosticSettingsResource
-type SubscriptionDiagnosticSettingsResourceCollection = original.SubscriptionDiagnosticSettingsResourceCollection
-type SubscriptionLogSettings = original.SubscriptionLogSettings
-type SubscriptionProxyOnlyResource = original.SubscriptionProxyOnlyResource
+type SyslogDataSource = original.SyslogDataSource
+type SystemData = original.SystemData
 type TagsResource = original.TagsResource
 type TenantActivityLogsClient = original.TenantActivityLogsClient
 type ThresholdRuleCondition = original.ThresholdRuleCondition
 type TimeSeriesBaseline = original.TimeSeriesBaseline
 type TimeSeriesElement = original.TimeSeriesElement
-type TimeSeriesInformation = original.TimeSeriesInformation
 type TimeWindow = original.TimeWindow
 type TriggerCondition = original.TriggerCondition
 type VMInsightsClient = original.VMInsightsClient
@@ -542,6 +738,7 @@ type VoiceReceiver = original.VoiceReceiver
 type WebhookNotification = original.WebhookNotification
 type WebhookReceiver = original.WebhookReceiver
 type WebtestLocationAvailabilityCriteria = original.WebtestLocationAvailabilityCriteria
+type WindowsEventLogDataSource = original.WindowsEventLogDataSource
 type WorkspaceInfo = original.WorkspaceInfo
 type WorkspaceInfoProperties = original.WorkspaceInfoProperties
 
@@ -602,6 +799,42 @@ func NewBaselinesClient(subscriptionID string) BaselinesClient {
 func NewBaselinesClientWithBaseURI(baseURI string, subscriptionID string) BaselinesClient {
 	return original.NewBaselinesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewDataCollectionEndpointResourceListResultIterator(page DataCollectionEndpointResourceListResultPage) DataCollectionEndpointResourceListResultIterator {
+	return original.NewDataCollectionEndpointResourceListResultIterator(page)
+}
+func NewDataCollectionEndpointResourceListResultPage(cur DataCollectionEndpointResourceListResult, getNextPage func(context.Context, DataCollectionEndpointResourceListResult) (DataCollectionEndpointResourceListResult, error)) DataCollectionEndpointResourceListResultPage {
+	return original.NewDataCollectionEndpointResourceListResultPage(cur, getNextPage)
+}
+func NewDataCollectionEndpointsClient(subscriptionID string) DataCollectionEndpointsClient {
+	return original.NewDataCollectionEndpointsClient(subscriptionID)
+}
+func NewDataCollectionEndpointsClientWithBaseURI(baseURI string, subscriptionID string) DataCollectionEndpointsClient {
+	return original.NewDataCollectionEndpointsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDataCollectionRuleAssociationProxyOnlyResourceListResultIterator(page DataCollectionRuleAssociationProxyOnlyResourceListResultPage) DataCollectionRuleAssociationProxyOnlyResourceListResultIterator {
+	return original.NewDataCollectionRuleAssociationProxyOnlyResourceListResultIterator(page)
+}
+func NewDataCollectionRuleAssociationProxyOnlyResourceListResultPage(cur DataCollectionRuleAssociationProxyOnlyResourceListResult, getNextPage func(context.Context, DataCollectionRuleAssociationProxyOnlyResourceListResult) (DataCollectionRuleAssociationProxyOnlyResourceListResult, error)) DataCollectionRuleAssociationProxyOnlyResourceListResultPage {
+	return original.NewDataCollectionRuleAssociationProxyOnlyResourceListResultPage(cur, getNextPage)
+}
+func NewDataCollectionRuleAssociationsClient(subscriptionID string) DataCollectionRuleAssociationsClient {
+	return original.NewDataCollectionRuleAssociationsClient(subscriptionID)
+}
+func NewDataCollectionRuleAssociationsClientWithBaseURI(baseURI string, subscriptionID string) DataCollectionRuleAssociationsClient {
+	return original.NewDataCollectionRuleAssociationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDataCollectionRuleResourceListResultIterator(page DataCollectionRuleResourceListResultPage) DataCollectionRuleResourceListResultIterator {
+	return original.NewDataCollectionRuleResourceListResultIterator(page)
+}
+func NewDataCollectionRuleResourceListResultPage(cur DataCollectionRuleResourceListResult, getNextPage func(context.Context, DataCollectionRuleResourceListResult) (DataCollectionRuleResourceListResult, error)) DataCollectionRuleResourceListResultPage {
+	return original.NewDataCollectionRuleResourceListResultPage(cur, getNextPage)
+}
+func NewDataCollectionRulesClient(subscriptionID string) DataCollectionRulesClient {
+	return original.NewDataCollectionRulesClient(subscriptionID)
+}
+func NewDataCollectionRulesClientWithBaseURI(baseURI string, subscriptionID string) DataCollectionRulesClient {
+	return original.NewDataCollectionRulesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewDiagnosticSettingsCategoryClient(subscriptionID string) DiagnosticSettingsCategoryClient {
 	return original.NewDiagnosticSettingsCategoryClient(subscriptionID)
 }
@@ -643,12 +876,6 @@ func NewMetricAlertsStatusClient(subscriptionID string) MetricAlertsStatusClient
 }
 func NewMetricAlertsStatusClientWithBaseURI(baseURI string, subscriptionID string) MetricAlertsStatusClient {
 	return original.NewMetricAlertsStatusClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewMetricBaselineClient(subscriptionID string) MetricBaselineClient {
-	return original.NewMetricBaselineClient(subscriptionID)
-}
-func NewMetricBaselineClientWithBaseURI(baseURI string, subscriptionID string) MetricBaselineClient {
-	return original.NewMetricBaselineClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewMetricDefinitionsClient(subscriptionID string) MetricDefinitionsClient {
 	return original.NewMetricDefinitionsClient(subscriptionID)
@@ -728,12 +955,6 @@ func NewScopedResourceListResultIterator(page ScopedResourceListResultPage) Scop
 func NewScopedResourceListResultPage(cur ScopedResourceListResult, getNextPage func(context.Context, ScopedResourceListResult) (ScopedResourceListResult, error)) ScopedResourceListResultPage {
 	return original.NewScopedResourceListResultPage(cur, getNextPage)
 }
-func NewSubscriptionDiagnosticSettingsClient(subscriptionID string) SubscriptionDiagnosticSettingsClient {
-	return original.NewSubscriptionDiagnosticSettingsClient(subscriptionID)
-}
-func NewSubscriptionDiagnosticSettingsClientWithBaseURI(baseURI string, subscriptionID string) SubscriptionDiagnosticSettingsClient {
-	return original.NewSubscriptionDiagnosticSettingsClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewTenantActivityLogsClient(subscriptionID string) TenantActivityLogsClient {
 	return original.NewTenantActivityLogsClient(subscriptionID)
 }
@@ -748,6 +969,9 @@ func NewVMInsightsClientWithBaseURI(baseURI string, subscriptionID string) VMIns
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAggregationTypeEnumValues() []AggregationTypeEnum {
+	return original.PossibleAggregationTypeEnumValues()
 }
 func PossibleAggregationTypeValues() []AggregationType {
 	return original.PossibleAggregationTypeValues()
@@ -770,6 +994,9 @@ func PossibleConditionOperatorValues() []ConditionOperator {
 func PossibleConditionalOperatorValues() []ConditionalOperator {
 	return original.PossibleConditionalOperatorValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleCriterionTypeValues() []CriterionType {
 	return original.PossibleCriterionTypeValues()
 }
@@ -788,11 +1015,59 @@ func PossibleEnabledValues() []Enabled {
 func PossibleEventLevelValues() []EventLevel {
 	return original.PossibleEventLevelValues()
 }
+func PossibleKnownDataCollectionEndpointProvisioningStateValues() []KnownDataCollectionEndpointProvisioningState {
+	return original.PossibleKnownDataCollectionEndpointProvisioningStateValues()
+}
+func PossibleKnownDataCollectionEndpointResourceKindValues() []KnownDataCollectionEndpointResourceKind {
+	return original.PossibleKnownDataCollectionEndpointResourceKindValues()
+}
+func PossibleKnownDataCollectionRuleAssociationProvisioningStateValues() []KnownDataCollectionRuleAssociationProvisioningState {
+	return original.PossibleKnownDataCollectionRuleAssociationProvisioningStateValues()
+}
+func PossibleKnownDataCollectionRuleProvisioningStateValues() []KnownDataCollectionRuleProvisioningState {
+	return original.PossibleKnownDataCollectionRuleProvisioningStateValues()
+}
+func PossibleKnownDataCollectionRuleResourceKindValues() []KnownDataCollectionRuleResourceKind {
+	return original.PossibleKnownDataCollectionRuleResourceKindValues()
+}
+func PossibleKnownDataFlowStreamsValues() []KnownDataFlowStreams {
+	return original.PossibleKnownDataFlowStreamsValues()
+}
+func PossibleKnownExtensionDataSourceStreamsValues() []KnownExtensionDataSourceStreams {
+	return original.PossibleKnownExtensionDataSourceStreamsValues()
+}
+func PossibleKnownPerfCounterDataSourceStreamsValues() []KnownPerfCounterDataSourceStreams {
+	return original.PossibleKnownPerfCounterDataSourceStreamsValues()
+}
+func PossibleKnownPublicNetworkAccessOptionsValues() []KnownPublicNetworkAccessOptions {
+	return original.PossibleKnownPublicNetworkAccessOptionsValues()
+}
+func PossibleKnownSyslogDataSourceFacilityNamesValues() []KnownSyslogDataSourceFacilityNames {
+	return original.PossibleKnownSyslogDataSourceFacilityNamesValues()
+}
+func PossibleKnownSyslogDataSourceLogLevelsValues() []KnownSyslogDataSourceLogLevels {
+	return original.PossibleKnownSyslogDataSourceLogLevelsValues()
+}
+func PossibleKnownSyslogDataSourceStreamsValues() []KnownSyslogDataSourceStreams {
+	return original.PossibleKnownSyslogDataSourceStreamsValues()
+}
+func PossibleKnownWindowsEventLogDataSourceStreamsValues() []KnownWindowsEventLogDataSourceStreams {
+	return original.PossibleKnownWindowsEventLogDataSourceStreamsValues()
+}
+func PossibleMetricClassValues() []MetricClass {
+	return original.PossibleMetricClassValues()
+}
 func PossibleMetricStatisticTypeValues() []MetricStatisticType {
 	return original.PossibleMetricStatisticTypeValues()
 }
 func PossibleMetricTriggerTypeValues() []MetricTriggerType {
 	return original.PossibleMetricTriggerTypeValues()
+}
+func PossibleMetricUnitValues() []MetricUnit {
+	return original.PossibleMetricUnitValues()
+}
+func PossibleNamespaceClassificationValues() []NamespaceClassification {
+	return original.PossibleNamespaceClassificationValues()
 }
 func PossibleOdataTypeBasicActionValues() []OdataTypeBasicAction {
 	return original.PossibleOdataTypeBasicActionValues()
@@ -839,17 +1114,11 @@ func PossibleScaleRuleMetricDimensionOperationTypeValues() []ScaleRuleMetricDime
 func PossibleScaleTypeValues() []ScaleType {
 	return original.PossibleScaleTypeValues()
 }
-func PossibleSensitivityValues() []Sensitivity {
-	return original.PossibleSensitivityValues()
-}
 func PossibleTimeAggregationOperatorValues() []TimeAggregationOperator {
 	return original.PossibleTimeAggregationOperatorValues()
 }
 func PossibleTimeAggregationTypeValues() []TimeAggregationType {
 	return original.PossibleTimeAggregationTypeValues()
-}
-func PossibleUnitValues() []Unit {
-	return original.PossibleUnitValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

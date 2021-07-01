@@ -11,7 +11,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/uuid"
 	"io"
 	"log"
 	"net/http"
@@ -203,39 +202,39 @@ func ExampleBlobURLParts() {
 
 // This example demonstrates how to use the SAS token convenience generators.
 // Though this example focuses on account SAS, these generators exist across all clients (Service, Container, Blob, and specialized Blob clients)
-func ExampleSASConvenienceGenerators() {
-	// Initialize a service client
-	accountName, accountKey := accountInfo()
-	credential, err := NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
-	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	// Provide the convenience function with relevant info (services, resource types, permissions, and duration)
-	// The SAS token will be valid from this moment onwards.
-	accountSAS, err := serviceClient.GetAccountSASToken(AccountSASServices{Blob: true}, AccountSASResourceTypes{Object: true, Service: true, Container: true}, AccountSASPermissions{Read: true, List: true}, time.Hour*48)
-	if err != nil {
-		log.Fatal(err)
-	}
-	qp := accountSAS.Encode()
-	urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, qp)
-	// You can hand off this URL to someone else via any mechanism you choose.
-
-	// ******************************************
-
-	// When someone receives the URL, they can access the resource using it in code like this, or a tool of some variety.
-	serviceClient, err = NewServiceClient(urlToSend, azcore.AnonymousCredential(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// You can also break a blob URL up into it's constituent parts
-	blobURLParts := NewBlobURLParts(serviceClient.URL())
-	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
-}
+//func ExampleSASConvenienceGenerators() {
+//	// Initialize a service client
+//	accountName, accountKey := accountInfo()
+//	credential, err := NewSharedKeyCredential(accountName, accountKey)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), credential, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	// Provide the convenience function with relevant info (services, resource types, permissions, and duration)
+//	// The SAS token will be valid from this moment onwards.
+//	accountSAS, err := serviceClient.GetAccountSASToken(AccountSASServices{Blob: true}, AccountSASResourceTypes{Object: true, Service: true, Container: true}, AccountSASPermissions{Read: true, List: true}, time.Hour*48)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	qp := accountSAS.Encode()
+//	urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, qp)
+//	// You can hand off this URL to someone else via any mechanism you choose.
+//
+//	// ******************************************
+//
+//	// When someone receives the URL, they can access the resource using it in code like this, or a tool of some variety.
+//	serviceClient, err = NewServiceClient(urlToSend, azcore.AnonymousCredential(), nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	// You can also break a blob URL up into it's constituent parts
+//	blobURLParts := NewBlobURLParts(serviceClient.URL())
+//	fmt.Printf("SAS expiry time = %s\n", blobURLParts.SAS.ExpiryTime())
+//}
 
 // This example shows how to create and use an Azure Storage account Shared Access Signature (SAS).
 func ExampleAccountSASSignatureValues() {
@@ -441,114 +440,114 @@ func ExampleBlobAccessConditions() {
 }
 
 // This examples shows how to create a container with metadata and then how to read & update the metadata.
-func ExampleMetadata_containers() {
-	// From the Azure portal, get your Storage account blob service URL endpoint.
-	accountName, accountKey := accountInfo()
-
-	// Create a containerClient object that wraps a soon-to-be-created container's URL and a default pipeline.
-	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
-	credential, err := NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
-	containerClient, err := NewContainerClient(u, credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	ctx := context.Background() // This example uses a never-expiring context
-
-	// Create a container with some metadata (string key/value pairs)
-	// NOTE: Metadata key names are always converted to lowercase before being sent to the Storage Service.
-	// Therefore, you should always use lowercase letters; especially when querying a map for a metadata key.
-	creatingApp, _ := os.Executable()
-	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: &map[string]string{"author": "Jeffrey", "app": creatingApp}})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Query the container's metadata
-	get, err := containerClient.GetProperties(ctx, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Show the container's metadata
-	if get.Metadata == nil {
-		log.Fatal("metadata is empty!")
-	}
-
-	metadata := get.Metadata
-	for k, v := range metadata {
-		fmt.Print(k + "=" + v + "\n")
-	}
-
-	// Update the metadata and write it back to the container
-	metadata["author"] = "Aidan" // NOTE: The keyname is in all lowercase letters
-	_, err = containerClient.SetMetadata(ctx, &SetMetadataContainerOptions{Metadata: &metadata})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// NOTE: The SetMetadata & SetProperties methods update the container's ETag & LastModified properties
-}
+//func ExampleMetadata_containers() {
+//	// From the Azure portal, get your Storage account blob service URL endpoint.
+//	accountName, accountKey := accountInfo()
+//
+//	// Create a containerClient object that wraps a soon-to-be-created container's URL and a default pipeline.
+//	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
+//	credential, err := NewSharedKeyCredential(accountName, accountKey)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	containerClient, err := NewContainerClient(u, credential, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	ctx := context.Background() // This example uses a never-expiring context
+//
+//	// Create a container with some metadata (string key/value pairs)
+//	// NOTE: Metadata key names are always converted to lowercase before being sent to the Storage Service.
+//	// Therefore, you should always use lowercase letters; especially when querying a map for a metadata key.
+//	creatingApp, _ := os.Executable()
+//	_, err = containerClient.Create(ctx, &CreateContainerOptions{Metadata: &map[string]string{"author": "Jeffrey", "app": creatingApp}})
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	// Query the container's metadata
+//	get, err := containerClient.GetProperties(ctx, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	// Show the container's metadata
+//	if get.Metadata == nil {
+//		log.Fatal("metadata is empty!")
+//	}
+//
+//	metadata := get.Metadata
+//	for k, v := range metadata {
+//		fmt.Print(k + "=" + v + "\n")
+//	}
+//
+//	// Update the metadata and write it back to the container
+//	metadata["author"] = "Aidan" // NOTE: The keyname is in all lowercase letters
+//	_, err = containerClient.SetMetadata(ctx, &SetMetadataContainerOptions{Metadata: &metadata})
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	// NOTE: The SetMetadata & SetProperties methods update the container's ETag & LastModified properties
+//}
 
 // This examples shows how to create a blob with metadata and then how to read & update
 // the blob's read-only properties and metadata.
-func ExampleMetadata_blobs() {
-	// From the Azure portal, get your Storage account blob service URL endpoint.
-	accountName, accountKey := accountInfo()
-
-	// Create a blob client
-	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/ReadMe.txt", accountName)
-	credential, err := NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
-	BlobClient, err := NewBlockBlobClient(u, credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	ctx := context.Background() // This example uses a never-expiring context
-
-	// Create a blob with metadata (string key/value pairs)
-	// NOTE: Metadata key names are always converted to lowercase before being sent to the Storage Service.
-	// Therefore, you should always use lowercase letters; especially when querying a map for a metadata key.
-	creatingApp, _ := os.Executable()
-	_, err = BlobClient.Upload(ctx, strings.NewReader("Some text"), &UploadBlockBlobOptions{Metadata: &map[string]string{"author": "Jeffrey", "app": creatingApp}})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Query the blob's properties and metadata
-	get, err := BlobClient.GetProperties(ctx, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Show some of the blob's read-only properties
-	fmt.Println(*get.BlobType, *get.ETag, *get.LastModified)
-
-	// Show the blob's metadata
-	if get.Metadata == nil {
-		log.Fatal("No metadata returned")
-	}
-
-	metadata := get.Metadata
-	for k, v := range metadata {
-		fmt.Print(k + "=" + v + "\n")
-	}
-
-	// Update the blob's metadata and write it back to the blob
-	metadata["editor"] = "Grant" // Add a new key/value; NOTE: The keyname is in all lowercase letters
-	_, err = BlobClient.SetMetadata(ctx, metadata, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// NOTE: The SetMetadata method updates the blob's ETag & LastModified properties
-}
+//func ExampleMetadata_blobs() {
+//	// From the Azure portal, get your Storage account blob service URL endpoint.
+//	accountName, accountKey := accountInfo()
+//
+//	// Create a blob client
+//	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/ReadMe.txt", accountName)
+//	credential, err := NewSharedKeyCredential(accountName, accountKey)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	BlobClient, err := NewBlockBlobClient(u, credential, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	ctx := context.Background() // This example uses a never-expiring context
+//
+//	// Create a blob with metadata (string key/value pairs)
+//	// NOTE: Metadata key names are always converted to lowercase before being sent to the Storage Service.
+//	// Therefore, you should always use lowercase letters; especially when querying a map for a metadata key.
+//	creatingApp, _ := os.Executable()
+//	_, err = BlobClient.Upload(ctx, strings.NewReader("Some text"), &UploadBlockBlobOptions{Metadata: &map[string]string{"author": "Jeffrey", "app": creatingApp}})
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	// Query the blob's properties and metadata
+//	get, err := BlobClient.GetProperties(ctx, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	// Show some of the blob's read-only properties
+//	fmt.Println(*get.BlobType, *get.ETag, *get.LastModified)
+//
+//	// Show the blob's metadata
+//	if get.Metadata == nil {
+//		log.Fatal("No metadata returned")
+//	}
+//
+//	metadata := get.Metadata
+//	for k, v := range metadata {
+//		fmt.Print(k + "=" + v + "\n")
+//	}
+//
+//	// Update the blob's metadata and write it back to the blob
+//	metadata["editor"] = "Grant" // Add a new key/value; NOTE: The keyname is in all lowercase letters
+//	_, err = BlobClient.SetMetadata(ctx, metadata, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	// NOTE: The SetMetadata method updates the blob's ETag & LastModified properties
+//}
 
 // This examples shows how to create a blob with HTTP Headers and then how to read & update
 // the blob's HTTP headers.
@@ -977,67 +976,67 @@ func ExampleBlobClient_startCopy() {
 }
 
 // // This example shows how to copy a large stream in blocks (chunks) to a block blob.
-func ExampleUploadFileToBlockBlobAndDownloadItBack() {
-	file, err := os.Open("BigFile.bin") // Open the file we want to upload
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
-	fileSize, err := file.Stat() // Get the size of the file (stream)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// From the Azure portal, get your Storage account blob service URL endpoint.
-	accountName, accountKey := accountInfo()
-
-	// Create a BlockBlobURL object to a blob in the container (we assume the container already exists).
-	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/BigBlockBlob.bin", accountName)
-	credential, err := NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
-	blockBlobURL, err := NewBlockBlobClient(u, credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	ctx := context.Background() // This example uses a never-expiring context
-
-	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
-	response, err := UploadFileToBlockBlob(ctx, file, blockBlobURL,
-		HighLevelUploadToBlockBlobOption{
-			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
-			Progress: func(bytesTransferred int64) {
-				fmt.Printf("Uploaded %d of %d bytes.\n", bytesTransferred, fileSize.Size())
-			},
-		})
-	if err != nil {
-		log.Fatal(err)
-	}
-	_ = response // Avoid compiler's "declared and not used" error
-
-	// Set up file to download the blob to
-	destFileName := "BigFile-downloaded.bin"
-	destFile, err := os.Create(destFileName)
-	defer destFile.Close()
-
-	// Perform download
-	err = DownloadBlobToFile(context.Background(), blockBlobURL.BlobClient, 0, CountToEnd, destFile,
-		HighLevelDownloadFromBlobOptions{
-			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
-			Progress: func(bytesTransferred int64) {
-				fmt.Printf("Downloaded %d of %d bytes.\n", bytesTransferred, fileSize.Size())
-			}})
-
-	if err != nil {
-		log.Fatal(err)
-	}
-}
+//func ExampleUploadFileToBlockBlobAndDownloadItBack() {
+//	file, err := os.Open("BigFile.bin") // Open the file we want to upload
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	defer file.Close()
+//	fileSize, err := file.Stat() // Get the size of the file (stream)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	// From the Azure portal, get your Storage account blob service URL endpoint.
+//	accountName, accountKey := accountInfo()
+//
+//	// Create a BlockBlobURL object to a blob in the container (we assume the container already exists).
+//	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/BigBlockBlob.bin", accountName)
+//	credential, err := NewSharedKeyCredential(accountName, accountKey)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	blockBlobURL, err := NewBlockBlobClient(u, credential, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	ctx := context.Background() // This example uses a never-expiring context
+//
+//	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
+//	response, err := UploadFileToBlockBlob(ctx, file, blockBlobURL,
+//		HighLevelUploadToBlockBlobOption{
+//			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
+//			Progress: func(bytesTransferred int64) {
+//				fmt.Printf("Uploaded %d of %d bytes.\n", bytesTransferred, fileSize.Size())
+//			},
+//		})
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	_ = response // Avoid compiler's "declared and not used" error
+//
+//	// Set up file to download the blob to
+//	destFileName := "BigFile-downloaded.bin"
+//	destFile, err := os.Create(destFileName)
+//	defer destFile.Close()
+//
+//	// Perform download
+//	err = DownloadBlobToFile(context.Background(), blockBlobURL.BlobClient, 0, CountToEnd, destFile,
+//		HighLevelDownloadFromBlobOptions{
+//			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
+//			Progress: func(bytesTransferred int64) {
+//				fmt.Printf("Downloaded %d of %d bytes.\n", bytesTransferred, fileSize.Size())
+//			}})
+//
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//}
 
 // This example shows how to download a large stream with intelligent retries. Specifically, if
 // the connection fails while reading, continuing to read from this stream initiates a new
-// GetBlob call passing a range that starts from the last byte successfully read before the failure.
+// GetBlob call passing a range that starts from the last byte successfully read Fbefore the failure.
 func ExampleBlobClient_Download() {
 	// From the Azure portal, get your Storage account blob service URL endpoint.
 	accountName, accountKey := accountInfo()
@@ -1120,81 +1119,81 @@ func ExampleUploadStreamToBlockBlob() {
 // The same lease operations can be performed on individual blobs as well.
 // A lease on a container prevents it from being deleted by others, while a lease on a blob
 // protects it from both modifications and deletions.
-func ExampleLeaseContainer() {
-	// From the Azure portal, get your Storage account's name and account key.
-	accountName, accountKey := accountInfo()
-
-	// Use your Storage account's name and key to create a credential object; this is used to access your account.
-	credential, err := NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Create an containerClient object that wraps the container's URL and a default pipeline.
-	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
-	leaseID := to.StringPtr(uuid.New().String())
-	containerLeaseClient, err := NewContainerLeaseClient(u, leaseID, credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// All operations allow you to specify a timeout via a Go context.Context object.
-	ctx := context.Background() // This example uses a never-expiring context
-
-	// Now acquire a lease on the container.
-	// You can choose to pass an empty string for proposed ID so that the service automatically assigns one for you.
-	duration := int32(60)
-	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: &duration})
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("The container is leased for delete operations with lease ID", *acquireLeaseResponse.LeaseID)
-
-	// The container cannot be deleted without providing the lease ID.
-	_, err = containerLeaseClient.Delete(ctx, nil)
-	if err == nil {
-		log.Fatal("delete should have failed")
-	}
-	fmt.Println("The container cannot be deleted while there is an active lease")
-
-	// We can release the lease now and the container can be deleted.
-	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("The lease on the container is now released")
-
-	// Acquire a lease again to perform other operations.
-	// Duration is still 60
-	acquireLeaseResponse, err = containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: &duration})
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("The container is leased again with lease ID", *acquireLeaseResponse.LeaseID)
-
-	// We can change the ID of an existing lease.
-	// A lease ID can be any valid GUID string format.
-	newLeaseID := uuid.New()
-	newLeaseID[0] = 1
-	changeLeaseResponse, err := containerLeaseClient.ChangeLease(ctx,
-		&ChangeLeaseContainerOptions{ProposedLeaseID: to.StringPtr(newLeaseID.String())})
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("The lease ID was changed to", *changeLeaseResponse.LeaseID)
-
-	// The lease can be renewed.
-	renewLeaseResponse, err := containerLeaseClient.RenewLease(ctx, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("The lease was renewed with the same ID", *renewLeaseResponse.LeaseID)
-
-	// Finally, the lease can be broken and we could prevent others from acquiring a lease for a period of time
-	duration = 60
-	_, err = containerLeaseClient.BreakLease(ctx, &BreakLeaseContainerOptions{BreakPeriod: &duration})
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("The lease was broken, and nobody can acquire a lease for 60 seconds")
-}
+//func ExampleContainerLeaseClient() {
+//	// From the Azure portal, get your Storage account's name and account key.
+//	accountName, accountKey := accountInfo()
+//
+//	// Use your Storage account's name and key to create a credential object; this is used to access your account.
+//	credential, err := NewSharedKeyCredential(accountName, accountKey)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	// Create an containerClient object that wraps the container's URL and a default pipeline.
+//	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
+//	leaseID := to.StringPtr(uuid.New().String())
+//	containerLeaseClient, err := NewContainerLeaseClient(u, leaseID, credential, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	// All operations allow you to specify a timeout via a Go context.Context object.
+//	ctx := context.Background() // This example uses a never-expiring context
+//
+//	// Now acquire a lease on the container.
+//	// You can choose to pass an empty string for proposed ID so that the service automatically assigns one for you.
+//	duration := int32(60)
+//	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: &duration})
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	fmt.Println("The container is leased for delete operations with lease ID", *acquireLeaseResponse.LeaseID)
+//
+//	// The container cannot be deleted without providing the lease ID.
+//	_, err = containerLeaseClient.Delete(ctx, nil)
+//	if err == nil {
+//		log.Fatal("delete should have failed")
+//	}
+//	fmt.Println("The container cannot be deleted while there is an active lease")
+//
+//	// We can release the lease now and the container can be deleted.
+//	_, err = containerLeaseClient.ReleaseLease(ctx, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	fmt.Println("The lease on the container is now released")
+//
+//	// Acquire a lease again to perform other operations.
+//	// Duration is still 60
+//	acquireLeaseResponse, err = containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: &duration})
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	fmt.Println("The container is leased again with lease ID", *acquireLeaseResponse.LeaseID)
+//
+//	// We can change the ID of an existing lease.
+//	// A lease ID can be any valid GUID string format.
+//	newLeaseID := uuid.New()
+//	newLeaseID[0] = 1
+//	changeLeaseResponse, err := containerLeaseClient.ChangeLease(ctx,
+//		&ChangeLeaseContainerOptions{ProposedLeaseID: to.StringPtr(newLeaseID.String())})
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	fmt.Println("The lease ID was changed to", *changeLeaseResponse.LeaseID)
+//
+//	// The lease can be renewed.
+//	renewLeaseResponse, err := containerLeaseClient.RenewLease(ctx, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	fmt.Println("The lease was renewed with the same ID", *renewLeaseResponse.LeaseID)
+//
+//	// Finally, the lease can be broken and we could prevent others from acquiring a lease for a period of time
+//	duration = 60
+//	_, err = containerLeaseClient.BreakLease(ctx, &BreakLeaseContainerOptions{BreakPeriod: &duration})
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	fmt.Println("The lease was broken, and nobody can acquire a lease for 60 seconds")
+//}

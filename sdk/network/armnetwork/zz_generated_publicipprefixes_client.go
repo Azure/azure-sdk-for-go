@@ -41,13 +41,12 @@ func (client *PublicIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, r
 	result := PublicIPPrefixPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("PublicIPPrefixesClient.CreateOrUpdate", "location", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("PublicIPPrefixesClient.CreateOrUpdate", "location", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return PublicIPPrefixPollerResponse{}, err
 	}
 	poller := &publicIPPrefixPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PublicIPPrefixResponse, error) {
@@ -59,13 +58,12 @@ func (client *PublicIPPrefixesClient) BeginCreateOrUpdate(ctx context.Context, r
 // ResumeCreateOrUpdate creates a new PublicIPPrefixPoller from the specified resume token.
 // token - The value must come from a previous call to PublicIPPrefixPoller.ResumeToken().
 func (client *PublicIPPrefixesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (PublicIPPrefixPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("PublicIPPrefixesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("PublicIPPrefixesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return PublicIPPrefixPollerResponse{}, err
 	}
 	poller := &publicIPPrefixPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -148,13 +146,12 @@ func (client *PublicIPPrefixesClient) BeginDelete(ctx context.Context, resourceG
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("PublicIPPrefixesClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("PublicIPPrefixesClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -166,13 +163,12 @@ func (client *PublicIPPrefixesClient) BeginDelete(ctx context.Context, resourceG
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *PublicIPPrefixesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("PublicIPPrefixesClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("PublicIPPrefixesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

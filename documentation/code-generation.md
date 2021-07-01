@@ -93,4 +93,4 @@ generator –r –v –l=temp –version=v11.2.0-beta C:/azure-rest-api-specs/sp
 
 ## Generate Azure SDK for Go profiles
 
-Take a look into the [profile generator documentation](https://github.com/Azure/azure-sdk-for-go/tree/master/tools/profileBuilder)
+Take a look into the [profile generator documentation](https://github.com/Azure/azure-sdk-for-go/tree/main/tools/profileBuilder)

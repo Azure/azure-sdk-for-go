@@ -1,5 +1,60 @@
 # CHANGELOG
 
+## `v55.5.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appinsights/mgmt/2020-02-02-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/signalr/mgmt/2021-06-01-preview/signalr`
+- `github.com/Azure/azure-sdk-for-go/services/preview/webpubsub/mgmt/2021-06-01-preview/webpubsub`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2021-03-01-preview/appconfiguration` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/appconfiguration/mgmt/2021-03-01-preview/appconfiguration/CHANGELOG.md) |
+
+## `v55.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-06-15/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers`
+- `github.com/Azure/azure-sdk-for-go/services/preview/azurestackhci/mgmt/2021-01-01-preview/azurestackhci`
+- `github.com/Azure/azure-sdk-for-go/services/preview/hybridkubernetes/mgmt/2021-04-01-preview/hybridkubernetes`
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-04-01-preview/insights`
+- `github.com/Azure/azure-sdk-for-go/services/preview/sql/mgmt/v5.0/sql`
+
+## `v55.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/databricks/mgmt/2021-04-01-preview/databricks`
+- `github.com/Azure/azure-sdk-for-go/services/preview/eventgrid/mgmt/2021-06-01-preview/eventgrid`
+- `github.com/Azure/azure-sdk-for-go/services/trafficmanager/mgmt/2018-08-01/trafficmanager`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/security/mgmt/v3.0/security/CHANGELOG.md) |
+
+## `v55.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-05-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/cosmos-db/mgmt/2021-05-15/documentdb`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-04-01/netapp`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.2.0/services/preview/postgresql/mgmt/2020-02-14-preview/postgresqlflexibleservers/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/web/mgmt/2020-12-01/web` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.2.0/services/web/mgmt/2020-12-01/web/CHANGELOG.md) |
+
 ## `v55.1.0`
 
 ### New Packages
@@ -10,7 +65,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2018-06-01/hdinsight` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/hdinsight/mgmt/2018-06-01/hdinsight/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2018-06-01/hdinsight` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.1.0/services/hdinsight/mgmt/2018-06-01/hdinsight/CHANGELOG.md) |
 
 ## `v55.0.0`
 

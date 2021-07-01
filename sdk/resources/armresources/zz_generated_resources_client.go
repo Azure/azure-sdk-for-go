@@ -166,13 +166,12 @@ func (client *ResourcesClient) BeginCreateOrUpdate(ctx context.Context, resource
 	result := GenericResourcePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourcesClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("ResourcesClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
@@ -184,13 +183,12 @@ func (client *ResourcesClient) BeginCreateOrUpdate(ctx context.Context, resource
 // ResumeCreateOrUpdate creates a new GenericResourcePoller from the specified resume token.
 // token - The value must come from a previous call to GenericResourcePoller.ResumeToken().
 func (client *ResourcesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (GenericResourcePollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ResourcesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -285,13 +283,12 @@ func (client *ResourcesClient) BeginCreateOrUpdateByID(ctx context.Context, reso
 	result := GenericResourcePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourcesClient.CreateOrUpdateByID", "", resp, client.createOrUpdateByIDHandleError)
+	pt, err := armcore.NewLROPoller("ResourcesClient.CreateOrUpdateByID", "", resp, client.con.Pipeline(), client.createOrUpdateByIDHandleError)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
@@ -303,13 +300,12 @@ func (client *ResourcesClient) BeginCreateOrUpdateByID(ctx context.Context, reso
 // ResumeCreateOrUpdateByID creates a new GenericResourcePoller from the specified resume token.
 // token - The value must come from a previous call to GenericResourcePoller.ResumeToken().
 func (client *ResourcesClient) ResumeCreateOrUpdateByID(ctx context.Context, token string) (GenericResourcePollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.CreateOrUpdateByID", token, client.createOrUpdateByIDHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ResourcesClient.CreateOrUpdateByID", token, client.con.Pipeline(), client.createOrUpdateByIDHandleError)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -384,13 +380,12 @@ func (client *ResourcesClient) BeginDelete(ctx context.Context, resourceGroupNam
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourcesClient.Delete", "", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("ResourcesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -402,13 +397,12 @@ func (client *ResourcesClient) BeginDelete(ctx context.Context, resourceGroupNam
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *ResourcesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ResourcesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -503,13 +497,12 @@ func (client *ResourcesClient) BeginDeleteByID(ctx context.Context, resourceID s
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourcesClient.DeleteByID", "", resp, client.deleteByIDHandleError)
+	pt, err := armcore.NewLROPoller("ResourcesClient.DeleteByID", "", resp, client.con.Pipeline(), client.deleteByIDHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -521,13 +514,12 @@ func (client *ResourcesClient) BeginDeleteByID(ctx context.Context, resourceID s
 // ResumeDeleteByID creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *ResourcesClient) ResumeDeleteByID(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.DeleteByID", token, client.deleteByIDHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ResourcesClient.DeleteByID", token, client.con.Pipeline(), client.deleteByIDHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -878,13 +870,12 @@ func (client *ResourcesClient) BeginMoveResources(ctx context.Context, sourceRes
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourcesClient.MoveResources", "", resp, client.moveResourcesHandleError)
+	pt, err := armcore.NewLROPoller("ResourcesClient.MoveResources", "", resp, client.con.Pipeline(), client.moveResourcesHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -896,13 +887,12 @@ func (client *ResourcesClient) BeginMoveResources(ctx context.Context, sourceRes
 // ResumeMoveResources creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *ResourcesClient) ResumeMoveResources(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.MoveResources", token, client.moveResourcesHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ResourcesClient.MoveResources", token, client.con.Pipeline(), client.moveResourcesHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -983,13 +973,12 @@ func (client *ResourcesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 	result := GenericResourcePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourcesClient.Update", "", resp, client.updateHandleError)
+	pt, err := armcore.NewLROPoller("ResourcesClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
@@ -1001,13 +990,12 @@ func (client *ResourcesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 // ResumeUpdate creates a new GenericResourcePoller from the specified resume token.
 // token - The value must come from a previous call to GenericResourcePoller.ResumeToken().
 func (client *ResourcesClient) ResumeUpdate(ctx context.Context, token string) (GenericResourcePollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.Update", token, client.updateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ResourcesClient.Update", token, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1102,13 +1090,12 @@ func (client *ResourcesClient) BeginUpdateByID(ctx context.Context, resourceID s
 	result := GenericResourcePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourcesClient.UpdateByID", "", resp, client.updateByIDHandleError)
+	pt, err := armcore.NewLROPoller("ResourcesClient.UpdateByID", "", resp, client.con.Pipeline(), client.updateByIDHandleError)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenericResourceResponse, error) {
@@ -1120,13 +1107,12 @@ func (client *ResourcesClient) BeginUpdateByID(ctx context.Context, resourceID s
 // ResumeUpdateByID creates a new GenericResourcePoller from the specified resume token.
 // token - The value must come from a previous call to GenericResourcePoller.ResumeToken().
 func (client *ResourcesClient) ResumeUpdateByID(ctx context.Context, token string) (GenericResourcePollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.UpdateByID", token, client.updateByIDHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ResourcesClient.UpdateByID", token, client.con.Pipeline(), client.updateByIDHandleError)
 	if err != nil {
 		return GenericResourcePollerResponse{}, err
 	}
 	poller := &genericResourcePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -1205,13 +1191,12 @@ func (client *ResourcesClient) BeginValidateMoveResources(ctx context.Context, s
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourcesClient.ValidateMoveResources", "", resp, client.validateMoveResourcesHandleError)
+	pt, err := armcore.NewLROPoller("ResourcesClient.ValidateMoveResources", "", resp, client.con.Pipeline(), client.validateMoveResourcesHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -1223,13 +1208,12 @@ func (client *ResourcesClient) BeginValidateMoveResources(ctx context.Context, s
 // ResumeValidateMoveResources creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *ResourcesClient) ResumeValidateMoveResources(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourcesClient.ValidateMoveResources", token, client.validateMoveResourcesHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ResourcesClient.ValidateMoveResources", token, client.con.Pipeline(), client.validateMoveResourcesHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

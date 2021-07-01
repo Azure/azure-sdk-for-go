@@ -7,6 +7,8 @@
 
 package armstorage
 
+const telemetryInfo = "azsdk-go-armstorage/v0.1.1"
+
 // AccessTier - Required for storage accounts where kind = BlobStorage. The access tier used for billing.
 type AccessTier string
 

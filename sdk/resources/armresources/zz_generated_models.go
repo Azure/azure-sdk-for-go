@@ -186,7 +186,7 @@ func (d Deployment) MarshalJSON() ([]byte, error) {
 // DeploymentExportResult - The deployment export result.
 type DeploymentExportResult struct {
 	// The template content.
-	Template interface{} `json:"template,omitempty"`
+	Template map[string]interface{} `json:"template,omitempty"`
 }
 
 // DeploymentExtended - Deployment information.
@@ -450,7 +450,7 @@ type DeploymentProperties struct {
 	// Name and value pairs that define the deployment parameters for the template. You use this element when you want to provide the parameter values directly
 	// in the request rather than link to an existing
 	// parameter file. Use either the parametersLink property or the parameters property, but not both. It can be a JObject or a well formed JSON string.
-	Parameters interface{} `json:"parameters,omitempty"`
+	Parameters map[string]interface{} `json:"parameters,omitempty"`
 
 	// The URI of parameters file. You use this element to link to an existing parameters file. Use either the parametersLink property or the parameters property,
 	// but not both.
@@ -459,7 +459,7 @@ type DeploymentProperties struct {
 	// The template content. You use this element when you want to pass the template syntax directly in the request rather than link to an existing template.
 	// It can be a JObject or well-formed JSON string.
 	// Use either the templateLink property or the template property, but not both.
-	Template interface{} `json:"template,omitempty"`
+	Template map[string]interface{} `json:"template,omitempty"`
 
 	// The URI of the template. Use either the templateLink property or the template property, but not both.
 	TemplateLink *TemplateLink `json:"templateLink,omitempty"`
@@ -492,10 +492,10 @@ type DeploymentPropertiesExtended struct {
 	OutputResources []*ResourceReference `json:"outputResources,omitempty" azure:"ro"`
 
 	// READ-ONLY; Key/value pairs that represent deployment output.
-	Outputs interface{} `json:"outputs,omitempty" azure:"ro"`
+	Outputs map[string]interface{} `json:"outputs,omitempty" azure:"ro"`
 
 	// READ-ONLY; Deployment parameters.
-	Parameters interface{} `json:"parameters,omitempty" azure:"ro"`
+	Parameters map[string]interface{} `json:"parameters,omitempty" azure:"ro"`
 
 	// READ-ONLY; The URI referencing the parameters.
 	ParametersLink *ParametersLink `json:"parametersLink,omitempty" azure:"ro"`
@@ -888,7 +888,7 @@ type DeploymentsListByResourceGroupOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info map[string]interface{} `json:"info,omitempty" azure:"ro"`
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
@@ -973,7 +973,7 @@ type GenericResource struct {
 	Plan *Plan `json:"plan,omitempty"`
 
 	// The resource properties.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties map[string]interface{} `json:"properties,omitempty"`
 
 	// The SKU of the resource.
 	SKU *SKU `json:"sku,omitempty"`
@@ -1102,7 +1102,7 @@ type GenericResourceFilter struct {
 // HTTPMessage - HTTP message.
 type HTTPMessage struct {
 	// HTTP message content.
-	Content interface{} `json:"content,omitempty"`
+	Content map[string]interface{} `json:"content,omitempty"`
 }
 
 // Identity for the resource.
@@ -1613,7 +1613,7 @@ type ResourceGroupExportResult struct {
 	Error *ErrorResponse `json:"error,omitempty"`
 
 	// The template content.
-	Template interface{} `json:"template,omitempty"`
+	Template map[string]interface{} `json:"template,omitempty"`
 }
 
 // ResourceGroupFilter - Resource group filter.
@@ -2165,10 +2165,10 @@ type WhatIfChange struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 
 	// The predicted snapshot of the resource after the deployment is executed.
-	After interface{} `json:"after,omitempty"`
+	After map[string]interface{} `json:"after,omitempty"`
 
 	// The snapshot of the resource before the deployment is executed.
-	Before interface{} `json:"before,omitempty"`
+	Before map[string]interface{} `json:"before,omitempty"`
 
 	// The predicted changes to resource properties.
 	Delta []*WhatIfPropertyChange `json:"delta,omitempty"`
@@ -2223,10 +2223,10 @@ type WhatIfPropertyChange struct {
 	PropertyChangeType *PropertyChangeType `json:"propertyChangeType,omitempty"`
 
 	// The value of the property after the deployment is executed.
-	After interface{} `json:"after,omitempty"`
+	After map[string]interface{} `json:"after,omitempty"`
 
 	// The value of the property before the deployment is executed.
-	Before interface{} `json:"before,omitempty"`
+	Before map[string]interface{} `json:"before,omitempty"`
 
 	// Nested property changes.
 	Children []*WhatIfPropertyChange `json:"children,omitempty"`

@@ -847,13 +847,12 @@ func (client *BlobContainersClient) BeginObjectLevelWorm(ctx context.Context, re
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("BlobContainersClient.ObjectLevelWorm", "location", resp, client.objectLevelWormHandleError)
+	pt, err := armcore.NewLROPoller("BlobContainersClient.ObjectLevelWorm", "location", resp, client.con.Pipeline(), client.objectLevelWormHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -865,13 +864,12 @@ func (client *BlobContainersClient) BeginObjectLevelWorm(ctx context.Context, re
 // ResumeObjectLevelWorm creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *BlobContainersClient) ResumeObjectLevelWorm(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("BlobContainersClient.ObjectLevelWorm", token, client.objectLevelWormHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("BlobContainersClient.ObjectLevelWorm", token, client.con.Pipeline(), client.objectLevelWormHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

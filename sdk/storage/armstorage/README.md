@@ -4,7 +4,7 @@
 
 The `armstorage` module provides operations for working with Azure storage resources.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/master/sdk/storage/armstorage)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/armstorage)
 
 # Getting started
 

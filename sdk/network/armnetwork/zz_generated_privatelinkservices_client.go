@@ -41,13 +41,12 @@ func (client *PrivateLinkServicesClient) BeginCheckPrivateLinkServiceVisibility(
 	result := PrivateLinkServiceVisibilityPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("PrivateLinkServicesClient.CheckPrivateLinkServiceVisibility", "location", resp, client.checkPrivateLinkServiceVisibilityHandleError)
+	pt, err := armcore.NewLROPoller("PrivateLinkServicesClient.CheckPrivateLinkServiceVisibility", "location", resp, client.con.Pipeline(), client.checkPrivateLinkServiceVisibilityHandleError)
 	if err != nil {
 		return PrivateLinkServiceVisibilityPollerResponse{}, err
 	}
 	poller := &privateLinkServiceVisibilityPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateLinkServiceVisibilityResponse, error) {
@@ -59,13 +58,12 @@ func (client *PrivateLinkServicesClient) BeginCheckPrivateLinkServiceVisibility(
 // ResumeCheckPrivateLinkServiceVisibility creates a new PrivateLinkServiceVisibilityPoller from the specified resume token.
 // token - The value must come from a previous call to PrivateLinkServiceVisibilityPoller.ResumeToken().
 func (client *PrivateLinkServicesClient) ResumeCheckPrivateLinkServiceVisibility(ctx context.Context, token string) (PrivateLinkServiceVisibilityPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("PrivateLinkServicesClient.CheckPrivateLinkServiceVisibility", token, client.checkPrivateLinkServiceVisibilityHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("PrivateLinkServicesClient.CheckPrivateLinkServiceVisibility", token, client.con.Pipeline(), client.checkPrivateLinkServiceVisibilityHandleError)
 	if err != nil {
 		return PrivateLinkServiceVisibilityPollerResponse{}, err
 	}
 	poller := &privateLinkServiceVisibilityPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -145,13 +143,12 @@ func (client *PrivateLinkServicesClient) BeginCheckPrivateLinkServiceVisibilityB
 	result := PrivateLinkServiceVisibilityPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("PrivateLinkServicesClient.CheckPrivateLinkServiceVisibilityByResourceGroup", "location", resp, client.checkPrivateLinkServiceVisibilityByResourceGroupHandleError)
+	pt, err := armcore.NewLROPoller("PrivateLinkServicesClient.CheckPrivateLinkServiceVisibilityByResourceGroup", "location", resp, client.con.Pipeline(), client.checkPrivateLinkServiceVisibilityByResourceGroupHandleError)
 	if err != nil {
 		return PrivateLinkServiceVisibilityPollerResponse{}, err
 	}
 	poller := &privateLinkServiceVisibilityPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateLinkServiceVisibilityResponse, error) {
@@ -163,13 +160,12 @@ func (client *PrivateLinkServicesClient) BeginCheckPrivateLinkServiceVisibilityB
 // ResumeCheckPrivateLinkServiceVisibilityByResourceGroup creates a new PrivateLinkServiceVisibilityPoller from the specified resume token.
 // token - The value must come from a previous call to PrivateLinkServiceVisibilityPoller.ResumeToken().
 func (client *PrivateLinkServicesClient) ResumeCheckPrivateLinkServiceVisibilityByResourceGroup(ctx context.Context, token string) (PrivateLinkServiceVisibilityPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("PrivateLinkServicesClient.CheckPrivateLinkServiceVisibilityByResourceGroup", token, client.checkPrivateLinkServiceVisibilityByResourceGroupHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("PrivateLinkServicesClient.CheckPrivateLinkServiceVisibilityByResourceGroup", token, client.con.Pipeline(), client.checkPrivateLinkServiceVisibilityByResourceGroupHandleError)
 	if err != nil {
 		return PrivateLinkServiceVisibilityPollerResponse{}, err
 	}
 	poller := &privateLinkServiceVisibilityPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -252,13 +248,12 @@ func (client *PrivateLinkServicesClient) BeginCreateOrUpdate(ctx context.Context
 	result := PrivateLinkServicePollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("PrivateLinkServicesClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("PrivateLinkServicesClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return PrivateLinkServicePollerResponse{}, err
 	}
 	poller := &privateLinkServicePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateLinkServiceResponse, error) {
@@ -270,13 +265,12 @@ func (client *PrivateLinkServicesClient) BeginCreateOrUpdate(ctx context.Context
 // ResumeCreateOrUpdate creates a new PrivateLinkServicePoller from the specified resume token.
 // token - The value must come from a previous call to PrivateLinkServicePoller.ResumeToken().
 func (client *PrivateLinkServicesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (PrivateLinkServicePollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("PrivateLinkServicesClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("PrivateLinkServicesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return PrivateLinkServicePollerResponse{}, err
 	}
 	poller := &privateLinkServicePoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -359,13 +353,12 @@ func (client *PrivateLinkServicesClient) BeginDelete(ctx context.Context, resour
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("PrivateLinkServicesClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("PrivateLinkServicesClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -377,13 +370,12 @@ func (client *PrivateLinkServicesClient) BeginDelete(ctx context.Context, resour
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *PrivateLinkServicesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("PrivateLinkServicesClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("PrivateLinkServicesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -466,13 +458,12 @@ func (client *PrivateLinkServicesClient) BeginDeletePrivateEndpointConnection(ct
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("PrivateLinkServicesClient.DeletePrivateEndpointConnection", "location", resp, client.deletePrivateEndpointConnectionHandleError)
+	pt, err := armcore.NewLROPoller("PrivateLinkServicesClient.DeletePrivateEndpointConnection", "location", resp, client.con.Pipeline(), client.deletePrivateEndpointConnectionHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -484,13 +475,12 @@ func (client *PrivateLinkServicesClient) BeginDeletePrivateEndpointConnection(ct
 // ResumeDeletePrivateEndpointConnection creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *PrivateLinkServicesClient) ResumeDeletePrivateEndpointConnection(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("PrivateLinkServicesClient.DeletePrivateEndpointConnection", token, client.deletePrivateEndpointConnectionHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("PrivateLinkServicesClient.DeletePrivateEndpointConnection", token, client.con.Pipeline(), client.deletePrivateEndpointConnectionHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

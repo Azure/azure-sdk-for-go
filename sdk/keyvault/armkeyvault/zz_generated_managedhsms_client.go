@@ -42,13 +42,12 @@ func (client *ManagedHsmsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	result := ManagedHsmPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ManagedHsmsClient.CreateOrUpdate", "", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("ManagedHsmsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return ManagedHsmPollerResponse{}, err
 	}
 	poller := &managedHsmPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedHsmResponse, error) {
@@ -60,13 +59,12 @@ func (client *ManagedHsmsClient) BeginCreateOrUpdate(ctx context.Context, resour
 // ResumeCreateOrUpdate creates a new ManagedHsmPoller from the specified resume token.
 // token - The value must come from a previous call to ManagedHsmPoller.ResumeToken().
 func (client *ManagedHsmsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ManagedHsmPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ManagedHsmsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ManagedHsmsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return ManagedHsmPollerResponse{}, err
 	}
 	poller := &managedHsmPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -149,13 +147,12 @@ func (client *ManagedHsmsClient) BeginDelete(ctx context.Context, resourceGroupN
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ManagedHsmsClient.Delete", "", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("ManagedHsmsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -167,13 +164,12 @@ func (client *ManagedHsmsClient) BeginDelete(ctx context.Context, resourceGroupN
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *ManagedHsmsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ManagedHsmsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ManagedHsmsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -573,13 +569,12 @@ func (client *ManagedHsmsClient) BeginPurgeDeleted(ctx context.Context, name str
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ManagedHsmsClient.PurgeDeleted", "", resp, client.purgeDeletedHandleError)
+	pt, err := armcore.NewLROPoller("ManagedHsmsClient.PurgeDeleted", "", resp, client.con.Pipeline(), client.purgeDeletedHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -591,13 +586,12 @@ func (client *ManagedHsmsClient) BeginPurgeDeleted(ctx context.Context, name str
 // ResumePurgeDeleted creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *ManagedHsmsClient) ResumePurgeDeleted(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ManagedHsmsClient.PurgeDeleted", token, client.purgeDeletedHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ManagedHsmsClient.PurgeDeleted", token, client.con.Pipeline(), client.purgeDeletedHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -680,13 +674,12 @@ func (client *ManagedHsmsClient) BeginUpdate(ctx context.Context, resourceGroupN
 	result := ManagedHsmPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ManagedHsmsClient.Update", "", resp, client.updateHandleError)
+	pt, err := armcore.NewLROPoller("ManagedHsmsClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
 		return ManagedHsmPollerResponse{}, err
 	}
 	poller := &managedHsmPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ManagedHsmResponse, error) {
@@ -698,13 +691,12 @@ func (client *ManagedHsmsClient) BeginUpdate(ctx context.Context, resourceGroupN
 // ResumeUpdate creates a new ManagedHsmPoller from the specified resume token.
 // token - The value must come from a previous call to ManagedHsmPoller.ResumeToken().
 func (client *ManagedHsmsClient) ResumeUpdate(ctx context.Context, token string) (ManagedHsmPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ManagedHsmsClient.Update", token, client.updateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ManagedHsmsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
 	if err != nil {
 		return ManagedHsmPollerResponse{}, err
 	}
 	poller := &managedHsmPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

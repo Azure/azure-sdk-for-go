@@ -41,13 +41,12 @@ func (client *HubVirtualNetworkConnectionsClient) BeginCreateOrUpdate(ctx contex
 	result := HubVirtualNetworkConnectionPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("HubVirtualNetworkConnectionsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("HubVirtualNetworkConnectionsClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return HubVirtualNetworkConnectionPollerResponse{}, err
 	}
 	poller := &hubVirtualNetworkConnectionPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (HubVirtualNetworkConnectionResponse, error) {
@@ -59,13 +58,12 @@ func (client *HubVirtualNetworkConnectionsClient) BeginCreateOrUpdate(ctx contex
 // ResumeCreateOrUpdate creates a new HubVirtualNetworkConnectionPoller from the specified resume token.
 // token - The value must come from a previous call to HubVirtualNetworkConnectionPoller.ResumeToken().
 func (client *HubVirtualNetworkConnectionsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (HubVirtualNetworkConnectionPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("HubVirtualNetworkConnectionsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("HubVirtualNetworkConnectionsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return HubVirtualNetworkConnectionPollerResponse{}, err
 	}
 	poller := &hubVirtualNetworkConnectionPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -152,13 +150,12 @@ func (client *HubVirtualNetworkConnectionsClient) BeginDelete(ctx context.Contex
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("HubVirtualNetworkConnectionsClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("HubVirtualNetworkConnectionsClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -170,13 +167,12 @@ func (client *HubVirtualNetworkConnectionsClient) BeginDelete(ctx context.Contex
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *HubVirtualNetworkConnectionsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("HubVirtualNetworkConnectionsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("HubVirtualNetworkConnectionsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

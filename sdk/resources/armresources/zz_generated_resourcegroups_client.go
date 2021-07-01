@@ -161,13 +161,12 @@ func (client *ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGro
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourceGroupsClient.Delete", "", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("ResourceGroupsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -179,13 +178,12 @@ func (client *ResourceGroupsClient) BeginDelete(ctx context.Context, resourceGro
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *ResourceGroupsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourceGroupsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ResourceGroupsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -268,13 +266,12 @@ func (client *ResourceGroupsClient) BeginExportTemplate(ctx context.Context, res
 	result := ResourceGroupExportResultPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("ResourceGroupsClient.ExportTemplate", "location", resp, client.exportTemplateHandleError)
+	pt, err := armcore.NewLROPoller("ResourceGroupsClient.ExportTemplate", "location", resp, client.con.Pipeline(), client.exportTemplateHandleError)
 	if err != nil {
 		return ResourceGroupExportResultPollerResponse{}, err
 	}
 	poller := &resourceGroupExportResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ResourceGroupExportResultResponse, error) {
@@ -286,13 +283,12 @@ func (client *ResourceGroupsClient) BeginExportTemplate(ctx context.Context, res
 // ResumeExportTemplate creates a new ResourceGroupExportResultPoller from the specified resume token.
 // token - The value must come from a previous call to ResourceGroupExportResultPoller.ResumeToken().
 func (client *ResourceGroupsClient) ResumeExportTemplate(ctx context.Context, token string) (ResourceGroupExportResultPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("ResourceGroupsClient.ExportTemplate", token, client.exportTemplateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("ResourceGroupsClient.ExportTemplate", token, client.con.Pipeline(), client.exportTemplateHandleError)
 	if err != nil {
 		return ResourceGroupExportResultPollerResponse{}, err
 	}
 	poller := &resourceGroupExportResultPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

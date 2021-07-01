@@ -41,13 +41,12 @@ func (client *VPNLinkConnectionsClient) BeginGetIkeSas(ctx context.Context, reso
 	result := StringPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VPNLinkConnectionsClient.GetIkeSas", "location", resp, client.getIkeSasHandleError)
+	pt, err := armcore.NewLROPoller("VPNLinkConnectionsClient.GetIkeSas", "location", resp, client.con.Pipeline(), client.getIkeSasHandleError)
 	if err != nil {
 		return StringPollerResponse{}, err
 	}
 	poller := &stringPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (StringResponse, error) {
@@ -59,13 +58,12 @@ func (client *VPNLinkConnectionsClient) BeginGetIkeSas(ctx context.Context, reso
 // ResumeGetIkeSas creates a new StringPoller from the specified resume token.
 // token - The value must come from a previous call to StringPoller.ResumeToken().
 func (client *VPNLinkConnectionsClient) ResumeGetIkeSas(ctx context.Context, token string) (StringPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VPNLinkConnectionsClient.GetIkeSas", token, client.getIkeSasHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("VPNLinkConnectionsClient.GetIkeSas", token, client.con.Pipeline(), client.getIkeSasHandleError)
 	if err != nil {
 		return StringPollerResponse{}, err
 	}
 	poller := &stringPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -226,13 +224,12 @@ func (client *VPNLinkConnectionsClient) BeginResetConnection(ctx context.Context
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VPNLinkConnectionsClient.ResetConnection", "location", resp, client.resetConnectionHandleError)
+	pt, err := armcore.NewLROPoller("VPNLinkConnectionsClient.ResetConnection", "location", resp, client.con.Pipeline(), client.resetConnectionHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -244,13 +241,12 @@ func (client *VPNLinkConnectionsClient) BeginResetConnection(ctx context.Context
 // ResumeResetConnection creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *VPNLinkConnectionsClient) ResumeResetConnection(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VPNLinkConnectionsClient.ResetConnection", token, client.resetConnectionHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("VPNLinkConnectionsClient.ResetConnection", token, client.con.Pipeline(), client.resetConnectionHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

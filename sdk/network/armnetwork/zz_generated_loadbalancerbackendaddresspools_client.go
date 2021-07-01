@@ -41,13 +41,12 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginCreateOrUpdate(ctx con
 	result := BackendAddressPoolPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("LoadBalancerBackendAddressPoolsClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("LoadBalancerBackendAddressPoolsClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return BackendAddressPoolPollerResponse{}, err
 	}
 	poller := &backendAddressPoolPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (BackendAddressPoolResponse, error) {
@@ -59,13 +58,12 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginCreateOrUpdate(ctx con
 // ResumeCreateOrUpdate creates a new BackendAddressPoolPoller from the specified resume token.
 // token - The value must come from a previous call to BackendAddressPoolPoller.ResumeToken().
 func (client *LoadBalancerBackendAddressPoolsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (BackendAddressPoolPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("LoadBalancerBackendAddressPoolsClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("LoadBalancerBackendAddressPoolsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return BackendAddressPoolPollerResponse{}, err
 	}
 	poller := &backendAddressPoolPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -152,13 +150,12 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginDelete(ctx context.Con
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("LoadBalancerBackendAddressPoolsClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("LoadBalancerBackendAddressPoolsClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -170,13 +167,12 @@ func (client *LoadBalancerBackendAddressPoolsClient) BeginDelete(ctx context.Con
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *LoadBalancerBackendAddressPoolsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("LoadBalancerBackendAddressPoolsClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("LoadBalancerBackendAddressPoolsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

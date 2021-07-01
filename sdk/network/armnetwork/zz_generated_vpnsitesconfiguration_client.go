@@ -41,13 +41,12 @@ func (client *VPNSitesConfigurationClient) BeginDownload(ctx context.Context, re
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("VPNSitesConfigurationClient.Download", "location", resp, client.downloadHandleError)
+	pt, err := armcore.NewLROPoller("VPNSitesConfigurationClient.Download", "location", resp, client.con.Pipeline(), client.downloadHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -59,13 +58,12 @@ func (client *VPNSitesConfigurationClient) BeginDownload(ctx context.Context, re
 // ResumeDownload creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *VPNSitesConfigurationClient) ResumeDownload(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("VPNSitesConfigurationClient.Download", token, client.downloadHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("VPNSitesConfigurationClient.Download", token, client.con.Pipeline(), client.downloadHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

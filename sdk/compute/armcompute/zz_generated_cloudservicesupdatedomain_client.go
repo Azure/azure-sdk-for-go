@@ -176,13 +176,12 @@ func (client *CloudServicesUpdateDomainClient) BeginWalkUpdateDomain(ctx context
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("CloudServicesUpdateDomainClient.WalkUpdateDomain", "", resp, client.walkUpdateDomainHandleError)
+	pt, err := armcore.NewLROPoller("CloudServicesUpdateDomainClient.WalkUpdateDomain", "", resp, client.con.Pipeline(), client.walkUpdateDomainHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -194,13 +193,12 @@ func (client *CloudServicesUpdateDomainClient) BeginWalkUpdateDomain(ctx context
 // ResumeWalkUpdateDomain creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *CloudServicesUpdateDomainClient) ResumeWalkUpdateDomain(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("CloudServicesUpdateDomainClient.WalkUpdateDomain", token, client.walkUpdateDomainHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesUpdateDomainClient.WalkUpdateDomain", token, client.con.Pipeline(), client.walkUpdateDomainHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

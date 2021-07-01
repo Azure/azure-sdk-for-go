@@ -1,7 +1,7 @@
 # Azure SDK for Go
 
 [![godoc](https://godoc.org/github.com/Azure/azure-sdk-for-go?status.svg)](https://godoc.org/github.com/Azure/azure-sdk-for-go)
-[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/Azure.azure-sdk-for-go?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=640&branchName=master)
+[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/Azure.azure-sdk-for-go?branchName=main)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=640&branchName=main)
 
 azure-sdk-for-go provides Go packages for managing and using Azure services.
 It officially supports the last two major releases of Go.  Older versions of
@@ -93,7 +93,7 @@ section](#authentication).
    `res, err := c.CreateOrUpdate(...)`.
 4. Handle responses and errors.
 
-[services_dir]: https://github.com/Azure/azure-sdk-for-go/tree/master/services
+[services_dir]: https://github.com/Azure/azure-sdk-for-go/tree/main/services
 
 For example, to create a new virtual network (substitute your own values for
 strings in angle brackets):
@@ -245,16 +245,16 @@ below.
 
 - The `auth.NewAuthorizerFromCLI()` method creates an authorizer which
   uses [Azure CLI][] to obtain its credentials.
-  
+
   The default audience being requested is `https://management.azure.com` (Azure ARM API).
   To specify your own audience, export `AZURE_AD_RESOURCE` as an evironment variable.
   This is read by `auth.NewAuthorizerFromCLI()` and passed to Azure CLI to acquire the access token.
-  
+
   For example, to request an access token for Azure Key Vault, export
   ```
   AZURE_AD_RESOURCE="https://vault.azure.net"
   ```
-  
+
 - `auth.NewAuthorizerFromCLIWithResource(AUDIENCE_URL_OR_APPLICATION_ID)` - this method is self contained and does
   not require exporting environment variables. For example, to request an access token for Azure Key Vault:
   ```
@@ -269,7 +269,7 @@ below.
   If you receive an error, use `az account get-access-token` to verify access.
 
   If Azure CLI is not installed to the default directory, you may receive an error
-  reporting that `az` cannot be found.  
+  reporting that `az` cannot be found.
   Use the `AzureCLIPath` environment variable to define the Azure CLI installation folder.
 
   If you are signed in to Azure CLI using multiple accounts or your account has
@@ -590,6 +590,6 @@ Security issues and bugs should be reported privately, via email, to the Microso
 
 ## Contribute
 
-See [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-go/blob/master/CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md).
 
 [samples_repo]: https://github.com/Azure-Samples/azure-sdk-for-go-samples

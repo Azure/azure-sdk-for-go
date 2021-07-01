@@ -41,13 +41,12 @@ func (client *LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, reso
 	result := LoadBalancerPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("LoadBalancersClient.CreateOrUpdate", "azure-async-operation", resp, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPoller("LoadBalancersClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return LoadBalancerPollerResponse{}, err
 	}
 	poller := &loadBalancerPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (LoadBalancerResponse, error) {
@@ -59,13 +58,12 @@ func (client *LoadBalancersClient) BeginCreateOrUpdate(ctx context.Context, reso
 // ResumeCreateOrUpdate creates a new LoadBalancerPoller from the specified resume token.
 // token - The value must come from a previous call to LoadBalancerPoller.ResumeToken().
 func (client *LoadBalancersClient) ResumeCreateOrUpdate(ctx context.Context, token string) (LoadBalancerPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("LoadBalancersClient.CreateOrUpdate", token, client.createOrUpdateHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("LoadBalancersClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
 	if err != nil {
 		return LoadBalancerPollerResponse{}, err
 	}
 	poller := &loadBalancerPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -148,13 +146,12 @@ func (client *LoadBalancersClient) BeginDelete(ctx context.Context, resourceGrou
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("LoadBalancersClient.Delete", "location", resp, client.deleteHandleError)
+	pt, err := armcore.NewLROPoller("LoadBalancersClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -166,13 +163,12 @@ func (client *LoadBalancersClient) BeginDelete(ctx context.Context, resourceGrou
 // ResumeDelete creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *LoadBalancersClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("LoadBalancersClient.Delete", token, client.deleteHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("LoadBalancersClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {
@@ -444,13 +440,12 @@ func (client *LoadBalancersClient) BeginSwapPublicIPAddresses(ctx context.Contex
 	result := HTTPPollerResponse{
 		RawResponse: resp.Response,
 	}
-	pt, err := armcore.NewPoller("LoadBalancersClient.SwapPublicIPAddresses", "location", resp, client.swapPublicIPAddressesHandleError)
+	pt, err := armcore.NewLROPoller("LoadBalancersClient.SwapPublicIPAddresses", "location", resp, client.con.Pipeline(), client.swapPublicIPAddressesHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	result.Poller = poller
 	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
@@ -462,13 +457,12 @@ func (client *LoadBalancersClient) BeginSwapPublicIPAddresses(ctx context.Contex
 // ResumeSwapPublicIPAddresses creates a new HTTPPoller from the specified resume token.
 // token - The value must come from a previous call to HTTPPoller.ResumeToken().
 func (client *LoadBalancersClient) ResumeSwapPublicIPAddresses(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewPollerFromResumeToken("LoadBalancersClient.SwapPublicIPAddresses", token, client.swapPublicIPAddressesHandleError)
+	pt, err := armcore.NewLROPollerFromResumeToken("LoadBalancersClient.SwapPublicIPAddresses", token, client.con.Pipeline(), client.swapPublicIPAddressesHandleError)
 	if err != nil {
 		return HTTPPollerResponse{}, err
 	}
 	poller := &httpPoller{
-		pipeline: client.con.Pipeline(),
-		pt:       pt,
+		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
 	if err != nil {

@@ -75,25 +75,25 @@ func (s *tableClientLiveTests) TestSetMultipleAccessPolicies() {
 	signedIdentifiers := make([]*SignedIdentifier, 0)
 
 	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
+		ID: &id,
 		AccessPolicy: &AccessPolicy{
 			Expiry:     &expiration,
 			Start:      &start,
 			Permission: &permission,
 		},
-		ID: &id,
 	})
 
-	expiration = time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)
-	permission = "rw"
-	id = "2"
+	expiration2 := time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)
+	permission2 := "rw"
+	id2 := "2"
 
 	signedIdentifiers = append(signedIdentifiers, &SignedIdentifier{
+		ID: &id2,
 		AccessPolicy: &AccessPolicy{
-			Expiry:     &expiration,
+			Expiry:     &expiration2,
 			Start:      &start,
-			Permission: &permission,
+			Permission: &permission2,
 		},
-		ID: &id,
 	})
 
 	param := TableSetAccessPolicyOptions{

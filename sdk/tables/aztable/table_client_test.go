@@ -471,7 +471,7 @@ func (s *tableClientLiveTests) TestInvalidEntity() {
 	_, err := client.AddEntity(ctx, *badEntity)
 
 	assert.NotNil(err)
-	assert.Contains(err.Error(), "Entity must have a PartitionKey and RowKey")
+	assert.Contains(err.Error(), partitionKeyRowKeyError.Error())
 }
 
 // setup the test environment

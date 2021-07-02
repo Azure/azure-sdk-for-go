@@ -14,5 +14,6 @@ func castAccessPolicyToSignedIdentifier(accessPolicies []*AccessPolicy) []*Signe
 	for _, accessPolicy := range accessPolicies {
 		ret = append(ret, &SignedIdentifier{AccessPolicy: accessPolicy})
 	}
+
 	return ret
 }

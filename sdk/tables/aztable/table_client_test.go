@@ -6,6 +6,7 @@ package aztable
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"testing"
@@ -456,6 +457,20 @@ func (s *tableClientLiveTests) TestBatchError() {
 	assert.Equal("EntityAlreadyExists", te.OdataError.Code)
 	assert.Equal(2, te.FailedEntityIndex)
 	assert.Equal(http.StatusConflict, (*resp.TransactionResponses)[0].StatusCode)
+}
+
+func (s *tableClientLiveTests) TestGetAccessPolicy() {
+	assert := assert.New(s.T())
+	// require := require.New(s.T())
+	// context := getTestContext(s.T().Name())
+	client, delete := s.init(true)
+	defer delete()
+	fmt.Println(client.cred.accountName)
+	if client.client.con.
+
+	policies, err := client.GetTableAccessPolicy(ctx)
+	assert.Nil(err)
+	fmt.Println(policies)
 }
 
 // setup the test environment

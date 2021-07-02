@@ -4,7 +4,6 @@
 package aztable
 
 import (
-	"math"
 	"time"
 
 	"github.com/stretchr/testify/assert"
@@ -24,17 +23,17 @@ func failOnError(err error, s *tableClientLiveTests) {
 	}
 }
 
-func (s *tableClientLiveTests) TestCustomEntity() {
-	client, delete := s.init(true)
-	defer delete()
+// func (s *tableClientLiveTests) TestCustomEntity() {
+// 	client, delete := s.init(true)
+// 	defer delete()
 
-	// Create a TestEntity
-	testEntity := TestEntity{Entity: Entity{PartitionKey: "pk001", RowKey: "rk001"}, BasicInt: 10, LargeInt: int64(math.Pow(2, 34)), StringValue: "basicString", DateTimeValue: time.Now()}
+// 	// Create a TestEntity
+// 	testEntity := TestEntity{Entity: Entity{PartitionKey: "pk001", RowKey: "rk001"}, BasicInt: 10, LargeInt: int64(math.Pow(2, 34)), StringValue: "basicString", DateTimeValue: time.Now()}
 
-	_, err := client.AddEntity(ctx, testEntity)
-	failOnError(err, s)
+// 	_, err := client.AddEntity(ctx, testEntity)
+// 	failOnError(err, s)
 
-	receivedEntity, err := client.GetEntity(ctx, "pk001", "rk001")
-	assert.Nil(s.T(), err)
-	assert.Equal(s.T(), testEntity.PartitionKey, receivedEntity.Value["PartitionKey"].(string))
-}
+// 	receivedEntity, err := client.GetEntity(ctx, "pk001", "rk001")
+// 	assert.Nil(s.T(), err)
+// 	assert.Equal(s.T(), testEntity.PartitionKey, receivedEntity.Value["PartitionKey"].(string))
+// }

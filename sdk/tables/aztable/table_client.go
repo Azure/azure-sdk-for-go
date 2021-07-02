@@ -6,6 +6,7 @@ package aztable
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -131,4 +132,16 @@ func (t *TableClient) UpsertEntity(ctx context.Context, entity map[string]interf
 		return t.client.UpdateEntity(ctx, t.Name, pk, rk, &TableUpdateEntityOptions{TableEntityProperties: entity}, &QueryOptions{})
 	}
 	return nil, errors.New("Invalid TableUpdateMode")
+}
+
+type TableAccessPolicy struct {
+	Start      time.Time
+	Expiry     time.Time
+	Permission string
+}
+
+// GetTableAccessPolicy retrieves details about any stored access policies specified on the table that may be used with Shared Access Signatures
+func (t *TableClient) GetTableAccessPolicy(ctx context.Context) (SignedIdentifierArrayResponse, error) {
+	accessPolicies, err := t.client.GetAccessPolicy(ctx, t.Name, nil)
+	return accessPolicies, err
 }

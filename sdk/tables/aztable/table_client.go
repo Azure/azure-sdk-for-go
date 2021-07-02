@@ -139,8 +139,7 @@ func (t *TableClient) GetAccessPolicy(ctx context.Context) (SignedIdentifierArra
 }
 
 // SetAccessPolicy sets stored access policies for the table that may be used with SharedAccessSignature
-func (t *TableClient) SetAccessPolicy(ctx context.Context, accessPolicies []*AccessPolicy) (TableSetAccessPolicyResponse, error) {
-	signedIdentifiers := castAccessPolicyToSignedIdentifier(accessPolicies)
-	response, err := t.client.SetAccessPolicy(ctx, t.Name, &TableSetAccessPolicyOptions{TableACL: signedIdentifiers})
+func (t *TableClient) SetAccessPolicy(ctx context.Context, options *TableSetAccessPolicyOptions) (TableSetAccessPolicyResponse, error) {
+	response, err := t.client.SetAccessPolicy(ctx, t.Name, options)
 	return response, err
 }

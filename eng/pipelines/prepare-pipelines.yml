@@ -7,4 +7,5 @@ extends:
     Prefix: go
     CIConventionOptions: ''
     UPConventionOptions: '--variablegroup 58 --variablegroup 76 --variablegroup 56 --variablegroup 93'
-    TestsConventionOptions: '--variablegroup 64'
+    # Uncomment once live tests (tests.yml) are added to the repository
+    # TestsConventionOptions: '--variablegroup 64'

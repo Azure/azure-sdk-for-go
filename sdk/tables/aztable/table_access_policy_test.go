@@ -58,6 +58,7 @@ func (s *tableClientLiveTests) TestSetAccessPolicy() {
 }
 
 func (s *tableClientLiveTests) TestSetMultipleAccessPolicies() {
+	// TODO: I think what's wrong here is the XML is formatted wrong, <Id> should be before <AccessPolicy>. This only throws if there's multiple
 	if _, ok := cosmosTestsMap[s.T().Name()]; ok {
 		s.T().Skip("TableAccessPolicies are not available on Cosmos Accounts")
 	}
@@ -144,6 +145,6 @@ func (s *tableClientLiveTests) TestSetTooManyAccessPolicies() {
 
 	_, err := client.SetAccessPolicy(ctx, &param)
 	assert.NotNil(err, "Set access policy succeeded but should have failed")
-	assert.Contains(err.Error(), "InvalidXmlDocument")
+	assert.Contains(err.Error(), tooManyAccessPoliciesError.Error())
 	// TODO: Should we add post-validation that only 5 access policies can be set at a time?
 }

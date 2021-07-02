@@ -143,7 +143,7 @@ func (t *TableClient) GetAccessPolicy(ctx context.Context) (SignedIdentifierArra
 func (t *TableClient) SetAccessPolicy(ctx context.Context, options *TableSetAccessPolicyOptions) (TableSetAccessPolicyResponse, error) {
 	response, err := t.client.SetAccessPolicy(ctx, t.Name, options)
 	if len(*&options.TableACL) > 5 {
-		err = errors.New("You cannot set more than five (5) access policies at a time.")
+		err = tooManyAccessPoliciesError
 	}
 	return response, err
 }

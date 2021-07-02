@@ -14,6 +14,7 @@ import (
 // BaseClientAPI contains the set of methods on the BaseClient type.
 type BaseClientAPI interface {
 	CreateRecommendedActionSession(ctx context.Context, resourceGroupName string, serverName string, advisorName string, databaseName string) (result mariadb.CreateRecommendedActionSessionFuture, err error)
+	ResetQueryPerformanceInsightData(ctx context.Context, resourceGroupName string, serverName string) (result mariadb.QueryPerformanceInsightResetDataResult, err error)
 }
 
 var _ BaseClientAPI = (*mariadb.BaseClient)(nil)
@@ -80,12 +81,33 @@ type ConfigurationsClientAPI interface {
 
 var _ ConfigurationsClientAPI = (*mariadb.ConfigurationsClient)(nil)
 
+// ServerParametersClientAPI contains the set of methods on the ServerParametersClient type.
+type ServerParametersClientAPI interface {
+	ListUpdateConfigurations(ctx context.Context, resourceGroupName string, serverName string, value mariadb.ConfigurationListResult) (result mariadb.ServerParametersListUpdateConfigurationsFuture, err error)
+}
+
+var _ ServerParametersClientAPI = (*mariadb.ServerParametersClient)(nil)
+
 // LogFilesClientAPI contains the set of methods on the LogFilesClient type.
 type LogFilesClientAPI interface {
 	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mariadb.LogFileListResult, err error)
 }
 
 var _ LogFilesClientAPI = (*mariadb.LogFilesClient)(nil)
+
+// RecoverableServersClientAPI contains the set of methods on the RecoverableServersClient type.
+type RecoverableServersClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, serverName string) (result mariadb.RecoverableServerResource, err error)
+}
+
+var _ RecoverableServersClientAPI = (*mariadb.RecoverableServersClient)(nil)
+
+// ServerBasedPerformanceTierClientAPI contains the set of methods on the ServerBasedPerformanceTierClient type.
+type ServerBasedPerformanceTierClientAPI interface {
+	List(ctx context.Context, resourceGroupName string, serverName string) (result mariadb.PerformanceTierListResult, err error)
+}
+
+var _ ServerBasedPerformanceTierClientAPI = (*mariadb.ServerBasedPerformanceTierClient)(nil)
 
 // LocationBasedPerformanceTierClientAPI contains the set of methods on the LocationBasedPerformanceTierClient type.
 type LocationBasedPerformanceTierClientAPI interface {
@@ -193,6 +215,8 @@ var _ PrivateLinkResourcesClientAPI = (*mariadb.PrivateLinkResourcesClient)(nil)
 type ServerSecurityAlertPoliciesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters mariadb.ServerSecurityAlertPolicy) (result mariadb.ServerSecurityAlertPoliciesCreateOrUpdateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, serverName string) (result mariadb.ServerSecurityAlertPolicy, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result mariadb.ServerSecurityAlertPolicyListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result mariadb.ServerSecurityAlertPolicyListResultIterator, err error)
 }
 
 var _ ServerSecurityAlertPoliciesClientAPI = (*mariadb.ServerSecurityAlertPoliciesClient)(nil)

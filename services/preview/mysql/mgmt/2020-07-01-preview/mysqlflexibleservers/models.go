@@ -209,6 +209,8 @@ type CapabilityProperties struct {
 	Zone *string `json:"zone,omitempty"`
 	// SupportedFlexibleServerEditions - READ-ONLY; A list of supported flexible server editions.
 	SupportedFlexibleServerEditions *[]ServerEditionCapability `json:"supportedFlexibleServerEditions,omitempty"`
+	// Status - READ-ONLY; The status of the capability.
+	Status *string `json:"status,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for CapabilityProperties.
@@ -487,6 +489,49 @@ func (cp ConfigurationProperties) MarshalJSON() ([]byte, error) {
 		objectMap["source"] = cp.Source
 	}
 	return json.Marshal(objectMap)
+}
+
+// ConfigurationsBatchUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ConfigurationsBatchUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ConfigurationsClient) (ConfigurationListResult, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ConfigurationsBatchUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ConfigurationsBatchUpdateFuture.Result.
+func (future *ConfigurationsBatchUpdateFuture) result(client ConfigurationsClient) (clr ConfigurationListResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ConfigurationsBatchUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		clr.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("mysqlflexibleservers.ConfigurationsBatchUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if clr.Response.Response, err = future.GetResult(sender); err == nil && clr.Response.Response.StatusCode != http.StatusNoContent {
+		clr, err = client.BatchUpdateResponder(clr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ConfigurationsBatchUpdateFuture", "Result", clr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
 }
 
 // ConfigurationsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -1387,7 +1432,7 @@ type ResourceModelWithAllowedPropertySet struct {
 	Type *string `json:"type,omitempty"`
 	// Location - The geo-location where the resource lives
 	Location *string `json:"location,omitempty"`
-	// ManagedBy - The  fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource.
+	// ManagedBy - The fully qualified resource ID of the resource that manages this resource. Indicates if this resource is managed by another Azure resource. If this is present, complete mode deployment will not delete the resource if it is removed from the template since it is managed by another resource.
 	ManagedBy *string `json:"managedBy,omitempty"`
 	// Kind - Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist this value.
 	Kind *string `json:"kind,omitempty"`
@@ -1605,6 +1650,8 @@ type ServerEditionCapability struct {
 	SupportedStorageEditions *[]StorageEditionCapability `json:"supportedStorageEditions,omitempty"`
 	// SupportedServerVersions - READ-ONLY; A list of supported server versions.
 	SupportedServerVersions *[]ServerVersionCapability `json:"supportedServerVersions,omitempty"`
+	// Status - READ-ONLY; The status of the capability.
+	Status *string `json:"status,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ServerEditionCapability.
@@ -2547,6 +2594,8 @@ type ServerVersionCapability struct {
 	Name *string `json:"name,omitempty"`
 	// SupportedVcores - READ-ONLY; A list of supported Vcores
 	SupportedVcores *[]VcoreCapability `json:"supportedVcores,omitempty"`
+	// Status - READ-ONLY; The status of the capability.
+	Status *string `json:"status,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ServerVersionCapability.
@@ -2575,6 +2624,8 @@ type StorageEditionCapability struct {
 	MinBackupRetentionDays *int64 `json:"minBackupRetentionDays,omitempty"`
 	// MaxBackupRetentionDays - READ-ONLY; Maximum backup retention days
 	MaxBackupRetentionDays *int64 `json:"maxBackupRetentionDays,omitempty"`
+	// Status - READ-ONLY; The status of the capability.
+	Status *string `json:"status,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for StorageEditionCapability.
@@ -2607,6 +2658,26 @@ type StorageProfile struct {
 	StorageIops *int32 `json:"storageIops,omitempty"`
 	// StorageAutogrow - Enable Storage Auto Grow. Possible values include: 'StorageAutogrowEnabled', 'StorageAutogrowDisabled'
 	StorageAutogrow StorageAutogrow `json:"storageAutogrow,omitempty"`
+	// FileStorageSkuName - READ-ONLY; The sku name of the file storage.
+	FileStorageSkuName *string `json:"fileStorageSkuName,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StorageProfile.
+func (sp StorageProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.BackupRetentionDays != nil {
+		objectMap["backupRetentionDays"] = sp.BackupRetentionDays
+	}
+	if sp.StorageMB != nil {
+		objectMap["storageMB"] = sp.StorageMB
+	}
+	if sp.StorageIops != nil {
+		objectMap["storageIops"] = sp.StorageIops
+	}
+	if sp.StorageAutogrow != "" {
+		objectMap["storageAutogrow"] = sp.StorageAutogrow
+	}
+	return json.Marshal(objectMap)
 }
 
 // TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
@@ -2646,6 +2717,8 @@ type VcoreCapability struct {
 	SupportedIops *int64 `json:"supportedIops,omitempty"`
 	// SupportedMemoryPerVcoreMB - READ-ONLY; supported memory per vCore in MB
 	SupportedMemoryPerVcoreMB *int64 `json:"supportedMemoryPerVcoreMB,omitempty"`
+	// Status - READ-ONLY; The status of the capability.
+	Status *string `json:"status,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for VcoreCapability.

@@ -967,6 +967,18 @@ type PerformanceTierListResult struct {
 type PerformanceTierProperties struct {
 	// ID - ID of the performance tier.
 	ID *string `json:"id,omitempty"`
+	// MaxBackupRetentionDays - Maximum Backup retention in days for the performance tier edition
+	MaxBackupRetentionDays *int32 `json:"maxBackupRetentionDays,omitempty"`
+	// MinBackupRetentionDays - Minimum Backup retention in days for the performance tier edition
+	MinBackupRetentionDays *int32 `json:"minBackupRetentionDays,omitempty"`
+	// MaxStorageMB - Max storage allowed for a server.
+	MaxStorageMB *int32 `json:"maxStorageMB,omitempty"`
+	// MinLargeStorageMB - Max storage allowed for a server.
+	MinLargeStorageMB *int32 `json:"minLargeStorageMB,omitempty"`
+	// MaxLargeStorageMB - Max storage allowed for a server.
+	MaxLargeStorageMB *int32 `json:"maxLargeStorageMB,omitempty"`
+	// MinStorageMB - Max storage allowed for a server.
+	MinStorageMB *int32 `json:"minStorageMB,omitempty"`
 	// ServiceLevelObjectives - Service level objectives associated with the performance tier
 	ServiceLevelObjectives *[]PerformanceTierServiceLevelObjectives `json:"serviceLevelObjectives,omitempty"`
 }
@@ -1619,6 +1631,15 @@ func (pr ProxyResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// QueryPerformanceInsightResetDataResult result of Query Performance Insight data reset.
+type QueryPerformanceInsightResetDataResult struct {
+	autorest.Response `json:"-"`
+	// Status - Indicates result of the operation. Possible values include: 'QueryPerformanceInsightResetDataResultStateSucceeded', 'QueryPerformanceInsightResetDataResultStateFailed'
+	Status QueryPerformanceInsightResetDataResultState `json:"status,omitempty"`
+	// Message - operation message.
+	Message *string `json:"message,omitempty"`
+}
+
 // QueryStatistic represents a Query Statistic.
 type QueryStatistic struct {
 	autorest.Response `json:"-"`
@@ -2262,6 +2283,101 @@ type RecommendedActionSessionsOperationStatus struct {
 	Status *string `json:"status,omitempty"`
 }
 
+// RecoverableServerProperties the recoverable server's properties.
+type RecoverableServerProperties struct {
+	// LastAvailableBackupDateTime - READ-ONLY; The last available backup date time.
+	LastAvailableBackupDateTime *string `json:"lastAvailableBackupDateTime,omitempty"`
+	// ServiceLevelObjective - READ-ONLY; The service level objective
+	ServiceLevelObjective *string `json:"serviceLevelObjective,omitempty"`
+	// Edition - READ-ONLY; Edition of the performance tier.
+	Edition *string `json:"edition,omitempty"`
+	// VCore - READ-ONLY; vCore associated with the service level objective
+	VCore *int32 `json:"vCore,omitempty"`
+	// HardwareGeneration - READ-ONLY; Hardware generation associated with the service level objective
+	HardwareGeneration *string `json:"hardwareGeneration,omitempty"`
+	// Version - READ-ONLY; The MariaDB version
+	Version *string `json:"version,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RecoverableServerProperties.
+func (rsp RecoverableServerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// RecoverableServerResource a recoverable server resource.
+type RecoverableServerResource struct {
+	autorest.Response `json:"-"`
+	// RecoverableServerProperties - Resource properties.
+	*RecoverableServerProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RecoverableServerResource.
+func (rsr RecoverableServerResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rsr.RecoverableServerProperties != nil {
+		objectMap["properties"] = rsr.RecoverableServerProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for RecoverableServerResource struct.
+func (rsr *RecoverableServerResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var recoverableServerProperties RecoverableServerProperties
+				err = json.Unmarshal(*v, &recoverableServerProperties)
+				if err != nil {
+					return err
+				}
+				rsr.RecoverableServerProperties = &recoverableServerProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				rsr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				rsr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rsr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -2496,6 +2612,49 @@ type ServerListResult struct {
 	Value *[]Server `json:"value,omitempty"`
 }
 
+// ServerParametersListUpdateConfigurationsFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type ServerParametersListUpdateConfigurationsFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ServerParametersClient) (ConfigurationListResult, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ServerParametersListUpdateConfigurationsFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ServerParametersListUpdateConfigurationsFuture.Result.
+func (future *ServerParametersListUpdateConfigurationsFuture) result(client ServerParametersClient) (clr ConfigurationListResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "mariadb.ServerParametersListUpdateConfigurationsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		clr.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("mariadb.ServerParametersListUpdateConfigurationsFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if clr.Response.Response, err = future.GetResult(sender); err == nil && clr.Response.Response.StatusCode != http.StatusNoContent {
+		clr, err = client.ListUpdateConfigurationsResponder(clr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "mariadb.ServerParametersListUpdateConfigurationsFuture", "Result", clr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
 // ServerPrivateEndpointConnection a private endpoint connection under a server
 type ServerPrivateEndpointConnection struct {
 	// ID - READ-ONLY; Resource Id of the private endpoint connection.
@@ -2558,10 +2717,12 @@ func (splscsp ServerPrivateLinkServiceConnectionStateProperty) MarshalJSON() ([]
 type ServerProperties struct {
 	// AdministratorLogin - The administrator's login name of a server. Can only be specified when the server is being created (and is required for creation).
 	AdministratorLogin *string `json:"administratorLogin,omitempty"`
-	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven'
+	// Version - Server version. Possible values include: 'OneZeroFullStopTwo', 'OneZeroFullStopThree'
 	Version ServerVersion `json:"version,omitempty"`
 	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
+	// MinimalTLSVersion - Enforce a minimal Tls version for the server. Possible values include: 'TLS10', 'TLS11', 'TLS12', 'TLSEnforcementDisabled'
+	MinimalTLSVersion MinimalTLSVersionEnum `json:"minimalTlsVersion,omitempty"`
 	// UserVisibleState - A state of a server that is visible to user. Possible values include: 'ServerStateReady', 'ServerStateDropping', 'ServerStateDisabled'
 	UserVisibleState ServerState `json:"userVisibleState,omitempty"`
 	// FullyQualifiedDomainName - The fully qualified domain name of a server.
@@ -2593,6 +2754,9 @@ func (sp ServerProperties) MarshalJSON() ([]byte, error) {
 	}
 	if sp.SslEnforcement != "" {
 		objectMap["sslEnforcement"] = sp.SslEnforcement
+	}
+	if sp.MinimalTLSVersion != "" {
+		objectMap["minimalTlsVersion"] = sp.MinimalTLSVersion
 	}
 	if sp.UserVisibleState != "" {
 		objectMap["userVisibleState"] = sp.UserVisibleState
@@ -2632,10 +2796,12 @@ type BasicServerPropertiesForCreate interface {
 
 // ServerPropertiesForCreate the properties used to create a new server.
 type ServerPropertiesForCreate struct {
-	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven'
+	// Version - Server version. Possible values include: 'OneZeroFullStopTwo', 'OneZeroFullStopThree'
 	Version ServerVersion `json:"version,omitempty"`
 	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
+	// MinimalTLSVersion - Enforce a minimal Tls version for the server. Possible values include: 'TLS10', 'TLS11', 'TLS12', 'TLSEnforcementDisabled'
+	MinimalTLSVersion MinimalTLSVersionEnum `json:"minimalTlsVersion,omitempty"`
 	// PublicNetworkAccess - Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'PublicNetworkAccessEnumEnabled', 'PublicNetworkAccessEnumDisabled'
 	PublicNetworkAccess PublicNetworkAccessEnum `json:"publicNetworkAccess,omitempty"`
 	// StorageProfile - Storage profile of a server.
@@ -2703,6 +2869,9 @@ func (spfc ServerPropertiesForCreate) MarshalJSON() ([]byte, error) {
 	if spfc.SslEnforcement != "" {
 		objectMap["sslEnforcement"] = spfc.SslEnforcement
 	}
+	if spfc.MinimalTLSVersion != "" {
+		objectMap["minimalTlsVersion"] = spfc.MinimalTLSVersion
+	}
 	if spfc.PublicNetworkAccess != "" {
 		objectMap["publicNetworkAccess"] = spfc.PublicNetworkAccess
 	}
@@ -2751,10 +2920,12 @@ type ServerPropertiesForDefaultCreate struct {
 	AdministratorLogin *string `json:"administratorLogin,omitempty"`
 	// AdministratorLoginPassword - The password of the administrator login.
 	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
-	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven'
+	// Version - Server version. Possible values include: 'OneZeroFullStopTwo', 'OneZeroFullStopThree'
 	Version ServerVersion `json:"version,omitempty"`
 	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
+	// MinimalTLSVersion - Enforce a minimal Tls version for the server. Possible values include: 'TLS10', 'TLS11', 'TLS12', 'TLSEnforcementDisabled'
+	MinimalTLSVersion MinimalTLSVersionEnum `json:"minimalTlsVersion,omitempty"`
 	// PublicNetworkAccess - Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'PublicNetworkAccessEnumEnabled', 'PublicNetworkAccessEnumDisabled'
 	PublicNetworkAccess PublicNetworkAccessEnum `json:"publicNetworkAccess,omitempty"`
 	// StorageProfile - Storage profile of a server.
@@ -2778,6 +2949,9 @@ func (spfdc ServerPropertiesForDefaultCreate) MarshalJSON() ([]byte, error) {
 	}
 	if spfdc.SslEnforcement != "" {
 		objectMap["sslEnforcement"] = spfdc.SslEnforcement
+	}
+	if spfdc.MinimalTLSVersion != "" {
+		objectMap["minimalTlsVersion"] = spfdc.MinimalTLSVersion
 	}
 	if spfdc.PublicNetworkAccess != "" {
 		objectMap["publicNetworkAccess"] = spfdc.PublicNetworkAccess
@@ -2826,10 +3000,12 @@ func (spfdc ServerPropertiesForDefaultCreate) AsBasicServerPropertiesForCreate()
 type ServerPropertiesForGeoRestore struct {
 	// SourceServerID - The source server id to restore from.
 	SourceServerID *string `json:"sourceServerId,omitempty"`
-	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven'
+	// Version - Server version. Possible values include: 'OneZeroFullStopTwo', 'OneZeroFullStopThree'
 	Version ServerVersion `json:"version,omitempty"`
 	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
+	// MinimalTLSVersion - Enforce a minimal Tls version for the server. Possible values include: 'TLS10', 'TLS11', 'TLS12', 'TLSEnforcementDisabled'
+	MinimalTLSVersion MinimalTLSVersionEnum `json:"minimalTlsVersion,omitempty"`
 	// PublicNetworkAccess - Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'PublicNetworkAccessEnumEnabled', 'PublicNetworkAccessEnumDisabled'
 	PublicNetworkAccess PublicNetworkAccessEnum `json:"publicNetworkAccess,omitempty"`
 	// StorageProfile - Storage profile of a server.
@@ -2850,6 +3026,9 @@ func (spfgr ServerPropertiesForGeoRestore) MarshalJSON() ([]byte, error) {
 	}
 	if spfgr.SslEnforcement != "" {
 		objectMap["sslEnforcement"] = spfgr.SslEnforcement
+	}
+	if spfgr.MinimalTLSVersion != "" {
+		objectMap["minimalTlsVersion"] = spfgr.MinimalTLSVersion
 	}
 	if spfgr.PublicNetworkAccess != "" {
 		objectMap["publicNetworkAccess"] = spfgr.PublicNetworkAccess
@@ -2897,10 +3076,12 @@ func (spfgr ServerPropertiesForGeoRestore) AsBasicServerPropertiesForCreate() (B
 type ServerPropertiesForReplica struct {
 	// SourceServerID - The master server id to create replica from.
 	SourceServerID *string `json:"sourceServerId,omitempty"`
-	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven'
+	// Version - Server version. Possible values include: 'OneZeroFullStopTwo', 'OneZeroFullStopThree'
 	Version ServerVersion `json:"version,omitempty"`
 	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
+	// MinimalTLSVersion - Enforce a minimal Tls version for the server. Possible values include: 'TLS10', 'TLS11', 'TLS12', 'TLSEnforcementDisabled'
+	MinimalTLSVersion MinimalTLSVersionEnum `json:"minimalTlsVersion,omitempty"`
 	// PublicNetworkAccess - Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'PublicNetworkAccessEnumEnabled', 'PublicNetworkAccessEnumDisabled'
 	PublicNetworkAccess PublicNetworkAccessEnum `json:"publicNetworkAccess,omitempty"`
 	// StorageProfile - Storage profile of a server.
@@ -2921,6 +3102,9 @@ func (spfr ServerPropertiesForReplica) MarshalJSON() ([]byte, error) {
 	}
 	if spfr.SslEnforcement != "" {
 		objectMap["sslEnforcement"] = spfr.SslEnforcement
+	}
+	if spfr.MinimalTLSVersion != "" {
+		objectMap["minimalTlsVersion"] = spfr.MinimalTLSVersion
 	}
 	if spfr.PublicNetworkAccess != "" {
 		objectMap["publicNetworkAccess"] = spfr.PublicNetworkAccess
@@ -2970,10 +3154,12 @@ type ServerPropertiesForRestore struct {
 	SourceServerID *string `json:"sourceServerId,omitempty"`
 	// RestorePointInTime - Restore point creation time (ISO8601 format), specifying the time to restore from.
 	RestorePointInTime *date.Time `json:"restorePointInTime,omitempty"`
-	// Version - Server version. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven'
+	// Version - Server version. Possible values include: 'OneZeroFullStopTwo', 'OneZeroFullStopThree'
 	Version ServerVersion `json:"version,omitempty"`
 	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
+	// MinimalTLSVersion - Enforce a minimal Tls version for the server. Possible values include: 'TLS10', 'TLS11', 'TLS12', 'TLSEnforcementDisabled'
+	MinimalTLSVersion MinimalTLSVersionEnum `json:"minimalTlsVersion,omitempty"`
 	// PublicNetworkAccess - Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'PublicNetworkAccessEnumEnabled', 'PublicNetworkAccessEnumDisabled'
 	PublicNetworkAccess PublicNetworkAccessEnum `json:"publicNetworkAccess,omitempty"`
 	// StorageProfile - Storage profile of a server.
@@ -2997,6 +3183,9 @@ func (spfr ServerPropertiesForRestore) MarshalJSON() ([]byte, error) {
 	}
 	if spfr.SslEnforcement != "" {
 		objectMap["sslEnforcement"] = spfr.SslEnforcement
+	}
+	if spfr.MinimalTLSVersion != "" {
+		objectMap["minimalTlsVersion"] = spfr.MinimalTLSVersion
 	}
 	if spfr.PublicNetworkAccess != "" {
 		objectMap["publicNetworkAccess"] = spfr.PublicNetworkAccess
@@ -3236,6 +3425,172 @@ func (ssap *ServerSecurityAlertPolicy) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
+// ServerSecurityAlertPolicyListResult a list of the server's security alert policies.
+type ServerSecurityAlertPolicyListResult struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; Array of results.
+	Value *[]ServerSecurityAlertPolicy `json:"value,omitempty"`
+	// NextLink - READ-ONLY; Link to retrieve next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ServerSecurityAlertPolicyListResult.
+func (ssaplr ServerSecurityAlertPolicyListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ServerSecurityAlertPolicyListResultIterator provides access to a complete listing of
+// ServerSecurityAlertPolicy values.
+type ServerSecurityAlertPolicyListResultIterator struct {
+	i    int
+	page ServerSecurityAlertPolicyListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ServerSecurityAlertPolicyListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerSecurityAlertPolicyListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ServerSecurityAlertPolicyListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ServerSecurityAlertPolicyListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ServerSecurityAlertPolicyListResultIterator) Response() ServerSecurityAlertPolicyListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ServerSecurityAlertPolicyListResultIterator) Value() ServerSecurityAlertPolicy {
+	if !iter.page.NotDone() {
+		return ServerSecurityAlertPolicy{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ServerSecurityAlertPolicyListResultIterator type.
+func NewServerSecurityAlertPolicyListResultIterator(page ServerSecurityAlertPolicyListResultPage) ServerSecurityAlertPolicyListResultIterator {
+	return ServerSecurityAlertPolicyListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (ssaplr ServerSecurityAlertPolicyListResult) IsEmpty() bool {
+	return ssaplr.Value == nil || len(*ssaplr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (ssaplr ServerSecurityAlertPolicyListResult) hasNextLink() bool {
+	return ssaplr.NextLink != nil && len(*ssaplr.NextLink) != 0
+}
+
+// serverSecurityAlertPolicyListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (ssaplr ServerSecurityAlertPolicyListResult) serverSecurityAlertPolicyListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !ssaplr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(ssaplr.NextLink)))
+}
+
+// ServerSecurityAlertPolicyListResultPage contains a page of ServerSecurityAlertPolicy values.
+type ServerSecurityAlertPolicyListResultPage struct {
+	fn     func(context.Context, ServerSecurityAlertPolicyListResult) (ServerSecurityAlertPolicyListResult, error)
+	ssaplr ServerSecurityAlertPolicyListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ServerSecurityAlertPolicyListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ServerSecurityAlertPolicyListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.ssaplr)
+		if err != nil {
+			return err
+		}
+		page.ssaplr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ServerSecurityAlertPolicyListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ServerSecurityAlertPolicyListResultPage) NotDone() bool {
+	return !page.ssaplr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ServerSecurityAlertPolicyListResultPage) Response() ServerSecurityAlertPolicyListResult {
+	return page.ssaplr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ServerSecurityAlertPolicyListResultPage) Values() []ServerSecurityAlertPolicy {
+	if page.ssaplr.IsEmpty() {
+		return nil
+	}
+	return *page.ssaplr.Value
+}
+
+// Creates a new instance of the ServerSecurityAlertPolicyListResultPage type.
+func NewServerSecurityAlertPolicyListResultPage(cur ServerSecurityAlertPolicyListResult, getNextPage func(context.Context, ServerSecurityAlertPolicyListResult) (ServerSecurityAlertPolicyListResult, error)) ServerSecurityAlertPolicyListResultPage {
+	return ServerSecurityAlertPolicyListResultPage{
+		fn:     getNextPage,
+		ssaplr: cur,
+	}
+}
+
 // ServersRestartFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
 type ServersRestartFuture struct {
@@ -3389,10 +3744,12 @@ type ServerUpdateParametersProperties struct {
 	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
 	// AdministratorLoginPassword - The password of the administrator login.
 	AdministratorLoginPassword *string `json:"administratorLoginPassword,omitempty"`
-	// Version - The version of a server. Possible values include: 'FiveFullStopSix', 'FiveFullStopSeven'
+	// Version - The version of a server. Possible values include: 'OneZeroFullStopTwo', 'OneZeroFullStopThree'
 	Version ServerVersion `json:"version,omitempty"`
 	// SslEnforcement - Enable ssl enforcement or not when connect to server. Possible values include: 'SslEnforcementEnumEnabled', 'SslEnforcementEnumDisabled'
 	SslEnforcement SslEnforcementEnum `json:"sslEnforcement,omitempty"`
+	// MinimalTLSVersion - Enforce a minimal Tls version for the server. Possible values include: 'TLS10', 'TLS11', 'TLS12', 'TLSEnforcementDisabled'
+	MinimalTLSVersion MinimalTLSVersionEnum `json:"minimalTlsVersion,omitempty"`
 	// PublicNetworkAccess - Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'PublicNetworkAccessEnumEnabled', 'PublicNetworkAccessEnumDisabled'
 	PublicNetworkAccess PublicNetworkAccessEnum `json:"publicNetworkAccess,omitempty"`
 	// ReplicationRole - The replication role of the server.

@@ -1,23 +1,102 @@
-# Change History
+# Unreleased
+
+## Breaking Changes
+
+### Removed Constants
+
+1. ServerVersion.FiveFullStopSeven
+1. ServerVersion.FiveFullStopSix
 
 ## Additive Changes
 
+### New Constants
+
+1. MinimalTLSVersionEnum.TLS10
+1. MinimalTLSVersionEnum.TLS11
+1. MinimalTLSVersionEnum.TLS12
+1. MinimalTLSVersionEnum.TLSEnforcementDisabled
+1. QueryPerformanceInsightResetDataResultState.QueryPerformanceInsightResetDataResultStateFailed
+1. QueryPerformanceInsightResetDataResultState.QueryPerformanceInsightResetDataResultStateSucceeded
+1. ServerVersion.OneZeroFullStopThree
+1. ServerVersion.OneZeroFullStopTwo
+
 ### New Funcs
 
-1. AdvisorsResultList.MarshalJSON() ([]byte, error)
-1. AzureEntityResource.MarshalJSON() ([]byte, error)
-1. ErrorAdditionalInfo.MarshalJSON() ([]byte, error)
-1. ErrorResponse.MarshalJSON() ([]byte, error)
-1. OperationDisplay.MarshalJSON() ([]byte, error)
-1. PrivateEndpointConnectionListResult.MarshalJSON() ([]byte, error)
-1. PrivateLinkResource.MarshalJSON() ([]byte, error)
-1. PrivateLinkResourceListResult.MarshalJSON() ([]byte, error)
-1. PrivateLinkResourceProperties.MarshalJSON() ([]byte, error)
-1. ProxyResource.MarshalJSON() ([]byte, error)
-1. QueryTextsResultList.MarshalJSON() ([]byte, error)
-1. RecommendationActionsResultList.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
-1. ServerPrivateEndpointConnection.MarshalJSON() ([]byte, error)
-1. TopQueryStatisticsResultList.MarshalJSON() ([]byte, error)
-1. VirtualNetworkRuleListResult.MarshalJSON() ([]byte, error)
-1. WaitStatisticsResultList.MarshalJSON() ([]byte, error)
+1. *RecoverableServerResource.UnmarshalJSON([]byte) error
+1. *ServerParametersListUpdateConfigurationsFuture.UnmarshalJSON([]byte) error
+1. *ServerSecurityAlertPolicyListResultIterator.Next() error
+1. *ServerSecurityAlertPolicyListResultIterator.NextWithContext(context.Context) error
+1. *ServerSecurityAlertPolicyListResultPage.Next() error
+1. *ServerSecurityAlertPolicyListResultPage.NextWithContext(context.Context) error
+1. BaseClient.ResetQueryPerformanceInsightData(context.Context, string, string) (QueryPerformanceInsightResetDataResult, error)
+1. BaseClient.ResetQueryPerformanceInsightDataPreparer(context.Context, string, string) (*http.Request, error)
+1. BaseClient.ResetQueryPerformanceInsightDataResponder(*http.Response) (QueryPerformanceInsightResetDataResult, error)
+1. BaseClient.ResetQueryPerformanceInsightDataSender(*http.Request) (*http.Response, error)
+1. NewRecoverableServersClient(string) RecoverableServersClient
+1. NewRecoverableServersClientWithBaseURI(string, string) RecoverableServersClient
+1. NewServerBasedPerformanceTierClient(string) ServerBasedPerformanceTierClient
+1. NewServerBasedPerformanceTierClientWithBaseURI(string, string) ServerBasedPerformanceTierClient
+1. NewServerParametersClient(string) ServerParametersClient
+1. NewServerParametersClientWithBaseURI(string, string) ServerParametersClient
+1. NewServerSecurityAlertPolicyListResultIterator(ServerSecurityAlertPolicyListResultPage) ServerSecurityAlertPolicyListResultIterator
+1. NewServerSecurityAlertPolicyListResultPage(ServerSecurityAlertPolicyListResult, func(context.Context, ServerSecurityAlertPolicyListResult) (ServerSecurityAlertPolicyListResult, error)) ServerSecurityAlertPolicyListResultPage
+1. PossibleMinimalTLSVersionEnumValues() []MinimalTLSVersionEnum
+1. PossibleQueryPerformanceInsightResetDataResultStateValues() []QueryPerformanceInsightResetDataResultState
+1. RecoverableServerProperties.MarshalJSON() ([]byte, error)
+1. RecoverableServerResource.MarshalJSON() ([]byte, error)
+1. RecoverableServersClient.Get(context.Context, string, string) (RecoverableServerResource, error)
+1. RecoverableServersClient.GetPreparer(context.Context, string, string) (*http.Request, error)
+1. RecoverableServersClient.GetResponder(*http.Response) (RecoverableServerResource, error)
+1. RecoverableServersClient.GetSender(*http.Request) (*http.Response, error)
+1. ServerBasedPerformanceTierClient.List(context.Context, string, string) (PerformanceTierListResult, error)
+1. ServerBasedPerformanceTierClient.ListPreparer(context.Context, string, string) (*http.Request, error)
+1. ServerBasedPerformanceTierClient.ListResponder(*http.Response) (PerformanceTierListResult, error)
+1. ServerBasedPerformanceTierClient.ListSender(*http.Request) (*http.Response, error)
+1. ServerParametersClient.ListUpdateConfigurations(context.Context, string, string, ConfigurationListResult) (ServerParametersListUpdateConfigurationsFuture, error)
+1. ServerParametersClient.ListUpdateConfigurationsPreparer(context.Context, string, string, ConfigurationListResult) (*http.Request, error)
+1. ServerParametersClient.ListUpdateConfigurationsResponder(*http.Response) (ConfigurationListResult, error)
+1. ServerParametersClient.ListUpdateConfigurationsSender(*http.Request) (ServerParametersListUpdateConfigurationsFuture, error)
+1. ServerSecurityAlertPoliciesClient.ListByServer(context.Context, string, string) (ServerSecurityAlertPolicyListResultPage, error)
+1. ServerSecurityAlertPoliciesClient.ListByServerComplete(context.Context, string, string) (ServerSecurityAlertPolicyListResultIterator, error)
+1. ServerSecurityAlertPoliciesClient.ListByServerPreparer(context.Context, string, string) (*http.Request, error)
+1. ServerSecurityAlertPoliciesClient.ListByServerResponder(*http.Response) (ServerSecurityAlertPolicyListResult, error)
+1. ServerSecurityAlertPoliciesClient.ListByServerSender(*http.Request) (*http.Response, error)
+1. ServerSecurityAlertPolicyListResult.IsEmpty() bool
+1. ServerSecurityAlertPolicyListResult.MarshalJSON() ([]byte, error)
+1. ServerSecurityAlertPolicyListResultIterator.NotDone() bool
+1. ServerSecurityAlertPolicyListResultIterator.Response() ServerSecurityAlertPolicyListResult
+1. ServerSecurityAlertPolicyListResultIterator.Value() ServerSecurityAlertPolicy
+1. ServerSecurityAlertPolicyListResultPage.NotDone() bool
+1. ServerSecurityAlertPolicyListResultPage.Response() ServerSecurityAlertPolicyListResult
+1. ServerSecurityAlertPolicyListResultPage.Values() []ServerSecurityAlertPolicy
+
+### Struct Changes
+
+#### New Structs
+
+1. QueryPerformanceInsightResetDataResult
+1. RecoverableServerProperties
+1. RecoverableServerResource
+1. RecoverableServersClient
+1. ServerBasedPerformanceTierClient
+1. ServerParametersClient
+1. ServerParametersListUpdateConfigurationsFuture
+1. ServerSecurityAlertPolicyListResult
+1. ServerSecurityAlertPolicyListResultIterator
+1. ServerSecurityAlertPolicyListResultPage
+
+#### New Struct Fields
+
+1. PerformanceTierProperties.MaxBackupRetentionDays
+1. PerformanceTierProperties.MaxLargeStorageMB
+1. PerformanceTierProperties.MaxStorageMB
+1. PerformanceTierProperties.MinBackupRetentionDays
+1. PerformanceTierProperties.MinLargeStorageMB
+1. PerformanceTierProperties.MinStorageMB
+1. ServerProperties.MinimalTLSVersion
+1. ServerPropertiesForCreate.MinimalTLSVersion
+1. ServerPropertiesForDefaultCreate.MinimalTLSVersion
+1. ServerPropertiesForGeoRestore.MinimalTLSVersion
+1. ServerPropertiesForReplica.MinimalTLSVersion
+1. ServerPropertiesForRestore.MinimalTLSVersion
+1. ServerUpdateParametersProperties.MinimalTLSVersion

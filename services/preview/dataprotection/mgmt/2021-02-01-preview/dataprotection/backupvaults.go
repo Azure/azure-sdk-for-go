@@ -77,7 +77,7 @@ func (client BackupVaultsClient) CheckNameAvailabilityPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-02-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -156,7 +156,7 @@ func (client BackupVaultsClient) CreateOrUpdatePreparer(ctx context.Context, vau
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-02-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -243,7 +243,7 @@ func (client BackupVaultsClient) DeletePreparer(ctx context.Context, vaultName s
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-02-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -318,7 +318,7 @@ func (client BackupVaultsClient) GetPreparer(ctx context.Context, vaultName stri
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-02-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -397,7 +397,7 @@ func (client BackupVaultsClient) GetInResourceGroupPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-02-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -510,7 +510,7 @@ func (client BackupVaultsClient) GetInSubscriptionPreparer(ctx context.Context) 
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-02-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -617,7 +617,7 @@ func (client BackupVaultsClient) UpdatePreparer(ctx context.Context, vaultName s
 		"vaultName":         autorest.Encode("path", vaultName),
 	}
 
-	const APIVersion = "2021-01-01"
+	const APIVersion = "2021-02-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -18,7 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/dataprotection/mgmt/2021-01-01/dataprotection"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/dataprotection/mgmt/2021-02-01-preview/dataprotection"
 
 // AbsoluteDeleteOption delete option with duration
 type AbsoluteDeleteOption struct {
@@ -2108,6 +2108,191 @@ func (future *BackupInstancesDeleteFuture) result(client BackupInstancesClient) 
 	if !done {
 		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupInstancesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// BackupInstancesResumeBackupsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type BackupInstancesResumeBackupsFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupInstancesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *BackupInstancesResumeBackupsFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for BackupInstancesResumeBackupsFuture.Result.
+func (future *BackupInstancesResumeBackupsFuture) result(client BackupInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesResumeBackupsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupInstancesResumeBackupsFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// BackupInstancesResumeProtectionFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type BackupInstancesResumeProtectionFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupInstancesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *BackupInstancesResumeProtectionFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for BackupInstancesResumeProtectionFuture.Result.
+func (future *BackupInstancesResumeProtectionFuture) result(client BackupInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesResumeProtectionFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupInstancesResumeProtectionFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// BackupInstancesStopProtectionFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type BackupInstancesStopProtectionFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupInstancesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *BackupInstancesStopProtectionFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for BackupInstancesStopProtectionFuture.Result.
+func (future *BackupInstancesStopProtectionFuture) result(client BackupInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesStopProtectionFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupInstancesStopProtectionFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// BackupInstancesSuspendBackupsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type BackupInstancesSuspendBackupsFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupInstancesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *BackupInstancesSuspendBackupsFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for BackupInstancesSuspendBackupsFuture.Result.
+func (future *BackupInstancesSuspendBackupsFuture) result(client BackupInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesSuspendBackupsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupInstancesSuspendBackupsFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// BackupInstancesSyncBackupInstanceFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type BackupInstancesSyncBackupInstanceFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(BackupInstancesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *BackupInstancesSyncBackupInstanceFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for BackupInstancesSyncBackupInstanceFuture.Result.
+func (future *BackupInstancesSyncBackupInstanceFuture) result(client BackupInstancesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesSyncBackupInstanceFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("dataprotection.BackupInstancesSyncBackupInstanceFuture")
 		return
 	}
 	ar.Response = future.Response()
@@ -5217,6 +5402,12 @@ type SupportedFeature struct {
 	SupportStatus FeatureSupportStatus `json:"supportStatus,omitempty"`
 	// ExposureControlledFeatures - support feature type.
 	ExposureControlledFeatures *[]string `json:"exposureControlledFeatures,omitempty"`
+}
+
+// SyncBackupInstanceRequest sync BackupInstance Request
+type SyncBackupInstanceRequest struct {
+	// SyncType - Field indicating sync type e.g. to sync only in case of failure or in all cases. Possible values include: 'Default', 'ForceResync'
+	SyncType SyncType `json:"syncType,omitempty"`
 }
 
 // SystemData metadata pertaining to creation and last modification of the resource.

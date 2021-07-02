@@ -179,16 +179,16 @@ func (f Feature) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Keys a class represents the access keys of SignalR service.
+// Keys a class represents the access keys of the resource.
 type Keys struct {
 	autorest.Response `json:"-"`
 	// PrimaryKey - The primary access key.
 	PrimaryKey *string `json:"primaryKey,omitempty"`
 	// SecondaryKey - The secondary access key.
 	SecondaryKey *string `json:"secondaryKey,omitempty"`
-	// PrimaryConnectionString - SignalR connection string constructed via the primaryKey
+	// PrimaryConnectionString - Connection string constructed via the primaryKey
 	PrimaryConnectionString *string `json:"primaryConnectionString,omitempty"`
-	// SecondaryConnectionString - SignalR connection string constructed via the secondaryKey
+	// SecondaryConnectionString - Connection string constructed via the secondaryKey
 	SecondaryConnectionString *string `json:"secondaryConnectionString,omitempty"`
 }
 
@@ -269,7 +269,7 @@ type NameAvailability struct {
 
 // NameAvailabilityParameters data POST-ed to the nameAvailability action
 type NameAvailabilityParameters struct {
-	// Type - The resource type. Should be always "Microsoft.SignalRService/SignalR".
+	// Type - The resource type. Can be "Microsoft.SignalRService/SignalR" or "Microsoft.SignalRService/webPubSub"
 	Type *string `json:"type,omitempty"`
 	// Name - The SignalR service name to validate. e.g."my-signalR-name-here"
 	Name *string `json:"name,omitempty"`
@@ -283,7 +283,7 @@ type NetworkACL struct {
 	Deny *[]RequestType `json:"deny,omitempty"`
 }
 
-// NetworkACLs network ACLs for SignalR
+// NetworkACLs network ACLs for the resource
 type NetworkACLs struct {
 	// DefaultAction - Default action when no other rule matches. Possible values include: 'Allow', 'Deny'
 	DefaultAction ACLAction `json:"defaultAction,omitempty"`
@@ -293,7 +293,7 @@ type NetworkACLs struct {
 	PrivateEndpoints *[]PrivateEndpointACL `json:"privateEndpoints,omitempty"`
 }
 
-// Operation REST API operation supported by SignalR resource provider.
+// Operation REST API operation supported by resource provider.
 type Operation struct {
 	// Name - Name of the operation with format: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
@@ -886,22 +886,21 @@ type PrivateLinkServiceConnectionState struct {
 	ActionsRequired *string `json:"actionsRequired,omitempty"`
 }
 
-// Properties a class that describes the properties of the SignalR service that should contain more
-// read-only properties than AzSignalR.Models.SignalRCreateOrUpdateProperties
+// Properties a class that describes the properties of the resource
 type Properties struct {
 	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
-	// ExternalIP - READ-ONLY; The publicly accessible IP of the SignalR service.
+	// ExternalIP - READ-ONLY; The publicly accessible IP of the resource.
 	ExternalIP *string `json:"externalIP,omitempty"`
-	// HostName - READ-ONLY; FQDN of the SignalR service instance. Format: xxx.service.signalr.net
+	// HostName - READ-ONLY; FQDN of the service instance.
 	HostName *string `json:"hostName,omitempty"`
-	// PublicPort - READ-ONLY; The publicly accessible port of the SignalR service which is designed for browser/client side usage.
+	// PublicPort - READ-ONLY; The publicly accessible port of the resource which is designed for browser/client side usage.
 	PublicPort *int32 `json:"publicPort,omitempty"`
-	// ServerPort - READ-ONLY; The publicly accessible port of the SignalR service which is designed for customer server side usage.
+	// ServerPort - READ-ONLY; The publicly accessible port of the resource which is designed for customer server side usage.
 	ServerPort *int32 `json:"serverPort,omitempty"`
-	// Version - READ-ONLY; Version of the SignalR resource. Probably you need the same or higher version of client SDKs.
+	// Version - READ-ONLY; Version of the resource. Probably you need the same or higher version of client SDKs.
 	Version *string `json:"version,omitempty"`
-	// PrivateEndpointConnections - READ-ONLY; Private endpoint connections to the SignalR resource.
+	// PrivateEndpointConnections - READ-ONLY; Private endpoint connections to the resource.
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 	// TLS - TLS settings.
 	TLS *TLSSettings `json:"tls,omitempty"`
@@ -1023,10 +1022,10 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ResourceList object that includes an array of SignalR services and a possible link for next set.
+// ResourceList object that includes an array of resources and a possible link for next set.
 type ResourceList struct {
 	autorest.Response `json:"-"`
-	// Value - List of SignalR services
+	// Value - List of the resources
 	Value *[]ResourceType `json:"value,omitempty"`
 	// NextLink - The URL the client should use to fetch the next page (per server side paging).
 	// It's null for now, added for future use.
@@ -1183,7 +1182,7 @@ func NewResourceListPage(cur ResourceList, getNextPage func(context.Context, Res
 	}
 }
 
-// ResourceSku the billing information of the SignalR resource.
+// ResourceSku the billing information of the resource.
 type ResourceSku struct {
 	// Name - The name of the SKU. Required.
 	//
@@ -1193,9 +1192,9 @@ type ResourceSku struct {
 	//
 	// `Basic` is deprecated, use `Standard` instead. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'
 	Tier SkuTier `json:"tier,omitempty"`
-	// Size - Optional string. For future use.
+	// Size - READ-ONLY; Not used. Retained for future use.
 	Size *string `json:"size,omitempty"`
-	// Family - Optional string. For future use.
+	// Family - READ-ONLY; Not used. Retained for future use.
 	Family *string `json:"family,omitempty"`
 	// Capacity - Optional, integer. The unit count of SignalR resource. 1 by default.
 	//
@@ -1205,18 +1204,33 @@ type ResourceSku struct {
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
-// ResourceType a class represent a SignalR service resource.
+// MarshalJSON is the custom marshaler for ResourceSku.
+func (rs ResourceSku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rs.Name != nil {
+		objectMap["name"] = rs.Name
+	}
+	if rs.Tier != "" {
+		objectMap["tier"] = rs.Tier
+	}
+	if rs.Capacity != nil {
+		objectMap["capacity"] = rs.Capacity
+	}
+	return json.Marshal(objectMap)
+}
+
+// ResourceType a class represent a resource.
 type ResourceType struct {
 	autorest.Response `json:"-"`
 	// Sku - The billing information of the resource.(e.g. Free, Standard)
 	Sku *ResourceSku `json:"sku,omitempty"`
 	// Properties - Settings used to provision or configure the resource
 	*Properties `json:"properties,omitempty"`
-	// Kind - The kind of the service - e.g. "SignalR", or "RawWebSockets" for "Microsoft.SignalRService/SignalR". Possible values include: 'SignalR', 'RawWebSockets'
+	// Kind - The kind of the service - e.g. "SignalR" for "Microsoft.SignalRService/SignalR". Possible values include: 'SignalR', 'RawWebSockets'
 	Kind ServiceKind `json:"kind,omitempty"`
 	// Identity - The managed identity response
 	Identity *ManagedIdentity `json:"identity,omitempty"`
-	// Location - The GEO location of the SignalR service. e.g. West US | East US | North Central US | South Central US.
+	// Location - The GEO location of the resource. e.g. West US | East US | North Central US | South Central US.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags of the service which is a list of key value pairs that describe the resource.
 	Tags map[string]*string `json:"tags"`
@@ -1384,7 +1398,7 @@ func (future *RestartFuture) result(client Client) (ar autorest.Response, err er
 	return
 }
 
-// ServerlessUpstreamSettings the settings for the Upstream when the Azure SignalR is in server-less mode.
+// ServerlessUpstreamSettings the settings for the Upstream when the service is in server-less mode.
 type ServerlessUpstreamSettings struct {
 	// Templates - Gets or sets the list of Upstream URL templates. Order matters, and the first matching template takes effects.
 	Templates *[]UpstreamTemplate `json:"templates,omitempty"`
@@ -1398,7 +1412,7 @@ type ServiceSpecification struct {
 	LogSpecifications *[]LogSpecification `json:"logSpecifications,omitempty"`
 }
 
-// TLSSettings TLS settings for SignalR
+// TLSSettings TLS settings for the resource
 type TLSSettings struct {
 	// ClientCertEnabled - Request client certificate during TLS handshake if enabled
 	ClientCertEnabled *bool `json:"clientCertEnabled,omitempty"`
@@ -1406,7 +1420,7 @@ type TLSSettings struct {
 
 // TrackedResource the resource model definition for a ARM tracked top level resource.
 type TrackedResource struct {
-	// Location - The GEO location of the SignalR service. e.g. West US | East US | North Central US | South Central US.
+	// Location - The GEO location of the resource. e.g. West US | East US | North Central US | South Central US.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags of the service which is a list of key value pairs that describe the resource.
 	Tags map[string]*string `json:"tags"`
@@ -1509,7 +1523,7 @@ type UpstreamTemplate struct {
 	Auth *UpstreamAuthSettings `json:"auth,omitempty"`
 }
 
-// Usage object that describes a specific usage of SignalR resources.
+// Usage object that describes a specific usage of the resources.
 type Usage struct {
 	// ID - Fully qualified ARM resource id
 	ID *string `json:"id,omitempty"`
@@ -1523,10 +1537,10 @@ type Usage struct {
 	Unit *string `json:"unit,omitempty"`
 }
 
-// UsageList object that includes an array of SignalR resource usages and a possible link for next set.
+// UsageList object that includes an array of the resource usages and a possible link for next set.
 type UsageList struct {
 	autorest.Response `json:"-"`
-	// Value - List of SignalR usages
+	// Value - List of the resource usages
 	Value *[]Usage `json:"value,omitempty"`
 	// NextLink - The URL the client should use to fetch the next page (per server side paging).
 	// It's null for now, added for future use.

@@ -36,13 +36,13 @@ func NewExtensionClientWithBaseURI(baseURI string, subscriptionID string) Extens
 // clusterName - the name of the cluster.
 // extensionName - the name of the cluster extension.
 // parameters - the cluster extensions create request.
-func (client ExtensionClient) Create(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters Extension) (result autorest.Response, err error) {
+func (client ExtensionClient) Create(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters Extension) (result ExtensionCreateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExtensionClient.Create")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -53,16 +53,9 @@ func (client ExtensionClient) Create(ctx context.Context, resourceGroupName stri
 		return
 	}
 
-	resp, err := client.CreateSender(req)
+	result, err = client.CreateSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Create", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.CreateResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Create", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Create", nil, "Failure sending request")
 		return
 	}
 
@@ -95,8 +88,17 @@ func (client ExtensionClient) CreatePreparer(ctx context.Context, resourceGroupN
 
 // CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExtensionClient) CreateSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client ExtensionClient) CreateSender(req *http.Request) (future ExtensionCreateFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
 }
 
 // CreateResponder handles the response to the Create request. The method always
@@ -115,13 +117,13 @@ func (client ExtensionClient) CreateResponder(resp *http.Response) (result autor
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster.
 // extensionName - the name of the cluster extension.
-func (client ExtensionClient) Delete(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (result autorest.Response, err error) {
+func (client ExtensionClient) Delete(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (result ExtensionDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExtensionClient.Delete")
 		defer func() {
 			sc := -1
-			if result.Response != nil {
-				sc = result.Response.StatusCode
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -132,16 +134,9 @@ func (client ExtensionClient) Delete(ctx context.Context, resourceGroupName stri
 		return
 	}
 
-	resp, err := client.DeleteSender(req)
+	result, err = client.DeleteSender(req)
 	if err != nil {
-		result.Response = resp
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Delete", resp, "Failure sending request")
-		return
-	}
-
-	result, err = client.DeleteResponder(resp)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Delete", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -172,8 +167,17 @@ func (client ExtensionClient) DeletePreparer(ctx context.Context, resourceGroupN
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client ExtensionClient) DeleteSender(req *http.Request) (*http.Response, error) {
-	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+func (client ExtensionClient) DeleteSender(req *http.Request) (future ExtensionDeleteFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
 }
 
 // DeleteResponder handles the response to the Delete request. The method always
@@ -181,7 +185,7 @@ func (client ExtensionClient) DeleteSender(req *http.Request) (*http.Response, e
 func (client ExtensionClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -258,7 +262,7 @@ func (client ExtensionClient) DisableMonitoringSender(req *http.Request) (future
 func (client ExtensionClient) DisableMonitoringResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
 		autorest.ByClosing())
 	result.Response = resp
 	return
@@ -349,7 +353,7 @@ func (client ExtensionClient) EnableMonitoringResponder(resp *http.Response) (re
 // resourceGroupName - the name of the resource group.
 // clusterName - the name of the cluster.
 // extensionName - the name of the cluster extension.
-func (client ExtensionClient) Get(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (result Extension, err error) {
+func (client ExtensionClient) Get(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (result ClusterMonitoringResponse, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExtensionClient.Get")
 		defer func() {
@@ -412,7 +416,7 @@ func (client ExtensionClient) GetSender(req *http.Request) (*http.Response, erro
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client ExtensionClient) GetResponder(resp *http.Response) (result Extension, err error) {
+func (client ExtensionClient) GetResponder(resp *http.Response) (result ClusterMonitoringResponse, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),

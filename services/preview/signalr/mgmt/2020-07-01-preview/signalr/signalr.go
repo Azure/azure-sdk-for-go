@@ -31,7 +31,7 @@ func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
 	return Client{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CheckNameAvailability checks that the SignalR name is valid and is not already in use.
+// CheckNameAvailability checks that the resource name is valid and is not already in use.
 // Parameters:
 // location - the region
 // parameters - parameters supplied to the operation.
@@ -120,7 +120,7 @@ func (client Client) CheckNameAvailabilityResponder(resp *http.Response) (result
 	return
 }
 
-// CreateOrUpdate create a new SignalR service and update an exiting SignalR service.
+// CreateOrUpdate create or update a resource.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
@@ -214,7 +214,7 @@ func (client Client) CreateOrUpdateResponder(resp *http.Response) (result Resour
 	return
 }
 
-// Delete operation to delete a SignalR service.
+// Delete operation to delete a resource.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
@@ -292,7 +292,7 @@ func (client Client) DeleteResponder(resp *http.Response) (result autorest.Respo
 	return
 }
 
-// Get get the SignalR service and its properties.
+// Get get the resource and its properties.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
@@ -599,7 +599,7 @@ func (client Client) ListBySubscriptionComplete(ctx context.Context) (result Res
 	return
 }
 
-// ListKeys get the access keys of the SignalR resource.
+// ListKeys get the access keys of the resource.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
@@ -676,8 +676,8 @@ func (client Client) ListKeysResponder(resp *http.Response) (result Keys, err er
 	return
 }
 
-// RegenerateKey regenerate SignalR service access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
-// time.
+// RegenerateKey regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the
+// same time.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
@@ -762,7 +762,7 @@ func (client Client) RegenerateKeyResponder(resp *http.Response) (result Keys, e
 	return
 }
 
-// Restart operation to restart a SignalR service.
+// Restart operation to restart a resource.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.
@@ -840,7 +840,7 @@ func (client Client) RestartResponder(resp *http.Response) (result autorest.Resp
 	return
 }
 
-// Update operation to update an exiting SignalR service.
+// Update operation to update an exiting resource.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the resource. You can obtain this value
 // from the Azure Resource Manager API or the portal.

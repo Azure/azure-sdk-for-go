@@ -70,7 +70,7 @@ func (future *CreateOrUpdateFuture) result(client Client) (rt ResourceType, err 
 
 // CreateOrUpdateProperties settings used to provision or configure the resource.
 type CreateOrUpdateProperties struct {
-	// HostNamePrefix - Prefix for the hostName of the SignalR service. Retained for future use.
+	// HostNamePrefix - READ-ONLY; Prefix for the hostName of the SignalR service. Retained for future use.
 	// The hostname will be of format: &lt;hostNamePrefix&gt;.service.signalr.net.
 	HostNamePrefix *string `json:"hostNamePrefix,omitempty"`
 	// Features - List of SignalR featureFlags. e.g. ServiceMode.
@@ -86,6 +86,24 @@ type CreateOrUpdateProperties struct {
 	Upstream *ServerlessUpstreamSettings `json:"upstream,omitempty"`
 	// NetworkACLs - Network ACLs
 	NetworkACLs *NetworkACLs `json:"networkACLs,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CreateOrUpdateProperties.
+func (coup CreateOrUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if coup.Features != nil {
+		objectMap["features"] = coup.Features
+	}
+	if coup.Cors != nil {
+		objectMap["cors"] = coup.Cors
+	}
+	if coup.Upstream != nil {
+		objectMap["upstream"] = coup.Upstream
+	}
+	if coup.NetworkACLs != nil {
+		objectMap["networkACLs"] = coup.NetworkACLs
+	}
+	return json.Marshal(objectMap)
 }
 
 // DeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
@@ -873,7 +891,7 @@ type Properties struct {
 	Version *string `json:"version,omitempty"`
 	// PrivateEndpointConnections - READ-ONLY; Private endpoint connections to the SignalR resource.
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
-	// HostNamePrefix - Prefix for the hostName of the SignalR service. Retained for future use.
+	// HostNamePrefix - READ-ONLY; Prefix for the hostName of the SignalR service. Retained for future use.
 	// The hostname will be of format: &lt;hostNamePrefix&gt;.service.signalr.net.
 	HostNamePrefix *string `json:"hostNamePrefix,omitempty"`
 	// Features - List of SignalR featureFlags. e.g. ServiceMode.
@@ -894,9 +912,6 @@ type Properties struct {
 // MarshalJSON is the custom marshaler for Properties.
 func (p Properties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if p.HostNamePrefix != nil {
-		objectMap["hostNamePrefix"] = p.HostNamePrefix
-	}
 	if p.Features != nil {
 		objectMap["features"] = p.Features
 	}
@@ -1164,9 +1179,9 @@ type ResourceSku struct {
 	//
 	// `Basic` is deprecated, use `Standard` instead. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'
 	Tier SkuTier `json:"tier,omitempty"`
-	// Size - Optional string. For future use.
+	// Size - READ-ONLY; Not used. Retained for future use.
 	Size *string `json:"size,omitempty"`
-	// Family - Optional string. For future use.
+	// Family - READ-ONLY; Not used. Retained for future use.
 	Family *string `json:"family,omitempty"`
 	// Capacity - Optional, integer. The unit count of SignalR resource. 1 by default.
 	//
@@ -1174,6 +1189,21 @@ type ResourceSku struct {
 	//     Free: 1
 	//     Standard: 1,2,5,10,20,50,100
 	Capacity *int32 `json:"capacity,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ResourceSku.
+func (rs ResourceSku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rs.Name != nil {
+		objectMap["name"] = rs.Name
+	}
+	if rs.Tier != "" {
+		objectMap["tier"] = rs.Tier
+	}
+	if rs.Capacity != nil {
+		objectMap["capacity"] = rs.Capacity
+	}
+	return json.Marshal(objectMap)
 }
 
 // ResourceType a class represent a SignalR service resource.

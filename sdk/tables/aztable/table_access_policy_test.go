@@ -143,11 +143,7 @@ func (s *tableClientLiveTests) TestSetTooManyAccessPolicies() {
 	param := TableSetAccessPolicyOptions{TableACL: signedIdentifiers}
 
 	_, err := client.SetAccessPolicy(ctx, &param)
-	assert.Nil(err, "Set access policy failed")
-
-	// Make a Get to assert two access policies
-	_, err = client.GetAccessPolicy(ctx)
-	assert.NotNil(err)
-	// assert.Nil(err, "Get Access Policy failed")
-	// assert.Equal(len(resp.SignedIdentifiers), 2)
+	assert.NotNil(err, "Set access policy succeeded but should have failed")
+	assert.Contains(err.Error(), "InvalidXmlDocument")
+	// TODO: Should we add post-validation that only 5 access policies can be set at a time?
 }

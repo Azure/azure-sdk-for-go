@@ -141,5 +141,8 @@ func (t *TableClient) GetAccessPolicy(ctx context.Context) (SignedIdentifierArra
 // SetAccessPolicy sets stored access policies for the table that may be used with SharedAccessSignature
 func (t *TableClient) SetAccessPolicy(ctx context.Context, options *TableSetAccessPolicyOptions) (TableSetAccessPolicyResponse, error) {
 	response, err := t.client.SetAccessPolicy(ctx, t.Name, options)
+	if len(*&options.TableACL) > 5 {
+		err = errors.New("You cannot set more than five (5) access policies at a time.")
+	}
 	return response, err
 }

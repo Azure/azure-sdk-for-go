@@ -2,7 +2,7 @@
 version: 1
 interactions:
 - request:
-    body: '{"TableName":"gotable3cdz8jxllhlrx"}'
+    body: '{"TableName":"gotablek44he1q6rgunh"}'
     form: {}
     headers:
       Accept:
@@ -19,29 +19,111 @@ interactions:
       - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
         Windows_NT)
       X-Ms-Date:
-      - Fri, 02 Jul 2021 16:41:27 GMT
+      - Fri, 02 Jul 2021 17:02:53 GMT
       X-Ms-Version:
       - "2019-02-02"
     url: https://seankaneprim.table.core.windows.net/Tables
     method: POST
   response:
-    body: '{"odata.error":{"code":"TableBeingDeleted","message":{"lang":"en-US","value":"The
-      specified table is being deleted. Try operation later.\nRequestId:2c372f12-9002-0035-3f61-6f8461000000\nTime:2021-07-02T16:41:27.9766306Z"}}}'
+    body: '{"odata.metadata":"https://seankaneprim.table.core.windows.net/$metadata#Tables/@Element","TableName":"gotablek44he1q6rgunh"}'
     headers:
       Cache-Control:
       - no-cache
       Content-Type:
       - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
       Date:
-      - Fri, 02 Jul 2021 16:41:27 GMT
+      - Fri, 02 Jul 2021 17:02:53 GMT
+      Location:
+      - https://seankaneprim.table.core.windows.net/Tables('gotablek44he1q6rgunh')
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - 2c372f12-9002-0035-3f61-6f8461000000
+      - 6ae78084-4002-006b-1564-6f6f81000000
       X-Ms-Version:
       - "2019-02-02"
-    status: 409 Conflict
-    code: 409
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: <SignedIdentifiers><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2029-01-01T00:00:00Z</Expiry><Start>2020-01-01T00:00:00Z</Start></AccessPolicy><Id>5</Id></SignedIdentifier><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2029-01-01T00:00:00Z</Expiry><Start>2020-01-01T00:00:00Z</Start></AccessPolicy><Id>5</Id></SignedIdentifier><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2029-01-01T00:00:00Z</Expiry><Start>2020-01-01T00:00:00Z</Start></AccessPolicy><Id>5</Id></SignedIdentifier><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2029-01-01T00:00:00Z</Expiry><Start>2020-01-01T00:00:00Z</Start></AccessPolicy><Id>5</Id></SignedIdentifier><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2029-01-01T00:00:00Z</Expiry><Start>2020-01-01T00:00:00Z</Start></AccessPolicy><Id>5</Id></SignedIdentifier><SignedIdentifier><AccessPolicy><Permission>r</Permission><Expiry>2029-01-01T00:00:00Z</Expiry><Start>2020-01-01T00:00:00Z</Start></AccessPolicy><Id>5</Id></SignedIdentifier></SignedIdentifiers>
+    form: {}
+    headers:
+      Accept:
+      - application/xml
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "1083"
+      Content-Type:
+      - application/xml
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Fri, 02 Jul 2021 17:02:54 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/gotablek44he1q6rgunh?comp=acl
+    method: PUT
+  response:
+    body: |-
+      <?xml version="1.0" encoding="utf-8"?><m:error xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata"><m:code>InvalidXmlDocument</m:code><m:message xml:lang="en-US">XML specified is not syntactically valid.
+      RequestId:6ae780ae-4002-006b-3864-6f6f81000000
+      Time:2021-07-02T17:02:54.4477447Z</m:message></m:error>
+    headers:
+      Content-Length:
+      - "327"
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 02 Jul 2021 17:02:53 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Ms-Error-Code:
+      - InvalidXmlDocument
+      X-Ms-Request-Id:
+      - 6ae780ae-4002-006b-3864-6f6f81000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 400 XML specified is not syntactically valid.
+    code: 400
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Fri, 02 Jul 2021 17:02:54 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.core.windows.net/Tables('gotablek44he1q6rgunh')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Length:
+      - "0"
+      Date:
+      - Fri, 02 Jul 2021 17:02:53 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - 6ae780d7-4002-006b-5f64-6f6f81000000
+      X-Ms-Version:
+      - "2019-02-02"
+    status: 204 No Content
+    code: 204
     duration: ""

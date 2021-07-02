@@ -437,7 +437,7 @@ func (client EnvironmentsClient) ListBySubscriptionResponder(resp *http.Response
 // environmentName - the name of the Time Series Insights environment associated with the specified resource
 // group.
 // environmentUpdateParameters - request object that contains the updated information for the environment.
-func (client EnvironmentsClient) Update(ctx context.Context, resourceGroupName string, environmentName string, environmentUpdateParameters EnvironmentUpdateParameters) (result EnvironmentsUpdateFuture, err error) {
+func (client EnvironmentsClient) Update(ctx context.Context, resourceGroupName string, environmentName string, environmentUpdateParameters BasicEnvironmentUpdateParameters) (result EnvironmentsUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EnvironmentsClient.Update")
 		defer func() {
@@ -464,7 +464,7 @@ func (client EnvironmentsClient) Update(ctx context.Context, resourceGroupName s
 }
 
 // UpdatePreparer prepares the Update request.
-func (client EnvironmentsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, environmentName string, environmentUpdateParameters EnvironmentUpdateParameters) (*http.Request, error) {
+func (client EnvironmentsClient) UpdatePreparer(ctx context.Context, resourceGroupName string, environmentName string, environmentUpdateParameters BasicEnvironmentUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"environmentName":   autorest.Encode("path", environmentName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),

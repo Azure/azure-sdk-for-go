@@ -368,7 +368,7 @@ func (client EventSourcesClient) ListByEnvironmentResponder(resp *http.Response)
 // eventSourceName - the name of the Time Series Insights event source associated with the specified
 // environment.
 // eventSourceUpdateParameters - request object that contains the updated information for the event source.
-func (client EventSourcesClient) Update(ctx context.Context, resourceGroupName string, environmentName string, eventSourceName string, eventSourceUpdateParameters EventSourceUpdateParameters) (result EventSourceResourceModel, err error) {
+func (client EventSourcesClient) Update(ctx context.Context, resourceGroupName string, environmentName string, eventSourceName string, eventSourceUpdateParameters BasicEventSourceUpdateParameters) (result EventSourceResourceModel, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/EventSourcesClient.Update")
 		defer func() {
@@ -402,7 +402,7 @@ func (client EventSourcesClient) Update(ctx context.Context, resourceGroupName s
 }
 
 // UpdatePreparer prepares the Update request.
-func (client EventSourcesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, environmentName string, eventSourceName string, eventSourceUpdateParameters EventSourceUpdateParameters) (*http.Request, error) {
+func (client EventSourcesClient) UpdatePreparer(ctx context.Context, resourceGroupName string, environmentName string, eventSourceName string, eventSourceUpdateParameters BasicEventSourceUpdateParameters) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"environmentName":   autorest.Encode("path", environmentName),
 		"eventSourceName":   autorest.Encode("path", eventSourceName),

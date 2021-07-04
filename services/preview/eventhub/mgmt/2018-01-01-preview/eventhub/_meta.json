@@ -1,5 +1,5 @@
 {
-  "commit": "3c764635e7d442b3e74caf593029fcd440b3ef82",
+  "commit": "dc3adc7b9b95b01d167ac88e8a4603917098f460",
   "readme": "/_/azure-rest-api-specs/specification/eventhub/resource-manager/readme.md",
   "tag": "package-2018-01-preview",
   "use": "@microsoft.azure/autorest.go@2.1.183",

@@ -1677,6 +1677,8 @@ func NewEHNamespaceListResultPage(cur EHNamespaceListResult, getNextPage func(co
 type EHNamespaceProperties struct {
 	// ProvisioningState - READ-ONLY; Provisioning state of the Namespace.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// Status - READ-ONLY; Status of the Namespace.
+	Status *string `json:"status,omitempty"`
 	// CreatedAt - READ-ONLY; The time the Namespace was created.
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
 	// UpdatedAt - READ-ONLY; The time the Namespace was updated.

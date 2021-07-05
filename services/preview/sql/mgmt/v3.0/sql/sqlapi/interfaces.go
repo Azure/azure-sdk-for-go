@@ -807,17 +807,6 @@ type UsagesClientAPI interface {
 
 var _ UsagesClientAPI = (*sql.UsagesClient)(nil)
 
-// PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
-type PrivateEndpointConnectionsClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, parameters sql.PrivateEndpointConnection) (result sql.PrivateEndpointConnectionsCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string) (result sql.PrivateEndpointConnectionsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string) (result sql.PrivateEndpointConnection, err error)
-	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.PrivateEndpointConnectionListResultPage, err error)
-	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.PrivateEndpointConnectionListResultIterator, err error)
-}
-
-var _ PrivateEndpointConnectionsClientAPI = (*sql.PrivateEndpointConnectionsClient)(nil)
-
 // PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
 type PrivateLinkResourcesClientAPI interface {
 	Get(ctx context.Context, resourceGroupName string, serverName string, groupName string) (result sql.PrivateLinkResource, err error)
@@ -961,29 +950,12 @@ type SyncMembersClientAPI interface {
 
 var _ SyncMembersClientAPI = (*sql.SyncMembersClient)(nil)
 
-// ManagedInstancesClientAPI contains the set of methods on the ManagedInstancesClient type.
-type ManagedInstancesClientAPI interface {
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstance) (result sql.ManagedInstancesCreateOrUpdateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstancesDeleteFuture, err error)
-	Failover(ctx context.Context, resourceGroupName string, managedInstanceName string, replicaType sql.ReplicaType) (result sql.ManagedInstancesFailoverFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstance, err error)
-	List(ctx context.Context) (result sql.ManagedInstanceListResultPage, err error)
-	ListComplete(ctx context.Context) (result sql.ManagedInstanceListResultIterator, err error)
-	ListByInstancePool(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.ManagedInstanceListResultPage, err error)
-	ListByInstancePoolComplete(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.ManagedInstanceListResultIterator, err error)
-	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.ManagedInstanceListResultPage, err error)
-	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result sql.ManagedInstanceListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstanceUpdate) (result sql.ManagedInstancesUpdateFuture, err error)
+// ImportExportClientAPI contains the set of methods on the ImportExportClient type.
+type ImportExportClientAPI interface {
+	Import(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.ImportExistingDatabaseDefinition) (result sql.ImportExportImportFuture, err error)
 }
 
-var _ ManagedInstancesClientAPI = (*sql.ManagedInstancesClient)(nil)
-
-// ManagedDatabaseRestoreDetailsClientAPI contains the set of methods on the ManagedDatabaseRestoreDetailsClient type.
-type ManagedDatabaseRestoreDetailsClientAPI interface {
-	Get(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string) (result sql.ManagedDatabaseRestoreDetailsResult, err error)
-}
-
-var _ ManagedDatabaseRestoreDetailsClientAPI = (*sql.ManagedDatabaseRestoreDetailsClient)(nil)
+var _ ImportExportClientAPI = (*sql.ImportExportClient)(nil)
 
 // ManagedDatabasesClientAPI contains the set of methods on the ManagedDatabasesClient type.
 type ManagedDatabasesClientAPI interface {
@@ -1011,12 +983,24 @@ type ServerAzureADOnlyAuthenticationsClientAPI interface {
 
 var _ ServerAzureADOnlyAuthenticationsClientAPI = (*sql.ServerAzureADOnlyAuthenticationsClient)(nil)
 
-// ImportExportClientAPI contains the set of methods on the ImportExportClient type.
-type ImportExportClientAPI interface {
-	Import(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters sql.ImportExistingDatabaseDefinition) (result sql.ImportExportImportFuture, err error)
+// ManagedInstancesClientAPI contains the set of methods on the ManagedInstancesClient type.
+type ManagedInstancesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstance) (result sql.ManagedInstancesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstancesDeleteFuture, err error)
+	Failover(ctx context.Context, resourceGroupName string, managedInstanceName string, replicaType sql.ReplicaType) (result sql.ManagedInstancesFailoverFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, managedInstanceName string) (result sql.ManagedInstance, err error)
+	List(ctx context.Context) (result sql.ManagedInstanceListResultPage, err error)
+	ListComplete(ctx context.Context) (result sql.ManagedInstanceListResultIterator, err error)
+	ListByInstancePool(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.ManagedInstanceListResultPage, err error)
+	ListByInstancePoolComplete(ctx context.Context, resourceGroupName string, instancePoolName string) (result sql.ManagedInstanceListResultIterator, err error)
+	ListByManagedInstance(ctx context.Context, resourceGroupName string, managedInstanceName string, numberOfQueries *int32, databases string, startTime string, endTime string, interval sql.QueryTimeGrainType, aggregationFunction sql.AggregationFunctionType, observationMetric sql.MetricType) (result sql.TopQueriesListResultPage, err error)
+	ListByManagedInstanceComplete(ctx context.Context, resourceGroupName string, managedInstanceName string, numberOfQueries *int32, databases string, startTime string, endTime string, interval sql.QueryTimeGrainType, aggregationFunction sql.AggregationFunctionType, observationMetric sql.MetricType) (result sql.TopQueriesListResultIterator, err error)
+	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result sql.ManagedInstanceListResultPage, err error)
+	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result sql.ManagedInstanceListResultIterator, err error)
+	Update(ctx context.Context, resourceGroupName string, managedInstanceName string, parameters sql.ManagedInstanceUpdate) (result sql.ManagedInstancesUpdateFuture, err error)
 }
 
-var _ ImportExportClientAPI = (*sql.ImportExportClient)(nil)
+var _ ManagedInstancesClientAPI = (*sql.ManagedInstancesClient)(nil)
 
 // ManagedInstanceAzureADOnlyAuthenticationsClientAPI contains the set of methods on the ManagedInstanceAzureADOnlyAuthenticationsClient type.
 type ManagedInstanceAzureADOnlyAuthenticationsClientAPI interface {
@@ -1041,3 +1025,14 @@ type ServerTrustGroupsClientAPI interface {
 }
 
 var _ ServerTrustGroupsClientAPI = (*sql.ServerTrustGroupsClient)(nil)
+
+// PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
+type PrivateEndpointConnectionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string, parameters sql.PrivateEndpointConnection) (result sql.PrivateEndpointConnectionsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string) (result sql.PrivateEndpointConnectionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, serverName string, privateEndpointConnectionName string) (result sql.PrivateEndpointConnection, err error)
+	ListByServer(ctx context.Context, resourceGroupName string, serverName string) (result sql.PrivateEndpointConnectionListResultPage, err error)
+	ListByServerComplete(ctx context.Context, resourceGroupName string, serverName string) (result sql.PrivateEndpointConnectionListResultIterator, err error)
+}
+
+var _ PrivateEndpointConnectionsClientAPI = (*sql.PrivateEndpointConnectionsClient)(nil)

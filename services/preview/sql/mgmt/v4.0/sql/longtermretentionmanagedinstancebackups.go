@@ -369,7 +369,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) GetByResourceGroupRe
 // databaseName - the name of the managed database.
 // onlyLatestPerDatabase - whether or not to only get the latest backup for each database.
 // databaseState - whether to query against just live databases, just deleted databases, or all databases.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByDatabase(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState1) (result ManagedInstanceLongTermRetentionBackupListResultPage, err error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByDatabase(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result ManagedInstanceLongTermRetentionBackupListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionManagedInstanceBackupsClient.ListByDatabase")
 		defer func() {
@@ -408,7 +408,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) ListByDatabase(ctx c
 }
 
 // ListByDatabasePreparer prepares the ListByDatabase request.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByDatabasePreparer(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState1) (*http.Request, error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByDatabasePreparer(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"databaseName":        autorest.Encode("path", databaseName),
 		"locationName":        autorest.Encode("path", locationName),
@@ -475,7 +475,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) listByDatabaseNextRe
 }
 
 // ListByDatabaseComplete enumerates all values, automatically crossing page boundaries as required.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByDatabaseComplete(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState1) (result ManagedInstanceLongTermRetentionBackupListResultIterator, err error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByDatabaseComplete(ctx context.Context, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result ManagedInstanceLongTermRetentionBackupListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionManagedInstanceBackupsClient.ListByDatabase")
 		defer func() {
@@ -496,7 +496,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) ListByDatabaseComple
 // managedInstanceName - the name of the managed instance.
 // onlyLatestPerDatabase - whether or not to only get the latest backup for each database.
 // databaseState - whether to query against just live databases, just deleted databases, or all databases.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByInstance(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState DatabaseState2) (result ManagedInstanceLongTermRetentionBackupListResultPage, err error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByInstance(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result ManagedInstanceLongTermRetentionBackupListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionManagedInstanceBackupsClient.ListByInstance")
 		defer func() {
@@ -535,7 +535,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) ListByInstance(ctx c
 }
 
 // ListByInstancePreparer prepares the ListByInstance request.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByInstancePreparer(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState DatabaseState2) (*http.Request, error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByInstancePreparer(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"locationName":        autorest.Encode("path", locationName),
 		"managedInstanceName": autorest.Encode("path", managedInstanceName),
@@ -601,7 +601,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) listByInstanceNextRe
 }
 
 // ListByInstanceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByInstanceComplete(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState DatabaseState2) (result ManagedInstanceLongTermRetentionBackupListResultIterator, err error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByInstanceComplete(ctx context.Context, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result ManagedInstanceLongTermRetentionBackupListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionManagedInstanceBackupsClient.ListByInstance")
 		defer func() {
@@ -621,7 +621,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) ListByInstanceComple
 // locationName - the location of the database.
 // onlyLatestPerDatabase - whether or not to only get the latest backup for each database.
 // databaseState - whether to query against just live databases, just deleted databases, or all databases.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByLocation(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState3) (result ManagedInstanceLongTermRetentionBackupListResultPage, err error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByLocation(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result ManagedInstanceLongTermRetentionBackupListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionManagedInstanceBackupsClient.ListByLocation")
 		defer func() {
@@ -660,7 +660,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) ListByLocation(ctx c
 }
 
 // ListByLocationPreparer prepares the ListByLocation request.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByLocationPreparer(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState3) (*http.Request, error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByLocationPreparer(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"locationName":   autorest.Encode("path", locationName),
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
@@ -725,7 +725,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) listByLocationNextRe
 }
 
 // ListByLocationComplete enumerates all values, automatically crossing page boundaries as required.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByLocationComplete(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState3) (result ManagedInstanceLongTermRetentionBackupListResultIterator, err error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByLocationComplete(ctx context.Context, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result ManagedInstanceLongTermRetentionBackupListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionManagedInstanceBackupsClient.ListByLocation")
 		defer func() {
@@ -749,7 +749,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) ListByLocationComple
 // databaseName - the name of the managed database.
 // onlyLatestPerDatabase - whether or not to only get the latest backup for each database.
 // databaseState - whether to query against just live databases, just deleted databases, or all databases.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupDatabase(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState4) (result ManagedInstanceLongTermRetentionBackupListResultPage, err error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupDatabase(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result ManagedInstanceLongTermRetentionBackupListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupDatabase")
 		defer func() {
@@ -788,7 +788,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupD
 }
 
 // ListByResourceGroupDatabasePreparer prepares the ListByResourceGroupDatabase request.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupDatabasePreparer(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState4) (*http.Request, error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupDatabasePreparer(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"databaseName":        autorest.Encode("path", databaseName),
 		"locationName":        autorest.Encode("path", locationName),
@@ -856,7 +856,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupD
 }
 
 // ListByResourceGroupDatabaseComplete enumerates all values, automatically crossing page boundaries as required.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupDatabaseComplete(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState4) (result ManagedInstanceLongTermRetentionBackupListResultIterator, err error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupDatabaseComplete(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result ManagedInstanceLongTermRetentionBackupListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupDatabase")
 		defer func() {
@@ -879,7 +879,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupD
 // managedInstanceName - the name of the managed instance.
 // onlyLatestPerDatabase - whether or not to only get the latest backup for each database.
 // databaseState - whether to query against just live databases, just deleted databases, or all databases.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupInstance(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState DatabaseState5) (result ManagedInstanceLongTermRetentionBackupListResultPage, err error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupInstance(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result ManagedInstanceLongTermRetentionBackupListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupInstance")
 		defer func() {
@@ -918,7 +918,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupI
 }
 
 // ListByResourceGroupInstancePreparer prepares the ListByResourceGroupInstance request.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupInstancePreparer(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState DatabaseState5) (*http.Request, error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupInstancePreparer(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"locationName":        autorest.Encode("path", locationName),
 		"managedInstanceName": autorest.Encode("path", managedInstanceName),
@@ -985,7 +985,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupI
 }
 
 // ListByResourceGroupInstanceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupInstanceComplete(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState DatabaseState5) (result ManagedInstanceLongTermRetentionBackupListResultIterator, err error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupInstanceComplete(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result ManagedInstanceLongTermRetentionBackupListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupInstance")
 		defer func() {
@@ -1007,7 +1007,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupI
 // locationName - the location of the database.
 // onlyLatestPerDatabase - whether or not to only get the latest backup for each database.
 // databaseState - whether to query against just live databases, just deleted databases, or all databases.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupLocation(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState6) (result ManagedInstanceLongTermRetentionBackupListResultPage, err error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupLocation(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result ManagedInstanceLongTermRetentionBackupListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupLocation")
 		defer func() {
@@ -1046,7 +1046,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupL
 }
 
 // ListByResourceGroupLocationPreparer prepares the ListByResourceGroupLocation request.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupLocationPreparer(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState6) (*http.Request, error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupLocationPreparer(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"locationName":      autorest.Encode("path", locationName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -1112,7 +1112,7 @@ func (client LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupL
 }
 
 // ListByResourceGroupLocationComplete enumerates all values, automatically crossing page boundaries as required.
-func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupLocationComplete(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState6) (result ManagedInstanceLongTermRetentionBackupListResultIterator, err error) {
+func (client LongTermRetentionManagedInstanceBackupsClient) ListByResourceGroupLocationComplete(ctx context.Context, resourceGroupName string, locationName string, onlyLatestPerDatabase *bool, databaseState DatabaseState) (result ManagedInstanceLongTermRetentionBackupListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/LongTermRetentionManagedInstanceBackupsClient.ListByResourceGroupLocation")
 		defer func() {

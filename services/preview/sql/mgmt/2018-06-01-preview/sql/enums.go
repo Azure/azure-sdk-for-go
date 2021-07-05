@@ -42,13 +42,17 @@ func PossibleDatabaseStateValues() []DatabaseState {
 type IdentityType string
 
 const (
+	// None ...
+	None IdentityType = "None"
 	// SystemAssigned ...
 	SystemAssigned IdentityType = "SystemAssigned"
+	// UserAssigned ...
+	UserAssigned IdentityType = "UserAssigned"
 )
 
 // PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
 func PossibleIdentityTypeValues() []IdentityType {
-	return []IdentityType{SystemAssigned}
+	return []IdentityType{None, SystemAssigned, UserAssigned}
 }
 
 // InstancePoolLicenseType enumerates the values for instance pool license type.
@@ -218,21 +222,21 @@ func PossibleSecurityAlertPolicyStateValues() []SecurityAlertPolicyState {
 type SensitivityLabelRank string
 
 const (
-	// Critical ...
-	Critical SensitivityLabelRank = "Critical"
-	// High ...
-	High SensitivityLabelRank = "High"
-	// Low ...
-	Low SensitivityLabelRank = "Low"
-	// Medium ...
-	Medium SensitivityLabelRank = "Medium"
-	// None ...
-	None SensitivityLabelRank = "None"
+	// SensitivityLabelRankCritical ...
+	SensitivityLabelRankCritical SensitivityLabelRank = "Critical"
+	// SensitivityLabelRankHigh ...
+	SensitivityLabelRankHigh SensitivityLabelRank = "High"
+	// SensitivityLabelRankLow ...
+	SensitivityLabelRankLow SensitivityLabelRank = "Low"
+	// SensitivityLabelRankMedium ...
+	SensitivityLabelRankMedium SensitivityLabelRank = "Medium"
+	// SensitivityLabelRankNone ...
+	SensitivityLabelRankNone SensitivityLabelRank = "None"
 )
 
 // PossibleSensitivityLabelRankValues returns an array of possible values for the SensitivityLabelRank const type.
 func PossibleSensitivityLabelRankValues() []SensitivityLabelRank {
-	return []SensitivityLabelRank{Critical, High, Low, Medium, None}
+	return []SensitivityLabelRank{SensitivityLabelRankCritical, SensitivityLabelRankHigh, SensitivityLabelRankLow, SensitivityLabelRankMedium, SensitivityLabelRankNone}
 }
 
 // SensitivityLabelSource enumerates the values for sensitivity label source.

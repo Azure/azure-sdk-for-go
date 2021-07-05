@@ -1,56 +1,40 @@
-# Change History
+# Unreleased
+
+## Breaking Changes
+
+### Removed Constants
+
+1. PrimaryAggregationType.Average
+1. PrimaryAggregationType.Maximum
+1. PrimaryAggregationType.Minimum
+1. PrimaryAggregationType.Total
+1. UnitDefinitionType.UnitDefinitionTypeBytes
+1. UnitDefinitionType.UnitDefinitionTypeBytesPerSecond
+1. UnitDefinitionType.UnitDefinitionTypeCount
+1. UnitDefinitionType.UnitDefinitionTypeCountPerSecond
+1. UnitDefinitionType.UnitDefinitionTypePercent
+1. UnitDefinitionType.UnitDefinitionTypeSeconds
+
+### Signature Changes
+
+#### Const Types
+
+1. Count changed type from PrimaryAggregationType to UnitDefinitionType
+1. None changed type from PrimaryAggregationType to IdentityType
 
 ## Additive Changes
 
-### New Funcs
+### New Constants
 
-1. CheckNameAvailabilityResponse.MarshalJSON() ([]byte, error)
-1. DatabaseBlobAuditingPolicyListResult.MarshalJSON() ([]byte, error)
-1. DatabaseUsage.MarshalJSON() ([]byte, error)
-1. ElasticPoolActivityProperties.MarshalJSON() ([]byte, error)
-1. ElasticPoolDatabaseActivityProperties.MarshalJSON() ([]byte, error)
-1. EncryptionProtectorListResult.MarshalJSON() ([]byte, error)
-1. FailoverGroupListResult.MarshalJSON() ([]byte, error)
-1. ImportExportResponseProperties.MarshalJSON() ([]byte, error)
-1. ManagedInstanceListResult.MarshalJSON() ([]byte, error)
-1. Metric.MarshalJSON() ([]byte, error)
-1. MetricAvailability.MarshalJSON() ([]byte, error)
-1. MetricDefinition.MarshalJSON() ([]byte, error)
-1. MetricName.MarshalJSON() ([]byte, error)
-1. MetricValue.MarshalJSON() ([]byte, error)
-1. OperationDisplay.MarshalJSON() ([]byte, error)
-1. OperationImpact.MarshalJSON() ([]byte, error)
-1. OperationListResult.MarshalJSON() ([]byte, error)
-1. PerformanceLevelCapability.MarshalJSON() ([]byte, error)
-1. ProxyResource.MarshalJSON() ([]byte, error)
-1. RecommendedIndexProperties.MarshalJSON() ([]byte, error)
-1. RecoverableDatabaseProperties.MarshalJSON() ([]byte, error)
-1. ReplicationLinkProperties.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
-1. RestorableDroppedDatabaseProperties.MarshalJSON() ([]byte, error)
-1. RestorePointProperties.MarshalJSON() ([]byte, error)
-1. ServerKeyListResult.MarshalJSON() ([]byte, error)
-1. ServerListResult.MarshalJSON() ([]byte, error)
-1. ServerUsage.MarshalJSON() ([]byte, error)
-1. ServiceObjectiveProperties.MarshalJSON() ([]byte, error)
-1. ServiceTierAdvisorProperties.MarshalJSON() ([]byte, error)
-1. SloUsageMetric.MarshalJSON() ([]byte, error)
-1. SubscriptionUsageListResult.MarshalJSON() ([]byte, error)
-1. SubscriptionUsageProperties.MarshalJSON() ([]byte, error)
-1. SyncAgentKeyProperties.MarshalJSON() ([]byte, error)
-1. SyncAgentLinkedDatabaseListResult.MarshalJSON() ([]byte, error)
-1. SyncAgentLinkedDatabaseProperties.MarshalJSON() ([]byte, error)
-1. SyncAgentListResult.MarshalJSON() ([]byte, error)
-1. SyncDatabaseIDListResult.MarshalJSON() ([]byte, error)
-1. SyncDatabaseIDProperties.MarshalJSON() ([]byte, error)
-1. SyncFullSchemaProperties.MarshalJSON() ([]byte, error)
-1. SyncFullSchemaPropertiesListResult.MarshalJSON() ([]byte, error)
-1. SyncFullSchemaTable.MarshalJSON() ([]byte, error)
-1. SyncFullSchemaTableColumn.MarshalJSON() ([]byte, error)
-1. SyncGroupListResult.MarshalJSON() ([]byte, error)
-1. SyncGroupLogListResult.MarshalJSON() ([]byte, error)
-1. SyncGroupLogProperties.MarshalJSON() ([]byte, error)
-1. SyncMemberListResult.MarshalJSON() ([]byte, error)
-1. TransparentDataEncryptionActivityProperties.MarshalJSON() ([]byte, error)
-1. VirtualClusterListResult.MarshalJSON() ([]byte, error)
-1. VirtualNetworkRuleListResult.MarshalJSON() ([]byte, error)
+1. IdentityType.UserAssigned
+1. PrimaryAggregationType.PrimaryAggregationTypeAverage
+1. PrimaryAggregationType.PrimaryAggregationTypeCount
+1. PrimaryAggregationType.PrimaryAggregationTypeMaximum
+1. PrimaryAggregationType.PrimaryAggregationTypeMinimum
+1. PrimaryAggregationType.PrimaryAggregationTypeNone
+1. PrimaryAggregationType.PrimaryAggregationTypeTotal
+1. UnitDefinitionType.Bytes
+1. UnitDefinitionType.BytesPerSecond
+1. UnitDefinitionType.CountPerSecond
+1. UnitDefinitionType.Percent
+1. UnitDefinitionType.Seconds

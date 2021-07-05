@@ -34,15 +34,3 @@ type HanaInstancesClientAPI interface {
 }
 
 var _ HanaInstancesClientAPI = (*hanaonazure.HanaInstancesClient)(nil)
-
-// SapMonitorsClientAPI contains the set of methods on the SapMonitorsClient type.
-type SapMonitorsClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, sapMonitorName string, sapMonitorParameter hanaonazure.SapMonitor) (result hanaonazure.SapMonitorsCreateFuture, err error)
-	Delete(ctx context.Context, resourceGroupName string, sapMonitorName string) (result hanaonazure.SapMonitorsDeleteFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, sapMonitorName string) (result hanaonazure.SapMonitor, err error)
-	List(ctx context.Context) (result hanaonazure.SapMonitorListResultPage, err error)
-	ListComplete(ctx context.Context) (result hanaonazure.SapMonitorListResultIterator, err error)
-	Update(ctx context.Context, resourceGroupName string, sapMonitorName string, tagsParameter hanaonazure.Tags) (result hanaonazure.SapMonitor, err error)
-}
-
-var _ SapMonitorsClientAPI = (*hanaonazure.SapMonitorsClient)(nil)

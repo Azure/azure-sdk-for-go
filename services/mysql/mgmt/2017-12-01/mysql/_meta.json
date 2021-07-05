@@ -1,5 +1,5 @@
 {
-  "commit": "3c764635e7d442b3e74caf593029fcd440b3ef82",
+  "commit": "cc7cdac8bd2a1f69f5e219f43039c8647c77a3bf",
   "readme": "/_/azure-rest-api-specs/specification/mysql/resource-manager/readme.md",
   "tag": "package-2017-12-01",
   "use": "@microsoft.azure/autorest.go@2.1.183",

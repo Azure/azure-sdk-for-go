@@ -1,22 +1,29 @@
-# Change History
+# Unreleased
 
 ## Additive Changes
 
 ### New Funcs
 
-1. AzureEntityResource.MarshalJSON() ([]byte, error)
-1. CapabilitiesListResult.MarshalJSON() ([]byte, error)
-1. CapabilityProperties.MarshalJSON() ([]byte, error)
-1. DelegatedSubnetUsage.MarshalJSON() ([]byte, error)
-1. ErrorAdditionalInfo.MarshalJSON() ([]byte, error)
-1. ErrorResponse.MarshalJSON() ([]byte, error)
-1. OperationDisplay.MarshalJSON() ([]byte, error)
-1. ProxyResource.MarshalJSON() ([]byte, error)
-1. Resource.MarshalJSON() ([]byte, error)
-1. ServerEditionCapability.MarshalJSON() ([]byte, error)
-1. ServerKeyListResult.MarshalJSON() ([]byte, error)
-1. ServerVersionCapability.MarshalJSON() ([]byte, error)
-1. StorageEditionCapability.MarshalJSON() ([]byte, error)
-1. StorageMBCapability.MarshalJSON() ([]byte, error)
-1. VcoreCapability.MarshalJSON() ([]byte, error)
-1. VirtualNetworkSubnetUsageResult.MarshalJSON() ([]byte, error)
+1. *ConfigurationsBatchUpdateFuture.UnmarshalJSON([]byte) error
+1. ConfigurationsClient.BatchUpdate(context.Context, string, string, ConfigurationListResult) (ConfigurationsBatchUpdateFuture, error)
+1. ConfigurationsClient.BatchUpdatePreparer(context.Context, string, string, ConfigurationListResult) (*http.Request, error)
+1. ConfigurationsClient.BatchUpdateResponder(*http.Response) (ConfigurationListResult, error)
+1. ConfigurationsClient.BatchUpdateSender(*http.Request) (ConfigurationsBatchUpdateFuture, error)
+1. StorageProfile.MarshalJSON() ([]byte, error)
+
+### Struct Changes
+
+#### New Structs
+
+1. ConfigurationsBatchUpdateFuture
+1. PrivateDNSZoneArguments
+
+#### New Struct Fields
+
+1. CapabilityProperties.Status
+1. ServerEditionCapability.Status
+1. ServerProperties.PrivateDNSZoneArguments
+1. ServerVersionCapability.Status
+1. StorageEditionCapability.Status
+1. StorageProfile.FileStorageSkuName
+1. VcoreCapability.Status

@@ -33,6 +33,96 @@ func NewConfigurationsClientWithBaseURI(baseURI string, subscriptionID string) C
 	return ConfigurationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
+// BatchUpdate update a list of configurations in a given server.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// serverName - the name of the server.
+// value - the parameters for updating a list of server configuration.
+func (client ConfigurationsClient) BatchUpdate(ctx context.Context, resourceGroupName string, serverName string, value ConfigurationListResult) (result ConfigurationsBatchUpdateFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConfigurationsClient.BatchUpdate")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("mysqlflexibleservers.ConfigurationsClient", "BatchUpdate", err.Error())
+	}
+
+	req, err := client.BatchUpdatePreparer(ctx, resourceGroupName, serverName, value)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ConfigurationsClient", "BatchUpdate", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.BatchUpdateSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "mysqlflexibleservers.ConfigurationsClient", "BatchUpdate", nil, "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// BatchUpdatePreparer prepares the BatchUpdate request.
+func (client ConfigurationsClient) BatchUpdatePreparer(ctx context.Context, resourceGroupName string, serverName string, value ConfigurationListResult) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"serverName":        autorest.Encode("path", serverName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-07-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForMySql/flexibleServers/{serverName}/updateConfigurations", pathParameters),
+		autorest.WithJSON(value),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// BatchUpdateSender sends the BatchUpdate request. The method will close the
+// http.Response Body if it receives an error.
+func (client ConfigurationsClient) BatchUpdateSender(req *http.Request) (future ConfigurationsBatchUpdateFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// BatchUpdateResponder handles the response to the BatchUpdate request. The method always
+// closes the http.Response Body.
+func (client ConfigurationsClient) BatchUpdateResponder(resp *http.Response) (result ConfigurationListResult, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
 // Get gets information about a configuration of server.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -54,8 +144,7 @@ func (client ConfigurationsClient) Get(ctx context.Context, resourceGroupName st
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("mysqlflexibleservers.ConfigurationsClient", "Get", err.Error())
 	}
 
@@ -141,8 +230,7 @@ func (client ConfigurationsClient) ListByServer(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("mysqlflexibleservers.ConfigurationsClient", "ListByServer", err.Error())
 	}
 
@@ -271,8 +359,7 @@ func (client ConfigurationsClient) Update(ctx context.Context, resourceGroupName
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("mysqlflexibleservers.ConfigurationsClient", "Update", err.Error())
 	}
 

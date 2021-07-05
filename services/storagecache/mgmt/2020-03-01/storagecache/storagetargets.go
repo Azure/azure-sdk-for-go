@@ -212,13 +212,12 @@ func (client StorageTargetsClient) DeleteSender(req *http.Request) (future Stora
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client StorageTargetsClient) DeleteResponder(resp *http.Response) (result SetObject, err error) {
+func (client StorageTargetsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
-	result.Response = autorest.Response{Response: resp}
+	result.Response = resp
 	return
 }
 

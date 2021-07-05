@@ -15,31 +15,31 @@ import (
 	"net/http"
 )
 
-// AuthorizationsClient is the azure VMware Solution API
-type AuthorizationsClient struct {
+// CloudLinksClient is the azure VMware Solution API
+type CloudLinksClient struct {
 	BaseClient
 }
 
-// NewAuthorizationsClient creates an instance of the AuthorizationsClient client.
-func NewAuthorizationsClient(subscriptionID string) AuthorizationsClient {
-	return NewAuthorizationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewCloudLinksClient creates an instance of the CloudLinksClient client.
+func NewCloudLinksClient(subscriptionID string) CloudLinksClient {
+	return NewCloudLinksClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAuthorizationsClientWithBaseURI creates an instance of the AuthorizationsClient client using a custom endpoint.
-// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewAuthorizationsClientWithBaseURI(baseURI string, subscriptionID string) AuthorizationsClient {
-	return AuthorizationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewCloudLinksClientWithBaseURI creates an instance of the CloudLinksClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewCloudLinksClientWithBaseURI(baseURI string, subscriptionID string) CloudLinksClient {
+	return CloudLinksClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate sends the create or update request.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // privateCloudName - the name of the private cloud.
-// authorizationName - name of the ExpressRoute Circuit Authorization in the private cloud
-// authorization - an ExpressRoute Circuit Authorization
-func (client AuthorizationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, authorization ExpressRouteAuthorization) (result AuthorizationsCreateOrUpdateFuture, err error) {
+// cloudLinkName - name of the cloud link resource
+// cloudLink - a cloud link in the private cloud
+func (client CloudLinksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string, cloudLink CloudLink) (result CloudLinksCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AuthorizationsClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudLinksClient.CreateOrUpdate")
 		defer func() {
 			sc := -1
 			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
@@ -54,18 +54,18 @@ func (client AuthorizationsClient) CreateOrUpdate(ctx context.Context, resourceG
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("avs.AuthorizationsClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("avs.CloudLinksClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, privateCloudName, authorizationName, authorization)
+	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, privateCloudName, cloudLinkName, cloudLink)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "avs.CloudLinksClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.CloudLinksClient", "CreateOrUpdate", nil, "Failure sending request")
 		return
 	}
 
@@ -73,33 +73,32 @@ func (client AuthorizationsClient) CreateOrUpdate(ctx context.Context, resourceG
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AuthorizationsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, authorization ExpressRouteAuthorization) (*http.Request, error) {
+func (client CloudLinksClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string, cloudLink CloudLink) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"authorizationName": autorest.Encode("path", authorizationName),
+		"cloudLinkName":     autorest.Encode("path", cloudLinkName),
 		"privateCloudName":  autorest.Encode("path", privateCloudName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
-	authorization.ExpressRouteAuthorizationProperties = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}", pathParameters),
-		autorest.WithJSON(authorization),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/cloudLinks/{cloudLinkName}", pathParameters),
+		autorest.WithJSON(cloudLink),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
 // http.Response Body if it receives an error.
-func (client AuthorizationsClient) CreateOrUpdateSender(req *http.Request) (future AuthorizationsCreateOrUpdateFuture, err error) {
+func (client CloudLinksClient) CreateOrUpdateSender(req *http.Request) (future CloudLinksCreateOrUpdateFuture, err error) {
 	var resp *http.Response
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
@@ -114,7 +113,7 @@ func (client AuthorizationsClient) CreateOrUpdateSender(req *http.Request) (futu
 
 // CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
 // closes the http.Response Body.
-func (client AuthorizationsClient) CreateOrUpdateResponder(resp *http.Response) (result ExpressRouteAuthorization, err error) {
+func (client CloudLinksClient) CreateOrUpdateResponder(resp *http.Response) (result CloudLink, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -128,10 +127,10 @@ func (client AuthorizationsClient) CreateOrUpdateResponder(resp *http.Response) 
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // privateCloudName - name of the private cloud
-// authorizationName - name of the ExpressRoute Circuit Authorization in the private cloud
-func (client AuthorizationsClient) Delete(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string) (result AuthorizationsDeleteFuture, err error) {
+// cloudLinkName - name of the cloud link resource
+func (client CloudLinksClient) Delete(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string) (result CloudLinksDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AuthorizationsClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudLinksClient.Delete")
 		defer func() {
 			sc := -1
 			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
@@ -146,18 +145,18 @@ func (client AuthorizationsClient) Delete(ctx context.Context, resourceGroupName
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("avs.AuthorizationsClient", "Delete", err.Error())
+		return result, validation.NewError("avs.CloudLinksClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, privateCloudName, authorizationName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, privateCloudName, cloudLinkName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "avs.CloudLinksClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.CloudLinksClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -165,15 +164,15 @@ func (client AuthorizationsClient) Delete(ctx context.Context, resourceGroupName
 }
 
 // DeletePreparer prepares the Delete request.
-func (client AuthorizationsClient) DeletePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string) (*http.Request, error) {
+func (client CloudLinksClient) DeletePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"authorizationName": autorest.Encode("path", authorizationName),
+		"cloudLinkName":     autorest.Encode("path", cloudLinkName),
 		"privateCloudName":  autorest.Encode("path", privateCloudName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -181,14 +180,14 @@ func (client AuthorizationsClient) DeletePreparer(ctx context.Context, resourceG
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/cloudLinks/{cloudLinkName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client AuthorizationsClient) DeleteSender(req *http.Request) (future AuthorizationsDeleteFuture, err error) {
+func (client CloudLinksClient) DeleteSender(req *http.Request) (future CloudLinksDeleteFuture, err error) {
 	var resp *http.Response
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
@@ -203,7 +202,7 @@ func (client AuthorizationsClient) DeleteSender(req *http.Request) (future Autho
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client AuthorizationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client CloudLinksClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
@@ -216,10 +215,10 @@ func (client AuthorizationsClient) DeleteResponder(resp *http.Response) (result 
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // privateCloudName - name of the private cloud
-// authorizationName - name of the ExpressRoute Circuit Authorization in the private cloud
-func (client AuthorizationsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string) (result ExpressRouteAuthorization, err error) {
+// cloudLinkName - name of the cloud link resource
+func (client CloudLinksClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string) (result CloudLink, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AuthorizationsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudLinksClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -234,25 +233,25 @@ func (client AuthorizationsClient) Get(ctx context.Context, resourceGroupName st
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("avs.AuthorizationsClient", "Get", err.Error())
+		return result, validation.NewError("avs.CloudLinksClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, privateCloudName, authorizationName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, privateCloudName, cloudLinkName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "avs.CloudLinksClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.CloudLinksClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "avs.CloudLinksClient", "Get", resp, "Failure responding to request")
 		return
 	}
 
@@ -260,15 +259,15 @@ func (client AuthorizationsClient) Get(ctx context.Context, resourceGroupName st
 }
 
 // GetPreparer prepares the Get request.
-func (client AuthorizationsClient) GetPreparer(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string) (*http.Request, error) {
+func (client CloudLinksClient) GetPreparer(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"authorizationName": autorest.Encode("path", authorizationName),
+		"cloudLinkName":     autorest.Encode("path", cloudLinkName),
 		"privateCloudName":  autorest.Encode("path", privateCloudName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -276,20 +275,20 @@ func (client AuthorizationsClient) GetPreparer(ctx context.Context, resourceGrou
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/cloudLinks/{cloudLinkName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client AuthorizationsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client CloudLinksClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AuthorizationsClient) GetResponder(resp *http.Response) (result ExpressRouteAuthorization, err error) {
+func (client CloudLinksClient) GetResponder(resp *http.Response) (result CloudLink, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -303,13 +302,13 @@ func (client AuthorizationsClient) GetResponder(resp *http.Response) (result Exp
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // privateCloudName - name of the private cloud
-func (client AuthorizationsClient) List(ctx context.Context, resourceGroupName string, privateCloudName string) (result ExpressRouteAuthorizationListPage, err error) {
+func (client CloudLinksClient) List(ctx context.Context, resourceGroupName string, privateCloudName string) (result CloudLinkListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AuthorizationsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudLinksClient.List")
 		defer func() {
 			sc := -1
-			if result.eral.Response.Response != nil {
-				sc = result.eral.Response.Response.StatusCode
+			if result.cll.Response.Response != nil {
+				sc = result.cll.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -320,29 +319,29 @@ func (client AuthorizationsClient) List(ctx context.Context, resourceGroupName s
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("avs.AuthorizationsClient", "List", err.Error())
+		return result, validation.NewError("avs.CloudLinksClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, privateCloudName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "avs.CloudLinksClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.eral.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "List", resp, "Failure sending request")
+		result.cll.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "avs.CloudLinksClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.eral, err = client.ListResponder(resp)
+	result.cll, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "avs.CloudLinksClient", "List", resp, "Failure responding to request")
 		return
 	}
-	if result.eral.hasNextLink() && result.eral.IsEmpty() {
+	if result.cll.hasNextLink() && result.cll.IsEmpty() {
 		err = result.NextWithContext(ctx)
 		return
 	}
@@ -351,14 +350,14 @@ func (client AuthorizationsClient) List(ctx context.Context, resourceGroupName s
 }
 
 // ListPreparer prepares the List request.
-func (client AuthorizationsClient) ListPreparer(ctx context.Context, resourceGroupName string, privateCloudName string) (*http.Request, error) {
+func (client CloudLinksClient) ListPreparer(ctx context.Context, resourceGroupName string, privateCloudName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"privateCloudName":  autorest.Encode("path", privateCloudName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -366,20 +365,20 @@ func (client AuthorizationsClient) ListPreparer(ctx context.Context, resourceGro
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/cloudLinks", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client AuthorizationsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client CloudLinksClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AuthorizationsClient) ListResponder(resp *http.Response) (result ExpressRouteAuthorizationList, err error) {
+func (client CloudLinksClient) ListResponder(resp *http.Response) (result CloudLinkList, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -390,10 +389,10 @@ func (client AuthorizationsClient) ListResponder(resp *http.Response) (result Ex
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client AuthorizationsClient) listNextResults(ctx context.Context, lastResults ExpressRouteAuthorizationList) (result ExpressRouteAuthorizationList, err error) {
-	req, err := lastResults.expressRouteAuthorizationListPreparer(ctx)
+func (client CloudLinksClient) listNextResults(ctx context.Context, lastResults CloudLinkList) (result CloudLinkList, err error) {
+	req, err := lastResults.cloudLinkListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "avs.CloudLinksClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -401,19 +400,19 @@ func (client AuthorizationsClient) listNextResults(ctx context.Context, lastResu
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "avs.CloudLinksClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "avs.CloudLinksClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AuthorizationsClient) ListComplete(ctx context.Context, resourceGroupName string, privateCloudName string) (result ExpressRouteAuthorizationListIterator, err error) {
+func (client CloudLinksClient) ListComplete(ctx context.Context, resourceGroupName string, privateCloudName string) (result CloudLinkListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AuthorizationsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudLinksClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {

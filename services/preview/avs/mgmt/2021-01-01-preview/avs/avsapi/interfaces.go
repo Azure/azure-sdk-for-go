@@ -8,7 +8,7 @@ package avsapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/avs/mgmt/2020-07-17-preview/avs"
+	"github.com/Azure/azure-sdk-for-go/services/preview/avs/mgmt/2021-01-01-preview/avs"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -56,6 +56,17 @@ type ClustersClientAPI interface {
 }
 
 var _ ClustersClientAPI = (*avs.ClustersClient)(nil)
+
+// DatastoresClientAPI contains the set of methods on the DatastoresClient type.
+type DatastoresClientAPI interface {
+	Create(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore avs.Datastore) (result avs.DatastoresCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string) (result avs.DatastoresDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string) (result avs.Datastore, err error)
+	List(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string) (result avs.DatastoreListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string) (result avs.DatastoreListIterator, err error)
+}
+
+var _ DatastoresClientAPI = (*avs.DatastoresClient)(nil)
 
 // HcxEnterpriseSitesClientAPI contains the set of methods on the HcxEnterpriseSitesClient type.
 type HcxEnterpriseSitesClientAPI interface {

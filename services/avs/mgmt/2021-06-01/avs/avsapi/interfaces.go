@@ -8,7 +8,7 @@ package avsapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/avs/mgmt/2020-07-17-preview/avs"
+	"github.com/Azure/azure-sdk-for-go/services/avs/mgmt/2021-06-01/avs"
 	"github.com/Azure/go-autorest/autorest"
 )
 
@@ -57,6 +57,17 @@ type ClustersClientAPI interface {
 
 var _ ClustersClientAPI = (*avs.ClustersClient)(nil)
 
+// DatastoresClientAPI contains the set of methods on the DatastoresClient type.
+type DatastoresClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore avs.Datastore) (result avs.DatastoresCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string) (result avs.DatastoresDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string) (result avs.Datastore, err error)
+	List(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string) (result avs.DatastoreListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string) (result avs.DatastoreListIterator, err error)
+}
+
+var _ DatastoresClientAPI = (*avs.DatastoresClient)(nil)
+
 // HcxEnterpriseSitesClientAPI contains the set of methods on the HcxEnterpriseSitesClient type.
 type HcxEnterpriseSitesClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, hcxEnterpriseSiteName string, hcxEnterpriseSite avs.HcxEnterpriseSite) (result avs.HcxEnterpriseSite, err error)
@@ -96,12 +107,14 @@ type WorkloadNetworksClientAPI interface {
 	CreateDNSService(ctx context.Context, resourceGroupName string, privateCloudName string, DNSServiceID string, workloadNetworkDNSService avs.WorkloadNetworkDNSService) (result avs.WorkloadNetworksCreateDNSServiceFuture, err error)
 	CreateDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, DNSZoneID string, workloadNetworkDNSZone avs.WorkloadNetworkDNSZone) (result avs.WorkloadNetworksCreateDNSZoneFuture, err error)
 	CreatePortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string, workloadNetworkPortMirroring avs.WorkloadNetworkPortMirroring) (result avs.WorkloadNetworksCreatePortMirroringFuture, err error)
+	CreatePublicIP(ctx context.Context, resourceGroupName string, privateCloudName string, publicIPID string, workloadNetworkPublicIP avs.WorkloadNetworkPublicIP) (result avs.WorkloadNetworksCreatePublicIPFuture, err error)
 	CreateSegments(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string, workloadNetworkSegment avs.WorkloadNetworkSegment) (result avs.WorkloadNetworksCreateSegmentsFuture, err error)
 	CreateVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, VMGroupID string, workloadNetworkVMGroup avs.WorkloadNetworkVMGroup) (result avs.WorkloadNetworksCreateVMGroupFuture, err error)
 	DeleteDhcp(ctx context.Context, resourceGroupName string, privateCloudName string, dhcpID string) (result avs.WorkloadNetworksDeleteDhcpFuture, err error)
 	DeleteDNSService(ctx context.Context, resourceGroupName string, DNSServiceID string, privateCloudName string) (result avs.WorkloadNetworksDeleteDNSServiceFuture, err error)
 	DeleteDNSZone(ctx context.Context, resourceGroupName string, DNSZoneID string, privateCloudName string) (result avs.WorkloadNetworksDeleteDNSZoneFuture, err error)
 	DeletePortMirroring(ctx context.Context, resourceGroupName string, portMirroringID string, privateCloudName string) (result avs.WorkloadNetworksDeletePortMirroringFuture, err error)
+	DeletePublicIP(ctx context.Context, resourceGroupName string, publicIPID string, privateCloudName string) (result avs.WorkloadNetworksDeletePublicIPFuture, err error)
 	DeleteSegment(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string) (result avs.WorkloadNetworksDeleteSegmentFuture, err error)
 	DeleteVMGroup(ctx context.Context, resourceGroupName string, VMGroupID string, privateCloudName string) (result avs.WorkloadNetworksDeleteVMGroupFuture, err error)
 	GetDhcp(ctx context.Context, resourceGroupName string, dhcpID string, privateCloudName string) (result avs.WorkloadNetworkDhcp, err error)
@@ -109,6 +122,7 @@ type WorkloadNetworksClientAPI interface {
 	GetDNSZone(ctx context.Context, resourceGroupName string, privateCloudName string, DNSZoneID string) (result avs.WorkloadNetworkDNSZone, err error)
 	GetGateway(ctx context.Context, resourceGroupName string, privateCloudName string, gatewayID string) (result avs.WorkloadNetworkGateway, err error)
 	GetPortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string, portMirroringID string) (result avs.WorkloadNetworkPortMirroring, err error)
+	GetPublicIP(ctx context.Context, resourceGroupName string, privateCloudName string, publicIPID string) (result avs.WorkloadNetworkPublicIP, err error)
 	GetSegment(ctx context.Context, resourceGroupName string, privateCloudName string, segmentID string) (result avs.WorkloadNetworkSegment, err error)
 	GetVirtualMachine(ctx context.Context, resourceGroupName string, privateCloudName string, virtualMachineID string) (result avs.WorkloadNetworkVirtualMachine, err error)
 	GetVMGroup(ctx context.Context, resourceGroupName string, privateCloudName string, VMGroupID string) (result avs.WorkloadNetworkVMGroup, err error)
@@ -122,6 +136,8 @@ type WorkloadNetworksClientAPI interface {
 	ListGatewaysComplete(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.WorkloadNetworkGatewayListIterator, err error)
 	ListPortMirroring(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.WorkloadNetworkPortMirroringListPage, err error)
 	ListPortMirroringComplete(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.WorkloadNetworkPortMirroringListIterator, err error)
+	ListPublicIPs(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.WorkloadNetworkPublicIPsListPage, err error)
+	ListPublicIPsComplete(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.WorkloadNetworkPublicIPsListIterator, err error)
 	ListSegments(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.WorkloadNetworkSegmentsListPage, err error)
 	ListSegmentsComplete(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.WorkloadNetworkSegmentsListIterator, err error)
 	ListVirtualMachines(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.WorkloadNetworkVirtualMachinesListPage, err error)
@@ -138,6 +154,17 @@ type WorkloadNetworksClientAPI interface {
 
 var _ WorkloadNetworksClientAPI = (*avs.WorkloadNetworksClient)(nil)
 
+// CloudLinksClientAPI contains the set of methods on the CloudLinksClient type.
+type CloudLinksClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string, cloudLink avs.CloudLink) (result avs.CloudLinksCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string) (result avs.CloudLinksDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, privateCloudName string, cloudLinkName string) (result avs.CloudLink, err error)
+	List(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.CloudLinkListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.CloudLinkListIterator, err error)
+}
+
+var _ CloudLinksClientAPI = (*avs.CloudLinksClient)(nil)
+
 // AddonsClientAPI contains the set of methods on the AddonsClient type.
 type AddonsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, addonName string, addon avs.Addon) (result avs.AddonsCreateOrUpdateFuture, err error)
@@ -148,3 +175,33 @@ type AddonsClientAPI interface {
 }
 
 var _ AddonsClientAPI = (*avs.AddonsClient)(nil)
+
+// ScriptPackagesClientAPI contains the set of methods on the ScriptPackagesClient type.
+type ScriptPackagesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string) (result avs.ScriptPackage, err error)
+	List(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.ScriptPackagesListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.ScriptPackagesListIterator, err error)
+}
+
+var _ ScriptPackagesClientAPI = (*avs.ScriptPackagesClient)(nil)
+
+// ScriptCmdletsClientAPI contains the set of methods on the ScriptCmdletsClient type.
+type ScriptCmdletsClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string, scriptCmdletName string) (result avs.ScriptCmdlet, err error)
+	List(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string) (result avs.ScriptCmdletsListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, privateCloudName string, scriptPackageName string) (result avs.ScriptCmdletsListIterator, err error)
+}
+
+var _ ScriptCmdletsClientAPI = (*avs.ScriptCmdletsClient)(nil)
+
+// ScriptExecutionsClientAPI contains the set of methods on the ScriptExecutionsClient type.
+type ScriptExecutionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, scriptExecution avs.ScriptExecution) (result avs.ScriptExecutionsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string) (result avs.ScriptExecutionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string) (result avs.ScriptExecution, err error)
+	GetExecutionLogs(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, scriptOutputStreamType []avs.ScriptOutputStreamType) (result avs.ScriptExecution, err error)
+	List(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.ScriptExecutionsListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, privateCloudName string) (result avs.ScriptExecutionsListIterator, err error)
+}
+
+var _ ScriptExecutionsClientAPI = (*avs.ScriptExecutionsClient)(nil)

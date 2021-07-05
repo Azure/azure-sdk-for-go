@@ -82,7 +82,7 @@ func (client WorkloadNetworksClient) CreateDhcpPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -174,7 +174,7 @@ func (client WorkloadNetworksClient) CreateDNSServicePreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -266,7 +266,7 @@ func (client WorkloadNetworksClient) CreateDNSZonePreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -358,7 +358,7 @@ func (client WorkloadNetworksClient) CreatePortMirroringPreparer(ctx context.Con
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -391,6 +391,98 @@ func (client WorkloadNetworksClient) CreatePortMirroringSender(req *http.Request
 // CreatePortMirroringResponder handles the response to the CreatePortMirroring request. The method always
 // closes the http.Response Body.
 func (client WorkloadNetworksClient) CreatePortMirroringResponder(resp *http.Response) (result WorkloadNetworkPortMirroring, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// CreatePublicIP sends the create public ip request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// privateCloudName - name of the private cloud
+// publicIPID - NSX Public IP Block identifier. Generally the same as the Public IP Block's display name
+// workloadNetworkPublicIP - NSX Public IP Block
+func (client WorkloadNetworksClient) CreatePublicIP(ctx context.Context, resourceGroupName string, privateCloudName string, publicIPID string, workloadNetworkPublicIP WorkloadNetworkPublicIP) (result WorkloadNetworksCreatePublicIPFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.CreatePublicIP")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.WorkloadNetworksClient", "CreatePublicIP", err.Error())
+	}
+
+	req, err := client.CreatePublicIPPreparer(ctx, resourceGroupName, privateCloudName, publicIPID, workloadNetworkPublicIP)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreatePublicIP", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.CreatePublicIPSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreatePublicIP", nil, "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// CreatePublicIPPreparer prepares the CreatePublicIP request.
+func (client WorkloadNetworksClient) CreatePublicIPPreparer(ctx context.Context, resourceGroupName string, privateCloudName string, publicIPID string, workloadNetworkPublicIP WorkloadNetworkPublicIP) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"publicIPId":        autorest.Encode("path", publicIPID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsContentType("application/json; charset=utf-8"),
+		autorest.AsPut(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}", pathParameters),
+		autorest.WithJSON(workloadNetworkPublicIP),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// CreatePublicIPSender sends the CreatePublicIP request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkloadNetworksClient) CreatePublicIPSender(req *http.Request) (future WorkloadNetworksCreatePublicIPFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// CreatePublicIPResponder handles the response to the CreatePublicIP request. The method always
+// closes the http.Response Body.
+func (client WorkloadNetworksClient) CreatePublicIPResponder(resp *http.Response) (result WorkloadNetworkPublicIP, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -450,7 +542,7 @@ func (client WorkloadNetworksClient) CreateSegmentsPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -542,7 +634,7 @@ func (client WorkloadNetworksClient) CreateVMGroupPreparer(ctx context.Context, 
 		"vmGroupId":         autorest.Encode("path", VMGroupID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -633,7 +725,7 @@ func (client WorkloadNetworksClient) DeleteDhcpPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -721,7 +813,7 @@ func (client WorkloadNetworksClient) DeleteDNSServicePreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -809,7 +901,7 @@ func (client WorkloadNetworksClient) DeleteDNSZonePreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -897,7 +989,7 @@ func (client WorkloadNetworksClient) DeletePortMirroringPreparer(ctx context.Con
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -928,6 +1020,94 @@ func (client WorkloadNetworksClient) DeletePortMirroringSender(req *http.Request
 // DeletePortMirroringResponder handles the response to the DeletePortMirroring request. The method always
 // closes the http.Response Body.
 func (client WorkloadNetworksClient) DeletePortMirroringResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// DeletePublicIP sends the delete public ip request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// publicIPID - NSX Public IP Block identifier. Generally the same as the Public IP Block's display name
+// privateCloudName - name of the private cloud
+func (client WorkloadNetworksClient) DeletePublicIP(ctx context.Context, resourceGroupName string, publicIPID string, privateCloudName string) (result WorkloadNetworksDeletePublicIPFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.DeletePublicIP")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.WorkloadNetworksClient", "DeletePublicIP", err.Error())
+	}
+
+	req, err := client.DeletePublicIPPreparer(ctx, resourceGroupName, publicIPID, privateCloudName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeletePublicIP", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.DeletePublicIPSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeletePublicIP", nil, "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// DeletePublicIPPreparer prepares the DeletePublicIP request.
+func (client WorkloadNetworksClient) DeletePublicIPPreparer(ctx context.Context, resourceGroupName string, publicIPID string, privateCloudName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"publicIPId":        autorest.Encode("path", publicIPID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsDelete(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DeletePublicIPSender sends the DeletePublicIP request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkloadNetworksClient) DeletePublicIPSender(req *http.Request) (future WorkloadNetworksDeletePublicIPFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// DeletePublicIPResponder handles the response to the DeletePublicIP request. The method always
+// closes the http.Response Body.
+func (client WorkloadNetworksClient) DeletePublicIPResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
@@ -985,7 +1165,7 @@ func (client WorkloadNetworksClient) DeleteSegmentPreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1073,7 +1253,7 @@ func (client WorkloadNetworksClient) DeleteVMGroupPreparer(ctx context.Context, 
 		"vmGroupId":         autorest.Encode("path", VMGroupID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1168,7 +1348,7 @@ func (client WorkloadNetworksClient) GetDhcpPreparer(ctx context.Context, resour
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1255,7 +1435,7 @@ func (client WorkloadNetworksClient) GetDNSServicePreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1342,7 +1522,7 @@ func (client WorkloadNetworksClient) GetDNSZonePreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1429,7 +1609,7 @@ func (client WorkloadNetworksClient) GetGatewayPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1516,7 +1696,7 @@ func (client WorkloadNetworksClient) GetPortMirroringPreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1538,6 +1718,93 @@ func (client WorkloadNetworksClient) GetPortMirroringSender(req *http.Request) (
 // GetPortMirroringResponder handles the response to the GetPortMirroring request. The method always
 // closes the http.Response Body.
 func (client WorkloadNetworksClient) GetPortMirroringResponder(resp *http.Response) (result WorkloadNetworkPortMirroring, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// GetPublicIP sends the get public ip request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// privateCloudName - name of the private cloud
+// publicIPID - NSX Public IP Block identifier. Generally the same as the Public IP Block's display name
+func (client WorkloadNetworksClient) GetPublicIP(ctx context.Context, resourceGroupName string, privateCloudName string, publicIPID string) (result WorkloadNetworkPublicIP, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.GetPublicIP")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.WorkloadNetworksClient", "GetPublicIP", err.Error())
+	}
+
+	req, err := client.GetPublicIPPreparer(ctx, resourceGroupName, privateCloudName, publicIPID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "GetPublicIP", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.GetPublicIPSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "GetPublicIP", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.GetPublicIPResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "GetPublicIP", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// GetPublicIPPreparer prepares the GetPublicIP request.
+func (client WorkloadNetworksClient) GetPublicIPPreparer(ctx context.Context, resourceGroupName string, privateCloudName string, publicIPID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"publicIPId":        autorest.Encode("path", publicIPID),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs/{publicIPId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// GetPublicIPSender sends the GetPublicIP request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkloadNetworksClient) GetPublicIPSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// GetPublicIPResponder handles the response to the GetPublicIP request. The method always
+// closes the http.Response Body.
+func (client WorkloadNetworksClient) GetPublicIPResponder(resp *http.Response) (result WorkloadNetworkPublicIP, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -1603,7 +1870,7 @@ func (client WorkloadNetworksClient) GetSegmentPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1638,7 +1905,7 @@ func (client WorkloadNetworksClient) GetSegmentResponder(resp *http.Response) (r
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // privateCloudName - name of the private cloud
-// virtualMachineID - NSX Virtual Machine identifier.
+// virtualMachineID - virtual Machine identifier
 func (client WorkloadNetworksClient) GetVirtualMachine(ctx context.Context, resourceGroupName string, privateCloudName string, virtualMachineID string) (result WorkloadNetworkVirtualMachine, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.GetVirtualMachine")
@@ -1690,7 +1957,7 @@ func (client WorkloadNetworksClient) GetVirtualMachinePreparer(ctx context.Conte
 		"virtualMachineId":  autorest.Encode("path", virtualMachineID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1777,7 +2044,7 @@ func (client WorkloadNetworksClient) GetVMGroupPreparer(ctx context.Context, res
 		"vmGroupId":         autorest.Encode("path", VMGroupID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1867,7 +2134,7 @@ func (client WorkloadNetworksClient) ListDhcpPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -1994,7 +2261,7 @@ func (client WorkloadNetworksClient) ListDNSServicesPreparer(ctx context.Context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2121,7 +2388,7 @@ func (client WorkloadNetworksClient) ListDNSZonesPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2248,7 +2515,7 @@ func (client WorkloadNetworksClient) ListGatewaysPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2375,7 +2642,7 @@ func (client WorkloadNetworksClient) ListPortMirroringPreparer(ctx context.Conte
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2443,6 +2710,133 @@ func (client WorkloadNetworksClient) ListPortMirroringComplete(ctx context.Conte
 	return
 }
 
+// ListPublicIPs sends the list public i ps request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// privateCloudName - name of the private cloud
+func (client WorkloadNetworksClient) ListPublicIPs(ctx context.Context, resourceGroupName string, privateCloudName string) (result WorkloadNetworkPublicIPsListPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.ListPublicIPs")
+		defer func() {
+			sc := -1
+			if result.wnpipl.Response.Response != nil {
+				sc = result.wnpipl.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.WorkloadNetworksClient", "ListPublicIPs", err.Error())
+	}
+
+	result.fn = client.listPublicIPsNextResults
+	req, err := client.ListPublicIPsPreparer(ctx, resourceGroupName, privateCloudName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "ListPublicIPs", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListPublicIPsSender(req)
+	if err != nil {
+		result.wnpipl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "ListPublicIPs", resp, "Failure sending request")
+		return
+	}
+
+	result.wnpipl, err = client.ListPublicIPsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "ListPublicIPs", resp, "Failure responding to request")
+		return
+	}
+	if result.wnpipl.hasNextLink() && result.wnpipl.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListPublicIPsPreparer prepares the ListPublicIPs request.
+func (client WorkloadNetworksClient) ListPublicIPsPreparer(ctx context.Context, resourceGroupName string, privateCloudName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-06-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks/default/publicIPs", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListPublicIPsSender sends the ListPublicIPs request. The method will close the
+// http.Response Body if it receives an error.
+func (client WorkloadNetworksClient) ListPublicIPsSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListPublicIPsResponder handles the response to the ListPublicIPs request. The method always
+// closes the http.Response Body.
+func (client WorkloadNetworksClient) ListPublicIPsResponder(resp *http.Response) (result WorkloadNetworkPublicIPsList, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listPublicIPsNextResults retrieves the next set of results, if any.
+func (client WorkloadNetworksClient) listPublicIPsNextResults(ctx context.Context, lastResults WorkloadNetworkPublicIPsList) (result WorkloadNetworkPublicIPsList, err error) {
+	req, err := lastResults.workloadNetworkPublicIPsListPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listPublicIPsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListPublicIPsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listPublicIPsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListPublicIPsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "listPublicIPsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListPublicIPsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client WorkloadNetworksClient) ListPublicIPsComplete(ctx context.Context, resourceGroupName string, privateCloudName string) (result WorkloadNetworkPublicIPsListIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworksClient.ListPublicIPs")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListPublicIPs(ctx, resourceGroupName, privateCloudName)
+	return
+}
+
 // ListSegments sends the list segments request.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -2502,7 +2896,7 @@ func (client WorkloadNetworksClient) ListSegmentsPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2629,7 +3023,7 @@ func (client WorkloadNetworksClient) ListVirtualMachinesPreparer(ctx context.Con
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2756,7 +3150,7 @@ func (client WorkloadNetworksClient) ListVMGroupsPreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2874,7 +3268,7 @@ func (client WorkloadNetworksClient) UpdateDhcpPreparer(ctx context.Context, res
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -2966,7 +3360,7 @@ func (client WorkloadNetworksClient) UpdateDNSServicePreparer(ctx context.Contex
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -3058,7 +3452,7 @@ func (client WorkloadNetworksClient) UpdateDNSZonePreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -3150,7 +3544,7 @@ func (client WorkloadNetworksClient) UpdatePortMirroringPreparer(ctx context.Con
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -3242,7 +3636,7 @@ func (client WorkloadNetworksClient) UpdateSegmentsPreparer(ctx context.Context,
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -3334,7 +3728,7 @@ func (client WorkloadNetworksClient) UpdateVMGroupPreparer(ctx context.Context, 
 		"vmGroupId":         autorest.Encode("path", VMGroupID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-06-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

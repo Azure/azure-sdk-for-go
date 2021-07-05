@@ -52,8 +52,7 @@ func (client PrivateCloudsClient) CreateOrUpdate(ctx context.Context, resourceGr
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: privateCloud,
 			Constraints: []validation.Constraint{{Target: "privateCloud.Sku", Name: validation.Null, Rule: true,
 				Chain: []validation.Constraint{{Target: "privateCloud.Sku.Name", Name: validation.Null, Rule: true, Chain: nil}}},
@@ -147,8 +146,7 @@ func (client PrivateCloudsClient) Delete(ctx context.Context, resourceGroupName 
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.PrivateCloudsClient", "Delete", err.Error())
 	}
 
@@ -234,8 +232,7 @@ func (client PrivateCloudsClient) Get(ctx context.Context, resourceGroupName str
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.PrivateCloudsClient", "Get", err.Error())
 	}
 
@@ -319,8 +316,7 @@ func (client PrivateCloudsClient) List(ctx context.Context, resourceGroupName st
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.PrivateCloudsClient", "List", err.Error())
 	}
 
@@ -446,8 +442,7 @@ func (client PrivateCloudsClient) ListAdminCredentials(ctx context.Context, reso
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.PrivateCloudsClient", "ListAdminCredentials", err.Error())
 	}
 
@@ -631,6 +626,178 @@ func (client PrivateCloudsClient) ListInSubscriptionComplete(ctx context.Context
 	return
 }
 
+// RotateNsxtPassword sends the rotate nsxt password request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// privateCloudName - name of the private cloud
+func (client PrivateCloudsClient) RotateNsxtPassword(ctx context.Context, resourceGroupName string, privateCloudName string) (result PrivateCloudsRotateNsxtPasswordFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateCloudsClient.RotateNsxtPassword")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.PrivateCloudsClient", "RotateNsxtPassword", err.Error())
+	}
+
+	req, err := client.RotateNsxtPasswordPreparer(ctx, resourceGroupName, privateCloudName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "RotateNsxtPassword", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.RotateNsxtPasswordSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "RotateNsxtPassword", nil, "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// RotateNsxtPasswordPreparer prepares the RotateNsxtPassword request.
+func (client PrivateCloudsClient) RotateNsxtPasswordPreparer(ctx context.Context, resourceGroupName string, privateCloudName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-07-17-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/rotateNsxtPassword", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RotateNsxtPasswordSender sends the RotateNsxtPassword request. The method will close the
+// http.Response Body if it receives an error.
+func (client PrivateCloudsClient) RotateNsxtPasswordSender(req *http.Request) (future PrivateCloudsRotateNsxtPasswordFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// RotateNsxtPasswordResponder handles the response to the RotateNsxtPassword request. The method always
+// closes the http.Response Body.
+func (client PrivateCloudsClient) RotateNsxtPasswordResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
+// RotateVcenterPassword sends the rotate vcenter password request.
+// Parameters:
+// resourceGroupName - the name of the resource group. The name is case insensitive.
+// privateCloudName - name of the private cloud
+func (client PrivateCloudsClient) RotateVcenterPassword(ctx context.Context, resourceGroupName string, privateCloudName string) (result PrivateCloudsRotateVcenterPasswordFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateCloudsClient.RotateVcenterPassword")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("avs.PrivateCloudsClient", "RotateVcenterPassword", err.Error())
+	}
+
+	req, err := client.RotateVcenterPasswordPreparer(ctx, resourceGroupName, privateCloudName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "RotateVcenterPassword", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.RotateVcenterPasswordSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "RotateVcenterPassword", nil, "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// RotateVcenterPasswordPreparer prepares the RotateVcenterPassword request.
+func (client PrivateCloudsClient) RotateVcenterPasswordPreparer(ctx context.Context, resourceGroupName string, privateCloudName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"privateCloudName":  autorest.Encode("path", privateCloudName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-07-17-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/rotateVcenterPassword", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// RotateVcenterPasswordSender sends the RotateVcenterPassword request. The method will close the
+// http.Response Body if it receives an error.
+func (client PrivateCloudsClient) RotateVcenterPasswordSender(req *http.Request) (future PrivateCloudsRotateVcenterPasswordFuture, err error) {
+	var resp *http.Response
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// RotateVcenterPasswordResponder handles the response to the RotateVcenterPassword request. The method always
+// closes the http.Response Body.
+func (client PrivateCloudsClient) RotateVcenterPasswordResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Update sends the update request.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
@@ -652,8 +819,7 @@ func (client PrivateCloudsClient) Update(ctx context.Context, resourceGroupName 
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("avs.PrivateCloudsClient", "Update", err.Error())
 	}
 

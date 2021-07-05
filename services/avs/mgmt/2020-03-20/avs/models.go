@@ -1202,6 +1202,10 @@ type MetricDimension struct {
 	Name *string `json:"name,omitempty"`
 	// DisplayName - Localized friendly display name of the dimension
 	DisplayName *string `json:"displayName,omitempty"`
+	// InternalName - Name of the dimension as it appears in MDM
+	InternalName *string `json:"internalName,omitempty"`
+	// ToBeExportedForShoebox - A boolean flag indicating whether this dimension should be included for the shoebox export scenario
+	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
 }
 
 // MetricSpecification specifications of the Metrics for Azure Monitoring

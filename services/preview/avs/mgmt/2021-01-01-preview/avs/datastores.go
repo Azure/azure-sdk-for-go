@@ -15,31 +15,32 @@ import (
 	"net/http"
 )
 
-// AuthorizationsClient is the azure VMware Solution API
-type AuthorizationsClient struct {
+// DatastoresClient is the azure VMware Solution API
+type DatastoresClient struct {
 	BaseClient
 }
 
-// NewAuthorizationsClient creates an instance of the AuthorizationsClient client.
-func NewAuthorizationsClient(subscriptionID string) AuthorizationsClient {
-	return NewAuthorizationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+// NewDatastoresClient creates an instance of the DatastoresClient client.
+func NewDatastoresClient(subscriptionID string) DatastoresClient {
+	return NewDatastoresClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
-// NewAuthorizationsClientWithBaseURI creates an instance of the AuthorizationsClient client using a custom endpoint.
-// Use this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewAuthorizationsClientWithBaseURI(baseURI string, subscriptionID string) AuthorizationsClient {
-	return AuthorizationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+// NewDatastoresClientWithBaseURI creates an instance of the DatastoresClient client using a custom endpoint.  Use this
+// when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
+func NewDatastoresClientWithBaseURI(baseURI string, subscriptionID string) DatastoresClient {
+	return DatastoresClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate sends the create or update request.
+// Create sends the create request.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
-// privateCloudName - the name of the private cloud.
-// authorizationName - name of the ExpressRoute Circuit Authorization in the private cloud
-// authorization - an ExpressRoute Circuit Authorization
-func (client AuthorizationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, authorization ExpressRouteAuthorization) (result AuthorizationsCreateOrUpdateFuture, err error) {
+// privateCloudName - name of the private cloud
+// clusterName - name of the cluster in the private cloud
+// datastoreName - name of the datastore in the private cloud cluster
+// datastore - a datastore in a private cloud cluster
+func (client DatastoresClient) Create(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore Datastore) (result DatastoresCreateFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AuthorizationsClient.CreateOrUpdate")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatastoresClient.Create")
 		defer func() {
 			sc := -1
 			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
@@ -54,52 +55,52 @@ func (client AuthorizationsClient) CreateOrUpdate(ctx context.Context, resourceG
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("avs.AuthorizationsClient", "CreateOrUpdate", err.Error())
+		return result, validation.NewError("avs.DatastoresClient", "Create", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, privateCloudName, authorizationName, authorization)
+	req, err := client.CreatePreparer(ctx, resourceGroupName, privateCloudName, clusterName, datastoreName, datastore)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "CreateOrUpdate", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "avs.DatastoresClient", "Create", nil, "Failure preparing request")
 		return
 	}
 
-	result, err = client.CreateOrUpdateSender(req)
+	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.DatastoresClient", "Create", nil, "Failure sending request")
 		return
 	}
 
 	return
 }
 
-// CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client AuthorizationsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, authorization ExpressRouteAuthorization) (*http.Request, error) {
+// CreatePreparer prepares the Create request.
+func (client DatastoresClient) CreatePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string, datastore Datastore) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"authorizationName": autorest.Encode("path", authorizationName),
+		"clusterName":       autorest.Encode("path", clusterName),
+		"datastoreName":     autorest.Encode("path", datastoreName),
 		"privateCloudName":  autorest.Encode("path", privateCloudName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
 
-	authorization.ExpressRouteAuthorizationProperties = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}", pathParameters),
-		autorest.WithJSON(authorization),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores/{datastoreName}", pathParameters),
+		autorest.WithJSON(datastore),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
-// CreateOrUpdateSender sends the CreateOrUpdate request. The method will close the
+// CreateSender sends the Create request. The method will close the
 // http.Response Body if it receives an error.
-func (client AuthorizationsClient) CreateOrUpdateSender(req *http.Request) (future AuthorizationsCreateOrUpdateFuture, err error) {
+func (client DatastoresClient) CreateSender(req *http.Request) (future DatastoresCreateFuture, err error) {
 	var resp *http.Response
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
@@ -112,9 +113,9 @@ func (client AuthorizationsClient) CreateOrUpdateSender(req *http.Request) (futu
 	return
 }
 
-// CreateOrUpdateResponder handles the response to the CreateOrUpdate request. The method always
+// CreateResponder handles the response to the Create request. The method always
 // closes the http.Response Body.
-func (client AuthorizationsClient) CreateOrUpdateResponder(resp *http.Response) (result ExpressRouteAuthorization, err error) {
+func (client DatastoresClient) CreateResponder(resp *http.Response) (result Datastore, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
@@ -128,10 +129,11 @@ func (client AuthorizationsClient) CreateOrUpdateResponder(resp *http.Response) 
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // privateCloudName - name of the private cloud
-// authorizationName - name of the ExpressRoute Circuit Authorization in the private cloud
-func (client AuthorizationsClient) Delete(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string) (result AuthorizationsDeleteFuture, err error) {
+// clusterName - name of the cluster in the private cloud
+// datastoreName - name of the datastore in the private cloud cluster
+func (client DatastoresClient) Delete(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string) (result DatastoresDeleteFuture, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AuthorizationsClient.Delete")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatastoresClient.Delete")
 		defer func() {
 			sc := -1
 			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
@@ -146,18 +148,18 @@ func (client AuthorizationsClient) Delete(ctx context.Context, resourceGroupName
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("avs.AuthorizationsClient", "Delete", err.Error())
+		return result, validation.NewError("avs.DatastoresClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, privateCloudName, authorizationName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, privateCloudName, clusterName, datastoreName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "Delete", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "avs.DatastoresClient", "Delete", nil, "Failure preparing request")
 		return
 	}
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.DatastoresClient", "Delete", nil, "Failure sending request")
 		return
 	}
 
@@ -165,15 +167,16 @@ func (client AuthorizationsClient) Delete(ctx context.Context, resourceGroupName
 }
 
 // DeletePreparer prepares the Delete request.
-func (client AuthorizationsClient) DeletePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string) (*http.Request, error) {
+func (client DatastoresClient) DeletePreparer(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"authorizationName": autorest.Encode("path", authorizationName),
+		"clusterName":       autorest.Encode("path", clusterName),
+		"datastoreName":     autorest.Encode("path", datastoreName),
 		"privateCloudName":  autorest.Encode("path", privateCloudName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -181,14 +184,14 @@ func (client AuthorizationsClient) DeletePreparer(ctx context.Context, resourceG
 	preparer := autorest.CreatePreparer(
 		autorest.AsDelete(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores/{datastoreName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // DeleteSender sends the Delete request. The method will close the
 // http.Response Body if it receives an error.
-func (client AuthorizationsClient) DeleteSender(req *http.Request) (future AuthorizationsDeleteFuture, err error) {
+func (client DatastoresClient) DeleteSender(req *http.Request) (future DatastoresDeleteFuture, err error) {
 	var resp *http.Response
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
@@ -203,7 +206,7 @@ func (client AuthorizationsClient) DeleteSender(req *http.Request) (future Autho
 
 // DeleteResponder handles the response to the Delete request. The method always
 // closes the http.Response Body.
-func (client AuthorizationsClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
+func (client DatastoresClient) DeleteResponder(resp *http.Response) (result autorest.Response, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
@@ -216,10 +219,11 @@ func (client AuthorizationsClient) DeleteResponder(resp *http.Response) (result 
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // privateCloudName - name of the private cloud
-// authorizationName - name of the ExpressRoute Circuit Authorization in the private cloud
-func (client AuthorizationsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string) (result ExpressRouteAuthorization, err error) {
+// clusterName - name of the cluster in the private cloud
+// datastoreName - name of the datastore in the private cloud cluster
+func (client DatastoresClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string) (result Datastore, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AuthorizationsClient.Get")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatastoresClient.Get")
 		defer func() {
 			sc := -1
 			if result.Response.Response != nil {
@@ -234,25 +238,25 @@ func (client AuthorizationsClient) Get(ctx context.Context, resourceGroupName st
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("avs.AuthorizationsClient", "Get", err.Error())
+		return result, validation.NewError("avs.DatastoresClient", "Get", err.Error())
 	}
 
-	req, err := client.GetPreparer(ctx, resourceGroupName, privateCloudName, authorizationName)
+	req, err := client.GetPreparer(ctx, resourceGroupName, privateCloudName, clusterName, datastoreName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "Get", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "avs.DatastoresClient", "Get", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.GetSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "Get", resp, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.DatastoresClient", "Get", resp, "Failure sending request")
 		return
 	}
 
 	result, err = client.GetResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "Get", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "avs.DatastoresClient", "Get", resp, "Failure responding to request")
 		return
 	}
 
@@ -260,15 +264,16 @@ func (client AuthorizationsClient) Get(ctx context.Context, resourceGroupName st
 }
 
 // GetPreparer prepares the Get request.
-func (client AuthorizationsClient) GetPreparer(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string) (*http.Request, error) {
+func (client DatastoresClient) GetPreparer(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string, datastoreName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"authorizationName": autorest.Encode("path", authorizationName),
+		"clusterName":       autorest.Encode("path", clusterName),
+		"datastoreName":     autorest.Encode("path", datastoreName),
 		"privateCloudName":  autorest.Encode("path", privateCloudName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -276,20 +281,20 @@ func (client AuthorizationsClient) GetPreparer(ctx context.Context, resourceGrou
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations/{authorizationName}", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores/{datastoreName}", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // GetSender sends the Get request. The method will close the
 // http.Response Body if it receives an error.
-func (client AuthorizationsClient) GetSender(req *http.Request) (*http.Response, error) {
+func (client DatastoresClient) GetSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // GetResponder handles the response to the Get request. The method always
 // closes the http.Response Body.
-func (client AuthorizationsClient) GetResponder(resp *http.Response) (result ExpressRouteAuthorization, err error) {
+func (client DatastoresClient) GetResponder(resp *http.Response) (result Datastore, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -303,13 +308,14 @@ func (client AuthorizationsClient) GetResponder(resp *http.Response) (result Exp
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // privateCloudName - name of the private cloud
-func (client AuthorizationsClient) List(ctx context.Context, resourceGroupName string, privateCloudName string) (result ExpressRouteAuthorizationListPage, err error) {
+// clusterName - name of the cluster in the private cloud
+func (client DatastoresClient) List(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string) (result DatastoreListPage, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AuthorizationsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatastoresClient.List")
 		defer func() {
 			sc := -1
-			if result.eral.Response.Response != nil {
-				sc = result.eral.Response.Response.StatusCode
+			if result.dl.Response.Response != nil {
+				sc = result.dl.Response.Response.StatusCode
 			}
 			tracing.EndSpan(ctx, sc, err)
 		}()
@@ -320,29 +326,29 @@ func (client AuthorizationsClient) List(ctx context.Context, resourceGroupName s
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
 				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
-		return result, validation.NewError("avs.AuthorizationsClient", "List", err.Error())
+		return result, validation.NewError("avs.DatastoresClient", "List", err.Error())
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceGroupName, privateCloudName)
+	req, err := client.ListPreparer(ctx, resourceGroupName, privateCloudName, clusterName)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "List", nil, "Failure preparing request")
+		err = autorest.NewErrorWithError(err, "avs.DatastoresClient", "List", nil, "Failure preparing request")
 		return
 	}
 
 	resp, err := client.ListSender(req)
 	if err != nil {
-		result.eral.Response = autorest.Response{Response: resp}
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "List", resp, "Failure sending request")
+		result.dl.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "avs.DatastoresClient", "List", resp, "Failure sending request")
 		return
 	}
 
-	result.eral, err = client.ListResponder(resp)
+	result.dl, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "List", resp, "Failure responding to request")
+		err = autorest.NewErrorWithError(err, "avs.DatastoresClient", "List", resp, "Failure responding to request")
 		return
 	}
-	if result.eral.hasNextLink() && result.eral.IsEmpty() {
+	if result.dl.hasNextLink() && result.dl.IsEmpty() {
 		err = result.NextWithContext(ctx)
 		return
 	}
@@ -351,14 +357,15 @@ func (client AuthorizationsClient) List(ctx context.Context, resourceGroupName s
 }
 
 // ListPreparer prepares the List request.
-func (client AuthorizationsClient) ListPreparer(ctx context.Context, resourceGroupName string, privateCloudName string) (*http.Request, error) {
+func (client DatastoresClient) ListPreparer(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
+		"clusterName":       autorest.Encode("path", clusterName),
 		"privateCloudName":  autorest.Encode("path", privateCloudName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-07-17-preview"
+	const APIVersion = "2021-01-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -366,20 +373,20 @@ func (client AuthorizationsClient) ListPreparer(ctx context.Context, resourceGro
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/authorizations", pathParameters),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/clusters/{clusterName}/datastores", pathParameters),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
 
 // ListSender sends the List request. The method will close the
 // http.Response Body if it receives an error.
-func (client AuthorizationsClient) ListSender(req *http.Request) (*http.Response, error) {
+func (client DatastoresClient) ListSender(req *http.Request) (*http.Response, error) {
 	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
 }
 
 // ListResponder handles the response to the List request. The method always
 // closes the http.Response Body.
-func (client AuthorizationsClient) ListResponder(resp *http.Response) (result ExpressRouteAuthorizationList, err error) {
+func (client DatastoresClient) ListResponder(resp *http.Response) (result DatastoreList, err error) {
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK),
@@ -390,10 +397,10 @@ func (client AuthorizationsClient) ListResponder(resp *http.Response) (result Ex
 }
 
 // listNextResults retrieves the next set of results, if any.
-func (client AuthorizationsClient) listNextResults(ctx context.Context, lastResults ExpressRouteAuthorizationList) (result ExpressRouteAuthorizationList, err error) {
-	req, err := lastResults.expressRouteAuthorizationListPreparer(ctx)
+func (client DatastoresClient) listNextResults(ctx context.Context, lastResults DatastoreList) (result DatastoreList, err error) {
+	req, err := lastResults.datastoreListPreparer(ctx)
 	if err != nil {
-		return result, autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "listNextResults", nil, "Failure preparing next results request")
+		return result, autorest.NewErrorWithError(err, "avs.DatastoresClient", "listNextResults", nil, "Failure preparing next results request")
 	}
 	if req == nil {
 		return
@@ -401,19 +408,19 @@ func (client AuthorizationsClient) listNextResults(ctx context.Context, lastResu
 	resp, err := client.ListSender(req)
 	if err != nil {
 		result.Response = autorest.Response{Response: resp}
-		return result, autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "listNextResults", resp, "Failure sending next results request")
+		return result, autorest.NewErrorWithError(err, "avs.DatastoresClient", "listNextResults", resp, "Failure sending next results request")
 	}
 	result, err = client.ListResponder(resp)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AuthorizationsClient", "listNextResults", resp, "Failure responding to next results request")
+		err = autorest.NewErrorWithError(err, "avs.DatastoresClient", "listNextResults", resp, "Failure responding to next results request")
 	}
 	return
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client AuthorizationsClient) ListComplete(ctx context.Context, resourceGroupName string, privateCloudName string) (result ExpressRouteAuthorizationListIterator, err error) {
+func (client DatastoresClient) ListComplete(ctx context.Context, resourceGroupName string, privateCloudName string, clusterName string) (result DatastoreListIterator, err error) {
 	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/AuthorizationsClient.List")
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatastoresClient.List")
 		defer func() {
 			sc := -1
 			if result.Response().Response.Response != nil {
@@ -422,6 +429,6 @@ func (client AuthorizationsClient) ListComplete(ctx context.Context, resourceGro
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, resourceGroupName, privateCloudName)
+	result.page, err = client.List(ctx, resourceGroupName, privateCloudName, clusterName)
 	return
 }

@@ -11,19 +11,20 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/avs/mgmt/2020-07-17-preview/avs"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/avs/mgmt/2021-06-01/avs"
 
 // Addon an addon resource
 type Addon struct {
 	autorest.Response `json:"-"`
-	// AddonProperties - The properties of an addon resource
-	*AddonProperties `json:"properties,omitempty"`
+	// Properties - The properties of an addon resource
+	Properties BasicAddonProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name.
@@ -35,9 +36,7 @@ type Addon struct {
 // MarshalJSON is the custom marshaler for Addon.
 func (a Addon) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if a.AddonProperties != nil {
-		objectMap["properties"] = a.AddonProperties
-	}
+	objectMap["properties"] = a.Properties
 	return json.Marshal(objectMap)
 }
 
@@ -52,12 +51,11 @@ func (a *Addon) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				var addonProperties AddonProperties
-				err = json.Unmarshal(*v, &addonProperties)
+				properties, err := unmarshalBasicAddonProperties(*v)
 				if err != nil {
 					return err
 				}
-				a.AddonProperties = &addonProperties
+				a.Properties = properties
 			}
 		case "id":
 			if v != nil {
@@ -90,6 +88,54 @@ func (a *Addon) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// AddonHcxProperties the properties of an HCX addon
+type AddonHcxProperties struct {
+	// Offer - The HCX offer, example VMware MaaS Cloud Provider (Enterprise)
+	Offer *string `json:"offer,omitempty"`
+	// ProvisioningState - READ-ONLY; The state of the addon provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Building', 'Deleting', 'Updating'
+	ProvisioningState AddonProvisioningState `json:"provisioningState,omitempty"`
+	// AddonType - Possible values include: 'AddonTypeAddonProperties', 'AddonTypeSRM', 'AddonTypeVR', 'AddonTypeHCX'
+	AddonType AddonType `json:"addonType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AddonHcxProperties.
+func (ahp AddonHcxProperties) MarshalJSON() ([]byte, error) {
+	ahp.AddonType = AddonTypeHCX
+	objectMap := make(map[string]interface{})
+	if ahp.Offer != nil {
+		objectMap["offer"] = ahp.Offer
+	}
+	if ahp.AddonType != "" {
+		objectMap["addonType"] = ahp.AddonType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsAddonSrmProperties is the BasicAddonProperties implementation for AddonHcxProperties.
+func (ahp AddonHcxProperties) AsAddonSrmProperties() (*AddonSrmProperties, bool) {
+	return nil, false
+}
+
+// AsAddonVrProperties is the BasicAddonProperties implementation for AddonHcxProperties.
+func (ahp AddonHcxProperties) AsAddonVrProperties() (*AddonVrProperties, bool) {
+	return nil, false
+}
+
+// AsAddonHcxProperties is the BasicAddonProperties implementation for AddonHcxProperties.
+func (ahp AddonHcxProperties) AsAddonHcxProperties() (*AddonHcxProperties, bool) {
+	return &ahp, true
+}
+
+// AsAddonProperties is the BasicAddonProperties implementation for AddonHcxProperties.
+func (ahp AddonHcxProperties) AsAddonProperties() (*AddonProperties, bool) {
+	return nil, false
+}
+
+// AsBasicAddonProperties is the BasicAddonProperties implementation for AddonHcxProperties.
+func (ahp AddonHcxProperties) AsBasicAddonProperties() (BasicAddonProperties, bool) {
+	return &ahp, true
 }
 
 // AddonList a paged list of addons
@@ -257,26 +303,100 @@ func NewAddonListPage(cur AddonList, getNextPage func(context.Context, AddonList
 	}
 }
 
-// AddonProperties the properties of an addon that may be updated
+// BasicAddonProperties the properties of an addon
+type BasicAddonProperties interface {
+	AsAddonSrmProperties() (*AddonSrmProperties, bool)
+	AsAddonVrProperties() (*AddonVrProperties, bool)
+	AsAddonHcxProperties() (*AddonHcxProperties, bool)
+	AsAddonProperties() (*AddonProperties, bool)
+}
+
+// AddonProperties the properties of an addon
 type AddonProperties struct {
-	// AddonType - The type of private cloud addon. Possible values include: 'SRM', 'VR'
-	AddonType AddonType `json:"addonType,omitempty"`
-	// ProvisioningState - READ-ONLY; The state of the addon provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'
+	// ProvisioningState - READ-ONLY; The state of the addon provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Building', 'Deleting', 'Updating'
 	ProvisioningState AddonProvisioningState `json:"provisioningState,omitempty"`
-	// LicenseKey - The SRM license
-	LicenseKey *string `json:"licenseKey,omitempty"`
+	// AddonType - Possible values include: 'AddonTypeAddonProperties', 'AddonTypeSRM', 'AddonTypeVR', 'AddonTypeHCX'
+	AddonType AddonType `json:"addonType,omitempty"`
+}
+
+func unmarshalBasicAddonProperties(body []byte) (BasicAddonProperties, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["addonType"] {
+	case string(AddonTypeSRM):
+		var asp AddonSrmProperties
+		err := json.Unmarshal(body, &asp)
+		return asp, err
+	case string(AddonTypeVR):
+		var avp AddonVrProperties
+		err := json.Unmarshal(body, &avp)
+		return avp, err
+	case string(AddonTypeHCX):
+		var ahp AddonHcxProperties
+		err := json.Unmarshal(body, &ahp)
+		return ahp, err
+	default:
+		var ap AddonProperties
+		err := json.Unmarshal(body, &ap)
+		return ap, err
+	}
+}
+func unmarshalBasicAddonPropertiesArray(body []byte) ([]BasicAddonProperties, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	apArray := make([]BasicAddonProperties, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		ap, err := unmarshalBasicAddonProperties(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		apArray[index] = ap
+	}
+	return apArray, nil
 }
 
 // MarshalJSON is the custom marshaler for AddonProperties.
 func (ap AddonProperties) MarshalJSON() ([]byte, error) {
+	ap.AddonType = AddonTypeAddonProperties
 	objectMap := make(map[string]interface{})
 	if ap.AddonType != "" {
 		objectMap["addonType"] = ap.AddonType
 	}
-	if ap.LicenseKey != nil {
-		objectMap["licenseKey"] = ap.LicenseKey
-	}
 	return json.Marshal(objectMap)
+}
+
+// AsAddonSrmProperties is the BasicAddonProperties implementation for AddonProperties.
+func (ap AddonProperties) AsAddonSrmProperties() (*AddonSrmProperties, bool) {
+	return nil, false
+}
+
+// AsAddonVrProperties is the BasicAddonProperties implementation for AddonProperties.
+func (ap AddonProperties) AsAddonVrProperties() (*AddonVrProperties, bool) {
+	return nil, false
+}
+
+// AsAddonHcxProperties is the BasicAddonProperties implementation for AddonProperties.
+func (ap AddonProperties) AsAddonHcxProperties() (*AddonHcxProperties, bool) {
+	return nil, false
+}
+
+// AsAddonProperties is the BasicAddonProperties implementation for AddonProperties.
+func (ap AddonProperties) AsAddonProperties() (*AddonProperties, bool) {
+	return &ap, true
+}
+
+// AsBasicAddonProperties is the BasicAddonProperties implementation for AddonProperties.
+func (ap AddonProperties) AsBasicAddonProperties() (BasicAddonProperties, bool) {
+	return &ap, true
 }
 
 // AddonsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -358,88 +478,100 @@ func (future *AddonsDeleteFuture) result(client AddonsClient) (ar autorest.Respo
 	return
 }
 
-// AddonSrmProperties the properties of an SRM addon that may be updated
+// AddonSrmProperties the properties of a Site Recovery Manager (SRM) addon
 type AddonSrmProperties struct {
-	// LicenseKey - The SRM license
+	// LicenseKey - The Site Recovery Manager (SRM) license
 	LicenseKey *string `json:"licenseKey,omitempty"`
+	// ProvisioningState - READ-ONLY; The state of the addon provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Building', 'Deleting', 'Updating'
+	ProvisioningState AddonProvisioningState `json:"provisioningState,omitempty"`
+	// AddonType - Possible values include: 'AddonTypeAddonProperties', 'AddonTypeSRM', 'AddonTypeVR', 'AddonTypeHCX'
+	AddonType AddonType `json:"addonType,omitempty"`
 }
 
-// AddonUpdate an update of an addon resource
-type AddonUpdate struct {
-	// AddonUpdateProperties - The properties of an addon resource that may be updated
-	*AddonUpdateProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for AddonUpdate.
-func (au AddonUpdate) MarshalJSON() ([]byte, error) {
+// MarshalJSON is the custom marshaler for AddonSrmProperties.
+func (asp AddonSrmProperties) MarshalJSON() ([]byte, error) {
+	asp.AddonType = AddonTypeSRM
 	objectMap := make(map[string]interface{})
-	if au.AddonUpdateProperties != nil {
-		objectMap["properties"] = au.AddonUpdateProperties
+	if asp.LicenseKey != nil {
+		objectMap["licenseKey"] = asp.LicenseKey
+	}
+	if asp.AddonType != "" {
+		objectMap["addonType"] = asp.AddonType
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for AddonUpdate struct.
-func (au *AddonUpdate) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var addonUpdateProperties AddonUpdateProperties
-				err = json.Unmarshal(*v, &addonUpdateProperties)
-				if err != nil {
-					return err
-				}
-				au.AddonUpdateProperties = &addonUpdateProperties
-			}
-		}
-	}
-
-	return nil
+// AsAddonSrmProperties is the BasicAddonProperties implementation for AddonSrmProperties.
+func (asp AddonSrmProperties) AsAddonSrmProperties() (*AddonSrmProperties, bool) {
+	return &asp, true
 }
 
-// AddonUpdateProperties the properties of an addon that may be updated
-type AddonUpdateProperties struct {
-	// AddonProperties - reference specific properties definition for addon type being used
-	*AddonProperties `json:"properties,omitempty"`
+// AsAddonVrProperties is the BasicAddonProperties implementation for AddonSrmProperties.
+func (asp AddonSrmProperties) AsAddonVrProperties() (*AddonVrProperties, bool) {
+	return nil, false
 }
 
-// MarshalJSON is the custom marshaler for AddonUpdateProperties.
-func (aup AddonUpdateProperties) MarshalJSON() ([]byte, error) {
+// AsAddonHcxProperties is the BasicAddonProperties implementation for AddonSrmProperties.
+func (asp AddonSrmProperties) AsAddonHcxProperties() (*AddonHcxProperties, bool) {
+	return nil, false
+}
+
+// AsAddonProperties is the BasicAddonProperties implementation for AddonSrmProperties.
+func (asp AddonSrmProperties) AsAddonProperties() (*AddonProperties, bool) {
+	return nil, false
+}
+
+// AsBasicAddonProperties is the BasicAddonProperties implementation for AddonSrmProperties.
+func (asp AddonSrmProperties) AsBasicAddonProperties() (BasicAddonProperties, bool) {
+	return &asp, true
+}
+
+// AddonVrProperties the properties of a vSphere Replication (VR) addon
+type AddonVrProperties struct {
+	// VrsCount - The vSphere Replication Server (VRS) count
+	VrsCount *int32 `json:"vrsCount,omitempty"`
+	// ProvisioningState - READ-ONLY; The state of the addon provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Building', 'Deleting', 'Updating'
+	ProvisioningState AddonProvisioningState `json:"provisioningState,omitempty"`
+	// AddonType - Possible values include: 'AddonTypeAddonProperties', 'AddonTypeSRM', 'AddonTypeVR', 'AddonTypeHCX'
+	AddonType AddonType `json:"addonType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AddonVrProperties.
+func (avp AddonVrProperties) MarshalJSON() ([]byte, error) {
+	avp.AddonType = AddonTypeVR
 	objectMap := make(map[string]interface{})
-	if aup.AddonProperties != nil {
-		objectMap["properties"] = aup.AddonProperties
+	if avp.VrsCount != nil {
+		objectMap["vrsCount"] = avp.VrsCount
+	}
+	if avp.AddonType != "" {
+		objectMap["addonType"] = avp.AddonType
 	}
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON is the custom unmarshaler for AddonUpdateProperties struct.
-func (aup *AddonUpdateProperties) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var addonProperties AddonProperties
-				err = json.Unmarshal(*v, &addonProperties)
-				if err != nil {
-					return err
-				}
-				aup.AddonProperties = &addonProperties
-			}
-		}
-	}
+// AsAddonSrmProperties is the BasicAddonProperties implementation for AddonVrProperties.
+func (avp AddonVrProperties) AsAddonSrmProperties() (*AddonSrmProperties, bool) {
+	return nil, false
+}
 
-	return nil
+// AsAddonVrProperties is the BasicAddonProperties implementation for AddonVrProperties.
+func (avp AddonVrProperties) AsAddonVrProperties() (*AddonVrProperties, bool) {
+	return &avp, true
+}
+
+// AsAddonHcxProperties is the BasicAddonProperties implementation for AddonVrProperties.
+func (avp AddonVrProperties) AsAddonHcxProperties() (*AddonHcxProperties, bool) {
+	return nil, false
+}
+
+// AsAddonProperties is the BasicAddonProperties implementation for AddonVrProperties.
+func (avp AddonVrProperties) AsAddonProperties() (*AddonProperties, bool) {
+	return nil, false
+}
+
+// AsBasicAddonProperties is the BasicAddonProperties implementation for AddonVrProperties.
+func (avp AddonVrProperties) AsBasicAddonProperties() (BasicAddonProperties, bool) {
+	return &avp, true
 }
 
 // AdminCredentials administrative credentials for accessing vCenter and NSX-T
@@ -563,6 +695,341 @@ func (c Circuit) MarshalJSON() ([]byte, error) {
 type CloudError struct {
 	// Error - An error returned by the API
 	Error *ErrorResponse `json:"error,omitempty"`
+}
+
+// CloudLink a cloud link resource
+type CloudLink struct {
+	autorest.Response `json:"-"`
+	// CloudLinkProperties - The properties of a cloud link.
+	*CloudLinkProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudLink.
+func (cl CloudLink) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cl.CloudLinkProperties != nil {
+		objectMap["properties"] = cl.CloudLinkProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for CloudLink struct.
+func (cl *CloudLink) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var cloudLinkProperties CloudLinkProperties
+				err = json.Unmarshal(*v, &cloudLinkProperties)
+				if err != nil {
+					return err
+				}
+				cl.CloudLinkProperties = &cloudLinkProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				cl.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				cl.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cl.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// CloudLinkList a paged list of cloud links
+type CloudLinkList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The items on a page
+	Value *[]CloudLink `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next page if any
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudLinkList.
+func (cll CloudLinkList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// CloudLinkListIterator provides access to a complete listing of CloudLink values.
+type CloudLinkListIterator struct {
+	i    int
+	page CloudLinkListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *CloudLinkListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudLinkListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *CloudLinkListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter CloudLinkListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter CloudLinkListIterator) Response() CloudLinkList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter CloudLinkListIterator) Value() CloudLink {
+	if !iter.page.NotDone() {
+		return CloudLink{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the CloudLinkListIterator type.
+func NewCloudLinkListIterator(page CloudLinkListPage) CloudLinkListIterator {
+	return CloudLinkListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (cll CloudLinkList) IsEmpty() bool {
+	return cll.Value == nil || len(*cll.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (cll CloudLinkList) hasNextLink() bool {
+	return cll.NextLink != nil && len(*cll.NextLink) != 0
+}
+
+// cloudLinkListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (cll CloudLinkList) cloudLinkListPreparer(ctx context.Context) (*http.Request, error) {
+	if !cll.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(cll.NextLink)))
+}
+
+// CloudLinkListPage contains a page of CloudLink values.
+type CloudLinkListPage struct {
+	fn  func(context.Context, CloudLinkList) (CloudLinkList, error)
+	cll CloudLinkList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *CloudLinkListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CloudLinkListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.cll)
+		if err != nil {
+			return err
+		}
+		page.cll = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *CloudLinkListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page CloudLinkListPage) NotDone() bool {
+	return !page.cll.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page CloudLinkListPage) Response() CloudLinkList {
+	return page.cll
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page CloudLinkListPage) Values() []CloudLink {
+	if page.cll.IsEmpty() {
+		return nil
+	}
+	return *page.cll.Value
+}
+
+// Creates a new instance of the CloudLinkListPage type.
+func NewCloudLinkListPage(cur CloudLinkList, getNextPage func(context.Context, CloudLinkList) (CloudLinkList, error)) CloudLinkListPage {
+	return CloudLinkListPage{
+		fn:  getNextPage,
+		cll: cur,
+	}
+}
+
+// CloudLinkProperties the properties of a cloud link.
+type CloudLinkProperties struct {
+	// Status - READ-ONLY; The state of the cloud link. Possible values include: 'CloudLinkStatusActive', 'CloudLinkStatusBuilding', 'CloudLinkStatusDeleting', 'CloudLinkStatusFailed', 'CloudLinkStatusDisconnected'
+	Status CloudLinkStatus `json:"status,omitempty"`
+	// LinkedCloud - Identifier of the other private cloud participating in the link.
+	LinkedCloud *string `json:"linkedCloud,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for CloudLinkProperties.
+func (clp CloudLinkProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if clp.LinkedCloud != nil {
+		objectMap["linkedCloud"] = clp.LinkedCloud
+	}
+	return json.Marshal(objectMap)
+}
+
+// CloudLinksCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type CloudLinksCreateOrUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(CloudLinksClient) (CloudLink, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *CloudLinksCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for CloudLinksCreateOrUpdateFuture.Result.
+func (future *CloudLinksCreateOrUpdateFuture) result(client CloudLinksClient) (cl CloudLink, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.CloudLinksCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		cl.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.CloudLinksCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if cl.Response.Response, err = future.GetResult(sender); err == nil && cl.Response.Response.StatusCode != http.StatusNoContent {
+		cl, err = client.CreateOrUpdateResponder(cl.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.CloudLinksCreateOrUpdateFuture", "Result", cl.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// CloudLinksDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type CloudLinksDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(CloudLinksClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *CloudLinksDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for CloudLinksDeleteFuture.Result.
+func (future *CloudLinksDeleteFuture) result(client CloudLinksClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.CloudLinksDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.CloudLinksDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // Cluster a cluster resource
@@ -819,10 +1286,10 @@ func NewClusterListPage(cur ClusterList, getNextPage func(context.Context, Clust
 
 // ClusterProperties the properties of a cluster
 type ClusterProperties struct {
-	// ProvisioningState - READ-ONLY; The state of the cluster provisioning. Possible values include: 'ClusterProvisioningStateSucceeded', 'ClusterProvisioningStateFailed', 'ClusterProvisioningStateCancelled', 'ClusterProvisioningStateDeleting', 'ClusterProvisioningStateUpdating'
-	ProvisioningState ClusterProvisioningState `json:"provisioningState,omitempty"`
 	// ClusterSize - The cluster size
 	ClusterSize *int32 `json:"clusterSize,omitempty"`
+	// ProvisioningState - The state of the cluster provisioning. Possible values include: 'ClusterProvisioningStateSucceeded', 'ClusterProvisioningStateFailed', 'ClusterProvisioningStateCancelled', 'ClusterProvisioningStateDeleting', 'ClusterProvisioningStateUpdating'
+	ProvisioningState ClusterProvisioningState `json:"provisioningState,omitempty"`
 	// ClusterID - READ-ONLY; The identity
 	ClusterID *int32 `json:"clusterId,omitempty"`
 	// Hosts - READ-ONLY; The hosts
@@ -834,6 +1301,9 @@ func (cp ClusterProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if cp.ClusterSize != nil {
 		objectMap["clusterSize"] = cp.ClusterSize
+	}
+	if cp.ProvisioningState != "" {
+		objectMap["provisioningState"] = cp.ProvisioningState
 	}
 	return json.Marshal(objectMap)
 }
@@ -1008,10 +1478,10 @@ type ClusterUpdateProperties struct {
 
 // CommonClusterProperties the common properties of a cluster
 type CommonClusterProperties struct {
-	// ProvisioningState - READ-ONLY; The state of the cluster provisioning. Possible values include: 'ClusterProvisioningStateSucceeded', 'ClusterProvisioningStateFailed', 'ClusterProvisioningStateCancelled', 'ClusterProvisioningStateDeleting', 'ClusterProvisioningStateUpdating'
-	ProvisioningState ClusterProvisioningState `json:"provisioningState,omitempty"`
 	// ClusterSize - The cluster size
 	ClusterSize *int32 `json:"clusterSize,omitempty"`
+	// ProvisioningState - The state of the cluster provisioning. Possible values include: 'ClusterProvisioningStateSucceeded', 'ClusterProvisioningStateFailed', 'ClusterProvisioningStateCancelled', 'ClusterProvisioningStateDeleting', 'ClusterProvisioningStateUpdating'
+	ProvisioningState ClusterProvisioningState `json:"provisioningState,omitempty"`
 	// ClusterID - READ-ONLY; The identity
 	ClusterID *int32 `json:"clusterId,omitempty"`
 	// Hosts - READ-ONLY; The hosts
@@ -1023,6 +1493,376 @@ func (ccp CommonClusterProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if ccp.ClusterSize != nil {
 		objectMap["clusterSize"] = ccp.ClusterSize
+	}
+	if ccp.ProvisioningState != "" {
+		objectMap["provisioningState"] = ccp.ProvisioningState
+	}
+	return json.Marshal(objectMap)
+}
+
+// Datastore a datastore resource
+type Datastore struct {
+	autorest.Response `json:"-"`
+	// DatastoreProperties - The properties of a datastore resource
+	*DatastoreProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Datastore.
+func (d Datastore) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if d.DatastoreProperties != nil {
+		objectMap["properties"] = d.DatastoreProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Datastore struct.
+func (d *Datastore) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var datastoreProperties DatastoreProperties
+				err = json.Unmarshal(*v, &datastoreProperties)
+				if err != nil {
+					return err
+				}
+				d.DatastoreProperties = &datastoreProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				d.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				d.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				d.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DatastoreList a paged list of datastores
+type DatastoreList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The items on a page
+	Value *[]Datastore `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next page if any
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatastoreList.
+func (dl DatastoreList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// DatastoreListIterator provides access to a complete listing of Datastore values.
+type DatastoreListIterator struct {
+	i    int
+	page DatastoreListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DatastoreListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatastoreListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DatastoreListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DatastoreListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DatastoreListIterator) Response() DatastoreList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DatastoreListIterator) Value() Datastore {
+	if !iter.page.NotDone() {
+		return Datastore{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the DatastoreListIterator type.
+func NewDatastoreListIterator(page DatastoreListPage) DatastoreListIterator {
+	return DatastoreListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dl DatastoreList) IsEmpty() bool {
+	return dl.Value == nil || len(*dl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (dl DatastoreList) hasNextLink() bool {
+	return dl.NextLink != nil && len(*dl.NextLink) != 0
+}
+
+// datastoreListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dl DatastoreList) datastoreListPreparer(ctx context.Context) (*http.Request, error) {
+	if !dl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dl.NextLink)))
+}
+
+// DatastoreListPage contains a page of Datastore values.
+type DatastoreListPage struct {
+	fn func(context.Context, DatastoreList) (DatastoreList, error)
+	dl DatastoreList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DatastoreListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatastoreListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.dl)
+		if err != nil {
+			return err
+		}
+		page.dl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DatastoreListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DatastoreListPage) NotDone() bool {
+	return !page.dl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DatastoreListPage) Response() DatastoreList {
+	return page.dl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DatastoreListPage) Values() []Datastore {
+	if page.dl.IsEmpty() {
+		return nil
+	}
+	return *page.dl.Value
+}
+
+// Creates a new instance of the DatastoreListPage type.
+func NewDatastoreListPage(cur DatastoreList, getNextPage func(context.Context, DatastoreList) (DatastoreList, error)) DatastoreListPage {
+	return DatastoreListPage{
+		fn: getNextPage,
+		dl: cur,
+	}
+}
+
+// DatastoreProperties the properties of a datastore
+type DatastoreProperties struct {
+	// ProvisioningState - READ-ONLY; The state of the datastore provisioning. Possible values include: 'DatastoreProvisioningStateSucceeded', 'DatastoreProvisioningStateFailed', 'DatastoreProvisioningStateCancelled', 'DatastoreProvisioningStatePending', 'DatastoreProvisioningStateCreating', 'DatastoreProvisioningStateUpdating', 'DatastoreProvisioningStateDeleting'
+	ProvisioningState DatastoreProvisioningState `json:"provisioningState,omitempty"`
+	// NetAppVolume - An Azure NetApp Files volume
+	NetAppVolume *NetAppVolume `json:"netAppVolume,omitempty"`
+	// DiskPoolVolume - An iSCSI volume
+	DiskPoolVolume *DiskPoolVolume `json:"diskPoolVolume,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatastoreProperties.
+func (dp DatastoreProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dp.NetAppVolume != nil {
+		objectMap["netAppVolume"] = dp.NetAppVolume
+	}
+	if dp.DiskPoolVolume != nil {
+		objectMap["diskPoolVolume"] = dp.DiskPoolVolume
+	}
+	return json.Marshal(objectMap)
+}
+
+// DatastoresCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type DatastoresCreateOrUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DatastoresClient) (Datastore, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *DatastoresCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for DatastoresCreateOrUpdateFuture.Result.
+func (future *DatastoresCreateOrUpdateFuture) result(client DatastoresClient) (d Datastore, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.DatastoresCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		d.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.DatastoresCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
+		d, err = client.CreateOrUpdateResponder(d.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.DatastoresCreateOrUpdateFuture", "Result", d.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// DatastoresDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DatastoresDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DatastoresClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *DatastoresDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for DatastoresDeleteFuture.Result.
+func (future *DatastoresDeleteFuture) result(client DatastoresClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.DatastoresDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.DatastoresDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// DiskPoolVolume an iSCSI volume from Microsoft.StoragePool provider
+type DiskPoolVolume struct {
+	// TargetID - Azure resource ID of the iSCSI target
+	TargetID *string `json:"targetId,omitempty"`
+	// LunName - Name of the LUN to be used for datastore
+	LunName *string `json:"lunName,omitempty"`
+	// MountOption - Mode that describes whether the LUN has to be mounted as a datastore or attached as a LUN. Possible values include: 'MOUNT', 'ATTACH'
+	MountOption MountOptionEnum `json:"mountOption,omitempty"`
+	// Path - READ-ONLY; Device path
+	Path *string `json:"path,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DiskPoolVolume.
+func (dpv DiskPoolVolume) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dpv.TargetID != nil {
+		objectMap["targetId"] = dpv.TargetID
+	}
+	if dpv.LunName != nil {
+		objectMap["lunName"] = dpv.LunName
+	}
+	if dpv.MountOption != "" {
+		objectMap["mountOption"] = dpv.MountOption
 	}
 	return json.Marshal(objectMap)
 }
@@ -1959,10 +2799,10 @@ type LogSpecification struct {
 
 // ManagementCluster the properties of a management cluster
 type ManagementCluster struct {
-	// ProvisioningState - READ-ONLY; The state of the cluster provisioning. Possible values include: 'ClusterProvisioningStateSucceeded', 'ClusterProvisioningStateFailed', 'ClusterProvisioningStateCancelled', 'ClusterProvisioningStateDeleting', 'ClusterProvisioningStateUpdating'
-	ProvisioningState ClusterProvisioningState `json:"provisioningState,omitempty"`
 	// ClusterSize - The cluster size
 	ClusterSize *int32 `json:"clusterSize,omitempty"`
+	// ProvisioningState - The state of the cluster provisioning. Possible values include: 'ClusterProvisioningStateSucceeded', 'ClusterProvisioningStateFailed', 'ClusterProvisioningStateCancelled', 'ClusterProvisioningStateDeleting', 'ClusterProvisioningStateUpdating'
+	ProvisioningState ClusterProvisioningState `json:"provisioningState,omitempty"`
 	// ClusterID - READ-ONLY; The identity
 	ClusterID *int32 `json:"clusterId,omitempty"`
 	// Hosts - READ-ONLY; The hosts
@@ -1974,6 +2814,9 @@ func (mc ManagementCluster) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if mc.ClusterSize != nil {
 		objectMap["clusterSize"] = mc.ClusterSize
+	}
+	if mc.ProvisioningState != "" {
+		objectMap["provisioningState"] = mc.ProvisioningState
 	}
 	return json.Marshal(objectMap)
 }
@@ -2018,6 +2861,12 @@ type MetricSpecification struct {
 	SourceMdmAccount *string `json:"sourceMdmAccount,omitempty"`
 	// SourceMdmNamespace - The name of the MDM namespace.
 	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
+}
+
+// NetAppVolume an Azure NetApp Files volume from Microsoft.NetApp provider
+type NetAppVolume struct {
+	// ID - Azure resource ID of the NetApp volume
+	ID *string `json:"id,omitempty"`
 }
 
 // Operation a REST API operation
@@ -2542,6 +3391,8 @@ type PrivateCloudProperties struct {
 	VcenterCertificateThumbprint *string `json:"vcenterCertificateThumbprint,omitempty"`
 	// NsxtCertificateThumbprint - READ-ONLY; Thumbprint of the NSX-T Manager SSL certificate
 	NsxtCertificateThumbprint *string `json:"nsxtCertificateThumbprint,omitempty"`
+	// ExternalCloudLinks - READ-ONLY; Array of cloud link IDs from other clouds that connect to this one
+	ExternalCloudLinks *[]string `json:"externalCloudLinks,omitempty"`
 	// ManagementCluster - The default cluster used for management
 	ManagementCluster *ManagementCluster `json:"managementCluster,omitempty"`
 	// Internet - Connectivity to internet is enabled or disabled. Possible values include: 'Enabled', 'Disabled'
@@ -2853,6 +3704,62 @@ func (pr ProxyResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// PSCredentialExecutionParameter a powershell credential object
+type PSCredentialExecutionParameter struct {
+	// Username - username for login
+	Username *string `json:"username,omitempty"`
+	// Password - password for login
+	Password *string `json:"password,omitempty"`
+	// Name - The parameter name
+	Name *string `json:"name,omitempty"`
+	// Type - Possible values include: 'TypeScriptExecutionParameter', 'TypeSecureValue', 'TypeValue', 'TypeCredential'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PSCredentialExecutionParameter.
+func (pcep PSCredentialExecutionParameter) MarshalJSON() ([]byte, error) {
+	pcep.Type = TypeCredential
+	objectMap := make(map[string]interface{})
+	if pcep.Username != nil {
+		objectMap["username"] = pcep.Username
+	}
+	if pcep.Password != nil {
+		objectMap["password"] = pcep.Password
+	}
+	if pcep.Name != nil {
+		objectMap["name"] = pcep.Name
+	}
+	if pcep.Type != "" {
+		objectMap["type"] = pcep.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsScriptSecureStringExecutionParameter is the BasicScriptExecutionParameter implementation for PSCredentialExecutionParameter.
+func (pcep PSCredentialExecutionParameter) AsScriptSecureStringExecutionParameter() (*ScriptSecureStringExecutionParameter, bool) {
+	return nil, false
+}
+
+// AsScriptStringExecutionParameter is the BasicScriptExecutionParameter implementation for PSCredentialExecutionParameter.
+func (pcep PSCredentialExecutionParameter) AsScriptStringExecutionParameter() (*ScriptStringExecutionParameter, bool) {
+	return nil, false
+}
+
+// AsPSCredentialExecutionParameter is the BasicScriptExecutionParameter implementation for PSCredentialExecutionParameter.
+func (pcep PSCredentialExecutionParameter) AsPSCredentialExecutionParameter() (*PSCredentialExecutionParameter, bool) {
+	return &pcep, true
+}
+
+// AsScriptExecutionParameter is the BasicScriptExecutionParameter implementation for PSCredentialExecutionParameter.
+func (pcep PSCredentialExecutionParameter) AsScriptExecutionParameter() (*ScriptExecutionParameter, bool) {
+	return nil, false
+}
+
+// AsBasicScriptExecutionParameter is the BasicScriptExecutionParameter implementation for PSCredentialExecutionParameter.
+func (pcep PSCredentialExecutionParameter) AsBasicScriptExecutionParameter() (BasicScriptExecutionParameter, bool) {
+	return &pcep, true
+}
+
 // Quota subscription quotas
 type Quota struct {
 	autorest.Response `json:"-"`
@@ -2882,6 +3789,1266 @@ type Resource struct {
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// ScriptCmdlet a cmdlet available for script execution
+type ScriptCmdlet struct {
+	autorest.Response `json:"-"`
+	// ScriptCmdletProperties - The properties of a script cmdlet resource
+	*ScriptCmdletProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScriptCmdlet.
+func (sc ScriptCmdlet) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sc.ScriptCmdletProperties != nil {
+		objectMap["properties"] = sc.ScriptCmdletProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ScriptCmdlet struct.
+func (sc *ScriptCmdlet) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var scriptCmdletProperties ScriptCmdletProperties
+				err = json.Unmarshal(*v, &scriptCmdletProperties)
+				if err != nil {
+					return err
+				}
+				sc.ScriptCmdletProperties = &scriptCmdletProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sc.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ScriptCmdletProperties properties of a pre-canned script
+type ScriptCmdletProperties struct {
+	// Description - READ-ONLY; Description of the scripts functionality
+	Description *string `json:"description,omitempty"`
+	// Timeout - READ-ONLY; Recommended time limit for execution
+	Timeout *string `json:"timeout,omitempty"`
+	// Parameters - READ-ONLY; Parameters the script will accept
+	Parameters *[]ScriptParameter `json:"parameters,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScriptCmdletProperties.
+func (scp ScriptCmdletProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ScriptCmdletsList pageable list of scripts/cmdlets
+type ScriptCmdletsList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of scripts
+	Value *[]ScriptCmdlet `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next page if any
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScriptCmdletsList.
+func (scl ScriptCmdletsList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ScriptCmdletsListIterator provides access to a complete listing of ScriptCmdlet values.
+type ScriptCmdletsListIterator struct {
+	i    int
+	page ScriptCmdletsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ScriptCmdletsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ScriptCmdletsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ScriptCmdletsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ScriptCmdletsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ScriptCmdletsListIterator) Response() ScriptCmdletsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ScriptCmdletsListIterator) Value() ScriptCmdlet {
+	if !iter.page.NotDone() {
+		return ScriptCmdlet{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ScriptCmdletsListIterator type.
+func NewScriptCmdletsListIterator(page ScriptCmdletsListPage) ScriptCmdletsListIterator {
+	return ScriptCmdletsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (scl ScriptCmdletsList) IsEmpty() bool {
+	return scl.Value == nil || len(*scl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (scl ScriptCmdletsList) hasNextLink() bool {
+	return scl.NextLink != nil && len(*scl.NextLink) != 0
+}
+
+// scriptCmdletsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (scl ScriptCmdletsList) scriptCmdletsListPreparer(ctx context.Context) (*http.Request, error) {
+	if !scl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(scl.NextLink)))
+}
+
+// ScriptCmdletsListPage contains a page of ScriptCmdlet values.
+type ScriptCmdletsListPage struct {
+	fn  func(context.Context, ScriptCmdletsList) (ScriptCmdletsList, error)
+	scl ScriptCmdletsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ScriptCmdletsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ScriptCmdletsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.scl)
+		if err != nil {
+			return err
+		}
+		page.scl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ScriptCmdletsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ScriptCmdletsListPage) NotDone() bool {
+	return !page.scl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ScriptCmdletsListPage) Response() ScriptCmdletsList {
+	return page.scl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ScriptCmdletsListPage) Values() []ScriptCmdlet {
+	if page.scl.IsEmpty() {
+		return nil
+	}
+	return *page.scl.Value
+}
+
+// Creates a new instance of the ScriptCmdletsListPage type.
+func NewScriptCmdletsListPage(cur ScriptCmdletsList, getNextPage func(context.Context, ScriptCmdletsList) (ScriptCmdletsList, error)) ScriptCmdletsListPage {
+	return ScriptCmdletsListPage{
+		fn:  getNextPage,
+		scl: cur,
+	}
+}
+
+// ScriptExecution an instance of a script executed by a user - custom or AVS
+type ScriptExecution struct {
+	autorest.Response `json:"-"`
+	// ScriptExecutionProperties - The properties of a script execution resource
+	*ScriptExecutionProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScriptExecution.
+func (se ScriptExecution) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if se.ScriptExecutionProperties != nil {
+		objectMap["properties"] = se.ScriptExecutionProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ScriptExecution struct.
+func (se *ScriptExecution) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var scriptExecutionProperties ScriptExecutionProperties
+				err = json.Unmarshal(*v, &scriptExecutionProperties)
+				if err != nil {
+					return err
+				}
+				se.ScriptExecutionProperties = &scriptExecutionProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				se.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				se.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				se.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicScriptExecutionParameter the arguments passed in to the execution
+type BasicScriptExecutionParameter interface {
+	AsScriptSecureStringExecutionParameter() (*ScriptSecureStringExecutionParameter, bool)
+	AsScriptStringExecutionParameter() (*ScriptStringExecutionParameter, bool)
+	AsPSCredentialExecutionParameter() (*PSCredentialExecutionParameter, bool)
+	AsScriptExecutionParameter() (*ScriptExecutionParameter, bool)
+}
+
+// ScriptExecutionParameter the arguments passed in to the execution
+type ScriptExecutionParameter struct {
+	// Name - The parameter name
+	Name *string `json:"name,omitempty"`
+	// Type - Possible values include: 'TypeScriptExecutionParameter', 'TypeSecureValue', 'TypeValue', 'TypeCredential'
+	Type Type `json:"type,omitempty"`
+}
+
+func unmarshalBasicScriptExecutionParameter(body []byte) (BasicScriptExecutionParameter, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeSecureValue):
+		var sssep ScriptSecureStringExecutionParameter
+		err := json.Unmarshal(body, &sssep)
+		return sssep, err
+	case string(TypeValue):
+		var ssep ScriptStringExecutionParameter
+		err := json.Unmarshal(body, &ssep)
+		return ssep, err
+	case string(TypeCredential):
+		var pcep PSCredentialExecutionParameter
+		err := json.Unmarshal(body, &pcep)
+		return pcep, err
+	default:
+		var sep ScriptExecutionParameter
+		err := json.Unmarshal(body, &sep)
+		return sep, err
+	}
+}
+func unmarshalBasicScriptExecutionParameterArray(body []byte) ([]BasicScriptExecutionParameter, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	sepArray := make([]BasicScriptExecutionParameter, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		sep, err := unmarshalBasicScriptExecutionParameter(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		sepArray[index] = sep
+	}
+	return sepArray, nil
+}
+
+// MarshalJSON is the custom marshaler for ScriptExecutionParameter.
+func (sep ScriptExecutionParameter) MarshalJSON() ([]byte, error) {
+	sep.Type = TypeScriptExecutionParameter
+	objectMap := make(map[string]interface{})
+	if sep.Name != nil {
+		objectMap["name"] = sep.Name
+	}
+	if sep.Type != "" {
+		objectMap["type"] = sep.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsScriptSecureStringExecutionParameter is the BasicScriptExecutionParameter implementation for ScriptExecutionParameter.
+func (sep ScriptExecutionParameter) AsScriptSecureStringExecutionParameter() (*ScriptSecureStringExecutionParameter, bool) {
+	return nil, false
+}
+
+// AsScriptStringExecutionParameter is the BasicScriptExecutionParameter implementation for ScriptExecutionParameter.
+func (sep ScriptExecutionParameter) AsScriptStringExecutionParameter() (*ScriptStringExecutionParameter, bool) {
+	return nil, false
+}
+
+// AsPSCredentialExecutionParameter is the BasicScriptExecutionParameter implementation for ScriptExecutionParameter.
+func (sep ScriptExecutionParameter) AsPSCredentialExecutionParameter() (*PSCredentialExecutionParameter, bool) {
+	return nil, false
+}
+
+// AsScriptExecutionParameter is the BasicScriptExecutionParameter implementation for ScriptExecutionParameter.
+func (sep ScriptExecutionParameter) AsScriptExecutionParameter() (*ScriptExecutionParameter, bool) {
+	return &sep, true
+}
+
+// AsBasicScriptExecutionParameter is the BasicScriptExecutionParameter implementation for ScriptExecutionParameter.
+func (sep ScriptExecutionParameter) AsBasicScriptExecutionParameter() (BasicScriptExecutionParameter, bool) {
+	return &sep, true
+}
+
+// ScriptExecutionProperties properties of a user-invoked script
+type ScriptExecutionProperties struct {
+	// ScriptCmdletID - A reference to the script cmdlet resource if user is running a AVS script
+	ScriptCmdletID *string `json:"scriptCmdletId,omitempty"`
+	// Parameters - Parameters the script will accept
+	Parameters *[]BasicScriptExecutionParameter `json:"parameters,omitempty"`
+	// HiddenParameters - Parameters that will be hidden/not visible to ARM, such as passwords and credentials
+	HiddenParameters *[]BasicScriptExecutionParameter `json:"hiddenParameters,omitempty"`
+	// FailureReason - Error message if the script was able to run, but if the script itself had errors or powershell threw an exception
+	FailureReason *string `json:"failureReason,omitempty"`
+	// Timeout - Time limit for execution
+	Timeout *string `json:"timeout,omitempty"`
+	// Retention - Time to live for the resource. If not provided, will be available for 60 days
+	Retention *string `json:"retention,omitempty"`
+	// SubmittedAt - READ-ONLY; Time the script execution was submitted
+	SubmittedAt *date.Time `json:"submittedAt,omitempty"`
+	// StartedAt - READ-ONLY; Time the script execution was started
+	StartedAt *date.Time `json:"startedAt,omitempty"`
+	// FinishedAt - READ-ONLY; Time the script execution was finished
+	FinishedAt *date.Time `json:"finishedAt,omitempty"`
+	// ProvisioningState - READ-ONLY; The state of the script execution resource. Possible values include: 'ScriptExecutionProvisioningStatePending', 'ScriptExecutionProvisioningStateRunning', 'ScriptExecutionProvisioningStateSucceeded', 'ScriptExecutionProvisioningStateFailed', 'ScriptExecutionProvisioningStateCancelling', 'ScriptExecutionProvisioningStateCancelled', 'ScriptExecutionProvisioningStateDeleting'
+	ProvisioningState ScriptExecutionProvisioningState `json:"provisioningState,omitempty"`
+	// Output - Standard output stream from the powershell execution
+	Output *[]string `json:"output,omitempty"`
+	// NamedOutputs - User-defined dictionary.
+	NamedOutputs map[string]interface{} `json:"namedOutputs"`
+	// Information - READ-ONLY; Standard information out stream from the powershell execution
+	Information *[]string `json:"information,omitempty"`
+	// Warnings - READ-ONLY; Standard warning out stream from the powershell execution
+	Warnings *[]string `json:"warnings,omitempty"`
+	// Errors - READ-ONLY; Standard error output stream from the powershell execution
+	Errors *[]string `json:"errors,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScriptExecutionProperties.
+func (sep ScriptExecutionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sep.ScriptCmdletID != nil {
+		objectMap["scriptCmdletId"] = sep.ScriptCmdletID
+	}
+	if sep.Parameters != nil {
+		objectMap["parameters"] = sep.Parameters
+	}
+	if sep.HiddenParameters != nil {
+		objectMap["hiddenParameters"] = sep.HiddenParameters
+	}
+	if sep.FailureReason != nil {
+		objectMap["failureReason"] = sep.FailureReason
+	}
+	if sep.Timeout != nil {
+		objectMap["timeout"] = sep.Timeout
+	}
+	if sep.Retention != nil {
+		objectMap["retention"] = sep.Retention
+	}
+	if sep.Output != nil {
+		objectMap["output"] = sep.Output
+	}
+	if sep.NamedOutputs != nil {
+		objectMap["namedOutputs"] = sep.NamedOutputs
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ScriptExecutionProperties struct.
+func (sep *ScriptExecutionProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "scriptCmdletId":
+			if v != nil {
+				var scriptCmdletID string
+				err = json.Unmarshal(*v, &scriptCmdletID)
+				if err != nil {
+					return err
+				}
+				sep.ScriptCmdletID = &scriptCmdletID
+			}
+		case "parameters":
+			if v != nil {
+				parameters, err := unmarshalBasicScriptExecutionParameterArray(*v)
+				if err != nil {
+					return err
+				}
+				sep.Parameters = &parameters
+			}
+		case "hiddenParameters":
+			if v != nil {
+				hiddenParameters, err := unmarshalBasicScriptExecutionParameterArray(*v)
+				if err != nil {
+					return err
+				}
+				sep.HiddenParameters = &hiddenParameters
+			}
+		case "failureReason":
+			if v != nil {
+				var failureReason string
+				err = json.Unmarshal(*v, &failureReason)
+				if err != nil {
+					return err
+				}
+				sep.FailureReason = &failureReason
+			}
+		case "timeout":
+			if v != nil {
+				var timeout string
+				err = json.Unmarshal(*v, &timeout)
+				if err != nil {
+					return err
+				}
+				sep.Timeout = &timeout
+			}
+		case "retention":
+			if v != nil {
+				var retention string
+				err = json.Unmarshal(*v, &retention)
+				if err != nil {
+					return err
+				}
+				sep.Retention = &retention
+			}
+		case "submittedAt":
+			if v != nil {
+				var submittedAt date.Time
+				err = json.Unmarshal(*v, &submittedAt)
+				if err != nil {
+					return err
+				}
+				sep.SubmittedAt = &submittedAt
+			}
+		case "startedAt":
+			if v != nil {
+				var startedAt date.Time
+				err = json.Unmarshal(*v, &startedAt)
+				if err != nil {
+					return err
+				}
+				sep.StartedAt = &startedAt
+			}
+		case "finishedAt":
+			if v != nil {
+				var finishedAt date.Time
+				err = json.Unmarshal(*v, &finishedAt)
+				if err != nil {
+					return err
+				}
+				sep.FinishedAt = &finishedAt
+			}
+		case "provisioningState":
+			if v != nil {
+				var provisioningState ScriptExecutionProvisioningState
+				err = json.Unmarshal(*v, &provisioningState)
+				if err != nil {
+					return err
+				}
+				sep.ProvisioningState = provisioningState
+			}
+		case "output":
+			if v != nil {
+				var output []string
+				err = json.Unmarshal(*v, &output)
+				if err != nil {
+					return err
+				}
+				sep.Output = &output
+			}
+		case "namedOutputs":
+			if v != nil {
+				var namedOutputs map[string]interface{}
+				err = json.Unmarshal(*v, &namedOutputs)
+				if err != nil {
+					return err
+				}
+				sep.NamedOutputs = namedOutputs
+			}
+		case "information":
+			if v != nil {
+				var information []string
+				err = json.Unmarshal(*v, &information)
+				if err != nil {
+					return err
+				}
+				sep.Information = &information
+			}
+		case "warnings":
+			if v != nil {
+				var warnings []string
+				err = json.Unmarshal(*v, &warnings)
+				if err != nil {
+					return err
+				}
+				sep.Warnings = &warnings
+			}
+		case "errors":
+			if v != nil {
+				var errorsVar []string
+				err = json.Unmarshal(*v, &errorsVar)
+				if err != nil {
+					return err
+				}
+				sep.Errors = &errorsVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ScriptExecutionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ScriptExecutionsCreateOrUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ScriptExecutionsClient) (ScriptExecution, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ScriptExecutionsCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ScriptExecutionsCreateOrUpdateFuture.Result.
+func (future *ScriptExecutionsCreateOrUpdateFuture) result(client ScriptExecutionsClient) (se ScriptExecution, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.ScriptExecutionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		se.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.ScriptExecutionsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if se.Response.Response, err = future.GetResult(sender); err == nil && se.Response.Response.StatusCode != http.StatusNoContent {
+		se, err = client.CreateOrUpdateResponder(se.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.ScriptExecutionsCreateOrUpdateFuture", "Result", se.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ScriptExecutionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ScriptExecutionsDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ScriptExecutionsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ScriptExecutionsDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ScriptExecutionsDeleteFuture.Result.
+func (future *ScriptExecutionsDeleteFuture) result(client ScriptExecutionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.ScriptExecutionsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.ScriptExecutionsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ScriptExecutionsList pageable list of script executions
+type ScriptExecutionsList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of scripts
+	Value *[]ScriptExecution `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next page if any
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScriptExecutionsList.
+func (sel ScriptExecutionsList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ScriptExecutionsListIterator provides access to a complete listing of ScriptExecution values.
+type ScriptExecutionsListIterator struct {
+	i    int
+	page ScriptExecutionsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ScriptExecutionsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ScriptExecutionsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ScriptExecutionsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ScriptExecutionsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ScriptExecutionsListIterator) Response() ScriptExecutionsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ScriptExecutionsListIterator) Value() ScriptExecution {
+	if !iter.page.NotDone() {
+		return ScriptExecution{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ScriptExecutionsListIterator type.
+func NewScriptExecutionsListIterator(page ScriptExecutionsListPage) ScriptExecutionsListIterator {
+	return ScriptExecutionsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (sel ScriptExecutionsList) IsEmpty() bool {
+	return sel.Value == nil || len(*sel.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (sel ScriptExecutionsList) hasNextLink() bool {
+	return sel.NextLink != nil && len(*sel.NextLink) != 0
+}
+
+// scriptExecutionsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (sel ScriptExecutionsList) scriptExecutionsListPreparer(ctx context.Context) (*http.Request, error) {
+	if !sel.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(sel.NextLink)))
+}
+
+// ScriptExecutionsListPage contains a page of ScriptExecution values.
+type ScriptExecutionsListPage struct {
+	fn  func(context.Context, ScriptExecutionsList) (ScriptExecutionsList, error)
+	sel ScriptExecutionsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ScriptExecutionsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ScriptExecutionsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.sel)
+		if err != nil {
+			return err
+		}
+		page.sel = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ScriptExecutionsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ScriptExecutionsListPage) NotDone() bool {
+	return !page.sel.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ScriptExecutionsListPage) Response() ScriptExecutionsList {
+	return page.sel
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ScriptExecutionsListPage) Values() []ScriptExecution {
+	if page.sel.IsEmpty() {
+		return nil
+	}
+	return *page.sel.Value
+}
+
+// Creates a new instance of the ScriptExecutionsListPage type.
+func NewScriptExecutionsListPage(cur ScriptExecutionsList, getNextPage func(context.Context, ScriptExecutionsList) (ScriptExecutionsList, error)) ScriptExecutionsListPage {
+	return ScriptExecutionsListPage{
+		fn:  getNextPage,
+		sel: cur,
+	}
+}
+
+// ScriptPackage script Package resources available for execution
+type ScriptPackage struct {
+	autorest.Response `json:"-"`
+	// ScriptPackageProperties - ScriptPackage resource properties
+	*ScriptPackageProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScriptPackage.
+func (sp ScriptPackage) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.ScriptPackageProperties != nil {
+		objectMap["properties"] = sp.ScriptPackageProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ScriptPackage struct.
+func (sp *ScriptPackage) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var scriptPackageProperties ScriptPackageProperties
+				err = json.Unmarshal(*v, &scriptPackageProperties)
+				if err != nil {
+					return err
+				}
+				sp.ScriptPackageProperties = &scriptPackageProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sp.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sp.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sp.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// ScriptPackageProperties properties of a Script Package subresource
+type ScriptPackageProperties struct {
+	// Description - READ-ONLY; User friendly description of the package
+	Description *string `json:"description,omitempty"`
+	// Version - READ-ONLY; Module version
+	Version *string `json:"version,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScriptPackageProperties.
+func (spp ScriptPackageProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ScriptPackagesList a list of the available script packages
+type ScriptPackagesList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; List of script package resources
+	Value *[]ScriptPackage `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next page if any
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScriptPackagesList.
+func (spl ScriptPackagesList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ScriptPackagesListIterator provides access to a complete listing of ScriptPackage values.
+type ScriptPackagesListIterator struct {
+	i    int
+	page ScriptPackagesListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ScriptPackagesListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ScriptPackagesListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ScriptPackagesListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ScriptPackagesListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ScriptPackagesListIterator) Response() ScriptPackagesList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ScriptPackagesListIterator) Value() ScriptPackage {
+	if !iter.page.NotDone() {
+		return ScriptPackage{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ScriptPackagesListIterator type.
+func NewScriptPackagesListIterator(page ScriptPackagesListPage) ScriptPackagesListIterator {
+	return ScriptPackagesListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (spl ScriptPackagesList) IsEmpty() bool {
+	return spl.Value == nil || len(*spl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (spl ScriptPackagesList) hasNextLink() bool {
+	return spl.NextLink != nil && len(*spl.NextLink) != 0
+}
+
+// scriptPackagesListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (spl ScriptPackagesList) scriptPackagesListPreparer(ctx context.Context) (*http.Request, error) {
+	if !spl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(spl.NextLink)))
+}
+
+// ScriptPackagesListPage contains a page of ScriptPackage values.
+type ScriptPackagesListPage struct {
+	fn  func(context.Context, ScriptPackagesList) (ScriptPackagesList, error)
+	spl ScriptPackagesList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ScriptPackagesListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ScriptPackagesListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.spl)
+		if err != nil {
+			return err
+		}
+		page.spl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ScriptPackagesListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ScriptPackagesListPage) NotDone() bool {
+	return !page.spl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ScriptPackagesListPage) Response() ScriptPackagesList {
+	return page.spl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ScriptPackagesListPage) Values() []ScriptPackage {
+	if page.spl.IsEmpty() {
+		return nil
+	}
+	return *page.spl.Value
+}
+
+// Creates a new instance of the ScriptPackagesListPage type.
+func NewScriptPackagesListPage(cur ScriptPackagesList, getNextPage func(context.Context, ScriptPackagesList) (ScriptPackagesList, error)) ScriptPackagesListPage {
+	return ScriptPackagesListPage{
+		fn:  getNextPage,
+		spl: cur,
+	}
+}
+
+// ScriptParameter an parameter that the script will accept
+type ScriptParameter struct {
+	// Type - READ-ONLY; The type of parameter the script is expecting. psCredential is a PSCredentialObject. Possible values include: 'String', 'SecureString', 'Credential', 'Int', 'Bool', 'Float'
+	Type ScriptParameterTypes `json:"type,omitempty"`
+	// Name - The parameter name that the script will expect a parameter value for
+	Name *string `json:"name,omitempty"`
+	// Description - READ-ONLY; User friendly description of the parameter
+	Description *string `json:"description,omitempty"`
+	// Visibility - READ-ONLY; Should this parameter be visible to arm and passed in the parameters argument when executing. Possible values include: 'Visible', 'Hidden'
+	Visibility VisibilityParameterEnum `json:"visibility,omitempty"`
+	// Optional - READ-ONLY; Is this parameter required or optional. Possible values include: 'Optional', 'Required'
+	Optional OptionalParamEnum `json:"optional,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScriptParameter.
+func (sp ScriptParameter) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.Name != nil {
+		objectMap["name"] = sp.Name
+	}
+	return json.Marshal(objectMap)
+}
+
+// ScriptSecureStringExecutionParameter a plain text value execution parameter
+type ScriptSecureStringExecutionParameter struct {
+	// SecureValue - A secure value for the passed parameter, not to be stored in logs
+	SecureValue *string `json:"secureValue,omitempty"`
+	// Name - The parameter name
+	Name *string `json:"name,omitempty"`
+	// Type - Possible values include: 'TypeScriptExecutionParameter', 'TypeSecureValue', 'TypeValue', 'TypeCredential'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScriptSecureStringExecutionParameter.
+func (sssep ScriptSecureStringExecutionParameter) MarshalJSON() ([]byte, error) {
+	sssep.Type = TypeSecureValue
+	objectMap := make(map[string]interface{})
+	if sssep.SecureValue != nil {
+		objectMap["secureValue"] = sssep.SecureValue
+	}
+	if sssep.Name != nil {
+		objectMap["name"] = sssep.Name
+	}
+	if sssep.Type != "" {
+		objectMap["type"] = sssep.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsScriptSecureStringExecutionParameter is the BasicScriptExecutionParameter implementation for ScriptSecureStringExecutionParameter.
+func (sssep ScriptSecureStringExecutionParameter) AsScriptSecureStringExecutionParameter() (*ScriptSecureStringExecutionParameter, bool) {
+	return &sssep, true
+}
+
+// AsScriptStringExecutionParameter is the BasicScriptExecutionParameter implementation for ScriptSecureStringExecutionParameter.
+func (sssep ScriptSecureStringExecutionParameter) AsScriptStringExecutionParameter() (*ScriptStringExecutionParameter, bool) {
+	return nil, false
+}
+
+// AsPSCredentialExecutionParameter is the BasicScriptExecutionParameter implementation for ScriptSecureStringExecutionParameter.
+func (sssep ScriptSecureStringExecutionParameter) AsPSCredentialExecutionParameter() (*PSCredentialExecutionParameter, bool) {
+	return nil, false
+}
+
+// AsScriptExecutionParameter is the BasicScriptExecutionParameter implementation for ScriptSecureStringExecutionParameter.
+func (sssep ScriptSecureStringExecutionParameter) AsScriptExecutionParameter() (*ScriptExecutionParameter, bool) {
+	return nil, false
+}
+
+// AsBasicScriptExecutionParameter is the BasicScriptExecutionParameter implementation for ScriptSecureStringExecutionParameter.
+func (sssep ScriptSecureStringExecutionParameter) AsBasicScriptExecutionParameter() (BasicScriptExecutionParameter, bool) {
+	return &sssep, true
+}
+
+// ScriptStringExecutionParameter a plain text value execution parameter
+type ScriptStringExecutionParameter struct {
+	// Value - The value for the passed parameter
+	Value *string `json:"value,omitempty"`
+	// Name - The parameter name
+	Name *string `json:"name,omitempty"`
+	// Type - Possible values include: 'TypeScriptExecutionParameter', 'TypeSecureValue', 'TypeValue', 'TypeCredential'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ScriptStringExecutionParameter.
+func (ssep ScriptStringExecutionParameter) MarshalJSON() ([]byte, error) {
+	ssep.Type = TypeValue
+	objectMap := make(map[string]interface{})
+	if ssep.Value != nil {
+		objectMap["value"] = ssep.Value
+	}
+	if ssep.Name != nil {
+		objectMap["name"] = ssep.Name
+	}
+	if ssep.Type != "" {
+		objectMap["type"] = ssep.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsScriptSecureStringExecutionParameter is the BasicScriptExecutionParameter implementation for ScriptStringExecutionParameter.
+func (ssep ScriptStringExecutionParameter) AsScriptSecureStringExecutionParameter() (*ScriptSecureStringExecutionParameter, bool) {
+	return nil, false
+}
+
+// AsScriptStringExecutionParameter is the BasicScriptExecutionParameter implementation for ScriptStringExecutionParameter.
+func (ssep ScriptStringExecutionParameter) AsScriptStringExecutionParameter() (*ScriptStringExecutionParameter, bool) {
+	return &ssep, true
+}
+
+// AsPSCredentialExecutionParameter is the BasicScriptExecutionParameter implementation for ScriptStringExecutionParameter.
+func (ssep ScriptStringExecutionParameter) AsPSCredentialExecutionParameter() (*PSCredentialExecutionParameter, bool) {
+	return nil, false
+}
+
+// AsScriptExecutionParameter is the BasicScriptExecutionParameter implementation for ScriptStringExecutionParameter.
+func (ssep ScriptStringExecutionParameter) AsScriptExecutionParameter() (*ScriptExecutionParameter, bool) {
+	return nil, false
+}
+
+// AsBasicScriptExecutionParameter is the BasicScriptExecutionParameter implementation for ScriptStringExecutionParameter.
+func (ssep ScriptStringExecutionParameter) AsBasicScriptExecutionParameter() (BasicScriptExecutionParameter, bool) {
+	return &ssep, true
 }
 
 // ServiceSpecification service specification payload
@@ -2942,8 +5109,8 @@ func (t Trial) MarshalJSON() ([]byte, error) {
 // WorkloadNetworkDhcp NSX DHCP
 type WorkloadNetworkDhcp struct {
 	autorest.Response `json:"-"`
-	// BasicWorkloadNetworkDhcpEntity - DHCP properties.
-	BasicWorkloadNetworkDhcpEntity `json:"properties,omitempty"`
+	// Properties - DHCP properties.
+	Properties BasicWorkloadNetworkDhcpEntity `json:"properties,omitempty"`
 	// ID - READ-ONLY; Resource ID.
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; Resource name.
@@ -2955,7 +5122,7 @@ type WorkloadNetworkDhcp struct {
 // MarshalJSON is the custom marshaler for WorkloadNetworkDhcp.
 func (wnd WorkloadNetworkDhcp) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	objectMap["properties"] = wnd.BasicWorkloadNetworkDhcpEntity
+	objectMap["properties"] = wnd.Properties
 	return json.Marshal(objectMap)
 }
 
@@ -2970,11 +5137,11 @@ func (wnd *WorkloadNetworkDhcp) UnmarshalJSON(body []byte) error {
 		switch k {
 		case "properties":
 			if v != nil {
-				basicWorkloadNetworkDhcpEntity, err := unmarshalBasicWorkloadNetworkDhcpEntity(*v)
+				properties, err := unmarshalBasicWorkloadNetworkDhcpEntity(*v)
 				if err != nil {
 					return err
 				}
-				wnd.BasicWorkloadNetworkDhcpEntity = basicWorkloadNetworkDhcpEntity
+				wnd.Properties = properties
 			}
 		case "id":
 			if v != nil {
@@ -4486,6 +6653,269 @@ func (wnpmp WorkloadNetworkPortMirroringProperties) MarshalJSON() ([]byte, error
 	return json.Marshal(objectMap)
 }
 
+// WorkloadNetworkPublicIP NSX Public IP Block
+type WorkloadNetworkPublicIP struct {
+	autorest.Response `json:"-"`
+	// WorkloadNetworkPublicIPProperties - Public IP Block properties
+	*WorkloadNetworkPublicIPProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkloadNetworkPublicIP.
+func (wnpi WorkloadNetworkPublicIP) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wnpi.WorkloadNetworkPublicIPProperties != nil {
+		objectMap["properties"] = wnpi.WorkloadNetworkPublicIPProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for WorkloadNetworkPublicIP struct.
+func (wnpi *WorkloadNetworkPublicIP) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var workloadNetworkPublicIPProperties WorkloadNetworkPublicIPProperties
+				err = json.Unmarshal(*v, &workloadNetworkPublicIPProperties)
+				if err != nil {
+					return err
+				}
+				wnpi.WorkloadNetworkPublicIPProperties = &workloadNetworkPublicIPProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				wnpi.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				wnpi.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				wnpi.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// WorkloadNetworkPublicIPProperties NSX Public IP Block Properties
+type WorkloadNetworkPublicIPProperties struct {
+	// DisplayName - Display name of the Public IP Block.
+	DisplayName *string `json:"displayName,omitempty"`
+	// NumberOfPublicIPs - Number of Public IPs requested.
+	NumberOfPublicIPs *int64 `json:"numberOfPublicIPs,omitempty"`
+	// PublicIPBlock - READ-ONLY; CIDR Block of the Public IP Block.
+	PublicIPBlock *string `json:"publicIPBlock,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state. Possible values include: 'WorkloadNetworkPublicIPProvisioningStateSucceeded', 'WorkloadNetworkPublicIPProvisioningStateFailed', 'WorkloadNetworkPublicIPProvisioningStateBuilding', 'WorkloadNetworkPublicIPProvisioningStateDeleting', 'WorkloadNetworkPublicIPProvisioningStateUpdating'
+	ProvisioningState WorkloadNetworkPublicIPProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkloadNetworkPublicIPProperties.
+func (wnpip WorkloadNetworkPublicIPProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if wnpip.DisplayName != nil {
+		objectMap["displayName"] = wnpip.DisplayName
+	}
+	if wnpip.NumberOfPublicIPs != nil {
+		objectMap["numberOfPublicIPs"] = wnpip.NumberOfPublicIPs
+	}
+	return json.Marshal(objectMap)
+}
+
+// WorkloadNetworkPublicIPsList a list of NSX Public IP Blocks
+type WorkloadNetworkPublicIPsList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The items on the page
+	Value *[]WorkloadNetworkPublicIP `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next page if any
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for WorkloadNetworkPublicIPsList.
+func (wnpipl WorkloadNetworkPublicIPsList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// WorkloadNetworkPublicIPsListIterator provides access to a complete listing of WorkloadNetworkPublicIP
+// values.
+type WorkloadNetworkPublicIPsListIterator struct {
+	i    int
+	page WorkloadNetworkPublicIPsListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *WorkloadNetworkPublicIPsListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworkPublicIPsListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *WorkloadNetworkPublicIPsListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter WorkloadNetworkPublicIPsListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter WorkloadNetworkPublicIPsListIterator) Response() WorkloadNetworkPublicIPsList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter WorkloadNetworkPublicIPsListIterator) Value() WorkloadNetworkPublicIP {
+	if !iter.page.NotDone() {
+		return WorkloadNetworkPublicIP{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the WorkloadNetworkPublicIPsListIterator type.
+func NewWorkloadNetworkPublicIPsListIterator(page WorkloadNetworkPublicIPsListPage) WorkloadNetworkPublicIPsListIterator {
+	return WorkloadNetworkPublicIPsListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (wnpipl WorkloadNetworkPublicIPsList) IsEmpty() bool {
+	return wnpipl.Value == nil || len(*wnpipl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (wnpipl WorkloadNetworkPublicIPsList) hasNextLink() bool {
+	return wnpipl.NextLink != nil && len(*wnpipl.NextLink) != 0
+}
+
+// workloadNetworkPublicIPsListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (wnpipl WorkloadNetworkPublicIPsList) workloadNetworkPublicIPsListPreparer(ctx context.Context) (*http.Request, error) {
+	if !wnpipl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(wnpipl.NextLink)))
+}
+
+// WorkloadNetworkPublicIPsListPage contains a page of WorkloadNetworkPublicIP values.
+type WorkloadNetworkPublicIPsListPage struct {
+	fn     func(context.Context, WorkloadNetworkPublicIPsList) (WorkloadNetworkPublicIPsList, error)
+	wnpipl WorkloadNetworkPublicIPsList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *WorkloadNetworkPublicIPsListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/WorkloadNetworkPublicIPsListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.wnpipl)
+		if err != nil {
+			return err
+		}
+		page.wnpipl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *WorkloadNetworkPublicIPsListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page WorkloadNetworkPublicIPsListPage) NotDone() bool {
+	return !page.wnpipl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page WorkloadNetworkPublicIPsListPage) Response() WorkloadNetworkPublicIPsList {
+	return page.wnpipl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page WorkloadNetworkPublicIPsListPage) Values() []WorkloadNetworkPublicIP {
+	if page.wnpipl.IsEmpty() {
+		return nil
+	}
+	return *page.wnpipl.Value
+}
+
+// Creates a new instance of the WorkloadNetworkPublicIPsListPage type.
+func NewWorkloadNetworkPublicIPsListPage(cur WorkloadNetworkPublicIPsList, getNextPage func(context.Context, WorkloadNetworkPublicIPsList) (WorkloadNetworkPublicIPsList, error)) WorkloadNetworkPublicIPsListPage {
+	return WorkloadNetworkPublicIPsListPage{
+		fn:     getNextPage,
+		wnpipl: cur,
+	}
+}
+
 // WorkloadNetworksCreateDhcpFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type WorkloadNetworksCreateDhcpFuture struct {
@@ -4653,6 +7083,49 @@ func (future *WorkloadNetworksCreatePortMirroringFuture) result(client WorkloadN
 		wnpm, err = client.CreatePortMirroringResponder(wnpm.Response.Response)
 		if err != nil {
 			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreatePortMirroringFuture", "Result", wnpm.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// WorkloadNetworksCreatePublicIPFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type WorkloadNetworksCreatePublicIPFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(WorkloadNetworksClient) (WorkloadNetworkPublicIP, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *WorkloadNetworksCreatePublicIPFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for WorkloadNetworksCreatePublicIPFuture.Result.
+func (future *WorkloadNetworksCreatePublicIPFuture) result(client WorkloadNetworksClient) (wnpi WorkloadNetworkPublicIP, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreatePublicIPFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		wnpi.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksCreatePublicIPFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if wnpi.Response.Response, err = future.GetResult(sender); err == nil && wnpi.Response.Response.StatusCode != http.StatusNoContent {
+		wnpi, err = client.CreatePublicIPResponder(wnpi.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksCreatePublicIPFuture", "Result", wnpi.Response.Response, "Failure responding to request")
 		}
 	}
 	return
@@ -4886,6 +7359,43 @@ func (future *WorkloadNetworksDeletePortMirroringFuture) result(client WorkloadN
 	if !done {
 		ar.Response = future.Response()
 		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksDeletePortMirroringFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// WorkloadNetworksDeletePublicIPFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type WorkloadNetworksDeletePublicIPFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(WorkloadNetworksClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *WorkloadNetworksDeletePublicIPFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for WorkloadNetworksDeletePublicIPFuture.Result.
+func (future *WorkloadNetworksDeletePublicIPFuture) result(client WorkloadNetworksClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksDeletePublicIPFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.WorkloadNetworksDeletePublicIPFuture")
 		return
 	}
 	ar.Response = future.Response()

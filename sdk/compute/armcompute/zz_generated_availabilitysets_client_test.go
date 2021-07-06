@@ -3,25 +3,21 @@
 package armcompute
 
 import (
-"errors"
-"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"net/http"
-"testing"
+	"testing"
 
-"github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
-"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-"github.com/stretchr/testify/assert"
-"github.com/stretchr/testify/suite"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 )
 
 type availabilitySetMockTest struct {
 	suite.Suite
-	mode         recording.RecordMode
+	mode recording.RecordMode
 }
 
 // Hookup to the testing framework
-func TestServiceClient_Storage(t *testing.T) {
+func TestAvailabilitySetClient(t *testing.T) {
 	mockTest := availabilitySetMockTest{mode: recording.Record}
 	suite.Run(t, &mockTest)
 }
@@ -54,6 +50,7 @@ type testState struct {
 	client    *TableServiceClient
 	context   *recording.TestContext
 }
+
 // a map to store our created test contexts
 var clientsMap map[string]*testState = make(map[string]*testState)
 
@@ -71,9 +68,9 @@ func recordedTestSetup(t *testing.T, testName string, mode recording.RecordMode)
 	//mode should be recording.Playback. This will automatically record if no test recording is available and playback if it is.
 	recording, err := recording.NewRecording(context, mode)
 	assert.Nil(err)
-	accountName, err := recording.GetRecordedVariable(storageAccountNameEnvVar, testframework.Default)
-	suffix := recording.GetOptionalRecordedVariable(storageEndpointSuffixEnvVar, DefaultStorageSuffix, testframework.Default)
-	secret, err := recording.GetRecordedVariable(storageAccountKeyEnvVar, testframework.Secret_Base64String)
+	accountName, err := recording.GetEnvVar(storageAccountNameEnvVar, testframework.Default)
+	suffix := recording.GetOptionalEnvVar(storageEndpointSuffixEnvVar, DefaultStorageSuffix, testframework.Default)
+	secret, err := recording.GetEnvVar(storageAccountKeyEnvVar, testframework.Secret_Base64String)
 	cred, _ := NewSharedKeyCredential(accountName, secret)
 	uri := storageURI(accountName, suffix)
 	// Set our client's HTTPClient to our recording instance.

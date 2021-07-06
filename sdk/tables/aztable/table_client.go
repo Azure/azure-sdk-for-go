@@ -6,6 +6,8 @@ package aztable
 import (
 	"context"
 	"errors"
+	"fmt"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -29,6 +31,80 @@ const (
 func NewTableClient(tableName string, serviceURL string, cred azcore.Credential, options *TableClientOptions) (*TableClient, error) {
 	s, err := NewTableServiceClient(serviceURL, cred, options)
 	return s.NewTableClient(tableName), err
+}
+
+func parseConnectionString(connStr string) (string, azcore.Credential, error) {
+	var serviceURL string
+	var cred azcore.Credential
+	splitString := strings.Split(connStr, ";")
+	var pairs [][]string
+	for _, splitPair := range splitString {
+		temp := strings.Split(splitPair, "=")
+		if len(temp) != 2 {
+			return serviceURL, cred, errors.New("Connection string is either blank or malformed")
+		}
+		pairs = append(pairs, temp)
+	}
+
+	pairsMap := make(map[string]string)
+	for _, pair := range pairs {
+		pairsMap[pair[0]] = pair[1]
+	}
+
+	var accountName string
+	var accountKey string
+	if value, ok := pairsMap["accountname"]; ok {
+		accountName = value
+	}
+	if value, ok := pairsMap["accountkey"]; ok {
+		accountKey = value
+	}
+
+	if accountName == "" || accountKey == "" {
+		// Try sharedaccesssignature
+		sharedAccessSignature, ok := pairsMap["sharedaccesssignature"]
+		if !ok {
+			return serviceURL, cred, errors.New("Connection string missing required connection details")
+		}
+		cred = azcore.SharedAccessSignature(sharedAccessSignature)
+	}
+
+	cred = &SharedKeyCredential{
+		accountName: accountName,
+		accountKey:  accountKey,
+	}
+
+	primary, okPrimary := pairsMap["tableendpoint"]
+	secondary, okSecondary := pairsMap["tablesecondaryendpoint"]
+	if !okPrimary {
+		if okSecondary {
+			return serviceURL, cred, errors.New("Connection string specifies only secondary connection")
+		}
+		if endpointsProtocol, ok := pairsMap["defaultendpointsprotocol"]; ok {
+			if accountName, ok := pairsMap["accountname"]; ok {
+				if endpointSuffix, ok := pairsMap["endpointsuffix"]; ok {
+					primary = fmt.Sprintf("%v://%v.table.%v", endpointsProtocol, accountName, endpointSuffix)
+					secondary = fmt.Sprintf("%v-secondary.table.%v", accountName, endpointSuffix)
+					okPrimary = true
+					okSecondary = true
+				}
+			}
+		}
+	}
+
+	if !okPrimary {
+
+	}
+
+	if serviceURL, ok = pairsMap["tableendpoint"]; !ok {
+		return serviceURL, cred, errors.New("Connection string does not specify")
+	}
+
+	return serviceURL, cred, nil
+}
+
+func NewTableClientFromConnectionString(tableName string, connectionString string, options *TableClientOptions) (*TableClient, error) {
+	endpoint, credential := parseConnectionString(connectionString)
 }
 
 // Create creates the table with the tableName specified when NewTableClient was called.

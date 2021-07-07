@@ -18,14 +18,12 @@ const (
 // DO NOT USE. This is for internal SDK usage. The TokenRefresher is used to provide
 // custom implementations for the bearer token policy.
 type TokenRefresher interface {
-	// IsZeroOrExpired returns a bool if there is a tenant that needs to be initialized, it also
-	// returns a list of tenants to get a token for
-	IsZeroOrExpired(map[string]time.Time) (bool, []string)
-	// ShouldRefresh returns a bool is a token needs to be refreshed and the list of tenants that
-	// need to be refreshed
-	ShouldRefresh(map[string]time.Time) (bool, []string)
+	// IsZeroOrExpired returns a bool if there is a tenant that needs to be initialized
+	IsZeroOrExpired(map[string]time.Time) bool
+	// ShouldRefresh returns a bool if a token needs to be refreshed
+	ShouldRefresh(map[string]time.Time) bool
 	// RefreshOrGet performs the GetToken call for the credential and returns the header needed for authentication
-	RefreshOrGet(ctx context.Context, cred TokenCredential, tenants []string, opts TokenRequestOptions) (string, error)
+	RefreshOrGet(ctx context.Context, cred TokenCredential, opts TokenRequestOptions) (string, error)
 	// Header returns the key for the header in the request
 	Header() string
 }
@@ -69,27 +67,25 @@ func (b *tokenRefreshPolicy) Do(req *Request) (*Response, error) {
 		// HTTPS must be used, otherwise the tokens are at the risk of being exposed
 		return nil, errors.New("token credentials require a URL using the HTTPS protocol scheme")
 	}
-	getToken, header, auxTenants := false, "", []string{}
+	getToken, header := false, ""
 	// acquire exclusive lock
 	b.cond.L.Lock()
 	for {
-		if getTk, tenants := b.implementer.IsZeroOrExpired(b.expiresOn); getTk {
+		if b.implementer.IsZeroOrExpired(b.expiresOn) {
 			// token was never obtained or has expired
 			if !b.renewing {
 				// another go routine isn't refreshing the token so this one will
 				b.renewing = true
 				getToken = true
-				auxTenants = tenants
 				break
 			}
 			// getting here means this go routine will wait for the token to refresh
-		} else if refresh, tenants := b.implementer.ShouldRefresh(b.expiresOn); refresh {
+		} else if b.implementer.ShouldRefresh(b.expiresOn) {
 			// token is within the expiration window
 			if !b.renewing {
 				// another go routine isn't refreshing the token so this one will
 				b.renewing = true
 				getToken = true
-				auxTenants = tenants
 				break
 			}
 			// this go routine will use the existing token while another refreshes it
@@ -107,7 +103,7 @@ func (b *tokenRefreshPolicy) Do(req *Request) (*Response, error) {
 	if getToken {
 		var err error
 		// this go routine has been elected to refresh the token
-		header, err = b.implementer.RefreshOrGet(req.Context(), b.creds, auxTenants, b.options)
+		header, err = b.implementer.RefreshOrGet(req.Context(), b.creds, b.options)
 		// update shared state
 		b.cond.L.Lock()
 		// to avoid a deadlock if GetToken() fails we MUST reset b.renewing to false before returning

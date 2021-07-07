@@ -1,4 +1,4 @@
-# Azure containerregistry Module for Go
+# Azure Container Registry Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/containerregistry/armcontainerregistry)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containerregistry/armcontainerregistry)
 

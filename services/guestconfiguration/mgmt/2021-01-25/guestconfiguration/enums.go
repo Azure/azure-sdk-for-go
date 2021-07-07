@@ -74,6 +74,25 @@ func PossibleConfigurationModeValues() []ConfigurationMode {
 	return []ConfigurationMode{ConfigurationModeApplyAndAutoCorrect, ConfigurationModeApplyAndMonitor, ConfigurationModeApplyOnly}
 }
 
+// CreatedByType enumerates the values for created by type.
+type CreatedByType string
+
+const (
+	// Application ...
+	Application CreatedByType = "Application"
+	// Key ...
+	Key CreatedByType = "Key"
+	// ManagedIdentity ...
+	ManagedIdentity CreatedByType = "ManagedIdentity"
+	// User ...
+	User CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns an array of possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{Application, Key, ManagedIdentity, User}
+}
+
 // Kind enumerates the values for kind.
 type Kind string
 

@@ -45,7 +45,7 @@ For more information on ARM connections, please see the documentation for `armco
 
 ## Clients
 
-Azure containerregistry modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
+Azure Container Registry modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
 
 ```go
 client := armcontainerregistry.NewRegistriesClient(con, "<subscription ID>")

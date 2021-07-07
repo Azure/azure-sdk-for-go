@@ -2,7 +2,7 @@
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/containerregistry/armcontainerregistry)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containerregistry/armcontainerregistry)
 
-The `armcontainerregistry` module provides operations for working with Azure containerregistry.
+The `armcontainerregistry` module provides operations for working with Azure Container Registry.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/containerregistry/armcontainerregistry)
 

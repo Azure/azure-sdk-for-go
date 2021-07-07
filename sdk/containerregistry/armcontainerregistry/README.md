@@ -17,7 +17,7 @@ The `armcontainerregistry` module provides operations for working with Azure con
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure containerregistry module:
+Install the Azure Container Registry module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/containerregistry/armcontainerregistry

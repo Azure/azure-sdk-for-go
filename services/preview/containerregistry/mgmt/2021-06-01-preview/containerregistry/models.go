@@ -18,7 +18,19 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2019-12-01-preview/containerregistry"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2021-06-01-preview/containerregistry"
+
+// ActivationProperties the activation properties of the connected registry.
+type ActivationProperties struct {
+	// Status - READ-ONLY; The activation status of the connected registry. Possible values include: 'Active', 'Inactive'
+	Status ActivationStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ActivationProperties.
+func (ap ActivationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
 
 // ActiveDirectoryObject the Active Directory Object that will be used for authenticating the token of a
 // container registry.
@@ -636,6 +648,506 @@ func (cc CallbackConfig) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ConnectedRegistriesCreateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ConnectedRegistriesCreateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ConnectedRegistriesClient) (ConnectedRegistry, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ConnectedRegistriesCreateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ConnectedRegistriesCreateFuture.Result.
+func (future *ConnectedRegistriesCreateFuture) result(client ConnectedRegistriesClient) (cr ConnectedRegistry, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.ConnectedRegistriesCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		cr.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("containerregistry.ConnectedRegistriesCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
+		cr, err = client.CreateResponder(cr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.ConnectedRegistriesCreateFuture", "Result", cr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ConnectedRegistriesDeactivateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ConnectedRegistriesDeactivateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ConnectedRegistriesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ConnectedRegistriesDeactivateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ConnectedRegistriesDeactivateFuture.Result.
+func (future *ConnectedRegistriesDeactivateFuture) result(client ConnectedRegistriesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.ConnectedRegistriesDeactivateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("containerregistry.ConnectedRegistriesDeactivateFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ConnectedRegistriesDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ConnectedRegistriesDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ConnectedRegistriesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ConnectedRegistriesDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ConnectedRegistriesDeleteFuture.Result.
+func (future *ConnectedRegistriesDeleteFuture) result(client ConnectedRegistriesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.ConnectedRegistriesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("containerregistry.ConnectedRegistriesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ConnectedRegistriesUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ConnectedRegistriesUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ConnectedRegistriesClient) (ConnectedRegistry, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ConnectedRegistriesUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ConnectedRegistriesUpdateFuture.Result.
+func (future *ConnectedRegistriesUpdateFuture) result(client ConnectedRegistriesClient) (cr ConnectedRegistry, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "containerregistry.ConnectedRegistriesUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		cr.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("containerregistry.ConnectedRegistriesUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if cr.Response.Response, err = future.GetResult(sender); err == nil && cr.Response.Response.StatusCode != http.StatusNoContent {
+		cr, err = client.UpdateResponder(cr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "containerregistry.ConnectedRegistriesUpdateFuture", "Result", cr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// ConnectedRegistry an object that represents a connected registry for a container registry.
+type ConnectedRegistry struct {
+	autorest.Response `json:"-"`
+	// ConnectedRegistryProperties - The properties of the connected registry.
+	*ConnectedRegistryProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; The resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource.
+	Type *string `json:"type,omitempty"`
+	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectedRegistry.
+func (cr ConnectedRegistry) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cr.ConnectedRegistryProperties != nil {
+		objectMap["properties"] = cr.ConnectedRegistryProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectedRegistry struct.
+func (cr *ConnectedRegistry) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var connectedRegistryProperties ConnectedRegistryProperties
+				err = json.Unmarshal(*v, &connectedRegistryProperties)
+				if err != nil {
+					return err
+				}
+				cr.ConnectedRegistryProperties = &connectedRegistryProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				cr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				cr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				cr.Type = &typeVar
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				cr.SystemData = &systemData
+			}
+		}
+	}
+
+	return nil
+}
+
+// ConnectedRegistryListResult the result of a request to list connected registries for a container
+// registry.
+type ConnectedRegistryListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of connected registries. Since this list may be incomplete, the nextLink field should be used to request the next list of connected registries.
+	Value *[]ConnectedRegistry `json:"value,omitempty"`
+	// NextLink - The URI that can be used to request the next list of connected registries.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// ConnectedRegistryListResultIterator provides access to a complete listing of ConnectedRegistry values.
+type ConnectedRegistryListResultIterator struct {
+	i    int
+	page ConnectedRegistryListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *ConnectedRegistryListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectedRegistryListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *ConnectedRegistryListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter ConnectedRegistryListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter ConnectedRegistryListResultIterator) Response() ConnectedRegistryListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter ConnectedRegistryListResultIterator) Value() ConnectedRegistry {
+	if !iter.page.NotDone() {
+		return ConnectedRegistry{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the ConnectedRegistryListResultIterator type.
+func NewConnectedRegistryListResultIterator(page ConnectedRegistryListResultPage) ConnectedRegistryListResultIterator {
+	return ConnectedRegistryListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (crlr ConnectedRegistryListResult) IsEmpty() bool {
+	return crlr.Value == nil || len(*crlr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (crlr ConnectedRegistryListResult) hasNextLink() bool {
+	return crlr.NextLink != nil && len(*crlr.NextLink) != 0
+}
+
+// connectedRegistryListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (crlr ConnectedRegistryListResult) connectedRegistryListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !crlr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(crlr.NextLink)))
+}
+
+// ConnectedRegistryListResultPage contains a page of ConnectedRegistry values.
+type ConnectedRegistryListResultPage struct {
+	fn   func(context.Context, ConnectedRegistryListResult) (ConnectedRegistryListResult, error)
+	crlr ConnectedRegistryListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *ConnectedRegistryListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/ConnectedRegistryListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.crlr)
+		if err != nil {
+			return err
+		}
+		page.crlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *ConnectedRegistryListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page ConnectedRegistryListResultPage) NotDone() bool {
+	return !page.crlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page ConnectedRegistryListResultPage) Response() ConnectedRegistryListResult {
+	return page.crlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page ConnectedRegistryListResultPage) Values() []ConnectedRegistry {
+	if page.crlr.IsEmpty() {
+		return nil
+	}
+	return *page.crlr.Value
+}
+
+// Creates a new instance of the ConnectedRegistryListResultPage type.
+func NewConnectedRegistryListResultPage(cur ConnectedRegistryListResult, getNextPage func(context.Context, ConnectedRegistryListResult) (ConnectedRegistryListResult, error)) ConnectedRegistryListResultPage {
+	return ConnectedRegistryListResultPage{
+		fn:   getNextPage,
+		crlr: cur,
+	}
+}
+
+// ConnectedRegistryProperties the properties of a connected registry.
+type ConnectedRegistryProperties struct {
+	// ProvisioningState - READ-ONLY; Provisioning state of the resource. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// Mode - The mode of the connected registry resource that indicates the permissions of the registry. Possible values include: 'ConnectedRegistryModeRegistry', 'ConnectedRegistryModeMirror'
+	Mode ConnectedRegistryMode `json:"mode,omitempty"`
+	// Version - READ-ONLY; The current version of ACR runtime on the connected registry.
+	Version *string `json:"version,omitempty"`
+	// ConnectionState - READ-ONLY; The current connection state of the connected registry. Possible values include: 'Online', 'Offline', 'Syncing', 'Unhealthy'
+	ConnectionState ConnectionState `json:"connectionState,omitempty"`
+	// LastActivityTime - READ-ONLY; The last activity time of the connected registry.
+	LastActivityTime *date.Time `json:"lastActivityTime,omitempty"`
+	// Activation - READ-ONLY; The activation properties of the connected registry.
+	Activation *ActivationProperties `json:"activation,omitempty"`
+	// Parent - The parent of the connected registry.
+	Parent *ParentProperties `json:"parent,omitempty"`
+	// ClientTokenIds - The list of the ACR token resource IDs used to authenticate clients to the connected registry.
+	ClientTokenIds *[]string `json:"clientTokenIds,omitempty"`
+	// LoginServer - The login server properties of the connected registry.
+	LoginServer *LoginServerProperties `json:"loginServer,omitempty"`
+	// Logging - The logging properties of the connected registry.
+	Logging *LoggingProperties `json:"logging,omitempty"`
+	// StatusDetails - READ-ONLY; The list of current statuses of the connected registry.
+	StatusDetails *[]StatusDetailProperties `json:"statusDetails,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectedRegistryProperties.
+func (crp ConnectedRegistryProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if crp.Mode != "" {
+		objectMap["mode"] = crp.Mode
+	}
+	if crp.Parent != nil {
+		objectMap["parent"] = crp.Parent
+	}
+	if crp.ClientTokenIds != nil {
+		objectMap["clientTokenIds"] = crp.ClientTokenIds
+	}
+	if crp.LoginServer != nil {
+		objectMap["loginServer"] = crp.LoginServer
+	}
+	if crp.Logging != nil {
+		objectMap["logging"] = crp.Logging
+	}
+	return json.Marshal(objectMap)
+}
+
+// ConnectedRegistryUpdateParameters the parameters for updating a connected registry.
+type ConnectedRegistryUpdateParameters struct {
+	// ConnectedRegistryUpdateProperties - The properties of the connected registry update parameters.
+	*ConnectedRegistryUpdateProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ConnectedRegistryUpdateParameters.
+func (crup ConnectedRegistryUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if crup.ConnectedRegistryUpdateProperties != nil {
+		objectMap["properties"] = crup.ConnectedRegistryUpdateProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for ConnectedRegistryUpdateParameters struct.
+func (crup *ConnectedRegistryUpdateParameters) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var connectedRegistryUpdateProperties ConnectedRegistryUpdateProperties
+				err = json.Unmarshal(*v, &connectedRegistryUpdateProperties)
+				if err != nil {
+					return err
+				}
+				crup.ConnectedRegistryUpdateProperties = &connectedRegistryUpdateProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// ConnectedRegistryUpdateProperties the parameters for updating token properties.
+type ConnectedRegistryUpdateProperties struct {
+	// SyncProperties - The sync properties of the connected registry with its parent.
+	SyncProperties *SyncUpdateProperties `json:"syncProperties,omitempty"`
+	// Logging - The logging properties of the connected registry.
+	Logging *LoggingProperties `json:"logging,omitempty"`
+	// ClientTokenIds - The list of the ACR token resource IDs used to authenticate clients to the connected registry.
+	ClientTokenIds *[]string `json:"clientTokenIds,omitempty"`
+}
+
 // Credentials the parameters that describes a set of credentials that will be used when a run is invoked.
 type Credentials struct {
 	// SourceRegistry - Describes the credential parameters for accessing the source registry.
@@ -1193,7 +1705,7 @@ func (etsup EncodedTaskStepUpdateParameters) AsBasicTaskStepUpdateParameters() (
 
 // EncryptionProperty ...
 type EncryptionProperty struct {
-	// Status - Indicates whether or not the encryption is enabled for container registry. Possible values include: 'Enabled', 'Disabled'
+	// Status - Indicates whether or not the encryption is enabled for container registry. Possible values include: 'EncryptionStatusEnabled', 'EncryptionStatusDisabled'
 	Status EncryptionStatus `json:"status,omitempty"`
 	// KeyVaultProperties - Key vault properties.
 	KeyVaultProperties *KeyVaultProperties `json:"keyVaultProperties,omitempty"`
@@ -1864,6 +2376,12 @@ type ExportPipelineTargetProperties struct {
 	URI *string `json:"uri,omitempty"`
 	// KeyVaultURI - They key vault secret uri to obtain the target storage SAS token.
 	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+}
+
+// ExportPolicy the export policy for a container registry.
+type ExportPolicy struct {
+	// Status - The value that indicates whether the policy is enabled or not. Possible values include: 'ExportPolicyStatusEnabled', 'ExportPolicyStatusDisabled'
+	Status ExportPolicyStatus `json:"status,omitempty"`
 }
 
 // FileTaskRunRequest the request parameters for a scheduling run against a task file.
@@ -2646,6 +3164,28 @@ func (kvp KeyVaultProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// LoggingProperties the logging properties of the connected registry.
+type LoggingProperties struct {
+	// LogLevel - The verbosity of logs persisted on the connected registry. Possible values include: 'LogLevelDebug', 'LogLevelInformation', 'LogLevelWarning', 'LogLevelError', 'LogLevelNone'
+	LogLevel LogLevel `json:"logLevel,omitempty"`
+	// AuditLogStatus - Indicates whether audit logs are enabled on the connected registry. Possible values include: 'Enabled', 'Disabled'
+	AuditLogStatus AuditLogStatus `json:"auditLogStatus,omitempty"`
+}
+
+// LoginServerProperties the login server properties of the connected registry.
+type LoginServerProperties struct {
+	// Host - READ-ONLY; The host of the connected registry. Can be FQDN or IP.
+	Host *string `json:"host,omitempty"`
+	// TLS - READ-ONLY; The TLS properties of the connected registry login server.
+	TLS *TLSProperties `json:"tls,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LoginServerProperties.
+func (lsp LoginServerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // NetworkRuleSet the network rule set for a container registry.
 type NetworkRuleSet struct {
 	// DefaultAction - The default action of allow or deny when no other rules match. Possible values include: 'DefaultActionAllow', 'DefaultActionDeny'
@@ -2666,6 +3206,9 @@ type OperationDefinition struct {
 	Display *OperationDisplayDefinition `json:"display,omitempty"`
 	// OperationPropertiesDefinition - The properties information for the container registry operation.
 	*OperationPropertiesDefinition `json:"properties,omitempty"`
+	// IsDataAction - This property indicates if the operation is an action or a data action
+	// ref: https://docs.microsoft.com/en-us/azure/role-based-access-control/role-definitions#management-and-data-operations
+	IsDataAction *bool `json:"isDataAction,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for OperationDefinition.
@@ -2682,6 +3225,9 @@ func (od OperationDefinition) MarshalJSON() ([]byte, error) {
 	}
 	if od.OperationPropertiesDefinition != nil {
 		objectMap["properties"] = od.OperationPropertiesDefinition
+	}
+	if od.IsDataAction != nil {
+		objectMap["isDataAction"] = od.IsDataAction
 	}
 	return json.Marshal(objectMap)
 }
@@ -2730,6 +3276,15 @@ func (od *OperationDefinition) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				od.OperationPropertiesDefinition = &operationPropertiesDefinition
+			}
+		case "isDataAction":
+			if v != nil {
+				var isDataAction bool
+				err = json.Unmarshal(*v, &isDataAction)
+				if err != nil {
+					return err
+				}
+				od.IsDataAction = &isDataAction
 			}
 		}
 	}
@@ -2963,6 +3518,14 @@ type OverrideTaskStepProperties struct {
 	Values *[]SetValue `json:"values,omitempty"`
 	// UpdateTriggerToken - Base64 encoded update trigger token that will be attached with the base image trigger webhook.
 	UpdateTriggerToken *string `json:"updateTriggerToken,omitempty"`
+}
+
+// ParentProperties the properties of the connected registry parent.
+type ParentProperties struct {
+	// ID - The resource ID of the parent to which the connected registry will be associated.
+	ID *string `json:"id,omitempty"`
+	// SyncProperties - The sync properties of the connected registry with its parent.
+	SyncProperties *SyncProperties `json:"syncProperties,omitempty"`
 }
 
 // PipelineRun an object that represents a pipeline run for a container registry.
@@ -3421,6 +3984,8 @@ type Policies struct {
 	TrustPolicy *TrustPolicy `json:"trustPolicy,omitempty"`
 	// RetentionPolicy - The retention policy for a container registry.
 	RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
+	// ExportPolicy - The export policy for a container registry.
+	ExportPolicy *ExportPolicy `json:"exportPolicy,omitempty"`
 }
 
 // PrivateEndpoint the Private Endpoint resource.
@@ -4682,6 +5247,10 @@ type RegistryProperties struct {
 	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 	// NetworkRuleBypassOptions - Whether to allow trusted Azure services to access a network restricted registry. Possible values include: 'NetworkRuleBypassOptionsAzureServices', 'NetworkRuleBypassOptionsNone'
 	NetworkRuleBypassOptions NetworkRuleBypassOptions `json:"networkRuleBypassOptions,omitempty"`
+	// ZoneRedundancy - Whether or not zone redundancy is enabled for this container registry. Possible values include: 'ZoneRedundancyEnabled', 'ZoneRedundancyDisabled'
+	ZoneRedundancy ZoneRedundancy `json:"zoneRedundancy,omitempty"`
+	// AnonymousPullEnabled - Enables registry-wide pull from unauthenticated clients.
+	AnonymousPullEnabled *bool `json:"anonymousPullEnabled,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for RegistryProperties.
@@ -4708,6 +5277,12 @@ func (rp RegistryProperties) MarshalJSON() ([]byte, error) {
 	if rp.NetworkRuleBypassOptions != "" {
 		objectMap["networkRuleBypassOptions"] = rp.NetworkRuleBypassOptions
 	}
+	if rp.ZoneRedundancy != "" {
+		objectMap["zoneRedundancy"] = rp.ZoneRedundancy
+	}
+	if rp.AnonymousPullEnabled != nil {
+		objectMap["anonymousPullEnabled"] = rp.AnonymousPullEnabled
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -4727,6 +5302,8 @@ type RegistryPropertiesUpdateParameters struct {
 	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 	// NetworkRuleBypassOptions - Whether to allow trusted Azure services to access a network restricted registry. Possible values include: 'NetworkRuleBypassOptionsAzureServices', 'NetworkRuleBypassOptionsNone'
 	NetworkRuleBypassOptions NetworkRuleBypassOptions `json:"networkRuleBypassOptions,omitempty"`
+	// AnonymousPullEnabled - Enables registry-wide pull from unauthenticated clients.
+	AnonymousPullEnabled *bool `json:"anonymousPullEnabled,omitempty"`
 }
 
 // RegistryUpdateParameters the parameters for updating a container registry.
@@ -5108,6 +5685,8 @@ type ReplicationProperties struct {
 	Status *Status `json:"status,omitempty"`
 	// RegionEndpointEnabled - Specifies whether the replication's regional endpoint is enabled. Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue to be synced with other replications.
 	RegionEndpointEnabled *bool `json:"regionEndpointEnabled,omitempty"`
+	// ZoneRedundancy - Whether or not zone redundancy is enabled for this container registry replication. Possible values include: 'ZoneRedundancyEnabled', 'ZoneRedundancyDisabled'
+	ZoneRedundancy ZoneRedundancy `json:"zoneRedundancy,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ReplicationProperties.
@@ -5115,6 +5694,9 @@ func (rp ReplicationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if rp.RegionEndpointEnabled != nil {
 		objectMap["regionEndpointEnabled"] = rp.RegionEndpointEnabled
+	}
+	if rp.ZoneRedundancy != "" {
+		objectMap["zoneRedundancy"] = rp.ZoneRedundancy
 	}
 	return json.Marshal(objectMap)
 }
@@ -6546,6 +7128,71 @@ type Status struct {
 func (s Status) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// StatusDetailProperties the status detail properties of the connected registry.
+type StatusDetailProperties struct {
+	// Type - READ-ONLY; The component of the connected registry corresponding to the status.
+	Type *string `json:"type,omitempty"`
+	// Code - READ-ONLY; The code of the status.
+	Code *string `json:"code,omitempty"`
+	// Description - READ-ONLY; The description of the status.
+	Description *string `json:"description,omitempty"`
+	// Timestamp - READ-ONLY; The timestamp of the status.
+	Timestamp *date.Time `json:"timestamp,omitempty"`
+	// CorrelationID - READ-ONLY; The correlation ID of the status.
+	CorrelationID *string `json:"correlationId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StatusDetailProperties.
+func (sdp StatusDetailProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// SyncProperties the sync properties of the connected registry with its parent.
+type SyncProperties struct {
+	// TokenID - The resource ID of the ACR token used to authenticate the connected registry to its parent during sync.
+	TokenID *string `json:"tokenId,omitempty"`
+	// Schedule - The cron expression indicating the schedule that the connected registry will sync with its parent.
+	Schedule *string `json:"schedule,omitempty"`
+	// SyncWindow - The time window during which sync is enabled for each schedule occurrence. Specify the duration using the format P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
+	SyncWindow *string `json:"syncWindow,omitempty"`
+	// MessageTTL - The period of time for which a message is available to sync before it is expired. Specify the duration using the format P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
+	MessageTTL *string `json:"messageTtl,omitempty"`
+	// LastSyncTime - READ-ONLY; The last time a sync occurred between the connected registry and its parent.
+	LastSyncTime *date.Time `json:"lastSyncTime,omitempty"`
+	// GatewayEndpoint - READ-ONLY; The gateway endpoint used by the connected registry to communicate with its parent.
+	GatewayEndpoint *string `json:"gatewayEndpoint,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SyncProperties.
+func (sp SyncProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sp.TokenID != nil {
+		objectMap["tokenId"] = sp.TokenID
+	}
+	if sp.Schedule != nil {
+		objectMap["schedule"] = sp.Schedule
+	}
+	if sp.SyncWindow != nil {
+		objectMap["syncWindow"] = sp.SyncWindow
+	}
+	if sp.MessageTTL != nil {
+		objectMap["messageTtl"] = sp.MessageTTL
+	}
+	return json.Marshal(objectMap)
+}
+
+// SyncUpdateProperties the parameters for updating the sync properties of the connected registry with its
+// parent.
+type SyncUpdateProperties struct {
+	// Schedule - The cron expression indicating the schedule that the connected registry will sync with its parent.
+	Schedule *string `json:"schedule,omitempty"`
+	// SyncWindow - The time window during which sync is enabled for each schedule occurrence. Specify the duration using the format P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
+	SyncWindow *string `json:"syncWindow,omitempty"`
+	// MessageTTL - The period of time for which a message is available to sync before it is expired. Specify the duration using the format P[n]Y[n]M[n]DT[n]H[n]M[n]S as per ISO8601.
+	MessageTTL *string `json:"messageTtl,omitempty"`
 }
 
 // SystemData metadata pertaining to creation and last modification of the resource.
@@ -8257,6 +8904,34 @@ type TimerTriggerUpdateParameters struct {
 	Name *string `json:"name,omitempty"`
 }
 
+// TLSCertificateProperties the TLS certificate properties of the connected registry login server.
+type TLSCertificateProperties struct {
+	// Type - READ-ONLY; The type of certificate location. Possible values include: 'LocalDirectory'
+	Type CertificateType `json:"type,omitempty"`
+	// Location - READ-ONLY; Indicates the location of the certificates.
+	Location *string `json:"location,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TLSCertificateProperties.
+func (TCP TLSCertificateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// TLSProperties the TLS properties of the connected registry login server.
+type TLSProperties struct {
+	// Status - READ-ONLY; Indicates whether HTTPS is enabled for the login server. Possible values include: 'TLSStatusEnabled', 'TLSStatusDisabled'
+	Status TLSStatus `json:"status,omitempty"`
+	// Certificate - READ-ONLY; The certificate used to configure HTTPS for the login server.
+	Certificate *TLSCertificateProperties `json:"certificate,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TLSProperties.
+func (tp TLSProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Token an object that represents a token for a container registry.
 type Token struct {
 	autorest.Response `json:"-"`
@@ -8356,9 +9031,8 @@ type TokenCertificate struct {
 // TokenCredentialsProperties the properties of the credentials that can be used for authenticating the
 // token.
 type TokenCredentialsProperties struct {
-	ActiveDirectoryObject *ActiveDirectoryObject `json:"activeDirectoryObject,omitempty"`
-	Certificates          *[]TokenCertificate    `json:"certificates,omitempty"`
-	Passwords             *[]TokenPassword       `json:"passwords,omitempty"`
+	Certificates *[]TokenCertificate `json:"certificates,omitempty"`
+	Passwords    *[]TokenPassword    `json:"passwords,omitempty"`
 }
 
 // TokenListResult the result of a request to list tokens for a container registry.

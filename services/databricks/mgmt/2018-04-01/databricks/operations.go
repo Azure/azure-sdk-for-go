@@ -14,7 +14,8 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the ARM Databricks
+// OperationsClient is the the Microsoft Azure management APIs allow end users to operate on Azure Databricks Workspace
+// resources.
 type OperationsClient struct {
 	BaseClient
 }

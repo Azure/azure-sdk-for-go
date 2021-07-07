@@ -15,15 +15,15 @@ const (
 	bearerTokenPrefix = "Bearer "
 )
 
-// DO NOT USE. This is for internal SDK usage. The TokenRefresher is used to provide
+// DO NOT USE. This is for internal SDK usage. The TokenFetcher is used to provide
 // custom implementations for the bearer token policy.
-type TokenRefresher interface {
+type TokenFetcher interface {
 	// IsZeroOrExpired returns a bool if there is a tenant that needs to be initialized
 	IsZeroOrExpired(map[string]time.Time) bool
 	// ShouldRefresh returns a bool if a token needs to be refreshed
 	ShouldRefresh(map[string]time.Time) bool
-	// RefreshOrGet performs the GetToken call for the credential and returns the header needed for authentication
-	RefreshOrGet(ctx context.Context, cred TokenCredential, opts TokenRequestOptions) (string, error)
+	// Fetch performs the GetToken call for the credential and returns the header needed for authentication
+	Fetch(ctx context.Context, cred TokenCredential, opts TokenRequestOptions) (string, error)
 	// Header returns the key for the header in the request
 	Header() string
 }
@@ -45,15 +45,15 @@ type tokenRefreshPolicy struct {
 	// the following fields are read-only
 	creds       TokenCredential
 	options     TokenRequestOptions
-	implementer TokenRefresher
+	implementer TokenFetcher
 }
 
 // NewTokenRefreshPolicy instantiates a thread safe token refresh policy.
-// Pass in the credential to use, along with a TokenRefresher that will be
+// Pass in the credential to use, along with a TokenFetcher that will be
 // used to provide a custom implementation for checking the expires_on
 // time of the token, when tokens should be refreshed, and setting custom headers.
 // Additionally specify options for the token to be retreived.
-func NewTokenRefreshPolicy(cred TokenCredential, p TokenRefresher, opts AuthenticationPolicyOptions) Policy {
+func NewTokenRefreshPolicy(cred TokenCredential, p TokenFetcher, opts AuthenticationPolicyOptions) Policy {
 	return &tokenRefreshPolicy{
 		cond:        sync.NewCond(&sync.Mutex{}),
 		creds:       cred,
@@ -103,7 +103,7 @@ func (b *tokenRefreshPolicy) Do(req *Request) (*Response, error) {
 	if getToken {
 		var err error
 		// this go routine has been elected to refresh the token
-		header, err = b.implementer.RefreshOrGet(req.Context(), b.creds, b.options)
+		header, err = b.implementer.Fetch(req.Context(), b.creds, b.options)
 		// update shared state
 		b.cond.L.Lock()
 		// to avoid a deadlock if GetToken() fails we MUST reset b.renewing to false before returning

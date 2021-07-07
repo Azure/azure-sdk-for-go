@@ -50,7 +50,7 @@ func (t *defaultTokenProcessor) ShouldRefresh(eo map[string]time.Time) bool {
 	return false
 }
 
-func (t *defaultTokenProcessor) RefreshOrGet(ctx context.Context, cred TokenCredential, opts TokenRequestOptions) (string, error) {
+func (t *defaultTokenProcessor) Fetch(ctx context.Context, cred TokenCredential, opts TokenRequestOptions) (string, error) {
 	tk, err := cred.GetToken(ctx, opts)
 	if err != nil {
 		return "", err

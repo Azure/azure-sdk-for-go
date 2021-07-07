@@ -165,7 +165,7 @@ func (as AvroSerialization) AsBasicSerialization() (BasicSerialization, bool) {
 type AzureDataLakeStoreOutputDataSource struct {
 	// AzureDataLakeStoreOutputDataSourceProperties - The properties that are associated with an Azure Data Lake Store output. Required on PUT (CreateOrReplace) requests.
 	*AzureDataLakeStoreOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeOutputDataSource', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
+	// Type - Possible values include: 'TypeOutputDataSource', 'TypeRaw', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -180,6 +180,11 @@ func (adlsods AzureDataLakeStoreOutputDataSource) MarshalJSON() ([]byte, error) 
 		objectMap["type"] = adlsods.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsRawOutputDatasource is the BasicOutputDataSource implementation for AzureDataLakeStoreOutputDataSource.
+func (adlsods AzureDataLakeStoreOutputDataSource) AsRawOutputDatasource() (*RawOutputDatasource, bool) {
+	return nil, false
 }
 
 // AsBlobOutputDataSource is the BasicOutputDataSource implementation for AzureDataLakeStoreOutputDataSource.
@@ -312,7 +317,7 @@ type AzureDataLakeStoreOutputDataSourceProperties struct {
 type AzureFunctionOutputDataSource struct {
 	// AzureFunctionOutputDataSourceProperties - The properties that are associated with a Azure Function output. Required on PUT (CreateOrReplace) requests.
 	*AzureFunctionOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeOutputDataSource', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
+	// Type - Possible values include: 'TypeOutputDataSource', 'TypeRaw', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -327,6 +332,11 @@ func (afods AzureFunctionOutputDataSource) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = afods.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsRawOutputDatasource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
+func (afods AzureFunctionOutputDataSource) AsRawOutputDatasource() (*RawOutputDatasource, bool) {
+	return nil, false
 }
 
 // AsBlobOutputDataSource is the BasicOutputDataSource implementation for AzureFunctionOutputDataSource.
@@ -917,7 +927,7 @@ type AzureSQLDatabaseDataSourceProperties struct {
 type AzureSQLDatabaseOutputDataSource struct {
 	// AzureSQLDatabaseOutputDataSourceProperties - The properties that are associated with an Azure SQL database output. Required on PUT (CreateOrReplace) requests.
 	*AzureSQLDatabaseOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeOutputDataSource', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
+	// Type - Possible values include: 'TypeOutputDataSource', 'TypeRaw', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -932,6 +942,11 @@ func (asdods AzureSQLDatabaseOutputDataSource) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = asdods.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsRawOutputDatasource is the BasicOutputDataSource implementation for AzureSQLDatabaseOutputDataSource.
+func (asdods AzureSQLDatabaseOutputDataSource) AsRawOutputDatasource() (*RawOutputDatasource, bool) {
+	return nil, false
 }
 
 // AsBlobOutputDataSource is the BasicOutputDataSource implementation for AzureSQLDatabaseOutputDataSource.
@@ -1061,7 +1076,7 @@ type AzureSQLDatabaseOutputDataSourceProperties struct {
 // AzureSQLReferenceInputDataSource describes an Azure SQL database reference input data source.
 type AzureSQLReferenceInputDataSource struct {
 	Properties *AzureSQLReferenceInputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource', 'TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase'
+	// Type - Possible values include: 'TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource', 'TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicReferenceInputDataSourceTypeRaw', 'TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase'
 	Type TypeBasicReferenceInputDataSource `json:"type,omitempty"`
 }
 
@@ -1083,6 +1098,11 @@ func (asrids AzureSQLReferenceInputDataSource) AsBlobReferenceInputDataSource() 
 	return nil, false
 }
 
+// AsRawReferenceInputDataSource is the BasicReferenceInputDataSource implementation for AzureSQLReferenceInputDataSource.
+func (asrids AzureSQLReferenceInputDataSource) AsRawReferenceInputDataSource() (*RawReferenceInputDataSource, bool) {
+	return nil, false
+}
+
 // AsAzureSQLReferenceInputDataSource is the BasicReferenceInputDataSource implementation for AzureSQLReferenceInputDataSource.
 func (asrids AzureSQLReferenceInputDataSource) AsAzureSQLReferenceInputDataSource() (*AzureSQLReferenceInputDataSource, bool) {
 	return &asrids, true
@@ -1098,7 +1118,8 @@ func (asrids AzureSQLReferenceInputDataSource) AsBasicReferenceInputDataSource()
 	return &asrids, true
 }
 
-// AzureSQLReferenceInputDataSourceProperties ...
+// AzureSQLReferenceInputDataSourceProperties describes Azure SQL database reference input data source
+// properties.
 type AzureSQLReferenceInputDataSourceProperties struct {
 	// Server - This element is associated with the datasource element. This is the name of the server that contains the database that will be written to.
 	Server *string `json:"server,omitempty"`
@@ -1139,7 +1160,7 @@ type AzureSynapseDataSourceProperties struct {
 type AzureSynapseOutputDataSource struct {
 	// AzureSynapseOutputDataSourceProperties - The properties that are associated with an Azure Synapse output. Required on PUT (CreateOrReplace) requests.
 	*AzureSynapseOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeOutputDataSource', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
+	// Type - Possible values include: 'TypeOutputDataSource', 'TypeRaw', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -1154,6 +1175,11 @@ func (asods AzureSynapseOutputDataSource) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = asods.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsRawOutputDatasource is the BasicOutputDataSource implementation for AzureSynapseOutputDataSource.
+func (asods AzureSynapseOutputDataSource) AsRawOutputDatasource() (*RawOutputDatasource, bool) {
+	return nil, false
 }
 
 // AsBlobOutputDataSource is the BasicOutputDataSource implementation for AzureSynapseOutputDataSource.
@@ -1277,7 +1303,7 @@ type AzureSynapseOutputDataSourceProperties struct {
 type AzureTableOutputDataSource struct {
 	// AzureTableOutputDataSourceProperties - The properties that are associated with an Azure Table output. Required on PUT (CreateOrReplace) requests.
 	*AzureTableOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeOutputDataSource', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
+	// Type - Possible values include: 'TypeOutputDataSource', 'TypeRaw', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -1292,6 +1318,11 @@ func (atods AzureTableOutputDataSource) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = atods.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsRawOutputDatasource is the BasicOutputDataSource implementation for AzureTableOutputDataSource.
+func (atods AzureTableOutputDataSource) AsRawOutputDatasource() (*RawOutputDatasource, bool) {
+	return nil, false
 }
 
 // AsBlobOutputDataSource is the BasicOutputDataSource implementation for AzureTableOutputDataSource.
@@ -1433,7 +1464,7 @@ type BlobDataSourceProperties struct {
 type BlobOutputDataSource struct {
 	// BlobOutputDataSourceProperties - The properties that are associated with a blob output. Required on PUT (CreateOrReplace) requests.
 	*BlobOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeOutputDataSource', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
+	// Type - Possible values include: 'TypeOutputDataSource', 'TypeRaw', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -1448,6 +1479,11 @@ func (bods BlobOutputDataSource) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = bods.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsRawOutputDatasource is the BasicOutputDataSource implementation for BlobOutputDataSource.
+func (bods BlobOutputDataSource) AsRawOutputDatasource() (*RawOutputDatasource, bool) {
+	return nil, false
 }
 
 // AsBlobOutputDataSource is the BasicOutputDataSource implementation for BlobOutputDataSource.
@@ -1573,7 +1609,7 @@ type BlobOutputDataSourceProperties struct {
 type BlobReferenceInputDataSource struct {
 	// BlobReferenceInputDataSourceProperties - The properties that are associated with a blob input containing reference data. Required on PUT (CreateOrReplace) requests.
 	*BlobReferenceInputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource', 'TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase'
+	// Type - Possible values include: 'TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource', 'TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicReferenceInputDataSourceTypeRaw', 'TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase'
 	Type TypeBasicReferenceInputDataSource `json:"type,omitempty"`
 }
 
@@ -1593,6 +1629,11 @@ func (brids BlobReferenceInputDataSource) MarshalJSON() ([]byte, error) {
 // AsBlobReferenceInputDataSource is the BasicReferenceInputDataSource implementation for BlobReferenceInputDataSource.
 func (brids BlobReferenceInputDataSource) AsBlobReferenceInputDataSource() (*BlobReferenceInputDataSource, bool) {
 	return &brids, true
+}
+
+// AsRawReferenceInputDataSource is the BasicReferenceInputDataSource implementation for BlobReferenceInputDataSource.
+func (brids BlobReferenceInputDataSource) AsRawReferenceInputDataSource() (*RawReferenceInputDataSource, bool) {
+	return nil, false
 }
 
 // AsAzureSQLReferenceInputDataSource is the BasicReferenceInputDataSource implementation for BlobReferenceInputDataSource.
@@ -1662,7 +1703,7 @@ type BlobReferenceInputDataSourceProperties struct {
 type BlobStreamInputDataSource struct {
 	// BlobStreamInputDataSourceProperties - The properties that are associated with a blob input containing stream data. Required on PUT (CreateOrReplace) requests.
 	*BlobStreamInputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicStreamInputDataSourceTypeStreamInputDataSource', 'TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs'
+	// Type - Possible values include: 'TypeBasicStreamInputDataSourceTypeStreamInputDataSource', 'TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs', 'TypeBasicStreamInputDataSourceTypeRaw'
 	Type TypeBasicStreamInputDataSource `json:"type,omitempty"`
 }
 
@@ -1696,6 +1737,11 @@ func (bsids BlobStreamInputDataSource) AsEventHubV2StreamInputDataSource() (*Eve
 
 // AsIoTHubStreamInputDataSource is the BasicStreamInputDataSource implementation for BlobStreamInputDataSource.
 func (bsids BlobStreamInputDataSource) AsIoTHubStreamInputDataSource() (*IoTHubStreamInputDataSource, bool) {
+	return nil, false
+}
+
+// AsRawStreamInputDataSource is the BasicStreamInputDataSource implementation for BlobStreamInputDataSource.
+func (bsids BlobStreamInputDataSource) AsRawStreamInputDataSource() (*RawStreamInputDataSource, bool) {
 	return nil, false
 }
 
@@ -2307,6 +2353,21 @@ func (future *ClustersUpdateFuture) result(client ClustersClient) (c Cluster, er
 	return
 }
 
+// CompileQuery the query compilation object which defines the input, output, and transformation for the
+// query compilation.
+type CompileQuery struct {
+	// Query - The query to compile.
+	Query *string `json:"query,omitempty"`
+	// Inputs - The inputs for the query compilation.
+	Inputs *[]QueryInput `json:"inputs,omitempty"`
+	// Functions - The functions for the query compilation.
+	Functions *[]QueryFunction `json:"functions,omitempty"`
+	// JobType - Describes the type of the job. Valid values are `Cloud` and 'Edge'. Possible values include: 'Cloud', 'Edge'
+	JobType JobType `json:"jobType,omitempty"`
+	// CompatibilityLevel - The query to compile. Possible values include: 'OneFullStopZero'
+	CompatibilityLevel CompatibilityLevel `json:"compatibilityLevel,omitempty"`
+}
+
 // Compression describes how input data is compressed
 type Compression struct {
 	Type *string `json:"type,omitempty"`
@@ -2733,7 +2794,7 @@ func (d Diagnostics) MarshalJSON() ([]byte, error) {
 type DocumentDbOutputDataSource struct {
 	// DocumentDbOutputDataSourceProperties - The properties that are associated with a DocumentDB output. Required on PUT (CreateOrReplace) requests.
 	*DocumentDbOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeOutputDataSource', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
+	// Type - Possible values include: 'TypeOutputDataSource', 'TypeRaw', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -2748,6 +2809,11 @@ func (ddods DocumentDbOutputDataSource) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = ddods.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsRawOutputDatasource is the BasicOutputDataSource implementation for DocumentDbOutputDataSource.
+func (ddods DocumentDbOutputDataSource) AsRawOutputDatasource() (*RawOutputDatasource, bool) {
+	return nil, false
 }
 
 // AsBlobOutputDataSource is the BasicOutputDataSource implementation for DocumentDbOutputDataSource.
@@ -2929,7 +2995,7 @@ type EventHubDataSourceProperties struct {
 type EventHubOutputDataSource struct {
 	// EventHubOutputDataSourceProperties - The properties that are associated with an Event Hub output. Required on PUT (CreateOrReplace) requests.
 	*EventHubOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeOutputDataSource', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
+	// Type - Possible values include: 'TypeOutputDataSource', 'TypeRaw', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -2944,6 +3010,11 @@ func (ehods EventHubOutputDataSource) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = ehods.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsRawOutputDatasource is the BasicOutputDataSource implementation for EventHubOutputDataSource.
+func (ehods EventHubOutputDataSource) AsRawOutputDatasource() (*RawOutputDatasource, bool) {
+	return nil, false
 }
 
 // AsBlobOutputDataSource is the BasicOutputDataSource implementation for EventHubOutputDataSource.
@@ -3070,7 +3141,7 @@ type EventHubOutputDataSourceProperties struct {
 type EventHubStreamInputDataSource struct {
 	// EventHubStreamInputDataSourceProperties - The properties that are associated with an Event Hub input containing stream data. Required on PUT (CreateOrReplace) requests.
 	*EventHubStreamInputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicStreamInputDataSourceTypeStreamInputDataSource', 'TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs'
+	// Type - Possible values include: 'TypeBasicStreamInputDataSourceTypeStreamInputDataSource', 'TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs', 'TypeBasicStreamInputDataSourceTypeRaw'
 	Type TypeBasicStreamInputDataSource `json:"type,omitempty"`
 }
 
@@ -3104,6 +3175,11 @@ func (ehsids EventHubStreamInputDataSource) AsEventHubV2StreamInputDataSource() 
 
 // AsIoTHubStreamInputDataSource is the BasicStreamInputDataSource implementation for EventHubStreamInputDataSource.
 func (ehsids EventHubStreamInputDataSource) AsIoTHubStreamInputDataSource() (*IoTHubStreamInputDataSource, bool) {
+	return nil, false
+}
+
+// AsRawStreamInputDataSource is the BasicStreamInputDataSource implementation for EventHubStreamInputDataSource.
+func (ehsids EventHubStreamInputDataSource) AsRawStreamInputDataSource() (*RawStreamInputDataSource, bool) {
 	return nil, false
 }
 
@@ -3171,7 +3247,7 @@ type EventHubStreamInputDataSourceProperties struct {
 type EventHubV2OutputDataSource struct {
 	// EventHubOutputDataSourceProperties - The properties that are associated with an Event Hub output. Required on PUT (CreateOrReplace) requests.
 	*EventHubOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeOutputDataSource', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
+	// Type - Possible values include: 'TypeOutputDataSource', 'TypeRaw', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -3186,6 +3262,11 @@ func (ehvods EventHubV2OutputDataSource) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = ehvods.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsRawOutputDatasource is the BasicOutputDataSource implementation for EventHubV2OutputDataSource.
+func (ehvods EventHubV2OutputDataSource) AsRawOutputDatasource() (*RawOutputDatasource, bool) {
+	return nil, false
 }
 
 // AsBlobOutputDataSource is the BasicOutputDataSource implementation for EventHubV2OutputDataSource.
@@ -3295,7 +3376,7 @@ func (ehvods *EventHubV2OutputDataSource) UnmarshalJSON(body []byte) error {
 type EventHubV2StreamInputDataSource struct {
 	// EventHubStreamInputDataSourceProperties - The properties that are associated with an Event Hub input containing stream data. Required on PUT (CreateOrReplace) requests.
 	*EventHubStreamInputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicStreamInputDataSourceTypeStreamInputDataSource', 'TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs'
+	// Type - Possible values include: 'TypeBasicStreamInputDataSourceTypeStreamInputDataSource', 'TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs', 'TypeBasicStreamInputDataSourceTypeRaw'
 	Type TypeBasicStreamInputDataSource `json:"type,omitempty"`
 }
 
@@ -3329,6 +3410,11 @@ func (ehvsids EventHubV2StreamInputDataSource) AsEventHubV2StreamInputDataSource
 
 // AsIoTHubStreamInputDataSource is the BasicStreamInputDataSource implementation for EventHubV2StreamInputDataSource.
 func (ehvsids EventHubV2StreamInputDataSource) AsIoTHubStreamInputDataSource() (*IoTHubStreamInputDataSource, bool) {
+	return nil, false
+}
+
+// AsRawStreamInputDataSource is the BasicStreamInputDataSource implementation for EventHubV2StreamInputDataSource.
+func (ehvsids EventHubV2StreamInputDataSource) AsRawStreamInputDataSource() (*RawStreamInputDataSource, bool) {
 	return nil, false
 }
 
@@ -4530,7 +4616,7 @@ func (future *InputsTestFuture) result(client InputsClient) (rts ResourceTestSta
 type IoTHubStreamInputDataSource struct {
 	// IoTHubStreamInputDataSourceProperties - The properties that are associated with an IoT Hub input containing stream data. Required on PUT (CreateOrReplace) requests.
 	*IoTHubStreamInputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeBasicStreamInputDataSourceTypeStreamInputDataSource', 'TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs'
+	// Type - Possible values include: 'TypeBasicStreamInputDataSourceTypeStreamInputDataSource', 'TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs', 'TypeBasicStreamInputDataSourceTypeRaw'
 	Type TypeBasicStreamInputDataSource `json:"type,omitempty"`
 }
 
@@ -4565,6 +4651,11 @@ func (ithsids IoTHubStreamInputDataSource) AsEventHubV2StreamInputDataSource() (
 // AsIoTHubStreamInputDataSource is the BasicStreamInputDataSource implementation for IoTHubStreamInputDataSource.
 func (ithsids IoTHubStreamInputDataSource) AsIoTHubStreamInputDataSource() (*IoTHubStreamInputDataSource, bool) {
 	return &ithsids, true
+}
+
+// AsRawStreamInputDataSource is the BasicStreamInputDataSource implementation for IoTHubStreamInputDataSource.
+func (ithsids IoTHubStreamInputDataSource) AsRawStreamInputDataSource() (*RawStreamInputDataSource, bool) {
+	return nil, false
 }
 
 // AsStreamInputDataSource is the BasicStreamInputDataSource implementation for IoTHubStreamInputDataSource.
@@ -5205,6 +5296,7 @@ func (o *Output) UnmarshalJSON(body []byte) error {
 
 // BasicOutputDataSource describes the data source that output will be written to.
 type BasicOutputDataSource interface {
+	AsRawOutputDatasource() (*RawOutputDatasource, bool)
 	AsBlobOutputDataSource() (*BlobOutputDataSource, bool)
 	AsAzureTableOutputDataSource() (*AzureTableOutputDataSource, bool)
 	AsEventHubOutputDataSource() (*EventHubOutputDataSource, bool)
@@ -5222,7 +5314,7 @@ type BasicOutputDataSource interface {
 
 // OutputDataSource describes the data source that output will be written to.
 type OutputDataSource struct {
-	// Type - Possible values include: 'TypeOutputDataSource', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
+	// Type - Possible values include: 'TypeOutputDataSource', 'TypeRaw', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -5234,6 +5326,10 @@ func unmarshalBasicOutputDataSource(body []byte) (BasicOutputDataSource, error) 
 	}
 
 	switch m["type"] {
+	case string(TypeRaw):
+		var rod RawOutputDatasource
+		err := json.Unmarshal(body, &rod)
+		return rod, err
 	case string(TypeMicrosoftStorageBlob):
 		var bods BlobOutputDataSource
 		err := json.Unmarshal(body, &bods)
@@ -5315,6 +5411,11 @@ func (ods OutputDataSource) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = ods.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsRawOutputDatasource is the BasicOutputDataSource implementation for OutputDataSource.
+func (ods OutputDataSource) AsRawOutputDatasource() (*RawOutputDatasource, bool) {
+	return nil, false
 }
 
 // AsBlobOutputDataSource is the BasicOutputDataSource implementation for OutputDataSource.
@@ -5750,7 +5851,7 @@ func (ps ParquetSerialization) AsBasicSerialization() (BasicSerialization, bool)
 type PowerBIOutputDataSource struct {
 	// PowerBIOutputDataSourceProperties - The properties that are associated with a Power BI output. Required on PUT (CreateOrReplace) requests.
 	*PowerBIOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeOutputDataSource', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
+	// Type - Possible values include: 'TypeOutputDataSource', 'TypeRaw', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -5765,6 +5866,11 @@ func (pbods PowerBIOutputDataSource) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = pbods.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsRawOutputDatasource is the BasicOutputDataSource implementation for PowerBIOutputDataSource.
+func (pbods PowerBIOutputDataSource) AsRawOutputDatasource() (*RawOutputDatasource, bool) {
+	return nil, false
 }
 
 // AsBlobOutputDataSource is the BasicOutputDataSource implementation for PowerBIOutputDataSource.
@@ -6218,16 +6324,422 @@ func (pr ProxyResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// QueryCompilationError an error produced by the compiler.
+type QueryCompilationError struct {
+	// Message - READ-ONLY; The content of the error message.
+	Message *string `json:"message,omitempty"`
+	// StartLine - READ-ONLY; Describes the error location in the original query. Not set if isGlobal is true.
+	StartLine *int32 `json:"startLine,omitempty"`
+	// StartColumn - READ-ONLY; Describes the error location in the original query. Not set if isGlobal is true.
+	StartColumn *int32 `json:"startColumn,omitempty"`
+	// EndLine - READ-ONLY; Describes the error location in the original query. Not set if isGlobal is true.
+	EndLine *int32 `json:"endLine,omitempty"`
+	// EndColumn - READ-ONLY; Describes the error location in the original query. Not set if isGlobal is true.
+	EndColumn *int32 `json:"endColumn,omitempty"`
+	// IsGlobal - READ-ONLY; Whether the error is not for a specific part but for the entire query.
+	IsGlobal *bool `json:"isGlobal,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryCompilationError.
+func (qce QueryCompilationError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// QueryCompilationResult the result of the query compilation request.
+type QueryCompilationResult struct {
+	autorest.Response `json:"-"`
+	// Errors - READ-ONLY; Error messages produced by the compiler.
+	Errors *[]QueryCompilationError `json:"errors,omitempty"`
+	// Warnings - READ-ONLY; Warning messages produced by the compiler.
+	Warnings *[]string `json:"warnings,omitempty"`
+	// Inputs - READ-ONLY; All input names used by the query.
+	Inputs *[]string `json:"inputs,omitempty"`
+	// Outputs - READ-ONLY; All output names used by the query.
+	Outputs *[]string `json:"outputs,omitempty"`
+	// Functions - READ-ONLY; All function names used by the query.
+	Functions *[]string `json:"functions,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryCompilationResult.
+func (qcr QueryCompilationResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// QueryFunction a function for the query compilation.
+type QueryFunction struct {
+	// Name - The name of the function.
+	Name *string `json:"name,omitempty"`
+	// Type - The type of the function.
+	Type *string `json:"type,omitempty"`
+	// BindingType - The type of the function binding.
+	BindingType *string `json:"bindingType,omitempty"`
+	// Inputs - The inputs for the function.
+	Inputs *[]FunctionInput `json:"inputs,omitempty"`
+	// Output - An output for the function.
+	Output *FunctionOutput `json:"output,omitempty"`
+}
+
+// QueryInput an input for the query compilation.
+type QueryInput struct {
+	// Name - The name of the input.
+	Name *string `json:"name,omitempty"`
+	// Type - The type of the input, can be Stream or Reference.
+	Type *string `json:"type,omitempty"`
+}
+
+// QueryTestingResult the result of the query testing request.
+type QueryTestingResult struct {
+	autorest.Response `json:"-"`
+	// Status - The status of the query testing request. Possible values include: 'Started', 'Success', 'CompilerError', 'RuntimeError', 'Timeout', 'UnknownError'
+	Status QueryTestingResultStatus `json:"status,omitempty"`
+	// OutputURI - READ-ONLY; The SAS URL to the outputs payload.
+	OutputURI *string `json:"outputUri,omitempty"`
+	// Error - Error definition properties.
+	Error *ErrorError `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for QueryTestingResult.
+func (qtr QueryTestingResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if qtr.Status != "" {
+		objectMap["status"] = qtr.Status
+	}
+	if qtr.Error != nil {
+		objectMap["error"] = qtr.Error
+	}
+	return json.Marshal(objectMap)
+}
+
+// RawInputDatasourceProperties the properties that are associated with a raw input.
+type RawInputDatasourceProperties struct {
+	// Payload - The JSON serialized content of the input data. Either payload or payloadUri must be set, but not both.
+	Payload *string `json:"payload,omitempty"`
+	// PayloadURI - The SAS URL to a blob containing the JSON serialized content of the input data. Either payload or payloadUri must be set, but not both.
+	PayloadURI *string `json:"payloadUri,omitempty"`
+}
+
+// RawOutputDatasource describes a raw output data source. This data source type is only applicable/usable
+// when using the query testing API. You cannot create a job with this data source type or add an output of
+// this data source type to an existing job.
+type RawOutputDatasource struct {
+	// RawOutputDatasourceProperties - The properties that are associated with a raw output. Required on PUT (CreateOrReplace) requests.
+	*RawOutputDatasourceProperties `json:"properties,omitempty"`
+	// Type - Possible values include: 'TypeOutputDataSource', 'TypeRaw', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
+	Type TypeBasicOutputDataSource `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RawOutputDatasource.
+func (rod RawOutputDatasource) MarshalJSON() ([]byte, error) {
+	rod.Type = TypeRaw
+	objectMap := make(map[string]interface{})
+	if rod.RawOutputDatasourceProperties != nil {
+		objectMap["properties"] = rod.RawOutputDatasourceProperties
+	}
+	if rod.Type != "" {
+		objectMap["type"] = rod.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsRawOutputDatasource is the BasicOutputDataSource implementation for RawOutputDatasource.
+func (rod RawOutputDatasource) AsRawOutputDatasource() (*RawOutputDatasource, bool) {
+	return &rod, true
+}
+
+// AsBlobOutputDataSource is the BasicOutputDataSource implementation for RawOutputDatasource.
+func (rod RawOutputDatasource) AsBlobOutputDataSource() (*BlobOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureTableOutputDataSource is the BasicOutputDataSource implementation for RawOutputDatasource.
+func (rod RawOutputDatasource) AsAzureTableOutputDataSource() (*AzureTableOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsEventHubOutputDataSource is the BasicOutputDataSource implementation for RawOutputDatasource.
+func (rod RawOutputDatasource) AsEventHubOutputDataSource() (*EventHubOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsEventHubV2OutputDataSource is the BasicOutputDataSource implementation for RawOutputDatasource.
+func (rod RawOutputDatasource) AsEventHubV2OutputDataSource() (*EventHubV2OutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureSQLDatabaseOutputDataSource is the BasicOutputDataSource implementation for RawOutputDatasource.
+func (rod RawOutputDatasource) AsAzureSQLDatabaseOutputDataSource() (*AzureSQLDatabaseOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureSynapseOutputDataSource is the BasicOutputDataSource implementation for RawOutputDatasource.
+func (rod RawOutputDatasource) AsAzureSynapseOutputDataSource() (*AzureSynapseOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsDocumentDbOutputDataSource is the BasicOutputDataSource implementation for RawOutputDatasource.
+func (rod RawOutputDatasource) AsDocumentDbOutputDataSource() (*DocumentDbOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureFunctionOutputDataSource is the BasicOutputDataSource implementation for RawOutputDatasource.
+func (rod RawOutputDatasource) AsAzureFunctionOutputDataSource() (*AzureFunctionOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsServiceBusQueueOutputDataSource is the BasicOutputDataSource implementation for RawOutputDatasource.
+func (rod RawOutputDatasource) AsServiceBusQueueOutputDataSource() (*ServiceBusQueueOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsServiceBusTopicOutputDataSource is the BasicOutputDataSource implementation for RawOutputDatasource.
+func (rod RawOutputDatasource) AsServiceBusTopicOutputDataSource() (*ServiceBusTopicOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsPowerBIOutputDataSource is the BasicOutputDataSource implementation for RawOutputDatasource.
+func (rod RawOutputDatasource) AsPowerBIOutputDataSource() (*PowerBIOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsAzureDataLakeStoreOutputDataSource is the BasicOutputDataSource implementation for RawOutputDatasource.
+func (rod RawOutputDatasource) AsAzureDataLakeStoreOutputDataSource() (*AzureDataLakeStoreOutputDataSource, bool) {
+	return nil, false
+}
+
+// AsOutputDataSource is the BasicOutputDataSource implementation for RawOutputDatasource.
+func (rod RawOutputDatasource) AsOutputDataSource() (*OutputDataSource, bool) {
+	return nil, false
+}
+
+// AsBasicOutputDataSource is the BasicOutputDataSource implementation for RawOutputDatasource.
+func (rod RawOutputDatasource) AsBasicOutputDataSource() (BasicOutputDataSource, bool) {
+	return &rod, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for RawOutputDatasource struct.
+func (rod *RawOutputDatasource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var rawOutputDatasourceProperties RawOutputDatasourceProperties
+				err = json.Unmarshal(*v, &rawOutputDatasourceProperties)
+				if err != nil {
+					return err
+				}
+				rod.RawOutputDatasourceProperties = &rawOutputDatasourceProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicOutputDataSource
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rod.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// RawOutputDatasourceProperties the properties that are associated with a raw output.
+type RawOutputDatasourceProperties struct {
+	// PayloadURI - The SAS URL to a blob where the output should be written. If this property is not set, output data will be written into a temporary storage, and a SAS URL to that temporary storage will be included in the result.
+	PayloadURI *string `json:"payloadUri,omitempty"`
+}
+
+// RawReferenceInputDataSource describes a raw input data source that contains reference data. This data
+// source type is only applicable/usable when using the query testing API. You cannot create a job with
+// this data source type or add an input of this data source type to an existing job.
+type RawReferenceInputDataSource struct {
+	// RawInputDatasourceProperties - The properties that are associated with a raw input containing reference data. Required on PUT (CreateOrReplace) requests.
+	*RawInputDatasourceProperties `json:"properties,omitempty"`
+	// Type - Possible values include: 'TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource', 'TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicReferenceInputDataSourceTypeRaw', 'TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase'
+	Type TypeBasicReferenceInputDataSource `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RawReferenceInputDataSource.
+func (rrids RawReferenceInputDataSource) MarshalJSON() ([]byte, error) {
+	rrids.Type = TypeBasicReferenceInputDataSourceTypeRaw
+	objectMap := make(map[string]interface{})
+	if rrids.RawInputDatasourceProperties != nil {
+		objectMap["properties"] = rrids.RawInputDatasourceProperties
+	}
+	if rrids.Type != "" {
+		objectMap["type"] = rrids.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsBlobReferenceInputDataSource is the BasicReferenceInputDataSource implementation for RawReferenceInputDataSource.
+func (rrids RawReferenceInputDataSource) AsBlobReferenceInputDataSource() (*BlobReferenceInputDataSource, bool) {
+	return nil, false
+}
+
+// AsRawReferenceInputDataSource is the BasicReferenceInputDataSource implementation for RawReferenceInputDataSource.
+func (rrids RawReferenceInputDataSource) AsRawReferenceInputDataSource() (*RawReferenceInputDataSource, bool) {
+	return &rrids, true
+}
+
+// AsAzureSQLReferenceInputDataSource is the BasicReferenceInputDataSource implementation for RawReferenceInputDataSource.
+func (rrids RawReferenceInputDataSource) AsAzureSQLReferenceInputDataSource() (*AzureSQLReferenceInputDataSource, bool) {
+	return nil, false
+}
+
+// AsReferenceInputDataSource is the BasicReferenceInputDataSource implementation for RawReferenceInputDataSource.
+func (rrids RawReferenceInputDataSource) AsReferenceInputDataSource() (*ReferenceInputDataSource, bool) {
+	return nil, false
+}
+
+// AsBasicReferenceInputDataSource is the BasicReferenceInputDataSource implementation for RawReferenceInputDataSource.
+func (rrids RawReferenceInputDataSource) AsBasicReferenceInputDataSource() (BasicReferenceInputDataSource, bool) {
+	return &rrids, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for RawReferenceInputDataSource struct.
+func (rrids *RawReferenceInputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var rawInputDatasourceProperties RawInputDatasourceProperties
+				err = json.Unmarshal(*v, &rawInputDatasourceProperties)
+				if err != nil {
+					return err
+				}
+				rrids.RawInputDatasourceProperties = &rawInputDatasourceProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicReferenceInputDataSource
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rrids.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// RawStreamInputDataSource describes a raw input data source that contains stream data. This data source
+// type is only applicable/usable when using the query testing API. You cannot create a job with this data
+// source type or add an input of this data source type to an existing job.
+type RawStreamInputDataSource struct {
+	// RawInputDatasourceProperties - The properties that are associated with a raw input. Required on PUT (CreateOrReplace) requests.
+	*RawInputDatasourceProperties `json:"properties,omitempty"`
+	// Type - Possible values include: 'TypeBasicStreamInputDataSourceTypeStreamInputDataSource', 'TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs', 'TypeBasicStreamInputDataSourceTypeRaw'
+	Type TypeBasicStreamInputDataSource `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RawStreamInputDataSource.
+func (rsids RawStreamInputDataSource) MarshalJSON() ([]byte, error) {
+	rsids.Type = TypeBasicStreamInputDataSourceTypeRaw
+	objectMap := make(map[string]interface{})
+	if rsids.RawInputDatasourceProperties != nil {
+		objectMap["properties"] = rsids.RawInputDatasourceProperties
+	}
+	if rsids.Type != "" {
+		objectMap["type"] = rsids.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsBlobStreamInputDataSource is the BasicStreamInputDataSource implementation for RawStreamInputDataSource.
+func (rsids RawStreamInputDataSource) AsBlobStreamInputDataSource() (*BlobStreamInputDataSource, bool) {
+	return nil, false
+}
+
+// AsEventHubStreamInputDataSource is the BasicStreamInputDataSource implementation for RawStreamInputDataSource.
+func (rsids RawStreamInputDataSource) AsEventHubStreamInputDataSource() (*EventHubStreamInputDataSource, bool) {
+	return nil, false
+}
+
+// AsEventHubV2StreamInputDataSource is the BasicStreamInputDataSource implementation for RawStreamInputDataSource.
+func (rsids RawStreamInputDataSource) AsEventHubV2StreamInputDataSource() (*EventHubV2StreamInputDataSource, bool) {
+	return nil, false
+}
+
+// AsIoTHubStreamInputDataSource is the BasicStreamInputDataSource implementation for RawStreamInputDataSource.
+func (rsids RawStreamInputDataSource) AsIoTHubStreamInputDataSource() (*IoTHubStreamInputDataSource, bool) {
+	return nil, false
+}
+
+// AsRawStreamInputDataSource is the BasicStreamInputDataSource implementation for RawStreamInputDataSource.
+func (rsids RawStreamInputDataSource) AsRawStreamInputDataSource() (*RawStreamInputDataSource, bool) {
+	return &rsids, true
+}
+
+// AsStreamInputDataSource is the BasicStreamInputDataSource implementation for RawStreamInputDataSource.
+func (rsids RawStreamInputDataSource) AsStreamInputDataSource() (*StreamInputDataSource, bool) {
+	return nil, false
+}
+
+// AsBasicStreamInputDataSource is the BasicStreamInputDataSource implementation for RawStreamInputDataSource.
+func (rsids RawStreamInputDataSource) AsBasicStreamInputDataSource() (BasicStreamInputDataSource, bool) {
+	return &rsids, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for RawStreamInputDataSource struct.
+func (rsids *RawStreamInputDataSource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var rawInputDatasourceProperties RawInputDatasourceProperties
+				err = json.Unmarshal(*v, &rawInputDatasourceProperties)
+				if err != nil {
+					return err
+				}
+				rsids.RawInputDatasourceProperties = &rawInputDatasourceProperties
+			}
+		case "type":
+			if v != nil {
+				var typeVar TypeBasicStreamInputDataSource
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				rsids.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
 // BasicReferenceInputDataSource describes an input data source that contains reference data.
 type BasicReferenceInputDataSource interface {
 	AsBlobReferenceInputDataSource() (*BlobReferenceInputDataSource, bool)
+	AsRawReferenceInputDataSource() (*RawReferenceInputDataSource, bool)
 	AsAzureSQLReferenceInputDataSource() (*AzureSQLReferenceInputDataSource, bool)
 	AsReferenceInputDataSource() (*ReferenceInputDataSource, bool)
 }
 
 // ReferenceInputDataSource describes an input data source that contains reference data.
 type ReferenceInputDataSource struct {
-	// Type - Possible values include: 'TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource', 'TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase'
+	// Type - Possible values include: 'TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource', 'TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicReferenceInputDataSourceTypeRaw', 'TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase'
 	Type TypeBasicReferenceInputDataSource `json:"type,omitempty"`
 }
 
@@ -6243,6 +6755,10 @@ func unmarshalBasicReferenceInputDataSource(body []byte) (BasicReferenceInputDat
 		var brids BlobReferenceInputDataSource
 		err := json.Unmarshal(body, &brids)
 		return brids, err
+	case string(TypeBasicReferenceInputDataSourceTypeRaw):
+		var rrids RawReferenceInputDataSource
+		err := json.Unmarshal(body, &rrids)
+		return rrids, err
 	case string(TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase):
 		var asrids AzureSQLReferenceInputDataSource
 		err := json.Unmarshal(body, &asrids)
@@ -6284,6 +6800,11 @@ func (rids ReferenceInputDataSource) MarshalJSON() ([]byte, error) {
 
 // AsBlobReferenceInputDataSource is the BasicReferenceInputDataSource implementation for ReferenceInputDataSource.
 func (rids ReferenceInputDataSource) AsBlobReferenceInputDataSource() (*BlobReferenceInputDataSource, bool) {
+	return nil, false
+}
+
+// AsRawReferenceInputDataSource is the BasicReferenceInputDataSource implementation for ReferenceInputDataSource.
+func (rids ReferenceInputDataSource) AsRawReferenceInputDataSource() (*RawReferenceInputDataSource, bool) {
 	return nil, false
 }
 
@@ -6433,7 +6954,7 @@ func (rip *ReferenceInputProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// Resource ...
+// Resource the base resource definition
 type Resource struct {
 	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
@@ -6462,6 +6983,45 @@ type ResourceTestStatus struct {
 // MarshalJSON is the custom marshaler for ResourceTestStatus.
 func (rts ResourceTestStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// SampleInput the stream analytics input to sample.
+type SampleInput struct {
+	// Input - The stream analytics input to sample.
+	Input *Input `json:"input,omitempty"`
+	// CompatibilityLevel - Defaults to the default ASA job compatibility level. Today it is 1.2
+	CompatibilityLevel *string `json:"compatibilityLevel,omitempty"`
+	// EventsURI - The SAS URI of the storage blob for service to write the sampled events to. If this parameter is not provided, service will write events to he system account and share a temporary SAS URI to it.
+	EventsURI *string `json:"eventsUri,omitempty"`
+	// DataLocale - Defaults to en-US.
+	DataLocale *string `json:"dataLocale,omitempty"`
+}
+
+// SampleInputResult the result of the sample input request.
+type SampleInputResult struct {
+	autorest.Response `json:"-"`
+	// Status - The status of the sample input request. Possible values include: 'ReadAllEventsInRange', 'NoEventsFoundInRange', 'ErrorConnectingToInput'
+	Status SampleInputResultStatus `json:"status,omitempty"`
+	// Diagnostics - READ-ONLY; Diagnostics messages. E.g. message indicating some partitions from the input have no data.
+	Diagnostics *[]string `json:"diagnostics,omitempty"`
+	// EventsDownloadURL - READ-ONLY; A SAS URL to download the sampled input data.
+	EventsDownloadURL *string `json:"eventsDownloadUrl,omitempty"`
+	// LastArrivalTime - READ-ONLY; The timestamp for the last event in the data. It is in DateTime format.
+	LastArrivalTime *string `json:"lastArrivalTime,omitempty"`
+	// Error - Error definition properties.
+	Error *ErrorError `json:"error,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SampleInputResult.
+func (sir SampleInputResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sir.Status != "" {
+		objectMap["status"] = sir.Status
+	}
+	if sir.Error != nil {
+		objectMap["error"] = sir.Error
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -6682,7 +7242,7 @@ type ServiceBusDataSourceProperties struct {
 type ServiceBusQueueOutputDataSource struct {
 	// ServiceBusQueueOutputDataSourceProperties - The properties that are associated with a Service Bus Queue output. Required on PUT (CreateOrReplace) requests.
 	*ServiceBusQueueOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeOutputDataSource', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
+	// Type - Possible values include: 'TypeOutputDataSource', 'TypeRaw', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -6697,6 +7257,11 @@ func (sbqods ServiceBusQueueOutputDataSource) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = sbqods.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsRawOutputDatasource is the BasicOutputDataSource implementation for ServiceBusQueueOutputDataSource.
+func (sbqods ServiceBusQueueOutputDataSource) AsRawOutputDatasource() (*RawOutputDatasource, bool) {
+	return nil, false
 }
 
 // AsBlobOutputDataSource is the BasicOutputDataSource implementation for ServiceBusQueueOutputDataSource.
@@ -6851,7 +7416,7 @@ func (sbqodsp ServiceBusQueueOutputDataSourceProperties) MarshalJSON() ([]byte, 
 type ServiceBusTopicOutputDataSource struct {
 	// ServiceBusTopicOutputDataSourceProperties - The properties that are associated with a Service Bus Topic output. Required on PUT (CreateOrReplace) requests.
 	*ServiceBusTopicOutputDataSourceProperties `json:"properties,omitempty"`
-	// Type - Possible values include: 'TypeOutputDataSource', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
+	// Type - Possible values include: 'TypeOutputDataSource', 'TypeRaw', 'TypeMicrosoftStorageBlob', 'TypeMicrosoftStorageTable', 'TypeMicrosoftServiceBusEventHub', 'TypeMicrosoftEventHubEventHub', 'TypeMicrosoftSQLServerDatabase', 'TypeMicrosoftSQLServerDataWarehouse', 'TypeMicrosoftStorageDocumentDB', 'TypeMicrosoftAzureFunction', 'TypeMicrosoftServiceBusQueue', 'TypeMicrosoftServiceBusTopic', 'TypePowerBI', 'TypeMicrosoftDataLakeAccounts'
 	Type TypeBasicOutputDataSource `json:"type,omitempty"`
 }
 
@@ -6866,6 +7431,11 @@ func (sbtods ServiceBusTopicOutputDataSource) MarshalJSON() ([]byte, error) {
 		objectMap["type"] = sbtods.Type
 	}
 	return json.Marshal(objectMap)
+}
+
+// AsRawOutputDatasource is the BasicOutputDataSource implementation for ServiceBusTopicOutputDataSource.
+func (sbtods ServiceBusTopicOutputDataSource) AsRawOutputDatasource() (*RawOutputDatasource, bool) {
+	return nil, false
 }
 
 // AsBlobOutputDataSource is the BasicOutputDataSource implementation for ServiceBusTopicOutputDataSource.
@@ -7589,12 +8159,13 @@ type BasicStreamInputDataSource interface {
 	AsEventHubStreamInputDataSource() (*EventHubStreamInputDataSource, bool)
 	AsEventHubV2StreamInputDataSource() (*EventHubV2StreamInputDataSource, bool)
 	AsIoTHubStreamInputDataSource() (*IoTHubStreamInputDataSource, bool)
+	AsRawStreamInputDataSource() (*RawStreamInputDataSource, bool)
 	AsStreamInputDataSource() (*StreamInputDataSource, bool)
 }
 
 // StreamInputDataSource describes an input data source that contains stream data.
 type StreamInputDataSource struct {
-	// Type - Possible values include: 'TypeBasicStreamInputDataSourceTypeStreamInputDataSource', 'TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs'
+	// Type - Possible values include: 'TypeBasicStreamInputDataSourceTypeStreamInputDataSource', 'TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob', 'TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub', 'TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs', 'TypeBasicStreamInputDataSourceTypeRaw'
 	Type TypeBasicStreamInputDataSource `json:"type,omitempty"`
 }
 
@@ -7622,6 +8193,10 @@ func unmarshalBasicStreamInputDataSource(body []byte) (BasicStreamInputDataSourc
 		var ithsids IoTHubStreamInputDataSource
 		err := json.Unmarshal(body, &ithsids)
 		return ithsids, err
+	case string(TypeBasicStreamInputDataSourceTypeRaw):
+		var rsids RawStreamInputDataSource
+		err := json.Unmarshal(body, &rsids)
+		return rsids, err
 	default:
 		var sids StreamInputDataSource
 		err := json.Unmarshal(body, &sids)
@@ -7674,6 +8249,11 @@ func (sids StreamInputDataSource) AsEventHubV2StreamInputDataSource() (*EventHub
 
 // AsIoTHubStreamInputDataSource is the BasicStreamInputDataSource implementation for StreamInputDataSource.
 func (sids StreamInputDataSource) AsIoTHubStreamInputDataSource() (*IoTHubStreamInputDataSource, bool) {
+	return nil, false
+}
+
+// AsRawStreamInputDataSource is the BasicStreamInputDataSource implementation for StreamInputDataSource.
+func (sids StreamInputDataSource) AsRawStreamInputDataSource() (*RawStreamInputDataSource, bool) {
 	return nil, false
 }
 
@@ -7935,6 +8515,215 @@ type SubscriptionQuotasListResult struct {
 func (sqlr SubscriptionQuotasListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// SubscriptionsSampleInputMethodFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type SubscriptionsSampleInputMethodFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SubscriptionsClient) (SampleInputResult, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *SubscriptionsSampleInputMethodFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for SubscriptionsSampleInputMethodFuture.Result.
+func (future *SubscriptionsSampleInputMethodFuture) result(client SubscriptionsClient) (sir SampleInputResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsSampleInputMethodFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		sir.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("streamanalytics.SubscriptionsSampleInputMethodFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if sir.Response.Response, err = future.GetResult(sender); err == nil && sir.Response.Response.StatusCode != http.StatusNoContent {
+		sir, err = client.SampleInputMethodResponder(sir.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsSampleInputMethodFuture", "Result", sir.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// SubscriptionsTestInputMethodFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type SubscriptionsTestInputMethodFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SubscriptionsClient) (TestDatasourceResult, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *SubscriptionsTestInputMethodFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for SubscriptionsTestInputMethodFuture.Result.
+func (future *SubscriptionsTestInputMethodFuture) result(client SubscriptionsClient) (tdr TestDatasourceResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsTestInputMethodFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		tdr.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("streamanalytics.SubscriptionsTestInputMethodFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if tdr.Response.Response, err = future.GetResult(sender); err == nil && tdr.Response.Response.StatusCode != http.StatusNoContent {
+		tdr, err = client.TestInputMethodResponder(tdr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsTestInputMethodFuture", "Result", tdr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// SubscriptionsTestOutputMethodFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type SubscriptionsTestOutputMethodFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SubscriptionsClient) (TestDatasourceResult, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *SubscriptionsTestOutputMethodFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for SubscriptionsTestOutputMethodFuture.Result.
+func (future *SubscriptionsTestOutputMethodFuture) result(client SubscriptionsClient) (tdr TestDatasourceResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsTestOutputMethodFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		tdr.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("streamanalytics.SubscriptionsTestOutputMethodFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if tdr.Response.Response, err = future.GetResult(sender); err == nil && tdr.Response.Response.StatusCode != http.StatusNoContent {
+		tdr, err = client.TestOutputMethodResponder(tdr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsTestOutputMethodFuture", "Result", tdr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// SubscriptionsTestQueryMethodFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type SubscriptionsTestQueryMethodFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SubscriptionsClient) (QueryTestingResult, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *SubscriptionsTestQueryMethodFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for SubscriptionsTestQueryMethodFuture.Result.
+func (future *SubscriptionsTestQueryMethodFuture) result(client SubscriptionsClient) (qtr QueryTestingResult, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsTestQueryMethodFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		qtr.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("streamanalytics.SubscriptionsTestQueryMethodFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if qtr.Response.Response, err = future.GetResult(sender); err == nil && qtr.Response.Response.StatusCode != http.StatusNoContent {
+		qtr, err = client.TestQueryMethodResponder(qtr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "streamanalytics.SubscriptionsTestQueryMethodFuture", "Result", qtr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// TestDatasourceResult the result of the test input or output request.
+type TestDatasourceResult struct {
+	autorest.Response `json:"-"`
+	// Status - The status of the sample output request. Possible values include: 'TestSucceeded', 'TestFailed'
+	Status TestDatasourceResultStatus `json:"status,omitempty"`
+	// Error - Error definition properties.
+	Error *ErrorError `json:"error,omitempty"`
+}
+
+// TestInput a stream analytics input.
+type TestInput struct {
+	// Input - The stream analytics input to test.
+	Input *Input `json:"input,omitempty"`
+}
+
+// TestOutput a stream analytics output.
+type TestOutput struct {
+	// Output - The stream analytics output to test.
+	Output *Output `json:"output,omitempty"`
+}
+
+// TestQuery the request object for query testing.
+type TestQuery struct {
+	// Diagnostics - Diagnostics information related to query testing.
+	Diagnostics *TestQueryDiagnostics `json:"diagnostics,omitempty"`
+	// StreamingJob - Stream analytics job object which defines the input, output, and transformation for the query testing.
+	StreamingJob *StreamingJob `json:"streamingJob,omitempty"`
+}
+
+// TestQueryDiagnostics diagnostics information related to query testing.
+type TestQueryDiagnostics struct {
+	// WriteURI - The SAS URI to the container or directory.
+	WriteURI *string `json:"writeUri,omitempty"`
+	// Path - The path to the subdirectory.
+	Path *string `json:"path,omitempty"`
 }
 
 // TrackedResource the resource model definition for a ARM tracked top level resource

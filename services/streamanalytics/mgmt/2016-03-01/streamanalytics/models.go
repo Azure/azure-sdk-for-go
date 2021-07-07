@@ -1224,6 +1224,34 @@ type DocumentDbOutputDataSourceProperties struct {
 	DocumentID *string `json:"documentId,omitempty"`
 }
 
+// Error common error representation.
+type Error struct {
+	// Error - Error definition properties.
+	Error *ErrorError `json:"error,omitempty"`
+}
+
+// ErrorDetails common error details representation.
+type ErrorDetails struct {
+	// Code - Error code.
+	Code *string `json:"code,omitempty"`
+	// Target - Error target.
+	Target *string `json:"target,omitempty"`
+	// Message - Error message.
+	Message *string `json:"message,omitempty"`
+}
+
+// ErrorError error definition properties.
+type ErrorError struct {
+	// Code - Error code.
+	Code *string `json:"code,omitempty"`
+	// Message - Error message.
+	Message *string `json:"message,omitempty"`
+	// Target - Error target.
+	Target *string `json:"target,omitempty"`
+	// Details - Error details.
+	Details *[]ErrorDetails `json:"details,omitempty"`
+}
+
 // ErrorResponse describes the error that occurred.
 type ErrorResponse struct {
 	// Code - READ-ONLY; Error code associated with the error that occurred.
@@ -3622,6 +3650,23 @@ type PowerBIOutputDataSourceProperties struct {
 	TokenUserDisplayName *string `json:"tokenUserDisplayName,omitempty"`
 }
 
+// ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
+// required location and tags
+type ProxyResource struct {
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // BasicReferenceInputDataSource describes an input data source that contains reference data.
 type BasicReferenceInputDataSource interface {
 	AsBlobReferenceInputDataSource() (*BlobReferenceInputDataSource, bool)
@@ -3800,29 +3845,19 @@ func (rip *ReferenceInputProperties) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// Resource the base resource model definition.
+// Resource the base resource definition
 type Resource struct {
-	// ID - READ-ONLY; Resource Id
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
+	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
 	Type *string `json:"type,omitempty"`
-	// Location - Resource location. Required on PUT (CreateOrReplace) requests.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags
-	Tags map[string]*string `json:"tags"`
 }
 
 // MarshalJSON is the custom marshaler for Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if r.Location != nil {
-		objectMap["location"] = r.Location
-	}
-	if r.Tags != nil {
-		objectMap["tags"] = r.Tags
-	}
 	return json.Marshal(objectMap)
 }
 
@@ -4355,16 +4390,16 @@ type StreamingJob struct {
 	autorest.Response `json:"-"`
 	// StreamingJobProperties - The properties that are associated with a streaming job.  Required on PUT (CreateOrReplace) requests.
 	*StreamingJobProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; Resource name
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; Resource type
-	Type *string `json:"type,omitempty"`
-	// Location - Resource location. Required on PUT (CreateOrReplace) requests.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags
+	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for StreamingJob.
@@ -4373,11 +4408,11 @@ func (sj StreamingJob) MarshalJSON() ([]byte, error) {
 	if sj.StreamingJobProperties != nil {
 		objectMap["properties"] = sj.StreamingJobProperties
 	}
-	if sj.Location != nil {
-		objectMap["location"] = sj.Location
-	}
 	if sj.Tags != nil {
 		objectMap["tags"] = sj.Tags
+	}
+	if sj.Location != nil {
+		objectMap["location"] = sj.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -4399,6 +4434,24 @@ func (sj *StreamingJob) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sj.StreamingJobProperties = &streamingJobProperties
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				sj.Tags = tags
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				sj.Location = &location
 			}
 		case "id":
 			if v != nil {
@@ -4426,24 +4479,6 @@ func (sj *StreamingJob) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				sj.Type = &typeVar
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				sj.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				sj.Tags = tags
 			}
 		}
 	}
@@ -5171,6 +5206,32 @@ type SubscriptionQuotasListResult struct {
 // MarshalJSON is the custom marshaler for SubscriptionQuotasListResult.
 func (sqlr SubscriptionQuotasListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// TrackedResource the resource model definition for a ARM tracked top level resource
+type TrackedResource struct {
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TrackedResource.
+func (tr TrackedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
+	}
 	return json.Marshal(objectMap)
 }
 

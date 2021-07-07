@@ -70,7 +70,12 @@ var _ StreamingJobsClientAPI = (*streamanalytics.StreamingJobsClient)(nil)
 
 // SubscriptionsClientAPI contains the set of methods on the SubscriptionsClient type.
 type SubscriptionsClientAPI interface {
+	CompileQueryMethod(ctx context.Context, compileQuery streamanalytics.CompileQuery, location string) (result streamanalytics.QueryCompilationResult, err error)
 	ListQuotas(ctx context.Context, location string) (result streamanalytics.SubscriptionQuotasListResult, err error)
+	SampleInputMethod(ctx context.Context, sampleInput streamanalytics.SampleInput, location string) (result streamanalytics.SubscriptionsSampleInputMethodFuture, err error)
+	TestInputMethod(ctx context.Context, testInput streamanalytics.TestInput, location string) (result streamanalytics.SubscriptionsTestInputMethodFuture, err error)
+	TestOutputMethod(ctx context.Context, testOutput streamanalytics.TestOutput, location string) (result streamanalytics.SubscriptionsTestOutputMethodFuture, err error)
+	TestQueryMethod(ctx context.Context, testQuery streamanalytics.TestQuery, location string) (result streamanalytics.SubscriptionsTestQueryMethodFuture, err error)
 }
 
 var _ SubscriptionsClientAPI = (*streamanalytics.SubscriptionsClient)(nil)

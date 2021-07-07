@@ -246,6 +246,46 @@ func PossibleOutputStartModeValues() []OutputStartMode {
 	return []OutputStartMode{CustomTime, JobStartTime, LastOutputEventTime}
 }
 
+// QueryTestingResultStatus enumerates the values for query testing result status.
+type QueryTestingResultStatus string
+
+const (
+	// CompilerError The query testing operation failed due to a compiler error.
+	CompilerError QueryTestingResultStatus = "CompilerError"
+	// RuntimeError The query testing operation failed due to a runtime error.
+	RuntimeError QueryTestingResultStatus = "RuntimeError"
+	// Started The query testing operation was initiated.
+	Started QueryTestingResultStatus = "Started"
+	// Success The query testing operation succeeded.
+	Success QueryTestingResultStatus = "Success"
+	// Timeout The query testing operation failed due to a timeout.
+	Timeout QueryTestingResultStatus = "Timeout"
+	// UnknownError The query testing operation failed due to an unknown error .
+	UnknownError QueryTestingResultStatus = "UnknownError"
+)
+
+// PossibleQueryTestingResultStatusValues returns an array of possible values for the QueryTestingResultStatus const type.
+func PossibleQueryTestingResultStatusValues() []QueryTestingResultStatus {
+	return []QueryTestingResultStatus{CompilerError, RuntimeError, Started, Success, Timeout, UnknownError}
+}
+
+// SampleInputResultStatus enumerates the values for sample input result status.
+type SampleInputResultStatus string
+
+const (
+	// ErrorConnectingToInput The sample input operation failed to connect to the input.
+	ErrorConnectingToInput SampleInputResultStatus = "ErrorConnectingToInput"
+	// NoEventsFoundInRange The sample input operation found no events in the range.
+	NoEventsFoundInRange SampleInputResultStatus = "NoEventsFoundInRange"
+	// ReadAllEventsInRange The sample input operation successfully read all the events in the range.
+	ReadAllEventsInRange SampleInputResultStatus = "ReadAllEventsInRange"
+)
+
+// PossibleSampleInputResultStatusValues returns an array of possible values for the SampleInputResultStatus const type.
+func PossibleSampleInputResultStatusValues() []SampleInputResultStatus {
+	return []SampleInputResultStatus{ErrorConnectingToInput, NoEventsFoundInRange, ReadAllEventsInRange}
+}
+
 // StreamingJobSkuName enumerates the values for streaming job sku name.
 type StreamingJobSkuName string
 
@@ -257,6 +297,21 @@ const (
 // PossibleStreamingJobSkuNameValues returns an array of possible values for the StreamingJobSkuName const type.
 func PossibleStreamingJobSkuNameValues() []StreamingJobSkuName {
 	return []StreamingJobSkuName{Standard}
+}
+
+// TestDatasourceResultStatus enumerates the values for test datasource result status.
+type TestDatasourceResultStatus string
+
+const (
+	// TestFailed The test datasource operation failed.
+	TestFailed TestDatasourceResultStatus = "TestFailed"
+	// TestSucceeded The test datasource operation succeeded.
+	TestSucceeded TestDatasourceResultStatus = "TestSucceeded"
+)
+
+// PossibleTestDatasourceResultStatusValues returns an array of possible values for the TestDatasourceResultStatus const type.
+func PossibleTestDatasourceResultStatusValues() []TestDatasourceResultStatus {
+	return []TestDatasourceResultStatus{TestFailed, TestSucceeded}
 }
 
 // Type enumerates the values for type.
@@ -344,11 +399,13 @@ const (
 	TypeOutputDataSource TypeBasicOutputDataSource = "OutputDataSource"
 	// TypePowerBI ...
 	TypePowerBI TypeBasicOutputDataSource = "PowerBI"
+	// TypeRaw ...
+	TypeRaw TypeBasicOutputDataSource = "Raw"
 )
 
 // PossibleTypeBasicOutputDataSourceValues returns an array of possible values for the TypeBasicOutputDataSource const type.
 func PossibleTypeBasicOutputDataSourceValues() []TypeBasicOutputDataSource {
-	return []TypeBasicOutputDataSource{TypeMicrosoftAzureFunction, TypeMicrosoftDataLakeAccounts, TypeMicrosoftEventHubEventHub, TypeMicrosoftServiceBusEventHub, TypeMicrosoftServiceBusQueue, TypeMicrosoftServiceBusTopic, TypeMicrosoftSQLServerDatabase, TypeMicrosoftSQLServerDataWarehouse, TypeMicrosoftStorageBlob, TypeMicrosoftStorageDocumentDB, TypeMicrosoftStorageTable, TypeOutputDataSource, TypePowerBI}
+	return []TypeBasicOutputDataSource{TypeMicrosoftAzureFunction, TypeMicrosoftDataLakeAccounts, TypeMicrosoftEventHubEventHub, TypeMicrosoftServiceBusEventHub, TypeMicrosoftServiceBusQueue, TypeMicrosoftServiceBusTopic, TypeMicrosoftSQLServerDatabase, TypeMicrosoftSQLServerDataWarehouse, TypeMicrosoftStorageBlob, TypeMicrosoftStorageDocumentDB, TypeMicrosoftStorageTable, TypeOutputDataSource, TypePowerBI, TypeRaw}
 }
 
 // TypeBasicReferenceInputDataSource enumerates the values for type basic reference input data source.
@@ -359,13 +416,15 @@ const (
 	TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase TypeBasicReferenceInputDataSource = "Microsoft.Sql/Server/Database"
 	// TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob ...
 	TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob TypeBasicReferenceInputDataSource = "Microsoft.Storage/Blob"
+	// TypeBasicReferenceInputDataSourceTypeRaw ...
+	TypeBasicReferenceInputDataSourceTypeRaw TypeBasicReferenceInputDataSource = "Raw"
 	// TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource ...
 	TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource TypeBasicReferenceInputDataSource = "ReferenceInputDataSource"
 )
 
 // PossibleTypeBasicReferenceInputDataSourceValues returns an array of possible values for the TypeBasicReferenceInputDataSource const type.
 func PossibleTypeBasicReferenceInputDataSourceValues() []TypeBasicReferenceInputDataSource {
-	return []TypeBasicReferenceInputDataSource{TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase, TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob, TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource}
+	return []TypeBasicReferenceInputDataSource{TypeBasicReferenceInputDataSourceTypeMicrosoftSQLServerDatabase, TypeBasicReferenceInputDataSourceTypeMicrosoftStorageBlob, TypeBasicReferenceInputDataSourceTypeRaw, TypeBasicReferenceInputDataSourceTypeReferenceInputDataSource}
 }
 
 // TypeBasicSerialization enumerates the values for type basic serialization.
@@ -403,13 +462,15 @@ const (
 	TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub TypeBasicStreamInputDataSource = "Microsoft.ServiceBus/EventHub"
 	// TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob ...
 	TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob TypeBasicStreamInputDataSource = "Microsoft.Storage/Blob"
+	// TypeBasicStreamInputDataSourceTypeRaw ...
+	TypeBasicStreamInputDataSourceTypeRaw TypeBasicStreamInputDataSource = "Raw"
 	// TypeBasicStreamInputDataSourceTypeStreamInputDataSource ...
 	TypeBasicStreamInputDataSourceTypeStreamInputDataSource TypeBasicStreamInputDataSource = "StreamInputDataSource"
 )
 
 // PossibleTypeBasicStreamInputDataSourceValues returns an array of possible values for the TypeBasicStreamInputDataSource const type.
 func PossibleTypeBasicStreamInputDataSourceValues() []TypeBasicStreamInputDataSource {
-	return []TypeBasicStreamInputDataSource{TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs, TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub, TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub, TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob, TypeBasicStreamInputDataSourceTypeStreamInputDataSource}
+	return []TypeBasicStreamInputDataSource{TypeBasicStreamInputDataSourceTypeMicrosoftDevicesIotHubs, TypeBasicStreamInputDataSourceTypeMicrosoftEventHubEventHub, TypeBasicStreamInputDataSourceTypeMicrosoftServiceBusEventHub, TypeBasicStreamInputDataSourceTypeMicrosoftStorageBlob, TypeBasicStreamInputDataSourceTypeRaw, TypeBasicStreamInputDataSourceTypeStreamInputDataSource}
 }
 
 // UdfType enumerates the values for udf type.

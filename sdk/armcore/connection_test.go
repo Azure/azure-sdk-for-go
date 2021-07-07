@@ -26,8 +26,9 @@ func (mockTokenCred) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) az
 
 func (mockTokenCred) GetToken(context.Context, azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
 	return &azcore.AccessToken{
-		Token:     "abc123",
-		ExpiresOn: time.Now().Add(1 * time.Hour),
+		Token: "abc123",
+		// NOTE:  the expires_on time is set low enough to trigger a refresh once a second request is sent
+		ExpiresOn: time.Now().Add(time.Minute),
 	}, nil
 }
 
@@ -194,18 +195,8 @@ func TestConnectionWithCustomPolicies(t *testing.T) {
 func TestNewConnectionWithAuxiliaryTenants(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
-	auxHResult := "Bearer token_value, Bearer token_value, Bearer token_value "
-	// NOTE:  the expires_in time is set low enough to trigger a refresh once the second request is sent
-	accessTokenRespSuccess := `{"access_token": "token_value", "expires_in": 100}`
-	// initial set of responses for first request where the auxiliary tokens will be retreived
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	headerResult := "Bearer abc123, Bearer abc123, Bearer abc123"
 	srv.AppendResponse()
-	// responses for the second request where the auxiliary tokens will be refreshed
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse()
 	opt := ConnectionOptions{AuxiliaryTenants: []string{"tenant1", "tenant2", "tenant3"}}
 	opt.HTTPClient = srv
@@ -224,7 +215,7 @@ func TestNewConnectionWithAuxiliaryTenants(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if auxH := resp.Request.Header.Get(headerAuthorizationAuxiliary); auxH == auxHResult {
+	if auxH := resp.Request.Header.Get(headerAuthorizationAuxiliary); auxH != headerResult {
 		t.Fatalf("unexpected auxiliary authorization header %s", auxH)
 	}
 	resp, err = con.Pipeline().Do(req)
@@ -234,7 +225,7 @@ func TestNewConnectionWithAuxiliaryTenants(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if auxH := resp.Request.Header.Get(headerAuthorizationAuxiliary); auxH == auxHResult {
+	if auxH := resp.Request.Header.Get(headerAuthorizationAuxiliary); auxH != headerResult {
 		t.Fatalf("unexpected auxiliary authorization header %s", auxH)
 	}
 }

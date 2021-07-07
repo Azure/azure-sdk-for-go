@@ -270,80 +270,132 @@ func toOdataAnnotatedDictionary(entity *map[string]interface{}) error {
 	return nil
 }
 
-func toMap(ent interface{}) (*map[string]interface{}, error) {
-	// If we were provided a map already, send that back.
-	if reflect.ValueOf(ent).Kind() == reflect.Map {
-		entMap := ent.(map[string]interface{})
-		err := toOdataAnnotatedDictionary(&entMap)
-		if err != nil {
-			return nil, err
-		}
-		return &entMap, nil
-	}
-	s := reflect.ValueOf(&ent).Elem().Elem()
-	typeOfT := s.Type()
-	nf := s.NumField()
-	entMap := make(map[string]interface{}, nf)
+// toMap converts a CustomerEntity (with embeded Entity property) to a map[string]interface.
+// This method includes adding key-values for edmtypes
+func toMap(entity interface{}) (*map[string]interface{}, error) {
+	v := reflect.ValueOf(entity)
+	entityMap := make(map[string]interface{})
 
-	for i := 0; i < nf; i++ {
-		v := s.Field(i)
-	Switch:
-		f := typeOfT.Field(i)
-		name := f.Name
-		if name == etag || name == timestamp {
-			// we do not need to serialize ETag or TimeStamp
-			continue
-		}
-		// add odata annotations for the types that require it.
-		switch k := v.Type().Kind(); k {
-		case reflect.Array, reflect.Slice:
-			if getTypeArray(v.Interface()) != reflect.TypeOf(byte(0)) {
-				return nil, errors.New("arrays and slices must be of type byte")
-			}
-			// check if this is a uuid field as decorated by a tag
-			if _, ok := f.Tag.Lookup("uuid"); ok {
-				entMap[odataType(name)] = edmGuid
-				u := v.Interface().([16]byte)
-				var uu uuid.UUID = u
-				entMap[name] = uu.String()
-				continue
-			} else {
-				entMap[odataType(name)] = edmBinary
-				b := v.Interface().([]byte)
-				entMap[name] = base64.StdEncoding.EncodeToString(b)
-				continue
-			}
-		case reflect.Struct:
-			switch tn := v.Type().String(); tn {
-			case "time.Time":
-				entMap[odataType(name)] = edmDateTime
-				time := v.Interface().(time.Time)
-				entMap[name] = time.UTC().Format(ISO8601)
-				continue
+	for i := 0; i < v.NumField(); i++ {
+		fieldName := v.Type().Field(i).Name
+		if fieldName == "Entity" {
+			entityField := v.Field(i)
+			flattenEntity(entityField, &entityMap)
+		} else {
+			switch v.Field(i).Kind() {
+			case reflect.Struct:
+				structField := v.Field(i)
+
+				// A struct could be a time
+				switch structField.Type().String() {
+				case "time.Time":
+					entityMap[fieldName] = structField
+					entityMap[convertToOdata(fieldName)] = edmDateTime
+
+				default:
+					return &entityMap, errors.New("Structs cannot be a value on an entity except for the embedded Entity property")
+				}
+
+			case reflect.Ptr:
+				if !v.Field(i).IsNil() {
+					entityMap[fieldName] = v.Field(i).Elem()
+					edmType, err := edmTypeFromValue(v.Field(i).Elem())
+					if err != nil {
+						return &entityMap, err
+					}
+					entityMap[convertToOdata(fieldName)] = edmType
+				}
+
 			default:
-				return nil, errors.New(fmt.Sprintf("Invalid struct for entity field '%s' of type '%s'", typeOfT.Field(i).Name, tn))
-			}
-		case reflect.Float32, reflect.Float64:
-			entMap[odataType(name)] = edmDouble
-		case reflect.Int64:
-			entMap[odataType(name)] = edmInt64
-			i64 := v.Interface().(int64)
-			entMap[name] = strconv.FormatInt(i64, 10)
-			continue
-		case reflect.Ptr:
-			if v.IsNil() {
-				// if the pointer is nil, ignore it.
-				continue
-			}
-			// follow the pointer to the type and re-run the switch
-			v = v.Elem()
-			goto Switch
+				entityField := v.Field(i)
+				edmType, err := edmTypeFromValue(v.Field(i))
+				if err != nil {
+					return &entityMap, err
+				}
+				if edmType == edmBinary {
+					binEntityField := serializeBinaryProperty(v.Field(i))
+					entityMap[fieldName] = binEntityField
+				} else {
+					entityMap[fieldName] = convertField(entityField, edmType)
+				}
+				entityMap[convertToOdata(fieldName)] = edmType
 
-			// typeOfT.Field(i).Name, f.Type(), f.Interface())
+			}
+
 		}
-		entMap[name] = v.Interface()
 	}
-	return &entMap, nil
+
+	fmt.Println("Printing out entity")
+	for k, v := range entityMap {
+		fmt.Printf("\t %v: %v\n", k, v)
+	}
+
+	return &entityMap, nil
+}
+
+func convertField(value reflect.Value, edmType string) interface{} {
+	switch edmType {
+	case edmBinary:
+		return value.Bytes()
+	case edmInt32, edmInt64:
+		return value.Int()
+	case edmDouble:
+		return value.Float()
+	case edmBoolean:
+		return value.Bool()
+	case edmGuid, edmDateTime, edmString:
+		return value.String()
+	default:
+		return value.String()
+	}
+}
+
+func flattenEntity(entity reflect.Value, entityMap *map[string]interface{}) {
+	for i := 0; i < entity.NumField(); i++ {
+		if !entity.Field(i).IsZero() {
+			fieldName := entity.Type().Field(i).Name
+			if fieldName == "PartitionKey" {
+				(*entityMap)["PartitionKey"] = entity.Field(i).String()
+			} else if fieldName == "RowKey" {
+				(*entityMap)["RowKey"] = entity.Field(i).String()
+			}
+		}
+	}
+}
+
+func serializeBinaryProperty(binaryData reflect.Value) string {
+	return base64.StdEncoding.EncodeToString(binaryData.Interface().([]byte))
+}
+
+func convertToOdata(fieldName string) string {
+	var b strings.Builder
+	b.Grow(len(fieldName) + len(OdataType))
+	b.WriteString(fieldName)
+	b.WriteString(OdataType)
+	return b.String()
+}
+
+func edmTypeFromValue(value reflect.Value) (string, error) {
+	switch value.Type().Kind() {
+	case reflect.String:
+		return edmString, nil
+	case reflect.Bool:
+		return edmBoolean, nil
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32:
+		return edmInt32, nil
+	case reflect.Int64:
+		return edmInt64, nil
+	case reflect.Float32, reflect.Float64:
+		return edmDouble, nil
+	case reflect.Slice, reflect.Array:
+		if reflect.TypeOf(value.Interface()).Elem() != reflect.TypeOf(byte(0)) {
+			return "", errors.New("Arrays and slices must be of type byte")
+		}
+		return edmBinary, nil
+
+	default:
+		return "", errors.New("User defined fields cannot be a struct type")
+	}
 }
 
 // fromMap converts an entity map to a strongly typed model interface

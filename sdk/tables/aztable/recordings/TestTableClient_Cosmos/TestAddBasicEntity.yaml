@@ -1,0 +1,143 @@
+---
+version: 1
+interactions:
+- request:
+    body: '{"TableName":"gotablegqn0hm4oskob8"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "36"
+      Content-Type:
+      - application/json
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 07 Jul 2021 22:09:16 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.cosmos.azure.com/Tables
+    method: POST
+  response:
+    body: '{"TableName":"gotablegqn0hm4oskob8","odata.metadata":"https://seankaneprim.table.cosmos.azure.com/$metadata#Tables/@Element"}'
+    headers:
+      Content-Type:
+      - application/json;odata=minimalmetadata
+      Date:
+      - Wed, 07 Jul 2021 22:09:17 GMT
+      Etag:
+      - W/"datetime'2021-07-07T22%3A09%3A17.8195976Z'"
+      Location:
+      - https://seankaneprim.table.cosmos.azure.com/Tables('gotablegqn0hm4oskob8')
+      X-Ms-Request-Id:
+      - 5a6c2814-03f9-4a2b-bda2-6dd2400b2215
+    status: 201 Created
+    code: 201
+    duration: ""
+- request:
+    body: '{"Float":3.14159,"Float@odata.type":"Edm.Double","Integer":10,"Integer@odata.type":"Edm.Int32","PartitionKey":"pk001","RowKey":"rk001","String":"abcdef","String@odata.type":"Edm.String"}'
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Content-Length:
+      - "186"
+      Content-Type:
+      - application/json
+      Dataserviceversion:
+      - "3.0"
+      Prefer:
+      - return-no-content
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 07 Jul 2021 22:09:17 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.cosmos.azure.com/gotablegqn0hm4oskob8
+    method: POST
+  response:
+    body: ""
+    headers:
+      Date:
+      - Wed, 07 Jul 2021 22:09:17 GMT
+      Etag:
+      - W/"datetime'2021-07-07T22%3A09%3A18.4112648Z'"
+      Location:
+      - https://seankaneprim.table.cosmos.azure.com/gotablegqn0hm4oskob8(PartitionKey='pk001',RowKey='rk001')
+      Preference-Applied:
+      - return-no-content
+      X-Ms-Request-Id:
+      - 74b7e12a-c4da-419b-9334-66b74a489e7a
+    status: 204 No Content
+    code: 204
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - sanitized
+      Dataserviceversion:
+      - "3.0"
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 07 Jul 2021 22:09:17 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.cosmos.azure.com/gotablegqn0hm4oskob8(PartitionKey='pk001',RowKey='rk001')
+    method: GET
+  response:
+    body: '{"odata.metadata":"https://seankaneprim.table.cosmos.azure.com/gotablegqn0hm4oskob8/$metadata#gotablegqn0hm4oskob8/@Element","odata.etag":"W/\"datetime''2021-07-07T22%3A09%3A18.4112648Z''\"","Float":3.14159,"Integer":10,"PartitionKey":"pk001","RowKey":"rk001","String":"abcdef","Timestamp":"2021-07-07T22:09:18.4112648Z"}'
+    headers:
+      Content-Type:
+      - application/json;odata=minimalmetadata
+      Date:
+      - Wed, 07 Jul 2021 22:09:17 GMT
+      Etag:
+      - W/"datetime'2021-07-07T22%3A09%3A18.4112648Z'"
+      X-Ms-Request-Id:
+      - 5e7dbceb-9ab1-4240-bec5-c8eb5d386df6
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - sanitized
+      User-Agent:
+      - azsdk-go-aztable/<version> azsdk-go-aztable/<version> azcore/v0.16.2 (go1.16.5;
+        Windows_NT)
+      X-Ms-Date:
+      - Wed, 07 Jul 2021 22:09:17 GMT
+      X-Ms-Version:
+      - "2019-02-02"
+    url: https://seankaneprim.table.cosmos.azure.com/Tables('gotablegqn0hm4oskob8')
+    method: DELETE
+  response:
+    body: ""
+    headers:
+      Date:
+      - Wed, 07 Jul 2021 22:09:18 GMT
+      X-Ms-Request-Id:
+      - 1ba277ba-e0fc-4428-babf-c44a0c1ad168
+    status: 204 No Content
+    code: 204
+    duration: ""

@@ -8,18 +8,5 @@ import "time"
 type Entity struct {
 	PartitionKey string
 	RowKey       string
-	TimeStampt   time.Time
+	TimeStamp    time.Time
 }
-
-type EdmType string
-
-const (
-	BINARY   EdmType = "Edm.Binary"
-	BOOLEAN  EdmType = "Edm.Boolean"
-	DATETIME EdmType = "Edm.DateTime"
-	DOUBLE   EdmType = "Edm.Double"
-	GUID     EdmType = "Edm.Guid"
-	INT32    EdmType = "Edm.Int32"
-	INT64    EdmType = "Edm.Int64"
-	STRING   EdmType = "Edm.String"
-)

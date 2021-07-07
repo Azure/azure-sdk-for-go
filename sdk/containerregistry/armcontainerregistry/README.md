@@ -1,26 +1,63 @@
-# Azure Resource Manager Core Client Module for Go
+# Azure containerregistry Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/armcontainerregistry)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcontainerregistry)
-[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/go%20-%armcontainerregistry%20-%20ci?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=1844&branchName=master)
-[![Code Coverage](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1844/master)](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1844/main)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/containerregistry/armcontainerregistry)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/containerregistry/armcontainerregistry)
 
-The `armcontainerregistry` module provides functions and types for Go SDK ARM client modules.
-These modules follow the [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html).
+The `armcontainerregistry` module provides operations for working with Azure containerregistry.
 
-## Getting started
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/containerregistry/armcontainerregistry)
+
+# Getting started
+
+## Prerequisites
+
+- an [Azure subscription](https://azure.microsoft.com/free/)
+- Go 1.13 or above
+
+## Install the package
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Typically, you will not need to explicitly install `armcontainerregistry` as it will be installed as an ARM client module dependency.
-To add the latest version to your `go.mod` file, execute the following command.
+Install the Azure containerregistry module:
 
-```bash
-go get -u github.com/Azure/azure-sdk-for-go/sdk/armcontainerregistry
+```sh
+go get github.com/Azure/azure-sdk-for-go/sdk/containerregistry/armcontainerregistry
 ```
 
-General documentation and examples can be found on [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcontainerregistry).
+## Authorization
 
-## Contributing
+When creating a client, you will need to provide a credential for authenticating with Azure containerregistry.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+
+```go
+cred, err := azidentity.NewDefaultAzureCredential(nil)
+```
+
+For more information on authentication, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
+
+## Connecting to Azure Containerregistry
+
+Once you have a credential, create a connection to the desired ARM endpoint.  The `armcore` module provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
+
+```go
+con := armcore.NewDefaultConnection(cred, nil)
+```
+
+For more information on ARM connections, please see the documentation for `armcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore).
+
+## Clients
+
+Azure containerregistry modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
+
+```go
+client := armcontainerregistry.NewRegistriesClient(con, "<subscription ID>")
+```
+
+## Provide Feedback
+
+If you encounter bugs or have suggestions, please
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `containerregistry` label.
+
+# Contributing
+
 This project welcomes contributions and suggestions. Most contributions require
 you to agree to a Contributor License Agreement (CLA) declaring that you have
 the right to, and actually do, grant us the rights to use your contribution.

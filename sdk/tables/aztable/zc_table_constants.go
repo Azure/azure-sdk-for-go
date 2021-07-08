@@ -3,6 +3,8 @@
 
 package aztable
 
+import "errors"
+
 const (
 	timestamp     = "Timestamp"
 	partitionKey  = "PartitionKey"
@@ -21,3 +23,5 @@ const (
 	edmString     = "Edm.String"
 	ISO8601       = "2006-01-02T15:04:05.9999999Z"
 )
+
+var partitionKeyRowKeyError = errors.New("Entity must have a PartitionKey and RowKey")

@@ -19,9 +19,9 @@ const (
 // custom implementations for the bearer token policy.
 type TokenFetcher interface {
 	// IsZeroOrExpired returns a bool if there is a tenant that needs to be initialized
-	IsZeroOrExpired(map[string]time.Time) bool
+	IsZeroOrExpired() bool
 	// ShouldRefresh returns a bool if a token needs to be refreshed
-	ShouldRefresh(map[string]time.Time) bool
+	ShouldRefresh() bool
 	// Fetch performs the GetToken call for the credential and returns the header needed for authentication
 	Fetch(ctx context.Context, cred TokenCredential, opts TokenRequestOptions) (string, error)
 	// Header returns the key for the header in the request
@@ -38,9 +38,6 @@ type tokenRefreshPolicy struct {
 
 	// header contains the authorization header value
 	header string
-
-	// expiresOn is when the token will expire
-	expiresOn map[string]time.Time
 
 	// the following fields are read-only
 	creds       TokenCredential
@@ -71,7 +68,7 @@ func (b *tokenRefreshPolicy) Do(req *Request) (*Response, error) {
 	// acquire exclusive lock
 	b.cond.L.Lock()
 	for {
-		if b.implementer.IsZeroOrExpired(b.expiresOn) {
+		if b.implementer.IsZeroOrExpired() {
 			// token was never obtained or has expired
 			if !b.renewing {
 				// another go routine isn't refreshing the token so this one will
@@ -80,7 +77,7 @@ func (b *tokenRefreshPolicy) Do(req *Request) (*Response, error) {
 				break
 			}
 			// getting here means this go routine will wait for the token to refresh
-		} else if b.implementer.ShouldRefresh(b.expiresOn) {
+		} else if b.implementer.ShouldRefresh() {
 			// token is within the expiration window
 			if !b.renewing {
 				// another go routine isn't refreshing the token so this one will

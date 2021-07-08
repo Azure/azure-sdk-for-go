@@ -27,27 +27,22 @@ func (c *dummyCredential) GetToken(ctx context.Context, options TokenRequestOpti
 
 // defaultTokenProcessor is used for the common case where only one token is requested directly from the
 // credential
-type defaultTokenProcessor struct{}
-
-func (t *defaultTokenProcessor) IsZeroOrExpired(eo map[string]time.Time) bool {
-	// the default case will only provide one token
-	// check if the token's expieration time has passed or is uninitialized
-	for _, t := range eo {
-		return t.IsZero() || t.Before(time.Now())
-	}
-	// if a nil or empty map is passed then return true to perform the initial token request
-	return true
+type defaultTokenProcessor struct {
+	// expiresOn is when the token will expire
+	expiresOn time.Time
 }
 
-func (t *defaultTokenProcessor) ShouldRefresh(eo map[string]time.Time) bool {
+func (t *defaultTokenProcessor) IsZeroOrExpired() bool {
+	// the default case will only provide one token
+	// check if the token's expieration time has passed or is uninitialized
+	return t.expiresOn.IsZero() || t.expiresOn.Before(time.Now())
+}
+
+func (t *defaultTokenProcessor) ShouldRefresh() bool {
 	// the default case will check that the token's expiration time is within two minutes
 	// if it is it will signal a refresh for the token.
 	const window = 2 * time.Minute
-	for _, t := range eo {
-		return t.Add(-window).Before(time.Now())
-	}
-	// TODO check if this should instead return an error?
-	return false
+	return t.expiresOn.Add(-window).Before(time.Now())
 }
 
 func (t *defaultTokenProcessor) Fetch(ctx context.Context, cred TokenCredential, opts TokenRequestOptions) (string, error) {
@@ -55,6 +50,7 @@ func (t *defaultTokenProcessor) Fetch(ctx context.Context, cred TokenCredential,
 	if err != nil {
 		return "", err
 	}
+	t.expiresOn = tk.ExpiresOn
 	return bearerTokenPrefix + tk.Token, nil
 }
 

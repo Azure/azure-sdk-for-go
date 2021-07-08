@@ -1,32 +1,34 @@
-function Get-ParentDir() {
-    [OutputType([string])]
-    param ([string]$path)
-    return Split-Path -Path $path -Parent
+#Requires -Version 7.0
+param($filter, [switch]$vet, [switch]$generate, [switch]$skipBuild, $parallel = 5)
+
+$sdks = @{};
+
+foreach ($sdk in (./eng/scripts/get_module_dirs.ps1 -serviceDir 'sdk/...')) {
+    $name = $sdk | split-path -leaf
+    $sdks[$name] = @{
+        'path' = $sdk;
+    }
 }
 
-function Get-FilteredChildren {
-    param ([string]$Path, [scriptblock]$Filter)    
-    return Get-ChildItem -Path $Path -Recurse -Directory | Where-Object -FilterScript $Filter
+$keys = $sdks.Keys | Sort-Object;
+if (![string]::IsNullOrWhiteSpace($filter)) { 
+    Write-Host "Using filter: $filter"
+    $keys = $keys.Where( { $_ -match $filter }) 
 }
 
-$sdkRoot = Get-ParentDir (Get-ParentDir ($PSScriptRoot))
-$skippedDirs = @(
-    [String](Join-Path -Path $sdkRoot -ChildPath "vendor"),
-    [String](Join-Path -Path $sdkRoot -ChildPath "sdk"),
-    [String](Join-Path -Path $sdkRoot -ChildPath "tools\generator")
-)
+$keys | ForEach-Object { $sdks[$_] } | ForEach-Object -Parallel {
+    Push-Location $_.path
 
-function Test-SkipDir () {
-    [OutputType([boolean])]
-    param ([string]$path)
-    return ($skippedDirs | Where-Object { $path.StartsWith($_) }).Count -eq 0
-}
-
-$filteredLocations = Get-FilteredChildren -Path $sdkRoot -Filter { Test-SkipDir $_.FullName };
-# foreach ($dir in $filteredLocations) {    
-#     Write-Host $dir
-# }
-$process = Start-Process -FilePath "go" -ArgumentList @("list", $filteredLocations[0]) -PassThru -Wait
-Write-Host $filteredLocations[0]
-Write-Host $process.StandardError
-Write-Host $process.ExitCode
+    if (!$skipBuild) {
+        Write-Host "##[command]Executing go build -v ./... in " $_.path
+        go build -v ./...
+    }
+    if ($vet) {
+        Write-Host "##[command]Executing go vet ./... in " $_.path
+        go vet ./...
+    }
+    if ($generate) {
+        Write-Host "##[command]Executing autorest.go in " $_.path
+        # TODO
+    }
+} -ThrottleLimit $parallel

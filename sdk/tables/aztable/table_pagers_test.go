@@ -112,54 +112,54 @@ func BenchmarkMarshal_Map_ToOdataDict_Map(b *testing.B) {
 	}
 }
 
-func TestToMap(t *testing.T) {
-	assert := assert.New(t)
+// func TestToMap(t *testing.T) {
+// 	assert := assert.New(t)
 
-	ent := createComplexEntity()
+// 	ent := createComplexEntity()
 
-	entMap, err := toMap(ent)
-	assert.Nil(err)
+// 	entMap, err := toMap(ent)
+// 	assert.Nil(err)
 
-	// Validate that we have all the @odata.type properties for types []byte, int64, float64, time.Time, and uuid
-	for k, v := range odataHintProps {
-		vv, ok := (*entMap)[odataType(k)]
-		assert.Truef(ok, "Should have found map key of name '%s'", odataType(k))
-		assert.Equal(v, vv)
-	}
+// 	// Validate that we have all the @odata.type properties for types []byte, int64, float64, time.Time, and uuid
+// 	for k, v := range odataHintProps {
+// 		vv, ok := (*entMap)[odataType(k)]
+// 		assert.Truef(ok, "Should have found map key of name '%s'", odataType(k))
+// 		assert.Equal(v, vv)
+// 	}
 
-	// validate all the types were properly casted / converted
-	assert.Equal(ent.PartitionKey, (*entMap)["PartitionKey"])
-	assert.Equal(ent.RowKey, (*entMap)["RowKey"])
-	assert.Equal(base64.StdEncoding.EncodeToString(ent.SomeBinaryProperty), string((*entMap)["SomeBinaryProperty"].(string)))
-	ts, _ := time.Parse(ISO8601, (*entMap)["SomeDateProperty"].(string))
-	assert.Equal(ent.SomeDateProperty.UTC().Format(ISO8601), ts.Format(ISO8601))
-	assert.Equal(ent.SomeDoubleProperty0, (*entMap)["SomeDoubleProperty0"])
-	assert.Equal(ent.SomeDoubleProperty1, (*entMap)["SomeDoubleProperty1"])
-	var u uuid.UUID = ent.SomeGuidProperty
-	assert.Equal(u.String(), (*entMap)["SomeGuidProperty"].(string))
-	assert.Equal(strconv.FormatInt(ent.SomeInt64Property, 10), (*entMap)["SomeInt64Property"].(string))
-	assert.Equal(ent.SomeIntProperty, (*entMap)["SomeIntProperty"])
-	assert.Equal(ent.SomeStringProperty, (*entMap)["SomeStringProperty"])
-	assert.Equal(*ent.SomePtrStringProperty, (*entMap)["SomePtrStringProperty"])
-}
+// 	// validate all the types were properly casted / converted
+// 	assert.Equal(ent.PartitionKey, (*entMap)["PartitionKey"])
+// 	assert.Equal(ent.RowKey, (*entMap)["RowKey"])
+// 	assert.Equal(base64.StdEncoding.EncodeToString(ent.SomeBinaryProperty), string((*entMap)["SomeBinaryProperty"].(string)))
+// 	ts, _ := time.Parse(ISO8601, (*entMap)["SomeDateProperty"].(string))
+// 	assert.Equal(ent.SomeDateProperty.UTC().Format(ISO8601), ts.Format(ISO8601))
+// 	assert.Equal(ent.SomeDoubleProperty0, (*entMap)["SomeDoubleProperty0"])
+// 	assert.Equal(ent.SomeDoubleProperty1, (*entMap)["SomeDoubleProperty1"])
+// 	var u uuid.UUID = ent.SomeGuidProperty
+// 	assert.Equal(u.String(), (*entMap)["SomeGuidProperty"].(string))
+// 	assert.Equal(strconv.FormatInt(ent.SomeInt64Property, 10), (*entMap)["SomeInt64Property"].(string))
+// 	assert.Equal(ent.SomeIntProperty, (*entMap)["SomeIntProperty"])
+// 	assert.Equal(ent.SomeStringProperty, (*entMap)["SomeStringProperty"])
+// 	assert.Equal(*ent.SomePtrStringProperty, (*entMap)["SomePtrStringProperty"])
+// }
 
-func TestToMapWithMap(t *testing.T) {
-	assert := assert.New(t)
+// func TestToMapWithMap(t *testing.T) {
+// 	assert := assert.New(t)
 
-	ent := createComplexEntityMap()
+// 	ent := createComplexEntityMap()
 
-	entMap, err := toMap(ent)
-	assert.Nil(err)
+// 	entMap, err := toMap(ent)
+// 	assert.Nil(err)
 
-	// Validate that we have all the @odata.type properties for types []byte, int64, float64, time.Time, and uuid
-	for k, v := range odataHintProps {
-		vv, ok := (*entMap)[odataType(k)]
-		assert.Truef(ok, "Should have found map key of name '%s'", odataType(k))
-		assert.Equal(v, vv)
-	}
+// 	// Validate that we have all the @odata.type properties for types []byte, int64, float64, time.Time, and uuid
+// 	for k, v := range odataHintProps {
+// 		vv, ok := (*entMap)[odataType(k)]
+// 		assert.Truef(ok, "Should have found map key of name '%s'", odataType(k))
+// 		assert.Equal(v, vv)
+// 	}
 
-	assert.Equal(&ent, entMap)
-}
+// 	assert.Equal(&ent, entMap)
+// }
 
 func TestEntitySerialization(t *testing.T) {
 	assert := assert.New(t)

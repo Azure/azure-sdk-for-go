@@ -82,6 +82,7 @@ func recordedTestSetup(t *testing.T, testName string, endpointType EndpointType,
 	}
 
 	client, err := NewTableServiceClient(uri, cred, &TableClientOptions{HTTPClient: r, Retry: azcore.RetryOptions{MaxRetries: -1}})
+
 	assert.Nil(err)
 	clientsMap[testName] = &testContext{client: client, recording: r, context: &context}
 }

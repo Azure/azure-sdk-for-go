@@ -6,6 +6,8 @@ package aztable
 import (
 	"context"
 	"errors"
+	"fmt"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -71,7 +73,7 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 	if err != nil {
 		return resp, err
 	}
-	castAndRemoveAnnotations(&resp.Value)
+	err = castAndRemoveAnnotations(&resp.Value)
 	return resp, err
 }
 
@@ -79,6 +81,7 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 // An entity must have at least a PartitionKey and RowKey property.
 func (t *TableClient) AddEntity(ctx context.Context, entity interface{}) (TableInsertEntityResponse, error) {
 	entmap, err := toMap(entity)
+	fmt.Println(entmap)
 	if err != nil {
 		return TableInsertEntityResponse{}, azcore.NewResponseError(err, nil)
 	}
@@ -132,4 +135,16 @@ func (t *TableClient) UpsertEntity(ctx context.Context, entity map[string]interf
 		return t.client.UpdateEntity(ctx, t.Name, pk, rk, &TableUpdateEntityOptions{TableEntityProperties: entity}, &QueryOptions{})
 	}
 	return nil, errors.New("Invalid TableUpdateMode")
+}
+
+type TableAccessPolicy struct {
+	Start      time.Time
+	Expiry     time.Time
+	Permission string
+}
+
+// GetTableAccessPolicy retrieves details about any stored access policies specified on the table that may be used with Shared Access Signatures
+func (t *TableClient) GetTableAccessPolicy(ctx context.Context) (SignedIdentifierArrayResponse, error) {
+	accessPolicies, err := t.client.GetAccessPolicy(ctx, t.Name, nil)
+	return accessPolicies, err
 }

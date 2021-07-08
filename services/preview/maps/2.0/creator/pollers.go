@@ -9,9 +9,10 @@ package creator
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // LongRunningOperationResultPoller provides polling facilities until the operation reaches a terminal state.
@@ -56,6 +57,6 @@ func (p *longRunningOperationResultPoller) pollUntilDone(ctx context.Context, fr
 		return LongRunningOperationResultResponse{}, err
 	}
 	respType.RawResponse = resp
+	respType.ResourceLocation = &respType.RawResponse.Header["Resource-Location"][0]
 	return respType, nil
 }
-

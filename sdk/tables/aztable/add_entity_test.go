@@ -41,4 +41,18 @@ func (s *tableClientLiveTests) TestAddBasicEntity() {
 	rk, ok := newEntity[rowKey]
 	assert.True(ok)
 	assert.Equal(rk, "rk001")
+
+	queryString := "PartitionKey eq 'pk001'"
+	queryOptions := QueryOptions{Filter: &queryString}
+	pager := client.Query(queryOptions)
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
+		// model := basicTestEntity{}
+		for _, e := range resp.TableEntityQueryResponse.Value {
+			pk, ok := e[partitionKey]
+			assert.True(ok)
+			assert.Equal(pk, "pk001")
+		}
+
+	}
 }

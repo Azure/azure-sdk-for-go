@@ -6,7 +6,6 @@ package aztable
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -81,7 +80,6 @@ func (t *TableClient) GetEntity(ctx context.Context, partitionKey string, rowKey
 // An entity must have at least a PartionKey and RowKey property.
 func (t *TableClient) AddEntity(ctx context.Context, entity interface{}) (TableInsertEntityResponse, error) {
 	entmap, err := toMap(entity)
-	fmt.Println(entmap)
 	if err != nil {
 		return TableInsertEntityResponse{}, azcore.NewResponseError(err, nil)
 	}

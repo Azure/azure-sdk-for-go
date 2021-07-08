@@ -325,11 +325,6 @@ func toMap(entity interface{}) (*map[string]interface{}, error) {
 		}
 	}
 
-	fmt.Println("Printing out entity")
-	for k, v := range entityMap {
-		fmt.Printf("\t %v: %v\n", k, v)
-	}
-
 	return &entityMap, nil
 }
 

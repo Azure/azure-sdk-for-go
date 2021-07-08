@@ -111,7 +111,7 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 
 	var qResp TableEntityQueryResponseResponse
 	filter := "RowKey eq '1'"
-	pager := client.Query(QueryOptions{Filter: &filter})
+	pager := client.Query(&QueryOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
@@ -128,7 +128,7 @@ func (s *tableClientLiveTests) TestMergeEntity() {
 	_, updateErr := client.UpdateEntity(ctx, mergeProperty, nil, Merge)
 	assert.Nil(updateErr)
 
-	pager = client.Query(QueryOptions{Filter: &filter})
+	pager = client.Query(&QueryOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
@@ -152,7 +152,7 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 
 	var qResp TableEntityQueryResponseResponse
 	filter := "RowKey eq '1'"
-	pager := client.Query(QueryOptions{Filter: &filter})
+	pager := client.Query(&QueryOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
@@ -169,7 +169,7 @@ func (s *tableClientLiveTests) TestUpsertEntity() {
 	_, updateErr := client.UpsertEntity(ctx, mergeProperty, Replace)
 	require.Nil(updateErr)
 
-	pager = client.Query(QueryOptions{Filter: &filter})
+	pager = client.Query(&QueryOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
@@ -229,7 +229,7 @@ func (s *tableClientLiveTests) TestQuerySimpleEntity() {
 	expectedCount := 4
 	var resp TableEntityQueryResponseResponse
 	var models []simpleEntity
-	pager := client.Query(QueryOptions{Filter: &filter})
+	pager := client.Query(&QueryOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		resp = pager.PageResponse()
 		models = make([]simpleEntity, len(resp.TableEntityQueryResponse.Value))
@@ -279,7 +279,7 @@ func (s *tableClientLiveTests) TestQueryComplexEntity() {
 	filter := "RowKey lt '5'"
 	expectedCount := 4
 	var resp TableEntityQueryResponseResponse
-	pager := client.Query(QueryOptions{Filter: &filter})
+	pager := client.Query(&QueryOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		resp = pager.PageResponse()
 		assert.Equal(expectedCount, len(resp.TableEntityQueryResponse.Value))
@@ -367,7 +367,7 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 
 	var qResp TableEntityQueryResponseResponse
 	filter := "RowKey eq '1'"
-	pager := client.Query(QueryOptions{Filter: &filter})
+	pager := client.Query(&QueryOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}
@@ -413,7 +413,7 @@ func (s *tableClientLiveTests) TestBatchMixed() {
 
 	}
 
-	pager = client.Query(QueryOptions{Filter: &filter})
+	pager = client.Query(&QueryOptions{Filter: &filter})
 	for pager.NextPage(ctx) {
 		qResp = pager.PageResponse()
 	}

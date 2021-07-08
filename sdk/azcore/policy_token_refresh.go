@@ -16,7 +16,7 @@ const (
 )
 
 // DO NOT USE. This is for internal SDK usage. The TokenFetcher is used to provide
-// custom implementations for the bearer token policy.
+// custom implementations for the token refresh policy.
 type TokenFetcher interface {
 	// IsZeroOrExpired returns a bool if there is a tenant that needs to be initialized
 	IsZeroOrExpired() bool

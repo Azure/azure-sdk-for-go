@@ -1,12 +1,19 @@
 #Requires -Version 7.0
 param($filter, [switch]$vet, [switch]$generate, [switch]$skipBuild, $parallel = 5)
 
+$startingDirectory = Get-Location
+$root = Resolve-Path ($PSScriptRoot + "/../..")
+Set-Location $root
 $sdks = @{};
 
 foreach ($sdk in (./eng/scripts/get_module_dirs.ps1 -serviceDir 'sdk/...')) {
     $name = $sdk | split-path -leaf
     $sdks[$name] = @{
-        'path' = $sdk;
+        'path'      = $sdk;
+        'vet'       = $vet;
+        'generate'  = $generate;
+        'skipBuild' = $skipBuild;
+        'root'      = $root;
     }
 }
 
@@ -19,16 +26,23 @@ if (![string]::IsNullOrWhiteSpace($filter)) {
 $keys | ForEach-Object { $sdks[$_] } | ForEach-Object -Parallel {
     Push-Location $_.path
 
-    if (!$skipBuild) {
+    if ($_.generate) {
+        Write-Host "##[command]Executing autorest.go in " $_.path
+        $autorestPath = $_.path + "\autorest.md"
+        $autorestVersion = "@autorest/go@4.0.0-preview.23"
+        $outputFolder = $_.path
+        $root = $_.root
+        autorest --use=$autorestVersion --go --track2 --go-sdk-folder=$root --output-folder=$outputFolder --file-prefix="zz_generated_" --clear-output-folder=false $autorestPath
+    }
+    if (!$_.skipBuild) {
         Write-Host "##[command]Executing go build -v ./... in " $_.path
         go build -v ./...
     }
-    if ($vet) {
+    if ($_.vet) {
         Write-Host "##[command]Executing go vet ./... in " $_.path
         go vet ./...
     }
-    if ($generate) {
-        Write-Host "##[command]Executing autorest.go in " $_.path
-        # TODO
-    }
+    Pop-Location
 } -ThrottleLimit $parallel
+
+Set-Location $startingDirectory

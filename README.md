@@ -38,9 +38,6 @@ APIs are updated frequently, we release a **new major version at the end of
 each month** with a full changelog. For more details and background see [SDK Update
 Practices](https://github.com/Azure/azure-sdk-for-go/wiki/SDK-Update-Practices).
 
-To more reliably manage dependencies like the Azure SDK in your applications we
-recommend [golang/dep](https://github.com/golang/dep).
-
 Packages that are still in public preview can be found under the ./services/preview
 directory. Please be aware that since these packages are in preview they are subject
 to change, including breaking changes outside of a major semver bump.

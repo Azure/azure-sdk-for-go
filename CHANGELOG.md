@@ -1,5 +1,28 @@
 # CHANGELOG
 
+## `v55.6.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/avs/mgmt/2021-06-01/avs`
+- `github.com/Azure/azure-sdk-for-go/services/preview/appplatform/mgmt/2021-06-01-preview/appplatform`
+- `github.com/Azure/azure-sdk-for-go/services/preview/edgeorder/mgmt/2020-12-01-preview/edgeorder`
+- `github.com/Azure/azure-sdk-for-go/services/redis/mgmt/2020-12-01/redis`
+- `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2021-07-01/features`
+- `github.com/Azure/azure-sdk-for-go/services/web/mgmt/2021-01-15/web`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/quantum/mgmt/2019-11-04-preview/quantum` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/quantum/mgmt/2019-11-04-preview/quantum/CHANGELOG.md) |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/security/mgmt/v3.0/security/CHANGELOG.md) |
+
 ## `v55.5.0`
 
 ### New Packages
@@ -13,7 +36,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2021-03-01-preview/appconfiguration` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/appconfiguration/mgmt/2021-03-01-preview/appconfiguration/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/appconfiguration/mgmt/2021-03-01-preview/appconfiguration` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.5.0/services/preview/appconfiguration/mgmt/2021-03-01-preview/appconfiguration/CHANGELOG.md) |
 
 ## `v55.4.0`
 
